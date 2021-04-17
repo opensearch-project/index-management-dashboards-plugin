@@ -36,7 +36,7 @@ import {
 } from "@elastic/eui";
 import { BrowserServices } from "../../../../models/interfaces";
 import { PolicyOption } from "../../models/interfaces";
-import { DocumentPolicy, Policy, State } from "../../../../../models/interfaces";
+import { DocumentPolicy, State } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { DOCUMENTATION_URL } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";

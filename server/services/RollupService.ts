@@ -14,16 +14,23 @@
  */
 
 import _ from "lodash";
-import { IClusterClient, KibanaRequest, KibanaResponseFactory, IKibanaResponse, ResponseError, RequestHandlerContext } from "kibana/server";
+import {
+  ILegacyCustomClusterClient,
+  OpenSearchDashboardsRequest,
+  OpenSearchDashboardsResponseFactory,
+  IOpenSearchDashboardsResponse,
+  ResponseError,
+  RequestHandlerContext,
+} from "opensearch-dashboards/server";
 import { DeleteRollupParams, DeleteRollupResponse, GetRollupsResponse, PutRollupParams, PutRollupResponse } from "../models/interfaces";
 import { ServerResponse } from "../models/types";
 import { DocumentRollup, Rollup } from "../../models/interfaces";
 
 export default class RollupService {
-  esDriver: IClusterClient;
+  osDriver: ILegacyCustomClusterClient;
 
-  constructor(esDriver: IClusterClient) {
-    this.esDriver = esDriver;
+  constructor(osDriver: ILegacyCustomClusterClient) {
+    this.osDriver = osDriver;
   }
 
   /**
@@ -31,9 +38,9 @@ export default class RollupService {
    */
   putRollup = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<PutRollupResponse> | ResponseError>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<PutRollupResponse> | ResponseError>> => {
     try {
       const { id } = request.params as { id: string };
       const { seqNo, primaryTerm } = request.query as { seqNo?: string; primaryTerm?: string };
@@ -48,7 +55,7 @@ export default class RollupService {
         method = "ism.createRollup";
         params = { rollupId: id, body: JSON.stringify(request.body) };
       }
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const putRollupResponse: PutRollupResponse = await callWithRequest(method, params);
       return response.custom({
         statusCode: 200,
@@ -74,13 +81,13 @@ export default class RollupService {
    */
   deleteRollup = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<boolean> | ResponseError>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean> | ResponseError>> => {
     try {
       const { id } = request.params as { id: string };
       const params: DeleteRollupParams = { rollupId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const deleteRollupResponse: DeleteRollupResponse = await callWithRequest("ism.deleteRollup", params);
       if (deleteRollupResponse.result !== "deleted") {
         return response.custom({
@@ -112,13 +119,13 @@ export default class RollupService {
 
   startRollup = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<boolean>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = { rollupId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const startResponse = await callWithRequest("ism.startRollup", params);
       const acknowledged = _.get(startResponse, "acknowledged");
       if (acknowledged) {
@@ -143,13 +150,13 @@ export default class RollupService {
 
   stopRollup = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<boolean>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = { rollupId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const stopResponse = await callWithRequest("ism.stopRollup", params);
       const acknowledged = _.get(stopResponse, "acknowledged");
       if (acknowledged) {
@@ -177,13 +184,13 @@ export default class RollupService {
    */
   getRollup = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<DocumentRollup>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentRollup>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = { rollupId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getResponse = await callWithRequest("ism.getRollup", params);
       const metadata = await callWithRequest("ism.explainRollup", params);
       const rollup = _.get(getResponse, "rollup", null);
@@ -237,13 +244,13 @@ export default class RollupService {
 
   getMappings = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<any>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
     try {
       const { index } = request.body as { index: string };
       const params = { index: index };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const mappings = await callWithRequest("indices.getMapping", params);
       return response.custom({
         statusCode: 200,
@@ -268,13 +275,13 @@ export default class RollupService {
    */
   getRollups = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<GetRollupsResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetRollupsResponse>>> => {
     try {
       const { from, size, search, sortDirection, sortField } = request.query as {
-        from: number;
-        size: number;
+        from: string;
+        size: string;
         search: string;
         sortDirection: string;
         sortField: string;
@@ -295,7 +302,7 @@ export default class RollupService {
         sortDirection,
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getRollupResponse = await callWithRequest("ism.getRollups", params);
       const totalRollups = getRollupResponse.total_rollups;
       const rollups = getRollupResponse.rollups.map((rollup: DocumentRollup) => ({

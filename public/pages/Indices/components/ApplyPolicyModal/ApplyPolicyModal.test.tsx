@@ -15,7 +15,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import ApplyPolicyModal from "./ApplyPolicyModal";
 import { browserServicesMock, coreServicesMock, httpClientMock } from "../../../../../test/mocks";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -25,7 +25,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 
 describe("<ApplyPolicyModal /> spec", () => {
   it("renders the component", async () => {
-    httpClientMock.post = jest.fn().mockResolvedValue({ ok: true, resp: { hits: { hits: [{ _id: "test_index" }] } } });
+    httpClientMock.post = jest.fn().mockResolvedValue({ ok: true, response: { policies: [{ policy: "some_policy", id: "some_id" }] } });
     render(<ApplyPolicyModal onClose={() => {}} services={browserServicesMock} indices={[]} />);
 
     // EuiOverlayMask appends an element to the body so we should have two, an empty div from react-test-library
@@ -35,7 +35,7 @@ describe("<ApplyPolicyModal /> spec", () => {
   });
 
   it("successfully calls search policies on mount", async () => {
-    httpClientMock.get = jest.fn().mockResolvedValue({ ok: true, resp: { hits: { hits: [{ _id: "test_index" }] } } });
+    httpClientMock.get = jest.fn().mockResolvedValue({ ok: true, response: { policies: [{ policy: "some_policy", id: "some_id" }] } });
     const spy = jest.spyOn(browserServicesMock.indexService, "searchPolicies");
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
@@ -58,7 +58,7 @@ describe("<ApplyPolicyModal /> spec", () => {
     );
 
     // wait 1 tick for the searchPolicies promise to resolve
-    await wait();
+    await waitFor(() => {});
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith("", true);
@@ -76,7 +76,7 @@ describe("<ApplyPolicyModal /> spec", () => {
     );
 
     // wait 1 tick for the searchPolicies promise to resolve
-    await wait();
+    await waitFor(() => {});
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith("", true);

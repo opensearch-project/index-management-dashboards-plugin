@@ -25,8 +25,8 @@ describe("Managed indices", () => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
-    // Visit ISM Kibana
-    cy.visit(`${Cypress.env("kibana")}/app/${PLUGIN_NAME}#/managed-indices`);
+    // Visit ISM OSD
+    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/managed-indices`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Rows per page", { timeout: 60000 });
@@ -58,7 +58,7 @@ describe("Managed indices", () => {
       // Reload the page
       cy.reload();
 
-      // Confirm we are back to empty loading state, give 20 seconds as Kibana takes a while to load
+      // Confirm we are back to empty loading state, give 20 seconds as OSD takes a while to load
       cy.contains("There are no existing managed indices.", { timeout: 20000 });
     });
   });
@@ -80,7 +80,7 @@ describe("Managed indices", () => {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(5000).reload();
 
-      // Confirm we have a Failed execution, wait up to 20 seconds as Kibana takes a while to load
+      // Confirm we have a Failed execution, wait up to 20 seconds as OSD takes a while to load
       cy.contains("Failed", { timeout: 20000 });
 
       // Create the policy we were missing
@@ -101,7 +101,7 @@ describe("Managed indices", () => {
       // Reload the page
       cy.reload();
 
-      // Confirm we see managed index attempting to retry, give 20 seconds for Kibana load
+      // Confirm we see managed index attempting to retry, give 20 seconds for OSD load
       cy.contains("Pending retry of failed managed index", { timeout: 20000 });
 
       // Speed up next execution of managed index

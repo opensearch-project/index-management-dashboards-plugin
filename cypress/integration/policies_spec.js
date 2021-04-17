@@ -23,8 +23,8 @@ describe("Policies", () => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
-    // Visit ISM Kibana
-    cy.visit(`${Cypress.env("kibana")}/app/${PLUGIN_NAME}`);
+    // Visit ISM OSD
+    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Create policy", { timeout: 60000 });

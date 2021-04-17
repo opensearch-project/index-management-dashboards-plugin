@@ -71,7 +71,7 @@ export default class GeneralInformation extends Component<GeneralInformationProp
           <EuiSpacer size="s" />
           <EuiFlexGrid columns={4}>
             {infoItems.map((item) => (
-              <EuiFlexItem>
+              <EuiFlexItem key={`${item.term}#${item.value}`}>
                 <EuiText size="xs">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>

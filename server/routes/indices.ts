@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { schema } from "@kbn/config-schema";
+import { schema } from "@osd/config-schema";
 import { NodeServices } from "../models/interfaces";
 import { NODE_API } from "../../utils/constants";
 import { IRouter } from "../../../../src/core/server";

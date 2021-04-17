@@ -13,15 +13,8 @@
  * permissions and limitations under the License.
  */
 
-import { HttpSetup } from "kibana/public";
-import { INDEX } from "../../server/utils/constants";
-import {
-  AcknowledgedResponse,
-  ApplyPolicyResponse,
-  GetIndicesResponse,
-  GetPoliciesResponse,
-  SearchResponse,
-} from "../../server/models/interfaces";
+import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
+import { AcknowledgedResponse, ApplyPolicyResponse, GetIndicesResponse, GetPoliciesResponse } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { NODE_API } from "../../utils/constants";
 
@@ -32,7 +25,7 @@ export default class IndexService {
     this.httpClient = httpClient;
   }
 
-  getIndices = async (queryObject: object): Promise<ServerResponse<GetIndicesResponse>> => {
+  getIndices = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetIndicesResponse>> => {
     let url = `..${NODE_API._INDICES}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetIndicesResponse>;
     return response;

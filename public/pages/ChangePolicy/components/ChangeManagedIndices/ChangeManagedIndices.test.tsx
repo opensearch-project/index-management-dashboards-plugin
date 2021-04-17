@@ -15,7 +15,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import ChangeManagedIndices from "./ChangeManagedIndices";
 import { browserServicesMock } from "../../../../../test/mocks";
 import coreServicesMock from "../../../../../test/mocks/coreServicesMock";
@@ -37,7 +37,7 @@ describe("<ChangeManagedIndices /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(container.firstChild).toMatchSnapshot();
   });
@@ -57,7 +57,7 @@ describe("<ChangeManagedIndices /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("this is an error");
@@ -78,7 +78,7 @@ describe("<ChangeManagedIndices /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
@@ -101,7 +101,7 @@ describe("<ChangeManagedIndices /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("You have not created a managed index yet");

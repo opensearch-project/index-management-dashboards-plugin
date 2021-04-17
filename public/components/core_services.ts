@@ -14,7 +14,7 @@
  */
 
 import { createContext } from "react";
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 
 const CoreServicesContext = createContext<CoreStart | null>(null);
 

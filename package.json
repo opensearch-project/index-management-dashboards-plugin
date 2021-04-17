@@ -1,21 +1,21 @@
 {
-  "name": "opendistro_index_management_kibana",
+  "name": "opensearch_index_management_dashboards",
   "version": "1.13.0.1",
-  "description": "Kibana plugin for Index Management",
+  "description": "Opensearch Dashboards plugin for Index Management",
   "main": "index.js",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/opendistro-for-elasticsearch/index-management-kibana-plugin",
+  "homepage": "https://github.com/opensearch-project/index-management-dashboards-plugin",
   "config": {
-    "id": "opendistroIndexManagementKibana"
+    "id": "indexManagementOpenSearchDashboards"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/opendistro-for-elasticsearch/index-management-kibana-plugin"
+    "url": "https://github.com/opensearch-project/index-management-dashboards-plugin"
   },
   "scripts": {
     "cypress:open": "cypress open",
-    "kbn": "node ../../scripts/kbn",
-    "es": "node ../../scripts/es",
+    "osd": "node ../../scripts/osd",
+    "opensearch": "node ../../scripts/opensearch",
     "lint": "eslint .",
     "plugin-helpers": "node ../../scripts/plugin_helpers",
     "test:jest": "NODE_PATH=../../node_modules ../../node_modules/.bin/jest --config ./test/jest.config.js",
@@ -37,8 +37,8 @@
     "eslint-utils": "^1.4.2"
   },
   "devDependencies": {
-    "@elastic/elastic-eslint-config-kibana": "link:../../packages/elastic-eslint-config-kibana",
-    "@elastic/eslint-import-resolver-kibana": "link:../../packages/kbn-eslint-import-resolver-kibana",
+    "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
+    "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
     "cypress": "^6.0.0",

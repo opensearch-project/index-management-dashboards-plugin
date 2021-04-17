@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { schema, TypeOf } from "@kbn/config-schema";
+import { schema, TypeOf } from "@osd/config-schema";
 import { PluginConfigDescriptor, PluginInitializerContext } from "../../../src/core/server";
 import { IndexPatternManagementPlugin } from "./plugin";
 

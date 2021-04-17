@@ -7,12 +7,12 @@ import sys
 import fileinput
 import re
 
-link_prefix = "https://github.com/opendistro-for-elasticsearch/index-management-kibana-plugin/pull/"
+link_prefix = "https://github.com/opensearch-project/index-management-dashboards-plugin/pull/"
 searchExp = re.compile("([\(\[]).*?([\)\]])")
 
 current_date = raw_input("what day is today (e.g. 2020-06-29): ")
 file_path = raw_input("Path to raw note file (e.g., note.md): ")
-plugin_name = "index-management-kibana-plugin"
+plugin_name = "index-management-dashboards-plugin"
 plugin_version = raw_input('Plugin version (x.x.x.x): ')
 
 app_num = int(

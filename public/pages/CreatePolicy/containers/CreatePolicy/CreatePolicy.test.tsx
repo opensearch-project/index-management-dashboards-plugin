@@ -15,9 +15,9 @@
 
 import React from "react";
 import { MemoryRouter as Router, Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { render, wait, fireEvent } from "@testing-library/react";
+import { render, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 import CreatePolicy from "./CreatePolicy";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -86,7 +86,7 @@ describe("<CreatePolicy /> spec", () => {
       .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy", policy: JSON.parse(DEFAULT_POLICY) } });
     const { container } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy`]);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(container.firstChild).toMatchSnapshot();
   });
@@ -94,7 +94,7 @@ describe("<CreatePolicy /> spec", () => {
   it("routes back to policies if given bad id", async () => {
     const { getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=one&id=two`]);
 
-    await wait(() => getByText("Testing Policies"));
+    await waitFor(() => getByText("Testing Policies"));
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Invalid policy id: one,two");
   });
@@ -103,7 +103,7 @@ describe("<CreatePolicy /> spec", () => {
     browserServicesMock.policyService.getPolicy = jest.fn().mockResolvedValue({ ok: false, error: "some error" });
     const { getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_id`]);
 
-    await wait(() => getByText("Testing Policies"));
+    await waitFor(() => getByText("Testing Policies"));
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Could not load the policy: some error");
   });
@@ -112,7 +112,7 @@ describe("<CreatePolicy /> spec", () => {
     browserServicesMock.policyService.getPolicy = jest.fn().mockRejectedValue(new Error("another error"));
     const { getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_id`]);
 
-    await wait(() => getByText("Testing Policies"));
+    await waitFor(() => getByText("Testing Policies"));
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("another error");
   });
@@ -123,7 +123,7 @@ describe("<CreatePolicy /> spec", () => {
       .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_id", policy: JSON.parse(DEFAULT_POLICY) } });
     const { getByDisplayValue, getByPlaceholderText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_id`]);
 
-    await wait(() => getByDisplayValue("some_id"));
+    await waitFor(() => getByDisplayValue("some_id"));
 
     expect(getByPlaceholderText("hot_cold_workflow")).toHaveAttribute("readonly");
   });
@@ -154,7 +154,7 @@ describe("<CreatePolicy /> spec", () => {
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 
-    await wait(() => getByText("Testing Policies"));
+    await waitFor(() => getByText("Testing Policies"));
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Created policy: some_policy_id");
   });
 
@@ -168,7 +168,7 @@ describe("<CreatePolicy /> spec", () => {
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 
-    await wait(() => getByText("bad policy"));
+    await waitFor(() => getByText("bad policy"));
   });
 
   it("shows a danger toaster when getting error from create policy", async () => {
@@ -181,7 +181,7 @@ describe("<CreatePolicy /> spec", () => {
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 
-    await wait(() => getByText("this is an error"));
+    await waitFor(() => getByText("this is an error"));
   });
 
   it("routes you back to policies and shows a success toaster when successfully updating a policy", async () => {
@@ -191,11 +191,11 @@ describe("<CreatePolicy /> spec", () => {
       .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
     const { getByText, getByTestId, getByDisplayValue } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
 
-    await wait(() => getByDisplayValue("some_policy_id"));
+    await waitFor(() => getByDisplayValue("some_policy_id"));
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 
-    await wait(() => getByText("Testing Policies"));
+    await waitFor(() => getByText("Testing Policies"));
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Updated policy: some_policy_id");
   });
 
@@ -206,11 +206,11 @@ describe("<CreatePolicy /> spec", () => {
       .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
     const { getByTestId, getByDisplayValue, getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
 
-    await wait(() => getByDisplayValue("some_policy_id"));
+    await waitFor(() => getByDisplayValue("some_policy_id"));
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 
-    await wait(() => getByText("bad policy"));
+    await waitFor(() => getByText("bad policy"));
   });
 
   it("shows a danger toaster when getting error from create policy", async () => {
@@ -220,11 +220,11 @@ describe("<CreatePolicy /> spec", () => {
       .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
     const { getByText, getByTestId, getByDisplayValue } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
 
-    await wait(() => getByDisplayValue("some_policy_id"));
+    await waitFor(() => getByDisplayValue("some_policy_id"));
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 
-    await wait(() => getByText("this is an error"));
+    await waitFor(() => getByText("this is an error"));
   });
 
   it("brings you back to policies when clicking cancel", async () => {
@@ -232,6 +232,6 @@ describe("<CreatePolicy /> spec", () => {
 
     userEvent.click(getByTestId("createPolicyCancelButton"));
 
-    await wait(() => getByText("Testing Policies"));
+    await waitFor(() => getByText("Testing Policies"));
   });
 });

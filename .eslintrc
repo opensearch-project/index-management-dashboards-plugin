@@ -4,6 +4,6 @@ extends: "@elastic/kibana"
 settings:
   import/resolver:
     '@elastic/eslint-import-resolver-kibana':
-      rootPackageName: 'opendistro_index_management_kibana'
+      rootPackageName: 'opensearch_index_management_dashboards'
       pluginPaths:
         - .

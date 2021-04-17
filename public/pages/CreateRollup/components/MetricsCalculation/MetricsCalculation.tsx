@@ -386,6 +386,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
 
     const disableActions = [
       <EuiContextMenuItem
+        key="disable-min"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -397,6 +398,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         Min
       </EuiContextMenuItem>,
       <EuiContextMenuItem
+        key="disable-max"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -408,6 +410,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         Max
       </EuiContextMenuItem>,
       <EuiContextMenuItem
+        key="disable-sum"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -419,6 +422,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         Sum
       </EuiContextMenuItem>,
       <EuiContextMenuItem
+        key="disable-avg"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -430,6 +434,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         Avg
       </EuiContextMenuItem>,
       <EuiContextMenuItem
+        key="disable-vc"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -444,6 +449,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
 
     const enableActions = [
       <EuiContextMenuItem
+        key="enable-min"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -455,6 +461,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         Min
       </EuiContextMenuItem>,
       <EuiContextMenuItem
+        key="enable-max"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -466,6 +473,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         Max
       </EuiContextMenuItem>,
       <EuiContextMenuItem
+        key="enable-sum"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -477,6 +485,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         Sum
       </EuiContextMenuItem>,
       <EuiContextMenuItem
+        key="enable-avg"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -488,6 +497,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         Avg
       </EuiContextMenuItem>,
       <EuiContextMenuItem
+        key="enable-vc"
         icon="empty"
         disabled={selectedMetrics.length == 0}
         onClick={() => {
@@ -586,7 +596,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
 
           <EuiBasicTable
             items={metricsShown}
-            itemId="source_field"
+            itemId="source_field.label"
             rowHeader="source_field"
             columns={metricsColumns}
             hasActions={true}

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-export const PLUGIN_NAME = "opendistro_index_management_kibana";
+export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 
 export const DEFAULT_EMPTY_DATA = "-";
 
@@ -46,7 +46,7 @@ export const BREADCRUMBS = Object.freeze({
   ROLLUP_DETAILS: { text: "Rollup details" },
 });
 
-// TODO: Kibana EUI has a SortDirection already
+// TODO: EUI has a SortDirection already
 export enum SortDirection {
   ASC = "asc",
   DESC = "desc",
