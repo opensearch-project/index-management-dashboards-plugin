@@ -13,10 +13,9 @@
  * permissions and limitations under the License.
  */
 
-import { CoreStart, AppMountParameters } from "kibana/public";
+import { CoreStart, AppMountParameters } from "opensearch-dashboards/public";
 import React from "react";
 import ReactDOM from "react-dom";
-import { render, unmountComponentAtNode } from "react-dom";
 import { HashRouter as Router, Route } from "react-router-dom";
 import { IndexService, ManagedIndexService, PolicyService, RollupService, ServicesContext } from "./services";
 import { DarkModeContext } from "./components/DarkMode";

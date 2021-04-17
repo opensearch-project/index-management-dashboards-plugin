@@ -15,7 +15,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent, wait } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RetryModal from "./RetryModal";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -197,7 +197,7 @@ describe("<RetryModal /> spec", () => {
 
     fireEvent.click(getByTestId("retryModalRetryButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.managedIndexService.retryManagedIndexPolicy).toHaveBeenCalledWith(["some_index"], "two");
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
@@ -214,7 +214,7 @@ describe("<RetryModal /> spec", () => {
 
     fireEvent.click(getByTestId("retryModalRetryButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("this is an error");
@@ -230,7 +230,7 @@ describe("<RetryModal /> spec", () => {
 
     fireEvent.click(getByTestId("retryModalRetryButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
@@ -249,7 +249,7 @@ describe("<RetryModal /> spec", () => {
 
     fireEvent.click(getByTestId("retryModalRetryButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Failed to retry: [index_a, some reason]");

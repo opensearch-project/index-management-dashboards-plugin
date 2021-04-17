@@ -1,0 +1,9 @@
+{
+  "id": "indexManagementOpenSearchDashboards",
+  "version": "1.13.0.1",
+  "opensearchDashboardsVersion": "7.10.2",
+  "configPath": ["opensearch_index_management"],
+  "requiredPlugins": ["navigation"],
+  "server": true,
+  "ui": true
+}

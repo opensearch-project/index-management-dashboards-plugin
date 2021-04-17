@@ -14,25 +14,23 @@
  */
 
 import _ from "lodash";
-import { IClusterClient, KibanaRequest, KibanaResponseFactory, IKibanaResponse, ResponseError, RequestHandlerContext } from "kibana/server";
-import { INDEX } from "../utils/constants";
 import {
-  DeletePolicyParams,
-  DeletePolicyResponse,
-  GetPoliciesResponse,
-  PutPolicyParams,
-  PutPolicyResponse,
-  SearchResponse,
-} from "../models/interfaces";
-import { getMustQuery } from "../utils/helpers";
+  ILegacyCustomClusterClient,
+  OpenSearchDashboardsRequest,
+  OpenSearchDashboardsResponseFactory,
+  IOpenSearchDashboardsResponse,
+  ResponseError,
+  RequestHandlerContext,
+} from "opensearch-dashboards/server";
+import { DeletePolicyParams, DeletePolicyResponse, GetPoliciesResponse, PutPolicyParams, PutPolicyResponse } from "../models/interfaces";
 import { PoliciesSort, ServerResponse } from "../models/types";
 import { DocumentPolicy, Policy } from "../../models/interfaces";
 
 export default class PolicyService {
-  esDriver: IClusterClient;
+  osDriver: ILegacyCustomClusterClient;
 
-  constructor(esDriver: IClusterClient) {
-    this.esDriver = esDriver;
+  constructor(osDriver: ILegacyCustomClusterClient) {
+    this.osDriver = osDriver;
   }
 
   /**
@@ -40,9 +38,9 @@ export default class PolicyService {
    */
   putPolicy = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<PutPolicyResponse> | ResponseError>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<PutPolicyResponse> | ResponseError>> => {
     try {
       const { id } = request.params as { id: string };
       const { seqNo, primaryTerm } = request.query as { seqNo?: string; primaryTerm?: string };
@@ -52,7 +50,7 @@ export default class PolicyService {
         method = "ism.createPolicy";
         params = { policyId: id, body: JSON.stringify(request.body) };
       }
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const putPolicyResponse: PutPolicyResponse = await callWithRequest(method, params);
       return response.custom({
         statusCode: 200,
@@ -78,13 +76,13 @@ export default class PolicyService {
    */
   deletePolicy = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<boolean> | ResponseError>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean> | ResponseError>> => {
     try {
       const { id } = request.params as { id: string };
       const params: DeletePolicyParams = { policyId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const deletePolicyResponse: DeletePolicyResponse = await callWithRequest("ism.deletePolicy", params);
       if (deletePolicyResponse.result !== "deleted") {
         return response.custom({
@@ -119,13 +117,13 @@ export default class PolicyService {
    */
   getPolicy = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<DocumentPolicy>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentPolicy>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = { policyId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getResponse = await callWithRequest("ism.getPolicy", params);
       const policy = _.get(getResponse, "policy", null);
       const seqNo = _.get(getResponse, "_seq_no");
@@ -164,9 +162,9 @@ export default class PolicyService {
    */
   getPolicies = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<GetPoliciesResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetPoliciesResponse>>> => {
     try {
       const { from = 0, size = 20, search, sortDirection = "desc", sortField = "id" } = request.query as {
         from: number;
@@ -190,7 +188,7 @@ export default class PolicyService {
         queryString: search.trim() ? `*${search.trim().split(" ").join("* *")}*` : "*",
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getResponse = await callWithRequest("ism.getPolicies", params);
 
       const policies: DocumentPolicy[] = getResponse.policies.map((p) => ({

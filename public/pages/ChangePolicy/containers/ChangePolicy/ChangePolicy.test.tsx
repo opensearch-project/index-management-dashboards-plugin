@@ -15,9 +15,9 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 import ChangePolicy from "./ChangePolicy";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -62,7 +62,7 @@ describe("<ChangePolicy /> spec", () => {
   it("renders the component", async () => {
     const { container } = renderWithRouter(ChangePolicy);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(container.firstChild).toMatchSnapshot();
   });

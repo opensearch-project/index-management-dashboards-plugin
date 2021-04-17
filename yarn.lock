@@ -67,11 +67,11 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@elastic/elastic-eslint-config-kibana@link:../../packages/elastic-eslint-config-kibana":
+"@elastic/elastic-eslint-config-kibana@link:../../packages/opensearch-eslint-config-opensearch-dashboards":
   version "0.0.0"
   uid ""
 
-"@elastic/eslint-import-resolver-kibana@link:../../packages/kbn-eslint-import-resolver-kibana":
+"@elastic/eslint-import-resolver-kibana@link:../../packages/osd-eslint-import-resolver-opensearch-dashboards":
   version "0.0.0"
   uid ""
 

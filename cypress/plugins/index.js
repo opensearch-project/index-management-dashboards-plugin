@@ -27,13 +27,13 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-// TODO: yarn kbn bootstrap fails when trying to add below package as a dependency..
+// TODO: yarn osd bootstrap fails when trying to add below package as a dependency..
 // const wp = require("@cypress/webpack-preprocessor");
 //
 /**
  * @type {Cypress.PluginConfig}
  */
-module.exports = on => {
+module.exports = (on) => {
   //   const options = {
   //     webpackOptions: {
   //       resolve: {

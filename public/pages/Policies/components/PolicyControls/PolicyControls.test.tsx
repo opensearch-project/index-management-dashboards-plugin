@@ -116,6 +116,6 @@ describe("<PolicyControls /> spec", () => {
 
     fireEvent.click(getByTestId("superDatePickerToggleRefreshButton"));
 
-    await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(2), { timeout: 3000 });
+    await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(2), { timeout: 10000 });
   });
 });

@@ -24,7 +24,7 @@ describe("Rollups", () => {
     localStorage.setItem("home:welcome:show", "true");
 
     // Go to sample data page
-    cy.visit(`${Cypress.env("kibana")}/app/home#/tutorial_directory/sampleData`);
+    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory/sampleData`);
 
     // Click on "Sample data" tab
     cy.contains("Sample data").click({ force: true });
@@ -34,8 +34,8 @@ describe("Rollups", () => {
     // Verify that sample data is add by checking toast notification
     cy.contains("Sample eCommerce orders installed", { timeout: 60000 });
 
-    // Visit ISM Kibana
-    cy.visit(`${Cypress.env("kibana")}/app/${PLUGIN_NAME}#/rollups`);
+    // Visit ISM OSD
+    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/rollups`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Create rollup", { timeout: 60000 });
@@ -65,7 +65,7 @@ describe("Rollups", () => {
       cy.get(`div[data-test-subj="sourceIndexCombobox"]`)
         .find(`input[data-test-subj="comboBoxSearchInput"]`)
         .focus()
-        .type("kibana_sample_data_ecommerce{enter}");
+        .type("opensearch_dashboards_sample_data_ecommerce{enter}");
 
       // Enter target index
       cy.get(`div[data-test-subj="targetIndexCombobox"]`)

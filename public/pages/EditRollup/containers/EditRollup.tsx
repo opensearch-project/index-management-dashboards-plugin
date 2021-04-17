@@ -49,7 +49,7 @@ interface EditRollupState {
   cronExpression: string;
   cronTimezone: string;
   pageSize: number;
-  delayTime: number | undefined;
+  delayTime: number | string;
   delayTimeunit: string;
   rollupJSON: any;
 }
@@ -76,7 +76,7 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
       cronExpression: "",
       cronTimezone: "UTC",
       pageSize: 1000,
-      delayTime: undefined,
+      delayTime: "",
       delayTimeunit: "MINUTES",
       rollupJSON: EMPTY_ROLLUP,
     };
@@ -109,7 +109,7 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
           description: response.response.rollup.description,
           jobEnabledByDefault: response.response.rollup.enabled,
           pageSize: response.response.rollup.page_size,
-          delayTime: response.response.rollup.delay == 0 ? "" : response.response.rollup.delay,
+          delayTime: !response.response.rollup.delay ? "" : response.response.rollup.delay,
           rollupJSON: newJSON,
         });
         if (response.response.rollup.schedule.cron == undefined) {

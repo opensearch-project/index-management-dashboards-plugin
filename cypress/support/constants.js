@@ -30,7 +30,7 @@ export const API = {
   ROLLUP_JOBS_BASE: `${API_ROUTE_PREFIX_ROLLUP}/jobs`,
 };
 
-export const PLUGIN_NAME = "opendistro_index_management_kibana";
+export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 
 export const ADMIN_AUTH = {
   username: "admin",

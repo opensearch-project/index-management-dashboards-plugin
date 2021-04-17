@@ -14,7 +14,7 @@
  */
 
 import React from "react";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -103,16 +103,16 @@ describe("<Rollups /> spec", () => {
       response: { rollups, totalRollups: 1 },
     });
     const { getByText } = renderRollupsWithRouter();
-    await wait();
+    await waitFor(() => {});
 
-    await wait(() => getByText(testRollup._id));
+    await waitFor(() => getByText(testRollup._id));
   });
 
   it("adds error toaster when get rollups has error", async () => {
     browserServicesMock.rollupService.getRollups = jest.fn().mockResolvedValue({ ok: false, error: "some error" });
     renderRollupsWithRouter();
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
@@ -122,7 +122,7 @@ describe("<Rollups /> spec", () => {
     browserServicesMock.rollupService.getRollups = jest.fn().mockRejectedValue(new Error("rejected error"));
     renderRollupsWithRouter();
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("rejected error");
@@ -135,11 +135,11 @@ describe("<Rollups /> spec", () => {
     });
     const { getByText, getByTestId } = renderRollupsWithRouter();
 
-    await wait();
+    await waitFor(() => {});
 
     userEvent.click(getByTestId("createRollupButton"));
 
-    await wait(() => getByText("Testing create rollup"));
+    await waitFor(() => getByText("Testing create rollup"));
   });
 
   it("can route to edit rollup", async () => {
@@ -150,17 +150,17 @@ describe("<Rollups /> spec", () => {
     });
     const { getByText, getByTestId } = renderRollupsWithRouter();
 
-    await wait(() => getByText(testRollup._id));
+    await waitFor(() => getByText(testRollup._id));
 
     userEvent.click(getByTestId(`checkboxSelectRow-${testRollup._id}`));
 
     userEvent.click(getByTestId("actionButton"));
 
-    await wait(() => getByTestId("editButton"));
+    await waitFor(() => getByTestId("editButton"));
 
     userEvent.click(getByTestId("editButton"));
 
-    await wait(() => getByText(`Testing edit rollup: ?id=${testRollup._id}`));
+    await waitFor(() => getByText(`Testing edit rollup: ?id=${testRollup._id}`));
   });
 
   it("can view details of a rollup job", async () => {
@@ -171,12 +171,12 @@ describe("<Rollups /> spec", () => {
     });
     const { getByText } = renderRollupsWithRouter();
 
-    await wait();
-    await wait(() => getByText(testRollup._id));
+    await waitFor(() => {});
+    await waitFor(() => getByText(testRollup._id));
 
     userEvent.click(getByText(testRollup._id));
 
-    await wait(() => getByText(`Testing rollup details: ?id=${testRollup._id}`));
+    await waitFor(() => getByText(`Testing rollup details: ?id=${testRollup._id}`));
   });
 
   it("can enable a rollup job", async () => {
@@ -191,7 +191,7 @@ describe("<Rollups /> spec", () => {
     });
     const { getByText, getByTestId } = renderRollupsWithRouter();
 
-    await wait(() => getByText(testRollup._id));
+    await waitFor(() => getByText(testRollup._id));
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
@@ -201,7 +201,7 @@ describe("<Rollups /> spec", () => {
 
     userEvent.click(getByTestId("enableButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.rollupService.startRollup).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
@@ -221,7 +221,7 @@ describe("<Rollups /> spec", () => {
 
     const { getByText, getByTestId } = renderRollupsWithRouter();
 
-    await wait(() => getByText(testRollup._id));
+    await waitFor(() => getByText(testRollup._id));
 
     expect(getByTestId("disableButton")).toBeDisabled();
 
@@ -231,7 +231,7 @@ describe("<Rollups /> spec", () => {
 
     userEvent.click(getByTestId("disableButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.rollupService.stopRollup).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);

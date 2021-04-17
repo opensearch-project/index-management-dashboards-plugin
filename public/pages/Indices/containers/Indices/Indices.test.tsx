@@ -15,12 +15,12 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent, wait } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import Indices from "./Indices";
 import { TEXT } from "../../components/IndexEmptyPrompt/IndexEmptyPrompt";
@@ -100,16 +100,16 @@ describe("<Indices /> spec", () => {
     ];
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({ ok: true, response: { indices, totalIndices: 1 } });
     const { getByText } = renderWithRouter(Indices);
-    await wait();
+    await waitFor(() => {});
 
-    await wait(() => getByText("index_1"));
+    await waitFor(() => getByText("index_1"));
   });
 
   it("adds error toaster when get indices has error", async () => {
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({ ok: false, error: "some error" });
     renderWithRouter(Indices);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
@@ -119,7 +119,7 @@ describe("<Indices /> spec", () => {
     browserServicesMock.indexService.getIndices = jest.fn().mockRejectedValue(new Error("rejected error"));
     renderWithRouter(Indices);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("rejected error");
@@ -141,10 +141,12 @@ describe("<Indices /> spec", () => {
       },
     ];
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({ ok: true, response: { indices, totalIndices: 1 } });
-    browserServicesMock.indexService.searchPolicies = jest.fn().mockResolvedValue({ ok: true, response: { policies: ["some_policy"] } });
+    browserServicesMock.indexService.searchPolicies = jest
+      .fn()
+      .mockResolvedValue({ ok: true, response: { policies: [{ policy: "some_policy", id: "some_id" }] } });
     const { getByText, getByTestId } = renderWithRouter(Indices);
 
-    await wait(() => getByText("index_1"));
+    await waitFor(() => getByText("index_1"));
 
     expect(getByTestId("Apply policyButton")).toBeDisabled();
 
@@ -154,7 +156,7 @@ describe("<Indices /> spec", () => {
 
     userEvent.click(getByTestId("Apply policyButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     /*
      * TODO: Cannot proceed with this test, throws error
@@ -167,12 +169,12 @@ describe("<Indices /> spec", () => {
 
     // userEvent.click(getByTestId("comboBoxToggleListButton"));
 
-    // await wait();
+    // await waitFor();
 
     // fireEvent.keyPress(getByTestId("comboBoxSearchInput"), { key: "Down Arrow", code: 40, charCode: 40 });
 
-    // await wait();
-  });
+    // await waitFor();
+  }, 10000);
 
   it("sorts/paginates the table", async () => {
     const indices = new Array(40).fill(null).map((_, index) => ({
@@ -199,24 +201,26 @@ describe("<Indices /> spec", () => {
         },
       });
 
-    browserServicesMock.indexService.searchPolicies = jest.fn().mockResolvedValue({ ok: true, response: { policies: ["some_policy"] } });
+    browserServicesMock.indexService.searchPolicies = jest
+      .fn()
+      .mockResolvedValue({ ok: true, response: { policies: [{ policy: "some_policy", id: "some_id" }] } });
     const { getByText, getByTestId, getAllByTestId, queryByText } = renderWithRouter(Indices);
 
     // should load indices 0-19 on first load
-    await wait(() => getByText("index_0"));
+    await waitFor(() => getByText("index_0"));
     expect(queryByText("index_39")).toBeNull();
 
     fireEvent.click(getAllByTestId("pagination-button-next")[0]);
 
     // should load indices 20-39 after clicking next
-    await wait(() => getByText("index_39"));
+    await waitFor(() => getByText("index_39"));
     expect(queryByText("index_0")).toBeNull();
 
     // @ts-ignore
     fireEvent.click(getByTestId("tableHeaderCell_docs.count_6").firstChild);
 
     // should load indices 0-19 after clicking sort (defaults to asc) on docs.count
-    await wait(() => getByText("index_0"));
+    await waitFor(() => getByText("index_0"));
     expect(queryByText("index_39")).toBeNull();
   });
 });

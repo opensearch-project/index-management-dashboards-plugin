@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 
 const coreServicesMock = {
   uiSettings: {
@@ -30,4 +30,4 @@ const coreServicesMock = {
   },
 };
 
-export default coreServicesMock as CoreStart;
+export default (coreServicesMock as unknown) as CoreStart;

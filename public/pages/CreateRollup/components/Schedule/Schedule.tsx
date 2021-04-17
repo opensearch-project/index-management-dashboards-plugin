@@ -44,7 +44,7 @@ interface ScheduleProps {
   cronExpression: string;
   cronTimezone: string;
   pageSize: number;
-  delayTime: number | undefined;
+  delayTime: number | string;
   delayTimeunit: string;
   onChangeJobEnabledByDefault: () => void;
   onChangeCron: (e: ChangeEvent<HTMLTextAreaElement>) => void;

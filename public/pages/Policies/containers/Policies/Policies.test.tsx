@@ -15,7 +15,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -123,16 +123,16 @@ describe("<IndexPolicies /> spec", () => {
       response: { policies, totalPolicies: 1 },
     });
     const { getByText } = renderPoliciesWithRouter();
-    await wait();
+    await waitFor(() => {});
 
-    await wait(() => getByText(testPolicy.id));
+    await waitFor(() => getByText(testPolicy.id));
   });
 
   it("adds error toaster when get policies has error", async () => {
     browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({ ok: false, error: "some error" });
     renderPoliciesWithRouter();
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
@@ -142,7 +142,7 @@ describe("<IndexPolicies /> spec", () => {
     browserServicesMock.policyService.getPolicies = jest.fn().mockRejectedValue(new Error("rejected error"));
     renderPoliciesWithRouter();
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("rejected error");
@@ -157,7 +157,7 @@ describe("<IndexPolicies /> spec", () => {
     browserServicesMock.policyService.deletePolicy = jest.fn().mockResolvedValue({ ok: true, response: true });
     const { queryByText, getByText, getByTestId } = renderPoliciesWithRouter();
 
-    await wait(() => getByText(testPolicy.id));
+    await waitFor(() => getByText(testPolicy.id));
 
     expect(getByTestId("DeleteButton")).toBeDisabled();
 
@@ -166,16 +166,16 @@ describe("<IndexPolicies /> spec", () => {
     expect(getByTestId("DeleteButton")).toBeEnabled();
 
     userEvent.click(getByTestId("DeleteButton"));
-    await wait(() => getByTestId("confirmationModalActionButton"));
+    await waitFor(() => getByTestId("confirmationModalActionButton"));
     userEvent.click(getByTestId("confirmationModalActionButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.policyService.deletePolicy).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`Deleted the policy: ${testPolicy.id}`);
 
-    await wait(() => expect(queryByText(testPolicy.id)).toBeNull());
+    await waitFor(() => expect(queryByText(testPolicy.id)).toBeNull());
   });
 
   it("can route to edit policy", async () => {
@@ -186,7 +186,7 @@ describe("<IndexPolicies /> spec", () => {
     });
     const { getByText, getByTestId } = renderPoliciesWithRouter();
 
-    await wait(() => getByText(testPolicy.id));
+    await waitFor(() => getByText(testPolicy.id));
 
     expect(getByTestId("EditButton")).toBeDisabled();
 
@@ -196,7 +196,7 @@ describe("<IndexPolicies /> spec", () => {
 
     userEvent.click(getByTestId("EditButton"));
 
-    await wait(() => getByText(`Testing edit policy: ?id=${testPolicy.id}`));
+    await waitFor(() => getByText(`Testing edit policy: ?id=${testPolicy.id}`));
   });
 
   it("can route to create policy", async () => {
@@ -206,11 +206,11 @@ describe("<IndexPolicies /> spec", () => {
     });
     const { getByText, getByTestId } = renderPoliciesWithRouter();
 
-    await wait();
+    await waitFor(() => {});
 
     userEvent.click(getByTestId("Create policyButton"));
 
-    await wait(() => getByText("Testing create policy"));
+    await waitFor(() => getByText("Testing create policy"));
   });
 
   it("can open and close a policy in modal", async () => {
@@ -221,13 +221,13 @@ describe("<IndexPolicies /> spec", () => {
     });
     const { getByText, queryByText, getByTestId } = renderPoliciesWithRouter();
 
-    await wait(() => getByText(testPolicy.id));
+    await waitFor(() => getByText(testPolicy.id));
 
     userEvent.click(getByText(testPolicy.id));
 
     // asserts that the policy description showed up in modal as the
     // whole JSON is broken up between span elements
-    await wait(() => getByText(`"${testPolicy.policy.policy.description}"`));
+    await waitFor(() => getByText(`"${testPolicy.policy.policy.description}"`));
 
     userEvent.click(getByTestId("policyModalCloseButton"));
 
@@ -242,12 +242,12 @@ describe("<IndexPolicies /> spec", () => {
     });
     const { getByText, getByTestId } = renderPoliciesWithRouter();
 
-    await wait(() => getByText(testPolicy.id));
+    await waitFor(() => getByText(testPolicy.id));
     userEvent.click(getByText(testPolicy.id));
-    await wait(() => getByTestId("policyModalEditButton"));
+    await waitFor(() => getByTestId("policyModalEditButton"));
     userEvent.click(getByTestId("policyModalEditButton"));
 
-    await wait(() => getByText(`Testing edit policy: ?id=${testPolicy.id}`));
+    await waitFor(() => getByText(`Testing edit policy: ?id=${testPolicy.id}`));
   });
 
   it("sorts/paginates the table", async () => {
@@ -275,20 +275,20 @@ describe("<IndexPolicies /> spec", () => {
     const { getByText, getByTestId, getAllByTestId, queryByText } = renderPoliciesWithRouter();
 
     // should load policies 0-19 on first load
-    await wait(() => getByText("some_policy_id_0"));
+    await waitFor(() => getByText("some_policy_id_0"));
     expect(queryByText("some_policy_id_39")).toBeNull();
 
     userEvent.click(getAllByTestId("pagination-button-next")[0]);
 
     // should load policies 20-39 after clicking next
-    await wait(() => getByText("some_policy_id_39"));
+    await waitFor(() => getByText("some_policy_id_39"));
     expect(queryByText("some_policy_id_0")).toBeNull();
 
     // @ts-ignore
     userEvent.click(getByTestId("tableHeaderCell_policy.last_updated_time_2").firstChild);
 
     // should load policies 0-19  after clicking sort (defaults to asc) on last_updated_time
-    await wait(() => getByText("some_policy_id_0"));
+    await waitFor(() => getByText("some_policy_id_0"));
     expect(queryByText("some_policy_id_39")).toBeNull();
   });
 });

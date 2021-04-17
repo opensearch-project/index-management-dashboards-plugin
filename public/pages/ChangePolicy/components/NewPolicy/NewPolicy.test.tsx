@@ -15,7 +15,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import NewPolicy from "./NewPolicy";
 import { browserServicesMock } from "../../../../../test/mocks";
 import { Radio } from "../../containers/ChangePolicy/ChangePolicy";
@@ -24,7 +24,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 
 describe("<NewPolicy /> spec", () => {
   it("renders the component", async () => {
-    browserServicesMock.indexService.searchPolicies = jest.fn().mockResolvedValue({ ok: true, response: { hits: { hits: [] } } });
+    browserServicesMock.indexService.searchPolicies = jest.fn().mockResolvedValue({ ok: true, response: { policies: [] } });
     const { container } = render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <NewPolicy
@@ -40,7 +40,7 @@ describe("<NewPolicy /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(container.firstChild).toMatchSnapshot();
   });
@@ -62,7 +62,7 @@ describe("<NewPolicy /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("this is an error");
@@ -85,7 +85,7 @@ describe("<NewPolicy /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
@@ -110,7 +110,7 @@ describe("<NewPolicy /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("You have not created a policy yet");

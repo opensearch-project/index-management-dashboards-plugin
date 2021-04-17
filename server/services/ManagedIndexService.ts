@@ -15,14 +15,19 @@
 
 import _ from "lodash";
 import { RequestParams } from "@elastic/elasticsearch";
-import { RequestHandlerContext, KibanaRequest, KibanaResponseFactory, IKibanaResponse, IClusterClient } from "kibana/server";
+import {
+  RequestHandlerContext,
+  OpenSearchDashboardsRequest,
+  OpenSearchDashboardsResponseFactory,
+  IOpenSearchDashboardsResponse,
+  ILegacyCustomClusterClient,
+} from "opensearch-dashboards/server";
 import { INDEX } from "../utils/constants";
-import { getMustQuery, transformManagedIndexMetaData } from "../utils/helpers";
+import { transformManagedIndexMetaData } from "../utils/helpers";
 import {
   ChangePolicyResponse,
   ExplainAllResponse,
   ExplainAPIManagedIndexMetaData,
-  ExplainResponse,
   GetManagedIndicesResponse,
   RemovePolicyResponse,
   RemoveResponse,
@@ -35,22 +40,22 @@ import { ManagedIndicesSort, ServerResponse } from "../models/types";
 import { ManagedIndexItem } from "../../models/interfaces";
 
 export default class ManagedIndexService {
-  esDriver: IClusterClient;
+  osDriver: ILegacyCustomClusterClient;
 
-  constructor(esDriver: IClusterClient) {
-    this.esDriver = esDriver;
+  constructor(osDriver: ILegacyCustomClusterClient) {
+    this.osDriver = osDriver;
   }
 
   // TODO: Not finished, need UI page that uses this first
   getManagedIndex = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<any>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
     try {
       const { id } = request.params as { id: string };
       const params: RequestParams.Get = { id, index: INDEX.OPENDISTRO_ISM_CONFIG };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const results: SearchResponse<any> = await callWithRequest("search", params);
       return response.custom({
         statusCode: 200,
@@ -73,9 +78,9 @@ export default class ManagedIndexService {
 
   getManagedIndices = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<GetManagedIndicesResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetManagedIndicesResponse>>> => {
     try {
       const { from, size, search, sortDirection, sortField } = request.query as {
         from: string;
@@ -94,7 +99,7 @@ export default class ManagedIndexService {
         queryString: search ? `*${search.split(" ").join("* *")}*` : null,
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const explainAllResponse: ExplainAllResponse = await callWithRequest("ism.explainAll", explainParams);
 
       const managedIndices: ManagedIndexItem[] = [];
@@ -158,12 +163,12 @@ export default class ManagedIndexService {
 
   retryManagedIndexPolicy = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<RetryManagedIndexResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<RetryManagedIndexResponse>>> => {
     try {
       const { index, state = null } = request.body as { index: string[]; state?: string };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const params: RetryParams = { index: index.join(",") };
       if (state) params.body = { state };
       const retryResponse: RetryResponse = await callWithRequest("ism.retry", params);
@@ -199,9 +204,9 @@ export default class ManagedIndexService {
 
   changePolicy = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<ChangePolicyResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<ChangePolicyResponse>>> => {
     try {
       const { indices, policyId, include, state } = request.body as {
         indices: string[];
@@ -209,7 +214,7 @@ export default class ManagedIndexService {
         state: string | null;
         include: { state: string }[];
       };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const params = { index: indices.join(","), body: { policy_id: policyId, include, state } };
       const changeResponse: RemoveResponse = await callWithRequest("ism.change", params);
       return response.custom({
@@ -241,12 +246,12 @@ export default class ManagedIndexService {
 
   removePolicy = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<RemovePolicyResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<RemovePolicyResponse>>> => {
     try {
       const { indices } = request.body as { indices: string[] };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const params = { index: indices.join(",") };
       const addResponse: RemoveResponse = await callWithRequest("ism.remove", params);
       return response.custom({

@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { PluginInitializerContext } from "kibana/public";
+import { PluginInitializerContext } from "opensearch-dashboards/public";
 import { IndexManagementPlugin } from "./plugin";
 
 export interface IndexManagementPluginSetup {}

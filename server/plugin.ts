@@ -14,23 +14,23 @@
  */
 
 import { IndexManagementPluginSetup, IndexManagementPluginStart } from ".";
-import { Plugin, CoreSetup, CoreStart, IClusterClient } from "../../../src/core/server";
+import { Plugin, CoreSetup, CoreStart, ILegacyCustomClusterClient } from "../../../src/core/server";
 import ismPlugin from "./clusters/ism/ismPlugin";
 import { PolicyService, ManagedIndexService, IndexService, RollupService } from "./services";
 import { indices, policies, managedIndices, rollups } from "../server/routes";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   public async setup(core: CoreSetup) {
-    // create Elasticsearch client that aware of ISM API endpoints
-    const esDriver: IClusterClient = core.elasticsearch.legacy.createClient("index_management", {
+    // create OpenSearch client that aware of ISM API endpoints
+    const osDriver: ILegacyCustomClusterClient = core.opensearch.legacy.createClient("index_management", {
       plugins: [ismPlugin],
     });
 
     // Initialize services
-    const indexService = new IndexService(esDriver);
-    const policyService = new PolicyService(esDriver);
-    const managedIndexService = new ManagedIndexService(esDriver);
-    const rollupService = new RollupService(esDriver);
+    const indexService = new IndexService(osDriver);
+    const policyService = new PolicyService(osDriver);
+    const managedIndexService = new ManagedIndexService(osDriver);
+    const rollupService = new RollupService(osDriver);
     const services = { indexService, policyService, managedIndexService, rollupService };
 
     // create router
