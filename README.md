@@ -1,6 +1,6 @@
-# Open Distro for Elasticsearch Index Management Dashboards
+# Index Management Dashboards
 
-The Open Distro for Elasticsearch Index Management Dashboards plugin lets you manage your [Open Distro for Elasticsearch Index Management Dashboards plugin](https://github.com/opensearch-project/index-management-dashboards-plugin) to view, monitor, and manage your indices directly from OpenSearch-Dashboards.
+The Index Management Dashboards plugin lets you manage your [Index Management Dashboards plugin](https://github.com/opensearch-project/index-management-dashboards-plugin) to view, monitor, and manage your indices directly from OpenSearch-Dashboards.
 
 ## Documentation
 
