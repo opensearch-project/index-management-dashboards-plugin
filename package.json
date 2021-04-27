@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "homepage": "https://github.com/opensearch-project/index-management-dashboards-plugin",
   "config": {
-    "id": "indexManagementOpenSearchDashboards"
+    "id": "indexManagementDashboards"
   },
   "repository": {
     "type": "git",

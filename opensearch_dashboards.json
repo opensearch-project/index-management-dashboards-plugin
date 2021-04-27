@@ -1,5 +1,5 @@
 {
-  "id": "indexManagementOpenSearchDashboards",
+  "id": "indexManagementDashboards",
   "version": "1.0.0.0-beta1",
   "opensearchDashboardsVersion": "1.0.0-beta1",
   "configPath": ["opensearch_index_management"],
