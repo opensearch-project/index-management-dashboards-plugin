@@ -18,4 +18,5 @@ Compatible with OpenSearch-Dashboards 1.0.0
 
 * Migrates plugin to OpenSearch Dashboards ([#1](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1))
 * Cleans up a few more references ([#5](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/5))
+* Update plugin id to indexManagementDashboards ([#10](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/10))
 
