@@ -5,6 +5,7 @@ Compatible with OpenSearch-Dashboards 1.0.0
 ### Infrastructure
 
 * Updates versions and fixes the unit test workflow ([#7](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/7))
+* Fix cypress workflow ([#8](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/8))
 
 ### Documentation
 
