@@ -9,10 +9,10 @@ Compatible with OpenSearch-Dashboards 1.0.0
 
 ### Documentation
 
-* Adds new license header ([#155](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/6))
+* Adds new license header ([#6](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/6))
 
 ### Refactoring
 
 * Migrates plugin to OpenSearch Dashboards ([#1](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/1))
-* Cleans up a few more references ([#150](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/5))
+* Cleans up a few more references ([#5](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/5))
 
