@@ -16,10 +16,10 @@ plugin_name = "index-management-dashboards-plugin"
 plugin_version = raw_input('Plugin version (x.x.x.x): ')
 
 app_num = int(
-    raw_input('Elasticsearch plugin (enter 1) or Kibana plugin (enter 2)? '))
-app = 'Elasticsearch'
+    raw_input('Opensearch plugin (enter 1) or Kibana plugin (enter 2)? '))
+app = 'Opensearch'
 if app_num is 2:
-    app = 'Kibana'
+    app = 'OpenSearch-Dashboards'
 
 app_version = raw_input(app + ' compatibility version (x.x.x): ')
 
