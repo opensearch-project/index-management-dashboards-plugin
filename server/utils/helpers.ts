@@ -31,7 +31,7 @@ import { ManagedIndexMetaData } from "../../models/interfaces";
 export function transformManagedIndexMetaData(metaData: ExplainAPIManagedIndexMetaData | undefined): ManagedIndexMetaData | null {
   if (!metaData) return null;
   // If this is not a managed index or we are still initializing we still return the
-  // opendistro.index_state_management.policy_id setting, but nothing else from the explain API
+  // plugins.index_state_management.policy_id setting, but nothing else from the explain API
   if (!metaData.index) return null;
   return {
     index: metaData.index,
