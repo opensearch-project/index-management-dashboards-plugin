@@ -126,7 +126,7 @@ export default class IndexService {
       for (const indexName in explainResponse) {
         if (indexName === "total_managed_indices") continue;
         const explain = explainResponse[indexName] as ExplainAPIManagedIndexMetaData;
-        managed[indexName] = explain["index.opendistro.index_state_management.policy_id"] === null ? "No" : "Yes";
+        managed[indexName] = explain["index.plugins.index_state_management.policy_id"] === null ? "No" : "Yes";
       }
 
       return managed;

@@ -26,8 +26,8 @@
 
 import { DefaultHeaders, IndexManagementApi } from "../models/interfaces";
 
-export const API_ROUTE_PREFIX = "/_opendistro/_ism";
-export const API_ROUTE_PREFIX_ROLLUP = "/_opendistro/_rollup";
+export const API_ROUTE_PREFIX = "/_plugins/_ism";
+export const API_ROUTE_PREFIX_ROLLUP = "/_plugins/_rollup";
 
 export const API: IndexManagementApi = {
   POLICY_BASE: `${API_ROUTE_PREFIX}/policies`,
@@ -55,5 +55,5 @@ export enum INDEX {
 }
 
 export enum Setting {
-  RolloverAlias = "opendistro.index_state_management.rollover_alias",
+  RolloverAlias = "plugins.index_state_management.rollover_alias",
 }
