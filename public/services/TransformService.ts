@@ -13,7 +13,7 @@
  * permissions and limitations under the License.
  */
 
-import { HttpSetup } from "kibana/public";
+import { HttpSetup } from "opensearch-dashboards/public";
 import { ServerResponse } from "../../server/models/types";
 import { GetTransformsResponse, PreviewTransformResponse, PutTransformResponse } from "../../server/models/interfaces";
 import { NODE_API } from "../../utils/constants";

@@ -20,7 +20,7 @@ import { ModalConsumer } from "../../../../components/Modal";
 import { TransformGroupItem, DimensionItem, FieldItem, TransformAggItem } from "../../../../../models/interfaces";
 import DefineTransforms from "../DefineTransforms";
 import { TransformService } from "../../../../services";
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 
 interface ReviewDefinitionProps {
   transformService: TransformService;

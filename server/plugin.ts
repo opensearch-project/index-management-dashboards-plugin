@@ -38,11 +38,11 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     });
 
     // Initialize services
-    const indexService = new IndexService(esDriver);
-    const policyService = new PolicyService(esDriver);
-    const managedIndexService = new ManagedIndexService(esDriver);
-    const rollupService = new RollupService(esDriver);
-    const transformService = new TransformService(esDriver);
+    const indexService = new IndexService(osDriver);
+    const policyService = new PolicyService(osDriver);
+    const managedIndexService = new ManagedIndexService(osDriver);
+    const rollupService = new RollupService(osDriver);
+    const transformService = new TransformService(osDriver);
     const services = { indexService, policyService, managedIndexService, rollupService, transformService };
 
     // create router

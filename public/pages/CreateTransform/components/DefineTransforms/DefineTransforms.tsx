@@ -14,7 +14,7 @@
  */
 
 import { EuiDataGrid, EuiDataGridColumn, EuiSpacer, EuiText, EuiToolTip } from "@elastic/eui";
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 import React, { useCallback, useState } from "react";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { FieldItem, TransformAggItem, TransformGroupItem } from "../../../../../models/interfaces";

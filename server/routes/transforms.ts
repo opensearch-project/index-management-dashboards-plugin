@@ -14,9 +14,9 @@
  */
 
 import { NodeServices } from "../models/interfaces";
-import { IRouter } from "kibana/server";
+import { IRouter } from "opensearch-dashboards/server";
 import { NODE_API } from "../../utils/constants";
-import { schema } from "@kbn/config-schema";
+import { schema } from "@osd/config-schema";
 
 export default function (services: NodeServices, router: IRouter) {
   const { transformService } = services;
