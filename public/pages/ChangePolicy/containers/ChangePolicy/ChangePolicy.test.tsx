@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -15,9 +26,9 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 import ChangePolicy from "./ChangePolicy";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -62,7 +73,7 @@ describe("<ChangePolicy /> spec", () => {
   it("renders the component", async () => {
     const { container } = renderWithRouter(ChangePolicy);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(container.firstChild).toMatchSnapshot();
   });

@@ -10,7 +10,7 @@
     },
     "last_updated_time": 1602100553,
     "description": "An example rollup job that rolls up the sample ecommerce data",
-    "source_index": "kibana_sample_data_ecommerce",
+    "source_index": "opensearch_dashboards_sample_data_ecommerce",
     "target_index": "test_rollup_target",
     "page_size": 1000,
     "delay": 0,

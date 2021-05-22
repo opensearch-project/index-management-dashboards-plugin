@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -16,8 +27,9 @@
 import { API } from "../../utils/constants";
 
 /*
+    TODO: migrate to types
  * Types are not available until 7.2
- * https://github.com/elastic/kibana/blob/v7.2.0/src/core/server/elasticsearch/elasticsearch_client_config.ts
+ * https://github.com/opensearch-project/OpenSearch-Dashboards/blob/main/src/core/server/opensearch/client/client_config.ts
  * */
 export default function ismPlugin(Client: any, config: any, components: any) {
   const ca = components.clientAction.factory;

@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -14,7 +25,7 @@
  */
 
 import React from "react";
-import { fireEvent, render, wait } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -90,23 +101,23 @@ describe("<EditRollup /> spec", () => {
     browserServicesMock.rollupService.getRollup = jest.fn().mockResolvedValue({ ok: false, error: "some error" });
     const { getByText } = renderEditRollupWithRouter([`${ROUTES.EDIT_ROLLUP}?id=${testRollup._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Could not load the rollup job: some error");
 
-    await wait(() => getByText("Testing rollup landing page"));
+    await waitFor(() => getByText("Testing rollup landing page"));
   });
 
   it("adds error toaster when get rollup throws error", async () => {
     browserServicesMock.rollupService.getRollup = jest.fn().mockRejectedValue(new Error("rejected error"));
     const { getByText } = renderEditRollupWithRouter([`${ROUTES.EDIT_ROLLUP}?id=${testRollup._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("rejected error");
-    await wait(() => getByText("Testing rollup landing page"));
+    await waitFor(() => getByText("Testing rollup landing page"));
   });
 
   it("can edit description", async () => {
@@ -121,7 +132,7 @@ describe("<EditRollup /> spec", () => {
     });
     const { getByTestId } = renderEditRollupWithRouter([`${ROUTES.EDIT_ROLLUP}?id=${testRollup._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     fireEvent.focus(getByTestId("description"));
     await userEvent.type(getByTestId("description"), "some description");

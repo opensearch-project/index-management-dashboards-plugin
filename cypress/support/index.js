@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -34,7 +45,7 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-// Switch the base URL of Elasticsearch when security enabled in the cluster
+// Switch the base URL of Opensearch when security enabled in the cluster
 if (Cypress.env("security_enabled")) {
-  Cypress.env("elasticsearch", "https://localhost:9200");
+  Cypress.env("opensearch", "https://localhost:9200");
 }

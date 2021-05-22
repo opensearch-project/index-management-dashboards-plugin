@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -13,11 +24,11 @@
  * permissions and limitations under the License.
  */
 
-export const PLUGIN_NAME = "opendistro_index_management_kibana";
+export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 
 export const DEFAULT_EMPTY_DATA = "-";
 
-export const DOCUMENTATION_URL = "https://opendistro.github.io/for-elasticsearch-docs/docs/ism/";
+export const DOCUMENTATION_URL = "https://docs-beta.opensearch.org/docs/im/ism/";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
@@ -54,7 +65,7 @@ export const BREADCRUMBS = Object.freeze({
   TRANSFORM_DETAILS: { text: "Transform details" },
 });
 
-// TODO: Kibana EUI has a SortDirection already
+// TODO: EUI has a SortDirection already
 export enum SortDirection {
   ASC = "asc",
   DESC = "desc",

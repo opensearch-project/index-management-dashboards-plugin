@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -15,7 +26,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import ChangeManagedIndices from "./ChangeManagedIndices";
 import { browserServicesMock } from "../../../../../test/mocks";
 import coreServicesMock from "../../../../../test/mocks/coreServicesMock";
@@ -37,7 +48,7 @@ describe("<ChangeManagedIndices /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(container.firstChild).toMatchSnapshot();
   });
@@ -57,7 +68,7 @@ describe("<ChangeManagedIndices /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("this is an error");
@@ -78,7 +89,7 @@ describe("<ChangeManagedIndices /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
@@ -101,7 +112,7 @@ describe("<ChangeManagedIndices /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("You have not created a managed index yet");

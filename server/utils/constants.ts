@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -15,9 +26,9 @@
 
 import { DefaultHeaders, IndexManagementApi } from "../models/interfaces";
 
-export const API_ROUTE_PREFIX = "/_opendistro/_ism";
-export const API_ROUTE_PREFIX_ROLLUP = "/_opendistro/_rollup";
-export const TRANSFORM_ROUTE_PREFIX = "/_opendistro/_transform";
+export const API_ROUTE_PREFIX = "/_plugins/_ism";
+export const API_ROUTE_PREFIX_ROLLUP = "/_plugins/_rollup";
+export const TRANSFORM_ROUTE_PREFIX = "/_plugins/_transform";
 
 export const API: IndexManagementApi = {
   POLICY_BASE: `${API_ROUTE_PREFIX}/policies`,
@@ -46,5 +57,5 @@ export enum INDEX {
 }
 
 export enum Setting {
-  RolloverAlias = "opendistro.index_state_management.rollover_alias",
+  RolloverAlias = "plugins.index_state_management.rollover_alias",
 }

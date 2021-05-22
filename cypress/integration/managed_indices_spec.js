@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -25,8 +36,8 @@ describe("Managed indices", () => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
-    // Visit ISM Kibana
-    cy.visit(`${Cypress.env("kibana")}/app/${PLUGIN_NAME}#/managed-indices`);
+    // Visit ISM OSD
+    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/managed-indices`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Rows per page", { timeout: 60000 });
@@ -58,7 +69,7 @@ describe("Managed indices", () => {
       // Reload the page
       cy.reload();
 
-      // Confirm we are back to empty loading state, give 20 seconds as Kibana takes a while to load
+      // Confirm we are back to empty loading state, give 20 seconds as OSD takes a while to load
       cy.contains("There are no existing managed indices.", { timeout: 20000 });
     });
   });
@@ -80,7 +91,7 @@ describe("Managed indices", () => {
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(5000).reload();
 
-      // Confirm we have a Failed execution, wait up to 20 seconds as Kibana takes a while to load
+      // Confirm we have a Failed execution, wait up to 20 seconds as OSD takes a while to load
       cy.contains("Failed", { timeout: 20000 });
 
       // Create the policy we were missing
@@ -101,7 +112,7 @@ describe("Managed indices", () => {
       // Reload the page
       cy.reload();
 
-      // Confirm we see managed index attempting to retry, give 20 seconds for Kibana load
+      // Confirm we see managed index attempting to retry, give 20 seconds for OSD load
       cy.contains("Pending retry of failed managed index", { timeout: 20000 });
 
       // Speed up next execution of managed index
@@ -125,7 +136,7 @@ describe("Managed indices", () => {
       cy.createPolicy(POLICY_ID, samplePolicy);
       // Create index with rollover_alias
       cy.createIndex(SAMPLE_INDEX, POLICY_ID, {
-        settings: { opendistro: { index_state_management: { rollover_alias: FIRST_ALIAS } } },
+        settings: { plugins: { index_state_management: { rollover_alias: FIRST_ALIAS } } },
       });
     });
 
@@ -136,10 +147,7 @@ describe("Managed indices", () => {
       // Get current index settings for index
       cy.getIndexSettings(SAMPLE_INDEX).then((res) => {
         // Confirm the current rollover_alias is the first one we set
-        expect(res.body).to.have.nested.property(
-          "sample_index.settings.index.opendistro.index_state_management.rollover_alias",
-          FIRST_ALIAS
-        );
+        expect(res.body).to.have.nested.property("sample_index.settings.index.plugins.index_state_management.rollover_alias", FIRST_ALIAS);
       });
 
       // Select checkbox for our managed index
@@ -160,10 +168,7 @@ describe("Managed indices", () => {
       // Get updated index settings for index
       cy.getIndexSettings(SAMPLE_INDEX).then((res) => {
         // Confirm the rollover_alias setting is set to second alias
-        expect(res.body).to.have.nested.property(
-          "sample_index.settings.index.opendistro.index_state_management.rollover_alias",
-          SECOND_ALIAS
-        );
+        expect(res.body).to.have.nested.property("sample_index.settings.index.plugins.index_state_management.rollover_alias", SECOND_ALIAS);
       });
     });
   });

@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -14,7 +25,7 @@
  */
 
 import React from "react";
-import { fireEvent, render, wait } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router";
 import userEvent from "@testing-library/user-event";
@@ -195,7 +206,7 @@ describe("<CreateRollupForm /> spec", () => {
 
     userEvent.click(getByTestId("createRollupCancelButton"));
 
-    await wait(() => getByText("Testing rollup landing page"));
+    await waitFor(() => getByText("Testing rollup landing page"));
   });
 
   it("will show error on step 1", async () => {
@@ -311,7 +322,7 @@ describe("<CreateRollupForm /> creation", () => {
 
     //Select timestamp
     await userEvent.type(getByTestId("comboBoxSearchInput"), "order_date");
-    await wait();
+    await waitFor(() => {});
     fireEvent.keyDown(getByTestId("comboBoxSearchInput"), { key: "Enter", code: "Enter" });
     fireEvent.blur(getByTestId("comboBoxSearchInput"));
 
@@ -328,7 +339,7 @@ describe("<CreateRollupForm /> creation", () => {
 
     //Test create
     userEvent.click(getByTestId("createRollupSubmitButton"));
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.rollupService.putRollup).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
@@ -359,7 +370,7 @@ describe("<CreateRollupForm /> creation", () => {
 
     //Select timestamp
     await userEvent.type(getByTestId("comboBoxSearchInput"), "order_date");
-    await wait();
+    await waitFor(() => {});
     fireEvent.keyDown(getByTestId("comboBoxSearchInput"), { key: "Enter", code: "Enter" });
     fireEvent.blur(getByTestId("comboBoxSearchInput"));
 
@@ -369,12 +380,12 @@ describe("<CreateRollupForm /> creation", () => {
 
     //Test change interval
     userEvent.click(getByDisplayValue("Hour"));
-    await wait(() => getByText("Week"));
+    await waitFor(() => getByText("Week"));
     userEvent.click(getByText("Week"));
 
     //Test change timezone
     userEvent.click(getByLabelText("Timezone"));
-    await wait(() => getByText("America/Los_Angeles"));
+    await waitFor(() => getByText("America/Los_Angeles"));
     userEvent.click(getByText("America/Los_Angeles"));
 
     //Test add aggregation
@@ -402,7 +413,7 @@ describe("<CreateRollupForm /> creation", () => {
     //TODO: Test change aggregation method, cannot proceed due to getElementError for Histogram option
 
     // userEvent.click(getByTestId("aggregationMethodSelect-day_of_week_i"));
-    // await wait(() => getByText("Histogram"));
+    // await waitFor(() => getByText("Histogram"));
     // userEvent.click(getByText("Histogram"));
 
     //Test move up/down of aggregations

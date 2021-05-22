@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -24,12 +35,12 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
 
   public setup(core: CoreSetup): IndexManagementPluginSetup {
     core.application.register({
-      id: "opendistro_index_management_kibana",
+      id: "opensearch_index_management_dashboards",
       title: "Index Management",
       order: 7000,
       category: {
-        id: "odfe",
-        label: "Open Distro for Elasticsearch",
+        id: "opensearch",
+        label: "OpenSearch Plugins",
         order: 2000,
       },
       mount: async (params: AppMountParameters) => {

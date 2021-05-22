@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -23,21 +34,21 @@ const setOfSteps = (step: number) => {
   return [
     {
       title: "Set up indices",
-      children: null,
+      children: <></>,
     },
     {
       title: "Define aggregations and metrics",
-      children: null,
+      children: <></>,
       status: step < 2 ? "disabled" : null,
     },
     {
       title: "Specify schedule",
-      children: null,
+      children: <></>,
       status: step < 3 ? "disabled" : null,
     },
     {
       title: "Review and create",
-      children: null,
+      children: <></>,
       status: step < 4 ? "disabled" : null,
     },
   ];

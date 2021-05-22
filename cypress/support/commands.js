@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -42,7 +53,7 @@ const { API, INDEX, ADMIN_AUTH } = require("./constants");
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.overwrite("visit", (originalFn, url, options) => {
-  // Add the basic auth header when security enabled in the Elasticsearch cluster
+  // Add the basic auth header when security enabled in the Opensearch cluster
   // https://github.com/cypress-io/cypress/issues/1288
   if (Cypress.env("security_enabled")) {
     if (options) {
@@ -50,7 +61,7 @@ Cypress.Commands.overwrite("visit", (originalFn, url, options) => {
     } else {
       options = { auth: ADMIN_AUTH };
     }
-    // Add query parameters - select the default Kibana tenant
+    // Add query parameters - select the default OSD tenant
     options.qs = { security_tenant: "private" };
     return originalFn(url, options);
   } else {
@@ -61,7 +72,7 @@ Cypress.Commands.overwrite("visit", (originalFn, url, options) => {
 // Be able to add default options to cy.request(), https://github.com/cypress-io/cypress/issues/726
 Cypress.Commands.overwrite("request", (originalFn, ...args) => {
   let defaults = {};
-  // Add the basic authentication header when security enabled in the Elasticsearch cluster
+  // Add the basic authentication header when security enabled in the Opensearch cluster
   if (Cypress.env("security_enabled")) {
     defaults.auth = ADMIN_AUTH;
   }
@@ -81,16 +92,16 @@ Cypress.Commands.overwrite("request", (originalFn, ...args) => {
 });
 
 Cypress.Commands.add("deleteAllIndices", () => {
-  cy.request("DELETE", `${Cypress.env("elasticsearch")}/index*,sample*,kibana*`);
-  cy.request("DELETE", `${Cypress.env("elasticsearch")}/.opendistro-ism*?expand_wildcards=all`);
+  cy.request("DELETE", `${Cypress.env("opensearch")}/index*,sample*,opensearch_dashboards*`);
+  cy.request("DELETE", `${Cypress.env("opensearch")}/.opendistro-ism*?expand_wildcards=all`);
 });
 
 Cypress.Commands.add("createPolicy", (policyId, policyJSON) => {
-  cy.request("PUT", `${Cypress.env("elasticsearch")}${API.POLICY_BASE}/${policyId}`, policyJSON);
+  cy.request("PUT", `${Cypress.env("opensearch")}${API.POLICY_BASE}/${policyId}`, policyJSON);
 });
 
 Cypress.Commands.add("getIndexSettings", (index) => {
-  cy.request("GET", `${Cypress.env("elasticsearch")}/${index}/_settings`);
+  cy.request("GET", `${Cypress.env("opensearch")}/${index}/_settings`);
 });
 
 Cypress.Commands.add("updateManagedIndexConfigStartTime", (index) => {
@@ -107,18 +118,18 @@ Cypress.Commands.add("updateManagedIndexConfigStartTime", (index) => {
         source: `ctx._source['managed_index']['schedule']['interval']['start_time'] = ${startTime}L`,
       },
     };
-    cy.request("POST", `${Cypress.env("elasticsearch")}/${INDEX.OPENDISTRO_ISM_CONFIG}/_update_by_query`, body);
+    cy.request("POST", `${Cypress.env("opensearch")}/${INDEX.OPENDISTRO_ISM_CONFIG}/_update_by_query`, body);
   });
 });
 
 Cypress.Commands.add("createIndex", (index, policyID = null, settings = {}) => {
-  cy.request("PUT", `${Cypress.env("elasticsearch")}/${index}`, settings);
+  cy.request("PUT", `${Cypress.env("opensearch")}/${index}`, settings);
   if (policyID != null) {
     const body = { policy_id: policyID };
-    cy.request("POST", `${Cypress.env("elasticsearch")}${API.ADD_POLICY_BASE}/${index}`, body);
+    cy.request("POST", `${Cypress.env("opensearch")}${API.ADD_POLICY_BASE}/${index}`, body);
   }
 });
 
 Cypress.Commands.add("createRollup", (rollupId, rollupJSON) => {
-  cy.request("PUT", `${Cypress.env("elasticsearch")}${API.ROLLUP_JOBS_BASE}/${rollupId}`, rollupJSON);
+  cy.request("PUT", `${Cypress.env("opensearch")}${API.ROLLUP_JOBS_BASE}/${rollupId}`, rollupJSON);
 });

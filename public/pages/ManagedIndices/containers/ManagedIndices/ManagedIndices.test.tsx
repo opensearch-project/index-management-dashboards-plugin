@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -17,9 +28,9 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent, wait } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CoreStart } from "kibana/public";
+import { CoreStart } from "opensearch-dashboards/public";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import ManagedIndices from "./ManagedIndices";
 import { TEXT } from "../../components/ManagedIndexEmptyPrompt/ManagedIndexEmptyPrompt";
@@ -106,16 +117,16 @@ describe("<ManagedIndices /> spec", () => {
       .fn()
       .mockResolvedValue({ ok: true, response: { managedIndices, totalManagedIndices: 1 } });
     const { getByText } = renderWithRouter(ManagedIndices);
-    await wait();
+    await waitFor(() => {});
 
-    await wait(() => getByText("index_1"));
+    await waitFor(() => getByText("index_1"));
   });
 
   it("adds error toaster when get managed indices has error", async () => {
     browserServicesMock.managedIndexService.getManagedIndices = jest.fn().mockResolvedValue({ ok: false, error: "some error" });
     renderWithRouter(ManagedIndices);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
@@ -125,7 +136,7 @@ describe("<ManagedIndices /> spec", () => {
     browserServicesMock.managedIndexService.getManagedIndices = jest.fn().mockRejectedValue(new Error("rejected error"));
     renderWithRouter(ManagedIndices);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("rejected error");
@@ -152,7 +163,7 @@ describe("<ManagedIndices /> spec", () => {
       .mockResolvedValue({ ok: true, response: { updatedIndices: 1, failures: false, failedIndices: [] } });
     const { getByText, getByTestId } = renderWithRouter(ManagedIndices);
 
-    await wait(() => getByText("index_1"));
+    await waitFor(() => getByText("index_1"));
 
     expect(getByTestId("Remove policyButton")).toBeDisabled();
 
@@ -161,9 +172,9 @@ describe("<ManagedIndices /> spec", () => {
     expect(getByTestId("Remove policyButton")).toBeEnabled();
 
     userEvent.click(getByTestId("Remove policyButton"));
-    await wait(() => getByTestId("confirmationModalActionButton"));
+    await waitFor(() => getByTestId("confirmationModalActionButton"));
     userEvent.click(getByTestId("confirmationModalActionButton"));
-    await wait();
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Removed policy from 1 managed indices");
@@ -195,20 +206,20 @@ describe("<ManagedIndices /> spec", () => {
     const { getByText, getByTestId, getAllByTestId, queryByText } = renderWithRouter(ManagedIndices);
 
     // should load managed indices 0-19 on first load
-    await wait(() => getByText("index_0"));
+    await waitFor(() => getByText("index_0"));
     expect(queryByText("index_39")).toBeNull();
 
     fireEvent.click(getAllByTestId("pagination-button-next")[0]);
 
     // should load managed indices 20-39 after clicking next
-    await wait(() => getByText("index_39"));
+    await waitFor(() => getByText("index_39"));
     expect(queryByText("index_0")).toBeNull();
 
     // @ts-ignore
     fireEvent.click(getByTestId("tableHeaderCell_index_0").firstChild);
 
     // should load managed indices 0-19 after clicking sort (defaults to asc) on index
-    await wait(() => getByText("index_0"));
+    await waitFor(() => getByText("index_0"));
     expect(queryByText("index_39")).toBeNull();
   });
 
@@ -271,7 +282,7 @@ describe("<ManagedIndices /> spec", () => {
 
     const { getByText, getByTestId } = renderWithRouter(ManagedIndices);
 
-    await wait(() => getByText("index_1"));
+    await waitFor(() => getByText("index_1"));
 
     expect(getByTestId("Retry policyButton")).toBeDisabled();
 

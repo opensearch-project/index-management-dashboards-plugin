@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -13,10 +24,9 @@
  * permissions and limitations under the License.
  */
 
-import { CoreStart, AppMountParameters } from "kibana/public";
+import { CoreStart, AppMountParameters } from "opensearch-dashboards/public";
 import React from "react";
 import ReactDOM from "react-dom";
-import { render, unmountComponentAtNode } from "react-dom";
 import { HashRouter as Router, Route } from "react-router-dom";
 import { IndexService, ManagedIndexService, PolicyService, RollupService, TransformService, ServicesContext } from "./services";
 import { DarkModeContext } from "./components/DarkMode";

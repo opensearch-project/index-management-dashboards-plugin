@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -13,33 +24,37 @@
  * permissions and limitations under the License.
  */
 
-import { RequestParams } from "@elastic/elasticsearch";
-import { INDEX, Setting } from "../utils/constants";
+import { Setting } from "../utils/constants";
 import {
   AcknowledgedResponse,
   ApplyPolicyResponse,
   AddResponse,
   CatIndex,
   GetIndicesResponse,
-  SearchResponse,
   ExplainResponse,
   ExplainAPIManagedIndexMetaData,
 } from "../models/interfaces";
 import { ServerResponse } from "../models/types";
-import { KibanaRequest, KibanaResponseFactory, IClusterClient, IKibanaResponse, RequestHandlerContext } from "../../../../src/core/server";
+import {
+  OpenSearchDashboardsRequest,
+  OpenSearchDashboardsResponseFactory,
+  ILegacyCustomClusterClient,
+  IOpenSearchDashboardsResponse,
+  RequestHandlerContext,
+} from "../../../../src/core/server";
 
 export default class IndexService {
-  esDriver: IClusterClient;
+  osDriver: ILegacyCustomClusterClient;
 
-  constructor(esDriver: IClusterClient) {
-    this.esDriver = esDriver;
+  constructor(osDriver: ILegacyCustomClusterClient) {
+    this.osDriver = osDriver;
   }
 
   getIndices = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<GetIndicesResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndicesResponse>>> => {
     try {
       // @ts-ignore
       const { from, size, search, sortField, sortDirection } = request.query as {
@@ -54,7 +69,7 @@ export default class IndexService {
         format: "json",
         s: `${sortField}:${sortDirection}`,
       };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const indicesResponse: CatIndex[] = await callWithRequest("cat.indices", params);
 
       // _cat doesn't support pagination, do our own in server pagination to at least reduce network bandwidth
@@ -101,17 +116,17 @@ export default class IndexService {
     }
   };
 
-  _getManagedStatus = async (request: KibanaRequest, indexNames: string[]): Promise<{ [indexName: string]: string }> => {
+  _getManagedStatus = async (request: OpenSearchDashboardsRequest, indexNames: string[]): Promise<{ [indexName: string]: string }> => {
     try {
       const explainParamas = { index: indexNames.toString() };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const explainResponse: ExplainResponse = await callWithRequest("ism.explain", explainParamas);
 
       const managed: { [indexName: string]: string } = {};
       for (const indexName in explainResponse) {
         if (indexName === "total_managed_indices") continue;
         const explain = explainResponse[indexName] as ExplainAPIManagedIndexMetaData;
-        managed[indexName] = explain["index.opendistro.index_state_management.policy_id"] === null ? "No" : "Yes";
+        managed[indexName] = explain["index.plugins.index_state_management.policy_id"] === null ? "No" : "Yes";
       }
 
       return managed;
@@ -125,12 +140,12 @@ export default class IndexService {
 
   applyPolicy = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<ApplyPolicyResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<ApplyPolicyResponse>>> => {
     try {
       const { indices, policyId } = request.body as { indices: string[]; policyId: string };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const params = { index: indices.join(","), body: { policy_id: policyId } };
 
       const addResponse: AddResponse = await callWithRequest("ism.add", params);
@@ -164,12 +179,12 @@ export default class IndexService {
 
   editRolloverAlias = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<AcknowledgedResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
     try {
       const { alias, index } = request.body as { alias: string; index: string };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const params = { index, body: { [Setting.RolloverAlias]: alias } };
       const rollOverResponse = await callWithRequest("indices.putSettings", params);
       return response.custom({

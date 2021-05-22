@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -13,15 +24,15 @@
  * permissions and limitations under the License.
  */
 
-import { Legacy } from "kibana";
+import { Legacy } from "opensearch-dashboards";
 import ismPlugin from "./ismPlugin";
 import { CLUSTER, DEFAULT_HEADERS } from "../../utils/constants";
 
 type Server = Legacy.Server;
 
 export default function createISMCluster(server: Server) {
-  const { customHeaders, ...rest } = server.config().get("elasticsearch");
-  server.plugins.elasticsearch.createCluster(CLUSTER.ISM, {
+  const { customHeaders, ...rest } = server.config().get("opensearch");
+  server.plugins.opensearch.createCluster(CLUSTER.ISM, {
     plugins: [ismPlugin],
     customHeaders: { ...customHeaders, ...DEFAULT_HEADERS },
     ...rest,

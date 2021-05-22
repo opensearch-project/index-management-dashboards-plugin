@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -14,7 +25,7 @@
  */
 
 import React from "react";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter as Router } from "react-router";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -96,7 +107,7 @@ describe("<RollupDetails /> spec", () => {
     });
     const { getByTestId } = renderRollupDetailsWithRouter([`${ROUTES.ROLLUP_DETAILS}?id=${testRollup._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
@@ -104,7 +115,7 @@ describe("<RollupDetails /> spec", () => {
 
     userEvent.click(getByTestId("disableButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.rollupService.stopRollup).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
@@ -122,7 +133,7 @@ describe("<RollupDetails /> spec", () => {
     });
     const { getByTestId } = renderRollupDetailsWithRouter([`${ROUTES.ROLLUP_DETAILS}?id=${testRollup._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
@@ -130,7 +141,7 @@ describe("<RollupDetails /> spec", () => {
 
     userEvent.click(getByTestId("disableButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.rollupService.stopRollup).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
@@ -149,7 +160,7 @@ describe("<RollupDetails /> spec", () => {
 
     const { getByTestId } = renderRollupDetailsWithRouter([`${ROUTES.ROLLUP_DETAILS}?id=${testRollup2._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(getByTestId("enableButton")).toBeEnabled();
 
@@ -157,7 +168,7 @@ describe("<RollupDetails /> spec", () => {
 
     userEvent.click(getByTestId("enableButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.rollupService.startRollup).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
@@ -172,11 +183,11 @@ describe("<RollupDetails /> spec", () => {
     browserServicesMock.rollupService.deleteRollup = jest.fn().mockResolvedValue({ ok: true, response: true });
     const { getByTestId } = renderRollupDetailsWithRouter([`${ROUTES.ROLLUP_DETAILS}?id=${testRollup._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     userEvent.click(getByTestId("deleteButton"));
 
-    await wait(() => getByTestId("deleteTextField"));
+    await waitFor(() => getByTestId("deleteTextField"));
 
     expect(getByTestId("confirmModalConfirmButton")).toBeDisabled();
 
@@ -186,11 +197,11 @@ describe("<RollupDetails /> spec", () => {
 
     userEvent.click(getByTestId("confirmModalConfirmButton"));
 
-    await wait();
+    await waitFor(() => {});
 
     expect(browserServicesMock.rollupService.deleteRollup).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-  });
+  }, 10000);
 
   it("can show a started rollup job", async () => {
     let startedJob = testRollup;
@@ -203,7 +214,7 @@ describe("<RollupDetails /> spec", () => {
 
     const { queryByText } = renderRollupDetailsWithRouter([`${ROUTES.ROLLUP_DETAILS}?id=${testRollup._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(queryByText("Started")).not.toBeNull();
   });
@@ -219,7 +230,7 @@ describe("<RollupDetails /> spec", () => {
 
     const { queryByText } = renderRollupDetailsWithRouter([`${ROUTES.ROLLUP_DETAILS}?id=${testRollup._id}`]);
 
-    await wait();
+    await waitFor(() => {});
 
     expect(queryByText("Stopped")).not.toBeNull();
   });
