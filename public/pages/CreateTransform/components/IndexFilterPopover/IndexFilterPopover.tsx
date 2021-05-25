@@ -41,7 +41,6 @@ export default function IndexFilterPopover({
   const [selectedField, setSelectedField] = useState("");
   const [selectedOperator, setSelectedOperator] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
-  const [isCustomEditorOpen, setIsCustomEditorOpen] = useState(false);
   const [queryDsl, setQueryDsl] = useState(sourceIndexFilter);
 
   const onChangeSelectedField = (e: ChangeEvent<HTMLSelectElement>): void => {
@@ -107,11 +106,6 @@ export default function IndexFilterPopover({
       <EuiPopoverTitle>
         <EuiFlexGroup alignItems="baseline" responsive={false}>
           <EuiFlexItem>Edit data filter</EuiFlexItem>
-          {/*<EuiFlexItem grow={false}>*/}
-          {/*  <EuiButtonEmpty size="xs" onClick={() => setIsCustomEditorOpen(!isCustomEditorOpen)}>*/}
-          {/*    {isCustomEditorOpen ? "Edit filter values" : "Custom expression"}*/}
-          {/*  </EuiButtonEmpty>*/}
-          {/*</EuiFlexItem>*/}
         </EuiFlexGroup>
       </EuiPopoverTitle>
       <EuiForm>
@@ -127,7 +121,6 @@ export default function IndexFilterPopover({
                 onChangeSourceIndexFilter(queryDsl);
                 closePopover();
               }}
-              // isDisabled={!this.isFilterValid()}
               data-test-subj="saveFilter"
             >
               Save

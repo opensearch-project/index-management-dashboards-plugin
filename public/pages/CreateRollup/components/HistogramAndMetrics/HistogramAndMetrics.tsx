@@ -49,7 +49,10 @@ import {
   additionalMetricsComponent,
   AGGREGATION_AND_METRIC_SETTINGS,
   BaseAggregationAndMetricsState,
-  BaseAggregationColumns, BaseMetricsColumns, sequenceTableComponents, sourceFieldComponents
+  BaseAggregationColumns,
+  BaseMetricsColumns,
+  sequenceTableComponents,
+  sourceFieldComponents,
 } from "../../../Commons/BaseAggregationAndMetricSettings";
 
 interface HistogramAndMetricsProps {
@@ -69,7 +72,6 @@ interface HistogramAndMetricsState extends BaseAggregationAndMetricsState {
   dimensionsShown: DimensionItem[];
 }
 
-
 const _createFlowAggregateColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = [
   {
     field: "field.type",
@@ -77,22 +79,22 @@ const _createFlowAggregateColumns: Readonly<EuiTableFieldDataColumnType<Dimensio
     align: "left",
     render: (type) => (type == undefined ? "-" : type),
   },
-]
+];
 
-const _createFlowMetricsColumn: Readonly<EuiTableFieldDataColumnType<MetricItem>> =  {
-    field: "all",
-    name: "All",
-    align: "center",
-    render: (all: boolean) => all && <EuiIcon type="check" />,
-  }
+const _createFlowMetricsColumn: Readonly<EuiTableFieldDataColumnType<MetricItem>> = {
+  field: "all",
+  name: "All",
+  align: "center",
+  render: (all: boolean) => all && <EuiIcon type="check" />,
+};
 
-
-const aggregationColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[]
-  = [...BaseAggregationColumns,..._createFlowAggregateColumns];
+const aggregationColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = [
+  ...BaseAggregationColumns,
+  ..._createFlowAggregateColumns,
+];
 
 // Adding 'all' column at 1st index.
-const metricsColumns: EuiTableFieldDataColumnType<MetricItem>[] =
-  [...BaseMetricsColumns].splice(1, 0, _createFlowMetricsColumn);
+const metricsColumns: EuiTableFieldDataColumnType<MetricItem>[] = [...BaseMetricsColumns].splice(1, 0, _createFlowMetricsColumn);
 
 export default class HistogramAndMetrics extends Component<HistogramAndMetricsProps, HistogramAndMetricsState> {
   constructor(props: HistogramAndMetricsProps) {
@@ -256,22 +258,21 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
             </EuiFlexItem>
           </EuiFlexGroup>
 
-          {
-            sequenceTableComponents( selectedDimensionField, dimensionsShown, aggregationColumns,
-              dimensionPagination, dimensionSorting, this.onDimensionTableChange )
-          }
+          {sequenceTableComponents(
+            selectedDimensionField,
+            dimensionsShown,
+            aggregationColumns,
+            dimensionPagination,
+            dimensionSorting,
+            this.onDimensionTableChange
+          )}
 
           <EuiSpacer size="m" />
 
           <EuiSpacer />
-          {
-            additionalMetricsComponent(selectedMetrics)
-          }
+          {additionalMetricsComponent(selectedMetrics)}
 
-          {
-            sourceFieldComponents(selectedMetrics, metricsShown, metricsColumns, pagination,
-                                  sorting, this.onTableChange)
-          }
+          {sourceFieldComponents(selectedMetrics, metricsShown, metricsColumns, pagination, sorting, this.onTableChange)}
 
           <EuiSpacer size="s" />
         </div>

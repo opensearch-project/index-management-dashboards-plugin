@@ -363,13 +363,13 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
       const response = await transformService.deleteTransform(id);
       if (response.ok) {
         this.closeDeleteModal();
-        this.context.notification.toasts.addSuccess(`"${id}" successfully deleted!`);
+        this.context.notifications.toasts.addSuccess(`"${id}" successfully deleted!`);
         this.props.history.push(ROUTES.TRANSFORMS);
       } else {
         this.context.notifications.toasts.addDanger(`Could not delete transform job "${id}" :  ${response.error}`);
       }
     } catch (err) {
-      this.context.notification.toasts.addDanger(getErrorMessage(err, "Could not delete the transform job"));
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not delete the transform job"));
     }
   };
 

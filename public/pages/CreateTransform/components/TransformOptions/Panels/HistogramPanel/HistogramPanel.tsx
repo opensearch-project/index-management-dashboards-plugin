@@ -12,6 +12,7 @@
 import { GROUP_TYPES, TRANSFORM_AGG_TYPE, TransformAggItem, TransformGroupItem } from "../../../../../../../models/interfaces";
 import React, { useState } from "react";
 import { EuiButton, EuiFieldNumber, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
+
 interface HistogramPanelProps {
   name: string;
   handleGroupSelectionChange: (newGroupItem: TransformGroupItem, type: TRANSFORM_AGG_TYPE, name: string) => void;
@@ -31,7 +32,7 @@ export default function HistogramPanel({ name, handleGroupSelectionChange, close
           </EuiFormRow>
           <EuiSpacer size="s" />
         </EuiFlexItem>
-        <EuiFlexItem grow={false}></EuiFlexItem>
+        <EuiFlexItem grow={false} />
       </EuiFlexGroup>
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>

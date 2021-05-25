@@ -40,31 +40,6 @@ export default class TransformSettings extends Component<TransformSettingsProps,
     };
   }
 
-  // getMappings = async (srcIndex: string): Promise<void> => {
-  //   if (!srcIndex.length) return;
-  //   try {
-  //     const { rollupService } = this.props;
-  //     const response = await rollupService.getMappings(srcIndex);
-  //     if (response.ok) {
-  //       let allMappings: FieldItem[][] = [];
-  //       const mappings = response.response;
-  //       //Push mappings array to allMappings 2D array first
-  //       for (let index in mappings) {
-  //         allMappings.push(parseFieldOptions("", mappings[index].mappings.properties));
-  //       }
-  //       //Find intersect from all mappings
-  //       const fields = allMappings.reduce((mappingA, mappingB) =>
-  //         mappingA.filter((itemA) => mappingB.some((itemB) => compareFieldItem(itemA, itemB)))
-  //       );
-  //       this.setState({ mappings, fields, allMappings });
-  //     } else {
-  //       this.context.notifications.toasts.addDanger(`Could not load fields: ${response.error}`);
-  //     }
-  //   } catch (err) {
-  //     this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not load fields"));
-  //   }
-  // };
-
   previewTransform = async (transform: any): Promise<void> => {
     try {
       const { transformService } = this.props;
@@ -85,9 +60,9 @@ export default class TransformSettings extends Component<TransformSettingsProps,
 
     const groupItems = () => {
       console.log(groupsShown);
-      return groupsShown.map((group) => {
+      return groupsShown.map((group, index) => {
         return (
-          <EuiFlexItem>
+          <EuiFlexItem key={index}>
             <EuiText size="xs">
               <dt>Group by {group.aggregationMethod}</dt>
               <dd>{group.field.label}</dd>
@@ -98,12 +73,12 @@ export default class TransformSettings extends Component<TransformSettingsProps,
     };
 
     const aggItems = () => {
-      return Object.keys(aggregationsShown).map((key) => {
+      return Object.keys(aggregationsShown).map((key, index) => {
         let aggregationType = Object.keys(aggregationsShown[key])[0];
         let sourceField = aggregationsShown[key][aggregationType].field;
 
         return (
-          <EuiFlexItem>
+          <EuiFlexItem key={index}>
             <EuiText size="xs">
               <dt>{aggregationType}()</dt>
               <dd>{sourceField}</dd>

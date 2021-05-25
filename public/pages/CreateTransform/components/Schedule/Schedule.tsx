@@ -63,12 +63,6 @@ export default class Schedule extends Component<ScheduleProps> {
 
           {!isEdit}
 
-          {/* TODO: Removing transform execution frequency dropdown menu as only fix interval will be supported in P0. */}
-          {/*<EuiFormRow label="Transform execution frequency">*/}
-          {/*  <EuiSelect id="continuousDefinition" options={ExecutionFrequencyDefinitionOptions} />*/}
-          {/*</EuiFormRow>*/}
-          {/*<EuiSpacer size="m" />*/}
-
           {/* TODO: Replace with switch block when define by cron expressions is supported. */}
           {selectInterval(interval, intervalTimeunit, intervalError, onChangeIntervalTime, onChangeIntervalTimeunit)}
           <EuiSpacer size="m" />

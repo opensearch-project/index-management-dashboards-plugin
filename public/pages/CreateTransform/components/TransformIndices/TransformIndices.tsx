@@ -132,15 +132,6 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
     }
   };
 
-  // onAddDataFilter = (dataFilter: string): void => {
-  //   const { dataFilters } = this.state;
-  //   //debug
-  //   console.log("to add: " + dataFilter + " existing filters: " + dataFilters);
-  //   dataFilters.push(dataFilter);
-  //   this.setState({ dataFilters });
-  //   this.closePopover();
-  // };
-
   closePopover = () => this.setState({ isPopoverOpen: false });
 
   render() {
@@ -219,9 +210,6 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
               </EuiLink>
             </EuiText>
             <EuiSpacer size="s" />
-            {/*{this.state.dataFilters.map((item) => (*/}
-            {/*  <EuiBadge>{item}</EuiBadge>*/}
-            {/*))}*/}
             <EuiBadge
               iconType="cross"
               iconSide="right"

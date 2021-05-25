@@ -391,7 +391,7 @@ export default class Transforms extends Component<TransformProps, TransformState
           this.context.notifications.toasts.addDanger(`Could not delete transform job "${transformId}" :  ${response.error}`);
         }
       } catch (err) {
-        this.context.notification.toasts.addDanger(getErrorMessage(err, "Could not delete the transform job"));
+        this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not delete the transform job"));
       }
     }
 

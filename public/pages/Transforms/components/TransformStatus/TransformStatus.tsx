@@ -61,8 +61,8 @@ export default class TransformStatus extends Component<TransformStatusProps> {
                 </dd>
               </EuiText>
             </EuiFlexItem>
-            <EuiFlexItem></EuiFlexItem>
-            <EuiFlexItem></EuiFlexItem>
+            <EuiFlexItem />
+            <EuiFlexItem />
             <EuiFlexItem>
               <EuiText size="xs">
                 <dt>Page processed</dt>

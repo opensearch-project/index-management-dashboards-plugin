@@ -49,8 +49,8 @@ export default function TransformOptions({
   const isText = type == "text";
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [groupSelection, setGroupSelection] = useState<TransformGroupItem[]>(selectedGroupField);
-  const [aggSelection, setAggSelection] = useState(selectedAggregations);
+  const [groupSelection] = useState<TransformGroupItem[]>(selectedGroupField);
+  const [aggSelection] = useState(selectedAggregations);
 
   const closePopover = () => {
     setIsPopoverOpen(false);
@@ -178,10 +178,6 @@ export default function TransformOptions({
         />
       ),
     },
-    // {
-    //   id: 3,
-    //   title: "Back",
-    // },
   ];
   const datePanels: EuiContextMenuPanelDescriptor[] = [
     {

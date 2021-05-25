@@ -1,4 +1,15 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+/*
  * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
@@ -13,21 +24,13 @@
  * permissions and limitations under the License.
  */
 
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 
-import {
-  EuiFlexItem,
-  EuiText,
-  EuiBasicTable,
-  EuiTableFieldDataColumnType,
-  EuiPanel,
-  EuiFlexGroup,
-  EuiIcon,
-} from "@elastic/eui";
+import { EuiFlexItem, EuiText, EuiBasicTable, EuiTableFieldDataColumnType, EuiPanel, EuiFlexGroup, EuiIcon } from "@elastic/eui";
 
-import {DimensionItem, MetricItem} from "../../../models/interfaces";
+import { DimensionItem, MetricItem } from "../../../models/interfaces";
 
-export const AGGREGATION_AND_METRIC_SETTINGS = 'Aggregation and metrics settings'
+export const AGGREGATION_AND_METRIC_SETTINGS = "Aggregation and metrics settings";
 
 export interface BaseAggregationAndMetricsState {
   from: number;
@@ -40,8 +43,7 @@ export interface BaseAggregationAndMetricsState {
   dimensionSortDirection: string;
 }
 
-
-export const BaseAggregationColumns:  Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = [
+export const BaseAggregationColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = [
   {
     field: "sequence",
     name: "Sequence",
@@ -70,7 +72,6 @@ export const BaseAggregationColumns:  Readonly<EuiTableFieldDataColumnType<Dimen
     },
   },
 ];
-
 
 export const BaseMetricsColumns: Readonly<EuiTableFieldDataColumnType<MetricItem>>[] = [
   {
@@ -109,16 +110,17 @@ export const BaseMetricsColumns: Readonly<EuiTableFieldDataColumnType<MetricItem
   },
 ];
 
-export function  sequenceTableComponents(selectedDimensionField, items, columns, pagination, sorting, onChange) {
-  if(selectedDimensionField.length == 0) {
-   return (
-     <EuiText>
-       <dd>No fields added for aggregation</dd>
-     </EuiText>
-   )
+export function sequenceTableComponents(selectedDimensionField, items, columns, pagination, sorting, onChange) {
+  if (selectedDimensionField.length == 0) {
+    return (
+      <EuiText>
+        <dd>No fields added for aggregation</dd>
+      </EuiText>
+    );
   }
 
-  return  (<Fragment>
+  return (
+    <Fragment>
       <EuiPanel>
         <EuiBasicTable
           items={items}
@@ -132,7 +134,7 @@ export function  sequenceTableComponents(selectedDimensionField, items, columns,
         />
       </EuiPanel>
     </Fragment>
-  )
+  );
 }
 
 export function additionalMetricsComponent(selectedMetrics) {
@@ -149,21 +151,20 @@ export function additionalMetricsComponent(selectedMetrics) {
         </EuiText>
       </EuiFlexItem>
     </EuiFlexGroup>
-  )
+  );
 }
 
 export function sourceFieldComponents(selectedMetrics, items, columns, pagination, sorting, onChange) {
-
-  if(selectedMetrics.length == 0) {
+  if (selectedMetrics.length == 0) {
     return (
       <EuiText>
         <dd>No fields added for metrics</dd>
       </EuiText>
-    )
+    );
   }
 
-   return (
-     <Fragment>
+  return (
+    <Fragment>
       <EuiPanel>
         <EuiBasicTable
           items={items}
@@ -176,6 +177,6 @@ export function sourceFieldComponents(selectedMetrics, items, columns, paginatio
           noItemsMessage="No fields added for metrics"
         />
       </EuiPanel>
-     </Fragment>
-     )
+    </Fragment>
+  );
 }
