@@ -15,7 +15,7 @@ import { EuiSpacer, EuiText, EuiAccordion, EuiFlexGrid, EuiFlexItem } from "@ela
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { TransformService } from "../../../../services";
-import { DimensionItem } from "../../../../../models/interfaces";
+import { DimensionItem, TRANSFORM_AGG_TYPE } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import PreviewTransforms from "../../../CreateTransform/components/PreviewTransform";
 
@@ -75,7 +75,12 @@ export default class TransformSettings extends Component<TransformSettingsProps,
     const aggItems = () => {
       return Object.keys(aggregationsShown).map((key, index) => {
         let aggregationType = Object.keys(aggregationsShown[key])[0];
-        let sourceField = aggregationsShown[key][aggregationType].field;
+        let sourceField = "";
+        if (aggregationType != TRANSFORM_AGG_TYPE.scripted_metric) {
+          sourceField = aggregationsShown[key][aggregationType].field;
+        } else {
+          sourceField = key;
+        }
 
         return (
           <EuiFlexItem key={index}>
