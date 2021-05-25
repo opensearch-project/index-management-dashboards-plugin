@@ -1,19 +1,21 @@
 /*
- * Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
  */
 
-import { IClusterClient, IKibanaResponse, KibanaRequest, KibanaResponseFactory, RequestHandlerContext } from "kibana/server";
+import {
+  IClusterClient,
+  IOpenSearchDashboardsResponse,
+  OpenSearchDashboardsRequest,
+  OpenSearchDashboardsResponseFactory,
+  RequestHandlerContext,
+} from "opensearch-dashboards/server";
 import { ServerResponse } from "../models/types";
 import {
   GetTransformsResponse,
@@ -34,9 +36,9 @@ export default class TransformService {
 
   getTransforms = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<GetTransformsResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetTransformsResponse>>> => {
     try {
       const { from, size, search, sortDirection, sortField } = request.query as {
         from: number;
@@ -121,9 +123,9 @@ export default class TransformService {
 
   getTransform = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<DocumentTransform>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentTransform>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = { transformId: id };
@@ -181,9 +183,9 @@ export default class TransformService {
 
   startTransform = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<boolean>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
     try {
       const { id } = request.params as { id: string };
       console.log("received " + JSON.stringify(request.params));
@@ -213,9 +215,9 @@ export default class TransformService {
 
   stopTransform = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<boolean>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = { transformId: id };
@@ -244,9 +246,9 @@ export default class TransformService {
 
   deleteTransform = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<boolean>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = { transformId: id };
@@ -274,9 +276,9 @@ export default class TransformService {
 
   putTransform = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<PutTransformResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<PutTransformResponse>>> => {
     try {
       const { id } = request.params as { id: string };
       const { seqNo, primaryTerm } = request.query as { seqNo?: string; primaryTerm?: string };
@@ -314,9 +316,9 @@ export default class TransformService {
 
   searchSampleData = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<any>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
     try {
       const { from, size } = request.query as {
         from: number;
@@ -370,9 +372,9 @@ export default class TransformService {
 
   previewTransform = async (
     context: RequestHandlerContext,
-    request: KibanaRequest,
-    response: KibanaResponseFactory
-  ): Promise<IKibanaResponse<ServerResponse<PreviewTransformResponse>>> => {
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<PreviewTransformResponse>>> => {
     try {
       let params = {
         body: JSON.stringify(request.body),
