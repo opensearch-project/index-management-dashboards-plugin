@@ -30,7 +30,7 @@ import { NodeServices } from "../models/interfaces";
 import { NODE_API } from "../../utils/constants";
 
 export default function (services: NodeServices, router: IRouter) {
-  const { rollupService } = services;
+  const { rollupService, transformService } = services;
 
   router.get(
     {

@@ -27,8 +27,8 @@
 import { IndexManagementPluginSetup, IndexManagementPluginStart } from ".";
 import { Plugin, CoreSetup, CoreStart, ILegacyCustomClusterClient } from "../../../src/core/server";
 import ismPlugin from "./clusters/ism/ismPlugin";
-import { PolicyService, ManagedIndexService, IndexService, RollupService } from "./services";
-import { indices, policies, managedIndices, rollups } from "../server/routes";
+import { PolicyService, ManagedIndexService, IndexService, RollupService, TransformService } from "./services";
+import { indices, policies, managedIndices, rollups, transforms } from "../server/routes";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   public async setup(core: CoreSetup) {
@@ -42,7 +42,8 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const policyService = new PolicyService(osDriver);
     const managedIndexService = new ManagedIndexService(osDriver);
     const rollupService = new RollupService(osDriver);
-    const services = { indexService, policyService, managedIndexService, rollupService };
+    const transformService = new TransformService(osDriver);
+    const services = { indexService, policyService, managedIndexService, rollupService, transformService };
 
     // create router
     const router = core.http.createRouter();
@@ -51,6 +52,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     policies(services, router);
     managedIndices(services, router);
     rollups(services, router);
+    transforms(services, router);
 
     return {};
   }
