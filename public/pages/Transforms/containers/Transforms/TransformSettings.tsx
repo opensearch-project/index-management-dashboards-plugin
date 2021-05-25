@@ -104,22 +104,16 @@ export default class TransformSettings extends Component<TransformSettingsProps,
               <EuiSpacer size={"m"} />
 
               {/*// TODO: Use the source data preview table from create workflow */}
-              {/*<DefineTransforms*/}
-              {/*  {...this.props}*/}
-              {/*  isReadOnly={true}*/}
-              {/*  notifications={this.context.notifications}*/}
-              {/*  fields={[]}*/}
-              {/*  selectedGroupField={[]}*/}
-              {/*  onGroupSelectionChange={()=>()}*/}
-              {/*  selectedAggregations={{}}*/}
-              {/*  onAggregationSelectionChange={()=> ()}*/}
-              {/*  previewTransform={[]}*/}
-              {/*/>*/}
               <EuiText>
                 <h5>Preview result based on sample data</h5>
               </EuiText>
               <EuiSpacer size={"s"} />
-              <PreviewTransforms previewTransform={this.state.previewTransform} aggList={[]} isReadOnly={true} />
+              <PreviewTransforms
+                onRemoveTransformation={() => {}}
+                previewTransform={this.state.previewTransform}
+                aggList={[]}
+                isReadOnly={true}
+              />
             </div>
           </EuiAccordion>
         </div>
@@ -128,6 +122,8 @@ export default class TransformSettings extends Component<TransformSettingsProps,
   }
 
   onClick = async () => {
-    await this.previewTransform({ transform: this.props.transformJson.transform });
+    // Only call preview when preview transform is empty
+    const { previewTransform } = this.state;
+    if (!previewTransform.length) await this.previewTransform({ transform: this.props.transformJson.transform });
   };
 }
