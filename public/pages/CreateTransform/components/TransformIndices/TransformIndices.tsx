@@ -36,6 +36,7 @@ interface TransformIndicesProps {
   indexService: IndexService;
   sourceIndex: { label: string; value?: IndexItem }[];
   sourceIndexFilter: string;
+  sourceIndexFilterError: string;
   sourceIndexError: string;
   targetIndex: { label: string; value?: IndexItem }[];
   targetIndexError: string;
@@ -139,6 +140,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
       sourceIndex,
       sourceIndexError,
       sourceIndexFilter,
+      sourceIndexFilterError,
       targetIndex,
       targetIndexError,
       onChangeSourceIndex,
@@ -236,6 +238,9 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             >
               <IndexFilterPopover {...this.props} closePopover={this.closePopover} />
             </EuiPopover>
+            <EuiText color="danger" size="xs">
+              {sourceIndexFilterError}
+            </EuiText>
             <EuiSpacer size="s" />
             <EuiHorizontalRule margin="xs" />
             <EuiFormRow
