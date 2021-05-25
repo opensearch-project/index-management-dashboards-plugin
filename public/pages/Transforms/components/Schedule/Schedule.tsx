@@ -36,7 +36,6 @@ interface ScheduleProps {
   onIntervalTimeUnitChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-// TODO: Check wording for page size form with UX team
 export default class Schedule extends Component<ScheduleProps> {
   constructor(props: ScheduleProps) {
     super(props);

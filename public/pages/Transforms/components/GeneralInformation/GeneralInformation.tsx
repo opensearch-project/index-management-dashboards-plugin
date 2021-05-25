@@ -27,7 +27,7 @@ interface GeneralInformationProps {
   onEdit: () => void;
 }
 
-export default class GenerationInformation extends Component<GeneralInformationProps> {
+export default class GeneralInformation extends Component<GeneralInformationProps> {
   constructor(props: GeneralInformationProps) {
     super(props);
   }
