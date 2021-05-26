@@ -52,14 +52,15 @@ export default class TransformSettings extends Component<TransformSettingsProps,
   };
 
   componentDidMount = async (): Promise<void> => {
-    await this.previewTransform({ transform: this.props.transformJson.transform });
+    if (this.props.transformJson.transform) {
+      await this.previewTransform({ transform: this.props.transformJson.transform });
+    }
   };
 
   render() {
     const { groupsShown, aggregationsShown } = this.props;
 
     const groupItems = () => {
-      console.log(groupsShown);
       return groupsShown.map((group, index) => {
         return (
           <EuiFlexItem key={index}>
