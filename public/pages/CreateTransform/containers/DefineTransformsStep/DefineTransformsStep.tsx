@@ -19,7 +19,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import DefineTransforms from "../../components/DefineTransforms";
 import { FieldItem, TransformAggItem, TransformGroupItem } from "../../../../../models/interfaces";
 
-interface CreateTransformStep2Props extends RouteComponentProps {
+interface DefineTransformsStepProps extends RouteComponentProps {
   transformService: TransformService;
   currentStep: number;
   sourceIndex: string;
@@ -33,9 +33,9 @@ interface CreateTransformStep2Props extends RouteComponentProps {
   previewTransform: any[];
 }
 
-export default class CreateTransformStep2 extends Component<CreateTransformStep2Props> {
+export default class DefineTransformsStep extends Component<DefineTransformsStepProps> {
   static contextType = CoreServicesContext;
-  constructor(props: CreateTransformStep2Props) {
+  constructor(props: DefineTransformsStepProps) {
     super(props);
   }
 

@@ -9,6 +9,6 @@
  * GitHub history for details.
  */
 
-import CreateTransform from "./containers/CreateTransform";
+import SetUpIndices from "./containers/SetUpIndicesStep";
 
-export default CreateTransform;
+export default SetUpIndices;

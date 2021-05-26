@@ -21,7 +21,7 @@ import ReviewDefinition from "../../components/ReviewDefinition";
 import ReviewSchedule from "../../components/ReviewSchedule";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-interface CreateTransformProps extends RouteComponentProps {
+interface ReviewAndCreateStepProps extends RouteComponentProps {
   transformService: TransformService;
   submitError: string;
   currentStep: number;
@@ -47,9 +47,9 @@ interface CreateTransformProps extends RouteComponentProps {
   intervalTimeunit: string;
 }
 
-export default class CreateTransformStep4 extends Component<CreateTransformProps> {
+export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepProps> {
   static contextType = CoreServicesContext;
-  constructor(props: CreateTransformProps) {
+  constructor(props: ReviewAndCreateStepProps) {
     super(props);
   }
 

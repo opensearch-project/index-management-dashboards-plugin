@@ -9,6 +9,6 @@
  * GitHub history for details.
  */
 
-import CreateTransform from "./CreateTransform";
+import SpecifyScheduleStep from "./SpecifyScheduleStep";
 
-export default CreateTransform;
+export default SpecifyScheduleStep;

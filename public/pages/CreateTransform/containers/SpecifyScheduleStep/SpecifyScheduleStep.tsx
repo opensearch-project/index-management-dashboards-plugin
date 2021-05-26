@@ -21,7 +21,7 @@ import Schedule from "../../components/Schedule";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { createdTransformToastMessage } from "../../utils/helpers";
 
-interface CreateTransformProps extends RouteComponentProps {
+interface SpecifyScheduleStepProps extends RouteComponentProps {
   transformService: TransformService;
   currentStep: number;
   jobEnabledByDefault: boolean;
@@ -35,7 +35,7 @@ interface CreateTransformProps extends RouteComponentProps {
   onChangeIntervalTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-interface CreateTransformState {
+interface SpecifyScheduleStepState {
   transformId: string;
   transformIdError: string;
   transformSeqNo: number | null;
@@ -45,9 +45,9 @@ interface CreateTransformState {
   hasSubmitted: boolean;
 }
 
-export default class CreateTransformStep3 extends Component<CreateTransformProps, CreateTransformState> {
+export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepProps, SpecifyScheduleStepState> {
   static contextType = CoreServicesContext;
-  constructor(props: CreateTransformProps) {
+  constructor(props: SpecifyScheduleStepProps) {
     super(props);
 
     this.state = {

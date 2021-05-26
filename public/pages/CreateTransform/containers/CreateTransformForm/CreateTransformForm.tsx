@@ -17,8 +17,8 @@ import { RollupService, TransformService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import IndexService from "../../../../services/IndexService";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
-import CreateTransform from "../CreateTransform";
-import CreateTransformStep2 from "../CreateTransformStep2";
+import SetUpIndices from "../SetUpIndicesStep";
+import DefineTransformsStep from "../DefineTransformsStep";
 import {
   FieldItem,
   IndexItem,
@@ -29,8 +29,8 @@ import {
 } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { EMPTY_TRANSFORM } from "../../utils/constants";
-import CreateTransformStep3 from "../CreateTransformStep3";
-import CreateTransformStep4 from "../CreateTransformStep4";
+import SpecifyScheduleStep from "../SpecifyScheduleStep";
+import ReviewAndCreateStep from "../ReviewAndCreateStep";
 import { compareFieldItem, createdTransformToastMessage, parseFieldOptions } from "../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 
@@ -408,7 +408,6 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
 
   onSubmit = async (): Promise<void> => {
     const { transformId, transformJSON } = this.state;
-    console.log(transformJSON);
     this.setState({ submitError: "", isSubmitting: true, hasSubmitted: true });
     try {
       if (!transformId) {
@@ -481,7 +480,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     } = this.state;
     return (
       <div>
-        <CreateTransform
+        <SetUpIndices
           {...this.props}
           transformId={transformId}
           transformIdError={transformIdError}
@@ -506,7 +505,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           fieldSelectedOption={fieldSelectedOption}
           beenWarned={beenWarned}
         />
-        <CreateTransformStep2
+        <DefineTransformsStep
           {...this.props}
           currentStep={this.state.currentStep}
           sourceIndex={sourceIndex[0] ? sourceIndex[0].label : ""}
@@ -519,7 +518,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           onRemoveTransformation={this.onRemoveTransformation}
           previewTransform={previewTransform}
         />
-        <CreateTransformStep3
+        <SpecifyScheduleStep
           {...this.props}
           currentStep={this.state.currentStep}
           jobEnabledByDefault={jobEnabledByDefault}
@@ -532,7 +531,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           onChangePage={this.onChangePage}
           onChangeIntervalTimeunit={this.onChangeIntervalTimeunit}
         />
-        <CreateTransformStep4
+        <ReviewAndCreateStep
           {...this.props}
           transformId={transformId}
           description={description}

@@ -9,6 +9,6 @@
  * GitHub history for details.
  */
 
-import CreateTransformStep4 from "./CreateTransformStep4";
+import ReviewAndCreateStep from "./ReviewAndCreateStep";
 
-export default CreateTransformStep4;
+export default ReviewAndCreateStep;
