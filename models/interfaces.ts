@@ -60,7 +60,7 @@ export interface IndexItem {
 }
 
 /**
- * Interface what the Policy Elasticsearch Document
+ * Interface what the Policy Opensearch Document
  */
 export interface DocumentPolicy {
   id: string;
