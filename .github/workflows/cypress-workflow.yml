@@ -69,7 +69,7 @@ jobs:
           path: index-management
           repository: opensearch-project/index-management
           ref: 'main'
-      - name: Run elasticsearch with plugin
+      - name: Run opensearch with plugin
         run: |
           cd index-management
           ./gradlew run &
