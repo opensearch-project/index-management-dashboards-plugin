@@ -61,12 +61,12 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
     if (currentStep !== 2) return null;
 
     return (
-      <div style={{ padding: "20px 50px" }}>
+      <div style={{ padding: "5px 50px" }}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateTransformSteps step={2} />
           </EuiFlexItem>
-          <EuiFlexItem style={{ maxWidth: "80%" }} grow={false}>
+          <EuiFlexItem style={{ overflow: "auto", flex: 1 }} grow={false}>
             <EuiTitle size="l">
               <h1>Define transform</h1>
             </EuiTitle>

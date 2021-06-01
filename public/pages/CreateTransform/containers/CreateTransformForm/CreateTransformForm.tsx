@@ -476,7 +476,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       beenWarned,
     } = this.state;
     return (
-      <div>
+      <div style={{ width: "100%" }}>
         <SetUpIndices
           {...this.props}
           transformId={transformId}
