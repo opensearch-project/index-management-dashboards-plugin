@@ -110,7 +110,7 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
         title="Define transforms"
         titleSize="m"
       >
-        <div style={{ padding: "10px" }}>
+        <div>
           <EuiFlexGrid columns={4}>{aggListItems()}</EuiFlexGrid>
           <EuiSpacer />
           <EuiAccordion id="" buttonContent="Sample source index and transform result">

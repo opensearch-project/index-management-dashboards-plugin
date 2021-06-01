@@ -57,7 +57,7 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
         title="Specify schedule"
         titleSize="m"
       >
-        <div style={{ padding: "15px" }}>
+        <div>
           <EuiFlexGrid columns={4}>
             <EuiFlexItem>
               <EuiText size="xs">
