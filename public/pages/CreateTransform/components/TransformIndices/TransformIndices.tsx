@@ -206,7 +206,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             </EuiText>
 
             <EuiText size="xs">
-              <EuiLink external={true} href="">
+              <EuiLink external={true} target="_blank" href="https://docs-beta.opensearch.org/docs/opensearch/query-dsl/">
                 {" "}
                 Learn more
               </EuiLink>
