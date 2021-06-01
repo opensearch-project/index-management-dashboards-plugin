@@ -65,5 +65,11 @@ declare namespace Cypress {
      * cy.createRollup("some_rollup", { "rollup": { ... } })
      */
     createRollup(policyId: string, policyJSON: object): Chainable<any>;
+    /**
+     * Creates a transform
+     * @example
+     * cy.createTransform("some_transform", { "transform": { ... } })
+     */
+    createTransform(transformId: string, transformJSON: object): Chainable<any>;
   }
 }
