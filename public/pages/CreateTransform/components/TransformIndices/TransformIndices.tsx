@@ -264,14 +264,12 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             </EuiFormRow>
           </div>
         </ContentPanel>
-        {beenWarned && (
-          <Fragment>
-            <EuiSpacer />
-            <EuiCallOut color="warning">
-              <p>You can't change indices after creating a job. Double-check the source and target index names before proceeding.</p>
-            </EuiCallOut>
-          </Fragment>
-        )}
+        <Fragment>
+          <EuiSpacer />
+          <EuiCallOut color="warning">
+            <p>You can't change indices after creating a job. Double-check the source and target index names before proceeding.</p>
+          </EuiCallOut>
+        </Fragment>
       </div>
     );
   }

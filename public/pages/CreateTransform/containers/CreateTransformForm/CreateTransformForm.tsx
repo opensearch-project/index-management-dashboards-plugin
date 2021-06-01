@@ -213,10 +213,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       //TODO: Add checking to see if grouping is defined
     }
     if (error) return;
-
-    if (warned) {
-      currentStep = currentStep >= 3 ? 4 : currentStep + 1;
-    }
+    currentStep = currentStep >= 3 ? 4 : currentStep + 1;
     warned = true;
 
     this.setState({
