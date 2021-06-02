@@ -20,7 +20,7 @@ const TRANSFORM_ID = "test_transform_id";
 
 describe("Transforms", () => {
     beforeEach(() => {
-      // Set welcome screen tracking to test_rollup_target
+      // Set welcome screen tracking to test_transform_target
       localStorage.setItem("home:welcome:show", true);
 
       // Go to sample data page_size
@@ -144,7 +144,7 @@ describe("Transforms", () => {
         // Click Edit button
         cy.get(`[data-test-subj="editButton"]`).click({ force: true });
 
-        // Wait for initial rollup job to load
+        // Wait for initial transform job to load
         cy.contains("Test transform");
 
         cy.get(`textArea[data-test-subj="description"]`).focus().clear().type("A new description");
@@ -155,7 +155,7 @@ describe("Transforms", () => {
         // Confirm we get toaster saying changes saved
         cy.contains(`Changes to transform saved`);
 
-        // Click into rollup job details page
+        // Click into transform job details page
         cy.get(`[data-test-subj="transformLink_${TRANSFORM_ID}"]`).click({ force: true });
 
         // Confirm new description shows in details page
@@ -202,4 +202,43 @@ describe("Transforms", () => {
         );
       });
     });
+
+    describe("can be enabled and disabled", () => {
+      before(() => {
+        cy.deleteAllIndices();
+        cy.createTransform(TRANSFORM_ID, sampleTransform);
+      });
+
+      it("successfully", () => {
+        // Confirm we have our initial transform
+        cy.contains(TRANSFORM_ID);
+
+        // Click into transform job details page
+        cy.get(`[data-test-subj="transformLink_${TRANSFORM_ID}"]`).click({ force: true });
+
+        cy.contains(`${TRANSFORM_ID}`);
+
+        cy.wait(1000);
+
+        // Click into Actions menu
+        cy.get(`[data-test-subj="actionButton"]`).click({ force: true });
+
+        // Click Disable button
+        cy.get(`[data-test-subj="disableButton"]`).click();
+
+        // Confirm we get toaster saying transform job is disabled
+        cy.contains(`"${TRANSFORM_ID}" is disabled`);
+
+        cy.wait(1000);
+
+        // Click into Actions menu
+        cy.get(`[data-test-subj="actionButton"]`).click({ force: true });
+
+        // Click Enable button
+        cy.get(`[data-test-subj="enableButton"]`).click({ force: true });
+
+        // Confirm we get toaster saying transform job is enabled
+        cy.contains(`"${TRANSFORM_ID}" is enabled`);
+      });
+    })
 });
