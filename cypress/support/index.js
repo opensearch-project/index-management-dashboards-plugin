@@ -49,3 +49,10 @@ import "./commands";
 if (Cypress.env("security_enabled")) {
   Cypress.env("opensearch", "https://localhost:9200");
 }
+
+// Ignore benign rendering exception
+Cypress.on('uncaught:exception', (err, runnable) => {
+  if (err.message.includes('ResizeObserver loop limit exceeded')) {
+    return false;
+  }
+})

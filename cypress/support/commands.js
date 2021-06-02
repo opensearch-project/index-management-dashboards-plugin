@@ -133,3 +133,7 @@ Cypress.Commands.add("createIndex", (index, policyID = null, settings = {}) => {
 Cypress.Commands.add("createRollup", (rollupId, rollupJSON) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.ROLLUP_JOBS_BASE}/${rollupId}`, rollupJSON);
 });
+
+Cypress.Commands.add("createTransform", (transformId, transformJSON) => {
+  cy.request("PUT", `${Cypress.env("opensearch")}${API.TRANSFORM_JOBS_BASE}/${transformId}`, transformJSON);
+});
