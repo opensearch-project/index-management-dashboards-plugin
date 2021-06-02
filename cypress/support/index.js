@@ -53,3 +53,10 @@ if (Cypress.env("security_enabled")) {
   Cypress.env("opensearch", `http://${Cypress.env("opensearch_url")}`);
   Cypress.env("opensearch_dashboards", `http://${Cypress.env("opensearch_dashboards_url")}`);
 }
+
+// Ignore benign rendering exception
+Cypress.on('uncaught:exception', (err, runnable) => {
+  if (err.message.includes('ResizeObserver loop limit exceeded')) {
+    return false;
+  }
+})

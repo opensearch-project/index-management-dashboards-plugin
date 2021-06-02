@@ -149,3 +149,7 @@ Cypress.Commands.add("deleteDataStreams", (names) => {
 Cypress.Commands.add("rollover", (target) => {
   cy.request("POST", `${Cypress.env("opensearch")}/${target}/_rollover`);
 });
+
+Cypress.Commands.add("createTransform", (transformId, transformJSON) => {
+  cy.request("PUT", `${Cypress.env("opensearch")}${API.TRANSFORM_JOBS_BASE}/${transformId}`, transformJSON);
+});
