@@ -75,8 +75,6 @@ describe("Transforms", () => {
 
         // Click the next button
         cy.get("button").contains("Next").click({ force: true });
-        cy.contains("You can't change indices")
-        cy.get("button").contains("Next").click({ force: true });
 
         // Confirm that we got to step 2 of creation page
         cy.contains("Select fields to transform");
@@ -194,6 +192,9 @@ describe("Transforms", () => {
 
         // Click the delete confirmation button in modal
         cy.get(`[data-test-subj="confirmModalConfirmButton"]`).click();
+
+        // Confirm we got deleted toaster
+        cy.contains(`"${TRANSFORM_ID}" successfully deleted`);
 
         // Confirm showing empty loading state
         cy.contains(
