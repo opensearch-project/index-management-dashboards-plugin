@@ -71,7 +71,7 @@ export default function PreviewTransform({ previewTransform, aggList, onRemoveTr
           });
         }
         setPreviewColumns(tempCol);
-        setVisiblePreviewColumns(() => tempCol.map(({ id }) => id).slice(0, 5));
+        setVisiblePreviewColumns(() => tempCol.map(({ id }) => id));
       }
     } else {
       if (aggList.length) {
@@ -117,6 +117,6 @@ export default function PreviewTransform({ previewTransform, aggList, onRemoveTr
       gridStyle={{ rowHover: isReadOnly ? "none" : "highlight" }}
     />
   ) : (
-    <PreviewEmptyPrompt />
+    <PreviewEmptyPrompt isReadOnly={isReadOnly} />
   );
 }

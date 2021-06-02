@@ -118,7 +118,9 @@ export default function (services: NodeServices, router: IRouter) {
     {
       path: `${NODE_API.TRANSFORMS}/_preview`,
       validate: {
-        body: schema.any(),
+        body: schema.object({
+          transform: schema.any()
+        }),
       },
     },
     transformService.previewTransform

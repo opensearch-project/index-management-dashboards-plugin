@@ -9,6 +9,6 @@
  * GitHub history for details.
  */
 
-import CreateTransformStep3 from "./CreateTransformStep3";
+import DefineTransformsStep from "./DefineTransformsStep";
 
-export default CreateTransformStep3;
+export default DefineTransformsStep;

@@ -24,6 +24,7 @@ import { isNumericMapping } from "../../utils/helpers";
 import { GROUP_TYPES, TRANSFORM_AGG_TYPE, TransformAggItem, TransformGroupItem } from "../../../../../models/interfaces";
 import HistogramPanel from "./Panels/HistogramPanel";
 import PercentilePanel from "./Panels/PercentilePanel";
+import ScriptedMetricsPanel from "./Panels/ScriptedMetricsPanel";
 
 interface TransformOptionsProps {
   name: string;
@@ -153,10 +154,10 @@ export default function TransformOptions({
           name: "Aggregate by percentile",
           panel: 2,
         },
-        // {
-        //   name: "Aggregate by scripted metrics",
-        //   panel: 3,
-        // },
+        {
+          name: "Aggregate by scripted metrics",
+          panel: 3,
+        },
       ],
     },
     {
@@ -171,6 +172,18 @@ export default function TransformOptions({
       title: "Back",
       content: (
         <PercentilePanel
+          name={name}
+          aggSelection={aggSelection}
+          handleAggSelectionChange={handleAggSelectionChange}
+          closePopover={closePopover}
+        />
+      ),
+    },
+    {
+      id: 3,
+      title: "Back",
+      content: (
+        <ScriptedMetricsPanel
           name={name}
           aggSelection={aggSelection}
           handleAggSelectionChange={handleAggSelectionChange}

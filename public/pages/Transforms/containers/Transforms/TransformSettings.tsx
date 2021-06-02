@@ -15,7 +15,7 @@ import { EuiSpacer, EuiText, EuiAccordion, EuiFlexGrid, EuiFlexItem } from "@ela
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { TransformService } from "../../../../services";
-import { DimensionItem } from "../../../../../models/interfaces";
+import { DimensionItem, TRANSFORM_AGG_TYPE } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import PreviewTransforms from "../../../CreateTransform/components/PreviewTransform";
 
@@ -52,14 +52,15 @@ export default class TransformSettings extends Component<TransformSettingsProps,
   };
 
   componentDidMount = async (): Promise<void> => {
-    await this.previewTransform({ transform: this.props.transformJson.transform });
+    if (this.props.transformJson.transform) {
+      await this.previewTransform({ transform: this.props.transformJson.transform });
+    }
   };
 
   render() {
     const { groupsShown, aggregationsShown } = this.props;
 
     const groupItems = () => {
-      console.log(groupsShown);
       return groupsShown.map((group, index) => {
         return (
           <EuiFlexItem key={index}>
@@ -75,7 +76,12 @@ export default class TransformSettings extends Component<TransformSettingsProps,
     const aggItems = () => {
       return Object.keys(aggregationsShown).map((key, index) => {
         let aggregationType = Object.keys(aggregationsShown[key])[0];
-        let sourceField = aggregationsShown[key][aggregationType].field;
+        let sourceField = "";
+        if (aggregationType != TRANSFORM_AGG_TYPE.scripted_metric) {
+          sourceField = aggregationsShown[key][aggregationType].field;
+        } else {
+          sourceField = key;
+        }
 
         return (
           <EuiFlexItem key={index}>
@@ -104,22 +110,16 @@ export default class TransformSettings extends Component<TransformSettingsProps,
               <EuiSpacer size={"m"} />
 
               {/*// TODO: Use the source data preview table from create workflow */}
-              {/*<DefineTransforms*/}
-              {/*  {...this.props}*/}
-              {/*  isReadOnly={true}*/}
-              {/*  notifications={this.context.notifications}*/}
-              {/*  fields={[]}*/}
-              {/*  selectedGroupField={[]}*/}
-              {/*  onGroupSelectionChange={()=>()}*/}
-              {/*  selectedAggregations={{}}*/}
-              {/*  onAggregationSelectionChange={()=> ()}*/}
-              {/*  previewTransform={[]}*/}
-              {/*/>*/}
               <EuiText>
                 <h5>Preview result based on sample data</h5>
               </EuiText>
               <EuiSpacer size={"s"} />
-              <PreviewTransforms previewTransform={this.state.previewTransform} aggList={[]} isReadOnly={true} />
+              <PreviewTransforms
+                onRemoveTransformation={() => {}}
+                previewTransform={this.state.previewTransform}
+                aggList={[]}
+                isReadOnly={true}
+              />
             </div>
           </EuiAccordion>
         </div>
@@ -128,6 +128,8 @@ export default class TransformSettings extends Component<TransformSettingsProps,
   }
 
   onClick = async () => {
-    await this.previewTransform({ transform: this.props.transformJson.transform });
+    // Only call preview when preview transform is empty
+    const { previewTransform } = this.state;
+    if (!previewTransform.length) await this.previewTransform({ transform: this.props.transformJson.transform });
   };
 }

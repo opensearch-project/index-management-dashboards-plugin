@@ -9,20 +9,32 @@
  * GitHub history for details.
  */
 
-import { EuiEmptyPrompt, EuiPanel, EuiText } from "@elastic/eui";
+import { EuiEmptyPrompt, EuiPanel, EuiText, EuiIcon } from "@elastic/eui";
 import React from "react";
 
-export default function PreviewEmptyPrompt() {
+interface PreviewEmptyPromptProps {
+  isReadOnly: boolean;
+}
+
+export default function PreviewEmptyPrompt({ isReadOnly }: PreviewEmptyPromptProps) {
   return (
     <EuiPanel>
-      <EuiEmptyPrompt
-        title={
-          <EuiText size="m">
-            <h4> No fields selected</h4>
-          </EuiText>
-        }
-        body={<p>From the table above, select a field you want to transform by clicking the “plus” button next to the field name</p>}
-      />
+      { (isReadOnly) ? (
+        <EuiEmptyPrompt title={<EuiText size="m"><h4> No preview available </h4></EuiText>}/>
+      ) : (
+        <EuiEmptyPrompt
+          title={
+            <EuiText size="m">
+              <h4> No fields selected </h4>
+            </EuiText>
+          }
+          body={
+            <p> From the table above, select a field you want to transform by clicking <EuiIcon
+              type="plusInCircleFilled"/> next to the field name.</p>
+          }
+        />
+        )
+      }
     </EuiPanel>
   );
 }

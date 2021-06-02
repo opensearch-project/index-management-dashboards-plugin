@@ -188,7 +188,6 @@ export default class TransformService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
     try {
       const { id } = request.params as { id: string };
-      console.log("received " + JSON.stringify(request.params));
       const params = { transformId: id };
       const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
       const startResponse = await callWithRequest("ism.startTransform", params);
@@ -330,12 +329,8 @@ export default class TransformService {
         from: from,
         size: size,
       };
-      //debug use
-      console.log("From: " + from + " size: " + size);
       const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
       const searchResponse: SearchResponse<any> = await callWithRequest("search", params);
-      //debug use
-      // console.log("Server search response: " + JSON.stringify(searchResponse));
       return response.custom({
         statusCode: 200,
         body: {

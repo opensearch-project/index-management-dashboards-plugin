@@ -9,6 +9,6 @@
  * GitHub history for details.
  */
 
-import SetUpIndices from "./containers/SetUpIndicesStep";
+import ScriptedMetricsPanel from "./ScriptedMetricsPanel";
 
-export default SetUpIndices;
+export default ScriptedMetricsPanel;

@@ -9,6 +9,6 @@
  * GitHub history for details.
  */
 
-import CreateTransformStep2 from "./CreateTransformStep2";
+import SetUpIndicesStep from "./SetUpIndicesStep";
 
-export default CreateTransformStep2;
+export default SetUpIndicesStep;

@@ -36,6 +36,7 @@ interface TransformIndicesProps {
   indexService: IndexService;
   sourceIndex: { label: string; value?: IndexItem }[];
   sourceIndexFilter: string;
+  sourceIndexFilterError: string;
   sourceIndexError: string;
   targetIndex: { label: string; value?: IndexItem }[];
   targetIndexError: string;
@@ -139,6 +140,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
       sourceIndex,
       sourceIndexError,
       sourceIndexFilter,
+      sourceIndexFilterError,
       targetIndex,
       targetIndexError,
       onChangeSourceIndex,
@@ -204,7 +206,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             </EuiText>
 
             <EuiText size="xs">
-              <EuiLink external={true} href="">
+              <EuiLink external={true} target="_blank" href="https://docs-beta.opensearch.org/docs/opensearch/query-dsl/">
                 {" "}
                 Learn more
               </EuiLink>
@@ -236,6 +238,9 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             >
               <IndexFilterPopover {...this.props} closePopover={this.closePopover} />
             </EuiPopover>
+            <EuiText color="danger" size="xs">
+              {sourceIndexFilterError}
+            </EuiText>
             <EuiSpacer size="s" />
             <EuiHorizontalRule margin="xs" />
             <EuiFormRow
@@ -259,14 +264,12 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             </EuiFormRow>
           </div>
         </ContentPanel>
-        {beenWarned && (
-          <Fragment>
-            <EuiSpacer />
-            <EuiCallOut color="warning">
-              <p>You can't change indices after creating a job. Double-check the source and target index names before proceeding.</p>
-            </EuiCallOut>
-          </Fragment>
-        )}
+        <Fragment>
+          <EuiSpacer />
+          <EuiCallOut color="warning">
+            <p>You can't change indices after creating a job. Double-check the source and target index names before proceeding.</p>
+          </EuiCallOut>
+        </Fragment>
       </div>
     );
   }

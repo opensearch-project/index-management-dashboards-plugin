@@ -69,6 +69,9 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
         // is a group
         title = "Group by " + item.type;
         field = item.item[item.type].source_field;
+      } else if (item.type == TRANSFORM_AGG_TYPE.scripted_metric) {
+        title = item.type + "()";
+        field = item.name;
       } else {
         // is an agg
         title = item.type + "()";
@@ -107,7 +110,7 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
         title="Define transforms"
         titleSize="m"
       >
-        <div style={{ padding: "10px" }}>
+        <div>
           <EuiFlexGrid columns={4}>{aggListItems()}</EuiFlexGrid>
           <EuiSpacer />
           <EuiAccordion id="" buttonContent="Sample source index and transform result">

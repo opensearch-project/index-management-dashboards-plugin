@@ -199,30 +199,7 @@ export default function DefineTransforms({
     );
 
   return (
-    <ContentPanel
-      //TODO: Add action to enter full screen view
-      // actions={
-      //   <ContentPanelActions
-      //     actions={[
-      //       {
-      //         text: "Full screen view",
-      //         buttonProps: {
-      //           iconType: "fullScreen",
-      //           // onClick: () =>
-      //           //   onShow(ApplyPolicyModal, {
-      //           //     indices: selectedItems.map((item: ManagedCatIndex) => item.index),
-      //           //     core: this.context,
-      //           //   }),
-      //         },
-      //       },
-      //     ]}
-      //   />
-      // }
-      panelStyles={{ padding: "20px 20px" }}
-      bodyStyles={{ padding: "10px" }}
-      title="Select fields to transform"
-      titleSize="m"
-    >
+    <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Select fields to transform" titleSize="m">
       <EuiText>
         <h5>Original fields with sample data</h5>
       </EuiText>

@@ -19,7 +19,7 @@ import CreateTransformSteps from "../../components/CreateTransformSteps";
 import IndexService from "../../../../services/IndexService";
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
 
-interface CreateTransformProps extends RouteComponentProps {
+interface SetUpIndicesStepProps extends RouteComponentProps {
   transformService: TransformService;
   indexService: IndexService;
   transformId: string;
@@ -30,6 +30,7 @@ interface CreateTransformProps extends RouteComponentProps {
   description: string;
   sourceIndex: { label: string; value?: IndexItem }[];
   sourceIndexFilter: string;
+  sourceIndexFilterError: string;
   sourceIndexError: string;
   targetIndex: { label: string; value?: IndexItem }[];
   targetIndexError: string;
@@ -45,7 +46,7 @@ interface CreateTransformProps extends RouteComponentProps {
   beenWarned: boolean;
 }
 
-export default class CreateTransform extends Component<CreateTransformProps> {
+export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
   render() {
     if (this.props.currentStep !== 1) {
       return null;
