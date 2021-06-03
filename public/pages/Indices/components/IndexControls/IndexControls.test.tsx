@@ -41,6 +41,9 @@ describe("<IndexControls /> spec", () => {
         onSearchChange={() => {}}
         onPageClick={() => {}}
         onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => {}}
+        toggleShowDataStreams={() => {}}
       />
     );
 
@@ -57,6 +60,9 @@ describe("<IndexControls /> spec", () => {
         onSearchChange={onSearchChange}
         onPageClick={() => {}}
         onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => {}}
+        toggleShowDataStreams={() => {}}
       />
     );
 
@@ -68,7 +74,17 @@ describe("<IndexControls /> spec", () => {
   it("calls onRefresh on an interval", async () => {
     const onRefresh = jest.fn();
     const { getByTestId } = render(
-      <IndexControls activePage={0} pageCount={2} search={""} onSearchChange={() => {}} onPageClick={() => {}} onRefresh={onRefresh} />
+      <IndexControls
+        activePage={0}
+        pageCount={2}
+        search={""}
+        onSearchChange={() => {}}
+        onPageClick={() => {}}
+        onRefresh={onRefresh}
+        showDataStreams={false}
+        getDataStreams={async () => {}}
+        toggleShowDataStreams={() => {}}
+      />
     );
 
     fireEvent.click(getByTestId("superDatePickerToggleQuickMenuButton"));

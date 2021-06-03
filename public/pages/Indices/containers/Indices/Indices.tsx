@@ -125,10 +125,9 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
       const getIndicesResponse = await indexService.getIndices({
         ...queryObject,
-        // TODO: enable these once UT issues are figured out.
-        // terms: this.getTermClausesFromState(),
-        // indices: this.getFieldClausesFromState("indices"),
-        // dataStreams: this.getFieldClausesFromState("data_streams"),
+        terms: this.getTermClausesFromState(),
+        indices: this.getFieldClausesFromState("indices"),
+        dataStreams: this.getFieldClausesFromState("data_streams"),
       });
 
       if (getIndicesResponse.ok) {
@@ -159,7 +158,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
   getFieldClausesFromState = (clause: string): string[] => {
     const { query } = this.state;
-    return (query.ast.getFieldClauses(clause) || []).map((field) => field.value).flat();
+    return _.flatten((query.ast.getFieldClauses(clause) || []).map((field) => field.value));
   };
 
   getTermClausesFromState = (): string[] => {

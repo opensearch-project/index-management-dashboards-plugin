@@ -71,7 +71,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
     const { indexService } = this.props;
     this.setState({ isLoading: true, indexOptions: [] });
     try {
-      const queryObject = { from: 0, size: 10, search: searchValue, sortDirection: "desc", sortField: "index" };
+      const queryObject = { from: 0, size: 10, search: searchValue, sortDirection: "desc", sortField: "index", showDataStreams: true };
       const getIndicesResponse = await indexService.getIndices(queryObject);
       if (getIndicesResponse.ok) {
         const options = searchValue.trim() ? [{ label: `${searchValue}*` }] : [];

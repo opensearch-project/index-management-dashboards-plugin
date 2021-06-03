@@ -248,10 +248,9 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
 
       const getManagedIndicesResponse = await managedIndexService.getManagedIndices({
         ...queryObject,
-        // TODO: enable these once UT failures are fixed
-        // terms: this.getTermClausesFromState(),
-        // indices: this.getFieldClausesFromState("indices"),
-        // dataStreams: this.getFieldClausesFromState("data_streams"),
+        terms: this.getTermClausesFromState(),
+        indices: this.getFieldClausesFromState("indices"),
+        dataStreams: this.getFieldClausesFromState("data_streams"),
       });
 
       if (getManagedIndicesResponse.ok) {
@@ -284,7 +283,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
 
   getFieldClausesFromState = (clause: string): string[] => {
     const { query } = this.state;
-    return (query.ast.getFieldClauses(clause) || []).map((field) => field.value).flat();
+    return _.flatten((query.ast.getFieldClauses(clause) || []).map((field) => field.value));
   };
 
   getTermClausesFromState = (): string[] => {

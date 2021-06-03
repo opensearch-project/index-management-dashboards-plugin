@@ -41,6 +41,9 @@ describe("<ManagedIndexControls /> spec", () => {
         onSearchChange={() => {}}
         onPageClick={() => {}}
         onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => {}}
+        toggleShowDataStreams={() => {}}
       />
     );
 
@@ -57,6 +60,9 @@ describe("<ManagedIndexControls /> spec", () => {
         onSearchChange={onSearchChange}
         onPageClick={() => {}}
         onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => {}}
+        toggleShowDataStreams={() => {}}
       />
     );
 
@@ -75,6 +81,9 @@ describe("<ManagedIndexControls /> spec", () => {
         onSearchChange={() => {}}
         onPageClick={() => {}}
         onRefresh={onRefresh}
+        showDataStreams={false}
+        getDataStreams={async () => {}}
+        toggleShowDataStreams={() => {}}
       />
     );
 
