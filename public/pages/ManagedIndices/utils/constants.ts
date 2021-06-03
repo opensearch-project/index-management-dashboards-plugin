@@ -33,4 +33,5 @@ export const DEFAULT_QUERY_PARAMS: ManagedIndicesQueryParams = {
   search: "",
   sortField: "index",
   sortDirection: "desc",
+  showDataStreams: true,
 };

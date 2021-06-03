@@ -37,6 +37,7 @@ export const DEFAULT_QUERY_PARAMS = {
   search: "",
   sortField: "name",
   sortDirection: SortDirection.DESC,
+  showDataStreams: true,
 };
 
 const HEALTH_TO_COLOR: {

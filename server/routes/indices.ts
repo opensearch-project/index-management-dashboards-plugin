@@ -52,6 +52,10 @@ export default function (services: NodeServices, router: IRouter) {
           search: schema.string(),
           sortField: schema.string(),
           sortDirection: schema.string(),
+          terms: schema.maybe(schema.any()),
+          indices: schema.maybe(schema.any()),
+          dataStreams: schema.maybe(schema.any()),
+          showDataStreams: schema.maybe(schema.boolean()), // TODO: remove maybe
         }),
       },
     },

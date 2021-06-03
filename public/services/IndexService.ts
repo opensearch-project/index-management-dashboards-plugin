@@ -25,7 +25,13 @@
  */
 
 import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
-import { AcknowledgedResponse, ApplyPolicyResponse, GetIndicesResponse, GetPoliciesResponse } from "../../server/models/interfaces";
+import {
+  AcknowledgedResponse,
+  ApplyPolicyResponse,
+  GetDataStreamsResponse,
+  GetIndicesResponse,
+  GetPoliciesResponse,
+} from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { NODE_API } from "../../utils/constants";
 
@@ -40,6 +46,11 @@ export default class IndexService {
     let url = `..${NODE_API._INDICES}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetIndicesResponse>;
     return response;
+  };
+
+  getDataStreams = async (): Promise<ServerResponse<GetDataStreamsResponse>> => {
+    const url = `..${NODE_API._DATA_STREAMS}`;
+    return await this.httpClient.get(url);
   };
 
   applyPolicy = async (indices: string[], policyId: string): Promise<ServerResponse<ApplyPolicyResponse>> => {
