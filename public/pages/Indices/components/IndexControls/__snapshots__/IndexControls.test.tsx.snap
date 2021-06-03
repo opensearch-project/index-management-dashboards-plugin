@@ -84,7 +84,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
         class="euiSwitch__label"
         id="some_html_id"
       >
-        Show Data Stream Indices
+        Show data stream indices
       </span>
     </div>
   </div>

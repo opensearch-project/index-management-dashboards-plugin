@@ -74,7 +74,6 @@ export default class IndexService {
         index: getSearchString(terms, indices, dataStreams),
         format: "json",
         s: `${sortField}:${sortDirection}`,
-        expand_wildcards: "all",
       };
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);

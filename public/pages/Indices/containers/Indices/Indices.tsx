@@ -141,7 +141,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the indices"));
     }
 
-    // Avoiding flicker by showing/hiding the "Data Stream" column only after the results are loaded.
+    // Avoiding flicker by showing/hiding the "Data stream" column only after the results are loaded.
     const { showDataStreams } = this.state;
     this.setState({ loadingIndices: false, isDataStreamColumnVisible: showDataStreams });
   };

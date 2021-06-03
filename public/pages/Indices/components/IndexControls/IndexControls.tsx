@@ -78,7 +78,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
           {
             type: "field_value_selection",
             field: "data_streams",
-            name: "Data Streams",
+            name: "Data streams",
             noOptionsMessage: "No data streams found",
             multiSelect: "or",
             cache: 60000,
@@ -98,7 +98,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiSwitch label="Show Data Stream Indices" checked={showDataStreams} onChange={toggleShowDataStreams} />
+          <EuiSwitch label="Show data stream indices" checked={showDataStreams} onChange={toggleShowDataStreams} />
         </EuiFlexItem>
         <EuiFlexItem grow={false} style={{ maxWidth: 250 }}>
           <EuiRefreshPicker

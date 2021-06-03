@@ -37,7 +37,7 @@ export const DEFAULT_QUERY_PARAMS = {
   search: "",
   sortField: "name",
   sortDirection: SortDirection.DESC,
-  showDataStreams: true,
+  showDataStreams: false,
 };
 
 const HEALTH_TO_COLOR: {
@@ -87,7 +87,7 @@ const INDICES_COLUMNS: EuiTableFieldDataColumnType<ManagedCatIndex>[] = [
   },
   {
     field: "data_stream",
-    name: "Data Stream",
+    name: "Data stream",
     sortable: true,
     truncateText: true,
     textOnly: true,

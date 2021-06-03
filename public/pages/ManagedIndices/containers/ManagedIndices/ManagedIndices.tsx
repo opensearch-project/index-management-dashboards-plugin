@@ -124,7 +124,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
       },
       {
         field: "dataStream",
-        name: "Data Stream",
+        name: "Data stream",
         sortable: true,
         truncateText: true,
         textOnly: true,
@@ -266,7 +266,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the managed indices"));
     }
 
-    // Avoiding flicker by showing/hiding the "Data Stream" column only after the results are loaded.
+    // Avoiding flicker by showing/hiding the "Data stream" column only after the results are loaded.
     const { showDataStreams } = this.state;
     this.setState({ loadingManagedIndices: false, isDataStreamColumnVisible: showDataStreams });
   };
