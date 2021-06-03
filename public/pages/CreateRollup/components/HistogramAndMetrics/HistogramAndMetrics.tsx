@@ -44,7 +44,7 @@ import { ContentPanel, ContentPanelActions } from "../../../../components/Conten
 import { ModalConsumer } from "../../../../components/Modal";
 import { DEFAULT_PAGE_SIZE_OPTIONS } from "../../../Rollups/utils/constants";
 import { parseTimeunit } from "../../utils/helpers";
-import { DimensionItem, MetricItem, RollupMetricItem } from "../../../../../models/interfaces";
+import { DimensionItem, MetricItem } from "../../../../../models/interfaces";
 import {
   additionalMetricsComponent,
   AGGREGATION_AND_METRIC_SETTINGS,
@@ -86,9 +86,7 @@ const aggregationColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[]
   ..._createFlowAggregateColumns,
 ];
 
-// changing first column to be source_field.label
 const metricsColumns: EuiTableFieldDataColumnType<MetricItem>[] = BaseMetricsColumns;
-// metricsColumns[0].field = "source_field.label"
 
 export default class HistogramAndMetrics extends Component<HistogramAndMetricsProps, HistogramAndMetricsState> {
   constructor(props: HistogramAndMetricsProps) {
