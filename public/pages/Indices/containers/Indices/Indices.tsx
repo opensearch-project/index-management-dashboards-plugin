@@ -38,6 +38,9 @@ import {
   // @ts-ignore
   Pagination,
   EuiTableSelectionType,
+  ArgsWithError,
+  ArgsWithQuery,
+  Query,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import IndexControls from "../../components/IndexControls";
@@ -46,7 +49,7 @@ import IndexEmptyPrompt from "../../components/IndexEmptyPrompt";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, indicesColumns } from "../../utils/constants";
 import { ModalConsumer } from "../../../../components/Modal";
 import IndexService from "../../../../services/IndexService";
-import { ManagedCatIndex } from "../../../../../server/models/interfaces";
+import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { getURLQueryParams } from "../../utils/helpers";
 import { IndicesQueryParams } from "../../models/interfaces";
 import { BREADCRUMBS } from "../../../../utils/constants";
@@ -62,28 +65,34 @@ interface IndicesState {
   from: number;
   size: number;
   search: string;
+  query: Query;
   sortField: keyof ManagedCatIndex;
   sortDirection: Direction;
   selectedItems: ManagedCatIndex[];
   indices: ManagedCatIndex[];
   loadingIndices: boolean;
+  showDataStreams: boolean;
+  isDataStreamColumnVisible: boolean;
 }
 
 export default class Indices extends Component<IndicesProps, IndicesState> {
   static contextType = CoreServicesContext;
   constructor(props: IndicesProps) {
     super(props);
-    const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
+    const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
     this.state = {
       totalIndices: 0,
       from,
       size,
       search,
+      query: Query.parse(search),
       sortField,
       sortDirection,
       selectedItems: [],
       indices: [],
       loadingIndices: true,
+      showDataStreams,
+      isDataStreamColumnVisible: showDataStreams,
     };
 
     this.getIndices = _.debounce(this.getIndices, 500, { leading: true });
@@ -102,8 +111,8 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     }
   }
 
-  static getQueryObjectFromState({ from, size, search, sortField, sortDirection }: IndicesState): IndicesQueryParams {
-    return { from, size, search, sortField, sortDirection };
+  static getQueryObjectFromState({ from, size, search, sortField, sortDirection, showDataStreams }: IndicesState): IndicesQueryParams {
+    return { from, size, search, sortField, sortDirection, showDataStreams };
   }
 
   getIndices = async (): Promise<void> => {
@@ -113,7 +122,15 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       const queryObject = Indices.getQueryObjectFromState(this.state);
       const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
-      const getIndicesResponse = await indexService.getIndices(queryObject);
+
+      const getIndicesResponse = await indexService.getIndices({
+        ...queryObject,
+        // TODO: enable these once UT issues are figured out.
+        // terms: this.getTermClausesFromState(),
+        // indices: this.getFieldClausesFromState("indices"),
+        // dataStreams: this.getFieldClausesFromState("data_streams"),
+      });
+
       if (getIndicesResponse.ok) {
         const { indices, totalIndices } = getIndicesResponse.response;
         this.setState({ indices, totalIndices });
@@ -123,7 +140,31 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the indices"));
     }
-    this.setState({ loadingIndices: false });
+
+    // Avoiding flicker by showing/hiding the "Data Stream" column only after the results are loaded.
+    const { showDataStreams } = this.state;
+    this.setState({ loadingIndices: false, isDataStreamColumnVisible: showDataStreams });
+  };
+
+  getDataStreams = async (): Promise<DataStream[]> => {
+    const { indexService } = this.props;
+    const serverResponse = await indexService.getDataStreams();
+    return serverResponse.response.dataStreams;
+  };
+
+  toggleShowDataStreams = () => {
+    const { showDataStreams } = this.state;
+    this.setState({ showDataStreams: !showDataStreams });
+  };
+
+  getFieldClausesFromState = (clause: string): string[] => {
+    const { query } = this.state;
+    return (query.ast.getFieldClauses(clause) || []).map((field) => field.value).flat();
+  };
+
+  getTermClausesFromState = (): string[] => {
+    const { query } = this.state;
+    return (query.ast.getTermClauses() || []).map((term) => term.value);
   };
 
   onTableChange = ({ page: tablePage, sort }: Criteria<ManagedCatIndex>): void => {
@@ -136,8 +177,12 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     this.setState({ selectedItems });
   };
 
-  onSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ from: 0, search: e.target.value });
+  onSearchChange = ({ query, queryText, error }: ArgsWithQuery | ArgsWithError): void => {
+    if (error) {
+      return;
+    }
+
+    this.setState({ from: 0, search: queryText, query });
   };
 
   onPageClick = (page: number): void => {
@@ -146,11 +191,23 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
   };
 
   resetFilters = (): void => {
-    this.setState({ search: DEFAULT_QUERY_PARAMS.search });
+    this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
 
   render() {
-    const { totalIndices, from, size, search, sortField, sortDirection, selectedItems, indices, loadingIndices } = this.state;
+    const {
+      totalIndices,
+      from,
+      size,
+      search,
+      sortField,
+      sortDirection,
+      selectedItems,
+      indices,
+      loadingIndices,
+      showDataStreams,
+      isDataStreamColumnVisible,
+    } = this.state;
 
     const filterIsApplied = !!search;
     const page = Math.floor(from / size);
@@ -205,12 +262,15 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           onSearchChange={this.onSearchChange}
           onPageClick={this.onPageClick}
           onRefresh={this.getIndices}
+          showDataStreams={showDataStreams}
+          getDataStreams={this.getDataStreams}
+          toggleShowDataStreams={this.toggleShowDataStreams}
         />
 
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable
-          columns={indicesColumns}
+          columns={indicesColumns(isDataStreamColumnVisible)}
           isSelectable={true}
           itemId="index"
           items={indices}

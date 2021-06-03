@@ -51,7 +51,7 @@ const HEALTH_TO_COLOR: {
   red: "danger",
 };
 
-export const indicesColumns: EuiTableFieldDataColumnType<ManagedCatIndex>[] = [
+const INDICES_COLUMNS: EuiTableFieldDataColumnType<ManagedCatIndex>[] = [
   {
     field: "index",
     name: "Index",
@@ -86,13 +86,23 @@ export const indicesColumns: EuiTableFieldDataColumnType<ManagedCatIndex>[] = [
     },
   },
   {
+    field: "data_stream",
+    name: "Data Stream",
+    sortable: true,
+    truncateText: true,
+    textOnly: true,
+    align: "right",
+    width: "120px",
+    render: (data_stream) => data_stream || "-",
+  },
+  {
     field: "managed",
     name: "Managed by Policy",
     sortable: false,
     truncateText: true,
     textOnly: true,
     align: "right",
-    width: "150px",
+    width: "140px",
   },
   {
     field: "status",
@@ -153,3 +163,7 @@ export const indicesColumns: EuiTableFieldDataColumnType<ManagedCatIndex>[] = [
     dataType: "number",
   },
 ];
+
+export const indicesColumns = (isDataStreamColumnVisible: boolean): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
+  return isDataStreamColumnVisible ? INDICES_COLUMNS : INDICES_COLUMNS.filter((col) => col["field"] !== "data_stream");
+};

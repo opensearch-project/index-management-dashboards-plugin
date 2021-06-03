@@ -43,6 +43,9 @@ import {
   // @ts-ignore
   Pagination,
   EuiTableSelectionType,
+  ArgsWithQuery,
+  ArgsWithError,
+  Query,
 } from "@elastic/eui";
 import queryString from "query-string";
 import _ from "lodash";
@@ -62,6 +65,7 @@ import ConfirmationModal from "../../../../components/ConfirmationModal";
 import RetryModal from "../../components/RetryModal";
 import RolloverAliasModal from "../../components/RolloverAliasModal";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { DataStream } from "../../../../../server/models/interfaces";
 
 interface ManagedIndicesProps extends RouteComponentProps {
   managedIndexService: ManagedIndexService;
@@ -72,11 +76,14 @@ interface ManagedIndicesState {
   from: number;
   size: number;
   search: string;
+  query: Query;
   sortField: keyof ManagedIndexItem;
   sortDirection: Direction;
   selectedItems: ManagedIndexItem[];
   managedIndices: ManagedIndexItem[];
   loadingManagedIndices: boolean;
+  showDataStreams: boolean;
+  isDataStreamColumnVisible: boolean;
 }
 
 export default class ManagedIndices extends Component<ManagedIndicesProps, ManagedIndicesState> {
@@ -86,18 +93,21 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
   constructor(props: ManagedIndicesProps) {
     super(props);
 
-    const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
+    const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
 
     this.state = {
       totalManagedIndices: 0,
       from,
       size,
       search,
+      query: Query.parse(search),
       sortField,
       sortDirection,
       selectedItems: [],
       managedIndices: [],
       loadingManagedIndices: true,
+      showDataStreams,
+      isDataStreamColumnVisible: showDataStreams,
     };
 
     this.getManagedIndices = _.debounce(this.getManagedIndices, 500, { leading: true });
@@ -113,12 +123,21 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
         render: (index: string) => <span title={index}>{index}</span>,
       },
       {
+        field: "dataStream",
+        name: "Data Stream",
+        sortable: true,
+        truncateText: true,
+        textOnly: true,
+        width: "120px",
+        render: (dataStream) => dataStream || DEFAULT_EMPTY_DATA,
+      },
+      {
         field: "policyId",
         name: "Policy",
         sortable: true,
         truncateText: true,
         textOnly: true,
-        width: "150px",
+        width: "140px",
         render: this.renderPolicyId,
       },
       {
@@ -173,6 +192,10 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     ];
   }
 
+  managedIndicesColumns = (isDataStreamColumnVisible: boolean): EuiTableFieldDataColumnType<ManagedIndexItem>[] => {
+    return isDataStreamColumnVisible ? this.columns : this.columns.filter((col) => col["field"] !== "dataStream");
+  };
+
   async componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES]);
     await this.getManagedIndices();
@@ -186,8 +209,8 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     }
   }
 
-  static getQueryObjectFromState({ from, size, search, sortField, sortDirection }: ManagedIndicesState) {
-    return { from, size, search, sortField, sortDirection };
+  static getQueryObjectFromState({ from, size, search, sortField, sortDirection, showDataStreams }: ManagedIndicesState) {
+    return { from, size, search, sortField, sortDirection, showDataStreams };
   }
 
   renderPolicyId = (policyId: string, item: ManagedIndexItem) => {
@@ -222,7 +245,15 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
       const queryObject = ManagedIndices.getQueryObjectFromState(this.state);
       const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
-      const getManagedIndicesResponse = await managedIndexService.getManagedIndices(queryObject);
+
+      const getManagedIndicesResponse = await managedIndexService.getManagedIndices({
+        ...queryObject,
+        // TODO: enable these once UT failures are fixed
+        // terms: this.getTermClausesFromState(),
+        // indices: this.getFieldClausesFromState("indices"),
+        // dataStreams: this.getFieldClausesFromState("data_streams"),
+      });
+
       if (getManagedIndicesResponse.ok) {
         const {
           response: { managedIndices, totalManagedIndices },
@@ -234,7 +265,31 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the managed indices"));
     }
-    this.setState({ loadingManagedIndices: false });
+
+    // Avoiding flicker by showing/hiding the "Data Stream" column only after the results are loaded.
+    const { showDataStreams } = this.state;
+    this.setState({ loadingManagedIndices: false, isDataStreamColumnVisible: showDataStreams });
+  };
+
+  getDataStreams = async (): Promise<DataStream[]> => {
+    const { managedIndexService } = this.props;
+    const serverResponse = await managedIndexService.getDataStreams();
+    return serverResponse.response.dataStreams;
+  };
+
+  toggleShowDataStreams = (): void => {
+    const { showDataStreams } = this.state;
+    this.setState({ showDataStreams: !showDataStreams });
+  };
+
+  getFieldClausesFromState = (clause: string): string[] => {
+    const { query } = this.state;
+    return (query.ast.getFieldClauses(clause) || []).map((field) => field.value).flat();
+  };
+
+  getTermClausesFromState = (): string[] => {
+    const { query } = this.state;
+    return (query.ast.getTermClauses() || []).map((term) => term.value);
   };
 
   onClickRemovePolicy = async (indices: string[]): Promise<void> => {
@@ -272,8 +327,12 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     this.setState({ selectedItems });
   };
 
-  onSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ from: 0, search: e.target.value });
+  onSearchChange = ({ query, queryText, error }: ArgsWithQuery | ArgsWithError): void => {
+    if (error) {
+      return;
+    }
+
+    this.setState({ from: 0, search: queryText, query });
   };
 
   onPageClick = (page: number): void => {
@@ -288,7 +347,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
   };
 
   resetFilters = (): void => {
-    this.setState({ search: DEFAULT_QUERY_PARAMS.search });
+    this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
 
   render() {
@@ -302,6 +361,8 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
       selectedItems,
       managedIndices,
       loadingManagedIndices,
+      showDataStreams,
+      isDataStreamColumnVisible,
     } = this.state;
 
     const filterIsApplied = !!search;
@@ -333,10 +394,13 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
         return !(retryInfo && retryInfo.failed) && !(action && action.failed);
       });
 
+    // Editing the rollover alias for a data stream shouldn't be allowed.
+    const isDataStreamIndexSelected = selectedItems.some((item) => item.dataStream !== null);
+
     const actions = [
       {
         text: "Edit rollover alias",
-        buttonProps: { disabled: selectedItems.length !== 1 },
+        buttonProps: { disabled: selectedItems.length !== 1 || isDataStreamIndexSelected },
         modal: {
           onClickModal: (onShow: (component: any, props: object) => void) => () =>
             onShow(RolloverAliasModal, {
@@ -399,12 +463,15 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
             onSearchChange={this.onSearchChange}
             onPageClick={this.onPageClick}
             onRefresh={this.getManagedIndices}
+            showDataStreams={showDataStreams}
+            getDataStreams={this.getDataStreams}
+            toggleShowDataStreams={this.toggleShowDataStreams}
           />
 
           <EuiHorizontalRule margin="xs" />
 
           <EuiBasicTable
-            columns={this.columns}
+            columns={this.managedIndicesColumns(isDataStreamColumnVisible)}
             isSelectable={true}
             itemId="index"
             items={managedIndices}
