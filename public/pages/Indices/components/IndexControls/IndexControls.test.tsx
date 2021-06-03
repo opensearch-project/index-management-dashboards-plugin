@@ -65,38 +65,6 @@ describe("<IndexControls /> spec", () => {
     expect(onSearchChange).toHaveBeenCalledTimes(4);
   });
 
-  it("shows/hides pagination", async () => {
-    const { queryByTestId, rerender } = render(
-      <IndexControls activePage={0} pageCount={1} search={""} onSearchChange={() => {}} onPageClick={() => {}} onRefresh={async () => {}} />
-    );
-
-    expect(queryByTestId("indexControlsPagination")).toBeNull();
-
-    rerender(
-      <IndexControls activePage={0} pageCount={2} search={""} onSearchChange={() => {}} onPageClick={() => {}} onRefresh={async () => {}} />
-    );
-
-    expect(queryByTestId("indexControlsPagination")).not.toBeNull();
-  });
-
-  it("calls onPageClick when clicking pagination", async () => {
-    const onPageClick = jest.fn();
-    const { getByTestId } = render(
-      <IndexControls
-        activePage={0}
-        pageCount={2}
-        search={""}
-        onSearchChange={() => {}}
-        onPageClick={onPageClick}
-        onRefresh={async () => {}}
-      />
-    );
-
-    fireEvent.click(getByTestId("pagination-button-1"));
-
-    expect(onPageClick).toHaveBeenCalledTimes(1);
-  });
-
   it("calls onRefresh on an interval", async () => {
     const onRefresh = jest.fn();
     const { getByTestId } = render(

@@ -30,12 +30,9 @@ import EuiRefreshPicker from "../../../../temporary/EuiRefreshPicker";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 interface ManagedIndexControlsProps {
-  activePage: number;
-  pageCount: number;
   search: string;
   showDataStreams: boolean;
   onSearchChange: (args: ArgsWithQuery | ArgsWithError) => void;
-  onPageClick: (page: number) => void;
   onRefresh: () => void;
   getDataStreams: () => Promise<DataStream[]>;
   toggleShowDataStreams: () => void;
@@ -56,7 +53,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
   };
 
   render() {
-    const { activePage, pageCount, search, onSearchChange, onPageClick, onRefresh, showDataStreams, toggleShowDataStreams } = this.props;
+    const { search, onSearchChange, onRefresh, showDataStreams, toggleShowDataStreams } = this.props;
     const { refreshInterval, isPaused } = this.state;
 
     const schema = {
@@ -106,16 +103,6 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
             onRefresh={onRefresh}
           />
         </EuiFlexItem>
-        {pageCount > 1 && (
-          <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>
-            <EuiPagination
-              pageCount={pageCount}
-              activePage={activePage}
-              onPageClick={onPageClick}
-              data-test-subj="managedIndexControlsPagination"
-            />
-          </EuiFlexItem>
-        )}
       </EuiFlexGroup>
     );
   }

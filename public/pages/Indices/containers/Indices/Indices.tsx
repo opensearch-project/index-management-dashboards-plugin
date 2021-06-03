@@ -185,11 +185,6 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     this.setState({ from: 0, search: queryText, query });
   };
 
-  onPageClick = (page: number): void => {
-    const { size } = this.state;
-    this.setState({ from: page * size });
-  };
-
   resetFilters = (): void => {
     this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
@@ -256,11 +251,8 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
         title="Indices"
       >
         <IndexControls
-          activePage={page}
-          pageCount={Math.ceil(totalIndices / size) || 1}
           search={search}
           onSearchChange={this.onSearchChange}
-          onPageClick={this.onPageClick}
           onRefresh={this.getIndices}
           showDataStreams={showDataStreams}
           getDataStreams={this.getDataStreams}

@@ -25,17 +25,14 @@
  */
 
 import React, { Component } from "react";
-import { ArgsWithError, ArgsWithQuery, EuiFlexGroup, EuiFlexItem, EuiPagination, EuiSearchBar, EuiSwitch } from "@elastic/eui";
+import { ArgsWithError, ArgsWithQuery, EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiSwitch } from "@elastic/eui";
 import EuiRefreshPicker from "../../../../temporary/EuiRefreshPicker";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 interface IndexControlsProps {
-  activePage: number;
-  pageCount: number;
   search: string;
   showDataStreams: boolean;
   onSearchChange: (args: ArgsWithQuery | ArgsWithError) => void;
-  onPageClick: (page: number) => void;
   onRefresh: () => Promise<void>;
   getDataStreams: () => Promise<DataStream[]>;
   toggleShowDataStreams: () => void;
@@ -61,7 +58,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
   };
 
   render() {
-    const { activePage, pageCount, search, onSearchChange, onPageClick, onRefresh, showDataStreams, toggleShowDataStreams } = this.props;
+    const { search, onSearchChange, onRefresh, showDataStreams, toggleShowDataStreams } = this.props;
     const { refreshInterval, isPaused } = this.state;
 
     const schema = {
@@ -111,16 +108,6 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
             onRefresh={onRefresh}
           />
         </EuiFlexItem>
-        {pageCount > 1 && (
-          <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>
-            <EuiPagination
-              pageCount={pageCount}
-              activePage={activePage}
-              onPageClick={onPageClick}
-              data-test-subj="indexControlsPagination"
-            />
-          </EuiFlexItem>
-        )}
       </EuiFlexGroup>
     );
   }

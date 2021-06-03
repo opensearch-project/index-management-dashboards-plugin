@@ -335,11 +335,6 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     this.setState({ from: 0, search: queryText, query });
   };
 
-  onPageClick = (page: number): void => {
-    const { size } = this.state;
-    this.setState({ from: page * size });
-  };
-
   onClickModalEdit = (item: ManagedIndexItem, onClose: () => void): void => {
     onClose();
     if (!item || !item.policyId) return;
@@ -457,11 +452,8 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
 
         <ContentPanel actions={<ContentPanelActions actions={actions} />} bodyStyles={{ padding: "initial" }} title="Indices">
           <ManagedIndexControls
-            activePage={page}
-            pageCount={Math.ceil(totalManagedIndices / size) || 1}
             search={search}
             onSearchChange={this.onSearchChange}
-            onPageClick={this.onPageClick}
             onRefresh={this.getManagedIndices}
             showDataStreams={showDataStreams}
             getDataStreams={this.getDataStreams}
