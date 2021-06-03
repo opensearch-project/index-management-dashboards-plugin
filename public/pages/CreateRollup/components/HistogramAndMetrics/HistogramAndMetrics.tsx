@@ -81,20 +81,12 @@ const _createFlowAggregateColumns: Readonly<EuiTableFieldDataColumnType<Dimensio
   },
 ];
 
-const _createFlowMetricsColumn: Readonly<EuiTableFieldDataColumnType<MetricItem>> = {
-  field: "all",
-  name: "All",
-  align: "center",
-  render: (all: boolean) => all && <EuiIcon type="check" />,
-};
-
 const aggregationColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = [
   ...BaseAggregationColumns,
   ..._createFlowAggregateColumns,
 ];
 
-// Adding 'all' column at 1st index.
-const metricsColumns: EuiTableFieldDataColumnType<MetricItem>[] = [...BaseMetricsColumns].splice(1, 0, _createFlowMetricsColumn);
+const metricsColumns: EuiTableFieldDataColumnType<MetricItem>[] = BaseMetricsColumns;
 
 export default class HistogramAndMetrics extends Component<HistogramAndMetricsProps, HistogramAndMetricsState> {
   constructor(props: HistogramAndMetricsProps) {
@@ -138,6 +130,20 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
       dimensionSortDirection: sortDirection,
       dimensionsShown: selectedDimensionField.slice(page * size, page * size + size),
     });
+  };
+
+  parseMetric = (metrics: MetricItem[]): MetricItem[] => {
+    if (metrics.length == 0) return [];
+    const result = metrics.map((metric) => ({
+      source_field: metric.source_field.label,
+      all: false,
+      min: metric.min,
+      max: metric.max,
+      sum: metric.sum,
+      avg: metric.avg,
+      value_count: metric.value_count,
+    }));
+    return result;
   };
 
   parseInterval(intervalType: string, intervalValue: number, timeunit: string): string {
@@ -272,7 +278,7 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
           <EuiSpacer />
           {additionalMetricsComponent(selectedMetrics)}
 
-          {sourceFieldComponents(selectedMetrics, metricsShown, metricsColumns, pagination, sorting, this.onTableChange)}
+          {sourceFieldComponents(selectedMetrics, this.parseMetric(metricsShown), metricsColumns, pagination, sorting, this.onTableChange)}
 
           <EuiSpacer size="s" />
         </div>
