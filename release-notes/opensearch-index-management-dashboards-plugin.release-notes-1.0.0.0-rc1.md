@@ -4,7 +4,6 @@ Compatible with OpenSearchDashboards 1.0.0-rc1
 
 ### Features
 * Introducing transforms ([#16](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/16))
-* Show data streams in 'Indices' and 'Managed Indices' sections ([#24](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/24))
 
 ### Bug Fixes
 * Rename plugin helper file ([#11](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/11))
