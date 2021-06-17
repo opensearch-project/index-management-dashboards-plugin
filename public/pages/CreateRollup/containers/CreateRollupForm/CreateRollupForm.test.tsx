@@ -36,6 +36,7 @@ import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import CreateRollupForm from "./CreateRollupForm";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { DataStream } from "../../../../../server/models/interfaces";
 
 const indices = [
   {
@@ -49,6 +50,24 @@ const indices = [
     status: "open",
     "store.size": "100KB",
     uuid: "some_uuid",
+  },
+];
+
+const dataStreams: DataStream[] = [
+  {
+    name: "data_stream_1",
+    indices: [
+      {
+        index_uuid: "uuid",
+        index_name: "name",
+      },
+    ],
+    status: "GREEN",
+    timestamp_field: {
+      name: "@timestamp",
+    },
+    template: "template",
+    generation: 1,
   },
 ];
 
@@ -228,6 +247,11 @@ describe("<CreateRollupForm /> creation", () => {
   browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({
     ok: true,
     response: { indices, totalIndices: 1 },
+  });
+
+  browserServicesMock.indexService.getDataStreams = jest.fn().mockResolvedValue({
+    ok: true,
+    response: { dataStreams, totalDataStreams: 1 },
   });
 
   browserServicesMock.rollupService.getMappings = jest.fn().mockResolvedValue({

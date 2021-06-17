@@ -48,9 +48,9 @@ export default class IndexService {
     return response;
   };
 
-  getDataStreams = async (): Promise<ServerResponse<GetDataStreamsResponse>> => {
+  getDataStreams = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetDataStreamsResponse>> => {
     const url = `..${NODE_API._DATA_STREAMS}`;
-    return await this.httpClient.get(url);
+    return await this.httpClient.get(url, { query: queryObject });
   };
 
   applyPolicy = async (indices: string[], policyId: string): Promise<ServerResponse<ApplyPolicyResponse>> => {

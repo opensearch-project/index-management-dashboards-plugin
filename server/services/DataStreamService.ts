@@ -33,8 +33,12 @@ export default class DataStreamService {
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetDataStreamsResponse>>> => {
     try {
+      const { search } = request.query as {
+        search?: string;
+      };
+
       const client = this.osDriver.asScoped(request);
-      const dataStreams = await getDataStreams(client);
+      const dataStreams = await getDataStreams(client, search);
 
       return response.custom({
         statusCode: 200,
@@ -59,9 +63,14 @@ export default class DataStreamService {
   };
 }
 
-export async function getDataStreams({ callAsCurrentUser: callWithRequest }: ILegacyScopedClusterClient): Promise<DataStream[]> {
+export async function getDataStreams(
+  { callAsCurrentUser: callWithRequest }: ILegacyScopedClusterClient,
+  search?: string
+): Promise<DataStream[]> {
+  const searchPattern = search ? `*${search}*` : "*";
+
   const dataStreamsResponse = await callWithRequest("transport.request", {
-    path: "/_data_stream",
+    path: `/_data_stream/${searchPattern}`,
     method: "GET",
   });
 
