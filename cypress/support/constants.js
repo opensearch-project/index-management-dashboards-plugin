@@ -24,8 +24,8 @@
  * permissions and limitations under the License.
  */
 
-export const API_ROUTE_PREFIX = "/_opendistro/_ism";
-export const API_ROUTE_PREFIX_ROLLUP = "/_opendistro/_rollup";
+export const API_ROUTE_PREFIX = "/_plugins/_ism";
+export const API_ROUTE_PREFIX_ROLLUP = "/_plugins/_rollup";
 
 export const INDEX = {
   OPENDISTRO_ISM_CONFIG: ".opendistro-ism-config",

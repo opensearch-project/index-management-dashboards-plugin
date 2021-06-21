@@ -136,7 +136,7 @@ describe("Managed indices", () => {
       cy.createPolicy(POLICY_ID, samplePolicy);
       // Create index with rollover_alias
       cy.createIndex(SAMPLE_INDEX, POLICY_ID, {
-        settings: { opendistro: { index_state_management: { rollover_alias: FIRST_ALIAS } } },
+        settings: { plugins: { index_state_management: { rollover_alias: FIRST_ALIAS } } },
       });
     });
 
@@ -147,10 +147,7 @@ describe("Managed indices", () => {
       // Get current index settings for index
       cy.getIndexSettings(SAMPLE_INDEX).then((res) => {
         // Confirm the current rollover_alias is the first one we set
-        expect(res.body).to.have.nested.property(
-          "sample_index.settings.index.opendistro.index_state_management.rollover_alias",
-          FIRST_ALIAS
-        );
+        expect(res.body).to.have.nested.property("sample_index.settings.index.plugins.index_state_management.rollover_alias", FIRST_ALIAS);
       });
 
       // Select checkbox for our managed index
@@ -171,10 +168,7 @@ describe("Managed indices", () => {
       // Get updated index settings for index
       cy.getIndexSettings(SAMPLE_INDEX).then((res) => {
         // Confirm the rollover_alias setting is set to second alias
-        expect(res.body).to.have.nested.property(
-          "sample_index.settings.index.opendistro.index_state_management.rollover_alias",
-          SECOND_ALIAS
-        );
+        expect(res.body).to.have.nested.property("sample_index.settings.index.plugins.index_state_management.rollover_alias", SECOND_ALIAS);
       });
     });
   });

@@ -2,7 +2,7 @@
 # As pull requests are merged, a draft release is kept up-to-date listing the changes, ready to publish when you’re ready
 
 template: |
-  Compatible with Kibana (**set version here**).
+  Compatible with OpenSearchDashboards (**set version here**).
   $CHANGES
 
 # Setting the formatting and sorting for the release notes body
@@ -42,6 +42,7 @@ categories:
   - title: 'Maintenance'
     labels:
       - 'version support'
+      - 'backwards-compatibility'
   - title: 'Refactoring'
     labels:
       - 'refactor'

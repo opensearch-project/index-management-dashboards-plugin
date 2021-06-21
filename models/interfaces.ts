@@ -60,7 +60,7 @@ export interface IndexItem {
 }
 
 /**
- * Interface what the Policy Elasticsearch Document
+ * Interface what the Policy Opensearch Document
  */
 export interface DocumentPolicy {
   id: string;
@@ -75,6 +75,14 @@ export interface DocumentRollup {
   _seqNo: number;
   _primaryTerm: number;
   rollup: Rollup;
+  metadata: any;
+}
+
+export interface DocumentTransform {
+  _id: string;
+  _seqNo: number;
+  _primaryTerm: number;
+  transform: Transform;
   metadata: any;
 }
 
@@ -130,6 +138,44 @@ export interface RollupMetadata {
       pages_processed: number | null;
       documents_processed: number | null;
       rollups_indexed: number | null;
+      index_time_in_millis: number | null;
+      search_time_in_millis: number | null;
+    };
+  };
+}
+
+export interface Transform {
+  description: string;
+  groups: RollupDimensionItem[];
+  enabled: boolean;
+  enabled_at: number | null;
+  updated_at: number;
+  metadata_id: string | null;
+  aggregations: Map<String, any>;
+  page_size: number;
+  schedule: IntervalSchedule | CronSchedule;
+  schema_version: number;
+  source_index: string;
+  target_index: string;
+  roles: String[];
+  data_selection_query: Map<String, any>;
+}
+
+export interface TransformMetadata {
+  metadata_id: string;
+  transform_metadata: {
+    id: string;
+    seq_no: number;
+    primary_term: number;
+    transform_id: string;
+    after_key: Map<string, any> | null;
+    last_updated_at: number;
+    status: string;
+    failure_reason: string | null;
+    stats: {
+      pages_processed: number | null;
+      documents_processed: number | null;
+      documents_indexed: number | null;
       index_time_in_millis: number | null;
       search_time_in_millis: number | null;
     };
@@ -214,4 +260,39 @@ export interface RollupMetricItem {
       value_count?: Object;
     }
   ];
+}
+
+export type TransformGroupItem = DateHistogramItem | TermsItem | HistogramItem;
+
+export enum GROUP_TYPES {
+  histogram = "histogram",
+  dateHistogram = "date_histogram",
+  terms = "terms",
+}
+
+export interface TransformAggItem {
+  type: TRANSFORM_AGG_TYPE;
+  name: string;
+  item: any | DateHistogramItem | TermsItem | HistogramItem;
+  percents?: number[];
+  sum?: { field: string };
+  max?: { field: string };
+  min?: { field: string };
+  avg?: { field: string };
+  value_count?: { field: string };
+  percentiles?: { field: string; percents: number[] };
+  scripted_metric?: object;
+}
+
+export enum TRANSFORM_AGG_TYPE {
+  sum = "sum",
+  max = "max",
+  min = "min",
+  avg = "avg",
+  value_count = "value_count",
+  percentiles = "percentiles",
+  scripted_metric = "scripted_metric",
+  terms = "terms",
+  histogram = "histogram",
+  date_histogram = "date_histogram",
 }

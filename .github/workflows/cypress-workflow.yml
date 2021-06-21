@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - development-*
 
 jobs:
   tests:
@@ -28,47 +29,47 @@ jobs:
         with:
           repository: 'opensearch-project/OpenSearch'
           path: OpenSearch
-          ref: '1.0.0-beta1'
+          ref: '1.0'
       - name: Build OpenSearch
         working-directory: ./OpenSearch
-        run: ./gradlew publishToMavenLocal -Dbuild.version_qualifier=beta1 -Dbuild.snapshot=false
+        run: ./gradlew publishToMavenLocal -Dbuild.version_qualifier=rc1 -Dbuild.snapshot=false
       # dependencies: common-utils
       - name: Checkout common-utils
         uses: actions/checkout@v2
         with:
           repository: 'opensearch-project/common-utils'
           path: common-utils
-          ref: '1.0.0-beta1'
+          ref: 'main'
       - name: Build common-utils
         working-directory: ./common-utils
-        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.0.0-beta1
+        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.0.0-rc1
       # dependencies: job-scheduler
       - name: Checkout job-scheduler
         uses: actions/checkout@v2
         with:
           repository: 'opensearch-project/job-scheduler'
           path: job-scheduler
-          ref: '1.0.0-beta1'
+          ref: 'main'
       - name: Build job-scheduler
         working-directory: ./job-scheduler
-        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.0.0-beta1 -Dbuild.snapshot=false
+        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.0.0-rc1 -Dbuild.snapshot=false
       # dependencies: alerting-notification
       - name: Checkout alerting
         uses: actions/checkout@v2
         with:
           repository: 'opensearch-project/alerting'
           path: alerting
-          ref: '1.0.0-beta1'
+          ref: 'main'
       - name: Build alerting
         working-directory: ./alerting
-        run: ./gradlew :alerting-notification:publishToMavenLocal -Dopensearch_version=1.0.0-beta1
+        run: ./gradlew :alerting-notification:publishToMavenLocal -Dopensearch_version=1.0.0-rc1
       - name: Checkout
         uses: actions/checkout@v2
         with:
           path: index-management
           repository: opensearch-project/index-management
-          ref: '1.0.0-beta1'
-      - name: Run elasticsearch with plugin
+          ref: 'main'
+      - name: Run opensearch with plugin
         run: |
           cd index-management
           ./gradlew run &
@@ -83,7 +84,7 @@ jobs:
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           path: OpenSearch-Dashboards
-          ref: '1.0.0-beta1'
+          ref: '1.0'
       - name: Get node and yarn versions
         id: versions
         run: |

@@ -28,7 +28,7 @@ export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 
 export const DEFAULT_EMPTY_DATA = "-";
 
-export const DOCUMENTATION_URL = "https://opendistro.github.io/for-elasticsearch-docs/docs/ism/";
+export const DOCUMENTATION_URL = "https://docs-beta.opensearch.org/docs/im/ism/";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
@@ -41,6 +41,10 @@ export const ROUTES = Object.freeze({
   CREATE_ROLLUP: "/create-rollup",
   EDIT_ROLLUP: "/edit-rollup",
   ROLLUP_DETAILS: "/rollup-details",
+  TRANSFORMS: "/transforms",
+  CREATE_TRANSFORM: "/create-transform",
+  EDIT_TRANSFORM: "/edit-transform",
+  TRANSFORM_DETAILS: "/transform-details",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -55,6 +59,10 @@ export const BREADCRUMBS = Object.freeze({
   CREATE_ROLLUP: { text: "Create rollup job" },
   EDIT_ROLLUP: { text: "Edit rollup job" },
   ROLLUP_DETAILS: { text: "Rollup details" },
+  TRANSFORMS: { text: "Transform jobs", href: `#${ROUTES.TRANSFORMS}` },
+  CREATE_TRANSFORM: { text: "Create transform job" },
+  EDIT_TRANSFORM: { text: "Edit transform job" },
+  TRANSFORM_DETAILS: { text: "Transform details" },
 });
 
 // TODO: EUI has a SortDirection already

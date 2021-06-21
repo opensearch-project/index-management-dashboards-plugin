@@ -241,7 +241,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
              
             <a
               class="euiLink euiLink--primary"
-              href="https://opendistro.github.io/for-elasticsearch-docs/docs/ism/"
+              href="https://docs-beta.opensearch.org/docs/im/ism/"
               rel="noopener noreferrer"
               target="_blank"
             >
