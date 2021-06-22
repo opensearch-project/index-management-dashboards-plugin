@@ -29,6 +29,7 @@ interface DefineTransformsStepProps extends RouteComponentProps {
   selectedAggregations: any;
   aggList: TransformAggItem[];
   onAggregationSelectionChange: (selectedFields: any, aggItem: TransformAggItem) => void;
+  onEditTransformation: (oldName: string, newName: string) => void;
   onRemoveTransformation: (name: string) => void;
   previewTransform: any[];
 }
@@ -56,6 +57,7 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
       onGroupSelectionChange,
       selectedAggregations,
       onAggregationSelectionChange,
+      onEditTransformation,
       onRemoveTransformation,
     } = this.props;
     if (currentStep !== 2) return null;
@@ -80,6 +82,7 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
               onGroupSelectionChange={onGroupSelectionChange}
               selectedAggregations={selectedAggregations}
               onAggregationSelectionChange={onAggregationSelectionChange}
+              onEditTransformation={onEditTransformation}
               onRemoveTransformation={onRemoveTransformation}
               isReadOnly={false}
             />

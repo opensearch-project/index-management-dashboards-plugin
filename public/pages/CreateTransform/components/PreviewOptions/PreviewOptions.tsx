@@ -21,26 +21,32 @@ import {
   EuiToolTip,
 } from "@elastic/eui";
 import { useState } from "react";
+import EditTransformPanel from "./Panels/EditTransformPanel";
 
 interface PreviewOptionsProps {
   name: string;
+  onEditTransformation: (oldName: string, newName: string) => void;
   onRemoveTransformation: (name: string) => void;
 }
 
-export default function PreviewOptions({ name, onRemoveTransformation }: PreviewOptionsProps) {
+export default function PreviewOptions({ name, onEditTransformation, onRemoveTransformation }: PreviewOptionsProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const closePopover = () => {
     setIsPopoverOpen(false);
   };
 
-  const button = <EuiButtonIcon color="danger" iconType="crossInACircleFilled" onClick={() => setIsPopoverOpen(!isPopoverOpen)} />;
+  const button = <EuiButtonIcon color="primary" iconType="pencil" onClick={() => setIsPopoverOpen(!isPopoverOpen)} />;
 
   const panels: EuiContextMenuPanelDescriptor[] = [
     {
       id: 0,
       title: "",
       items: [
+        {
+          name: "Edit transformation",
+          panel: 1,
+        },
         {
           name: "Remove transformation",
           onClick: () => {
@@ -49,6 +55,11 @@ export default function PreviewOptions({ name, onRemoveTransformation }: Preview
           },
         },
       ],
+    },
+    {
+      id: 1,
+      title: "Back",
+      content: <EditTransformPanel name={name} onEditTransformation={onEditTransformation} closePopover={closePopover} />,
     },
   ];
 

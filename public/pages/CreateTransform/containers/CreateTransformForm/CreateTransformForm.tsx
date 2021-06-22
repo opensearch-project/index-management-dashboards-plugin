@@ -31,7 +31,7 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { EMPTY_TRANSFORM } from "../../utils/constants";
 import SpecifyScheduleStep from "../SpecifyScheduleStep";
 import ReviewAndCreateStep from "../ReviewAndCreateStep";
-import { compareFieldItem, createdTransformToastMessage, parseFieldOptions } from "../../utils/helpers";
+import { compareFieldItem, createdTransformToastMessage, isGroupBy, parseFieldOptions } from "../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 
 interface CreateTransformFormProps extends RouteComponentProps {
@@ -316,6 +316,29 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     this.setState({ selectedAggregations: selectedAggregations });
   };
 
+  onEditTransformation = async (oldName: string, newName: string): Promise<void> => {
+    const { aggList } = this.state;
+
+    const toEditIndex = aggList.findIndex((item) => {
+      return item.name === oldName;
+    });
+
+    let newAggItem = aggList[toEditIndex];
+    const type = aggList[toEditIndex].type;
+
+    // Modify the name of transform
+    newAggItem.name = newName;
+
+    // Also modify the target field if the transformation is a group by definition
+    if (isGroupBy(type)) newAggItem.item[type].target_field = newName;
+
+    this.setState({ aggList });
+
+    this.updateGroup();
+    this.updateAggregation();
+    await this.previewTransform(this.state.transformJSON);
+  };
+
   onRemoveTransformation = async (name: string): Promise<void> => {
     const { aggList } = this.state;
     const toRemoveIndex = aggList.findIndex((item) => {
@@ -512,6 +535,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           selectedAggregations={selectedAggregations}
           onGroupSelectionChange={this.onGroupSelectionChange}
           onAggregationSelectionChange={this.onAggregationSelectionChange}
+          onEditTransformation={this.onEditTransformation}
           onRemoveTransformation={this.onRemoveTransformation}
           previewTransform={previewTransform}
         />
