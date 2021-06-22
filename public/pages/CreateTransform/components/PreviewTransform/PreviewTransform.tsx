@@ -89,6 +89,7 @@ export default function PreviewTransform({
             display: (
               <PreviewOptions
                 name={aggItem.name}
+                aggList={aggList}
                 onEditTransformation={onEditTransformation}
                 onRemoveTransformation={onRemoveTransformation}
               />

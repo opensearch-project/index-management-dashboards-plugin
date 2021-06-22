@@ -14,31 +14,47 @@
  */
 
 import React, { useState } from "react";
-import { EuiButton, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
+import { EuiButton, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
+import { TransformAggItem } from "../../../../../../../models/interfaces";
+
 interface EditTransformPanelProps {
   name: string;
+  aggList: TransformAggItem[];
   onEditTransformation: (oldName: string, newName: string) => void;
   closePopover: () => void;
 }
 
-export default function EditTransformPanel({ name, onEditTransformation, closePopover }: EditTransformPanelProps) {
+export default function EditTransformPanel({ name, aggList, onEditTransformation, closePopover }: EditTransformPanelProps) {
   const [transformName, setTransformName] = useState(name);
+  const [transformNameError, setTransformNameError] = useState("");
+
+  // Function to check if newName is already used
+  const validateName = (newName: string) => {
+    const isDuplicate = aggList.some((item) => {
+      return item.name === newName;
+    });
+
+    if (name !== newName && isDuplicate) setTransformNameError(`Transformation with name "${newName}"  already exists`);
+    else setTransformNameError("");
+  };
+
   return (
     <EuiPanel>
-      <EuiFlexGroup>
-        <EuiFlexItem grow={false}>
-          <EuiFormRow label="Transformation name">
-            <EuiFieldText
-              value={transformName}
-              onChange={(e) => {
-                setTransformName(e.target.value);
-              }}
-            />
-          </EuiFormRow>
-          <EuiSpacer size="s" />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}></EuiFlexItem>
-      </EuiFlexGroup>
+      <EuiFormRow label="Transformation name">
+        <EuiFieldText
+          value={transformName}
+          isInvalid={transformNameError !== ""}
+          onChange={(e) => {
+            validateName(e.target.value);
+            setTransformName(e.target.value);
+          }}
+        />
+      </EuiFormRow>
+      <EuiSpacer size="s" />
+      <EuiText color="danger" size="xs">
+        {transformNameError}
+      </EuiText>
+      <EuiSpacer size="s" />
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>
           <EuiButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
@@ -49,8 +65,10 @@ export default function EditTransformPanel({ name, onEditTransformation, closePo
           <EuiButton
             fill
             fullWidth={false}
+            disabled={transformNameError !== ""}
             onClick={() => {
-              onEditTransformation(name, transformName);
+              // Update transform name if new value specified
+              if (name !== transformName) onEditTransformation(name, transformName);
               closePopover();
             }}
             style={{ minWidth: 55 }}

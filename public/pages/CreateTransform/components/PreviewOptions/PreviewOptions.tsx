@@ -22,14 +22,16 @@ import {
 } from "@elastic/eui";
 import { useState } from "react";
 import EditTransformPanel from "./Panels/EditTransformPanel";
+import { TransformAggItem } from "../../../../../models/interfaces";
 
 interface PreviewOptionsProps {
   name: string;
+  aggList: TransformAggItem[];
   onEditTransformation: (oldName: string, newName: string) => void;
   onRemoveTransformation: (name: string) => void;
 }
 
-export default function PreviewOptions({ name, onEditTransformation, onRemoveTransformation }: PreviewOptionsProps) {
+export default function PreviewOptions({ name, aggList, onEditTransformation, onRemoveTransformation }: PreviewOptionsProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const closePopover = () => {
@@ -59,7 +61,7 @@ export default function PreviewOptions({ name, onEditTransformation, onRemoveTra
     {
       id: 1,
       title: "Back",
-      content: <EditTransformPanel name={name} onEditTransformation={onEditTransformation} closePopover={closePopover} />,
+      content: <EditTransformPanel name={name} aggList={aggList} onEditTransformation={onEditTransformation} closePopover={closePopover} />,
     },
   ];
 
