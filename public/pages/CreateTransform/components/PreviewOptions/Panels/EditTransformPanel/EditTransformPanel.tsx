@@ -40,7 +40,7 @@ export default function EditTransformPanel({ name, aggList, onEditTransformation
 
   return (
     <EuiPanel>
-      <EuiFormRow label="Transformation name">
+      <EuiFormRow label="Transformation name" isInvalid={transformNameError !== ""} error={transformNameError}>
         <EuiFieldText
           value={transformName}
           isInvalid={transformNameError !== ""}
@@ -50,10 +50,6 @@ export default function EditTransformPanel({ name, aggList, onEditTransformation
           }}
         />
       </EuiFormRow>
-      <EuiSpacer size="s" />
-      <EuiText color="danger" size="xs">
-        {transformNameError}
-      </EuiText>
       <EuiSpacer size="s" />
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>
