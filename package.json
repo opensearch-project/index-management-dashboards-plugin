@@ -39,7 +39,7 @@
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
     "@elastic/eslint-import-resolver-kibana": "link:../../packages/osd-eslint-import-resolver-opensearch-dashboards",
-    "@testing-library/dom": "^7.31.2",
+    "@testing-library/dom": "^7.24.2",
     "@testing-library/user-event": "^13.1.9",
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.1.5",
