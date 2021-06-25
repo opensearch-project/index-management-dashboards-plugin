@@ -32,6 +32,8 @@ export const INDEX = {
 };
 
 export const API = {
+  INDEX_TEMPLATE_BASE: "/_index_template",
+  DATA_STREAM_BASE: "/_data_stream",
   POLICY_BASE: `${API_ROUTE_PREFIX}/policies`,
   EXPLAIN_BASE: `${API_ROUTE_PREFIX}/explain`,
   RETRY_BASE: `${API_ROUTE_PREFIX}/retry`,

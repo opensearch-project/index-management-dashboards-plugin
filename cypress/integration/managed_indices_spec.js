@@ -26,6 +26,7 @@
 
 import { PLUGIN_NAME } from "../support/constants";
 import samplePolicy from "../fixtures/sample_policy";
+import sampleDataStreamPolicy from "../fixtures/sample_data_stream_policy.json";
 
 const POLICY_ID = "test_policy_id";
 const POLICY_ID_2 = "test_policy_id_2";
@@ -196,13 +197,13 @@ describe("Managed indices", () => {
         .type(SAMPLE_INDEX, { parseSpecialCharSequences: false, delay: 1 });
 
       // Click the index option
-      cy.get(`button[role="option"]`).eq(1).click({ force: true });
+      cy.get(`button[title="${SAMPLE_INDEX}"]`).click({ force: true });
 
       // Get the third combo search input box which should be the policy input
       cy.get(`input[data-test-subj="comboBoxSearchInput"]`).eq(2).focus().type(POLICY_ID_2, { parseSpecialCharSequences: false, delay: 1 });
 
       // Click the policy option
-      cy.get(`button[role="option"]`).first().click({ force: true });
+      cy.get(`button[title="${POLICY_ID_2}"]`).click({ force: true });
 
       // Click the Change Policy button
       cy.get(`[data-test-subj="changePolicyChangeButton"]`).click({ force: true });
@@ -224,6 +225,61 @@ describe("Managed indices", () => {
       cy.contains("Successfully initialized");
       // Confirm the policy initialized was the second policy we changed to
       cy.contains(POLICY_ID_2);
+    });
+  });
+
+  describe("can manage data stream indices", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.deleteDataStreams("*");
+
+      cy.createPolicy("sample-index-policy", samplePolicy);
+      cy.createPolicy("sample-data-stream-policy", sampleDataStreamPolicy);
+
+      cy.createIndexTemplate("logs-template", {
+        index_patterns: ["logs-*"],
+        data_stream: {},
+      });
+
+      cy.createIndex("index-1", "sample-index-policy");
+      cy.createIndex("index-2", "sample-index-policy");
+      cy.createDataStream("logs-nginx");
+      cy.createDataStream("logs-haproxy");
+      cy.createDataStream("logs-redis");
+      cy.rollover("logs-redis");
+    });
+
+    it("successfully", () => {
+      // Confirm regular indices are shown, but data stream indices are not shown.
+      cy.contains("index-1");
+      cy.contains(".ds-logs-nginx-000001").should("not.exist");
+      cy.contains(".ds-logs-haproxy-000001").should("not.exist");
+
+      // Confirm that "Show data stream indices" toggle switch works.
+      cy.get(`[data-test-subj="toggleShowDataStreams"]`).click({ force: true });
+      cy.contains(".ds-logs-nginx-000001");
+      cy.contains(".ds-logs-haproxy-000001");
+
+      // Confirm that data streams can be selected from dropdown.
+      cy.get(`span[data-text="Data streams"]`).first().click({ force: true });
+      cy.get(".euiFilterSelect__items").should(($tr) => {
+        expect($tr, "item").to.contain("logs-nginx");
+        expect($tr, "item").to.contain("logs-haproxy");
+        expect($tr, "item").to.contain("logs-redis");
+      });
+
+      // Select data streams from the list.
+      cy.get(".euiFilterSelect__items").contains("logs-redis").click({ force: true });
+      cy.get(`span[data-text="Data streams"]`).first().click({ force: true });
+      cy.get("tbody > tr").should(($tr) => {
+        expect($tr, "2 rows").to.have.length(2);
+        expect($tr, "item").to.contain(".ds-logs-redis-000001");
+        expect($tr, "item").to.contain(".ds-logs-redis-000002");
+      });
+
+      // Confirm that "Edit rollover alias" button remains disabled for a data stream backing index.
+      cy.get(`[data-test-subj="checkboxSelectRow-.ds-logs-redis-000001"]`).check({ force: true });
+      cy.get(`[data-test-subj="Edit rollover aliasButton"]`).should("be.disabled");
     });
   });
 });

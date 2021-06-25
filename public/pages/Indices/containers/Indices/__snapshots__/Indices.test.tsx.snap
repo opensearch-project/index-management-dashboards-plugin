@@ -111,6 +111,7 @@ exports[`<Indices /> spec renders the component 1`] = `
             aria-checked="false"
             aria-labelledby="some_html_id"
             class="euiSwitch__button"
+            data-test-subj="toggleShowDataStreams"
             id="some_html_id"
             role="switch"
             type="button"

@@ -133,3 +133,19 @@ Cypress.Commands.add("createIndex", (index, policyID = null, settings = {}) => {
 Cypress.Commands.add("createRollup", (rollupId, rollupJSON) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.ROLLUP_JOBS_BASE}/${rollupId}`, rollupJSON);
 });
+
+Cypress.Commands.add("createIndexTemplate", (name, template) => {
+  cy.request("PUT", `${Cypress.env("opensearch")}${API.INDEX_TEMPLATE_BASE}/${name}`, template);
+});
+
+Cypress.Commands.add("createDataStream", (name) => {
+  cy.request("PUT", `${Cypress.env("opensearch")}${API.DATA_STREAM_BASE}/${name}`);
+});
+
+Cypress.Commands.add("deleteDataStreams", (names) => {
+  cy.request("DELETE", `${Cypress.env("opensearch")}${API.DATA_STREAM_BASE}/${names}`);
+});
+
+Cypress.Commands.add("rollover", (target) => {
+  cy.request("POST", `${Cypress.env("opensearch")}/${target}/_rollover`);
+});

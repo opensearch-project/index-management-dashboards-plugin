@@ -42,7 +42,7 @@ describe("<ManagedIndexControls /> spec", () => {
         onPageClick={() => {}}
         onRefresh={async () => {}}
         showDataStreams={false}
-        getDataStreams={async () => {}}
+        getDataStreams={async () => []}
         toggleShowDataStreams={() => {}}
       />
     );
@@ -61,7 +61,7 @@ describe("<ManagedIndexControls /> spec", () => {
         onPageClick={() => {}}
         onRefresh={async () => {}}
         showDataStreams={false}
-        getDataStreams={async () => {}}
+        getDataStreams={async () => []}
         toggleShowDataStreams={() => {}}
       />
     );
@@ -82,7 +82,7 @@ describe("<ManagedIndexControls /> spec", () => {
         onPageClick={() => {}}
         onRefresh={onRefresh}
         showDataStreams={false}
-        getDataStreams={async () => {}}
+        getDataStreams={async () => []}
         toggleShowDataStreams={() => {}}
       />
     );
@@ -98,5 +98,50 @@ describe("<ManagedIndexControls /> spec", () => {
     fireEvent.click(getByTestId("superDatePickerToggleRefreshButton"));
 
     await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(2), { timeout: 10000 });
+  });
+
+  it("calls toggleShowDataStreams when clicked", async () => {
+    const toggleShowDataStreams = jest.fn();
+    const { getByTestId } = render(
+      <ManagedIndexControls
+        activePage={0}
+        pageCount={2}
+        search={""}
+        onSearchChange={() => {}}
+        onPageClick={() => {}}
+        onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={toggleShowDataStreams}
+      />
+    );
+
+    fireEvent.click(getByTestId("toggleShowDataStreams"));
+    expect(toggleShowDataStreams).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders data streams selection field", async () => {
+    const getDataStreams = jest.fn();
+    const { container, getByText } = render(
+      <ManagedIndexControls
+        activePage={0}
+        pageCount={2}
+        search={""}
+        onSearchChange={() => {}}
+        onPageClick={() => {}}
+        onRefresh={async () => {}}
+        showDataStreams={true}
+        getDataStreams={getDataStreams}
+        toggleShowDataStreams={() => {}}
+      />
+    );
+
+    expect(container.firstChild).toMatchSnapshot();
+
+    const dataStreamsSelection = getByText("Data streams");
+    expect(dataStreamsSelection).not.toBeNull();
+
+    fireEvent.click(dataStreamsSelection);
+    await waitFor(() => expect(getDataStreams).toHaveBeenCalledTimes(1), { timeout: 10000 });
   });
 });
