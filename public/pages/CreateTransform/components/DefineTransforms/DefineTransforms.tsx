@@ -31,6 +31,7 @@ interface DefineTransformsProps {
   selectedAggregations: any;
   aggList: TransformAggItem[];
   onAggregationSelectionChange: (selectedFields: any, aggItem: TransformAggItem) => void;
+  onEditTransformation: (oldName: string, newName: string) => void;
   onRemoveTransformation: (name: string) => void;
   previewTransform: any[];
   isReadOnly: boolean;
@@ -46,6 +47,7 @@ export default function DefineTransforms({
   selectedAggregations,
   aggList,
   onAggregationSelectionChange,
+  onEditTransformation,
   onRemoveTransformation,
   previewTransform,
   isReadOnly,
@@ -192,6 +194,7 @@ export default function DefineTransforms({
         <PreviewTransform
           previewTransform={previewTransform}
           aggList={aggList}
+          onEditTransformation={onEditTransformation}
           onRemoveTransformation={onRemoveTransformation}
           isReadOnly={isReadOnly}
         />
@@ -242,6 +245,7 @@ export default function DefineTransforms({
       <PreviewTransform
         previewTransform={previewTransform}
         aggList={aggList}
+        onEditTransformation={onEditTransformation}
         onRemoveTransformation={onRemoveTransformation}
         isReadOnly={isReadOnly}
       />
