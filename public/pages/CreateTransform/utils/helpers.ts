@@ -75,6 +75,6 @@ export const wrapQuotesAroundTransformId = (transformId: string, stringToSearch:
   return stringToSearch.replace(regex, idWrappedWithQuotes);
 };
 
-export const isGroupBy = (type: string) => {
+export const isGroupBy = (type: string): boolean => {
   return type == TRANSFORM_AGG_TYPE.histogram || type == TRANSFORM_AGG_TYPE.terms || type == TRANSFORM_AGG_TYPE.date_histogram;
 };
