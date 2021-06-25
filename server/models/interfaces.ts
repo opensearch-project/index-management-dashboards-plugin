@@ -89,6 +89,11 @@ export interface GetDataStreamsResponse {
   totalDataStreams: number;
 }
 
+export interface GetDataStreamsAndIndicesNamesResponse {
+  dataStreams: string[];
+  indices: string[];
+}
+
 export interface GetFieldsResponse {
   result: string;
 }

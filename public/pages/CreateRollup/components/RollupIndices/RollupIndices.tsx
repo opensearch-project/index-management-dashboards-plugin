@@ -71,28 +71,17 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
     const { indexService } = this.props;
     this.setState({ isLoading: true, indexOptions: [] });
     try {
-      const queryObject = { from: 0, size: 10, search: searchValue, sortDirection: "desc", sortField: "index", showDataStreams: true };
-      const [getIndicesResponse, getDataStreamsResponse] = await Promise.all([
-        indexService.getIndices(queryObject),
-        indexService.getDataStreams({ search: searchValue }),
-      ]);
-
-      if (getIndicesResponse.ok) {
+      const dataStreamsAndIndicesNamesResponse = await indexService.getDataStreamsAndIndicesNames(searchValue);
+      if (dataStreamsAndIndicesNamesResponse.ok) {
         const options = searchValue.trim() ? [{ label: `${searchValue}*` }] : [];
-        const dataStreams = getDataStreamsResponse.ok
-          ? getDataStreamsResponse.response.dataStreams.map((ds) => ({
-              label: ds.name,
-            }))
-          : [];
-        const indices = getIndicesResponse.response.indices.map((index: IndexItem) => ({
-          label: index.index,
-        }));
+        const dataStreams = dataStreamsAndIndicesNamesResponse.response.dataStreams.map((label) => ({ label }));
+        const indices = dataStreamsAndIndicesNamesResponse.response.indices.map((label) => ({ label }));
         this.setState({ indexOptions: options.concat(dataStreams, indices), targetIndexOptions: indices });
       } else {
-        if (getIndicesResponse.error.startsWith("[index_not_found_exception]")) {
+        if (dataStreamsAndIndicesNamesResponse.error.startsWith("[index_not_found_exception]")) {
           this.context.notifications.toasts.addDanger("No index available");
         } else {
-          this.context.notifications.toasts.addDanger(getIndicesResponse.error);
+          this.context.notifications.toasts.addDanger(dataStreamsAndIndicesNamesResponse.error);
         }
       }
     } catch (err) {
