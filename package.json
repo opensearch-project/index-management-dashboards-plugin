@@ -1,12 +1,13 @@
 {
   "name": "opensearch_index_management_dashboards",
-  "version": "1.0.0.0-rc1",
+  "version": "1.0.0.0",
   "description": "Opensearch Dashboards plugin for Index Management",
   "main": "index.js",
   "license": "Apache-2.0",
   "homepage": "https://github.com/opensearch-project/index-management-dashboards-plugin",
   "config": {
-    "id": "indexManagementDashboards"
+    "id": "indexManagementDashboards",
+    "zip_name": "index-management-dashboards"
   },
   "repository": {
     "type": "git",
@@ -20,7 +21,7 @@
     "plugin-helpers": "node ../../scripts/plugin_helpers",
     "test:jest": "NODE_PATH=../../node_modules ../../node_modules/.bin/jest --config ./test/jest.config.js",
     "build": "yarn plugin-helpers build",
-    "postbuild": "echo Renaming build artifact to [$npm_package_config_id-$npm_package_version.zip] && mv build/$npm_package_config_id*.zip build/$npm_package_config_id-$npm_package_version.zip"
+    "postbuild": "echo Renaming build artifact to [$npm_package_config_zip_name-$npm_package_version.zip] && mv build/$npm_package_config_id*.zip build/$npm_package_config_zip_name-$npm_package_version.zip"
   },
   "husky": {
     "hooks": {
@@ -34,7 +35,10 @@
     "**/@types/jest": "^24.0.9",
     "**/@types/react-dom": "^16.9.8",
     "**/@types/react-router-dom": "^4.3.1",
-    "eslint-utils": "^1.4.2"
+    "eslint-utils": "^1.4.2",
+    "path-parse": "^1.0.7",
+    "kind-of": "^6.0.3",
+    "glob-parent": "^5.1.2"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
@@ -51,7 +55,7 @@
     "ts-loader": "^6.2.1"
   },
   "engines": {
-    "node": "10.23.1",
+    "node": "10.24.1",
     "yarn": "^1.21.1"
   }
 }
