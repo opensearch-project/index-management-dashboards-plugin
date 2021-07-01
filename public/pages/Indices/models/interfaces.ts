@@ -39,4 +39,5 @@ export interface IndicesQueryParams {
   search: string;
   sortField: keyof ManagedCatIndex;
   sortDirection: Direction;
+  showDataStreams: boolean;
 }

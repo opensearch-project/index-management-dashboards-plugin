@@ -1,46 +1,278 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<IndexControls /> spec renders the component 1`] = `
+exports[`<IndexControls /> spec renders data streams selection field 1`] = `
 <div
-  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
   style="padding: 0px 5px;"
 >
   <div
     class="euiFlexItem"
   >
     <div
-      class="euiFormControlLayout euiFormControlLayout--fullWidth"
+      class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
     >
       <div
-        class="euiFormControlLayout__childrenWrapper"
+        class="euiFlexItem euiSearchBar__searchHolder"
       >
-        <input
-          class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
-          placeholder="Search"
-          type="search"
-          value="testing"
-        />
         <div
-          class="euiFormControlLayoutIcons"
+          class="euiFormControlLayout euiFormControlLayout--fullWidth"
         >
-          <span
-            class="euiFormControlLayoutCustomIcon"
+          <div
+            class="euiFormControlLayout__childrenWrapper"
           >
-            EuiIconMock
-          </span>
-        </div>
-        <div
-          class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-        >
-          <button
-            aria-label="Clear input"
-            class="euiFormControlLayoutClearButton"
-            type="button"
-          >
-            EuiIconMock
-          </button>
+            <input
+              aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
+              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+              placeholder="Search"
+              type="search"
+              value="testing"
+            />
+            <div
+              class="euiFormControlLayoutIcons"
+            >
+              <span
+                class="euiFormControlLayoutCustomIcon"
+              >
+                EuiIconMock
+              </span>
+            </div>
+            <div
+              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+            >
+              <button
+                aria-label="Clear input"
+                class="euiFormControlLayoutClearButton"
+                type="button"
+              >
+                EuiIconMock
+              </button>
+            </div>
+          </div>
         </div>
       </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero euiSearchBar__filtersHolder"
+      >
+        <div
+          class="euiFilterGroup"
+        >
+          <div
+            class="euiPopover euiPopover--anchorDownCenter"
+            id="field_value_selection_0"
+          >
+            <div
+              class="euiPopover__anchor"
+            >
+              <button
+                class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton--hasIcon"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                >
+                  EuiIconMock
+                  <span
+                    class="euiButtonEmpty__text"
+                  >
+                    <span
+                      class="euiFilterButton__textShift"
+                      data-text="Data streams"
+                      title="Data streams"
+                    >
+                      Data streams
+                    </span>
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexItem euiFlexItem--flexGrowZero"
+  >
+    <div
+      class="euiSwitch"
+    >
+      <button
+        aria-checked="true"
+        aria-labelledby="some_html_id"
+        class="euiSwitch__button"
+        data-test-subj="toggleShowDataStreams"
+        id="some_html_id"
+        role="switch"
+        type="button"
+      >
+        <span
+          class="euiSwitch__body"
+        >
+          <span
+            class="euiSwitch__thumb"
+          />
+          <span
+            class="euiSwitch__track"
+          >
+            EuiIconMock
+            EuiIconMock
+          </span>
+        </span>
+      </button>
+      <span
+        class="euiSwitch__label"
+        id="some_html_id"
+      >
+        Show data stream indices
+      </span>
+    </div>
+  </div>
+  <div
+    class="euiFlexItem euiFlexItem--flexGrowZero"
+    style="max-width: 250px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--isAutoRefreshOnly"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
+        >
+          <div
+            class="euiPopover euiPopover--anchorDownLeft"
+            id="QuickSelectPopover"
+          >
+            <div
+              class="euiPopover__anchor euiQuickSelectPopover__anchor"
+            >
+              <button
+                aria-label="Date quick select"
+                class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
+                data-test-subj="superDatePickerToggleQuickMenuButton"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                >
+                  EuiIconMock
+                  <span
+                    class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
+                  >
+                    EuiIconMock
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <div
+              class="euiDatePickerRange euiDatePickerRange--readOnly euiDatePickerRange--inGroup"
+            >
+              <span
+                class="euiSuperDatePicker__prettyFormat"
+              >
+                Off
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<IndexControls /> spec renders the component 1`] = `
+<div
+  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+  style="padding: 0px 5px;"
+>
+  <div
+    class="euiFlexItem"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+    >
+      <div
+        class="euiFlexItem euiSearchBar__searchHolder"
+      >
+        <div
+          class="euiFormControlLayout euiFormControlLayout--fullWidth"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <input
+              aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
+              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+              placeholder="Search"
+              type="search"
+              value="testing"
+            />
+            <div
+              class="euiFormControlLayoutIcons"
+            >
+              <span
+                class="euiFormControlLayoutCustomIcon"
+              >
+                EuiIconMock
+              </span>
+            </div>
+            <div
+              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+            >
+              <button
+                aria-label="Clear input"
+                class="euiFormControlLayoutClearButton"
+                type="button"
+              >
+                EuiIconMock
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexItem euiFlexItem--flexGrowZero"
+  >
+    <div
+      class="euiSwitch"
+    >
+      <button
+        aria-checked="false"
+        aria-labelledby="some_html_id"
+        class="euiSwitch__button"
+        data-test-subj="toggleShowDataStreams"
+        id="some_html_id"
+        role="switch"
+        type="button"
+      >
+        <span
+          class="euiSwitch__body"
+        >
+          <span
+            class="euiSwitch__thumb"
+          />
+          <span
+            class="euiSwitch__track"
+          >
+            EuiIconMock
+            EuiIconMock
+          </span>
+        </span>
+      </button>
+      <span
+        class="euiSwitch__label"
+        id="some_html_id"
+      >
+        Show data stream indices
+      </span>
     </div>
   </div>
   <div

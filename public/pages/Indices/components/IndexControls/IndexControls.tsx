@@ -25,16 +25,17 @@
  */
 
 import React, { Component } from "react";
-import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiPagination } from "@elastic/eui";
+import { ArgsWithError, ArgsWithQuery, EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiSwitch } from "@elastic/eui";
 import EuiRefreshPicker from "../../../../temporary/EuiRefreshPicker";
+import { DataStream } from "../../../../../server/models/interfaces";
 
 interface IndexControlsProps {
-  activePage: number;
-  pageCount: number;
   search: string;
-  onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onPageClick: (page: number) => void;
+  showDataStreams: boolean;
+  onSearchChange: (args: ArgsWithQuery | ArgsWithError) => void;
   onRefresh: () => Promise<void>;
+  getDataStreams: () => Promise<DataStream[]>;
+  toggleShowDataStreams: () => void;
 }
 
 interface IndexControlsState {
@@ -52,13 +53,57 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
     this.setState({ isPaused, refreshInterval });
   };
 
+  getDataStreams = async () => {
+    return (await this.props.getDataStreams()).map((ds) => ({ value: ds.name }));
+  };
+
   render() {
-    const { activePage, pageCount, search, onSearchChange, onPageClick, onRefresh } = this.props;
+    const { search, onSearchChange, onRefresh, showDataStreams, toggleShowDataStreams } = this.props;
     const { refreshInterval, isPaused } = this.state;
+
+    const schema = {
+      strict: true,
+      fields: {
+        indices: {
+          type: "string",
+        },
+        data_streams: {
+          type: "string",
+        },
+      },
+    };
+
+    const filters = showDataStreams
+      ? [
+          {
+            type: "field_value_selection",
+            field: "data_streams",
+            name: "Data streams",
+            noOptionsMessage: "No data streams found",
+            multiSelect: "or",
+            cache: 60000,
+            options: () => this.getDataStreams(),
+          },
+        ]
+      : undefined;
+
     return (
-      <EuiFlexGroup style={{ padding: "0px 5px" }}>
+      <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
         <EuiFlexItem>
-          <EuiFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={onSearchChange} />
+          <EuiSearchBar
+            query={search}
+            box={{ placeholder: "Search", schema, incremental: true }}
+            onChange={onSearchChange}
+            filters={filters}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiSwitch
+            label="Show data stream indices"
+            checked={showDataStreams}
+            onChange={toggleShowDataStreams}
+            data-test-subj="toggleShowDataStreams"
+          />
         </EuiFlexItem>
         <EuiFlexItem grow={false} style={{ maxWidth: 250 }}>
           <EuiRefreshPicker
@@ -68,16 +113,6 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
             onRefresh={onRefresh}
           />
         </EuiFlexItem>
-        {pageCount > 1 && (
-          <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>
-            <EuiPagination
-              pageCount={pageCount}
-              activePage={activePage}
-              onPageClick={onPageClick}
-              data-test-subj="indexControlsPagination"
-            />
-          </EuiFlexItem>
-        )}
       </EuiFlexGroup>
     );
   }

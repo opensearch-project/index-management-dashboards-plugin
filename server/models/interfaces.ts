@@ -24,11 +24,12 @@
  * permissions and limitations under the License.
  */
 
-import { IndexService, ManagedIndexService, PolicyService, RollupService, TransformService } from "../services";
+import { DataStreamService, IndexService, ManagedIndexService, PolicyService, RollupService, TransformService } from "../services";
 import { DocumentPolicy, DocumentRollup, DocumentTransform, ManagedIndexItem, Rollup, Transform } from "../../models/interfaces";
 
 export interface NodeServices {
   indexService: IndexService;
+  dataStreamService: DataStreamService;
   managedIndexService: ManagedIndexService;
   policyService: PolicyService;
   rollupService: RollupService;
@@ -81,6 +82,16 @@ export interface DeleteRollupResponse {
 export interface GetIndicesResponse {
   indices: ManagedCatIndex[];
   totalIndices: number;
+}
+
+export interface GetDataStreamsResponse {
+  dataStreams: DataStream[];
+  totalDataStreams: number;
+}
+
+export interface GetDataStreamsAndIndicesNamesResponse {
+  dataStreams: string[];
+  indices: string[];
 }
 
 export interface GetFieldsResponse {
@@ -284,8 +295,27 @@ export interface CatIndex {
   status: string;
   "store.size": string;
   uuid: string;
+  data_stream: string | null;
 }
 
 export interface ManagedCatIndex extends CatIndex {
   managed: string;
+}
+
+export interface DataStream {
+  name: string;
+  timestamp_field: DataStreamTimestampField;
+  indices: DataStreamIndex[];
+  generation: number;
+  status: string;
+  template?: string;
+}
+
+export interface DataStreamTimestampField {
+  name: string;
+}
+
+export interface DataStreamIndex {
+  index_name: string;
+  index_uuid: string;
 }

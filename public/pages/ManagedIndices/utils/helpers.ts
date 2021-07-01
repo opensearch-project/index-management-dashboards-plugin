@@ -29,7 +29,7 @@ import { DEFAULT_QUERY_PARAMS } from "./constants";
 import { ManagedIndicesQueryParams } from "../models/interfaces";
 
 export function getURLQueryParams(location: { search: string }): ManagedIndicesQueryParams {
-  const { from, size, search, sortField, sortDirection } = queryString.parse(location.search);
+  const { from, size, search, sortField, sortDirection, showDataStreams } = queryString.parse(location.search);
 
   return <ManagedIndicesQueryParams>{
     // @ts-ignore
@@ -39,5 +39,6 @@ export function getURLQueryParams(location: { search: string }): ManagedIndicesQ
     search: typeof search !== "string" ? DEFAULT_QUERY_PARAMS.search : search,
     sortField: typeof sortField !== "string" ? DEFAULT_QUERY_PARAMS.sortField : sortField,
     sortDirection: typeof sortDirection !== "string" ? DEFAULT_QUERY_PARAMS.sortDirection : sortDirection,
+    showDataStreams: showDataStreams === undefined ? DEFAULT_QUERY_PARAMS.showDataStreams : "true" === showDataStreams,
   };
 }

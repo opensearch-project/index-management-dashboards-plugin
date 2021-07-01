@@ -25,9 +25,18 @@
  */
 
 import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
-import { AcknowledgedResponse, ApplyPolicyResponse, GetIndicesResponse, GetPoliciesResponse } from "../../server/models/interfaces";
+import {
+  AcknowledgedResponse,
+  ApplyPolicyResponse,
+  DataStream,
+  GetDataStreamsAndIndicesNamesResponse,
+  GetDataStreamsResponse,
+  GetIndicesResponse,
+  GetPoliciesResponse,
+} from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { NODE_API } from "../../utils/constants";
+import { IndexItem } from "../../models/interfaces";
 
 export default class IndexService {
   httpClient: HttpSetup;
@@ -40,6 +49,40 @@ export default class IndexService {
     let url = `..${NODE_API._INDICES}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetIndicesResponse>;
     return response;
+  };
+
+  getDataStreams = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetDataStreamsResponse>> => {
+    const url = `..${NODE_API._DATA_STREAMS}`;
+    return await this.httpClient.get(url, { query: queryObject });
+  };
+
+  getDataStreamsAndIndicesNames = async (searchValue: string): Promise<ServerResponse<GetDataStreamsAndIndicesNamesResponse>> => {
+    const [getIndicesResponse, getDataStreamsResponse] = await Promise.all([
+      this.getIndices({ from: 0, size: 10, search: searchValue, sortDirection: "desc", sortField: "index", showDataStreams: true }),
+      this.getDataStreams({ search: searchValue }),
+    ]);
+
+    if (!getIndicesResponse.ok) {
+      return {
+        ok: false,
+        error: getIndicesResponse.error,
+      };
+    }
+
+    if (!getDataStreamsResponse.ok) {
+      return {
+        ok: false,
+        error: getDataStreamsResponse.error,
+      };
+    }
+
+    return {
+      ok: true,
+      response: {
+        dataStreams: getDataStreamsResponse.response.dataStreams.map((ds: DataStream) => ds.name),
+        indices: getIndicesResponse.response.indices.map((index: IndexItem) => index.index),
+      },
+    };
   };
 
   applyPolicy = async (indices: string[], policyId: string): Promise<ServerResponse<ApplyPolicyResponse>> => {

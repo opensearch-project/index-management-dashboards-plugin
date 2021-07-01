@@ -33,4 +33,5 @@ export interface ManagedIndicesQueryParams {
   search: string;
   sortField: keyof ManagedIndexItem;
   sortDirection: Direction;
+  showDataStreams: boolean;
 }

@@ -40,6 +40,15 @@ describe("IndexService spec", () => {
     expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API._INDICES}`, { query: queryObject });
   });
 
+  it("calls get data streams nodejs route when calling getDataStreams", async () => {
+    httpClientMock.get = jest.fn().mockResolvedValue({ data: {} });
+    const queryObject = {};
+    await indexService.getDataStreams(queryObject);
+
+    expect(httpClientMock.get).toHaveBeenCalledTimes(1);
+    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API._DATA_STREAMS}`, { query: queryObject });
+  });
+
   it("calls apply policy nodejs route when calling applyPolicy", async () => {
     httpClientMock.post = jest.fn().mockResolvedValue({ data: {} });
     const indices = ["one", "two"];

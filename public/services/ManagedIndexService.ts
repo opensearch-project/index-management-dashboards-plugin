@@ -27,6 +27,7 @@
 import { HttpSetup } from "opensearch-dashboards/public";
 import {
   ChangePolicyResponse,
+  GetDataStreamsResponse,
   GetManagedIndicesResponse,
   RemovePolicyResponse,
   RetryManagedIndexResponse,
@@ -50,6 +51,11 @@ export default class ManagedIndexService {
     let url = `..${NODE_API.MANAGED_INDICES}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetManagedIndicesResponse>;
     return response;
+  };
+
+  getDataStreams = async (): Promise<ServerResponse<GetDataStreamsResponse>> => {
+    const url = `..${NODE_API._DATA_STREAMS}`;
+    return await this.httpClient.get(url);
   };
 
   retryManagedIndexPolicy = async (index: string[], state: string | null): Promise<ServerResponse<RetryManagedIndexResponse>> => {

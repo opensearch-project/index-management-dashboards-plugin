@@ -47,6 +47,7 @@ export interface ManagedIndexMetaData {
 export interface ManagedIndexItem {
   index: string;
   indexUuid: string;
+  dataStream: string | null;
   policyId: string;
   policySeqNo: number;
   policyPrimaryTerm: number;

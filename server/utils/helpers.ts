@@ -24,6 +24,7 @@
  * permissions and limitations under the License.
  */
 
+import _ from "lodash";
 import { ExplainAPIManagedIndexMetaData, QueryStringQuery } from "../models/interfaces";
 import { MatchAllQuery } from "../models/types";
 import { ManagedIndexMetaData } from "../../models/interfaces";
@@ -73,4 +74,17 @@ export function getMustQuery<T extends string>(field: T, search: string): MatchA
   }
 
   return { match_all: {} };
+}
+
+export function getSearchString(terms?: string[], indices?: string[], dataStreams?: string[]): string {
+  // Terms are searched with a wildcard around them.
+  const searchTerms = terms ? `*${_.castArray(terms).join("*,*")}*` : "";
+
+  // Indices and data streams are searched with an exact match.
+  const searchIndices = indices ? _.castArray(indices).join(",") : "";
+  const searchDataStreams = dataStreams ? _.castArray(dataStreams).join(",") : "";
+
+  // The overall search string is a combination of terms, indices, and data streams.
+  // If the search string is blank, then '*' is used to match everything.
+  return [searchTerms, searchIndices, searchDataStreams].filter((value) => value !== "").join(",") || "*";
 }

@@ -49,6 +49,14 @@ describe("ManagedIndexService spec", () => {
     expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.MANAGED_INDICES}`, { query: queryObject });
   });
 
+  it("calls get data streams nodejs route when calling getDataStreams", async () => {
+    httpClientMock.get = jest.fn().mockResolvedValue({ data: {} });
+    await managedIndexService.getDataStreams();
+
+    expect(httpClientMock.get).toHaveBeenCalledTimes(1);
+    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API._DATA_STREAMS}`);
+  });
+
   it("calls retry policy nodejs route when calling retryManagedIndexPolicy", async () => {
     httpClientMock.post = jest.fn().mockResolvedValue({ data: {} });
     const index = ["one", "two"];
