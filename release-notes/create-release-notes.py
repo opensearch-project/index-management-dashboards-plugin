@@ -15,12 +15,7 @@ file_path = raw_input("Path to raw note file (e.g., note.md): ")
 plugin_name = "index-management-dashboards-plugin"
 plugin_version = raw_input('Plugin version (x.x.x.x): ')
 
-app_num = int(
-    raw_input('OpenSearch plugin (enter 1) or OpenSearchDashboards plugin (enter 2)? '))
-app = 'Opensearch'
-if app_num is 2:
-    app = 'OpenSearch-Dashboards'
-
+app = 'OpenSearch-Dashboards'
 app_version = raw_input(app + ' compatibility version (x.x.x): ')
 
 for line in fileinput.input(file_path, inplace=True):

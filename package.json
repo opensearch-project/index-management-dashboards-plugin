@@ -38,7 +38,10 @@
     "eslint-utils": "^1.4.2",
     "path-parse": "^1.0.7",
     "kind-of": "^6.0.3",
-    "glob-parent": "^5.1.2"
+    "glob-parent": "^5.1.2",
+    "ssri": "^6.0.2",
+    "lodash": "^4.17.21",
+    "hosted-git-info": "^2.8.9"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
