@@ -73,4 +73,5 @@ then
   PASSWORD=`echo $CREDENTIAL | awk -F ':' '{print $2}'`
 fi
 
+yarn osd bootstrap
 cypress run --env security_enabled=$SECURITY_ENABLED
