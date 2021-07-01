@@ -1,4 +1,4 @@
-name: E2E Cypress tests
+name: E2E tests workflow
 on:
   pull_request:
     branches:
