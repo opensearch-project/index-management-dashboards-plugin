@@ -33,7 +33,7 @@ Ultimately, your directory structure should look like this:
 
 To build the plugin's distributable zip simply run `yarn build`.
 
-Example output: `./build/indexManagementDashboards-1.0.0.0-rc1.zip`
+Example output: `./build/index-management-dashboards-1.0.0.0.zip`
 
 
 ## Run
