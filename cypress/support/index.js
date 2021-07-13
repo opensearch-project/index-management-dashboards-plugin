@@ -45,7 +45,11 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-// Switch the base URL of Opensearch when security enabled in the cluster
+// Switch the HTTPS url of Opensearch and Dashboards when security enabled in the cluster
 if (Cypress.env("security_enabled")) {
-  Cypress.env("opensearch", "https://localhost:9200");
+  Cypress.env("opensearch", `https://${Cypress.env("opensearch_url")}`);
+  Cypress.env("opensearch_dashboards", `https://${Cypress.env("opensearch_dasbhoards_url")}`);
+} else {
+  Cypress.env("opensearch", `http://${Cypress.env("opensearch_url")}`);
+  Cypress.env("opensearch_dashboards", `http://${Cypress.env("opensearch_dashboards_url")}`);
 }
