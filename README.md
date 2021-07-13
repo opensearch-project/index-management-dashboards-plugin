@@ -1,7 +1,7 @@
 [![Unit tests](https://github.com/opensearch-project/index-management-dashboards-plugin/workflows/Unit%20tests%20workflow/badge.svg)](https://github.com/opensearch-project/index-management-dashboards-plugin/actions?query=workflow%3A%22Unit+tests+workflow%22)
 [![Integration tests](https://github.com/opensearch-project/index-management-dashboards-plugin/workflows/E2E%20tests%20workflow/badge.svg)](https://github.com/opensearch-project/index-management-dashboards-plugin/actions?query=workflow%3A%22E2E+tests+workflow%22)
 [![codecov](https://codecov.io/gh/opensearch-project/index-management-dashboards-plugin/branch/main/graph/badge.svg)](https://codecov.io/gh/opensearch-project/index-management-dashboards-plugin)
-[![Documentation](https://img.shields.io/badge/doc-reference-blue)](https://docs-beta.opensearch.org/monitoring-plugins/ad/index/)
+[![Documentation](https://img.shields.io/badge/doc-reference-blue)](https://opensearch.org/docs/im-plugin/index/)
 [![Forum](https://img.shields.io/badge/chat-on%20forums-blue)](https://discuss.opendistrocommunity.dev/c/Use-this-category-for-all-questions-around-machine-learning-plugins)
 ![PRs welcome!](https://img.shields.io/badge/PRs-welcome!-success)
 
@@ -21,7 +21,7 @@ The Index Management Dashboards plugin lets you manage your [Index Management Da
 
 ## Documentation
 
-Please see our [documentation](https://docs-beta.opensearch.org/monitoring-plugins/ad/index/).
+Please see our [documentation](https://opensearch.org/docs/im-plugin/index/).
 
 ## Contributing
 
