@@ -1,92 +1,44 @@
-# Index Management Dashboards
+[![Unit tests](https://github.com/opensearch-project/index-management-dashboards-plugin/workflows/Unit%20tests%20workflow/badge.svg)](https://github.com/opensearch-project/index-management-dashboards-plugin/actions?query=workflow%3A%22Unit+tests+workflow%22)
+[![Integration tests](https://github.com/opensearch-project/index-management-dashboards-plugin/workflows/E2E%20tests%20workflow/badge.svg)](https://github.com/opensearch-project/index-management-dashboards-plugin/actions?query=workflow%3A%22E2E+tests+workflow%22)
+[![codecov](https://codecov.io/gh/opensearch-project/index-management-dashboards-plugin/branch/main/graph/badge.svg)](https://codecov.io/gh/opensearch-project/index-management-dashboards-plugin)
+[![Documentation](https://img.shields.io/badge/doc-reference-blue)](https://opensearch.org/docs/im-plugin/index/)
+[![Forum](https://img.shields.io/badge/chat-on%20forums-blue)](https://discuss.opendistrocommunity.dev/c/Use-this-category-for-all-questions-around-machine-learning-plugins)
+![PRs welcome!](https://img.shields.io/badge/PRs-welcome!-success)
+
+<img src="https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg" height="64px"/>
+
+- [OpenSearch Index Management Dashboards Plugin](#opensearch-index-management-dashboards-plugin)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Code of Conduct](#code-of-conduct)
+- [Security](#security)
+- [License](#license)
+- [Copyright](#copyright)
+
+## OpenSearch Index Management Dashboards Plugin
 
 The Index Management Dashboards plugin lets you manage your [Index Management Dashboards plugin](https://github.com/opensearch-project/index-management-dashboards-plugin) to view, monitor, and manage your indices directly from OpenSearch-Dashboards.
 
 ## Documentation
 
-Please see our [documentation](https://docs-beta.opensearch.org/).
+Please see our [documentation](https://opensearch.org/docs/im-plugin/index/).
 
-## Setup
+## Contributing
 
-1. Download OpenSearch for the version that matches the [OpenSearch Dashboard version specified in package.json](./package.json#L9).
-1. Download and install the appropriate [OpenSearch Index Management plugin](https://github.com/opensearch-project/index-management).
-1. Download the OpenSearch-Dashboards source code for the [version specified in package.json](./package.json#L9) you want to set up.
+See [developer guide](DEVELOPER_GUIDE.md) and [how to contribute to this project](CONTRIBUTING.md).
 
-   See the [OpenSearch Dashboards contributing guide](https://github.com/opensearch-project/OpenSearch-Dashboards/blob/main/CONTRIBUTING.md#setting-up-your-development-environment) for more instructions on setting up your development environment.
-   
-1. Change your node version to the version specified in `.node-version` inside the OpenSearch-Dashboards root directory.
-1. cd into the `plugins` directory of the OpenSearch-Dashboards source code directory.
-1. Check out this package from version control into the `plugins` directory.
-1. Run `yarn osd bootstrap` inside `OpenSearch-Dashboards/plugins/index-management-dashboards-plugin`.
+## Code of Conduct
 
-Ultimately, your directory structure should look like this:
+This project has adopted the [Amazon Open Source Code of Conduct](CODE_OF_CONDUCT.md). For more information see the [Code of Conduct FAQ](https://aws.github.io/code-of-conduct-faq), or contact [opensource-codeofconduct@amazon.com](mailto:opensource-codeofconduct@amazon.com) with any additional questions or comments.
 
-```md
-.
-├── OpenSearch-Dashboards
-│   └── plugins
-│       └── index-management-dashboards-plugin
-```
+## Security
 
-
-## Build
-
-To build the plugin's distributable zip simply run `yarn build`.
-
-Example output: `./build/indexManagementDashboards-1.0.0.0-rc1.zip`
-
-
-## Run
-
-- `yarn start`
-
-  - Starts OpenSearch-Dashboards and includes this plugin. OpenSearch-Dashboards will be available on `localhost:5601`.
-  - Please run in the OpenSearch-Dashboards root directory
-  - You must have OpenSearch running with the Index Management plugin
-
-## Test
-
-There are unit/stubbed integration tests and cypress e2e/integration tests.
-
-To run the cypress tests, you must have both OpenSearch and OpenSearch-Dashboards running with the Index Management plugin running.
-
-If you are running cypress tests with OpenSearch-Dashboards development server use the `--no-base-path` option and if you are writing Cypress tests use the `--no-watch` to make sure your server is not restarted.
-
-- `yarn test:jest`
-
-  - Runs the plugin tests.
-  
-- `yarn run cypress open`
-
-  - Opens the Cypress test runner
-
-- `yarn run cypress run`
-
-  - Runs the Cypress test runner
-
-## Contributing to Index Management Dashboards Plugin
-
-- Refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
-- Since this is an OpenSearch-Dashboards plugin, it can be useful to review the [OpenSearch Dashboards contributing guide](https://github.com/opensearch-project/OpenSearch-Dashboards/blob/main/CONTRIBUTING.md)
-
-## Get Started and Contribute!
-
-You can get started by:
-- [Reporting](https://github.com/opensearch-project/index-management-dashboards-plugin/issues) a bug
-- [Proposing](https://github.com/opensearch-project/index-management-dashboards-plugin/issues) new ideas to enhance the plugin
-- [Contribute](https://github.com/opensearch-project/index-management-dashboards-plugin/issues) documentation and sample code
-- Read [CONTRIBUTING.md](./CONTRIBUTING.md) for more details to get involved in the project.
-
-## Questions
-
-Please feel free to come ask questions on the Open Distro community discussion forum.
+If you discover a potential security issue in this project we ask that you notify AWS/Amazon Security via our [vulnerability reporting page](http://aws.amazon.com/security/vulnerability-reporting/). Please do **not** create a public GitHub issue.
 
 ## License
 
-This code is licensed under the Apache 2.0 License. 
+This project is licensed under the [Apache v2.0 License](LICENSE.txt).
 
 ## Copyright
 
-Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
-
+Copyright 2020-2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.

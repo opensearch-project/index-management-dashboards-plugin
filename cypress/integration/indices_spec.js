@@ -71,6 +71,70 @@ describe("Indices", () => {
     });
   });
 
+  describe("can show data stream indices", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.deleteDataStreams("*");
+
+      cy.createIndexTemplate("logs-template", {
+        index_patterns: ["logs-*"],
+        data_stream: {},
+      });
+
+      // Create sample regular indices.
+      cy.createIndex("index-1");
+      cy.createIndex("index-2");
+
+      // Create sample data streams.
+      cy.createDataStream("logs-nginx");
+      cy.createDataStream("logs-haproxy");
+      cy.createDataStream("logs-redis");
+      cy.rollover("logs-redis");
+    });
+
+    it("successfully", () => {
+      // Confirm that the regular indices are shown.
+      cy.contains("index-1");
+      cy.contains("index-2");
+
+      // Confirm that the data stream indices are not shown by default.
+      cy.contains(".ds-logs-nginx-000001").should("not.exist");
+      cy.contains(".ds-logs-haproxy-000001").should("not.exist");
+
+      // Confirm that "Show data stream indices" toggle switch works.
+      cy.get(`[data-test-subj="toggleShowDataStreams"]`).click({ force: true });
+      cy.contains(".ds-logs-nginx-000001");
+      cy.contains(".ds-logs-haproxy-000001");
+
+      // Confirm that data stream indices can be searched.
+      cy.get(`input[type="search"]`).focus().type("logs-redis");
+      cy.get("tbody > tr").should(($tr) => {
+        expect($tr, "2 rows").to.have.length(2);
+        expect($tr, "item").to.contain(".ds-logs-redis-000001");
+        expect($tr, "item").to.contain(".ds-logs-redis-000002");
+      });
+      cy.get(`button[aria-label="Clear input"]`).first().click({ force: true });
+
+      // Confirm that data streams can be selected from dropdown.
+      cy.get(`span[data-text="Data streams"]`).first().click({ force: true });
+      cy.get(".euiFilterSelect__items").should(($tr) => {
+        expect($tr, "item").to.contain("logs-nginx");
+        expect($tr, "item").to.contain("logs-haproxy");
+        expect($tr, "item").to.contain("logs-redis");
+      });
+
+      // Select data streams from the list.
+      cy.get(".euiFilterSelect__items").contains("logs-nginx").click({ force: true });
+      cy.get(".euiFilterSelect__items").contains("logs-haproxy").click({ force: true });
+      cy.get(`span[data-text="Data streams"]`).first().click({ force: true });
+      cy.get("tbody > tr").should(($tr) => {
+        expect($tr, "2 rows").to.have.length(2);
+        expect($tr, "item").to.contain(".ds-logs-nginx-000001");
+        expect($tr, "item").to.contain(".ds-logs-haproxy-000001");
+      });
+    });
+  });
+
   describe("can have policies applied", () => {
     before(() => {
       cy.deleteAllIndices();

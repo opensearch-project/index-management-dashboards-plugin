@@ -41,6 +41,9 @@ describe("<ManagedIndexControls /> spec", () => {
         onSearchChange={() => {}}
         onPageClick={() => {}}
         onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={() => {}}
       />
     );
 
@@ -57,58 +60,15 @@ describe("<ManagedIndexControls /> spec", () => {
         onSearchChange={onSearchChange}
         onPageClick={() => {}}
         onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={() => {}}
       />
     );
 
     userEvent.type(getByPlaceholderText("Search"), "four");
 
     expect(onSearchChange).toHaveBeenCalledTimes(4);
-  });
-
-  it("shows/hides pagination", async () => {
-    const { queryByTestId, rerender } = render(
-      <ManagedIndexControls
-        activePage={0}
-        pageCount={1}
-        search={""}
-        onSearchChange={() => {}}
-        onPageClick={() => {}}
-        onRefresh={async () => {}}
-      />
-    );
-
-    expect(queryByTestId("managedIndexControlsPagination")).toBeNull();
-
-    rerender(
-      <ManagedIndexControls
-        activePage={0}
-        pageCount={2}
-        search={""}
-        onSearchChange={() => {}}
-        onPageClick={() => {}}
-        onRefresh={async () => {}}
-      />
-    );
-
-    expect(queryByTestId("managedIndexControlsPagination")).not.toBeNull();
-  });
-
-  it("calls onPageClick when clicking pagination", async () => {
-    const onPageClick = jest.fn();
-    const { getByTestId } = render(
-      <ManagedIndexControls
-        activePage={0}
-        pageCount={2}
-        search={""}
-        onSearchChange={() => {}}
-        onPageClick={onPageClick}
-        onRefresh={async () => {}}
-      />
-    );
-
-    fireEvent.click(getByTestId("pagination-button-1"));
-
-    expect(onPageClick).toHaveBeenCalledTimes(1);
   });
 
   it("calls onRefresh on an interval", async () => {
@@ -121,6 +81,9 @@ describe("<ManagedIndexControls /> spec", () => {
         onSearchChange={() => {}}
         onPageClick={() => {}}
         onRefresh={onRefresh}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={() => {}}
       />
     );
 
@@ -135,5 +98,50 @@ describe("<ManagedIndexControls /> spec", () => {
     fireEvent.click(getByTestId("superDatePickerToggleRefreshButton"));
 
     await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(2), { timeout: 10000 });
+  });
+
+  it("calls toggleShowDataStreams when clicked", async () => {
+    const toggleShowDataStreams = jest.fn();
+    const { getByTestId } = render(
+      <ManagedIndexControls
+        activePage={0}
+        pageCount={2}
+        search={""}
+        onSearchChange={() => {}}
+        onPageClick={() => {}}
+        onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={toggleShowDataStreams}
+      />
+    );
+
+    fireEvent.click(getByTestId("toggleShowDataStreams"));
+    expect(toggleShowDataStreams).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders data streams selection field", async () => {
+    const getDataStreams = jest.fn();
+    const { container, getByText } = render(
+      <ManagedIndexControls
+        activePage={0}
+        pageCount={2}
+        search={""}
+        onSearchChange={() => {}}
+        onPageClick={() => {}}
+        onRefresh={async () => {}}
+        showDataStreams={true}
+        getDataStreams={getDataStreams}
+        toggleShowDataStreams={() => {}}
+      />
+    );
+
+    expect(container.firstChild).toMatchSnapshot();
+
+    const dataStreamsSelection = getByText("Data streams");
+    expect(dataStreamsSelection).not.toBeNull();
+
+    fireEvent.click(dataStreamsSelection);
+    await waitFor(() => expect(getDataStreams).toHaveBeenCalledTimes(1), { timeout: 10000 });
   });
 });

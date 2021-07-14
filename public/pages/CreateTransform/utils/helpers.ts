@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-import { FieldItem } from "../../../../models/interfaces";
+import { FieldItem, TRANSFORM_AGG_TYPE } from "../../../../models/interfaces";
 
 export const parseTimeunit = (timeunit: string): string => {
   if (timeunit == "ms" || timeunit == "Milliseconds") return "millisecond(s)";
@@ -73,4 +73,8 @@ export const wrapQuotesAroundTransformId = (transformId: string, stringToSearch:
   const regex = new RegExp(transformId, "g");
   const idWrappedWithQuotes = `"${transformId}"`;
   return stringToSearch.replace(regex, idWrappedWithQuotes);
+};
+
+export const isGroupBy = (type: string): boolean => {
+  return type == TRANSFORM_AGG_TYPE.histogram || type == TRANSFORM_AGG_TYPE.terms || type == TRANSFORM_AGG_TYPE.date_histogram;
 };

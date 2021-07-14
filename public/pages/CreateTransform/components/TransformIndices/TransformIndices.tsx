@@ -81,19 +81,17 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
     const { indexService } = this.props;
     this.setState({ isLoading: true, indexOptions: [] });
     try {
-      const queryObject = { from: 0, size: 10, search: searchValue, sortDirection: "desc", sortField: "index" };
-      const getIndicesResponse = await indexService.getIndices(queryObject);
-      if (getIndicesResponse.ok) {
+      const dataStreamsAndIndicesNamesResponse = await indexService.getDataStreamsAndIndicesNames(searchValue);
+      if (dataStreamsAndIndicesNamesResponse.ok) {
         const options = searchValue.trim() ? [{ label: `${searchValue}*` }] : [];
-        const indices = getIndicesResponse.response.indices.map((index: IndexItem) => ({
-          label: index.index,
-        }));
-        this.setState({ indexOptions: options.concat(indices), targetIndexOptions: indices });
+        const dataStreams = dataStreamsAndIndicesNamesResponse.response.dataStreams.map((label) => ({ label }));
+        const indices = dataStreamsAndIndicesNamesResponse.response.indices.map((label) => ({ label }));
+        this.setState({ indexOptions: options.concat(dataStreams, indices), targetIndexOptions: indices });
       } else {
-        if (getIndicesResponse.error.startsWith("[index_not_found_exception]")) {
+        if (dataStreamsAndIndicesNamesResponse.error.startsWith("[index_not_found_exception]")) {
           this.context.notifications.toasts.addDanger("No index available");
         } else {
-          this.context.notifications.toasts.addDanger(getIndicesResponse.error);
+          this.context.notifications.toasts.addDanger(dataStreamsAndIndicesNamesResponse.error);
         }
       }
     } catch (err) {

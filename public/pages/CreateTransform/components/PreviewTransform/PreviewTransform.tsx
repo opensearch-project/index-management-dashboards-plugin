@@ -19,11 +19,18 @@ import { renderTime } from "../../../Transforms/utils/helpers";
 interface PreviewTransformProps {
   previewTransform: any[];
   aggList: TransformAggItem[];
+  onEditTransformation: (oldName: string, newName: string) => void;
   onRemoveTransformation: (name: string) => void;
   isReadOnly: boolean;
 }
 
-export default function PreviewTransform({ previewTransform, aggList, onRemoveTransformation, isReadOnly }: PreviewTransformProps) {
+export default function PreviewTransform({
+  previewTransform,
+  aggList,
+  onEditTransformation,
+  onRemoveTransformation,
+  isReadOnly,
+}: PreviewTransformProps) {
   const [previewColumns, setPreviewColumns] = useState<EuiDataGridColumn[]>([]);
   const [visiblePreviewColumns, setVisiblePreviewColumns] = useState(() => previewColumns.map(({ id }) => id).slice(0, 5));
 
@@ -79,7 +86,14 @@ export default function PreviewTransform({ previewTransform, aggList, onRemoveTr
         aggList.map((aggItem) => {
           tempCol.push({
             id: aggItem.name,
-            display: <PreviewOptions name={aggItem.name} onRemoveTransformation={onRemoveTransformation} />,
+            display: (
+              <PreviewOptions
+                name={aggItem.name}
+                aggList={aggList}
+                onEditTransformation={onEditTransformation}
+                onRemoveTransformation={onRemoveTransformation}
+              />
+            ),
             actions: {
               showHide: false,
               showMoveLeft: false,

@@ -71,7 +71,7 @@ export default function TransformOptions({
     closePopover();
   };
 
-  const panels: EuiContextMenuPanelDescriptor[] = [
+  const numberPanels: EuiContextMenuPanelDescriptor[] = [
     {
       id: 0,
       title: "Transform options",
@@ -79,6 +79,22 @@ export default function TransformOptions({
         {
           name: "Group by histogram",
           panel: 1,
+        },
+        {
+          name: "Group by terms",
+          onClick: () => {
+            const targetField = `${name}_${GROUP_TYPES.terms}`;
+            handleGroupSelectionChange(
+              {
+                terms: {
+                  source_field: name,
+                  target_field: targetField,
+                },
+              },
+              TRANSFORM_AGG_TYPE.terms,
+              targetField
+            );
+          },
         },
         {
           name: "Aggregate by sum",
@@ -200,6 +216,22 @@ export default function TransformOptions({
         {
           name: "Group by date histogram",
           panel: 1,
+        },
+        {
+          name: "Group by terms",
+          onClick: () => {
+            const targetField = `${name}_${GROUP_TYPES.terms}`;
+            handleGroupSelectionChange(
+              {
+                terms: {
+                  source_field: name,
+                  target_field: targetField,
+                },
+              },
+              TRANSFORM_AGG_TYPE.terms,
+              targetField
+            );
+          },
         },
         {
           name: "Aggregate by count",
@@ -388,7 +420,7 @@ export default function TransformOptions({
       ],
     },
   ];
-  const keywordPanels: EuiContextMenuPanelDescriptor[] = [
+  const defaultPanels: EuiContextMenuPanelDescriptor[] = [
     {
       id: 0,
       title: "Transform options",
@@ -448,7 +480,10 @@ export default function TransformOptions({
             panelPaddingSize="none"
             anchorPosition="rightCenter"
           >
-            <EuiContextMenu initialPanelId={0} panels={isNumeric ? panels : isText ? textPanels : isDate ? datePanels : keywordPanels} />
+            <EuiContextMenu
+              initialPanelId={0}
+              panels={isNumeric ? numberPanels : isText ? textPanels : isDate ? datePanels : defaultPanels}
+            />
           </EuiPopover>
         </EuiFlexItem>
       </EuiFlexGroup>

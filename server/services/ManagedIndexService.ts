@@ -34,7 +34,7 @@ import {
   ILegacyCustomClusterClient,
 } from "opensearch-dashboards/server";
 import { INDEX } from "../utils/constants";
-import { transformManagedIndexMetaData } from "../utils/helpers";
+import { getSearchString, transformManagedIndexMetaData } from "../utils/helpers";
 import {
   ChangePolicyResponse,
   ExplainAllResponse,
@@ -49,6 +49,7 @@ import {
 } from "../models/interfaces";
 import { ManagedIndicesSort, ServerResponse } from "../models/types";
 import { ManagedIndexItem } from "../../models/interfaces";
+import { getIndexToDataStreamMapping } from "./DataStreamService";
 
 export default class ManagedIndexService {
   osDriver: ILegacyCustomClusterClient;
@@ -93,30 +94,48 @@ export default class ManagedIndexService {
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetManagedIndicesResponse>>> => {
     try {
-      const { from, size, search, sortDirection, sortField } = request.query as {
+      const { from, size, sortDirection, sortField, terms, indices, dataStreams, showDataStreams } = request.query as {
         from: string;
         size: string;
         search: string;
         sortDirection: string;
         sortField: string;
+        terms?: string[];
+        indices?: string[];
+        dataStreams?: string[];
+        showDataStreams: boolean;
       };
 
       const managedIndexSorts: ManagedIndicesSort = { index: "managed_index.index", policyId: "managed_index.policy_id" };
       const explainParams = {
-        size,
-        from,
         sortField: sortField ? managedIndexSorts[sortField] : null,
         sortOrder: sortDirection,
-        queryString: search ? `*${search.split(" ").join("* *")}*` : null,
+        queryString: getSearchString(terms, indices, dataStreams),
       };
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const explainAllResponse: ExplainAllResponse = await callWithRequest("ism.explainAll", explainParams);
+      const [explainAllResponse, indexToDataStreamMapping] = await Promise.all([
+        callWithRequest("ism.explainAll", explainParams) as Promise<ExplainAllResponse>,
+        getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
+      ]);
 
+      let totalCount = 0;
       const managedIndices: ManagedIndexItem[] = [];
+
       for (const indexName in explainAllResponse) {
         if (indexName == "total_managed_indices") continue;
         const metadata = explainAllResponse[indexName] as ExplainAPIManagedIndexMetaData;
+
+        // If showDataStreams is not true, then skip the managed index if it belongs to a data stream.
+        const parentDataStream = indexToDataStreamMapping[metadata.index] || null;
+        if (!showDataStreams && parentDataStream !== null) continue;
+
+        // Total count is the number of indices after being filtered.
+        totalCount++;
+
+        // Using the running totalCount, check if the managed index belongs to the current page.
+        if (totalCount <= from || totalCount > from + size) continue;
+
         let policy, seqNo, primaryTerm, getResponse;
         try {
           getResponse = await callWithRequest("ism.getPolicy", { policyId: metadata.policy_id });
@@ -133,6 +152,7 @@ export default class ManagedIndexService {
         managedIndices.push({
           index: metadata.index,
           indexUuid: metadata.index_uuid,
+          dataStream: parentDataStream,
           policyId: metadata.policy_id,
           policySeqNo: seqNo,
           policyPrimaryTerm: primaryTerm,
@@ -142,13 +162,11 @@ export default class ManagedIndexService {
         });
       }
 
-      const totalManagedIndices: number = explainAllResponse.total_managed_indices;
-
       return response.custom({
         statusCode: 200,
         body: {
           ok: true,
-          response: { managedIndices: managedIndices, totalManagedIndices: totalManagedIndices },
+          response: { managedIndices: managedIndices, totalManagedIndices: totalCount },
         },
       });
     } catch (err) {

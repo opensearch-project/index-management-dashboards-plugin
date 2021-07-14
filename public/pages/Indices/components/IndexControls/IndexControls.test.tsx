@@ -41,6 +41,9 @@ describe("<IndexControls /> spec", () => {
         onSearchChange={() => {}}
         onPageClick={() => {}}
         onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={() => {}}
       />
     );
 
@@ -57,6 +60,9 @@ describe("<IndexControls /> spec", () => {
         onSearchChange={onSearchChange}
         onPageClick={() => {}}
         onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={() => {}}
       />
     );
 
@@ -65,42 +71,20 @@ describe("<IndexControls /> spec", () => {
     expect(onSearchChange).toHaveBeenCalledTimes(4);
   });
 
-  it("shows/hides pagination", async () => {
-    const { queryByTestId, rerender } = render(
-      <IndexControls activePage={0} pageCount={1} search={""} onSearchChange={() => {}} onPageClick={() => {}} onRefresh={async () => {}} />
-    );
-
-    expect(queryByTestId("indexControlsPagination")).toBeNull();
-
-    rerender(
-      <IndexControls activePage={0} pageCount={2} search={""} onSearchChange={() => {}} onPageClick={() => {}} onRefresh={async () => {}} />
-    );
-
-    expect(queryByTestId("indexControlsPagination")).not.toBeNull();
-  });
-
-  it("calls onPageClick when clicking pagination", async () => {
-    const onPageClick = jest.fn();
+  it("calls onRefresh on an interval", async () => {
+    const onRefresh = jest.fn();
     const { getByTestId } = render(
       <IndexControls
         activePage={0}
         pageCount={2}
         search={""}
         onSearchChange={() => {}}
-        onPageClick={onPageClick}
-        onRefresh={async () => {}}
+        onPageClick={() => {}}
+        onRefresh={onRefresh}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={() => {}}
       />
-    );
-
-    fireEvent.click(getByTestId("pagination-button-1"));
-
-    expect(onPageClick).toHaveBeenCalledTimes(1);
-  });
-
-  it("calls onRefresh on an interval", async () => {
-    const onRefresh = jest.fn();
-    const { getByTestId } = render(
-      <IndexControls activePage={0} pageCount={2} search={""} onSearchChange={() => {}} onPageClick={() => {}} onRefresh={onRefresh} />
     );
 
     fireEvent.click(getByTestId("superDatePickerToggleQuickMenuButton"));
@@ -114,5 +98,50 @@ describe("<IndexControls /> spec", () => {
     fireEvent.click(getByTestId("superDatePickerToggleRefreshButton"));
 
     await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(2), { timeout: 10000 });
+  });
+
+  it("calls toggleShowDataStreams when clicked", async () => {
+    const toggleShowDataStreams = jest.fn();
+    const { getByTestId } = render(
+      <IndexControls
+        activePage={0}
+        pageCount={2}
+        search={""}
+        onSearchChange={() => {}}
+        onPageClick={() => {}}
+        onRefresh={async () => {}}
+        showDataStreams={false}
+        getDataStreams={async () => []}
+        toggleShowDataStreams={toggleShowDataStreams}
+      />
+    );
+
+    fireEvent.click(getByTestId("toggleShowDataStreams"));
+    expect(toggleShowDataStreams).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders data streams selection field", async () => {
+    const getDataStreams = jest.fn();
+    const { container, getByText } = render(
+      <IndexControls
+        activePage={0}
+        pageCount={1}
+        search={"testing"}
+        onSearchChange={() => {}}
+        onPageClick={() => {}}
+        onRefresh={async () => {}}
+        showDataStreams={true}
+        getDataStreams={getDataStreams}
+        toggleShowDataStreams={() => {}}
+      />
+    );
+
+    expect(container.firstChild).toMatchSnapshot();
+
+    const dataStreamsSelection = getByText("Data streams");
+    expect(dataStreamsSelection).not.toBeNull();
+
+    fireEvent.click(dataStreamsSelection);
+    await waitFor(() => expect(getDataStreams).toHaveBeenCalledTimes(1), { timeout: 10000 });
   });
 });
