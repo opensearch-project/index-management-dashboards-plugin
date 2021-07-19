@@ -204,7 +204,7 @@ describe("<Transforms /> spec", () => {
 
     expect(browserServicesMock.transformService.startTransform).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`${testTransform._id} is enabled`);
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`\"${testTransform._id}\" is enabled`);
   });
 
   it("can disable a transform job", async () => {
@@ -234,6 +234,6 @@ describe("<Transforms /> spec", () => {
 
     expect(browserServicesMock.transformService.stopTransform).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`${testTransform._id} is disabled`);
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`\"${testTransform._id}\" is disabled`);
   });
 })
