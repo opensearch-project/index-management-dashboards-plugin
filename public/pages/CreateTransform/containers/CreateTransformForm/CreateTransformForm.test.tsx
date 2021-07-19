@@ -127,6 +127,40 @@ const sampleMapping = {
   },
 };
 
+const indexData = [{
+  _id: "H1tNZHoBkfvfBoG1npgz",
+  _index: "index_1",
+  _score: 1,
+  _source: {
+    category: ["Women's Clothing"],
+    customer_gender: "FEMALE",
+    day_of_week: "Monday",
+    day_of_week_i: 0,
+    geoip: {
+      city_name: "New York",
+      region_name: "New York"
+    },
+    order_date: "2021-07-15T13:32:10+00:00",
+    products: [
+      {
+        _id: "sold_product_588880_18574",
+        category: "Women's Clothing",
+        price: 28.99,
+        quantity: 1,
+        tax_amount: 0,
+        taxful_price: 28.99,
+        taxless_price: 28.99,
+      }
+    ],
+    taxful_total_price: 61.98,
+    taxless_total_price: 61.98,
+    total_quantity: 2,
+    type: "order",
+    user: "elyssa"
+  },
+  _type: "_doc",
+}];
+
 function renderCreateTransformFormWithRouter() {
   return {
     ...render(
@@ -146,6 +180,7 @@ function renderCreateTransformFormWithRouter() {
                             <CreateTransformForm
                               {...props}
                               transformService={services.transformService}
+                              rollupService={services.rollupService}
                               indexService={services.indexService}
                               core={coreServicesMock}
                             />
@@ -167,6 +202,24 @@ function renderCreateTransformFormWithRouter() {
 }
 
 describe("<CreateTransformForm /> spec", () => {
+  browserServicesMock.transformService.getMappings = jest.fn().mockResolvedValue({
+    ok: true,
+    response: sampleMapping,
+  });
+
+  browserServicesMock.rollupService.getMappings = jest.fn().mockResolvedValue({
+    ok: true,
+    response: sampleMapping,
+  });
+
+  browserServicesMock.transformService.searchSampleData = jest.fn().mockResolvedValue({
+    ok: true,
+    response: {
+      data: indexData,
+      total: { value: 1 }
+    }
+  });
+
   it("renders the component", async () => {
     const { container } = renderCreateTransformFormWithRouter();
 
@@ -194,18 +247,21 @@ describe("<CreateTransformForm /> spec", () => {
     await waitFor(() => getByText("Testing transform landing page"));
   })
 
-  it("will show error on step 1", async () => {
-    const { getByTestId, queryByText } = renderCreateTransformFormWithRouter();
+  it("does not move to step 2 without info", async () => {
+    const { getByTestId, getByText, getByLabelText, queryByText } = renderCreateTransformFormWithRouter();
+    browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
+      ok: false,
+      response: {},
+    });
 
     expect(getByTestId("createTransformNextButton")).toBeEnabled();
 
     userEvent.click(getByTestId("createTransformNextButton"));
+    await waitFor(() => {},{timeout:2000});
 
-    expect(queryByText("Job name is required.")).not.toBeNull();
-
-    expect(queryByText("Source index is required.")).not.toBeNull();
-
-    expect(queryByText("Target index is required.")).not.toBeNull();
+    // Currently no pop up warnings?
+    // Check still on step 1
+    expect(getByText("Job name and description"));
   });
 });
 
@@ -215,13 +271,31 @@ describe("<CreateTransformForm /> creation", () => {
     response: { indices, totalIndices: 1 },
   });
 
+  browserServicesMock.transformService.searchSampleData = jest.fn().mockResolvedValue({
+    ok: true,
+    response: {
+      data: indexData,
+      total: { value: 1 }
+    }
+  });
+
   browserServicesMock.transformService.getMappings = jest.fn().mockResolvedValue({
+    ok: true,
+    response: sampleMapping,
+  });
+
+  browserServicesMock.rollupService.getMappings = jest.fn().mockResolvedValue({
     ok: true,
     response: sampleMapping,
   });
 
   it("routes from step 1 to step 2 and back", async () => {
     const { getByTestId, getByLabelText, queryByText, getAllByTestId } = renderCreateTransformFormWithRouter();
+
+    browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
+      ok: false,
+      response: {},
+    });
 
     fireEvent.focus(getByLabelText("Name"));
     await userEvent.type(getByLabelText("Name"), "some_transform_id");
@@ -239,13 +313,105 @@ describe("<CreateTransformForm /> creation", () => {
 
     userEvent.click(getByTestId("createTransformNextButton"));
 
-    expect(queryByText("Job name is required.")).toBeNull();
-
-    expect(queryByText("Source index is required.")).toBeNull();
-
-    expect(queryByText("Target index is required.")).toBeNull();
+    await waitFor(() => {},{timeout:2000});
 
     //Check that it routes to step 2
-    expect(queryByText("Timestamp field")).not.toBeNull();
-  })
+    expect(queryByText("Job name and description")).toBeNull();
+    expect(queryByText('Select fields to transform')).not.toBeNull();
+  });
+
+  it("routes from step 1 to step 4", async () => {
+    const transform = {
+      _id: "some_transform_id",
+      _version: 3,
+      _seq_no: 7,
+      _primary_term: 1,
+      transform: {
+        transform_id: "some_transform_id",
+        enabled: true,
+        schedule: {
+          interval: {
+            period: 1,
+            unit: "Minutes",
+            start_time: 1602100553,
+          },
+        },
+        last_updated_time: 1602100553,
+        description: "some description",
+        source_index: "index_1",
+        target_index: "some_target_index",
+        page_size: 1000,
+        delay: 0,
+        continuous: false,
+        metadata_id: null,
+        enabledTime: null,
+        lastUpdatedTime: null,
+        schemaVersion: 1,
+        groups: [],
+        aggregations: {},
+      },
+    };
+
+    browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
+      ok: false,
+      response: {},
+    });
+
+    browserServicesMock.transformService.putTransform = jest.fn().mockResolvedValue({
+      ok: true,
+      response: transform,
+    });
+
+    const { getByTestId, getByLabelText, queryByText, getAllByTestId, getByDisplayValue, findByText, getByText } = renderCreateTransformFormWithRouter();
+
+    fireEvent.focus(getByLabelText("Name"));
+    await userEvent.type(getByLabelText("Name"), "some_transform_id");
+    fireEvent.blur(getByLabelText("Name"));
+
+    fireEvent.focus(getByTestId("description"));
+    await userEvent.type(getByTestId("description"), "some description");
+    fireEvent.blur(getByTestId("description"));
+
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index_1");
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
+
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "some_target_index");
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
+
+    await waitFor(() => {},{timeout:2000});
+
+    userEvent.click(getByTestId("createTransformNextButton"));
+
+    await waitFor(() => {},{timeout:2000});
+    //Check that it routes to step 2
+    expect(queryByText("Job name and description")).toBeNull();
+    expect(queryByText('Select fields to transform')).not.toBeNull();
+
+    //Select timestamp
+    // TODO: adapt to Groups + Aggs
+
+    await waitFor(() => {}, {timeout:2000});
+    await waitFor(() => {}, {timeout:2000});
+    await userEvent.click(getByTestId('dataGridHeaderCell-customer_gender'));
+    fireEvent.keyDown(getByTestId('dataGridHeaderCell-category.keyword'), { key: "Enter", code: "Enter"});
+    userEvent.click(getByLabelText("Group by terms"));
+
+    userEvent.click(getByTestId("createTransformNextButton"));
+
+    //Check that it routes to step 3
+    expect(queryByText("Job enabled by default")).not.toBeNull();
+
+    userEvent.click(getByTestId("createTransformNextButton"));
+
+    //Check that it routes to step 4
+    expect(queryByText("Define transforms")).not.toBeNull();
+
+    //Test create
+    userEvent.click(getByTestId("createTransformSubmitButton"));
+    await waitFor(() => {});
+
+    expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledTimes(1);
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`Transform job "some_transform_id" successfully created.`);
+  });
 })
