@@ -9,7 +9,7 @@
       }
     },
     "description": "Test transform",
-    "source_index": "kibana_sample_data_ecommerce",
+    "source_index": "opensearch_dashboards_sample_data_ecommerce",
     "target_index": "test_transform",
     "data_selection_query": {
       "match_all": {}
