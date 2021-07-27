@@ -26,6 +26,8 @@
 
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
+import { ActionType } from "../public/pages/NewCreatePolicy/utils/actions";
+
 export interface ManagedIndexMetaData {
   index: string;
   indexUuid: string;
@@ -87,19 +89,177 @@ export interface DocumentTransform {
   metadata: any;
 }
 
-// TODO: Fill out when needed
-// TODO: separate a frontend Policy from backendPolicy
 export interface Policy {
   description: string;
   default_state: string;
+  error_notification?: ErrorNotification;
   states: State[];
-  ism_template: any;
+  ism_template?: ISMTemplate[] | ISMTemplate | null;
+}
+
+export interface ErrorNotification {
+  destination?: Destination;
+  channel?: Channel;
+  message_template: MessageTemplate;
+}
+
+export interface Channel {
+  channel_id: string;
+}
+
+export interface Destination {
+  chime?: {
+    url: string;
+  };
+  slack?: {
+    url: string;
+  };
+  custom_webhook?: {
+    url: string;
+  };
+}
+
+export interface MessageTemplate {
+  source: string;
+}
+
+export interface ISMTemplate {
+  index_patterns: string[];
+  priority: number;
 }
 
 export interface State {
   name: string;
-  actions: object[];
-  transitions: object[];
+  actions: Action[];
+  transitions: Transition[];
+}
+
+export interface Action {
+  timeout: string;
+  retry: Retry;
+}
+
+export interface Retry {
+  count: number;
+  backoff: string;
+  delay: string;
+}
+
+export interface UIAction<Data> {
+  action: Data;
+  id: string;
+  type: ActionType;
+  render: (uiAction: UIAction<Data>, onChangeAction: (uiAction: UIAction<Data>) => void) => JSX.Element | null;
+  clone: (action: Data) => UIAction<Data>;
+  content: () => JSX.Element | string | null;
+}
+
+export interface ForceMergeAction extends Action {
+  force_merge: {
+    max_num_segments: number;
+  };
+}
+
+export interface ReadOnlyAction extends Action {
+  read_only: {};
+}
+
+export interface ReadWriteAction extends Action {
+  read_write: {};
+}
+
+export interface ReplicaCountAction extends Action {
+  replica_count: {
+    number_of_replicas: number;
+  };
+}
+
+export interface CloseAction extends Action {
+  close: {};
+}
+
+export interface OpenAction extends Action {
+  open: {};
+}
+
+export interface DeleteAction extends Action {
+  delete: {};
+}
+
+export interface RolloverAction extends Action {
+  rollover: {
+    min_size: string;
+    min_doc_count: number;
+    min_index_age: string;
+  };
+}
+
+export interface NotificationAction extends Action {
+  notification: {
+    destination: Destination;
+    message_template: MessageTemplate;
+  };
+}
+
+export interface SnapshotAction extends Action {
+  snapshot: {
+    repository: string;
+    snapshot: string;
+  };
+}
+
+export interface IndexPriorityAction extends Action {
+  index_priority: {
+    priority: number;
+  };
+}
+
+export interface AllocationAction extends Action {
+  allocation: {
+    require: {
+      [key: string]: string;
+    };
+    include: {
+      [key: string]: string;
+    };
+    exclude: {
+      [key: string]: string;
+    };
+    wait_for: boolean;
+  };
+}
+
+export interface RollupAction extends Action {
+  rollup: object;
+}
+
+export interface UITransition {
+  transition: Transition;
+  id: string;
+  render: (uiTransition: UITransition, onChangeTransition: (uiTransition: UITransition) => void) => JSX.Element | null;
+  clone: (transition: Transition) => UITransition;
+}
+
+export interface Transition {
+  state_name: string;
+  conditions: Condition;
+}
+
+export interface Condition {
+  min_index_age?: string;
+  min_doc_count?: number;
+  min_size?: string;
+  cron?: Cron;
+}
+
+// TODO: Backend has weird nested cron
+export interface Cron {
+  cron: InnerCron;
+}
+
+export interface InnerCron {
+  expression: string;
+  timezone: string;
 }
 
 export interface Rollup {

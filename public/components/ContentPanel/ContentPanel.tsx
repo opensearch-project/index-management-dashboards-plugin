@@ -28,7 +28,7 @@ import React from "react";
 import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiTitle } from "@elastic/eui";
 
 interface ContentPanelProps {
-  title?: string;
+  title?: string | JSX.Element;
   titleSize?: "xxxs" | "xxs" | "xs" | "s" | "m" | "l";
   bodyStyles?: object;
   panelStyles?: object;
@@ -49,9 +49,13 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
   <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}>
     <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
       <EuiFlexItem>
-        <EuiTitle size={titleSize}>
-          <h3>{title}</h3>
-        </EuiTitle>
+        {typeof title === "string" ? (
+          <EuiTitle size={titleSize}>
+            <h3>{title}</h3>
+          </EuiTitle>
+        ) : (
+          title
+        )}
       </EuiFlexItem>
       {actions ? (
         <EuiFlexItem grow={false}>
