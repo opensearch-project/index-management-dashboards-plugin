@@ -134,6 +134,32 @@ export interface RolloverAction extends Action {
   };
 }
 
+export interface UITransition {
+  transition: Transition;
+  id: string;
+}
+
+export interface Transition {
+  state_name: string;
+  conditions?: Condition;
+}
+
+export interface Condition {
+  min_index_age?: string;
+  min_doc_count?: number;
+  min_size?: string;
+  cron?: Cron;
+}
+
+export interface Cron {
+  cron: InnerCron;
+}
+
+export interface InnerCron {
+  expression: string;
+  timezone: string;
+}
+
 export interface Rollup {
   continuous: boolean;
   delay: number | null;

@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DraggableTransition /> spec renders the component 1`] = `
+<div
+  class="euiDroppable euiDroppable--noGrow"
+  data-rbd-droppable-context-id="0"
+  data-rbd-droppable-id="STATE_ACTIONS_DROPPABLE_AREA"
+  data-test-subj="droppable"
+>
+  <div
+    class="euiDraggable euiDraggable--hasCustomDragHandle"
+    data-rbd-draggable-context-id="0"
+    data-rbd-draggable-id="some_html_id"
+    data-test-subj="draggable"
+    style="padding: 0px 0px 0px 0px;"
+  >
+    <div
+      class="euiPanel euiPanel--paddingMedium custom euiDraggable__item euiDraggable__item--hasCustomDragHandle"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <div
+            aria-describedby="rbd-hidden-text-0-hidden-text-0"
+            aria-label="Drag Handle"
+            data-rbd-drag-handle-context-id="0"
+            data-rbd-drag-handle-draggable-id="some_html_id"
+            draggable="false"
+            role="button"
+            tabindex="0"
+          >
+            EuiIconMock
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--medium"
+          >
+            <dl>
+              <dt>
+                Destination state
+              </dt>
+              <dd>
+                some_state
+              </dd>
+              <dt>
+                Transition trigger logic
+              </dt>
+              <dd>
+                No condition
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <button
+            aria-label="Delete"
+            class="euiButtonIcon euiButtonIcon--danger"
+            data-test-subj="draggable-transition-delete-button"
+            type="button"
+          >
+            EuiIconMock
+          </button>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <button
+            aria-label="Edit"
+            class="euiButtonIcon euiButtonIcon--primary"
+            data-test-subj="draggable-transition-edit-button"
+            type="button"
+          >
+            EuiIconMock
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiDroppable__placeholder"
+  />
+</div>
+`;
