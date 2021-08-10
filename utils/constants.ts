@@ -37,6 +37,7 @@ export const NODE_API = Object.freeze({
   ROLLUPS: `${BASE_API_PATH}/rollups`,
   TRANSFORMS: `${BASE_API_PATH}/transforms`,
   MANAGED_INDICES: `${BASE_API_PATH}/managedIndices`,
+  CHANNELS: `${BASE_API_PATH}/notifications/channels`,
   RETRY: `${BASE_API_PATH}/retry`,
   CHANGE_POLICY: `${BASE_API_PATH}/changePolicy`,
   REMOVE_POLICY: `${BASE_API_PATH}/removePolicy`,
