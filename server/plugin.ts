@@ -27,7 +27,15 @@
 import { IndexManagementPluginSetup, IndexManagementPluginStart } from ".";
 import { Plugin, CoreSetup, CoreStart, ILegacyCustomClusterClient } from "../../../src/core/server";
 import ismPlugin from "./clusters/ism/ismPlugin";
-import { PolicyService, ManagedIndexService, IndexService, RollupService, TransformService, DataStreamService } from "./services";
+import {
+  PolicyService,
+  ManagedIndexService,
+  IndexService,
+  RollupService,
+  TransformService,
+  DataStreamService,
+  NotificationService,
+} from "./services";
 import { indices, policies, managedIndices, rollups, transforms } from "../server/routes";
 import dataStreams from "./routes/dataStreams";
 
@@ -45,7 +53,16 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const managedIndexService = new ManagedIndexService(osDriver);
     const rollupService = new RollupService(osDriver);
     const transformService = new TransformService(osDriver);
-    const services = { indexService, dataStreamService, policyService, managedIndexService, rollupService, transformService };
+    const notificationService = new NotificationService(osDriver);
+    const services = {
+      indexService,
+      dataStreamService,
+      policyService,
+      managedIndexService,
+      rollupService,
+      transformService,
+      notificationService,
+    };
 
     // create router
     const router = core.http.createRouter();

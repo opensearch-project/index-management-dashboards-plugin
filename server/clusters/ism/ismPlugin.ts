@@ -389,4 +389,11 @@ export default function ismPlugin(Client: any, config: any, components: any) {
     needBody: true,
     method: "POST",
   });
+
+  ism.getChannels = ca({
+    url: {
+      fmt: `${API.CHANNELS_BASE}/index_management`,
+    },
+    method: "GET",
+  });
 }
