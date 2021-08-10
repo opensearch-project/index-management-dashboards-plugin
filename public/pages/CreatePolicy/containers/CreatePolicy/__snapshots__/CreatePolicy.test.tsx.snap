@@ -317,7 +317,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
          
         <a
           class="euiLink euiLink--primary"
-          href="https://docs-beta.opensearch.org/docs/im/ism/"
+          href="https://opensearch.org/docs/im-plugin/ism/index/"
           rel="noopener noreferrer"
           target="_blank"
         >

@@ -25,11 +25,12 @@
  */
 
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiTitle } from "@elastic/eui";
+import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiTitle, EuiText } from "@elastic/eui";
 
 interface ContentPanelProps {
-  title?: string;
+  title?: string | JSX.Element;
   titleSize?: "xxxs" | "xxs" | "xs" | "s" | "m" | "l";
+  subTitleText?: string | JSX.Element;
   bodyStyles?: object;
   panelStyles?: object;
   horizontalRuleClassName?: string;
@@ -37,9 +38,22 @@ interface ContentPanelProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
+const renderSubTitleText = (subTitleText: string | JSX.Element): JSX.Element | null => {
+  if (typeof subTitleText === "string") {
+    if (!subTitleText) return null;
+    return (
+      <EuiText size="s">
+        <span style={{ color: "grey", fontWeight: 200, fontSize: "15px" }}>{subTitleText}</span>
+      </EuiText>
+    );
+  }
+  return subTitleText;
+};
+
 const ContentPanel: React.SFC<ContentPanelProps> = ({
   title = "",
   titleSize = "l",
+  subTitleText = "",
   bodyStyles = {},
   panelStyles = {},
   horizontalRuleClassName = "",
@@ -49,9 +63,14 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
   <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}>
     <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
       <EuiFlexItem>
-        <EuiTitle size={titleSize}>
-          <h3>{title}</h3>
-        </EuiTitle>
+        {typeof title === "string" ? (
+          <EuiTitle size={titleSize}>
+            <h3>{title}</h3>
+          </EuiTitle>
+        ) : (
+          title
+        )}
+        {renderSubTitleText(subTitleText)}
       </EuiFlexItem>
       {actions ? (
         <EuiFlexItem grow={false}>

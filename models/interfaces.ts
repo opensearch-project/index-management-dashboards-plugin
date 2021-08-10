@@ -89,13 +89,39 @@ export interface DocumentTransform {
   metadata: any;
 }
 
-// TODO: Fill out when needed
-// TODO: separate a frontend Policy from backendPolicy
 export interface Policy {
   description: string;
   default_state: string;
   states: State[];
   ism_template: any;
+}
+
+export interface ErrorNotification {
+  destination?: Destination;
+  channel?: Channel;
+  message_template: MessageTemplate;
+}
+
+export interface Channel {
+  id: string;
+}
+
+export interface Destination {
+  chime?: {
+    url: string;
+  };
+  slack?: {
+    url: string;
+  };
+  custom_webhook?: {
+    url: string;
+    [other: string]: any; // custom webhook also allows users to create by part including customizing headers/query params, port/host, etc.
+  };
+}
+
+export interface MessageTemplate {
+  source: string;
+  lang?: string;
 }
 
 export interface State {
