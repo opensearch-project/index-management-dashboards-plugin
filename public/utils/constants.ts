@@ -28,7 +28,7 @@ export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 
 export const DEFAULT_EMPTY_DATA = "-";
 
-export const DOCUMENTATION_URL = "https://docs-beta.opensearch.org/docs/im/ism/";
+export const DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/index/";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
