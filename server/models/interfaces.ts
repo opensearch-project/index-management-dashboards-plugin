@@ -94,6 +94,14 @@ export interface GetDataStreamsAndIndicesNamesResponse {
   indices: string[];
 }
 
+export interface FeatureChannelList {
+  config_id: string;
+  name: string;
+  description: string;
+  config_type: string;
+  is_enabled: boolean;
+}
+
 export interface GetFieldsResponse {
   result: string;
 }
