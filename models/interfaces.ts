@@ -26,6 +26,8 @@
 
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
+import { ActionType } from "../public/pages/VisualCreatePolicy/utils/actions";
+
 export interface ManagedIndexMetaData {
   index: string;
   indexUuid: string;
@@ -100,6 +102,36 @@ export interface State {
   name: string;
   actions: object[];
   transitions: object[];
+}
+
+export interface Action {
+  timeout?: string;
+  retry?: Retry;
+  [action: string]: any;
+}
+
+export interface Retry {
+  count: number;
+  backoff?: string;
+  delay?: string;
+}
+
+export interface UIAction<Data> {
+  action: Data;
+  id: string;
+  type: ActionType;
+  render: (uiAction: UIAction<Data>, onChangeAction: (uiAction: UIAction<Data>) => void) => JSX.Element | null;
+  clone: (action: Data) => UIAction<Data>;
+  content: () => JSX.Element | string | null;
+  toAction: () => Action;
+}
+
+export interface RolloverAction extends Action {
+  rollover: {
+    min_size?: string;
+    min_doc_count?: number;
+    min_index_age?: string;
+  };
 }
 
 export interface Rollup {
