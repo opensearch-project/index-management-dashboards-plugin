@@ -109,3 +109,6 @@ export const convertTemplatesToArray = (ismTemplates: ISMTemplate[] | ISMTemplat
   }
   return templates;
 };
+
+export const capitalizeFirstLetter = ([first, ...rest]: string, locale = navigator.language) =>
+  first.toLocaleUpperCase(locale) + rest.join("");
