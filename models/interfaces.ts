@@ -26,7 +26,7 @@
 
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
-import { ActionType } from "../public/pages/VisualCreatePolicy/utils/actions";
+import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
 
 export interface ManagedIndexMetaData {
   index: string;
@@ -152,6 +152,38 @@ export interface UIAction<Data> {
   toAction: () => Action;
 }
 
+export interface ForceMergeAction extends Action {
+  force_merge: {
+    max_num_segments: number;
+  };
+}
+
+export interface ReadOnlyAction extends Action {
+  read_only: {};
+}
+
+export interface ReadWriteAction extends Action {
+  read_write: {};
+}
+
+export interface ReplicaCountAction extends Action {
+  replica_count: {
+    number_of_replicas: number;
+  };
+}
+
+export interface CloseAction extends Action {
+  close: {};
+}
+
+export interface OpenAction extends Action {
+  open: {};
+}
+
+export interface DeleteAction extends Action {
+  delete: {};
+}
+
 export interface RolloverAction extends Action {
   rollover: {
     min_size?: string;
@@ -184,6 +216,51 @@ export interface Cron {
 export interface InnerCron {
   expression: string;
   timezone: string;
+}
+
+export interface NotificationAction extends Action {
+  notification: {
+    destination?: Destination;
+    channel?: {
+      id: string;
+    };
+    message_template: MessageTemplate;
+  };
+  notificationJsonString?: string;
+}
+
+export interface SnapshotAction extends Action {
+  snapshot: {
+    repository: string;
+    snapshot: string;
+  };
+}
+
+export interface IndexPriorityAction extends Action {
+  index_priority: {
+    priority: number;
+  };
+}
+
+export interface AllocationAction extends Action {
+  allocation: {
+    require: {
+      [key: string]: string;
+    };
+    include: {
+      [key: string]: string;
+    };
+    exclude: {
+      [key: string]: string;
+    };
+    wait_for: boolean;
+  };
+}
+
+export interface RollupAction extends Action {
+  rollup: {
+    jsonString: string;
+  };
 }
 
 export interface Rollup {
