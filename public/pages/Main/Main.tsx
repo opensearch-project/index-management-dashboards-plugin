@@ -35,6 +35,7 @@ import Indices from "../Indices";
 import CreatePolicy from "../CreatePolicy";
 import VisualCreatePolicy from "../VisualCreatePolicy";
 import ChangePolicy from "../ChangePolicy";
+import PolicyDetails from "../PolicyDetails/containers/PolicyDetails";
 import Rollups from "../Rollups";
 import { ModalProvider, ModalRoot } from "../../components/Modal";
 import { ServicesConsumer } from "../../services";
@@ -188,6 +189,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={{ padding: "25px 25px" }}>
                                 <Policies {...props} policyService={services.policyService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.POLICY_DETAILS}
+                            render={(props: RouteComponentProps) => (
+                              <div style={{ padding: "25px 25px" }}>
+                                <PolicyDetails {...props} policyService={services.policyService} />
                               </div>
                             )}
                           />
