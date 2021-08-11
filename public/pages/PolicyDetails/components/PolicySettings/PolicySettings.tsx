@@ -44,7 +44,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
   }
 
   // TODO: Needs to be updated to handle template array
-  getTemplates = (ismTemplates: ISMTemplate[]): any[] => {
+  getTemplates = (ismTemplates: ISMTemplate[]): ISMTemplate[] => {
     const templateArray = [];
     ismTemplates.map((ismTemplate)=> {
       templateArray.push({
