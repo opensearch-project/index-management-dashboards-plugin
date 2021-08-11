@@ -124,7 +124,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
                   {
                     text: "Edit",
                     buttonProps: {
-                      onClick: {},
+                      onClick: () => {},
                     },
                   },
                 ]}
