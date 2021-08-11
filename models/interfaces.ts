@@ -104,37 +104,6 @@ export interface ErrorNotification {
 }
 
 export interface Channel {
-  channel_id: string;
-}
-
-export interface Destination {
-  chime?: {
-    url: string;
-  };
-  slack?: {
-    url: string;
-  };
-  custom_webhook?: {
-    url: string;
-  };
-}
-
-export interface MessageTemplate {
-  source: string;
-}
-
-export interface ISMTemplate {
-  index_patterns: string[];
-  priority: number;
-}
-
-export interface ErrorNotification {
-  destination?: Destination;
-  channel?: Channel;
-  message_template: MessageTemplate;
-}
-
-export interface Channel {
   id: string;
 }
 

@@ -43,23 +43,18 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
     }
   }
 
-  // TODO: Needs to be updated to handle template array
   getTemplates = (ismTemplates: ISMTemplate[]): ISMTemplate[] => {
-    const templateArray = [];
-    ismTemplates.map((ismTemplate)=> {
-      templateArray.push({
-        indexPatterns: ismTemplate.index_patterns,
-        priority: ismTemplate.priority,
-      })
-    })
+    const templateArray = ismTemplates.map(ismTemplate => ({
+      index_patterns: ismTemplate.index_patterns,
+      priority: ismTemplate.priority,
+    }));
     return templateArray;
   }
 
   onTableChange = ({ page = {} }) => {
     const { index: pageIndex, size: pageSize } = page;
 
-    this.setState({pageIndex: pageIndex});
-    this.setState({pageSize: pageSize});
+    this.setState({pageIndex, pageSize});
   };
 
   render() {

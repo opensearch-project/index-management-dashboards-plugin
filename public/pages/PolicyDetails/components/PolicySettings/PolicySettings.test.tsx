@@ -16,13 +16,12 @@ import PolicySettings from "./PolicySettings";
 
 describe("<PolicySettings /> spec", () => {
   it("renders the component", () => {
-    const dateTime = new Date();
     const { container } = render(
       <PolicySettings
         policyId={"some_id"}
         channelId={"some_channel_id"}
         primaryTerm={1}
-        lastUpdated={dateTime.toString()}
+        lastUpdated={"2021-08-11T23:17:01.054Z"}
         description={"some description"}
         sequenceNumber={2}
         schemaVersion={3}
