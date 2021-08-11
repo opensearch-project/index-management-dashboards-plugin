@@ -97,3 +97,6 @@ export const getUIAction = (actionType: string): UIAction<any> => {
       throw new Error(`Action type [${actionType}] not supported`);
   }
 };
+
+export const capitalizeFirstLetter = ([first, ...rest]: string, locale = navigator.language) =>
+  first.toLocaleUpperCase(locale) + rest.join("");
