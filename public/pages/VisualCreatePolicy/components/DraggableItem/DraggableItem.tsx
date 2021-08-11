@@ -11,17 +11,17 @@
 
 import React from "react";
 import { EuiFlexGroup, EuiFlexItem, EuiDraggable, EuiPanel, EuiIcon, EuiButtonIcon } from "@elastic/eui";
-import { Action, UIAction } from "../../../../../models/interfaces";
 
-interface DraggableActionProps {
-  action: UIAction<Action>;
+interface DraggableItemProps {
+  content: string | JSX.Element | null;
+  id: string;
   idx: number;
   isLast: boolean;
-  onClickDeleteAction: () => void;
-  onClickEditAction: () => void;
+  onClickDelete: () => void;
+  onClickEdit: () => void;
 }
 
-const DraggableAction = ({ action: { id, content }, idx, isLast, onClickDeleteAction, onClickEditAction }: DraggableActionProps) => (
+const DraggableItem = ({ content, id, idx, isLast, onClickDelete, onClickEdit }: DraggableItemProps) => (
   <EuiDraggable style={{ padding: `0px 0px ${isLast ? "0px" : "10px"} 0px` }} key={id} index={idx} draggableId={id} customDragHandle={true}>
     {(provided) => (
       <EuiPanel className="custom" paddingSize="m">
@@ -31,14 +31,14 @@ const DraggableAction = ({ action: { id, content }, idx, isLast, onClickDeleteAc
               <EuiIcon type="grab" />
             </div>
           </EuiFlexItem>
-          <EuiFlexItem>{content()}</EuiFlexItem>
+          <EuiFlexItem>{content}</EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButtonIcon
               iconType="trash"
               aria-label="Delete"
               color="danger"
-              onClick={onClickDeleteAction}
-              data-test-subj="draggable-action-delete-button"
+              onClick={onClickDelete}
+              data-test-subj={`draggable-item-delete-button-${id}`}
             />
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
@@ -46,8 +46,8 @@ const DraggableAction = ({ action: { id, content }, idx, isLast, onClickDeleteAc
               iconType="pencil"
               aria-label="Edit"
               color="primary"
-              onClick={onClickEditAction}
-              data-test-subj="draggable-action-edit-button"
+              onClick={onClickEdit}
+              data-test-subj={`draggable-item-edit-button-${id}`}
             />
           </EuiFlexItem>
         </EuiFlexGroup>
@@ -56,4 +56,4 @@ const DraggableAction = ({ action: { id, content }, idx, isLast, onClickDeleteAc
   </EuiDraggable>
 );
 
-export default DraggableAction;
+export default DraggableItem;

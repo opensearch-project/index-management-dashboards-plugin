@@ -9,6 +9,6 @@
  * GitHub history for details.
  */
 
-import DraggableTransition from "./DraggableTransition";
+import DraggableItem from "./DraggableItem";
 
-export default DraggableTransition;
+export default DraggableItem;

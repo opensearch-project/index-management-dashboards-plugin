@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DraggableTransition /> spec renders the component 1`] = `
+exports[`<DraggableItem /> spec renders the component 1`] = `
 <div
   class="euiDroppable euiDroppable--noGrow"
   data-rbd-droppable-context-id="0"
@@ -18,7 +18,7 @@ exports[`<DraggableTransition /> spec renders the component 1`] = `
       class="euiPanel euiPanel--paddingMedium custom euiDraggable__item euiDraggable__item--hasCustomDragHandle"
     >
       <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
       >
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -38,24 +38,7 @@ exports[`<DraggableTransition /> spec renders the component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <div
-            class="euiText euiText--medium"
-          >
-            <dl>
-              <dt>
-                Destination state
-              </dt>
-              <dd>
-                some_state
-              </dd>
-              <dt>
-                Transition trigger logic
-              </dt>
-              <dd>
-                No condition
-              </dd>
-            </dl>
-          </div>
+          Rollover
         </div>
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -63,7 +46,7 @@ exports[`<DraggableTransition /> spec renders the component 1`] = `
           <button
             aria-label="Delete"
             class="euiButtonIcon euiButtonIcon--danger"
-            data-test-subj="draggable-transition-delete-button"
+            data-test-subj="draggable-item-delete-button-some_html_id"
             type="button"
           >
             EuiIconMock
@@ -75,7 +58,7 @@ exports[`<DraggableTransition /> spec renders the component 1`] = `
           <button
             aria-label="Edit"
             class="euiButtonIcon euiButtonIcon--primary"
-            data-test-subj="draggable-transition-edit-button"
+            data-test-subj="draggable-item-edit-button-some_html_id"
             type="button"
           >
             EuiIconMock
