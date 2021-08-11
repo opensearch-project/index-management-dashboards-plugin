@@ -43,14 +43,6 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
     }
   }
 
-  getTemplates = (ismTemplates: ISMTemplate[]): ISMTemplate[] => {
-    const templateArray = ismTemplates.map(ismTemplate => ({
-      index_patterns: ismTemplate.index_patterns,
-      priority: ismTemplate.priority,
-    }));
-    return templateArray;
-  }
-
   onTableChange = ({ page = {} }) => {
     const { index: pageIndex, size: pageSize } = page;
 
@@ -79,7 +71,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
 
     const columns = [
       {
-        field: 'indexPatterns',
+        field: 'index_patterns',
         name: 'Index patterns',
         truncateText: false
       },
@@ -89,7 +81,6 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
         truncateText: false
       }
     ]
-    const items = this.getTemplates(ismTemplates);
 
     const infoItems = [
       { term: "Policy name", value: policyId },
@@ -152,7 +143,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
             titleSize="s"
           >
             <EuiBasicTable
-              items={items}
+              items={ismTemplates}
               columns={columns}
               pagination={pagination}
               onChange={this.onTableChange}

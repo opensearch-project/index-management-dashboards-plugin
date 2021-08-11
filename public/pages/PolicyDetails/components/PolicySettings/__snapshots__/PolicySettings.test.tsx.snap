@@ -225,7 +225,7 @@ exports[`<PolicySettings /> spec renders the component 1`] = `
                   <tr>
                     <th
                       class="euiTableHeaderCell"
-                      data-test-subj="tableHeaderCell_indexPatterns_0"
+                      data-test-subj="tableHeaderCell_index_patterns_0"
                       role="columnheader"
                       scope="col"
                     >
