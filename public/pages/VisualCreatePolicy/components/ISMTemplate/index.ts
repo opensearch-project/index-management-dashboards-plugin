@@ -9,15 +9,6 @@
  * GitHub history for details.
  */
 
-export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
-  destination: {
-    slack: {
-      url: "<url>",
-    },
-  },
-  message_template: {
-    source: "The index {{ctx.index}} failed during policy execution.",
-  },
-};
+import ISMTemplate from "./ISMTemplate";
 
-export const ISM_TEMPLATE_INPUT_MAX_WIDTH = "400px";
+export default ISMTemplate;
