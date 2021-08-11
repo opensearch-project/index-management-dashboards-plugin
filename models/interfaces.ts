@@ -92,8 +92,40 @@ export interface DocumentTransform {
 export interface Policy {
   description: string;
   default_state: string;
+  error_notification?: ErrorNotification;
   states: State[];
-  ism_template: any;
+  ism_template?: ISMTemplate[] | ISMTemplate | null;
+}
+
+export interface ErrorNotification {
+  destination?: Destination;
+  channel?: Channel;
+  message_template: MessageTemplate;
+}
+
+export interface Channel {
+  channel_id: string;
+}
+
+export interface Destination {
+  chime?: {
+    url: string;
+  };
+  slack?: {
+    url: string;
+  };
+  custom_webhook?: {
+    url: string;
+  };
+}
+
+export interface MessageTemplate {
+  source: string;
+}
+
+export interface ISMTemplate {
+  index_patterns: string[];
+  priority: number;
 }
 
 export interface ErrorNotification {
