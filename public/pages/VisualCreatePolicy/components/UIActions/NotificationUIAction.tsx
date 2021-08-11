@@ -17,8 +17,7 @@ import LegacyNotification from "../LegacyNotification";
 import ChannelNotification from "../ChannelNotification";
 import { getErrorMessage, makeId } from "../../../../utils/helpers";
 import { BrowserServices } from "../../../../models/interfaces";
-import { ActionType } from "../../utils/constants";
-import { DEFAULT_NOTIFICATION } from "../../utils/constants";
+import { ActionType, DEFAULT_NOTIFICATION } from "../../utils/constants";
 
 interface NotifUIState {
   channels: FeatureChannelList[];

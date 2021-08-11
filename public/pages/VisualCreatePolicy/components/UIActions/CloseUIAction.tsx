@@ -11,8 +11,8 @@
 
 import React from "react";
 import { CloseAction, UIAction } from "../../../../../models/interfaces";
-import { ActionType } from "../../utils/constants";
 import { makeId } from "../../../../utils/helpers";
+import { ActionType } from "../../utils/constants";
 
 export default class CloseUIAction implements UIAction<CloseAction> {
   id: string;

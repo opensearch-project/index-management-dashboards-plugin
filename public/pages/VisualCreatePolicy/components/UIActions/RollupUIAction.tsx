@@ -12,9 +12,9 @@
 import React from "react";
 import { EuiFormRow, EuiCodeEditor } from "@elastic/eui";
 import { RollupAction, UIAction } from "../../../../../models/interfaces";
-import { ActionType } from "../../utils/constants";
 import { makeId } from "../../../../utils/helpers";
 import { DarkModeConsumer } from "../../../../components/DarkMode";
+import { ActionType } from "../../utils/constants";
 
 export default class RollupUIAction implements UIAction<RollupAction> {
   id: string;

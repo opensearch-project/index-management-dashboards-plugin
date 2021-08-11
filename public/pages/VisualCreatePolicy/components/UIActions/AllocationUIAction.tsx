@@ -11,8 +11,8 @@
 
 import React from "react";
 import { AllocationAction, UIAction } from "../../../../../models/interfaces";
-import { ActionType } from "../../utils/constants";
 import { makeId } from "../../../../utils/helpers";
+import { ActionType } from "../../utils/constants";
 
 export default class AllocationUIAction implements UIAction<AllocationAction> {
   id: string;

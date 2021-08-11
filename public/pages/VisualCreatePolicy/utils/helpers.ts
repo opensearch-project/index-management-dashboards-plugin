@@ -11,6 +11,7 @@
 
 import { UIAction, Action, Transition } from "../../../../models/interfaces";
 import {
+  ActionType,
   DEFAULT_ALLOCATION,
   DEFAULT_CLOSE,
   DEFAULT_DELETE,
@@ -24,7 +25,6 @@ import {
   DEFAULT_ROLLOVER,
   DEFAULT_ROLLUP,
   DEFAULT_SNAPSHOT,
-  ActionType,
 } from "./constants";
 import {
   AllocationUIAction,

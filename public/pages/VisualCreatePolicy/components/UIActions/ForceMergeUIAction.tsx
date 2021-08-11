@@ -13,8 +13,8 @@ import React, { ChangeEvent } from "react";
 import { EuiFormRow, EuiFieldNumber } from "@elastic/eui";
 import EuiFormCustomLabel from "../EuiFormCustomLabel";
 import { ForceMergeAction, UIAction } from "../../../../../models/interfaces";
-import { ActionType } from "../../utils/constants";
 import { makeId } from "../../../../utils/helpers";
+import { ActionType } from "../../utils/constants";
 
 export default class ForceMergeUIAction implements UIAction<ForceMergeAction> {
   id: string;

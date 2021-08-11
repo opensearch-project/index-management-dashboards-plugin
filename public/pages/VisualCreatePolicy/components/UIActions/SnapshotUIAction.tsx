@@ -12,8 +12,8 @@
 import React, { ChangeEvent } from "react";
 import { EuiFormRow, EuiFieldText } from "@elastic/eui";
 import { SnapshotAction, UIAction } from "../../../../../models/interfaces";
-import { ActionType } from "../../utils/constants";
 import { makeId } from "../../../../utils/helpers";
+import { ActionType } from "../../utils/constants";
 
 export default class SnapshotUIAction implements UIAction<SnapshotAction> {
   id: string;

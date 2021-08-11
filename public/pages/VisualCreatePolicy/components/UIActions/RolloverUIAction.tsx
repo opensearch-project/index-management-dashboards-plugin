@@ -12,8 +12,8 @@
 import React, { ChangeEvent } from "react";
 import { EuiFormRow, EuiFieldNumber, EuiFieldText } from "@elastic/eui";
 import { RolloverAction, UIAction } from "../../../../../models/interfaces";
-import { ActionType } from "../../utils/constants";
 import { makeId } from "../../../../utils/helpers";
+import { ActionType } from "../../utils/constants";
 
 export default class RolloverUIAction implements UIAction<RolloverAction> {
   id: string;

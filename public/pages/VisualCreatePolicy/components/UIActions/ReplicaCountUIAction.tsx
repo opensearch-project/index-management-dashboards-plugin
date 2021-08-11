@@ -12,8 +12,8 @@
 import React, { ChangeEvent } from "react";
 import { EuiFormRow, EuiFieldNumber } from "@elastic/eui";
 import { ReplicaCountAction, UIAction } from "../../../../../models/interfaces";
-import { ActionType } from "../../utils/constants";
 import { makeId } from "../../../../utils/helpers";
+import { ActionType } from "../../utils/constants";
 
 export default class ReplicaCountUIAction implements UIAction<ReplicaCountAction> {
   id: string;
