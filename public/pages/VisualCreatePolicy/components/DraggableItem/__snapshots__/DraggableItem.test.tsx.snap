@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DraggableAction /> spec renders the component 1`] = `
+exports[`<DraggableItem /> spec renders the component 1`] = `
 <div
   class="euiDroppable euiDroppable--noGrow"
   data-rbd-droppable-context-id="0"
@@ -46,7 +46,7 @@ exports[`<DraggableAction /> spec renders the component 1`] = `
           <button
             aria-label="Delete"
             class="euiButtonIcon euiButtonIcon--danger"
-            data-test-subj="draggable-action-delete-button"
+            data-test-subj="draggable-item-delete-button-some_html_id"
             type="button"
           >
             EuiIconMock
@@ -58,7 +58,7 @@ exports[`<DraggableAction /> spec renders the component 1`] = `
           <button
             aria-label="Edit"
             class="euiButtonIcon euiButtonIcon--primary"
-            data-test-subj="draggable-action-edit-button"
+            data-test-subj="draggable-item-edit-button-some_html_id"
             type="button"
           >
             EuiIconMock
