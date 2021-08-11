@@ -131,8 +131,8 @@ export interface ISMTemplate {
 
 export interface State {
   name: string;
-  actions: object[];
-  transitions: object[];
+  actions?: Action[];
+  transitions?: Transition[];
 }
 
 export interface Action {
