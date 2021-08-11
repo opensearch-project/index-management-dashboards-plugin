@@ -1,0 +1,117 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ * compatible open source license.
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+
+import React, { ChangeEvent } from "react";
+import { EuiAccordion, EuiText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiFieldNumber, EuiFieldText, EuiSelect } from "@elastic/eui";
+import "brace/theme/github";
+import "brace/mode/json";
+import { Action, UIAction } from "../../../../../models/interfaces";
+import EuiFormCustomLabel from "../EuiFormCustomLabel";
+
+interface TimeoutRetrySettingsProps {
+  action: UIAction<Action>;
+  editAction: boolean;
+  onChangeAction: (action: UIAction<any>) => void;
+}
+
+const options = [
+  { value: "exponential", text: "Exponential" },
+  { value: "constant", text: "Constant" },
+  { value: "linear", text: "Linear" },
+];
+
+const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRetrySettingsProps) => (
+  <EuiAccordion id="timeout-retry-settings" buttonContent="Timeout and retry settings">
+    <EuiFlexGroup style={{ padding: "5px 28px" }} direction="column">
+      <EuiFlexItem>
+        <EuiText>
+          <p>
+            <span style={{ color: "grey", fontWeight: 200, fontSize: "15px" }}>
+              Timeout and retry settings are supported to handle an action failure. You can specify parameters based on your need.
+            </span>
+          </p>
+        </EuiText>
+      </EuiFlexItem>
+      <EuiFlexItem>
+        <EuiFormCustomLabel title="Timeout" helpText={`The timeout period for the action. Accepts time units, e.g. "5h" or "1d".`} />
+        <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiFieldText
+                fullWidth
+                isInvalid={false}
+                value={action.action.timeout}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const timeout = e.target.value;
+                  onChangeAction(action.clone({ ...action.action, timeout }));
+                }}
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiFormRow>
+      </EuiFlexItem>
+      <EuiFlexItem>
+        <EuiFormCustomLabel title="Retry count" helpText="The number of times the action should be retried if it fails." />
+        <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiFieldNumber
+                fullWidth
+                isInvalid={false}
+                min={0}
+                value={action.action.retry?.count}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const count = e.target.valueAsNumber;
+                  onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, count } }));
+                }}
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiFormRow>
+      </EuiFlexItem>
+      <EuiFlexItem>
+        <EuiFormCustomLabel title="Retry backoff" helpText="The backoff policy type to use when retrying." />
+        <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiSelect
+            fullWidth
+            id="retry-backoff-type"
+            options={options}
+            value={action.action.retry?.backoff}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+              const backoff = e.target.value;
+              onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, backoff } }));
+            }}
+          />
+        </EuiFormRow>
+      </EuiFlexItem>
+      <EuiFlexItem>
+        <EuiFormCustomLabel title="Retry delay" helpText={`The time to wait between retries. Accepts time units, e.g. "2h" or "1d"`} />
+        <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <EuiFieldText
+                fullWidth
+                isInvalid={false}
+                value={action.action.retry?.delay}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  const delay = e.target.value;
+                  onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, delay } }));
+                }}
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </EuiFormRow>
+      </EuiFlexItem>
+    </EuiFlexGroup>
+  </EuiAccordion>
+);
+
+export default TimeoutRetrySettings;
