@@ -9,6 +9,6 @@
  * GitHub history for details.
  */
 
-import DraggableAction from "./DraggableAction";
+import DraggableItem from "./DraggableItem";
 
-export default DraggableAction;
+export default DraggableItem;

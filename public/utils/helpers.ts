@@ -24,7 +24,12 @@
  * permissions and limitations under the License.
  */
 
+// @ts-ignore
+import { htmlIdGenerator } from "@elastic/eui/lib/services";
+
 export function getErrorMessage(err: any, defaultMessage: string) {
   if (err && err.message) return err.message;
   return defaultMessage;
 }
+
+export const makeId = htmlIdGenerator();
