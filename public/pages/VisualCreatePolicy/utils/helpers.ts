@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-import { UIAction, Action, Transition, ISMTemplate } from "../../../../models/interfaces";
+import { UIAction, Action, Transition, ISMTemplate, State } from "../../../../models/interfaces";
 import {
   ActionType,
   DEFAULT_ALLOCATION,
@@ -112,3 +112,40 @@ export const convertTemplatesToArray = (ismTemplates: ISMTemplate[] | ISMTemplat
 
 export const capitalizeFirstLetter = ([first, ...rest]: string, locale = navigator.language) =>
   first.toLocaleUpperCase(locale) + rest.join("");
+
+export const getOrderInfo = (
+  state: State | null,
+  states: State[]
+): { order: string; afterBeforeState: string; disableOrderSelections: boolean } => {
+  const isEditing = !!state;
+  const editingStateIdx = states.findIndex((s) => s === state);
+  let afterBeforeState = "";
+  let order = "after";
+  let disableOrderSelections = false;
+  if (isEditing) {
+    // If there is only one existing state then we are editing the only state and there is nothing to order after/before
+    if (states.length === 1) {
+      disableOrderSelections = true;
+    } else {
+      // If the editing state is the first state then we are "Add before $secondState"
+      if (editingStateIdx === 0) {
+        afterBeforeState = states[editingStateIdx + 1]?.name;
+        order = "before";
+      } else {
+        // otherwise we are "Add after $previousState"
+        afterBeforeState = states[editingStateIdx - 1]?.name;
+      }
+    }
+  } else {
+    // when creating a new state
+    // If there are no existing states then there is nothing to order after/before
+    if (!states.length) {
+      disableOrderSelections = true;
+    } else {
+      // Else always order it after the last state
+      afterBeforeState = states[states.length - 1]?.name;
+    }
+  }
+
+  return { order, afterBeforeState, disableOrderSelections };
+};

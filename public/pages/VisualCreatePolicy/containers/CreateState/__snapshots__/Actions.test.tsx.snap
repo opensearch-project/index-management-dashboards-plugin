@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Actions /> spec renders the component 1`] = `
+<div
+  class="euiText euiText--medium"
+  style="margin-bottom: 5px;"
+>
+  <h5
+    style="margin-bottom: 2px;"
+  >
+    Actions
+  </h5>
+  <p>
+     
+    <span
+      style="color: grey; font-weight: 200; font-size: 12px;"
+    >
+      Actions are the operations ISM performs when an index is in a certain state.
+    </span>
+  </p>
+</div>
+`;

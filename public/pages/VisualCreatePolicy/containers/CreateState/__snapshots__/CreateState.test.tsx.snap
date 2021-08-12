@@ -1,0 +1,367 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateState /> spec renders the component 1`] = `
+<div>
+  <div>
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="1"
+    />
+    <div
+      data-focus-lock-disabled="false"
+    >
+      <div
+        aria-labelledby="flyoutTitle"
+        class="euiFlyout euiFlyout--medium"
+        role="dialog"
+        style="max-width: 600px;"
+        tabindex="0"
+      >
+        <button
+          aria-label="Close this dialog"
+          class="euiButtonIcon euiButtonIcon--text euiFlyout__closeButton"
+          data-test-subj="euiFlyoutCloseButton"
+          type="button"
+        >
+          EuiIconMock
+        </button>
+        <div
+          class="euiFlyoutHeader euiFlyoutHeader--hasBorder"
+        >
+          <h2
+            class="euiTitle euiTitle--medium"
+            id="flyoutTitle"
+          >
+            Create state: 
+          </h2>
+        </div>
+        <div
+          class="euiFlyoutBody"
+        >
+          <div
+            class="euiFlyoutBody__overflow"
+          >
+            <div
+              class="euiFlyoutBody__overflowContent"
+            >
+              <div
+                class="euiText euiText--medium"
+              >
+                <h5>
+                  State name
+                </h5>
+                <span />
+                 
+              </div>
+              <div
+                class="euiFormRow euiFormRow--fullWidth"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <input
+                        class="euiFieldText euiFieldText--fullWidth"
+                        data-test-subj="create-state-state-name"
+                        id="some_html_id"
+                        placeholder="sample_hot_state"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--l"
+              />
+              <div
+                class="euiText euiText--medium"
+              >
+                <h5>
+                  Order
+                </h5>
+                <span />
+                 
+              </div>
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiFormRow"
+                    id="some_html_id-row"
+                  >
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiFormControlLayout"
+                      >
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <select
+                            aria-label="Retry failed policy from"
+                            class="euiSelect"
+                            id="some_html_id"
+                          >
+                            <option
+                              value="after"
+                            >
+                              Add after
+                            </option>
+                            <option
+                              value="before"
+                            >
+                              Add before
+                            </option>
+                          </select>
+                          <div
+                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          >
+                            <span
+                              class="euiFormControlLayoutCustomIcon"
+                            >
+                              EuiIconMock
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiFormRow"
+                    id="some_html_id-row"
+                  >
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiFormControlLayout"
+                      >
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <select
+                            aria-label="Retry failed policy from"
+                            class="euiSelect"
+                            id="some_html_id"
+                          >
+                            <option
+                              value="hot"
+                            >
+                              hot
+                            </option>
+                            <option
+                              value="cold"
+                            >
+                              cold
+                            </option>
+                          </select>
+                          <div
+                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          >
+                            <span
+                              class="euiFormControlLayoutCustomIcon"
+                            >
+                              EuiIconMock
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr
+                class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginLarge"
+              />
+              <div
+                class="euiText euiText--medium"
+                style="margin-bottom: 5px;"
+              >
+                <h5
+                  style="margin-bottom: 2px;"
+                >
+                  Actions
+                </h5>
+                <p>
+                   
+                  <span
+                    style="color: grey; font-weight: 200; font-size: 12px;"
+                  >
+                    Actions are the operations ISM performs when an index is in a certain state.
+                  </span>
+                </p>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--s"
+              />
+              <div
+                class="euiText euiText--medium"
+              >
+                <p
+                  style="background-color: rgb(245, 247, 250); padding: 5px;"
+                >
+                  <span
+                    style="color: grey; font-weight: 200; font-size: 15px;"
+                  >
+                    No actions have been added.
+                  </span>
+                </p>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--l"
+              />
+              <button
+                class="euiButton euiButton--primary"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButton__content"
+                >
+                  <span
+                    class="euiButton__text"
+                  >
+                    + Add action
+                  </span>
+                </span>
+              </button>
+              <hr
+                class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginLarge"
+              />
+              <div
+                class="euiText euiText--medium"
+                style="margin-bottom: 5px;"
+              >
+                <h5
+                  style="margin-bottom: 2px;"
+                >
+                  Transitions
+                </h5>
+                <p>
+                   
+                  <span
+                    style="color: grey; font-weight: 200; font-size: 12px;"
+                  >
+                    Transitions define the conditions that need to be met for a state to change. After all actions in the current state are completed, the policy starts checking the conditions for transitions.
+                  </span>
+                </p>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--s"
+              />
+              <div
+                class="euiText euiText--medium"
+              >
+                <p
+                  style="background-color: rgb(245, 247, 250); padding: 5px;"
+                >
+                  <span
+                    style="color: grey; font-weight: 200; font-size: 15px;"
+                  >
+                    No transitions have been added.
+                  </span>
+                </p>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--l"
+              />
+              <button
+                class="euiButton euiButton--primary"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButton__content"
+                >
+                  <span
+                    class="euiButton__text"
+                  >
+                    + Add Transition
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlyoutFooter"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <button
+                class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--flushLeft"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButtonEmpty__content"
+                >
+                  EuiIconMock
+                  <span
+                    class="euiButtonEmpty__text"
+                  >
+                    Close
+                  </span>
+                </span>
+              </button>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <button
+                class="euiButton euiButton--primary euiButton--fill euiButton-isDisabled"
+                disabled=""
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButton__content"
+                >
+                  <span
+                    class="euiButton__text"
+                  >
+                    Save state
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+  </div>
+</div>
+`;
