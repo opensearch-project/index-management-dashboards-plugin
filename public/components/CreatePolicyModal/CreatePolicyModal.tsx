@@ -26,16 +26,14 @@ import {
   EuiRadio,
   EuiPanel,
 } from "@elastic/eui";
-import * as H from "history";
 
 interface CreatePolicyModalProps {
   isEdit?: boolean;
-  history: H.History;
   onClose: () => void;
   onClickContinue: (visual: boolean) => void;
 }
 
-const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, onClose, history, onClickContinue }) => {
+const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, onClose, onClickContinue }) => {
   const [visual, setVisual] = useState(true);
   return (
     <EuiOverlayMask>

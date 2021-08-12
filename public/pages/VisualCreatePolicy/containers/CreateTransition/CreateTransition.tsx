@@ -19,7 +19,6 @@ import Transition from "../../components/Transition";
 
 interface CreateTransitionProps {
   editTransition: UITransition | null;
-  transitions: UITransition[];
   onCloseCreateTransition: () => void;
   onClickSaveTransition: (uiTransition: UITransition) => void;
   stateOptions: string[];
