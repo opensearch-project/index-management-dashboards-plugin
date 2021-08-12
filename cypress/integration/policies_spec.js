@@ -103,6 +103,12 @@ describe("Policies", () => {
       // Click Edit button
       cy.get(`[data-test-subj="EditButton"]`).click({ force: true });
 
+      // Route us to edit policy page
+      cy.contains("JSON editor").click({ force: true });
+
+      // Route us to edit policy page
+      cy.contains("Continue").click({ force: true });
+
       // Wait for initial policy JSON to load
       cy.contains("A simple description");
 
