@@ -17,7 +17,7 @@ import { DEFAULT_POLICY } from "../../utils/constants";
 
 describe("<CreateState /> spec", () => {
   it("renders the component", () => {
-    const { container } = render(<CreateState policy={DEFAULT_POLICY} onSaveState={() => {}} onCloseFlyout={() => {}} state={null} />);
-    expect(container.firstChild).toMatchSnapshot();
+    render(<CreateState policy={DEFAULT_POLICY} onSaveState={() => {}} onCloseFlyout={() => {}} state={null} />);
+    expect(document.body.children[1]).toMatchSnapshot();
   });
 });
