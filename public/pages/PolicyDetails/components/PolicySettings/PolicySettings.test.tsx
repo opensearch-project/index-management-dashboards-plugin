@@ -15,13 +15,22 @@ import { render } from "@testing-library/react";
 import PolicySettings from "./PolicySettings";
 
 describe("<PolicySettings /> spec", () => {
+  beforeAll(() => {
+    jest.useFakeTimers('modern');
+    jest.setSystemTime(new Date(2021, 7, 1));
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   it("renders the component", () => {
     const { container } = render(
       <PolicySettings
         policyId={"some_id"}
         channelId={"some_channel_id"}
         primaryTerm={1}
-        lastUpdated={"2021-08-11T23:17:01.054Z"}
+        lastUpdated={new Date().toString()}
         description={"some description"}
         sequenceNumber={2}
         schemaVersion={3}
