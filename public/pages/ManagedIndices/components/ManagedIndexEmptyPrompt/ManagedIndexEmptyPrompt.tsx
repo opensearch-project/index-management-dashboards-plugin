@@ -25,8 +25,11 @@
  */
 
 import React from "react";
+import * as H from "history";
 import { EuiButton, EuiEmptyPrompt, EuiText } from "@elastic/eui";
-import { PLUGIN_NAME, ROUTES } from "../../../../utils/constants";
+import { ModalConsumer } from "../../../../components/Modal";
+import CreatePolicyModal from "../../../../components/CreatePolicyModal";
+import { ROUTES } from "../../../../utils/constants";
 
 export const TEXT = {
   RESET_FILTERS: "There are no managed indices matching your applied filters. Reset your filters to view your managed indices.",
@@ -40,7 +43,7 @@ const getMessagePrompt = ({ filterIsApplied, loading }: ManagedIndexEmptyPromptP
   return TEXT.NO_MANAGED_INDICES;
 };
 
-const getActions: React.SFC<ManagedIndexEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters }) => {
+const getActions: React.SFC<ManagedIndexEmptyPromptProps> = ({ history, filterIsApplied, loading, resetFilters }) => {
   if (loading) return null;
 
   if (filterIsApplied) {
@@ -51,10 +54,18 @@ const getActions: React.SFC<ManagedIndexEmptyPromptProps> = ({ filterIsApplied, 
     );
   }
 
+  const onClickCreate = (visual: boolean): void => {
+    history.push(`${ROUTES.CREATE_POLICY}${visual ? "?type=visual" : ""}`);
+  };
+
   return (
-    <EuiButton fill href={`${PLUGIN_NAME}#${ROUTES.CREATE_POLICY}`}>
-      Create policy
-    </EuiButton>
+    <ModalConsumer>
+      {({ onShow }) => (
+        <EuiButton fill onClick={() => onShow(CreatePolicyModal, { history, onClickContinue: onClickCreate })}>
+          Create policy
+        </EuiButton>
+      )}
+    </ModalConsumer>
   );
 };
 
@@ -62,9 +73,10 @@ interface ManagedIndexEmptyPromptProps {
   filterIsApplied: boolean;
   loading: boolean;
   resetFilters: () => void;
+  history: H.History;
 }
 
-const ManagedIndexEmptyPrompt: React.SFC<ManagedIndexEmptyPromptProps> = props => (
+const ManagedIndexEmptyPrompt: React.SFC<ManagedIndexEmptyPromptProps> = (props) => (
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={

@@ -92,8 +92,11 @@ export interface DocumentTransform {
 export interface Policy {
   description: string;
   default_state: string;
+  error_notification?: ErrorNotification | null;
   states: State[];
-  ism_template: any;
+  ism_template?: ISMTemplate[] | ISMTemplate | null;
+  last_updated_time?: string;
+  schema_version?: number;
 }
 
 export interface ErrorNotification {

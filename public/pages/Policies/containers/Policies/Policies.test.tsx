@@ -189,41 +189,6 @@ describe("<IndexPolicies /> spec", () => {
     await waitFor(() => expect(queryByText(testPolicy.id)).toBeNull());
   });
 
-  it("can route to edit policy", async () => {
-    const policies = [testPolicy];
-    browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({
-      ok: true,
-      response: { policies, totalPolicies: 1 },
-    });
-    const { getByText, getByTestId } = renderPoliciesWithRouter();
-
-    await waitFor(() => getByText(testPolicy.id));
-
-    expect(getByTestId("EditButton")).toBeDisabled();
-
-    userEvent.click(getByTestId(`checkboxSelectRow-${testPolicy.id}`));
-
-    expect(getByTestId("EditButton")).toBeEnabled();
-
-    userEvent.click(getByTestId("EditButton"));
-
-    await waitFor(() => getByText(`Testing edit policy: ?id=${testPolicy.id}`));
-  });
-
-  it("can route to create policy", async () => {
-    browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({
-      ok: true,
-      response: { policies: [], totalPolicies: 1 },
-    });
-    const { getByText, getByTestId } = renderPoliciesWithRouter();
-
-    await waitFor(() => {});
-
-    userEvent.click(getByTestId("Create policyButton"));
-
-    await waitFor(() => getByText("Testing create policy"));
-  });
-
   it("can open and close a policy in modal", async () => {
     const policies = [testPolicy];
     browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({

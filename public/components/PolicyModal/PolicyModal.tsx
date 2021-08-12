@@ -46,7 +46,7 @@ interface PolicyModalProps {
   policy: object | null;
   errorMessage?: string;
   onClose: () => void;
-  onEdit: () => void;
+  onEdit: (visual: boolean) => void;
 }
 
 const PolicyModal: React.SFC<PolicyModalProps> = ({ policyId, policy, errorMessage, onClose, onEdit }) => {
@@ -61,7 +61,7 @@ const PolicyModal: React.SFC<PolicyModalProps> = ({ policyId, policy, errorMessa
         </EuiModalHeader>
 
         <EuiModalBody>
-          <EuiCodeBlock language="json" fontSize="m">
+          <EuiCodeBlock language="json" fontSize="m" style={{ minWidth: 600 }}>
             {errorMessage != null ? errorMessage : policyString}
           </EuiCodeBlock>
         </EuiModalBody>
@@ -83,7 +83,12 @@ const PolicyModal: React.SFC<PolicyModalProps> = ({ policyId, policy, errorMessa
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton onClick={onEdit} fill disabled={!policyId || !policy} data-test-subj="policyModalEditButton">
+              <EuiButton onClick={() => onEdit(false)} fill disabled={!policyId || !policy} data-test-subj="policyModalEditJsonButton">
+                Edit as JSON
+              </EuiButton>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButton onClick={() => onEdit(true)} fill disabled={!policyId || !policy} data-test-subj="policyModalEditButton">
                 Edit
               </EuiButton>
             </EuiFlexItem>
