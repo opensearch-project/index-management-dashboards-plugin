@@ -24,6 +24,7 @@ import {
   EuiModalHeaderTitle,
   EuiModalBody,
   EuiCodeBlock,
+  EuiLoadingSpinner,
 } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -31,7 +32,7 @@ import { PolicyService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import PolicySettings from "../../components/PolicySettings/PolicySettings";
-import { ISMTemplate } from "../../../../../models/interfaces";
+import { ISMTemplate, Policy } from "../../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import States from "../../../VisualCreatePolicy/components/States";
@@ -42,17 +43,10 @@ interface PolicyDetailsProps extends RouteComponentProps {
 
 interface PolicyDetailsState {
   policyId: string;
-  channelId: string;
-  primaryTerm: number;
-  lastUpdated: string;
-  description: string;
-  sequenceNumber: number;
-  schemaVersion: number;
-  ismTemplates: ISMTemplate[];
-
   isJSONModalOpen: boolean;
-  policyJSON: any;
+  policy: Policy | null;
   isDeleteModalVisible: boolean;
+  loading: boolean;
 }
 
 export default class PolicyDetails extends Component<PolicyDetailsProps,
@@ -63,17 +57,10 @@ export default class PolicyDetails extends Component<PolicyDetailsProps,
 
       this.state = {
         policyId: "",
-        channelId: "",
-        primaryTerm: -1,
-        lastUpdated: "",
-        description: "",
-        sequenceNumber: -1,
-        schemaVersion: -1,
-        ismTemplates: [],
-
         isJSONModalOpen: false,
-        policyJSON: {policy:{states:[]}},
+        policy: null,
         isDeleteModalVisible: false,
+        loading: true,
       };
     }
 
@@ -82,10 +69,7 @@ export default class PolicyDetails extends Component<PolicyDetailsProps,
       const { id } = queryString.parse(this.props.location.search);
       if (typeof id === "string") {
         this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, { text: id }]);
-        this.props.history.push(`${ROUTES.POLICY_DETAILS}?id=${id}`);
-        console.log("Getting policy!");
         await this.getPolicy(id);
-        this.forceUpdate();
       } else {
         this.context.notifications.toasts.addDanger(`Invalid policy id: ${id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);
@@ -98,25 +82,26 @@ export default class PolicyDetails extends Component<PolicyDetailsProps,
         const response = await policyService.getPolicy(policyId);
 
         if (response.ok) {
-          console.log("Response: ", response.response);
           this.setState({
+            policy: response.response,
             policyId: response.response.id,
-            channelId: response.response.policy.error_notification,
-            primaryTerm: response.response.primaryTerm,
-            lastUpdated: response.response.policy.last_updated_time,
-            policyJSON: response.response,
-            description: response.response.policy.description,
-            sequenceNumber: response.response.seqNo,
-            schemaVersion: response.response.policy.schema_version,
-          })
-          if (response.response.policy.ism_template) {
-            this.setState({ismTemplates: response.response.policy.ism_template,});
-          }
+            loading: false,
+          });
+
+        } else {
+          this.context.notifications.toasts.addDanger(`Could not load the policy: ${response.error}`);
+          this.props.history.push(ROUTES.INDEX_POLICIES);
         }
       } catch (err) {
-        this.context.notifications.toasts.addDanger(getErrorMessage(err, "Somethin' happened"));
+        this.context.notifications.toasts.addDanger(`Could not load the policy`);
+        this.props.history.push(ROUTES.INDEX_POLICIES);
       }
     }
+
+    onEdit = (): void => {
+      const { policyId } = this.state;
+      if (policyId) this.props.history.push(`${ROUTES.EDIT_POLICY}?id=${policyId}`);
+    };
 
     closeDeleteModal = (): void => {
       this.setState({ isDeleteModalVisible: false });
@@ -153,19 +138,19 @@ export default class PolicyDetails extends Component<PolicyDetailsProps,
     render() {
       const {
         policyId,
-        channelId,
-        primaryTerm,
-        lastUpdated,
-        description,
-        sequenceNumber,
-        schemaVersion,
-        ismTemplates,
         isJSONModalOpen,
-        policyJSON,
+        policy,
         isDeleteModalVisible,
+        loading
       } = this.state;
 
-      console.log(this.props, this.state);
+      if (loading) {
+        return (
+          <EuiFlexGroup justifyContent="center" alignItems="center" style={{ marginTop: '100px' }}>
+            <EuiLoadingSpinner size="xl" />
+          </EuiFlexGroup>
+        );
+      }
 
       // TODO: Needs states section
       // TODO: Edit button needs destination
@@ -197,19 +182,20 @@ export default class PolicyDetails extends Component<PolicyDetailsProps,
           <EuiSpacer />
           <PolicySettings
             policyId={policyId}
-            channelId={channelId}
-            primaryTerm={primaryTerm}
-            lastUpdated={lastUpdated}
-            description={description}
-            sequenceNumber={sequenceNumber}
-            schemaVersion={schemaVersion}
-            ismTemplates={ismTemplates}
+            channelId={policy.policy.error_notification}
+            primaryTerm={policy.primaryTerm}
+            lastUpdated={policy.policy.last_updated_time}
+            description={policy.policy.description}
+            sequenceNumber={policy.seqNo}
+            schemaVersion={policy.policy.schema_version}
+            ismTemplates={policy.policy.ism_template || []}
+            onEdit={this.onEdit}
           />
           <EuiSpacer />
           <States
             onOpenFlyout={() => {}}
             onClickEditState={() => {}}
-            policy={policyJSON.policy}
+            policy={policy.policy}
             onClickDeleteState={() => {}}
             isReadOnly={true}
           />
@@ -223,7 +209,7 @@ export default class PolicyDetails extends Component<PolicyDetailsProps,
 
                 <EuiModalBody>
                   <EuiCodeBlock language="json" fontSize="m" paddingSize="m" overflowHeight={600} inline={false} isCopyable>
-                    {JSON.stringify(policyJSON, null, 4)}
+                    {JSON.stringify(policy, null, 4)}
                   </EuiCodeBlock>
                 </EuiModalBody>
 
