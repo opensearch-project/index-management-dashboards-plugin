@@ -59,7 +59,9 @@ export const getConditionContent = (transition: Transition): string => {
 };
 
 export const getUIActionFromData = (action: Action): UIAction<any> => {
-  const actionType = Object.keys(action).pop();
+  const actionType = Object.keys(action)
+    .filter((key) => key !== "timeout" && key !== "retry")
+    .pop();
   if (!actionType) throw new Error(`Failed to get action using type [${actionType}]`);
   const uiAction = getUIAction(actionType);
   return uiAction.clone(action);

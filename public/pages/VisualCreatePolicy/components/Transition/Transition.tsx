@@ -43,19 +43,17 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           style={{ textTransform: "capitalize" }}
           onChange={(e) => {
             const selectedConditionType = e.target.value;
-            let conditionValue = {};
-            if (selectedConditionType === "min_index_age") conditionValue = { min_index_age: "30d" };
-            if (selectedConditionType === "min_doc_count") conditionValue = { min_doc_count: 1000000 };
-            if (selectedConditionType === "min_size") conditionValue = { min_size: "50gb" };
+            let condition = {};
+            if (selectedConditionType === "min_index_age") condition = { min_index_age: "30d" };
+            if (selectedConditionType === "min_doc_count") condition = { min_doc_count: 1000000 };
+            if (selectedConditionType === "min_size") condition = { min_size: "50gb" };
             if (selectedConditionType === "cron")
-              conditionValue = { cron: { expression: "* 17 * * SAT", timezone: "America/Los_Angeles" } };
+              condition = { cron: { cron: { expression: "* 17 * * SAT", timezone: "America/Los_Angeles" } } };
             onChangeTransition({
               ...uiTransition,
               transition: {
                 ...uiTransition.transition,
-                conditions: {
-                  [selectedConditionType]: conditionValue,
-                },
+                conditions: condition,
               },
             });
           }}
