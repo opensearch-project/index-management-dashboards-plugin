@@ -36,7 +36,7 @@ import {
   DataStreamService,
   NotificationService,
 } from "./services";
-import { indices, policies, managedIndices, rollups, transforms } from "../server/routes";
+import { indices, policies, managedIndices, rollups, transforms, notifications } from "../server/routes";
 import dataStreams from "./routes/dataStreams";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
@@ -73,6 +73,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     managedIndices(services, router);
     rollups(services, router);
     transforms(services, router);
+    notifications(services, router);
 
     return {};
   }

@@ -53,6 +53,12 @@ describe("Policies", () => {
       // Route us to create policy page
       cy.contains("Create policy").click({ force: true });
 
+      // Route us to create policy page
+      cy.contains("JSON editor").click({ force: true });
+
+      // Route us to create policy page
+      cy.contains("Continue").click({ force: true });
+
       // Wait for input to load and then type in the policy ID
       cy.get(`input[placeholder="hot_cold_workflow"]`).type(POLICY_ID, { force: true });
 
@@ -96,6 +102,12 @@ describe("Policies", () => {
 
       // Click Edit button
       cy.get(`[data-test-subj="EditButton"]`).click({ force: true });
+
+      // Route us to edit policy page
+      cy.contains("JSON editor").click({ force: true });
+
+      // Route us to edit policy page
+      cy.contains("Continue").click({ force: true });
 
       // Wait for initial policy JSON to load
       cy.contains("A simple description");

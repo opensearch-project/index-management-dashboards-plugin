@@ -62,7 +62,10 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
     const { editAction } = this.props;
 
     const actionOptions = actions.map((action) => {
-      const key = Object.keys(action).pop() || "";
+      const key =
+        Object.keys(action)
+          .filter((k) => k !== "timeout" && k !== "retry")
+          .pop() || "";
       return {
         value: key,
         text: key

@@ -59,7 +59,9 @@ export const getConditionContent = (transition: Transition): string => {
 };
 
 export const getUIActionFromData = (action: Action): UIAction<any> => {
-  const actionType = Object.keys(action).pop();
+  const actionType = Object.keys(action)
+    .filter((key) => key !== "timeout" && key !== "retry")
+    .pop();
   if (!actionType) throw new Error(`Failed to get action using type [${actionType}]`);
   const uiAction = getUIAction(actionType);
   return uiAction.clone(action);
@@ -148,4 +150,24 @@ export const getOrderInfo = (
   }
 
   return { order, afterBeforeState, disableOrderSelections };
+};
+
+export const getUpdatedStates = (
+  state: State,
+  editingState: State | null,
+  states: State[],
+  order: string,
+  afterBeforeState: string
+): State[] => {
+  const someStates: State[] = [];
+  const isEditing = !!editingState;
+  if ((isEditing && states.length === 1) || (!isEditing && !states.length)) return [state];
+
+  states.forEach((s, idx) => {
+    if (s.name === afterBeforeState && order === "before") someStates.push(state);
+    if (s.name !== editingState?.name) someStates.push(s);
+    if (s.name === afterBeforeState && order === "after") someStates.push(state);
+  });
+
+  return someStates;
 };

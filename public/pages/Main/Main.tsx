@@ -33,6 +33,7 @@ import Policies from "../Policies";
 import ManagedIndices from "../ManagedIndices";
 import Indices from "../Indices";
 import CreatePolicy from "../CreatePolicy";
+import VisualCreatePolicy from "../VisualCreatePolicy";
 import ChangePolicy from "../ChangePolicy";
 import Rollups from "../Rollups";
 import { ModalProvider, ModalRoot } from "../../components/Modal";
@@ -46,6 +47,8 @@ import EditRollup from "../EditRollup/containers";
 import RollupDetails from "../RollupDetails/containers/RollupDetails";
 import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
+import queryString from "query-string";
+import PolicyDetails from "../PolicyDetails/containers/PolicyDetails";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -63,6 +66,18 @@ enum Pathname {
   Rollups = "/rollups",
   Transforms = "/transforms",
 }
+
+const HIDDEN_NAV_ROUTES = [
+  ROUTES.CREATE_ROLLUP,
+  ROUTES.EDIT_ROLLUP,
+  ROUTES.ROLLUP_DETAILS,
+  ROUTES.CREATE_TRANSFORM,
+  ROUTES.EDIT_TRANSFORM,
+  ROUTES.TRANSFORM_DETAILS,
+  ROUTES.CREATE_POLICY,
+  ROUTES.EDIT_POLICY,
+  ROUTES.CHANGE_POLICY,
+];
 
 interface MainProps extends RouteComponentProps {}
 
@@ -121,16 +136,11 @@ export default class Main extends Component<MainProps, object> {
                     <ModalRoot services={services} />
                     <EuiPage restrictWidth="100%">
                       {/*Hide side navigation bar when creating or editing rollup job*/}
-                      {pathname != ROUTES.CREATE_ROLLUP &&
-                        pathname != ROUTES.EDIT_ROLLUP &&
-                        pathname != ROUTES.ROLLUP_DETAILS &&
-                        pathname != ROUTES.CREATE_TRANSFORM &&
-                        pathname != ROUTES.EDIT_TRANSFORM &&
-                        pathname != ROUTES.TRANSFORM_DETAILS && (
-                          <EuiPageSideBar style={{ minWidth: 150 }}>
-                            <EuiSideNav style={{ width: 150 }} items={sideNav} />
-                          </EuiPageSideBar>
-                        )}
+                      {!HIDDEN_NAV_ROUTES.includes(pathname) && (
+                        <EuiPageSideBar style={{ minWidth: 150 }}>
+                          <EuiSideNav style={{ width: 150 }} items={sideNav} />
+                        </EuiPageSideBar>
+                      )}
                       <EuiPageBody>
                         <Switch>
                           <Route
@@ -145,15 +155,33 @@ export default class Main extends Component<MainProps, object> {
                           />
                           <Route
                             path={ROUTES.CREATE_POLICY}
-                            render={(props: RouteComponentProps) => (
-                              <CreatePolicy {...props} isEdit={false} policyService={services.policyService} />
-                            )}
+                            render={(props: RouteComponentProps) =>
+                              queryString.parse(this.props.location.search).type == "visual" ? (
+                                <VisualCreatePolicy
+                                  {...props}
+                                  isEdit={false}
+                                  policyService={services.policyService}
+                                  notificationService={services.notificationService}
+                                />
+                              ) : (
+                                <CreatePolicy {...props} isEdit={false} policyService={services.policyService} />
+                              )
+                            }
                           />
                           <Route
                             path={ROUTES.EDIT_POLICY}
-                            render={(props: RouteComponentProps) => (
-                              <CreatePolicy {...props} isEdit={true} policyService={services.policyService} />
-                            )}
+                            render={(props: RouteComponentProps) =>
+                              queryString.parse(this.props.location.search).type == "visual" ? (
+                                <VisualCreatePolicy
+                                  {...props}
+                                  isEdit={true}
+                                  policyService={services.policyService}
+                                  notificationService={services.notificationService}
+                                />
+                              ) : (
+                                <CreatePolicy {...props} isEdit={true} policyService={services.policyService} />
+                              )
+                            }
                           />
                           <Route
                             path={ROUTES.INDEX_POLICIES}

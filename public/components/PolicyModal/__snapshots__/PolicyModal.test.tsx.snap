@@ -59,6 +59,7 @@ exports[`<PolicyModal /> spec renders the component 1`] = `
               >
                 <code
                   class="euiCodeBlock__code json hljs"
+                  style="min-width: 600px;"
                 >
                   {
     
@@ -134,6 +135,25 @@ exports[`<PolicyModal /> spec renders the component 1`] = `
                     class="euiButtonEmpty__text"
                   >
                     Close
+                  </span>
+                </span>
+              </button>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <button
+                class="euiButton euiButton--primary euiButton--fill"
+                data-test-subj="policyModalEditJsonButton"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButton__content"
+                >
+                  <span
+                    class="euiButton__text"
+                  >
+                    Edit as JSON
                   </span>
                 </span>
               </button>

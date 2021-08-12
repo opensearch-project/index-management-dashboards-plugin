@@ -467,7 +467,12 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
             itemId="index"
             items={managedIndices}
             noItemsMessage={
-              <ManagedIndexEmptyPrompt filterIsApplied={filterIsApplied} loading={loadingManagedIndices} resetFilters={this.resetFilters} />
+              <ManagedIndexEmptyPrompt
+                history={this.props.history}
+                filterIsApplied={filterIsApplied}
+                loading={loadingManagedIndices}
+                resetFilters={this.resetFilters}
+              />
             }
             onChange={this.onTableChange}
             pagination={pagination}

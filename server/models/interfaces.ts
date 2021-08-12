@@ -292,6 +292,7 @@ export interface IndexManagementApi {
   readonly CHANGE_POLICY_BASE: string;
   readonly ROLLUP_JOBS_BASE: string;
   readonly TRANSFORM_BASE: string;
+  readonly CHANNELS_BASE: string;
 }
 
 export interface DefaultHeaders {
