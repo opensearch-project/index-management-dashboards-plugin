@@ -185,7 +185,7 @@ exports[`<PolicySettings /> spec renders the component 1`] = `
             <h3
               class="euiTitle euiTitle--small"
             >
-              ISM Templates
+              ISM Templates (0)
             </h3>
           </div>
         </div>

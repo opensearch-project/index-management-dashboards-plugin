@@ -139,7 +139,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
           <ContentPanel
             panelStyles={{ padding: "20px 20px" }}
             bodyStyles={{ padding: "10px" }}
-            title="ISM Templates"
+            title={`ISM Templates (${ismTemplates.length})`}
             titleSize="s"
           >
             <EuiBasicTable
