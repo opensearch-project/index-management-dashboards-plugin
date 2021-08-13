@@ -35,8 +35,9 @@ import CreateTransition from "../CreateTransition";
 import CreateAction from "../CreateAction";
 import Actions from "./Actions";
 import Transitions from "./Transitions";
-import { getOrderInfo, getUIActionFromData } from "../../utils/helpers";
 import { makeId } from "../../../../utils/helpers";
+import { actionRepoSingleton } from "../../../../plugin";
+import { getOrderInfo } from "../../utils/helpers";
 
 interface CreateStateProps {
   policy: Policy;
@@ -69,7 +70,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
       editAction: null,
       createTransition: false,
       editTransition: null,
-      actions: props.state?.actions?.map((action) => getUIActionFromData(action)) || [],
+      actions: props.state?.actions?.map((action) => actionRepoSingleton.getUIActionFromData(action)) || [],
       transitions: props.state?.transitions?.map((transition) => ({ id: makeId(), transition })) || [],
       afterBeforeState,
       order,

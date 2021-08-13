@@ -14,9 +14,10 @@ import { EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSelect, EuiSpa
 import { UIAction, Action } from "../../../../../models/interfaces";
 import { actions } from "../../utils/constants";
 import TimeoutRetrySettings from "../../components/TimeoutRetrySettings";
-import { capitalizeFirstLetter, getUIAction } from "../../utils/helpers";
+import { capitalizeFirstLetter } from "../../utils/helpers";
 import FlyoutFooter from "../../components/FlyoutFooter";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
+import { actionRepoSingleton } from "../../../../plugin";
 
 interface CreateActionProps {
   stateName: string;
@@ -43,7 +44,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
   // This should be ephemeral and not change the actual list of actions yet as they might click cancel so we put it separate
   onChangeSelectedAction = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedAction = event.target.value;
-    const uiAction = getUIAction(selectedAction);
+    const uiAction = actionRepoSingleton.getUIAction(selectedAction);
     this.setState({ action: uiAction });
   };
 
@@ -61,11 +62,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
     const { action } = this.state;
     const { editAction } = this.props;
 
-    const actionOptions = actions.map((action) => {
-      const key =
-        Object.keys(action)
-          .filter((k) => k !== "timeout" && k !== "retry")
-          .pop() || "";
+    const actionOptions = actionRepoSingleton.getAllActionTypes().map((key) => {
       return {
         value: key,
         text: key
