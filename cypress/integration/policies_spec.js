@@ -188,4 +188,26 @@ describe("Policies", () => {
       });
     });
   });
+
+  describe("can be viewed", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.createPolicy(POLICY_ID, samplePolicy);
+    });
+
+    it("successfully", () => {
+      cy.contains(POLICY_ID);
+
+      cy.get(`[data-test-subj="policyLink_${POLICY_ID}"]`).click({ force: true });
+
+      cy.contains(POLICY_ID);
+      cy.contains(samplePolicy.policy.description);
+      samplePolicy.policy.states.forEach((state, i) => {
+        cy.contains(state.name);
+      });
+
+      cy.get(`[data-test-subj="viewButton"]`).click({ force: true });
+      cy.contains(`View JSON of ${POLICY_ID}`);
+    });
+  })
 });
