@@ -49,7 +49,6 @@ import RollupDetails from "../RollupDetails/containers/RollupDetails";
 import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
 import queryString from "query-string";
-import PolicyDetails from "../PolicyDetails/containers/PolicyDetails";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -77,6 +76,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.TRANSFORM_DETAILS,
   ROUTES.CREATE_POLICY,
   ROUTES.EDIT_POLICY,
+  ROUTES.POLICY_DETAILS,
   ROUTES.CHANGE_POLICY,
 ];
 
