@@ -19,7 +19,7 @@ import ConfirmationModal from "../../../../components/ConfirmationModal";
 import Badge from "../Badge";
 import TransitionContent from "../Transition/TransitionContent";
 import { makeId } from "../../../../utils/helpers";
-import { actionRepoSingleton } from "../../../../plugin";
+import { actionRepoSingleton } from "../../utils/helpers";
 
 interface StateProps {
   state: StateData;

@@ -36,8 +36,7 @@ import CreateAction from "../CreateAction";
 import Actions from "./Actions";
 import Transitions from "./Transitions";
 import { makeId } from "../../../../utils/helpers";
-import { actionRepoSingleton } from "../../../../plugin";
-import { getOrderInfo } from "../../utils/helpers";
+import { actionRepoSingleton, getOrderInfo } from "../../utils/helpers";
 
 interface CreateStateProps {
   policy: Policy;

@@ -14,10 +14,9 @@ import { EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSelect, EuiSpa
 import { UIAction, Action } from "../../../../../models/interfaces";
 import { actions } from "../../utils/constants";
 import TimeoutRetrySettings from "../../components/TimeoutRetrySettings";
-import { capitalizeFirstLetter } from "../../utils/helpers";
+import { actionRepoSingleton, capitalizeFirstLetter } from "../../utils/helpers";
 import FlyoutFooter from "../../components/FlyoutFooter";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
-import { actionRepoSingleton } from "../../../../plugin";
 
 interface CreateActionProps {
   stateName: string;

@@ -27,9 +27,7 @@
 import { AppMountParameters, CoreSetup, CoreStart, Plugin, PluginInitializerContext } from "../../../src/core/public";
 import { IndexManagementPluginSetup } from ".";
 import { IndexManagementPluginStart } from ".";
-import { ActionRepository } from "./pages/VisualCreatePolicy/utils/helpers";
-
-export const actionRepoSingleton = new ActionRepository();
+import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 
 export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   constructor(private readonly initializerContext: PluginInitializerContext) {
@@ -60,8 +58,8 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
   }
 
   public start(core: CoreStart): IndexManagementPluginStart {
-    // https://www.digitalocean.com/community/tutorials/js-js-singletons
-    Object.freeze(actionRepoSingleton);
+    Object.freeze(actionRepoSingleton.repository);
+    // After this point, calling registerAction will throw error because "Object is not extensible"
     return {};
   }
 }

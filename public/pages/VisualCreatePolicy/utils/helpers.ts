@@ -100,7 +100,7 @@ export const getUIAction = (actionType: string): UIAction<any> => {
   }
 };
 
-export class ActionRepository {
+class ActionRepository {
   repository: { [actionType: string]: [new (action: Action) => UIAction<any>, Action] } = {
     allocation: [AllocationUIAction, DEFAULT_ALLOCATION],
     close: [CloseUIAction, DEFAULT_CLOSE],
@@ -144,6 +144,8 @@ export class ActionRepository {
     return new uiAction[0](uiAction[1]);
   };
 }
+
+export const actionRepoSingleton = new ActionRepository();
 
 // Takes in the ismTemplates which could be a single object, array, or not defined and returns them reformatted as a list
 export const convertTemplatesToArray = (ismTemplates: ISMTemplate[] | ISMTemplate | null | undefined): ISMTemplate[] => {
