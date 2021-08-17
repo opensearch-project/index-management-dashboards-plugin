@@ -26,8 +26,14 @@
 
 import { PluginInitializerContext } from "opensearch-dashboards/public";
 import { IndexManagementPlugin } from "./plugin";
+import { Action, UIAction } from "../models/interfaces";
 
-export interface IndexManagementPluginSetup {}
+// export for other plugins to register action
+export { Action, UIAction } from "../models/interfaces";
+
+export interface IndexManagementPluginSetup {
+  registerAction: (actionType: string, uiActionCtor: new (action: Action) => UIAction<any>, defaultAction: Action) => void;
+}
 export interface IndexManagementPluginStart {}
 
 export function plugin(initializerContext: PluginInitializerContext) {

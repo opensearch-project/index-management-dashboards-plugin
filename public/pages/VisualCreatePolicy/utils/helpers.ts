@@ -100,6 +100,53 @@ export const getUIAction = (actionType: string): UIAction<any> => {
   }
 };
 
+class ActionRepository {
+  repository: { [actionType: string]: [new (action: Action) => UIAction<any>, Action] } = {
+    allocation: [AllocationUIAction, DEFAULT_ALLOCATION],
+    close: [CloseUIAction, DEFAULT_CLOSE],
+    delete: [DeleteUIAction, DEFAULT_DELETE],
+    force_merge: [ForceMergeUIAction, DEFAULT_FORCE_MERGE],
+    index_priority: [IndexPriorityUIAction, DEFAULT_INDEX_PRIORITY],
+    notification: [NotificationUIAction, DEFAULT_NOTIFICATION],
+    open: [OpenUIAction, DEFAULT_OPEN],
+    read_only: [ReadOnlyUIAction, DEFAULT_READ_ONLY],
+    read_write: [ReadWriteUIAction, DEFAULT_READ_WRITE],
+    replica_count: [ReplicaCountUIAction, DEFAULT_REPLICA_COUNT],
+    rollover: [RolloverUIAction, DEFAULT_ROLLOVER],
+    rollup: [RollupUIAction, DEFAULT_ROLLUP],
+    snapshot: [SnapshotUIAction, DEFAULT_SNAPSHOT],
+  };
+
+  getAllActionTypes = () => {
+    return Object.keys(this.repository);
+  };
+
+  registerAction = (actionType: string, uiActionCtor: new (action: Action) => UIAction<any>, defaultAction: Action) => {
+    if (this.repository.hasOwnProperty(actionType)) {
+      throw new Error(`Cannot register an action twice in the repository [type=${actionType}]`);
+    }
+
+    this.repository[actionType] = [uiActionCtor, defaultAction];
+  };
+
+  getUIActionFromData = (action: Action) => {
+    const actionType = Object.keys(action)
+      .filter((key) => key !== "timeout" && key !== "retry")
+      .pop();
+    if (!actionType) throw new Error(`Failed to get action using type [${actionType}]`);
+    const uiAction = this.getUIAction(actionType);
+    return uiAction.clone(action);
+  };
+
+  getUIAction = (actionType: string): UIAction<any> => {
+    const uiAction = this.repository[actionType];
+    if (!uiAction) throw new Error(`Action type [${actionType}] not supported`);
+    return new uiAction[0](uiAction[1]);
+  };
+}
+
+export const actionRepoSingleton = new ActionRepository();
+
 // Takes in the ismTemplates which could be a single object, array, or not defined and returns them reformatted as a list
 export const convertTemplatesToArray = (ismTemplates: ISMTemplate[] | ISMTemplate | null | undefined): ISMTemplate[] => {
   const templates = [];
