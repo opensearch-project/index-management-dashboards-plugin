@@ -290,11 +290,16 @@ describe("<CreateTransformForm /> creation", () => {
   });
 
   it("routes from step 1 to step 2 and back", async () => {
-    const { getByTestId, getByLabelText, queryByText, getAllByTestId } = renderCreateTransformFormWithRouter();
+    const { getByTestId, getByLabelText, queryByText, getAllByTestId, getByText } = renderCreateTransformFormWithRouter();
 
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
       ok: false,
       response: {},
+    });
+
+    browserServicesMock.rollupService.getMappings = jest.fn().mockResolvedValue({
+      ok: true,
+      response: sampleMapping,
     });
 
     fireEvent.focus(getByLabelText("Name"));
@@ -313,7 +318,7 @@ describe("<CreateTransformForm /> creation", () => {
 
     userEvent.click(getByTestId("createTransformNextButton"));
 
-    await waitFor(() => {},{timeout:2000});
+    await waitFor(() => {},{timeout:4000});
 
     //Check that it routes to step 2
     expect(queryByText("Job name and description")).toBeNull();
@@ -387,11 +392,9 @@ describe("<CreateTransformForm /> creation", () => {
     expect(queryByText("Job name and description")).toBeNull();
     expect(queryByText('Select fields to transform')).not.toBeNull();
 
-    //Select timestamp
-    // TODO: adapt to Groups + Aggs
+    await waitFor(() => {}, {timeout:2000});
 
-    await waitFor(() => {}, {timeout:2000});
-    await waitFor(() => {}, {timeout:2000});
+    // Data grid should be rendered
     await userEvent.click(getByTestId('dataGridHeaderCell-customer_gender'));
     fireEvent.keyDown(getByTestId('dataGridHeaderCell-category.keyword'), { key: "Enter", code: "Enter"});
     userEvent.click(getByLabelText("Group by terms"));
@@ -400,7 +403,6 @@ describe("<CreateTransformForm /> creation", () => {
 
     //Check that it routes to step 3
     expect(queryByText("Job enabled by default")).not.toBeNull();
-
     userEvent.click(getByTestId("createTransformNextButton"));
 
     //Check that it routes to step 4

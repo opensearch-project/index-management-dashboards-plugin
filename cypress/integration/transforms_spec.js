@@ -16,6 +16,8 @@ const TRANSFORM_ID = "test_transform_id";
 
 describe("Transforms", () => {
     beforeEach(() => {
+      cy.deleteAllIndices();
+
       // Set welcome screen tracking to test_transform_target
       localStorage.setItem("home:welcome:show", true);
 
@@ -38,10 +40,6 @@ describe("Transforms", () => {
     });
 
     describe("can be created", () => {
-      before(() => {
-        cy.deleteAllIndices();
-      });
-
       it("successfully", () => {
         // Confirm we loaded empty state
         cy.contains(
@@ -121,9 +119,9 @@ describe("Transforms", () => {
     });
 
     describe("can be edited", () => {
-      before(() => {
-        cy.deleteAllIndices();
+      beforeEach(() => {
         cy.createTransform(TRANSFORM_ID, sampleTransform);
+        cy.reload();
       });
 
       it("successfully", () => {
@@ -160,9 +158,9 @@ describe("Transforms", () => {
     });
 
     describe("can be deleted", () => {
-      before(() => {
-        cy.deleteAllIndices();
+      beforeEach(() => {
         cy.createTransform(TRANSFORM_ID, sampleTransform);
+        cy.reload();
       });
 
       it("successfully", () => {
@@ -200,9 +198,9 @@ describe("Transforms", () => {
     });
 
     describe("can be enabled and disabled", () => {
-      before(() => {
-        cy.deleteAllIndices();
+      beforeEach(() => {
         cy.createTransform(TRANSFORM_ID, sampleTransform);
+        cy.reload();
       });
 
       it("successfully", () => {
