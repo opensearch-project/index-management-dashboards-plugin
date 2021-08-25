@@ -44,8 +44,3 @@ export const API = {
 };
 
 export const PLUGIN_NAME = "opensearch_index_management_dashboards";
-
-export const ADMIN_AUTH = {
-  username: "admin",
-  password: "admin",
-};

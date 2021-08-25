@@ -29,19 +29,10 @@ jobs:
         with:
           repository: 'opensearch-project/OpenSearch'
           path: OpenSearch
-          ref: '1.0'
+          ref: '1.x'
       - name: Build OpenSearch
         working-directory: ./OpenSearch
-        run: ./gradlew publishToMavenLocal -Dbuild.snapshot=false
-      - name: Checkout OpenSearch2
-        uses: actions/checkout@v2
-        with:
-          repository: 'opensearch-project/OpenSearch'
-          path: OpenSearch2
-          ref: '1.x'
-      - name: Build OpenSearch2
-        working-directory: ./OpenSearch2
-        run: ./gradlew publishToMavenLocal -Dbuild.snapshot=false
+        run: ./gradlew publishToMavenLocal
       # dependencies: common-utils
       - name: Checkout common-utils
         uses: actions/checkout@v2
@@ -51,27 +42,17 @@ jobs:
           ref: 'main'
       - name: Build common-utils
         working-directory: ./common-utils
-        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.1.0 -Dbuild.snapshot=false
+        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.1.0-SNAPSHOT
       # dependencies: job-scheduler
       - name: Checkout job-scheduler
         uses: actions/checkout@v2
         with:
           repository: 'opensearch-project/job-scheduler'
           path: job-scheduler
-          ref: '1.0'
+          ref: 'main'
       - name: Build job-scheduler
         working-directory: ./job-scheduler
-        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.0.0 -Dbuild.snapshot=false
-      # dependencies: alerting-notification
-      - name: Checkout alerting
-        uses: actions/checkout@v2
-        with:
-          repository: 'opensearch-project/alerting'
-          path: alerting
-          ref: '1.0'
-      - name: Build alerting
-        working-directory: ./alerting
-        run: ./gradlew :alerting-notification:publishToMavenLocal -Dopensearch.version=1.0.0 -Dbuild.snapshot=false
+        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.1.0-SNAPSHOT
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -81,7 +62,7 @@ jobs:
       - name: Run opensearch with plugin
         run: |
           cd index-management
-          ./gradlew run &
+          ./gradlew run -Dopensearch.version=1.1.0-SNAPSHOT &
           sleep 300
         # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
       - name: Checkout Index Management Dashboards plugin
