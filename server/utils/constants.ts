@@ -62,3 +62,5 @@ export enum INDEX {
 export enum Setting {
   RolloverAlias = "plugins.index_state_management.rollover_alias",
 }
+
+export const SECURITY_EXCEPTION_PREFIX = "[security_exception]";

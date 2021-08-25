@@ -37,6 +37,7 @@ import {
 import { ServerResponse } from "../../server/models/types";
 import { NODE_API } from "../../utils/constants";
 import { IndexItem } from "../../models/interfaces";
+import { SECURITY_EXCEPTION_PREFIX } from "../../server/utils/constants";
 
 export default class IndexService {
   httpClient: HttpSetup;
@@ -70,6 +71,16 @@ export default class IndexService {
     }
 
     if (!getDataStreamsResponse.ok) {
+      // Data stream security exception shouldn't block this call totally
+      if (getDataStreamsResponse.error.startsWith(SECURITY_EXCEPTION_PREFIX)) {
+        return {
+          ok: true,
+          response: {
+            dataStreams: [],
+            indices: getIndicesResponse.response.indices.map((index: IndexItem) => index.index),
+          },
+        };
+      }
       return {
         ok: false,
         error: getDataStreamsResponse.error,

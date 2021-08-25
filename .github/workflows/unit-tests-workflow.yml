@@ -2,11 +2,10 @@ name: Unit tests workflow
 on:
   pull_request:
     branches:
-      - main
+      - '1.0'
   push:
     branches:
-      - main
-      - development-*
+      - '1.0'
 
 jobs:
   tests:
@@ -47,4 +46,8 @@ jobs:
       - name: Run tests
         run: |
           cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
-          yarn run test:jest
+          yarn run test:jest --coverage
+      - name: Uploads coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

@@ -2,11 +2,10 @@ name: E2E tests workflow
 on:
   pull_request:
     branches:
-      - main
+      - '1.0'
   push:
     branches:
-      - main
-      - development-*
+      - '1.0'
 
 jobs:
   tests:
@@ -29,18 +28,9 @@ jobs:
         with:
           repository: 'opensearch-project/OpenSearch'
           path: OpenSearch
-          ref: '1.0'
+          ref: refs/tags/1.0.0
       - name: Build OpenSearch
         working-directory: ./OpenSearch
-        run: ./gradlew publishToMavenLocal -Dbuild.snapshot=false
-      - name: Checkout OpenSearch2
-        uses: actions/checkout@v2
-        with:
-          repository: 'opensearch-project/OpenSearch'
-          path: OpenSearch2
-          ref: '1.x'
-      - name: Build OpenSearch2
-        working-directory: ./OpenSearch2
         run: ./gradlew publishToMavenLocal -Dbuild.snapshot=false
       # dependencies: common-utils
       - name: Checkout common-utils
@@ -48,10 +38,10 @@ jobs:
         with:
           repository: 'opensearch-project/common-utils'
           path: common-utils
-          ref: 'main'
+          ref: '1.0'
       - name: Build common-utils
         working-directory: ./common-utils
-        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.1.0 -Dbuild.snapshot=false
+        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.0.0
       # dependencies: job-scheduler
       - name: Checkout job-scheduler
         uses: actions/checkout@v2
@@ -77,11 +67,11 @@ jobs:
         with:
           path: index-management
           repository: opensearch-project/index-management
-          ref: 'main'
+          ref: '1.0'
       - name: Run opensearch with plugin
         run: |
           cd index-management
-          ./gradlew run &
+          ./gradlew run -Dopensearch.version=1.0.0 &
           sleep 300
         # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
       - name: Checkout Index Management Dashboards plugin

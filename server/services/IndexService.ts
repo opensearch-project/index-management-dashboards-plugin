@@ -33,6 +33,7 @@ import {
   GetIndicesResponse,
   ExplainResponse,
   ExplainAPIManagedIndexMetaData,
+  IndexToDataStream,
 } from "../models/interfaces";
 import { ServerResponse } from "../models/types";
 import {
@@ -77,7 +78,8 @@ export default class IndexService {
       };
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const [indicesResponse, indexToDataStreamMapping]: [indicesResponse: CatIndex[]] = await Promise.all([
+
+      const [indicesResponse, indexToDataStreamMapping]: [CatIndex[], IndexToDataStream] = await Promise.all([
         callWithRequest("cat.indices", params),
         getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
       ]);
