@@ -18,7 +18,8 @@ import {
   ILegacyScopedClusterClient,
 } from "opensearch-dashboards/server";
 import { ServerResponse } from "../models/types";
-import { DataStream, GetDataStreamsResponse } from "../models/interfaces";
+import { DataStream, GetDataStreamsResponse, IndexToDataStream } from "../models/interfaces";
+import { SECURITY_EXCEPTION_PREFIX } from "../utils/constants";
 
 export default class DataStreamService {
   osDriver: ILegacyCustomClusterClient;
@@ -38,7 +39,16 @@ export default class DataStreamService {
       };
 
       const client = this.osDriver.asScoped(request);
-      const dataStreams = await getDataStreams(client, search);
+      const [dataStreams, apiAccessible, errMsg] = await getDataStreams(client, search);
+
+      if (!apiAccessible)
+        return response.custom({
+          statusCode: 200,
+          body: {
+            ok: false,
+            error: errMsg,
+          },
+        });
 
       return response.custom({
         statusCode: 200,
@@ -66,21 +76,30 @@ export default class DataStreamService {
 export async function getDataStreams(
   { callAsCurrentUser: callWithRequest }: ILegacyScopedClusterClient,
   search?: string
-): Promise<DataStream[]> {
+): Promise<[DataStream[], boolean, string]> {
   const searchPattern = search ? `*${search}*` : "*";
 
+  let accessible = true;
+  let errMsg = "";
   const dataStreamsResponse = await callWithRequest("transport.request", {
     path: `/_data_stream/${searchPattern}`,
     method: "GET",
+  }).catch((e) => {
+    if (e.statusCode === 403 && e.message.startsWith(SECURITY_EXCEPTION_PREFIX)) {
+      accessible = false;
+      errMsg = e.message;
+      return { data_streams: [] };
+    }
+    throw e;
   });
 
-  return dataStreamsResponse["data_streams"];
+  return [dataStreamsResponse["data_streams"], accessible, errMsg];
 }
 
 export async function getIndexToDataStreamMapping({
   callAsCurrentUser: callWithRequest,
-}: ILegacyScopedClusterClient): Promise<{ [indexName: string]: string }> {
-  const dataStreams: DataStream[] = await getDataStreams({ callAsCurrentUser: callWithRequest });
+}: ILegacyScopedClusterClient): Promise<IndexToDataStream> {
+  const [dataStreams] = await getDataStreams({ callAsCurrentUser: callWithRequest });
 
   const mapping: { [indexName: string]: string } = {};
   dataStreams.forEach((dataStream) => {
