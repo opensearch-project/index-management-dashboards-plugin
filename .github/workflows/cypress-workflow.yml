@@ -55,6 +55,7 @@ jobs:
       - name: Build job-scheduler
         working-directory: ./job-scheduler
         run: ./gradlew publishToMavenLocal -Dopensearch.version=${{ env.OPENSEARCH_VERSION }}
+      # dependencies: alerting-notification
       - name: Checkout alerting
         uses: actions/checkout@v2
         with:

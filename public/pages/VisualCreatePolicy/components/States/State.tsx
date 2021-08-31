@@ -27,9 +27,10 @@ interface StateProps {
   idx: number;
   onClickEditState: (state: StateData) => void;
   onClickDeleteState: (idx: number) => void;
+  isReadOnly: boolean;
 }
 
-const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteState }: StateProps) => (
+const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteState, isReadOnly = false }: StateProps) => (
   <EuiAccordion
     style={{ padding: "15px" }}
     id={state.name}
@@ -62,40 +63,42 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
       </EuiFlexGroup>
     }
     extraAction={
-      <EuiFlexGroup gutterSize="m">
-        <EuiFlexItem grow={false}>
-          <ModalConsumer>
-            {({ onShow, onClose }) => (
-              <EuiButtonIcon
-                iconType="trash"
-                aria-label="Delete"
-                color="danger"
-                onClick={() =>
-                  onShow(ConfirmationModal, {
-                    title: "Delete state",
-                    bodyMessage: (
-                      <EuiText>
-                        <span>
-                          Delete "<strong>{state.name}</strong>" permanently? Deleting the state will result in deleting all transitions.
-                        </span>
-                      </EuiText>
-                    ),
-                    actionMessage: "Delete state",
-                    actionProps: { color: "danger" },
-                    modalProps: { maxWidth: 600 },
-                    onAction: () => onClickDeleteState(idx),
-                    onClose,
-                  })
-                }
-                data-test-subj="state-delete-button"
-              />
-            )}
-          </ModalConsumer>
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButtonIcon iconType="pencil" aria-label="Edit" color="primary" onClick={() => onClickEditState(state)} />
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      !isReadOnly && (
+        <EuiFlexGroup gutterSize="m">
+          <EuiFlexItem grow={false}>
+            <ModalConsumer>
+              {({ onShow, onClose }) => (
+                <EuiButtonIcon
+                  iconType="trash"
+                  aria-label="Delete"
+                  color="danger"
+                  onClick={() =>
+                    onShow(ConfirmationModal, {
+                      title: "Delete state",
+                      bodyMessage: (
+                        <EuiText>
+                          <span>
+                            Delete "<strong>{state.name}</strong>" permanently? Deleting the state will result in deleting all transitions.
+                          </span>
+                        </EuiText>
+                      ),
+                      actionMessage: "Delete state",
+                      actionProps: { color: "danger" },
+                      modalProps: { maxWidth: 600 },
+                      onAction: () => onClickDeleteState(idx),
+                      onClose,
+                    })
+                  }
+                  data-test-subj="state-delete-button"
+                />
+              )}
+            </ModalConsumer>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButtonIcon iconType="pencil" aria-label="Edit" color="primary" onClick={() => onClickEditState(state)} />
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      )
     }
     paddingSize="l"
   >
