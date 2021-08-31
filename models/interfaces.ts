@@ -95,7 +95,7 @@ export interface Policy {
   error_notification?: ErrorNotification | null;
   states: State[];
   ism_template?: ISMTemplate[] | ISMTemplate | null;
-  last_updated_time?: string;
+  last_updated_time?: number;
   schema_version?: number;
 }
 
