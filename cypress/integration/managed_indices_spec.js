@@ -71,7 +71,7 @@ describe("Managed indices", () => {
       cy.contains("Removed policy from 1 managed indices");
 
       // Reload the page
-      cy.reload();
+      cy.wait(3000).reload();
 
       // Confirm we are back to empty loading state, give 20 seconds as OSD takes a while to load
       cy.contains("There are no existing managed indices.", { timeout: 20000 });
