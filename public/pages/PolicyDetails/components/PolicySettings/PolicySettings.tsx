@@ -10,99 +10,54 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiBasicTable } from "@elastic/eui";
+import { EuiLink, EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
-import { ISMTemplate } from "../../../../../models/interfaces";
+import { ErrorNotification, ISMTemplate } from "../../../../../models/interfaces";
+import CreatePolicyModal from "../../../../components/CreatePolicyModal";
+import JSONModal from "../../../../components/JSONModal";
 
 interface PolicySettingsProps {
   policyId: string;
-  channelId: string;
+  errorNotification: ErrorNotification | null | undefined;
   primaryTerm: number;
-  lastUpdated: string;
+  lastUpdated: number | undefined;
   description: string;
   sequenceNumber: number;
-  schemaVersion: number;
   ismTemplates: ISMTemplate[] | ISMTemplate | null;
-  onEdit: () => void;
+  onEdit: (visual: boolean) => void;
 }
 
-interface PolicySettingsState {
-  pageIndex: number;
-  pageSize: number;
-  showPerPageOptions: boolean;
-}
+interface PolicySettingsState {}
 
 export default class PolicySettings extends Component<PolicySettingsProps, PolicySettingsState> {
-  constructor(props: PolicySettingsProps) {
-    super(props);
-
-    this.state = {
-      pageIndex: 0,
-      pageSize: 10,
-      showPerPageOptions: true,
-    }
-  }
-
-  onTableChange = ({ page = {} }) => {
-    const { index: pageIndex, size: pageSize } = page;
-
-    this.setState({pageIndex, pageSize});
-  };
-
   render() {
-    const {
-      policyId,
-      channelId,
-      primaryTerm,
-      lastUpdated,
-      description,
-      sequenceNumber,
-      schemaVersion,
-      ismTemplates,
-      onEdit,
-    } = this.props;
+    const { policyId, errorNotification, primaryTerm, lastUpdated, description, sequenceNumber, onEdit } = this.props;
 
-    const {
-      pageIndex,
-      pageSize,
-      showPerPageOptions,
-    } = this.state;
+    const updatedDate = lastUpdated ? new Date(lastUpdated).toLocaleString() : "-";
 
-    const updatedDate = new Date(lastUpdated);
+    let errorNotificationValue: string | JSX.Element = "-";
 
-    const columns = [
-      {
-        field: 'index_patterns',
-        name: 'Index patterns',
-        truncateText: false
-      },
-      {
-        field: 'priority',
-        name: "Priority",
-        truncateText: false
-      }
-    ]
+    if (errorNotification) {
+      errorNotificationValue = (
+        <ModalConsumer>
+          {({ onShow }) => (
+            <EuiLink onClick={() => onShow(JSONModal, { title: "Error notification", json: errorNotification })}>View code</EuiLink>
+          )}
+        </ModalConsumer>
+      );
+    }
 
     const infoItems = [
       { term: "Policy name", value: policyId },
-      { term: "channel ID", value: channelId || "-" },
+      { term: "Error notification", value: errorNotificationValue },
       { term: "Primary term", value: primaryTerm },
-      { term: "Last updated", value: updatedDate.toLocaleString() },
+      { term: "Last updated", value: updatedDate },
       { term: "Policy description", value: description || "-" },
       { term: "Sequence number", value: sequenceNumber },
-      { term: "Schema version", value: schemaVersion },
     ];
 
-    const pagination = {
-      pageIndex: pageIndex,
-      pageSize,
-      totalItemCount: ismTemplates.length || 0,
-      pageSizeOptions: [10, 20, 50],
-      hidePerPageOptions: !showPerPageOptions,
-    };
-
-    return(
+    return (
       <ContentPanel
         actions={
           <ModalConsumer>
@@ -112,7 +67,11 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
                   {
                     text: "Edit",
                     buttonProps: {
-                      onClick: () => onEdit(),
+                      onClick: onEdit,
+                    },
+                    modal: {
+                      onClickModal: (onShow: (component: any, props: object) => void) => () =>
+                        onShow(CreatePolicyModal, { isEdit: true, onClickContinue: onEdit }),
                     },
                   },
                 ]}
@@ -120,7 +79,6 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
             )}
           </ModalConsumer>
         }
-        panelStyles={{ padding: "20px 20px" }}
         bodyStyles={{ padding: "10px" }}
         title="Policy settings"
         titleSize="s"
@@ -137,20 +95,6 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
               </EuiFlexItem>
             ))}
           </EuiFlexGrid>
-          <EuiSpacer size="s" />
-          <ContentPanel
-            panelStyles={{ padding: "20px 20px" }}
-            bodyStyles={{ padding: "10px" }}
-            title={`ISM Templates (${ismTemplates.length})`}
-            titleSize="s"
-          >
-            <EuiBasicTable
-              items={ismTemplates}
-              columns={columns}
-              pagination={pagination}
-              onChange={this.onTableChange}
-            />
-          </ContentPanel>
         </div>
       </ContentPanel>
     );

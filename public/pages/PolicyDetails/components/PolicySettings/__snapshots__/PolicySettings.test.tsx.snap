@@ -3,7 +3,7 @@
 exports[`<PolicySettings /> spec renders the component 1`] = `
 <div
   class="euiPanel euiPanel--paddingMedium"
-  style="padding: 20px 20px;"
+  style="padding-left: 0px; padding-right: 0px;"
 >
   <div
     class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -90,10 +90,10 @@ exports[`<PolicySettings /> spec renders the component 1`] = `
             class="euiText euiText--extraSmall"
           >
             <dt>
-              channel ID
+              Error notification
             </dt>
             <dd>
-              some_channel_id
+              -
             </dd>
           </div>
         </div>
@@ -151,136 +151,6 @@ exports[`<PolicySettings /> spec renders the component 1`] = `
             <dd>
               2
             </dd>
-          </div>
-        </div>
-        <div
-          class="euiFlexItem"
-        >
-          <div
-            class="euiText euiText--extraSmall"
-          >
-            <dt>
-              Schema version
-            </dt>
-            <dd>
-              3
-            </dd>
-          </div>
-        </div>
-      </div>
-      <div
-        class="euiSpacer euiSpacer--s"
-      />
-      <div
-        class="euiPanel euiPanel--paddingMedium"
-        style="padding: 20px 20px;"
-      >
-        <div
-          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-          style="padding: 0px 10px;"
-        >
-          <div
-            class="euiFlexItem"
-          >
-            <h3
-              class="euiTitle euiTitle--small"
-            >
-              ISM Templates (0)
-            </h3>
-          </div>
-        </div>
-        <hr
-          class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-        />
-        <div
-          style="padding: 10px;"
-        >
-          <div
-            class="euiBasicTable"
-          >
-            <div>
-              <div
-                class="euiTableHeaderMobile"
-              >
-                <div
-                  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsBaseline euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow"
-                >
-                  <div
-                    class="euiFlexItem euiFlexItem--flexGrowZero"
-                  />
-                  <div
-                    class="euiFlexItem euiFlexItem--flexGrowZero"
-                  />
-                </div>
-              </div>
-              <table
-                class="euiTable euiTable--responsive"
-                id="some_html_id"
-                tabindex="-1"
-              >
-                <caption
-                  class="euiScreenReaderOnly euiTableCaption"
-                />
-                <thead>
-                  <tr>
-                    <th
-                      class="euiTableHeaderCell"
-                      data-test-subj="tableHeaderCell_index_patterns_0"
-                      role="columnheader"
-                      scope="col"
-                    >
-                      <div
-                        class="euiTableCellContent"
-                      >
-                        <span
-                          class="euiTableCellContent__text"
-                          title="Index patterns"
-                        >
-                          Index patterns
-                        </span>
-                      </div>
-                    </th>
-                    <th
-                      class="euiTableHeaderCell"
-                      data-test-subj="tableHeaderCell_priority_1"
-                      role="columnheader"
-                      scope="col"
-                    >
-                      <div
-                        class="euiTableCellContent"
-                      >
-                        <span
-                          class="euiTableCellContent__text"
-                          title="Priority"
-                        >
-                          Priority
-                        </span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    class="euiTableRow"
-                  >
-                    <td
-                      class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                      colspan="2"
-                    >
-                      <div
-                        class="euiTableCellContent euiTableCellContent--alignCenter"
-                      >
-                        <span
-                          class="euiTableCellContent__text"
-                        >
-                          No items found
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </div>
       </div>

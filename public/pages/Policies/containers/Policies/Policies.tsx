@@ -281,14 +281,14 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
         },
         modal: {
           onClickModal: (onShow: (component: any, props: object) => void) => () =>
-            onShow(CreatePolicyModal, { isEdit: true, history: this.props.history, onClickContinue: this.onClickEdit }),
+            onShow(CreatePolicyModal, { isEdit: true, onClickContinue: this.onClickEdit }),
         },
       },
       {
         text: "Create policy",
         modal: {
           onClickModal: (onShow: (component: any, props: object) => void) => () =>
-            onShow(CreatePolicyModal, { history: this.props.history, onClickContinue: this.onClickCreate }),
+            onShow(CreatePolicyModal, { onClickContinue: this.onClickCreate }),
         },
       },
     ];

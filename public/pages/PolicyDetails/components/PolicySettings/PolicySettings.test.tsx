@@ -16,7 +16,7 @@ import PolicySettings from "./PolicySettings";
 
 describe("<PolicySettings /> spec", () => {
   beforeAll(() => {
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers("modern");
     jest.setSystemTime(new Date(2021, 7, 1));
   });
 
@@ -28,13 +28,13 @@ describe("<PolicySettings /> spec", () => {
     const { container } = render(
       <PolicySettings
         policyId={"some_id"}
-        channelId={"some_channel_id"}
+        errorNotification={null}
         primaryTerm={1}
-        lastUpdated={new Date().toString()}
+        lastUpdated={new Date().valueOf()}
         description={"some description"}
         sequenceNumber={2}
-        schemaVersion={3}
         ismTemplates={[]}
+        onEdit={() => {}}
       />
     );
 
