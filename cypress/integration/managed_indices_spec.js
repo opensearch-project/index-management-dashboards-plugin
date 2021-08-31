@@ -37,6 +37,8 @@ describe("Managed indices", () => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
+    cy.wait(3000).reload();
+
     // Visit ISM OSD
     cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/managed-indices`);
 
@@ -199,7 +201,7 @@ describe("Managed indices", () => {
 
       // Click the index option
       // TODO flaky: Seems sometime click not actually select the option...
-      cy.get(`button[title="${SAMPLE_INDEX}"]`).dblclick().debug();
+      cy.get(`button[title="${SAMPLE_INDEX}"]`).trigger("click", { force: true });
 
       // Get the third combo search input box which should be the policy input
       cy.get(`input[data-test-subj="comboBoxSearchInput"]`).eq(2).focus().type(POLICY_ID_2, { parseSpecialCharSequences: false, delay: 1 });
