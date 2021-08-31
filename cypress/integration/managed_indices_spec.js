@@ -37,7 +37,7 @@ describe("Managed indices", () => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
-    cy.wait(3000).reload();
+    cy.wait(3000);
 
     // Visit ISM OSD
     cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/managed-indices`);
@@ -70,8 +70,8 @@ describe("Managed indices", () => {
       // Confirm we got a remove policy toaster
       cy.contains("Removed policy from 1 managed indices");
 
-      // Reload the page
-      cy.reload();
+      // Wait some time for remove policy to execute before reload
+      cy.wait(3000).reload();
 
       // Confirm we are back to empty loading state, give 20 seconds as OSD takes a while to load
       cy.contains("There are no existing managed indices.", { timeout: 20000 });
