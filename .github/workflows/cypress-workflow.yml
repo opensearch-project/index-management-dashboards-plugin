@@ -83,7 +83,7 @@ jobs:
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           path: OpenSearch-Dashboards
-          ref: '1.0'
+          ref: '1.0.0'
       - name: Get node and yarn versions
         id: versions
         run: |
