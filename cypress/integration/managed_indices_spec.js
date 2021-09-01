@@ -37,6 +37,8 @@ describe("Managed indices", () => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
+    cy.wait(3000);
+
     // Visit ISM OSD
     cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/managed-indices`);
 
@@ -68,8 +70,8 @@ describe("Managed indices", () => {
       // Confirm we got a remove policy toaster
       cy.contains("Removed policy from 1 managed indices");
 
-      // Reload the page
-      cy.reload();
+      // Wait some time for remove policy to execute before reload
+      cy.wait(3000).reload();
 
       // Confirm we are back to empty loading state, give 20 seconds as OSD takes a while to load
       cy.contains("There are no existing managed indices.", { timeout: 20000 });
@@ -198,8 +200,7 @@ describe("Managed indices", () => {
         .type(SAMPLE_INDEX, { parseSpecialCharSequences: false, delay: 1 });
 
       // Click the index option
-      // TODO flaky: Seems sometime click not actually select the option...
-      cy.get(`button[title="${SAMPLE_INDEX}"]`).dblclick().debug();
+      cy.get(`button[title="${SAMPLE_INDEX}"]`).trigger("click", { force: true });
 
       // Get the third combo search input box which should be the policy input
       cy.get(`input[data-test-subj="comboBoxSearchInput"]`).eq(2).focus().type(POLICY_ID_2, { parseSpecialCharSequences: false, delay: 1 });
