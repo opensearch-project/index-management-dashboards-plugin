@@ -100,13 +100,8 @@ export interface Policy {
 }
 
 export interface ErrorNotification {
-  destination?: Destination;
-  channel?: Channel;
+  destination: Destination;
   message_template: MessageTemplate;
-}
-
-export interface Channel {
-  id: string;
 }
 
 export interface Destination {
@@ -228,13 +223,10 @@ export interface InnerCron {
 
 export interface NotificationAction extends Action {
   notification: {
-    destination?: Destination;
-    channel?: {
-      id: string;
-    };
+    destination: Destination;
     message_template: MessageTemplate;
   };
-  notificationJsonString?: string;
+  notificationJsonString: string;
 }
 
 export interface SnapshotAction extends Action {

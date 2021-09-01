@@ -9,86 +9,21 @@
  * GitHub history for details.
  */
 
-import React, { ChangeEvent } from "react";
+import React from "react";
 import { UIAction, NotificationAction } from "../../../../../models/interfaces";
-import { NotificationService, ServicesConsumer } from "../../../../services";
-import { FeatureChannelList } from "../../../../../server/models/interfaces";
+import { ServicesConsumer } from "../../../../services";
 import LegacyNotification from "../LegacyNotification";
-import ChannelNotification from "../ChannelNotification";
-import { getErrorMessage, makeId } from "../../../../utils/helpers";
+import { makeId } from "../../../../utils/helpers";
 import { BrowserServices } from "../../../../models/interfaces";
-import { ActionType, DEFAULT_NOTIFICATION } from "../../utils/constants";
+import { ActionType } from "../../utils/constants";
 
-interface NotifUIState {
-  channels: FeatureChannelList[];
-  loadingChannels: boolean;
-}
+interface NotifUIState {}
 interface NotifUIProps {
   action: NotificationAction;
   clone: (action: NotificationAction) => NotificationUIAction;
   onChangeAction: (action: UIAction<NotificationAction>) => void;
-  notificationService: NotificationService;
 }
 class NotifUI extends React.Component<NotifUIProps, NotifUIState> {
-  state: NotifUIState = {
-    channels: [],
-    loadingChannels: true,
-  };
-
-  componentDidMount(): void {
-    this.getChannels();
-  }
-
-  getChannels = async (): Promise<void> => {
-    this.setState({ loadingChannels: true });
-    try {
-      const { notificationService } = this.props;
-      const response = await notificationService.getChannels();
-      if (response.ok) {
-        this.setState({
-          channels: response.response.feature_channel_list,
-        });
-      } else {
-        this.context.notifications.toasts.addDanger(`Could not load notification channels: ${response.error}`);
-      }
-    } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not load the notification channels"));
-    }
-    this.setState({ loadingChannels: false });
-  };
-
-  onChangeChannelId = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { action, clone, onChangeAction } = this.props;
-    const id = e.target.value;
-    onChangeAction(
-      clone({
-        ...action,
-        notification: {
-          ...action.notification,
-          channel: {
-            id,
-          },
-        },
-      })
-    );
-  };
-
-  onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const { action, clone, onChangeAction } = this.props;
-    const message = e.target.value;
-    onChangeAction(
-      clone({
-        ...action,
-        notification: {
-          ...action.notification,
-          message_template: {
-            source: message,
-          },
-        },
-      })
-    );
-  };
-
   onChangeNotificationJsonString = (str: string) => {
     const { action, clone, onChangeAction } = this.props;
     onChangeAction(
@@ -99,41 +34,12 @@ class NotifUI extends React.Component<NotifUIProps, NotifUIState> {
     );
   };
 
-  onSwitchToChannels = () => {
-    const { action, clone, onChangeAction } = this.props;
-    // Keep any retry settings and overwrite the notification w/ default channels notification
-    const newAction: NotificationAction = { ...action, ...DEFAULT_NOTIFICATION };
-    // Delete the notification json string
-    delete newAction.notificationJsonString;
-    onChangeAction(clone(newAction));
-  };
-
   render() {
     const { action } = this.props;
-    const { channels, loadingChannels } = this.state;
-
-    const hasDestination = !!action.notification?.destination;
-
-    if (hasDestination) {
-      return (
-        <LegacyNotification
-          notificationJsonString={action.notificationJsonString || ""}
-          onChangeNotificationJsonString={this.onChangeNotificationJsonString}
-          onSwitchToChannels={this.onSwitchToChannels}
-          actionNotification
-        />
-      );
-    }
-
     return (
-      <ChannelNotification
-        channelId={action.notification?.channel?.id || ""}
-        channels={channels}
-        loadingChannels={loadingChannels}
-        message={action.notification.message_template.source}
-        onChangeChannelId={this.onChangeChannelId}
-        onChangeMessage={this.onChangeMessage}
-        getChannels={this.getChannels}
+      <LegacyNotification
+        notificationJsonString={action.notificationJsonString || ""}
+        onChangeNotificationJsonString={this.onChangeNotificationJsonString}
         actionNotification
       />
     );
@@ -146,10 +52,7 @@ export default class NotificationUIAction implements UIAction<NotificationAction
   type = ActionType.Notification;
 
   constructor(action: NotificationAction, id: string = makeId()) {
-    let notificationJsonString = "";
-    if (!!action.notification.destination) {
-      notificationJsonString = JSON.stringify(action.notification, null, 4);
-    }
+    const notificationJsonString = JSON.stringify(action.notification, null, 4);
     this.action = { ...action, notificationJsonString };
     this.id = id;
   }
@@ -162,27 +65,16 @@ export default class NotificationUIAction implements UIAction<NotificationAction
     return (
       <ServicesConsumer>
         {(services: BrowserServices | null) =>
-          services && (
-            <NotifUI
-              onChangeAction={onChangeAction}
-              action={this.action}
-              clone={this.clone}
-              notificationService={services.notificationService}
-            />
-          )
+          services && <NotifUI onChangeAction={onChangeAction} action={this.action} clone={this.clone} />
         }
       </ServicesConsumer>
     );
   };
 
   toAction = () => {
-    // If they used legacy json editor use the json string
     const newAction = { ...this.action };
-    let notification = newAction.notification;
-    if (!!newAction.notificationJsonString) {
-      notification = JSON.parse(newAction.notificationJsonString);
-    }
-    // otherwise delete it and return the action
+    const notification = JSON.parse(newAction.notificationJsonString);
+    // delete json strng key and return the action
     delete newAction.notificationJsonString;
     return { ...newAction, notification };
   };

@@ -93,11 +93,13 @@ export const DEFAULT_INDEX_PRIORITY = {
 };
 export const DEFAULT_NOTIFICATION = {
   notification: {
-    channel: {
-      id: "",
+    destination: {
+      slack: {
+        url: "<url>",
+      },
     },
     message_template: {
-      source: "",
+      source: "The index {{ctx.index}} is executing the notification action",
     },
   },
 };

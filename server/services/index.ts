@@ -30,6 +30,5 @@ import PolicyService from "./PolicyService";
 import ManagedIndexService from "./ManagedIndexService";
 import RollupService from "./RollupService";
 import TransformService from "./TransformService";
-import NotificationService from "./NotificationService";
 
-export { IndexService, DataStreamService, PolicyService, ManagedIndexService, RollupService, TransformService, NotificationService };
+export { IndexService, DataStreamService, PolicyService, ManagedIndexService, RollupService, TransformService };
