@@ -36,9 +36,10 @@ interface StatesProps {
   onClickEditState: (state: StateData) => void;
   onClickDeleteState: (idx: number) => void;
   onChangeDefaultState: (event: ChangeEvent<HTMLSelectElement>) => void;
+  isReadOnly: boolean;
 }
 
-const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, onChangeDefaultState }: StatesProps) => {
+const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, onChangeDefaultState, isReadOnly = false }: StatesProps) => {
   return (
     <ContentPanel
       bodyStyles={{ padding: "initial" }}
@@ -58,19 +59,21 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
       }
     >
       <div style={{ padding: "0px 10px" }}>
-        <EuiFormRow compressed style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
-          <EuiSelect
-            compressed
-            prepend="Initial state"
-            options={policy.states.map((state) => ({ text: state.name, value: state.name }))}
-            value={policy.default_state}
-            onChange={onChangeDefaultState}
-          />
-        </EuiFormRow>
-
-        <EuiSpacer size="s" />
-
-        <EuiHorizontalRule margin="none" />
+        {!isReadOnly && (
+          <>
+            <EuiFormRow compressed style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
+              <EuiSelect
+                compressed
+                prepend="Initial state"
+                options={policy.states.map((state) => ({ text: state.name, value: state.name }))}
+                value={policy.default_state}
+                onChange={onChangeDefaultState}
+              />
+            </EuiFormRow>
+            <EuiSpacer size="s" />
+            <EuiHorizontalRule margin="none" />
+          </>
+        )}
 
         <EuiFlexGroup gutterSize="none" direction="column">
           {policy.states.map((state, idx) => (
@@ -81,31 +84,33 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
                 isInitialState={state.name === policy.default_state}
                 onClickEditState={onClickEditState}
                 onClickDeleteState={onClickDeleteState}
+                isReadOnly={isReadOnly}
               />
               <EuiHorizontalRule margin="none" />
             </EuiFlexItem>
           ))}
         </EuiFlexGroup>
 
-        {!!policy.states.length ? (
-          <>
-            <EuiSpacer />
-            <EuiButton onClick={onOpenFlyout} data-test-subj="states-add-state-button">
-              Add state
-            </EuiButton>
-          </>
-        ) : (
-          <EuiEmptyPrompt
-            title={<h2>No states</h2>}
-            titleSize="s"
-            body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
-            actions={
-              <EuiButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
+        {!isReadOnly &&
+          (!!policy.states.length ? (
+            <>
+              <EuiSpacer />
+              <EuiButton onClick={onOpenFlyout} data-test-subj="states-add-state-button">
                 Add state
               </EuiButton>
-            }
-          />
-        )}
+            </>
+          ) : (
+            <EuiEmptyPrompt
+              title={<h2>No states</h2>}
+              titleSize="s"
+              body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
+              actions={
+                <EuiButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
+                  Add state
+                </EuiButton>
+              }
+            />
+          ))}
       </div>
     </ContentPanel>
   );
