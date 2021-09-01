@@ -21,7 +21,6 @@ describe("<LegacyNotification /> spec", () => {
       <LegacyNotification
         notificationJsonString={JSON.stringify(DEFAULT_LEGACY_ERROR_NOTIFICATION)}
         onChangeNotificationJsonString={() => {}}
-        onSwitchToChannels={() => {}}
       />
     );
     expect(container.firstChild).toMatchSnapshot();

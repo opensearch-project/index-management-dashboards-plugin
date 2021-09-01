@@ -30,7 +30,6 @@ export const API_ROUTE_PREFIX = "/_plugins/_ism";
 export const API_ROUTE_PREFIX_ROLLUP = "/_plugins/_rollup";
 export const TRANSFORM_ROUTE_PREFIX = "/_plugins/_transform";
 export const NOTIFICATIONS_API_ROUTE_PREFIX = "/_plugins/_notifications";
-export const CHANNELS_ROUTE = `${NOTIFICATIONS_API_ROUTE_PREFIX}/feature/channels`;
 
 export const API: IndexManagementApi = {
   POLICY_BASE: `${API_ROUTE_PREFIX}/policies`,
@@ -41,7 +40,6 @@ export const API: IndexManagementApi = {
   CHANGE_POLICY_BASE: `${API_ROUTE_PREFIX}/change_policy`,
   ROLLUP_JOBS_BASE: `${API_ROUTE_PREFIX_ROLLUP}/jobs`,
   TRANSFORM_BASE: `${TRANSFORM_ROUTE_PREFIX}`,
-  CHANNELS_BASE: `${CHANNELS_ROUTE}`,
 };
 
 export const DEFAULT_HEADERS: DefaultHeaders = {

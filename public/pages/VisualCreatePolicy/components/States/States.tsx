@@ -36,7 +36,7 @@ interface StatesProps {
   onClickEditState: (state: StateData) => void;
   onClickDeleteState: (idx: number) => void;
   onChangeDefaultState: (event: ChangeEvent<HTMLSelectElement>) => void;
-  isReadOnly: boolean;
+  isReadOnly?: boolean;
 }
 
 const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, onChangeDefaultState, isReadOnly = false }: StatesProps) => {

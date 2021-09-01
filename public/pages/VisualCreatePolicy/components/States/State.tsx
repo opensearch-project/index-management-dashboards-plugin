@@ -27,7 +27,7 @@ interface StateProps {
   idx: number;
   onClickEditState: (state: StateData) => void;
   onClickDeleteState: (idx: number) => void;
-  isReadOnly: boolean;
+  isReadOnly?: boolean;
 }
 
 const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteState, isReadOnly = false }: StateProps) => (

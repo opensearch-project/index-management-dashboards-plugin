@@ -158,12 +158,7 @@ export default class Main extends Component<MainProps, object> {
                             path={ROUTES.CREATE_POLICY}
                             render={(props: RouteComponentProps) =>
                               queryString.parse(this.props.location.search).type == "visual" ? (
-                                <VisualCreatePolicy
-                                  {...props}
-                                  isEdit={false}
-                                  policyService={services.policyService}
-                                  notificationService={services.notificationService}
-                                />
+                                <VisualCreatePolicy {...props} isEdit={false} policyService={services.policyService} />
                               ) : (
                                 <CreatePolicy {...props} isEdit={false} policyService={services.policyService} />
                               )
@@ -173,12 +168,7 @@ export default class Main extends Component<MainProps, object> {
                             path={ROUTES.EDIT_POLICY}
                             render={(props: RouteComponentProps) =>
                               queryString.parse(this.props.location.search).type == "visual" ? (
-                                <VisualCreatePolicy
-                                  {...props}
-                                  isEdit={true}
-                                  policyService={services.policyService}
-                                  notificationService={services.notificationService}
-                                />
+                                <VisualCreatePolicy {...props} isEdit={true} policyService={services.policyService} />
                               ) : (
                                 <CreatePolicy {...props} isEdit={true} policyService={services.policyService} />
                               )
