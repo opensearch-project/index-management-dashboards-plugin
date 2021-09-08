@@ -270,8 +270,8 @@ export default class CreateState extends Component<CreateStateProps, CreateState
     return (
       <EuiFlexGroup justifyContent="spaceBetween">
         <EuiFlexItem grow={false}>
-          <EuiButtonEmpty iconType="cross" onClick={onCloseFlyout} flush="left">
-            Close
+          <EuiButtonEmpty onClick={onCloseFlyout} flush="left">
+            Cancel
           </EuiButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
