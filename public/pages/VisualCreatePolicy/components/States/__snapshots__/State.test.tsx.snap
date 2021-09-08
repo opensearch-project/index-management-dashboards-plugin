@@ -171,7 +171,7 @@ exports[`<State /> spec renders the component 1`] = `
             class="euiFlexItem"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
             >
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -217,7 +217,7 @@ exports[`<State /> spec renders the component 1`] = `
             class="euiFlexItem"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
             >
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
