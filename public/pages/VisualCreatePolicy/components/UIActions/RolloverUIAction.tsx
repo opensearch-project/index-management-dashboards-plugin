@@ -43,22 +43,19 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
   };
 
   render = (action: UIAction<RolloverAction>, onChangeAction: (action: UIAction<RolloverAction>) => void) => {
+    const rollover = action.action.rollover;
     return (
       <>
         <EuiFormRow label="Minimum index age" helpText="The minimum age required to roll over the index." isInvalid={false} error={null}>
           <EuiFieldText
-            value={(action.action as RolloverAction).rollover.min_index_age}
+            value={rollover.min_index_age || ""}
             style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minIndexAge = e.target.value;
-              onChangeAction(
-                this.clone({
-                  rollover: {
-                    ...action.action.rollover,
-                    min_index_age: minIndexAge,
-                  },
-                })
-              );
+              const rollover = { ...action.action.rollover };
+              if (minIndexAge) rollover.min_index_age = minIndexAge;
+              else delete rollover.min_index_age;
+              onChangeAction(this.clone({ rollover }));
             }}
             data-test-subj="action-render-rollover-min-index-age"
           />
@@ -70,18 +67,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
           error={null}
         >
           <EuiFieldNumber
-            value={(action.action as RolloverAction).rollover.min_doc_count}
+            value={typeof rollover.min_doc_count === "undefined" ? "" : rollover.min_doc_count}
             style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minDocCount = e.target.valueAsNumber;
-              onChangeAction(
-                this.clone({
-                  rollover: {
-                    ...action.action.rollover,
-                    min_doc_count: minDocCount,
-                  },
-                })
-              );
+              const rollover = { ...action.action.rollover };
+              if (!isNaN(minDocCount)) rollover.min_doc_count = minDocCount;
+              else delete rollover.min_doc_count;
+              onChangeAction(this.clone({ rollover }));
             }}
             data-test-subj="action-render-rollover-min-doc-count"
           />
@@ -93,18 +86,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
           error={null}
         >
           <EuiFieldText
-            value={(action.action as RolloverAction).rollover.min_size}
+            value={rollover.min_size || ""}
             style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minSize = e.target.value;
-              onChangeAction(
-                this.clone({
-                  rollover: {
-                    ...action.action.rollover,
-                    min_size: minSize,
-                  },
-                })
-              );
+              const rollover = { ...action.action.rollover };
+              if (minSize) rollover.min_size = minSize;
+              else delete rollover.min_size;
+              onChangeAction(this.clone({ rollover }));
             }}
             data-test-subj="action-render-rollover-min-size"
           />
