@@ -29,6 +29,19 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
 
   clone = (action: RolloverAction) => new RolloverUIAction(action, this.id);
 
+  isValid = (action: UIAction<RolloverAction>) => {
+    const minIndexAge = action.action.rollover.min_index_age;
+    const minDocCount = action.action.rollover.min_doc_count;
+    const minSize = action.action.rollover.min_size;
+    if (typeof minDocCount !== "undefined") {
+      if (minDocCount <= 0) return false;
+    }
+
+    // for minIndexAge and minSize just let them through and backend will fail the validation
+    // TODO -> add validation for index age and size.. but involves replicating checks for byte strings and time strings
+    return !!minIndexAge || minDocCount === 0 || !!minDocCount || !!minSize;
+  };
+
   render = (action: UIAction<RolloverAction>, onChangeAction: (action: UIAction<RolloverAction>) => void) => {
     return (
       <>

@@ -29,6 +29,10 @@ export default class ReplicaCountUIAction implements UIAction<ReplicaCountAction
 
   clone = (action: ReplicaCountAction) => new ReplicaCountUIAction(action, this.id);
 
+  isValid = (action: UIAction<ReplicaCountAction>) => {
+    return action.action.replica_count.number_of_replicas >= 0;
+  };
+
   render = (action: UIAction<ReplicaCountAction>, onChangeAction: (action: UIAction<ReplicaCountAction>) => void) => {
     return (
       <EuiFormRow label="Number of replicas" helpText="The number of replicas to set for the index." isInvalid={false} error={null}>

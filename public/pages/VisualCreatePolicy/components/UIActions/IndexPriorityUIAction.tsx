@@ -30,6 +30,10 @@ export default class IndexPriorityUIAction implements UIAction<IndexPriorityActi
 
   clone = (action: IndexPriorityAction) => new IndexPriorityUIAction(action, this.id);
 
+  isValid = (action: UIAction<IndexPriorityAction>) => {
+    return action.action.index_priority.priority >= 0;
+  };
+
   render = (action: UIAction<IndexPriorityAction>, onChangeAction: (action: UIAction<IndexPriorityAction>) => void) => {
     return (
       <>

@@ -30,6 +30,10 @@ export default class ForceMergeUIAction implements UIAction<ForceMergeAction> {
 
   clone = (action: ForceMergeAction) => new ForceMergeUIAction(action, this.id);
 
+  isValid = (action: UIAction<ForceMergeAction>) => {
+    return action.action.force_merge.max_num_segments > 0;
+  };
+
   render = (action: UIAction<ForceMergeAction>, onChangeAction: (action: UIAction<ForceMergeAction>) => void) => {
     return (
       <>

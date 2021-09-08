@@ -61,6 +61,16 @@ export default class NotificationUIAction implements UIAction<NotificationAction
 
   clone = (action: NotificationAction) => new NotificationUIAction(action, this.id);
 
+  isValid = (action: UIAction<NotificationAction>) => {
+    try {
+      JSON.parse(action.action.notificationJsonString);
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
   render = (action: UIAction<NotificationAction>, onChangeAction: (action: UIAction<NotificationAction>) => void) => {
     return (
       <ServicesConsumer>

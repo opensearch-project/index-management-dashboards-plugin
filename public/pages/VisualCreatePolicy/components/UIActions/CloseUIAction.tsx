@@ -28,6 +28,8 @@ export default class CloseUIAction implements UIAction<CloseAction> {
 
   clone = (action: CloseAction) => new CloseUIAction(action, this.id);
 
+  isValid = (action: UIAction<CloseAction>) => true;
+
   render = (action: UIAction<CloseAction>, onChangeAction: (action: UIAction<CloseAction>) => void) => {
     return <div />;
   };

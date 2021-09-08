@@ -29,6 +29,10 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
 
   clone = (action: SnapshotAction) => new SnapshotUIAction(action, this.id);
 
+  isValid = (action: UIAction<SnapshotAction>) => {
+    return !!action.action.snapshot.snapshot && !!action.action.snapshot.repository;
+  };
+
   render = (action: UIAction<SnapshotAction>, onChangeAction: (action: UIAction<SnapshotAction>) => void) => {
     return (
       <>

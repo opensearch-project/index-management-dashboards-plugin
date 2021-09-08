@@ -28,6 +28,8 @@ export default class ReadOnlyUIAction implements UIAction<ReadOnlyAction> {
 
   clone = (action: ReadOnlyAction) => new ReadOnlyUIAction(action, this.id);
 
+  isValid = (action: UIAction<ReadOnlyAction>) => true;
+
   render = (action: UIAction<ReadOnlyAction>, onChangeAction: (action: UIAction<ReadOnlyAction>) => void) => {
     return <div />;
   };
