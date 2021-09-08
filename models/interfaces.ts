@@ -244,16 +244,18 @@ export interface IndexPriorityAction extends Action {
 
 export interface AllocationAction extends Action {
   allocation: {
-    require: {
-      [key: string]: string;
-    };
-    include: {
-      [key: string]: string;
-    };
-    exclude: {
-      [key: string]: string;
-    };
-    wait_for: boolean;
+    // TODO: These require a complete UI and we are only supporting JSON editor for allocation for now
+    // require: {
+    //   [key: string]: string;
+    // };
+    // include: {
+    //   [key: string]: string;
+    // };
+    // exclude: {
+    //   [key: string]: string;
+    // };
+    // wait_for: boolean;
+    jsonString: string;
   };
 }
 

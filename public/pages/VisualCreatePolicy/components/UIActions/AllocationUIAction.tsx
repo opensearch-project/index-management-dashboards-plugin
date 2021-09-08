@@ -10,9 +10,11 @@
  */
 
 import React from "react";
+import { EuiFormRow, EuiCodeEditor } from "@elastic/eui";
 import { AllocationAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
+import { DarkModeConsumer } from "../../../../components/DarkMode";
 
 export default class AllocationUIAction implements UIAction<AllocationAction> {
   id: string;
@@ -28,9 +30,51 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
 
   clone = (action: AllocationAction = this.action) => new AllocationUIAction(action, this.id);
 
-  render = (action: UIAction<AllocationAction>, onChangeAction: (action: UIAction<AllocationAction>) => void) => {
-    return <div />;
+  isValid = (action: UIAction<AllocationAction>) => {
+    try {
+      JSON.parse(this.getActionJsonString(action));
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
   };
 
-  toAction = () => this.action;
+  getActionJsonString = (action: UIAction<AllocationAction>) => {
+    const allocation = action.action.allocation;
+    return allocation.hasOwnProperty("jsonString") ? allocation.jsonString : JSON.stringify(allocation, null, 4);
+  };
+
+  render = (action: UIAction<AllocationAction>, onChangeAction: (action: UIAction<AllocationAction>) => void) => {
+    return (
+      <EuiFormRow isInvalid={false} error={null} style={{ maxWidth: "100%" }}>
+        <DarkModeConsumer>
+          {(isDarkMode) => (
+            <EuiCodeEditor
+              mode="json"
+              theme={isDarkMode ? "sense-dark" : "github"}
+              width="100%"
+              value={this.getActionJsonString(action)}
+              onChange={(str) => {
+                onChangeAction(
+                  this.clone({
+                    ...action,
+                    allocation: { jsonString: str },
+                  })
+                );
+              }}
+              setOptions={{ fontSize: "14px" }}
+              aria-label="Code Editor"
+            />
+          )}
+        </DarkModeConsumer>
+      </EuiFormRow>
+    );
+  };
+
+  toAction = () => {
+    const newAction = { ...this.action };
+    const allocation = JSON.parse(newAction.allocation.jsonString);
+    return { ...newAction, allocation };
+  };
 }
