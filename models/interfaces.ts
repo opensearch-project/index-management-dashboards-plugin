@@ -150,7 +150,7 @@ export interface UIAction<Data> {
   id: string;
   type: ActionType | string;
   render: (uiAction: UIAction<Data>, onChangeAction: (uiAction: UIAction<Data>) => void) => JSX.Element | null;
-  isValid: (action: UIAction<Data>) => boolean;
+  isValid: () => boolean;
   clone: (action: Data) => UIAction<Data>;
   content: () => JSX.Element | string | null;
   toAction: () => Action;

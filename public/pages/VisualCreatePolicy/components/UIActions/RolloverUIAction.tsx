@@ -14,6 +14,7 @@ import { EuiFormRow, EuiFieldNumber, EuiFieldText } from "@elastic/eui";
 import { RolloverAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
+import EuiFormCustomLabel from "../EuiFormCustomLabel";
 
 export default class RolloverUIAction implements UIAction<RolloverAction> {
   id: string;
@@ -29,10 +30,10 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
 
   clone = (action: RolloverAction) => new RolloverUIAction(action, this.id);
 
-  isValid = (action: UIAction<RolloverAction>) => {
-    const minIndexAge = action.action.rollover.min_index_age;
-    const minDocCount = action.action.rollover.min_doc_count;
-    const minSize = action.action.rollover.min_size;
+  isValid = () => {
+    const minIndexAge = this.action.rollover.min_index_age;
+    const minDocCount = this.action.rollover.min_doc_count;
+    const minSize = this.action.rollover.min_size;
     if (typeof minDocCount !== "undefined") {
       if (minDocCount <= 0) return false;
     }
@@ -46,10 +47,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
     const rollover = action.action.rollover;
     return (
       <>
-        <EuiFormRow label="Minimum index age" helpText="The minimum age required to roll over the index." isInvalid={false} error={null}>
+        <EuiFormCustomLabel
+          title="Minimum index age"
+          helpText="The minimum age required to roll over the index."
+          isInvalid={!this.isValid()}
+        />
+        <EuiFormRow isInvalid={!this.isValid()} error={null}>
           <EuiFieldText
             value={rollover.min_index_age || ""}
-            style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minIndexAge = e.target.value;
               const rollover = { ...action.action.rollover };
@@ -60,15 +65,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             data-test-subj="action-render-rollover-min-index-age"
           />
         </EuiFormRow>
-        <EuiFormRow
-          label="Minimum doc count"
+        <EuiFormCustomLabel
+          title="Minimum doc count"
           helpText="The minimum number of documents required to roll over the index."
-          isInvalid={false}
-          error={null}
-        >
+          isInvalid={!this.isValid()}
+        />
+        <EuiFormRow isInvalid={false} error={null}>
           <EuiFieldNumber
             value={typeof rollover.min_doc_count === "undefined" ? "" : rollover.min_doc_count}
-            style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minDocCount = e.target.valueAsNumber;
               const rollover = { ...action.action.rollover };
@@ -79,15 +83,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             data-test-subj="action-render-rollover-min-doc-count"
           />
         </EuiFormRow>
-        <EuiFormRow
-          label="Minimum index size"
+        <EuiFormCustomLabel
+          title="Minimum index size"
           helpText="The minimum size of the total primary shard storage required to roll over the index."
-          isInvalid={false}
-          error={null}
-        >
+          isInvalid={!this.isValid()}
+        />
+        <EuiFormRow isInvalid={false} error={null}>
           <EuiFieldText
             value={rollover.min_size || ""}
-            style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minSize = e.target.value;
               const rollover = { ...action.action.rollover };

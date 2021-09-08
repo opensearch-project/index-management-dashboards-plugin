@@ -28,7 +28,7 @@ export default class ReadWriteUIAction implements UIAction<ReadWriteAction> {
 
   clone = (action: ReadWriteAction) => new ReadWriteUIAction(action, this.id);
 
-  isValid = (action: UIAction<ReadWriteAction>) => true;
+  isValid = () => true;
 
   render = (action: UIAction<ReadWriteAction>, onChangeAction: (action: UIAction<ReadWriteAction>) => void) => {
     return <div />;

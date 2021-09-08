@@ -6,6 +6,7 @@ exports[`<Actions /> spec renders the component 1`] = `
   style="margin-bottom: 5px;"
 >
   <h5
+    class="euiFormLabel "
     style="margin-bottom: 2px;"
   >
     Actions

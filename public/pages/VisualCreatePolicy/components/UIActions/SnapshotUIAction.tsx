@@ -14,6 +14,7 @@ import { EuiFormRow, EuiFieldText } from "@elastic/eui";
 import { SnapshotAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
+import EuiFormCustomLabel from "../EuiFormCustomLabel";
 
 export default class SnapshotUIAction implements UIAction<SnapshotAction> {
   id: string;
@@ -29,22 +30,21 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
 
   clone = (action: SnapshotAction) => new SnapshotUIAction(action, this.id);
 
-  isValid = (action: UIAction<SnapshotAction>) => {
-    return !!action.action.snapshot.snapshot && !!action.action.snapshot.repository;
+  isValid = () => {
+    return !!this.action.snapshot.snapshot && !!this.action.snapshot.repository;
   };
 
   render = (action: UIAction<SnapshotAction>, onChangeAction: (action: UIAction<SnapshotAction>) => void) => {
     return (
       <>
-        <EuiFormRow
-          label="Repository"
+        <EuiFormCustomLabel
+          title="Repository"
           helpText="The repository name that you register through the native snapshot API operations."
-          isInvalid={false}
-          error={null}
-        >
+          isInvalid={!this.isValid()}
+        />
+        <EuiFormRow isInvalid={!this.isValid()} error={null}>
           <EuiFieldText
             value={(action.action as SnapshotAction).snapshot.repository}
-            style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const repository = e.target.value;
               onChangeAction(
@@ -59,10 +59,10 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
             data-test-subj="action-render-snapshot-repository"
           />
         </EuiFormRow>
-        <EuiFormRow label="Snapshot" helpText="The name of the snapshot." isInvalid={false} error={null}>
+        <EuiFormCustomLabel title="Snapshot" helpText="The name of the snapshot." isInvalid={!this.isValid()} />
+        <EuiFormRow isInvalid={!this.isValid()} error={null}>
           <EuiFieldText
             value={(action.action as SnapshotAction).snapshot.snapshot}
-            style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const snapshot = e.target.value;
               onChangeAction(

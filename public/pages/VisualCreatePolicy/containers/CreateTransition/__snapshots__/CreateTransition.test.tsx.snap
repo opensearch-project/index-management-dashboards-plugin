@@ -23,6 +23,7 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         style="margin-bottom: 5px;"
       >
         <h5
+          class="euiFormLabel "
           style="margin-bottom: 2px;"
         >
           Destination state
@@ -115,6 +116,7 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         style="margin-bottom: 5px;"
       >
         <h5
+          class="euiFormLabel "
           style="margin-bottom: 2px;"
         >
           Condition
@@ -194,6 +196,7 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         style="margin-bottom: 5px;"
       >
         <h5
+          class="euiFormLabel "
           style="margin-bottom: 2px;"
         >
           Minimum index age
@@ -224,7 +227,6 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
                 class="euiFieldText"
                 data-test-subj="transition-render-conditions-min-index-age"
                 id="some_html_id"
-                style="text-transform: capitalize;"
                 type="text"
                 value="30d"
               />

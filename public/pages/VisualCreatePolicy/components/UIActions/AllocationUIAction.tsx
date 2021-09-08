@@ -30,9 +30,9 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
 
   clone = (action: AllocationAction = this.action) => new AllocationUIAction(action, this.id);
 
-  isValid = (action: UIAction<AllocationAction>) => {
+  isValid = () => {
     try {
-      JSON.parse(this.getActionJsonString(action));
+      JSON.parse(this.getActionJsonString(this.action));
       return true;
     } catch (err) {
       console.error(err);
@@ -40,21 +40,21 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
     }
   };
 
-  getActionJsonString = (action: UIAction<AllocationAction>) => {
-    const allocation = action.action.allocation;
+  getActionJsonString = (action: AllocationAction) => {
+    const allocation = action.allocation;
     return allocation.hasOwnProperty("jsonString") ? allocation.jsonString : JSON.stringify(allocation, null, 4);
   };
 
   render = (action: UIAction<AllocationAction>, onChangeAction: (action: UIAction<AllocationAction>) => void) => {
     return (
-      <EuiFormRow isInvalid={false} error={null} style={{ maxWidth: "100%" }}>
+      <EuiFormRow isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor
               mode="json"
               theme={isDarkMode ? "sense-dark" : "github"}
               width="100%"
-              value={this.getActionJsonString(action)}
+              value={this.getActionJsonString(action.action)}
               onChange={(str) => {
                 onChangeAction(
                   this.clone({

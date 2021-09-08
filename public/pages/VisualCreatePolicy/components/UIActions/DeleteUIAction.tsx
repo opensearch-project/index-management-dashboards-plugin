@@ -28,7 +28,7 @@ export default class DeleteUIAction implements UIAction<DeleteAction> {
 
   clone = (action: DeleteAction) => new DeleteUIAction(action, this.id);
 
-  isValid = (action: UIAction<DeleteAction>) => true;
+  isValid = () => true;
 
   render = (action: UIAction<DeleteAction>, onChangeAction: (action: UIAction<DeleteAction>) => void) => {
     return <div />;

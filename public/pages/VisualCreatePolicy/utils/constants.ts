@@ -176,8 +176,8 @@ export const DEFAULT_ROLLUP = {
 };
 export const DEFAULT_SNAPSHOT = {
   snapshot: {
-    repository: "",
-    snapshot: "",
+    repository: "example-repository",
+    snapshot: "example-snapshot",
   },
 };
 

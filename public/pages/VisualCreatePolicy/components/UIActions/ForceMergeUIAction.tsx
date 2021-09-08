@@ -30,8 +30,8 @@ export default class ForceMergeUIAction implements UIAction<ForceMergeAction> {
 
   clone = (action: ForceMergeAction) => new ForceMergeUIAction(action, this.id);
 
-  isValid = (action: UIAction<ForceMergeAction>) => {
-    const segments = action.action.force_merge.max_num_segments;
+  isValid = () => {
+    const segments = this.action.force_merge.max_num_segments;
     return !!segments && segments > 0;
   };
 
@@ -39,11 +39,10 @@ export default class ForceMergeUIAction implements UIAction<ForceMergeAction> {
     const segments = action.action.force_merge.max_num_segments;
     return (
       <>
-        <EuiFormCustomLabel title="Max num segments" helpText="The number of segments to merge to." />
-        <EuiFormRow isInvalid={false} error={null}>
+        <EuiFormCustomLabel title="Max num segments" helpText="The number of segments to merge to." isInvalid={!this.isValid()} />
+        <EuiFormRow isInvalid={!this.isValid()} error={null}>
           <EuiFieldNumber
             value={typeof segments === "undefined" ? "" : segments}
-            style={{ textTransform: "capitalize" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const maxNumSegments = e.target.valueAsNumber;
               const forceMerge = { max_num_segments: maxNumSegments };

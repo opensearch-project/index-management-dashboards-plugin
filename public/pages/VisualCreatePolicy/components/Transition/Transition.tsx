@@ -71,7 +71,6 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           <EuiFormRow isInvalid={false} error={null}>
             <EuiFieldText
               value={conditions?.min_index_age}
-              style={{ textTransform: "capitalize" }}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minIndexAge = e.target.value;
                 onChangeTransition({
@@ -99,7 +98,6 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           <EuiFormRow isInvalid={false} error={null}>
             <EuiFieldNumber
               value={typeof conditions?.min_doc_count === "undefined" ? "" : conditions?.min_doc_count}
-              style={{ textTransform: "capitalize" }}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minDocCount = e.target.valueAsNumber;
                 const conditions = { min_doc_count: minDocCount };
@@ -129,7 +127,6 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           <EuiFormRow isInvalid={false} error={null}>
             <EuiFieldText
               value={conditions?.min_size}
-              style={{ textTransform: "capitalize" }}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minSize = e.target.value;
                 onChangeTransition({
@@ -154,7 +151,6 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           <EuiFormRow isInvalid={false} error={null}>
             <EuiFieldText
               value={conditions?.cron?.cron.expression}
-              style={{ textTransform: "capitalize" }}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const expression = e.target.value;
                 onChangeTransition({
