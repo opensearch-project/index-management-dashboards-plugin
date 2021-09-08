@@ -43,26 +43,34 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
-          <button
-            aria-label="Delete"
-            class="euiButtonIcon euiButtonIcon--danger"
-            data-test-subj="draggable-item-delete-button-some_html_id"
-            type="button"
+          <span
+            class="euiToolTipAnchor"
           >
-            EuiIconMock
-          </button>
+            <button
+              aria-label="Delete"
+              class="euiButtonIcon euiButtonIcon--danger"
+              data-test-subj="draggable-item-delete-button-some_html_id"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </span>
         </div>
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
-          <button
-            aria-label="Edit"
-            class="euiButtonIcon euiButtonIcon--primary"
-            data-test-subj="draggable-item-edit-button-some_html_id"
-            type="button"
+          <span
+            class="euiToolTipAnchor"
           >
-            EuiIconMock
-          </button>
+            <button
+              aria-label="Edit"
+              class="euiButtonIcon euiButtonIcon--primary"
+              data-test-subj="draggable-item-edit-button-some_html_id"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </span>
         </div>
       </div>
     </div>
