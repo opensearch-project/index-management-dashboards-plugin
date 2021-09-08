@@ -148,6 +148,11 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
                 style="text-transform: capitalize;"
               >
                 <option
+                  value="none"
+                >
+                  No condition
+                </option>
+                <option
                   value="min_index_age"
                 >
                   Minimum index age
