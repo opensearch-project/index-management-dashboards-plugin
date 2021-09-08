@@ -50,6 +50,7 @@ const Transitions = ({
                   isLast={transitions.length - 1 === idx}
                   onClickDelete={() => onClickDeleteTransition(idx)}
                   onClickEdit={() => onClickEditTransition(transition)}
+                  draggableType="transition"
                 />
               ))}
             </EuiDroppable>

@@ -11,7 +11,7 @@ exports[`<State /> spec renders the component 1`] = `
     <button
       aria-controls="some_name"
       aria-expanded="false"
-      class="euiAccordion__button"
+      class="euiAccordion__button state-accordion"
       id="some_html_id"
       type="button"
     >
@@ -113,25 +113,33 @@ exports[`<State /> spec renders the component 1`] = `
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
-          <button
-            aria-label="Delete"
-            class="euiButtonIcon euiButtonIcon--danger"
-            data-test-subj="state-delete-button"
-            type="button"
+          <span
+            class="euiToolTipAnchor"
           >
-            EuiIconMock
-          </button>
+            <button
+              aria-label="Delete"
+              class="euiButtonIcon euiButtonIcon--danger"
+              data-test-subj="state-delete-button"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </span>
         </div>
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
-          <button
-            aria-label="Edit"
-            class="euiButtonIcon euiButtonIcon--primary"
-            type="button"
+          <span
+            class="euiToolTipAnchor"
           >
-            EuiIconMock
-          </button>
+            <button
+              aria-label="Edit"
+              class="euiButtonIcon euiButtonIcon--primary"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </span>
         </div>
       </div>
     </div>
@@ -163,7 +171,7 @@ exports[`<State /> spec renders the component 1`] = `
             class="euiFlexItem"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
             >
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -209,7 +217,7 @@ exports[`<State /> spec renders the component 1`] = `
             class="euiFlexItem"
           >
             <div
-              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
             >
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"

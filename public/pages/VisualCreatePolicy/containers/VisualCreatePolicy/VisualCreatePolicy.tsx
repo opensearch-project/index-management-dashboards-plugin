@@ -181,7 +181,9 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         this.context.notifications.toasts.addDanger(`Failed to create policy: ${response.error}`);
       }
     } catch (err) {
-      this.setState({ submitError: getErrorMessage(err, "There was a problem creating the policy") });
+      const errorMessage = getErrorMessage(err, "There was a problem creating the policy");
+      this.context.notifications.toasts.addDanger(errorMessage);
+      this.setState({ submitError: errorMessage });
     }
   };
 
@@ -198,10 +200,13 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         this.context.notifications.toasts.addSuccess(`Updated policy: ${response.response._id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);
       } else {
+        this.context.notifications.toasts.addDanger(`Failed to update policy: ${response.error}`);
         this.setState({ submitError: response.error });
       }
     } catch (err) {
-      this.setState({ submitError: getErrorMessage(err, "There was a problem updating the policy") });
+      const errorMessage = getErrorMessage(err, "There was a problem updating the policy");
+      this.context.notifications.toasts.addDanger(errorMessage);
+      this.setState({ submitError: errorMessage });
     }
   };
 

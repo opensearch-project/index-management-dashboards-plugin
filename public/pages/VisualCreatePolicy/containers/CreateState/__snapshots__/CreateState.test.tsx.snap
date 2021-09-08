@@ -27,14 +27,6 @@ exports[`<CreateState /> spec renders the component 1`] = `
         style="max-width: 600px;"
         tabindex="0"
       >
-        <button
-          aria-label="Close this dialog"
-          class="euiButtonIcon euiButtonIcon--text euiFlyout__closeButton"
-          data-test-subj="euiFlyoutCloseButton"
-          type="button"
-        >
-          EuiIconMock
-        </button>
         <div
           class="euiFlyoutHeader euiFlyoutHeader--hasBorder"
         >
@@ -204,6 +196,7 @@ exports[`<CreateState /> spec renders the component 1`] = `
                 style="margin-bottom: 5px;"
               >
                 <h5
+                  class="euiFormLabel "
                   style="margin-bottom: 2px;"
                 >
                   Actions
@@ -258,6 +251,7 @@ exports[`<CreateState /> spec renders the component 1`] = `
                 style="margin-bottom: 5px;"
               >
                 <h5
+                  class="euiFormLabel "
                   style="margin-bottom: 2px;"
                 >
                   Transitions
@@ -323,11 +317,10 @@ exports[`<CreateState /> spec renders the component 1`] = `
                 <span
                   class="euiButtonContent euiButtonEmpty__content"
                 >
-                  EuiIconMock
                   <span
                     class="euiButtonEmpty__text"
                   >
-                    Close
+                    Cancel
                   </span>
                 </span>
               </button>
