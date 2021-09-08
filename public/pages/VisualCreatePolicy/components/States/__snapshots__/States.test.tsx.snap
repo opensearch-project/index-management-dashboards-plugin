@@ -120,7 +120,7 @@ exports[`<States /> spec renders the component 1`] = `
               <button
                 aria-controls="hot"
                 aria-expanded="false"
-                class="euiAccordion__button"
+                class="euiAccordion__button state-accordion"
                 id="some_html_id"
                 type="button"
               >
@@ -222,25 +222,33 @@ exports[`<States /> spec renders the component 1`] = `
                   <div
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
-                    <button
-                      aria-label="Delete"
-                      class="euiButtonIcon euiButtonIcon--danger"
-                      data-test-subj="state-delete-button"
-                      type="button"
+                    <span
+                      class="euiToolTipAnchor"
                     >
-                      EuiIconMock
-                    </button>
+                      <button
+                        aria-label="Delete"
+                        class="euiButtonIcon euiButtonIcon--danger"
+                        data-test-subj="state-delete-button"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
                   </div>
                   <div
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
-                    <button
-                      aria-label="Edit"
-                      class="euiButtonIcon euiButtonIcon--primary"
-                      type="button"
+                    <span
+                      class="euiToolTipAnchor"
                     >
-                      EuiIconMock
-                    </button>
+                      <button
+                        aria-label="Edit"
+                        class="euiButtonIcon euiButtonIcon--primary"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -352,7 +360,7 @@ exports[`<States /> spec renders the component 1`] = `
               <button
                 aria-controls="cold"
                 aria-expanded="false"
-                class="euiAccordion__button"
+                class="euiAccordion__button state-accordion"
                 id="some_html_id"
                 type="button"
               >
@@ -415,25 +423,33 @@ exports[`<States /> spec renders the component 1`] = `
                   <div
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
-                    <button
-                      aria-label="Delete"
-                      class="euiButtonIcon euiButtonIcon--danger"
-                      data-test-subj="state-delete-button"
-                      type="button"
+                    <span
+                      class="euiToolTipAnchor"
                     >
-                      EuiIconMock
-                    </button>
+                      <button
+                        aria-label="Delete"
+                        class="euiButtonIcon euiButtonIcon--danger"
+                        data-test-subj="state-delete-button"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
                   </div>
                   <div
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
-                    <button
-                      aria-label="Edit"
-                      class="euiButtonIcon euiButtonIcon--primary"
-                      type="button"
+                    <span
+                      class="euiToolTipAnchor"
                     >
-                      EuiIconMock
-                    </button>
+                      <button
+                        aria-label="Edit"
+                        class="euiButtonIcon euiButtonIcon--primary"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
                   </div>
                 </div>
               </div>
