@@ -35,7 +35,6 @@ export default class RollupUIAction implements UIAction<RollupAction> {
       JSON.parse(this.getActionJsonString(this.action));
       return true;
     } catch (err) {
-      console.error(err);
       return false;
     }
   };
@@ -64,7 +63,7 @@ export default class RollupUIAction implements UIAction<RollupAction> {
               onChange={(str) => {
                 onChangeAction(
                   this.clone({
-                    ...action,
+                    ...action.action,
                     rollup: { jsonString: str },
                   })
                 );

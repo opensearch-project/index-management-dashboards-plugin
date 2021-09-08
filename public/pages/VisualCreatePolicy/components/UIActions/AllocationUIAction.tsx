@@ -35,7 +35,6 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
       JSON.parse(this.getActionJsonString(this.action));
       return true;
     } catch (err) {
-      console.error(err);
       return false;
     }
   };
@@ -43,6 +42,11 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
   getActionJsonString = (action: AllocationAction) => {
     const allocation = action.allocation;
     return allocation.hasOwnProperty("jsonString") ? allocation.jsonString : JSON.stringify(allocation, null, 4);
+  };
+
+  getActionJson = (action: AllocationAction) => {
+    const allocation = action.allocation;
+    return allocation.hasOwnProperty("jsonString") ? JSON.parse(allocation.jsonString) : allocation;
   };
 
   render = (action: UIAction<AllocationAction>, onChangeAction: (action: UIAction<AllocationAction>) => void) => {
@@ -58,7 +62,7 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
               onChange={(str) => {
                 onChangeAction(
                   this.clone({
-                    ...action,
+                    ...action.action,
                     allocation: { jsonString: str },
                   })
                 );
@@ -72,9 +76,8 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
     );
   };
 
-  toAction = () => {
-    const newAction = { ...this.action };
-    const allocation = JSON.parse(newAction.allocation.jsonString);
-    return { ...newAction, allocation };
-  };
+  toAction = () => ({
+    ...this.action,
+    allocation: this.getActionJson(this.action),
+  });
 }
