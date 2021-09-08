@@ -45,6 +45,11 @@ export default class RollupUIAction implements UIAction<RollupAction> {
     return rollup.hasOwnProperty("jsonString") ? rollup.jsonString : JSON.stringify(rollup, null, 4);
   };
 
+  getActionJson = (action: RollupAction) => {
+    const rollup = action.rollup;
+    return rollup.hasOwnProperty("jsonString") ? JSON.parse(rollup.jsonString) : rollup;
+  };
+
   render = (action: UIAction<RollupAction>, onChangeAction: (action: UIAction<RollupAction>) => void) => {
     // If we don't have a JSON string yet it just means we haven't converted the rollup to it yet
     return (
@@ -75,6 +80,6 @@ export default class RollupUIAction implements UIAction<RollupAction> {
 
   toAction = () => ({
     ...this.action,
-    rollup: { ism_rollup: JSON.parse(this.action.rollup.jsonString) },
+    rollup: this.getActionJson(this.action),
   });
 }
