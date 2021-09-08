@@ -158,7 +158,9 @@ export default class CreateState extends Component<CreateStateProps, CreateState
     if (action?.action) {
       let newActions = [...actions, action];
       if (!!editAction) {
-        const foundActionIdx = actions.findIndex(({ id }) => action.id === id);
+        // Use edit action id instead of action id.. as current logic of editing an action can end
+        // up with a new id if you switch action types, i.e. rollover -> delete will create a new class w/ a new id
+        const foundActionIdx = actions.findIndex(({ id }) => editAction.id === id);
         if (foundActionIdx >= 0) {
           newActions = actions
             .slice(0, foundActionIdx)
