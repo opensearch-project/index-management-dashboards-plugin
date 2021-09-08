@@ -47,6 +47,7 @@ interface CreateStateProps {
 
 interface CreateStateState {
   name: string;
+  nameError: string;
   createAction: boolean;
   editAction: UIAction<Action> | null;
   createTransition: boolean;
@@ -65,6 +66,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
     const { afterBeforeState, order, disableOrderSelections } = getOrderInfo(props.state, props.policy.states);
     this.state = {
       name: props.state?.name || "",
+      nameError: "",
       createAction: false,
       editAction: null,
       createTransition: false,
@@ -78,8 +80,19 @@ export default class CreateState extends Component<CreateStateProps, CreateState
   }
 
   onChangeStateName = (event: ChangeEvent<HTMLInputElement>) => {
+    const { state, policy } = this.props;
     const name = event.target.value;
-    this.setState((state) => ({ name }));
+    const isEditing = !!this.props.state;
+    let nameError = "";
+    // If we are not editing a state or if we are editing and have changed the name
+    if (!isEditing || (isEditing && name !== state?.name)) {
+      // then check to make sure a state doesn't already exist in the policy with that name
+      if (!!policy.states.find((state) => state.name === name)) {
+        nameError = "A state with this name already exists.";
+      }
+    }
+
+    this.setState({ name, nameError });
   };
 
   onDragEndActions = ({ source, destination }: DropResult) => {
@@ -183,7 +196,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
 
   renderDefault = () => {
     const { policy, state } = this.props;
-    const { actions, name, afterBeforeState, order, disableOrderSelections } = this.state;
+    const { actions, name, nameError, afterBeforeState, order, disableOrderSelections } = this.state;
     // If we are editing a state filter it out from the selectable options
     const stateOptions = policy.states.map((state) => ({ value: state.name, text: state.name })).filter((s) => s.value !== state?.name);
     return (
@@ -193,10 +206,10 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           <span /> {/* Dummy span to get rid of last child styling on h5 */}
         </EuiText>
 
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiFormRow fullWidth isInvalid={!!nameError} error={nameError}>
           <EuiFieldText
             fullWidth
-            isInvalid={false}
+            isInvalid={!!nameError}
             placeholder="sample_hot_state"
             readOnly={false}
             value={name}
@@ -265,7 +278,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
 
   renderDefaultFooter = () => {
     const { onCloseFlyout, state } = this.props;
-    const { name } = this.state;
+    const { name, nameError } = this.state;
     const isEditing = !!state;
     return (
       <EuiFlexGroup justifyContent="spaceBetween">
@@ -275,7 +288,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           </EuiButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton fill disabled={!name.trim().length} onClick={this.onClickSaveState}>
+          <EuiButton fill disabled={!name.trim().length || !!nameError} onClick={this.onClickSaveState}>
             {isEditing ? "Update state" : "Save state"}
           </EuiButton>
         </EuiFlexItem>
