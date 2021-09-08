@@ -48,7 +48,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
               <EuiFieldText
                 fullWidth
                 isInvalid={false}
-                value={action.action.timeout}
+                value={action.action.timeout || ""}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const timeout = e.target.value;
                   onChangeAction(action.clone({ ...action.action, timeout }));
@@ -67,10 +67,12 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
                 fullWidth
                 isInvalid={false}
                 min={0}
-                value={action.action.retry?.count}
+                value={typeof action.action.retry?.count === "undefined" ? "" : action.action.retry.count}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const count = e.target.valueAsNumber;
-                  onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, count } }));
+                  const retry = { ...action.action.retry, count };
+                  if (isNaN(count)) delete retry.count;
+                  onChangeAction(action.clone({ ...action.action, retry }));
                 }}
               />
             </EuiFlexItem>
@@ -84,7 +86,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
             fullWidth
             id="retry-backoff-type"
             options={options}
-            value={action.action.retry?.backoff}
+            value={action.action.retry?.backoff || ""}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
               const backoff = e.target.value;
               onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, backoff } }));
@@ -100,7 +102,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
               <EuiFieldText
                 fullWidth
                 isInvalid={false}
-                value={action.action.retry?.delay}
+                value={action.action.retry?.delay || ""}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const delay = e.target.value;
                   onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, delay } }));

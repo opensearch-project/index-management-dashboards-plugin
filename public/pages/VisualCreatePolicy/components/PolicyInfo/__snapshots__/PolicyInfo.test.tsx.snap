@@ -33,6 +33,7 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         style="margin-bottom: 5px;"
       >
         <h5
+          class="euiFormLabel "
           style="margin-bottom: 2px;"
         >
           Policy ID
@@ -79,6 +80,7 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         style="margin-bottom: 5px;"
       >
         <h5
+          class="euiFormLabel "
           style="margin-bottom: 2px;"
         >
           Description

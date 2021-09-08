@@ -22,6 +22,7 @@ interface NotifUIProps {
   action: NotificationAction;
   clone: (action: NotificationAction) => NotificationUIAction;
   onChangeAction: (action: UIAction<NotificationAction>) => void;
+  isInvalid: boolean;
 }
 class NotifUI extends React.Component<NotifUIProps, NotifUIState> {
   onChangeNotificationJsonString = (str: string) => {
@@ -35,12 +36,13 @@ class NotifUI extends React.Component<NotifUIProps, NotifUIState> {
   };
 
   render() {
-    const { action } = this.props;
+    const { action, isInvalid } = this.props;
     return (
       <LegacyNotification
         notificationJsonString={action.notificationJsonString || ""}
         onChangeNotificationJsonString={this.onChangeNotificationJsonString}
         actionNotification
+        isInvalid={isInvalid}
       />
     );
   }
@@ -61,11 +63,21 @@ export default class NotificationUIAction implements UIAction<NotificationAction
 
   clone = (action: NotificationAction) => new NotificationUIAction(action, this.id);
 
+  isValid = () => {
+    try {
+      JSON.parse(this.action.notificationJsonString);
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  };
+
   render = (action: UIAction<NotificationAction>, onChangeAction: (action: UIAction<NotificationAction>) => void) => {
     return (
       <ServicesConsumer>
         {(services: BrowserServices | null) =>
-          services && <NotifUI onChangeAction={onChangeAction} action={this.action} clone={this.clone} />
+          services && <NotifUI onChangeAction={onChangeAction} action={this.action} clone={this.clone} isInvalid={!this.isValid()} />
         }
       </ServicesConsumer>
     );

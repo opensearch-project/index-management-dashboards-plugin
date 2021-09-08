@@ -23,6 +23,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         style="margin-bottom: 5px;"
       >
         <h5
+          class="euiFormLabel "
           style="margin-bottom: 2px;"
         >
           Action type
@@ -147,63 +148,71 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
-        id="some_html_id-row"
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
       >
-        <div
-          class="euiFormRow__labelWrapper"
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Minimum index age
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormControlLayout"
-          >
-            <div
-              class="euiFormControlLayout__childrenWrapper"
-            >
-              <input
-                aria-describedby="some_html_id-help"
-                class="euiFieldText"
-                data-test-subj="action-render-rollover-min-index-age"
-                id="some_html_id"
-                style="text-transform: capitalize;"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            id="some_html_id-help"
+          Minimum index age
+        </h5>
+        <p>
+           
+          <span
+            style="color: grey; font-weight: 200; font-size: 12px;"
           >
             The minimum age required to roll over the index.
-          </div>
-        </div>
+          </span>
+        </p>
       </div>
       <div
         class="euiFormRow"
         id="some_html_id-row"
       >
         <div
-          class="euiFormRow__labelWrapper"
+          class="euiFormRow__fieldWrapper"
         >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
+          <div
+            class="euiFormControlLayout"
           >
-            Minimum doc count
-          </label>
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText"
+                data-test-subj="action-render-rollover-min-index-age"
+                id="some_html_id"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
         </div>
+      </div>
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Minimum doc count
+        </h5>
+        <p>
+           
+          <span
+            style="color: grey; font-weight: 200; font-size: 12px;"
+          >
+            The minimum number of documents required to roll over the index.
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
         <div
           class="euiFormRow__fieldWrapper"
         >
@@ -214,39 +223,39 @@ exports[`<CreateAction /> spec renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                aria-describedby="some_html_id-help"
                 class="euiFieldNumber"
                 data-test-subj="action-render-rollover-min-doc-count"
                 id="some_html_id"
-                style="text-transform: capitalize;"
                 type="number"
                 value="5"
               />
             </div>
           </div>
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            id="some_html_id-help"
-          >
-            The minimum number of documents required to roll over the index.
-          </div>
         </div>
+      </div>
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Minimum index size
+        </h5>
+        <p>
+           
+          <span
+            style="color: grey; font-weight: 200; font-size: 12px;"
+          >
+            The minimum size of the total primary shard storage required to roll over the index.
+          </span>
+        </p>
       </div>
       <div
         class="euiFormRow"
         id="some_html_id-row"
       >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Minimum index size
-          </label>
-        </div>
         <div
           class="euiFormRow__fieldWrapper"
         >
@@ -257,21 +266,13 @@ exports[`<CreateAction /> spec renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                aria-describedby="some_html_id-help"
                 class="euiFieldText"
                 data-test-subj="action-render-rollover-min-size"
                 id="some_html_id"
-                style="text-transform: capitalize;"
                 type="text"
                 value=""
               />
             </div>
-          </div>
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            id="some_html_id-help"
-          >
-            The minimum size of the total primary shard storage required to roll over the index.
           </div>
         </div>
       </div>
@@ -338,6 +339,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     style="margin-bottom: 5px;"
                   >
                     <h5
+                      class="euiFormLabel "
                       style="margin-bottom: 2px;"
                     >
                       Timeout
@@ -391,6 +393,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     style="margin-bottom: 5px;"
                   >
                     <h5
+                      class="euiFormLabel "
                       style="margin-bottom: 2px;"
                     >
                       Retry count
@@ -445,6 +448,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     style="margin-bottom: 5px;"
                   >
                     <h5
+                      class="euiFormLabel "
                       style="margin-bottom: 2px;"
                     >
                       Retry backoff
@@ -513,6 +517,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     style="margin-bottom: 5px;"
                   >
                     <h5
+                      class="euiFormLabel "
                       style="margin-bottom: 2px;"
                     >
                       Retry delay

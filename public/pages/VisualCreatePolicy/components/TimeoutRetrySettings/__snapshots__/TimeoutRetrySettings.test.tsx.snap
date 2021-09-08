@@ -61,6 +61,7 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
               style="margin-bottom: 5px;"
             >
               <h5
+                class="euiFormLabel "
                 style="margin-bottom: 2px;"
               >
                 Timeout
@@ -114,6 +115,7 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
               style="margin-bottom: 5px;"
             >
               <h5
+                class="euiFormLabel "
                 style="margin-bottom: 2px;"
               >
                 Retry count
@@ -168,6 +170,7 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
               style="margin-bottom: 5px;"
             >
               <h5
+                class="euiFormLabel "
                 style="margin-bottom: 2px;"
               >
                 Retry backoff
@@ -236,6 +239,7 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
               style="margin-bottom: 5px;"
             >
               <h5
+                class="euiFormLabel "
                 style="margin-bottom: 2px;"
               >
                 Retry delay

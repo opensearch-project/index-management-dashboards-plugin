@@ -30,23 +30,24 @@ export default class ForceMergeUIAction implements UIAction<ForceMergeAction> {
 
   clone = (action: ForceMergeAction) => new ForceMergeUIAction(action, this.id);
 
+  isValid = () => {
+    const segments = this.action.force_merge.max_num_segments;
+    return !!segments && segments > 0;
+  };
+
   render = (action: UIAction<ForceMergeAction>, onChangeAction: (action: UIAction<ForceMergeAction>) => void) => {
+    const segments = action.action.force_merge.max_num_segments;
     return (
       <>
-        <EuiFormCustomLabel title="Max num segments" helpText="The number of segments to merge to." />
-        <EuiFormRow isInvalid={false} error={null}>
+        <EuiFormCustomLabel title="Max num segments" helpText="The number of segments to merge to." isInvalid={!this.isValid()} />
+        <EuiFormRow isInvalid={!this.isValid()} error={null}>
           <EuiFieldNumber
-            value={(action.action as ForceMergeAction).force_merge.max_num_segments}
-            style={{ textTransform: "capitalize" }}
+            value={typeof segments === "undefined" ? "" : segments}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const maxNumSegments = e.target.valueAsNumber;
-              onChangeAction(
-                this.clone({
-                  force_merge: {
-                    max_num_segments: maxNumSegments,
-                  },
-                })
-              );
+              const forceMerge = { max_num_segments: maxNumSegments };
+              if (isNaN(maxNumSegments)) delete forceMerge.max_num_segments;
+              onChangeAction(this.clone({ force_merge: forceMerge }));
             }}
             data-test-subj="action-render-force-merge"
           />

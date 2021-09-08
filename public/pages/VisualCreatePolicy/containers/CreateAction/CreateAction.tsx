@@ -12,7 +12,6 @@
 import React, { Component, ChangeEvent } from "react";
 import { EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSelect, EuiSpacer } from "@elastic/eui";
 import { UIAction, Action } from "../../../../../models/interfaces";
-import { actions } from "../../utils/constants";
 import TimeoutRetrySettings from "../../components/TimeoutRetrySettings";
 import { actionRepoSingleton, capitalizeFirstLetter } from "../../utils/helpers";
 import FlyoutFooter from "../../components/FlyoutFooter";
@@ -112,7 +111,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
           <FlyoutFooter
             edit={!!editAction}
             action="action"
-            disabledAction={!action}
+            disabledAction={!action || !action.isValid(action)}
             onClickCancel={this.props.onClickCancelAction}
             onClickAction={this.onClickSaveAction}
           />

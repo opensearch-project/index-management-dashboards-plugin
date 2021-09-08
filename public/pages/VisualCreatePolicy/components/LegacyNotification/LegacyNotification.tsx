@@ -20,16 +20,18 @@ interface LegacyNotificationProps {
   notificationJsonString: string;
   onChangeNotificationJsonString: (str: string) => void;
   actionNotification?: boolean;
+  isInvalid?: boolean;
 }
 
 const LegacyNotification = ({
   notificationJsonString,
   onChangeNotificationJsonString,
   actionNotification = false,
+  isInvalid = false, // TODO: default to false for error notification for now, but add validation logic for it
 }: LegacyNotificationProps) => {
   return (
     <>
-      <EuiFormRow isInvalid={false} error={null} style={{ maxWidth: "100%" }}>
+      <EuiFormRow isInvalid={isInvalid} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor

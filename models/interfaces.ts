@@ -150,6 +150,7 @@ export interface UIAction<Data> {
   id: string;
   type: ActionType | string;
   render: (uiAction: UIAction<Data>, onChangeAction: (uiAction: UIAction<Data>) => void) => JSX.Element | null;
+  isValid: () => boolean;
   clone: (action: Data) => UIAction<Data>;
   content: () => JSX.Element | string | null;
   toAction: () => Action;
@@ -157,7 +158,7 @@ export interface UIAction<Data> {
 
 export interface ForceMergeAction extends Action {
   force_merge: {
-    max_num_segments: number;
+    max_num_segments?: number;
   };
 }
 
@@ -171,7 +172,7 @@ export interface ReadWriteAction extends Action {
 
 export interface ReplicaCountAction extends Action {
   replica_count: {
-    number_of_replicas: number;
+    number_of_replicas?: number;
   };
 }
 
@@ -207,7 +208,7 @@ export interface Transition {
 
 export interface Condition {
   min_index_age?: string;
-  min_doc_count?: number;
+  min_doc_count?: number | undefined;
   min_size?: string;
   cron?: Cron;
 }
@@ -238,22 +239,24 @@ export interface SnapshotAction extends Action {
 
 export interface IndexPriorityAction extends Action {
   index_priority: {
-    priority: number;
+    priority?: number;
   };
 }
 
 export interface AllocationAction extends Action {
   allocation: {
-    require: {
-      [key: string]: string;
-    };
-    include: {
-      [key: string]: string;
-    };
-    exclude: {
-      [key: string]: string;
-    };
-    wait_for: boolean;
+    // TODO: These require a complete UI and we are only supporting JSON editor for allocation for now
+    // require: {
+    //   [key: string]: string;
+    // };
+    // include: {
+    //   [key: string]: string;
+    // };
+    // exclude: {
+    //   [key: string]: string;
+    // };
+    // wait_for: boolean;
+    jsonString: string;
   };
 }
 

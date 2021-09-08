@@ -17,6 +17,7 @@ interface EuiFormCustomLabelProps {
   helpText?: string;
   textStyle?: object;
   headerStyle?: object;
+  isInvalid?: boolean;
 }
 
 // New pattern for label and help text both being above the form row instead of label above and help below.
@@ -25,9 +26,12 @@ const EuiFormCustomLabel = ({
   helpText,
   textStyle = { marginBottom: "5px" },
   headerStyle = { marginBottom: "2px" },
+  isInvalid = false,
 }: EuiFormCustomLabelProps) => (
   <EuiText style={textStyle}>
-    <h5 style={headerStyle}>{title}</h5>
+    <h5 style={headerStyle} className={`euiFormLabel ${isInvalid ? "euiFormLabel-isInvalid" : ""}`}>
+      {title}
+    </h5>
     <p>
       {" "}
       {/* Keep the <p> tag even if no helpText to remove last child styling on h tags */}

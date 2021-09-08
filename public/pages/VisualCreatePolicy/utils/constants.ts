@@ -129,45 +129,47 @@ export const DEFAULT_ROLLUP = {
   rollup: {
     jsonString: JSON.stringify(
       {
-        target_index: "rollup-nyc-taxi-data",
-        description: "Example rollup job",
-        page_size: 200,
-        dimensions: [
-          {
-            date_histogram: {
-              source_field: "tpep_pickup_datetime",
-              fixed_interval: "1h",
-              timezone: "America/Los_Angeles",
+        ism_rollup: {
+          target_index: "rollup-nyc-taxi-data",
+          description: "Example rollup job",
+          page_size: 200,
+          dimensions: [
+            {
+              date_histogram: {
+                source_field: "tpep_pickup_datetime",
+                fixed_interval: "1h",
+                timezone: "America/Los_Angeles",
+              },
             },
-          },
-          {
-            terms: {
-              source_field: "PULocationID",
+            {
+              terms: {
+                source_field: "PULocationID",
+              },
             },
-          },
-        ],
-        metrics: [
-          {
-            source_field: "passenger_count",
-            metrics: [
-              {
-                avg: {},
-              },
-              {
-                sum: {},
-              },
-              {
-                max: {},
-              },
-              {
-                min: {},
-              },
-              {
-                value_count: {},
-              },
-            ],
-          },
-        ],
+          ],
+          metrics: [
+            {
+              source_field: "passenger_count",
+              metrics: [
+                {
+                  avg: {},
+                },
+                {
+                  sum: {},
+                },
+                {
+                  max: {},
+                },
+                {
+                  min: {},
+                },
+                {
+                  value_count: {},
+                },
+              ],
+            },
+          ],
+        },
       },
       null,
       4
@@ -176,8 +178,8 @@ export const DEFAULT_ROLLUP = {
 };
 export const DEFAULT_SNAPSHOT = {
   snapshot: {
-    repository: "",
-    snapshot: "",
+    repository: "example-repository",
+    snapshot: "example-snapshot",
   },
 };
 

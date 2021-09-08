@@ -10,7 +10,7 @@
  */
 
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiDraggable, EuiPanel, EuiIcon, EuiButtonIcon } from "@elastic/eui";
+import { EuiFlexGroup, EuiFlexItem, EuiDraggable, EuiPanel, EuiIcon, EuiButtonIcon, EuiToolTip } from "@elastic/eui";
 
 interface DraggableItemProps {
   content: string | JSX.Element | null;
@@ -19,9 +19,10 @@ interface DraggableItemProps {
   isLast: boolean;
   onClickDelete: () => void;
   onClickEdit: () => void;
+  draggableType: "action" | "transition";
 }
 
-const DraggableItem = ({ content, id, idx, isLast, onClickDelete, onClickEdit }: DraggableItemProps) => (
+const DraggableItem = ({ content, id, idx, isLast, onClickDelete, onClickEdit, draggableType }: DraggableItemProps) => (
   <EuiDraggable style={{ padding: `0px 0px ${isLast ? "0px" : "10px"} 0px` }} key={id} index={idx} draggableId={id} customDragHandle={true}>
     {(provided) => (
       <EuiPanel className="custom" paddingSize="m">
@@ -33,22 +34,26 @@ const DraggableItem = ({ content, id, idx, isLast, onClickDelete, onClickEdit }:
           </EuiFlexItem>
           <EuiFlexItem>{content}</EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButtonIcon
-              iconType="trash"
-              aria-label="Delete"
-              color="danger"
-              onClick={onClickDelete}
-              data-test-subj={`draggable-item-delete-button-${id}`}
-            />
+            <EuiToolTip position="top" content={<p>Delete {draggableType}</p>}>
+              <EuiButtonIcon
+                iconType="trash"
+                aria-label="Delete"
+                color="danger"
+                onClick={onClickDelete}
+                data-test-subj={`draggable-item-delete-button-${id}`}
+              />
+            </EuiToolTip>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButtonIcon
-              iconType="pencil"
-              aria-label="Edit"
-              color="primary"
-              onClick={onClickEdit}
-              data-test-subj={`draggable-item-edit-button-${id}`}
-            />
+            <EuiToolTip position="top" content={<p>Edit {draggableType}</p>}>
+              <EuiButtonIcon
+                iconType="pencil"
+                aria-label="Edit"
+                color="primary"
+                onClick={onClickEdit}
+                data-test-subj={`draggable-item-edit-button-${id}`}
+              />
+            </EuiToolTip>
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiPanel>

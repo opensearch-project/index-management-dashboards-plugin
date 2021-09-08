@@ -50,3 +50,7 @@ $euiTextColor: $euiColorDarkestShade !default;
     }
   }
 }
+
+.state-accordion:hover {
+  text-decoration: none;
+}

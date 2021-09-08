@@ -10,7 +10,7 @@
  */
 
 import React from "react";
-import { EuiAccordion, EuiText, EuiPanel, EuiFlexGroup, EuiFlexItem, EuiButtonIcon } from "@elastic/eui";
+import { EuiAccordion, EuiText, EuiPanel, EuiFlexGroup, EuiFlexItem, EuiButtonIcon, EuiToolTip } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { State as StateData } from "../../../../../models/interfaces";
@@ -34,6 +34,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
   <EuiAccordion
     style={{ padding: "15px" }}
     id={state.name}
+    buttonClassName="state-accordion"
     buttonContent={
       <EuiFlexGroup justifyContent="center" alignItems="center">
         <EuiFlexItem grow={false}>
@@ -68,34 +69,39 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
           <EuiFlexItem grow={false}>
             <ModalConsumer>
               {({ onShow, onClose }) => (
-                <EuiButtonIcon
-                  iconType="trash"
-                  aria-label="Delete"
-                  color="danger"
-                  onClick={() =>
-                    onShow(ConfirmationModal, {
-                      title: "Delete state",
-                      bodyMessage: (
-                        <EuiText>
-                          <span>
-                            Delete "<strong>{state.name}</strong>" permanently? Deleting the state will result in deleting all transitions.
-                          </span>
-                        </EuiText>
-                      ),
-                      actionMessage: "Delete state",
-                      actionProps: { color: "danger" },
-                      modalProps: { maxWidth: 600 },
-                      onAction: () => onClickDeleteState(idx),
-                      onClose,
-                    })
-                  }
-                  data-test-subj="state-delete-button"
-                />
+                <EuiToolTip position="top" content={<p>Delete state</p>}>
+                  <EuiButtonIcon
+                    iconType="trash"
+                    aria-label="Delete"
+                    color="danger"
+                    onClick={() =>
+                      onShow(ConfirmationModal, {
+                        title: "Delete state",
+                        bodyMessage: (
+                          <EuiText>
+                            <span>
+                              Delete "<strong>{state.name}</strong>" permanently? Deleting the state will result in deleting all
+                              transitions.
+                            </span>
+                          </EuiText>
+                        ),
+                        actionMessage: "Delete state",
+                        actionProps: { color: "danger" },
+                        modalProps: { maxWidth: 600 },
+                        onAction: () => onClickDeleteState(idx),
+                        onClose,
+                      })
+                    }
+                    data-test-subj="state-delete-button"
+                  />
+                </EuiToolTip>
               )}
             </ModalConsumer>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButtonIcon iconType="pencil" aria-label="Edit" color="primary" onClick={() => onClickEditState(state)} />
+            <EuiToolTip position="top" content={<p>Edit state</p>}>
+              <EuiButtonIcon iconType="pencil" aria-label="Edit" color="primary" onClick={() => onClickEditState(state)} />
+            </EuiToolTip>
           </EuiFlexItem>
         </EuiFlexGroup>
       )
@@ -112,7 +118,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
         {!state.actions?.length ? (
           <EuiText>No actions. Edit state to add actions.</EuiText>
         ) : (
-          <EuiFlexGroup>
+          <EuiFlexGroup wrap>
             {state.actions.map((action) => (
               <EuiFlexItem grow={false} key={makeId()}>
                 <EuiPanel>{actionRepoSingleton.getUIActionFromData(action).content()}</EuiPanel>
@@ -130,7 +136,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
         {!state.transitions?.length ? (
           <EuiText>No transitions. Edit state to add transitions.</EuiText>
         ) : (
-          <EuiFlexGroup>
+          <EuiFlexGroup wrap>
             {state.transitions.map((transition) => (
               <EuiFlexItem grow={false} key={makeId()}>
                 <EuiPanel>

@@ -41,6 +41,7 @@ const Actions = ({ actions, onClickDeleteAction, onClickEditAction, onDragEndAct
                   isLast={actions.length - 1 === idx}
                   onClickDelete={() => onClickDeleteAction(idx)}
                   onClickEdit={() => onClickEditAction(action)}
+                  draggableType="action"
                 />
               ))}
             </EuiDroppable>
