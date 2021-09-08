@@ -38,7 +38,7 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
       uiTransition = {
         transition: {
           state_name: "",
-          conditions: { min_index_age: "30d" },
+          conditions: {},
         },
         id: makeId(),
       };

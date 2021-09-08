@@ -158,7 +158,7 @@ export interface UIAction<Data> {
 
 export interface ForceMergeAction extends Action {
   force_merge: {
-    max_num_segments: number;
+    max_num_segments?: number;
   };
 }
 
@@ -172,7 +172,7 @@ export interface ReadWriteAction extends Action {
 
 export interface ReplicaCountAction extends Action {
   replica_count: {
-    number_of_replicas: number;
+    number_of_replicas?: number;
   };
 }
 
@@ -208,7 +208,7 @@ export interface Transition {
 
 export interface Condition {
   min_index_age?: string;
-  min_doc_count?: number;
+  min_doc_count?: number | undefined;
   min_size?: string;
   cron?: Cron;
 }
@@ -239,7 +239,7 @@ export interface SnapshotAction extends Action {
 
 export interface IndexPriorityAction extends Action {
   index_priority: {
-    priority: number;
+    priority?: number;
   };
 }
 

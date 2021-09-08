@@ -30,24 +30,22 @@ export default class ReplicaCountUIAction implements UIAction<ReplicaCountAction
   clone = (action: ReplicaCountAction) => new ReplicaCountUIAction(action, this.id);
 
   isValid = (action: UIAction<ReplicaCountAction>) => {
-    return action.action.replica_count.number_of_replicas >= 0;
+    const numberOfReplicas = action.action.replica_count.number_of_replicas;
+    return typeof numberOfReplicas !== "undefined" && numberOfReplicas >= 0;
   };
 
   render = (action: UIAction<ReplicaCountAction>, onChangeAction: (action: UIAction<ReplicaCountAction>) => void) => {
+    const replicas = action.action.replica_count.number_of_replicas;
     return (
       <EuiFormRow label="Number of replicas" helpText="The number of replicas to set for the index." isInvalid={false} error={null}>
         <EuiFieldNumber
-          value={(action.action as ReplicaCountAction).replica_count.number_of_replicas}
+          value={typeof replicas === "undefined" ? "" : replicas}
           style={{ textTransform: "capitalize" }}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             const numberOfReplicas = e.target.valueAsNumber;
-            onChangeAction(
-              this.clone({
-                replica_count: {
-                  number_of_replicas: numberOfReplicas,
-                },
-              })
-            );
+            const replicaCount = { number_of_replicas: numberOfReplicas };
+            if (isNaN(numberOfReplicas)) delete replicaCount.number_of_replicas;
+            onChangeAction(this.clone({ replica_count: replicaCount }));
           }}
           data-test-subj="action-render-replica-count"
         />
