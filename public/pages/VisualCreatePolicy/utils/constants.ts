@@ -47,12 +47,7 @@ export const DEFAULT_POLICY = {
       transitions: [],
     },
   ],
-  ism_template: [
-    {
-      index_patterns: ["logs-*"],
-      priority: 5,
-    },
-  ],
+  ism_template: [],
 };
 
 export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {

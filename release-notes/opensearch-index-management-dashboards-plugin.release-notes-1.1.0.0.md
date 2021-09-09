@@ -35,6 +35,7 @@ Compatible with OpenSearchDashboards 1.1.0
 * Address data stream API security breaking issue ([#69](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/69))
 * Fix flaky ([#76](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/76))
 * UI fixes for new ISM UI ([#84](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/84))
+* Fixes some small UI touchups/issues for new ISM UI ([#85](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/85))
 
 ### Documentation
 * Adding support to correctly set the dashboards and opensearch endpoint ([#33](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/33))

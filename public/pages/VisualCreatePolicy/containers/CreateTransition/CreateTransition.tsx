@@ -38,7 +38,6 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
       uiTransition = {
         transition: {
           state_name: "",
-          conditions: {},
         },
         id: makeId(),
       };

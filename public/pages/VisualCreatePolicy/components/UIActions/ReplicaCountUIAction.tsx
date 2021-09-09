@@ -44,8 +44,9 @@ export default class ReplicaCountUIAction implements UIAction<ReplicaCountAction
           helpText="The number of replicas to set for the index."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow isInvalid={!this.isValid()} error={null}>
+        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldNumber
+            fullWidth
             value={typeof replicas === "undefined" ? "" : replicas}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const numberOfReplicas = e.target.valueAsNumber;

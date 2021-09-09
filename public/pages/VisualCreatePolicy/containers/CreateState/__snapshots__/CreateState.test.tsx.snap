@@ -317,6 +317,7 @@ exports[`<CreateState /> spec renders the component 1`] = `
                 <span
                   class="euiButtonContent euiButtonEmpty__content"
                 >
+                  EuiIconMock
                   <span
                     class="euiButtonEmpty__text"
                   >

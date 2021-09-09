@@ -40,8 +40,9 @@ export default class ForceMergeUIAction implements UIAction<ForceMergeAction> {
     return (
       <>
         <EuiFormCustomLabel title="Max num segments" helpText="The number of segments to merge to." isInvalid={!this.isValid()} />
-        <EuiFormRow isInvalid={!this.isValid()} error={null}>
+        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldNumber
+            fullWidth
             value={typeof segments === "undefined" ? "" : segments}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const maxNumSegments = e.target.valueAsNumber;
