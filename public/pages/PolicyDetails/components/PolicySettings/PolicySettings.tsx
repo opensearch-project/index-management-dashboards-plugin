@@ -11,10 +11,9 @@
 
 import React, { Component } from "react";
 import { EuiLink, EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText } from "@elastic/eui";
-import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
+import { ContentPanel } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { ErrorNotification, ISMTemplate } from "../../../../../models/interfaces";
-import CreatePolicyModal from "../../../../components/CreatePolicyModal";
 import JSONModal from "../../../../components/JSONModal";
 
 interface PolicySettingsProps {
@@ -25,14 +24,13 @@ interface PolicySettingsProps {
   description: string;
   sequenceNumber: number;
   ismTemplates: ISMTemplate[] | ISMTemplate | null;
-  onEdit: (visual: boolean) => void;
 }
 
 interface PolicySettingsState {}
 
 export default class PolicySettings extends Component<PolicySettingsProps, PolicySettingsState> {
   render() {
-    const { policyId, errorNotification, primaryTerm, lastUpdated, description, sequenceNumber, onEdit } = this.props;
+    const { policyId, errorNotification, primaryTerm, lastUpdated, description, sequenceNumber } = this.props;
 
     const updatedDate = lastUpdated ? new Date(lastUpdated).toLocaleString() : "-";
 
@@ -58,31 +56,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
     ];
 
     return (
-      <ContentPanel
-        actions={
-          <ModalConsumer>
-            {() => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Edit",
-                    buttonProps: {
-                      onClick: onEdit,
-                    },
-                    modal: {
-                      onClickModal: (onShow: (component: any, props: object) => void) => () =>
-                        onShow(CreatePolicyModal, { isEdit: true, onClickContinue: onEdit }),
-                    },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
-        }
-        bodyStyles={{ padding: "10px" }}
-        title="Policy settings"
-        titleSize="s"
-      >
+      <ContentPanel bodyStyles={{ padding: "10px" }} title="Policy settings" titleSize="s">
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />
           <EuiFlexGrid columns={4}>
