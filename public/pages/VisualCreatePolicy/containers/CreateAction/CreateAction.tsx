@@ -83,8 +83,9 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
           <EuiSpacer />
 
           <EuiFormCustomLabel title="Action type" helpText="Select the action you want to add to this state." />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiSelect
+              fullWidth
               placeholder="Select action type"
               id="action-type"
               hasNoInitialSelection

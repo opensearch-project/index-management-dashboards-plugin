@@ -10,7 +10,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiFieldNumber, EuiFieldText } from "@elastic/eui";
+import { EuiFormRow, EuiFieldNumber, EuiFieldText, EuiSpacer } from "@elastic/eui";
 import { RolloverAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -52,8 +52,9 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
           helpText="The minimum age required to roll over the index."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow isInvalid={!this.isValid()} error={null}>
+        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldText
+            fullWidth
             value={rollover.min_index_age || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minIndexAge = e.target.value;
@@ -65,13 +66,15 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             data-test-subj="action-render-rollover-min-index-age"
           />
         </EuiFormRow>
+        <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Minimum doc count"
           helpText="The minimum number of documents required to roll over the index."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow isInvalid={false} error={null}>
+        <EuiFormRow fullWidth isInvalid={false} error={null}>
           <EuiFieldNumber
+            fullWidth
             value={typeof rollover.min_doc_count === "undefined" ? "" : rollover.min_doc_count}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minDocCount = e.target.valueAsNumber;
@@ -83,13 +86,15 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             data-test-subj="action-render-rollover-min-doc-count"
           />
         </EuiFormRow>
+        <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Minimum index size"
           helpText="The minimum size of the total primary shard storage required to roll over the index."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow isInvalid={false} error={null}>
+        <EuiFormRow fullWidth isInvalid={false} error={null}>
           <EuiFieldText
+            fullWidth
             value={rollover.min_size || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minSize = e.target.value;

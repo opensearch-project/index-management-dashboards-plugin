@@ -74,7 +74,7 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
       style="padding: 10px 0px 0px 10px;"
     >
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
         style="max-width: 100%;"
       >

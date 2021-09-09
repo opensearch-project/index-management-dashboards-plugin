@@ -2,7 +2,7 @@
 
 exports[`<LegacyNotification /> spec renders the component 1`] = `
 <div
-  class="euiFormRow"
+  class="euiFormRow euiFormRow--fullWidth"
   id="some_html_id-row"
   style="max-width: 100%;"
 >

@@ -44,8 +44,9 @@ export default class IndexPriorityUIAction implements UIAction<IndexPriorityActi
           helpText="Higher priority indices are recovered first when possible."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow isInvalid={!this.isValid()} error={null}>
+        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldNumber
+            fullWidth
             value={typeof priority === "undefined" ? "" : priority}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const priority = e.target.valueAsNumber;

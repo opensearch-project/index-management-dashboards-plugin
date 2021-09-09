@@ -52,7 +52,7 @@ export default class RollupUIAction implements UIAction<RollupAction> {
   render = (action: UIAction<RollupAction>, onChangeAction: (action: UIAction<RollupAction>) => void) => {
     // If we don't have a JSON string yet it just means we haven't converted the rollup to it yet
     return (
-      <EuiFormRow isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
+      <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor

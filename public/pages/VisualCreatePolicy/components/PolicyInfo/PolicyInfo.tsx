@@ -44,7 +44,7 @@ const PolicyInfo = ({ isEdit, policyId, policyIdError, description, onChangePoli
 
       <EuiSpacer size="m" />
 
-      <EuiFormCustomLabel title="Description" helpText="Describe the policy" />
+      <EuiFormCustomLabel title="Description" helpText="Describe the policy." />
 
       <EuiFormRow isInvalid={false} error={null}>
         <EuiTextArea

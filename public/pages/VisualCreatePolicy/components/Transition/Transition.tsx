@@ -32,7 +32,7 @@ interface TransitionProps {
 
 const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
   // We currently only support one transition condition
-  const conditionType = Object.keys(uiTransition.transition?.conditions || []).pop() || "none";
+  const conditionType = Object.keys(uiTransition.transition.conditions || []).pop() || "none";
   const conditions = uiTransition.transition.conditions;
   return (
     <>
@@ -45,18 +45,16 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           style={{ textTransform: "capitalize" }}
           onChange={(e) => {
             const selectedConditionType = e.target.value;
-            let condition = {};
-            if (selectedConditionType === "min_index_age") condition = { min_index_age: "30d" };
-            if (selectedConditionType === "min_doc_count") condition = { min_doc_count: 1000000 };
-            if (selectedConditionType === "min_size") condition = { min_size: "50gb" };
+            const transition = { ...uiTransition.transition };
+            if (selectedConditionType === "none") delete transition.conditions;
+            if (selectedConditionType === "min_index_age") transition.conditions = { min_index_age: "30d" };
+            if (selectedConditionType === "min_doc_count") transition.conditions = { min_doc_count: 1000000 };
+            if (selectedConditionType === "min_size") transition.conditions = { min_size: "50gb" };
             if (selectedConditionType === "cron")
-              condition = { cron: { cron: { expression: "* 17 * * SAT", timezone: "America/Los_Angeles" } } };
+              transition.conditions = { cron: { cron: { expression: "* 17 * * SAT", timezone: "America/Los_Angeles" } } };
             onChangeTransition({
               ...uiTransition,
-              transition: {
-                ...uiTransition.transition,
-                conditions: condition,
-              },
+              transition,
             });
           }}
           data-test-subj="create-state-action-type"
