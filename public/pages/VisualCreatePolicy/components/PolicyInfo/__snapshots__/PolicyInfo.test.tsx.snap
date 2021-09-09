@@ -90,7 +90,7 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
           <span
             style="color: grey; font-weight: 200; font-size: 12px;"
           >
-            Describe the policy
+            Describe the policy.
           </span>
         </p>
       </div>
