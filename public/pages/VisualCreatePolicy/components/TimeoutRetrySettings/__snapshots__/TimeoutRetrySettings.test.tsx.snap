@@ -125,7 +125,7 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
                 <span
                   style="color: grey; font-weight: 200; font-size: 12px;"
                 >
-                  The number of times the action should be retried if it fails.
+                  The number of times the action should be retried if it fails. Must be greater than 0.
                 </span>
               </p>
             </div>

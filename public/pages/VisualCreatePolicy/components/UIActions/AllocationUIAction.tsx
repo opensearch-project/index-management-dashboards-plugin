@@ -51,7 +51,7 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
 
   render = (action: UIAction<AllocationAction>, onChangeAction: (action: UIAction<AllocationAction>) => void) => {
     return (
-      <EuiFormRow isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
+      <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor

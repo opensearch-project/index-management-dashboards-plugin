@@ -38,20 +38,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <select
-                class="euiSelect"
+                class="euiSelect euiSelect--fullWidth"
                 data-test-subj="create-state-action-type"
                 id="some_html_id"
                 placeholder="Select action type"
@@ -167,20 +167,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldText"
+                class="euiFieldText euiFieldText--fullWidth"
                 data-test-subj="action-render-rollover-min-index-age"
                 id="some_html_id"
                 type="text"
@@ -190,6 +190,9 @@ exports[`<CreateAction /> spec renders the component 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
       <div
         class="euiText euiText--medium"
         style="margin-bottom: 5px;"
@@ -210,20 +213,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldNumber"
+                class="euiFieldNumber euiFieldNumber--fullWidth"
                 data-test-subj="action-render-rollover-min-doc-count"
                 id="some_html_id"
                 type="number"
@@ -233,6 +236,9 @@ exports[`<CreateAction /> spec renders the component 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
       <div
         class="euiText euiText--medium"
         style="margin-bottom: 5px;"
@@ -253,20 +259,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldText"
+                class="euiFieldText euiFieldText--fullWidth"
                 data-test-subj="action-render-rollover-min-size"
                 id="some_html_id"
                 type="text"
@@ -403,7 +409,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                       <span
                         style="color: grey; font-weight: 200; font-size: 12px;"
                       >
-                        The number of times the action should be retried if it fails.
+                        The number of times the action should be retried if it fails. Must be greater than 0.
                       </span>
                     </p>
                   </div>

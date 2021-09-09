@@ -31,7 +31,7 @@ const LegacyNotification = ({
 }: LegacyNotificationProps) => {
   return (
     <>
-      <EuiFormRow isInvalid={isInvalid} error={null} style={{ maxWidth: "100%" }}>
+      <EuiFormRow fullWidth isInvalid={isInvalid} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor
