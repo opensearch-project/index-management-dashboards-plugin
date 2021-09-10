@@ -21,23 +21,27 @@ exports[`<States /> spec renders the component 1`] = `
         class="euiText euiText--small"
         style="padding: 5px 0px;"
       >
-        <p
-          style="color: grey; font-weight: 200;"
+        <div
+          class="euiTextColor euiTextColor--subdued"
         >
-          You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
-          <br />
-          "Transitions" define when to move from one state to another.
-           
-          <a
-            class="euiLink euiLink--primary"
-            href="https://opensearch.org/docs/im-plugin/ism/index/"
-            rel="noopener noreferrer"
-            target="_blank"
+          <p
+            style="font-weight: 200;"
           >
-            Learn more 
-            EuiIconMock
-          </a>
-        </p>
+            You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
+            <br />
+            "Transitions" define when to move from one state to another.
+             
+            <a
+              class="euiLink euiLink--primary"
+              href="https://opensearch.org/docs/im-plugin/ism/policies/#states"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more 
+              EuiIconMock
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </div>

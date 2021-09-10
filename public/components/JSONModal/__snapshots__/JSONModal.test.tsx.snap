@@ -23,7 +23,6 @@ exports[`<JSONModal /> spec renders the component 1`] = `
   >
     <div
       class="euiModal euiModal--maxWidth-default"
-      style="padding: 5px 30px;"
       tabindex="0"
     >
       <button
@@ -53,11 +52,9 @@ exports[`<JSONModal /> spec renders the component 1`] = `
           >
             <div
               class="euiCodeBlock euiCodeBlock--fontMedium euiCodeBlock--paddingMedium euiCodeBlock--hasControls"
-              style="max-height: 600px;"
             >
               <pre
                 class="euiCodeBlock__pre euiCodeBlock__pre--whiteSpacePreWrap"
-                style="max-height: 600px;"
               >
                 <code
                   class="euiCodeBlock__code json hljs"
@@ -119,13 +116,6 @@ exports[`<JSONModal /> spec renders the component 1`] = `
               <div
                 class="euiCodeBlock__controls"
               >
-                <button
-                  aria-label="Expand"
-                  class="euiButtonIcon euiButtonIcon--text euiCodeBlock__fullScreenButton"
-                  type="button"
-                >
-                  EuiIconMock
-                </button>
                 <div
                   class="euiCodeBlock__copyButton"
                 >

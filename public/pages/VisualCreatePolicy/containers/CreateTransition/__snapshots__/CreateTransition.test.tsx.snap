@@ -16,6 +16,22 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         Edit transition
       </h3>
       <div
+        class="euiText euiText--extraSmall"
+        style="font-weight: 200;"
+      >
+        Transitions define the conditions that need to be met for a state to change. After all actions in the current state are completed, the policy starts checking the conditions for transitions.
+         
+        <a
+          class="euiLink euiLink--primary"
+          href="https://opensearch.org/docs/im-plugin/ism/policies/#transitions"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more 
+          EuiIconMock
+        </a>
+      </div>
+      <div
         class="euiSpacer euiSpacer--l"
       />
       <div
@@ -31,14 +47,15 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
             If entering a state that does not exist yet then you must create it before creating the policy.
+             
           </span>
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
       >
         <div
@@ -47,17 +64,17 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox--fullWidth"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--fullWidth"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--fullWidth euiComboBox__inputWrap--noWrap"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >
@@ -86,14 +103,6 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
                 <div
                   class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                 >
-                  <button
-                    aria-label="Clear input"
-                    class="euiFormControlLayoutClearButton"
-                    data-test-subj="comboBoxClearButton"
-                    type="button"
-                  >
-                    EuiIconMock
-                  </button>
                   <button
                     aria-label="Open list of options"
                     class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
@@ -124,27 +133,28 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
             Specify the condition needed to be met to transition to the destination state.
+             
           </span>
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <select
-                class="euiSelect"
+                class="euiSelect euiSelect--fullWidth"
                 data-test-subj="create-state-action-type"
                 id="some_html_id"
                 style="text-transform: capitalize;"
@@ -204,27 +214,28 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
             The minimum age required to transition to the next state.
+             
           </span>
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldText"
+                class="euiFieldText euiFieldText--fullWidth"
                 data-test-subj="transition-render-conditions-min-index-age"
                 id="some_html_id"
                 type="text"

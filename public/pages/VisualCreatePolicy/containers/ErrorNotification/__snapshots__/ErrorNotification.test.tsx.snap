@@ -46,21 +46,25 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
         class="euiText euiText--small"
         style="padding: 5px 0px;"
       >
-        <p
-          style="color: grey; font-weight: 200;"
+        <div
+          class="euiTextColor euiTextColor--subdued"
         >
-          You can set up an error notification for when a policy execution fails to notify you.
-           
-          <a
-            class="euiLink euiLink--primary"
-            href="https://opensearch.org/docs/im-plugin/ism/index/"
-            rel="noopener noreferrer"
-            target="_blank"
+          <p
+            style="font-weight: 200;"
           >
-            Learn more 
-            EuiIconMock
-          </a>
-        </p>
+            You can set up an error notification for when a policy execution fails.
+             
+            <a
+              class="euiLink euiLink--primary"
+              href="https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more 
+              EuiIconMock
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </div>

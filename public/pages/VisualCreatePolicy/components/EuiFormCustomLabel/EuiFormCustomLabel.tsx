@@ -15,6 +15,7 @@ import { EuiText } from "@elastic/eui";
 interface EuiFormCustomLabelProps {
   title: string;
   helpText?: string;
+  learnMore?: JSX.Element | null | undefined;
   textStyle?: object;
   headerStyle?: object;
   isInvalid?: boolean;
@@ -24,6 +25,7 @@ interface EuiFormCustomLabelProps {
 const EuiFormCustomLabel = ({
   title,
   helpText,
+  learnMore = null,
   textStyle = { marginBottom: "5px" },
   headerStyle = { marginBottom: "2px" },
   isInvalid = false,
@@ -35,7 +37,11 @@ const EuiFormCustomLabel = ({
     <p>
       {" "}
       {/* Keep the <p> tag even if no helpText to remove last child styling on h tags */}
-      {helpText && <span style={{ color: "grey", fontWeight: 200, fontSize: "12px" }}>{helpText}</span>}
+      {helpText && (
+        <span style={{ fontWeight: 200, fontSize: "12px" }}>
+          {helpText} {learnMore}
+        </span>
+      )}
     </p>
   </EuiText>
 );

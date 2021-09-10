@@ -34,7 +34,7 @@ exports[`<CreateState /> spec renders the component 1`] = `
             class="euiTitle euiTitle--medium"
             id="flyoutTitle"
           >
-            Create state: 
+            Create state
           </h2>
         </div>
         <div
@@ -204,9 +204,10 @@ exports[`<CreateState /> spec renders the component 1`] = `
                 <p>
                    
                   <span
-                    style="color: grey; font-weight: 200; font-size: 12px;"
+                    style="font-weight: 200; font-size: 12px;"
                   >
                     Actions are the operations ISM performs when an index is in a certain state.
+                     
                   </span>
                 </p>
               </div>
@@ -259,9 +260,10 @@ exports[`<CreateState /> spec renders the component 1`] = `
                 <p>
                    
                   <span
-                    style="color: grey; font-weight: 200; font-size: 12px;"
+                    style="font-weight: 200; font-size: 12px;"
                   >
                     Transitions define the conditions that need to be met for a state to change. After all actions in the current state are completed, the policy starts checking the conditions for transitions.
+                     
                   </span>
                 </p>
               </div>

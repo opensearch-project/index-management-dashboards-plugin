@@ -29,6 +29,11 @@ export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 export const DEFAULT_EMPTY_DATA = "-";
 
 export const DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/index/";
+export const POLICY_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/";
+export const ACTIONS_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#actions";
+export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#states";
+export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
+export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
@@ -56,7 +61,7 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_POLICY: { text: "Edit policy" },
   CREATE_POLICY: { text: "Create policy" },
   CHANGE_POLICY: { text: "Change policy" },
-  POLICY_DETAILS: {text: "Policy details"},
+  POLICY_DETAILS: { text: "Policy details" },
   ROLLUPS: { text: "Rollup jobs", href: `#${ROUTES.ROLLUPS}` },
   CREATE_ROLLUP: { text: "Create rollup job" },
   EDIT_ROLLUP: { text: "Edit rollup job" },

@@ -30,13 +30,13 @@ interface JSONModalProps {
 const JSONModal: React.SFC<JSONModalProps> = ({ title, json, onClose }) => {
   return (
     <EuiOverlayMask>
-      <EuiModal onClose={onClose} style={{ padding: "5px 30px" }}>
+      <EuiModal onClose={onClose}>
         <EuiModalHeader>
           <EuiModalHeaderTitle>{title}</EuiModalHeaderTitle>
         </EuiModalHeader>
 
         <EuiModalBody>
-          <EuiCodeBlock language="json" fontSize="m" paddingSize="m" overflowHeight={600} inline={false} isCopyable>
+          <EuiCodeBlock language="json" fontSize="m" paddingSize="m" inline={false} isCopyable>
             {JSON.stringify(json, null, 4)}
           </EuiCodeBlock>
         </EuiModalBody>
