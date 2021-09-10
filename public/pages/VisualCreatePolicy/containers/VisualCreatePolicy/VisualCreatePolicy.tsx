@@ -16,7 +16,7 @@ import queryString from "query-string";
 import { DEFAULT_POLICY } from "../../utils/constants";
 import { Policy, State } from "../../../../../models/interfaces";
 import { PolicyService } from "../../../../services";
-import { BREADCRUMBS, DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, POLICY_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import PolicyInfo from "../../components/PolicyInfo";
 import ISMTemplates from "../../components/ISMTemplates";
@@ -246,7 +246,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         <EuiText size="s">
           <p>
             Policies let you automatically perform administrative operations on indices.{" "}
-            <EuiLink href={DOCUMENTATION_URL} target="_blank">
+            <EuiLink href={POLICY_DOCUMENTATION_URL} target="_blank">
               Learn more <EuiIcon type="popout" size="s" />
             </EuiLink>
           </p>

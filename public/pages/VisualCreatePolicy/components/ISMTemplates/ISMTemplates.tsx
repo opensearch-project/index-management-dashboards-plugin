@@ -45,7 +45,7 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
         <EuiFlexGroup gutterSize="xs" alignItems="center">
           <EuiFlexItem grow={false}>
             <EuiText>
-              <h3>ISM template</h3>
+              <h3>ISM templates</h3>
             </EuiText>
           </EuiFlexItem>
           <EuiFlexItem>
@@ -57,9 +57,9 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
       }
       titleSize="s"
       subTitleText={
-        <EuiText size="s" style={{ padding: "5px 0px" }}>
-          <p style={{ color: "grey", fontWeight: 200 }}>
-            Specify an ISM template pattern that matches the index to apply the policy.{" "}
+        <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+          <p style={{ fontWeight: 200 }}>
+            Specify ISM template patterns that match the index to apply the policy.{" "}
             <EuiLink href={DOCUMENTATION_URL} target="_blank">
               Learn more <EuiIcon type="popout" size="s" />
             </EuiLink>
