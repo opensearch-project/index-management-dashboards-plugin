@@ -49,7 +49,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
       <>
         <EuiFormCustomLabel
           title="Minimum index age"
-          helpText="The minimum age required to roll over the index."
+          helpText={`The minimum age required to roll over the index. Accepts time units, e.g. "5h" or "1d".`}
           isInvalid={!this.isValid()}
         />
         <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
@@ -89,7 +89,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
         <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Minimum index size"
-          helpText="The minimum size of the total primary shard storage required to roll over the index."
+          helpText={`The minimum size of the total primary shard storage required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".`}
           isInvalid={!this.isValid()}
         />
         <EuiFormRow fullWidth isInvalid={false} error={null}>

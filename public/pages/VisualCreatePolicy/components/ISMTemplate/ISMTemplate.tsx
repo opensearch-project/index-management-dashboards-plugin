@@ -31,6 +31,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
       <EuiFlexItem style={{ maxWidth: ISM_TEMPLATE_INPUT_MAX_WIDTH }}>
         <EuiFormRow isInvalid={false} error={null}>
           <EuiComboBox
+            isClearable={false}
             placeholder="Add index patterns"
             noSuggestions
             selectedOptions={template.index_patterns.map((pattern) => ({ label: pattern }))}
@@ -64,7 +65,6 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
               //TODO
               setInvalid(false);
             }}
-            isClearable={true}
             isInvalid={isInvalid}
             data-test-subj="ism-template-index-pattern-input"
           />

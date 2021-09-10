@@ -303,8 +303,9 @@ export default class CreateState extends Component<CreateStateProps, CreateState
     const { name, createAction, editAction, createTransition, editTransition, actions } = this.state;
     const isEditing = !!state;
 
-    let title = `${isEditing ? "Edit" : "Create"} state: ${name}`;
-    if (createTransition || createAction || !!editTransition || !!editAction) title = `State: ${name}`;
+    let title = `${isEditing ? "Edit" : "Create"} state`;
+    if (createTransition || createAction || !!editTransition || !!editAction) title = "State";
+    if (name) title += `: ${name}`;
 
     // Filter out the current editing state if we are editing
     const stateOptions = policy.states.map((s) => s.name);

@@ -16,7 +16,7 @@ import "brace/theme/github";
 import "brace/mode/json";
 import { CoreServicesContext } from "../../../../components/core_services";
 import LegacyNotification from "../../components/LegacyNotification";
-import { DOCUMENTATION_URL } from "../../../../utils/constants";
+import { ERROR_NOTIFICATION_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 interface ErrorNotificationProps {
   errorNotificationJsonString: string;
@@ -61,10 +61,10 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
         }
         titleSize="s"
         subTitleText={
-          <EuiText size="s" style={{ padding: "5px 0px" }}>
-            <p style={{ color: "grey", fontWeight: 200 }}>
-              You can set up an error notification for when a policy execution fails to notify you.{" "}
-              <EuiLink href={DOCUMENTATION_URL} target="_blank">
+          <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+            <p style={{ fontWeight: 200 }}>
+              You can set up an error notification for when a policy execution fails.{" "}
+              <EuiLink href={ERROR_NOTIFICATION_DOCUMENTATION_URL} target="_blank">
                 Learn more <EuiIcon type="popout" size="s" />
               </EuiLink>
             </p>

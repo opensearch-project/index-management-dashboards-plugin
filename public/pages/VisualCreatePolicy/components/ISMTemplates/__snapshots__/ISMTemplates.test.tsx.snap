@@ -22,7 +22,7 @@ exports[`<ISMTemplates /> spec renders the component 1`] = `
             class="euiText euiText--medium"
           >
             <h3>
-              ISM template
+              ISM templates
             </h3>
           </div>
         </div>
@@ -46,21 +46,25 @@ exports[`<ISMTemplates /> spec renders the component 1`] = `
         class="euiText euiText--small"
         style="padding: 5px 0px;"
       >
-        <p
-          style="color: grey; font-weight: 200;"
+        <div
+          class="euiTextColor euiTextColor--subdued"
         >
-          Specify an ISM template pattern that matches the index to apply the policy.
-           
-          <a
-            class="euiLink euiLink--primary"
-            href="https://opensearch.org/docs/im-plugin/ism/index/"
-            rel="noopener noreferrer"
-            target="_blank"
+          <p
+            style="font-weight: 200;"
           >
-            Learn more 
-            EuiIconMock
-          </a>
-        </p>
+            Specify ISM template patterns that match the index to apply the policy.
+             
+            <a
+              class="euiLink euiLink--primary"
+              href="https://opensearch.org/docs/im-plugin/ism/index/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more 
+              EuiIconMock
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </div>

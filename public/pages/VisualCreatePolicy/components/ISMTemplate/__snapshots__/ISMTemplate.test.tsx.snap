@@ -29,7 +29,7 @@ exports[`<ISMTemplate /> spec renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <div
-                class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                class="euiComboBox__inputWrap"
                 data-test-subj="comboBoxInput"
                 tabindex="-1"
               >
@@ -70,18 +70,6 @@ exports[`<ISMTemplate /> spec renders the component 1`] = `
                     style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
                   />
                 </div>
-              </div>
-              <div
-                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-              >
-                <button
-                  aria-label="Clear input"
-                  class="euiFormControlLayoutClearButton"
-                  data-test-subj="comboBoxClearButton"
-                  type="button"
-                >
-                  EuiIconMock
-                </button>
               </div>
             </div>
           </div>

@@ -10,10 +10,11 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiSelect, EuiSpacer, EuiFieldText, EuiFieldNumber } from "@elastic/eui";
+import { EuiLink, EuiIcon, EuiFormRow, EuiSelect, EuiSpacer, EuiFieldText, EuiFieldNumber } from "@elastic/eui";
 import moment from "moment-timezone";
 import EuiFormCustomLabel from "../EuiFormCustomLabel";
 import { UITransition } from "../../../../../models/interfaces";
+import { TRANSITION_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 const timezones = moment.tz.names().map((tz) => ({ label: tz, text: tz }));
 
@@ -37,8 +38,9 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
   return (
     <>
       <EuiFormCustomLabel title="Condition" helpText="Specify the condition needed to be met to transition to the destination state." />
-      <EuiFormRow isInvalid={false} error={null}>
+      <EuiFormRow fullWidth isInvalid={false} error={null}>
         <EuiSelect
+          fullWidth
           id="condition-type"
           options={conditionTypeOptions}
           value={conditionType}
@@ -66,8 +68,9 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
       {conditionType === "min_index_age" && (
         <>
           <EuiFormCustomLabel title="Minimum index age" helpText="The minimum age required to transition to the next state." />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
+              fullWidth
               value={conditions?.min_index_age}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minIndexAge = e.target.value;
@@ -93,8 +96,9 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             title="Minimum doc count"
             helpText="The minimum number of documents required to transition to the next state."
           />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldNumber
+              fullWidth
               value={typeof conditions?.min_doc_count === "undefined" ? "" : conditions?.min_doc_count}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minDocCount = e.target.valueAsNumber;
@@ -122,8 +126,9 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             title="Minimum index size"
             helpText="The minimum size of the total primary shard storage required to transition to the next state."
           />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
+              fullWidth
               value={conditions?.min_size}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minSize = e.target.value;
@@ -145,9 +150,18 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
 
       {conditionType === "cron" && (
         <>
-          <EuiFormCustomLabel title="Cron expression" helpText="The matching cron expression required to transition to the next state." />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormCustomLabel
+            title="Cron expression"
+            helpText="The matching cron expression required to transition to the next state."
+            learnMore={
+              <EuiLink href={TRANSITION_DOCUMENTATION_URL} target="_blank">
+                Learn more <EuiIcon type="popout" size="s" />
+              </EuiLink>
+            }
+          />
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
+              fullWidth
               value={conditions?.cron?.cron.expression}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const expression = e.target.value;
@@ -173,8 +187,9 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           <EuiSpacer />
 
           <EuiFormCustomLabel title="Timezone" helpText="A day starts from 00:00:00 in the specified timezone." />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiSelect
+              fullWidth
               id="timezone"
               options={timezones}
               value={conditions?.cron?.cron.timezone}
