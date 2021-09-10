@@ -16,6 +16,22 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         Edit action
       </h3>
       <div
+        class="euiText euiText--extraSmall"
+        style="font-weight: 200;"
+      >
+        Actions are the operations ISM performs when an index is in a certain state.
+         
+        <a
+          class="euiLink euiLink--primary"
+          href="https://opensearch.org/docs/im-plugin/ism/policies/#actions"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more 
+          EuiIconMock
+        </a>
+      </div>
+      <div
         class="euiSpacer euiSpacer--l"
       />
       <div
@@ -31,9 +47,10 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
             Select the action you want to add to this state.
+             
           </span>
         </p>
       </div>
@@ -160,9 +177,10 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
-            The minimum age required to roll over the index.
+            The minimum age required to roll over the index. Accepts time units, e.g. "5h" or "1d".
+             
           </span>
         </p>
       </div>
@@ -206,9 +224,10 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
             The minimum number of documents required to roll over the index.
+             
           </span>
         </p>
       </div>
@@ -252,9 +271,10 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
-            The minimum size of the total primary shard storage required to roll over the index.
+            The minimum size of the total primary shard storage required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+             
           </span>
         </p>
       </div>
@@ -353,9 +373,10 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     <p>
                        
                       <span
-                        style="color: grey; font-weight: 200; font-size: 12px;"
+                        style="font-weight: 200; font-size: 12px;"
                       >
                         The timeout period for the action. Accepts time units, e.g. "5h" or "1d".
+                         
                       </span>
                     </p>
                   </div>
@@ -407,9 +428,10 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     <p>
                        
                       <span
-                        style="color: grey; font-weight: 200; font-size: 12px;"
+                        style="font-weight: 200; font-size: 12px;"
                       >
                         The number of times the action should be retried if it fails. Must be greater than 0.
+                         
                       </span>
                     </p>
                   </div>
@@ -462,9 +484,10 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     <p>
                        
                       <span
-                        style="color: grey; font-weight: 200; font-size: 12px;"
+                        style="font-weight: 200; font-size: 12px;"
                       >
                         The backoff policy type to use when retrying.
+                         
                       </span>
                     </p>
                   </div>
@@ -531,9 +554,10 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     <p>
                        
                       <span
-                        style="color: grey; font-weight: 200; font-size: 12px;"
+                        style="font-weight: 200; font-size: 12px;"
                       >
                         The time to wait between retries. Accepts time units, e.g. "2h" or "1d"
+                         
                       </span>
                     </p>
                   </div>
