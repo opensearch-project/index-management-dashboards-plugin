@@ -10,13 +10,13 @@
  */
 
 import React, { Component, ChangeEvent } from "react";
-import { EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSelect, EuiSpacer } from "@elastic/eui";
+import { EuiText, EuiLink, EuiIcon, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSelect, EuiSpacer } from "@elastic/eui";
 import { UIAction, Action } from "../../../../../models/interfaces";
-import { actions } from "../../utils/constants";
 import TimeoutRetrySettings from "../../components/TimeoutRetrySettings";
 import { actionRepoSingleton, capitalizeFirstLetter } from "../../utils/helpers";
 import FlyoutFooter from "../../components/FlyoutFooter";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
+import { ACTIONS_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 interface CreateActionProps {
   stateName: string;
@@ -71,7 +71,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
       };
     });
 
-    let bodyTitle = "Create action";
+    let bodyTitle = "Add action";
     if (!!editAction) bodyTitle = "Edit action";
 
     return (
@@ -81,11 +81,19 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
             <h3>{bodyTitle}</h3>
           </EuiTitle>
 
+          <EuiText size="xs" style={{ fontWeight: 200 }}>
+            Actions are the operations ISM performs when an index is in a certain state.{" "}
+            <EuiLink href={ACTIONS_DOCUMENTATION_URL} target="_blank">
+              Learn more <EuiIcon type="popout" size="s" />
+            </EuiLink>
+          </EuiText>
+
           <EuiSpacer />
 
           <EuiFormCustomLabel title="Action type" helpText="Select the action you want to add to this state." />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiSelect
+              fullWidth
               placeholder="Select action type"
               id="action-type"
               hasNoInitialSelection
@@ -112,7 +120,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
           <FlyoutFooter
             edit={!!editAction}
             action="action"
-            disabledAction={!action}
+            disabledAction={!action || !action.isValid()}
             onClickCancel={this.props.onClickCancelAction}
             onClickAction={this.onClickSaveAction}
           />

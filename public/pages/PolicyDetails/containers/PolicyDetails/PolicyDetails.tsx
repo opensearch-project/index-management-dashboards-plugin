@@ -37,6 +37,8 @@ import States from "../../../VisualCreatePolicy/components/States";
 import JSONModal from "../../../../components/JSONModal";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { convertTemplatesToArray } from "../../../VisualCreatePolicy/utils/helpers";
+import CreatePolicyModal from "../../../../components/CreatePolicyModal";
+import { ModalConsumer } from "../../../../components/Modal";
 
 interface PolicyDetailsProps extends RouteComponentProps {
   policyService: PolicyService;
@@ -190,6 +192,18 @@ export default class PolicyDetails extends Component<PolicyDetailsProps, PolicyD
           <EuiFlexItem grow={false}>
             <EuiFlexGroup alignItems="center" gutterSize="s">
               <EuiFlexItem grow={false}>
+                <ModalConsumer>
+                  {({ onShow }) => (
+                    <EuiButton
+                      onClick={() => onShow(CreatePolicyModal, { isEdit: true, onClickContinue: this.onEdit })}
+                      data-test-subj="policy-details-edit-button"
+                    >
+                      Edit
+                    </EuiButton>
+                  )}
+                </ModalConsumer>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
                 <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
                   Delete
                 </EuiButton>
@@ -212,7 +226,6 @@ export default class PolicyDetails extends Component<PolicyDetailsProps, PolicyD
           description={policy.policy.description}
           sequenceNumber={policy.seqNo}
           ismTemplates={policy.policy.ism_template || []}
-          onEdit={this.onEdit}
         />
         <EuiSpacer />
         <ContentPanel bodyStyles={{ padding: "10px" }} title={`ISM Templates (${convertedISMTemplates.length})`} titleSize="s">

@@ -28,6 +28,8 @@ export default class OpenUIAction implements UIAction<OpenAction> {
 
   clone = (action: OpenAction) => new OpenUIAction(action, this.id);
 
+  isValid = () => true;
+
   render = (action: UIAction<OpenAction>, onChangeAction: (action: UIAction<OpenAction>) => void) => {
     return <div />;
   };

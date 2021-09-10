@@ -6,6 +6,7 @@ exports[`<Transition /> spec renders the component 1`] = `
   style="margin-bottom: 5px;"
 >
   <h5
+    class="euiFormLabel "
     style="margin-bottom: 2px;"
   >
     Condition
@@ -13,9 +14,10 @@ exports[`<Transition /> spec renders the component 1`] = `
   <p>
      
     <span
-      style="color: grey; font-weight: 200; font-size: 12px;"
+      style="font-weight: 200; font-size: 12px;"
     >
       Specify the condition needed to be met to transition to the destination state.
+       
     </span>
   </p>
 </div>

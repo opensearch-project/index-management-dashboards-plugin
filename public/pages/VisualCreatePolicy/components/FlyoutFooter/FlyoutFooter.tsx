@@ -21,9 +21,9 @@ interface FlyoutFooterProps {
 }
 
 const FlyoutFooter = ({ edit, action, disabledAction = false, onClickCancel, onClickAction }: FlyoutFooterProps) => (
-  <EuiFlexGroup justifyContent="spaceBetween">
+  <EuiFlexGroup justifyContent="flexEnd">
     <EuiFlexItem grow={false}>
-      <EuiButtonEmpty iconType="cross" onClick={onClickCancel} flush="left" data-test-subj="flyout-footer-cancel-button">
+      <EuiButtonEmpty onClick={onClickCancel} flush="left" data-test-subj="flyout-footer-cancel-button">
         Cancel
       </EuiButtonEmpty>
     </EuiFlexItem>

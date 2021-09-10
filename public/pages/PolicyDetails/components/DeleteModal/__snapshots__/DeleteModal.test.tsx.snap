@@ -69,7 +69,7 @@ exports[`<DeleteModal /> spec renders the component 1`] = `
                   <strong>
                     some_id
                   </strong>
-                  " permanently? Indices will no longer be managed using this policy
+                  " permanently? Indices will no longer be managed using this policy.
                   <div
                     class="euiSpacer euiSpacer--s"
                   />
@@ -101,7 +101,7 @@ exports[`<DeleteModal /> spec renders the component 1`] = `
                         class="euiFormHelpText euiFormRow__text"
                         id="some_html_id-help"
                       >
-                        To confirm deletion, type delete
+                        To confirm deletion, type "delete".
                       </div>
                     </div>
                   </div>

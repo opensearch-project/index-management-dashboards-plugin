@@ -10,14 +10,16 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiSelect, EuiSpacer, EuiFieldText, EuiFieldNumber } from "@elastic/eui";
+import { EuiLink, EuiIcon, EuiFormRow, EuiSelect, EuiSpacer, EuiFieldText, EuiFieldNumber } from "@elastic/eui";
 import moment from "moment-timezone";
 import EuiFormCustomLabel from "../EuiFormCustomLabel";
 import { UITransition } from "../../../../../models/interfaces";
+import { TRANSITION_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 const timezones = moment.tz.names().map((tz) => ({ label: tz, text: tz }));
 
 const conditionTypeOptions = [
+  { value: "none", text: "No condition" },
   { value: "min_index_age", text: "Minimum index age" },
   { value: "min_doc_count", text: "Minimum doc count" },
   { value: "min_size", text: "Minimum size" },
@@ -31,30 +33,30 @@ interface TransitionProps {
 
 const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
   // We currently only support one transition condition
-  const conditionType = Object.keys(uiTransition.transition?.conditions || []).pop() || "min_index_age";
+  const conditionType = Object.keys(uiTransition.transition.conditions || []).pop() || "none";
+  const conditions = uiTransition.transition.conditions;
   return (
     <>
       <EuiFormCustomLabel title="Condition" helpText="Specify the condition needed to be met to transition to the destination state." />
-      <EuiFormRow isInvalid={false} error={null}>
+      <EuiFormRow fullWidth isInvalid={false} error={null}>
         <EuiSelect
+          fullWidth
           id="condition-type"
           options={conditionTypeOptions}
           value={conditionType}
           style={{ textTransform: "capitalize" }}
           onChange={(e) => {
             const selectedConditionType = e.target.value;
-            let condition = {};
-            if (selectedConditionType === "min_index_age") condition = { min_index_age: "30d" };
-            if (selectedConditionType === "min_doc_count") condition = { min_doc_count: 1000000 };
-            if (selectedConditionType === "min_size") condition = { min_size: "50gb" };
+            const transition = { ...uiTransition.transition };
+            if (selectedConditionType === "none") delete transition.conditions;
+            if (selectedConditionType === "min_index_age") transition.conditions = { min_index_age: "30d" };
+            if (selectedConditionType === "min_doc_count") transition.conditions = { min_doc_count: 1000000 };
+            if (selectedConditionType === "min_size") transition.conditions = { min_size: "50gb" };
             if (selectedConditionType === "cron")
-              condition = { cron: { cron: { expression: "* 17 * * SAT", timezone: "America/Los_Angeles" } } };
+              transition.conditions = { cron: { cron: { expression: "* 17 * * SAT", timezone: "America/Los_Angeles" } } };
             onChangeTransition({
               ...uiTransition,
-              transition: {
-                ...uiTransition.transition,
-                conditions: condition,
-              },
+              transition,
             });
           }}
           data-test-subj="create-state-action-type"
@@ -66,10 +68,10 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
       {conditionType === "min_index_age" && (
         <>
           <EuiFormCustomLabel title="Minimum index age" helpText="The minimum age required to transition to the next state." />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
-              value={uiTransition.transition.conditions?.min_index_age}
-              style={{ textTransform: "capitalize" }}
+              fullWidth
+              value={conditions?.min_index_age}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minIndexAge = e.target.value;
                 onChangeTransition({
@@ -94,19 +96,21 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             title="Minimum doc count"
             helpText="The minimum number of documents required to transition to the next state."
           />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldNumber
-              value={uiTransition.transition.conditions?.min_doc_count}
-              style={{ textTransform: "capitalize" }}
+              fullWidth
+              value={typeof conditions?.min_doc_count === "undefined" ? "" : conditions?.min_doc_count}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minDocCount = e.target.valueAsNumber;
+                const conditions = { min_doc_count: minDocCount };
+                // TODO: clean this up..
+                // set it to undefined instead of deleting... as we use the presence of the key itself for the type of transition
+                if (isNaN(minDocCount)) conditions.min_doc_count = undefined;
                 onChangeTransition({
                   ...uiTransition,
                   transition: {
                     ...uiTransition.transition,
-                    conditions: {
-                      min_doc_count: minDocCount,
-                    },
+                    conditions,
                   },
                 });
               }}
@@ -122,10 +126,10 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             title="Minimum index size"
             helpText="The minimum size of the total primary shard storage required to transition to the next state."
           />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
-              value={uiTransition.transition.conditions?.min_size}
-              style={{ textTransform: "capitalize" }}
+              fullWidth
+              value={conditions?.min_size}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minSize = e.target.value;
                 onChangeTransition({
@@ -146,11 +150,19 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
 
       {conditionType === "cron" && (
         <>
-          <EuiFormCustomLabel title="Cron expression" helpText="The matching cron expression required to transition to the next state." />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormCustomLabel
+            title="Cron expression"
+            helpText="The matching cron expression required to transition to the next state."
+            learnMore={
+              <EuiLink href={TRANSITION_DOCUMENTATION_URL} target="_blank">
+                Learn more <EuiIcon type="popout" size="s" />
+              </EuiLink>
+            }
+          />
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
-              value={uiTransition.transition.conditions?.cron?.cron.expression}
-              style={{ textTransform: "capitalize" }}
+              fullWidth
+              value={conditions?.cron?.cron.expression}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const expression = e.target.value;
                 onChangeTransition({
@@ -175,11 +187,12 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           <EuiSpacer />
 
           <EuiFormCustomLabel title="Timezone" helpText="A day starts from 00:00:00 in the specified timezone." />
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiSelect
+              fullWidth
               id="timezone"
               options={timezones}
-              value={uiTransition.transition.conditions?.cron?.cron.timezone}
+              value={conditions?.cron?.cron.timezone}
               onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                 const timezone = e.target.value;
                 onChangeTransition({

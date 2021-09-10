@@ -10,9 +10,11 @@
  */
 
 import React from "react";
+import { EuiFormRow, EuiCodeEditor } from "@elastic/eui";
 import { AllocationAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
+import { DarkModeConsumer } from "../../../../components/DarkMode";
 
 export default class AllocationUIAction implements UIAction<AllocationAction> {
   id: string;
@@ -28,9 +30,54 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
 
   clone = (action: AllocationAction = this.action) => new AllocationUIAction(action, this.id);
 
-  render = (action: UIAction<AllocationAction>, onChangeAction: (action: UIAction<AllocationAction>) => void) => {
-    return <div />;
+  isValid = () => {
+    try {
+      JSON.parse(this.getActionJsonString(this.action));
+      return true;
+    } catch (err) {
+      return false;
+    }
   };
 
-  toAction = () => this.action;
+  getActionJsonString = (action: AllocationAction) => {
+    const allocation = action.allocation;
+    return allocation.hasOwnProperty("jsonString") ? allocation.jsonString : JSON.stringify(allocation, null, 4);
+  };
+
+  getActionJson = (action: AllocationAction) => {
+    const allocation = action.allocation;
+    return allocation.hasOwnProperty("jsonString") ? JSON.parse(allocation.jsonString) : allocation;
+  };
+
+  render = (action: UIAction<AllocationAction>, onChangeAction: (action: UIAction<AllocationAction>) => void) => {
+    return (
+      <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
+        <DarkModeConsumer>
+          {(isDarkMode) => (
+            <EuiCodeEditor
+              mode="json"
+              theme={isDarkMode ? "sense-dark" : "github"}
+              width="100%"
+              value={this.getActionJsonString(action.action)}
+              onChange={(str) => {
+                onChangeAction(
+                  this.clone({
+                    ...action.action,
+                    allocation: { jsonString: str },
+                  })
+                );
+              }}
+              setOptions={{ fontSize: "14px" }}
+              aria-label="Code Editor"
+            />
+          )}
+        </DarkModeConsumer>
+      </EuiFormRow>
+    );
+  };
+
+  toAction = () => ({
+    ...this.action,
+    allocation: this.getActionJson(this.action),
+  });
 }

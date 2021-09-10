@@ -10,12 +10,13 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSpacer, EuiComboBox } from "@elastic/eui";
+import { EuiText, EuiLink, EuiIcon, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSpacer, EuiComboBox } from "@elastic/eui";
 import { Transition as ITransition, UITransition } from "../../../../../models/interfaces";
 import FlyoutFooter from "../../components/FlyoutFooter";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
 import { makeId } from "../../../../utils/helpers";
 import Transition from "../../components/Transition";
+import { TRANSITION_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 interface CreateTransitionProps {
   editTransition: UITransition | null;
@@ -38,7 +39,6 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
       uiTransition = {
         transition: {
           state_name: "",
-          conditions: { min_index_age: "30d" },
         },
         id: makeId(),
       };
@@ -84,7 +84,7 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
   render() {
     const { editTransition, onCloseCreateTransition, stateOptions } = this.props;
     const { uiTransition } = this.state;
-    let title = "Create transition";
+    let title = "Add transition";
     if (!!editTransition) title = "Edit transition";
     return (
       <>
@@ -93,6 +93,14 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
             <h3>{title}</h3>
           </EuiTitle>
 
+          <EuiText size="xs" style={{ fontWeight: 200 }}>
+            Transitions define the conditions that need to be met for a state to change. After all actions in the current state are
+            completed, the policy starts checking the conditions for transitions.{" "}
+            <EuiLink href={TRANSITION_DOCUMENTATION_URL} target="_blank">
+              Learn more <EuiIcon type="popout" size="s" />
+            </EuiLink>
+          </EuiText>
+
           <EuiSpacer />
 
           <EuiFormCustomLabel
@@ -100,8 +108,10 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
             helpText="If entering a state that does not exist yet then you must create it before creating the policy."
           />
 
-          <EuiFormRow isInvalid={false} error={null}>
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiComboBox
+              fullWidth
+              isClearable={false}
               placeholder="Select a single option"
               singleSelection={{ asPlainText: true }}
               options={stateOptions.map((state) => ({ label: state }))}

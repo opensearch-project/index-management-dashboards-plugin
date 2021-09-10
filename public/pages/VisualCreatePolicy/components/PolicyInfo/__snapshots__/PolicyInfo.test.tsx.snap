@@ -33,6 +33,7 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         style="margin-bottom: 5px;"
       >
         <h5
+          class="euiFormLabel "
           style="margin-bottom: 2px;"
         >
           Policy ID
@@ -40,9 +41,10 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
             Specify a unique and descriptive ID that is easy to recognize and remember.
+             
           </span>
         </p>
       </div>
@@ -79,6 +81,7 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         style="margin-bottom: 5px;"
       >
         <h5
+          class="euiFormLabel "
           style="margin-bottom: 2px;"
         >
           Description
@@ -86,9 +89,10 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         <p>
            
           <span
-            style="color: grey; font-weight: 200; font-size: 12px;"
+            style="font-weight: 200; font-size: 12px;"
           >
-            Describe the policy
+            Describe the policy.
+             
           </span>
         </p>
       </div>

@@ -30,20 +30,40 @@ export default class RollupUIAction implements UIAction<RollupAction> {
 
   clone = (action: RollupAction) => new RollupUIAction(action, this.id);
 
+  isValid = () => {
+    try {
+      JSON.parse(this.getActionJsonString(this.action));
+      return true;
+    } catch (err) {
+      return false;
+    }
+  };
+
+  getActionJsonString = (action: RollupAction) => {
+    const rollup = action.rollup;
+    return rollup.hasOwnProperty("jsonString") ? rollup.jsonString : JSON.stringify(rollup, null, 4);
+  };
+
+  getActionJson = (action: RollupAction) => {
+    const rollup = action.rollup;
+    return rollup.hasOwnProperty("jsonString") ? JSON.parse(rollup.jsonString) : rollup;
+  };
+
   render = (action: UIAction<RollupAction>, onChangeAction: (action: UIAction<RollupAction>) => void) => {
+    // If we don't have a JSON string yet it just means we haven't converted the rollup to it yet
     return (
-      <EuiFormRow isInvalid={false} error={null} style={{ maxWidth: "100%" }}>
+      <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor
               mode="json"
               theme={isDarkMode ? "sense-dark" : "github"}
               width="100%"
-              value={action.action.rollup.jsonString}
+              value={this.getActionJsonString(action.action)}
               onChange={(str) => {
                 onChangeAction(
                   this.clone({
-                    ...action,
+                    ...action.action,
                     rollup: { jsonString: str },
                   })
                 );
@@ -59,7 +79,6 @@ export default class RollupUIAction implements UIAction<RollupAction> {
 
   toAction = () => ({
     ...this.action,
-    // TODO: validate this in UI before parsing here in case it failsZ
-    rollup: { ism_rollup: JSON.parse(this.action.rollup.jsonString) },
+    rollup: this.getActionJson(this.action),
   });
 }

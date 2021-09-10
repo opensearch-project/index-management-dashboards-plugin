@@ -30,21 +30,29 @@ export default class IndexPriorityUIAction implements UIAction<IndexPriorityActi
 
   clone = (action: IndexPriorityAction) => new IndexPriorityUIAction(action, this.id);
 
+  isValid = () => {
+    const priority = this.action.index_priority.priority;
+    return typeof priority !== "undefined" && priority >= 0;
+  };
+
   render = (action: UIAction<IndexPriorityAction>, onChangeAction: (action: UIAction<IndexPriorityAction>) => void) => {
+    const priority = action.action.index_priority.priority;
     return (
       <>
-        <EuiFormCustomLabel title="Priority" helpText="Higher priority indices are recovered first when possible." />
-        <EuiFormRow isInvalid={false} error={null}>
+        <EuiFormCustomLabel
+          title="Priority"
+          helpText="Higher priority indices are recovered first when possible."
+          isInvalid={!this.isValid()}
+        />
+        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldNumber
-            value={(action.action as IndexPriorityAction).index_priority.priority}
-            style={{ textTransform: "capitalize" }}
+            fullWidth
+            value={typeof priority === "undefined" ? "" : priority}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const priority = e.target.valueAsNumber;
-              onChangeAction(
-                this.clone({
-                  index_priority: { priority },
-                })
-              );
+              const indexPriority = { priority };
+              if (isNaN(priority)) delete indexPriority.priority;
+              onChangeAction(this.clone({ index_priority: indexPriority }));
             }}
             data-test-subj="action-render-index-priority"
           />

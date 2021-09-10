@@ -46,9 +46,9 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
           <EuiFlexGroup>
             <EuiFlexItem>
               <EuiFieldText
-                fullWidth
                 isInvalid={false}
-                value={action.action.timeout}
+                fullWidth
+                value={action.action.timeout || ""}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const timeout = e.target.value;
                   onChangeAction(action.clone({ ...action.action, timeout }));
@@ -59,18 +59,23 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
         </EuiFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
-        <EuiFormCustomLabel title="Retry count" helpText="The number of times the action should be retried if it fails." />
+        <EuiFormCustomLabel
+          title="Retry count"
+          helpText="The number of times the action should be retried if it fails. Must be greater than 0."
+        />
         <EuiFormRow fullWidth isInvalid={false} error={null}>
           <EuiFlexGroup>
             <EuiFlexItem>
               <EuiFieldNumber
-                fullWidth
                 isInvalid={false}
+                fullWidth
                 min={0}
-                value={action.action.retry?.count}
+                value={typeof action.action.retry?.count === "undefined" ? "" : action.action.retry.count}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const count = e.target.valueAsNumber;
-                  onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, count } }));
+                  const retry = { ...action.action.retry, count };
+                  if (isNaN(count)) delete retry.count;
+                  onChangeAction(action.clone({ ...action.action, retry }));
                 }}
               />
             </EuiFlexItem>
@@ -81,10 +86,10 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
         <EuiFormCustomLabel title="Retry backoff" helpText="The backoff policy type to use when retrying." />
         <EuiFormRow fullWidth isInvalid={false} error={null}>
           <EuiSelect
-            fullWidth
             id="retry-backoff-type"
+            fullWidth
             options={options}
-            value={action.action.retry?.backoff}
+            value={action.action.retry?.backoff || ""}
             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
               const backoff = e.target.value;
               onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, backoff } }));
@@ -98,9 +103,9 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
           <EuiFlexGroup>
             <EuiFlexItem>
               <EuiFieldText
-                fullWidth
                 isInvalid={false}
-                value={action.action.retry?.delay}
+                fullWidth
+                value={action.action.retry?.delay || ""}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const delay = e.target.value;
                   onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, delay } }));

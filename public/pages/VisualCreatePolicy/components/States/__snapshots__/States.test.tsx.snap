@@ -21,23 +21,27 @@ exports[`<States /> spec renders the component 1`] = `
         class="euiText euiText--small"
         style="padding: 5px 0px;"
       >
-        <p
-          style="color: grey; font-weight: 200;"
+        <div
+          class="euiTextColor euiTextColor--subdued"
         >
-          You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
-          <br />
-          "Transitions" define when to move from one state to another.
-           
-          <a
-            class="euiLink euiLink--primary"
-            href="https://opensearch.org/docs/im-plugin/ism/index/"
-            rel="noopener noreferrer"
-            target="_blank"
+          <p
+            style="font-weight: 200;"
           >
-            Learn more 
-            EuiIconMock
-          </a>
-        </p>
+            You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
+            <br />
+            "Transitions" define when to move from one state to another.
+             
+            <a
+              class="euiLink euiLink--primary"
+              href="https://opensearch.org/docs/im-plugin/ism/policies/#states"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more 
+              EuiIconMock
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -120,7 +124,7 @@ exports[`<States /> spec renders the component 1`] = `
               <button
                 aria-controls="hot"
                 aria-expanded="false"
-                class="euiAccordion__button"
+                class="euiAccordion__button state-accordion"
                 id="some_html_id"
                 type="button"
               >
@@ -222,25 +226,33 @@ exports[`<States /> spec renders the component 1`] = `
                   <div
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
-                    <button
-                      aria-label="Delete"
-                      class="euiButtonIcon euiButtonIcon--danger"
-                      data-test-subj="state-delete-button"
-                      type="button"
+                    <span
+                      class="euiToolTipAnchor"
                     >
-                      EuiIconMock
-                    </button>
+                      <button
+                        aria-label="Delete"
+                        class="euiButtonIcon euiButtonIcon--danger"
+                        data-test-subj="state-delete-button"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
                   </div>
                   <div
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
-                    <button
-                      aria-label="Edit"
-                      class="euiButtonIcon euiButtonIcon--primary"
-                      type="button"
+                    <span
+                      class="euiToolTipAnchor"
                     >
-                      EuiIconMock
-                    </button>
+                      <button
+                        aria-label="Edit"
+                        class="euiButtonIcon euiButtonIcon--primary"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -272,7 +284,7 @@ exports[`<States /> spec renders the component 1`] = `
                       class="euiFlexItem"
                     >
                       <div
-                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
                       >
                         <div
                           class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -300,7 +312,7 @@ exports[`<States /> spec renders the component 1`] = `
                       class="euiFlexItem"
                     >
                       <div
-                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
                       >
                         <div
                           class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -352,7 +364,7 @@ exports[`<States /> spec renders the component 1`] = `
               <button
                 aria-controls="cold"
                 aria-expanded="false"
-                class="euiAccordion__button"
+                class="euiAccordion__button state-accordion"
                 id="some_html_id"
                 type="button"
               >
@@ -415,25 +427,33 @@ exports[`<States /> spec renders the component 1`] = `
                   <div
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
-                    <button
-                      aria-label="Delete"
-                      class="euiButtonIcon euiButtonIcon--danger"
-                      data-test-subj="state-delete-button"
-                      type="button"
+                    <span
+                      class="euiToolTipAnchor"
                     >
-                      EuiIconMock
-                    </button>
+                      <button
+                        aria-label="Delete"
+                        class="euiButtonIcon euiButtonIcon--danger"
+                        data-test-subj="state-delete-button"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
                   </div>
                   <div
                     class="euiFlexItem euiFlexItem--flexGrowZero"
                   >
-                    <button
-                      aria-label="Edit"
-                      class="euiButtonIcon euiButtonIcon--primary"
-                      type="button"
+                    <span
+                      class="euiToolTipAnchor"
                     >
-                      EuiIconMock
-                    </button>
+                      <button
+                        aria-label="Edit"
+                        class="euiButtonIcon euiButtonIcon--primary"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -465,7 +485,7 @@ exports[`<States /> spec renders the component 1`] = `
                       class="euiFlexItem"
                     >
                       <div
-                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
                       >
                         <div
                           class="euiFlexItem euiFlexItem--flexGrowZero"

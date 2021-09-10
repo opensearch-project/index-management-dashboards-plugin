@@ -26,7 +26,15 @@ describe("<DraggableItem /> spec", () => {
     const { container } = render(
       <EuiDragDropContext onDragEnd={() => {}}>
         <EuiDroppable droppableId="STATE_ACTIONS_DROPPABLE_AREA">
-          <DraggableItem content={content} id={action.id} idx={0} isLast={true} onClickDelete={() => {}} onClickEdit={() => {}} />
+          <DraggableItem
+            content={content}
+            id={action.id}
+            idx={0}
+            isLast={true}
+            onClickDelete={() => {}}
+            onClickEdit={() => {}}
+            draggableType="action"
+          />
         </EuiDroppable>
       </EuiDragDropContext>
     );
@@ -40,7 +48,15 @@ describe("<DraggableItem /> spec", () => {
     const { getByTestId } = render(
       <EuiDragDropContext onDragEnd={() => {}}>
         <EuiDroppable droppableId="STATE_ACTIONS_DROPPABLE_AREA">
-          <DraggableItem content={content} id={action.id} idx={0} isLast={true} onClickDelete={onClickDelete} onClickEdit={() => {}} />
+          <DraggableItem
+            content={content}
+            id={action.id}
+            idx={0}
+            isLast={true}
+            onClickDelete={onClickDelete}
+            onClickEdit={() => {}}
+            draggableType="action"
+          />
         </EuiDroppable>
       </EuiDragDropContext>
     );
@@ -56,7 +72,15 @@ describe("<DraggableItem /> spec", () => {
     const { getByTestId } = render(
       <EuiDragDropContext onDragEnd={() => {}}>
         <EuiDroppable droppableId="STATE_ACTIONS_DROPPABLE_AREA">
-          <DraggableItem content={content} id={action.id} idx={0} isLast={true} onClickDelete={() => {}} onClickEdit={onClickEdit} />
+          <DraggableItem
+            content={content}
+            id={action.id}
+            idx={0}
+            isLast={true}
+            onClickDelete={() => {}}
+            onClickEdit={onClickEdit}
+            draggableType="action"
+          />
         </EuiDroppable>
       </EuiDragDropContext>
     );
