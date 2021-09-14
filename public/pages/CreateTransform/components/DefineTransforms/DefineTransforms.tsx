@@ -103,27 +103,18 @@ export default function DefineTransforms({
     try {
       const response = await transformService.searchSampleData(sourceIndex, { from: 0, size: DefaultSampleDataSize }, sourceIndexFilter);
 
-      console.log("Sample response:", response);
-
       if (response.ok) {
         setData(response.response.data);
         setDataCount(response.response.total.value);
       }
-      console.log("Done loading sample data");
     } catch (err) {
-      console.log("Didn't load sample data");
       notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the transforms"));
     }
     setLoading(false);
   }, [sourceIndex]);
 
   React.useEffect(() => {
-    console.log("Fetching Data!");
     fetchData();
-    console.log("Finished fetchData!");
-    console.log("data: " + data);
-    console.log("dataCount: " + dataCount);
-    console.log("loading: " + loading);
 
   }, []);
 
@@ -155,7 +146,6 @@ export default function DefineTransforms({
   );
 
   const renderCellValue = ({ rowIndex, columnId }) => {
-    console.log("Rendering a cell value: ", columnId);
 
     if (!loading && data.hasOwnProperty(rowIndex)) {
       if (columns?.find((column) => column.id == columnId).schema == "keyword") {
@@ -173,13 +163,6 @@ export default function DefineTransforms({
     }
     return "-";
   };
-
-  console.log("Columns:", columns);
-  console.log("Visible columns:", visibleColumns);
-  console.log("Table data:", data);
-  console.log("Counts:", dataCount, DefaultSampleDataSize);
-  console.log("sortingColumns:", sortingColumns);
-  console.log("Still loading?", loading);
 
   //TODO: remove duplicate code here after extracting the first table as separate component
   if (isReadOnly)
