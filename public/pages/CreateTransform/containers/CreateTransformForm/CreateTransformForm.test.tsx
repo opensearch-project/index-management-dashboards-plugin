@@ -43,11 +43,6 @@ const sampleMapping = {
       properties: {
         category: {
           type: "text",
-          fields: {
-            keyword: {
-              type: "keyword",
-            },
-          },
         },
         customer_gender: {
           type: "keyword",
@@ -127,12 +122,44 @@ const sampleMapping = {
   },
 };
 
+const miniMapping = {
+  index_1: {
+    mappings: {
+      properties: {
+        category: {
+          type: "text",
+        },
+      },
+    },
+  },
+};
+
+const emptyData = [];
+
+const emptyMapping = {
+  index_1: {
+    mappings: {
+      properties: {},
+    },
+  },
+};
+
+const miniData = [{
+  _id: "H1tNZHoBkfvfBoG1npgz",
+  _index: "index_1",
+  _score: 1,
+  _source: {
+    category: "Women's Clothing",
+  },
+  _type: "_doc",
+}];
+
 const indexData = [{
   _id: "H1tNZHoBkfvfBoG1npgz",
   _index: "index_1",
   _score: 1,
   _source: {
-    category: ["Women's Clothing"],
+    category: "Women's Clothing",
     customer_gender: "FEMALE",
     day_of_week: "Monday",
     day_of_week_i: 0,
@@ -274,19 +301,27 @@ describe("<CreateTransformForm /> creation", () => {
   browserServicesMock.transformService.searchSampleData = jest.fn().mockResolvedValue({
     ok: true,
     response: {
-      data: indexData,
-      total: { value: 1 }
+      data: emptyData,
+      total: { value: 0,  relation: "gte" }
     }
   });
 
   browserServicesMock.transformService.getMappings = jest.fn().mockResolvedValue({
     ok: true,
-    response: sampleMapping,
+    response: emptyMapping,
   });
 
   browserServicesMock.rollupService.getMappings = jest.fn().mockResolvedValue({
     ok: true,
-    response: sampleMapping,
+    response: emptyMapping,
+  });
+
+  browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
+    ok: true,
+    response: {
+      indices: ["index_1"],
+      dataStreams: ["data_stream_1"],
+    },
   });
 
   it("routes from step 1 to step 2 and back", async () => {
@@ -295,11 +330,6 @@ describe("<CreateTransformForm /> creation", () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
       ok: false,
       response: {},
-    });
-
-    browserServicesMock.rollupService.getMappings = jest.fn().mockResolvedValue({
-      ok: true,
-      response: sampleMapping,
     });
 
     fireEvent.focus(getByLabelText("Name"));
@@ -325,7 +355,7 @@ describe("<CreateTransformForm /> creation", () => {
     expect(queryByText('Select fields to transform')).not.toBeNull();
   });
 
-  it("routes from step 1 to step 4", async () => {
+  it.only("routes from step 1 to step 4", async () => {
     const transform = {
       _id: "some_transform_id",
       _version: 3,
@@ -367,7 +397,7 @@ describe("<CreateTransformForm /> creation", () => {
       response: transform,
     });
 
-    const { getByTestId, getByLabelText, queryByText, getAllByTestId, getByDisplayValue, findByText, getByText } = renderCreateTransformFormWithRouter();
+    const { getByTestId, getByLabelText, queryByText, getAllByTestId, getByDisplayValue, findByText, getByText, container, debug } = renderCreateTransformFormWithRouter();
 
     fireEvent.focus(getByLabelText("Name"));
     await userEvent.type(getByLabelText("Name"), "some_transform_id");
@@ -392,11 +422,13 @@ describe("<CreateTransformForm /> creation", () => {
     expect(queryByText("Job name and description")).toBeNull();
     expect(queryByText('Select fields to transform')).not.toBeNull();
 
-    await waitFor(() => {}, {timeout:2000});
+    await waitFor(() => {}, {timeout:4000});
+
 
     // Data grid should be rendered
-    await userEvent.click(getByTestId('dataGridHeaderCell-customer_gender'));
-    fireEvent.keyDown(getByTestId('dataGridHeaderCell-category.keyword'), { key: "Enter", code: "Enter"});
+    debug();
+    await userEvent.click(getByTestId('dataGridHeaderCell-category'));
+    fireEvent.keyDown(getByTestId('dataGridHeaderCell-category'), { key: "Enter", code: "Enter"});
     userEvent.click(getByLabelText("Group by terms"));
 
     userEvent.click(getByTestId("createTransformNextButton"));
