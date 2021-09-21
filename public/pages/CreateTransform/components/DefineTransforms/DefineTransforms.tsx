@@ -150,6 +150,11 @@ export default function DefineTransforms({
         return data[rowIndex]._source[correspondingTextColumnId] ? data[rowIndex]._source[correspondingTextColumnId] : "-";
       } else if (columns?.find((column) => column.id == columnId).schema == "date") {
         return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
+      } else if (columns?.find((column) => column.id == columnId).schema == "geo_point") {
+        return data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon ?
+          data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon : "-";
+      } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
+        return data[rowIndex]._source[columnId] == null ? "-" : (data[rowIndex]._source[columnId] ? "true" : "false");
       }
       return data[rowIndex]._source[columnId] ? data[rowIndex]._source[columnId] : "-";
     }
