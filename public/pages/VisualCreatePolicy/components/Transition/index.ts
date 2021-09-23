@@ -9,7 +9,6 @@
  * GitHub history for details.
  */
 
-import Transition from "./Transition";
 import TransitionContent from "./TransitionContent";
 
 export { TransitionContent };
