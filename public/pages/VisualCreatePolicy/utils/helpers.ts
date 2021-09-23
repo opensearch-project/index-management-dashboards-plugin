@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-import { UIAction, Action, Transition, ISMTemplate } from "../../../../models/interfaces";
+import { UIAction, Action, Transition } from "../../../../models/interfaces";
 import {
   ActionType,
   DEFAULT_ALLOCATION,
@@ -96,16 +96,4 @@ export const getUIAction = (actionType: string): UIAction<any> => {
     default:
       throw new Error(`Action type [${actionType}] not supported`);
   }
-};
-
-// Takes in the ismTemplates which could be a single object, array, or not defined and returns them reformatted as a list
-export const convertTemplatesToArray = (ismTemplates: ISMTemplate[] | ISMTemplate | null | undefined): ISMTemplate[] => {
-  const templates = [];
-  // policy.ism_template can be an array of templates or a single template as an object or null
-  if (Array.isArray(ismTemplates)) {
-    templates.push(...ismTemplates);
-  } else if (ismTemplates) {
-    templates.push(ismTemplates);
-  }
-  return templates;
 };
