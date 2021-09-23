@@ -9,9 +9,8 @@
  * GitHub history for details.
  */
 
-import { actionRepoSingleton, capitalizeFirstLetter, convertTemplatesToArray, getOrderInfo } from "./helpers";
-import { Action, ISMTemplate, UIAction } from "../../../../models/interfaces";
-import { makeId } from "../../../utils/helpers";
+import { capitalizeFirstLetter, convertTemplatesToArray, getOrderInfo } from "./helpers";
+import { ISMTemplate } from "../../../../models/interfaces";
 
 test("converts all ism template formats into a list of ism templates", () => {
   expect(convertTemplatesToArray(null)).toEqual([]);
@@ -48,41 +47,4 @@ test("getOrderInfo returns correct order info", () => {
   expect(getOrderInfo(null, [state]).disableOrderSelections).toBe(false);
   expect(getOrderInfo(null, [state]).order).toBe("after");
   expect(getOrderInfo(null, [state]).afterBeforeState).toBe(state.name);
-});
-
-interface DummyAction extends Action {
-  dummy: {};
-}
-
-const DEFAULT_DUMMY: DummyAction = {
-  dummy: {},
-};
-
-class DummyUIAction implements UIAction<DummyAction> {
-  id: string;
-  action: DummyAction;
-  type = "dummy";
-
-  constructor(action: DummyAction, id: string = makeId()) {
-    this.action = action;
-    this.id = id;
-  }
-
-  content = () => `Dummy content.`;
-
-  clone = (action: DummyAction) => new DummyUIAction(action, this.id);
-
-  render = (action: UIAction<DummyAction>, onChangeAction: (action: UIAction<DummyAction>) => void) => {
-    return null;
-  };
-
-  toAction = () => this.action;
-}
-
-test("action repository usage", () => {
-  expect(actionRepoSingleton.getAllActionTypes().length).toBe(13);
-  actionRepoSingleton.registerAction("dummy", DummyUIAction, DEFAULT_DUMMY);
-  expect(actionRepoSingleton.getAllActionTypes().length).toBe(14);
-  expect(actionRepoSingleton.getUIAction("dummy") instanceof DummyUIAction).toBe(true);
-  expect(actionRepoSingleton.getUIActionFromData(DEFAULT_DUMMY) instanceof DummyUIAction).toBe(true);
 });

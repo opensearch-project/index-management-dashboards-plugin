@@ -153,7 +153,7 @@ export interface Retry {
 export interface UIAction<Data> {
   action: Data;
   id: string;
-  type: ActionType | string;
+  type: ActionType;
   render: (uiAction: UIAction<Data>, onChangeAction: (uiAction: UIAction<Data>) => void) => JSX.Element | null;
   clone: (action: Data) => UIAction<Data>;
   content: () => JSX.Element | string | null;
