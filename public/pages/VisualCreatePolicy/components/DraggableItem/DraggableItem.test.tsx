@@ -15,7 +15,7 @@ import { render } from "@testing-library/react";
 import { EuiDragDropContext, EuiDroppable } from "@elastic/eui";
 import DraggableItem from "./DraggableItem";
 import { DEFAULT_ROLLOVER } from "../../utils/constants";
-import { RolloverUIAction } from "../UIActions";
+import { RolloverUIAction } from "../../utils/actions";
 import { UIAction } from "../../../../../models/interfaces";
 import { fireEvent } from "@testing-library/dom";
 
