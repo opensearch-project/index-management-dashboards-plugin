@@ -9,7 +9,7 @@
  * GitHub history for details.
  */
 
-import { capitalizeFirstLetter, convertTemplatesToArray, getOrderInfo } from "./helpers";
+import { convertTemplatesToArray, getOrderInfo } from "./helpers";
 import { ISMTemplate } from "../../../../models/interfaces";
 
 test("converts all ism template formats into a list of ism templates", () => {
@@ -19,10 +19,6 @@ test("converts all ism template formats into a list of ism templates", () => {
   expect(convertTemplatesToArray(template)).toEqual([template]);
   const templates = [template, { index_patterns: ["log*"], priority: 50 }];
   expect(convertTemplatesToArray(templates)).toEqual(templates);
-});
-
-test("capitalizes first letter of string", () => {
-  expect(capitalizeFirstLetter("some string")).toBe("Some string");
 });
 
 test("getOrderInfo returns correct order info", () => {

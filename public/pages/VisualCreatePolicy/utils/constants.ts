@@ -196,3 +196,19 @@ export const actions = [
 ];
 
 export const ISM_TEMPLATE_INPUT_MAX_WIDTH = "400px";
+
+export enum ActionType {
+  Allocation = "allocation",
+  Close = "close",
+  Delete = "delete",
+  ForceMerge = "force_merge",
+  IndexPriority = "index_priority",
+  Notification = "notification",
+  Open = "open",
+  ReadOnly = "read_only",
+  ReadWrite = "read_write",
+  ReplicaCount = "replica_count",
+  Rollover = "rollover",
+  Rollup = "rollup",
+  Snapshot = "snapshot",
+}
