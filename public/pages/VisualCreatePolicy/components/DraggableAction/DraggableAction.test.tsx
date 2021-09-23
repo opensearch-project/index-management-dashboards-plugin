@@ -13,20 +13,19 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
 import { EuiDragDropContext, EuiDroppable } from "@elastic/eui";
-import DraggableItem from "./DraggableItem";
+import DraggableAction from "./DraggableAction";
 import { DEFAULT_ROLLOVER } from "../../utils/constants";
 import { RolloverUIAction } from "../../utils/actions";
 import { UIAction } from "../../../../../models/interfaces";
 import { fireEvent } from "@testing-library/dom";
 
-describe("<DraggableItem /> spec", () => {
+describe("<DraggableAction /> spec", () => {
   it("renders the component", () => {
     const action: UIAction<any> = new RolloverUIAction(DEFAULT_ROLLOVER);
-    const content = action.content();
     const { container } = render(
       <EuiDragDropContext onDragEnd={() => {}}>
         <EuiDroppable droppableId="STATE_ACTIONS_DROPPABLE_AREA">
-          <DraggableItem content={content} id={action.id} idx={0} isLast={true} onClickDelete={() => {}} onClickEdit={() => {}} />
+          <DraggableAction action={action} idx={0} isLast={true} onClickDeleteAction={() => {}} onClickEditAction={() => {}} />
         </EuiDroppable>
       </EuiDragDropContext>
     );
@@ -35,33 +34,31 @@ describe("<DraggableItem /> spec", () => {
 
   it("calls onclickdeleteaction when clicking delete button", () => {
     const action: UIAction<any> = new RolloverUIAction(DEFAULT_ROLLOVER);
-    const onClickDelete = jest.fn();
-    const content = action.content();
+    const onClickDeleteAction = jest.fn();
     const { getByTestId } = render(
       <EuiDragDropContext onDragEnd={() => {}}>
         <EuiDroppable droppableId="STATE_ACTIONS_DROPPABLE_AREA">
-          <DraggableItem content={content} id={action.id} idx={0} isLast={true} onClickDelete={onClickDelete} onClickEdit={() => {}} />
+          <DraggableAction action={action} idx={0} isLast={true} onClickDeleteAction={onClickDeleteAction} onClickEditAction={() => {}} />
         </EuiDroppable>
       </EuiDragDropContext>
     );
 
-    fireEvent.click(getByTestId("draggable-item-delete-button-" + action.id));
-    expect(onClickDelete).toHaveBeenCalledTimes(1);
+    fireEvent.click(getByTestId("draggable-action-delete-button"));
+    expect(onClickDeleteAction).toHaveBeenCalledTimes(1);
   });
 
-  it("calls onclickeditaction when clicking edit button", () => {
+  it("calls onclickeditaction when clicking delete button", () => {
     const action: UIAction<any> = new RolloverUIAction(DEFAULT_ROLLOVER);
-    const onClickEdit = jest.fn();
-    const content = action.content();
+    const onClickEditAction = jest.fn();
     const { getByTestId } = render(
       <EuiDragDropContext onDragEnd={() => {}}>
         <EuiDroppable droppableId="STATE_ACTIONS_DROPPABLE_AREA">
-          <DraggableItem content={content} id={action.id} idx={0} isLast={true} onClickDelete={() => {}} onClickEdit={onClickEdit} />
+          <DraggableAction action={action} idx={0} isLast={true} onClickDeleteAction={() => {}} onClickEditAction={onClickEditAction} />
         </EuiDroppable>
       </EuiDragDropContext>
     );
 
-    fireEvent.click(getByTestId("draggable-item-edit-button-" + action.id));
-    expect(onClickEdit).toHaveBeenCalledTimes(1);
+    fireEvent.click(getByTestId("draggable-action-edit-button"));
+    expect(onClickEditAction).toHaveBeenCalledTimes(1);
   });
 });
