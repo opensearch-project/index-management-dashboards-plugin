@@ -104,9 +104,17 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
         textOnly: true,
         width: "150px",
         render: (name: string, item: PolicyItem) => (
-          <EuiLink onClick={() => this.props.history.push(`${ROUTES.POLICY_DETAILS}?id=${name}`)} data-test-subj={`policyLink_${name}`}>
-            {name}
-          </EuiLink>
+          <ModalConsumer>
+            {({ onShow, onClose }) => (
+              <EuiLink
+                onClick={() =>
+                  onShow(PolicyModal, { policyId: item.id, policy: item.policy, onEdit: () => this.onClickModalEdit(item, onClose) })
+                }
+              >
+                {name}
+              </EuiLink>
+            )}
+          </ModalConsumer>
         ),
       },
       {

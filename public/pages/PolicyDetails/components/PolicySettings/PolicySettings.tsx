@@ -23,8 +23,7 @@ interface PolicySettingsProps {
   description: string;
   sequenceNumber: number;
   schemaVersion: number;
-  ismTemplates: ISMTemplate[] | ISMTemplate | null;
-  onEdit: () => void;
+  ismTemplates: ISMTemplate[];
 }
 
 interface PolicySettingsState {
@@ -60,7 +59,6 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
       sequenceNumber,
       schemaVersion,
       ismTemplates,
-      onEdit,
     } = this.props;
 
     const {
@@ -97,7 +95,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
     const pagination = {
       pageIndex: pageIndex,
       pageSize,
-      totalItemCount: ismTemplates.length || 0,
+      totalItemCount: ismTemplates.length,
       pageSizeOptions: [10, 20, 50],
       hidePerPageOptions: !showPerPageOptions,
     };
@@ -112,7 +110,7 @@ export default class PolicySettings extends Component<PolicySettingsProps, Polic
                   {
                     text: "Edit",
                     buttonProps: {
-                      onClick: () => onEdit(),
+                      onClick: () => {},
                     },
                   },
                 ]}
