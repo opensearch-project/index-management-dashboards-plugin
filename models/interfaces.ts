@@ -92,9 +92,8 @@ export interface DocumentTransform {
 export interface Policy {
   description: string;
   default_state: string;
-  error_notification?: ErrorNotification;
   states: State[];
-  ism_template?: ISMTemplate[] | ISMTemplate | null;
+  ism_template: any;
 }
 
 export interface ErrorNotification {
