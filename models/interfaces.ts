@@ -142,7 +142,7 @@ export interface Action {
 }
 
 export interface Retry {
-  count?: number;
+  count: number;
   backoff?: string;
   delay?: string;
 }
