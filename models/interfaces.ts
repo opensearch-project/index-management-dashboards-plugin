@@ -124,11 +124,6 @@ export interface MessageTemplate {
   lang?: string;
 }
 
-export interface ISMTemplate {
-  index_patterns: string[];
-  priority: number;
-}
-
 export interface State {
   name: string;
   actions: object[];
