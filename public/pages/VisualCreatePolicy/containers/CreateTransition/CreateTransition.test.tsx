@@ -18,9 +18,11 @@ import { UITransition } from "../../../../../models/interfaces";
 describe("<CreateTransition /> spec", () => {
   it("renders the component", () => {
     const transition: UITransition = { id: "some_id", transition: { state_name: "hot", conditions: { min_index_age: "30d" } } };
+    const transitions = [transition];
     const { container } = render(
       <CreateTransition
         editTransition={transition}
+        transitions={transitions}
         onCloseCreateTransition={() => {}}
         onClickSaveTransition={() => {}}
         stateOptions={["hot", "warm", "cold"]}
