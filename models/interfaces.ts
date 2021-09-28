@@ -26,8 +26,6 @@
 
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
-import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
-
 export interface ManagedIndexMetaData {
   index: string;
   indexUuid: string;
@@ -89,186 +87,19 @@ export interface DocumentTransform {
   metadata: any;
 }
 
+// TODO: Fill out when needed
+// TODO: separate a frontend Policy from backendPolicy
 export interface Policy {
   description: string;
   default_state: string;
-  error_notification?: ErrorNotification | null;
   states: State[];
-  ism_template?: ISMTemplate[] | ISMTemplate | null;
-  last_updated_time?: string;
-  schema_version?: number;
-}
-
-export interface ErrorNotification {
-  destination?: Destination;
-  channel?: Channel;
-  message_template: MessageTemplate;
-}
-
-export interface Channel {
-  id: string;
-}
-
-export interface Destination {
-  chime?: {
-    url: string;
-  };
-  slack?: {
-    url: string;
-  };
-  custom_webhook?: {
-    url: string;
-    [other: string]: any; // custom webhook also allows users to create by part including customizing headers/query params, port/host, etc.
-  };
-}
-
-export interface MessageTemplate {
-  source: string;
-  lang?: string;
-}
-
-export interface ISMTemplate {
-  index_patterns: string[];
-  priority: number;
+  ism_template: any;
 }
 
 export interface State {
   name: string;
-  actions?: Action[];
-  transitions?: Transition[];
-}
-
-export interface Action {
-  timeout?: string;
-  retry?: Retry;
-  [action: string]: any;
-}
-
-export interface Retry {
-  count?: number;
-  backoff?: string;
-  delay?: string;
-}
-
-export interface UIAction<Data> {
-  action: Data;
-  id: string;
-  type: ActionType | string;
-  render: (uiAction: UIAction<Data>, onChangeAction: (uiAction: UIAction<Data>) => void) => JSX.Element | null;
-  clone: (action: Data) => UIAction<Data>;
-  content: () => JSX.Element | string | null;
-  toAction: () => Action;
-}
-
-export interface ForceMergeAction extends Action {
-  force_merge: {
-    max_num_segments: number;
-  };
-}
-
-export interface ReadOnlyAction extends Action {
-  read_only: {};
-}
-
-export interface ReadWriteAction extends Action {
-  read_write: {};
-}
-
-export interface ReplicaCountAction extends Action {
-  replica_count: {
-    number_of_replicas: number;
-  };
-}
-
-export interface CloseAction extends Action {
-  close: {};
-}
-
-export interface OpenAction extends Action {
-  open: {};
-}
-
-export interface DeleteAction extends Action {
-  delete: {};
-}
-
-export interface RolloverAction extends Action {
-  rollover: {
-    min_size?: string;
-    min_doc_count?: number;
-    min_index_age?: string;
-  };
-}
-
-export interface UITransition {
-  transition: Transition;
-  id: string;
-}
-
-export interface Transition {
-  state_name: string;
-  conditions?: Condition;
-}
-
-export interface Condition {
-  min_index_age?: string;
-  min_doc_count?: number;
-  min_size?: string;
-  cron?: Cron;
-}
-
-export interface Cron {
-  cron: InnerCron;
-}
-
-export interface InnerCron {
-  expression: string;
-  timezone: string;
-}
-
-export interface NotificationAction extends Action {
-  notification: {
-    destination?: Destination;
-    channel?: {
-      id: string;
-    };
-    message_template: MessageTemplate;
-  };
-  notificationJsonString?: string;
-}
-
-export interface SnapshotAction extends Action {
-  snapshot: {
-    repository: string;
-    snapshot: string;
-  };
-}
-
-export interface IndexPriorityAction extends Action {
-  index_priority: {
-    priority: number;
-  };
-}
-
-export interface AllocationAction extends Action {
-  allocation: {
-    require: {
-      [key: string]: string;
-    };
-    include: {
-      [key: string]: string;
-    };
-    exclude: {
-      [key: string]: string;
-    };
-    wait_for: boolean;
-  };
-}
-
-export interface RollupAction extends Action {
-  rollup: {
-    jsonString: string;
-  };
+  actions: object[];
+  transitions: object[];
 }
 
 export interface Rollup {

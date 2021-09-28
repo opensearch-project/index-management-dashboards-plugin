@@ -113,7 +113,7 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
     }
   };
 
-  onCreate = async (policyId: string, policy: { policy: Policy }): Promise<void> => {
+  onCreate = async (policyId: string, policy: Policy): Promise<void> => {
     const { policyService } = this.props;
     try {
       const response = await policyService.putPolicy(policy, policyId);
@@ -128,7 +128,7 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
     }
   };
 
-  onUpdate = async (policyId: string, policy: { policy: Policy }): Promise<void> => {
+  onUpdate = async (policyId: string, policy: Policy): Promise<void> => {
     try {
       const { policyService } = this.props;
       const { policyPrimaryTerm, policySeqNo } = this.state;

@@ -58,5 +58,4 @@ module.exports = {
   ],
   clearMocks: true,
   testPathIgnorePatterns: ["<rootDir>/build/", "<rootDir>/node_modules/"],
-  modulePathIgnorePatterns: ["indexManagementDashboards"],
 };

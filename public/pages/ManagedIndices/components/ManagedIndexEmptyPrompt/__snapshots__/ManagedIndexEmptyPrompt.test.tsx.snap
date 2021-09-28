@@ -26,9 +26,10 @@ exports[`<ManagedIndexEmptyPrompt /> spec renders the component 1`] = `
   <div
     class="euiSpacer euiSpacer--s"
   />
-  <button
+  <a
     class="euiButton euiButton--primary euiButton--fill"
-    type="button"
+    href="opensearch_index_management_dashboards#/create-policy"
+    rel="noreferrer"
   >
     <span
       class="euiButtonContent euiButton__content"
@@ -39,6 +40,6 @@ exports[`<ManagedIndexEmptyPrompt /> spec renders the component 1`] = `
         Create policy
       </span>
     </span>
-  </button>
+  </a>
 </div>
 `;

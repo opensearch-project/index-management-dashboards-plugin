@@ -39,28 +39,18 @@ import {
 
 interface ConfirmationModalProps {
   title: string;
-  bodyMessage: string | JSX.Element;
+  bodyMessage: string;
   actionMessage: string;
-  actionProps?: object;
-  modalProps?: object;
   onClose: () => void;
   onAction: () => void;
 }
 
-const ConfirmationModal: React.SFC<ConfirmationModalProps> = ({
-  title,
-  bodyMessage,
-  actionMessage,
-  onClose,
-  onAction,
-  actionProps = {},
-  modalProps = {},
-}) => {
+const ConfirmationModal: React.SFC<ConfirmationModalProps> = ({ title, bodyMessage, actionMessage, onClose, onAction }) => {
   return (
     <EuiOverlayMask>
       {/*
       // @ts-ignore */}
-      <EuiModal onCancel={onClose} onClose={onClose} maxWidth={1000} {...modalProps}>
+      <EuiModal onCancel={onClose} onClose={onClose} maxWidth={1000}>
         <EuiModalHeader>
           <EuiModalHeaderTitle>{title}</EuiModalHeaderTitle>
         </EuiModalHeader>
@@ -78,7 +68,6 @@ const ConfirmationModal: React.SFC<ConfirmationModalProps> = ({
             }}
             fill
             data-test-subj="confirmationModalActionButton"
-            {...actionProps}
           >
             {actionMessage}
           </EuiButton>

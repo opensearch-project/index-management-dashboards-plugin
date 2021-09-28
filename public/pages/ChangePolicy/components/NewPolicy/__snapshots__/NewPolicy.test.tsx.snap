@@ -36,7 +36,7 @@ exports[`<NewPolicy /> spec renders the component 1`] = `
            
           <a
             class="euiLink euiLink--primary"
-            href="https://opensearch.org/docs/im-plugin/ism/index/"
+            href="https://docs-beta.opensearch.org/docs/im/ism/"
             rel="noopener noreferrer"
             target="_blank"
           >

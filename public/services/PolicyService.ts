@@ -44,7 +44,7 @@ export default class PolicyService {
   };
 
   putPolicy = async (
-    policy: { policy: Policy },
+    policy: Policy,
     policyId: string,
     seqNo?: number,
     primaryTerm?: number

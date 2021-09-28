@@ -53,12 +53,6 @@ describe("Policies", () => {
       // Route us to create policy page
       cy.contains("Create policy").click({ force: true });
 
-      // Route us to create policy page
-      cy.contains("JSON editor").click({ force: true });
-
-      // Route us to create policy page
-      cy.contains("Continue").click({ force: true });
-
       // Wait for input to load and then type in the policy ID
       cy.get(`input[placeholder="hot_cold_workflow"]`).type(POLICY_ID, { force: true });
 
@@ -102,12 +96,6 @@ describe("Policies", () => {
 
       // Click Edit button
       cy.get(`[data-test-subj="EditButton"]`).click({ force: true });
-
-      // Route us to edit policy page
-      cy.contains("JSON editor").click({ force: true });
-
-      // Route us to edit policy page
-      cy.contains("Continue").click({ force: true });
 
       // Wait for initial policy JSON to load
       cy.contains("A simple description");
@@ -188,26 +176,4 @@ describe("Policies", () => {
       });
     });
   });
-
-  describe("can be viewed", () => {
-    before(() => {
-      cy.deleteAllIndices();
-      cy.createPolicy(POLICY_ID, samplePolicy);
-    });
-
-    it("successfully", () => {
-      cy.contains(POLICY_ID);
-
-      cy.get(`[data-test-subj="policyLink_${POLICY_ID}"]`).click({ force: true });
-
-      cy.contains(POLICY_ID);
-      cy.contains(samplePolicy.policy.description);
-      samplePolicy.policy.states.forEach((state, i) => {
-        cy.contains(state.name);
-      });
-
-      cy.get(`[data-test-subj="viewButton"]`).click({ force: true });
-      cy.contains(`View JSON of ${POLICY_ID}`);
-    });
-  })
 });

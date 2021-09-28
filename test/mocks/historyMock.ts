@@ -23,9 +23,8 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-import * as H from "history";
 
-const historyMock: H.History = {
+const historyMock = {
   action: "REPLACE", // PUSH, REPLACE, POP
   block: jest.fn(), // prevents navigation
   createHref: jest.fn(),
