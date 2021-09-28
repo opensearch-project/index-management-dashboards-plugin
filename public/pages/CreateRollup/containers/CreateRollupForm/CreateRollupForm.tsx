@@ -36,6 +36,7 @@ import CreateRollup from "../CreateRollup";
 import CreateRollupStep2 from "../CreateRollupStep2";
 import { DimensionItem, FieldItem, IndexItem, MetricItem, Rollup } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
+import { delayTimeUnitToMS } from "../../utils/helpers";
 import { EMPTY_ROLLUP } from "../../utils/constants";
 import CreateRollupStep3 from "../CreateRollupStep3";
 import CreateRollupStep4 from "../CreateRollupStep4";
@@ -375,15 +376,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
     const { delayTimeunit, delayTime } = this.state;
     let newJSON = this.state.rollupJSON;
     if (delayTime == undefined) newJSON.rollup.delay = 0;
-    else if (delayTimeunit == "SECONDS") {
-      newJSON.rollup.delay = moment.duration(delayTime, "seconds").asMilliseconds();
-    } else if (delayTimeunit == "MINUTES") {
-      newJSON.rollup.delay = moment.duration(delayTime, "minutes").asMilliseconds();
-    } else if (delayTimeunit == "HOURS") {
-      newJSON.rollup.delay = moment.duration(delayTime, "hours").asMilliseconds();
-    } else {
-      newJSON.rollup.delay = moment.duration(delayTime, "days").asMilliseconds();
-    }
+    else newJSON.rollup.delay = delayTimeUnitToMS(delayTime, delayTimeunit);
     this.setState({ rollupJSON: newJSON });
   };
 
