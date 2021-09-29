@@ -234,6 +234,34 @@ export default function TransformOptions({
           },
         },
         {
+          name: "Aggregate by max",
+          onClick: () => {
+            const aggItem: TransformAggItem = {
+              type: TRANSFORM_AGG_TYPE.max,
+              name: `max_${name}`,
+              item: { max: { field: name } },
+            };
+            aggSelection[`max_${name}`] = {
+              max: { field: name },
+            };
+            handleAggSelectionChange(aggItem);
+          },
+        },
+        {
+          name: "Aggregate by min",
+          onClick: () => {
+            const aggItem: TransformAggItem = {
+              type: TRANSFORM_AGG_TYPE.min,
+              name: `min_${name}`,
+              item: { min: { field: name } },
+            };
+            aggSelection[`min_${name}`] = {
+              min: { field: name },
+            };
+            handleAggSelectionChange(aggItem);
+          },
+        },
+        {
           name: "Aggregate by count",
           onClick: () => {
             const aggItem: TransformAggItem = {
