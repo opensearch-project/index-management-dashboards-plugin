@@ -25,6 +25,7 @@ interface DefineTransformsProps {
   transformService: TransformService;
   notifications: CoreStart["notifications"];
   sourceIndex: string;
+  sourceIndexFilter: string;
   fields: FieldItem[];
   selectedGroupField: TransformGroupItem[];
   onGroupSelectionChange: (selectedFields: TransformGroupItem[], aggItem: TransformAggItem) => void;
@@ -41,6 +42,7 @@ export default function DefineTransforms({
   transformService,
   notifications,
   sourceIndex,
+  sourceIndexFilter,
   fields,
   selectedGroupField,
   onGroupSelectionChange,
@@ -99,7 +101,7 @@ export default function DefineTransforms({
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await transformService.searchSampleData(sourceIndex, { from: 0, size: DefaultSampleDataSize });
+      const response = await transformService.searchSampleData(sourceIndex, { from: 0, size: DefaultSampleDataSize }, sourceIndexFilter);
 
       if (response.ok) {
         setData(response.response.data);

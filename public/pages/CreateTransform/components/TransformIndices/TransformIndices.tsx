@@ -54,7 +54,6 @@ interface TransformIndicesState {
   targetIndexOptions: { label: string; value?: IndexItem }[];
   isPopoverOpen: boolean;
   selectFieldValue: string;
-  dataFilters: string;
 }
 
 export default class TransformIndices extends Component<TransformIndicesProps, TransformIndicesState> {
@@ -67,7 +66,6 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
       targetIndexOptions: [],
       isPopoverOpen: false,
       selectFieldValue: "",
-      dataFilters: "",
     };
 
     this.onIndexSearchChange = _.debounce(this.onIndexSearchChange, 500, { leading: true });

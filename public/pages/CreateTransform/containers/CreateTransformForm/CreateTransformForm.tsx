@@ -58,8 +58,6 @@ interface CreateTransformFormState {
   description: string;
   sourceIndex: { label: string; value?: IndexItem }[];
   sourceIndexError: string;
-  //TODO: Uncomment the following line when multiple data filter is supported
-  // sourceIndexFilter: string[];
   sourceIndexFilter: string;
   sourceIndexFilterError: string;
   targetIndex: { label: string; value?: IndexItem }[];
@@ -117,8 +115,6 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
 
       sourceIndex: [],
       sourceIndexError: "",
-      //TODO: Uncomment the following line when multiple data filter is supported
-      // sourceIndexFilter: [],
       sourceIndexFilter: "",
       sourceIndexFilterError: "",
       targetIndex: [],
@@ -539,6 +535,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           {...this.props}
           currentStep={this.state.currentStep}
           sourceIndex={sourceIndex[0] ? sourceIndex[0].label : ""}
+          sourceIndexFilter={sourceIndexFilter}
           fields={fields}
           aggList={aggList}
           selectedGroupField={selectedGroupField}

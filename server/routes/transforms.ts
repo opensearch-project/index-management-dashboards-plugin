@@ -98,7 +98,7 @@ export default function (services: NodeServices, router: IRouter) {
     transformService.putTransform
   );
 
-  router.get(
+  router.post(
     {
       path: `${NODE_API._SEARCH_SAMPLE_DATA}/{index}`,
       validate: {
@@ -109,6 +109,7 @@ export default function (services: NodeServices, router: IRouter) {
           from: schema.number(),
           size: schema.number(),
         }),
+        body: schema.any(),
       },
     },
     transformService.searchSampleData
@@ -119,7 +120,7 @@ export default function (services: NodeServices, router: IRouter) {
       path: `${NODE_API.TRANSFORMS}/_preview`,
       validate: {
         body: schema.object({
-          transform: schema.any()
+          transform: schema.any(),
         }),
       },
     },
