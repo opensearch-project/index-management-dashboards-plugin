@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ISMTemplate /> spec renders the component 1`] = `
+<div
+  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+>
+  <div
+    class="euiFlexItem"
+    style="max-width: 400px;"
+  >
+    <div
+      class="euiFormRow"
+      id="some_html_id-row"
+    >
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="euiComboBox"
+          data-test-subj="ism-template-index-pattern-input"
+          role="combobox"
+        >
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <div
+                class="euiComboBox__inputWrap"
+                data-test-subj="comboBoxInput"
+                tabindex="-1"
+              >
+                <span
+                  class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                  title="*"
+                >
+                  <span
+                    class="euiBadge__content"
+                  >
+                    <span
+                      class="euiBadge__text"
+                    >
+                      *
+                    </span>
+                    <button
+                      aria-label="Remove * from selection in this group"
+                      class="euiBadge__iconButton"
+                      title="Remove * from selection in this group"
+                    >
+                      EuiIconMock
+                    </button>
+                  </span>
+                </span>
+                <div
+                  class="euiComboBox__input"
+                  style="font-size: 14px; display: inline-block;"
+                >
+                  <input
+                    aria-controls=""
+                    data-test-subj="comboBoxSearchInput"
+                    id="some_html_id"
+                    role="textbox"
+                    style="box-sizing: content-box; width: 2px;"
+                    value=""
+                  />
+                  <div
+                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexItem euiFlexItem--flexGrowZero"
+  >
+    <div
+      class="euiFormRow"
+      id="some_html_id-row"
+    >
+      <div
+        class="euiFormRow__fieldWrapper"
+      >
+        <div
+          class="euiFormControlLayout"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <input
+              class="euiFieldNumber"
+              data-test-subj="ism-template-priority-input"
+              id="some_html_id"
+              type="number"
+              value="5"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexItem euiFlexItem--flexGrowZero"
+  >
+    <button
+      class="euiButton euiButton--danger"
+      data-test-subj="ism-template-remove-button"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButton__content"
+      >
+        <span
+          class="euiButton__text"
+        >
+          Remove
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;

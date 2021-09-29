@@ -1,0 +1,255 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<State /> spec renders the component 1`] = `
+<div
+  class="euiAccordion"
+  style="padding: 15px;"
+>
+  <div
+    class="euiAccordion__triggerWrapper"
+  >
+    <button
+      aria-controls="some_name"
+      aria-expanded="false"
+      class="euiAccordion__button state-accordion"
+      id="some_html_id"
+      type="button"
+    >
+      <span
+        class="euiAccordion__iconWrapper"
+      >
+        EuiIconMock
+      </span>
+      <span
+        class="euiIEFlexWrapFix"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--medium"
+            >
+              <strong>
+                some_name
+              </strong>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiPanel"
+            >
+              <div
+                class="euiText euiText--extraSmall"
+                style="padding: 0px 10px;"
+              >
+                Initial state
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <div
+                class="euiTextAlign euiTextAlign--center"
+              >
+                <span
+                  class="euiTextColor euiTextColor--subdued"
+                >
+                  <p>
+                    Actions
+                     
+                    <span
+                      class="euiNotificationBadge euiNotificationBadge--subdued"
+                    >
+                      3
+                    </span>
+                  </p>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <div
+                class="euiTextAlign euiTextAlign--center"
+              >
+                <span
+                  class="euiTextColor euiTextColor--subdued"
+                >
+                  <p>
+                    Transitions
+                     
+                    <span
+                      class="euiNotificationBadge euiNotificationBadge--subdued"
+                    >
+                      1
+                    </span>
+                  </p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </button>
+    <div
+      class="euiAccordion__optionalAction"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <span
+            class="euiToolTipAnchor"
+          >
+            <button
+              aria-label="Delete"
+              class="euiButtonIcon euiButtonIcon--danger"
+              data-test-subj="state-delete-button"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </span>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <span
+            class="euiToolTipAnchor"
+          >
+            <button
+              aria-label="Edit"
+              class="euiButtonIcon euiButtonIcon--primary"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiAccordion__childWrapper"
+    id="some_name"
+  >
+    <div>
+      <div
+        class="euiAccordion__padding--l"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+          style="background-color: rgb(248, 249, 252);"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--medium"
+            >
+              <h4>
+                Actions
+              </h4>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+            >
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                <div
+                  class="euiPanel euiPanel--paddingMedium"
+                >
+                  Close
+                </div>
+              </div>
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                <div
+                  class="euiPanel euiPanel--paddingMedium"
+                >
+                  Open
+                </div>
+              </div>
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                <div
+                  class="euiPanel euiPanel--paddingMedium"
+                >
+                  Delete
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--medium"
+            >
+              <h4>
+                Transitions
+              </h4>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+            >
+              <div
+                class="euiFlexItem euiFlexItem--flexGrowZero"
+              >
+                <div
+                  class="euiPanel euiPanel--paddingMedium"
+                >
+                  <div
+                    class="euiText euiText--medium"
+                  >
+                    <dl>
+                      <dt>
+                        Destination state
+                      </dt>
+                      <dd>
+                        elsewhere
+                      </dd>
+                      <dt>
+                        Transition trigger logic
+                      </dt>
+                      <dd>
+                        No condition
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

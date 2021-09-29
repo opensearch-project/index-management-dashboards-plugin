@@ -28,17 +28,20 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent } from "@testing-library/react";
 import ManagedIndexEmptyPrompt, { TEXT } from "./ManagedIndexEmptyPrompt";
+import historyMock from "../../../../../test/mocks/historyMock";
 
 describe("<ManagedIndexEmptyPrompt /> spec", () => {
   it("renders the component", async () => {
-    const { container } = render(<ManagedIndexEmptyPrompt filterIsApplied={false} loading={false} resetFilters={() => {}} />);
+    const { container } = render(
+      <ManagedIndexEmptyPrompt history={historyMock} filterIsApplied={false} loading={false} resetFilters={() => {}} />
+    );
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("renders no managed indices by default", async () => {
     const { getByText, queryByTestId } = render(
-      <ManagedIndexEmptyPrompt filterIsApplied={false} loading={false} resetFilters={() => {}} />
+      <ManagedIndexEmptyPrompt history={historyMock} filterIsApplied={false} loading={false} resetFilters={() => {}} />
     );
 
     getByText(TEXT.NO_MANAGED_INDICES);
@@ -46,7 +49,9 @@ describe("<ManagedIndexEmptyPrompt /> spec", () => {
   });
 
   it("shows LOADING", async () => {
-    const { getByText, queryByTestId } = render(<ManagedIndexEmptyPrompt filterIsApplied={true} loading={true} resetFilters={() => {}} />);
+    const { getByText, queryByTestId } = render(
+      <ManagedIndexEmptyPrompt history={historyMock} filterIsApplied={true} loading={true} resetFilters={() => {}} />
+    );
 
     getByText(TEXT.LOADING);
     expect(queryByTestId("managedIndexEmptyPromptResetFilters")).toBeNull();
@@ -55,7 +60,7 @@ describe("<ManagedIndexEmptyPrompt /> spec", () => {
   it("shows reset filters", async () => {
     const resetFilters = jest.fn();
     const { getByText, getByTestId } = render(
-      <ManagedIndexEmptyPrompt filterIsApplied={true} loading={false} resetFilters={resetFilters} />
+      <ManagedIndexEmptyPrompt history={historyMock} filterIsApplied={true} loading={false} resetFilters={resetFilters} />
     );
 
     getByText(TEXT.RESET_FILTERS);

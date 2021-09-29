@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Badge /> spec renders the component 1`] = `
+<div
+  class="euiText euiText--extraSmall"
+>
+  <div
+    class="euiTextAlign euiTextAlign--center"
+  >
+    <span
+      class="euiTextColor euiTextColor--subdued"
+    >
+      <p>
+        Some text
+         
+        <span
+          class="euiNotificationBadge euiNotificationBadge--subdued"
+        >
+          2
+        </span>
+      </p>
+    </span>
+  </div>
+</div>
+`;

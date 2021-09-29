@@ -1,4 +1,4 @@
-/*
+  /*
  * SPDX-License-Identifier: Apache-2.0
  *
  * The OpenSearch Contributors require contributions made to
@@ -63,6 +63,7 @@ function renderPoliciesWithRouter() {
                       />
                       <Route path={ROUTES.CREATE_POLICY} render={(props) => <div>Testing create policy</div>} />
                       <Route path={ROUTES.EDIT_POLICY} render={(props) => <div>Testing edit policy: {props.location.search}</div>} />
+                      <Route path={ROUTES.POLICY_DETAILS} render={(props) =><div>Testing policy details: {props.location.search}</div>} />
                       <Redirect from="/" to={ROUTES.INDEX_POLICIES} />
                     </Switch>
                   </ModalProvider>
@@ -189,76 +190,19 @@ describe("<IndexPolicies /> spec", () => {
     await waitFor(() => expect(queryByText(testPolicy.id)).toBeNull());
   });
 
-  it("can route to edit policy", async () => {
+  it("can open a policy", async () => {
     const policies = [testPolicy];
     browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({
       ok: true,
       response: { policies, totalPolicies: 1 },
     });
-    const { getByText, getByTestId } = renderPoliciesWithRouter();
-
-    await waitFor(() => getByText(testPolicy.id));
-
-    expect(getByTestId("EditButton")).toBeDisabled();
-
-    userEvent.click(getByTestId(`checkboxSelectRow-${testPolicy.id}`));
-
-    expect(getByTestId("EditButton")).toBeEnabled();
-
-    userEvent.click(getByTestId("EditButton"));
-
-    await waitFor(() => getByText(`Testing edit policy: ?id=${testPolicy.id}`));
-  });
-
-  it("can route to create policy", async () => {
-    browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({
-      ok: true,
-      response: { policies: [], totalPolicies: 1 },
-    });
-    const { getByText, getByTestId } = renderPoliciesWithRouter();
-
-    await waitFor(() => {});
-
-    userEvent.click(getByTestId("Create policyButton"));
-
-    await waitFor(() => getByText("Testing create policy"));
-  });
-
-  it("can open and close a policy in modal", async () => {
-    const policies = [testPolicy];
-    browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({
-      ok: true,
-      response: { policies, totalPolicies: 1 },
-    });
-    const { getByText, queryByText, getByTestId } = renderPoliciesWithRouter();
+    const { getByText } = renderPoliciesWithRouter();
 
     await waitFor(() => getByText(testPolicy.id));
 
     userEvent.click(getByText(testPolicy.id));
 
-    // asserts that the policy description showed up in modal as the
-    // whole JSON is broken up between span elements
-    await waitFor(() => getByText(`"${testPolicy.policy.policy.description}"`));
-
-    userEvent.click(getByTestId("policyModalCloseButton"));
-
-    expect(queryByText(`"${testPolicy.policy.policy.description}"`)).toBeNull();
-  });
-
-  it("can go to edit a policy from modal", async () => {
-    const policies = [testPolicy];
-    browserServicesMock.policyService.getPolicies = jest.fn().mockResolvedValue({
-      ok: true,
-      response: { policies, totalPolicies: 1 },
-    });
-    const { getByText, getByTestId } = renderPoliciesWithRouter();
-
-    await waitFor(() => getByText(testPolicy.id));
-    userEvent.click(getByText(testPolicy.id));
-    await waitFor(() => getByTestId("policyModalEditButton"));
-    userEvent.click(getByTestId("policyModalEditButton"));
-
-    await waitFor(() => getByText(`Testing edit policy: ?id=${testPolicy.id}`));
+    await waitFor(() => getByText(`Testing policy details: ?id=${testPolicy.id}`));
   });
 
   it("sorts/paginates the table", async () => {

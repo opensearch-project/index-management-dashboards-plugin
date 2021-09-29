@@ -1,0 +1,604 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateAction /> spec renders the component 1`] = `
+<div
+  class="euiFlyoutBody"
+>
+  <div
+    class="euiFlyoutBody__overflow"
+  >
+    <div
+      class="euiFlyoutBody__overflowContent"
+    >
+      <h3
+        class="euiTitle euiTitle--small"
+      >
+        Edit action
+      </h3>
+      <div
+        class="euiText euiText--extraSmall"
+        style="font-weight: 200;"
+      >
+        Actions are the operations ISM performs when an index is in a certain state.
+         
+        <a
+          class="euiLink euiLink--primary"
+          href="https://opensearch.org/docs/im-plugin/ism/policies/#actions"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more 
+          EuiIconMock
+        </a>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Action type
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            Select the action you want to add to this state.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <select
+                class="euiSelect euiSelect--fullWidth"
+                data-test-subj="create-state-action-type"
+                id="some_html_id"
+                placeholder="Select action type"
+                style="text-transform: capitalize;"
+              >
+                <option
+                  disabled=""
+                  hidden=""
+                  style="display: none;"
+                  value=""
+                >
+                   
+                </option>
+                <option
+                  value="allocation"
+                >
+                  Allocation
+                </option>
+                <option
+                  value="close"
+                >
+                  Close
+                </option>
+                <option
+                  value="delete"
+                >
+                  Delete
+                </option>
+                <option
+                  value="force_merge"
+                >
+                  Force Merge
+                </option>
+                <option
+                  value="index_priority"
+                >
+                  Index Priority
+                </option>
+                <option
+                  value="notification"
+                >
+                  Notification
+                </option>
+                <option
+                  value="open"
+                >
+                  Open
+                </option>
+                <option
+                  value="read_only"
+                >
+                  Read Only
+                </option>
+                <option
+                  value="read_write"
+                >
+                  Read Write
+                </option>
+                <option
+                  value="replica_count"
+                >
+                  Replica Count
+                </option>
+                <option
+                  value="rollover"
+                >
+                  Rollover
+                </option>
+                <option
+                  value="rollup"
+                >
+                  Rollup
+                </option>
+                <option
+                  value="snapshot"
+                >
+                  Snapshot
+                </option>
+              </select>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <span
+                  class="euiFormControlLayoutCustomIcon"
+                >
+                  EuiIconMock
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Minimum index age
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The minimum age required to roll over the index. Accepts time units, e.g. "5h" or "1d".
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText euiFieldText--fullWidth"
+                data-test-subj="action-render-rollover-min-index-age"
+                id="some_html_id"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Minimum doc count
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The minimum number of documents required to roll over the index.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldNumber euiFieldNumber--fullWidth"
+                data-test-subj="action-render-rollover-min-doc-count"
+                id="some_html_id"
+                type="number"
+                value="5"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Minimum index size
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The minimum size of the total primary shard storage required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText euiFieldText--fullWidth"
+                data-test-subj="action-render-rollover-min-size"
+                id="some_html_id"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiAccordion"
+      >
+        <div
+          class="euiAccordion__triggerWrapper"
+        >
+          <button
+            aria-controls="timeout-retry-settings"
+            aria-expanded="false"
+            class="euiAccordion__button"
+            id="some_html_id"
+            type="button"
+          >
+            <span
+              class="euiAccordion__iconWrapper"
+            >
+              EuiIconMock
+            </span>
+            <span
+              class="euiIEFlexWrapFix"
+            >
+              Timeout and retry settings
+            </span>
+          </button>
+        </div>
+        <div
+          class="euiAccordion__childWrapper"
+          id="timeout-retry-settings"
+        >
+          <div>
+            <div
+              class=""
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                style="padding: 5px 28px;"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium"
+                  >
+                    <p>
+                      <span
+                        style="color: grey; font-weight: 200; font-size: 15px;"
+                      >
+                        Timeout and retry settings are supported to handle an action failure. You can specify parameters based on your need.
+                      </span>
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium"
+                    style="margin-bottom: 5px;"
+                  >
+                    <h5
+                      class="euiFormLabel "
+                      style="margin-bottom: 2px;"
+                    >
+                      Timeout
+                    </h5>
+                    <p>
+                       
+                      <span
+                        style="font-weight: 200; font-size: 12px;"
+                      >
+                        The timeout period for the action. Accepts time units, e.g. "5h" or "1d".
+                         
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    class="euiFormRow euiFormRow--fullWidth"
+                    id="some_html_id-row"
+                  >
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+                        id="some_html_id"
+                      >
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <div
+                            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <input
+                                class="euiFieldText euiFieldText--fullWidth"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium"
+                    style="margin-bottom: 5px;"
+                  >
+                    <h5
+                      class="euiFormLabel "
+                      style="margin-bottom: 2px;"
+                    >
+                      Retry count
+                    </h5>
+                    <p>
+                       
+                      <span
+                        style="font-weight: 200; font-size: 12px;"
+                      >
+                        The number of times the action should be retried if it fails. Must be greater than 0.
+                         
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    class="euiFormRow euiFormRow--fullWidth"
+                    id="some_html_id-row"
+                  >
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+                        id="some_html_id"
+                      >
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <div
+                            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <input
+                                class="euiFieldNumber euiFieldNumber--fullWidth"
+                                min="0"
+                                type="number"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium"
+                    style="margin-bottom: 5px;"
+                  >
+                    <h5
+                      class="euiFormLabel "
+                      style="margin-bottom: 2px;"
+                    >
+                      Retry backoff
+                    </h5>
+                    <p>
+                       
+                      <span
+                        style="font-weight: 200; font-size: 12px;"
+                      >
+                        The backoff policy type to use when retrying.
+                         
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    class="euiFormRow euiFormRow--fullWidth"
+                    id="some_html_id-row"
+                  >
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                      >
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <select
+                            class="euiSelect euiSelect--fullWidth"
+                            id="some_html_id"
+                          >
+                            <option
+                              value="exponential"
+                            >
+                              Exponential
+                            </option>
+                            <option
+                              value="constant"
+                            >
+                              Constant
+                            </option>
+                            <option
+                              value="linear"
+                            >
+                              Linear
+                            </option>
+                          </select>
+                          <div
+                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          >
+                            <span
+                              class="euiFormControlLayoutCustomIcon"
+                            >
+                              EuiIconMock
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFlexItem"
+                >
+                  <div
+                    class="euiText euiText--medium"
+                    style="margin-bottom: 5px;"
+                  >
+                    <h5
+                      class="euiFormLabel "
+                      style="margin-bottom: 2px;"
+                    >
+                      Retry delay
+                    </h5>
+                    <p>
+                       
+                      <span
+                        style="font-weight: 200; font-size: 12px;"
+                      >
+                        The time to wait between retries. Accepts time units, e.g. "2h" or "1d"
+                         
+                      </span>
+                    </p>
+                  </div>
+                  <div
+                    class="euiFormRow euiFormRow--fullWidth"
+                    id="some_html_id-row"
+                  >
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+                        id="some_html_id"
+                      >
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <div
+                            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                          >
+                            <div
+                              class="euiFormControlLayout__childrenWrapper"
+                            >
+                              <input
+                                class="euiFieldText euiFieldText--fullWidth"
+                                type="text"
+                                value=""
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

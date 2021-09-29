@@ -237,13 +237,13 @@ describe("Rollups", () => {
       cy.contains(`${ROLLUP_ID}`);
 
       // Click Disable button
-      cy.get(`[data-test-subj="disableButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="disableButton"]`).trigger("click", { force: true });
 
       // Confirm we get toaster saying rollup job is disabled
       cy.contains(`${ROLLUP_ID} is disabled`);
 
       // Click Enable button
-      cy.get(`[data-test-subj="enableButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="enableButton"]`).trigger("click", { force: true });
 
       // Confirm we get toaster saying rollup job is enabled
       cy.contains(`${ROLLUP_ID} is enabled`);

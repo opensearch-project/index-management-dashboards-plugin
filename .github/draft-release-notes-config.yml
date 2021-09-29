@@ -14,7 +14,7 @@ replacers:
   - search: '##'
     replace: '###'
 
-# Organizing the tagged PRs into unified ODFE categories
+# Organizing the tagged PRs into unified OpenSearch categories
 categories:
   - title: 'Breaking changes'
     labels:
@@ -41,7 +41,6 @@ categories:
       - 'documentation'
   - title: 'Maintenance'
     labels:
-      - 'security'
       - 'version support'
       - 'backwards-compatibility'
   - title: 'Refactoring'

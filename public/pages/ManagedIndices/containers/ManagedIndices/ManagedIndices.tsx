@@ -66,6 +66,10 @@ import RetryModal from "../../components/RetryModal";
 import RolloverAliasModal from "../../components/RolloverAliasModal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataStream } from "../../../../../server/models/interfaces";
+import {
+  CUSTOM_DATA_STREAM_SECURITY_EXCEPTION,
+  DATA_STREAM_LACK_PERMISSION_WARNING,
+} from "../../../../../server/services/DataStreamService";
 
 interface ManagedIndicesProps extends RouteComponentProps {
   managedIndexService: ManagedIndexService;
@@ -273,6 +277,11 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
   getDataStreams = async (): Promise<DataStream[]> => {
     const { managedIndexService } = this.props;
     const serverResponse = await managedIndexService.getDataStreams();
+    if (!serverResponse.ok) {
+      if (serverResponse.error.startsWith(CUSTOM_DATA_STREAM_SECURITY_EXCEPTION)) {
+        this.context.notifications.toasts.addWarning(DATA_STREAM_LACK_PERMISSION_WARNING);
+      }
+    }
     return serverResponse.response.dataStreams;
   };
 
@@ -467,7 +476,12 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
             itemId="index"
             items={managedIndices}
             noItemsMessage={
-              <ManagedIndexEmptyPrompt filterIsApplied={filterIsApplied} loading={loadingManagedIndices} resetFilters={this.resetFilters} />
+              <ManagedIndexEmptyPrompt
+                history={this.props.history}
+                filterIsApplied={filterIsApplied}
+                loading={loadingManagedIndices}
+                resetFilters={this.resetFilters}
+              />
             }
             onChange={this.onTableChange}
             pagination={pagination}

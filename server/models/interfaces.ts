@@ -319,3 +319,7 @@ export interface DataStreamIndex {
   index_name: string;
   index_uuid: string;
 }
+
+export interface IndexToDataStream {
+  [indexName: string]: string;
+}

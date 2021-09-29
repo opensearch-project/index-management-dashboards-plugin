@@ -45,7 +45,14 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const managedIndexService = new ManagedIndexService(osDriver);
     const rollupService = new RollupService(osDriver);
     const transformService = new TransformService(osDriver);
-    const services = { indexService, dataStreamService, policyService, managedIndexService, rollupService, transformService };
+    const services = {
+      indexService,
+      dataStreamService,
+      policyService,
+      managedIndexService,
+      rollupService,
+      transformService,
+    };
 
     // create router
     const router = core.http.createRouter();

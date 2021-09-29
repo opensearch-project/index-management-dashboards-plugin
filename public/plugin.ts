@@ -27,6 +27,7 @@
 import { AppMountParameters, CoreSetup, CoreStart, Plugin, PluginInitializerContext } from "../../../src/core/public";
 import { IndexManagementPluginSetup } from ".";
 import { IndexManagementPluginStart } from ".";
+import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 
 export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   constructor(private readonly initializerContext: PluginInitializerContext) {
@@ -49,10 +50,16 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         return renderApp(coreStart, params);
       },
     });
-    return {};
+    return {
+      registerAction: (actionType, uiActionCtor, defaultAction) => {
+        actionRepoSingleton.registerAction(actionType, uiActionCtor, defaultAction);
+      },
+    };
   }
 
   public start(core: CoreStart): IndexManagementPluginStart {
+    Object.freeze(actionRepoSingleton.repository);
+    // After this point, calling registerAction will throw error because "Object is not extensible"
     return {};
   }
 }

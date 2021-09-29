@@ -1,0 +1,552 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<States /> spec renders the component 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium"
+  style="padding-left: 0px; padding-right: 0px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h3
+        class="euiTitle euiTitle--small"
+      >
+        States (2)
+      </h3>
+      <div
+        class="euiText euiText--small"
+        style="padding: 5px 0px;"
+      >
+        <div
+          class="euiTextColor euiTextColor--subdued"
+        >
+          <p
+            style="font-weight: 200;"
+          >
+            You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
+            <br />
+            "Transitions" define when to move from one state to another.
+             
+            <a
+              class="euiLink euiLink--primary"
+              href="https://opensearch.org/docs/im-plugin/ism/policies/#states"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more 
+              EuiIconMock
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr
+    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+  />
+  <div
+    style="padding: initial;"
+  >
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFormRow euiFormRow--compressed"
+        id="some_html_id-row"
+        style="max-width: 300px; padding: 15px;"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--compressed euiFormControlLayout--group"
+          >
+            <label
+              class="euiFormLabel euiFormControlLayout__prepend"
+              for="some_html_id"
+            >
+              Initial state
+            </label>
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <select
+                class="euiSelect euiSelect--compressed euiSelect--inGroup"
+                id="some_html_id"
+              >
+                <option
+                  value="hot"
+                >
+                  hot
+                </option>
+                <option
+                  value="cold"
+                >
+                  cold
+                </option>
+              </select>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <span
+                  class="euiFormControlLayoutCustomIcon"
+                >
+                  EuiIconMock
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full"
+      />
+      <div
+        class="euiFlexGroup euiFlexGroup--directionColumn euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiAccordion"
+            style="padding: 15px;"
+          >
+            <div
+              class="euiAccordion__triggerWrapper"
+            >
+              <button
+                aria-controls="hot"
+                aria-expanded="false"
+                class="euiAccordion__button state-accordion"
+                id="some_html_id"
+                type="button"
+              >
+                <span
+                  class="euiAccordion__iconWrapper"
+                >
+                  EuiIconMock
+                </span>
+                <span
+                  class="euiIEFlexWrapFix"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  >
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--medium"
+                      >
+                        <strong>
+                          hot
+                        </strong>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiPanel"
+                      >
+                        <div
+                          class="euiText euiText--extraSmall"
+                          style="padding: 0px 10px;"
+                        >
+                          Initial state
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--extraSmall"
+                      >
+                        <div
+                          class="euiTextAlign euiTextAlign--center"
+                        >
+                          <span
+                            class="euiTextColor euiTextColor--subdued"
+                          >
+                            <p>
+                              Actions
+                               
+                              <span
+                                class="euiNotificationBadge euiNotificationBadge--subdued"
+                              >
+                                1
+                              </span>
+                            </p>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--extraSmall"
+                      >
+                        <div
+                          class="euiTextAlign euiTextAlign--center"
+                        >
+                          <span
+                            class="euiTextColor euiTextColor--subdued"
+                          >
+                            <p>
+                              Transitions
+                               
+                              <span
+                                class="euiNotificationBadge euiNotificationBadge--subdued"
+                              >
+                                1
+                              </span>
+                            </p>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </button>
+              <div
+                class="euiAccordion__optionalAction"
+              >
+                <div
+                  class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--directionRow euiFlexGroup--responsive"
+                >
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  >
+                    <span
+                      class="euiToolTipAnchor"
+                    >
+                      <button
+                        aria-label="Delete"
+                        class="euiButtonIcon euiButtonIcon--danger"
+                        data-test-subj="state-delete-button"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
+                  </div>
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  >
+                    <span
+                      class="euiToolTipAnchor"
+                    >
+                      <button
+                        aria-label="Edit"
+                        class="euiButtonIcon euiButtonIcon--primary"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiAccordion__childWrapper"
+              id="hot"
+            >
+              <div>
+                <div
+                  class="euiAccordion__padding--l"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                    style="background-color: rgb(248, 249, 252);"
+                  >
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--medium"
+                      >
+                        <h4>
+                          Actions
+                        </h4>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+                      >
+                        <div
+                          class="euiFlexItem euiFlexItem--flexGrowZero"
+                        >
+                          <div
+                            class="euiPanel euiPanel--paddingMedium"
+                          >
+                            Set number of replicas to 5
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--medium"
+                      >
+                        <h4>
+                          Transitions
+                        </h4>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+                      >
+                        <div
+                          class="euiFlexItem euiFlexItem--flexGrowZero"
+                        >
+                          <div
+                            class="euiPanel euiPanel--paddingMedium"
+                          >
+                            <div
+                              class="euiText euiText--medium"
+                            >
+                              <dl>
+                                <dt>
+                                  Destination state
+                                </dt>
+                                <dd>
+                                  cold
+                                </dd>
+                                <dt>
+                                  Transition trigger logic
+                                </dt>
+                                <dd>
+                                  Minimum index age is 30d
+                                </dd>
+                              </dl>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full"
+          />
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiAccordion"
+            style="padding: 15px;"
+          >
+            <div
+              class="euiAccordion__triggerWrapper"
+            >
+              <button
+                aria-controls="cold"
+                aria-expanded="false"
+                class="euiAccordion__button state-accordion"
+                id="some_html_id"
+                type="button"
+              >
+                <span
+                  class="euiAccordion__iconWrapper"
+                >
+                  EuiIconMock
+                </span>
+                <span
+                  class="euiIEFlexWrapFix"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  >
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--medium"
+                      >
+                        <strong>
+                          cold
+                        </strong>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--extraSmall"
+                      >
+                        <div
+                          class="euiTextAlign euiTextAlign--center"
+                        >
+                          <span
+                            class="euiTextColor euiTextColor--subdued"
+                          >
+                            <p>
+                              Actions
+                               
+                              <span
+                                class="euiNotificationBadge euiNotificationBadge--subdued"
+                              >
+                                1
+                              </span>
+                            </p>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              </button>
+              <div
+                class="euiAccordion__optionalAction"
+              >
+                <div
+                  class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--directionRow euiFlexGroup--responsive"
+                >
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  >
+                    <span
+                      class="euiToolTipAnchor"
+                    >
+                      <button
+                        aria-label="Delete"
+                        class="euiButtonIcon euiButtonIcon--danger"
+                        data-test-subj="state-delete-button"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
+                  </div>
+                  <div
+                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                  >
+                    <span
+                      class="euiToolTipAnchor"
+                    >
+                      <button
+                        aria-label="Edit"
+                        class="euiButtonIcon euiButtonIcon--primary"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiAccordion__childWrapper"
+              id="cold"
+            >
+              <div>
+                <div
+                  class="euiAccordion__padding--l"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                    style="background-color: rgb(248, 249, 252);"
+                  >
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--medium"
+                      >
+                        <h4>
+                          Actions
+                        </h4>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+                      >
+                        <div
+                          class="euiFlexItem euiFlexItem--flexGrowZero"
+                        >
+                          <div
+                            class="euiPanel euiPanel--paddingMedium"
+                          >
+                            Set number of replicas to 2
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      <div
+                        class="euiText euiText--medium"
+                      >
+                        <h4>
+                          Transitions
+                        </h4>
+                      </div>
+                    </div>
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <div
+                        class="euiText euiText--medium"
+                      >
+                        No transitions. Edit state to add transitions.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr
+            class="euiHorizontalRule euiHorizontalRule--full"
+          />
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <button
+        class="euiButton euiButton--primary"
+        data-test-subj="states-add-state-button"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Add state
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

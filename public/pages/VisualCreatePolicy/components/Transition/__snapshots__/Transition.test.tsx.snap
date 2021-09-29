@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Transition /> spec renders the component 1`] = `
+<div
+  class="euiText euiText--medium"
+  style="margin-bottom: 5px;"
+>
+  <h5
+    class="euiFormLabel "
+    style="margin-bottom: 2px;"
+  >
+    Condition
+  </h5>
+  <p>
+     
+    <span
+      style="font-weight: 200; font-size: 12px;"
+    >
+      Specify the condition needed to be met to transition to the destination state.
+       
+    </span>
+  </p>
+</div>
+`;

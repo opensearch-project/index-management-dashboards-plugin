@@ -167,7 +167,8 @@ describe("Indices", () => {
 
       cy.get(`[data-test-subj="applyPolicyModalEditButton"]`).click({ force: true });
 
-      cy.reload();
+      // Wait some time for apply policy to execute before reload
+      cy.wait(3000).reload();
 
       cy.contains(SAMPLE_INDEX, { timeout: 20000 });
 

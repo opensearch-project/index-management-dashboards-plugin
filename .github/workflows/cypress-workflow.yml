@@ -7,7 +7,9 @@ on:
     branches:
       - main
       - development-*
-
+env:
+  OPENSEARCH_DASHBOARDS_VERSION: '1.x'
+  OPENSEARCH_VERSION: '1.1.0-SNAPSHOT'
 jobs:
   tests:
     name: Run Cypress E2E tests
@@ -23,47 +25,7 @@ jobs:
         with:
           # TODO: Parse this from index management plugin
           java-version: 14
-      # dependencies: OpenSearch
-      - name: Checkout OpenSearch
-        uses: actions/checkout@v2
-        with:
-          repository: 'opensearch-project/OpenSearch'
-          path: OpenSearch
-          ref: '1.0'
-      - name: Build OpenSearch
-        working-directory: ./OpenSearch
-        run: ./gradlew publishToMavenLocal -Dbuild.snapshot=false
-      # dependencies: common-utils
-      - name: Checkout common-utils
-        uses: actions/checkout@v2
-        with:
-          repository: 'opensearch-project/common-utils'
-          path: common-utils
-          ref: '1.0'
-      - name: Build common-utils
-        working-directory: ./common-utils
-        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.0.0
-      # dependencies: job-scheduler
-      - name: Checkout job-scheduler
-        uses: actions/checkout@v2
-        with:
-          repository: 'opensearch-project/job-scheduler'
-          path: job-scheduler
-          ref: '1.0'
-      - name: Build job-scheduler
-        working-directory: ./job-scheduler
-        run: ./gradlew publishToMavenLocal -Dopensearch.version=1.0.0 -Dbuild.snapshot=false
-      # dependencies: alerting-notification
-      - name: Checkout alerting
-        uses: actions/checkout@v2
-        with:
-          repository: 'opensearch-project/alerting'
-          path: alerting
-          ref: '1.0'
-      - name: Build alerting
-        working-directory: ./alerting
-        run: ./gradlew :alerting-notification:publishToMavenLocal -Dopensearch.version=1.0.0 -Dbuild.snapshot=false
-      - name: Checkout
+      - name: Checkout index management
         uses: actions/checkout@v2
         with:
           path: index-management
@@ -72,7 +34,7 @@ jobs:
       - name: Run opensearch with plugin
         run: |
           cd index-management
-          ./gradlew run &
+          ./gradlew run -Dopensearch.version=${{ env.OPENSEARCH_VERSION }} &
           sleep 300
         # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
       - name: Checkout Index Management Dashboards plugin
@@ -84,7 +46,7 @@ jobs:
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           path: OpenSearch-Dashboards
-          ref: '1.0'
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
       - name: Get node and yarn versions
         id: versions
         run: |

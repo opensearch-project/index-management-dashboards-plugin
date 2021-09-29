@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PolicySettings /> spec renders the component 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium"
+  style="padding-left: 0px; padding-right: 0px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h3
+        class="euiTitle euiTitle--small"
+      >
+        Policy settings
+      </h3>
+    </div>
+  </div>
+  <hr
+    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+  />
+  <div
+    style="padding: 10px;"
+  >
+    <div
+      style="padding-left: 10px;"
+    >
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Policy name
+            </dt>
+            <dd>
+              some_id
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Error notification
+            </dt>
+            <dd>
+              -
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Primary term
+            </dt>
+            <dd>
+              1
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Last updated
+            </dt>
+            <dd>
+              8/1/2021, 12:00:00 AM
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Policy description
+            </dt>
+            <dd>
+              some description
+            </dd>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem"
+        >
+          <div
+            class="euiText euiText--extraSmall"
+          >
+            <dt>
+              Sequence number
+            </dt>
+            <dd>
+              2
+            </dd>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

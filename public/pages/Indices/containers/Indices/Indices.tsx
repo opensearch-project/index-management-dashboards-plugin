@@ -55,6 +55,7 @@ import { IndicesQueryParams } from "../../models/interfaces";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
@@ -148,6 +149,11 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
   getDataStreams = async (): Promise<DataStream[]> => {
     const { indexService } = this.props;
     const serverResponse = await indexService.getDataStreams();
+    if (!serverResponse.ok) {
+      if (serverResponse.error.startsWith(SECURITY_EXCEPTION_PREFIX)) {
+        this.context.notifications.toasts.addWarning(serverResponse.error);
+      }
+    }
     return serverResponse.response.dataStreams;
   };
 

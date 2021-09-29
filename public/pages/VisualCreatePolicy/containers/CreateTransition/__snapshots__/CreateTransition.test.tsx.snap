@@ -1,0 +1,251 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateTransition /> spec renders the component 1`] = `
+<div
+  class="euiFlyoutBody"
+>
+  <div
+    class="euiFlyoutBody__overflow"
+  >
+    <div
+      class="euiFlyoutBody__overflowContent"
+    >
+      <h3
+        class="euiTitle euiTitle--small"
+      >
+        Edit transition
+      </h3>
+      <div
+        class="euiText euiText--extraSmall"
+        style="font-weight: 200;"
+      >
+        Transitions define the conditions that need to be met for a state to change. After all actions in the current state are completed, the policy starts checking the conditions for transitions.
+         
+        <a
+          class="euiLink euiLink--primary"
+          href="https://opensearch.org/docs/im-plugin/ism/policies/#transitions"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more 
+          EuiIconMock
+        </a>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Destination state
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            If entering a state that does not exist yet then you must create it before creating the policy.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            class="euiComboBox euiComboBox--fullWidth"
+            role="combobox"
+          >
+            <div
+              class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <div
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--fullWidth euiComboBox__inputWrap--noWrap"
+                  data-test-subj="comboBoxInput"
+                  tabindex="-1"
+                >
+                  <span
+                    class="euiComboBoxPill euiComboBoxPill--plainText"
+                  >
+                    hot
+                  </span>
+                  <div
+                    class="euiComboBox__input"
+                    style="font-size: 14px; display: inline-block;"
+                  >
+                    <input
+                      aria-controls=""
+                      data-test-subj="comboBoxSearchInput"
+                      id="some_html_id"
+                      role="textbox"
+                      style="box-sizing: content-box; width: 2px;"
+                      value=""
+                    />
+                    <div
+                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                >
+                  <button
+                    aria-label="Open list of options"
+                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                    data-test-subj="comboBoxToggleListButton"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Condition
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            Specify the condition needed to be met to transition to the destination state.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <select
+                class="euiSelect euiSelect--fullWidth"
+                data-test-subj="create-state-action-type"
+                id="some_html_id"
+                style="text-transform: capitalize;"
+              >
+                <option
+                  value="none"
+                >
+                  No condition
+                </option>
+                <option
+                  value="min_index_age"
+                >
+                  Minimum index age
+                </option>
+                <option
+                  value="min_doc_count"
+                >
+                  Minimum doc count
+                </option>
+                <option
+                  value="min_size"
+                >
+                  Minimum size
+                </option>
+                <option
+                  value="cron"
+                >
+                  Cron expression
+                </option>
+              </select>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <span
+                  class="euiFormControlLayoutCustomIcon"
+                >
+                  EuiIconMock
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Minimum index age
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The minimum age required to transition to the next state.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText euiFieldText--fullWidth"
+                data-test-subj="transition-render-conditions-min-index-age"
+                id="some_html_id"
+                type="text"
+                value="30d"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

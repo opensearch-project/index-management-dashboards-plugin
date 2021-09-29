@@ -32,6 +32,7 @@ import { IndexService, ManagedIndexService, PolicyService, RollupService, Transf
 import { DarkModeContext } from "./components/DarkMode";
 import Main from "./pages/Main";
 import { CoreServicesContext } from "./components/core_services";
+import "./app.scss";
 
 export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
   const http = coreStart.http;

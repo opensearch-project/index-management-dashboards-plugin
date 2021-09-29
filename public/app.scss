@@ -12,3 +12,45 @@
  * express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+
+// Copies over styling from eui library to be used in custom classes
+// Core
+$euiColorPrimary: #006BB4 !default;
+$euiColorDarkestShade: #343741 !default;
+$euiColorGhost: #FFF !default;
+$euiColorInk: #000 !default;
+$euiTextColor: $euiColorDarkestShade !default;
+
+.selected-radio-panel {
+  background-color: tintOrShade($euiColorPrimary, 90%, 70%);
+  border-color: $euiColorPrimary;
+}
+
+@function tintOrShade($color, $tint, $shade) {
+  @if (lightness($euiTextColor) > 50) {
+    @return shade($color, $shade);
+  } @else {
+    @return tint($color, $tint);
+  }
+}
+
+@function tint($color, $percent) {
+  @return mix($euiColorGhost, $color, $percent);
+}
+
+@function shade($color, $percent) {
+  @return mix($euiColorInk, $color, $percent);
+}
+
+.refresh-button {
+  min-width: 0;
+  .euiButtonContent {
+    .euiButton__text {
+      margin: 0;
+    }
+  }
+}
+
+.state-accordion:hover {
+  text-decoration: none;
+}

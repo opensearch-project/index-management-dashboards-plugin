@@ -44,6 +44,7 @@ import _ from "lodash";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import PolicyControls from "../../components/PolicyControls";
 import PolicyEmptyPrompt from "../../components/PolicyEmptyPrompt";
+import CreatePolicyModal from "../../../../components/CreatePolicyModal";
 import PolicyModal from "../../../../components/PolicyModal";
 import { ModalConsumer } from "../../../../components/Modal";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -103,17 +104,9 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
         textOnly: true,
         width: "150px",
         render: (name: string, item: PolicyItem) => (
-          <ModalConsumer>
-            {({ onShow, onClose }) => (
-              <EuiLink
-                onClick={() =>
-                  onShow(PolicyModal, { policyId: item.id, policy: item.policy, onEdit: () => this.onClickModalEdit(item, onClose) })
-                }
-              >
-                {name}
-              </EuiLink>
-            )}
-          </ModalConsumer>
+          <EuiLink onClick={() => this.props.history.push(`${ROUTES.POLICY_DETAILS}?id=${name}`)} data-test-subj={`policyLink_${name}`}>
+            {name}
+          </EuiLink>
         ),
       },
       {
@@ -214,15 +207,15 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
     this.setState({ search: DEFAULT_QUERY_PARAMS.search });
   };
 
-  onClickEdit = (): void => {
+  onClickEdit = (visual: boolean): void => {
     const {
       selectedItems: [{ id }],
     } = this.state;
-    if (id) this.props.history.push(`${ROUTES.EDIT_POLICY}?id=${id}`);
+    if (id) this.props.history.push(`${ROUTES.EDIT_POLICY}?id=${id}${visual ? "&type=visual" : ""}`);
   };
 
-  onClickCreate = (): void => {
-    this.props.history.push(ROUTES.CREATE_POLICY);
+  onClickCreate = (visual: boolean): void => {
+    this.props.history.push(`${ROUTES.CREATE_POLICY}${visual ? "?type=visual" : ""}`);
   };
 
   onClickDelete = async (policyIds: string[]): Promise<void> => {
@@ -234,10 +227,10 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
     if (deleted) await this.getPolicies();
   };
 
-  onClickModalEdit = (item: PolicyItem, onClose: () => void): void => {
+  onClickModalEdit = (item: PolicyItem, onClose: () => void, visual: boolean = false): void => {
     onClose();
     if (!item || !item.id) return;
-    this.props.history.push(`${ROUTES.EDIT_POLICY}?id=${item.id}`);
+    this.props.history.push(`${ROUTES.EDIT_POLICY}?id=${item.id}${visual ? "&type=visual" : ""}`);
   };
 
   render() {
@@ -286,11 +279,16 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
           disabled: selectedItems.length !== 1,
           onClick: this.onClickEdit,
         },
+        modal: {
+          onClickModal: (onShow: (component: any, props: object) => void) => () =>
+            onShow(CreatePolicyModal, { isEdit: true, onClickContinue: this.onClickEdit }),
+        },
       },
       {
         text: "Create policy",
-        buttonProps: {
-          onClick: this.onClickCreate,
+        modal: {
+          onClickModal: (onShow: (component: any, props: object) => void) => () =>
+            onShow(CreatePolicyModal, { onClickContinue: this.onClickCreate }),
         },
       },
     ];
@@ -314,7 +312,12 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
           itemId="id"
           items={policies}
           noItemsMessage={
-            <PolicyEmptyPrompt filterIsApplied={filterIsApplied} loading={loadingPolicies} resetFilters={this.resetFilters} />
+            <PolicyEmptyPrompt
+              history={this.props.history}
+              filterIsApplied={filterIsApplied}
+              loading={loadingPolicies}
+              resetFilters={this.resetFilters}
+            />
           }
           onChange={this.onTableChange}
           pagination={pagination}
