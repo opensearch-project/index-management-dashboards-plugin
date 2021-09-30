@@ -30,6 +30,7 @@ Compatible with OpenSearchDashboards 1.1.0
 * Register action hook ([#64](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/64))
 * Fixes policy details page ([#80](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/80))
 * Removes support for notification channels ([#81](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/81))
+* Changes the default policy of the visual editor to be an empty one ([#100](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/100))
 
 ### Bug Fixes
 * Address data stream API security breaking issue ([#69](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/69))
