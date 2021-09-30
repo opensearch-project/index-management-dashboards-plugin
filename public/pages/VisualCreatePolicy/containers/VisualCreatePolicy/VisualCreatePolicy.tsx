@@ -13,7 +13,7 @@ import React, { ChangeEvent, Component } from "react";
 import { EuiText, EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiLink, EuiIcon } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
-import { DEFAULT_POLICY } from "../../utils/constants";
+import { EMPTY_DEFAULT_POLICY } from "../../utils/constants";
 import { Policy, State } from "../../../../../models/interfaces";
 import { PolicyService } from "../../../../services";
 import { BREADCRUMBS, POLICY_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
@@ -52,7 +52,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
 
     this.state = {
       policyId: "",
-      policy: DEFAULT_POLICY,
+      policy: EMPTY_DEFAULT_POLICY,
       showFlyout: false,
       editingState: null,
 
