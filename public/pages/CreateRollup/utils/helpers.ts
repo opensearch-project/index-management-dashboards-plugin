@@ -26,19 +26,98 @@
 
 import { FieldItem } from "../../../../models/interfaces";
 import { COMPARISON_OPERATORS } from "./constants";
+import moment from "moment";
+
+const timeunits = {
+  isMilliseconds: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "milliseconds" || stringToCheck.trim().toLowerCase() == "ms";
+  },
+  isSeconds: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "seconds" || stringToCheck.trim().toLowerCase() == "s";
+  },
+  isMinutes: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "minutes" || stringToCheck.trim() == "m";
+  },
+  isHours: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "hours" || stringToCheck.trim().toLowerCase() == "h";
+  },
+  isDays: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "days" || stringToCheck.trim().toLowerCase() == "d";
+  },
+  isWeeks: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "weeks" || stringToCheck.trim().toLowerCase() == "w";
+  },
+  isMonths: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "months" || stringToCheck.trim() == "M";
+  },
+  isQuarters: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "quarters" || stringToCheck.trim().toLowerCase() == "q";
+  },
+  isYears: function (stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() == "years" || stringToCheck.trim().toLowerCase() == "y";
+  },
+} as const;
+
+export const buildIntervalScheduleText = (continuous: boolean, interval: number, intervalTimeUnit: string): string => {
+  let scheduleText = "";
+  if (continuous) {
+    scheduleText += "Continuous, every " + interval + " " + parseTimeunit(intervalTimeUnit);
+  } else {
+    scheduleText += "Not continuous";
+  }
+  return scheduleText;
+};
+
+export const buildCronScheduleText = (continuous: boolean, cronExpression: string): string => {
+  let scheduleText = "";
+  if (continuous) {
+    scheduleText += "Continuous, defined by cron expression: " + cronExpression;
+  } else {
+    scheduleText += "Not continuous";
+  }
+  return scheduleText;
+};
 
 export const parseTimeunit = (timeunit: string): string => {
-  if (timeunit == "ms" || timeunit == "Milliseconds") return "millisecond(s)";
-  else if (timeunit == "SECONDS" || timeunit == "s" || timeunit == "Seconds") return "second(s)";
-  else if (timeunit == "MINUTES" || timeunit == "m" || timeunit == "Minutes") return "minute(s)";
-  else if (timeunit == "HOURS" || timeunit == "h" || timeunit == "Hours") return "hour(s)";
-  else if (timeunit == "DAYS" || timeunit == "d" || timeunit == "Days") return "day(s)";
-  else if (timeunit == "w") return "week";
-  else if (timeunit == "M") return "month";
-  else if (timeunit == "q") return "quarter";
-  else if (timeunit == "y") return "year";
+  if (timeunits.isMilliseconds(timeunit)) return "millisecond(s)";
+  else if (timeunits.isSeconds(timeunit)) return "second(s)";
+  else if (timeunits.isMinutes(timeunit)) return "minute(s)";
+  else if (timeunits.isHours(timeunit)) return "hour(s)";
+  else if (timeunits.isDays(timeunit)) return "day(s)";
+  else if (timeunits.isWeeks(timeunit)) return "week";
+  else if (timeunits.isMonths(timeunit)) return "month";
+  else if (timeunits.isQuarters(timeunit)) return "quarter";
+  else if (timeunits.isYears(timeunit)) return "year";
 
   return timeunit;
+};
+
+export const delayTimeUnitToMS = (delay: number, timeunit: string): number => {
+  if (timeunits.isSeconds(timeunit)) {
+    return moment.duration(delay, "seconds").asMilliseconds();
+  } else if (timeunits.isMinutes(timeunit)) {
+    return moment.duration(delay, "minutes").asMilliseconds();
+  } else if (timeunits.isHours(timeunit)) {
+    return moment.duration(delay, "hours").asMilliseconds();
+  } else if (timeunits.isDays(timeunit)) {
+    return moment.duration(delay, "days").asMilliseconds();
+  } else {
+    return delay;
+  }
+};
+
+export const msToDelayTimeUnit = (delay: number, timeunit: string): number => {
+  if (timeunits.isSeconds(timeunit)) {
+    return moment.duration(delay, "milliseconds").asSeconds();
+  } else if (timeunits.isMinutes(timeunit)) {
+    return moment.duration(delay, "milliseconds").asMinutes();
+  } else if (timeunits.isHours(timeunit)) {
+    return moment.duration(delay, "milliseconds").asHours();
+  } else if (timeunits.isDays(timeunit)) {
+    return moment.duration(delay, "milliseconds").asDays();
+  } else {
+    return delay;
+  }
 };
 
 //Returns true if field type is numeric

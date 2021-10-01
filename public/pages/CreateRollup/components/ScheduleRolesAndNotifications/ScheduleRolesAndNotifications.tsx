@@ -28,7 +28,7 @@ import React, { Component } from "react";
 import { EuiFlexGrid, EuiFlexItem, EuiSpacer, EuiText } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
-import { parseTimeunit } from "../../utils/helpers";
+import { parseTimeunit, buildIntervalScheduleText, buildCronScheduleText } from "../../utils/helpers";
 
 interface ScheduleRolesAndNotificationsProps {
   rollupId: string;
@@ -60,12 +60,10 @@ export default class ScheduleRolesAndNotifications extends Component<ScheduleRol
       delayTimeunit,
     } = this.props;
 
-    let scheduleText = continuousJob ? "Continuous, " : "Not continuous, ";
-    if (continuousDefinition == "fixed") {
-      scheduleText += "every " + interval + " " + parseTimeunit(intervalTimeunit);
-    } else {
-      scheduleText += "defined by cron expression: " + cronExpression;
-    }
+    let scheduleText =
+      continuousDefinition === "fixed"
+        ? buildIntervalScheduleText(continuousJob === "yes", interval, intervalTimeunit)
+        : buildCronScheduleText(continuousJob === "yes", cronExpression);
 
     return (
       <ContentPanel

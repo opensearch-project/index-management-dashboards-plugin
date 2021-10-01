@@ -140,4 +140,21 @@ describe("<EditRollup /> spec", () => {
 
     //TODO: Verify changes are saved.
   });
+
+  it("shows rollup job delay", async () => {
+    let rollupJob = testRollup;
+    rollupJob.rollup.delay = 90000;
+
+    browserServicesMock.rollupService.getRollup = jest.fn().mockResolvedValue({
+      ok: true,
+      response: rollupJob,
+    });
+
+    const { queryByText } = renderEditRollupWithRouter([`${ROUTES.ROLLUP_DETAILS}?id=${testRollup._id}`]);
+
+    await waitFor(() => {});
+
+    await waitFor(() => queryByText("1.5"));
+    await waitFor(() => queryByText("Minute(s)"));
+  });
 });
