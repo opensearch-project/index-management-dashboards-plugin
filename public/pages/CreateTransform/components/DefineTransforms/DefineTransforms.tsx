@@ -156,7 +156,7 @@ export default function DefineTransforms({
       } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
         return data[rowIndex]._source[columnId] == null ? "-" : (data[rowIndex]._source[columnId] ? "true" : "false");
       }
-      return data[rowIndex]._source[columnId] ? data[rowIndex]._source[columnId] : "-";
+      return JSON.stringify(data[rowIndex]._source[columnId]) ? JSON.stringify(data[rowIndex]._source[columnId]) : "-";
     }
     return "-";
   };
