@@ -123,7 +123,7 @@ describe("Transforms", () => {
         cy.get("button").contains("Create").click({ force: true });
 
         // Verify that sample data is add by checking toast notification
-        cy.contains("Transform job "${TRANSFORM_ID}" successfully created.");
+        cy.contains(`Transform job "${TRANSFORM_ID}" successfully created.`);
       });
     });
 
