@@ -21,7 +21,7 @@ describe("Transforms", () => {
       // Set welcome screen tracking to test_transform_target
       localStorage.setItem("home:welcome:show", true);
 
-      // Go to sample data page_size
+      // Go to sample data page
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory/sampleData`);
 
       // Click on "Sample data" tab
@@ -75,6 +75,11 @@ describe("Transforms", () => {
 
         // Setup Group and aggregation
         cy.wait(2000);
+
+        /* Finds the correct header text, then navigates up the structure, then
+         * down to the next div, which contains the button. Then navigates down
+         * the div to the clickable button and clicks it.
+         */
         cy.contains("category.keyword").parent().parent().parent().next()
           .children().first().children().first().children().first()
           .click({ force: true });
@@ -90,6 +95,10 @@ describe("Transforms", () => {
         // Click out of the window
         cy.contains("Select fields to transform").click({ force: true });
 
+        /* Finds the correct header text, then navigates up the structure, then
+         * down to the next div, which contains the button. Then navigates down
+         * the div to the clickable button and clicks it.
+         */
         cy.contains("taxless_total_price").parent().parent().parent().next()
           .children().first().children().first().children().first()
           .click({ force: true });
@@ -114,7 +123,7 @@ describe("Transforms", () => {
         cy.get("button").contains("Create").click({ force: true });
 
         // Verify that sample data is add by checking toast notification
-        cy.contains(`${TRANSFORM_ID}`);
+        cy.contains("Transform job "${TRANSFORM_ID}" successfully created.");
       });
     });
 
