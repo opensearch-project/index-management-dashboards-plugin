@@ -122,38 +122,6 @@ const sampleMapping = {
   },
 };
 
-const miniMapping = {
-  index_1: {
-    mappings: {
-      properties: {
-        category: {
-          type: "text",
-        },
-      },
-    },
-  },
-};
-
-const emptyData = [];
-
-const emptyMapping = {
-  index_1: {
-    mappings: {
-      properties: {},
-    },
-  },
-};
-
-const miniData = [{
-  _id: "H1tNZHoBkfvfBoG1npgz",
-  _index: "index_1",
-  _score: 1,
-  _source: {
-    category: "Women's Clothing",
-  },
-  _type: "_doc",
-}];
-
 const indexData = [{
   _id: "H1tNZHoBkfvfBoG1npgz",
   _index: "index_1",
@@ -301,19 +269,19 @@ describe("<CreateTransformForm /> creation", () => {
   browserServicesMock.transformService.searchSampleData = jest.fn().mockResolvedValue({
     ok: true,
     response: {
-      data: emptyData,
-      total: { value: 0,  relation: "gte" }
+      data: indexData,
+      total: { value: 1,  relation: "gte" }
     }
   });
 
   browserServicesMock.transformService.getMappings = jest.fn().mockResolvedValue({
     ok: true,
-    response: emptyMapping,
+    response: sampleMapping,
   });
 
   browserServicesMock.rollupService.getMappings = jest.fn().mockResolvedValue({
     ok: true,
-    response: emptyMapping,
+    response: sampleMapping,
   });
 
   browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
