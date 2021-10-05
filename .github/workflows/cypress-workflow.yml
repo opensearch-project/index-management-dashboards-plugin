@@ -8,7 +8,7 @@ on:
       - main
       - development-*
 env:
-  OPENSEARCH_DASHBOARDS_REF: 'main'
+  OPENSEARCH_DASHBOARDS_VERSION: '1.x'
   OPENSEARCH_VERSION: '1.2.0-SNAPSHOT'
 jobs:
   tests:
@@ -46,7 +46,7 @@ jobs:
         with:
           repository: opensearch-project/OpenSearch-Dashboards
           path: OpenSearch-Dashboards
-          ref: ${{ env.OPENSEARCH_DASHBOARDS_REF }}
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
       - name: Get node and yarn versions
         id: versions
         run: |
