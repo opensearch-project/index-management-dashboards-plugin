@@ -52,6 +52,18 @@ export const CalendarTimeunitOptions = [
   { value: "y", text: "Year" },
 ];
 
+export const DateHistogramTimeunitOptions = [
+  { value: "ms", text: "Millisecond(s)" },
+  { value: "s", text: "Second(s)" },
+  { value: "m", text: "Minute(s)" },
+  { value: "h", text: "Hour(s)" },
+  { value: "d", text: "Day(s)" },
+  { value: "w", text: "Week(s)" },
+  { value: "M", text: "Month(s)" },
+  { value: "q", text: "Quarter(s)" },
+  { value: "y", text: "Year(s)" },
+];
+
 export const ScheduleIntervalTimeunitOptions = [
   { value: "Minutes", text: "Minute(s)" },
   { value: "Hours", text: "Hour(s)" },
@@ -78,3 +90,5 @@ export const ExecutionFrequencyDefinitionOptions = [
 ];
 
 export const DefaultSampleDataSize = 50;
+
+export const DateHistogramInfoText = "Calendar interval timeunits (e.g. day, week, month, quarter, and year.) only accepts interval of 1.";

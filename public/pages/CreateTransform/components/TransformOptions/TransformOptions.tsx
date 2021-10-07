@@ -25,6 +25,7 @@ import { GROUP_TYPES, TRANSFORM_AGG_TYPE, TransformAggItem, TransformGroupItem }
 import HistogramPanel from "./Panels/HistogramPanel";
 import PercentilePanel from "./Panels/PercentilePanel";
 import ScriptedMetricsPanel from "./Panels/ScriptedMetricsPanel";
+import DateHistogramPanel from "./Panels/DateHistogramPanel";
 
 interface TransformOptionsProps {
   name: string;
@@ -215,7 +216,7 @@ export default function TransformOptions({
       items: [
         {
           name: "Group by date histogram",
-          panel: 1,
+          panel: 2,
         },
         {
           name: "Group by terms",
@@ -435,6 +436,19 @@ export default function TransformOptions({
           },
         },
       ],
+    },
+    {
+      id: 2,
+      title: "Back",
+      width: 350,
+      content: (
+        <DateHistogramPanel
+          name={name}
+          handleGroupSelectionChange={handleGroupSelectionChange}
+          aggList={aggList}
+          closePopover={closePopover}
+        />
+      ),
     },
   ];
   const textPanels: EuiContextMenuPanelDescriptor[] = [
