@@ -26,6 +26,7 @@ import HistogramPanel from "./Panels/HistogramPanel";
 import PercentilePanel from "./Panels/PercentilePanel";
 import ScriptedMetricsPanel from "./Panels/ScriptedMetricsPanel";
 import DateHistogramPanel from "./Panels/DateHistogramPanel";
+import { IntervalType } from "../../../../utils/constants";
 
 interface TransformOptionsProps {
   name: string;
@@ -216,7 +217,7 @@ export default function TransformOptions({
       items: [
         {
           name: "Group by date histogram",
-          panel: 2,
+          panel: 1,
         },
         {
           name: "Group by terms",
@@ -278,162 +279,178 @@ export default function TransformOptions({
         },
       ],
     },
+    // {
+    //   id: 1,
+    //   title: "Back",
+    //   items: [
+    //     {
+    //       name: "Millisecond",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_millisecond`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               fixed_interval: "1ms",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //     {
+    //       name: "Second",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_second`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               fixed_interval: "1s",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //     {
+    //       name: "Minute",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_minute`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               fixed_interval: "1m",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //     {
+    //       name: "Hour",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_hour`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               fixed_interval: "1h",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //     {
+    //       name: "Day",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_day`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               calendar_interval: "1d",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //     {
+    //       name: "Week",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_week`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               calendar_interval: "1w",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //     {
+    //       name: "Month",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_month`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               calendar_interval: "1M",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //     {
+    //       name: "Quarter",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_quarter`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               calendar_interval: "1q",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //     {
+    //       name: "Year",
+    //       onClick: () => {
+    //         const targetField = `${name}_${GROUP_TYPES.dateHistogram}_year`;
+    //         handleGroupSelectionChange(
+    //           {
+    //             date_histogram: {
+    //               source_field: name,
+    //               target_field: targetField,
+    //               calendar_interval: "1y",
+    //             },
+    //           },
+    //           TRANSFORM_AGG_TYPE.date_histogram,
+    //           targetField
+    //         );
+    //       },
+    //     },
+    //   ],
+    // },
+    //
     {
       id: 1,
       title: "Back",
+      width: 350,
       items: [
         {
-          name: "Millisecond",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_millisecond`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  fixed_interval: "1ms",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
+          name: "Fixed interval",
+          panel: 2,
         },
         {
-          name: "Second",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_second`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  fixed_interval: "1s",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
-        },
-        {
-          name: "Minute",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_minute`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  fixed_interval: "1m",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
-        },
-        {
-          name: "Hour",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_hour`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  fixed_interval: "1h",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
-        },
-        {
-          name: "Day",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_day`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  calendar_interval: "1d",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
-        },
-        {
-          name: "Week",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_week`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  calendar_interval: "1w",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
-        },
-        {
-          name: "Month",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_month`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  calendar_interval: "1M",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
-        },
-        {
-          name: "Quarter",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_quarter`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  calendar_interval: "1q",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
-        },
-        {
-          name: "Year",
-          onClick: () => {
-            const targetField = `${name}_${GROUP_TYPES.dateHistogram}_year`;
-            handleGroupSelectionChange(
-              {
-                date_histogram: {
-                  source_field: name,
-                  target_field: targetField,
-                  calendar_interval: "1y",
-                },
-              },
-              TRANSFORM_AGG_TYPE.date_histogram,
-              targetField
-            );
-          },
+          name: "Calendar interval",
+          panel: 3,
         },
       ],
     },
@@ -447,6 +464,21 @@ export default function TransformOptions({
           handleGroupSelectionChange={handleGroupSelectionChange}
           aggList={aggList}
           closePopover={closePopover}
+          intervalType={IntervalType.FIXED}
+        />
+      ),
+    },
+    {
+      id: 3,
+      title: "Back",
+      width: 350,
+      content: (
+        <DateHistogramPanel
+          name={name}
+          handleGroupSelectionChange={handleGroupSelectionChange}
+          aggList={aggList}
+          closePopover={closePopover}
+          intervalType={IntervalType.CALENDAR}
         />
       ),
     },

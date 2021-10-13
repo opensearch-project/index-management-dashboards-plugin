@@ -10,6 +10,7 @@
  */
 
 import { FieldItem, TRANSFORM_AGG_TYPE, TransformGroupItem } from "../../../../models/interfaces";
+import { IntervalType } from "../../../utils/constants";
 
 export const parseTimeunit = (timeunit: string): string => {
   if (timeunit == "ms" || timeunit == "Milliseconds") return "millisecond(s)";
@@ -95,10 +96,11 @@ export const getDateHistogramGroupItem = (
   name: string,
   targetFieldName: string,
   interval: number,
-  timeunit: string
+  timeunit: string,
+  intervalType: IntervalType
 ): TransformGroupItem => {
   const dateHistogramInterval = `${interval}${timeunit}`;
-  if (isCalendarTimeunit(timeunit))
+  if (intervalType === IntervalType.CALENDAR)
     return {
       date_histogram: {
         source_field: name,

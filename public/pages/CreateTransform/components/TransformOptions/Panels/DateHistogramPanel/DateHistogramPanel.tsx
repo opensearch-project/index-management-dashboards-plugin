@@ -9,62 +9,60 @@
  * GitHub history for details.
  */
 
-import { GROUP_TYPES, TRANSFORM_AGG_TYPE, TransformAggItem, TransformGroupItem } from "../../../../../../../models/interfaces";
 import React, { useState } from "react";
-import {
-  EuiButton,
-  EuiFieldNumber,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiIcon,
-  EuiPanel,
-  EuiSelect,
-  EuiSpacer,
-  EuiText,
-  EuiToolTip,
-} from "@elastic/eui";
-import { DateHistogramInfoText, DateHistogramTimeunitOptions } from "../../../../utils/constants";
-import { getDateHistogramGroupItem, getGroupByDateHistogramItem } from "../../../../utils/helpers";
+import { EuiButton, EuiFieldNumber, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSelect, EuiSpacer, EuiText } from "@elastic/eui";
+import { getDateHistogramGroupItem } from "../../../../utils/helpers";
+import { CalendarTimeunitOptions, FixedTimeunitOptions, IntervalType } from "../../../../../../utils/constants";
+import { GROUP_TYPES, TRANSFORM_AGG_TYPE, TransformAggItem, TransformGroupItem } from "../../../../../../../models/interfaces";
 
 interface DateHistogramPanelProps {
   name: string;
   handleGroupSelectionChange: (newGroupItem: TransformGroupItem, type: TRANSFORM_AGG_TYPE, name: string) => void;
   aggList: TransformAggItem[];
   closePopover: () => void;
+  intervalType: IntervalType;
 }
 
-export default function DateHistogramPanel({ name, handleGroupSelectionChange, closePopover }: DateHistogramPanelProps) {
+export default function DateHistogramPanel({ name, handleGroupSelectionChange, closePopover, intervalType }: DateHistogramPanelProps) {
   const [dateHistogramInterval, setDateHistogramInterval] = useState(1);
   const [dateHistogramTimeunit, setDateHistogramTimeunit] = useState("m");
+
+  let timeunitOptions, intervalDefinition;
+  if (intervalType === IntervalType.FIXED) {
+    intervalDefinition = (
+      <EuiFieldNumber value={dateHistogramInterval} onChange={(e) => setDateHistogramInterval(e.target.valueAsNumber)} />
+    );
+    timeunitOptions = FixedTimeunitOptions;
+  } else {
+    intervalDefinition = (
+      <div>
+        <EuiSpacer size="s" />
+        <EuiText size="m">Every 1</EuiText>
+      </div>
+    );
+    timeunitOptions = CalendarTimeunitOptions;
+  }
 
   return (
     <EuiPanel>
       <EuiFlexGroup>
         <EuiFlexItem grow={false} style={{ width: 100 }}>
           <EuiText size="xs">
-            <h4>Date histogram interval</h4>
+            <h4>Interval</h4>
           </EuiText>
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiText size="xs">
-            <h4>Date histogram timeunit</h4>
+            <h4>Timeunit</h4>
           </EuiText>
-
-          <EuiToolTip position="top" content={DateHistogramInfoText}>
-            <EuiIcon type="questionInCircle" />
-          </EuiToolTip>
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiFlexGroup>
         <EuiFlexItem grow={false} style={{ width: 100 }}>
-          <EuiFieldNumber value={dateHistogramInterval} onChange={(e) => setDateHistogramInterval(e.target.valueAsNumber)} />
+          {intervalDefinition}
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiSelect
-            options={DateHistogramTimeunitOptions}
-            value={dateHistogramTimeunit}
-            onChange={(e) => setDateHistogramTimeunit(e.target.value)}
-          />
+          <EuiSelect options={timeunitOptions} value={dateHistogramTimeunit} onChange={(e) => setDateHistogramTimeunit(e.target.value)} />
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer size="m" />
@@ -79,13 +77,16 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
             fill
             fullWidth={false}
             onClick={() => {
-              const targetFieldName = `${name} _${GROUP_TYPES.dateHistogram}_${dateHistogramInterval}_${dateHistogramTimeunit}`;
+              const targetFieldName = `${name} _${GROUP_TYPES.dateHistogram}_${dateHistogramInterval}_${dateHistogramTimeunit}_${intervalType}`;
 
               //Switch between fixed interval and calendar interval by checking timeunit
-              const dateHistogramGroupItem = getDateHistogramGroupItem(name, targetFieldName, dateHistogramInterval, dateHistogramTimeunit);
-              //Debug use
-              console.log(targetFieldName);
-              console.log(JSON.stringify(dateHistogramGroupItem));
+              const dateHistogramGroupItem = getDateHistogramGroupItem(
+                name,
+                targetFieldName,
+                dateHistogramInterval,
+                dateHistogramTimeunit,
+                intervalType
+              );
               handleGroupSelectionChange(dateHistogramGroupItem, TRANSFORM_AGG_TYPE.date_histogram, targetFieldName);
             }}
             style={{ minWidth: 55 }}

@@ -27,41 +27,11 @@ export const EMPTY_TRANSFORM = JSON.stringify({
   },
 });
 
-export const FixedTimeunitOptions = [
-  { value: "ms", text: "Millisecond(s)" },
-  { value: "s", text: "Second(s)" },
-  { value: "m", text: "Minute(s)" },
-  { value: "h", text: "Hour(s)" },
-  { value: "d", text: "Day(s)" },
-];
-
 export const DelayTimeunitOptions = [
   { value: "SECONDS", text: "Second(s)" },
   { value: "MINUTES", text: "Minute(s)" },
   { value: "HOURS", text: "Hour(s)" },
   { value: "DAYS", text: "Day(s)" },
-];
-
-export const CalendarTimeunitOptions = [
-  { value: "m", text: "Minute" },
-  { value: "h", text: "Hour" },
-  { value: "d", text: "Day" },
-  { value: "w", text: "Week" },
-  { value: "M", text: "Month" },
-  { value: "q", text: "Quarter" },
-  { value: "y", text: "Year" },
-];
-
-export const DateHistogramTimeunitOptions = [
-  { value: "ms", text: "Millisecond(s)" },
-  { value: "s", text: "Second(s)" },
-  { value: "m", text: "Minute(s)" },
-  { value: "h", text: "Hour(s)" },
-  { value: "d", text: "Day(s)" },
-  { value: "w", text: "Week(s)" },
-  { value: "M", text: "Month(s)" },
-  { value: "q", text: "Quarter(s)" },
-  { value: "y", text: "Year(s)" },
 ];
 
 export const ScheduleIntervalTimeunitOptions = [
@@ -84,11 +54,4 @@ export const AddFieldsColumns = [
   },
 ];
 
-export const ExecutionFrequencyDefinitionOptions = [
-  { value: "fixed", text: "Define by fixed interval" },
-  { value: "cron", text: "Define by cron expression" },
-];
-
 export const DefaultSampleDataSize = 50;
-
-export const DateHistogramInfoText = "Calendar interval timeunits (e.g. day, week, month, quarter, and year.) only accepts interval of 1.";

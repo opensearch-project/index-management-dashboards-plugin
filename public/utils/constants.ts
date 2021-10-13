@@ -77,3 +77,26 @@ export enum SortDirection {
   ASC = "asc",
   DESC = "desc",
 }
+
+export const FixedTimeunitOptions = [
+  { value: "ms", text: "Millisecond(s)" },
+  { value: "s", text: "Second(s)" },
+  { value: "m", text: "Minute(s)" },
+  { value: "h", text: "Hour(s)" },
+  { value: "d", text: "Day(s)" },
+];
+
+export const CalendarTimeunitOptions = [
+  { value: "m", text: "Minute" },
+  { value: "h", text: "Hour" },
+  { value: "d", text: "Day" },
+  { value: "w", text: "Week" },
+  { value: "M", text: "Month" },
+  { value: "q", text: "Quarter" },
+  { value: "y", text: "Year" },
+];
+
+export enum IntervalType {
+  FIXED = "fixed",
+  CALENDAR = "calendar",
+}
