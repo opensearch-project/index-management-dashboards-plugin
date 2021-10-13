@@ -183,7 +183,9 @@ describe("<RollupDetails /> spec", () => {
     browserServicesMock.rollupService.deleteRollup = jest.fn().mockResolvedValue({ ok: true, response: true });
     const { getByTestId } = renderRollupDetailsWithRouter([`${ROUTES.ROLLUP_DETAILS}?id=${testRollup._id}`]);
 
-    await waitFor(() => {});
+    await waitFor(() => {
+      getByTestId("deleteButton");
+    });
 
     userEvent.click(getByTestId("deleteButton"));
 

@@ -236,6 +236,9 @@ describe("Rollups", () => {
 
       cy.contains(`${ROLLUP_ID}`);
 
+      // Disable button is enabled
+      cy.get(`[data-test-subj="disableButton"]`).should("not.be.disabled");
+
       // Click Disable button
       cy.get(`[data-test-subj="disableButton"]`).trigger("click", { force: true });
 
