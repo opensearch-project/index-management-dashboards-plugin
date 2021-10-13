@@ -15,22 +15,28 @@ import sampleTransform from "../fixtures/sample_transform";
 const TRANSFORM_ID = "test_transform_id";
 
 describe("Transforms", () => {
-    beforeEach(() => {
+    before(() => {
+      // Delete all indices
       cy.deleteAllIndices();
+
+      // Load ecommerce data
+      cy.request({
+        method: 'POST',
+        url:`${Cypress.env("opensearch_dashboards")}/api/sample_data/ecommerce`,
+        headers: {
+          'osd-xsrf': true
+        }
+      }).then((response) => {
+        expect(response.status).equal(200);
+      });
+    });
+
+    beforeEach(() => {
+      // delete test transforms
+      cy.request("DELETE", `${Cypress.env("opensearch")}/test_transform*`);
 
       // Set welcome screen tracking to test_transform_target
       localStorage.setItem("home:welcome:show", true);
-
-      // Go to sample data page
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory/sampleData`);
-
-      // Click on "Sample data" tab
-      cy.contains("Sample data", { timeout: 20000 }).click({ force: true });
-      // Load sample eCommerce data
-      cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({ force: true });
-
-      // Verify that sample data is add by checking toast notification
-      cy.contains("Sample eCommerce orders installed", { timeout: 60000 });
 
       // Visit ISM Transforms Dashboard
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/transforms`);
@@ -50,7 +56,7 @@ describe("Transforms", () => {
         cy.contains("Create transform").click({ force: true });
 
         // Type in transform ID
-        cy.get(`input[placeholder="my-transformjob1"]`).type(TRANSFORM_ID, { force: true });
+        cy.get(`input[placeholder="test_transform"]`).type(TRANSFORM_ID, { force: true });
 
         // Get description input box
         cy.get(`textarea[data-test-subj="description"]`).focus().type("some description");
@@ -65,7 +71,7 @@ describe("Transforms", () => {
         cy.get(`div[data-test-subj="targetIndexCombobox"]`)
           .find(`input[data-test-subj="comboBoxSearchInput"]`)
           .focus()
-          .type("target_index{enter}");
+          .type("test_transform{enter}");
 
         // Click the next button
         cy.get("button").contains("Next").click({ force: true });
@@ -73,15 +79,7 @@ describe("Transforms", () => {
         // Confirm that we got to step 2 of creation page
         cy.contains("Select fields to transform");
 
-        // Setup Group and aggregation
-        cy.wait(2000);
-
-        /* Finds the correct header text, then navigates up the structure, then
-         * down to the next div, which contains the button. Then navigates down
-         * the div to the clickable button and clicks it.
-         */
-        cy.contains("category.keyword").parent().parent().parent().next()
-          .children().first().children().first().children().first()
+        cy.get(`button[data-test-subj="category.keywordOptionsPopover"]`)
           .click({ force: true });
 
         cy.contains("Group by terms").click({ force: true });
@@ -95,13 +93,9 @@ describe("Transforms", () => {
         // Click out of the window
         cy.contains("Select fields to transform").click({ force: true });
 
-        /* Finds the correct header text, then navigates up the structure, then
-         * down to the next div, which contains the button. Then navigates down
-         * the div to the clickable button and clicks it.
-         */
-        cy.contains("taxless_total_price").parent().parent().parent().next()
-          .children().first().children().first().children().first()
+        cy.get(`button[data-test-subj="taxless_total_priceOptionsPopover"]`)
           .click({ force: true });
+
         cy.contains("Aggregate by avg").click({ force: true });
 
         // Confirm agg was added
@@ -124,6 +118,8 @@ describe("Transforms", () => {
 
         // Verify that sample data is add by checking toast notification
         cy.contains(`Transform job "${TRANSFORM_ID}" successfully created.`);
+        cy.location('pathname').should('eq', '/app/opensearch_index_management_dashboards#/transforms');
+        cy.get(`button[data-test-subj="transformLink_test_transform"]`);
       });
     });
 
@@ -221,8 +217,6 @@ describe("Transforms", () => {
 
         cy.contains(`${TRANSFORM_ID}`);
 
-        cy.wait(1000);
-
         // Click into Actions menu
         cy.get(`[data-test-subj="actionButton"]`).click({ force: true });
 
@@ -231,8 +225,6 @@ describe("Transforms", () => {
 
         // Confirm we get toaster saying transform job is disabled
         cy.contains(`"${TRANSFORM_ID}" is disabled`);
-
-        cy.wait(1000);
 
         // Click into Actions menu
         cy.get(`[data-test-subj="actionButton"]`).click({ force: true });

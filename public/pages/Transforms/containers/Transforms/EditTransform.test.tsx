@@ -120,7 +120,18 @@ describe("<EditTransform /> spec", () => {
     await waitFor(() => {});
 
     fireEvent.focus(getByTestId("description"));
-    await userEvent.type(getByTestId("description"), "some description");
+    userEvent.type(getByTestId("description"), "some description");
     fireEvent.blur(getByTestId("description"));
+
+    userEvent.click(getByTestId("editTransformSaveButton"));
+
+    expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledTimes(1);
+    expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledWith(
+      expect.objectContaining({
+        transform: expect.objectContaining({
+          description: 'some description',
+        }),
+      })
+    );
   });
 });
