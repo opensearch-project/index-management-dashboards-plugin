@@ -30,7 +30,11 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
   let timeunitOptions, intervalDefinition;
   if (intervalType === IntervalType.FIXED) {
     intervalDefinition = (
-      <EuiFieldNumber value={dateHistogramInterval} onChange={(e) => setDateHistogramInterval(e.target.valueAsNumber)} />
+      <EuiFieldNumber
+        value={dateHistogramInterval}
+        onChange={(e) => setDateHistogramInterval(e.target.valueAsNumber)}
+        data-test-subj="dateHistogramValueInput"
+      />
     );
     timeunitOptions = FixedTimeunitOptions;
   } else {
@@ -62,7 +66,12 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
           {intervalDefinition}
         </EuiFlexItem>
         <EuiFlexItem>
-          <EuiSelect options={timeunitOptions} value={dateHistogramTimeunit} onChange={(e) => setDateHistogramTimeunit(e.target.value)} />
+          <EuiSelect
+            options={timeunitOptions}
+            value={dateHistogramTimeunit}
+            onChange={(e) => setDateHistogramTimeunit(e.target.value)}
+            data-test-subj="dateHistogramTimeunitSelect"
+          />
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer size="m" />
@@ -95,6 +104,7 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
               handleGroupSelectionChange(dateHistogramGroupItem, TRANSFORM_AGG_TYPE.date_histogram, targetFieldName);
             }}
             style={{ minWidth: 55 }}
+            data-test-subj="dateHistogramPanelOKButton"
           >
             OK
           </EuiButton>
