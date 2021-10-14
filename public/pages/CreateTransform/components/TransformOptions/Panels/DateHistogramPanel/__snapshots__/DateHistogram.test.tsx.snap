@@ -60,6 +60,7 @@ exports[`<DateHistogramPanel /> spec renders the component with calendar interva
         >
           <select
             class="euiSelect"
+            data-test-subj="dateHistogramTimeunitSelect"
           >
             <option
               value="m"
@@ -141,6 +142,7 @@ exports[`<DateHistogramPanel /> spec renders the component with calendar interva
     >
       <button
         class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="dateHistogramPanelOKButton"
         style="min-width: 55px;"
         type="button"
       >
@@ -205,6 +207,7 @@ exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1
         >
           <input
             class="euiFieldNumber"
+            data-test-subj="dateHistogramValueInput"
             type="number"
             value="1"
           />
@@ -222,6 +225,7 @@ exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1
         >
           <select
             class="euiSelect"
+            data-test-subj="dateHistogramTimeunitSelect"
           >
             <option
               value="ms"
@@ -293,6 +297,7 @@ exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1
     >
       <button
         class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="dateHistogramPanelOKButton"
         style="min-width: 55px;"
         type="button"
       >

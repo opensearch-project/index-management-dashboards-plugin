@@ -80,18 +80,6 @@ export const isGroupBy = (type: string): boolean => {
   return type == TRANSFORM_AGG_TYPE.histogram || type == TRANSFORM_AGG_TYPE.terms || type == TRANSFORM_AGG_TYPE.date_histogram;
 };
 
-export const isCalendarTimeunit = (timeunit: string): boolean => {
-  switch (timeunit) {
-    case "w":
-    case "M":
-    case "q":
-    case "y":
-      return true;
-    default:
-      return false;
-  }
-};
-
 export const getDateHistogramGroupItem = (
   name: string,
   targetFieldName: string,
