@@ -242,6 +242,8 @@ describe("Transforms", () => {
         // Confirm we get toaster saying transform job is disabled
         cy.contains(`"${TRANSFORM_ID}" is disabled`);
 
+        cy.wait(1000);
+
         // Click into Actions menu
         cy.get(`[data-test-subj="actionButton"]`).click({ force: true });
 
