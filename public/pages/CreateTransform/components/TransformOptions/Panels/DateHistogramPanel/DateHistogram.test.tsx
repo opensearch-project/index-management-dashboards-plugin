@@ -10,7 +10,7 @@
  */
 
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import DateHistogramPanel from "./DateHistogramPanel";
 import { IntervalType } from "../../../../../../utils/constants";
 
@@ -40,5 +40,22 @@ describe("<DateHistogramPanel /> spec", () => {
     );
 
     expect(container.firstChild).toMatchSnapshot();
+  });
+
+  it("calls closePopover when clicking cancel button", async () => {
+    const closePopover = jest.fn();
+    const { getByTestId } = render(
+      <DateHistogramPanel
+        name="test"
+        handleGroupSelectionChange={() => {}}
+        aggList={[]}
+        closePopover={closePopover}
+        intervalType={IntervalType.FIXED}
+      />
+    );
+
+    await fireEvent.click(getByTestId("dateHistogramPanelCancelButton"));
+
+    expect(closePopover).toHaveBeenCalledTimes(1);
   });
 });

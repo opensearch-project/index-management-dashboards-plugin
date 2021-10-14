@@ -121,6 +121,7 @@ exports[`<DateHistogramPanel /> spec renders the component with calendar interva
     >
       <button
         class="euiButton euiButton--primary"
+        data-test-subj="dateHistogramPanelCancelButton"
         style="min-width: 84px;"
         type="button"
       >
@@ -272,6 +273,7 @@ exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1
     >
       <button
         class="euiButton euiButton--primary"
+        data-test-subj="dateHistogramPanelCancelButton"
         style="min-width: 84px;"
         type="button"
       >

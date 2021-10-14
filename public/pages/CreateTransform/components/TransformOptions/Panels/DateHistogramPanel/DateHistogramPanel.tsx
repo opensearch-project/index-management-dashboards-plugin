@@ -68,7 +68,12 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
       <EuiSpacer size="m" />
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>
-          <EuiButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
+          <EuiButton
+            fullWidth={false}
+            onClick={() => closePopover()}
+            style={{ minWidth: 84 }}
+            data-test-subj="dateHistogramPanelCancelButton"
+          >
             Cancel
           </EuiButton>
         </EuiFlexItem>
