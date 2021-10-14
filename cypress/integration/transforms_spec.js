@@ -32,8 +32,18 @@ describe("Transforms", () => {
     });
 
     beforeEach(() => {
-      // delete test transforms
+      // delete test transform and index
       cy.request("DELETE", `${Cypress.env("opensearch")}/test_transform*`);
+      cy.request({
+        method: 'POST',
+        url: `${Cypress.env("opensearch")}/_plugins/_transform/${TRANSFORM_ID}/_stop`,
+        failOnStatusCode: false
+      });
+      cy.request({
+        method: 'DELETE',
+        url: `${Cypress.env("opensearch")}/_plugins/_transform/${TRANSFORM_ID}  `,
+        failOnStatusCode: false
+      });
 
       // Set welcome screen tracking to test_transform_target
       localStorage.setItem("home:welcome:show", true);
@@ -56,7 +66,7 @@ describe("Transforms", () => {
         cy.contains("Create transform").click({ force: true });
 
         // Type in transform ID
-        cy.get(`input[placeholder="test_transform"]`).type(TRANSFORM_ID, { force: true });
+        cy.get(`input[placeholder="my-transformjob1"]`).type(TRANSFORM_ID, { force: true });
 
         // Get description input box
         cy.get(`textarea[data-test-subj="description"]`).focus().type("some description");
@@ -118,8 +128,8 @@ describe("Transforms", () => {
 
         // Verify that sample data is add by checking toast notification
         cy.contains(`Transform job "${TRANSFORM_ID}" successfully created.`);
-        cy.location('pathname').should('eq', '/app/opensearch_index_management_dashboards#/transforms');
-        cy.get(`button[data-test-subj="transformLink_test_transform"]`);
+        cy.location('hash').should('contain', 'transforms');
+        cy.get(`button[data-test-subj="transformLink_${TRANSFORM_ID}"]`);
       });
     });
 
@@ -216,6 +226,12 @@ describe("Transforms", () => {
         cy.get(`[data-test-subj="transformLink_${TRANSFORM_ID}"]`).click({ force: true });
 
         cy.contains(`${TRANSFORM_ID}`);
+
+        /* Wait required for page data to load, otherwise "Disable" button will
+         * appear greyed out and unavailable. Cypress automatically retries,
+         * but only after menu is open, doesn't re-render.
+         */
+        cy.wait(1000);
 
         // Click into Actions menu
         cy.get(`[data-test-subj="actionButton"]`).click({ force: true });

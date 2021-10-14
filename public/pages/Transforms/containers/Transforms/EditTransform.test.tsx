@@ -120,7 +120,7 @@ describe("<EditTransform /> spec", () => {
     await waitFor(() => {});
 
     fireEvent.focus(getByTestId("description"));
-    userEvent.type(getByTestId("description"), "some description");
+    userEvent.type(getByTestId("description"), "{selectall}{backspace}some description");
     fireEvent.blur(getByTestId("description"));
 
     userEvent.click(getByTestId("editTransformSaveButton"));
@@ -131,7 +131,7 @@ describe("<EditTransform /> spec", () => {
         transform: expect.objectContaining({
           description: 'some description',
         }),
-      })
+      }), "test1", 7, 1
     );
   });
 });

@@ -265,8 +265,8 @@ export const testTransform = {
 export const testTransform = {
   _id: "test1",
   _version: 3,
-  _seq_no: 7,
-  _primary_term: 1,
+  _seqNo: 7,
+  _primaryTerm: 1,
   transform: {
     transform_id: "test1",
     enabled: true,
