@@ -23,6 +23,7 @@ interface DefineTransformsStepProps extends RouteComponentProps {
   transformService: TransformService;
   currentStep: number;
   sourceIndex: string;
+  sourceIndexFilter: string;
   fields: FieldItem[];
   selectedGroupField: TransformGroupItem[];
   onGroupSelectionChange: (selectedFields: TransformGroupItem[], aggItem: TransformAggItem) => void;
