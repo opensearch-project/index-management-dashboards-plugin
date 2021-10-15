@@ -200,7 +200,7 @@ export default function TransformOptions({
     {
       id: 3,
       title: "Back",
-      width: 550,
+      width: 0.4 * window.innerWidth,
       content: (
         <ScriptedMetricsPanel
           name={name}

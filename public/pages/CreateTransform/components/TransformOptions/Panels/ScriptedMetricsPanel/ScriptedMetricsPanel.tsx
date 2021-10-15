@@ -12,6 +12,7 @@
 import React, { useState } from "react";
 import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiForm, EuiFormRow, EuiPanel, EuiCodeEditor, EuiSpacer } from "@elastic/eui";
 import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../models/interfaces";
+import { useWindowSize } from "react-use";
 
 interface ScriptedMetricsPanelProps {
   name: string;
@@ -26,8 +27,13 @@ export default function ScriptedMetricsPanel({ name, aggSelection, handleAggSele
   return (
     <EuiPanel>
       <EuiForm>
-        <EuiFormRow label="JSON script">
-          <EuiCodeEditor value={script} onChange={(value: string) => setScript(value)} mode="json" width="500px" height="400px" />
+        <EuiFormRow label="Scripted metrics">
+          <EuiCodeEditor
+            style={{ width: 0.38 * window.innerWidth, height: 0.4 * window.innerHeight }}
+            value={script}
+            onChange={(value: string) => setScript(value)}
+            mode="json"
+          />
         </EuiFormRow>
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd" gutterSize="m">
