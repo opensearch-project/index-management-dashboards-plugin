@@ -1,11 +1,9 @@
 name: Link Checker
 on:
   push:
-    branches:
-      branches: [ main ]
+    branches: [ main ]
   pull_request:
-    branches:
-      branches: [ main ]
+    branches: [ main ]
 
 jobs:
   linkchecker:
