@@ -10,16 +10,7 @@
  */
 
 import React, { useState } from "react";
-import {
-  EuiButton,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiForm,
-  EuiFormRow,
-  EuiPanel,
-  EuiCodeEditor,
-  EuiSpacer,
- } from "@elastic/eui";
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiForm, EuiFormRow, EuiPanel, EuiCodeEditor, EuiSpacer } from "@elastic/eui";
 import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../models/interfaces";
 
 interface ScriptedMetricsPanelProps {
@@ -36,10 +27,10 @@ export default function ScriptedMetricsPanel({ name, aggSelection, handleAggSele
     <EuiPanel>
       <EuiForm>
         <EuiFormRow label="JSON script">
-          <EuiCodeEditor value={script} onChange={(value: string) => setScript(value)} mode="json" width="100%" height="250px" />
+          <EuiCodeEditor value={script} onChange={(value: string) => setScript(value)} mode="json" width="500px" height="400px" />
         </EuiFormRow>
         <EuiSpacer />
-        <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
+        <EuiFlexGroup justifyContent="flexEnd" gutterSize="m">
           <EuiFlexItem grow={false}>
             <EuiButton fullWidth={false} onClick={() => closePopover()}>
               Cancel
@@ -54,8 +45,8 @@ export default function ScriptedMetricsPanel({ name, aggSelection, handleAggSele
                   type: TRANSFORM_AGG_TYPE.scripted_metric,
                   name: `scripted_metric_${name}`,
                   item: {
-                    scripted_metric: JSON.parse(script)
-                    }
+                    scripted_metric: JSON.parse(script),
+                  },
                 };
                 aggSelection[`scripted_metric_${name}`] = {
                   scripted_metric: JSON.parse(script),

@@ -200,6 +200,7 @@ export default function TransformOptions({
     {
       id: 3,
       title: "Back",
+      width: 550,
       content: (
         <ScriptedMetricsPanel
           name={name}
@@ -282,7 +283,6 @@ export default function TransformOptions({
     {
       id: 1,
       title: "Back",
-      width: 350,
       items: [
         {
           name: "Fixed interval",
