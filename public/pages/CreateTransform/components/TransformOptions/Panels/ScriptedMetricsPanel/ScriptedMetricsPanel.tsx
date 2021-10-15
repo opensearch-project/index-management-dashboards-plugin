@@ -12,7 +12,6 @@
 import React, { useState } from "react";
 import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiForm, EuiFormRow, EuiPanel, EuiCodeEditor, EuiSpacer } from "@elastic/eui";
 import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../models/interfaces";
-import { useWindowSize } from "react-use";
 
 interface ScriptedMetricsPanelProps {
   name: string;
