@@ -187,17 +187,18 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     //Verification here
     if (currentStep == 1) {
       const { transformId, sourceIndex, targetIndex, sourceIndexFilterError } = this.state;
-      const response = await this.props.transformService.getTransform(transformId);
-      if (response.ok && response.response._id == transformId) {
-        this.setState({
-          submitError: `There is already a job named "${transformId}". Please provide a different name.`,
-          transformIdError: `There is already a job named "${transformId}". Please provide a different name.`,
-        });
-        error = true;
-      }
       if (!transformId) {
         this.setState({ submitError: "Job name is required.", transformIdError: "Job name is required." });
         error = true;
+      } else {
+        const response = await this.props.transformService.getTransform(transformId);
+        if (response.ok && response.response._id == transformId) {
+          this.setState({
+            submitError: `There is already a job named "${transformId}". Please provide a different name.`,
+            transformIdError: `There is already a job named "${transformId}". Please provide a different name.`,
+          });
+          error = true;
+        }
       }
       if (sourceIndex.length == 0) {
         this.setState({ submitError: "Source index is required.", sourceIndexError: "Source index is required." });
