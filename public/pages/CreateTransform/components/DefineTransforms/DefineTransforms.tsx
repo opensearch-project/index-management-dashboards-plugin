@@ -153,9 +153,7 @@ export default function DefineTransforms({
       } else if (columns?.find((column) => column.id == columnId).schema == "date") {
         return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
       } else if (columns?.find((column) => column.id == columnId).schema == "geo_point") {
-        return data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon
-          ? data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon
-          : "-";
+        return data[rowIndex].source[columndId] ? data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon : "-";
       } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
         return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
       }
