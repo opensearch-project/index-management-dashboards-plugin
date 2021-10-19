@@ -21,12 +21,18 @@ interface NotifUIState {}
 interface NotifUIProps {
   action: NotificationAction;
   clone: (action: NotificationAction) => NotificationUIAction;
-  onChange: (value: string) => void;
+  onChangeAction: (action: UIAction<NotificationAction>) => void;
   isInvalid: boolean;
 }
 class NotifUI extends React.Component<NotifUIProps, NotifUIState> {
   onChangeNotificationJsonString = (str: string) => {
-    this.props.onChange(str);
+    const { action, clone, onChangeAction } = this.props;
+    onChangeAction(
+      clone({
+        ...action,
+        notificationJsonString: str,
+      })
+    );
   };
 
   render() {
@@ -57,10 +63,6 @@ export default class NotificationUIAction implements UIAction<NotificationAction
 
   clone = (action: NotificationAction) => new NotificationUIAction(action, this.id);
 
-  updateNotificationMessage = (value: string) => {
-    this.action.notificationJsonString = value;
-  };
-
   isValid = () => {
     try {
       JSON.parse(this.action.notificationJsonString);
@@ -71,17 +73,17 @@ export default class NotificationUIAction implements UIAction<NotificationAction
     }
   };
 
-  render() {
+  render = (action: UIAction<NotificationAction>, onChangeAction: (action: UIAction<NotificationAction>) => void) => {
     return (
       <ServicesConsumer>
         {(services: BrowserServices | null) =>
-          services && <NotifUI onChange={this.updateNotificationMessage} action={this.action} clone={this.clone} isInvalid={!this.isValid()} />
+          services && <NotifUI onChangeAction={onChangeAction} action={this.action} clone={this.clone} isInvalid={!this.isValid()} />
         }
       </ServicesConsumer>
     );
   };
 
-  toAction() {
+  toAction = () => {
     const newAction = { ...this.action };
     const notification = JSON.parse(newAction.notificationJsonString);
     // delete json strng key and return the action
