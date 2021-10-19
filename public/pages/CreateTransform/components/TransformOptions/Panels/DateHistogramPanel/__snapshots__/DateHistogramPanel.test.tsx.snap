@@ -1,0 +1,317 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DateHistogramPanel /> spec renders the component with calendar interval 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+      style="width: 100px;"
+    >
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <h4>
+          Interval
+        </h4>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <h4>
+          Timeunit
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+      style="width: 100px;"
+    >
+      <div>
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+        <div
+          class="euiText euiText--medium"
+        >
+          Every 1
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        class="euiFormControlLayout"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <select
+            class="euiSelect"
+            data-test-subj="dateHistogramTimeunitSelect"
+          >
+            <option
+              value="m"
+            >
+              Minute
+            </option>
+            <option
+              value="h"
+            >
+              Hour
+            </option>
+            <option
+              value="d"
+            >
+              Day
+            </option>
+            <option
+              value="w"
+            >
+              Week
+            </option>
+            <option
+              value="M"
+            >
+              Month
+            </option>
+            <option
+              value="q"
+            >
+              Quarter
+            </option>
+            <option
+              value="y"
+            >
+              Year
+            </option>
+          </select>
+          <div
+            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+          >
+            <span
+              class="euiFormControlLayoutCustomIcon"
+            >
+              EuiIconMock
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--m"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary"
+        data-test-subj="dateHistogramPanelCancelButton"
+        style="min-width: 84px;"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="dateHistogramPanelOKButton"
+        style="min-width: 55px;"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            OK
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+      style="width: 100px;"
+    >
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <h4>
+          Interval
+        </h4>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <h4>
+          Timeunit
+        </h4>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+      style="width: 100px;"
+    >
+      <div
+        class="euiFormControlLayout"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldNumber"
+            data-test-subj="dateHistogramValueInput"
+            type="number"
+            value="1"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        class="euiFormControlLayout"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <select
+            class="euiSelect"
+            data-test-subj="dateHistogramTimeunitSelect"
+          >
+            <option
+              value="ms"
+            >
+              Millisecond(s)
+            </option>
+            <option
+              value="s"
+            >
+              Second(s)
+            </option>
+            <option
+              value="m"
+            >
+              Minute(s)
+            </option>
+            <option
+              value="h"
+            >
+              Hour(s)
+            </option>
+            <option
+              value="d"
+            >
+              Day(s)
+            </option>
+          </select>
+          <div
+            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+          >
+            <span
+              class="euiFormControlLayoutCustomIcon"
+            >
+              EuiIconMock
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--m"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary"
+        data-test-subj="dateHistogramPanelCancelButton"
+        style="min-width: 84px;"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="dateHistogramPanelOKButton"
+        style="min-width: 55px;"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            OK
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

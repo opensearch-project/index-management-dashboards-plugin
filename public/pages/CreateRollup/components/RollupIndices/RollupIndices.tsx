@@ -26,12 +26,13 @@
 
 import React, { Component, Fragment } from "react";
 import { EuiSpacer, EuiFormRow, EuiComboBox, EuiCallOut } from "@elastic/eui";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
+import _ from "lodash";
+import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexService from "../../../../services/IndexService";
-import _ from "lodash";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { wildcardOption } from "../../../../utils/helpers";
 
 interface RollupIndicesProps {
   indexService: IndexService;
@@ -73,7 +74,8 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
     try {
       const dataStreamsAndIndicesNamesResponse = await indexService.getDataStreamsAndIndicesNames(searchValue);
       if (dataStreamsAndIndicesNamesResponse.ok) {
-        const options = searchValue.trim() ? [{ label: `${searchValue}*` }] : [];
+        // Adding wildcard to search value
+        const options = searchValue.trim() ? [{ label: wildcardOption(searchValue) }] : [];
         const dataStreams = dataStreamsAndIndicesNamesResponse.response.dataStreams.map((label) => ({ label }));
         const indices = dataStreamsAndIndicesNamesResponse.response.indices.map((label) => ({ label }));
         this.setState({ indexOptions: options.concat(dataStreams, indices), targetIndexOptions: indices });

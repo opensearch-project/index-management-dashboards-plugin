@@ -41,10 +41,10 @@ import {
   EuiHorizontalRule,
   EuiText,
 } from "@elastic/eui";
-import { CalendarTimeunitOptions, FixedTimeunitOptions } from "../../utils/constants";
-import { RollupService } from "../../../../services";
 import moment from "moment-timezone";
+import { RollupService } from "../../../../services";
 import { FieldItem } from "../../../../../models/interfaces";
+import { CalendarTimeunitOptions, FixedTimeunitOptions } from "../../../../utils/constants";
 
 interface TimeAggregationProps {
   rollupService: RollupService;

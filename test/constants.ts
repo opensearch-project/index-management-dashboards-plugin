@@ -195,3 +195,69 @@ export const testRollup2 = {
     },
   },
 };
+export const testTransform = {
+  _id: "test1",
+  _seqNo: 6,
+  _primaryTerm: 1,
+  transform: {
+    transform_id: "test1",
+    schema_version: 11,
+    schedule: {
+      interval: {
+        start_time: 1632951884470,
+        period: 1,
+        unit: "Minutes",
+      },
+    },
+    metadata_id: "tFttMG7OTAehIakVVsAA-g",
+    updated_at: 1632951944840,
+    enabled: false,
+    enabled_at: null,
+    description: "",
+    source_index: "opensearch_dashboards_sample_data_ecommerce",
+    data_selection_query: {
+      match: {
+        customer_gender: {
+          query: "FEMALE",
+          operator: "OR",
+          prefix_length: 0,
+          max_expansions: 50,
+          fuzzy_transpositions: true,
+          lenient: false,
+          zero_terms_query: "NONE",
+          auto_generate_synonyms_phrase_query: true,
+          boost: 1,
+        },
+      },
+    },
+    target_index: "t",
+    page_size: 1000,
+    groups: [
+      {
+        terms: {
+          source_field: "currency",
+          target_field: "currency_terms",
+        },
+      },
+    ],
+    aggregations: {},
+  },
+  metadata: {
+    test1: {
+      metadata_id: "tFttMG7OTAehIakVVsAA-g",
+      transform_metadata: {
+        transform_id: "test1",
+        last_updated_at: 1632951944827,
+        status: "finished",
+        failure_reason: null,
+        stats: {
+          pages_processed: 2,
+          documents_processed: 2433,
+          documents_indexed: 1,
+          index_time_in_millis: 37,
+          search_time_in_millis: 11,
+        },
+      },
+    },
+  },
+};

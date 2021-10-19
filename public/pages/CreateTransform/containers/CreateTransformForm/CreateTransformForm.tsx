@@ -28,7 +28,7 @@ import {
   TransformGroupItem,
 } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { EMPTY_TRANSFORM } from "../../utils/constants";
+import { DefaultSampleDataSize, EMPTY_TRANSFORM } from "../../utils/constants";
 import SpecifyScheduleStep from "../SpecifyScheduleStep";
 import ReviewAndCreateStep from "../ReviewAndCreateStep";
 import { compareFieldItem, createdTransformToastMessage, isGroupBy, parseFieldOptions } from "../../utils/helpers";
@@ -58,8 +58,6 @@ interface CreateTransformFormState {
   description: string;
   sourceIndex: { label: string; value?: IndexItem }[];
   sourceIndexError: string;
-  //TODO: Uncomment the following line when multiple data filter is supported
-  // sourceIndexFilter: string[];
   sourceIndexFilter: string;
   sourceIndexFilterError: string;
   targetIndex: { label: string; value?: IndexItem }[];
@@ -83,6 +81,7 @@ interface CreateTransformFormState {
   transformJSON: any;
 
   beenWarned: boolean;
+  isLoading: boolean;
 }
 
 export default class CreateTransformForm extends Component<CreateTransformFormProps, CreateTransformFormState> {
@@ -117,8 +116,6 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
 
       sourceIndex: [],
       sourceIndexError: "",
-      //TODO: Uncomment the following line when multiple data filter is supported
-      // sourceIndexFilter: [],
       sourceIndexFilter: "",
       sourceIndexFilterError: "",
       targetIndex: [],
@@ -133,6 +130,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       transformJSON: JSON.parse(EMPTY_TRANSFORM),
 
       beenWarned: false,
+      isLoading: false,
     };
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
@@ -184,24 +182,52 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     }
   };
 
+  searchData = async (): Promise<boolean> => {
+    const { transformService } = this.props;
+    const { sourceIndex, sourceIndexFilter } = this.state;
+    this.setState({ isLoading: true });
+    try {
+      const response = await transformService.searchSampleData(
+        sourceIndex[0].label,
+        { from: 0, size: DefaultSampleDataSize },
+        sourceIndexFilter
+      );
+
+      if (!response.ok) {
+        const errMsg = response.error ? response.error : "There was a problem searching data from source index.";
+        this.setState({ sourceIndexFilterError: errMsg });
+        this.context.notifications.toasts.addDanger(errMsg);
+      }
+      this.setState({ isLoading: false });
+      return response.ok;
+    } catch (err) {
+      this.setState({ sourceIndexFilterError: "There was an error applying data filter, please modify or remove filter." });
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem searching data from source index."));
+      this.setState({ isLoading: false });
+      return false;
+    }
+  };
+
   _next = async () => {
     let currentStep = this.state.currentStep;
     let warned = this.state.beenWarned;
     let error = false;
-    //Verification here
+    // Verification here
     if (currentStep == 1) {
       const { transformId, sourceIndex, targetIndex, sourceIndexFilterError } = this.state;
-      const response = await this.props.transformService.getTransform(transformId);
-      if (response.ok && response.response._id == transformId) {
-        this.setState({
-          submitError: `There is already a job named "${transformId}". Please provide a different name.`,
-          transformIdError: `There is already a job named "${transformId}". Please provide a different name.`,
-        });
-        error = true;
-      }
       if (!transformId) {
         this.setState({ submitError: "Job name is required.", transformIdError: "Job name is required." });
         error = true;
+      } else {
+        // Check if transform job name is duplicated
+        const response = await this.props.transformService.getTransform(transformId);
+        if (response.ok && response.response._id == transformId) {
+          this.setState({
+            submitError: `There is already a job named "${transformId}". Please provide a different name.`,
+            transformIdError: `There is already a job named "${transformId}". Please provide a different name.`,
+          });
+          error = true;
+        }
       }
       if (sourceIndex.length == 0) {
         this.setState({ submitError: "Source index is required.", sourceIndexError: "Source index is required." });
@@ -214,6 +240,11 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       if (sourceIndexFilterError !== "") {
         this.setState({ submitError: "Source index filter is invalid" });
         error = true;
+      }
+      // Run search of source index data
+      if (!error) {
+        const searchDataOk = await this.searchData();
+        error = !searchDataOk;
       }
     } else if (currentStep == 2) {
       //TODO: Add checking to see if grouping is defined
@@ -507,6 +538,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       pageSize,
 
       beenWarned,
+      isLoading,
     } = this.state;
     return (
       <div style={{ width: "100%" }}>
@@ -539,6 +571,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           {...this.props}
           currentStep={this.state.currentStep}
           sourceIndex={sourceIndex[0] ? sourceIndex[0].label : ""}
+          sourceIndexFilter={sourceIndexFilter}
           fields={fields}
           aggList={aggList}
           selectedGroupField={selectedGroupField}
@@ -607,7 +640,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
             </EuiFlexItem>
           ) : (
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={this._next} data-test-subj="createTransformNextButton">
+              <EuiButton fill onClick={this._next} isLoading={isLoading} data-test-subj="createTransformNextButton">
                 Next
               </EuiButton>
             </EuiFlexItem>
