@@ -155,7 +155,7 @@ export default function DefineTransforms({
       } else if (columns?.find((column) => column.id == columnId).schema == "geo_point") {
         return data[rowIndex].source[columndId] ? data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon : "-";
       } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
-        return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
+        return data[rowIndex]._source[columnId] == null ? "-" : (data[rowIndex]._source[columnId] ? "true" : "false");
       }
       return data[rowIndex]._source[columnId] !== null ? JSON.stringify(data[rowIndex]._source[columnId]) : "-";
     }
