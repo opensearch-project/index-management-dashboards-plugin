@@ -21,7 +21,7 @@ import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import Transforms from "./Transforms";
 import { TEXT } from "../../components/TransformEmptyPrompt/TransformEmptyPrompt";
-import { testTransform } from "../../../../../test/constants";
+import { testTransform2 } from "../../../../../test/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
 function renderTransformsWithRouter() {
@@ -93,7 +93,7 @@ describe("<Transforms /> spec", () => {
   });
 
   it("loads transforms", async() => {
-    const transforms = [testTransform];
+    const transforms = [testTransform2];
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
       response: { transforms, totalTransforms: 1 },
@@ -101,7 +101,7 @@ describe("<Transforms /> spec", () => {
     const { getByText } = renderTransformsWithRouter();
     await waitFor(() => {});
 
-    await waitFor(() => getByText(testTransform._id));
+    await waitFor(() => getByText(testTransform2._id));
   });
 
   it("adds error toaster when get transforms has error", async() => {
@@ -142,16 +142,16 @@ describe("<Transforms /> spec", () => {
   });
 
   it("can route to edit transform", async () => {
-    const transforms = [testTransform];
+    const transforms = [testTransform2];
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
       response: { transforms, totalTransforms:1 },
     });
     const { getByText, getByTestId } = renderTransformsWithRouter();
 
-    await waitFor(() => getByText(testTransform._id));
+    await waitFor(() => getByText(testTransform2._id));
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform._id}`));
+    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
 
     userEvent.click(getByTestId("actionButton"));
 
@@ -159,11 +159,11 @@ describe("<Transforms /> spec", () => {
 
     userEvent.click(getByTestId("editButton"));
 
-    await waitFor(() => getByText(`Testing edit transform: ?id=${testTransform._id}`));
+    await waitFor(() => getByText(`Testing edit transform: ?id=${testTransform2._id}`));
   });
 
   it("can view details of a transform job", async () => {
-    const transforms = [testTransform];
+    const transforms = [testTransform2];
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
       response: { transforms, totalTransforms: 1 },
@@ -171,15 +171,15 @@ describe("<Transforms /> spec", () => {
     const { getByText } = renderTransformsWithRouter();
 
     await waitFor(() => {});
-    await waitFor(() => getByText(testTransform._id));
+    await waitFor(() => getByText(testTransform2._id));
 
-    userEvent.click(getByText(testTransform._id));
+    userEvent.click(getByText(testTransform2._id));
 
-    await waitFor(() => getByText(`Testing transform details: ?id=${testTransform._id}`));
+    await waitFor(() => getByText(`Testing transform details: ?id=${testTransform2._id}`));
   });
 
   it("can enable a transform job", async () => {
-    const transforms = [testTransform];
+    const transforms = [testTransform2];
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
       response: { transforms, totalTransforms: 1 },
@@ -190,11 +190,11 @@ describe("<Transforms /> spec", () => {
     });
     const { getByText, getByTestId } = renderTransformsWithRouter();
 
-    await waitFor(() => getByText(testTransform._id));
+    await waitFor(() => getByText(testTransform2._id));
 
     expect(getByTestId("enableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform._id}`));
+    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
 
     expect(getByTestId("enableButton")).toBeEnabled();
 
@@ -204,11 +204,11 @@ describe("<Transforms /> spec", () => {
 
     expect(browserServicesMock.transformService.startTransform).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`\"${testTransform._id}\" is enabled`);
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`\"${testTransform2._id}\" is enabled`);
   });
 
   it("can disable a transform job", async () => {
-    const transforms = [testTransform];
+    const transforms = [testTransform2];
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
       response: { transforms, totalTransforms: 1 },
@@ -220,11 +220,11 @@ describe("<Transforms /> spec", () => {
 
     const { getByText, getByTestId } = renderTransformsWithRouter();
 
-    await waitFor(() => getByText(testTransform._id));
+    await waitFor(() => getByText(testTransform2._id));
 
     expect(getByTestId("disableButton")).toBeDisabled();
 
-    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform._id}`));
+    userEvent.click(getByTestId(`checkboxSelectRow-${testTransform2._id}`));
 
     expect(getByTestId("disableButton")).toBeEnabled();
 
@@ -234,6 +234,6 @@ describe("<Transforms /> spec", () => {
 
     expect(browserServicesMock.transformService.stopTransform).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`\"${testTransform._id}\" is disabled`);
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`\"${testTransform2._id}\" is disabled`);
   });
 })

@@ -20,7 +20,7 @@
  import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
  import TransformDetails from "./TransformDetails";
  import { ServicesConsumer, ServicesContext } from "../../../../services";
- import { testTransform, testTransformDisabled } from "../../../../../test/constants";
+ import { testTransform2, testTransformDisabled } from "../../../../../test/constants";
  import { CoreServicesContext } from "../../../../components/core_services";
 
  function renderTransformDetailsWithRouter(initialEntries = ["/"]) {
@@ -58,7 +58,7 @@
    it("renders the component", async () => {
      browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
        ok: true,
-       response: testTransform,
+       response: testTransform2,
      });
      const { container } = renderTransformDetailsWithRouter();
 
@@ -68,29 +68,29 @@
    it("sets breadcrumbs when mounting", async () => {
      browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
        ok: true,
-       response: testTransform,
+       response: testTransform2,
      });
-     renderTransformDetailsWithRouter([`${ROUTES.TRANSFORM_DETAILS}?id=${testTransform._id}`]);
+     renderTransformDetailsWithRouter([`${ROUTES.TRANSFORM_DETAILS}?id=${testTransform2._id}`]);
 
      expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledTimes(2);
      expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledWith([
        BREADCRUMBS.INDEX_MANAGEMENT,
        BREADCRUMBS.TRANSFORMS,
-       { text: testTransform._id },
+       { text: testTransform2._id },
      ]);
    });
 
    it("can disable transform job", async () => {
      browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
        ok: true,
-       response: testTransform,
+       response: testTransform2,
      });
 
      browserServicesMock.transformService.stopTransform = jest.fn().mockResolvedValue({
        ok: true,
        response: true,
      });
-     const { getByTestId } = renderTransformDetailsWithRouter([`${ROUTES.TRANSFORM_DETAILS}?id=${testTransform._id}`]);
+     const { getByTestId } = renderTransformDetailsWithRouter([`${ROUTES.TRANSFORM_DETAILS}?id=${testTransform2._id}`]);
 
      await waitFor(() => {});
 
@@ -111,14 +111,14 @@
    it("shows toast when failed to disable transform job", async () => {
      browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
        ok: true,
-       response: testTransform,
+       response: testTransform2,
      });
 
      browserServicesMock.transformService.stopTransform = jest.fn().mockResolvedValue({
        ok: false,
        response: "some error",
      });
-     const { getByTestId } = renderTransformDetailsWithRouter([`${ROUTES.TRANSFORM_DETAILS}?id=${testTransform._id}`]);
+     const { getByTestId } = renderTransformDetailsWithRouter([`${ROUTES.TRANSFORM_DETAILS}?id=${testTransform2._id}`]);
 
      await waitFor(() => {});
 
@@ -166,13 +166,13 @@
    });
 
    it("can delete a transform job", async () => {
-     const transforms = [testTransform];
+     const transforms = [testTransform2];
      browserServicesMock.transformService.getTransform = jest
        .fn()
-       .mockResolvedValueOnce({ ok: true, response: testTransform })
+       .mockResolvedValueOnce({ ok: true, response: testTransform2 })
        .mockResolvedValueOnce({ ok: false, response: {} });
      browserServicesMock.transformService.deleteTransform = jest.fn().mockResolvedValue({ ok: true, response: true });
-     const { getByTestId } = renderTransformDetailsWithRouter([`${ROUTES.TRANSFORM_DETAILS}?id=${testTransform._id}`]);
+     const { getByTestId } = renderTransformDetailsWithRouter([`${ROUTES.TRANSFORM_DETAILS}?id=${testTransform2._id}`]);
 
      await waitFor(() => {});
 
@@ -199,7 +199,7 @@
    }, 10000);
 
    it("can show a started transform job", async () => {
-     let startedJob = testTransform;
+     let startedJob = testTransform2;
      startedJob.metadata.test1.transform_metadata.status = "init";
 
      browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
@@ -215,7 +215,7 @@
    });
 
    it("can show a stopped transform job", async () => {
-     let stoppedJob = testTransform;
+     let stoppedJob = testTransform2;
      stoppedJob.metadata.test1.transform_metadata.status = "stopped";
 
      browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({

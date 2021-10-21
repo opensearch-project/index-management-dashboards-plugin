@@ -109,6 +109,7 @@ export const testRollup = {
     },
   },
 };
+
 export const testRollup2 = {
   _id: "test2",
   _version: 3,
@@ -195,6 +196,7 @@ export const testRollup2 = {
     },
   },
 };
+
 export const testTransform = {
   _id: "test1",
   _seqNo: 6,
@@ -262,7 +264,7 @@ export const testTransform = {
   },
 };
 
-export const testTransform = {
+export const testTransform2 = {
   _id: "test1",
   _version: 3,
   _seqNo: 7,

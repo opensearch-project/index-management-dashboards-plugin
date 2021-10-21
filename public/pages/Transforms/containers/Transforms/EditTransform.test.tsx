@@ -20,7 +20,7 @@ import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { BrowserServices } from "../../../../models/interfaces";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
-import { testTransform } from "../../../../../test/constants";
+import { testTransform2 } from "../../../../../test/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
 function renderEditTransformWithRouter(initialEntries = ["/"]) {
@@ -59,9 +59,9 @@ describe("<EditTransform /> spec", () => {
   it("renders the component", async () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
       ok: true,
-      response: testTransform,
+      response: testTransform2,
     });
-    const { container } = renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform._id}`]);
+    const { container } = renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform2._id}`]);
 
     expect(container.firstChild).toMatchSnapshot();
   });
@@ -69,22 +69,22 @@ describe("<EditTransform /> spec", () => {
   it("sets breadcrumbs when mounting", async () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
       ok: true,
-      response: testTransform,
+      response: testTransform2,
     });
-    renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform._id}`]);
+    renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform2._id}`]);
 
     expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledWith([
       BREADCRUMBS.INDEX_MANAGEMENT,
       BREADCRUMBS.TRANSFORMS,
       BREADCRUMBS.EDIT_TRANSFORM,
-      { text: testTransform._id },
+      { text: testTransform2._id },
     ]);
   });
 
   it("adds error toaster when get transform has error", async () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({ ok: false, error: "some error" });
-    const { getByText } = renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform._id}`]);
+    const { getByText } = renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform2._id}`]);
 
     await waitFor(() => {});
 
@@ -96,7 +96,7 @@ describe("<EditTransform /> spec", () => {
 
   it("adds error toaster when get transform throws error", async () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockRejectedValue(new Error("rejected error"));
-    const { getByText } = renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform._id}`]);
+    const { getByText } = renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform2._id}`]);
 
     await waitFor(() => {});
 
@@ -108,14 +108,14 @@ describe("<EditTransform /> spec", () => {
   it("can edit description", async () => {
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
       ok: true,
-      response: testTransform,
+      response: testTransform2,
     });
 
     browserServicesMock.transformService.putTransform = jest.fn().mockResolvedValue({
       ok: true,
-      response: testTransform,
+      response: testTransform2,
     });
-    const { getByTestId } = renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform._id}`]);
+    const { getByTestId } = renderEditTransformWithRouter([`${ROUTES.EDIT_TRANSFORM}?id=${testTransform2._id}`]);
 
     await waitFor(() => {});
 
