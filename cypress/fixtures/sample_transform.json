@@ -1,0 +1,40 @@
+{
+  "transform": {
+    "enabled": true,
+    "schedule": {
+      "interval": {
+        "period": 1,
+        "unit": "Minutes",
+        "start_time": 1602100553
+      }
+    },
+    "description": "Test transform",
+    "source_index": "opensearch_dashboards_sample_data_ecommerce",
+    "target_index": "test_transform",
+    "data_selection_query": {
+      "match_all": {}
+    },
+    "page_size": 1000,
+    "groups": [
+      {
+        "terms": {
+          "source_field": "customer_gender",
+          "target_field": "gender"
+        }
+      },
+      {
+        "terms": {
+          "source_field": "day_of_week",
+          "target_field": "day"
+        }
+      }
+    ],
+    "aggregations": {
+      "quantity": {
+        "sum": {
+          "field": "total_quantity"
+        }
+      }
+    }
+  }
+}

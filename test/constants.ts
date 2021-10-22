@@ -109,6 +109,7 @@ export const testRollup = {
     },
   },
 };
+
 export const testRollup2 = {
   _id: "test2",
   _version: 3,
@@ -195,6 +196,7 @@ export const testRollup2 = {
     },
   },
 };
+
 export const testTransform = {
   _id: "test1",
   _seqNo: 6,
@@ -261,3 +263,139 @@ export const testTransform = {
     },
   },
 };
+
+export const testTransform2 = {
+  _id: "test1",
+  _version: 3,
+  _seqNo: 7,
+  _primaryTerm: 1,
+  transform: {
+    transform_id: "test1",
+    enabled: true,
+    schedule: {
+      interval: {
+        period: 1,
+        unit: "Minutes",
+        start_time: 1602100553
+      }
+    },
+    metadata_id: null,
+    updated_at: 1619725487957,
+    enabled_at: 1619725487956,
+    description: "Test transform using ecommerce data",
+    source_index: "opensearch_dashboards_sample_data_ecommerce",
+    target_index: "test_transform",
+    data_selection_query: {
+      match_all: {}
+    },
+    page_size: 1000,
+    roles: [ ],
+    groups: [
+      {
+        terms: {
+          source_field: "customer_gender",
+          target_field: "gender"
+        }
+      },
+      {
+        terms: {
+          source_field: "day_of_week",
+          target_field: "day"
+        }
+      }
+    ],
+    aggregations: {
+      quantity: {
+        sum: {
+          field: "total_quantity"
+        }
+      }
+    }
+  },
+  metadata: {
+    test1: {
+      metadata_id: "GSCm3HUBeGRB78cDQju6",
+      transform_metadata: {
+        transform_id: "test1",
+        last_updated_time: 1605724690355,
+        status: "finished",
+        failure_reason: null,
+        stats: {
+          pages_processed: 5,
+          documents_processed: 4675,
+          transforms_indexed: 3627,
+          index_time_in_millis: 1522,
+          search_time_in_millis: 1168,
+        },
+      },
+    }
+  }
+}
+
+export const testTransformDisabled = {
+  _id: "test1",
+  _version: 3,
+  _seq_no: 7,
+  _primary_term: 1,
+  transform: {
+    transform_id: "test1",
+    enabled: false,
+    schedule: {
+      interval: {
+        period: 1,
+        unit: "Minutes",
+        start_time: 1602100553
+      }
+    },
+    metadata_id: null,
+    updated_at: 1619725487957,
+    enabled_at: 1619725487956,
+    description: "Test transform using ecommerce data",
+    source_index: "opensearch_dashboards_sample_data_ecommerce",
+    target_index: "test_transform",
+    data_selection_query: {
+      match_all: {}
+    },
+    page_size: 1000,
+    roles: [ ],
+    groups: [
+      {
+        terms: {
+          source_field: "customer_gender",
+          target_field: "gender"
+        }
+      },
+      {
+        terms: {
+          source_field: "day_of_week",
+          target_field: "day"
+        }
+      }
+    ],
+    aggregations: {
+      quantity: {
+        sum: {
+          field: "total_quantity"
+        }
+      }
+    }
+  },
+  metadata: {
+    test1: {
+      metadata_id: "GSCm3HUBeGRB78cDQju6",
+      transform_metadata: {
+        transform_id: "test1",
+        last_updated_time: 1605724690355,
+        status: "started",
+        failure_reason: null,
+        stats: {
+          pages_processed: 5,
+          documents_processed: 4675,
+          transforms_indexed: 3627,
+          index_time_in_millis: 1522,
+          search_time_in_millis: 1168,
+        },
+      },
+    }
+  }
+}

@@ -98,5 +98,12 @@ declare namespace Cypress {
      * cy.rollover("some_rollover_target")
      */
     rollover(target: string): Chainable<any>;
+
+    /**
+     * Creates a transform
+     * @example
+     * cy.createTransform("some_transform", { "transform": { ... } })
+     */
+    createTransform(transformId: string, transformJSON: object): Chainable<any>;
   }
 }

@@ -373,7 +373,7 @@ export default function TransformOptions({
     },
   ];
 
-  const button = <EuiButtonIcon iconType="plusInCircleFilled" onClick={() => setIsPopoverOpen(!isPopoverOpen)} />;
+  const button = <EuiButtonIcon iconType="plusInCircleFilled" onClick={() => setIsPopoverOpen(!isPopoverOpen)} data-test-subj={`${name}OptionsPopover`} />;
 
   return (
     <div>

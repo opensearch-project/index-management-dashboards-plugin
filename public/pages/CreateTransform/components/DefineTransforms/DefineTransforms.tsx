@@ -115,6 +115,7 @@ export default function DefineTransforms({
 
   React.useEffect(() => {
     fetchData();
+
   }, []);
 
   const onChangeItemsPerPage = useCallback(
@@ -145,6 +146,7 @@ export default function DefineTransforms({
   );
 
   const renderCellValue = ({ rowIndex, columnId }) => {
+
     if (!loading && data.hasOwnProperty(rowIndex)) {
       if (columns?.find((column) => column.id == columnId).schema == "keyword") {
         // Remove the keyword postfix for getting correct data from array
