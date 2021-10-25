@@ -110,7 +110,7 @@ export default class ManagedIndexService {
       const explainParams = {
         sortField: sortField ? managedIndexSorts[sortField] : null,
         sortOrder: sortDirection,
-        queryString: getSearchString(terms, indices, dataStreams),
+        queryString: getSearchString(terms, indices, dataStreams, showDataStreams),
         from: from,
         size: size
       };
@@ -155,11 +155,6 @@ export default class ManagedIndexService {
       }
 
       let totalManagedIndices = explainAllResponse.total_managed_indices;
-      // This can still lead to empty pages in pagination when there is a typed string in search bar - to fix that we
-      // need to calculate the number of data stream indices that match the pattern and remove from total_managed_indices
-      if (!showDataStreams && explainParams.queryString === "*") {
-        totalManagedIndices = explainAllResponse.total_managed_indices - Object.keys(indexToDataStreamMapping).length;
-      }
       return response.custom({
         statusCode: 200,
         body: {
