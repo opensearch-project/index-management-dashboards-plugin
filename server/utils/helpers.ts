@@ -76,7 +76,7 @@ export function getMustQuery<T extends string>(field: T, search: string): MatchA
   return { match_all: {} };
 }
 
-export function getSearchString(terms?: string[], indices?: string[], dataStreams?: string[]): string {
+export function getSearchString(terms?: string[], indices?: string[], dataStreams?: string[], showDataStreams: boolean = true): string {
   // Terms are searched with a wildcard around them.
   const searchTerms = terms ? `*${_.castArray(terms).join("*,*")}*` : "";
 
@@ -86,5 +86,7 @@ export function getSearchString(terms?: string[], indices?: string[], dataStream
 
   // The overall search string is a combination of terms, indices, and data streams.
   // If the search string is blank, then '*' is used to match everything.
-  return [searchTerms, searchIndices, searchDataStreams].filter((value) => value !== "").join(",") || "*";
+  const resolved = [searchTerms, searchIndices, searchDataStreams].filter((value) => value !== "").join(",") || "*";
+  // We don't want to fetch managed datastream indices if there are not selected by caller.
+  return showDataStreams ? resolved : resolved + " -.ds"
 }
