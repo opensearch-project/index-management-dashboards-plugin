@@ -51,7 +51,10 @@ declare namespace Cypress {
 
     /**
      * Updated the managed index config's start time to
-     * make it run in 3 seconds after calling this
+     * make it run in 3 seconds after calling this.
+     * Note: if you are calling this then you likely are forcing
+     * an ISM job to run. Make sure disableJitter is called sometime
+     * before this or else the delay may cause test flakiness.
      * @example
      * cy.updateManagedIndexConfigStartTime("some_index")
      */
@@ -105,5 +108,15 @@ declare namespace Cypress {
      * cy.createTransform("some_transform", { "transform": { ... } })
      */
     createTransform(transformId: string, transformJSON: object): Chainable<any>;
+
+    /**
+     * Disables jitter on a cluster. The jitter is used in
+     * index state management to add a randomized delay to the start
+     * time of jobs. This helps spread the resource load when there are
+     * many jobs scheduled for the same time, but can cause flakiness in tests.
+     * @example
+     * cy.disableJitter()
+     */
+    disableJitter(): Chainable<any>;
   }
 }

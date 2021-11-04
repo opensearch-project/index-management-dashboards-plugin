@@ -36,6 +36,8 @@ describe("Managed indices", () => {
   beforeEach(() => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
+    // Disable jitter so ISM jobs run without an additional delay
+    cy.disableJitter();
 
     cy.wait(3000);
 

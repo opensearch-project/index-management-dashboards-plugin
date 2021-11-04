@@ -161,3 +161,17 @@ Cypress.Commands.add("rollover", (target) => {
 Cypress.Commands.add("createTransform", (transformId, transformJSON) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.TRANSFORM_JOBS_BASE}/${transformId}`, transformJSON);
 });
+
+Cypress.Commands.add("disableJitter", () => {
+  // Sets the jitter to 0 in the ISM plugin cluster settings
+  const jitterJson = {
+    persistent: {
+      plugins: {
+        index_state_management: {
+          jitter: "0.0",
+        },
+      },
+    },
+  };
+  cy.request("PUT", `${Cypress.env("opensearch")}/_cluster/settings`, jitterJson);
+});
