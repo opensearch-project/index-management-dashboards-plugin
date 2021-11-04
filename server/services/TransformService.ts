@@ -324,10 +324,11 @@ export default class TransformService {
         size: number;
       };
       const { index } = request.params as { index: string };
-      const params = {
+      let params = {
         index: index,
         from: from,
         size: size,
+        body: request.body ? JSON.stringify({ query: request.body }) : {},
       };
       const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
       const searchResponse: SearchResponse<any> = await callWithRequest("search", params);

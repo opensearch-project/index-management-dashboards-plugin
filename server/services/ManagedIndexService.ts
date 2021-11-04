@@ -110,7 +110,9 @@ export default class ManagedIndexService {
       const explainParams = {
         sortField: sortField ? managedIndexSorts[sortField] : null,
         sortOrder: sortDirection,
-        queryString: getSearchString(terms, indices, dataStreams),
+        queryString: getSearchString(terms, indices, dataStreams, showDataStreams),
+        from: from,
+        size: size
       };
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
@@ -118,10 +120,7 @@ export default class ManagedIndexService {
         callWithRequest("ism.explainAll", explainParams) as Promise<ExplainAllResponse>,
         getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
       ]);
-
-      let totalCount = 0;
       const managedIndices: ManagedIndexItem[] = [];
-
       for (const indexName in explainAllResponse) {
         if (indexName == "total_managed_indices") continue;
         const metadata = explainAllResponse[indexName] as ExplainAPIManagedIndexMetaData;
@@ -129,13 +128,6 @@ export default class ManagedIndexService {
         // If showDataStreams is not true, then skip the managed index if it belongs to a data stream.
         const parentDataStream = indexToDataStreamMapping[metadata.index] || null;
         if (!showDataStreams && parentDataStream !== null) continue;
-
-        // Total count is the number of indices after being filtered.
-        totalCount++;
-
-        // Using the running totalCount, check if the managed index belongs to the current page.
-        if (totalCount <= from || totalCount > from + size) continue;
-
         let policy, seqNo, primaryTerm, getResponse;
         try {
           getResponse = await callWithRequest("ism.getPolicy", { policyId: metadata.policy_id });
@@ -162,11 +154,12 @@ export default class ManagedIndexService {
         });
       }
 
+      let totalManagedIndices = explainAllResponse.total_managed_indices;
       return response.custom({
         statusCode: 200,
         body: {
           ok: true,
-          response: { managedIndices: managedIndices, totalManagedIndices: totalCount },
+          response: { managedIndices: managedIndices, totalManagedIndices: totalManagedIndices},
         },
       });
     } catch (err) {

@@ -96,13 +96,18 @@ export default function IndexFilterPopover({
   function customEditor() {
     return (
       <EuiFormRow label="Custom query DSL">
-        <EuiCodeEditor value={queryDsl} onChange={(string) => setQueryDsl(string)} mode="json" width="100%" height="250px" />
+        <EuiCodeEditor
+          style={{ width: 0.38 * window.innerWidth, height: 0.4 * window.innerHeight }}
+          value={queryDsl}
+          onChange={(string) => setQueryDsl(string)}
+          mode="json"
+        />
       </EuiFormRow>
     );
   }
 
   return (
-    <div>
+    <div style={{ width: 0.4 * window.innerWidth }}>
       <EuiPopoverTitle>
         <EuiFlexGroup alignItems="baseline" responsive={false}>
           <EuiFlexItem>Edit data filter</EuiFlexItem>

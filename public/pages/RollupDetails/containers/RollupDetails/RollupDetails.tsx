@@ -49,7 +49,7 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import GeneralInformation from "../../components/GeneralInformation/GeneralInformation";
 import RollupStatus from "../../components/RollupStatus/RollupStatus";
 import AggregationAndMetricsSettings from "../../components/AggregationAndMetricsSettings/AggregationAndMetricsSettings";
-import { parseTimeunit } from "../../../CreateRollup/utils/helpers";
+import { parseTimeunit, buildIntervalScheduleText, buildCronScheduleText } from "../../../CreateRollup/utils/helpers";
 import { DimensionItem, MetricItem, RollupDimensionItem, RollupMetadata, RollupMetricItem } from "../../../../../models/interfaces";
 import { renderTime } from "../../../Rollups/utils/helpers";
 import DeleteModal from "../../../Rollups/components/DeleteModal";
@@ -331,11 +331,12 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
       isDeleteModalVisible,
     } = this.state;
 
-    let scheduleText = continuousJob ? "Continuous, " : "Not continuous, ";
-    if (continuousDefinition == "fixed") {
-      scheduleText += "every " + interval + " " + parseTimeunit(intervalTimeunit);
-    } else {
-      scheduleText += "defined by cron expression: " + cronExpression;
+    let scheduleText = "";
+    if (rollupJSON.rollup != null) {
+      scheduleText =
+        rollupJSON.rollup.schedule.interval != null
+          ? buildIntervalScheduleText(rollupJSON.rollup.continuous, interval, intervalTimeunit)
+          : buildCronScheduleText(rollupJSON.rollup.continuous, rollupJSON.rollup.schedule.cron.expression);
     }
 
     return (
