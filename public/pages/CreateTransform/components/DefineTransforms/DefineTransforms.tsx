@@ -25,6 +25,7 @@ interface DefineTransformsProps {
   transformService: TransformService;
   notifications: CoreStart["notifications"];
   sourceIndex: string;
+  sourceIndexFilter: string;
   fields: FieldItem[];
   selectedGroupField: TransformGroupItem[];
   onGroupSelectionChange: (selectedFields: TransformGroupItem[], aggItem: TransformAggItem) => void;
@@ -41,6 +42,7 @@ export default function DefineTransforms({
   transformService,
   notifications,
   sourceIndex,
+  sourceIndexFilter,
   fields,
   selectedGroupField,
   onGroupSelectionChange,
@@ -99,7 +101,7 @@ export default function DefineTransforms({
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await transformService.searchSampleData(sourceIndex, { from: 0, size: DefaultSampleDataSize });
+      const response = await transformService.searchSampleData(sourceIndex, { from: 0, size: DefaultSampleDataSize }, sourceIndexFilter);
 
       if (response.ok) {
         setData(response.response.data);
@@ -113,6 +115,7 @@ export default function DefineTransforms({
 
   React.useEffect(() => {
     fetchData();
+
   }, []);
 
   const onChangeItemsPerPage = useCallback(
@@ -143,6 +146,7 @@ export default function DefineTransforms({
   );
 
   const renderCellValue = ({ rowIndex, columnId }) => {
+
     if (!loading && data.hasOwnProperty(rowIndex)) {
       if (columns?.find((column) => column.id == columnId).schema == "keyword") {
         // Remove the keyword postfix for getting correct data from array
@@ -150,8 +154,12 @@ export default function DefineTransforms({
         return data[rowIndex]._source[correspondingTextColumnId] ? data[rowIndex]._source[correspondingTextColumnId] : "-";
       } else if (columns?.find((column) => column.id == columnId).schema == "date") {
         return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
+      } else if (columns?.find((column) => column.id == columnId).schema == "geo_point") {
+        return data[rowIndex].source[columndId] ? data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon : "-";
+      } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
+        return data[rowIndex]._source[columnId] == null ? "-" : (data[rowIndex]._source[columnId] ? "true" : "false");
       }
-      return data[rowIndex]._source[columnId] ? data[rowIndex]._source[columnId] : "-";
+      return data[rowIndex]._source[columnId] !== null ? JSON.stringify(data[rowIndex]._source[columnId]) : "-";
     }
     return "-";
   };

@@ -37,6 +37,7 @@ import { Rollup } from "../../../../models/interfaces";
 import { RollupService } from "../../../services";
 import { EMPTY_ROLLUP } from "../../CreateRollup/utils/constants";
 import { CoreServicesContext } from "../../../components/core_services";
+import { delayTimeUnitToMS, msToDelayTimeUnit } from "../../CreateRollup/utils/helpers";
 
 interface EditRollupProps extends RouteComponentProps {
   rollupService: RollupService;
@@ -120,7 +121,7 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
           description: response.response.rollup.description,
           jobEnabledByDefault: response.response.rollup.enabled,
           pageSize: response.response.rollup.page_size,
-          delayTime: !response.response.rollup.delay ? "" : response.response.rollup.delay,
+          delayTime: !response.response.rollup.delay ? "" : msToDelayTimeUnit(response.response.rollup.delay, this.state.delayTimeunit),
           rollupJSON: newJSON,
         });
         if (response.response.rollup.schedule.cron == undefined) {
@@ -218,6 +219,14 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
     this.setState({ intervalTimeunit: e.target.value });
   };
 
+  // convert from delayTimeunit to ms for internal processing
+  updateDelay = (): void => {
+    const { delayTime, delayTimeunit } = this.state;
+    let newJSON = this.state.rollupJSON;
+    newJSON.rollup.delay = delayTimeUnitToMS(delayTime as number, delayTimeunit).toString();
+    this.setState({ rollupJSON: newJSON });
+  };
+
   updateSchedule = (): void => {
     const { continuousDefinition, cronExpression, interval, intervalTimeunit, cronTimezone } = this.state;
     let newJSON = this.state.rollupJSON;
@@ -245,6 +254,7 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
       } else {
         //Build JSON string here
         this.updateSchedule();
+        this.updateDelay();
         await this.onUpdate(rollupId, rollupJSON);
       }
     } catch (err) {

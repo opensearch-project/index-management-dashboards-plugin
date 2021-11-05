@@ -1,0 +1,598 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EditTransform /> spec renders the component 1`] = `
+<div
+  style="padding: 25px 50px;"
+>
+  <h1
+    class="euiTitle euiTitle--large"
+  >
+    Edit transform job
+  </h1>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--medium"
+        >
+          Job name and description
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: initial;"
+    >
+      <div
+        style="padding-left: 10px;"
+      >
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Name
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormControlLayout"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  aria-describedby="some_html_id-help"
+                  class="euiFieldText"
+                  disabled=""
+                  id="some_html_id"
+                  placeholder="transform-id"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              id="some_html_id-help"
+            >
+              Specify a unique, descriptive name.
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <h4>
+                Description
+              </h4>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <div
+                class="euiTextColor euiTextColor--subdued"
+              >
+                <i>
+                   - optional
+                </i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--xs"
+        />
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <textarea
+              class="euiTextArea euiTextArea--resizeVertical euiTextArea--compressed"
+              data-test-subj="description"
+              id="some_html_id"
+              rows="3"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--medium"
+        >
+          Indices
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: initial;"
+    >
+      <div
+        style="padding-left: 10px;"
+      >
+        <div
+          class="euiText euiText--extraSmall"
+        >
+          <dt>
+            Source index
+          </dt>
+          <dd />
+        </div>
+        <div
+          class="euiSpacer euiSpacer--m"
+        />
+        <div
+          class="euiText euiText--extraSmall"
+        >
+          <dt>
+            Source index filter
+          </dt>
+          <div
+            class="euiCodeEditorWrapper"
+            data-test-subj="codeEditorContainer"
+            style="width: 400px; height: 100px;"
+          >
+            <div
+              class="euiCodeEditorKeyboardHint"
+              data-test-subj="codeEditorHint"
+              id="some_html_id"
+              role="button"
+              tabindex="0"
+            >
+              <p
+                class="euiText"
+              >
+                Press Enter to start editing.
+              </p>
+              <p
+                class="euiText"
+              >
+                When you're done, press Escape to stop editing.
+              </p>
+            </div>
+            <div
+              class=" ace_editor ace-tm"
+              id="some_html_id"
+              style="width: 400px; height: 100px;"
+            >
+              <textarea
+                autocapitalize="off"
+                autocorrect="off"
+                class="ace_text-input"
+                spellcheck="false"
+                style="opacity: 0;"
+                tabindex="-1"
+                wrap="off"
+              />
+              <div
+                aria-hidden="true"
+                class="ace_gutter"
+              >
+                <div
+                  class="ace_layer ace_gutter-layer ace_folding-enabled"
+                />
+                <div
+                  class="ace_gutter-active-line"
+                />
+              </div>
+              <div
+                class="ace_scroller"
+              >
+                <div
+                  class="ace_content"
+                >
+                  <div
+                    class="ace_layer ace_print-margin-layer"
+                  >
+                    <div
+                      class="ace_print-margin"
+                      style="left: 4px; visibility: visible;"
+                    />
+                  </div>
+                  <div
+                    class="ace_layer ace_marker-layer"
+                  />
+                  <div
+                    class="ace_layer ace_text-layer"
+                    style="padding: 0px 4px;"
+                  />
+                  <div
+                    class="ace_layer ace_marker-layer"
+                  />
+                  <div
+                    class="ace_layer ace_cursor-layer ace_hidden-cursors"
+                  >
+                    <div
+                      class="ace_cursor"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="ace_scrollbar ace_scrollbar-v"
+                style="display: none; width: 20px;"
+              >
+                <div
+                  class="ace_scrollbar-inner"
+                  style="width: 20px;"
+                />
+              </div>
+              <div
+                class="ace_scrollbar ace_scrollbar-h"
+                style="display: none; height: 20px;"
+              >
+                <div
+                  class="ace_scrollbar-inner"
+                  style="height: 20px;"
+                />
+              </div>
+              <div
+                style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
+              >
+                <div
+                  style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                />
+                <div
+                  style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                >
+                  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--m"
+        />
+        <div
+          class="euiText euiText--extraSmall"
+        >
+          <dt>
+            Target index
+          </dt>
+          <dd />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--medium"
+        >
+          Schedule
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: initial;"
+    >
+      <div
+        style="padding-left: 10px;"
+      >
+        <div
+          class="euiCheckbox"
+        >
+          <input
+            checked=""
+            class="euiCheckbox__input"
+            data-test-subj="jobEnabled"
+            id="jobEnabled"
+            type="checkbox"
+          />
+          <div
+            class="euiCheckbox__square"
+          />
+          <label
+            class="euiCheckbox__label"
+            for="jobEnabled"
+          >
+            Job enabled by default
+          </label>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--m"
+        />
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          style="max-width: 400px;"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+            style="width: 200px;"
+          >
+            <div
+              class="euiFormRow"
+              id="some_html_id-row"
+            >
+              <div
+                class="euiFormRow__labelWrapper"
+              >
+                <label
+                  aria-invalid="false"
+                  class="euiFormLabel euiFormRow__label"
+                  for="some_html_id"
+                >
+                  Transform execution interval
+                </label>
+              </div>
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <input
+                      class="euiFieldNumber"
+                      id="some_html_id"
+                      type="number"
+                      value="2"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <div
+              class="euiFormRow euiFormRow--hasEmptyLabelSpace"
+              id="some_html_id-row"
+            >
+              <div
+                class="euiFormRow__fieldWrapper"
+              >
+                <div
+                  class="euiFormControlLayout"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <select
+                      class="euiSelect"
+                      id="some_html_id"
+                    >
+                      <option
+                        value="Minutes"
+                      >
+                        Minute(s)
+                      </option>
+                      <option
+                        value="Hours"
+                      >
+                        Hour(s)
+                      </option>
+                      <option
+                        value="Days"
+                      >
+                        Day(s)
+                      </option>
+                    </select>
+                    <div
+                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                    >
+                      <span
+                        class="euiFormControlLayoutCustomIcon"
+                      >
+                        EuiIconMock
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--m"
+        />
+        <div
+          class="euiAccordion"
+        >
+          <div
+            class="euiAccordion__triggerWrapper"
+          >
+            <button
+              aria-controls="some_html_id"
+              aria-expanded="false"
+              class="euiAccordion__button"
+              id="some_html_id"
+              type="button"
+            >
+              <span
+                class="euiAccordion__iconWrapper"
+              >
+                EuiIconMock
+              </span>
+              <span
+                class="euiIEFlexWrapFix"
+              >
+                Advanced
+              </span>
+            </button>
+          </div>
+          <div
+            class="euiAccordion__childWrapper"
+            id="some_html_id"
+          >
+            <div>
+              <div
+                class=""
+              >
+                <div
+                  class="euiSpacer euiSpacer--m"
+                />
+                <div
+                  class="euiFormRow"
+                  id="some_html_id-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
+                    >
+                      Pages per execution
+                    </label>
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <div
+                      class="euiFormControlLayout"
+                    >
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <input
+                          aria-describedby="some_html_id-help"
+                          class="euiFieldNumber"
+                          id="some_html_id"
+                          min="1"
+                          placeholder="1000"
+                          type="number"
+                          value="1000"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="euiFormHelpText euiFormRow__text"
+                      id="some_html_id-help"
+                    >
+                      Determines the number of transformed buckets that are computed and indexed at a time. A larger number means faster execution, but costs more memory. An exception occurs when memory limits are exceeded. We recommend you to start with default value and adjust based on your use case.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButtonEmpty euiButtonEmpty--primary"
+        data-test-subj="editTransformCancelButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButtonEmpty__content"
+        >
+          <span
+            class="euiButtonEmpty__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="editTransformSaveButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Save changes
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

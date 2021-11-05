@@ -74,9 +74,9 @@ export default class TransformService {
     return response;
   };
 
-  searchSampleData = async (index: string, queryObject: object): Promise<ServerResponse<any>> => {
+  searchSampleData = async (index: string, queryObject: object, body: string): Promise<ServerResponse<any>> => {
     const url = `..${NODE_API._SEARCH_SAMPLE_DATA}/${index}`;
-    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<any>;
+    const response = (await this.httpClient.post(url, { query: queryObject, body: body })) as ServerResponse<any>;
     return response;
   };
 }

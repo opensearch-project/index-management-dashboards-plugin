@@ -53,8 +53,11 @@ export default class NotificationUIAction implements UIAction<NotificationAction
   action: NotificationAction;
   type = ActionType.Notification;
 
-  constructor(action: NotificationAction, id: string = makeId()) {
-    const notificationJsonString = JSON.stringify(action.notification, null, 4);
+  constructor(action: NotificationAction, id: string = makeId(), useNotificationString: boolean = false) {
+    let notificationJsonString = JSON.stringify(action.notification, null, 4);
+    if (useNotificationString) {
+      notificationJsonString = action.notificationJsonString;
+    }
     this.action = { ...action, notificationJsonString };
     this.id = id;
   }
@@ -62,6 +65,8 @@ export default class NotificationUIAction implements UIAction<NotificationAction
   content = () => `Notification`;
 
   clone = (action: NotificationAction) => new NotificationUIAction(action, this.id);
+
+  cloneUsingString = (action: NotificationAction) => new NotificationUIAction(action, this.id, true);
 
   isValid = () => {
     try {
@@ -77,7 +82,7 @@ export default class NotificationUIAction implements UIAction<NotificationAction
     return (
       <ServicesConsumer>
         {(services: BrowserServices | null) =>
-          services && <NotifUI onChangeAction={onChangeAction} action={this.action} clone={this.clone} isInvalid={!this.isValid()} />
+          services && <NotifUI onChangeAction={onChangeAction} action={this.action} clone={this.cloneUsingString} isInvalid={!this.isValid()} />
         }
       </ServicesConsumer>
     );

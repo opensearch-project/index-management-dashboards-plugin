@@ -9,7 +9,8 @@
  * GitHub history for details.
  */
 
-import { FieldItem, TRANSFORM_AGG_TYPE } from "../../../../models/interfaces";
+import { FieldItem, TRANSFORM_AGG_TYPE, TransformGroupItem } from "../../../../models/interfaces";
+import { IntervalType } from "../../../utils/constants";
 
 export const parseTimeunit = (timeunit: string): string => {
   if (timeunit == "ms" || timeunit == "Milliseconds") return "millisecond(s)";
@@ -77,4 +78,30 @@ export const wrapQuotesAroundTransformId = (transformId: string, stringToSearch:
 
 export const isGroupBy = (type: string): boolean => {
   return type == TRANSFORM_AGG_TYPE.histogram || type == TRANSFORM_AGG_TYPE.terms || type == TRANSFORM_AGG_TYPE.date_histogram;
+};
+
+export const getDateHistogramGroupItem = (
+  name: string,
+  targetFieldName: string,
+  interval: number,
+  timeunit: string,
+  intervalType: IntervalType
+): TransformGroupItem => {
+  const dateHistogramInterval = `${interval}${timeunit}`;
+  if (intervalType === IntervalType.CALENDAR)
+    return {
+      date_histogram: {
+        source_field: name,
+        target_field: targetFieldName,
+        calendar_interval: dateHistogramInterval,
+      },
+    };
+  else
+    return {
+      date_histogram: {
+        source_field: name,
+        target_field: targetFieldName,
+        fixed_interval: dateHistogramInterval,
+      },
+    };
 };
