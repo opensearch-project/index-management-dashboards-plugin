@@ -9,7 +9,7 @@ on:
       - main
       - development-*
 env:
-  OPENSEARCH_DASHBOARDS_VERSION: '1.x'
+  OPENSEARCH_DASHBOARDS_VERSION: '1.2'
 jobs:
   tests:
     name: Run unit tests
