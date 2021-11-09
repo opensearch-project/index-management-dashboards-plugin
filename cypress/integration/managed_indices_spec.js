@@ -26,11 +26,14 @@
 
 import { PLUGIN_NAME } from "../support/constants";
 import samplePolicy from "../fixtures/sample_policy";
+import sampleRolloverPolicy from "../fixtures/sample_rollover_policy";
 import sampleDataStreamPolicy from "../fixtures/sample_data_stream_policy.json";
 
 const POLICY_ID = "test_policy_id";
 const POLICY_ID_2 = "test_policy_id_2";
+const POLICY_ID_ROLLOVER = "test_policy_rollover";
 const SAMPLE_INDEX = "sample_index";
+const SAMPLE_INDEX_ROLLOVER = "sample_index-01";
 
 describe("Managed indices", () => {
   beforeEach(() => {
@@ -45,8 +48,9 @@ describe("Managed indices", () => {
     cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/managed-indices`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
-    // TODO flaky: page may not rendered right with below line
-    cy.contains("Rows per page", { timeout: 60000 });
+    cy.contains("Edit rollover alias", { timeout: 60000 });
+
+    cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
   });
 
   describe("can have policies removed", () => {
@@ -80,31 +84,46 @@ describe("Managed indices", () => {
     });
   });
 
-  describe.skip("can have policies retried", () => {
+  describe("can have policies retried", () => {
     before(() => {
       cy.deleteAllIndices();
-      // Add a non-existent policy to the index
-      cy.createIndex(SAMPLE_INDEX, POLICY_ID);
-      // Speed up execution time to happen in a few seconds
-      cy.updateManagedIndexConfigStartTime(SAMPLE_INDEX);
+      // Create a policy that rolls over
+      cy.createPolicy(POLICY_ID_ROLLOVER, sampleRolloverPolicy);
+      // Create index with alias to rollover
+      cy.createIndex(SAMPLE_INDEX_ROLLOVER, POLICY_ID_ROLLOVER, { aliases: { "retry-rollover-alias": {} } });
     });
 
     it("successfully", () => {
       // Confirm we have initial policy
-      cy.contains(POLICY_ID);
+      cy.contains(POLICY_ID_ROLLOVER);
+
+      // Speed up execution time to happen in a few seconds
+      cy.updateManagedIndexConfigStartTime(SAMPLE_INDEX_ROLLOVER);
 
       // Wait up to 5 seconds for the managed index to execute
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(5000).reload();
+      cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
+
+      // Confirm managed index successfully initialized the policy
+      cy.contains("Successfully initialized", { timeout: 20000 });
+
+      cy.updateManagedIndexConfigStartTime(SAMPLE_INDEX_ROLLOVER);
+
+      // Wait up to 5 seconds for managed index to execute
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(5000).reload();
+      cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
 
       // Confirm we have a Failed execution, wait up to 20 seconds as OSD takes a while to load
       cy.contains("Failed", { timeout: 20000 });
+      cy.contains("Missing rollover_alias");
 
-      // Create the policy we were missing
-      cy.createPolicy(POLICY_ID, samplePolicy);
+      // Add rollover alias
+      cy.updateIndexSettings(SAMPLE_INDEX_ROLLOVER, { "plugins.index_state_management.rollover_alias": "retry-rollover-alias" });
 
       // Select checkbox for our managed index
-      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX_ROLLOVER}"]`).check({ force: true });
 
       // Click the retry policy button
       cy.get(`[data-test-subj="Retry policyButton"]`).click({ force: true });
@@ -117,19 +136,21 @@ describe("Managed indices", () => {
 
       // Reload the page
       cy.reload();
+      cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
 
       // Confirm we see managed index attempting to retry, give 20 seconds for OSD load
       cy.contains("Pending retry of failed managed index", { timeout: 20000 });
 
       // Speed up next execution of managed index
-      cy.updateManagedIndexConfigStartTime(SAMPLE_INDEX);
+      cy.updateManagedIndexConfigStartTime(SAMPLE_INDEX_ROLLOVER);
 
       // Wait up to 5 seconds for managed index to execute
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(5000).reload();
+      cy.get('[data-test-subj="toastCloseButton"]').click({ force: true });
 
-      // Confirm managed index successfully initialized the policy
-      cy.contains("Successfully initialized", { timeout: 20000 });
+      // Confirm managed index successfully rolled over
+      cy.contains("Successfully rolled over", { timeout: 20000 });
     });
   });
 

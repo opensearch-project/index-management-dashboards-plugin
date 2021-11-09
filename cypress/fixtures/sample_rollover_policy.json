@@ -1,0 +1,35 @@
+{
+  "policy": {
+    "description": "A simple description",
+    "default_state": "hot",
+    "states": [
+      {
+        "name": "hot",
+        "actions": [
+          {
+            "rollover": {}
+          }
+        ],
+        "transitions": [
+          {
+            "state_name": "cold",
+            "conditions": {
+              "min_index_age": "30d"
+            }
+          }
+        ]
+      },
+      {
+        "name": "cold",
+        "actions": [
+          {
+            "replica_count": {
+              "number_of_replicas": 2
+            }
+          }
+        ],
+        "transitions": []
+      }
+    ]
+  }
+}
