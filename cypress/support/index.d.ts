@@ -31,7 +31,7 @@ declare namespace Cypress {
     /**
      * Deletes all indices in cluster
      * @example
-     * cy.wipeCluster()
+     * cy.deleteAllIndices()
      */
     deleteAllIndices(): Chainable<any>;
 
@@ -48,6 +48,13 @@ declare namespace Cypress {
      * cy.getIndexSettings("some_index")
      */
     getIndexSettings(index: string): Chainable<any>;
+
+    /**
+     * Updates settings for index
+     * @example
+     * cy.updateIndexSettings("some_index", settings)
+     */
+    updateIndexSettings(index: string, settings: object): Chainable<any>;
 
     /**
      * Updated the managed index config's start time to

@@ -112,6 +112,10 @@ Cypress.Commands.add("getIndexSettings", (index) => {
   cy.request("GET", `${Cypress.env("opensearch")}/${index}/_settings`);
 });
 
+Cypress.Commands.add("updateIndexSettings", (index, settings) => {
+  cy.request("PUT", `${Cypress.env("opensearch")}/${index}/_settings`, settings);
+});
+
 Cypress.Commands.add("updateManagedIndexConfigStartTime", (index) => {
   // Creating closure over startTime so it's not calculated until actual update_by_query call
   // eslint-disable-next-line cypress/no-unnecessary-waiting
