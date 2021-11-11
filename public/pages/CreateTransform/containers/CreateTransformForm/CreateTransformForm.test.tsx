@@ -1,12 +1,6 @@
 /*
+ * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
- *
- * The OpenSearch Contributors require contributions made to
- * this file be licensed under the Apache-2.0 license or a
- * compatible open source license.
- *
- * Modifications Copyright OpenSearch Contributors. See
- * GitHub history for details.
  */
 
 import React from "react";
@@ -122,39 +116,41 @@ const sampleMapping = {
   },
 };
 
-const indexData = [{
-  _id: "H1tNZHoBkfvfBoG1npgz",
-  _index: "index_1",
-  _score: 1,
-  _source: {
-    category: "Women's Clothing",
-    customer_gender: "FEMALE",
-    day_of_week: "Monday",
-    day_of_week_i: 0,
-    geoip: {
-      city_name: "New York",
-      region_name: "New York"
+const indexData = [
+  {
+    _id: "H1tNZHoBkfvfBoG1npgz",
+    _index: "index_1",
+    _score: 1,
+    _source: {
+      category: "Women's Clothing",
+      customer_gender: "FEMALE",
+      day_of_week: "Monday",
+      day_of_week_i: 0,
+      geoip: {
+        city_name: "New York",
+        region_name: "New York",
+      },
+      order_date: "2021-07-15T13:32:10+00:00",
+      products: [
+        {
+          _id: "sold_product_588880_18574",
+          category: "Women's Clothing",
+          price: 28.99,
+          quantity: 1,
+          tax_amount: 0,
+          taxful_price: 28.99,
+          taxless_price: 28.99,
+        },
+      ],
+      taxful_total_price: 61.98,
+      taxless_total_price: 61.98,
+      total_quantity: 2,
+      type: "order",
+      user: "elyssa",
     },
-    order_date: "2021-07-15T13:32:10+00:00",
-    products: [
-      {
-        _id: "sold_product_588880_18574",
-        category: "Women's Clothing",
-        price: 28.99,
-        quantity: 1,
-        tax_amount: 0,
-        taxful_price: 28.99,
-        taxless_price: 28.99,
-      }
-    ],
-    taxful_total_price: 61.98,
-    taxless_total_price: 61.98,
-    total_quantity: 2,
-    type: "order",
-    user: "elyssa"
+    _type: "_doc",
   },
-  _type: "_doc",
-}];
+];
 
 function renderCreateTransformFormWithRouter() {
   return {
@@ -211,8 +207,8 @@ describe("<CreateTransformForm /> spec", () => {
     ok: true,
     response: {
       data: indexData,
-      total: { value: 1 }
-    }
+      total: { value: 1 },
+    },
   });
 
   it("renders the component", async () => {
@@ -240,7 +236,7 @@ describe("<CreateTransformForm /> spec", () => {
     userEvent.click(getByTestId("createTransformCancelButton"));
 
     await waitFor(() => getByText("Testing transform landing page"));
-  })
+  });
 
   it("does not move to step 2 without info", async () => {
     const { getByTestId, getByText, getByLabelText, queryByText } = renderCreateTransformFormWithRouter();
@@ -252,7 +248,7 @@ describe("<CreateTransformForm /> spec", () => {
     expect(getByTestId("createTransformNextButton")).toBeEnabled();
 
     userEvent.click(getByTestId("createTransformNextButton"));
-    await waitFor(() => {},{timeout:2000});
+    await waitFor(() => {}, { timeout: 2000 });
 
     // Currently no pop up warnings?
     // Check still on step 1
@@ -270,8 +266,8 @@ describe("<CreateTransformForm /> creation", () => {
     ok: true,
     response: {
       data: indexData,
-      total: { value: 1,  relation: "gte" }
-    }
+      total: { value: 1, relation: "gte" },
+    },
   });
 
   browserServicesMock.transformService.getMappings = jest.fn().mockResolvedValue({
@@ -316,11 +312,11 @@ describe("<CreateTransformForm /> creation", () => {
 
     userEvent.click(getByTestId("createTransformNextButton"));
 
-    await waitFor(() => {},{timeout:4000});
+    await waitFor(() => {}, { timeout: 4000 });
 
     //Check that it routes to step 2
     expect(queryByText("Job name and description")).toBeNull();
-    expect(queryByText('Select fields to transform')).not.toBeNull();
+    expect(queryByText("Select fields to transform")).not.toBeNull();
   });
 
   it("routes from step 1 to step 4", async () => {
@@ -377,25 +373,27 @@ describe("<CreateTransformForm /> creation", () => {
     await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "some_target_index");
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
-    await waitFor(() => {},{timeout:2000});
+    await waitFor(() => {}, { timeout: 2000 });
     userEvent.click(getByTestId("createTransformNextButton"));
 
     // Check that it routes to step 2
-    await waitFor(() => {},{timeout:2000});
-    expect(queryByText('Select fields to transform')).not.toBeNull();
+    await waitFor(() => {}, { timeout: 2000 });
+    expect(queryByText("Select fields to transform")).not.toBeNull();
 
     // Does not test adding groups and aggregations, this fucntionality is
     // covered by Cypress tests and component Jest tests
     userEvent.click(getByTestId("createTransformNextButton"));
 
     // Check that it routes to step 3
-    await waitFor(() => {},{timeout:2000});
+    await waitFor(() => {}, { timeout: 2000 });
     expect(queryByText("Job enabled by default")).not.toBeNull();
     userEvent.click(getByTestId("createTransformNextButton"));
 
     // Check that it routes to step 4
-    await waitFor(() => {},{timeout:2000});
-    expect(queryByText("You can only change the description and schedule after creating a job. Double-check your choices before proceeding.")).not.toBeNull();
+    await waitFor(() => {}, { timeout: 2000 });
+    expect(
+      queryByText("You can only change the description and schedule after creating a job. Double-check your choices before proceeding.")
+    ).not.toBeNull();
 
     //Test create
     userEvent.click(getByTestId("createTransformSubmitButton"));
@@ -403,6 +401,8 @@ describe("<CreateTransformForm /> creation", () => {
 
     expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`Transform job "some_transform_id" successfully created.`);
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+      `Transform job "some_transform_id" successfully created.`
+    );
   });
-})
+});

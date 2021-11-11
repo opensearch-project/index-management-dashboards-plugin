@@ -1,12 +1,6 @@
 /*
+ * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
- *
- * The OpenSearch Contributors require contributions made to
- * this file be licensed under the Apache-2.0 license or a
- * compatible open source license.
- *
- * Modifications Copyright OpenSearch Contributors. See
- * GitHub history for details.
  */
 
 import { EuiDataGrid, EuiDataGridColumn, EuiSpacer, EuiText, EuiToolTip } from "@elastic/eui";
@@ -115,7 +109,6 @@ export default function DefineTransforms({
 
   React.useEffect(() => {
     fetchData();
-
   }, []);
 
   const onChangeItemsPerPage = useCallback(
@@ -146,7 +139,6 @@ export default function DefineTransforms({
   );
 
   const renderCellValue = ({ rowIndex, columnId }) => {
-
     if (!loading && data.hasOwnProperty(rowIndex)) {
       if (columns?.find((column) => column.id == columnId).schema == "keyword") {
         // Remove the keyword postfix for getting correct data from array
@@ -157,7 +149,7 @@ export default function DefineTransforms({
       } else if (columns?.find((column) => column.id == columnId).schema == "geo_point") {
         return data[rowIndex].source[columndId] ? data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon : "-";
       } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
-        return data[rowIndex]._source[columnId] == null ? "-" : (data[rowIndex]._source[columnId] ? "true" : "false");
+        return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
       }
       return data[rowIndex]._source[columnId] !== null ? JSON.stringify(data[rowIndex]._source[columnId]) : "-";
     }

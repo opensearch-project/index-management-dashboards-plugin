@@ -1,12 +1,6 @@
 /*
+ * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
- *
- * The OpenSearch Contributors require contributions made to
- * this file be licensed under the Apache-2.0 license or a
- * compatible open source license.
- *
- * Modifications Copyright OpenSearch Contributors. See
- * GitHub history for details.
  */
 
 import React from "react";
@@ -18,25 +12,13 @@ import userEvent from "@testing-library/user-event/dist";
 
 describe("<DeleteModal /> spec", () => {
   it("renders the component", () => {
-    const { baseElement } = render(
-      <DeleteModal
-        policyId="some_id"
-        closeDeleteModal={() => {}}
-        onClickDelete={() => {}}
-      />
-    );
+    const { baseElement } = render(<DeleteModal policyId="some_id" closeDeleteModal={() => {}} onClickDelete={() => {}} />);
     expect(baseElement).toMatchSnapshot();
   });
 
   it("calls closeDeleteModal when cancel button is clicked", () => {
     const closeDeleteModal = jest.fn();
-    const { getByTestId } = render(
-      <DeleteModal
-        policyId="some_id"
-        closeDeleteModal={closeDeleteModal}
-        onClickDelete={() => {}}
-      />
-    );
+    const { getByTestId } = render(<DeleteModal policyId="some_id" closeDeleteModal={closeDeleteModal} onClickDelete={() => {}} />);
 
     userEvent.click(getByTestId("confirmModalCancelButton"));
     expect(closeDeleteModal).toHaveBeenCalled();
@@ -44,13 +26,7 @@ describe("<DeleteModal /> spec", () => {
 
   it("calls onClickDelete when delete button is clicked", () => {
     const onClickDelete = jest.fn();
-    const { getByTestId } = render(
-      <DeleteModal
-        policyId="some_id"
-        closeDeleteModal={() => {}}
-        onClickDelete={onClickDelete}
-      />
-    );
+    const { getByTestId } = render(<DeleteModal policyId="some_id" closeDeleteModal={() => {}} onClickDelete={onClickDelete} />);
 
     fireEvent.focus(getByTestId("deleteTextField"));
     userEvent.type(getByTestId("deleteTextField"), `delete`);

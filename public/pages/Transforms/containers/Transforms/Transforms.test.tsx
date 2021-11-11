@@ -1,12 +1,6 @@
 /*
+ * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
- *
- * The OpenSearch Contributors require contributions made to
- * this file be licensed under the Apache-2.0 license or a
- * compatible open source license.
- *
- * Modifications Copyright OpenSearch Contributors. See
- * GitHub history for details.
  */
 
 import React from "react";
@@ -46,10 +40,13 @@ function renderTransformsWithRouter() {
                       />
                       <Route path={ROUTES.CREATE_TRANSFORM} render={(props) => <div>Testing create transform</div>} />
                       <Route path={ROUTES.EDIT_TRANSFORM} render={(props) => <div>Testing edit transform: {props.location.search}</div>} />
-                      <Route path={ROUTES.TRANSFORM_DETAILS} render={(props) => <div>Testing transform details: {props.location.search}</div>} />
+                      <Route
+                        path={ROUTES.TRANSFORM_DETAILS}
+                        render={(props) => <div>Testing transform details: {props.location.search}</div>}
+                      />
                       <Redirect from="/" to={ROUTES.TRANSFORMS} />
                     </Switch>
-                  </ ModalProvider>
+                  </ModalProvider>
                 )
               }
             </ServicesConsumer>
@@ -92,7 +89,7 @@ describe("<Transforms /> spec", () => {
     expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledWith([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS]);
   });
 
-  it("loads transforms", async() => {
+  it("loads transforms", async () => {
     const transforms = [testTransform2];
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
@@ -104,10 +101,10 @@ describe("<Transforms /> spec", () => {
     await waitFor(() => getByText(testTransform2._id));
   });
 
-  it("adds error toaster when get transforms has error", async() => {
+  it("adds error toaster when get transforms has error", async () => {
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: false,
-      error: "some error"
+      error: "some error",
     });
     renderTransformsWithRouter();
 
@@ -130,7 +127,7 @@ describe("<Transforms /> spec", () => {
   it("can route to create transform", async () => {
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
-      response: { transforms: [], totalTransforms: 0 }
+      response: { transforms: [], totalTransforms: 0 },
     });
     const { getByText, getByTestId } = renderTransformsWithRouter();
 
@@ -145,7 +142,7 @@ describe("<Transforms /> spec", () => {
     const transforms = [testTransform2];
     browserServicesMock.transformService.getTransforms = jest.fn().mockResolvedValue({
       ok: true,
-      response: { transforms, totalTransforms:1 },
+      response: { transforms, totalTransforms: 1 },
     });
     const { getByText, getByTestId } = renderTransformsWithRouter();
 
@@ -236,4 +233,4 @@ describe("<Transforms /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`\"${testTransform2._id}\" is disabled`);
   });
-})
+});
