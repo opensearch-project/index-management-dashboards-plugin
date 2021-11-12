@@ -1,12 +1,6 @@
 /*
+ * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
- *
- * The OpenSearch Contributors require contributions made to
- * this file be licensed under the Apache-2.0 license or a
- * compatible open source license.
- *
- * Modifications Copyright OpenSearch Contributors. See
- * GitHub history for details.
  */
 
 import React from "react";
@@ -129,9 +123,12 @@ describe("<EditTransform /> spec", () => {
     expect(browserServicesMock.transformService.putTransform).toHaveBeenCalledWith(
       expect.objectContaining({
         transform: expect.objectContaining({
-          description: 'some description',
+          description: "some description",
         }),
-      }), "test1", 7, 1
+      }),
+      "test1",
+      7,
+      1
     );
   });
 });
