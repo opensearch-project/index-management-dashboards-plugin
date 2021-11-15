@@ -233,4 +233,14 @@ describe("<Transforms /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`\"${testTransform2._id}\" is disabled`);
   });
+
+  it("calls getTransforms when clicking refresh button", async () => {
+    browserServicesMock.transformService.getTransforms = jest.fn();
+
+    const { getByTestId } = renderTransformsWithRouter();
+
+    userEvent.click(getByTestId("refreshButton"));
+
+    expect(browserServicesMock.transformService.getTransforms).toHaveBeenCalledTimes(1);
+  });
 });
