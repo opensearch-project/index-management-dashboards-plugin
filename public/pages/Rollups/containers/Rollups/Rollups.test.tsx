@@ -227,4 +227,14 @@ describe("<Rollups /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(`${testRollup._id} is disabled`);
   });
+
+  it("calls getRollups when clicking refresh button", async () => {
+    browserServicesMock.rollupService.getRollups = jest.fn();
+
+    const { getByTestId } = renderRollupsWithRouter();
+
+    userEvent.click(getByTestId("refreshButton"));
+
+    expect(browserServicesMock.rollupService.getRollups).toHaveBeenCalledTimes(1);
+  });
 });
