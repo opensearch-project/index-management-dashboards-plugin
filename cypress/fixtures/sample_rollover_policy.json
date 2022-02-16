@@ -7,7 +7,10 @@
         "name": "hot",
         "actions": [
           {
-            "rollover": {}
+            "rollover": {},
+            "retry": {
+              "count": 0
+            }
           }
         ],
         "transitions": [
