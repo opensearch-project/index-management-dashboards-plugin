@@ -17,7 +17,7 @@ import ISMTemplates from "../../components/ISMTemplates";
 import States from "../../components/States";
 import CreateState from "../CreateState";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { getUpdatedStates } from "../../utils/helpers";
+import { getUpdatedPolicy, getUpdatedStates } from "../../utils/helpers";
 import ErrorNotification from "../ErrorNotification";
 
 interface VisualCreatePolicyProps extends RouteComponentProps {
@@ -171,13 +171,13 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         this.context.notifications.toasts.addSuccess(`Created policy: ${response.response._id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);
       } else {
-        this.setState({ submitError: response.error });
+        this.setState({ submitError: response.error, isSubmitting: false });
         this.context.notifications.toasts.addDanger(`Failed to create policy: ${response.error}`);
       }
     } catch (err) {
       const errorMessage = getErrorMessage(err, "There was a problem creating the policy");
       this.context.notifications.toasts.addDanger(errorMessage);
-      this.setState({ submitError: errorMessage });
+      this.setState({ submitError: errorMessage, isSubmitting: false });
     }
   };
 
@@ -195,12 +195,12 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         this.props.history.push(ROUTES.INDEX_POLICIES);
       } else {
         this.context.notifications.toasts.addDanger(`Failed to update policy: ${response.error}`);
-        this.setState({ submitError: response.error });
+        this.setState({ submitError: response.error, isSubmitting: false });
       }
     } catch (err) {
       const errorMessage = getErrorMessage(err, "There was a problem updating the policy");
       this.context.notifications.toasts.addDanger(errorMessage);
-      this.setState({ submitError: errorMessage });
+      this.setState({ submitError: errorMessage, isSubmitting: false });
     }
   };
 
@@ -223,9 +223,15 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
     } catch (err) {
       this.context.notifications.toasts.addDanger("Invalid Policy");
       console.error(err);
+      this.setState({ isSubmitting: false });
     }
+  };
 
-    this.setState({ isSubmitting: false });
+  onSaveState = (state: State, states: State[], order: string, afterBeforeState: string) => {
+    const { policy, editingState } = this.state;
+    const updatedPolicy = getUpdatedPolicy(policy, state, editingState, states, order, afterBeforeState);
+    this.setState({ policy: updatedPolicy });
+    this.onCloseFlyout();
   };
 
   render() {
@@ -272,25 +278,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         <EuiSpacer size="m" />
 
         {showFlyout && (
-          <CreateState
-            state={editingState}
-            policy={policy}
-            onSaveState={(state: State, editingState: State | null, states: State[], order: string, afterBeforeState: string) => {
-              const updatedStates = getUpdatedStates(state, editingState, states, order, afterBeforeState);
-              let defaultState = policy.default_state;
-              // If we are creating the first state, set the default state to it
-              if (updatedStates.length === 1) defaultState = updatedStates[0].name;
-              this.setState({
-                policy: {
-                  ...policy,
-                  states: updatedStates,
-                  default_state: defaultState,
-                },
-              });
-              this.onCloseFlyout();
-            }}
-            onCloseFlyout={this.onCloseFlyout}
-          />
+          <CreateState state={editingState} policy={policy} onSaveState={this.onSaveState} onCloseFlyout={this.onCloseFlyout} />
         )}
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">

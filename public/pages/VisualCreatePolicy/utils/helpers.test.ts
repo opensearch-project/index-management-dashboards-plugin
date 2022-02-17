@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { actionRepoSingleton, capitalizeFirstLetter, convertTemplatesToArray, getOrderInfo } from "./helpers";
+import { actionRepoSingleton, capitalizeFirstLetter, convertTemplatesToArray, getOrderInfo, getUpdatedPolicy } from "./helpers";
 import { Action, ISMTemplate, UIAction } from "../../../../models/interfaces";
 import { makeId } from "../../../utils/helpers";
+import { DEFAULT_POLICY } from "./constants";
 
 test("converts all ism template formats into a list of ism templates", () => {
   expect(convertTemplatesToArray(null)).toEqual([]);
@@ -79,4 +80,11 @@ test("action repository usage", () => {
   expect(actionRepoSingleton.getAllActionTypes().length).toBe(14);
   expect(actionRepoSingleton.getUIAction("dummy") instanceof DummyUIAction).toBe(true);
   expect(actionRepoSingleton.getUIActionFromData(DEFAULT_DUMMY) instanceof DummyUIAction).toBe(true);
+});
+
+test("changing the default state name correctly updates default_state", () => {
+  const policy = DEFAULT_POLICY;
+  const updatedState = { ...policy.states[0], name: "new_hot" };
+  const newPolicy = getUpdatedPolicy(policy, updatedState, policy.states[0], policy.states, "before", policy.states[1].name);
+  expect(newPolicy.default_state).toBe("new_hot");
 });

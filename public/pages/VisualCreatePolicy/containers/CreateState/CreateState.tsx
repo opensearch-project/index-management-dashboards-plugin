@@ -34,7 +34,7 @@ import { actionRepoSingleton, getOrderInfo } from "../../utils/helpers";
 
 interface CreateStateProps {
   policy: Policy;
-  onSaveState: (state: State, editingState: State | null, states: State[], order: string, afterBeforeState: string) => void;
+  onSaveState: (state: State, states: State[], order: string, afterBeforeState: string) => void;
   onCloseFlyout: () => void;
   state: State | null;
 }
@@ -176,14 +176,13 @@ export default class CreateState extends Component<CreateStateProps, CreateState
 
   onClickSaveState = () => {
     const { order, afterBeforeState } = this.state;
-    const { onSaveState, state, policy } = this.props;
+    const { onSaveState, policy } = this.props;
     onSaveState(
       {
         name: this.state.name,
         actions: this.state.actions.map((action) => action.toAction()),
         transitions: this.state.transitions.map((transition) => transition.transition),
       },
-      state,
       policy.states,
       order,
       afterBeforeState
