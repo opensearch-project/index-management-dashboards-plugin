@@ -43,9 +43,13 @@ export const renderStatus = (metadata: TransformMetadata | undefined): JSX.Eleme
       iconColor = "success";
       text = "Complete";
       break;
-    case "init" || "started":
+    case "init":
       iconColor = "subdued";
       text = "Initializing...";
+      break;
+    case "started":
+      iconColor = "success";
+      text = "Started";
       break;
     case "stopped":
       iconColor = "#DDDDDD";
