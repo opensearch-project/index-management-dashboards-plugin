@@ -44,6 +44,13 @@ export const DEFAULT_POLICY = {
   ism_template: [],
 };
 
+export const EMPTY_DEFAULT_POLICY = {
+  description: "A sample description of the policy",
+  default_state: "",
+  states: [],
+  ism_template: [],
+};
+
 export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
   destination: {
     slack: {

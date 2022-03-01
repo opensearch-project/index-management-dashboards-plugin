@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { UIAction, Action, Transition, ISMTemplate, State } from "../../../../models/interfaces";
+import { UIAction, Action, Transition, ISMTemplate, State, Policy } from "../../../../models/interfaces";
 import {
   ActionType,
   DEFAULT_ALLOCATION,
@@ -211,4 +211,31 @@ export const getUpdatedStates = (
   });
 
   return someStates;
+};
+
+export const getUpdatedPolicy = (
+  currentPolicy: Policy,
+  updatedState: State,
+  editingState: State | null,
+  currentStates: State[],
+  order: string,
+  afterBeforeState: string
+): Policy => {
+  const updatedStates = getUpdatedStates(updatedState, editingState, currentStates, order, afterBeforeState);
+  let defaultState = currentPolicy.default_state;
+  // If there is 1 state, change it to this state
+  if (updatedStates.length === 1) {
+    defaultState = updatedStates[0].name;
+  }
+  // Change the default state if the state being edited was the default state
+  if (editingState && editingState.name === defaultState) {
+    // don't bother checking if the name itself changed, just set it regardless to the value from the new state
+    defaultState = updatedState.name;
+  }
+
+  return {
+    ...currentPolicy,
+    states: updatedStates,
+    default_state: defaultState,
+  };
 };
