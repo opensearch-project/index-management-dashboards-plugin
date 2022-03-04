@@ -20,3 +20,4 @@ Compatible with OpenSearchDashboards 1.3.0
 * Add support for codeowners to repo ([#131](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/131))
 * Fixes copyright header ([#150](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/150))
 * Updating license headers ([#130](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/130))
+* Create backport workflow  ([#148](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/148))
