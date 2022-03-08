@@ -303,6 +303,53 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </div>
       </div>
       <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Minimum primary shard size
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The minimum size of a single primary shard required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText euiFieldText--fullWidth"
+                data-test-subj="action-render-rollover-min-primary-shard-size"
+                id="some_html_id"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         class="euiSpacer euiSpacer--l"
       />
       <div

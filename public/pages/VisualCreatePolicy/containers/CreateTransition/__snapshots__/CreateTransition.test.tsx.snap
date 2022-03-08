@@ -180,6 +180,11 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
                   Minimum size
                 </option>
                 <option
+                  value="min_rollover_age"
+                >
+                  Minimum rollover age
+                </option>
+                <option
                   value="cron"
                 >
                   Cron expression

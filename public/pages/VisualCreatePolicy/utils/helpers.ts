@@ -42,12 +42,14 @@ export const getConditionContent = (transition: Transition): string => {
       min_doc_count: minDocCount = undefined,
       min_index_age: minIndexAge = undefined,
       min_size: minSize = undefined,
+      min_rollover_age: minRolloverAge = undefined,
       cron = undefined,
     } = {},
   } = transition;
   if (minSize != undefined) return `Minimum index size is ${minSize}`;
   if (minDocCount != undefined) return `Minimum index doc count is ${minDocCount}`;
   if (minIndexAge != undefined) return `Minimum index age is ${minIndexAge}`;
+  if (minRolloverAge != undefined) return `Minimum rollover age is ${minRolloverAge}`;
   if (cron != undefined) return `After cron expression "${cron.cron.expression}" in ${cron.cron.timezone}`;
   return "No condition";
 };

@@ -28,13 +28,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
     const minIndexAge = this.action.rollover.min_index_age;
     const minDocCount = this.action.rollover.min_doc_count;
     const minSize = this.action.rollover.min_size;
+    const minPrimaryShardSize = this.action.rollover.min_primary_shard_size;
     if (typeof minDocCount !== "undefined") {
       if (minDocCount <= 0) return false;
     }
 
-    // for minIndexAge and minSize just let them through and backend will fail the validation
+    // for minIndexAge and minSize and minPrimaryShardSize just let them through and backend will fail the validation
     // TODO -> add validation for index age and size.. but involves replicating checks for byte strings and time strings
-    return !!minIndexAge || minDocCount === 0 || !!minDocCount || !!minSize;
+    return true;
   };
 
   render = (action: UIAction<RolloverAction>, onChangeAction: (action: UIAction<RolloverAction>) => void) => {
@@ -98,6 +99,26 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
               onChangeAction(this.clone({ rollover }));
             }}
             data-test-subj="action-render-rollover-min-size"
+          />
+        </EuiFormRow>
+        <EuiSpacer size="s" />
+        <EuiFormCustomLabel
+          title="Minimum primary shard size"
+          helpText={`The minimum size of a single primary shard required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".`}
+          isInvalid={!this.isValid()}
+        />
+        <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiFieldText
+            fullWidth
+            value={rollover.min_primary_shard_size || ""}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              const minPrimaryShardSize = e.target.value;
+              const rollover = { ...action.action.rollover };
+              if (minPrimaryShardSize) rollover.min_primary_shard_size = minPrimaryShardSize;
+              else delete rollover.min_primary_shard_size;
+              onChangeAction(this.clone({ rollover }));
+            }}
+            data-test-subj="action-render-rollover-min-primary-shard-size"
           />
         </EuiFormRow>
       </>
