@@ -100,6 +100,26 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             data-test-subj="action-render-rollover-min-size"
           />
         </EuiFormRow>
+        <EuiSpacer size="s" />
+        <EuiFormCustomLabel
+          title="Minimum primary shard size"
+          helpText={`The minimum size of a single primary shard required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".`}
+          isInvalid={!this.isValid()}
+        />
+        <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiFieldText
+            fullWidth
+            value={rollover.min_primary_shard_size || ""}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              const minPrimaryShardSize = e.target.value;
+              const rollover = { ...action.action.rollover };
+              if (minPrimaryShardSize) rollover.min_primary_shard_size = minPrimaryShardSize;
+              else delete rollover.min_primary_shard_size;
+              onChangeAction(this.clone({ rollover }));
+            }}
+            data-test-subj="action-render-rollover-min-primary-shard-size"
+          />
+        </EuiFormRow>
       </>
     );
   };
