@@ -19,11 +19,13 @@ interface SpecifyScheduleStepProps extends RouteComponentProps {
   transformService: TransformService;
   currentStep: number;
   jobEnabledByDefault: boolean;
+  continuousJob: string;
   interval: number;
   intervalTimeunit: string;
   intervalError: string;
   pageSize: number;
   onChangeJobEnabledByDefault: () => void;
+  onChangeContinuousJob: (optionId: string) => void;
   onChangeIntervalTime: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangePage: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeIntervalTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -109,10 +111,12 @@ export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepPr
     if (this.props.currentStep != 3) return null;
     const {
       jobEnabledByDefault,
+      continuousJob,
       interval,
       intervalTimeunit,
       pageSize,
       onChangeJobEnabledByDefault,
+      onChangeContinuousJob,
       onChangeIntervalTime,
       onChangePage,
       onChangeIntervalTimeunit,
@@ -135,10 +139,12 @@ export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepPr
               transformId={transformId}
               transformIdError={transformIdError}
               jobEnabledByDefault={jobEnabledByDefault}
+              continuousJob={continuousJob}
               interval={interval}
               intervalTimeunit={intervalTimeunit}
               pageSize={pageSize}
               onChangeJobEnabledByDefault={onChangeJobEnabledByDefault}
+              onChangeContinuousJob={onChangeContinuousJob}
               onChangeIntervalTime={onChangeIntervalTime}
               onChangeIntervalTimeunit={onChangeIntervalTimeunit}
               onChangePage={onChangePage}

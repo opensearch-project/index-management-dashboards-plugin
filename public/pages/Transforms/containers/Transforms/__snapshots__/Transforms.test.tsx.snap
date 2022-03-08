@@ -404,7 +404,37 @@ exports[`<Transforms /> spec renders the component 1`] = `
                   aria-live="polite"
                   aria-sort="none"
                   class="euiTableHeaderCell"
-                  data-test-subj="tableHeaderCell_transform.updated_at_4"
+                  data-test-subj="tableHeaderCell_transform.continuous_4"
+                  role="columnheader"
+                  scope="col"
+                >
+                  <button
+                    class="euiTableHeaderButton"
+                    data-test-subj="tableHeaderSortButton"
+                    type="button"
+                  >
+                    <span
+                      class="euiTableCellContent"
+                    >
+                      <span
+                        class="euiTableCellContent__text"
+                        title="Continuous"
+                      >
+                        Continuous
+                      </span>
+                      <span
+                        class="euiScreenReaderOnly"
+                      >
+                        Click to sort in ascending order
+                      </span>
+                    </span>
+                  </button>
+                </th>
+                <th
+                  aria-live="polite"
+                  aria-sort="none"
+                  class="euiTableHeaderCell"
+                  data-test-subj="tableHeaderCell_transform.updated_at_5"
                   role="columnheader"
                   scope="col"
                 >
@@ -432,7 +462,7 @@ exports[`<Transforms /> spec renders the component 1`] = `
                 </th>
                 <th
                   class="euiTableHeaderCell"
-                  data-test-subj="tableHeaderCell_metadata_5"
+                  data-test-subj="tableHeaderCell_metadata_6"
                   role="columnheader"
                   scope="col"
                 >
@@ -455,7 +485,7 @@ exports[`<Transforms /> spec renders the component 1`] = `
               >
                 <td
                   class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                  colspan="7"
+                  colspan="8"
                 >
                   <div
                     class="euiTableCellContent euiTableCellContent--alignCenter"

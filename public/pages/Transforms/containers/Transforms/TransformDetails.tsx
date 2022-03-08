@@ -35,6 +35,7 @@ import TransformStatus from "../../components/TransformStatus";
 import { EMPTY_TRANSFORM } from "../../utils/constants";
 import TransformSettings from "./TransformSettings";
 import GeneralInformation from "../../components/GeneralInformation";
+import { buildIntervalScheduleText } from "../../../CreateRollup/utils/helpers";
 
 interface TransformDetailsProps extends RouteComponentProps {
   transformService: TransformService;
@@ -48,6 +49,7 @@ interface TransformDetailsState {
   updatedAt: number;
   pageSize: number;
   transformJson: any;
+  continuousJob: string;
   sourceIndex: string;
   targetIndex: string;
   sourceIndexFilter: string;
@@ -75,6 +77,7 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
       updatedAt: 1,
       pageSize: 1000,
       transformJson: EMPTY_TRANSFORM,
+      continuousJob: "no",
       sourceIndex: "",
       targetIndex: "",
       sourceIndexFilter: "",
@@ -214,7 +217,10 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
       isPopOverOpen,
     } = this.state;
 
-    let scheduleText = "Every " + interval + " " + intervalTimeUnit.toLowerCase();
+    let scheduleText = "";
+    if (transformJson.transform != null) {
+      scheduleText = buildIntervalScheduleText(transformJson.transform.continuous, interval, intervalTimeUnit);
+    }
     const actionButton = (
       <EuiButton iconType="arrowDown" iconSide="right" disabled={false} onClick={this.onActionButtonClick} data-test-subj="actionButton">
         Actions

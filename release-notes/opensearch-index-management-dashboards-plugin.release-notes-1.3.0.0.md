@@ -4,6 +4,7 @@ Compatible with OpenSearchDashboards 1.3.0
 
 ### Enhancement
 * Add refresh button to rollup page ([#132](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/132))
+* Adds support for creating and displaying the transform continuous mode ([#153](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/153))
 
 ### Bug fixes
 
