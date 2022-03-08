@@ -28,13 +28,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
     const minIndexAge = this.action.rollover.min_index_age;
     const minDocCount = this.action.rollover.min_doc_count;
     const minSize = this.action.rollover.min_size;
+    const minPrimaryShardSize = this.action.rollover.min_primary_shard_size;
     if (typeof minDocCount !== "undefined") {
       if (minDocCount <= 0) return false;
     }
 
-    // for minIndexAge and minSize just let them through and backend will fail the validation
+    // for minIndexAge and minSize and minPrimaryShardSize just let them through and backend will fail the validation
     // TODO -> add validation for index age and size.. but involves replicating checks for byte strings and time strings
-    return !!minIndexAge || minDocCount === 0 || !!minDocCount || !!minSize;
+    return true;
   };
 
   render = (action: UIAction<RolloverAction>, onChangeAction: (action: UIAction<RolloverAction>) => void) => {
