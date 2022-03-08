@@ -190,6 +190,7 @@ export interface Condition {
   min_index_age?: string;
   min_doc_count?: number | undefined;
   min_size?: string;
+  min_rollover_age?: string;
   cron?: Cron;
 }
 
