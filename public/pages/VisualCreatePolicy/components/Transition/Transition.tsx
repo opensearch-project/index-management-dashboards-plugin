@@ -17,6 +17,7 @@ const conditionTypeOptions = [
   { value: "min_index_age", text: "Minimum index age" },
   { value: "min_doc_count", text: "Minimum doc count" },
   { value: "min_size", text: "Minimum size" },
+  { value: "min_rollover_age", text: "Minimum rollover age" },
   { value: "cron", text: "Cron expression" },
 ];
 
@@ -46,6 +47,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             if (selectedConditionType === "min_index_age") transition.conditions = { min_index_age: "30d" };
             if (selectedConditionType === "min_doc_count") transition.conditions = { min_doc_count: 1000000 };
             if (selectedConditionType === "min_size") transition.conditions = { min_size: "50gb" };
+            if (selectedConditionType === "min_rollover_age") transition.conditions = { min_rollover_age: "7d" };
             if (selectedConditionType === "cron")
               transition.conditions = { cron: { cron: { expression: "* 17 * * SAT", timezone: "America/Los_Angeles" } } };
             onChangeTransition({
@@ -137,6 +139,34 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
                 });
               }}
               data-test-subj="transition-render-conditions-min-size"
+            />
+          </EuiFormRow>
+        </>
+      )}
+
+      {conditionType === "min_rollover_age" && (
+        <>
+          <EuiFormCustomLabel
+            title="Minimum rollover age"
+            helpText="The minimum age after a rollover has occurred that is required to transition to the next state."
+          />
+          <EuiFormRow fullWidth isInvalid={false} error={null}>
+            <EuiFieldText
+              fullWidth
+              value={conditions?.min_rollover_age}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                const minRolloverAge = e.target.value;
+                onChangeTransition({
+                  ...uiTransition,
+                  transition: {
+                    ...uiTransition.transition,
+                    conditions: {
+                      min_rollover_age: minRolloverAge,
+                    },
+                  },
+                });
+              }}
+              data-test-subj="transition-render-conditions-min-rollover-age"
             />
           </EuiFormRow>
         </>
