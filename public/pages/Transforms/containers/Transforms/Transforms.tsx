@@ -43,6 +43,7 @@ import { renderEnabled, renderStatus } from "../../utils/metadataHelper";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../../Indices/utils/constants";
 import _ from "lodash";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
+import { renderContinuous } from "../../../Rollups/utils/helpers";
 
 interface TransformProps extends RouteComponentProps {
   transformService: TransformService;
@@ -160,6 +161,14 @@ export default class Transforms extends Component<TransformProps, TransformState
         textOnly: true,
         truncateText: true,
         render: renderEnabled,
+      },
+      {
+        field: "transform.continuous",
+        name: "Continuous",
+        sortable: true,
+        textOnly: true,
+        truncateText: true,
+        render: renderContinuous,
       },
       {
         field: "transform.updated_at",

@@ -68,6 +68,7 @@ interface CreateTransformFormState {
   selectedFields: FieldItem[];
   jobEnabledByDefault: boolean;
 
+  continuousJob: string;
   interval: number;
   intervalError: string;
   intervalTimeunit: string;
@@ -118,6 +119,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       intervalError: "",
 
       jobEnabledByDefault: true,
+      continuousJob: "no",
       interval: 1,
       intervalTimeunit: "MINUTES",
       pageSize: 1000,
@@ -394,6 +396,12 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     this.setState({ jobEnabledByDefault: !checked, transformJSON: newJSON });
   };
 
+  onChangeContinuousJob = (optionId: string): void => {
+    let newJSON = this.state.transformJSON;
+    newJSON.transform.continuous = optionId == "yes";
+    this.setState({ continuousJob: optionId, transformJSON: newJSON });
+  };
+
   onChangeIntervalTime = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ interval: e.target.valueAsNumber });
     if (e.target.value == "") {
@@ -526,6 +534,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       selectedAggregations,
       aggList,
       jobEnabledByDefault,
+      continuousJob,
       interval,
       intervalTimeunit,
       intervalError,
@@ -580,11 +589,13 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           {...this.props}
           currentStep={this.state.currentStep}
           jobEnabledByDefault={jobEnabledByDefault}
+          continuousJob={continuousJob}
           interval={interval}
           intervalTimeunit={intervalTimeunit}
           intervalError={intervalError}
           pageSize={pageSize}
           onChangeJobEnabledByDefault={this.onChangeJobEnabledByDefault}
+          onChangeContinuousJob={this.onChangeContinuousJob}
           onChangeIntervalTime={this.onChangeIntervalTime}
           onChangePage={this.onChangePage}
           onChangeIntervalTimeunit={this.onChangeIntervalTimeunit}
@@ -605,6 +616,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           onRemoveTransformation={this.onRemoveTransformation}
           previewTransform={previewTransform}
           jobEnabledByDefault={jobEnabledByDefault}
+          continuousJob={continuousJob}
           interval={interval}
           intervalTimeunit={intervalTimeunit}
           pageSize={pageSize}

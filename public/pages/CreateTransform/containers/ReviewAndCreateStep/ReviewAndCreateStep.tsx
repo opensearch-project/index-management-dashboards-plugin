@@ -27,6 +27,7 @@ interface ReviewAndCreateStepProps extends RouteComponentProps {
   sourceIndexFilter: string;
 
   jobEnabledByDefault: boolean;
+  continuousJob: string;
   pageSize: number;
   fields: FieldItem[];
   selectedGroupField: TransformGroupItem[];
