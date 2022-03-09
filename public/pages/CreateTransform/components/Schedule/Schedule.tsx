@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiCheckbox, EuiFormRow, EuiFieldNumber, EuiAccordion, EuiHorizontalRule } from "@elastic/eui";
+import { EuiSpacer, EuiCheckbox, EuiRadioGroup, EuiFormRow, EuiFieldNumber, EuiAccordion, EuiHorizontalRule } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { selectInterval } from "../../../Transforms/utils/metadataHelper";
 
@@ -13,15 +13,37 @@ interface ScheduleProps {
   transformId: string;
   transformIdError: string;
   jobEnabledByDefault: boolean;
+  continuousJob: string;
   pageSize: number;
   onChangeJobEnabledByDefault: () => void;
   interval: number;
   intervalTimeunit: string;
   intervalError: string;
+  onChangeContinuousJob: (optionId: string) => void;
   onChangeIntervalTime: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeIntervalTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
   onChangePage: (e: ChangeEvent<HTMLInputElement>) => void;
 }
+
+const radios = [
+  {
+    id: "no",
+    label: "No",
+  },
+  {
+    id: "yes",
+    label: "Yes",
+  },
+];
+
+const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: string) => void) => (
+  <React.Fragment>
+    <EuiFormRow label="Continuous">
+      <EuiRadioGroup options={radios} idSelected={continuousJob} onChange={(id) => onChangeContinuousJob(id)} name="continuousJob" />
+    </EuiFormRow>
+    <EuiSpacer size="m" />
+  </React.Fragment>
+);
 
 export default class Schedule extends Component<ScheduleProps> {
   constructor(props: ScheduleProps) {
@@ -32,11 +54,13 @@ export default class Schedule extends Component<ScheduleProps> {
     const {
       isEdit,
       jobEnabledByDefault,
+      continuousJob,
       interval,
       intervalTimeunit,
       intervalError,
       pageSize,
       onChangeJobEnabledByDefault,
+      onChangeContinuousJob,
       onChangeIntervalTime,
       onChangeIntervalTimeunit,
       onChangePage,
@@ -55,7 +79,7 @@ export default class Schedule extends Component<ScheduleProps> {
           )}
           <EuiSpacer size="m" />
 
-          {!isEdit}
+          {!isEdit && isContinuous(continuousJob, onChangeContinuousJob)}
 
           {/* TODO: Replace with switch block when define by cron expressions is supported. */}
           {selectInterval(interval, intervalTimeunit, intervalError, onChangeIntervalTime, onChangeIntervalTimeunit)}

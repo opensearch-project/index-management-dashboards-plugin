@@ -172,6 +172,7 @@ export interface RolloverAction extends Action {
     min_size?: string;
     min_doc_count?: number;
     min_index_age?: string;
+    min_primary_shard_size?: string;
   };
 }
 
@@ -189,6 +190,7 @@ export interface Condition {
   min_index_age?: string;
   min_doc_count?: number | undefined;
   min_size?: string;
+  min_rollover_age?: string;
   cron?: Cron;
 }
 

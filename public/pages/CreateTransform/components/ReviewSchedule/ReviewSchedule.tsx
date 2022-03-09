@@ -7,9 +7,11 @@ import React, { Component } from "react";
 import { EuiFlexGrid, EuiFlexItem, EuiText } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
+import { buildIntervalScheduleText } from "../../../CreateRollup/utils/helpers";
 
 interface ReviewScheduleProps {
   jobEnabledByDefault: boolean;
+  continuousJob: string;
   interval: number;
   intervalTimeunit: string;
   pageSize: number;
@@ -22,11 +24,11 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
   }
 
   render() {
-    const { jobEnabledByDefault, interval, intervalTimeunit, pageSize, onChangeStep } = this.props;
+    const { jobEnabledByDefault, continuousJob, interval, intervalTimeunit, pageSize, onChangeStep } = this.props;
 
     const enabled = jobEnabledByDefault ? "Yes" : "No";
 
-    const schedule = "Every " + interval + " " + intervalTimeunit.toLowerCase();
+    const schedule = buildIntervalScheduleText(continuousJob === "yes", interval, intervalTimeunit);
 
     return (
       <ContentPanel

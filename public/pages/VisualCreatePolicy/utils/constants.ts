@@ -115,9 +115,7 @@ export const DEFAULT_REPLICA_COUNT = {
 };
 export const DEFAULT_ROLLOVER = {
   rollover: {
-    min_size: "",
     min_doc_count: 5,
-    min_index_age: "",
   },
 };
 export const DEFAULT_ROLLUP = {
