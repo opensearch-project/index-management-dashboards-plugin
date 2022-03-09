@@ -5,6 +5,7 @@ Compatible with OpenSearchDashboards 1.3.0
 ### Enhancement
 * Add refresh button to rollup page ([#132](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/132))
 * Adds support for creating and displaying the transform continuous mode ([#153](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/153))
+* Adds support on UI for min primary shard size rollover condition and min rollover age transition condition ([#159](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/159))
 
 ### Bug fixes
 
@@ -15,6 +16,9 @@ Compatible with OpenSearchDashboards 1.3.0
 
 * Adds developer certificate of origin check workflow ([#129](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/129))
 * Fixes retry failed managed index cypress test ([#125](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/125))
+
+### Documentation
+* Add backport documentation link ([#161](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/161))
 
 ### Maintenance
 
