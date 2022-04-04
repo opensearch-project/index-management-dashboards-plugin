@@ -15,7 +15,7 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
     style="padding: 0px 0px 0px 0px;"
   >
     <div
-      class="euiPanel euiPanel--paddingMedium custom euiDraggable__item euiDraggable__item--hasCustomDragHandle"
+      class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow custom euiDraggable__item euiDraggable__item--hasCustomDragHandle"
     >
       <div
         class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -48,7 +48,7 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
           >
             <button
               aria-label="Delete"
-              class="euiButtonIcon euiButtonIcon--danger"
+              class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--xSmall"
               data-test-subj="draggable-item-delete-button-some_html_id"
               type="button"
             >
@@ -64,7 +64,7 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
           >
             <button
               aria-label="Edit"
-              class="euiButtonIcon euiButtonIcon--primary"
+              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
               data-test-subj="draggable-item-edit-button-some_html_id"
               type="button"
             >

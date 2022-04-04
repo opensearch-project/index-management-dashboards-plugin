@@ -2,7 +2,7 @@
 
 exports[`<DefinePolicy /> spec renders the component 1`] = `
 <div
-  class="euiPanel euiPanel--paddingMedium"
+  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   style="padding-left: 0px; padding-right: 0px;"
 >
   <div
@@ -92,6 +92,12 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
           >
             Learn more 
             EuiIconMock
+            EuiIconMock
+            <span
+              class="euiScreenReaderOnly"
+            >
+              (opens in a new tab or window)
+            </span>
           </a>
         </p>
       </div>
@@ -104,12 +110,10 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
       data-test-subj="codeEditorContainer"
       style="width: 100%;"
     >
-      <div
+      <button
         class="euiCodeEditorKeyboardHint"
         data-test-subj="codeEditorHint"
         id="some_html_id"
-        role="button"
-        tabindex="0"
       >
         <p
           class="euiText"
@@ -121,7 +125,7 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
         >
           When you're done, press Escape to stop editing.
         </p>
-      </div>
+      </button>
       <div
         class=" ace_editor ace-tm"
         id="some_html_id"

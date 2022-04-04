@@ -58,7 +58,6 @@ exports[`<PolicyControls /> spec renders the component 1`] = `
         >
           <div
             class="euiPopover euiPopover--anchorDownLeft"
-            id="QuickSelectPopover"
           >
             <div
               class="euiPopover__anchor euiQuickSelectPopover__anchor"

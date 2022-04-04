@@ -14,7 +14,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -75,7 +75,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  aria-describedby="some_html_id-help"
+                  aria-describedby="some_html_id-help-0"
                   class="euiFieldText"
                   id="some_html_id"
                   placeholder="hot_cold_workflow"
@@ -86,7 +86,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
             </div>
             <div
               class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help"
+              id="some_html_id-help-0"
             >
               Specify a unique ID that is easy to recognize and remember.
             </div>
@@ -99,7 +99,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -312,26 +312,36 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
     <div
       class="euiText euiText--small"
     >
-      <p>
-        This ensures that any update to a policy doesn't harm indices that are running under an older version of the policy. To carry over your edits to these indices, please use the "Change Policy" under "Managed Indices" to reapply the policy after submitting your edits.
-         
-        <a
-          class="euiLink euiLink--primary"
-          href="https://opensearch.org/docs/im-plugin/ism/index/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Learn more 
-          EuiIconMock
-        </a>
-      </p>
+      <div
+        class="euiTextColor euiTextColor--default"
+      >
+        <p>
+          This ensures that any update to a policy doesn't harm indices that are running under an older version of the policy. To carry over your edits to these indices, please use the "Change Policy" under "Managed Indices" to reapply the policy after submitting your edits.
+           
+          <a
+            class="euiLink euiLink--primary"
+            href="https://opensearch.org/docs/im-plugin/ism/index/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more 
+            EuiIconMock
+            EuiIconMock
+            <span
+              class="euiScreenReaderOnly"
+            >
+              (opens in a new tab or window)
+            </span>
+          </a>
+        </p>
+      </div>
     </div>
   </div>
   <div
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -392,7 +402,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  aria-describedby="some_html_id-help"
+                  aria-describedby="some_html_id-help-0"
                   class="euiFieldText"
                   id="some_html_id"
                   placeholder="hot_cold_workflow"
@@ -404,7 +414,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
             </div>
             <div
               class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help"
+              id="some_html_id-help-0"
             >
               Specify a unique ID that is easy to recognize and remember.
             </div>
@@ -417,7 +427,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
