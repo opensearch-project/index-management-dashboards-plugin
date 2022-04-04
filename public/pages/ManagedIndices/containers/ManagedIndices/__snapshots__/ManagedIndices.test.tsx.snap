@@ -41,7 +41,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -161,7 +161,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                 >
                   <input
                     aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
-                    class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+                    class="euiFieldSearch euiFieldSearch--fullWidth"
                     placeholder="Search"
                     type="search"
                     value=""
@@ -232,7 +232,6 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
               >
                 <div
                   class="euiPopover euiPopover--anchorDownLeft"
-                  id="QuickSelectPopover"
                 >
                   <div
                     class="euiPopover__anchor euiQuickSelectPopover__anchor"
@@ -397,16 +396,11 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                     >
                       <span
                         class="euiTableCellContent__text"
-                        title="Index; Sorted in descending order"
+                        title="Index"
                       >
                         Index
                       </span>
                       EuiIconMock
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -433,11 +427,6 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                       >
                         Policy
                       </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -448,7 +437,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                   scope="col"
                   style="width: 150px;"
                 >
-                  <div
+                  <span
                     class="euiTableCellContent"
                   >
                     <span
@@ -457,7 +446,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                     >
                       State
                     </span>
-                  </div>
+                  </span>
                 </th>
                 <th
                   class="euiTableHeaderCell"
@@ -466,7 +455,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                   scope="col"
                   style="width: 150px;"
                 >
-                  <div
+                  <span
                     class="euiTableCellContent"
                   >
                     <span
@@ -475,7 +464,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                     >
                       Action
                     </span>
-                  </div>
+                  </span>
                 </th>
                 <th
                   class="euiTableHeaderCell"
@@ -484,7 +473,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                   scope="col"
                   style="width: 150px;"
                 >
-                  <div
+                  <span
                     class="euiTableCellContent"
                   >
                     <span
@@ -493,7 +482,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                     >
                       Info
                     </span>
-                  </div>
+                  </span>
                 </th>
                 <th
                   class="euiTableHeaderCell"
@@ -502,7 +491,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                   scope="col"
                   style="width: 150px;"
                 >
-                  <div
+                  <span
                     class="euiTableCellContent"
                   >
                     <span
@@ -511,7 +500,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                     >
                       Job Status
                     </span>
-                  </div>
+                  </span>
                 </th>
               </tr>
             </thead>

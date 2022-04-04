@@ -6,6 +6,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
 >
   <div
     class="euiFlyoutBody__overflow"
+    tabindex="0"
   >
     <div
       class="euiFlyoutBody__overflowContent"
@@ -29,6 +30,12 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         >
           Learn more 
           EuiIconMock
+          EuiIconMock
+          <span
+            class="euiScreenReaderOnly"
+          >
+            (opens in a new tab or window)
+          </span>
         </a>
       </div>
       <div
@@ -378,8 +385,11 @@ exports[`<CreateAction /> spec renders the component 1`] = `
           </button>
         </div>
         <div
+          aria-labelledby="some_html_id"
           class="euiAccordion__childWrapper"
           id="timeout-retry-settings"
+          role="region"
+          tabindex="-1"
         >
           <div>
             <div

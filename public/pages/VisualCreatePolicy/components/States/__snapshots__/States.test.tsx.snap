@@ -2,7 +2,7 @@
 
 exports[`<States /> spec renders the component 1`] = `
 <div
-  class="euiPanel euiPanel--paddingMedium"
+  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   style="padding-left: 0px; padding-right: 0px;"
 >
   <div
@@ -39,6 +39,12 @@ exports[`<States /> spec renders the component 1`] = `
             >
               Learn more 
               EuiIconMock
+              EuiIconMock
+              <span
+                class="euiScreenReaderOnly"
+              >
+                (opens in a new tab or window)
+              </span>
             </a>
           </p>
         </div>
@@ -55,7 +61,7 @@ exports[`<States /> spec renders the component 1`] = `
       style="padding: 0px 10px;"
     >
       <div
-        class="euiFormRow euiFormRow--compressed"
+        class="euiFormRow"
         id="some_html_id-row"
         style="max-width: 300px; padding: 15px;"
       >
@@ -154,7 +160,7 @@ exports[`<States /> spec renders the component 1`] = `
                       class="euiFlexItem euiFlexItem--flexGrowZero"
                     >
                       <div
-                        class="euiPanel"
+                        class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                       >
                         <div
                           class="euiText euiText--extraSmall"
@@ -231,7 +237,7 @@ exports[`<States /> spec renders the component 1`] = `
                     >
                       <button
                         aria-label="Delete"
-                        class="euiButtonIcon euiButtonIcon--danger"
+                        class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--xSmall"
                         data-test-subj="state-delete-button"
                         type="button"
                       >
@@ -247,7 +253,7 @@ exports[`<States /> spec renders the component 1`] = `
                     >
                       <button
                         aria-label="Edit"
-                        class="euiButtonIcon euiButtonIcon--primary"
+                        class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
                         type="button"
                       >
                         EuiIconMock
@@ -258,8 +264,11 @@ exports[`<States /> spec renders the component 1`] = `
               </div>
             </div>
             <div
+              aria-labelledby="some_html_id"
               class="euiAccordion__childWrapper"
               id="hot"
+              role="region"
+              tabindex="-1"
             >
               <div>
                 <div
@@ -290,7 +299,7 @@ exports[`<States /> spec renders the component 1`] = `
                           class="euiFlexItem euiFlexItem--flexGrowZero"
                         >
                           <div
-                            class="euiPanel euiPanel--paddingMedium"
+                            class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                           >
                             Set number of replicas to 5
                           </div>
@@ -318,7 +327,7 @@ exports[`<States /> spec renders the component 1`] = `
                           class="euiFlexItem euiFlexItem--flexGrowZero"
                         >
                           <div
-                            class="euiPanel euiPanel--paddingMedium"
+                            class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                           >
                             <div
                               class="euiText euiText--medium"
@@ -432,7 +441,7 @@ exports[`<States /> spec renders the component 1`] = `
                     >
                       <button
                         aria-label="Delete"
-                        class="euiButtonIcon euiButtonIcon--danger"
+                        class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--xSmall"
                         data-test-subj="state-delete-button"
                         type="button"
                       >
@@ -448,7 +457,7 @@ exports[`<States /> spec renders the component 1`] = `
                     >
                       <button
                         aria-label="Edit"
-                        class="euiButtonIcon euiButtonIcon--primary"
+                        class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
                         type="button"
                       >
                         EuiIconMock
@@ -459,8 +468,11 @@ exports[`<States /> spec renders the component 1`] = `
               </div>
             </div>
             <div
+              aria-labelledby="some_html_id"
               class="euiAccordion__childWrapper"
               id="cold"
+              role="region"
+              tabindex="-1"
             >
               <div>
                 <div
@@ -491,7 +503,7 @@ exports[`<States /> spec renders the component 1`] = `
                           class="euiFlexItem euiFlexItem--flexGrowZero"
                         >
                           <div
-                            class="euiPanel euiPanel--paddingMedium"
+                            class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                           >
                             Set number of replicas to 2
                           </div>

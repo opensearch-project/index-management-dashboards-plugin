@@ -49,6 +49,7 @@ exports[`<ISMTemplate /> spec renders the component 1`] = `
                       aria-label="Remove * from selection in this group"
                       class="euiBadge__iconButton"
                       title="Remove * from selection in this group"
+                      type="button"
                     >
                       EuiIconMock
                     </button>

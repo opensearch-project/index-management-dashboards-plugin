@@ -41,7 +41,7 @@ exports[`<State /> spec renders the component 1`] = `
             class="euiFlexItem euiFlexItem--flexGrowZero"
           >
             <div
-              class="euiPanel"
+              class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
             >
               <div
                 class="euiText euiText--extraSmall"
@@ -118,7 +118,7 @@ exports[`<State /> spec renders the component 1`] = `
           >
             <button
               aria-label="Delete"
-              class="euiButtonIcon euiButtonIcon--danger"
+              class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--xSmall"
               data-test-subj="state-delete-button"
               type="button"
             >
@@ -134,7 +134,7 @@ exports[`<State /> spec renders the component 1`] = `
           >
             <button
               aria-label="Edit"
-              class="euiButtonIcon euiButtonIcon--primary"
+              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
               type="button"
             >
               EuiIconMock
@@ -145,8 +145,11 @@ exports[`<State /> spec renders the component 1`] = `
     </div>
   </div>
   <div
+    aria-labelledby="some_html_id"
     class="euiAccordion__childWrapper"
     id="some_name"
+    role="region"
+    tabindex="-1"
   >
     <div>
       <div
@@ -177,7 +180,7 @@ exports[`<State /> spec renders the component 1`] = `
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium"
+                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
                   Close
                 </div>
@@ -186,7 +189,7 @@ exports[`<State /> spec renders the component 1`] = `
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium"
+                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
                   Open
                 </div>
@@ -195,7 +198,7 @@ exports[`<State /> spec renders the component 1`] = `
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium"
+                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
                   Delete
                 </div>
@@ -223,7 +226,7 @@ exports[`<State /> spec renders the component 1`] = `
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <div
-                  class="euiPanel euiPanel--paddingMedium"
+                  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
                 >
                   <div
                     class="euiText euiText--medium"

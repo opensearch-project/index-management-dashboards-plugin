@@ -11,18 +11,18 @@ import CreatePolicyModal from "./CreatePolicyModal";
 describe("<CreatePolicyModal /> spec", () => {
   it("renders the component", () => {
     render(<CreatePolicyModal isEdit={false} onClose={() => {}} onClickContinue={() => {}} />);
-    // EuiOverlayMask appends an element to the body so we should have two, an empty div from react-test-library
+    // EuiOverlayMask appends an element to the body so we should have three (used to be two, after upgrading appears to have 3 now), an empty div from react-test-library
     // and our EuiOverlayMask element
-    expect(document.body.children).toHaveLength(2);
-    expect(document.body.children[1]).toMatchSnapshot();
+    expect(document.body.children).toHaveLength(3);
+    expect(document.body.children[2]).toMatchSnapshot();
   });
 
   it("renders the component w/ edit", () => {
     render(<CreatePolicyModal isEdit={true} onClose={() => {}} onClickContinue={() => {}} />);
-    // EuiOverlayMask appends an element to the body so we should have two, an empty div from react-test-library
+    // EuiOverlayMask appends an element to the body so we should have three (used to be two, after upgrading appears to have 3 now), an empty div from react-test-library
     // and our EuiOverlayMask element
-    expect(document.body.children).toHaveLength(2);
-    expect(document.body.children[1]).toMatchSnapshot();
+    expect(document.body.children).toHaveLength(3);
+    expect(document.body.children[2]).toMatchSnapshot();
   });
 
   it("calls onAction and onCLose when action button clicked", () => {

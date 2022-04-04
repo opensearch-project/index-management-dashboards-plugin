@@ -27,8 +27,11 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
     </button>
   </div>
   <div
+    aria-labelledby="some_html_id"
     class="euiAccordion__childWrapper"
     id="timeout-retry-settings"
+    role="region"
+    tabindex="-1"
   >
     <div>
       <div

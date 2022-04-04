@@ -13,7 +13,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -61,7 +61,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              aria-describedby="some_html_id-help"
+              aria-describedby="some_html_id-help-0"
               aria-expanded="false"
               aria-haspopup="listbox"
               class="euiComboBox"
@@ -112,7 +112,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             </div>
             <div
               class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help"
+              id="some_html_id-help-0"
             >
               You can use * as wildcards to form index patterns.
             </div>
@@ -136,7 +136,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              aria-describedby="some_html_id-help"
+              aria-describedby="some_html_id-help-0"
               aria-expanded="false"
               aria-haspopup="listbox"
               class="euiComboBox euiComboBox-isDisabled"
@@ -194,7 +194,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             </div>
             <div
               class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help"
+              id="some_html_id-help-0"
             >
               Apply new policy only on managed indices in these states.
             </div>
@@ -207,7 +207,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -247,6 +247,12 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             >
               Learn more 
               EuiIconMock
+              EuiIconMock
+              <span
+                class="euiScreenReaderOnly"
+              >
+                (opens in a new tab or window)
+              </span>
             </a>
           </p>
         </div>

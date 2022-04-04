@@ -5,7 +5,7 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
   style="padding: 25px 25px;"
 >
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -117,7 +117,7 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+                class="euiFieldSearch euiFieldSearch--fullWidth"
                 placeholder="Search"
                 type="search"
                 value=""
@@ -149,7 +149,6 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
               >
                 <div
                   class="euiPopover euiPopover--anchorDownLeft"
-                  id="QuickSelectPopover"
                 >
                   <div
                     class="euiPopover__anchor euiQuickSelectPopover__anchor"
@@ -314,16 +313,11 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
                     >
                       <span
                         class="euiTableCellContent__text"
-                        title="Policy; Sorted in descending order"
+                        title="Policy"
                       >
                         Policy
                       </span>
                       EuiIconMock
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -350,11 +344,6 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
                       >
                         Description
                       </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -380,11 +369,6 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
                         title="Last updated time"
                       >
                         Last updated time
-                      </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
                       </span>
                     </span>
                   </button>

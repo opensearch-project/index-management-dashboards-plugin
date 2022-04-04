@@ -22,7 +22,7 @@ exports[`<ManagedIndexControls /> spec renders data streams selection field 1`] 
           >
             <input
               aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
-              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+              class="euiFieldSearch euiFieldSearch--fullWidth"
               placeholder="Search"
               type="search"
               value=""
@@ -131,7 +131,6 @@ exports[`<ManagedIndexControls /> spec renders data streams selection field 1`] 
         >
           <div
             class="euiPopover euiPopover--anchorDownLeft"
-            id="QuickSelectPopover"
           >
             <div
               class="euiPopover__anchor euiQuickSelectPopover__anchor"
@@ -279,7 +278,6 @@ exports[`<ManagedIndexControls /> spec renders the component 1`] = `
         >
           <div
             class="euiPopover euiPopover--anchorDownLeft"
-            id="QuickSelectPopover"
           >
             <div
               class="euiPopover__anchor euiQuickSelectPopover__anchor"

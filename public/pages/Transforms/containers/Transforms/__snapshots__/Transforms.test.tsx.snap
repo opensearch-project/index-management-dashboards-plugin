@@ -5,7 +5,7 @@ exports[`<Transforms /> spec renders the component 1`] = `
   style="padding: 25px 25px;"
 >
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -157,7 +157,7 @@ exports[`<Transforms /> spec renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+                class="euiFieldSearch euiFieldSearch--fullWidth"
                 placeholder="Search"
                 type="search"
                 value=""
@@ -297,16 +297,11 @@ exports[`<Transforms /> spec renders the component 1`] = `
                     >
                       <span
                         class="euiTableCellContent__text"
-                        title="Name; Sorted in descending order"
+                        title="Name"
                       >
                         Name
                       </span>
                       EuiIconMock
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -331,11 +326,6 @@ exports[`<Transforms /> spec renders the component 1`] = `
                         title="Source index"
                       >
                         Source index
-                      </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
                       </span>
                     </span>
                   </button>
@@ -362,11 +352,6 @@ exports[`<Transforms /> spec renders the component 1`] = `
                       >
                         Target index
                       </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -391,11 +376,6 @@ exports[`<Transforms /> spec renders the component 1`] = `
                         title="Job state"
                       >
                         Job state
-                      </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
                       </span>
                     </span>
                   </button>
@@ -422,11 +402,6 @@ exports[`<Transforms /> spec renders the component 1`] = `
                       >
                         Continuous
                       </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -452,11 +427,6 @@ exports[`<Transforms /> spec renders the component 1`] = `
                       >
                         Last updated time
                       </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -466,7 +436,7 @@ exports[`<Transforms /> spec renders the component 1`] = `
                   role="columnheader"
                   scope="col"
                 >
-                  <div
+                  <span
                     class="euiTableCellContent"
                   >
                     <span
@@ -475,7 +445,7 @@ exports[`<Transforms /> spec renders the component 1`] = `
                     >
                       Transform job status
                     </span>
-                  </div>
+                  </span>
                 </th>
               </tr>
             </thead>
