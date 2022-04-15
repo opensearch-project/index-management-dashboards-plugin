@@ -202,6 +202,12 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           </DarkModeConsumer>
         </EuiFormRow>
         <EuiSpacer size="s" />
+        <EuiCallOut color="warning" hidden={!this.action.shrink.force_unsafe}>
+          <p>
+            Warning: shrinking without replicas will allocate all primaries to one node, which could result in a complete loss of the index
+            in the case of a node crashing.
+          </p>
+        </EuiCallOut>
         <EuiFormCustomLabel
           title="Force unsafe"
           helpText={`If this is set to 'No' then the shrink action will fail for indices which do not have replica shards.`}
