@@ -176,6 +176,20 @@ export interface RolloverAction extends Action {
   };
 }
 
+export interface ShrinkAction extends Action {
+  shrink: {
+    num_new_shards?: number;
+    max_shard_size?: string;
+    percentage_of_source_shards?: number;
+    target_index_name_template?: MessageTemplate;
+    aliases?: object[];
+    force_unsafe?: boolean;
+  };
+  aliases_json?: string;
+  force_unsafe_input?: string;
+  target_index_name_template_json?: string;
+}
+
 export interface UITransition {
   transition: Transition;
   id: string;
