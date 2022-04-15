@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiCodeEditor, EuiFieldNumber, EuiFieldText, EuiSpacer, EuiRadioGroup, EuiCallOut } from "@elastic/eui";
+import { EuiFormRow, EuiCodeEditor, EuiFieldText, EuiSpacer, EuiRadioGroup, EuiCallOut } from "@elastic/eui";
 import { ShrinkAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -177,6 +177,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           helpText={`The mustache template to use to form the name of the output shrunken index.
           If not provided, a default suffix of "_shrunken" will be appended.`}
           isInvalid={!this.isValidIndexNameTemplateJson()}
+          isOptional={true}
         />
         <EuiFormRow fullWidth isInvalid={!this.isValidIndexNameTemplateJson()} error={null} style={{ maxWidth: "100%" }}>
           <DarkModeConsumer>
@@ -230,6 +231,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           title="Aliases"
           helpText={`The aliases to be applied to the output shrunken index.`}
           isInvalid={!this.isValidAliasesJson()}
+          isOptional={true}
         />
         <EuiFormRow fullWidth isInvalid={!this.isValidAliasesJson()} error={null} style={{ maxWidth: "100%" }}>
           <DarkModeConsumer>
@@ -263,8 +265,6 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
     const shrink = { ...this.action };
     if (shrink.aliases_json != null) {
       shrink.shrink.aliases = JSON.parse(shrink.aliases_json as string);
-      console.log(shrink.aliases_json as string);
-      console.log((shrink.shrink.aliases as Object[])[0]);
     }
     if (shrink.target_index_name_template_json != null) {
       shrink.shrink.target_index_name_template = JSON.parse(shrink.target_index_name_template_json as string);
@@ -272,7 +272,6 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
     delete shrink.aliases_json;
     delete shrink.force_unsafe_input;
     delete shrink.target_index_name_template_json;
-    console.log(shrink);
     return shrink;
   };
 }
