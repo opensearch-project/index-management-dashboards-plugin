@@ -67,5 +67,5 @@ export function getSearchString(terms?: string[], indices?: string[], dataStream
   // If the search string is blank, then '*' is used to match everything.
   const resolved = [searchTerms, searchIndices, searchDataStreams].filter((value) => value !== "").join(",") || "*";
   // We don't want to fetch managed datastream indices if there are not selected by caller.
-  return showDataStreams ? resolved : resolved + " -.ds"
+  return showDataStreams ? resolved : resolved + " -.ds*";
 }
