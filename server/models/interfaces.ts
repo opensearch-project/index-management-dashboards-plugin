@@ -3,7 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { DataStreamService, IndexService, ManagedIndexService, PolicyService, RollupService, TransformService } from "../services";
+import {
+  DataStreamService,
+  IndexService,
+  ManagedIndexService,
+  PolicyService,
+  RollupService,
+  TransformService,
+  NotificationService,
+} from "../services";
 import { DocumentPolicy, DocumentRollup, DocumentTransform, ManagedIndexItem, Rollup, Transform } from "../../models/interfaces";
 
 export interface NodeServices {
@@ -13,6 +21,7 @@ export interface NodeServices {
   policyService: PolicyService;
   rollupService: RollupService;
   transformService: TransformService;
+  notificationService: NotificationService;
 }
 
 export interface SearchResponse<T> {
@@ -71,6 +80,21 @@ export interface GetDataStreamsResponse {
 export interface GetDataStreamsAndIndicesNamesResponse {
   dataStreams: string[];
   indices: string[];
+}
+
+export interface GetChannelsResponse {
+  start_index: number;
+  total_hits: number;
+  total_hit_relation: string;
+  feature_channel_list: FeatureChannelList[];
+}
+
+export interface FeatureChannelList {
+  config_id: string;
+  name: string;
+  description: string;
+  config_type: string;
+  is_enabled: boolean;
 }
 
 export interface GetFieldsResponse {
@@ -247,6 +271,7 @@ export interface IndexManagementApi {
   readonly CHANGE_POLICY_BASE: string;
   readonly ROLLUP_JOBS_BASE: string;
   readonly TRANSFORM_BASE: string;
+  readonly CHANNELS_BASE: string;
 }
 
 export interface DefaultHeaders {

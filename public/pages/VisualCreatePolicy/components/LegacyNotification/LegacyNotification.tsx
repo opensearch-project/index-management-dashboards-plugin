@@ -4,15 +4,15 @@
  */
 
 import React from "react";
-import { EuiFormRow, EuiCodeEditor } from "@elastic/eui";
+import { EuiFormRow, EuiCodeEditor, EuiCallOut, EuiButton, EuiSpacer } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { DarkModeConsumer } from "../../../../components/DarkMode";
-import { DEFAULT_LEGACY_ERROR_NOTIFICATION } from "../../utils/constants";
 
 interface LegacyNotificationProps {
   notificationJsonString: string;
   onChangeNotificationJsonString: (str: string) => void;
+  onSwitchToChannels: () => void;
   actionNotification?: boolean;
   isInvalid?: boolean;
 }
@@ -20,17 +20,25 @@ interface LegacyNotificationProps {
 const LegacyNotification = ({
   notificationJsonString,
   onChangeNotificationJsonString,
+  onSwitchToChannels,
   actionNotification = false,
   isInvalid = false, // TODO: default to false for error notification for now, but add validation logic for it
 }: LegacyNotificationProps) => {
   return (
     <>
+      <EuiCallOut title="Update your notifications to use Channel ID" iconType="iInCircle" size="s">
+        <p>
+          Using Channel ID will give you more control to manage notifications across OpenSearch dashboards. If you do decide to switch, you
+          will lose your current error notification settings.
+        </p>
+        <EuiButton onClick={onSwitchToChannels}>Switch to using Channel ID</EuiButton>
+      </EuiCallOut>
+      <EuiSpacer size="m" />
       <EuiFormRow fullWidth isInvalid={isInvalid} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor
               mode="json"
-              placeholder={JSON.stringify(DEFAULT_LEGACY_ERROR_NOTIFICATION, null, 4)}
               theme={isDarkMode ? "sense-dark" : "github"}
               width="100%"
               value={notificationJsonString}

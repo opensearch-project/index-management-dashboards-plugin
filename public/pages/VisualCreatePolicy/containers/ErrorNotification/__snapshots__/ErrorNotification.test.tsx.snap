@@ -84,125 +84,152 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
       style="padding: 10px 0px 0px 10px;"
     >
       <div
-        class="euiFormRow euiFormRow--fullWidth"
-        id="some_html_id-row"
-        style="max-width: 100%;"
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Channel ID
+        </h5>
+        <p>
+           
+        </p>
+      </div>
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="max-width: 600px;"
       >
         <div
-          class="euiFormRow__fieldWrapper"
+          class="euiFlexItem"
         >
           <div
-            class="euiCodeEditorWrapper"
-            data-test-subj="create-policy-legacy-notification"
-            style="width: 100%; height: 300px;"
+            class="euiFormRow"
+            id="some_html_id-row"
           >
-            <button
-              class="euiCodeEditorKeyboardHint"
-              data-test-subj="codeEditorHint"
-              id="some_html_id"
-            >
-              <p
-                class="euiText"
-              >
-                Press Enter to start editing.
-              </p>
-              <p
-                class="euiText"
-              >
-                When you're done, press Escape to stop editing.
-              </p>
-            </button>
             <div
-              class=" ace_editor ace-tm"
-              id="some_html_id"
-              style="width: 100%; height: 300px; font-size: 14px;"
+              class="euiFormRow__fieldWrapper"
             >
-              <textarea
-                aria-label="Code Editor"
-                autocapitalize="off"
-                autocorrect="off"
-                class="ace_text-input"
-                spellcheck="false"
-                style="opacity: 0;"
-                tabindex="-1"
-                wrap="off"
-              />
               <div
-                aria-hidden="true"
-                class="ace_gutter"
+                class="euiFormControlLayout"
               >
                 <div
-                  class="ace_layer ace_gutter-layer ace_folding-enabled"
-                />
-                <div
-                  class="ace_gutter-active-line"
-                />
-              </div>
-              <div
-                class="ace_scroller"
-              >
-                <div
-                  class="ace_content"
+                  class="euiFormControlLayout__childrenWrapper"
                 >
-                  <div
-                    class="ace_layer ace_print-margin-layer"
+                  <select
+                    class="euiSelect euiSelect-isLoading"
+                    data-test-subj="create-policy-notification-channel-id"
+                    id="some_html_id"
+                    placeholder="Select channel ID"
                   >
-                    <div
-                      class="ace_print-margin"
-                      style="left: 4px; visibility: visible;"
-                    />
-                  </div>
+                    <option
+                      disabled=""
+                      hidden=""
+                      style="display: none;"
+                      value=""
+                    >
+                       
+                    </option>
+                  </select>
                   <div
-                    class="ace_layer ace_marker-layer"
-                  />
-                  <div
-                    class="ace_layer ace_text-layer"
-                    style="padding: 0px 4px;"
-                  />
-                  <div
-                    class="ace_layer ace_marker-layer"
-                  />
-                  <div
-                    class="ace_layer ace_cursor-layer ace_hidden-cursors"
+                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
-                    <div
-                      class="ace_cursor"
+                    <span
+                      class="euiLoadingSpinner euiLoadingSpinner--medium"
                     />
+                    <span
+                      class="euiFormControlLayoutCustomIcon"
+                    >
+                      EuiIconMock
+                    </span>
                   </div>
-                </div>
-              </div>
-              <div
-                class="ace_scrollbar ace_scrollbar-v"
-                style="display: none; width: 20px;"
-              >
-                <div
-                  class="ace_scrollbar-inner"
-                  style="width: 20px;"
-                />
-              </div>
-              <div
-                class="ace_scrollbar ace_scrollbar-h"
-                style="display: none; height: 20px;"
-              >
-                <div
-                  class="ace_scrollbar-inner"
-                  style="height: 20px;"
-                />
-              </div>
-              <div
-                style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
-              >
-                <div
-                  style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                />
-                <div
-                  style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                >
-                  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <button
+            class="euiButton euiButton--primary euiButton-isDisabled refresh-button"
+            data-test-subj="channel-notification-refresh"
+            disabled=""
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              EuiIconMock
+              <span
+                class="euiButton__text"
+              />
+            </span>
+          </button>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <a
+            class="euiButton euiButton--primary"
+            href="notifications-dashboards#/channels"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              EuiIconMock
+              <span
+                class="euiButton__text"
+              >
+                Manage channels
+              </span>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--m"
+      />
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Notification message
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            Embed variables in your message using Mustache template.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <textarea
+            class="euiTextArea euiTextArea--resizeVertical euiTextArea--compressed"
+            data-test-subj="create-policy-notification-message"
+            id="some_html_id"
+            placeholder="The index {{ctx.index}} failed during policy execution."
+            rows="3"
+            style="min-height: 150px;"
+          >
+            some source message
+          </textarea>
         </div>
       </div>
     </div>
