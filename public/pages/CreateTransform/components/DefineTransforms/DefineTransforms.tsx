@@ -51,36 +51,38 @@ export default function DefineTransforms({
   let columns: EuiDataGridColumn[] = [];
 
   fields.map((field: FieldItem) => {
-    columns.push({
-      id: field.label,
-      display: isReadOnly ? (
-        <div>
-          <EuiToolTip content={field.label}>
-            <EuiText size="s">
-              <b>{field.label}</b>
-            </EuiText>
-          </EuiToolTip>
-        </div>
-      ) : (
-        <TransformOptions
-          name={field.label}
-          type={field.type}
-          selectedGroupField={selectedGroupField}
-          onGroupSelectionChange={onGroupSelectionChange}
-          aggList={aggList}
-          selectedAggregations={selectedAggregations}
-          onAggregationSelectionChange={onAggregationSelectionChange}
-        />
-      ),
-      schema: field.type,
-      actions: {
-        showHide: false,
-        showMoveLeft: false,
-        showMoveRight: false,
-        showSortAsc: false,
-        showSortDesc: false,
-      },
-    });
+      if (field.type !== "alias") {
+          columns.push({
+              id: field.label,
+              display: isReadOnly ? (
+                  <div>
+                      <EuiToolTip content={field.label}>
+                          <EuiText size="s">
+                              <b>{field.label}</b>
+                          </EuiText>
+                      </EuiToolTip>
+                  </div>
+              ) : (
+                  <TransformOptions
+                      name={field.label}
+                      type={field.type}
+                      selectedGroupField={selectedGroupField}
+                      onGroupSelectionChange={onGroupSelectionChange}
+                      aggList={aggList}
+                      selectedAggregations={selectedAggregations}
+                      onAggregationSelectionChange={onAggregationSelectionChange}
+                  />
+              ),
+              schema: field.type,
+              actions: {
+                  showHide: false,
+                  showMoveLeft: false,
+                  showMoveRight: false,
+                  showSortAsc: false,
+                  showSortDesc: false,
+              },
+          });
+      };
   });
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -146,12 +148,11 @@ export default function DefineTransforms({
         return data[rowIndex]._source[correspondingTextColumnId] ? data[rowIndex]._source[correspondingTextColumnId] : "-";
       } else if (columns?.find((column) => column.id == columnId).schema == "date") {
         return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
-      } else if (columns?.find((column) => column.id == columnId).schema == "geo_point") {
-        return data[rowIndex].source[columndId] ? data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon : "-";
       } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
         return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
       }
-      return data[rowIndex]._source[columnId] !== null ? JSON.stringify(data[rowIndex]._source[columnId]) : "-";
+      const val = data[rowIndex]._source[columnId];
+      return val !== undefined ? JSON.stringify(val) : "-";
     }
     return "-";
   };
