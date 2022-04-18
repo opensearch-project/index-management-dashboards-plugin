@@ -15,6 +15,7 @@ import ReadWriteUIAction from "./ReadWriteUIAction";
 import ReplicaCountUIAction from "./ReplicaCountUIAction";
 import RolloverUIAction from "./RolloverUIAction";
 import RollupUIAction from "./RollupUIAction";
+import ShrinkUIAction from "./ShrinkUIAction";
 import SnapshotUIAction from "./SnapshotUIAction";
 
 export {
@@ -30,5 +31,6 @@ export {
   ReplicaCountUIAction,
   RolloverUIAction,
   RollupUIAction,
+  ShrinkUIAction,
   SnapshotUIAction,
 };

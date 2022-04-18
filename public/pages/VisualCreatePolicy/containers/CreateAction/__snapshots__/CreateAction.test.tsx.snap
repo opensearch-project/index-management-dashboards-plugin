@@ -150,6 +150,11 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                   Rollup
                 </option>
                 <option
+                  value="shrink"
+                >
+                  Shrink
+                </option>
+                <option
                   value="snapshot"
                 >
                   Snapshot

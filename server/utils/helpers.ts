@@ -59,13 +59,13 @@ export function getSearchString(terms?: string[], indices?: string[], dataStream
   // Terms are searched with a wildcard around them.
   const searchTerms = terms ? `*${_.castArray(terms).join("*,*")}*` : "";
 
-  // Indices and data streams are searched with an exact match.
-  const searchIndices = indices ? _.castArray(indices).join(",") : "";
-  const searchDataStreams = dataStreams ? _.castArray(dataStreams).join(",") : "";
+  // Indices and data streams are searched with wildcards around them.
+  const searchIndices = indices ? `*${_.castArray(indices).join("*,*")}*` : "";
+  const searchDataStreams = dataStreams ? `*${_.castArray(dataStreams).join("*,*")}*` : "";
 
   // The overall search string is a combination of terms, indices, and data streams.
   // If the search string is blank, then '*' is used to match everything.
   const resolved = [searchTerms, searchIndices, searchDataStreams].filter((value) => value !== "").join(",") || "*";
   // We don't want to fetch managed datastream indices if there are not selected by caller.
-  return showDataStreams ? resolved : resolved + " -.ds"
+  return showDataStreams ? resolved : resolved + " -.ds*";
 }

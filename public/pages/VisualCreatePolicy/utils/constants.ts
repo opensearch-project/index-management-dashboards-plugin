@@ -18,6 +18,7 @@ export enum ActionType {
   ReplicaCount = "replica_count",
   Rollover = "rollover",
   Rollup = "rollup",
+  Shrink = "shrink",
   Snapshot = "snapshot",
 }
 
@@ -170,6 +171,18 @@ export const DEFAULT_ROLLUP = {
     ),
   },
 };
+
+export const DEFAULT_SHRINK = {
+  shrink: {
+    percentage_of_source_shards: 0.5,
+    force_unsafe: false,
+    target_index_name_template: {
+      source: "{{ctx.index}}_shrunken",
+    },
+  },
+  force_unsafe_input: "no",
+};
+
 export const DEFAULT_SNAPSHOT = {
   snapshot: {
     repository: "example-repository",
@@ -190,6 +203,7 @@ export const actions = [
   DEFAULT_REPLICA_COUNT,
   DEFAULT_ROLLOVER,
   DEFAULT_ROLLUP,
+  DEFAULT_SHRINK,
   DEFAULT_SNAPSHOT,
 ];
 

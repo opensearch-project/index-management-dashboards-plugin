@@ -18,6 +18,7 @@ import {
   DEFAULT_REPLICA_COUNT,
   DEFAULT_ROLLOVER,
   DEFAULT_ROLLUP,
+  DEFAULT_SHRINK,
   DEFAULT_SNAPSHOT,
 } from "./constants";
 import {
@@ -33,6 +34,7 @@ import {
   ReplicaCountUIAction,
   RolloverUIAction,
   RollupUIAction,
+  ShrinkUIAction,
   SnapshotUIAction,
 } from "../components/UIActions";
 
@@ -89,6 +91,8 @@ export const getUIAction = (actionType: string): UIAction<any> => {
       return new RolloverUIAction(DEFAULT_ROLLOVER);
     case ActionType.Rollup:
       return new RollupUIAction(DEFAULT_ROLLUP);
+    case ActionType.Shrink:
+      return new ShrinkUIAction(DEFAULT_SHRINK);
     case ActionType.Snapshot:
       return new SnapshotUIAction(DEFAULT_SNAPSHOT);
     default:
@@ -110,6 +114,7 @@ class ActionRepository {
     replica_count: [ReplicaCountUIAction, DEFAULT_REPLICA_COUNT],
     rollover: [RolloverUIAction, DEFAULT_ROLLOVER],
     rollup: [RollupUIAction, DEFAULT_ROLLUP],
+    shrink: [ShrinkUIAction, DEFAULT_SHRINK],
     snapshot: [SnapshotUIAction, DEFAULT_SNAPSHOT],
   };
 
