@@ -114,7 +114,7 @@ export const isNumericMapping = (fieldType: string | undefined): boolean => {
 };
 
 export const compareFieldItem = (itemA: FieldItem, itemB: FieldItem): boolean => {
-  return itemB.label == itemA.label && itemA.type == itemB.type;
+  return itemB.label == itemA.label && itemA.type == itemB.type && itemA.path == itemB.path;
 };
 
 export const parseFieldOptions = (prefix: string, mappings: any): FieldItem[] => {

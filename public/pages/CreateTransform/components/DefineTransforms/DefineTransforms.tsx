@@ -140,21 +140,28 @@ export default function DefineTransforms({
 
   const renderCellValue = ({ rowIndex, columnId }) => {
     if (!loading && data.hasOwnProperty(rowIndex)) {
-      if (columns?.find((column) => column.id == columnId).schema == "keyword") {
-        // Remove the keyword postfix for getting correct data from array
-        const correspondingTextColumnId = columnId.replace(".keyword", "");
-        return data[rowIndex]._source[correspondingTextColumnId] ? data[rowIndex]._source[correspondingTextColumnId] : "-";
-      } else if (columns?.find((column) => column.id == columnId).schema == "date") {
-        return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
-      } else if (columns?.find((column) => column.id == columnId).schema == "geo_point") {
-        return data[rowIndex].source[columndId] ? data[rowIndex]._source[columnId].lat + ", " + data[rowIndex]._source[columnId].lon : "-";
-      } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
-        return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
+      let lookupId = columnId;
+      if (columns?.find((column) => column.id == columnId).schema == "alias") {
+        lookupId = columns?.find((column) => column.id == columnId).path;
       }
-      return data[rowIndex]._source[columnId] !== null ? JSON.stringify(data[rowIndex]._source[columnId]) : "-";
+      return getColumnValue(rowIndex, lookupId);
     }
     return "-";
   };
+
+  const getColumnValue = (rowIndex, columnId) => {
+    if (columns?.find((column) => column.id == columnId).schema == "keyword") {
+      // Remove the keyword postfix for getting correct data from array
+      const correspondingTextColumnId = columnId.replace(".keyword", "");
+      return data[rowIndex]._source[correspondingTextColumnId] ? data[rowIndex]._source[correspondingTextColumnId] : "-";
+    } else if (columns?.find((column) => column.id == columnId).schema == "date") {
+      return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
+    } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
+      return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
+    }
+    const val = data[rowIndex]._source[columnId];
+    return val !== undefined ? JSON.stringify(val) : "-";
+  }
 
   //TODO: remove duplicate code here after extracting the first table as separate component
   if (isReadOnly)
