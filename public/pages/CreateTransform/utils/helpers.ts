@@ -43,7 +43,7 @@ export const parseFieldOptions = (prefix: string, mappings: any): FieldItem[] =>
   for (let field in mappings) {
     if (mappings.hasOwnProperty(field)) {
       if (mappings[field].type != "object" && mappings[field].type != null && mappings[field].type != "nested")
-        fieldsOption.push({ label: prefix + field, type: mappings[field].type });
+        fieldsOption.push({ label: prefix + field, type: mappings[field].type, path: mappings[field].path});
       if (mappings[field].fields != null)
         fieldsOption = fieldsOption.concat(parseFieldOptions(prefix + field + ".", mappings[field].fields));
       if (mappings[field].properties != null)

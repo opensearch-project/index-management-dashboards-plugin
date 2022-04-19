@@ -379,6 +379,7 @@ export interface MetricItem {
 export interface FieldItem {
   label: string;
   type: string | undefined;
+  path: string | undefined;
 }
 
 interface DateHistogramItem {

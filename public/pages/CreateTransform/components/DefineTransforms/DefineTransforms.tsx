@@ -51,38 +51,36 @@ export default function DefineTransforms({
   let columns: EuiDataGridColumn[] = [];
 
   fields.map((field: FieldItem) => {
-      if (field.type !== "alias") {
-          columns.push({
-              id: field.label,
-              display: isReadOnly ? (
-                  <div>
-                      <EuiToolTip content={field.label}>
-                          <EuiText size="s">
-                              <b>{field.label}</b>
-                          </EuiText>
-                      </EuiToolTip>
-                  </div>
-              ) : (
-                  <TransformOptions
-                      name={field.label}
-                      type={field.type}
-                      selectedGroupField={selectedGroupField}
-                      onGroupSelectionChange={onGroupSelectionChange}
-                      aggList={aggList}
-                      selectedAggregations={selectedAggregations}
-                      onAggregationSelectionChange={onAggregationSelectionChange}
-                  />
-              ),
-              schema: field.type,
-              actions: {
-                  showHide: false,
-                  showMoveLeft: false,
-                  showMoveRight: false,
-                  showSortAsc: false,
-                  showSortDesc: false,
-              },
-          });
-      };
+    columns.push({
+      id: field.label,
+      display: isReadOnly ? (
+        <div>
+          <EuiToolTip content={field.label}>
+            <EuiText size="s">
+              <b>{field.label}</b>
+            </EuiText>
+          </EuiToolTip>
+        </div>
+      ) : (
+        <TransformOptions
+          name={field.label}
+          type={field.type}
+          selectedGroupField={selectedGroupField}
+          onGroupSelectionChange={onGroupSelectionChange}
+          aggList={aggList}
+          selectedAggregations={selectedAggregations}
+          onAggregationSelectionChange={onAggregationSelectionChange}
+        />
+      ),
+      schema: field.type,
+      actions: {
+        showHide: false,
+        showMoveLeft: false,
+        showMoveRight: false,
+        showSortAsc: false,
+        showSortDesc: false,
+      },
+    });
   });
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -142,20 +140,28 @@ export default function DefineTransforms({
 
   const renderCellValue = ({ rowIndex, columnId }) => {
     if (!loading && data.hasOwnProperty(rowIndex)) {
-      if (columns?.find((column) => column.id == columnId).schema == "keyword") {
-        // Remove the keyword postfix for getting correct data from array
-        const correspondingTextColumnId = columnId.replace(".keyword", "");
-        return data[rowIndex]._source[correspondingTextColumnId] ? data[rowIndex]._source[correspondingTextColumnId] : "-";
-      } else if (columns?.find((column) => column.id == columnId).schema == "date") {
-        return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
-      } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
-        return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
+      let lookupId = columnId;
+      if (columns?.find((column) => column.id == columnId).schema == "alias") {
+        lookupId = columns?.find((column) => column.id == columnId).path;
       }
-      const val = data[rowIndex]._source[columnId];
-      return val !== undefined ? JSON.stringify(val) : "-";
+      return getColumnValue(rowIndex, lookupId);
     }
     return "-";
   };
+
+  const getColumnValue = (rowIndex, columnId) => {
+    if (columns?.find((column) => column.id == columnId).schema == "keyword") {
+      // Remove the keyword postfix for getting correct data from array
+      const correspondingTextColumnId = columnId.replace(".keyword", "");
+      return data[rowIndex]._source[correspondingTextColumnId] ? data[rowIndex]._source[correspondingTextColumnId] : "-";
+    } else if (columns?.find((column) => column.id == columnId).schema == "date") {
+      return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
+    } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
+      return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
+    }
+    const val = data[rowIndex]._source[columnId];
+    return val !== undefined ? JSON.stringify(val) : "-";
+  }
 
   //TODO: remove duplicate code here after extracting the first table as separate component
   if (isReadOnly)
