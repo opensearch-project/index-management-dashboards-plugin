@@ -86,7 +86,7 @@ export interface GetChannelsResponse {
   start_index: number;
   total_hits: number;
   total_hit_relation: string;
-  feature_channel_list: FeatureChannelList[];
+  channel_list: FeatureChannelList[];
 }
 
 export interface FeatureChannelList {

@@ -41,7 +41,7 @@ class NotifUI extends React.Component<NotifUIProps, NotifUIState> {
       const response = await notificationService.getChannels();
       if (response.ok) {
         this.setState({
-          channels: response.response.feature_channel_list,
+          channels: response.response.channel_list,
         });
       } else {
         this.context.notifications.toasts.addDanger(`Could not load notification channels: ${response.error}`);
@@ -141,11 +141,28 @@ export default class NotificationUIAction implements UIAction<NotificationAction
   action: NotificationAction;
   type = ActionType.Notification;
 
-  constructor(action: NotificationAction, id: string = makeId(), useNotificationString: boolean = false) {
-    let notificationJsonString = JSON.stringify(action.notification, null, 4);
-    if (useNotificationString) {
+  /**
+   * For render purposes we use notificationJsonString if it's a legacy notification
+   * For all other cases we render using action's notification field
+   * When action is stored to state we only store action's notification field and discard notificationJSonString
+   *
+   * In the constructor we need to support editing and viewing of both legacy and new notifications:
+   */
+  constructor(action: NotificationAction, id: string = makeId()) {
+    // notificationJsonString is only populated for legacy notifications
+    let notificationJsonString = "";
+
+    // legacy notification - populate notificationJsonString using action.notification to render this information
+    if (!!action.notification.destination) {
+      notificationJsonString = JSON.stringify(action.notification, null, 4);
+    }
+
+    // If action.notificationJsonString is not empty it means the legacy notification is being edited and
+    // action.notification will be stale, we override the notificationJsonString with action.notificationJsonString
+    if (action.notificationJsonString) {
       notificationJsonString = action.notificationJsonString;
     }
+
     this.action = { ...action, notificationJsonString };
     this.id = id;
   }
@@ -154,11 +171,12 @@ export default class NotificationUIAction implements UIAction<NotificationAction
 
   clone = (action: NotificationAction) => new NotificationUIAction(action, this.id);
 
-  cloneUsingString = (action: NotificationAction) => new NotificationUIAction(action, this.id, true);
-
   isValid = () => {
     try {
-      JSON.parse(this.action.notificationJsonString);
+      // validate only if it's not empty
+      if (this.action.notificationJsonString) {
+        JSON.parse(this.action.notificationJsonString);
+      }
       return true;
     } catch (err) {
       console.error(err);
@@ -174,7 +192,7 @@ export default class NotificationUIAction implements UIAction<NotificationAction
             <NotifUI
               onChangeAction={onChangeAction}
               action={this.action}
-              clone={this.cloneUsingString}
+              clone={this.clone}
               isInvalid={!this.isValid()}
               notificationService={services.notificationService}
             />
@@ -188,6 +206,7 @@ export default class NotificationUIAction implements UIAction<NotificationAction
     // If they used legacy json editor use the json string
     const newAction = { ...this.action };
     let notification = newAction.notification;
+    // if notificationJsonString is present it means a legacy notification and we need to generate action.notification using this value
     if (!!newAction.notificationJsonString) {
       notification = JSON.parse(newAction.notificationJsonString);
     }

@@ -53,7 +53,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
       const { notificationService } = this.props;
       const response = await notificationService.getChannels();
       if (response.ok) {
-        this.setState({ channels: response.response.feature_channel_list });
+        this.setState({ channels: response.response.channel_list });
       } else {
         this.context.notifications.toasts.addDanger(`Could not load notification channels: ${response.error}`);
       }
