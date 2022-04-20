@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChannelNotification /> spec renders the component 1`] = `
+<div
+  class="euiText euiText--medium"
+  style="margin-bottom: 5px;"
+>
+  <h5
+    class="euiFormLabel "
+    style="margin-bottom: 2px;"
+  >
+    Channel ID
+  </h5>
+  <p>
+     
+  </p>
+</div>
+`;

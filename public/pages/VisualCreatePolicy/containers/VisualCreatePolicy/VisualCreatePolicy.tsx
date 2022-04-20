@@ -9,7 +9,7 @@ import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import { EMPTY_DEFAULT_POLICY } from "../../utils/constants";
 import { Policy, State } from "../../../../../models/interfaces";
-import { PolicyService } from "../../../../services";
+import { NotificationService, PolicyService } from "../../../../services";
 import { BREADCRUMBS, POLICY_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import PolicyInfo from "../../components/PolicyInfo";
@@ -23,6 +23,7 @@ import ErrorNotification from "../ErrorNotification";
 interface VisualCreatePolicyProps extends RouteComponentProps {
   isEdit: boolean;
   policyService: PolicyService;
+  notificationService: NotificationService;
 }
 
 interface VisualCreatePolicyState {
@@ -123,8 +124,46 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
     this.setState({ policy: policy });
   };
 
+  onChangeChannelId = (e: ChangeEvent<HTMLSelectElement>): void => {
+    const channelId = e.target.value;
+    this.setState((state) => ({
+      policy: {
+        ...state.policy,
+        error_notification: {
+          // Either message_template already exists and it will get
+          // replaced w/ the spread below or it doesn't and we init it here
+          message_template: { source: "", lang: "mustache" },
+          ...state.policy.error_notification,
+          channel: {
+            id: channelId,
+          },
+        },
+      },
+    }));
+  };
+
+  onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+    const source = e.target.value;
+    this.setState((state) => ({
+      policy: {
+        ...state.policy,
+        error_notification: {
+          ...state.policy.error_notification,
+          message_template: {
+            ...state.policy.error_notification?.message_template,
+            source,
+          },
+        },
+      },
+    }));
+  };
+
   onChangeErrorNotificationJsonString = (errorNotificationJsonString: string): void => {
     this.setState({ errorNotificationJsonString });
+  };
+
+  onSwitchToChannels = () => {
+    this.setState((state) => ({ errorNotificationJsonString: "", policy: { ...state.policy, error_notification: null } }));
   };
 
   onOpenFlyout = (): void => this.setState({ showFlyout: true });
@@ -235,7 +274,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
   };
 
   render() {
-    const { isEdit } = this.props;
+    const { isEdit, notificationService } = this.props;
     const { policyId, policyIdError, policy, showFlyout, editingState, errorNotificationJsonString } = this.state;
     return (
       <div style={{ padding: "25px 50px" }}>
@@ -262,8 +301,13 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         />
         <EuiSpacer size="m" />
         <ErrorNotification
+          errorNotification={policy.error_notification}
           errorNotificationJsonString={errorNotificationJsonString}
+          onChangeChannelId={this.onChangeChannelId}
+          onChangeMessage={this.onChangeMessage}
           onChangeErrorNotificationJsonString={this.onChangeErrorNotificationJsonString}
+          onSwitchToChannels={this.onSwitchToChannels}
+          notificationService={notificationService}
         />
         <EuiSpacer size="m" />
         <ISMTemplates policy={policy} onChangePolicy={this.onChangePolicy} />
