@@ -371,7 +371,7 @@ export default function ismPlugin(Client: any, config: any, components: any) {
 
   ism.getChannels = ca({
     url: {
-      fmt: `${API.CHANNELS_BASE}/index_management`,
+      fmt: `${API.CHANNELS_BASE}`,
     },
     method: "GET",
   });
