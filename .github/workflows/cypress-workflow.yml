@@ -3,13 +3,15 @@ on:
   pull_request:
     branches:
       - main
+      - 2.0
   push:
     branches:
       - main
       - development-*
+      - 2.0
 env:
-  OPENSEARCH_DASHBOARDS_VERSION: 'main'
-  OPENSEARCH_VERSION: '2.0.0-rc1-SNAPSHOT'
+  OPENSEARCH_DASHBOARDS_VERSION: '2.0'
+  OPENSEARCH_VERSION: '2.0.0-SNAPSHOT'
 jobs:
   tests:
     name: Run Cypress E2E tests
@@ -30,7 +32,7 @@ jobs:
         with:
           path: index-management
           repository: opensearch-project/index-management
-          ref: 'main'
+          ref: '2.0'
       - name: Run opensearch with plugin
         run: |
           cd index-management
