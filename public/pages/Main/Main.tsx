@@ -37,6 +37,8 @@ enum Navigation {
   Indices = "Indices",
   Rollups = "Rollup Jobs",
   Transforms = "Transform Jobs",
+  SnapshotManagement = "Snapshot Management",
+  Snapshots = "Snapshots",
 }
 
 enum Pathname {
@@ -45,6 +47,7 @@ enum Pathname {
   Indices = "/indices",
   Rollups = "/rollups",
   Transforms = "/transforms",
+  Snapshots = "/snapshots",
 }
 
 const HIDDEN_NAV_ROUTES = [
@@ -105,6 +108,19 @@ export default class Main extends Component<MainProps, object> {
           },
         ],
       },
+      {
+        name: Navigation.SnapshotManagement,
+        id: 1,
+        href: `#${Pathname.Snapshots}`,
+        items: [
+          {
+            name: Navigation.Snapshots,
+            id: 1,
+            href: `#${Pathname.Snapshots}`,
+            isSelected: pathname === Pathname.Snapshots,
+          },
+        ],
+      },
     ];
     return (
       <CoreServicesConsumer>
@@ -118,8 +134,8 @@ export default class Main extends Component<MainProps, object> {
                     <EuiPage restrictWidth="100%">
                       {/*Hide side navigation bar when creating or editing rollup job*/}
                       {!HIDDEN_NAV_ROUTES.includes(pathname) && (
-                        <EuiPageSideBar style={{ minWidth: 150 }}>
-                          <EuiSideNav style={{ width: 150 }} items={sideNav} />
+                        <EuiPageSideBar style={{ minWidth: 200 }}>
+                          <EuiSideNav style={{ width: 200 }} items={sideNav} />
                         </EuiPageSideBar>
                       )}
                       <EuiPageBody>
