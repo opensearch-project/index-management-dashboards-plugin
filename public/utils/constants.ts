@@ -50,6 +50,8 @@ export const BREADCRUMBS = Object.freeze({
   CREATE_TRANSFORM: { text: "Create transform job" },
   EDIT_TRANSFORM: { text: "Edit transform job" },
   TRANSFORM_DETAILS: { text: "Transform details" },
+  SNAPSHOT_MANAGEMENT: { text: "Snapshot Management", href: "#/" },
+  SNAPSHOTS: { text: "Snapshots", href: `#${ROUTES.SNAPSHOTS}` },
 });
 
 // TODO: EUI has a SortDirection already
