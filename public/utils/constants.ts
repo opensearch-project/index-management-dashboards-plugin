@@ -30,6 +30,7 @@ export const ROUTES = Object.freeze({
   CREATE_TRANSFORM: "/create-transform",
   EDIT_TRANSFORM: "/edit-transform",
   TRANSFORM_DETAILS: "/transform-details",
+  SNAPSHOTS: "/snapshots",
 });
 
 export const BREADCRUMBS = Object.freeze({

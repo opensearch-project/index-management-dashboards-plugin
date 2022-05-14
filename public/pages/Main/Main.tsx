@@ -28,6 +28,7 @@ import RollupDetails from "../RollupDetails/containers/RollupDetails";
 import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
 import queryString from "query-string";
+import Snapshots from "../Snapshots";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -123,6 +124,7 @@ export default class Main extends Component<MainProps, object> {
                       )}
                       <EuiPageBody>
                         <Switch>
+                          <Route path={ROUTES.SNAPSHOTS} render={(props: RouteComponentProps) => <Snapshots {...props} />} />
                           <Route
                             path={ROUTES.CHANGE_POLICY}
                             render={(props: RouteComponentProps) => (
