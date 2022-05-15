@@ -15,6 +15,7 @@ import {
   TransformService,
   NotificationService,
   ServicesContext,
+  SnapshotManagementService,
 } from "./services";
 import { DarkModeContext } from "./components/DarkMode";
 import Main from "./pages/Main";
@@ -30,7 +31,16 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
   const rollupService = new RollupService(http);
   const transformService = new TransformService(http);
   const notificationService = new NotificationService(http);
-  const services = { indexService, managedIndexService, policyService, rollupService, transformService, notificationService };
+  const snapshotManagementService = new SnapshotManagementService(http);
+  const services = {
+    indexService,
+    managedIndexService,
+    policyService,
+    rollupService,
+    transformService,
+    notificationService,
+    snapshotManagementService,
+  };
 
   const isDarkMode = coreStart.uiSettings.get("theme:darkMode") || false;
 

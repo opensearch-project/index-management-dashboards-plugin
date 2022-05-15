@@ -140,7 +140,12 @@ export default class Main extends Component<MainProps, object> {
                       )}
                       <EuiPageBody>
                         <Switch>
-                          <Route path={ROUTES.SNAPSHOTS} render={(props: RouteComponentProps) => <Snapshots {...props} />} />
+                          <Route
+                            path={ROUTES.SNAPSHOTS}
+                            render={(props: RouteComponentProps) => (
+                              <Snapshots {...props} snapshotManagementService={services.snapshotManagementService} />
+                            )}
+                          />
                           <Route
                             path={ROUTES.CHANGE_POLICY}
                             render={(props: RouteComponentProps) => (
