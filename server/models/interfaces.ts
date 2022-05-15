@@ -11,6 +11,7 @@ import {
   RollupService,
   TransformService,
   NotificationService,
+  SnapshotManagementService,
 } from "../services";
 import { DocumentPolicy, DocumentRollup, DocumentTransform, ManagedIndexItem, Rollup, Transform } from "../../models/interfaces";
 
@@ -22,6 +23,7 @@ export interface NodeServices {
   rollupService: RollupService;
   transformService: TransformService;
   notificationService: NotificationService;
+  snapshotManagementService: SnapshotManagementService;
 }
 
 export interface SearchResponse<T> {

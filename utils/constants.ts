@@ -20,6 +20,7 @@ export const NODE_API = Object.freeze({
   RETRY: `${BASE_API_PATH}/retry`,
   CHANGE_POLICY: `${BASE_API_PATH}/changePolicy`,
   REMOVE_POLICY: `${BASE_API_PATH}/removePolicy`,
+  SNAPSHOTMANAGEMENT: `${BASE_API_PATH}/snapshots`,
 });
 
 export const REQUEST = Object.freeze({
