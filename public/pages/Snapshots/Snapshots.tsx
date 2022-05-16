@@ -14,7 +14,9 @@ interface SnapshotsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
 }
 
-interface SnapshotsState {}
+interface SnapshotsState {
+  snapshots: SnapshotItem[];
+}
 
 interface SnapshotItem {
   id: string;
@@ -29,7 +31,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
   constructor(props: SnapshotsProps) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      snapshots: [],
+    };
 
     this.columns = [
       {
@@ -53,18 +57,22 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const { snapshotManagementService } = this.props;
     const response = await snapshotManagementService.getSnapshots();
     console.log(`sm dev Snapshots get response ${JSON.stringify(response)}`);
+    if (response.ok) {
+      const snapshots = response.response;
+      this.setState({ snapshots });
+    }
   }
 
   render() {
+    const { snapshots } = this.state;
+
     return (
       <div>
         <EuiTitle size="l">
           <h1>Snapshots</h1>
         </EuiTitle>
 
-        {/* <EuiBasicTable
-
-        /> */}
+        <EuiBasicTable items={snapshots} columns={this.columns} />
       </div>
     );
   }
