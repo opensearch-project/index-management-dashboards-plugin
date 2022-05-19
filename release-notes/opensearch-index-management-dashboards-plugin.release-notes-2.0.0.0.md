@@ -1,4 +1,4 @@
-## Version 2.0.0.0 2022-05-18
+## Version 2.0.0.0 2022-05-19
 
 Compatible with OpenSearch 2.0.0
 
@@ -23,3 +23,4 @@ Compatible with OpenSearch 2.0.0
 * Incremented version to 2.0-rc1. ([#175](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/175))
 * Removes rc1 version qualifier ([#192](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/192))
 * Remove node version in package.json ([#186](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/186))
+* Wrap up node removal and bump as dependabot suggest ([#193](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/193))
