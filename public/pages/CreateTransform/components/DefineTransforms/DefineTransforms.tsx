@@ -73,6 +73,7 @@ export default function DefineTransforms({
         />
       ),
       schema: field.type,
+      path: field.path,
       actions: {
         showHide: false,
         showMoveLeft: false,
