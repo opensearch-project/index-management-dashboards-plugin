@@ -5,6 +5,7 @@
 
 import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
 import { NODE_API } from "../../utils/constants";
+import { GetSnapshotsResponse } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 
 export default class SnapshotManagementService {
@@ -14,8 +15,10 @@ export default class SnapshotManagementService {
     this.httpClient = httpClient;
   }
 
-  getSnapshots = async (): Promise<ServerResponse<any>> => {
-    const response = await this.httpClient.get(`${NODE_API.SNAPSHOTMANAGEMENT}`);
+  getSnapshots = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetSnapshotsResponse>> => {
+    const response = (await this.httpClient.get(`${NODE_API.SNAPSHOTMANAGEMENT}`, { query: queryObject })) as ServerResponse<
+      GetSnapshotsResponse
+    >;
     console.log(`sm dev get snapshot response: ${JSON.stringify(response)}`);
     return response;
   };

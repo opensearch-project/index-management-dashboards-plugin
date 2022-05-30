@@ -3,6 +3,4 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import Snapshots from "./containers/Snapshots";
-
-export default Snapshots;
+export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];

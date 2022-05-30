@@ -329,3 +329,25 @@ export interface DataStreamIndex {
 export interface IndexToDataStream {
   [indexName: string]: string;
 }
+
+export interface GetSnapshotsResponse {
+  snapshots: CatSnapshot[];
+  totalSnapshots: number;
+}
+
+export interface CatSnapshot {
+  id: string;
+  status: string;
+  start_epoch: number;
+  end_epoch: number;
+  duration: string;
+  indices: number;
+  successful_shards: number;
+  failed_shards: number;
+  total_shards: number;
+}
+
+export interface CatRepository {
+  id: string;
+  type: string;
+}
