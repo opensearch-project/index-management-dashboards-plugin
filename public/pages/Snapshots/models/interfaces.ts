@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Direction } from "@elastic/eui";
+import { Direction, Query, ArgsWithQuery, ArgsWithError } from "@elastic/eui";
 import { CatSnapshot } from "../../../../server/models/interfaces";
 
 export interface SnapshotItem {
@@ -16,6 +16,7 @@ export interface SnapshotItem {
   successful_shards: number;
   failed_shards: number;
   total_shards: number;
+  repository: string;
 }
 
 export interface SnapshotsQueryParams {
@@ -23,5 +24,6 @@ export interface SnapshotsQueryParams {
   size: number;
   sortField: keyof CatSnapshot;
   sortDirection: Direction;
-  search: string;
 }
+
+export type OnSearchChangeArgs = ArgsWithQuery | ArgsWithError;

@@ -15,7 +15,7 @@ export default function (services: NodeServices, router: IRouter) {
     {
       path: NODE_API._SNAPSHOTS,
       validate: {
-        // for public to pass object to server
+        // for public service to pass object to server service
         query: schema.object({
           from: schema.number(),
           size: schema.number(),
@@ -25,6 +25,6 @@ export default function (services: NodeServices, router: IRouter) {
         }),
       },
     },
-    snapshotManagementService.getSnapshots
+    snapshotManagementService.catSnapshots
   );
 }

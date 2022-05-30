@@ -345,6 +345,7 @@ export interface CatSnapshot {
   successful_shards: number;
   failed_shards: number;
   total_shards: number;
+  repository: string;
 }
 
 export interface CatRepository {

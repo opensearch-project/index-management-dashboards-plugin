@@ -29,11 +29,19 @@ export const SNAPSHOTS_COLUMNS: EuiTableFieldDataColumnType<CatSnapshot>[] = [
     field: "id",
     name: "Name",
     sortable: true,
+    dataType: "string",
+  },
+  {
+    field: "repository",
+    name: "Repository",
+    sortable: true,
+    dataType: "string",
   },
   {
     field: "status",
     name: "Status",
     sortable: true,
+    dataType: "string",
   },
   {
     field: "start_epoch",

@@ -7,15 +7,28 @@ import React, { Component } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
-import { Criteria, Direction, EuiBasicTable, EuiTableSelectionType, EuiTableSortingType, EuiTitle, Pagination } from "@elastic/eui";
+import {
+  Criteria,
+  Direction,
+  EuiBasicTable,
+  EuiButton,
+  EuiInMemoryTable,
+  EuiTableSelectionType,
+  EuiTableSortingType,
+  EuiTitle,
+  Pagination,
+  SortDirection,
+} from "@elastic/eui";
 import { CoreServicesContext } from "../../../components/core_services";
 import { BREADCRUMBS } from "../../../utils/constants";
 import { SnapshotManagementService } from "../../../services";
 import { getURLQueryParams } from "../utils/helpers";
-import { SnapshotItem } from "../models/interfaces";
+import { OnSearchChangeArgs, SnapshotItem } from "../models/interfaces";
 import { DEFAULT_PAGE_SIZE_OPTIONS, SNAPSHOTS_COLUMNS } from "../utils/constants";
 import { getErrorMessage } from "../../../utils/helpers";
 import { CatSnapshot } from "../../../../server/models/interfaces";
+import { ContentPanel } from "../../../components/ContentPanel";
+import { SnapshotControls } from "../components/SnapshotControls";
 
 interface SnapshotsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -29,7 +42,6 @@ interface SnapshotsState {
   totalSnapshots: number;
   sortField: keyof SnapshotItem;
   sortDirection: Direction;
-  search: string;
   selectedItems: SnapshotItem[];
 }
 
@@ -39,7 +51,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
   constructor(props: SnapshotsProps) {
     super(props);
 
-    const { from, size, sortField, sortDirection, search } = getURLQueryParams(this.props.location);
+    const { from, size, sortField, sortDirection } = getURLQueryParams(this.props.location);
     this.state = {
       snapshots: [],
       loadingSnapshots: false,
@@ -48,7 +60,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       totalSnapshots: 10,
       sortField: sortField,
       sortDirection: sortDirection,
-      search: search,
       selectedItems: [],
     };
 
@@ -78,13 +89,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     try {
       const { snapshotManagementService, history } = this.props;
       const queryParamsObject = Snapshots.getQueryObjectFromState(this.state);
-      console.log(`query object ${JSON.stringify(queryParamsObject)}`);
       const queryParamsString = queryString.stringify(queryParamsObject);
       history.replace({ ...this.props.location, search: queryParamsString });
 
       const response = await snapshotManagementService.getSnapshots({ ...queryParamsObject });
-      console.log(`sm dev Snapshots get response ${JSON.stringify(response)}`);
-
       if (response.ok) {
         const { snapshots, totalSnapshots } = response.response;
         this.setState({ snapshots, totalSnapshots });
@@ -114,10 +122,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       from,
       size,
       totalSnapshots,
-      sortField,
-      sortDirection,
+      // sortField,
+      // sortDirection,
       selectedItems, // enable/disable action button
     } = this.state;
+
+    console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
 
     const page = Math.floor(from / size);
     const pagination: Pagination = {
@@ -127,10 +137,17 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       totalItemCount: totalSnapshots,
     };
 
-    const sorting: EuiTableSortingType<SnapshotItem> = {
+    // const sorting: EuiTableSortingType<SnapshotItem> = {
+    //   sort: {
+    //     direction: sortDirection,
+    //     field: sortField,
+    //   },
+    // };
+
+    const sorting = {
       sort: {
-        direction: sortDirection,
-        field: sortField,
+        field: "start_epoch",
+        direction: SortDirection.DESC,
       },
     };
 
@@ -138,24 +155,47 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       onSelectionChange: this.onSelectionChange,
     };
 
-    return (
-      <div>
-        <EuiTitle size="l">
-          <h1>Snapshots</h1>
-        </EuiTitle>
+    const repos = [...new Set(snapshots.map((snapshot) => snapshot.repository))];
+    const search = {
+      box: {
+        placeholder: "Search snapshot",
+      },
+      filters: [
+        {
+          type: "field_value_selection",
+          field: "repository",
+          name: "Repository",
+          options: repos.map((repo) => ({ value: repo })),
+          multiSelect: "or",
+        },
+      ],
+    };
 
-        <EuiBasicTable
+    return (
+      <ContentPanel
+        title="Snapshots"
+        actions={
+          <EuiButton iconType="refresh" onClick={this.getSnapshots} data-test-subj="refreshButton">
+            Refresh
+          </EuiButton>
+        }
+      >
+        <EuiInMemoryTable
           items={snapshots}
+          itemId={(item) => `${item.id}${item.repository}`}
           columns={SNAPSHOTS_COLUMNS}
           pagination={pagination}
           sorting={sorting}
-          itemId="id"
           isSelectable={true}
           selection={selection}
-          onChange={this.onTableChange}
-          noItemsMessage={null}
+          // onChange={this.onTableChange}
+          // noItemsMessage={null}
+          search={search}
+          // loading={loading}
+          // error={error}
+          // message={message}
         />
-      </div>
+      </ContentPanel>
     );
   }
 }
