@@ -16,9 +16,9 @@ export default class SnapshotManagementService {
   }
 
   getSnapshots = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetSnapshotsResponse>> => {
-    const response = (await this.httpClient.get(`${NODE_API.SNAPSHOTMANAGEMENT}`, { query: queryObject })) as ServerResponse<
-      GetSnapshotsResponse
-    >;
+    console.log(`sm dev query object: ${JSON.stringify(queryObject)}`);
+    let url = `..${NODE_API._SNAPSHOTS}`;
+    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetSnapshotsResponse>;
     console.log(`sm dev get snapshot response: ${JSON.stringify(response)}`);
     return response;
   };

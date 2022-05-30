@@ -6,23 +6,16 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import {
-  Direction,
-  EuiBasicTable,
-  EuiTableFieldDataColumnType,
-  EuiTableSelectionType,
-  EuiTableSortingType,
-  EuiTitle,
-  Pagination,
-  SortDirection,
-} from "@elastic/eui";
+import queryString from "query-string";
+import { Criteria, Direction, EuiBasicTable, EuiTableSelectionType, EuiTableSortingType, EuiTitle, Pagination } from "@elastic/eui";
 import { CoreServicesContext } from "../../../components/core_services";
 import { BREADCRUMBS } from "../../../utils/constants";
 import { SnapshotManagementService } from "../../../services";
-import { renderTimestampSecond } from "../utils/helpers";
+import { getURLQueryParams } from "../utils/helpers";
 import { SnapshotItem } from "../models/interfaces";
-import { DEFAULT_PAGE_SIZE_OPTIONS } from "../utils/constants";
+import { DEFAULT_PAGE_SIZE_OPTIONS, SNAPSHOTS_COLUMNS } from "../utils/constants";
 import { getErrorMessage } from "../../../utils/helpers";
+import { CatSnapshot } from "../../../../server/models/interfaces";
 
 interface SnapshotsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -36,67 +29,60 @@ interface SnapshotsState {
   totalSnapshots: number;
   sortField: keyof SnapshotItem;
   sortDirection: Direction;
+  search: string;
   selectedItems: SnapshotItem[];
 }
 
 export default class Snapshots extends Component<SnapshotsProps, SnapshotsState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<SnapshotItem>[];
 
   constructor(props: SnapshotsProps) {
     super(props);
 
+    const { from, size, sortField, sortDirection, search } = getURLQueryParams(this.props.location);
     this.state = {
       snapshots: [],
       loadingSnapshots: false,
-      from: 0,
-      size: 5,
+      from: from,
+      size: size,
       totalSnapshots: 10,
-      sortField: "id",
-      sortDirection: SortDirection.DESC,
+      sortField: sortField,
+      sortDirection: sortDirection,
+      search: search,
       selectedItems: [],
     };
-
-    this.columns = [
-      {
-        field: "id",
-        name: "Name",
-        sortable: true,
-      },
-      {
-        field: "status",
-        name: "Status",
-        sortable: true,
-      },
-      {
-        field: "start_epoch",
-        name: "Start time",
-        sortable: true,
-        dataType: "date",
-        render: renderTimestampSecond,
-      },
-      {
-        field: "end_epoch",
-        name: "End time",
-        sortable: true,
-        dataType: "date",
-        render: renderTimestampSecond,
-      },
-    ];
 
     this.getSnapshots = _.debounce(this.getSnapshots, 500, { leading: true });
   }
 
-  async componentDidMount(): Promise<void> {
+  async componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
     await this.getSnapshots();
   }
 
+  async componentDidUpdate(prevProps: SnapshotsProps, prevState: SnapshotsState) {
+    const prevQuery = Snapshots.getQueryObjectFromState(prevState);
+    const currQuery = Snapshots.getQueryObjectFromState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getSnapshots();
+    }
+  }
+
+  static getQueryObjectFromState({ from, size, sortField, sortDirection }: SnapshotsState) {
+    return { from, size, sortField, sortDirection };
+  }
+
   getSnapshots = async () => {
     this.setState({ loadingSnapshots: true });
+
     try {
       const { snapshotManagementService, history } = this.props;
-      const response = await snapshotManagementService.getSnapshots();
+      const queryParamsObject = Snapshots.getQueryObjectFromState(this.state);
+      console.log(`query object ${JSON.stringify(queryParamsObject)}`);
+      const queryParamsString = queryString.stringify(queryParamsObject);
+      history.replace({ ...this.props.location, search: queryParamsString });
+
+      const response = await snapshotManagementService.getSnapshots({ ...queryParamsObject });
       console.log(`sm dev Snapshots get response ${JSON.stringify(response)}`);
 
       if (response.ok) {
@@ -108,9 +94,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshots."));
     }
+
+    this.setState({ loadingSnapshots: false });
   };
 
-  onTableChange = ({ page: tablePage, sort }): void => {
+  onTableChange = ({ page: tablePage, sort }: Criteria<CatSnapshot>): void => {
     const { index: page, size } = tablePage;
     const { field: sortField, direction: sortDirection } = sort;
     this.setState({ from: page * size, size, sortField, sortDirection });
@@ -123,12 +111,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
   render() {
     const {
       snapshots,
-      selectedItems, // enable/disable action button
       from,
       size,
       totalSnapshots,
       sortField,
       sortDirection,
+      selectedItems, // enable/disable action button
     } = this.state;
 
     const page = Math.floor(from / size);
@@ -158,7 +146,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
         <EuiBasicTable
           items={snapshots}
-          columns={this.columns}
+          columns={SNAPSHOTS_COLUMNS}
           pagination={pagination}
           sorting={sorting}
           itemId="id"
