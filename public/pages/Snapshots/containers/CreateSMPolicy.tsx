@@ -14,6 +14,8 @@ import {
   EuiSwitch,
   EuiSwitchEvent,
   EuiTitle,
+  EuiButtonEmpty,
+  EuiButton,
 } from "@elastic/eui";
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -21,10 +23,17 @@ import { ContentPanel } from "../../../components/ContentPanel";
 import { DEFAULT_DELETE_CONDITION, DEFAULT_SM_POLICY } from "../utils/constants";
 import moment from "moment-timezone";
 import CustomLabel from "../components/CustomLabel";
+import ToggleWrapper from "../components/ToggleWrapper";
+import { ROUTES } from "../../../utils/constants";
+import { CoreServicesContext } from "../../../components/core_services";
+import { getErrorMessage } from "../../../utils/helpers";
+import { SnapshotManagementService } from "../../../services";
 
 const timezones = moment.tz.names().map((tz) => ({ label: tz, text: tz }));
 
-interface CreateSMPolicyProps extends RouteComponentProps {}
+interface CreateSMPolicyProps extends RouteComponentProps {
+  snapshotManagementService: SnapshotManagementService;
+}
 
 interface CreateSMPolicyState {
   name: string;
@@ -44,9 +53,13 @@ interface CreateSMPolicyState {
   minCount: number;
 
   policyJson: any;
+
+  isSubmitting: boolean;
 }
 
 export default class CreateSMPolicy extends Component<CreateSMPolicyProps, CreateSMPolicyState> {
+  static contextType = CoreServicesContext;
+
   constructor(props: CreateSMPolicyProps) {
     super(props);
 
@@ -69,6 +82,8 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
       minCount: DEFAULT_DELETE_CONDITION.min_count,
 
       policyJson: defaultPolicy,
+
+      isSubmitting: false,
     };
   }
 
@@ -162,6 +177,30 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
     this.setState({ minCount: minCount, policyJson: newJSON });
   };
 
+  onCancel = (): void => {
+    this.props.history.push(ROUTES.SNAPSHOTS);
+  };
+
+  onCreate = async () => {
+    const { snapshotManagementService } = this.props;
+    try {
+      const { name, policyJson } = this.state;
+      const response = await snapshotManagementService.createPolicy(name, policyJson);
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(
+        `Failed to create transform: ${getErrorMessage(err, "There was a problem creating the transform job")}`
+      );
+    }
+  };
+
+  onSubmit = async () => {
+    this.setState({ isSubmitting: true });
+    try {
+      await this.onCreate();
+    } catch (err) {}
+    this.setState({ isSubmitting: false });
+  };
+
   render() {
     console.log(`sm dev state ${JSON.stringify(this.state)}`);
 
@@ -179,6 +218,7 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
       maxCount,
       maxAge,
       minCount,
+      isSubmitting,
     } = this.state;
 
     return (
@@ -243,46 +283,37 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
 
           <EuiSpacer size="m" />
 
-          <EuiFlexGroup>
-            <EuiFlexItem style={{ minWidth: 300 }}>
+          <ToggleWrapper
+            label={
               <CustomLabel title="Include global state" helpText="Whether to include cluster state in the snapshot." isOptional={true} />
-            </EuiFlexItem>
-            <EuiFlexItem style={{ minWidth: 300 }}>
-              <EuiFormRow>
-                <EuiSwitch label="" checked={includeGlobalState} onChange={this.onIncludeGlobalStateToggle} />
-              </EuiFormRow>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+            }
+            checked={includeGlobalState}
+            onSwitchChange={this.onIncludeGlobalStateToggle}
+          />
 
           <EuiSpacer size="m" />
 
-          <EuiFlexGroup>
-            <EuiFlexItem style={{ minWidth: 300 }}>
+          <ToggleWrapper
+            label={
               <CustomLabel
                 title="Ignore unavailable"
                 helpText="Whether to ignore unavailable index rather than fail the snapshot."
                 isOptional={true}
               />
-            </EuiFlexItem>
-            <EuiFlexItem style={{ minWidth: 300 }}>
-              <EuiFormRow>
-                <EuiSwitch label="" checked={ignoreUnavailable} onChange={this.onIgnoreUnavailableToggle} />
-              </EuiFormRow>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+            }
+            checked={ignoreUnavailable}
+            onSwitchChange={this.onIgnoreUnavailableToggle}
+          />
 
           <EuiSpacer size="m" />
 
-          <EuiFlexGroup>
-            <EuiFlexItem style={{ minWidth: 300 }}>
+          <ToggleWrapper
+            label={
               <CustomLabel title="Partial" helpText="Whether to allow partial snapshots rather than fail the snapshot." isOptional={true} />
-            </EuiFlexItem>
-            <EuiFlexItem style={{ minWidth: 300 }}>
-              <EuiFormRow>
-                <EuiSwitch label="" checked={partial} onChange={this.onPartialToggle} />
-              </EuiFormRow>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+            }
+            checked={partial}
+            onSwitchChange={this.onPartialToggle}
+          />
         </ContentPanel>
 
         <EuiSpacer />
@@ -307,6 +338,18 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
             <EuiFieldText value={minCount} onChange={this.onChangeMinCount} />
           </EuiFormRow>
         </ContentPanel>
+
+        <EuiFlexGroup justifyContent="flexEnd">
+          <EuiFlexItem grow={false}>
+            <EuiButtonEmpty onClick={this.onCancel}>Cancel</EuiButtonEmpty>
+          </EuiFlexItem>
+
+          <EuiFlexItem grow={false}>
+            <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting}>
+              Create
+            </EuiButton>
+          </EuiFlexItem>
+        </EuiFlexGroup>
       </div>
     );
   }

@@ -154,7 +154,12 @@ export default class Main extends Component<MainProps, object> {
                               <Snapshots {...props} snapshotManagementService={services.snapshotManagementService} />
                             )}
                           />
-                          <Route path={ROUTES.CREATE_SM_POLICY} render={(props: RouteComponentProps) => <CreateSMPolicy {...props} />} />
+                          <Route
+                            path={ROUTES.CREATE_SM_POLICY}
+                            render={(props: RouteComponentProps) => (
+                              <CreateSMPolicy {...props} snapshotManagementService={services.snapshotManagementService} />
+                            )}
+                          />
                           <Route
                             path={ROUTES.CHANGE_POLICY}
                             render={(props: RouteComponentProps) => (

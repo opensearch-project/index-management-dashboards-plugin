@@ -5,6 +5,7 @@
 
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
+import { CreateIndexMapOptions } from "src/core/server/saved_objects/migrations/core/build_index_map";
 import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
 
 export interface ManagedIndexMetaData {
@@ -76,6 +77,30 @@ export interface Policy {
   ism_template?: ISMTemplate[] | ISMTemplate | null;
   last_updated_time?: number;
   schema_version?: number;
+}
+
+export interface SMPolicy {
+  description: string;
+  creation: SMCreation;
+  deletion: SMDeletion;
+  snapshot_config: object;
+}
+
+export interface SMCreation {
+  schedule: Cron;
+  time_limit?: string;
+}
+
+export interface SMDeletion {
+  schedule: Cron;
+  condition: SMDeleteCondition;
+  time_limit?: string;
+}
+
+export interface SMDeleteCondition {
+  max_count: number;
+  max_age?: string;
+  min_count?: number;
 }
 
 export interface ErrorNotification {

@@ -13,7 +13,7 @@ import {
   NotificationService,
   SnapshotManagementService,
 } from "../services";
-import { DocumentPolicy, DocumentRollup, DocumentTransform, ManagedIndexItem, Rollup, Transform } from "../../models/interfaces";
+import { DocumentPolicy, DocumentRollup, DocumentTransform, ManagedIndexItem, Rollup, SMPolicy, Transform } from "../../models/interfaces";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -131,6 +131,13 @@ export interface PutTransformResponse {
   _primary_term: string;
   _seq_no: string;
   transform: { transform: Transform };
+}
+
+export interface CreateSMPolicyResponse {
+  _id: string;
+  _primary_term: string;
+  _seq_no: string;
+  policy: SMPolicy;
 }
 
 export interface PreviewTransformResponse {
@@ -274,6 +281,7 @@ export interface IndexManagementApi {
   readonly ROLLUP_JOBS_BASE: string;
   readonly TRANSFORM_BASE: string;
   readonly CHANNELS_BASE: string;
+  readonly SM_POLICY_BASE: string;
 }
 
 export interface DefaultHeaders {

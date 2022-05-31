@@ -27,4 +27,34 @@ export default function (services: NodeServices, router: IRouter) {
     },
     snapshotManagementService.catSnapshots
   );
+
+  router.post(
+    {
+      path: `${NODE_API.SMPolicies}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+        body: schema.any(),
+      },
+    },
+    snapshotManagementService.createPolicy
+  );
+
+  // router.put(
+  //   {
+  //     path: `${NODE_API.SMPolicies}/{id}`,
+  //     validate: {
+  //       params: schema.object({
+  //         id: schema.string(),
+  //       }),
+  //       query: schema.object({
+  //         seqNo: schema.maybe(schema.number()),
+  //         primaryTerm: schema.maybe(schema.number()),
+  //       }),
+  //       body: schema.any(),
+  //     },
+  //   },
+  //   snapshotManagementService.createPolicy
+  // );
 }

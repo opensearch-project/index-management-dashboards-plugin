@@ -28,7 +28,6 @@ import { DEFAULT_PAGE_SIZE_OPTIONS, SNAPSHOTS_COLUMNS } from "../utils/constants
 import { getErrorMessage } from "../../../utils/helpers";
 import { CatSnapshot } from "../../../../server/models/interfaces";
 import { ContentPanel } from "../../../components/ContentPanel";
-import { SnapshotControls } from "../components/SnapshotControls";
 
 interface SnapshotsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;

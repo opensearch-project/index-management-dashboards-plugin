@@ -21,6 +21,7 @@ export const NODE_API = Object.freeze({
   CHANGE_POLICY: `${BASE_API_PATH}/changePolicy`,
   REMOVE_POLICY: `${BASE_API_PATH}/removePolicy`,
   _SNAPSHOTS: `${BASE_API_PATH}/_snapshots`,
+  SMPolicies: `${BASE_API_PATH}/smPolicies`,
 });
 
 export const REQUEST = Object.freeze({

@@ -112,7 +112,7 @@ export default class SnapshotManagementService {
     }
   };
 
-  getSnapshots = async (
+  getSnapshot = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
@@ -124,6 +124,7 @@ export default class SnapshotManagementService {
         snapshot: "_all",
         ignore_unavailable: true,
       });
+      console.log(`sm dev response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -133,6 +134,41 @@ export default class SnapshotManagementService {
       });
     } catch (err) {
       console.error("Index Management - SnapshotManagementService - getSnapshots:", err);
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: false,
+          error: err.message,
+        },
+      });
+    }
+  };
+
+  createPolicy = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
+    try {
+      const { id } = request.params as { id: string };
+      const params = {
+        policyId: id,
+        body: JSON.stringify(request.body),
+      };
+
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const res: any = await callWithRequest("ism.createSMPolicy", params);
+      console.log(`sm dev server response: ${JSON.stringify(res)}`);
+
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: res,
+        },
+      });
+    } catch (err) {
+      console.error("Index Management - SnapshotManagementService - createPolicy:", err);
       return response.custom({
         statusCode: 200,
         body: {

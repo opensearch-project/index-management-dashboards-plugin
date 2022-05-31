@@ -50,6 +50,42 @@ export default function ismPlugin(Client: any, config: any, components: any) {
     method: "PUT",
   });
 
+  ism.createSMPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
+      req: {
+        policyId: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    needBody: true,
+    method: "POST",
+  });
+
+  ism.updateSMPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?if_seq_no=<%=ifSeqNo%>&if_primary_term=<%=ifPrimaryTerm%>&refresh=wait_for`,
+      req: {
+        policyId: {
+          type: "string",
+          required: true,
+        },
+        ifSeqNo: {
+          type: "string",
+          required: true,
+        },
+        ifPrimaryTerm: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    needBody: true,
+    method: "PUT",
+  });
+
   ism.deletePolicy = ca({
     url: {
       fmt: `${API.POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
