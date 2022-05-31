@@ -58,3 +58,39 @@ export const SNAPSHOTS_COLUMNS: EuiTableFieldDataColumnType<CatSnapshot>[] = [
     render: renderTimestampSecond,
   },
 ];
+
+export const DEFAULT_SM_POLICY = JSON.stringify({
+  description: "",
+  enabled: true,
+  creation: {
+    schedule: {
+      cron: {
+        expression: "0 20 * * *",
+        timezone: "America/Los_Angeles",
+      },
+    },
+    time_limit: undefined,
+  },
+  deletion: {
+    schedule: {
+      cron: {
+        expression: "0 1 * * *",
+        timezone: "America/Los_Angeles",
+      },
+    },
+    time_limit: undefined,
+    condition: {
+      max_count: 50,
+      max_age: undefined,
+      min_count: undefined,
+    },
+  },
+  snapshot_config: {
+    date_expression: "{now/d}",
+    indices: "",
+    repository: "",
+    ignore_unavailable: false,
+    include_global_state: true,
+    partial: false,
+  },
+});

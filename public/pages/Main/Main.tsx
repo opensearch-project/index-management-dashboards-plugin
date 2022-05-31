@@ -29,6 +29,7 @@ import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
 import queryString from "query-string";
 import Snapshots from "../Snapshots";
+import CreateSMPolicy from "../Snapshots/containers/CreateSMPolicy";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -48,6 +49,7 @@ enum Pathname {
   Rollups = "/rollups",
   Transforms = "/transforms",
   Snapshots = "/snapshots",
+  SnapshotPolicies = "/snapshot-policies",
 }
 
 const HIDDEN_NAV_ROUTES = [
@@ -119,6 +121,12 @@ export default class Main extends Component<MainProps, object> {
             href: `#${Pathname.Snapshots}`,
             isSelected: pathname === Pathname.Snapshots,
           },
+          {
+            name: Navigation.SnapshotManagement,
+            id: 2,
+            href: `#${Pathname.SnapshotPolicies}`,
+            isSelected: pathname === Pathname.SnapshotPolicies,
+          },
         ],
       },
     ];
@@ -146,6 +154,7 @@ export default class Main extends Component<MainProps, object> {
                               <Snapshots {...props} snapshotManagementService={services.snapshotManagementService} />
                             )}
                           />
+                          <Route path={ROUTES.CREATE_SM_POLICY} render={(props: RouteComponentProps) => <CreateSMPolicy {...props} />} />
                           <Route
                             path={ROUTES.CHANGE_POLICY}
                             render={(props: RouteComponentProps) => (

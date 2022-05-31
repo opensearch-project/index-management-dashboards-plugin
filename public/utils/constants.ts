@@ -31,6 +31,7 @@ export const ROUTES = Object.freeze({
   EDIT_TRANSFORM: "/edit-transform",
   TRANSFORM_DETAILS: "/transform-details",
   SNAPSHOTS: "/snapshots",
+  CREATE_SM_POLICY: "/snapshot-policies",
 });
 
 export const BREADCRUMBS = Object.freeze({
