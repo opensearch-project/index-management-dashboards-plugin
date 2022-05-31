@@ -86,11 +86,17 @@ export const DEFAULT_SM_POLICY = JSON.stringify({
     },
   },
   snapshot_config: {
-    date_expression: "{now/d}",
-    indices: "",
-    repository: "",
+    indices: undefined,
+    repository: undefined,
     ignore_unavailable: false,
-    include_global_state: true,
+    include_global_state: false,
     partial: false,
+    date_expression: "{now/d}",
   },
 });
+
+export const DEFAULT_DELETE_CONDITION = {
+  max_count: 50,
+  max_age: "",
+  min_count: 5,
+};

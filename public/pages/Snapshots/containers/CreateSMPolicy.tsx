@@ -4,23 +4,21 @@
  */
 
 import {
-  EuiDescribedFormGroup,
+  EuiFormRow,
+  EuiTextArea,
+  EuiSelect,
   EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFormRow,
-  EuiSelect,
   EuiSpacer,
   EuiSwitch,
   EuiSwitchEvent,
-  EuiText,
-  EuiTextArea,
   EuiTitle,
 } from "@elastic/eui";
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ContentPanel } from "../../../components/ContentPanel";
-import { DEFAULT_SM_POLICY } from "../utils/constants";
+import { DEFAULT_DELETE_CONDITION, DEFAULT_SM_POLICY } from "../utils/constants";
 import moment from "moment-timezone";
 import CustomLabel from "../components/CustomLabel";
 
@@ -34,7 +32,17 @@ interface CreateSMPolicyState {
   creationExpression: string;
   deletionExpression: string;
   timezone: string;
+
+  indices: string;
+  repository: string;
   includeGlobalState: boolean;
+  ignoreUnavailable: boolean;
+  partial: boolean;
+
+  maxCount: number;
+  maxAge: string;
+  minCount: number;
+
   policyJson: any;
 }
 
@@ -49,7 +57,17 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
       creationExpression: defaultPolicy.creation.schedule.cron.expression,
       deletionExpression: defaultPolicy.deletion.schedule.cron.expression,
       timezone: defaultPolicy.creation.schedule.cron.timezone,
+
+      indices: "",
+      repository: "",
       includeGlobalState: false,
+      ignoreUnavailable: false,
+      partial: false,
+
+      maxCount: DEFAULT_DELETE_CONDITION.max_count,
+      maxAge: DEFAULT_DELETE_CONDITION.max_age,
+      minCount: DEFAULT_DELETE_CONDITION.min_count,
+
       policyJson: defaultPolicy,
     };
   }
@@ -87,6 +105,20 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
     this.setState({ timezone: timezone, policyJson: newJSON });
   };
 
+  onChangeIndices = (e: ChangeEvent<HTMLInputElement>) => {
+    const indices = e.target.value;
+    let newJSON = this.state.policyJson;
+    newJSON.snapshot_config.indices = indices;
+    this.setState({ indices: indices, policyJson: newJSON });
+  };
+
+  onChangeRepository = (e: ChangeEvent<HTMLInputElement>) => {
+    const repository = e.target.value;
+    let newJSON = this.state.policyJson;
+    newJSON.snapshot_config.repository = repository;
+    this.setState({ repository: repository, policyJson: newJSON });
+  };
+
   onIncludeGlobalStateToggle = (event: EuiSwitchEvent) => {
     const { checked } = event.target;
     let newJSON = this.state.policyJson;
@@ -94,10 +126,60 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
     this.setState({ includeGlobalState: checked, policyJson: newJSON });
   };
 
+  onIgnoreUnavailableToggle = (event: EuiSwitchEvent) => {
+    const { checked } = event.target;
+    let newJSON = this.state.policyJson;
+    newJSON.snapshot_config.ignore_unavailable = checked;
+    this.setState({ ignoreUnavailable: checked, policyJson: newJSON });
+  };
+
+  onPartialToggle = (event: EuiSwitchEvent) => {
+    const { checked } = event.target;
+    let newJSON = this.state.policyJson;
+    newJSON.snapshot_config.parial = checked;
+    this.setState({ partial: checked, policyJson: newJSON });
+  };
+
+  onChangeMaxCount = (e: ChangeEvent<HTMLInputElement>) => {
+    // Received NaN for the `value` attribute. If this is expected, cast the value to a string.
+    const maxCount = isNaN(parseInt(e.target.value)) ? 50 : parseInt(e.target.value);
+    let newJSON = this.state.policyJson;
+    newJSON.deletion.condition.max_count = maxCount;
+    this.setState({ maxCount: maxCount, policyJson: newJSON });
+  };
+
+  onChangeMaxAge = (e: ChangeEvent<HTMLInputElement>) => {
+    const maxAge = e.target.value;
+    let newJSON = this.state.policyJson;
+    newJSON.deletion.condition.max_age = maxAge;
+    this.setState({ maxAge: maxAge, policyJson: newJSON });
+  };
+
+  onChangeMinCount = (e: ChangeEvent<HTMLInputElement>) => {
+    const minCount = isNaN(parseInt(e.target.value)) ? 5 : parseInt(e.target.value);
+    let newJSON = this.state.policyJson;
+    newJSON.deletion.condition.min_count = minCount;
+    this.setState({ minCount: minCount, policyJson: newJSON });
+  };
+
   render() {
     console.log(`sm dev state ${JSON.stringify(this.state)}`);
 
-    const { name, description, creationExpression, deletionExpression, timezone, includeGlobalState } = this.state;
+    const {
+      name,
+      description,
+      creationExpression,
+      deletionExpression,
+      timezone,
+      indices,
+      repository,
+      includeGlobalState,
+      ignoreUnavailable,
+      partial,
+      maxCount,
+      maxAge,
+      minCount,
+    } = this.state;
 
     return (
       <div>
@@ -147,20 +229,83 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
         <EuiSpacer />
 
         <ContentPanel title="Snapshot configuration" titleSize="m">
+          <CustomLabel title="Indices" />
+          <EuiFormRow>
+            <EuiFieldText value={indices} onChange={this.onChangeIndices} />
+          </EuiFormRow>
+
+          <EuiSpacer size="m" />
+
+          <CustomLabel title="Repository" />
+          <EuiFormRow>
+            <EuiFieldText value={repository} onChange={this.onChangeRepository} />
+          </EuiFormRow>
+
+          <EuiSpacer size="m" />
+
           <EuiFlexGroup>
-            <EuiFlexItem grow={false}>
-              <CustomLabel
-                title="Include global state"
-                helpText="Stores the global cluster state as part of the snapshot."
-                isOptional={true}
-              />
+            <EuiFlexItem style={{ minWidth: 300 }}>
+              <CustomLabel title="Include global state" helpText="Whether to include cluster state in the snapshot." isOptional={true} />
             </EuiFlexItem>
-            <EuiFlexItem grow={false}>
+            <EuiFlexItem style={{ minWidth: 300 }}>
               <EuiFormRow>
-                <EuiSwitch label="Include global state" checked={includeGlobalState} onChange={this.onIncludeGlobalStateToggle} />
+                <EuiSwitch label="" checked={includeGlobalState} onChange={this.onIncludeGlobalStateToggle} />
               </EuiFormRow>
             </EuiFlexItem>
           </EuiFlexGroup>
+
+          <EuiSpacer size="m" />
+
+          <EuiFlexGroup>
+            <EuiFlexItem style={{ minWidth: 300 }}>
+              <CustomLabel
+                title="Ignore unavailable"
+                helpText="Whether to ignore unavailable index rather than fail the snapshot."
+                isOptional={true}
+              />
+            </EuiFlexItem>
+            <EuiFlexItem style={{ minWidth: 300 }}>
+              <EuiFormRow>
+                <EuiSwitch label="" checked={ignoreUnavailable} onChange={this.onIgnoreUnavailableToggle} />
+              </EuiFormRow>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+
+          <EuiSpacer size="m" />
+
+          <EuiFlexGroup>
+            <EuiFlexItem style={{ minWidth: 300 }}>
+              <CustomLabel title="Partial" helpText="Whether to allow partial snapshots rather than fail the snapshot." isOptional={true} />
+            </EuiFlexItem>
+            <EuiFlexItem style={{ minWidth: 300 }}>
+              <EuiFormRow>
+                <EuiSwitch label="" checked={partial} onChange={this.onPartialToggle} />
+              </EuiFormRow>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </ContentPanel>
+
+        <EuiSpacer />
+
+        <ContentPanel title="Delete condition" titleSize="m">
+          <CustomLabel title="Max count" />
+          <EuiFormRow>
+            <EuiFieldText value={maxCount} onChange={this.onChangeMaxCount} />
+          </EuiFormRow>
+
+          <EuiSpacer size="m" />
+
+          <CustomLabel title="Max age" isOptional={true} />
+          <EuiFormRow>
+            <EuiFieldText value={maxAge} onChange={this.onChangeMaxAge} placeholder="e.g. 7d" />
+          </EuiFormRow>
+
+          <EuiSpacer size="m" />
+
+          <CustomLabel title="Min count" isOptional={true} />
+          <EuiFormRow>
+            <EuiFieldText value={minCount} onChange={this.onChangeMinCount} />
+          </EuiFormRow>
         </ContentPanel>
       </div>
     );
