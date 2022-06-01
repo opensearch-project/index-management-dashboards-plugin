@@ -79,11 +79,29 @@ export interface Policy {
   schema_version?: number;
 }
 
+export interface DocumentSMPolicy {
+  id: string;
+  seqNo: number;
+  primaryTerm: number;
+  policy: SMPolicy;
+}
 export interface SMPolicy {
+  name: string;
   description: string;
   creation: SMCreation;
-  deletion: SMDeletion;
-  snapshot_config: object;
+  deletion?: SMDeletion;
+  snapshot_config: SMSnapshotConfig;
+  enabled: boolean;
+  last_updated_time?: number;
+}
+
+export interface SMSnapshotConfig {
+  indices: string;
+  repository: string;
+  ignore_unavailable?: boolean;
+  include_global_state?: boolean;
+  partial?: boolean;
+  date_expression?: string;
 }
 
 export interface SMCreation {
@@ -92,13 +110,13 @@ export interface SMCreation {
 }
 
 export interface SMDeletion {
-  schedule: Cron;
-  condition: SMDeleteCondition;
+  schedule?: Cron;
+  condition?: SMDeleteCondition;
   time_limit?: string;
 }
 
 export interface SMDeleteCondition {
-  max_count: number;
+  max_count?: number;
   max_age?: string;
   min_count?: number;
 }

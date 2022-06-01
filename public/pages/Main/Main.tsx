@@ -29,6 +29,8 @@ import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
 import queryString from "query-string";
 import Snapshots from "../Snapshots";
+import SMPolicies from "../Snapshots/containers/SMPolicies";
+import SMPolicyDetails from "../Snapshots/containers/SMPolicyDetails";
 import CreateSMPolicy from "../Snapshots/containers/CreateSMPolicy";
 
 enum Navigation {
@@ -40,6 +42,7 @@ enum Navigation {
   Transforms = "Transform Jobs",
   SnapshotManagement = "Snapshot Management",
   Snapshots = "Snapshots",
+  SnapshotPolicies = "Snapshot Policies",
 }
 
 enum Pathname {
@@ -63,6 +66,9 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.EDIT_POLICY,
   ROUTES.POLICY_DETAILS,
   ROUTES.CHANGE_POLICY,
+  ROUTES.SNAPSHOT_POLICY_DETAILS,
+  ROUTES.CREATE_SNAPSHOT_POLICY,
+  ROUTES.EDIT_SNAPSHOT_POLICY,
 ];
 
 interface MainProps extends RouteComponentProps {}
@@ -113,19 +119,19 @@ export default class Main extends Component<MainProps, object> {
       {
         name: Navigation.SnapshotManagement,
         id: 1,
-        href: `#${Pathname.Snapshots}`,
+        href: `#${Pathname.SnapshotPolicies}`,
         items: [
           {
-            name: Navigation.Snapshots,
+            name: Navigation.SnapshotPolicies,
             id: 1,
-            href: `#${Pathname.Snapshots}`,
-            isSelected: pathname === Pathname.Snapshots,
-          },
-          {
-            name: Navigation.SnapshotManagement,
-            id: 2,
             href: `#${Pathname.SnapshotPolicies}`,
             isSelected: pathname === Pathname.SnapshotPolicies,
+          },
+          {
+            name: Navigation.Snapshots,
+            id: 2,
+            href: `#${Pathname.Snapshots}`,
+            isSelected: pathname === Pathname.Snapshots,
           },
         ],
       },
@@ -155,9 +161,27 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
-                            path={ROUTES.CREATE_SM_POLICY}
+                            path={ROUTES.SNAPSHOT_POLICIES}
                             render={(props: RouteComponentProps) => (
-                              <CreateSMPolicy {...props} snapshotManagementService={services.snapshotManagementService} />
+                              <SMPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SNAPSHOT_POLICY_DETAILS}
+                            render={(props: RouteComponentProps) => (
+                              <SMPolicyDetails {...props} snapshotManagementService={services.snapshotManagementService} />
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_SNAPSHOT_POLICY}
+                            render={(props: RouteComponentProps) => (
+                              <CreateSMPolicy {...props} snapshotManagementService={services.snapshotManagementService} isEdit={false} />
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.EDIT_SNAPSHOT_POLICY}
+                            render={(props: RouteComponentProps) => (
+                              <CreateSMPolicy {...props} snapshotManagementService={services.snapshotManagementService} isEdit={true} />
                             )}
                           />
                           <Route

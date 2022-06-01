@@ -55,6 +55,47 @@ export default function (services: NodeServices, router: IRouter) {
   //       body: schema.any(),
   //     },
   //   },
-  //   snapshotManagementService.createPolicy
+  //   snapshotManagementService.updatePolicy
   // );
+
+  router.get(
+    {
+      path: NODE_API.SMPolicies,
+      validate: {
+        // for public service to pass object to server service
+        query: schema.object({
+          from: schema.number(),
+          size: schema.number(),
+          sortField: schema.string(),
+          sortDirection: schema.string(),
+          // search: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.getPolicies
+  );
+
+  router.get(
+    {
+      path: `${NODE_API.SMPolicies}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.getPolicy
+  );
+
+  router.delete(
+    {
+      path: `${NODE_API.SMPolicies}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.deletePolicy
+  );
 }

@@ -13,18 +13,21 @@ import {
   EuiBasicTable,
   EuiButton,
   EuiInMemoryTable,
+  EuiSearchBar,
+  EuiTableFieldDataColumnType,
   EuiTableSelectionType,
   EuiTableSortingType,
   EuiTitle,
   Pagination,
+  Query,
   SortDirection,
 } from "@elastic/eui";
 import { CoreServicesContext } from "../../../components/core_services";
 import { BREADCRUMBS } from "../../../utils/constants";
 import { SnapshotManagementService } from "../../../services";
-import { getURLQueryParams } from "../utils/helpers";
-import { OnSearchChangeArgs, SnapshotItem } from "../models/interfaces";
-import { DEFAULT_PAGE_SIZE_OPTIONS, SNAPSHOTS_COLUMNS } from "../utils/constants";
+import { getSnapshotsQueryParamsFromURL } from "../utils/helpers";
+import { OnSearchChangeArgs } from "../models/interfaces";
+import { DEFAULT_PAGE_SIZE_OPTIONS, renderTimestampSecond } from "../utils/constants";
 import { getErrorMessage } from "../../../utils/helpers";
 import { CatSnapshot } from "../../../../server/models/interfaces";
 import { ContentPanel } from "../../../components/ContentPanel";
@@ -34,34 +37,78 @@ interface SnapshotsProps extends RouteComponentProps {
 }
 
 interface SnapshotsState {
-  snapshots: SnapshotItem[];
+  snapshots: CatSnapshot[];
   loadingSnapshots: boolean;
+  query: Query;
   from: number;
   size: number;
   totalSnapshots: number;
-  sortField: keyof SnapshotItem;
+  sortField: keyof CatSnapshot;
   sortDirection: Direction;
-  selectedItems: SnapshotItem[];
+  selectedItems: CatSnapshot[];
 }
 
 export default class Snapshots extends Component<SnapshotsProps, SnapshotsState> {
   static contextType = CoreServicesContext;
+  columns: EuiTableFieldDataColumnType<CatSnapshot>[];
+  initialQuery = Query.MATCH_ALL;
 
   constructor(props: SnapshotsProps) {
     super(props);
 
-    const { from, size, sortField, sortDirection } = getURLQueryParams(this.props.location);
+    const { from, size, sortField, sortDirection } = getSnapshotsQueryParamsFromURL(this.props.location);
     this.state = {
       snapshots: [],
       loadingSnapshots: false,
+      query: this.initialQuery,
       from: from,
       size: size,
-      totalSnapshots: 10,
+      totalSnapshots: 0,
       sortField: sortField,
       sortDirection: sortDirection,
       selectedItems: [],
     };
 
+    this.columns = [
+      {
+        field: "id",
+        name: "Name",
+        sortable: true,
+        dataType: "string",
+      },
+      {
+        field: "repository",
+        name: "Repository",
+        sortable: false,
+        dataType: "string",
+      },
+      {
+        field: "status",
+        name: "Status",
+        sortable: true,
+        dataType: "string",
+      },
+      {
+        field: "start_epoch",
+        name: "Start time",
+        sortable: true,
+        dataType: "date",
+        render: renderTimestampSecond,
+      },
+      {
+        field: "end_epoch",
+        name: "End time",
+        sortable: true,
+        dataType: "date",
+        render: renderTimestampSecond,
+      },
+      {
+        field: "policy",
+        name: "Policy",
+        sortable: false,
+        dataType: "string",
+      },
+    ];
     this.getSnapshots = _.debounce(this.getSnapshots, 500, { leading: true });
   }
 
@@ -105,52 +152,48 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     this.setState({ loadingSnapshots: false });
   };
 
-  onTableChange = ({ page: tablePage, sort }: Criteria<CatSnapshot>): void => {
-    const { index: page, size } = tablePage;
-    const { field: sortField, direction: sortDirection } = sort;
-    this.setState({ from: page * size, size, sortField, sortDirection });
+  onTableChange = (criteria: Criteria<CatSnapshot>): void => {
+    const { from: prevFrom, size: prevSize, sortField, sortDirection } = this.state;
+    const { page: { index, size } = {}, sort: { field, direction } = {} } = criteria;
+
+    this.setState({
+      from: index ? (size ? index * size : prevFrom) : prevFrom,
+      size: size ?? prevSize,
+      sortField: field ?? sortField,
+      sortDirection: direction ?? sortDirection,
+    });
   };
 
-  onSelectionChange = (selectedItems: SnapshotItem[]): void => {
+  onSelectionChange = (selectedItems: CatSnapshot[]): void => {
     this.setState({ selectedItems });
   };
 
+  onSearchChange = ({ query, error }: OnSearchChangeArgs) => {
+    this.setState({ query });
+  };
+
   render() {
-    const {
-      snapshots,
-      from,
-      size,
-      totalSnapshots,
-      // sortField,
-      // sortDirection,
-      selectedItems, // enable/disable action button
-    } = this.state;
+    const { snapshots, query, from, size, totalSnapshots, sortField, sortDirection, selectedItems } = this.state;
 
     console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
 
-    const page = Math.floor(from / size);
+    const pageIndex = Math.floor(from / size);
     const pagination: Pagination = {
-      pageIndex: page,
+      pageIndex: pageIndex,
       pageSize: size,
       pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
       totalItemCount: totalSnapshots,
     };
+    let paginatedSnapshots = snapshots.slice(from, from + size);
 
-    // const sorting: EuiTableSortingType<SnapshotItem> = {
-    //   sort: {
-    //     direction: sortDirection,
-    //     field: sortField,
-    //   },
-    // };
-
-    const sorting = {
+    const sorting: EuiTableSortingType<CatSnapshot> = {
       sort: {
-        field: "start_epoch",
-        direction: SortDirection.DESC,
+        direction: sortDirection,
+        field: sortField,
       },
     };
 
-    const selection: EuiTableSelectionType<SnapshotItem> = {
+    const selection: EuiTableSelectionType<CatSnapshot> = {
       onSelectionChange: this.onSelectionChange,
     };
 
@@ -170,6 +213,19 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       ],
     };
 
+    const schema = {
+      strict: true,
+      fields: {
+        repository: {
+          type: "string",
+        },
+      },
+    };
+
+    paginatedSnapshots = Query.execute(query, paginatedSnapshots, {
+      defaultFields: ["repository"],
+    });
+
     return (
       <ContentPanel
         title="Snapshots"
@@ -179,17 +235,25 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
           </EuiButton>
         }
       >
-        <EuiInMemoryTable
-          items={snapshots}
-          itemId={(item) => `${item.id}${item.repository}`}
-          columns={SNAPSHOTS_COLUMNS}
+        <EuiSearchBar
+          defaultQuery={this.initialQuery}
+          box={{
+            placeholder: "e.g. type:visualization -is:active joe",
+            incremental: false,
+            schema,
+          }}
+          onChange={this.onSearchChange}
+        />
+        <EuiBasicTable
+          items={paginatedSnapshots}
+          itemId={(item) => `${item.repository}:${item.id}`}
+          columns={this.columns}
           pagination={pagination}
           sorting={sorting}
           isSelectable={true}
           selection={selection}
-          // onChange={this.onTableChange}
+          onChange={this.onTableChange}
           // noItemsMessage={null}
-          search={search}
           // loading={loading}
           // error={error}
           // message={message}

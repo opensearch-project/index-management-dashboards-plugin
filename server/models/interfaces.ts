@@ -13,7 +13,16 @@ import {
   NotificationService,
   SnapshotManagementService,
 } from "../services";
-import { DocumentPolicy, DocumentRollup, DocumentTransform, ManagedIndexItem, Rollup, SMPolicy, Transform } from "../../models/interfaces";
+import {
+  DocumentPolicy,
+  DocumentRollup,
+  DocumentSMPolicy,
+  DocumentTransform,
+  ManagedIndexItem,
+  Rollup,
+  SMPolicy,
+  Transform,
+} from "../../models/interfaces";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -354,9 +363,15 @@ export interface CatSnapshot {
   failed_shards: number;
   total_shards: number;
   repository: string;
+  policy?: string;
 }
 
 export interface CatRepository {
   id: string;
   type: string;
+}
+
+export interface GetSMPoliciesResponse {
+  policies: DocumentSMPolicy[];
+  totalPolicies: number;
 }

@@ -29,9 +29,29 @@ export default function ismPlugin(Client: any, config: any, components: any) {
     method: "GET",
   });
 
+  ism.getSMPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>`,
+      req: {
+        policyId: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "GET",
+  });
+
   ism.getPolicies = ca({
     url: {
       fmt: `${API.POLICY_BASE}`,
+    },
+    method: "GET",
+  });
+
+  ism.getSMPolicies = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}`,
     },
     method: "GET",
   });
@@ -89,6 +109,19 @@ export default function ismPlugin(Client: any, config: any, components: any) {
   ism.deletePolicy = ca({
     url: {
       fmt: `${API.POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
+      req: {
+        policyId: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "DELETE",
+  });
+
+  ism.deleteSMPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
       req: {
         policyId: {
           type: "string",

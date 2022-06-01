@@ -31,7 +31,10 @@ export const ROUTES = Object.freeze({
   EDIT_TRANSFORM: "/edit-transform",
   TRANSFORM_DETAILS: "/transform-details",
   SNAPSHOTS: "/snapshots",
-  CREATE_SM_POLICY: "/snapshot-policies",
+  SNAPSHOT_POLICIES: "/snapshot-policies",
+  SNAPSHOT_POLICY_DETAILS: "/snapshot-policy-details",
+  CREATE_SNAPSHOT_POLICY: "/create-snapshot-policy",
+  EDIT_SNAPSHOT_POLICY: "/edit-snapshot-policy",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -51,7 +54,12 @@ export const BREADCRUMBS = Object.freeze({
   CREATE_TRANSFORM: { text: "Create transform job" },
   EDIT_TRANSFORM: { text: "Edit transform job" },
   TRANSFORM_DETAILS: { text: "Transform details" },
-  SNAPSHOT_MANAGEMENT: { text: "Snapshot Management", href: "#/" },
+
+  SNAPSHOT_MANAGEMENT: { text: "Snapshot Management", href: `#${ROUTES.SNAPSHOT_POLICIES}` },
+  SNAPSHOT_POLICIES: { text: "Snapshot policies", href: `#${ROUTES.SNAPSHOT_POLICIES}` },
+  SNAPSHOT_POLICY_DETAILS: { text: "Snapshot policy details" },
+  CREATE_SNAPSHOT_POLICY: { text: "Create snapshot policy" },
+  EDIT_SNAPSHOT_POLICY: { text: "Edit snapshot policy" },
   SNAPSHOTS: { text: "Snapshots", href: `#${ROUTES.SNAPSHOTS}` },
 });
 
