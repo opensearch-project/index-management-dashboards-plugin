@@ -29,9 +29,9 @@ import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
 import queryString from "query-string";
 import Snapshots from "../Snapshots";
-import SMPolicies from "../Snapshots/containers/SMPolicies";
-import SMPolicyDetails from "../Snapshots/containers/SMPolicyDetails";
-import CreateSMPolicy from "../Snapshots/containers/CreateSMPolicy";
+import SnapshotPolicies from "../Snapshots/containers/SnapshotPolicies";
+import SnapshotPolicyDetails from "../Snapshots/containers/SnapshotPolicyDetails";
+import CreateSMPolicy from "../Snapshots/containers/CreateSnapshotPolicy";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -163,13 +163,13 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOT_POLICIES}
                             render={(props: RouteComponentProps) => (
-                              <SMPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
+                              <SnapshotPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
                             )}
                           />
                           <Route
                             path={ROUTES.SNAPSHOT_POLICY_DETAILS}
                             render={(props: RouteComponentProps) => (
-                              <SMPolicyDetails {...props} snapshotManagementService={services.snapshotManagementService} />
+                              <SnapshotPolicyDetails {...props} snapshotManagementService={services.snapshotManagementService} />
                             )}
                           />
                           <Route

@@ -13,11 +13,16 @@ import {
   Direction,
   EuiBasicTable,
   EuiButton,
+  EuiContextMenuItem,
+  EuiContextMenuPanel,
+  EuiEmptyPrompt,
   EuiLink,
+  EuiPopover,
   EuiSearchBar,
   EuiTableFieldDataColumnType,
   EuiTableSelectionType,
   EuiTableSortingType,
+  EuiTextColor,
   EuiTitle,
   Pagination,
   Query,
@@ -30,12 +35,13 @@ import { getErrorMessage } from "../../../utils/helpers";
 import { DEFAULT_PAGE_SIZE_OPTIONS, renderTimestampMillis } from "../utils/constants";
 import { ContentPanel } from "../../../components/ContentPanel";
 import { OnSearchChangeArgs } from "../models/interfaces";
+import DeleteModal from "../../PolicyDetails/components/DeleteModal";
 
-interface SMPoliciesProps extends RouteComponentProps {
+interface SnapshotPoliciesProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
 }
 
-interface SMPoliciesState {
+interface SnapshotPoliciesState {
   policies: SMPolicy[];
   totalPolicies: number;
 
@@ -51,13 +57,16 @@ interface SMPoliciesState {
 
   showFlyout: boolean;
   policyClicked: SMPolicy | null;
+
+  isPopoverOpen: boolean;
+  isDeleteModalVisible: boolean;
 }
 
-export default class SMPolicies extends Component<SMPoliciesProps, SMPoliciesState> {
+export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, SnapshotPoliciesState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<SMPolicy>[];
 
-  constructor(props: SMPoliciesProps) {
+  constructor(props: SnapshotPoliciesProps) {
     super(props);
 
     const { from, size, sortField, sortDirection } = getSMPoliciesQueryParamsFromURL(this.props.location);
@@ -73,12 +82,14 @@ export default class SMPolicies extends Component<SMPoliciesProps, SMPoliciesSta
       selectedItems: [],
       showFlyout: false,
       policyClicked: null,
+      isPopoverOpen: false,
+      isDeleteModalVisible: false,
     };
 
     this.columns = [
       {
         field: "name",
-        name: "Name",
+        name: "Policy name",
         sortable: true,
         dataType: "string",
         render: (name: string, item: SMPolicy) => (
@@ -99,7 +110,7 @@ export default class SMPolicies extends Component<SMPoliciesProps, SMPoliciesSta
       },
       {
         field: "creation.schedule.cron.expression",
-        name: "Creation cron",
+        name: "Snapshot schedule",
         sortable: false,
         dataType: "string",
       },
@@ -124,22 +135,22 @@ export default class SMPolicies extends Component<SMPoliciesProps, SMPoliciesSta
     await this.getPolicies();
   }
 
-  async componentDidUpdate(prevProps: SMPoliciesProps, prevState: SMPoliciesState) {
-    const prevQuery = SMPolicies.getQueryObjectFromState(prevState);
-    const currQuery = SMPolicies.getQueryObjectFromState(this.state);
+  async componentDidUpdate(prevProps: SnapshotPoliciesProps, prevState: SnapshotPoliciesState) {
+    const prevQuery = SnapshotPolicies.getQueryObjectFromState(prevState);
+    const currQuery = SnapshotPolicies.getQueryObjectFromState(this.state);
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getPolicies();
     }
   }
 
-  static getQueryObjectFromState({ from, size, sortField, sortDirection }: SMPoliciesState) {
+  static getQueryObjectFromState({ from, size, sortField, sortDirection }: SnapshotPoliciesState) {
     return { from, size, sortField, sortDirection };
   }
 
   getPolicies = async () => {
     try {
       const { snapshotManagementService, history } = this.props;
-      const queryParamsObject = SMPolicies.getQueryObjectFromState(this.state);
+      const queryParamsObject = SnapshotPolicies.getQueryObjectFromState(this.state);
       const queryParamsString = queryString.stringify(queryParamsObject);
       history.replace({ ...this.props.location, search: queryParamsString });
 
@@ -185,8 +196,69 @@ export default class SMPolicies extends Component<SMPoliciesProps, SMPoliciesSta
     this.setState({ from: 0, queryText, query });
   };
 
+  closePopover = () => {
+    this.setState({ isPopoverOpen: false });
+  };
+
+  onClickEdit = () => {
+    const {
+      selectedItems: [{ name }],
+    } = this.state;
+    if (name) this.props.history.push(`${ROUTES.EDIT_SNAPSHOT_POLICY}?id=${name}`);
+  };
+
+  showDeleteModal = () => {
+    this.setState({ isDeleteModalVisible: true });
+  };
+
+  closeDeleteModal = () => {
+    this.setState({ isDeleteModalVisible: false });
+  };
+
+  onActionButtonClick = () => {
+    this.setState({ isPopoverOpen: !this.state.isPopoverOpen });
+  };
+
+  onClickDelete = async () => {
+    const { snapshotManagementService } = this.props;
+    const { selectedItems } = this.state;
+    for (let item of selectedItems) {
+      const policyId = item.name;
+      try {
+        const response = await snapshotManagementService.deletePolicy(policyId);
+        if (response.ok) {
+          this.context.notifications.toasts.addSuccess(`"${policyId}" successfully deleted!`);
+        } else {
+          this.context.notifications.toasts.addDanger(`Could not delete policy "${policyId}" :  ${response.error}`);
+        }
+      } catch (err) {
+        this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not delete the policy"));
+      }
+    }
+    this.closeDeleteModal();
+    await this.getPolicies();
+  };
+
+  getSelectedPolicyIds = () => {
+    return this.state.selectedItems
+      .map((item: SMPolicy) => {
+        return item.name;
+      })
+      .join(", ");
+  };
+
   render() {
-    const { policies, totalPolicies, from, size, sortField, sortDirection, selectedItems } = this.state;
+    const {
+      policies,
+      totalPolicies,
+      from,
+      size,
+      sortField,
+      sortDirection,
+      selectedItems,
+      isPopoverOpen,
+      isDeleteModalVisible,
+    } = this.state;
 
     console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
 
@@ -211,36 +283,98 @@ export default class SMPolicies extends Component<SMPoliciesProps, SMPoliciesSta
       onSelectionChange: this.onSelectionChange,
     };
 
+    const actionItems = [
+      <EuiContextMenuItem
+        key="Edit"
+        icon="empty"
+        disabled={selectedItems.length != 1}
+        data-test-subj="editButton"
+        onClick={() => {
+          this.closePopover();
+          this.onClickEdit();
+        }}
+      >
+        Edit
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        key="Delete"
+        icon="empty"
+        disabled={!selectedItems.length}
+        data-test-subj="deleteButton"
+        onClick={() => {
+          this.closePopover();
+          this.showDeleteModal();
+        }}
+      >
+        <EuiTextColor color="danger">Delete</EuiTextColor>
+      </EuiContextMenuItem>,
+    ];
+
+    const actionButton = (
+      <EuiButton
+        iconType="arrowDown"
+        iconSide="right"
+        disabled={!selectedItems.length}
+        onClick={this.onActionButtonClick}
+        data-test-subj="actionButton"
+      >
+        Actions
+      </EuiButton>
+    );
+
     const actions = [
       <EuiButton iconType="refresh" onClick={this.getPolicies} data-test-subj="refreshButton">
         Refresh
       </EuiButton>,
-      <EuiButton onClick={this.onClickCreate} data-test-subj="createPolicyButton">
+      <EuiButton disabled={!selectedItems.length} onClick={() => {}}>
+        Disable
+      </EuiButton>,
+      <EuiButton disabled={!selectedItems.length} onClick={() => {}}>
+        Enable
+      </EuiButton>,
+      <EuiPopover
+        id="action"
+        button={actionButton}
+        isOpen={isPopoverOpen}
+        closePopover={this.closePopover}
+        panelPaddingSize="none"
+        anchorPosition="downLeft"
+        data-test-subj="actionPopover"
+      >
+        <EuiContextMenuPanel items={actionItems} />
+      </EuiPopover>,
+      <EuiButton onClick={this.onClickCreate} fill={true}>
         Create policy
       </EuiButton>,
     ];
 
     return (
-      <ContentPanel title="Snapshot policies" actions={actions}>
-        <EuiSearchBar
-          box={{
-            placeholder: "e.g. ",
-            incremental: false,
-          }}
-          onChange={this.onSearchChange}
-        />
-        <EuiBasicTable
-          items={policies}
-          itemId="name"
-          columns={this.columns}
-          pagination={pagination}
-          sorting={sorting}
-          isSelectable={true}
-          selection={selection}
-          onChange={this.onTableChange}
-          noItemsMessage={null}
-        />
-      </ContentPanel>
+      <>
+        <ContentPanel title="Snapshot policies" actions={actions}>
+          <EuiSearchBar
+            box={{
+              placeholder: "e.g. ",
+              incremental: false,
+            }}
+            onChange={this.onSearchChange}
+          />
+          <EuiBasicTable
+            items={policies}
+            itemId="name"
+            columns={this.columns}
+            pagination={pagination}
+            sorting={sorting}
+            isSelectable={true}
+            selection={selection}
+            onChange={this.onTableChange}
+            noItemsMessage={<EuiEmptyPrompt title={<h5>No snapshot policy found</h5>} body="There are no snapshot policy." />}
+          />
+        </ContentPanel>
+
+        {isDeleteModalVisible && (
+          <DeleteModal policyId={this.getSelectedPolicyIds()} closeDeleteModal={this.closeDeleteModal} onClickDelete={this.onClickDelete} />
+        )}
+      </>
     );
   }
 }

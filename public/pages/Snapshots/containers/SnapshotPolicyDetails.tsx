@@ -8,31 +8,50 @@ import React, { Component } from "react";
 import { CoreServicesContext } from "../../../components/core_services";
 import { SnapshotManagementService } from "../../../services";
 import queryString from "query-string";
-import { EuiButton, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiLoadingSpinner, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiConfirmModal,
+  EuiFieldText,
+  EuiFlexGrid,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiForm,
+  EuiFormRow,
+  EuiLoadingSpinner,
+  EuiOverlayMask,
+  EuiSpacer,
+  EuiText,
+  EuiTitle,
+} from "@elastic/eui";
 import { BREADCRUMBS, ROUTES } from "../../../utils/constants";
 import { ContentPanel } from "../../../components/ContentPanel";
 import CustomLabel from "../components/CustomLabel";
 import { SMPolicy } from "../../../../models/interfaces";
 import { ModalConsumer } from "../../../components/Modal";
+import DeleteModal from "../../PolicyDetails/components/DeleteModal";
+import { getErrorMessage } from "../../../utils/helpers";
 
-interface SMPolicyDetailsProps extends RouteComponentProps {
+interface SnapshotPolicyDetailsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
 }
 
-interface SMPolicyDetailsState {
+interface SnapshotPolicyDetailsState {
   policyId: string;
   policy: SMPolicy | null;
+
+  isDeleteModalVisible: boolean;
 }
 
-export default class SMPolicyDetails extends Component<SMPolicyDetailsProps, SMPolicyDetailsState> {
+export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetailsProps, SnapshotPolicyDetailsState> {
   static contextType = CoreServicesContext;
 
-  constructor(props: SMPolicyDetailsProps) {
+  constructor(props: SnapshotPolicyDetailsProps) {
     super(props);
 
     this.state = {
       policyId: "",
       policy: null,
+      isDeleteModalVisible: false,
     };
   }
 
@@ -52,7 +71,7 @@ export default class SMPolicyDetails extends Component<SMPolicyDetailsProps, SMP
     try {
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.getPolicy(policyId);
-      console.log(`sm dev get policy ${response}`);
+      console.log(`sm dev get policy ${JSON.stringify(response)}`);
 
       if (response.ok && !!response.response.policy) {
         this.setState({
@@ -77,8 +96,42 @@ export default class SMPolicyDetails extends Component<SMPolicyDetailsProps, SMP
     }
   };
 
+  closeDeleteModal = () => {
+    this.setState({ isDeleteModalVisible: false });
+  };
+
+  showDeleteModal = (): void => {
+    this.setState({ isDeleteModalVisible: true });
+  };
+
+  onClickDelete = async (): Promise<void> => {
+    const { snapshotManagementService } = this.props;
+    const { policyId } = this.state;
+
+    try {
+      const response = await snapshotManagementService.deletePolicy(policyId);
+
+      if (response.ok) {
+        this.closeDeleteModal();
+        this.context.notifications.toasts.addSuccess(`"Policy ${policyId}" successfully deleted`);
+        this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
+      } else {
+        this.context.notifications.toasts.addDanger(`Could not delete the policy "${policyId}" : ${response.error}`);
+      }
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not delete the policy"));
+    }
+  };
+
+  renderEnabledField = (enabled: boolean) => {
+    if (enabled) {
+      return "Enabled";
+    }
+    return "Disabled";
+  };
+
   render() {
-    const { policyId, policy } = this.state;
+    const { policyId, policy, isDeleteModalVisible } = this.state;
 
     if (!policy) {
       return (
@@ -88,8 +141,18 @@ export default class SMPolicyDetails extends Component<SMPolicyDetailsProps, SMP
       );
     }
 
+    console.log(`sm dev enabled field ${policy.enabled}`);
+    const policySettingItems = [
+      { term: "Policy name", value: policyId },
+      { term: "Status", value: this.renderEnabledField(policy.enabled) },
+      { term: "Last updated time", value: policy.last_updated_time },
+      { term: "Indices", value: policy.snapshot_config.indices },
+      { term: "Repository", value: policy.snapshot_config.repository },
+      { term: "Description", value: policy.description },
+    ];
+
     return (
-      <div>
+      <div style={{ padding: "5px 50px" }}>
         <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem grow={false}>
             <EuiTitle size="m">
@@ -102,18 +165,29 @@ export default class SMPolicyDetails extends Component<SMPolicyDetailsProps, SMP
               <EuiFlexItem grow={false}>
                 <EuiButton onClick={this.onEdit}>Edit</EuiButton>
               </EuiFlexItem>
-              {/* <EuiFlexItem grow={false}>
+              <EuiFlexItem grow={false}>
                 <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
                   Delete
                 </EuiButton>
-              </EuiFlexItem> */}
+              </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
         </EuiFlexGroup>
 
         <EuiSpacer />
 
-        <ContentPanel title="Policy settings" titleSize="m"></ContentPanel>
+        <ContentPanel title="Policy settings" titleSize="m">
+          <EuiFlexGrid columns={3}>
+            {policySettingItems.map((item) => (
+              <EuiFlexItem key={`${item.term}`}>
+                <EuiText size="xs">
+                  <dt>{item.term}</dt>
+                  <dd>{item.value}</dd>
+                </EuiText>
+              </EuiFlexItem>
+            ))}
+          </EuiFlexGrid>
+        </ContentPanel>
 
         <EuiSpacer />
 
@@ -130,6 +204,10 @@ export default class SMPolicyDetails extends Component<SMPolicyDetailsProps, SMP
         <EuiSpacer />
 
         <ContentPanel title="Snapshot activities" titleSize="m"></ContentPanel>
+
+        {isDeleteModalVisible && (
+          <DeleteModal policyId={policyId} closeDeleteModal={this.closeDeleteModal} onClickDelete={this.onClickDelete} />
+        )}
       </div>
     );
   }

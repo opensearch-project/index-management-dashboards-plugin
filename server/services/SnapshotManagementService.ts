@@ -13,7 +13,15 @@ import {
   ResponseError,
 } from "../../../../src/core/server";
 import { SMPolicy, DocumentSMPolicy } from "../../models/interfaces";
-import { CatRepository, CatSnapshot, GetSnapshotsResponse, GetSMPoliciesResponse, DeletePolicyResponse } from "../models/interfaces";
+import {
+  CatRepository,
+  CatSnapshot,
+  CatSnapshotsResponse,
+  GetSMPoliciesResponse,
+  DeletePolicyResponse,
+  GetSnapshot,
+  GetSnapshotResponse,
+} from "../models/interfaces";
 import { FailedServerResponse, ServerResponse } from "../models/types";
 
 export default class SnapshotManagementService {
@@ -23,18 +31,18 @@ export default class SnapshotManagementService {
     this.osDriver = osDriver;
   }
 
-  catSnapshots = async (
+  getSnapshots = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetSnapshotsResponse>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatSnapshotsResponse>>> => {
     try {
-      const { from, size, sortField, sortDirection } = request.query as {
-        from: string;
-        size: string;
-        sortField: string;
-        sortDirection: string;
-      };
+      // const { from, size, sortField, sortDirection } = request.query as {
+      //   from: string;
+      //   size: string;
+      //   sortField: string;
+      //   sortDirection: string;
+      // };
 
       // if no repository input, we need to first get back all repositories
       const getRepositoryRes = await this.getRepositories(context, request, response);
@@ -57,7 +65,7 @@ export default class SnapshotManagementService {
       for (let i = 0; i < repositories.length; i++) {
         const params = {
           format: "json",
-          s: `${sortField}:${sortDirection}`,
+          // s: `${sortField}:${sortDirection}`,
           repository: repositories[i],
           // time: "ms",
         };
@@ -74,12 +82,11 @@ export default class SnapshotManagementService {
         const policyNames = getSMPoliciesRes.payload?.response.policies
           .map((policy) => policy.policy.name)
           .sort((a, b) => b.length - a.length);
+        console.log(`sm dev get snapshot policies ${policyNames}`);
         function addPolicyField(snapshot: CatSnapshot) {
           for (let i = 0; i < policyNames.length; i++) {
             if (snapshot.id.startsWith(policyNames[i])) {
               return { ...snapshot, policy: policyNames[i] };
-            } else {
-              return snapshot;
             }
           }
           return snapshot;
@@ -130,20 +137,24 @@ export default class SnapshotManagementService {
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetSnapshot>>> => {
     try {
+      const { id } = request.params as {
+        id: string;
+      };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: any = await callWithRequest("snapshot.get", {
+      const res: GetSnapshotResponse = await callWithRequest("snapshot.get", {
         repository: "repo",
-        snapshot: "_all",
+        snapshot: `${id}`,
         ignore_unavailable: true,
       });
-      console.log(`sm dev response: ${JSON.stringify(res)}`);
+
+      console.log(`sm dev get single snapshot response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
           ok: true,
-          response: res,
+          response: res.snapshots[0],
         },
       });
     } catch (err) {
@@ -167,7 +178,7 @@ export default class SnapshotManagementService {
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const res: any = await callWithRequest("ism.createSMPolicy", params);
-      console.log(`sm dev server response: ${JSON.stringify(res)}`);
+      console.log(`sm dev server create policy response: ${JSON.stringify(res)}`);
 
       return response.custom({
         statusCode: 200,
@@ -178,6 +189,39 @@ export default class SnapshotManagementService {
       });
     } catch (err) {
       return this.errorResponse(response, err, "createPolicy");
+    }
+  };
+
+  updatePolicy = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
+    try {
+      const { id } = request.params as { id: string };
+      const { seqNo, primaryTerm } = request.query as { seqNo?: string; primaryTerm?: string };
+      const params = {
+        policyId: id,
+        ifSeqNo: seqNo,
+        ifPrimaryTerm: primaryTerm,
+        body: JSON.stringify(request.body),
+      };
+
+      console.log(`sm dev update policy ${JSON.stringify(request.body)}`);
+
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const res: any = await callWithRequest("ism.updateSMPolicy", params);
+      console.log(`sm dev server update policy response: ${JSON.stringify(res)}`);
+
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: res,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "updatePolicy");
     }
   };
 

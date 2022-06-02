@@ -12,7 +12,11 @@ import {
   Direction,
   EuiBasicTable,
   EuiButton,
+  EuiEmptyPrompt,
+  EuiFlyout,
+  EuiFlyoutHeader,
   EuiInMemoryTable,
+  EuiLink,
   EuiSearchBar,
   EuiTableFieldDataColumnType,
   EuiTableSelectionType,
@@ -22,8 +26,9 @@ import {
   Query,
   SortDirection,
 } from "@elastic/eui";
+import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../components/core_services";
-import { BREADCRUMBS } from "../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../utils/constants";
 import { SnapshotManagementService } from "../../../services";
 import { getSnapshotsQueryParamsFromURL } from "../utils/helpers";
 import { OnSearchChangeArgs } from "../models/interfaces";
@@ -31,6 +36,7 @@ import { DEFAULT_PAGE_SIZE_OPTIONS, renderTimestampSecond } from "../utils/const
 import { getErrorMessage } from "../../../utils/helpers";
 import { CatSnapshot } from "../../../../server/models/interfaces";
 import { ContentPanel } from "../../../components/ContentPanel";
+import SnapshotFlyout from "../components/SnapshotFlyout";
 
 interface SnapshotsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -38,35 +44,41 @@ interface SnapshotsProps extends RouteComponentProps {
 
 interface SnapshotsState {
   snapshots: CatSnapshot[];
-  loadingSnapshots: boolean;
-  query: Query;
-  from: number;
-  size: number;
-  totalSnapshots: number;
-  sortField: keyof CatSnapshot;
-  sortDirection: Direction;
+  filteredSnapshots: CatSnapshot[];
+  // from: number;
+  // size: number;
+  // totalSnapshots: number;
+  // sortField: keyof CatSnapshot;
+  // sortDirection: Direction;
   selectedItems: CatSnapshot[];
+
+  showFlyout: boolean;
+  flyoutSnapshotId: string;
+
+  loadingSnapshots: boolean;
+  message?: React.ReactNode;
 }
 
 export default class Snapshots extends Component<SnapshotsProps, SnapshotsState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<CatSnapshot>[];
-  initialQuery = Query.MATCH_ALL;
 
   constructor(props: SnapshotsProps) {
     super(props);
 
-    const { from, size, sortField, sortDirection } = getSnapshotsQueryParamsFromURL(this.props.location);
     this.state = {
       snapshots: [],
+      filteredSnapshots: [],
       loadingSnapshots: false,
-      query: this.initialQuery,
-      from: from,
-      size: size,
-      totalSnapshots: 0,
-      sortField: sortField,
-      sortDirection: sortDirection,
+      // from: from,
+      // size: size,
+      // totalSnapshots: 0,
+      // sortField: sortField,
+      // sortDirection: sortDirection,
       selectedItems: [],
+      showFlyout: false,
+      flyoutSnapshotId: "",
+      message: null,
     };
 
     this.columns = [
@@ -75,6 +87,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Name",
         sortable: true,
         dataType: "string",
+        render: (name: string, item: CatSnapshot) => (
+          <EuiLink onClick={() => this.setState({ showFlyout: true, flyoutSnapshotId: name })}>{name}</EuiLink>
+        ),
       },
       {
         field: "repository",
@@ -107,8 +122,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Policy",
         sortable: false,
         dataType: "string",
+        render: (name: string, item: CatSnapshot) => (
+          <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>{name}</EuiLink>
+        ),
       },
     ];
+
     this.getSnapshots = _.debounce(this.getSnapshots, 500, { leading: true });
   }
 
@@ -117,85 +136,37 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     await this.getSnapshots();
   }
 
-  async componentDidUpdate(prevProps: SnapshotsProps, prevState: SnapshotsState) {
-    const prevQuery = Snapshots.getQueryObjectFromState(prevState);
-    const currQuery = Snapshots.getQueryObjectFromState(this.state);
-    if (!_.isEqual(prevQuery, currQuery)) {
-      await this.getSnapshots();
-    }
-  }
-
-  static getQueryObjectFromState({ from, size, sortField, sortDirection }: SnapshotsState) {
-    return { from, size, sortField, sortDirection };
-  }
-
   getSnapshots = async () => {
-    this.setState({ loadingSnapshots: true });
+    this.setState({ loadingSnapshots: true, message: "Loading snapshots..." });
 
     try {
-      const { snapshotManagementService, history } = this.props;
-      const queryParamsObject = Snapshots.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(queryParamsObject);
-      history.replace({ ...this.props.location, search: queryParamsString });
-
-      const response = await snapshotManagementService.getSnapshots({ ...queryParamsObject });
+      const { snapshotManagementService } = this.props;
+      const response = await snapshotManagementService.getSnapshots();
       if (response.ok) {
         const { snapshots, totalSnapshots } = response.response;
-        this.setState({ snapshots, totalSnapshots });
+        this.setState({ snapshots, filteredSnapshots: snapshots });
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshots."));
+    } finally {
+      this.setState({ loadingSnapshots: false, message: null });
     }
-
-    this.setState({ loadingSnapshots: false });
-  };
-
-  onTableChange = (criteria: Criteria<CatSnapshot>): void => {
-    const { from: prevFrom, size: prevSize, sortField, sortDirection } = this.state;
-    const { page: { index, size } = {}, sort: { field, direction } = {} } = criteria;
-
-    this.setState({
-      from: index ? (size ? index * size : prevFrom) : prevFrom,
-      size: size ?? prevSize,
-      sortField: field ?? sortField,
-      sortDirection: direction ?? sortDirection,
-    });
   };
 
   onSelectionChange = (selectedItems: CatSnapshot[]): void => {
     this.setState({ selectedItems });
   };
 
-  onSearchChange = ({ query, error }: OnSearchChangeArgs) => {
-    this.setState({ query });
+  onCloseFlyout = () => {
+    this.setState({ showFlyout: false });
   };
 
   render() {
-    const { snapshots, query, from, size, totalSnapshots, sortField, sortDirection, selectedItems } = this.state;
+    const { snapshots, filteredSnapshots, selectedItems, loadingSnapshots, showFlyout, flyoutSnapshotId, message } = this.state;
 
     console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
-
-    const pageIndex = Math.floor(from / size);
-    const pagination: Pagination = {
-      pageIndex: pageIndex,
-      pageSize: size,
-      pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
-      totalItemCount: totalSnapshots,
-    };
-    let paginatedSnapshots = snapshots.slice(from, from + size);
-
-    const sorting: EuiTableSortingType<CatSnapshot> = {
-      sort: {
-        direction: sortDirection,
-        field: sortField,
-      },
-    };
-
-    const selection: EuiTableSelectionType<CatSnapshot> = {
-      onSelectionChange: this.onSelectionChange,
-    };
 
     const repos = [...new Set(snapshots.map((snapshot) => snapshot.repository))];
     const search = {
@@ -209,56 +180,48 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
           name: "Repository",
           options: repos.map((repo) => ({ value: repo })),
           multiSelect: "or",
-        },
+        } as FieldValueSelectionFilterConfigType,
       ],
     };
 
-    const schema = {
-      strict: true,
-      fields: {
-        repository: {
-          type: "string",
-        },
-      },
-    };
-
-    paginatedSnapshots = Query.execute(query, paginatedSnapshots, {
-      defaultFields: ["repository"],
-    });
-
     return (
-      <ContentPanel
-        title="Snapshots"
-        actions={
-          <EuiButton iconType="refresh" onClick={this.getSnapshots} data-test-subj="refreshButton">
-            Refresh
-          </EuiButton>
-        }
-      >
-        <EuiSearchBar
-          defaultQuery={this.initialQuery}
-          box={{
-            placeholder: "e.g. type:visualization -is:active joe",
-            incremental: false,
-            schema,
-          }}
-          onChange={this.onSearchChange}
-        />
-        <EuiBasicTable
-          items={paginatedSnapshots}
-          itemId={(item) => `${item.repository}:${item.id}`}
-          columns={this.columns}
-          pagination={pagination}
-          sorting={sorting}
-          isSelectable={true}
-          selection={selection}
-          onChange={this.onTableChange}
-          // noItemsMessage={null}
-          // loading={loading}
-          // error={error}
-          // message={message}
-        />
-      </ContentPanel>
+      <>
+        <ContentPanel
+          title="Snapshots"
+          actions={
+            <EuiButton iconType="refresh" onClick={this.getSnapshots} data-test-subj="refreshButton">
+              Refresh
+            </EuiButton>
+          }
+        >
+          <EuiInMemoryTable
+            items={filteredSnapshots}
+            itemId={(item) => `${item.repository}:${item.id}`}
+            columns={this.columns}
+            pagination={true}
+            sorting={{
+              sort: {
+                field: "id",
+                direction: "desc",
+              },
+            }}
+            isSelectable={true}
+            selection={{ onSelectionChange: this.onSelectionChange }}
+            search={search}
+            loading={loadingSnapshots}
+            // message={message}
+            // error={error}
+          />
+        </ContentPanel>
+
+        {showFlyout && (
+          <SnapshotFlyout
+            snapshotId={flyoutSnapshotId}
+            snapshotManagementService={this.props.snapshotManagementService}
+            onCloseFlyout={this.onCloseFlyout}
+          />
+        )}
+      </>
     );
   }
 }

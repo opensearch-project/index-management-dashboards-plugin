@@ -39,24 +39,10 @@ interface CreateSMPolicyProps extends RouteComponentProps {
 }
 
 interface CreateSMPolicyState {
-  // name: string;
-  // description: string;
-  // creationExpression: string;
-  // deletionExpression: string;
-  // timezone: string;
-
-  // indices: string;
-  // repository: string;
-  // includeGlobalState: boolean;
-  // ignoreUnavailable: boolean;
-  // partial: boolean;
-
-  // maxCount: number;
-  // maxAge: string;
-  // minCount: number;
-
   policy: SMPolicy;
   policyId: string;
+  policySeqNo: number | null;
+  policyPrimaryTerm: number | null;
 
   isSubmitting: boolean;
 }
@@ -68,24 +54,10 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
     super(props);
 
     this.state = {
-      // name: "",
-      // description: "",
-      // creationExpression: DEFAULT_SM_POLICY.creation.schedule.cron.expression,
-      // deletionExpression: DEFAULT_SM_POLICY.deletion.schedule.cron.expression,
-      // timezone: DEFAULT_SM_POLICY.creation.schedule.cron.timezone,
-
-      // indices: DEFAULT_SM_POLICY.snapshot_config.indices,
-      // repository: DEFAULT_SM_POLICY.snapshot_config.repository,
-      // includeGlobalState: false,
-      // ignoreUnavailable: false,
-      // partial: false,
-
-      // maxCount: DEFAULT_DELETE_CONDITION.max_count,
-      // maxAge: DEFAULT_DELETE_CONDITION.max_age,
-      // minCount: DEFAULT_DELETE_CONDITION.min_count,
-
       policy: DEFAULT_SM_POLICY,
       policyId: "",
+      policySeqNo: null,
+      policyPrimaryTerm: null,
 
       isSubmitting: false,
     };
@@ -122,10 +94,12 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
       const response = await snapshotManagementService.getPolicy(policyId);
       console.log(`sm dev get policy ${response}`);
 
-      if (response.ok && !!response.response.policy) {
+      if (response.ok) {
         this.setState({
           policy: response.response.policy,
           policyId: response.response.id,
+          policySeqNo: response.response.seqNo,
+          policyPrimaryTerm: response.response.primaryTerm,
         });
       } else {
         const errorMessage = response.ok ? "Policy was empty" : response.error;
@@ -235,11 +209,9 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
     // TODO SM clean up state
   };
 
-  onCreate = async () => {
+  onCreate = async (policyId: string, policy: SMPolicy) => {
     const { snapshotManagementService } = this.props;
     try {
-      const { policyId, policy } = this.state;
-      console.log(`sm dev create policy ${JSON.stringify(policy)}`);
       const response = await snapshotManagementService.createPolicy(policyId, policy);
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Created policy: ${response.response.policy.name}`);
@@ -254,10 +226,46 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
     }
   };
 
+  onUpdate = async (policyId: string, policy: SMPolicy): Promise<void> => {
+    try {
+      const { snapshotManagementService } = this.props;
+      const { policyPrimaryTerm, policySeqNo } = this.state;
+      if (policySeqNo == null || policyPrimaryTerm == null) {
+        this.context.notifications.toasts.addDanger("Could not update policy without seqNo and primaryTerm");
+        return;
+      }
+      const response = await snapshotManagementService.updatePolicy(policyId, policy, policySeqNo, policyPrimaryTerm);
+      if (response.ok) {
+        this.context.notifications.toasts.addSuccess(`Updated policy: ${response.response._id}`);
+        this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
+      } else {
+        this.context.notifications.toasts.addDanger(`Failed to update policy: ${response.error}`);
+        this.setState({ isSubmitting: false });
+      }
+    } catch (err) {
+      const errorMessage = getErrorMessage(err, "There was a problem updating the policy");
+      this.context.notifications.toasts.addDanger(errorMessage);
+      this.setState({ isSubmitting: false });
+    }
+  };
+
   onSubmit = async () => {
     this.setState({ isSubmitting: true });
+    const { isEdit } = this.props;
+    const { policyId, policy } = this.state;
 
-    await this.onCreate();
+    try {
+      if (!policyId.trim()) {
+        // this.setState({ policyIdError: "Required" });
+      } else {
+        if (isEdit) await this.onUpdate(policyId, policy);
+        else await this.onCreate(policyId, policy);
+      }
+    } catch (err) {
+      this.context.notifications.toasts.addDanger("Invalid Policy");
+      console.error(err);
+      this.setState({ isSubmitting: false });
+    }
 
     this.setState({ isSubmitting: false });
   };
@@ -265,29 +273,13 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
   render() {
     console.log(`sm dev state ${JSON.stringify(this.state)}`);
 
-    const {
-      // name,
-      // description,
-      // creationExpression,
-      // deletionExpression,
-      // timezone,
-      // indices,
-      // repository,
-      // includeGlobalState,
-      // ignoreUnavailable,
-      // partial,
-      // maxCount,
-      // maxAge,
-      // minCount,
-      policy,
-      policyId,
-      isSubmitting,
-    } = this.state;
+    const { isEdit } = this.props;
+    const { policy, policyId, isSubmitting } = this.state;
 
     return (
-      <div>
+      <div style={{ padding: "5px 50px" }}>
         <EuiTitle size="l">
-          <h1>Create policy</h1>
+          <h1>{isEdit ? "Edit" : "Create"} policy</h1>
         </EuiTitle>
 
         <EuiSpacer />
@@ -295,7 +287,12 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
         <ContentPanel title="Policy settings" titleSize="m">
           <CustomLabel title="Policy name" />
           <EuiFormRow>
-            <EuiFieldText placeholder="daily-snapshot" value={_.get(policy, "name", "")} onChange={this.onChangeName} />
+            <EuiFieldText
+              placeholder="e.g. daily-snapshot"
+              value={_.get(policy, "name", "")}
+              onChange={this.onChangeName}
+              disabled={isEdit}
+            />
           </EuiFormRow>
 
           <EuiSpacer />
@@ -423,7 +420,7 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
 
           <EuiFlexItem grow={false}>
             <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting}>
-              Create
+              {isEdit ? "Update" : "Create"}
             </EuiButton>
           </EuiFlexItem>
         </EuiFlexGroup>

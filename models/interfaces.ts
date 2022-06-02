@@ -85,6 +85,7 @@ export interface DocumentSMPolicy {
   primaryTerm: number;
   policy: SMPolicy;
 }
+
 export interface SMPolicy {
   name: string;
   description: string;

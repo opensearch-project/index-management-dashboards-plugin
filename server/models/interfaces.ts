@@ -347,7 +347,7 @@ export interface IndexToDataStream {
   [indexName: string]: string;
 }
 
-export interface GetSnapshotsResponse {
+export interface CatSnapshotsResponse {
   snapshots: CatSnapshot[];
   totalSnapshots: number;
 }
@@ -364,6 +364,30 @@ export interface CatSnapshot {
   total_shards: number;
   repository: string;
   policy?: string;
+}
+
+export interface GetSnapshotResponse {
+  snapshots: GetSnapshot[];
+}
+
+export interface GetSnapshot {
+  snapshot: string;
+  uuid: string;
+  version: number;
+  state: string;
+  indices: string[];
+  data_streams: string[];
+  failures: any[];
+  include_global_state: boolean;
+  start_time: string;
+  start_time_in_millis: number;
+  end_time: string;
+  end_time_in_millis: number;
+  shards: {
+    total: number;
+    successful: number;
+    failed: number;
+  };
 }
 
 export interface CatRepository {
