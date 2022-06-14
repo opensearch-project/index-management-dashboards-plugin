@@ -34,7 +34,7 @@ import { getSnapshotsQueryParamsFromURL } from "../utils/helpers";
 import { OnSearchChangeArgs } from "../models/interfaces";
 import { DEFAULT_PAGE_SIZE_OPTIONS, renderTimestampSecond } from "../utils/constants";
 import { getErrorMessage } from "../../../utils/helpers";
-import { CatSnapshot } from "../../../../server/models/interfaces";
+import { CatSnapshotWithRepoAndPolicy } from "../../../../server/models/interfaces";
 import { ContentPanel } from "../../../components/ContentPanel";
 import SnapshotFlyout from "../components/SnapshotFlyout";
 
@@ -43,14 +43,14 @@ interface SnapshotsProps extends RouteComponentProps {
 }
 
 interface SnapshotsState {
-  snapshots: CatSnapshot[];
-  filteredSnapshots: CatSnapshot[];
+  snapshots: CatSnapshotWithRepoAndPolicy[];
+  filteredSnapshots: CatSnapshotWithRepoAndPolicy[];
   // from: number;
   // size: number;
   // totalSnapshots: number;
   // sortField: keyof CatSnapshot;
   // sortDirection: Direction;
-  selectedItems: CatSnapshot[];
+  selectedItems: CatSnapshotWithRepoAndPolicy[];
 
   showFlyout: boolean;
   flyoutSnapshotId: string;
@@ -61,7 +61,7 @@ interface SnapshotsState {
 
 export default class Snapshots extends Component<SnapshotsProps, SnapshotsState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<CatSnapshot>[];
+  columns: EuiTableFieldDataColumnType<CatSnapshotWithRepoAndPolicy>[];
 
   constructor(props: SnapshotsProps) {
     super(props);
@@ -87,7 +87,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Name",
         sortable: true,
         dataType: "string",
-        render: (name: string, item: CatSnapshot) => (
+        render: (name: string, item: CatSnapshotWithRepoAndPolicy) => (
           <EuiLink onClick={() => this.setState({ showFlyout: true, flyoutSnapshotId: name })}>{name}</EuiLink>
         ),
       },
@@ -122,7 +122,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Policy",
         sortable: false,
         dataType: "string",
-        render: (name: string, item: CatSnapshot) => (
+        render: (name: string, item: CatSnapshotWithRepoAndPolicy) => (
           <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>{name}</EuiLink>
         ),
       },
@@ -155,7 +155,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     }
   };
 
-  onSelectionChange = (selectedItems: CatSnapshot[]): void => {
+  onSelectionChange = (selectedItems: CatSnapshotWithRepoAndPolicy[]): void => {
     this.setState({ selectedItems });
   };
 

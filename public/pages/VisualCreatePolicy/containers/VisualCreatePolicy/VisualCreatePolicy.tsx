@@ -59,6 +59,8 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
       hasSubmitted: false,
       errorNotificationJsonString: "",
     };
+
+    console.log(`ism dev visual create policy state in constructor ${JSON.stringify(this.state)}`);
   }
 
   componentDidMount = async (): Promise<void> => {

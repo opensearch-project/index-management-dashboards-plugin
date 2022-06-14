@@ -28,10 +28,7 @@ import RollupDetails from "../RollupDetails/containers/RollupDetails";
 import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
 import queryString from "query-string";
-import Snapshots from "../Snapshots";
-import SnapshotPolicies from "../Snapshots/containers/SnapshotPolicies";
-import SnapshotPolicyDetails from "../Snapshots/containers/SnapshotPolicyDetails";
-import CreateSMPolicy from "../Snapshots/containers/CreateSnapshotPolicy";
+import { Snapshots, SnapshotPolicies, SnapshotPolicyDetails, CreateSnapshotPolicy, Repositories } from "../SnapshotManagement";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -43,6 +40,7 @@ enum Navigation {
   SnapshotManagement = "Snapshot Management",
   Snapshots = "Snapshots",
   SnapshotPolicies = "Snapshot Policies",
+  Repositories = "Repositories",
 }
 
 enum Pathname {
@@ -53,6 +51,7 @@ enum Pathname {
   Transforms = "/transforms",
   Snapshots = "/snapshots",
   SnapshotPolicies = "/snapshot-policies",
+  Repositories = "/repositories",
 }
 
 const HIDDEN_NAV_ROUTES = [
@@ -133,6 +132,12 @@ export default class Main extends Component<MainProps, object> {
             href: `#${Pathname.Snapshots}`,
             isSelected: pathname === Pathname.Snapshots,
           },
+          {
+            name: Navigation.Repositories,
+            id: 3,
+            href: `#${Pathname.Repositories}`,
+            isSelected: pathname === Pathname.Repositories,
+          },
         ],
       },
     ];
@@ -161,6 +166,12 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={ROUTES.REPOSITORIES}
+                            render={(props: RouteComponentProps) => (
+                              <Repositories {...props} snapshotManagementService={services.snapshotManagementService} />
+                            )}
+                          />
+                          <Route
                             path={ROUTES.SNAPSHOT_POLICIES}
                             render={(props: RouteComponentProps) => (
                               <SnapshotPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
@@ -175,13 +186,25 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.CREATE_SNAPSHOT_POLICY}
                             render={(props: RouteComponentProps) => (
-                              <CreateSMPolicy {...props} snapshotManagementService={services.snapshotManagementService} isEdit={false} />
+                              <CreateSnapshotPolicy
+                                {...props}
+                                snapshotManagementService={services.snapshotManagementService}
+                                notificationService={services.notificationService}
+                                indexService={services.indexService}
+                                isEdit={false}
+                              />
                             )}
                           />
                           <Route
                             path={ROUTES.EDIT_SNAPSHOT_POLICY}
                             render={(props: RouteComponentProps) => (
-                              <CreateSMPolicy {...props} snapshotManagementService={services.snapshotManagementService} isEdit={true} />
+                              <CreateSnapshotPolicy
+                                {...props}
+                                snapshotManagementService={services.snapshotManagementService}
+                                notificationService={services.notificationService}
+                                indexService={services.indexService}
+                                isEdit={true}
+                              />
                             )}
                           />
                           <Route

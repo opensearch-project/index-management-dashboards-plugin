@@ -25,7 +25,15 @@ export default function (services: NodeServices, router: IRouter) {
         // }),
       },
     },
-    snapshotManagementService.getSnapshots
+    snapshotManagementService.catSnapshots
+  );
+
+  router.get(
+    {
+      path: NODE_API._REPOSITORIES,
+      validate: {},
+    },
+    snapshotManagementService.getRepositories
   );
 
   router.get(
@@ -79,8 +87,8 @@ export default function (services: NodeServices, router: IRouter) {
           from: schema.number(),
           size: schema.number(),
           sortField: schema.string(),
-          sortDirection: schema.string(),
-          // search: schema.string(),
+          sortOrder: schema.string(),
+          queryString: schema.string(),
         }),
       },
     },

@@ -46,12 +46,12 @@ interface SnapshotPoliciesState {
   totalPolicies: number;
 
   query: Query | null;
-  queryText: string;
+  queryString: string;
 
   from: number;
   size: number;
+  sortOrder: Direction;
   sortField: keyof SMPolicy;
-  sortDirection: Direction;
 
   selectedItems: SMPolicy[];
 
@@ -69,16 +69,16 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   constructor(props: SnapshotPoliciesProps) {
     super(props);
 
-    const { from, size, sortField, sortDirection } = getSMPoliciesQueryParamsFromURL(this.props.location);
+    const { from, size, sortField, sortOrder } = getSMPoliciesQueryParamsFromURL(this.props.location);
     this.state = {
       policies: [],
       totalPolicies: 0,
       query: null,
-      queryText: "",
+      queryString: "",
       from: from,
       size: size,
       sortField: sortField,
-      sortDirection: sortDirection,
+      sortOrder: sortOrder,
       selectedItems: [],
       showFlyout: false,
       policyClicked: null,
@@ -124,7 +124,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       {
         field: "description",
         name: "Description",
-        sortable: true,
+        sortable: false,
         dataType: "string",
       },
     ];
@@ -141,10 +141,6 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getPolicies();
     }
-  }
-
-  static getQueryObjectFromState({ from, size, sortField, sortDirection }: SnapshotPoliciesState) {
-    return { from, size, sortField, sortDirection };
   }
 
   getPolicies = async () => {
@@ -166,19 +162,23 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     }
   };
 
+  static getQueryObjectFromState({ from, size, sortField, sortOrder, queryString }: SnapshotPoliciesState) {
+    return { from, size, sortField, sortOrder, queryString };
+  }
+
   onSelectionChange = (selectedItems: SMPolicy[]): void => {
     this.setState({ selectedItems });
   };
 
   onTableChange = (criteria: Criteria<SMPolicy>): void => {
-    const { from: prevFrom, size: prevSize, sortField, sortDirection } = this.state;
+    const { from: prevFrom, size: prevSize, sortField, sortOrder } = this.state;
     const { page: { index, size } = {}, sort: { field, direction } = {} } = criteria;
 
     this.setState({
       from: index ? (size ? index * size : prevFrom) : prevFrom,
       size: size ?? prevSize,
       sortField: field ?? sortField,
-      sortDirection: direction ?? sortDirection,
+      sortOrder: direction ?? sortOrder,
     });
   };
 
@@ -193,7 +193,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
 
     console.log(`sm dev policies page search change ${queryText}`);
 
-    this.setState({ from: 0, queryText, query });
+    this.setState({ from: 0, queryString: queryText, query });
   };
 
   closePopover = () => {
@@ -248,17 +248,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   };
 
   render() {
-    const {
-      policies,
-      totalPolicies,
-      from,
-      size,
-      sortField,
-      sortDirection,
-      selectedItems,
-      isPopoverOpen,
-      isDeleteModalVisible,
-    } = this.state;
+    const { policies, totalPolicies, from, size, sortField, sortOrder, selectedItems, isPopoverOpen, isDeleteModalVisible } = this.state;
 
     console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
 
@@ -274,7 +264,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
 
     const sorting: EuiTableSortingType<SMPolicy> = {
       sort: {
-        direction: sortDirection,
+        direction: sortOrder,
         field: sortField,
       },
     };

@@ -200,6 +200,8 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
     const { isEdit } = this.props;
     const { policyId, policyIdError, jsonString, submitError, isSubmitting } = this.state;
 
+    console.log(`ism dev ${JSON.stringify(this.state)}`);
+
     let hasJSONError = false;
     try {
       JSON.parse(jsonString);

@@ -15,8 +15,8 @@ import {
 import { SMPolicy, DocumentSMPolicy } from "../../models/interfaces";
 import {
   CatRepository,
-  CatSnapshot,
-  CatSnapshotsResponse,
+  CatSnapshotWithRepoAndPolicy,
+  GetSnapshotsResponse,
   GetSMPoliciesResponse,
   DeletePolicyResponse,
   GetSnapshot,
@@ -31,11 +31,12 @@ export default class SnapshotManagementService {
     this.osDriver = osDriver;
   }
 
-  getSnapshots = async (
+  // TODO SM get snapshots and use the sm_policy in metadata
+  catSnapshots = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatSnapshotsResponse>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetSnapshotsResponse>>> => {
     try {
       // const { from, size, sortField, sortDirection } = request.query as {
       //   from: string;
@@ -61,7 +62,7 @@ export default class SnapshotManagementService {
       }
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      let snapshots: CatSnapshot[] = [];
+      let snapshots: CatSnapshotWithRepoAndPolicy[] = [];
       for (let i = 0; i < repositories.length; i++) {
         const params = {
           format: "json",
@@ -70,7 +71,7 @@ export default class SnapshotManagementService {
           // time: "ms",
         };
         // try catch the missing snapshot exception
-        const catSnapshotsRes: CatSnapshot[] = await callWithRequest("cat.snapshots", params);
+        const catSnapshotsRes: CatSnapshotWithRepoAndPolicy[] = await callWithRequest("cat.snapshots", params);
         const snapshotsWithRepo = catSnapshotsRes.map((item) => ({ ...item, repository: repositories[i] }));
         console.log(`sm dev cat snapshot response: ${JSON.stringify(catSnapshotsRes)}`);
         snapshots = [...snapshots, ...snapshotsWithRepo];
@@ -83,7 +84,7 @@ export default class SnapshotManagementService {
           .map((policy) => policy.policy.name)
           .sort((a, b) => b.length - a.length);
         console.log(`sm dev get snapshot policies ${policyNames}`);
-        function addPolicyField(snapshot: CatSnapshot) {
+        function addPolicyField(snapshot: CatSnapshotWithRepoAndPolicy) {
           for (let i = 0; i < policyNames.length; i++) {
             if (snapshot.id.startsWith(policyNames[i])) {
               return { ...snapshot, policy: policyNames[i] };
@@ -166,7 +167,7 @@ export default class SnapshotManagementService {
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentSMPolicy>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = {
@@ -177,7 +178,14 @@ export default class SnapshotManagementService {
       console.log(`sm dev create policy ${JSON.stringify(request.body)}`);
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: any = await callWithRequest("ism.createSMPolicy", params);
+      const rawRes = await callWithRequest("ism.createSMPolicy", params);
+      const res: DocumentSMPolicy = {
+        seqNo: rawRes._seq_no,
+        primaryTerm: rawRes._primary_term,
+        id: rawRes._id,
+        policy: rawRes.sm_policy,
+      };
+
       console.log(`sm dev server create policy response: ${JSON.stringify(res)}`);
 
       return response.custom({
@@ -196,7 +204,7 @@ export default class SnapshotManagementService {
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentSMPolicy>>> => {
     try {
       const { id } = request.params as { id: string };
       const { seqNo, primaryTerm } = request.query as { seqNo?: string; primaryTerm?: string };
@@ -210,7 +218,13 @@ export default class SnapshotManagementService {
       console.log(`sm dev update policy ${JSON.stringify(request.body)}`);
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: any = await callWithRequest("ism.updateSMPolicy", params);
+      const rawRes = await callWithRequest("ism.updateSMPolicy", params);
+      const res: DocumentSMPolicy = {
+        seqNo: rawRes._seq_no,
+        primaryTerm: rawRes._primary_term,
+        id: rawRes._id,
+        policy: rawRes.sm_policy,
+      };
       console.log(`sm dev server update policy response: ${JSON.stringify(res)}`);
 
       return response.custom({
@@ -231,24 +245,33 @@ export default class SnapshotManagementService {
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetSMPoliciesResponse>>> => {
     try {
-      const { from, size, sortField, sortDirection } = request.query as {
+      const { from, size, sortField, sortOrder, queryString } = request.query as {
         from: string;
         size: string;
         sortField: string;
-        sortDirection: string;
+        sortOrder: string;
+        queryString: string;
       };
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      let params = {};
+      let params = {
+        from,
+        size,
+        sortField: `sm_policy.${sortField}`,
+        sortOrder,
+        queryString: queryString.trim() ? `${queryString.trim()}` : "*",
+      };
+      console.log(`sm dev get policies ${JSON.stringify(params)}`);
       const res = await callWithRequest("ism.getSMPolicies", params);
-      // console.log(`sm dev server get policies response: ${JSON.stringify(res)}`);
 
-      const policies: DocumentSMPolicy[] = res.policies.map((p: { _id: string; _seq_no: number; _primary_term: number; sm: SMPolicy }) => ({
-        seqNo: p._seq_no,
-        primaryTerm: p._primary_term,
-        id: p._id,
-        policy: p.sm,
-      }));
+      const policies: DocumentSMPolicy[] = res.policies.map(
+        (p: { _id: string; _seq_no: number; _primary_term: number; sm_policy: SMPolicy }) => ({
+          seqNo: p._seq_no,
+          primaryTerm: p._primary_term,
+          id: p._id,
+          policy: p.sm_policy,
+        })
+      );
       return response.custom({
         statusCode: 200,
         body: {
@@ -256,6 +279,7 @@ export default class SnapshotManagementService {
           response: { policies, totalPolicies: res.total_policies as number },
         },
       });
+      // TODO SM handle config index not exist
     } catch (err) {
       return this.errorResponse(response, err, "getPolicies");
     }
@@ -271,26 +295,19 @@ export default class SnapshotManagementService {
       const params = { policyId: id };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getResponse = await callWithRequest("ism.getSMPolicy", params);
-      const policy = _.get(getResponse, "policy", null);
-      const seqNo = _.get(getResponse, "_seq_no");
-      const primaryTerm = _.get(getResponse, "_primary_term");
-      if (policy) {
-        return response.custom({
-          statusCode: 200,
-          body: {
-            ok: true,
-            response: { id, seqNo: seqNo as number, primaryTerm: primaryTerm as number, policy: policy as SMPolicy },
-          },
-        });
-      } else {
-        return response.custom({
-          statusCode: 200,
-          body: {
-            ok: false,
-            error: "Failed to load policy",
-          },
-        });
-      }
+      const documentPolicy = {
+        id: id,
+        seqNo: getResponse._seq_no,
+        primaryTerm: getResponse._primary_term,
+        policy: getResponse.sm_policy,
+      };
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: documentPolicy,
+        },
+      });
     } catch (err) {
       return this.errorResponse(response, err, "getPolicy");
     }

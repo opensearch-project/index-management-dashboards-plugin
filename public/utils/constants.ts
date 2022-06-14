@@ -35,6 +35,7 @@ export const ROUTES = Object.freeze({
   SNAPSHOT_POLICY_DETAILS: "/snapshot-policy-details",
   CREATE_SNAPSHOT_POLICY: "/create-snapshot-policy",
   EDIT_SNAPSHOT_POLICY: "/edit-snapshot-policy",
+  REPOSITORIES: "/repositories",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -61,6 +62,7 @@ export const BREADCRUMBS = Object.freeze({
   CREATE_SNAPSHOT_POLICY: { text: "Create snapshot policy" },
   EDIT_SNAPSHOT_POLICY: { text: "Edit snapshot policy" },
   SNAPSHOTS: { text: "Snapshots", href: `#${ROUTES.SNAPSHOTS}` },
+  REPOSITORIES: { text: "Repositories", href: `#${ROUTES.REPOSITORIES}` },
 });
 
 // TODO: EUI has a SortDirection already

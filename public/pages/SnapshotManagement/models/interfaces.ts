@@ -4,13 +4,13 @@
  */
 
 import { Direction, Query, ArgsWithQuery, ArgsWithError } from "@elastic/eui";
-import { CatSnapshot } from "../../../../server/models/interfaces";
+import { CatSnapshotWithRepoAndPolicy } from "../../../../server/models/interfaces";
 import { SMPolicy } from "../../../../models/interfaces";
 
 export interface SnapshotsQueryParams {
   from: number;
   size: number;
-  sortField: keyof CatSnapshot;
+  sortField: keyof CatSnapshotWithRepoAndPolicy;
   sortDirection: Direction;
 }
 
@@ -18,7 +18,7 @@ export interface SMPoliciesQueryParams {
   from: number;
   size: number;
   sortField: keyof SMPolicy;
-  sortDirection: Direction;
+  sortOrder: Direction;
 }
 
 export type OnSearchChangeArgs = ArgsWithQuery | ArgsWithError;

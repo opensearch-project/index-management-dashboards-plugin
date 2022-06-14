@@ -5,7 +5,7 @@
 
 import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
 import { NODE_API } from "../../utils/constants";
-import { CreateSMPolicyResponse, CatSnapshotsResponse, GetSMPoliciesResponse, GetSnapshot } from "../../server/models/interfaces";
+import { GetSnapshotsResponse, GetSMPoliciesResponse, GetSnapshot, CatRepository } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { DocumentSMPolicy, SMPolicy } from "../../models/interfaces";
 
@@ -16,9 +16,9 @@ export default class SnapshotManagementService {
     this.httpClient = httpClient;
   }
 
-  getSnapshots = async (): Promise<ServerResponse<CatSnapshotsResponse>> => {
+  getSnapshots = async (): Promise<ServerResponse<GetSnapshotsResponse>> => {
     let url = `..${NODE_API._SNAPSHOTS}`;
-    const response = (await this.httpClient.get(url)) as ServerResponse<CatSnapshotsResponse>;
+    const response = (await this.httpClient.get(url)) as ServerResponse<GetSnapshotsResponse>;
     return response;
   };
 
@@ -28,9 +28,9 @@ export default class SnapshotManagementService {
     return response;
   };
 
-  createPolicy = async (policyId: string, policy: SMPolicy): Promise<ServerResponse<CreateSMPolicyResponse>> => {
+  createPolicy = async (policyId: string, policy: SMPolicy): Promise<ServerResponse<DocumentSMPolicy>> => {
     let url = `..${NODE_API.SMPolicies}/${policyId}`;
-    const response = (await this.httpClient.post(url, { body: JSON.stringify(policy) })) as ServerResponse<CreateSMPolicyResponse>;
+    const response = (await this.httpClient.post(url, { body: JSON.stringify(policy) })) as ServerResponse<DocumentSMPolicy>;
     console.log(`sm dev public create sm policy response ${JSON.stringify(response)}`);
     return response;
   };
@@ -40,10 +40,10 @@ export default class SnapshotManagementService {
     policy: SMPolicy,
     seqNo: number,
     primaryTerm: number
-  ): Promise<ServerResponse<CreateSMPolicyResponse>> => {
+  ): Promise<ServerResponse<DocumentSMPolicy>> => {
     let url = `..${NODE_API.SMPolicies}/${policyId}`;
     const response = (await this.httpClient.put(url, { query: { seqNo, primaryTerm }, body: JSON.stringify(policy) })) as ServerResponse<
-      CreateSMPolicyResponse
+      DocumentSMPolicy
     >;
     console.log(`sm dev public update sm policy response ${JSON.stringify(response)}`);
     return response;
@@ -65,6 +65,13 @@ export default class SnapshotManagementService {
   deletePolicy = async (policyId: string): Promise<ServerResponse<boolean>> => {
     const url = `..${NODE_API.SMPolicies}/${policyId}`;
     const response = (await this.httpClient.delete(url)) as ServerResponse<boolean>;
+    return response;
+  };
+
+  getRepositories = async (): Promise<ServerResponse<CatRepository[]>> => {
+    const url = `..${NODE_API._REPOSITORIES}`;
+    const response = (await this.httpClient.get(url)) as ServerResponse<CatRepository[]>;
+    console.log(`sm dev get repositories ${JSON.stringify(response)}`);
     return response;
   };
 }

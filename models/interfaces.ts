@@ -94,11 +94,12 @@ export interface SMPolicy {
   snapshot_config: SMSnapshotConfig;
   enabled: boolean;
   last_updated_time?: number;
+  notification?: Notification;
 }
 
 export interface SMSnapshotConfig {
-  indices: string;
   repository: string;
+  indices?: string;
   ignore_unavailable?: boolean;
   include_global_state?: boolean;
   partial?: boolean;
@@ -126,6 +127,10 @@ export interface ErrorNotification {
   destination?: Destination;
   channel?: Channel;
   message_template: MessageTemplate;
+}
+
+export interface Notification {
+  channel: Channel;
 }
 
 export interface Channel {

@@ -142,13 +142,6 @@ export interface PutTransformResponse {
   transform: { transform: Transform };
 }
 
-export interface CreateSMPolicyResponse {
-  _id: string;
-  _primary_term: string;
-  _seq_no: string;
-  policy: SMPolicy;
-}
-
 export interface PreviewTransformResponse {
   documents: object[];
 }
@@ -347,12 +340,12 @@ export interface IndexToDataStream {
   [indexName: string]: string;
 }
 
-export interface CatSnapshotsResponse {
-  snapshots: CatSnapshot[];
+export interface GetSnapshotsResponse {
+  snapshots: CatSnapshotWithRepoAndPolicy[];
   totalSnapshots: number;
 }
 
-export interface CatSnapshot {
+export interface CatSnapshotWithRepoAndPolicy {
   id: string;
   status: string;
   start_epoch: number;
