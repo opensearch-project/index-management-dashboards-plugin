@@ -541,7 +541,7 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
   getRepos = async () => {
     try {
       const { snapshotManagementService } = this.props;
-      const response = await snapshotManagementService.getRepositories();
+      const response = await snapshotManagementService.catRepositories();
       if (response.ok) {
         this.setState({ repositories: response.response });
       } else {

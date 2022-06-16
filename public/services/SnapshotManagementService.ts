@@ -5,7 +5,13 @@
 
 import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
 import { NODE_API } from "../../utils/constants";
-import { GetSnapshotsResponse, GetSMPoliciesResponse, GetSnapshot, CatRepository } from "../../server/models/interfaces";
+import {
+  GetSnapshotsResponse,
+  GetSMPoliciesResponse,
+  GetSnapshot,
+  CatRepository,
+  CreateRepositoryBody,
+} from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { DocumentSMPolicy, SMPolicy } from "../../models/interfaces";
 
@@ -16,15 +22,15 @@ export default class SnapshotManagementService {
     this.httpClient = httpClient;
   }
 
-  getSnapshots = async (): Promise<ServerResponse<GetSnapshotsResponse>> => {
+  catSnapshots = async (): Promise<ServerResponse<GetSnapshotsResponse>> => {
     let url = `..${NODE_API._SNAPSHOTS}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<GetSnapshotsResponse>;
     return response;
   };
 
-  getSnapshot = async (snapshotId: string): Promise<ServerResponse<GetSnapshot>> => {
+  getSnapshot = async (snapshotId: string, repository: string): Promise<ServerResponse<GetSnapshot>> => {
     let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
-    const response = (await this.httpClient.get(url)) as ServerResponse<GetSnapshot>;
+    const response = (await this.httpClient.get(url, { query: { repository } })) as ServerResponse<GetSnapshot>;
     return response;
   };
 
@@ -68,10 +74,31 @@ export default class SnapshotManagementService {
     return response;
   };
 
-  getRepositories = async (): Promise<ServerResponse<CatRepository[]>> => {
+  catRepositories = async (): Promise<ServerResponse<CatRepository[]>> => {
     const url = `..${NODE_API._REPOSITORIES}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<CatRepository[]>;
     console.log(`sm dev get repositories ${JSON.stringify(response)}`);
+    return response;
+  };
+
+  getRepository = async (repo: string): Promise<ServerResponse<any>> => {
+    const url = `..${NODE_API._REPOSITORIES}/${repo}`;
+    const response = (await this.httpClient.get(url)) as ServerResponse<any>;
+    console.log(`sm dev get repository ${JSON.stringify(response)}`);
+    return response;
+  };
+
+  createRepository = async (repo: string, createRepoBody: CreateRepositoryBody): Promise<ServerResponse<any>> => {
+    const url = `..${NODE_API._REPOSITORIES}/${repo}`;
+    const response = (await this.httpClient.put(url, { body: JSON.stringify(createRepoBody) })) as ServerResponse<any>;
+    console.log(`sm dev create repository ${JSON.stringify(response)}`);
+    return response;
+  };
+
+  deleteRepository = async (repo: string): Promise<ServerResponse<any>> => {
+    const url = `..${NODE_API._REPOSITORIES}/${repo}`;
+    const response = (await this.httpClient.delete(url)) as ServerResponse<any>;
+    console.log(`sm dev delete repository ${JSON.stringify(response)}`);
     return response;
   };
 }

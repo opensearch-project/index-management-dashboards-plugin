@@ -21,6 +21,8 @@ import {
   DeletePolicyResponse,
   GetSnapshot,
   GetSnapshotResponse,
+  GetRepositoryResponse,
+  AcknowledgedResponse,
 } from "../models/interfaces";
 import { FailedServerResponse, ServerResponse } from "../models/types";
 
@@ -31,22 +33,14 @@ export default class SnapshotManagementService {
     this.osDriver = osDriver;
   }
 
-  // TODO SM get snapshots and use the sm_policy in metadata
-  catSnapshots = async (
+  getSnapshotsWithPolicy = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetSnapshotsResponse>>> => {
     try {
-      // const { from, size, sortField, sortDirection } = request.query as {
-      //   from: string;
-      //   size: string;
-      //   sortField: string;
-      //   sortDirection: string;
-      // };
-
       // if no repository input, we need to first get back all repositories
-      const getRepositoryRes = await this.getRepositories(context, request, response);
+      const getRepositoryRes = await this.catRepositories(context, request, response);
       let repositories: string[];
       if (getRepositoryRes.payload?.ok) {
         repositories = getRepositoryRes.payload?.response.map((repo) => repo.id);
@@ -64,36 +58,48 @@ export default class SnapshotManagementService {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       let snapshots: CatSnapshotWithRepoAndPolicy[] = [];
       for (let i = 0; i < repositories.length; i++) {
-        const params = {
-          format: "json",
-          // s: `${sortField}:${sortDirection}`,
+        const res: GetSnapshotResponse = await callWithRequest("snapshot.get", {
           repository: repositories[i],
-          // time: "ms",
-        };
-        // try catch the missing snapshot exception
-        const catSnapshotsRes: CatSnapshotWithRepoAndPolicy[] = await callWithRequest("cat.snapshots", params);
-        const snapshotsWithRepo = catSnapshotsRes.map((item) => ({ ...item, repository: repositories[i] }));
-        console.log(`sm dev cat snapshot response: ${JSON.stringify(catSnapshotsRes)}`);
-        snapshots = [...snapshots, ...snapshotsWithRepo];
+          snapshot: "_all",
+          ignore_unavailable: true,
+        });
+        const snapshotWithPolicy: CatSnapshotWithRepoAndPolicy[] = res.snapshots.map((s: GetSnapshot) => ({
+          id: s.snapshot,
+          status: s.state,
+          start_epoch: s.start_time_in_millis,
+          end_epoch: s.end_time_in_millis,
+          duration: s.duration_in_millis,
+          indices: s.indices.length,
+          successful_shards: s.shards.successful,
+          failed_shards: s.shards.failed,
+          total_shards: s.shards.total,
+          repository: repositories[i],
+          policy: s.metadata.sm_policy,
+        }));
+        // TODO SM try catch the missing snapshot exception
+        // const catSnapshotsRes: CatSnapshotWithRepoAndPolicy[] = await callWithRequest("snapshot.get", params);
+        // const snapshotsWithRepo = catSnapshotsRes.map((item) => ({ ...item, repository: repositories[i] }));
+        // console.log(`sm dev cat snapshot response: ${JSON.stringify(snapshotWithPolicy)}`);
+        snapshots = [...snapshots, ...snapshotWithPolicy];
       }
 
       // populate policy field for snapshot
-      const getSMPoliciesRes = await this.getPolicies(context, request, response);
-      if (getSMPoliciesRes.payload?.ok) {
-        const policyNames = getSMPoliciesRes.payload?.response.policies
-          .map((policy) => policy.policy.name)
-          .sort((a, b) => b.length - a.length);
-        console.log(`sm dev get snapshot policies ${policyNames}`);
-        function addPolicyField(snapshot: CatSnapshotWithRepoAndPolicy) {
-          for (let i = 0; i < policyNames.length; i++) {
-            if (snapshot.id.startsWith(policyNames[i])) {
-              return { ...snapshot, policy: policyNames[i] };
-            }
-          }
-          return snapshot;
-        }
-        snapshots = snapshots.map(addPolicyField);
-      }
+      // const getSMPoliciesRes = await this.getPolicies(context, request, response);
+      // if (getSMPoliciesRes.payload?.ok) {
+      //   const policyNames = getSMPoliciesRes.payload?.response.policies
+      //     .map((policy) => policy.policy.name)
+      //     .sort((a, b) => b.length - a.length);
+      //   console.log(`sm dev get snapshot policies ${policyNames}`);
+      //   function addPolicyField(snapshot: CatSnapshotWithRepoAndPolicy) {
+      //     for (let i = 0; i < policyNames.length; i++) {
+      //       if (snapshot.id.startsWith(policyNames[i])) {
+      //         return { ...snapshot, policy: policyNames[i] };
+      //       }
+      //     }
+      //     return snapshot;
+      //   }
+      //   snapshots = snapshots.map(addPolicyField);
+      // }
 
       return response.custom({
         statusCode: 200,
@@ -111,29 +117,6 @@ export default class SnapshotManagementService {
     }
   };
 
-  getRepositories = async (
-    context: RequestHandlerContext,
-    request: OpenSearchDashboardsRequest,
-    response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatRepository[]>>> => {
-    try {
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: CatRepository[] = await callWithRequest("cat.repositories", {
-        format: "json",
-      });
-      console.log(`sm dev cat repositories response: ${JSON.stringify(res)}`);
-      return response.custom({
-        statusCode: 200,
-        body: {
-          ok: true,
-          response: res,
-        },
-      });
-    } catch (err) {
-      return this.errorResponse(response, err, "getRepositories");
-    }
-  };
-
   getSnapshot = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -143,14 +126,17 @@ export default class SnapshotManagementService {
       const { id } = request.params as {
         id: string;
       };
+      const { repository } = request.query as {
+        repository: string;
+      };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const res: GetSnapshotResponse = await callWithRequest("snapshot.get", {
-        repository: "repo",
+        repository: repository,
         snapshot: `${id}`,
         ignore_unavailable: true,
       });
 
-      console.log(`sm dev get single snapshot response: ${JSON.stringify(res)}`);
+      console.log(`sm dev get snapshot response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -341,6 +327,107 @@ export default class SnapshotManagementService {
       });
     } catch (err) {
       return this.errorResponse(response, err, "deletePolicy");
+    }
+  };
+
+  catRepositories = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatRepository[]>>> => {
+    try {
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const res: CatRepository[] = await callWithRequest("cat.repositories", {
+        format: "json",
+      });
+      console.log(`sm dev cat repositories response: ${JSON.stringify(res)}`);
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: res,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "getRepositories");
+    }
+  };
+
+  // delete repository
+  deleteRepository = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
+    try {
+      const { id } = request.params as { id: string };
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const res: AcknowledgedResponse = await callWithRequest("snapshot.deleteRepository", {
+        repository: id,
+      });
+      console.log(`sm dev delete repository response: ${JSON.stringify(res)}`);
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: res,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "deleteRepository");
+    }
+  };
+
+  // get repository for edit
+  getRepository = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetRepositoryResponse>>> => {
+    try {
+      const { id } = request.params as { id: string };
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const res: GetRepositoryResponse = await callWithRequest("snapshot.getRepository", {
+        repository: id,
+      });
+      console.log(`sm dev get repository response: ${JSON.stringify(res)}`);
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: res,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "getRepository");
+    }
+  };
+
+  // create repository
+  createRepository = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
+    try {
+      const { id } = request.params as { id: string };
+      const params = {
+        repository: id,
+        body: JSON.stringify(request.body),
+      };
+      console.log(`sm dev create repo params ${JSON.stringify(params)}`);
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const res: AcknowledgedResponse = await callWithRequest("snapshot.createRepository", params);
+      console.log(`sm dev create repository response: ${JSON.stringify(res)}`);
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: res,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "createRepository");
     }
   };
 

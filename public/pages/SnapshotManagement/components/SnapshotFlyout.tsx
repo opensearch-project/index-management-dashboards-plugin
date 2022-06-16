@@ -12,6 +12,7 @@ import { getErrorMessage } from "../../../utils/helpers";
 
 interface SnapshotFlyoutProps {
   snapshotId: string;
+  repository: string;
   snapshotManagementService: SnapshotManagementService;
   onCloseFlyout: () => void;
 }
@@ -32,14 +33,14 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
   }
 
   async componentDidMount() {
-    const { snapshotId } = this.props;
-    await this.getSnapshot(snapshotId);
+    const { snapshotId, repository } = this.props;
+    await this.getSnapshot(snapshotId, repository);
   }
 
-  getSnapshot = async (snapshotId: string) => {
+  getSnapshot = async (snapshotId: string, repository: string) => {
     const { snapshotManagementService } = this.props;
     try {
-      const response = await snapshotManagementService.getSnapshot(snapshotId);
+      const response = await snapshotManagementService.getSnapshot(snapshotId, repository);
       if (response.ok) {
         this.setState({ snapshot: response.response });
       }

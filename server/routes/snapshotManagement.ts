@@ -14,18 +14,9 @@ export default function (services: NodeServices, router: IRouter) {
   router.get(
     {
       path: NODE_API._SNAPSHOTS,
-      validate: {
-        // for public service to pass object to server service
-        // query: schema.object({
-        //   from: schema.number(),
-        //   size: schema.number(),
-        //   sortField: schema.string(),
-        //   sortDirection: schema.string(),
-        //   search: schema.string(),
-        // }),
-      },
+      validate: {},
     },
-    snapshotManagementService.catSnapshots
+    snapshotManagementService.getSnapshotsWithPolicy
   );
 
   router.get(
@@ -33,7 +24,7 @@ export default function (services: NodeServices, router: IRouter) {
       path: NODE_API._REPOSITORIES,
       validate: {},
     },
-    snapshotManagementService.getRepositories
+    snapshotManagementService.catRepositories
   );
 
   router.get(
@@ -42,6 +33,9 @@ export default function (services: NodeServices, router: IRouter) {
       validate: {
         params: schema.object({
           id: schema.string(),
+        }),
+        query: schema.object({
+          repository: schema.string(),
         }),
       },
     },
@@ -117,5 +111,42 @@ export default function (services: NodeServices, router: IRouter) {
       },
     },
     snapshotManagementService.deletePolicy
+  );
+
+  router.delete(
+    {
+      path: `${NODE_API._REPOSITORIES}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.deleteRepository
+  );
+
+  router.get(
+    {
+      path: `${NODE_API._REPOSITORIES}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.getRepository
+  );
+
+  router.put(
+    {
+      path: `${NODE_API._REPOSITORIES}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+        body: schema.any(),
+      },
+    },
+    snapshotManagementService.createRepository
   );
 }

@@ -23,6 +23,7 @@ import {
   SMPolicy,
   Transform,
 } from "../../models/interfaces";
+import { string } from "joi";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -350,7 +351,7 @@ export interface CatSnapshotWithRepoAndPolicy {
   status: string;
   start_epoch: number;
   end_epoch: number;
-  duration: string;
+  duration: number;
   indices: number;
   successful_shards: number;
   failed_shards: number;
@@ -376,16 +377,33 @@ export interface GetSnapshot {
   start_time_in_millis: number;
   end_time: string;
   end_time_in_millis: number;
+  duration_in_millis: number;
   shards: {
     total: number;
     successful: number;
     failed: number;
+  };
+  metadata: {
+    sm_policy?: string;
   };
 }
 
 export interface CatRepository {
   id: string;
   type: string;
+}
+
+export interface GetRepositoryResponse {
+  [repoName: string]: CreateRepositoryBody;
+}
+
+export interface CreateRepositorySettings {
+  location: string;
+}
+
+export interface CreateRepositoryBody {
+  type: string;
+  settings: CreateRepositorySettings;
 }
 
 export interface GetSMPoliciesResponse {

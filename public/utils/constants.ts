@@ -30,12 +30,16 @@ export const ROUTES = Object.freeze({
   CREATE_TRANSFORM: "/create-transform",
   EDIT_TRANSFORM: "/edit-transform",
   TRANSFORM_DETAILS: "/transform-details",
-  SNAPSHOTS: "/snapshots",
   SNAPSHOT_POLICIES: "/snapshot-policies",
   SNAPSHOT_POLICY_DETAILS: "/snapshot-policy-details",
   CREATE_SNAPSHOT_POLICY: "/create-snapshot-policy",
   EDIT_SNAPSHOT_POLICY: "/edit-snapshot-policy",
+  SNAPSHOTS: "/snapshots",
+  CREATE_SNAPSHOT: "/create-snapshot",
+  EDIT_SNAPSHOT: "/edit-snapshot",
   REPOSITORIES: "/repositories",
+  CREATE_REPOSITORY: "/create-repository",
+  EDIT_REPOSITORY: "/edit-repository",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -57,12 +61,19 @@ export const BREADCRUMBS = Object.freeze({
   TRANSFORM_DETAILS: { text: "Transform details" },
 
   SNAPSHOT_MANAGEMENT: { text: "Snapshot Management", href: `#${ROUTES.SNAPSHOT_POLICIES}` },
+
   SNAPSHOT_POLICIES: { text: "Snapshot policies", href: `#${ROUTES.SNAPSHOT_POLICIES}` },
   SNAPSHOT_POLICY_DETAILS: { text: "Snapshot policy details" },
   CREATE_SNAPSHOT_POLICY: { text: "Create snapshot policy" },
   EDIT_SNAPSHOT_POLICY: { text: "Edit snapshot policy" },
+
   SNAPSHOTS: { text: "Snapshots", href: `#${ROUTES.SNAPSHOTS}` },
+  CREATE_SNAPSHOT: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
+  EDIT_SNAPSHOT: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
+
   REPOSITORIES: { text: "Repositories", href: `#${ROUTES.REPOSITORIES}` },
+  CREATE_REPOSITORY: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
+  EDIT_REPOSITORY: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
 });
 
 // TODO: EUI has a SortDirection already

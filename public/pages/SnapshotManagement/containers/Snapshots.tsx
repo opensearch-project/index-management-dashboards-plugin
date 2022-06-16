@@ -30,7 +30,6 @@ import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components
 import { CoreServicesContext } from "../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../utils/constants";
 import { SnapshotManagementService } from "../../../services";
-import { getSnapshotsQueryParamsFromURL } from "../utils/helpers";
 import { OnSearchChangeArgs } from "../models/interfaces";
 import { DEFAULT_PAGE_SIZE_OPTIONS, renderTimestampSecond } from "../utils/constants";
 import { getErrorMessage } from "../../../utils/helpers";
@@ -54,6 +53,7 @@ interface SnapshotsState {
 
   showFlyout: boolean;
   flyoutSnapshotId: string;
+  flyoutSnapshotRepo: string;
 
   loadingSnapshots: boolean;
   message?: React.ReactNode;
@@ -78,6 +78,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       selectedItems: [],
       showFlyout: false,
       flyoutSnapshotId: "",
+      flyoutSnapshotRepo: "",
       message: null,
     };
 
@@ -88,7 +89,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         sortable: true,
         dataType: "string",
         render: (name: string, item: CatSnapshotWithRepoAndPolicy) => (
-          <EuiLink onClick={() => this.setState({ showFlyout: true, flyoutSnapshotId: name })}>{name}</EuiLink>
+          <EuiLink onClick={() => this.setState({ showFlyout: true, flyoutSnapshotId: name, flyoutSnapshotRepo: item.repository })}>
+            {name}
+          </EuiLink>
         ),
       },
       {
@@ -141,7 +144,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
     try {
       const { snapshotManagementService } = this.props;
-      const response = await snapshotManagementService.getSnapshots();
+      const response = await snapshotManagementService.catSnapshots();
       if (response.ok) {
         const { snapshots, totalSnapshots } = response.response;
         this.setState({ snapshots, filteredSnapshots: snapshots });
@@ -164,7 +167,16 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
   };
 
   render() {
-    const { snapshots, filteredSnapshots, selectedItems, loadingSnapshots, showFlyout, flyoutSnapshotId, message } = this.state;
+    const {
+      snapshots,
+      filteredSnapshots,
+      selectedItems,
+      loadingSnapshots,
+      showFlyout,
+      flyoutSnapshotId,
+      flyoutSnapshotRepo,
+      message,
+    } = this.state;
 
     console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
 
@@ -217,6 +229,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         {showFlyout && (
           <SnapshotFlyout
             snapshotId={flyoutSnapshotId}
+            repository={flyoutSnapshotRepo}
             snapshotManagementService={this.props.snapshotManagementService}
             onCloseFlyout={this.onCloseFlyout}
           />

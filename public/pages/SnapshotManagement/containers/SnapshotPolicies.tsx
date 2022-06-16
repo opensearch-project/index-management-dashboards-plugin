@@ -273,7 +273,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       onSelectionChange: this.onSelectionChange,
     };
 
-    const actionItems = [
+    const popoverActionItems = [
       <EuiContextMenuItem
         key="Edit"
         icon="empty"
@@ -300,7 +300,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       </EuiContextMenuItem>,
     ];
 
-    const actionButton = (
+    const actionsButton = (
       <EuiButton
         iconType="arrowDown"
         iconSide="right"
@@ -324,14 +324,14 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       </EuiButton>,
       <EuiPopover
         id="action"
-        button={actionButton}
+        button={actionsButton}
         isOpen={isPopoverOpen}
         closePopover={this.closePopover}
         panelPaddingSize="none"
         anchorPosition="downLeft"
         data-test-subj="actionPopover"
       >
-        <EuiContextMenuPanel items={actionItems} />
+        <EuiContextMenuPanel items={popoverActionItems} />
       </EuiPopover>,
       <EuiButton onClick={this.onClickCreate} fill={true}>
         Create policy
