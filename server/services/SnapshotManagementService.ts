@@ -23,6 +23,7 @@ import {
   GetSnapshotResponse,
   GetRepositoryResponse,
   AcknowledgedResponse,
+  CreateSnapshotResponse,
 } from "../models/interfaces";
 import { FailedServerResponse, ServerResponse } from "../models/types";
 
@@ -33,7 +34,7 @@ export default class SnapshotManagementService {
     this.osDriver = osDriver;
   }
 
-  getSnapshotsWithPolicy = async (
+  getAllSnapshotsWithPolicy = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
@@ -74,7 +75,7 @@ export default class SnapshotManagementService {
           failed_shards: s.shards.failed,
           total_shards: s.shards.total,
           repository: repositories[i],
-          policy: s.metadata.sm_policy,
+          policy: s.metadata?.sm_policy,
         }));
         // TODO SM try catch the missing snapshot exception
         // const catSnapshotsRes: CatSnapshotWithRepoAndPolicy[] = await callWithRequest("snapshot.get", params);
@@ -113,7 +114,7 @@ export default class SnapshotManagementService {
       });
     } catch (err) {
       // TODO SM handle missing snapshot exception, return empty
-      return this.errorResponse(response, err, "catSnapshots");
+      return this.errorResponse(response, err, "getAllSnapshotsWithPolicy");
     }
   };
 
@@ -146,6 +147,71 @@ export default class SnapshotManagementService {
       });
     } catch (err) {
       return this.errorResponse(response, err, "getSnapshot");
+    }
+  };
+
+  deleteSnapshot = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
+    try {
+      const { id } = request.params as {
+        id: string;
+      };
+      const { repository } = request.query as {
+        repository: string;
+      };
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const resp: AcknowledgedResponse = await callWithRequest("snapshot.delete", {
+        repository: repository,
+        snapshot: `${id}`,
+      });
+
+      console.log(`sm dev delete snapshot response: ${JSON.stringify(resp)}`);
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: resp,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "deleteSnapshot");
+    }
+  };
+
+  createSnapshot = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CreateSnapshotResponse>>> => {
+    try {
+      const { id } = request.params as {
+        id: string;
+      };
+      const { repository } = request.query as {
+        repository: string;
+      };
+      const params = {
+        repository: repository,
+        snapshot: id,
+        body: JSON.stringify(request.body),
+      };
+      // TODO SM body indices, ignore_unavailable, include_global_state, partial
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const resp: CreateSnapshotResponse = await callWithRequest("snapshot.create", params);
+
+      console.log(`sm dev createSnapshot response: ${JSON.stringify(resp)}`);
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: resp,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "createSnapshot");
     }
   };
 

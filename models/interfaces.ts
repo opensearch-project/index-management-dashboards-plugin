@@ -97,6 +97,14 @@ export interface SMPolicy {
   notification?: Notification;
 }
 
+export interface Snapshot {
+  indices: string;
+  ignore_unavailable: boolean;
+  include_global_state: boolean;
+  partial: boolean;
+  metadata?: object;
+}
+
 export interface SMSnapshotConfig {
   repository: string;
   indices?: string;

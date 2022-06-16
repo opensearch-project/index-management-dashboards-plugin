@@ -16,7 +16,7 @@ export default function (services: NodeServices, router: IRouter) {
       path: NODE_API._SNAPSHOTS,
       validate: {},
     },
-    snapshotManagementService.getSnapshotsWithPolicy
+    snapshotManagementService.getAllSnapshotsWithPolicy
   );
 
   router.get(
@@ -40,6 +40,37 @@ export default function (services: NodeServices, router: IRouter) {
       },
     },
     snapshotManagementService.getSnapshot
+  );
+
+  router.delete(
+    {
+      path: `${NODE_API._SNAPSHOTS}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+        query: schema.object({
+          repository: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.deleteSnapshot
+  );
+
+  router.put(
+    {
+      path: `${NODE_API._SNAPSHOTS}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+        query: schema.object({
+          repository: schema.string(),
+        }),
+        body: schema.any(),
+      },
+    },
+    snapshotManagementService.createSnapshot
   );
 
   router.post(

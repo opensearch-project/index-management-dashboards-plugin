@@ -364,6 +364,10 @@ export interface GetSnapshotResponse {
   snapshots: GetSnapshot[];
 }
 
+export interface CreateSnapshotResponse {
+  snapshot: GetSnapshot;
+}
+
 export interface GetSnapshot {
   snapshot: string;
   uuid: string;
@@ -383,7 +387,7 @@ export interface GetSnapshot {
     successful: number;
     failed: number;
   };
-  metadata: {
+  metadata?: {
     sm_policy?: string;
   };
 }

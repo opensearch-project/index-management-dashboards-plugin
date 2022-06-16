@@ -24,6 +24,9 @@ import {
   EuiRadioGroup,
   EuiText,
   EuiCheckbox,
+  EuiPanel,
+  EuiHorizontalRule,
+  EuiButtonIcon,
 } from "@elastic/eui";
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -40,6 +43,7 @@ import { IndexService, NotificationService, SnapshotManagementService } from "..
 import { IndexItem, SMPolicy } from "../../../../models/interfaces";
 import ChannelNotification from "../../VisualCreatePolicy/components/ChannelNotification";
 import { CatRepository, FeatureChannelList } from "../../../../server/models/interfaces";
+import SnapshotIndicesRepoInput from "../components/SnapshotIndicesRepoInput";
 
 interface CreateSMPolicyProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -80,6 +84,8 @@ interface CreateSMPolicyState {
 
   deleteConditionEnabled: boolean;
   deletionScheduleEnabled: boolean;
+
+  advancedSettingsOpen: boolean;
 }
 
 export default class CreateSMPolicy extends Component<CreateSMPolicyProps, CreateSMPolicyState> {
@@ -123,6 +129,8 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
 
       deleteConditionEnabled: false,
       deletionScheduleEnabled: false,
+
+      advancedSettingsOpen: false,
     };
   }
 
@@ -594,6 +602,7 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
       deletionScheduleDayOfWeek,
       deleteConditionEnabled,
       deletionScheduleEnabled,
+      advancedSettingsOpen,
     } = this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
@@ -644,69 +653,16 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
         <EuiSpacer />
 
         <ContentPanel title="Source and destination" titleSize="m">
-          <CustomLabel title="Indices" />
-          <EuiComboBox
-            placeholder="Select indices"
-            options={indexOptions}
-            selectedOptions={selectedIndexOptions}
-            onChange={this.onIndicesSelectionChange}
-            onSearchChange={this.getIndexOptions}
+          <SnapshotIndicesRepoInput
+            indexOptions={indexOptions}
+            selectedIndexOptions={selectedIndexOptions}
+            onIndicesSelectionChange={this.onIndicesSelectionChange}
+            getIndexOptions={this.getIndexOptions}
             onCreateOption={this.onCreateOption}
-            isClearable={true}
+            repoOptions={repoOptions}
+            selectedRepoValue={selectedRepoValue}
+            onRepoSelectionChange={this.onRepoSelectionChange}
           />
-
-          <EuiSpacer size="m" />
-
-          <CustomLabel title="Repository" />
-          <EuiFormRow>
-            <EuiSelect
-              disabled={repoOptions.length === 0}
-              options={repoOptions}
-              value={selectedRepoValue}
-              onChange={this.onRepoSelectionChange}
-              hasNoInitialSelection={true}
-            />
-          </EuiFormRow>
-
-          <EuiSpacer size="m" />
-
-          <EuiAccordion id="advanced_settings_accordian" buttonContent="Advanced options">
-            <ToggleWrapper
-              label={
-                <CustomLabel title="Include global state" helpText="Whether to include cluster state in the snapshot." isOptional={true} />
-              }
-              checked={String(_.get(policy, "snapshot_config.include_global_state", false)) == "true"}
-              onSwitchChange={this.onIncludeGlobalStateToggle}
-            />
-
-            <EuiSpacer size="m" />
-
-            <ToggleWrapper
-              label={
-                <CustomLabel
-                  title="Ignore unavailable"
-                  helpText="Whether to ignore unavailable index rather than fail the snapshot."
-                  isOptional={true}
-                />
-              }
-              checked={String(_.get(policy, "snapshot_config.ignore_unavailable", false)) == "true"}
-              onSwitchChange={this.onIgnoreUnavailableToggle}
-            />
-
-            <EuiSpacer size="m" />
-
-            <ToggleWrapper
-              label={
-                <CustomLabel
-                  title="Partial"
-                  helpText="Whether to allow partial snapshots rather than fail the snapshot."
-                  isOptional={true}
-                />
-              }
-              checked={String(_.get(policy, "snapshot_config.partial", false)) == "true"}
-              onSwitchChange={this.onPartialToggle}
-            />
-          </EuiAccordion>
         </ContentPanel>
 
         <EuiSpacer />
@@ -838,6 +794,76 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
             getChannels={this.getChannels}
           />
         </ContentPanel>
+
+        <EuiSpacer />
+
+        {/* Advanced settings */}
+        <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+          <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="flexStart" alignItems="center" gutterSize="none">
+            <EuiFlexItem grow={false}>
+              <EuiButtonIcon
+                iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
+                color="text"
+                onClick={() => {
+                  this.setState({ advancedSettingsOpen: !this.state.advancedSettingsOpen });
+                }}
+              />
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiTitle size="m">
+                <h3>Advanced settings</h3>
+              </EuiTitle>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+
+          {advancedSettingsOpen && (
+            <div style={{ padding: "10px 10px" }}>
+              <EuiHorizontalRule margin="xs" />
+
+              <ToggleWrapper
+                label={
+                  <CustomLabel
+                    title="Include global state"
+                    helpText="Whether to include cluster state in the snapshot."
+                    isOptional={true}
+                  />
+                }
+                checked={String(_.get(policy, "snapshot_config.include_global_state", false)) == "true"}
+                onSwitchChange={this.onIncludeGlobalStateToggle}
+              />
+
+              <EuiSpacer size="m" />
+
+              <ToggleWrapper
+                label={
+                  <CustomLabel
+                    title="Ignore unavailable"
+                    helpText="Whether to ignore unavailable index rather than fail the snapshot."
+                    isOptional={true}
+                  />
+                }
+                checked={String(_.get(policy, "snapshot_config.ignore_unavailable", false)) == "true"}
+                onSwitchChange={this.onIgnoreUnavailableToggle}
+              />
+
+              <EuiSpacer size="m" />
+
+              <ToggleWrapper
+                label={
+                  <CustomLabel
+                    title="Partial"
+                    helpText="Whether to allow partial snapshots rather than fail the snapshot."
+                    isOptional={true}
+                  />
+                }
+                checked={String(_.get(policy, "snapshot_config.partial", false)) == "true"}
+                onSwitchChange={this.onPartialToggle}
+              />
+            </div>
+          )}
+        </EuiPanel>
+
+        <EuiSpacer />
 
         <EuiFlexGroup justifyContent="flexEnd">
           <EuiFlexItem grow={false}>

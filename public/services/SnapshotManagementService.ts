@@ -11,9 +11,11 @@ import {
   GetSnapshot,
   CatRepository,
   CreateRepositoryBody,
+  AcknowledgedResponse,
+  CreateSnapshotResponse,
 } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
-import { DocumentSMPolicy, SMPolicy } from "../../models/interfaces";
+import { DocumentSMPolicy, SMPolicy, Snapshot } from "../../models/interfaces";
 
 export default class SnapshotManagementService {
   httpClient: HttpSetup;
@@ -22,7 +24,7 @@ export default class SnapshotManagementService {
     this.httpClient = httpClient;
   }
 
-  catSnapshots = async (): Promise<ServerResponse<GetSnapshotsResponse>> => {
+  getAllSnapshotsWithPolicy = async (): Promise<ServerResponse<GetSnapshotsResponse>> => {
     let url = `..${NODE_API._SNAPSHOTS}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<GetSnapshotsResponse>;
     return response;
@@ -31,6 +33,20 @@ export default class SnapshotManagementService {
   getSnapshot = async (snapshotId: string, repository: string): Promise<ServerResponse<GetSnapshot>> => {
     let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
     const response = (await this.httpClient.get(url, { query: { repository } })) as ServerResponse<GetSnapshot>;
+    return response;
+  };
+
+  deleteSnapshot = async (snapshotId: string, repository: string): Promise<ServerResponse<AcknowledgedResponse>> => {
+    let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
+    const response = (await this.httpClient.delete(url, { query: { repository } })) as ServerResponse<AcknowledgedResponse>;
+    return response;
+  };
+
+  createSnapshot = async (snapshotId: string, repository: string, snapshot: Snapshot): Promise<ServerResponse<CreateSnapshotResponse>> => {
+    let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
+    const response = (await this.httpClient.put(url, { query: { repository }, body: JSON.stringify(snapshot) })) as ServerResponse<
+      CreateSnapshotResponse
+    >;
     return response;
   };
 

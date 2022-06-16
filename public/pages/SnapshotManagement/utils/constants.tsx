@@ -7,7 +7,7 @@ import { EuiTableFieldDataColumnType } from "@elastic/eui";
 import { CatSnapshotWithRepoAndPolicy } from "../../../../server/models/interfaces";
 import { SortDirection } from "../../../utils/constants";
 import moment from "moment";
-import { SMPolicy } from "../../../../models/interfaces";
+import { SMPolicy, Snapshot } from "../../../../models/interfaces";
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];
 
@@ -53,6 +53,13 @@ export const getDefaultSMPolicy = (): SMPolicy => ({
     // partial: false,
     // date_expression: "yyyy-MM-dd-HH:mm",
   },
+});
+
+export const getEmptySnapshot = (): Snapshot => ({
+  indices: "",
+  ignore_unavailable: false,
+  include_global_state: false,
+  partial: false,
 });
 
 export const DEFAULT_DELETE_CONDITION = {

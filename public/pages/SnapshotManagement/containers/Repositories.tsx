@@ -59,7 +59,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
         name: "Name",
         sortable: true,
         dataType: "string",
-        width: "20%",
+        width: "15%",
         align: "center",
       },
       {
@@ -67,7 +67,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
         name: "Type",
         sortable: true,
         dataType: "string",
-        width: "80%",
+        width: "90%",
       },
     ];
   }
@@ -122,7 +122,6 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.deleteRepository(repoName);
       if (response.ok) {
-        this.setState({ showFlyout: false });
         this.context.notifications.toasts.addSuccess(`Deleted repository ${repoName}.`);
       } else {
         this.context.notifications.toasts.addDanger(response.error);
