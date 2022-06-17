@@ -31,9 +31,9 @@ export default function ismPlugin(Client: any, config: any, components: any) {
 
   ism.getSMPolicy = ca({
     url: {
-      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>`,
+      fmt: `${API.SM_POLICY_BASE}/<%=id%>`,
       req: {
-        policyId: {
+        id: {
           type: "string",
           required: true,
         },
@@ -364,11 +364,50 @@ export default function ismPlugin(Client: any, config: any, components: any) {
     method: "GET",
   });
 
+  ism.explainSnapshotPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_explain`,
+      req: {
+        id: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "GET",
+  });
+
   ism.startTransform = ca({
     url: {
       fmt: `${API.TRANSFORM_BASE}/<%=transformId%>/_start`,
       req: {
         transformId: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "POST",
+  });
+
+  ism.startSnapshotPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_start`,
+      req: {
+        id: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "POST",
+  });
+
+  ism.stopSnapshotPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_stop`,
+      req: {
+        id: {
           type: "string",
           required: true,
         },

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Direction, Query, ArgsWithQuery, ArgsWithError } from "@elastic/eui";
+import { Direction, ArgsWithQuery, ArgsWithError } from "@elastic/eui";
 import { CatSnapshotWithRepoAndPolicy } from "../../../../server/models/interfaces";
 import { SMPolicy } from "../../../../models/interfaces";
 
@@ -22,3 +22,15 @@ export interface SMPoliciesQueryParams {
 }
 
 export type OnSearchChangeArgs = ArgsWithQuery | ArgsWithError;
+
+export interface LatestActivities {
+  activityType: "Creation" | "Deletion";
+  status?: string;
+  snapshot?: string;
+  start_time?: number;
+  end_time?: number;
+  info?: {
+    message?: string;
+    cause?: string;
+  };
+}

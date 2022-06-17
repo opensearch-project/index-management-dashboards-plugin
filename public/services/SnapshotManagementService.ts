@@ -15,7 +15,7 @@ import {
   CreateSnapshotResponse,
 } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
-import { DocumentSMPolicy, SMPolicy, Snapshot } from "../../models/interfaces";
+import { DocumentSMPolicy, DocumentSMPolicyWithMetadata, SMPolicy, Snapshot } from "../../models/interfaces";
 
 export default class SnapshotManagementService {
   httpClient: HttpSetup;
@@ -78,15 +78,27 @@ export default class SnapshotManagementService {
     return response;
   };
 
-  getPolicy = async (policyId: string): Promise<ServerResponse<DocumentSMPolicy>> => {
+  getPolicy = async (policyId: string): Promise<ServerResponse<DocumentSMPolicyWithMetadata>> => {
     const url = `..${NODE_API.SMPolicies}/${policyId}`;
-    const response = (await this.httpClient.get(url)) as ServerResponse<DocumentSMPolicy>;
+    const response = (await this.httpClient.get(url)) as ServerResponse<DocumentSMPolicyWithMetadata>;
     return response;
   };
 
   deletePolicy = async (policyId: string): Promise<ServerResponse<boolean>> => {
     const url = `..${NODE_API.SMPolicies}/${policyId}`;
     const response = (await this.httpClient.delete(url)) as ServerResponse<boolean>;
+    return response;
+  };
+
+  startPolicy = async (policyId: string): Promise<ServerResponse<boolean>> => {
+    const url = `..${NODE_API.SMPolicies}/${policyId}/_start`;
+    const response = (await this.httpClient.post(url)) as ServerResponse<boolean>;
+    return response;
+  };
+
+  stopPolicy = async (policyId: string): Promise<ServerResponse<boolean>> => {
+    const url = `..${NODE_API.SMPolicies}/${policyId}/_stop`;
+    const response = (await this.httpClient.post(url)) as ServerResponse<boolean>;
     return response;
   };
 

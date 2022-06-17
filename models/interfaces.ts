@@ -5,6 +5,7 @@
 
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
+import { long } from "@opensearch-project/opensearch/api/types";
 import { CreateIndexMapOptions } from "src/core/server/saved_objects/migrations/core/build_index_map";
 import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
 
@@ -84,6 +85,39 @@ export interface DocumentSMPolicy {
   seqNo: number;
   primaryTerm: number;
   policy: SMPolicy;
+}
+
+export interface DocumentSMPolicyWithMetadata {
+  id: string;
+  seqNo: number;
+  primaryTerm: number;
+  policy: SMPolicy;
+  metadata: SMMetadata;
+}
+
+export interface SMMetadata {
+  name: string;
+  creation?: SMWorkflowMetadata;
+  deletion?: SMWorkflowMetadata;
+  policy_seq_no?: number;
+  policy_primary_term?: number;
+  enabled: boolean;
+}
+
+export interface SMWorkflowMetadata {
+  trigger: {
+    time: number;
+  };
+  started: string[];
+  latest_execution: {
+    status: string;
+    start_time: long;
+    end_time?: long;
+    info?: {
+      message?: string;
+      cause?: string;
+    };
+  };
 }
 
 export interface SMPolicy {

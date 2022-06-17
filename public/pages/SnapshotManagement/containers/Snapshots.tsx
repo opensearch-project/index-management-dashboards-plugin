@@ -267,7 +267,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton iconType="refresh" onClick={this.getSnapshots} data-test-subj="refreshButton">
         Refresh
       </EuiButton>,
-      <EuiButton onClick={this.onClickDelete} data-test-subj="deleteButton">
+      <EuiButton disabled={!selectedItems.length} onClick={this.onClickDelete} data-test-subj="deleteButton">
         Delete
       </EuiButton>,
       <EuiButton onClick={this.onClickCreate} fill={true}>

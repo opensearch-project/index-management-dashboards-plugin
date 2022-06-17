@@ -144,6 +144,30 @@ export default function (services: NodeServices, router: IRouter) {
     snapshotManagementService.deletePolicy
   );
 
+  router.post(
+    {
+      path: `${NODE_API.SMPolicies}/{id}/_start`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.startPolicy
+  );
+
+  router.post(
+    {
+      path: `${NODE_API.SMPolicies}/{id}/_stop`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.stopPolicy
+  );
+
   router.delete(
     {
       path: `${NODE_API._REPOSITORIES}/{id}`,

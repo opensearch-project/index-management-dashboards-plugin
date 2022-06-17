@@ -101,6 +101,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Status",
         sortable: true,
         dataType: "boolean",
+        render: (name: string, item: SMPolicy) => (item.enabled ? "Enabled" : "Disabled"),
       },
       {
         field: "snapshot_config.indices",
@@ -239,6 +240,42 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     await this.getPolicies();
   };
 
+  onClickStart = async () => {
+    const { snapshotManagementService } = this.props;
+    const { selectedItems } = this.state;
+    for (let item of selectedItems) {
+      const policyId = item.name;
+      try {
+        const response = await snapshotManagementService.startPolicy(policyId);
+        if (response.ok) {
+          this.context.notifications.toasts.addSuccess(`"${policyId}" successfully started!`);
+        } else {
+          this.context.notifications.toasts.addDanger(`Could not start policy "${policyId}" :  ${response.error}`);
+        }
+      } catch (err) {
+        this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not start the policy"));
+      }
+    }
+  };
+
+  onClickStop = async () => {
+    const { snapshotManagementService } = this.props;
+    const { selectedItems } = this.state;
+    for (let item of selectedItems) {
+      const policyId = item.name;
+      try {
+        const response = await snapshotManagementService.stopPolicy(policyId);
+        if (response.ok) {
+          this.context.notifications.toasts.addSuccess(`"${policyId}" successfully stopped!`);
+        } else {
+          this.context.notifications.toasts.addDanger(`Could not stop policy "${policyId}" :  ${response.error}`);
+        }
+      } catch (err) {
+        this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not stop the policy"));
+      }
+    }
+  };
+
   getSelectedPolicyIds = () => {
     return this.state.selectedItems
       .map((item: SMPolicy) => {
@@ -316,10 +353,10 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       <EuiButton iconType="refresh" onClick={this.getPolicies} data-test-subj="refreshButton">
         Refresh
       </EuiButton>,
-      <EuiButton disabled={!selectedItems.length} onClick={() => {}}>
+      <EuiButton disabled={!selectedItems.length} onClick={this.onClickStop}>
         Disable
       </EuiButton>,
-      <EuiButton disabled={!selectedItems.length} onClick={() => {}}>
+      <EuiButton disabled={!selectedItems.length} onClick={this.onClickStart}>
         Enable
       </EuiButton>,
       <EuiPopover

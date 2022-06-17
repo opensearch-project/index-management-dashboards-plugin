@@ -8,6 +8,7 @@ import React, { ChangeEvent } from "react";
 import { EuiCheckbox, EuiDatePicker, EuiFieldNumber, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiSelect, EuiSpacer } from "@elastic/eui";
 import moment from "moment-timezone";
 import CustomLabel from "../components/CustomLabel";
+import { WEEK_DAYS } from "../utils/constants";
 
 interface CronScheduleProps {
   frequencyType: string;
@@ -48,7 +49,7 @@ const CronSchedule = ({
 
   const timezones = moment.tz.names().map((tz) => ({ label: tz, text: tz }));
 
-  const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+  const days = WEEK_DAYS;
   const dayOfWeekCheckbox = (day: string, checkedDay: string) => (
     <EuiFlexItem key={day} grow={false} style={{ marginRight: "0px" }}>
       <EuiCheckbox id={day} label={day} checked={checkedDay === day} onChange={(e) => onChangeDayOfWeek(day)} compressed />

@@ -18,7 +18,8 @@ export const DEFAULT_QUERY_PARAMS = {
   search: "",
 };
 
-export const renderTimestampMillis = (time: number): string => {
+export const renderTimestampMillis = (time?: number): string => {
+  if (time == null) return "-";
   const momentTime = moment(time).local();
   if (time && momentTime.isValid()) return momentTime.format("MM/DD/YY h:mm a");
   return "-";
@@ -66,3 +67,5 @@ export const DEFAULT_DELETE_CONDITION = {
   max_age: "7d",
   min_count: 1,
 };
+
+export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];

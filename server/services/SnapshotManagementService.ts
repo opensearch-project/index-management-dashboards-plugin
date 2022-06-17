@@ -12,7 +12,7 @@ import {
   RequestHandlerContext,
   ResponseError,
 } from "../../../../src/core/server";
-import { SMPolicy, DocumentSMPolicy } from "../../models/interfaces";
+import { SMPolicy, DocumentSMPolicy, DocumentSMPolicyWithMetadata } from "../../models/interfaces";
 import {
   CatRepository,
   CatSnapshotWithRepoAndPolicy,
@@ -341,17 +341,20 @@ export default class SnapshotManagementService {
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentSMPolicy>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentSMPolicyWithMetadata>>> => {
     try {
       const { id } = request.params as { id: string };
-      const params = { policyId: id };
+      const params = { id: id };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getResponse = await callWithRequest("ism.getSMPolicy", params);
+      const metadata = await callWithRequest("ism.explainSnapshotPolicy", params);
+      console.log(`sm dev metadata ${JSON.stringify(metadata)}`);
       const documentPolicy = {
         id: id,
         seqNo: getResponse._seq_no,
         primaryTerm: getResponse._primary_term,
         policy: getResponse.sm_policy,
+        metadata: metadata.policies[0],
       };
       return response.custom({
         statusCode: 200,
@@ -393,6 +396,58 @@ export default class SnapshotManagementService {
       });
     } catch (err) {
       return this.errorResponse(response, err, "deletePolicy");
+    }
+  };
+
+  startPolicy = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
+    try {
+      const { id } = request.params as { id: string };
+      const params = { id: id };
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const resp: AcknowledgedResponse = await callWithRequest("ism.startSnapshotPolicy", params);
+      if (resp.acknowledged) {
+        return response.custom({
+          statusCode: 200,
+          body: { ok: true, response: true },
+        });
+      } else {
+        return response.custom({
+          statusCode: 200,
+          body: { ok: false, error: "Failed to start snapshot policy." },
+        });
+      }
+    } catch (err) {
+      return this.errorResponse(response, err, "startPolicy");
+    }
+  };
+
+  stopPolicy = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
+    try {
+      const { id } = request.params as { id: string };
+      const params = { id: id };
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const resp: AcknowledgedResponse = await callWithRequest("ism.stopSnapshotPolicy", params);
+      if (resp.acknowledged) {
+        return response.custom({
+          statusCode: 200,
+          body: { ok: true, response: true },
+        });
+      } else {
+        return response.custom({
+          statusCode: 200,
+          body: { ok: false, error: "Failed to stop snapshot policy." },
+        });
+      }
+    } catch (err) {
+      return this.errorResponse(response, err, "stopPolicy");
     }
   };
 

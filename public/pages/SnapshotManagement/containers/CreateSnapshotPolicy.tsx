@@ -31,7 +31,7 @@ import {
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { ContentPanel } from "../../../components/ContentPanel";
-import { getDefaultSMPolicy } from "../utils/constants";
+import { getDefaultSMPolicy, WEEK_DAYS } from "../utils/constants";
 import moment from "moment-timezone";
 import CustomLabel from "../components/CustomLabel";
 import ToggleWrapper from "../components/ToggleWrapper";
@@ -42,8 +42,9 @@ import { getErrorMessage, wildcardOption } from "../../../utils/helpers";
 import { IndexService, NotificationService, SnapshotManagementService } from "../../../services";
 import { IndexItem, SMPolicy } from "../../../../models/interfaces";
 import ChannelNotification from "../../VisualCreatePolicy/components/ChannelNotification";
-import { CatRepository, FeatureChannelList } from "../../../../server/models/interfaces";
+import { CatRepository, CreateRepositoryBody, CreateRepositorySettings, FeatureChannelList } from "../../../../server/models/interfaces";
 import SnapshotIndicesRepoInput from "../components/SnapshotIndicesRepoInput";
+import { isNumber, parseCronExpression } from "../utils/helpers";
 
 interface CreateSMPolicyProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -86,6 +87,8 @@ interface CreateSMPolicyState {
   deletionScheduleEnabled: boolean;
 
   advancedSettingsOpen: boolean;
+
+  showCreateRepoFlyout: boolean;
 }
 
 export default class CreateSMPolicy extends Component<CreateSMPolicyProps, CreateSMPolicyState> {
@@ -131,6 +134,7 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
       deletionScheduleEnabled: false,
 
       advancedSettingsOpen: false,
+      showCreateRepoFlyout: false,
     };
   }
 
@@ -373,17 +377,25 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
   };
 
   populateCronExpressionToState = (expression: string, creation: boolean) => {
-    const expArr = expression.split(" ");
-    const minute = ("0" + expArr[0]).slice(-2);
-    const hour = ("0" + expArr[1]).slice(-2);
+    const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(expression);
+
     const timeStr = `2022-01-01 ${hour}:${minute}`;
+    console.log(`sm dev time str ${timeStr}`);
     const startTime = moment(timeStr);
-    const dayOfWeek = expArr[4] === "*" ? "SUN" : expArr[4];
-    const dayOfMonth = expArr[2] === "*" ? 1 : parseInt(expArr[2]);
     if (creation) {
-      this.setState({ creationScheduleStartTime: startTime, creationScheduleDayOfWeek: dayOfWeek, creationScheduleDayOfMonth: dayOfMonth });
+      this.setState({
+        creationScheduleStartTime: startTime,
+        creationScheduleDayOfWeek: dayOfWeek,
+        creationScheduleDayOfMonth: dayOfMonth,
+        creationScheduleFrequencyType: frequencyType,
+      });
     } else {
-      this.setState({ deletionScheduleStartTime: startTime, deletionScheduleDayOfWeek: dayOfWeek, deletionScheduleDayOfMonth: dayOfMonth });
+      this.setState({
+        deletionScheduleStartTime: startTime,
+        deletionScheduleDayOfWeek: dayOfWeek,
+        deletionScheduleDayOfMonth: dayOfMonth,
+        deletionScheduleFrequencyType: frequencyType,
+      });
     }
   };
 
@@ -576,6 +588,27 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
     this.setState({ creationScheduleFrequencyType: e.target.value });
   };
 
+  createRepo = async (repoName: string, type: string, settings: CreateRepositorySettings) => {
+    try {
+      const { snapshotManagementService } = this.props;
+
+      const createRepoBody: CreateRepositoryBody = {
+        type: type,
+        settings: settings,
+      };
+      const response = await snapshotManagementService.createRepository(repoName, createRepoBody);
+      if (response.ok) {
+        this.setState({ showCreateRepoFlyout: false });
+        this.context.notifications.toasts.addSuccess(`Created repository ${repoName}.`);
+        await this.getRepos();
+      } else {
+        this.context.notifications.toasts.addDanger(response.error);
+      }
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem creating the repository."));
+    }
+  };
+
   render() {
     // console.log(`sm dev render state ${JSON.stringify(this.state)}`);
 
@@ -603,6 +636,7 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
       deleteConditionEnabled,
       deletionScheduleEnabled,
       advancedSettingsOpen,
+      showCreateRepoFlyout,
     } = this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
@@ -662,6 +696,15 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
             repoOptions={repoOptions}
             selectedRepoValue={selectedRepoValue}
             onRepoSelectionChange={this.onRepoSelectionChange}
+            showFlyout={showCreateRepoFlyout}
+            openFlyout={() => {
+              this.setState({ showCreateRepoFlyout: true });
+            }}
+            closeFlyout={() => {
+              this.setState({ showCreateRepoFlyout: false });
+            }}
+            createRepo={this.createRepo}
+            snapshotManagementService={this.props.snapshotManagementService}
           />
         </ContentPanel>
 
@@ -807,6 +850,7 @@ export default class CreateSMPolicy extends Component<CreateSMPolicyProps, Creat
                 onClick={() => {
                   this.setState({ advancedSettingsOpen: !this.state.advancedSettingsOpen });
                 }}
+                aria-label="drop down icon"
               />
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
