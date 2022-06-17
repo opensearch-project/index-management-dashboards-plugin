@@ -13,12 +13,12 @@ import {
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
-  EuiTextArea,
+  EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
 import _ from "lodash";
 import { CreateRepositorySettings } from "../../../../server/models/interfaces";
-import React, { ChangeEvent, Component } from "react";
+import React, { Component } from "react";
 import FlyoutFooter from "../../VisualCreatePolicy/components/FlyoutFooter";
 import CustomLabel from "./CustomLabel";
 import { CoreServicesContext } from "../../../components/core_services";
@@ -133,6 +133,8 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
           <CustomLabel title="Repository name" />
           <EuiFieldText value={repoName} onChange={(e) => this.setState({ repoName: e.target.value })} />
 
+          <EuiSpacer size="m" />
+
           <CustomLabel title="Repository type" />
           <EuiComboBox
             options={repoTypeOptions}
@@ -142,14 +144,17 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
             singleSelection={true}
             isClearable={true}
           />
+          <EuiSpacer size="m" />
 
           <CustomLabel title="Location" />
-          <EuiFieldText value={location} onChange={(e) => this.setState({ location: e.target.value })} />
+          <EuiFieldText placeholder="e.g. /mnt/snapshots" value={location} onChange={(e) => this.setState({ location: e.target.value })} />
+
+          <EuiSpacer size="m" />
 
           <EuiAccordion id="repo_advanced_settings" buttonContent="Advanced settings">
             <EuiCodeEditor
               mode="json"
-              width="100%"
+              width="90%"
               height="250px"
               value={settingsJsonString}
               onChange={(str) => {

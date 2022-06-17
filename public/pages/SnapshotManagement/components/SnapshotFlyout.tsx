@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, ChangeEvent } from "react";
+import React, { Component } from "react";
 import {
   EuiButtonEmpty,
   EuiFlexGrid,
@@ -80,12 +80,11 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
       {
         term: "Policy",
         value: (
-          <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${snapshot?.metadata.sm_policy}`)}>
-            {snapshot?.metadata.sm_policy}
+          <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${snapshot?.metadata?.sm_policy}`)}>
+            {snapshot?.metadata?.sm_policy}
           </EuiLink>
         ),
       },
-      { term: "Indices", value: snapshot?.indices },
     ];
 
     let error = null;
@@ -136,8 +135,8 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
           <EuiSpacer size="l" />
 
           <EuiText size="xs">
-            <dt>Data streams</dt>
-            <dd>{snapshot?.data_streams}</dd>
+            <dt>Indices</dt>
+            <dd>{snapshot?.indices.join(", ")}</dd>
           </EuiText>
         </EuiFlyoutBody>
 

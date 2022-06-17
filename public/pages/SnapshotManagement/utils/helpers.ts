@@ -5,7 +5,7 @@
 
 import queryString from "query-string";
 import { SMPoliciesQueryParams } from "../models/interfaces";
-import { DEFAULT_QUERY_PARAMS, WEEK_DAYS } from "../utils/constants";
+import { DEFAULT_QUERY_PARAMS, PROMPT_TEXT, WEEK_DAYS } from "../utils/constants";
 
 export function getSMPoliciesQueryParamsFromURL(location: { search: string }): SMPoliciesQueryParams {
   const { from, size, sortField, sortOrder, search } = queryString.parse(location.search);
@@ -29,7 +29,7 @@ export interface CronExpressionConstructs {
   hour: string;
   dayOfWeek: string;
   dayOfMonth: number;
-  frequencyType: string;
+  frequencyType: "custom" | "monthly" | "weekly" | "daily" | "hourly" | string;
 }
 
 export function parseCronExpression(expression: string): CronExpressionConstructs {
@@ -70,3 +70,47 @@ export function parseCronExpression(expression: string): CronExpressionConstruct
     frequencyType,
   };
 }
+
+export function humanCronExpression(
+  { minute, hour, dayOfWeek, dayOfMonth, frequencyType }: CronExpressionConstructs,
+  expression: string,
+  timezone: string
+): string {
+  if (frequencyType == "custom") {
+    return expression + ` (${timezone})`;
+  }
+  let startTime = `${hour}:${minute} (${timezone})`;
+  if (frequencyType == "monthly") {
+    startTime = `Day ${dayOfMonth} ` + startTime;
+  }
+  if (frequencyType == "weekly") {
+    startTime = `${dayOfWeek} ` + startTime;
+  }
+  return startTime;
+}
+
+export function buildCronExpressionFromState(startTime: moment.Moment, type: string, dayOfWeek: string, dayOfMonth: number): string {
+  const minute = startTime.minute();
+  const hour = startTime.hour();
+  console.log(`sm dev start time minute hour ${minute}, ${hour}`);
+  switch (type) {
+    case "hourly": {
+      return `${minute} * * * *`;
+    }
+    case "daily": {
+      return `${minute} ${hour} * * *`;
+    }
+    case "weekly": {
+      return `${minute} ${hour} * * ${dayOfWeek}`;
+    }
+    case "monthly": {
+      return `${minute} ${hour} ${dayOfMonth} * *`;
+    }
+  }
+  throw new Error(`Unknown schedule frequency type ${type}.`);
+}
+
+export const getMessagePrompt = (loading: boolean) => {
+  if (loading) return PROMPT_TEXT.LOADING;
+  return PROMPT_TEXT.NO_POLICIES;
+};

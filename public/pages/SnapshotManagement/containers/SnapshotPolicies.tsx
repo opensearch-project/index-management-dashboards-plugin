@@ -16,20 +16,21 @@ import {
   EuiContextMenuItem,
   EuiContextMenuPanel,
   EuiEmptyPrompt,
+  EuiIcon,
   EuiLink,
   EuiPopover,
   EuiSearchBar,
   EuiTableFieldDataColumnType,
   EuiTableSelectionType,
   EuiTableSortingType,
+  EuiText,
   EuiTextColor,
-  EuiTitle,
   Pagination,
   Query,
 } from "@elastic/eui";
-import { BREADCRUMBS, ROUTES } from "../../../utils/constants";
-import { getSMPoliciesQueryParamsFromURL } from "../utils/helpers";
-import { DocumentSMPolicy, SMPolicy } from "../../../../models/interfaces";
+import { BREADCRUMBS, DOCUMENTATION_URL, ROUTES } from "../../../utils/constants";
+import { getMessagePrompt, getSMPoliciesQueryParamsFromURL } from "../utils/helpers";
+import { SMPolicy } from "../../../../models/interfaces";
 import { SnapshotManagementService } from "../../../services";
 import { getErrorMessage } from "../../../utils/helpers";
 import { DEFAULT_PAGE_SIZE_OPTIONS, renderTimestampMillis } from "../utils/constants";
@@ -44,6 +45,7 @@ interface SnapshotPoliciesProps extends RouteComponentProps {
 interface SnapshotPoliciesState {
   policies: SMPolicy[];
   totalPolicies: number;
+  loadingPolicies: boolean;
 
   query: Query | null;
   queryString: string;
@@ -73,6 +75,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     this.state = {
       policies: [],
       totalPolicies: 0,
+      loadingPolicies: false,
       query: null,
       queryString: "",
       from: from,
@@ -114,6 +117,9 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Snapshot schedule",
         sortable: false,
         dataType: "string",
+        render: (name: string, item: SMPolicy) => {
+          return `${name} (${item.creation.schedule.cron.timezone})`;
+        },
       },
       {
         field: "last_updated_time",
@@ -145,6 +151,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   }
 
   getPolicies = async () => {
+    this.setState({ loadingPolicies: true });
     try {
       const { snapshotManagementService, history } = this.props;
       const queryParamsObject = SnapshotPolicies.getQueryObjectFromState(this.state);
@@ -161,6 +168,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshot policies."));
     }
+    this.setState({ loadingPolicies: false });
   };
 
   static getQueryObjectFromState({ from, size, sortField, sortOrder, queryString }: SnapshotPoliciesState) {
@@ -285,9 +293,20 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   };
 
   render() {
-    const { policies, totalPolicies, from, size, sortField, sortOrder, selectedItems, isPopoverOpen, isDeleteModalVisible } = this.state;
+    const {
+      policies,
+      totalPolicies,
+      loadingPolicies,
+      from,
+      size,
+      sortField,
+      sortOrder,
+      selectedItems,
+      isPopoverOpen,
+      isDeleteModalVisible,
+    } = this.state;
 
-    console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
+    // console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
 
     const page = Math.floor(from / size);
     const pagination: Pagination = {
@@ -349,6 +368,22 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       </EuiButton>
     );
 
+    const promptMessage = (
+      <EuiEmptyPrompt
+        style={{ maxWidth: "45em" }}
+        body={
+          <EuiText>
+            <p>{getMessagePrompt(loadingPolicies)}</p>
+          </EuiText>
+        }
+        actions={
+          <EuiButton onClick={this.onClickCreate} fill={true}>
+            Create policy
+          </EuiButton>
+        }
+      />
+    );
+
     const actions = [
       <EuiButton iconType="refresh" onClick={this.getPolicies} data-test-subj="refreshButton">
         Refresh
@@ -375,9 +410,20 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       </EuiButton>,
     ];
 
+    const subTitleText = (
+      <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+        <p style={{ fontWeight: 200 }}>
+          Define an automated snapshot schedule and retention period with a snapshot policy.{" "}
+          <EuiLink href={DOCUMENTATION_URL} target="_blank">
+            Learn more
+          </EuiLink>
+        </p>
+      </EuiText>
+    );
+
     return (
       <>
-        <ContentPanel title="Snapshot policies" actions={actions}>
+        <ContentPanel title="Snapshot policies" actions={actions} subTitleText={subTitleText}>
           <EuiSearchBar
             box={{
               placeholder: "e.g. ",
@@ -394,7 +440,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
             isSelectable={true}
             selection={selection}
             onChange={this.onTableChange}
-            noItemsMessage={<EuiEmptyPrompt title={<h5>No snapshot policy found</h5>} body="There are no snapshot policy." />}
+            noItemsMessage={promptMessage}
           />
         </ContentPanel>
 

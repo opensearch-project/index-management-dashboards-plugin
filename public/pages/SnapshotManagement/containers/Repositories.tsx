@@ -9,6 +9,7 @@ import {
   EuiInMemoryTable,
   EuiPopover,
   EuiTableFieldDataColumnType,
+  EuiText,
   EuiTextColor,
 } from "@elastic/eui";
 import { getErrorMessage } from "../../../utils/helpers";
@@ -17,9 +18,10 @@ import { RouteComponentProps } from "react-router-dom";
 import { CatRepository, CreateRepositoryBody, CreateRepositorySettings } from "../../../../server/models/interfaces";
 import { CoreServicesContext } from "../../../components/core_services";
 import { SnapshotManagementService } from "../../../services";
-import { BREADCRUMBS, ROUTES } from "../../../utils/constants";
+import { BREADCRUMBS } from "../../../utils/constants";
 import { ContentPanel } from "../../../components/ContentPanel";
 import CreateRepositoryFlyout from "../components/CreateRepositoryFlyout";
+import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 
 interface RepositoriesProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -56,7 +58,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
     this.columns = [
       {
         field: "id",
-        name: "Name",
+        name: "Repository name",
         sortable: true,
         dataType: "string",
         width: "15%",
@@ -220,15 +222,38 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
       </EuiButton>,
     ];
 
+    const search = {
+      box: {
+        placeholder: "Search repository",
+      },
+      filters: [
+        {
+          type: "field_value_selection",
+          field: "type",
+          name: "Type",
+          options: repositories.map((repo) => ({ value: repo.type })),
+          multiSelect: "or",
+        } as FieldValueSelectionFilterConfigType,
+      ],
+    };
+
+    const subTitleText = (
+      <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+        <p style={{ fontWeight: 200 }}>Repositories are remote storage locations used to store snapshots.</p>
+      </EuiText>
+    );
+
     return (
       <>
-        <ContentPanel title="Repositories" actions={actions}>
+        <ContentPanel title="Repositories" actions={actions} subTitleText={subTitleText}>
           <EuiInMemoryTable
             items={repositories}
             itemId="id"
             columns={this.columns}
+            pagination={true}
             isSelectable={true}
             selection={{ onSelectionChange: (selectedItems) => this.setState({ selectedItems }) }}
+            search={search}
             loading={loading}
           />
         </ContentPanel>

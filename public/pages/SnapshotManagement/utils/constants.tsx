@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiTableFieldDataColumnType } from "@elastic/eui";
-import { CatSnapshotWithRepoAndPolicy } from "../../../../server/models/interfaces";
 import { SortDirection } from "../../../utils/constants";
 import moment from "moment";
 import { SMPolicy, Snapshot } from "../../../../models/interfaces";
@@ -48,13 +46,14 @@ export const getDefaultSMPolicy = (): SMPolicy => ({
   },
   snapshot_config: {
     repository: "",
-    indices: "*",
     // ignore_unavailable: false,
     // include_global_state: false,
     // partial: false,
     // date_expression: "yyyy-MM-dd-HH:mm",
   },
 });
+
+export const DEFAULT_INDEX_OPTIONS = [{ label: "*" }, { label: "-.opendistro_security" }];
 
 export const getEmptySnapshot = (): Snapshot => ({
   indices: "",
@@ -69,3 +68,12 @@ export const DEFAULT_DELETE_CONDITION = {
 };
 
 export const WEEK_DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+
+export const PROMPT_TEXT = {
+  NO_POLICIES: "There are no existing policies.",
+  LOADING: "Loading policies...",
+};
+
+export const ERROR_PROMPT = {
+  REPO: "Repository must be provided.",
+};

@@ -333,6 +333,15 @@ export default class SnapshotManagementService {
       });
       // TODO SM handle config index not exist
     } catch (err) {
+      if (err.statusCode === 404 && err.body.error.reason === "Snapshot management config index not found") {
+        return response.custom({
+          statusCode: 200,
+          body: {
+            ok: true,
+            response: { policies: [], totalPolicies: 0 },
+          },
+        });
+      }
       return this.errorResponse(response, err, "getPolicies");
     }
   };

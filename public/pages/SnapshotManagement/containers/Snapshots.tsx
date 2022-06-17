@@ -6,32 +6,12 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import queryString from "query-string";
-import {
-  Criteria,
-  Direction,
-  EuiBasicTable,
-  EuiButton,
-  EuiEmptyPrompt,
-  EuiFlyout,
-  EuiFlyoutHeader,
-  EuiInMemoryTable,
-  EuiLink,
-  EuiSearchBar,
-  EuiTableFieldDataColumnType,
-  EuiTableSelectionType,
-  EuiTableSortingType,
-  EuiTitle,
-  Pagination,
-  Query,
-  SortDirection,
-} from "@elastic/eui";
+import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../utils/constants";
 import { SnapshotManagementService, IndexService } from "../../../services";
-import { OnSearchChangeArgs } from "../models/interfaces";
-import { DEFAULT_PAGE_SIZE_OPTIONS, renderTimestampSecond } from "../utils/constants";
+import { renderTimestampSecond } from "../utils/constants";
 import { getErrorMessage } from "../../../utils/helpers";
 import { CatSnapshotWithRepoAndPolicy as snapshotsWithRepoAndPolicy } from "../../../../server/models/interfaces";
 import { ContentPanel } from "../../../components/ContentPanel";
@@ -92,16 +72,22 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         ),
       },
       {
-        field: "repository",
-        name: "Repository",
-        sortable: false,
-        dataType: "string",
-      },
-      {
         field: "status",
         name: "Status",
         sortable: true,
         dataType: "string",
+      },
+      {
+        field: "policy",
+        name: "Policy",
+        sortable: false,
+        dataType: "string",
+        render: (name: string, item: snapshotsWithRepoAndPolicy) => {
+          if (!!item.policy) {
+            return <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>{name}</EuiLink>;
+          }
+          return "-";
+        },
       },
       {
         field: "start_epoch",
@@ -118,16 +104,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         render: renderTimestampSecond,
       },
       {
-        field: "policy",
-        name: "Policy",
+        field: "repository",
+        name: "Repository",
         sortable: false,
         dataType: "string",
-        render: (name: string, item: snapshotsWithRepoAndPolicy) => {
-          if (!!item.policy) {
-            return <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>{name}</EuiLink>;
-          }
-          return "-";
-        },
       },
     ];
 
@@ -146,7 +126,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.getAllSnapshotsWithPolicy();
       if (response.ok) {
-        const { snapshots, totalSnapshots } = response.response;
+        const { snapshots } = response.response;
         const existingPolicyNames = [
           ...new Set(snapshots.filter((snapshot) => !!snapshot.policy).map((snapshot) => snapshot.policy)),
         ] as string[];
@@ -224,7 +204,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       showFlyout,
       flyoutSnapshotId,
       flyoutSnapshotRepo,
-      message,
       showCreateFlyout,
     } = this.state;
 
@@ -275,9 +254,17 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       </EuiButton>,
     ];
 
+    const subTitleText = (
+      <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+        <p style={{ fontWeight: 200 }}>
+          Snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository.
+        </p>
+      </EuiText>
+    );
+
     return (
       <>
-        <ContentPanel title="Snapshots" actions={actions}>
+        <ContentPanel title="Snapshots" actions={actions} subTitleText={subTitleText}>
           <EuiInMemoryTable
             items={snapshots}
             itemId={(item) => `${item.repository}:${item.id}`}
@@ -293,8 +280,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             selection={{ onSelectionChange: this.onSelectionChange }}
             search={search}
             loading={loadingSnapshots}
-            // message={message}
-            // error={error}
           />
         </ContentPanel>
 

@@ -35,7 +35,7 @@ import DeleteModal from "../../PolicyDetails/components/DeleteModal";
 import { getErrorMessage } from "../../../utils/helpers";
 import { LatestActivities } from "../models/interfaces";
 import { renderTimestampMillis } from "../utils/constants";
-import { parseCronExpression } from "../utils/helpers";
+import { humanCronExpression, parseCronExpression } from "../utils/helpers";
 
 interface SnapshotPolicyDetailsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -196,20 +196,16 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
 
     const createCronExpression = policy.creation.schedule.cron.expression;
     const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(createCronExpression);
-    let snapshotScheduleItems;
-    if (frequencyType == "custom") {
-      snapshotScheduleItems = [
-        { term: "Frequency", value: "Custom" },
-        { term: "Custom expression", value: createCronExpression },
-        { term: "Next snapshot time", value: renderTimestampMillis(metadata?.creation?.trigger.time) },
-      ];
-    } else {
-      snapshotScheduleItems = [
-        { term: "Frequency", value: _.capitalize(frequencyType) },
-        { term: "Start time", value: `${hour}:${minute} (${policy.creation.schedule.cron.timezone})` },
-        { term: "Next snapshot time", value: renderTimestampMillis(metadata?.creation?.trigger.time) },
-      ];
-    }
+    const humanCron = humanCronExpression(
+      { minute, hour, dayOfWeek, dayOfMonth, frequencyType },
+      createCronExpression,
+      policy.creation.schedule.cron.timezone
+    );
+    const snapshotScheduleItems = [
+      { term: "Frequency", value: _.capitalize(frequencyType) },
+      { term: "Cron schedule", value: humanCron },
+      { term: "Next snapshot time", value: renderTimestampMillis(metadata?.creation?.trigger.time) },
+    ];
 
     let retentionItems = [{ term: "Retention period", value: "Keep all snapshots" }];
     let deletionScheduleItems;
@@ -222,19 +218,17 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       const deleteCronExpression = policy.deletion?.schedule?.cron.expression;
       if (deleteCronExpression != null) {
         const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(deleteCronExpression);
-        if (frequencyType == "custom") {
-          deletionScheduleItems = [
-            { term: "Frequency", value: "Custom" },
-            { term: "Custom expression", value: deleteCronExpression },
-            { term: "Next snapshot time", value: renderTimestampMillis(metadata?.deletion?.trigger.time) },
-          ];
-        } else {
-          deletionScheduleItems = [
-            { term: "Frequency", value: _.capitalize(frequencyType) },
-            { term: "Start time", value: `${hour}:${minute} (${policy.deletion.schedule?.cron.timezone})` },
-            { term: "Next snapshot time", value: renderTimestampMillis(metadata?.deletion?.trigger.time) },
-          ];
-        }
+        const humanCron = humanCronExpression(
+          { minute, hour, dayOfWeek, dayOfMonth, frequencyType },
+          deleteCronExpression,
+          policy.deletion.schedule?.cron.timezone ?? "-"
+        );
+
+        deletionScheduleItems = [
+          { term: "Frequency", value: _.capitalize(frequencyType) },
+          { term: "Cron schedule", value: humanCron },
+          { term: "Next snapshot time", value: renderTimestampMillis(metadata?.deletion?.trigger.time) },
+        ];
       }
     }
 
@@ -246,9 +240,12 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
     let creationLatestActivity: LatestActivities = { activityType: "Creation" };
     creationLatestActivity = { ...creationLatestActivity, ...metadata?.creation?.latest_execution };
     console.log(`sm dev creation latest activity ${JSON.stringify(creationLatestActivity)}`);
-    let deletionLatestActivity: LatestActivities = { activityType: "Deletion" };
-    deletionLatestActivity = { ...deletionLatestActivity, ...metadata?.deletion?.latest_execution };
-    const latestActivities: LatestActivities[] = [creationLatestActivity, deletionLatestActivity];
+    let latestActivities: LatestActivities[] = [creationLatestActivity];
+    if (policy.deletion != null) {
+      let deletionLatestActivity: LatestActivities = { activityType: "Deletion" };
+      deletionLatestActivity = { ...deletionLatestActivity, ...metadata?.deletion?.latest_execution };
+      latestActivities = [...latestActivities, deletionLatestActivity];
+    }
 
     return (
       <div style={{ padding: "5px 50px" }}>

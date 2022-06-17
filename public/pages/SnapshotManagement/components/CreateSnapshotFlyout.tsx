@@ -5,18 +5,14 @@
 
 import {
   EuiAccordion,
-  EuiCodeEditor,
-  EuiComboBox,
   EuiComboBoxOptionOption,
   EuiFieldText,
   EuiFlyout,
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
-  EuiSelectOption,
   EuiSpacer,
   EuiSwitchEvent,
-  EuiTextArea,
   EuiTitle,
 } from "@elastic/eui";
 import _ from "lodash";
@@ -29,9 +25,9 @@ import { IndexService, SnapshotManagementService } from "../../../services";
 import { getErrorMessage, wildcardOption } from "../../../utils/helpers";
 import { IndexItem, Snapshot } from "../../../../models/interfaces";
 import SnapshotIndicesRepoInput from "./SnapshotIndicesRepoInput";
-import ToggleWrapper from "./ToggleWrapper";
-import { getEmptySnapshot } from "../utils/constants";
+import { ERROR_PROMPT, getEmptySnapshot } from "../utils/constants";
 import { CatRepository } from "../../../../server/models/interfaces";
+import SnapshotAdvancedSettings from "./SnapshotAdvancedSettings";
 
 interface CreateSnapshotProps {
   snapshotManagementService: SnapshotManagementService;
@@ -49,6 +45,8 @@ interface CreateSnapshotState {
 
   snapshot: Snapshot;
   snapshotId: string;
+
+  repoError: string;
 }
 
 export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps, CreateSnapshotState> {
@@ -63,6 +61,7 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
       selectedRepoValue: "",
       snapshot: getEmptySnapshot(),
       snapshotId: "",
+      repoError: "",
     };
   }
 
@@ -74,6 +73,12 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
   onClickAction = () => {
     const { createSnapshot } = this.props;
     const { snapshotId, selectedRepoValue, snapshot } = this.state;
+    let repoError = "";
+    if (!selectedRepoValue) {
+      repoError = ERROR_PROMPT.REPO;
+      this.setState({ repoError });
+      return;
+    }
     console.log(`sm dev snapshot body ${JSON.stringify(snapshot)}`);
     createSnapshot(snapshotId, selectedRepoValue, snapshot);
   };
@@ -142,7 +147,11 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
 
   onRepoSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRepo = e.target.value;
-    this.setState({ selectedRepoValue: selectedRepo });
+    let repoError = "";
+    if (!selectedRepo) {
+      repoError = ERROR_PROMPT.REPO;
+    }
+    this.setState({ selectedRepoValue: selectedRepo, repoError });
   };
 
   onIncludeGlobalStateToggle = (event: EuiSwitchEvent) => {
@@ -162,7 +171,7 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
 
   render() {
     const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, snapshot, snapshotId } = this.state;
+    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, snapshot, snapshotId, repoError } = this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
 
@@ -183,6 +192,8 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
             }}
           />
 
+          <EuiSpacer size="m" />
+
           <SnapshotIndicesRepoInput
             indexOptions={indexOptions}
             selectedIndexOptions={selectedIndexOptions}
@@ -192,45 +203,20 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
             repoOptions={repoOptions}
             selectedRepoValue={selectedRepoValue}
             onRepoSelectionChange={this.onRepoSelectionChange}
+            repoError={repoError}
           />
 
           <EuiSpacer size="m" />
 
           <EuiAccordion id="advanced_settings_accordian" buttonContent="Advanced options">
-            <ToggleWrapper
-              label={
-                <CustomLabel title="Include global state" helpText="Whether to include cluster state in the snapshot." isOptional={true} />
-              }
-              checked={String(_.get(snapshot, "include_global_state", false)) == "true"}
-              onSwitchChange={this.onIncludeGlobalStateToggle}
-            />
-
-            <EuiSpacer size="m" />
-
-            <ToggleWrapper
-              label={
-                <CustomLabel
-                  title="Ignore unavailable"
-                  helpText="Whether to ignore unavailable index rather than fail the snapshot."
-                  isOptional={true}
-                />
-              }
-              checked={String(_.get(snapshot, "ignore_unavailable", false)) == "true"}
-              onSwitchChange={this.onIgnoreUnavailableToggle}
-            />
-
-            <EuiSpacer size="m" />
-
-            <ToggleWrapper
-              label={
-                <CustomLabel
-                  title="Partial"
-                  helpText="Whether to allow partial snapshots rather than fail the snapshot."
-                  isOptional={true}
-                />
-              }
-              checked={String(_.get(snapshot, "partial", false)) == "true"}
-              onSwitchChange={this.onPartialToggle}
+            <SnapshotAdvancedSettings
+              includeGlobalState={String(_.get(snapshot, "include_global_state", false)) == "true"}
+              onIncludeGlobalStateToggle={this.onIncludeGlobalStateToggle}
+              ignoreUnavailable={String(_.get(snapshot, "ignore_unavailable", false)) == "true"}
+              onIgnoreUnavailableToggle={this.onIgnoreUnavailableToggle}
+              partial={String(_.get(snapshot, "partial", false)) == "true"}
+              onPartialToggle={this.onPartialToggle}
+              width="200%"
             />
           </EuiAccordion>
         </EuiFlyoutBody>

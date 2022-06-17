@@ -9,6 +9,7 @@ import {
   EuiComboBoxOptionOption,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiFormRow,
   EuiSelect,
   EuiSelectOption,
   EuiSpacer,
@@ -34,6 +35,7 @@ interface SnapshotIndicesProps {
   closeFlyout?: () => void;
   createRepo?: (repoName: string, type: string, settings: CreateRepositorySettings) => void;
   snapshotManagementService?: SnapshotManagementService;
+  repoError: string;
 }
 
 const SnapshotIndicesRepoInput = ({
@@ -50,8 +52,9 @@ const SnapshotIndicesRepoInput = ({
   closeFlyout,
   createRepo,
   snapshotManagementService,
+  repoError,
 }: SnapshotIndicesProps) => {
-  let createRepoFlyout = null;
+  let createRepoFlyout;
   if (snapshotManagementService != null && createRepo != null && closeFlyout != null) {
     createRepoFlyout = (
       <CreateRepositoryFlyout service={snapshotManagementService} editRepo={null} createRepo={createRepo} onCloseFlyout={closeFlyout} />
@@ -62,7 +65,7 @@ const SnapshotIndicesRepoInput = ({
     <>
       <CustomLabel title="Indices" />
       <EuiComboBox
-        placeholder="Select indices"
+        placeholder="Select or input indexes or index patterns"
         options={indexOptions}
         selectedOptions={selectedIndexOptions}
         onChange={onIndicesSelectionChange}
@@ -76,13 +79,16 @@ const SnapshotIndicesRepoInput = ({
       <EuiFlexGroup alignItems="flexEnd">
         <EuiFlexItem style={{ maxWidth: "400px" }}>
           <CustomLabel title="Repository" />
-          <EuiSelect
-            disabled={repoOptions.length === 0}
-            options={repoOptions}
-            value={selectedRepoValue}
-            onChange={onRepoSelectionChange}
-            hasNoInitialSelection={true}
-          />
+          <EuiFormRow isInvalid={!!repoError} error={repoError}>
+            <EuiSelect
+              placeholder="Select a repository"
+              disabled={repoOptions.length === 0}
+              options={repoOptions}
+              value={selectedRepoValue}
+              onChange={onRepoSelectionChange}
+              hasNoInitialSelection={true}
+            />
+          </EuiFormRow>
         </EuiFlexItem>
 
         {showFlyout != null && (
@@ -92,7 +98,7 @@ const SnapshotIndicesRepoInput = ({
         )}
       </EuiFlexGroup>
 
-      {showFlyout && { createRepoFlyout }}
+      {showFlyout && createRepoFlyout}
     </>
   );
 };
