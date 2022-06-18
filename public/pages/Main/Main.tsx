@@ -28,7 +28,11 @@ import RollupDetails from "../RollupDetails/containers/RollupDetails";
 import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
 import queryString from "query-string";
-import { Snapshots, SnapshotPolicies, SnapshotPolicyDetails, CreateSnapshotPolicy, Repositories } from "../SnapshotManagement";
+import CreateSnapshotPolicy from "../CreateSnapshotPolicy";
+import Repositories from "../Repositories";
+import SnapshotPolicies from "../SnapshotPolicies";
+import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
+import Snapshots from "../Snapshots";
 
 enum Navigation {
   IndexManagement = "Index Management",
