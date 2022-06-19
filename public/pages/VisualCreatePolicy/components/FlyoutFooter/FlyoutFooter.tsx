@@ -12,9 +12,10 @@ interface FlyoutFooterProps {
   disabledAction?: boolean;
   onClickCancel: () => void;
   onClickAction: () => void;
+  save?: boolean;
 }
 
-const FlyoutFooter = ({ edit, action, disabledAction = false, onClickCancel, onClickAction }: FlyoutFooterProps) => (
+const FlyoutFooter = ({ edit, action, disabledAction = false, onClickCancel, onClickAction, save }: FlyoutFooterProps) => (
   <EuiFlexGroup justifyContent="flexEnd">
     <EuiFlexItem grow={false}>
       <EuiButtonEmpty onClick={onClickCancel} flush="left" data-test-subj="flyout-footer-cancel-button">
@@ -23,7 +24,7 @@ const FlyoutFooter = ({ edit, action, disabledAction = false, onClickCancel, onC
     </EuiFlexItem>
     <EuiFlexItem grow={false}>
       <EuiButton disabled={disabledAction} onClick={onClickAction} fill data-test-subj="flyout-footer-action-button">
-        {`${edit ? "Edit" : "Add"} ${action}`}
+        {!save ? `${edit ? "Edit" : "Add"} ${action}` : save ? "Save" : "Create"}
       </EuiButton>
     </EuiFlexItem>
   </EuiFlexGroup>

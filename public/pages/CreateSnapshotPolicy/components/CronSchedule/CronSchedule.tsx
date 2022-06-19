@@ -4,61 +4,94 @@
  */
 
 import _ from "lodash";
-import React, { ChangeEvent } from "react";
-import { EuiCheckbox, EuiDatePicker, EuiFieldNumber, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiSelect, EuiSpacer } from "@elastic/eui";
-import moment from "moment-timezone";
-import { WEEK_DAYS } from "../../../SnapshotPolicies/constants";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import {
+  EuiCheckbox,
+  EuiDatePicker,
+  EuiFieldNumber,
+  EuiFieldText,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiLink,
+  EuiSelect,
+  EuiSpacer,
+  EuiText,
+} from "@elastic/eui";
 import CustomLabel from "../../../../components/CustomLabel";
+import { WEEK_DAYS, CRON_SCHEDULE_FREQUENCY_TYPE, TIMEZONES } from "./constants";
+import { buildCronExpression, parseCronExpression, startTime } from "./helper";
+import moment from "moment-timezone";
+import { CRON_EXPRESSION_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 interface CronScheduleProps {
   frequencyType: string;
   onChangeFrequencyType: (e: ChangeEvent<HTMLSelectElement>) => void;
-  startTime: moment.Moment;
-  onChangeStartTime: (date: moment.Moment | null) => void;
+  cronExpression: string;
+  onCronExpressionChange: (expression: string) => void;
   timezone?: string;
   onChangeTimezone?: (e: ChangeEvent<HTMLSelectElement>) => void;
-  cronExpression: string;
-  onChangeCronExpression: (e: ChangeEvent<HTMLInputElement>) => void;
-  dayOfWeek: string;
-  onChangeDayOfWeek: (day: string) => void;
-  dayOfMonth: number;
-  onChangeDayOfMonth: (day: number) => void;
 }
 
 const CronSchedule = ({
   frequencyType,
   onChangeFrequencyType,
-  startTime,
-  onChangeStartTime,
+  cronExpression,
+  onCronExpressionChange,
   timezone,
   onChangeTimezone,
-  cronExpression,
-  onChangeCronExpression,
-  dayOfWeek,
-  onChangeDayOfWeek,
-  dayOfMonth,
-  onChangeDayOfMonth,
 }: CronScheduleProps) => {
-  const cronScheduleTypeOptions = [
-    { value: "hourly", text: "Hourly" },
-    { value: "daily", text: "Daily" },
-    { value: "weekly", text: "Weekly" },
-    { value: "monthly", text: "Monthly" },
-    { value: "custom", text: "Custom" },
-  ];
+  const { minute: initMin, hour: initHour, dayOfWeek: initWeek, dayOfMonth: initMonth } = parseCronExpression(cronExpression);
 
-  const timezones = moment.tz.names().map((tz) => ({ label: tz, text: tz }));
+  const [minute, setMinute] = useState(initMin);
+  const [hour, setHour] = useState(initHour);
+  const [dayOfWeek, setWeek] = useState(initWeek);
+  const [dayOfMonth, setMonth] = useState(initMonth);
 
-  const days = WEEK_DAYS;
+  useEffect(() => {
+    changeCron();
+  }, [minute, hour, dayOfWeek, dayOfMonth]);
+
+  const changeCron = (input?: any) => {
+    let cronParts = { hour, minute, dayOfWeek, dayOfMonth, frequencyType };
+    cronParts = { ...cronParts, ...input };
+    const expression = buildCronExpression(cronParts, cronExpression);
+    console.log(`sm dev built expression ${expression}`);
+    onCronExpressionChange(expression);
+  };
+
+  function onDayOfWeekChange(dayOfWeek: string) {
+    setWeek(dayOfWeek);
+    // changeCron({ dayOfWeek });
+  }
+
+  function onDayOfMonthChange(dayOfMonth: number) {
+    setMonth(dayOfMonth);
+    // changeCron({ dayOfMonth });
+  }
+
+  function onStartTimeChange(date: moment.Moment) {
+    const minute = date.minute();
+    const hour = date.hour();
+    setMinute(minute);
+    setHour(hour);
+    // changeCron({ minute, hour });
+  }
+
+  function onTypeChange(e: ChangeEvent<HTMLSelectElement>) {
+    const frequencyType = e.target.value;
+    onChangeFrequencyType(e);
+    changeCron({ frequencyType });
+  }
+
   const dayOfWeekCheckbox = (day: string, checkedDay: string) => (
     <EuiFlexItem key={day} grow={false} style={{ marginRight: "0px" }}>
-      <EuiCheckbox id={day} label={day} checked={checkedDay === day} onChange={(e) => onChangeDayOfWeek(day)} compressed />
+      <EuiCheckbox id={day} label={day} checked={checkedDay === day} onChange={(e) => onDayOfWeekChange(day)} compressed />
     </EuiFlexItem>
   );
 
   let additionalContent;
   if (frequencyType === "weekly") {
-    additionalContent = <EuiFlexGroup>{days.map((d) => dayOfWeekCheckbox(d, dayOfWeek))}</EuiFlexGroup>;
+    additionalContent = <EuiFlexGroup>{WEEK_DAYS.map((d) => dayOfWeekCheckbox(d, dayOfWeek))}</EuiFlexGroup>;
   }
   if (frequencyType === "monthly") {
     additionalContent = (
@@ -71,7 +104,7 @@ const CronSchedule = ({
             value={dayOfMonth}
             onChange={(e) => {
               console.log(`sm dev change day of month ${parseInt(e.target.value)}`);
-              onChangeDayOfMonth(parseInt(e.target.value));
+              onDayOfMonthChange(parseInt(e.target.value));
             }}
           />
         </EuiFlexItem>
@@ -79,10 +112,21 @@ const CronSchedule = ({
     );
   }
 
+  const cronExpressionHelp = (
+    <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+      <p style={{ fontWeight: 200, fontSize: "12px" }}>
+        Use Cron expression to define complex schedule.{" "}
+        <EuiLink href={CRON_EXPRESSION_DOCUMENTATION_URL} target="_blank">
+          Learn more
+        </EuiLink>
+      </p>
+    </EuiText>
+  );
+
   return (
     <>
       <CustomLabel title="Schedule frequency" />
-      <EuiSelect id="creationCronScheduleType" options={cronScheduleTypeOptions} value={frequencyType} onChange={onChangeFrequencyType} />
+      <EuiSelect id="creationCronScheduleType" options={CRON_SCHEDULE_FREQUENCY_TYPE} value={frequencyType} onChange={onTypeChange} />
 
       <EuiSpacer size="m" />
 
@@ -90,8 +134,13 @@ const CronSchedule = ({
         <EuiFlexItem style={{ maxWidth: 400 }}>
           {frequencyType === "custom" ? (
             <>
-              <CustomLabel title="Custom expression" />
-              <EuiFieldText value={cronExpression} onChange={onChangeCronExpression} />
+              <CustomLabel title="Cron expression" helpText={cronExpressionHelp} />
+              <EuiFieldText
+                value={cronExpression}
+                onChange={(e) => {
+                  onCronExpressionChange(e.target.value);
+                }}
+              />
             </>
           ) : (
             <>
@@ -99,8 +148,8 @@ const CronSchedule = ({
               <EuiDatePicker
                 showTimeSelect
                 showTimeSelectOnly
-                selected={startTime}
-                onChange={onChangeStartTime}
+                selected={startTime(hour, minute)}
+                onChange={onStartTimeChange}
                 dateFormat="HH:mm"
                 timeFormat="HH:mm"
               />
@@ -113,7 +162,7 @@ const CronSchedule = ({
         {timezone ? (
           <EuiFlexItem style={{ maxWidth: 200 }}>
             <CustomLabel title="Timezone" />
-            <EuiSelect id="timezone" options={timezones} value={timezone} onChange={onChangeTimezone} />
+            <EuiSelect id="timezone" options={TIMEZONES} value={timezone} onChange={onChangeTimezone} />
           </EuiFlexItem>
         ) : null}
       </EuiFlexGroup>

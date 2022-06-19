@@ -13,7 +13,6 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiSpacer,
-  EuiSwitchEvent,
   EuiTitle,
   EuiButtonEmpty,
   EuiButton,
@@ -30,21 +29,19 @@ import {
 } from "@elastic/eui";
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import moment from "moment-timezone";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CatRepository, CreateRepositoryBody, CreateRepositorySettings, FeatureChannelList } from "../../../../../server/models/interfaces";
 import { IndexItem, SMPolicy } from "../../../../../models/interfaces";
-import { BREADCRUMBS, DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexService, NotificationService, SnapshotManagementService } from "../../../../services";
-import { DEFAULT_INDEX_OPTIONS, ERROR_PROMPT, getDefaultSMPolicy } from "../../../SnapshotPolicies/constants";
 import { getErrorMessage, wildcardOption } from "../../../../utils/helpers";
-import { buildCronExpressionFromState, parseCronExpression } from "../../../SnapshotPolicies/helpers";
 import SnapshotIndicesRepoInput from "../../components/SnapshotIndicesRepoInput/SnapshotIndicesRepoInput";
 import CronSchedule from "../../components/CronSchedule/CronSchedule";
 import SnapshotAdvancedSettings from "../../components/SnapshotAdvancedSettings/SnapshotAdvancedSettings";
 import CustomLabel from "../../../../components/CustomLabel";
 import ChannelNotification from "../../../VisualCreatePolicy/components/ChannelNotification";
+import { DEFAULT_INDEX_OPTIONS, ERROR_PROMPT, getDefaultSMPolicy, maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS } from "../../constants";
 
 interface CreateSMPolicyProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -73,14 +70,8 @@ interface CreateSMPolicyState {
   maxAgeNum: number;
   maxAgeUnit: string;
 
-  creationScheduleStartTime: moment.Moment;
   creationScheduleFrequencyType: string;
-  creationScheduleDayOfMonth: number;
-  creationScheduleDayOfWeek: string;
-  deletionScheduleStartTime: moment.Moment;
   deletionScheduleFrequencyType: string;
-  deletionScheduleDayOfMonth: number;
-  deletionScheduleDayOfWeek: string;
 
   deleteConditionEnabled: boolean;
   deletionScheduleEnabled: boolean;
@@ -100,10 +91,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   constructor(props: CreateSMPolicyProps) {
     super(props);
 
-    console.log(`sm dev is constructor run?`);
     this.state = {
-      // This component has this policy object reference saved in state
-      // which doesn't necessarily need to be updated by setState
       policy: getDefaultSMPolicy(),
       policyId: "",
       policySeqNo: undefined,
@@ -123,14 +111,8 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       maxAgeNum: 1,
       maxAgeUnit: "d",
 
-      creationScheduleStartTime: moment("2022-01-01 20:00"),
       creationScheduleFrequencyType: "daily",
-      creationScheduleDayOfWeek: "SUN",
-      creationScheduleDayOfMonth: 1,
-      deletionScheduleStartTime: moment("2022-01-01 01:00"),
       deletionScheduleFrequencyType: "daily",
-      deletionScheduleDayOfWeek: "SUN",
-      deletionScheduleDayOfMonth: 1,
 
       deleteConditionEnabled: false,
       deletionScheduleEnabled: false,
@@ -196,7 +178,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
     }
   };
-
   getIndexOptions = async (searchValue: string) => {
     const { indexService } = this.props;
     this.setState({ indexOptions: DEFAULT_INDEX_OPTIONS });
@@ -205,9 +186,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       if (optionsResponse.ok) {
         // Adding wildcard to search value
         const options = searchValue.trim() ? [{ label: wildcardOption(searchValue) }, { label: searchValue }] : [];
-        // const dataStreams = optionsResponse.response.dataStreams.map((label) => ({ label }));
         const indices = optionsResponse.response.indices.map((label) => ({ label }));
-        // this.setState({ indexOptions: options.concat(dataStreams, indices)});
         this.setState({ indexOptions: [...this.state.indexOptions, ...options.concat(indices)] });
       } else {
         if (optionsResponse.error.startsWith("[index_not_found_exception]")) {
@@ -220,13 +199,17 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem fetching index options."));
     }
   };
-
   getRepos = async () => {
     try {
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.catRepositories();
       if (response.ok) {
-        this.setState({ repositories: response.response });
+        const selectedRepoValue = response.response.length > 0 ? response.response[0].id : "";
+        this.setState({
+          repositories: response.response,
+          selectedRepoValue,
+          policy: this.setPolicyHelper("snapshot_config.repository", selectedRepoValue),
+        });
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
@@ -234,7 +217,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshots."));
     }
   };
-
   createRepo = async (repoName: string, type: string, settings: CreateRepositorySettings) => {
     try {
       const { snapshotManagementService } = this.props;
@@ -255,7 +237,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem creating the repository."));
     }
   };
-
   createPolicy = async (policyId: string, policy: SMPolicy) => {
     const { snapshotManagementService } = this.props;
     try {
@@ -295,10 +276,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem updating the policy"));
     }
   };
+
   onClickCancel = (): void => {
     this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
   };
-
   onClickSubmit = async () => {
     this.setState({ isSubmitting: true });
     const { isEdit } = this.props;
@@ -307,8 +288,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     try {
       if (!policyId.trim()) {
         this.setState({ policyIdError: "Required" });
-      }
-      if (!_.get(policy, "snapshot_config.repository")) {
+      } else if (!_.get(policy, "snapshot_config.repository")) {
         this.setState({ repoError: ERROR_PROMPT.REPO });
       } else {
         const policyFromState = this.buildPolicyFromState(policy);
@@ -324,34 +304,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   buildPolicyFromState = (policy: SMPolicy): SMPolicy => {
-    const {
-      deletionScheduleEnabled,
-      maxAgeNum,
-      maxAgeUnit,
-      creationScheduleStartTime,
-      creationScheduleFrequencyType,
-      creationScheduleDayOfWeek,
-      creationScheduleDayOfMonth,
-      deletionScheduleStartTime,
-      deletionScheduleFrequencyType,
-      deletionScheduleDayOfWeek,
-      deletionScheduleDayOfMonth,
-      deleteConditionEnabled,
-    } = this.state;
-
-    // custom type directly update state.policy corresponding field
-    if (creationScheduleFrequencyType !== "custom") {
-      _.set(
-        policy,
-        "creation.schedule.cron.expression",
-        buildCronExpressionFromState(
-          creationScheduleStartTime,
-          creationScheduleFrequencyType,
-          creationScheduleDayOfWeek,
-          creationScheduleDayOfMonth
-        )
-      );
-    }
+    const { deletionScheduleEnabled, maxAgeNum, maxAgeUnit, deleteConditionEnabled } = this.state;
 
     if (deleteConditionEnabled) {
       _.set(policy, "deletion.condition.max_age", maxAgeNum + maxAgeUnit);
@@ -360,18 +313,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     }
 
     if (deletionScheduleEnabled) {
-      if (deletionScheduleFrequencyType !== "custom") {
-        _.set(
-          policy,
-          "deletion.schedule.cron.expression",
-          buildCronExpressionFromState(
-            deletionScheduleStartTime,
-            deletionScheduleFrequencyType,
-            deletionScheduleDayOfWeek,
-            deletionScheduleDayOfMonth
-          )
-        );
-      }
       _.set(policy, "deletion.schedule.cron.timezone", _.get(policy, "creation.schedule.cron.timezone", "America/Los_Angeles"));
     } else {
       delete policy.deletion?.schedule;
@@ -383,20 +324,20 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
     const selectedIndexOptions = selectedOptions.map((o) => o.label);
-    let newJSON = this.state.policy;
-    newJSON.snapshot_config.indices = selectedIndexOptions.toString();
-    this.setState({ policy: newJSON, selectedIndexOptions: selectedOptions });
+    console.log(`sm dev indices selection change ${selectedIndexOptions.toString()}`);
+    this.setState({
+      policy: this.setPolicyHelper("snapshot_config.indices", selectedIndexOptions.toString()),
+      selectedIndexOptions: selectedOptions,
+    });
   };
 
   onRepoSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRepo = e.target.value;
-    let newJSON = this.state.policy;
-    newJSON.snapshot_config.repository = selectedRepo;
     let repoError = "";
     if (!selectedRepo) {
       repoError = ERROR_PROMPT.REPO;
     }
-    this.setState({ policy: newJSON, selectedRepoValue: selectedRepo, repoError });
+    this.setState({ policy: this.setPolicyHelper("snapshot_config.repository", selectedRepo), selectedRepoValue: selectedRepo, repoError });
   };
 
   onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
@@ -413,9 +354,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     }
 
     const selectedIndexOptions = [...this.state.selectedIndexOptions, newOption];
-    let newJSON = this.state.policy;
-    newJSON.snapshot_config.indices = selectedIndexOptions.toString();
-    this.setState({ selectedIndexOptions: selectedIndexOptions, policy: newJSON });
+    this.setState({
+      selectedIndexOptions: selectedIndexOptions,
+      policy: this.setPolicyHelper("snapshot_config.indices", selectedIndexOptions.toString()),
+    });
   };
 
   getChannels = async (): Promise<void> => {
@@ -434,23 +376,16 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     }
     this.setState({ loadingChannels: false });
   };
-
   onChangeChannelId = (e: ChangeEvent<HTMLSelectElement>): void => {
     const channelId = e.target.value;
-    this.setState((state) => ({
-      policy: {
-        ...state.policy,
-        notification: {
-          channel: {
-            id: channelId,
-          },
-        },
-      },
-    }));
+    this.setState({ policy: this.setPolicyHelper("notification.channel.id", channelId) });
   };
 
   render() {
-    // console.log(`sm dev render state ${JSON.stringify(this.state)}`);
+    // console.log(`sm dev render state creation cron ${JSON.stringify(this.state.policy.creation.schedule.cron)}`);
+    // console.log(`sm dev render state deletion cron ${JSON.stringify(this.state.policy.deletion?.schedule?.cron)}`);
+    // console.log(`sm dev render state repository ${JSON.stringify(this.state.policy.snapshot_config.repository)}`);
+    console.log(`sm dev render state indices ${JSON.stringify(this.state.policy.snapshot_config)}`);
 
     const { isEdit } = this.props;
     const {
@@ -465,14 +400,8 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       selectedRepoValue,
       maxAgeNum,
       maxAgeUnit,
-      creationScheduleStartTime,
       creationScheduleFrequencyType,
-      creationScheduleDayOfMonth,
-      creationScheduleDayOfWeek,
-      deletionScheduleStartTime,
       deletionScheduleFrequencyType,
-      deletionScheduleDayOfMonth,
-      deletionScheduleDayOfWeek,
       deleteConditionEnabled,
       deletionScheduleEnabled,
       advancedSettingsOpen,
@@ -484,12 +413,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
 
-    const maxAgeUnitOptions = [
-      { value: "d", text: "Days" },
-      { value: "h", text: "Hours" },
-    ];
-
-    const radios = [
+    const rententionEnableRadios = [
       {
         id: "retention_disabled",
         label: "Retain all snapshots",
@@ -504,7 +428,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           Snapshot policies allow you to define an automated snapshot schedule and retention period.{" "}
-          <EuiLink href={DOCUMENTATION_URL} target="_blank">
+          <EuiLink href={SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL} target="_blank">
             Learn more
           </EuiLink>
         </p>
@@ -572,26 +496,13 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             onChangeFrequencyType={(e) => {
               this.setState({ creationScheduleFrequencyType: e.target.value });
             }}
-            startTime={creationScheduleStartTime}
-            onChangeStartTime={(date) => {
-              this.setState({ creationScheduleStartTime: date ?? this.state.creationScheduleStartTime });
-            }}
             timezone={_.get(policy, "creation.schedule.cron.timezone", "America/Los_Angeles")}
             onChangeTimezone={(e) => {
-              this.setState({ policy: _.set(this.state.policy, "creation.schedule.cron.timezone", e.target.value) });
+              this.setState({ policy: this.setPolicyHelper("creation.schedule.cron.timezone", e.target.value) });
             }}
             cronExpression={_.get(policy, "creation.schedule.cron.expression", "")}
-            onChangeCronExpression={(e) => {
-              this.setState({ policy: _.set(this.state.policy, "creation.schedule.cron.expression", e.target.value) });
-            }}
-            dayOfWeek={creationScheduleDayOfWeek}
-            onChangeDayOfWeek={(day) => {
-              this.setState({ creationScheduleDayOfWeek: day });
-            }}
-            dayOfMonth={creationScheduleDayOfMonth}
-            onChangeDayOfMonth={(day) => {
-              console.log(`sm dev change month day ${day}`);
-              this.setState({ creationScheduleDayOfMonth: day });
+            onCronExpressionChange={(expression: string) => {
+              this.setState({ policy: this.setPolicyHelper("creation.schedule.cron.expression", expression) });
             }}
           />
         </ContentPanel>
@@ -600,7 +511,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
         <ContentPanel title="Retention period" titleSize="m">
           <EuiRadioGroup
-            options={radios}
+            options={rententionEnableRadios}
             idSelected={deleteConditionEnabled ? "retention_enabled" : "retention_disabled"}
             onChange={(id) => {
               this.setState({ deleteConditionEnabled: id === "retention_enabled" });
@@ -624,7 +535,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                 </EuiFlexItem>
                 <EuiFlexItem style={{ maxWidth: 100 }}>
                   <EuiSelect
-                    options={maxAgeUnitOptions}
+                    options={MAX_AGE_UNIT_OPTIONS}
                     value={maxAgeUnit}
                     onChange={(e) => {
                       this.setState({ maxAgeUnit: e.target.value });
@@ -676,22 +587,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                     onChangeFrequencyType={(e) => {
                       this.setState({ deletionScheduleFrequencyType: e.target.value });
                     }}
-                    startTime={deletionScheduleStartTime}
-                    onChangeStartTime={(date) => {
-                      this.setState({ deletionScheduleStartTime: date ?? this.state.deletionScheduleStartTime });
-                    }}
                     timezone={undefined}
                     cronExpression={_.get(policy, "deletion.schedule.cron.expression", "")}
-                    onChangeCronExpression={(e) => {
-                      this.setState({ policy: _.set(this.state.policy, "deletion.schedule.cron.expression", e.target.value) });
-                    }}
-                    dayOfWeek={deletionScheduleDayOfWeek}
-                    onChangeDayOfWeek={(day) => {
-                      this.setState({ deletionScheduleDayOfWeek: day });
-                    }}
-                    dayOfMonth={deletionScheduleDayOfMonth}
-                    onChangeDayOfMonth={(day) => {
-                      this.setState({ deletionScheduleDayOfMonth: day });
+                    onCronExpressionChange={(expression: string) => {
+                      this.setState({ policy: this.setPolicyHelper("deletion.schedule.cron.expression", expression) });
                     }}
                   />
                 ) : null}
@@ -729,7 +628,9 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiTitle size="m">
-                <h3>Advanced settings</h3>
+                <h3>
+                  Advanced settings <i>- optional</i>
+                </h3>
               </EuiTitle>
             </EuiFlexItem>
           </EuiFlexGroup>
@@ -744,6 +645,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                 onIgnoreUnavailableToggle={this.onIgnoreUnavailableToggle}
                 partial={String(_.get(policy, "snapshot_config.partial", false)) == "true"}
                 onPartialToggle={this.onPartialToggle}
+                width="200%"
               />
             </>
           )}
@@ -774,133 +676,71 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
         maxAgeUnit: maxAge[maxAge.length - 1],
       });
     }
-
-    const creationCronExpression = policy.creation.schedule.cron.expression;
-    this.populateCronExpressionToState(creationCronExpression, true);
-
-    const deletionCronExpression = policy.deletion?.schedule?.cron.expression;
-    if (deletionCronExpression) {
-      this.populateCronExpressionToState(deletionCronExpression, false);
-    }
-  };
-
-  populateCronExpressionToState = (expression: string, creation: boolean) => {
-    const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(expression);
-
-    const timeStr = `2022-01-01 ${hour}:${minute}`;
-    console.log(`sm dev time str ${timeStr}`);
-    const startTime = moment(timeStr);
-    if (creation) {
-      this.setState({
-        creationScheduleStartTime: startTime,
-        creationScheduleDayOfWeek: dayOfWeek,
-        creationScheduleDayOfMonth: dayOfMonth,
-        creationScheduleFrequencyType: frequencyType,
-      });
-    } else {
-      this.setState({
-        deletionScheduleStartTime: startTime,
-        deletionScheduleDayOfWeek: dayOfWeek,
-        deletionScheduleDayOfMonth: dayOfMonth,
-        deletionScheduleFrequencyType: frequencyType,
-      });
-    }
   };
 
   onChangeMaxCount = (e: ChangeEvent<HTMLInputElement>) => {
     // Received NaN for the `value` attribute. If this is expected, cast the value to a string.
     const maxCount = isNaN(parseInt(e.target.value)) ? undefined : parseInt(e.target.value);
-    this.setState({ policy: _.set(this.state.policy, "deletion.condition.max_count", maxCount) });
+    this.setState({ policy: this.setPolicyHelper("deletion.condition.max_count", maxCount) });
   };
 
   onChangeMinCount = (e: ChangeEvent<HTMLInputElement>) => {
-    const minCount = isNaN(parseInt(e.target.value)) ? 1 : parseInt(e.target.value);
+    const minCount = isNaN(parseInt(e.target.value)) ? undefined : parseInt(e.target.value);
     let isMinCountValid = "";
-    if (minCount < 1) {
+    if (!minCount || minCount < 1) {
       isMinCountValid = "Min count should be bigger than 0.";
     }
-    this.setState({ policy: _.set(this.state.policy, "deletion.condition.min_count", minCount), minCountError: isMinCountValid });
+    this.setState({ policy: this.setPolicyHelper("deletion.condition.min_count", minCount), minCountError: isMinCountValid });
   };
 
   onChangePolicyName = (e: ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value;
-    // let newJSON = this.state.policy;
-    // newJSON.name = name;
-    this.state.policy.name = name;
-    // this.setState((state) => ({ policyId: name, policy:{...state.policy, name} }));
-    this.setState((state) => ({ policyId: name }));
+    this.setState({ policyId: e.target.value });
   };
 
   onChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    const description = e.target.value;
-    let newJSON = this.state.policy;
-    newJSON.description = description;
-    this.setState({ policy: newJSON });
+    this.setState({ policy: this.setPolicyHelper("description", e.target.value) });
   };
 
   onChangeCreationExpression = (e: ChangeEvent<HTMLInputElement>) => {
-    const expression = e.target.value;
-    let newJSON = this.state.policy;
-    newJSON.creation.schedule.cron.expression = expression;
-    this.setState({ policy: newJSON });
+    this.setState({ policy: this.setPolicyHelper("creation.schedule.cron.expression", e.target.value) });
   };
 
   onChangeDeletionExpression = (e: ChangeEvent<HTMLInputElement>) => {
-    const expression = e.target.value;
-    let newJSON = this.state.policy;
-    _.set(newJSON, "deletion.schedule.cron.expression", expression);
-    this.setState({ policy: newJSON });
+    this.setState({ policy: this.setPolicyHelper("deletion.schedule.cron.expression", e.target.value) });
   };
 
   onChangeCreationTimezone = (e: ChangeEvent<HTMLSelectElement>) => {
-    // const timezone = e.target.value;
-    // let newJSON = this.state.policy;
-    // _.set(newJSON, "creation.schedule.cron.timezone", timezone);
-    // this.setState({ policy: newJSON });
     console.log(`sm dev policy cron timezone: ${_.get(this.state.policy, "creation.schedule.cron.timezone")}`);
-    this.setState({ policy: _.set(this.state.policy, "creation.schedule.cron.timezone", e.target.value) });
+    this.setState({ policy: this.setPolicyHelper("creation.schedule.cron.timezone", e.target.value) });
     console.log(`sm dev policy cron timezone 2: ${_.get(this.state.policy, "creation.schedule.cron.timezone")}`);
   };
 
   onChangeDeletionTimezone = (e: ChangeEvent<HTMLSelectElement>) => {
-    const timezone = e.target.value;
-    let newJSON = this.state.policy;
-    _.set(newJSON, "deletion.schedule.cron.timezone", timezone);
-    this.setState({ policy: newJSON });
+    this.setState({ policy: this.setPolicyHelper("deletion.schedule.cron.timezone", e.target.value) });
   };
 
   onChangeIndices = (e: ChangeEvent<HTMLInputElement>) => {
-    const indices = e.target.value;
-    let newJSON = this.state.policy;
-    newJSON.snapshot_config.indices = indices;
-    this.setState({ policy: newJSON });
+    this.setState({ policy: this.setPolicyHelper("snapshot_config.indices", e.target.value) });
   };
 
   onChangeRepository = (e: ChangeEvent<HTMLInputElement>) => {
-    const repository = e.target.value;
-    let newJSON = this.state.policy;
-    newJSON.snapshot_config.repository = repository;
-    this.setState({ policy: newJSON });
+    this.setState({ policy: this.setPolicyHelper("snapshot_config.repository", e.target.value) });
   };
 
-  onIncludeGlobalStateToggle = (event: EuiSwitchEvent) => {
-    this.setState({ policy: _.set(this.state.policy, "snapshot_config.include_global_state", event.target.checked) });
+  onIncludeGlobalStateToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(`sm dev include global ${e.target.checked}`);
+    this.setState({ policy: this.setPolicyHelper("snapshot_config.include_global_state", e.target.checked) });
   };
 
-  onIgnoreUnavailableToggle = (event: EuiSwitchEvent) => {
-    const { checked } = event.target;
-    console.log(`sm dev ignore unavaliable ${checked}`);
-    console.log(`sm dev ignore unavaliable ${event.target}`);
-    // let newJSON = this.state.policy;
-    // newJSON.snapshot_config.ignore_unavailable = checked;
-
-    this.setState({ policy: _.set(this.state.policy, "snapshot_config.ignore_unavailable", event.target.checked) });
+  onIgnoreUnavailableToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ policy: this.setPolicyHelper("snapshot_config.ignore_unavailable", e.target.checked) });
   };
 
-  onPartialToggle = (event: EuiSwitchEvent) => {
-    const { checked } = event.target;
-    let newJSON = this.state.policy;
-    newJSON.snapshot_config.partial = checked;
-    this.setState({ policy: newJSON });
+  onPartialToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ policy: this.setPolicyHelper("snapshot_config.partial", e.target.checked) });
+  };
+
+  setPolicyHelper = (path: string, newValue: any) => {
+    return _.set(this.state.policy, path, newValue);
   };
 }

@@ -22,6 +22,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import CreateRepositoryFlyout from "../../components/CreateRepositoryFlyout";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { BREADCRUMBS } from "../../../../utils/constants";
+import DeleteModal from "../../components/DeleteModal";
 
 interface RepositoriesProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -37,6 +38,8 @@ interface RepositoriesState {
   isPopoverOpen: boolean;
 
   editRepo: string | null;
+
+  isDeleteModalVisible: boolean;
 }
 
 export default class Repositories extends Component<RepositoriesProps, RepositoriesState> {
@@ -53,6 +56,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
       showFlyout: false,
       isPopoverOpen: false,
       editRepo: null,
+      isDeleteModalVisible: false,
     };
 
     this.columns = [
@@ -62,7 +66,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
         sortable: true,
         dataType: "string",
         width: "15%",
-        align: "center",
+        align: "left",
       },
       {
         field: "type",
@@ -109,7 +113,11 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
       const response = await snapshotManagementService.createRepository(repoName, createRepoBody);
       if (response.ok) {
         this.setState({ showFlyout: false });
-        this.context.notifications.toasts.addSuccess(`Created repository ${repoName}.`);
+        let toastMsgPre = "Created";
+        if (!!this.state.editRepo) {
+          toastMsgPre = "Edited";
+        }
+        this.context.notifications.toasts.addSuccess(`${toastMsgPre} repository ${repoName}.`);
         await this.getRepos();
       } else {
         this.context.notifications.toasts.addDanger(response.error);
@@ -159,7 +167,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
   };
 
   render() {
-    const { repositories, loading, selectedItems, showFlyout, isPopoverOpen, editRepo } = this.state;
+    const { repositories, loading, selectedItems, showFlyout, isPopoverOpen, editRepo, isDeleteModalVisible } = this.state;
 
     const popoverActionItems = [
       <EuiContextMenuItem
@@ -181,13 +189,12 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
         data-test-subj="deleteButton"
         onClick={() => {
           this.closePopover();
-          this.onClickDelete();
+          this.showDeleteModal();
         }}
       >
         <EuiTextColor color="danger">Delete</EuiTextColor>
       </EuiContextMenuItem>,
     ];
-
     const popoverButton = (
       <EuiButton
         iconType="arrowDown"
@@ -201,7 +208,6 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
         Actions
       </EuiButton>
     );
-
     const actions = [
       <EuiButton iconType="refresh" onClick={this.getRepos} data-test-subj="refreshButton">
         Refresh
@@ -268,7 +274,31 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
             }}
           />
         )}
+
+        {isDeleteModalVisible && (
+          <DeleteModal
+            type="repository"
+            ids={this.getSelectedIds()}
+            closeDeleteModal={this.closeDeleteModal}
+            onClickDelete={this.onClickDelete}
+          />
+        )}
       </>
     );
   }
+
+  showDeleteModal = () => {
+    this.setState({ isDeleteModalVisible: true });
+  };
+  closeDeleteModal = () => {
+    this.setState({ isDeleteModalVisible: false });
+  };
+
+  getSelectedIds = () => {
+    return this.state.selectedItems
+      .map((item: CatRepository) => {
+        return item.id;
+      })
+      .join(", ");
+  };
 }

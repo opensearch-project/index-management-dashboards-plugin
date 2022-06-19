@@ -10,7 +10,6 @@ import {
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
   RequestHandlerContext,
-  ResponseError,
 } from "../../../../src/core/server";
 import { SMPolicy, DocumentSMPolicy, DocumentSMPolicyWithMetadata } from "../../models/interfaces";
 import {
@@ -331,8 +330,7 @@ export default class SnapshotManagementService {
           response: { policies, totalPolicies: res.total_policies as number },
         },
       });
-      // TODO SM handle config index not exist
-    } catch (err) {
+    } catch (err: any) {
       if (err.statusCode === 404 && err.body.error.reason === "Snapshot management config index not found") {
         return response.custom({
           statusCode: 200,
@@ -350,7 +348,7 @@ export default class SnapshotManagementService {
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentSMPolicyWithMetadata>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentSMPolicyWithMetadata | null>>> => {
     try {
       const { id } = request.params as { id: string };
       const params = { id: id };
@@ -372,7 +370,16 @@ export default class SnapshotManagementService {
           response: documentPolicy,
         },
       });
-    } catch (err) {
+    } catch (err: any) {
+      if (err.statusCode === 404 && err.body.error.reason === "Snapshot management config index not found") {
+        return response.custom({
+          statusCode: 200,
+          body: {
+            ok: true,
+            response: null,
+          },
+        });
+      }
       return this.errorResponse(response, err, "getPolicy");
     }
   };

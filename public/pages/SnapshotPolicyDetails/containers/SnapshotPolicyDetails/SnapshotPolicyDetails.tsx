@@ -13,6 +13,7 @@ import {
   EuiFlexGrid,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiLink,
   EuiLoadingSpinner,
   EuiSpacer,
   EuiTableFieldDataColumnType,
@@ -22,13 +23,15 @@ import {
 import { SnapshotManagementService } from "../../../../services";
 import { SMMetadata, SMPolicy } from "../../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { renderTimestampMillis } from "../../../SnapshotPolicies/constants";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
-import { humanCronExpression, parseCronExpression } from "../../../SnapshotPolicies/helpers";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import DeleteModal from "../../../PolicyDetails/components/DeleteModal";
 import { LatestActivities } from "../../../../models/interfaces";
+import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
+import { humanCronExpression, parseCronExpression } from "../../../CreateSnapshotPolicy/components/CronSchedule/helper";
+import { ModalConsumer } from "../../../../components/Modal";
+import InfoModal from "../../components/InfoModal";
 
 interface SnapshotPolicyDetailsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -86,6 +89,17 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
         field: "info",
         name: "Info",
         dataType: "auto",
+        render: (info: object) => {
+          const message = _.get(info, "message", null);
+          const cause = _.get(info, "cause", null);
+          let showSymbol = "-";
+          console.log(`sm dev cause ${cause} message ${message}`);
+          if (!!message) showSymbol = "message";
+          if (!!cause) showSymbol = "cause";
+          return (
+            <ModalConsumer>{({ onShow }) => <EuiLink onClick={() => onShow(InfoModal, { info })}>{showSymbol}</EuiLink>}</ModalConsumer>
+          );
+        },
       },
     ];
   }
@@ -108,6 +122,12 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       const response = await snapshotManagementService.getPolicy(policyId);
       console.log(`sm dev get policy ${JSON.stringify(response)}`);
 
+      if (response.ok && !response.response) {
+        let errorMessage = "policy doesn't exist";
+        this.context.notifications.toasts.addDanger(`Could not load the policy: ${errorMessage}`);
+        this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
+        return;
+      }
       if (response.ok && !!response.response.policy) {
         this.setState({
           policy: response.response.policy,
@@ -115,7 +135,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
           metadata: response.response.metadata,
         });
       } else {
-        const errorMessage = response.ok ? "Policy was empty" : response.error;
+        let errorMessage = response.ok ? "Policy was empty" : response.error;
         this.context.notifications.toasts.addDanger(`Could not load the policy: ${errorMessage}`);
         this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
       }
@@ -220,7 +240,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
         deletionScheduleItems = [
           { term: "Frequency", value: _.capitalize(frequencyType) },
           { term: "Cron schedule", value: humanCron },
-          { term: "Next snapshot time", value: renderTimestampMillis(metadata?.deletion?.trigger.time) },
+          { term: "Next retention time", value: renderTimestampMillis(metadata?.deletion?.trigger.time) },
         ];
       }
     }
@@ -338,7 +358,15 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
 
         <EuiSpacer />
 
-        <ContentPanel title="Latest activities" titleSize="m">
+        <ContentPanel
+          title="Last activity"
+          titleSize="m"
+          actions={
+            <EuiButton iconType="refresh" onClick={() => this.getPolicy(policyId)} data-test-subj="refreshButton">
+              Refresh
+            </EuiButton>
+          }
+        >
           <EuiBasicTable items={latestActivities} itemId="name" columns={this.columns} />
         </ContentPanel>
 

@@ -9,7 +9,7 @@ import React from "react";
 interface CustomLabelProps {
   title: string;
   isOptional?: boolean;
-  helpText?: string;
+  helpText?: string | JSX.Element;
 }
 
 const CustomLabel = ({ title, isOptional = false, helpText }: CustomLabelProps) => (
@@ -30,7 +30,7 @@ const CustomLabel = ({ title, isOptional = false, helpText }: CustomLabelProps) 
       ) : null}
     </EuiFlexGroup>
 
-    {helpText && <span style={{ fontWeight: 200, fontSize: "12px" }}>{helpText}</span>}
+    {helpText && typeof helpText === "string" ? <span style={{ fontWeight: 200, fontSize: "12px" }}>{helpText}</span> : helpText}
 
     <EuiSpacer size="s" />
   </>

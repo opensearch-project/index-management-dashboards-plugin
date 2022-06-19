@@ -11,8 +11,8 @@ import {
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
+  EuiFormRow,
   EuiSpacer,
-  EuiSwitchEvent,
   EuiTitle,
 } from "@elastic/eui";
 import _ from "lodash";
@@ -24,10 +24,12 @@ import { IndexService, SnapshotManagementService } from "../../../../services";
 import { getErrorMessage, wildcardOption } from "../../../../utils/helpers";
 import { IndexItem, Snapshot } from "../../../../../models/interfaces";
 import { CatRepository } from "../../../../../server/models/interfaces";
-import { ERROR_PROMPT, getEmptySnapshot } from "../../../SnapshotPolicies/constants";
 import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotAdvancedSettings from "../../../CreateSnapshotPolicy/components/SnapshotAdvancedSettings";
 import SnapshotIndicesRepoInput from "../../../CreateSnapshotPolicy/components/SnapshotIndicesRepoInput";
+import { ChangeEvent } from "react";
+import { getEmptySnapshot } from "./constants";
+import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
 
 interface CreateSnapshotProps {
   snapshotManagementService: SnapshotManagementService;
@@ -47,6 +49,7 @@ interface CreateSnapshotState {
   snapshotId: string;
 
   repoError: string;
+  snapshotIdError: string;
 }
 
 export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps, CreateSnapshotState> {
@@ -62,6 +65,7 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
       snapshot: getEmptySnapshot(),
       snapshotId: "",
       repoError: "",
+      snapshotIdError: "",
     };
   }
 
@@ -74,6 +78,10 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
     const { createSnapshot } = this.props;
     const { snapshotId, selectedRepoValue, snapshot } = this.state;
     let repoError = "";
+    if (!snapshotId.trim()) {
+      this.setState({ snapshotIdError: "Required" });
+      return;
+    }
     if (!selectedRepoValue) {
       repoError = ERROR_PROMPT.REPO;
       this.setState({ repoError });
@@ -136,7 +144,8 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.catRepositories();
       if (response.ok) {
-        this.setState({ repositories: response.response });
+        const selectedRepoValue = response.response.length > 0 ? response.response[0].id : "";
+        this.setState({ repositories: response.response, selectedRepoValue });
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
@@ -154,16 +163,16 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
     this.setState({ selectedRepoValue: selectedRepo, repoError });
   };
 
-  onIncludeGlobalStateToggle = (event: EuiSwitchEvent) => {
-    this.setState({ snapshot: _.set(this.state.snapshot, "include_global_state", event.target.checked) });
+  onIncludeGlobalStateToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ snapshot: _.set(this.state.snapshot, "include_global_state", e.target.checked) });
   };
 
-  onIgnoreUnavailableToggle = (event: EuiSwitchEvent) => {
-    this.setState({ snapshot: _.set(this.state.snapshot, "ignore_unavailable", event.target.checked) });
+  onIgnoreUnavailableToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ snapshot: _.set(this.state.snapshot, "ignore_unavailable", e.target.checked) });
   };
 
-  onPartialToggle = (event: EuiSwitchEvent) => {
-    const { checked } = event.target;
+  onPartialToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = e.target;
     let newJSON = this.state.snapshot;
     newJSON.partial = checked;
     this.setState({ snapshot: newJSON });
@@ -171,7 +180,16 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
 
   render() {
     const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, snapshot, snapshotId, repoError } = this.state;
+    const {
+      indexOptions,
+      selectedIndexOptions,
+      repositories,
+      selectedRepoValue,
+      snapshot,
+      snapshotId,
+      repoError,
+      snapshotIdError,
+    } = this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
 
@@ -185,12 +203,14 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
 
         <EuiFlyoutBody>
           <CustomLabel title="Snapshot name" />
-          <EuiFieldText
-            value={snapshotId}
-            onChange={(e) => {
-              this.setState({ snapshotId: e.target.value });
-            }}
-          />
+          <EuiFormRow isInvalid={!!snapshotIdError} error={snapshotIdError}>
+            <EuiFieldText
+              value={snapshotId}
+              onChange={(e) => {
+                this.setState({ snapshotId: e.target.value });
+              }}
+            />
+          </EuiFormRow>
 
           <EuiSpacer size="m" />
 
@@ -206,9 +226,11 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
             repoError={repoError}
           />
 
-          <EuiSpacer size="m" />
+          <EuiSpacer size="l" />
 
           <EuiAccordion id="advanced_settings_accordian" buttonContent="Advanced options">
+            <EuiSpacer size="m" />
+
             <SnapshotAdvancedSettings
               includeGlobalState={String(_.get(snapshot, "include_global_state", false)) == "true"}
               onIncludeGlobalStateToggle={this.onIncludeGlobalStateToggle}

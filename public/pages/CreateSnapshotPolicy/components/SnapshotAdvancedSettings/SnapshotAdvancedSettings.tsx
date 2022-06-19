@@ -3,18 +3,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiSpacer, EuiSwitchEvent } from "@elastic/eui";
+import { EuiCheckbox, EuiSpacer } from "@elastic/eui";
 import CustomLabel from "../../../../components/CustomLabel";
-import React from "react";
-import ToggleWrapper from "../ToggleWrapper";
+import React, { ChangeEvent } from "react";
 
 interface SnapshotAdvancedSettingsProps {
   includeGlobalState: boolean;
-  onIncludeGlobalStateToggle: (event: EuiSwitchEvent) => void;
+  onIncludeGlobalStateToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   ignoreUnavailable: boolean;
-  onIgnoreUnavailableToggle: (event: EuiSwitchEvent) => void;
+  onIgnoreUnavailableToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   partial: boolean;
-  onPartialToggle: (event: EuiSwitchEvent) => void;
+  onPartialToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   width?: string;
 }
 
@@ -28,15 +27,17 @@ const SnapshotAdvancedSettings = ({
   width,
 }: SnapshotAdvancedSettingsProps) => (
   <div style={{ padding: "10px 10px", width: width }}>
-    <ToggleWrapper
+    <EuiCheckbox
+      id="include_global_state"
       label={<CustomLabel title="Include cluster state in snapshots" />}
       checked={includeGlobalState}
-      onSwitchChange={onIncludeGlobalStateToggle}
+      onChange={onIncludeGlobalStateToggle}
     />
 
     <EuiSpacer size="m" />
 
-    <ToggleWrapper
+    <EuiCheckbox
+      id="ignore_unavailable"
       label={
         <CustomLabel
           title="Ignore unavailable indices"
@@ -44,17 +45,18 @@ const SnapshotAdvancedSettings = ({
         />
       }
       checked={ignoreUnavailable}
-      onSwitchChange={onIgnoreUnavailableToggle}
+      onChange={onIgnoreUnavailableToggle}
     />
 
     <EuiSpacer size="m" />
 
-    <ToggleWrapper
+    <EuiCheckbox
+      id="partial"
       label={
         <CustomLabel title="Allow partial snapshots" helpText="Allow taking partial snapshots if one or more shards failed to store." />
       }
       checked={partial}
-      onSwitchChange={onPartialToggle}
+      onChange={onPartialToggle}
     />
   </div>
 );

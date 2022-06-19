@@ -27,12 +27,12 @@ import {
   Pagination,
   Query,
 } from "@elastic/eui";
-import { BREADCRUMBS, DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
-import { getMessagePrompt, getSMPoliciesQueryParamsFromURL } from "../../helpers";
+import { BREADCRUMBS, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
+import { getMessagePrompt, getSMPoliciesQueryParamsFromURL, renderTimestampMillis } from "../../helpers";
 import { SMPolicy } from "../../../../../models/interfaces";
 import { SnapshotManagementService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { DEFAULT_PAGE_SIZE_OPTIONS, renderTimestampMillis } from "../../constants";
+import { DEFAULT_PAGE_SIZE_OPTIONS } from "../../constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import DeleteModal from "../../../PolicyDetails/components/DeleteModal";
 import { OnSearchChangeArgs } from "../../../../models/interfaces";
@@ -94,15 +94,22 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Policy name",
         sortable: true,
         dataType: "string",
-        render: (name: string, item: SMPolicy) => (
-          <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>{name}</EuiLink>
-        ),
+        width: "180px",
+        render: (name: string, item: SMPolicy) => {
+          const showSymbol = _.truncate(name, { length: 20 });
+          return (
+            <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>
+              <span title={name}>{showSymbol}</span>
+            </EuiLink>
+          );
+        },
       },
       {
         field: "enabled",
         name: "Status",
         sortable: true,
         dataType: "boolean",
+        width: "100px",
         render: (name: string, item: SMPolicy) => (item.enabled ? "Enabled" : "Disabled"),
       },
       {
@@ -306,8 +313,6 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       isDeleteModalVisible,
     } = this.state;
 
-    // console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
-
     const page = Math.floor(from / size);
     const pagination: Pagination = {
       pageIndex: page,
@@ -315,8 +320,6 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
       totalItemCount: totalPolicies,
     };
-
-    console.log(`sm dev pagination object ${JSON.stringify(pagination)}`);
 
     const sorting: EuiTableSortingType<SMPolicy> = {
       sort: {
@@ -355,7 +358,6 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         <EuiTextColor color="danger">Delete</EuiTextColor>
       </EuiContextMenuItem>,
     ];
-
     const actionsButton = (
       <EuiButton
         iconType="arrowDown"
@@ -367,23 +369,6 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         Actions
       </EuiButton>
     );
-
-    const promptMessage = (
-      <EuiEmptyPrompt
-        style={{ maxWidth: "45em" }}
-        body={
-          <EuiText>
-            <p>{getMessagePrompt(loadingPolicies)}</p>
-          </EuiText>
-        }
-        actions={
-          <EuiButton onClick={this.onClickCreate} fill={true}>
-            Create policy
-          </EuiButton>
-        }
-      />
-    );
-
     const actions = [
       <EuiButton iconType="refresh" onClick={this.getPolicies} data-test-subj="refreshButton">
         Refresh
@@ -414,11 +399,27 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           Define an automated snapshot schedule and retention period with a snapshot policy.{" "}
-          <EuiLink href={DOCUMENTATION_URL} target="_blank">
+          <EuiLink href={SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL} target="_blank">
             Learn more
           </EuiLink>
         </p>
       </EuiText>
+    );
+
+    const promptMessage = (
+      <EuiEmptyPrompt
+        style={{ maxWidth: "45em" }}
+        body={
+          <EuiText>
+            <p>{getMessagePrompt(loadingPolicies)}</p>
+          </EuiText>
+        }
+        actions={
+          <EuiButton onClick={this.onClickCreate} fill={true}>
+            Create policy
+          </EuiButton>
+        }
+      />
     );
 
     return (

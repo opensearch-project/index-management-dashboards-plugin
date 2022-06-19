@@ -30,6 +30,7 @@ interface SnapshotIndicesProps {
   repoOptions: EuiSelectOption[];
   selectedRepoValue: string;
   onRepoSelectionChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  // create repository flyout
   showFlyout?: boolean;
   openFlyout?: () => void;
   closeFlyout?: () => void;
@@ -86,7 +87,6 @@ const SnapshotIndicesRepoInput = ({
               options={repoOptions}
               value={selectedRepoValue}
               onChange={onRepoSelectionChange}
-              hasNoInitialSelection={true}
             />
           </EuiFormRow>
         </EuiFlexItem>

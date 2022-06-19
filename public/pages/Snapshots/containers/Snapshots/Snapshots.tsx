@@ -16,8 +16,9 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import SnapshotFlyout from "../../components/SnapshotFlyout/SnapshotFlyout";
 import CreateSnapshotFlyout from "../../components/CreateSnapshotFlyout/CreateSnapshotFlyout";
 import { Snapshot } from "../../../../../models/interfaces";
-import { renderTimestampSecond } from "../../../SnapshotPolicies/constants";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
+import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
 
 interface SnapshotsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -38,6 +39,8 @@ interface SnapshotsState {
   showCreateFlyout: boolean;
 
   message?: React.ReactNode;
+
+  isDeleteModalVisible: boolean;
 }
 
 export default class Snapshots extends Component<SnapshotsProps, SnapshotsState> {
@@ -57,6 +60,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       flyoutSnapshotRepo: "",
       showCreateFlyout: false,
       message: null,
+      isDeleteModalVisible: false,
     };
 
     this.columns = [
@@ -76,6 +80,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Status",
         sortable: true,
         dataType: "string",
+        width: "100px",
       },
       {
         field: "policy",
@@ -94,14 +99,14 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Start time",
         sortable: true,
         dataType: "date",
-        render: renderTimestampSecond,
+        render: renderTimestampMillis,
       },
       {
         field: "end_epoch",
         name: "End time",
         sortable: true,
         dataType: "date",
-        render: renderTimestampSecond,
+        render: renderTimestampMillis,
       },
       {
         field: "repository",
@@ -205,6 +210,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       flyoutSnapshotId,
       flyoutSnapshotRepo,
       showCreateFlyout,
+      isDeleteModalVisible,
     } = this.state;
 
     console.log(`sm dev existingPolicyNames ${existingPolicyNames}`);
@@ -246,7 +252,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton iconType="refresh" onClick={this.getSnapshots} data-test-subj="refreshButton">
         Refresh
       </EuiButton>,
-      <EuiButton disabled={!selectedItems.length} onClick={this.onClickDelete} data-test-subj="deleteButton">
+      <EuiButton disabled={!selectedItems.length} onClick={this.showDeleteModal} data-test-subj="deleteButton" color="danger">
         Delete
       </EuiButton>,
       <EuiButton onClick={this.onClickCreate} fill={true}>
@@ -272,7 +278,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             pagination={true}
             sorting={{
               sort: {
-                field: "id",
+                field: "end_epoch",
                 direction: "desc",
               },
             }}
@@ -301,7 +307,31 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             createSnapshot={this.createSnapshot}
           />
         )}
+
+        {isDeleteModalVisible && (
+          <DeleteModal
+            type="snapshot"
+            ids={this.getSelectedIds()}
+            closeDeleteModal={this.closeDeleteModal}
+            onClickDelete={this.onClickDelete}
+          />
+        )}
       </>
     );
   }
+
+  showDeleteModal = () => {
+    this.setState({ isDeleteModalVisible: true });
+  };
+  closeDeleteModal = () => {
+    this.setState({ isDeleteModalVisible: false });
+  };
+
+  getSelectedIds = () => {
+    return this.state.selectedItems
+      .map((item: snapshotsWithRepoAndPolicy) => {
+        return item.id;
+      })
+      .join(", ");
+  };
 }

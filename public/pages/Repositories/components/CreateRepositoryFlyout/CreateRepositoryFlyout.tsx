@@ -13,6 +13,7 @@ import {
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
+  EuiFormRow,
   EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
@@ -24,6 +25,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import CustomLabel from "../../../../components/CustomLabel";
+import { REPO_TYPES } from "./constants";
 
 interface CreateRepositoryProps {
   service: SnapshotManagementService;
@@ -38,6 +40,10 @@ interface CreateRepositoryState {
   repoTypeOptions: EuiComboBoxOptionOption<string>[];
   selectedRepoTypeOption: EuiComboBoxOptionOption<string>[];
   settingsJsonString: string;
+
+  repoNameError: string;
+  repoTypeError: string;
+  locationError: string;
 }
 
 export default class CreateRepositoryFlyout extends Component<CreateRepositoryProps, CreateRepositoryState> {
@@ -52,12 +58,14 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
       repoTypeOptions: [],
       selectedRepoTypeOption: [],
       settingsJsonString: JSON.stringify({}, null, 4),
+      repoNameError: "",
+      repoTypeError: "",
+      locationError: "",
     };
   }
 
   async componentDidMount() {
-    const typeOptions = ["fs", "url", "repository-s3", "repository-hdfs", "repository-azure", "repository-gcs"];
-    this.setState({ repoTypeOptions: typeOptions.map((label) => ({ label })) });
+    this.setState({ repoTypeOptions: REPO_TYPES });
     const { editRepo } = this.props;
     if (!!editRepo) {
       await this.getRepo(editRepo);
@@ -114,12 +122,34 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
     } catch (err) {
       this.context.notifications.toasts.addDanger("Invalid Policy JSON");
     }
-    createRepo(repoName, selectedRepoTypeOption[0].label, { location: location });
+    if (!repoName.trim()) {
+      this.setState({ repoNameError: "Required." });
+      return;
+    }
+    if (selectedRepoTypeOption.length == 0) {
+      this.setState({ repoTypeError: "Required." });
+      return;
+    }
+    const repoType = selectedRepoTypeOption[0].value ?? selectedRepoTypeOption[0].label;
+    if (!location.trim()) {
+      this.setState({ location: "Required." });
+      return;
+    }
+    createRepo(repoName, repoType, { location: location });
   };
 
   render() {
     const { editRepo, onCloseFlyout } = this.props;
-    const { repoName, location, repoTypeOptions, selectedRepoTypeOption, settingsJsonString } = this.state;
+    const {
+      repoName,
+      location,
+      repoTypeOptions,
+      selectedRepoTypeOption,
+      settingsJsonString,
+      repoNameError,
+      repoTypeError,
+      locationError,
+    } = this.state;
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
@@ -131,27 +161,41 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
 
         <EuiFlyoutBody>
           <CustomLabel title="Repository name" />
-          <EuiFieldText value={repoName} onChange={(e) => this.setState({ repoName: e.target.value })} />
+          <EuiFormRow isInvalid={!!repoNameError} error={repoNameError}>
+            <EuiFieldText disabled={!!editRepo} value={repoName} onChange={(e) => this.setState({ repoName: e.target.value })} />
+          </EuiFormRow>
 
           <EuiSpacer size="m" />
 
           <CustomLabel title="Repository type" />
-          <EuiComboBox
-            options={repoTypeOptions}
-            selectedOptions={selectedRepoTypeOption}
-            onChange={this.onSelectionChange}
-            onCreateOption={this.onCreateOption}
-            singleSelection={true}
-            isClearable={true}
-          />
+          <EuiFormRow isInvalid={!!repoTypeError} error={repoTypeError}>
+            <EuiComboBox
+              isDisabled={!!editRepo}
+              options={repoTypeOptions}
+              selectedOptions={selectedRepoTypeOption}
+              onChange={this.onSelectionChange}
+              onCreateOption={this.onCreateOption}
+              singleSelection={true}
+              isClearable={true}
+            />
+          </EuiFormRow>
+
           <EuiSpacer size="m" />
 
           <CustomLabel title="Location" />
-          <EuiFieldText placeholder="e.g. /mnt/snapshots" value={location} onChange={(e) => this.setState({ location: e.target.value })} />
+          <EuiFormRow isInvalid={!!locationError} error={locationError}>
+            <EuiFieldText
+              disabled={!!editRepo}
+              placeholder="e.g. /mnt/snapshots"
+              value={location}
+              onChange={(e) => this.setState({ location: e.target.value })}
+            />
+          </EuiFormRow>
 
-          <EuiSpacer size="m" />
+          <EuiSpacer size="l" />
 
           <EuiAccordion id="repo_advanced_settings" buttonContent="Advanced settings">
+            <EuiSpacer size="m" />
             <EuiCodeEditor
               mode="json"
               width="90%"
@@ -166,7 +210,7 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
-          <FlyoutFooter edit={!!editRepo} action="" onClickAction={this.onClickAction} onClickCancel={onCloseFlyout} />
+          <FlyoutFooter save={!!editRepo} edit={!!editRepo} action="" onClickAction={this.onClickAction} onClickCancel={onCloseFlyout} />
         </EuiFlyoutFooter>
       </EuiFlyout>
     );
