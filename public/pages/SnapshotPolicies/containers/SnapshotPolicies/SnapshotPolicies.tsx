@@ -427,7 +427,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         <ContentPanel title="Snapshot policies" actions={actions} subTitleText={subTitleText}>
           <EuiSearchBar
             box={{
-              placeholder: "e.g. ",
+              placeholder: "Search snapshot policies",
               incremental: false,
             }}
             onChange={this.onSearchChange}

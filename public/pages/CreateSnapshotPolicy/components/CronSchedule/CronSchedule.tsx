@@ -95,20 +95,23 @@ const CronSchedule = ({
   }
   if (frequencyType === "monthly") {
     additionalContent = (
-      <EuiFlexGroup gutterSize="m">
-        <EuiFlexItem>
-          <EuiSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" />
-        </EuiFlexItem>
-        <EuiFlexItem>
-          <EuiFieldNumber
-            value={dayOfMonth}
-            onChange={(e) => {
-              console.log(`sm dev change day of month ${parseInt(e.target.value)}`);
-              onDayOfMonthChange(parseInt(e.target.value));
-            }}
-          />
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      <>
+        <CustomLabel title="On the" />
+        <EuiFlexGroup gutterSize="m">
+          <EuiFlexItem>
+            <EuiSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" />
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiFieldNumber
+              value={dayOfMonth}
+              onChange={(e) => {
+                console.log(`sm dev change day of month ${parseInt(e.target.value)}`);
+                onDayOfMonthChange(parseInt(e.target.value));
+              }}
+            />
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      </>
     );
   }
 

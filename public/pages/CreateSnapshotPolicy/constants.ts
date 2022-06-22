@@ -10,7 +10,7 @@ import { SMPolicy } from "../../../models/interfaces";
  */
 export const getDefaultSMPolicy = (): SMPolicy => ({
   name: "",
-  description: "Snapshot management policy.",
+  description: "",
   enabled: true,
   creation: {
     schedule: {

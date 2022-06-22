@@ -157,16 +157,25 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     try {
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.getPolicy(policyId);
-      console.log(`sm dev get policy ${response}`);
 
       if (response.ok) {
         this.populatePolicyToState(response.response.policy);
 
+        const policy = response.response.policy;
+        const indices = _.get(policy, "snapshot_config.indices", "");
+        const selectedIndexOptions = indices
+          .split(",")
+          .filter((index: string) => !!index)
+          .map((label: string) => ({ label }));
+        const selectedRepoValue = _.get(policy, "snapshot_config.repository", "");
+
         this.setState({
-          policy: response.response.policy,
+          policy,
           policyId: response.response.id,
           policySeqNo: response.response.seqNo,
           policyPrimaryTerm: response.response.primaryTerm,
+          selectedIndexOptions,
+          selectedRepoValue,
         });
       } else {
         const errorMessage = response.ok ? "Policy was empty" : response.error;
@@ -204,12 +213,18 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.catRepositories();
       if (response.ok) {
-        const selectedRepoValue = response.response.length > 0 ? response.response[0].id : "";
-        this.setState({
-          repositories: response.response,
-          selectedRepoValue,
-          policy: this.setPolicyHelper("snapshot_config.repository", selectedRepoValue),
-        });
+        if (!this.props.isEdit) {
+          const selectedRepoValue = response.response.length > 0 ? response.response[0].id : "";
+          this.setState({
+            repositories: response.response,
+            selectedRepoValue,
+            policy: this.setPolicyHelper("snapshot_config.repository", selectedRepoValue),
+          });
+        } else {
+          this.setState({
+            repositories: response.response,
+          });
+        }
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
@@ -458,6 +473,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
               compressed={true}
               value={_.get(policy, "description", "")}
               onChange={this.onChangeDescription}
+              placeholder="Snapshot management daily policy."
               data-test-subj="description"
             />
           </EuiFormRow>
