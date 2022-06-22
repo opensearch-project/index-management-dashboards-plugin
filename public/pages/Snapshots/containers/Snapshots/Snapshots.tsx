@@ -95,6 +95,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         },
       },
       {
+        field: "repository",
+        name: "Repository",
+        sortable: false,
+        dataType: "string",
+      },
+      {
         field: "start_epoch",
         name: "Start time",
         sortable: true,
@@ -107,12 +113,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         sortable: true,
         dataType: "date",
         render: renderTimestampMillis,
-      },
-      {
-        field: "repository",
-        name: "Repository",
-        sortable: false,
-        dataType: "string",
       },
     ];
 

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiConfirmModal, EuiForm, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
+import { EuiConfirmModal, EuiFieldText, EuiForm, EuiFormRow, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
 
 interface DeleteModalProps {
   closeDeleteModal: (event?: any) => void;
@@ -12,6 +12,7 @@ interface DeleteModalProps {
   type: string;
   ids: string;
   addtionalWarning?: string;
+  confirmation?: boolean;
 }
 
 interface DeleteModalState {
@@ -19,15 +20,23 @@ interface DeleteModalState {
 }
 
 export default class DeleteModal extends Component<DeleteModalProps, DeleteModalState> {
-  state = { confirmDeleteText: "" };
+  constructor(props: DeleteModalProps) {
+    super(props);
+
+    let confirmDeleteText = "delete";
+    if (props.confirmation) confirmDeleteText = "";
+    this.state = {
+      confirmDeleteText,
+    };
+  }
 
   onChange = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ confirmDeleteText: e.target.value });
   };
 
   render() {
-    const { type, ids, closeDeleteModal, onClickDelete, addtionalWarning } = this.props;
-    // const { confirmDeleteText } = this.state;
+    const { type, ids, closeDeleteModal, onClickDelete, addtionalWarning, confirmation } = this.props;
+    const { confirmDeleteText } = this.state;
 
     return (
       <EuiOverlayMask>
@@ -42,16 +51,18 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
           confirmButtonText={`Delete ${type}`}
           buttonColor="danger"
           defaultFocusedButton="confirm"
-          // confirmButtonDisabled={confirmDeleteText != "delete"}
+          confirmButtonDisabled={confirmDeleteText != "delete"}
         >
           <EuiForm>
             <p>
               Delete "<strong>{ids}</strong>" permanently? {addtionalWarning}
             </p>
             <EuiSpacer size="s" />
-            {/* <EuiFormRow helpText={`To confirm deletion, type "delete".`}>
-              <EuiFieldText value={confirmDeleteText} placeholder="delete" onChange={this.onChange} data-test-subj="deleteTextField" />
-            </EuiFormRow> */}
+            {!!confirmation && (
+              <EuiFormRow helpText={`To confirm deletion, type "delete".`}>
+                <EuiFieldText value={confirmDeleteText} placeholder="delete" onChange={this.onChange} data-test-subj="deleteTextField" />
+              </EuiFormRow>
+            )}
           </EuiForm>
         </EuiConfirmModal>
       </EuiOverlayMask>

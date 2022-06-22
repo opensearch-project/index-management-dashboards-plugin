@@ -20,10 +20,8 @@ import {
   DocumentTransform,
   ManagedIndexItem,
   Rollup,
-  SMPolicy,
   Transform,
 } from "../../models/interfaces";
-import { string } from "joi";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -395,6 +393,7 @@ export interface GetSnapshot {
 export interface CatRepository {
   id: string;
   type: string;
+  snapshotCount?: number;
 }
 
 export interface GetRepositoryResponse {
@@ -402,7 +401,7 @@ export interface GetRepositoryResponse {
 }
 
 export interface CreateRepositorySettings {
-  location: string;
+  location?: string;
 }
 
 export interface CreateRepositoryBody {

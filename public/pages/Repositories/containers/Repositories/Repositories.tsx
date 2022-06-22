@@ -73,7 +73,13 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
         name: "Type",
         sortable: true,
         dataType: "string",
-        width: "90%",
+        width: "10%",
+      },
+      {
+        field: "snapshotCount",
+        name: "Snapshot count",
+        sortable: true,
+        width: "80%",
       },
     ];
   }
@@ -102,12 +108,12 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
     }
   };
 
-  createRepo = async (repoName: string, type: string, settings: CreateRepositorySettings) => {
+  createRepo = async (repoName: string, repoType: string, settings: CreateRepositorySettings) => {
     try {
       const { snapshotManagementService } = this.props;
 
       const createRepoBody: CreateRepositoryBody = {
-        type: type,
+        type: repoType,
         settings: settings,
       };
       const response = await snapshotManagementService.createRepository(repoName, createRepoBody);
@@ -212,17 +218,9 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
       <EuiButton iconType="refresh" onClick={this.getRepos} data-test-subj="refreshButton">
         Refresh
       </EuiButton>,
-      <EuiPopover
-        id="actionsPopover"
-        button={popoverButton}
-        isOpen={isPopoverOpen}
-        closePopover={this.closePopover}
-        panelPaddingSize="none"
-        anchorPosition="downLeft"
-        data-test-subj="actionPopover"
-      >
-        <EuiContextMenuPanel items={popoverActionItems} />
-      </EuiPopover>,
+      <EuiButton disabled={!selectedItems.length} onClick={this.showDeleteModal} data-test-subj="deleteButton" color="danger">
+        Delete
+      </EuiButton>,
       <EuiButton onClick={this.onClickCreate} fill={true}>
         Create repository
       </EuiButton>,
@@ -249,6 +247,12 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
       </EuiText>
     );
 
+    let additionalWarning = `You have ${this.getSelectedSnapshotCounts()} snapshots`;
+    if (selectedItems.length > 1) {
+      additionalWarning += " in these repositories respectively.";
+    } else {
+      additionalWarning += " in the repository.";
+    }
     return (
       <>
         <ContentPanel title="Repositories" actions={actions} subTitleText={subTitleText}>
@@ -281,6 +285,8 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
             ids={this.getSelectedIds()}
             closeDeleteModal={this.closeDeleteModal}
             onClickDelete={this.onClickDelete}
+            confirmation={true}
+            addtionalWarning={additionalWarning}
           />
         )}
       </>
@@ -298,6 +304,14 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
     return this.state.selectedItems
       .map((item: CatRepository) => {
         return item.id;
+      })
+      .join(", ");
+  };
+
+  getSelectedSnapshotCounts = () => {
+    return this.state.selectedItems
+      .map((item: CatRepository) => {
+        return item.snapshotCount;
       })
       .join(", ");
   };

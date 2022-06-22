@@ -14,7 +14,10 @@ import {
   EuiFlyoutFooter,
   EuiFlyoutHeader,
   EuiFormRow,
+  EuiLink,
+  EuiSelect,
   EuiSpacer,
+  EuiText,
   EuiTitle,
 } from "@elastic/eui";
 import _ from "lodash";
@@ -25,21 +28,30 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import CustomLabel from "../../../../components/CustomLabel";
-import { REPO_TYPES } from "./constants";
+import { CUSTOM_CONFIGURATION, FS_ADVANCED_SETTINGS, REPO_SELECT_OPTIONS, REPO_TYPES } from "./constants";
+import {
+  FS_REPOSITORY_DOCUMENTATION_URL,
+  REPOSITORY_DOCUMENTATION_URL,
+  S3_REPOSITORY_DOCUMENTATION_URL,
+  SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL,
+} from "../../../../utils/constants";
 
 interface CreateRepositoryProps {
   service: SnapshotManagementService;
   editRepo: string | null;
   onCloseFlyout: () => void;
-  createRepo: (repoName: string, type: string, settings: CreateRepositorySettings) => void;
+  createRepo: (repoName: string, repoType: string, settings: CreateRepositorySettings) => void;
 }
 
 interface CreateRepositoryState {
   repoName: string;
   location: string;
-  repoTypeOptions: EuiComboBoxOptionOption<string>[];
-  selectedRepoTypeOption: EuiComboBoxOptionOption<string>[];
-  settingsJsonString: string;
+  // repoTypeOptions: EuiComboBoxOptionOption<string>[];
+  // selectedRepoTypeOption: EuiComboBoxOptionOption<string>[];
+
+  selectedRepoTypeOption: string;
+  fsSettingsJsonString: string;
+  customSettingsJsonString: string;
 
   repoNameError: string;
   repoTypeError: string;
@@ -55,9 +67,10 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
     this.state = {
       repoName: "",
       location: "",
-      repoTypeOptions: [],
-      selectedRepoTypeOption: [],
-      settingsJsonString: JSON.stringify({}, null, 4),
+      // repoTypeOptions: [],
+      selectedRepoTypeOption: REPO_SELECT_OPTIONS[0].value as string,
+      fsSettingsJsonString: JSON.stringify(FS_ADVANCED_SETTINGS, null, 4),
+      customSettingsJsonString: JSON.stringify(CUSTOM_CONFIGURATION, null, 4),
       repoNameError: "",
       repoTypeError: "",
       locationError: "",
@@ -65,7 +78,6 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
   }
 
   async componentDidMount() {
-    this.setState({ repoTypeOptions: REPO_TYPES });
     const { editRepo } = this.props;
     if (!!editRepo) {
       await this.getRepo(editRepo);
@@ -84,7 +96,7 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
         const location = settings.location;
         delete settings.location;
         const settingsJsonString = JSON.stringify(settings);
-        this.setState({ repoName, location, settingsJsonString, selectedRepoTypeOption: [{ label: type }] });
+        this.setState({ repoName, location });
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
@@ -93,49 +105,39 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
     }
   };
 
-  onSelectionChange = (selectedOption: EuiComboBoxOptionOption<string>[]) => {
-    this.setState({ selectedRepoTypeOption: selectedOption });
-  };
-
-  onCreateOption = (searchValue: string, options: EuiComboBoxOptionOption<string>[]) => {
-    const normalizedSearchValue = searchValue.trim().toLowerCase();
-    if (!normalizedSearchValue) {
-      return;
-    }
-    const newOption = {
-      label: searchValue,
-    };
-    // Create the option if it doesn't exist.
-    if (options.findIndex((option) => option.label.trim().toLowerCase() === normalizedSearchValue) === -1) {
-      this.setState({ repoTypeOptions: [...this.state.repoTypeOptions, newOption] });
-    }
-
-    this.setState({ selectedRepoTypeOption: [newOption] });
-  };
-
   onClickAction = () => {
     const { createRepo } = this.props;
-    const { repoName, selectedRepoTypeOption, location, settingsJsonString } = this.state;
-    try {
-      const settings = JSON.parse(settingsJsonString);
-      settings.location = location;
-    } catch (err) {
-      this.context.notifications.toasts.addDanger("Invalid Policy JSON");
-    }
+    const { repoName, selectedRepoTypeOption, location, fsSettingsJsonString, customSettingsJsonString } = this.state;
+
     if (!repoName.trim()) {
       this.setState({ repoNameError: "Required." });
       return;
     }
-    if (selectedRepoTypeOption.length == 0) {
-      this.setState({ repoTypeError: "Required." });
-      return;
-    }
-    const repoType = selectedRepoTypeOption[0].value ?? selectedRepoTypeOption[0].label;
     if (!location.trim()) {
       this.setState({ location: "Required." });
       return;
     }
-    createRepo(repoName, repoType, { location: location });
+    if (selectedRepoTypeOption == "fs") {
+      let settings;
+      try {
+        settings = JSON.parse(fsSettingsJsonString);
+        settings.location = location;
+      } catch (err) {
+        this.context.notifications.toasts.addDanger("Invalid Policy JSON");
+      }
+      createRepo(repoName, selectedRepoTypeOption, settings);
+    } else if (selectedRepoTypeOption == "custom") {
+      let repoType;
+      let settings;
+      try {
+        const parsed = JSON.parse(customSettingsJsonString);
+        repoType = parsed.type;
+        settings = parsed.settings;
+        createRepo(repoName, repoType, settings);
+      } catch (err) {
+        this.context.notifications.toasts.addDanger("Invalid Policy JSON");
+      }
+    }
   };
 
   render() {
@@ -143,13 +145,90 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
     const {
       repoName,
       location,
-      repoTypeOptions,
       selectedRepoTypeOption,
-      settingsJsonString,
+      fsSettingsJsonString,
+      customSettingsJsonString,
       repoNameError,
       repoTypeError,
       locationError,
     } = this.state;
+
+    let configuration;
+    if (selectedRepoTypeOption == "fs") {
+      configuration = (
+        <>
+          <CustomLabel title="Location" />
+          <EuiFormRow isInvalid={!!locationError} error={locationError}>
+            <EuiFieldText
+              disabled={!!editRepo}
+              placeholder="e.g. /mnt/snapshots"
+              value={location}
+              onChange={(e) => this.setState({ location: e.target.value })}
+            />
+          </EuiFormRow>
+
+          <EuiSpacer size="l" />
+
+          <EuiAccordion id="repo_advanced_settings" buttonContent="Advanced settings">
+            <EuiSpacer size="s" />
+
+            <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
+              <p style={{ fontWeight: 200 }}>
+                Define additional settings for this repository.{" "}
+                <EuiLink href={FS_REPOSITORY_DOCUMENTATION_URL} target="_blank">
+                  Learn more
+                </EuiLink>
+              </p>
+            </EuiText>
+            <EuiCodeEditor
+              mode="json"
+              width="90%"
+              height="250px"
+              value={fsSettingsJsonString}
+              onChange={(str) => {
+                this.setState({ fsSettingsJsonString: str });
+              }}
+              setOptions={{ fontSize: "14px" }}
+            />
+          </EuiAccordion>
+        </>
+      );
+    }
+    if (selectedRepoTypeOption == "custom") {
+      configuration = (
+        <>
+          <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
+            <p style={{ fontWeight: 200 }}>
+              Define a repository by custom type and settings.{" "}
+              <EuiLink href={S3_REPOSITORY_DOCUMENTATION_URL} target="_blank">
+                View sample configurations
+              </EuiLink>
+            </p>
+          </EuiText>
+          <EuiCodeEditor
+            mode="json"
+            width="90%"
+            height="250px"
+            value={customSettingsJsonString}
+            onChange={(str) => {
+              this.setState({ customSettingsJsonString: str });
+            }}
+            setOptions={{ fontSize: "14px" }}
+          />
+        </>
+      );
+    }
+
+    const repoTypeHelpText = (
+      <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
+        <p style={{ fontWeight: 200 }}>
+          Select a supported repository type. For additional types, install the latest repository plugins and choose Custom configuration.{" "}
+          <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank">
+            Learn more
+          </EuiLink>
+        </p>
+      </EuiText>
+    );
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
@@ -167,46 +246,20 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
 
           <EuiSpacer size="m" />
 
-          <CustomLabel title="Repository type" />
+          <CustomLabel title="Repository type" helpText={repoTypeHelpText} />
           <EuiFormRow isInvalid={!!repoTypeError} error={repoTypeError}>
-            <EuiComboBox
-              isDisabled={!!editRepo}
-              options={repoTypeOptions}
-              selectedOptions={selectedRepoTypeOption}
-              onChange={this.onSelectionChange}
-              onCreateOption={this.onCreateOption}
-              singleSelection={true}
-              isClearable={true}
+            <EuiSelect
+              options={REPO_SELECT_OPTIONS}
+              value={selectedRepoTypeOption}
+              onChange={(e) => this.setState({ selectedRepoTypeOption: e.target.value })}
             />
           </EuiFormRow>
 
           <EuiSpacer size="m" />
 
-          <CustomLabel title="Location" />
-          <EuiFormRow isInvalid={!!locationError} error={locationError}>
-            <EuiFieldText
-              disabled={!!editRepo}
-              placeholder="e.g. /mnt/snapshots"
-              value={location}
-              onChange={(e) => this.setState({ location: e.target.value })}
-            />
-          </EuiFormRow>
+          {configuration}
 
-          <EuiSpacer size="l" />
-
-          <EuiAccordion id="repo_advanced_settings" buttonContent="Advanced settings">
-            <EuiSpacer size="m" />
-            <EuiCodeEditor
-              mode="json"
-              width="90%"
-              height="250px"
-              value={settingsJsonString}
-              onChange={(str) => {
-                this.setState({ settingsJsonString: str });
-              }}
-              setOptions={{ fontSize: "14px" }}
-            />
-          </EuiAccordion>
+          <EuiSpacer size="m" />
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>

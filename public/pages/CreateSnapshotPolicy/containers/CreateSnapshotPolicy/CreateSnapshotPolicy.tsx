@@ -518,10 +518,9 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             }}
           />
 
-          <EuiSpacer size="m" />
-
           {deleteConditionEnabled ? (
             <>
+              <EuiSpacer size="m" />
               <CustomLabel title="Maximum age of snapshots retained" />
               <EuiFlexGroup>
                 <EuiFlexItem grow={false}>
@@ -552,13 +551,13 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
                 <EuiFlexGroup alignItems="flexStart">
                   <EuiFlexItem grow={false}>
-                    <CustomLabel title="Min count" />
+                    <CustomLabel title="Minumum" />
                     <EuiFormRow isInvalid={!!minCountError} error={minCountError}>
                       <EuiFieldNumber min={1} value={_.get(policy, "deletion.condition.min_count", "")} onChange={this.onChangeMinCount} />
                     </EuiFormRow>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <CustomLabel title="Max count" isOptional={true} />
+                    <CustomLabel title="Maximum" isOptional={true} />
                     <EuiFormRow>
                       <EuiFieldNumber min={1} value={_.get(policy, "deletion.condition.max_count", "")} onChange={this.onChangeMaxCount} />
                     </EuiFormRow>
@@ -571,6 +570,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                 <span style={{ color: "grey", fontWeight: 200, fontSize: "12px" }}>
                   Delete snapshots that are outside the retention period
                 </span>
+                <EuiSpacer size="s" />
 
                 <EuiCheckbox
                   id="delete_schedule_checkbox"

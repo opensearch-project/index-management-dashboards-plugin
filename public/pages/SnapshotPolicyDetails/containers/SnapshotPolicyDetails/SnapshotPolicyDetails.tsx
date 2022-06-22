@@ -73,14 +73,14 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       },
       {
         field: "start_time",
-        name: "Start time",
+        name: "Time started",
         sortable: true,
         dataType: "date",
         render: renderTimestampMillis,
       },
       {
         field: "end_time",
-        name: "Completed time",
+        name: "Time completed",
         sortable: true,
         dataType: "date",
         render: renderTimestampMillis,
@@ -359,7 +359,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
         <EuiSpacer />
 
         <ContentPanel
-          title="Last activity"
+          title="Last creation/deletion"
           titleSize="m"
           actions={
             <EuiButton iconType="refresh" onClick={() => this.getPolicy(policyId)} data-test-subj="refreshButton">

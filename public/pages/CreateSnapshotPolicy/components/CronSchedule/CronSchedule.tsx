@@ -112,7 +112,7 @@ const CronSchedule = ({
     );
   }
 
-  const cronExpressionHelp = (
+  const cronExpressionHelpText = (
     <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
       <p style={{ fontWeight: 200, fontSize: "12px" }}>
         Use Cron expression to define complex schedule.{" "}
@@ -134,7 +134,7 @@ const CronSchedule = ({
         <EuiFlexItem style={{ maxWidth: 400 }}>
           {frequencyType === "custom" ? (
             <>
-              <CustomLabel title="Cron expression" helpText={cronExpressionHelp} />
+              <CustomLabel title="Cron expression" helpText={cronExpressionHelpText} />
               <EuiFieldText
                 value={cronExpression}
                 onChange={(e) => {
@@ -154,6 +154,7 @@ const CronSchedule = ({
                 timeFormat="HH:mm"
               />
               <EuiSpacer size="s" />
+
               {additionalContent}
             </>
           )}
@@ -161,7 +162,7 @@ const CronSchedule = ({
 
         {timezone ? (
           <EuiFlexItem style={{ maxWidth: 200 }}>
-            <CustomLabel title="Timezone" />
+            <CustomLabel title="Time zone" />
             <EuiSelect id="timezone" options={TIMEZONES} value={timezone} onChange={onChangeTimezone} />
           </EuiFlexItem>
         ) : null}

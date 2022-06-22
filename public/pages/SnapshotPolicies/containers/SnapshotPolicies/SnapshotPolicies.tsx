@@ -129,7 +129,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       },
       {
         field: "last_updated_time",
-        name: "Last updated time",
+        name: "Time last updated",
         sortable: true,
         dataType: "date",
         render: renderTimestampMillis,

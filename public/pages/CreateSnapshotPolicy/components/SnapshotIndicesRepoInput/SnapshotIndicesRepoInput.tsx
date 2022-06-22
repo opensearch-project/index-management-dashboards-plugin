@@ -64,7 +64,7 @@ const SnapshotIndicesRepoInput = ({
 
   return (
     <>
-      <CustomLabel title="Indices" />
+      <CustomLabel title="Select or input source indexes or index patterns" />
       <EuiComboBox
         placeholder="Select or input indexes or index patterns"
         options={indexOptions}
@@ -79,7 +79,7 @@ const SnapshotIndicesRepoInput = ({
 
       <EuiFlexGroup alignItems="flexEnd">
         <EuiFlexItem style={{ maxWidth: "400px" }}>
-          <CustomLabel title="Repository" />
+          <CustomLabel title="Select a repository for snapshots" />
           <EuiFormRow isInvalid={!!repoError} error={repoError}>
             <EuiSelect
               placeholder="Select a repository"

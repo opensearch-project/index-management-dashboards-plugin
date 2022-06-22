@@ -21,14 +21,6 @@ export default function (services: NodeServices, router: IRouter) {
 
   router.get(
     {
-      path: NODE_API._REPOSITORIES,
-      validate: {},
-    },
-    snapshotManagementService.catRepositories
-  );
-
-  router.get(
-    {
       path: `${NODE_API._SNAPSHOTS}/{id}`,
       validate: {
         params: schema.object({
@@ -166,6 +158,14 @@ export default function (services: NodeServices, router: IRouter) {
       },
     },
     snapshotManagementService.stopPolicy
+  );
+
+  router.get(
+    {
+      path: NODE_API._REPOSITORIES,
+      validate: {},
+    },
+    snapshotManagementService.catRepositoriesWithSnapshotCount
   );
 
   router.delete(

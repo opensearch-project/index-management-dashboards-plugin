@@ -52,9 +52,7 @@ const SnapshotAdvancedSettings = ({
 
     <EuiCheckbox
       id="partial"
-      label={
-        <CustomLabel title="Allow partial snapshots" helpText="Allow taking partial snapshots if one or more shards failed to store." />
-      }
+      label={<CustomLabel title="Allow partial snapshots" helpText="Allow partial snapshots if one or more shards failed to store." />}
       checked={partial}
       onChange={onPartialToggle}
     />

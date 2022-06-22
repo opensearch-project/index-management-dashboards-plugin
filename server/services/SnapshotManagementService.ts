@@ -486,11 +486,43 @@ export default class SnapshotManagementService {
         },
       });
     } catch (err) {
-      return this.errorResponse(response, err, "getRepositories");
+      return this.errorResponse(response, err, "catRepositories");
     }
   };
 
-  // delete repository
+  catRepositoriesWithSnapshotCount = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatRepository[]>>> => {
+    try {
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const res: CatRepository[] = await callWithRequest("cat.repositories", {
+        format: "json",
+      });
+
+      for (let i = 0; i < res.length; i++) {
+        const getSnapshotRes: GetSnapshotResponse = await callWithRequest("snapshot.get", {
+          repository: res[i].id,
+          snapshot: "_all",
+          ignore_unavailable: true,
+        });
+        res[i].snapshotCount = getSnapshotRes.snapshots.length;
+      }
+
+      console.log(`sm dev cat repositories with snapshot count response: ${JSON.stringify(res)}`);
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: res,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "catRepositoriesWithSnapshotCount");
+    }
+  };
+
   deleteRepository = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -515,7 +547,6 @@ export default class SnapshotManagementService {
     }
   };
 
-  // get repository for edit
   getRepository = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -540,7 +571,6 @@ export default class SnapshotManagementService {
     }
   };
 
-  // create repository
   createRepository = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
