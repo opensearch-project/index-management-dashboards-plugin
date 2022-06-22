@@ -37,5 +37,7 @@ export const maxAgeUnitOptions = [
 export const DEFAULT_INDEX_OPTIONS = [{ label: "*" }, { label: "-.opendistro_security" }];
 
 export const ERROR_PROMPT = {
+  NAME: "Name must be provided.",
   REPO: "Repository must be provided.",
+  TIMEZONE: "Time zone must be provided.",
 };

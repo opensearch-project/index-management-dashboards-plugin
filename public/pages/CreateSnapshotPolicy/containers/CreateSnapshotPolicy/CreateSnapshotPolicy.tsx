@@ -42,6 +42,8 @@ import SnapshotAdvancedSettings from "../../components/SnapshotAdvancedSettings/
 import CustomLabel from "../../../../components/CustomLabel";
 import ChannelNotification from "../../../VisualCreatePolicy/components/ChannelNotification";
 import { DEFAULT_INDEX_OPTIONS, ERROR_PROMPT, getDefaultSMPolicy, maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS } from "../../constants";
+import { getIncludeGlobalState, getIgnoreUnavailabel, getAllowPartial } from "../helper";
+import { parseCronExpression } from "../../components/CronSchedule/helper";
 
 interface CreateSMPolicyProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -83,6 +85,7 @@ interface CreateSMPolicyState {
   policyIdError: string;
   minCountError: string;
   repoError: string;
+  timezoneError: string;
 }
 
 export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps, CreateSMPolicyState> {
@@ -123,6 +126,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       policyIdError: "",
       repoError: "",
       minCountError: "",
+      timezoneError: "",
     };
   }
 
@@ -169,6 +173,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
           .map((label: string) => ({ label }));
         const selectedRepoValue = _.get(policy, "snapshot_config.repository", "");
 
+        // TODO SM parse frequency type
+        const { frequencyType: creationScheduleFrequencyType } = parseCronExpression(_.get(policy, "creation.schedule.cron.expression"));
+        const { frequencyType: deletionScheduleFrequencyType } = parseCronExpression(_.get(policy, "deletion.schedule.cron.expression"));
+
         this.setState({
           policy,
           policyId: response.response.id,
@@ -176,6 +184,8 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
           policyPrimaryTerm: response.response.primaryTerm,
           selectedIndexOptions,
           selectedRepoValue,
+          creationScheduleFrequencyType,
+          deletionScheduleFrequencyType,
         });
       } else {
         const errorMessage = response.ok ? "Policy was empty" : response.error;
@@ -302,11 +312,14 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
     try {
       if (!policyId.trim()) {
-        this.setState({ policyIdError: "Required" });
+        this.setState({ policyIdError: ERROR_PROMPT.NAME });
       } else if (!_.get(policy, "snapshot_config.repository")) {
         this.setState({ repoError: ERROR_PROMPT.REPO });
+      } else if (!_.get(policy, "creation.schedule.cron.timezone")) {
+        this.setState({ timezoneError: ERROR_PROMPT.TIMEZONE });
       } else {
         const policyFromState = this.buildPolicyFromState(policy);
+        console.log(`sm dev policy from state ${JSON.stringify(policyFromState)}`);
         if (isEdit) await this.updatePolicy(policyId, policyFromState);
         else await this.createPolicy(policyId, policyFromState);
       }
@@ -328,7 +341,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     }
 
     if (deletionScheduleEnabled) {
-      _.set(policy, "deletion.schedule.cron.timezone", _.get(policy, "creation.schedule.cron.timezone", "America/Los_Angeles"));
+      _.set(policy, "deletion.schedule.cron.timezone", _.get(policy, "creation.schedule.cron.timezone"));
     } else {
       delete policy.deletion?.schedule;
     }
@@ -397,10 +410,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   render() {
-    // console.log(`sm dev render state creation cron ${JSON.stringify(this.state.policy.creation.schedule.cron)}`);
+    console.log(`sm dev render state creation cron ${JSON.stringify(this.state.policy.creation.schedule.cron)}`);
     // console.log(`sm dev render state deletion cron ${JSON.stringify(this.state.policy.deletion?.schedule?.cron)}`);
     // console.log(`sm dev render state repository ${JSON.stringify(this.state.policy.snapshot_config.repository)}`);
-    console.log(`sm dev render state indices ${JSON.stringify(this.state.policy.snapshot_config)}`);
+    // console.log(`sm dev render state indices ${JSON.stringify(this.state.policy.snapshot_config)}`);
 
     const { isEdit } = this.props;
     const {
@@ -424,6 +437,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       policyIdError,
       repoError,
       minCountError,
+      timezoneError,
     } = this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
@@ -512,10 +526,12 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             onChangeFrequencyType={(e) => {
               this.setState({ creationScheduleFrequencyType: e.target.value });
             }}
-            timezone={_.get(policy, "creation.schedule.cron.timezone", "America/Los_Angeles")}
-            onChangeTimezone={(e) => {
-              this.setState({ policy: this.setPolicyHelper("creation.schedule.cron.timezone", e.target.value) });
+            showTimezone={true}
+            timezone={_.get(policy, "creation.schedule.cron.timezone")}
+            onChangeTimezone={(timezone: string) => {
+              this.setState({ policy: this.setPolicyHelper("creation.schedule.cron.timezone", timezone) });
             }}
+            timezoneError={timezoneError}
             cronExpression={_.get(policy, "creation.schedule.cron.expression", "")}
             onCronExpressionChange={(expression: string) => {
               this.setState({ policy: this.setPolicyHelper("creation.schedule.cron.expression", expression) });
@@ -655,11 +671,11 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             <>
               <EuiHorizontalRule margin="xs" />
               <SnapshotAdvancedSettings
-                includeGlobalState={String(_.get(policy, "snapshot_config.include_global_state", false)) == "true"}
+                includeGlobalState={getIncludeGlobalState(policy)}
                 onIncludeGlobalStateToggle={this.onIncludeGlobalStateToggle}
-                ignoreUnavailable={String(_.get(policy, "snapshot_config.ignore_unavailable", false)) == "true"}
+                ignoreUnavailable={getIgnoreUnavailabel(policy)}
                 onIgnoreUnavailableToggle={this.onIgnoreUnavailableToggle}
-                partial={String(_.get(policy, "snapshot_config.partial", false)) == "true"}
+                partial={getAllowPartial(policy)}
                 onPartialToggle={this.onPartialToggle}
                 width="200%"
               />

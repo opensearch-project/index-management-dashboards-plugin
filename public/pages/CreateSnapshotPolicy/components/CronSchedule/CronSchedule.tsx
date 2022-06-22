@@ -7,11 +7,13 @@ import _ from "lodash";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   EuiCheckbox,
+  EuiComboBox,
   EuiDatePicker,
   EuiFieldNumber,
   EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
+  EuiFormRow,
   EuiLink,
   EuiSelect,
   EuiSpacer,
@@ -28,8 +30,10 @@ interface CronScheduleProps {
   onChangeFrequencyType: (e: ChangeEvent<HTMLSelectElement>) => void;
   cronExpression: string;
   onCronExpressionChange: (expression: string) => void;
+  showTimezone?: boolean;
   timezone?: string;
-  onChangeTimezone?: (e: ChangeEvent<HTMLSelectElement>) => void;
+  onChangeTimezone?: (timezone: string) => void;
+  timezoneError?: string;
 }
 
 const CronSchedule = ({
@@ -37,15 +41,19 @@ const CronSchedule = ({
   onChangeFrequencyType,
   cronExpression,
   onCronExpressionChange,
+  showTimezone,
   timezone,
   onChangeTimezone,
+  timezoneError,
 }: CronScheduleProps) => {
   const { minute: initMin, hour: initHour, dayOfWeek: initWeek, dayOfMonth: initMonth } = parseCronExpression(cronExpression);
+  console.log(`sm dev init week ${initWeek}`);
 
   const [minute, setMinute] = useState(initMin);
   const [hour, setHour] = useState(initHour);
   const [dayOfWeek, setWeek] = useState(initWeek);
   const [dayOfMonth, setMonth] = useState(initMonth);
+  console.log(`sm dev dayOfWeek ${initWeek}`);
 
   useEffect(() => {
     changeCron();
@@ -91,7 +99,8 @@ const CronSchedule = ({
 
   let additionalContent;
   if (frequencyType === "weekly") {
-    additionalContent = <EuiFlexGroup>{WEEK_DAYS.map((d) => dayOfWeekCheckbox(d, dayOfWeek))}</EuiFlexGroup>;
+    // TODO SM if use dayOfWeek not initWeek, somehow it would be SUN
+    additionalContent = <EuiFlexGroup>{WEEK_DAYS.map((d) => dayOfWeekCheckbox(d, initWeek))}</EuiFlexGroup>;
   }
   if (frequencyType === "monthly") {
     additionalContent = (
@@ -163,10 +172,23 @@ const CronSchedule = ({
           )}
         </EuiFlexItem>
 
-        {timezone ? (
-          <EuiFlexItem style={{ maxWidth: 200 }}>
+        {showTimezone ? (
+          <EuiFlexItem style={{ maxWidth: 250 }}>
             <CustomLabel title="Time zone" />
-            <EuiSelect id="timezone" options={TIMEZONES} value={timezone} onChange={onChangeTimezone} />
+            <EuiFormRow isInvalid={!!timezoneError} error={timezoneError}>
+              <EuiComboBox
+                placeholder="Select a time zone"
+                singleSelection={{ asPlainText: true }}
+                options={TIMEZONES}
+                renderOption={({ label: tz }) => `${tz} (${moment.tz(tz).format("Z")})`}
+                selectedOptions={[{ label: timezone ?? "" }]}
+                onChange={(options) => {
+                  if (onChangeTimezone) {
+                    onChangeTimezone(_.first(options)?.label ?? "");
+                  }
+                }}
+              />
+            </EuiFormRow>
           </EuiFlexItem>
         ) : null}
       </EuiFlexGroup>

@@ -8,6 +8,7 @@ import { RouteComponentProps } from "react-router-dom";
 import React, { Component } from "react";
 import queryString from "query-string";
 import {
+  EuiAccordion,
   EuiBasicTable,
   EuiButton,
   EuiFlexGrid,
@@ -32,6 +33,7 @@ import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
 import { humanCronExpression, parseCronExpression } from "../../../CreateSnapshotPolicy/components/CronSchedule/helper";
 import { ModalConsumer } from "../../../../components/Modal";
 import InfoModal from "../../components/InfoModal";
+import { getAllowPartial, getIgnoreUnavailabel, getIncludeGlobalState } from "../../../CreateSnapshotPolicy/containers/helper";
 
 interface SnapshotPolicyDetailsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -93,7 +95,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
           const message = _.get(info, "message", null);
           const cause = _.get(info, "cause", null);
           let showSymbol = "-";
-          console.log(`sm dev cause ${cause} message ${message}`);
           if (!!message) showSymbol = "message";
           if (!!cause) showSymbol = "cause";
           return (
@@ -197,7 +198,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       );
     }
 
-    console.log(`sm dev enabled field ${policy.enabled}`);
     const policySettingItems = [
       { term: "Policy name", value: policyId },
       { term: "Status", value: this.renderEnabledField(policy.enabled) },
@@ -207,7 +207,14 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       { term: "Description", value: policy.description },
     ];
 
+    const advancedSettingItems = [
+      { term: "Include cluster state", value: `${getIncludeGlobalState(policy)}` },
+      { term: "Ignore unavailable indices", value: `${getIgnoreUnavailabel(policy)}` },
+      { term: "Allow partial snapshots", value: `${getAllowPartial(policy)}` },
+    ];
+
     const createCronExpression = policy.creation.schedule.cron.expression;
+    console.log(`sm dev create cron expression ${createCronExpression}`);
     const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(createCronExpression);
     const humanCron = humanCronExpression(
       { minute, hour, dayOfWeek, dayOfMonth, frequencyType },
@@ -252,7 +259,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
 
     let creationLatestActivity: LatestActivities = { activityType: "Creation" };
     creationLatestActivity = { ...creationLatestActivity, ...metadata?.creation?.latest_execution };
-    console.log(`sm dev creation latest activity ${JSON.stringify(creationLatestActivity)}`);
     let latestActivities: LatestActivities[] = [creationLatestActivity];
     if (policy.deletion != null) {
       let deletionLatestActivity: LatestActivities = { activityType: "Deletion" };
@@ -296,6 +302,20 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
               </EuiFlexItem>
             ))}
           </EuiFlexGrid>
+
+          <EuiAccordion id="advanced_settings_items" buttonContent="Advanced settings">
+            <EuiSpacer size="s" />
+            <EuiFlexGrid columns={3}>
+              {advancedSettingItems.map((item) => (
+                <EuiFlexItem key={`${item.term}`}>
+                  <EuiText size="xs">
+                    <dt>{item.term}</dt>
+                    <dd>{item.value}</dd>
+                  </EuiText>
+                </EuiFlexItem>
+              ))}
+            </EuiFlexGrid>
+          </EuiAccordion>
         </ContentPanel>
 
         <EuiSpacer />

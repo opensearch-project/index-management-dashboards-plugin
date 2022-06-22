@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { isNumber } from "lodash";
 import moment from "moment-timezone";
 import { WEEK_DAYS } from "./constants";
 
@@ -21,56 +20,56 @@ export const DEFAULT_CRON_MINUTE = 0;
 export const DEFAULT_CRON_HOUR = 20;
 
 export function parseCronExpression(expression: string): CronUIParts {
-  const expArr = expression.split(" ");
-  let minute = formatNumberToHourMin(DEFAULT_CRON_MINUTE);
-  let hour = formatNumberToHourMin(DEFAULT_CRON_HOUR);
+  let minute = DEFAULT_CRON_MINUTE;
+  let hour = DEFAULT_CRON_HOUR;
   let frequencyType = "custom";
   let dayOfWeek = DEFAULT_CRON_DAY_OF_WEEK;
   let dayOfMonth = DEFAULT_CRON_DAY_OF_MONTH;
 
+  if (!expression) {
+    return {
+      hour,
+      minute,
+      dayOfWeek,
+      dayOfMonth,
+      frequencyType,
+    };
+  }
+  const expArr = expression.split(" ");
+
   if (isNumber(expArr[0]) && isNumber(expArr[1])) {
-    minute = ("0" + expArr[0]).slice(-2);
-    hour = ("0" + expArr[1]).slice(-2);
+    minute = parseInt(expArr[0]);
+    hour = parseInt(expArr[1]);
     if (isNumber(expArr[2]) && expArr[3] == "*" && expArr[4] == "*") {
       frequencyType = "monthly";
       dayOfMonth = parseInt(expArr[2]);
     }
     if (expArr[2] == "*" && expArr[3] == "*" && (isNumber(expArr[4]) || WEEK_DAYS.includes(expArr[4]))) {
       frequencyType = "weekly";
-      dayOfWeek = expArr[4];
+      if (isNumber(expArr[4])) {
+        dayOfWeek = ["SUN", ...WEEK_DAYS][parseInt(expArr[4])];
+      } else {
+        dayOfWeek = expArr[4];
+      }
     }
     if (expArr[2] == "*" && expArr[3] == "*" && expArr[4] == "*") {
       frequencyType = "daily";
     }
   }
   if (isNumber(expArr[0])) {
-    minute = ("0" + expArr[0]).slice(-2);
+    minute = parseInt(expArr[0]);
     if (expArr[1] == "*" && expArr[2] == "*" && expArr[3] == "*" && expArr[4] == "*") {
       frequencyType = "hourly";
     }
   }
 
-  const minuteNumber = parseInt(minute);
-  const hourNumber = parseInt(hour);
-
   return {
-    hour: hourNumber,
-    minute: minuteNumber,
+    hour,
+    minute,
     dayOfWeek,
     dayOfMonth,
     frequencyType,
   };
-}
-
-export function formatNumberToHourMin(timeNumber: number) {
-  return ("0" + timeNumber).slice(-2);
-}
-
-export function startTime(hourNumber: number, minuteNumber: number): moment.Moment {
-  const minute = formatNumberToHourMin(minuteNumber);
-  const hour = formatNumberToHourMin(hourNumber);
-  const timeStr = `2022-01-01 ${hour}:${minute}`;
-  return moment(timeStr);
 }
 
 export function buildCronExpression(cronParts: CronUIParts, expression: string): string {
@@ -105,12 +104,29 @@ export function humanCronExpression(
   if (frequencyType == "custom") {
     return expression + ` (${timezone})`;
   }
-  let humanCron = `${hour}:${minute} (${timezone})`;
+  let humanCron = `${startTime(hour, minute).format("h:mm a z")} (${timezone})`;
   if (frequencyType == "monthly") {
-    humanCron = `Day ${dayOfMonth} ` + startTime;
+    humanCron = `Day ${dayOfMonth}, ` + humanCron;
   }
   if (frequencyType == "weekly") {
-    humanCron = `${dayOfWeek} ` + startTime;
+    humanCron = `${dayOfWeek}, ` + humanCron;
   }
   return humanCron;
+}
+
+function isNumber(value: any): boolean {
+  return !isNaN(parseInt(value));
+}
+
+export function formatNumberToHourMin(timeNumber: number) {
+  return ("0" + timeNumber).slice(-2);
+}
+
+export function startTime(hourNumber: number, minuteNumber: number): moment.Moment {
+  const minute = formatNumberToHourMin(minuteNumber);
+  const hour = formatNumberToHourMin(hourNumber);
+  const timeStr = `2022-01-01 ${hour}:${minute}`;
+  const timeMoment = moment().hours(hourNumber).minutes(minuteNumber);
+  console.log(`sm dev time moment ${timeMoment}`);
+  return timeMoment;
 }
