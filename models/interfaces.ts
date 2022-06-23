@@ -6,7 +6,6 @@
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
 import { long } from "@opensearch-project/opensearch/api/types";
-import { CreateIndexMapOptions } from "src/core/server/saved_objects/migrations/core/build_index_map";
 import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
 
 export interface ManagedIndexMetaData {

@@ -221,10 +221,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       isDeleteModalVisible,
     } = this.state;
 
-    console.log(`sm dev existingPolicyNames ${existingPolicyNames}`);
-
-    console.log(`sm dev selectedItems ${JSON.stringify(selectedItems)}`);
-
     const repos = [...new Set(snapshots.map((snapshot) => snapshot.repository))];
     const status = [...new Set(snapshots.map((snapshot) => snapshot.status))];
     const search = {

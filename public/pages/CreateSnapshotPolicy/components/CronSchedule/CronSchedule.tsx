@@ -47,13 +47,11 @@ const CronSchedule = ({
   timezoneError,
 }: CronScheduleProps) => {
   const { minute: initMin, hour: initHour, dayOfWeek: initWeek, dayOfMonth: initMonth } = parseCronExpression(cronExpression);
-  // console.log(`sm dev init week ${initWeek}`);
 
   const [minute, setMinute] = useState(initMin);
   const [hour, setHour] = useState(initHour);
   const [dayOfWeek, setWeek] = useState(initWeek);
   const [dayOfMonth, setMonth] = useState(initMonth);
-  // console.log(`sm dev dayOfWeek ${initWeek}`);
 
   useEffect(() => {
     changeCron();
@@ -63,7 +61,7 @@ const CronSchedule = ({
     let cronParts = { hour, minute, dayOfWeek, dayOfMonth, frequencyType };
     cronParts = { ...cronParts, ...input };
     const expression = buildCronExpression(cronParts, cronExpression);
-    console.log(`sm dev built expression ${expression}`);
+    // console.log(`sm dev built expression ${expression}`);
     onCronExpressionChange(expression);
   };
 
@@ -110,7 +108,7 @@ const CronSchedule = ({
     />
   );
   if (frequencyType === "hourly") {
-    startTimeContent = <EuiText size="s">Start at the beginning of the hour.</EuiText>;
+    startTimeContent = <EuiText size="s">Starts at the beginning of the hour.</EuiText>;
   }
 
   let additionalContent;

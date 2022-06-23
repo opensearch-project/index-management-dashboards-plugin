@@ -141,7 +141,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   }
 
   async componentDidMount() {
-    console.log(`sm dev component did mount`);
     if (this.props.isEdit) {
       const { id } = queryString.parse(this.props.location.search);
       if (typeof id === "string" && !!id) {
@@ -329,7 +328,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
         this.setState({ timezoneError: ERROR_PROMPT.TIMEZONE });
       } else {
         const policyFromState = this.buildPolicyFromState(policy);
-        console.log(`sm dev policy from state ${JSON.stringify(policyFromState)}`);
+        // console.log(`sm dev policy from state ${JSON.stringify(policyFromState)}`);
         if (isEdit) await this.updatePolicy(policyId, policyFromState);
         else await this.createPolicy(policyId, policyFromState);
       }
@@ -356,13 +355,11 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       delete policy.deletion?.schedule;
     }
 
-    console.log(`sm dev: build policy from state ${JSON.stringify(policy)}`);
     return policy;
   };
 
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
     const selectedIndexOptions = selectedOptions.map((o) => o.label);
-    console.log(`sm dev indices selection change ${selectedIndexOptions.toString()}`);
     this.setState({
       policy: this.setPolicyHelper("snapshot_config.indices", selectedIndexOptions.toString()),
       selectedIndexOptions: selectedOptions,
@@ -420,10 +417,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   render() {
-    console.log(`sm dev render state snapshotconfig ${JSON.stringify(this.state.policy.snapshot_config)}`);
-    // console.log(`sm dev render state deletion cron ${JSON.stringify(this.state.policy.deletion?.schedule?.cron)}`);
-    // console.log(`sm dev render state repository ${JSON.stringify(this.state.policy.snapshot_config.repository)}`);
-    // console.log(`sm dev render state indices ${JSON.stringify(this.state.policy.snapshot_config)}`);
+    // console.log(`sm dev render state snapshotconfig ${JSON.stringify(this.state.policy.snapshot_config)}`);
 
     const { isEdit } = this.props;
     const {
@@ -831,9 +825,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   onChangeCreationTimezone = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log(`sm dev policy cron timezone: ${_.get(this.state.policy, "creation.schedule.cron.timezone")}`);
     this.setState({ policy: this.setPolicyHelper("creation.schedule.cron.timezone", e.target.value) });
-    console.log(`sm dev policy cron timezone 2: ${_.get(this.state.policy, "creation.schedule.cron.timezone")}`);
   };
 
   onChangeDeletionTimezone = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -849,7 +841,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   onIncludeGlobalStateToggle = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(`sm dev include global ${e.target.checked}`);
     this.setState({ policy: this.setPolicyHelper("snapshot_config.include_global_state", e.target.checked) });
   };
 

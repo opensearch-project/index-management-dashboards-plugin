@@ -87,7 +87,7 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
       this.setState({ repoError });
       return;
     }
-    console.log(`sm dev snapshot body ${JSON.stringify(snapshot)}`);
+    // console.log(`sm dev snapshot body ${JSON.stringify(snapshot)}`);
     createSnapshot(snapshotId, selectedRepoValue, snapshot);
   };
 

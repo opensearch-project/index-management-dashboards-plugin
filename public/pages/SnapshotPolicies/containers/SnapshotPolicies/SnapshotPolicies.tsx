@@ -205,7 +205,6 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   onTableChange = (criteria: Criteria<SMPolicy>): void => {
     const { from: prevFrom, size: prevSize, sortField, sortOrder } = this.state;
     const { page: { index, size } = {}, sort: { field, direction } = {} } = criteria;
-    console.log(`sm dev criteria ${JSON.stringify(criteria)}`);
 
     // index could be 0, so need to explicitly check if it's undefined
     const from = index !== undefined ? (size ? index * size : prevFrom) : prevFrom;
@@ -225,8 +224,6 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     if (error) {
       return;
     }
-
-    console.log(`sm dev policies page search change ${queryText}`);
 
     this.setState({ from: 0, queryString: queryText, query });
   };

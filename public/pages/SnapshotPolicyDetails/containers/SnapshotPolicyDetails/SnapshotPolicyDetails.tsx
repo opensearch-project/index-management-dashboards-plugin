@@ -22,7 +22,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { SnapshotManagementService } from "../../../../services";
-import { SMMetadata, SMNotificationCondition, SMPolicy } from "../../../../../models/interfaces";
+import { SMMetadata, SMPolicy } from "../../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
@@ -122,7 +122,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
     try {
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.getPolicy(policyId);
-      console.log(`sm dev get policy ${JSON.stringify(response)}`);
 
       if (response.ok && !response.response) {
         let errorMessage = "policy doesn't exist";
@@ -199,7 +198,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       );
     }
 
-    console.log(`sm dev policy ${JSON.stringify(policy)}`);
+    // console.log(`sm dev policy ${JSON.stringify(policy)}`);
 
     const policySettingItems = [
       { term: "Policy name", value: truncateSpan(policyId, 30) },
@@ -219,7 +218,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
     ];
 
     const createCronExpression = policy.creation.schedule.cron.expression;
-    console.log(`sm dev create cron expression ${createCronExpression}`);
     const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(createCronExpression);
     const humanCron = humanCronExpression(
       { minute, hour, dayOfWeek, dayOfMonth, frequencyType },

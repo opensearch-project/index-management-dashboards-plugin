@@ -164,7 +164,6 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
     const {
       selectedItems: [{ id }],
     } = this.state;
-    console.log(`sm dev edit repo ${id}`);
     this.setState({ showFlyout: true, editRepo: id });
   };
 
