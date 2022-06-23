@@ -14,9 +14,9 @@ interface ChannelNotificationProps {
   channelId: string;
   channels: FeatureChannelList[];
   loadingChannels: boolean;
-  message: string;
+  message?: string;
   onChangeChannelId: (value: ChangeEvent<HTMLSelectElement>) => void;
-  onChangeMessage: (value: ChangeEvent<HTMLTextAreaElement>) => void;
+  onChangeMessage?: (value: ChangeEvent<HTMLTextAreaElement>) => void;
   getChannels: () => void;
   actionNotification?: boolean; // to tell if this is rendering in actions or in error notification as they both show up on page together
 }
