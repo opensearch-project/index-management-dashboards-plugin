@@ -44,7 +44,14 @@ import SnapshotAdvancedSettings from "../../components/SnapshotAdvancedSettings/
 import CustomLabel from "../../../../components/CustomLabel";
 import ChannelNotification from "../../../VisualCreatePolicy/components/ChannelNotification";
 import { DEFAULT_INDEX_OPTIONS, ERROR_PROMPT, getDefaultSMPolicy, maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS } from "../../constants";
-import { getIncludeGlobalState, getIgnoreUnavailabel, getAllowPartial } from "../helper";
+import {
+  getIncludeGlobalState,
+  getIgnoreUnavailabel,
+  getAllowPartial,
+  getNotifyCreation,
+  getNotifyDeletion,
+  getNotifyFailure,
+} from "../helper";
 import { parseCronExpression } from "../../components/CronSchedule/helper";
 import { TIMEZONES } from "../../components/CronSchedule/constants";
 
@@ -467,6 +474,15 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       </EuiText>
     );
 
+    const notifyOnCreation = getNotifyCreation(policy);
+    const notifyOnDeletion = getNotifyDeletion(policy);
+    const notifyOnFailure = getNotifyFailure(policy);
+
+    let showNotificationChannel = false;
+    if (notifyOnCreation || notifyOnDeletion || notifyOnFailure) {
+      showNotificationChannel = true;
+    }
+
     return (
       <div style={{ padding: "5px 50px" }}>
         <EuiTitle size="l">
@@ -637,13 +653,50 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
         <EuiSpacer />
 
         <ContentPanel title="Notifications" titleSize="m">
-          <ChannelNotification
-            channelId=""
-            channels={channels}
-            loadingChannels={loadingChannels}
-            onChangeChannelId={this.onChangeChannelId}
-            getChannels={this.getChannels}
-          />
+          <div style={{ padding: "10px 10px" }}>
+            <EuiText>Notify on snapshot activities</EuiText>
+
+            <EuiSpacer size="s" />
+            <EuiCheckbox
+              id="creation"
+              label="When a snapshot gets created."
+              checked={notifyOnCreation}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                this.setState({ policy: this.setPolicyHelper("notification.conditions.creation", e.target.checked) });
+              }}
+            />
+
+            <EuiSpacer size="s" />
+
+            <EuiCheckbox
+              id="deletion"
+              label="when snapshots get deleted."
+              checked={notifyOnDeletion}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                this.setState({ policy: this.setPolicyHelper("notification.conditions.deletion", e.target.checked) });
+              }}
+            />
+
+            <EuiSpacer size="s" />
+
+            <EuiCheckbox
+              id="partial"
+              label="When a snapshot operation failed."
+              checked={notifyOnFailure}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                this.setState({ policy: this.setPolicyHelper("notification.conditions.failure", e.target.checked) });
+              }}
+            />
+          </div>
+          {showNotificationChannel ? (
+            <ChannelNotification
+              channelId=""
+              channels={channels}
+              loadingChannels={loadingChannels}
+              onChangeChannelId={this.onChangeChannelId}
+              getChannels={this.getChannels}
+            />
+          ) : null}
         </ContentPanel>
 
         <EuiSpacer />

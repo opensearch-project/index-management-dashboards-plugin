@@ -29,29 +29,9 @@ export default function ismPlugin(Client: any, config: any, components: any) {
     method: "GET",
   });
 
-  ism.getSMPolicy = ca({
-    url: {
-      fmt: `${API.SM_POLICY_BASE}/<%=id%>`,
-      req: {
-        id: {
-          type: "string",
-          required: true,
-        },
-      },
-    },
-    method: "GET",
-  });
-
   ism.getPolicies = ca({
     url: {
       fmt: `${API.POLICY_BASE}`,
-    },
-    method: "GET",
-  });
-
-  ism.getSMPolicies = ca({
-    url: {
-      fmt: `${API.SM_POLICY_BASE}`,
     },
     method: "GET",
   });
@@ -70,58 +50,9 @@ export default function ismPlugin(Client: any, config: any, components: any) {
     method: "PUT",
   });
 
-  ism.createSMPolicy = ca({
-    url: {
-      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
-      req: {
-        policyId: {
-          type: "string",
-          required: true,
-        },
-      },
-    },
-    needBody: true,
-    method: "POST",
-  });
-
-  ism.updateSMPolicy = ca({
-    url: {
-      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?if_seq_no=<%=ifSeqNo%>&if_primary_term=<%=ifPrimaryTerm%>&refresh=wait_for`,
-      req: {
-        policyId: {
-          type: "string",
-          required: true,
-        },
-        ifSeqNo: {
-          type: "string",
-          required: true,
-        },
-        ifPrimaryTerm: {
-          type: "string",
-          required: true,
-        },
-      },
-    },
-    needBody: true,
-    method: "PUT",
-  });
-
   ism.deletePolicy = ca({
     url: {
       fmt: `${API.POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
-      req: {
-        policyId: {
-          type: "string",
-          required: true,
-        },
-      },
-    },
-    method: "DELETE",
-  });
-
-  ism.deleteSMPolicy = ca({
-    url: {
-      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
       req: {
         policyId: {
           type: "string",
@@ -364,50 +295,11 @@ export default function ismPlugin(Client: any, config: any, components: any) {
     method: "GET",
   });
 
-  ism.explainSnapshotPolicy = ca({
-    url: {
-      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_explain`,
-      req: {
-        id: {
-          type: "string",
-          required: true,
-        },
-      },
-    },
-    method: "GET",
-  });
-
   ism.startTransform = ca({
     url: {
       fmt: `${API.TRANSFORM_BASE}/<%=transformId%>/_start`,
       req: {
         transformId: {
-          type: "string",
-          required: true,
-        },
-      },
-    },
-    method: "POST",
-  });
-
-  ism.startSnapshotPolicy = ca({
-    url: {
-      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_start`,
-      req: {
-        id: {
-          type: "string",
-          required: true,
-        },
-      },
-    },
-    method: "POST",
-  });
-
-  ism.stopSnapshotPolicy = ca({
-    url: {
-      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_stop`,
-      req: {
-        id: {
           type: "string",
           required: true,
         },
@@ -482,5 +374,113 @@ export default function ismPlugin(Client: any, config: any, components: any) {
       fmt: `${API.CHANNELS_BASE}`,
     },
     method: "GET",
+  });
+
+  ism.getSMPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=id%>`,
+      req: {
+        id: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "GET",
+  });
+
+  ism.getSMPolicies = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}`,
+    },
+    method: "GET",
+  });
+
+  ism.createSMPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
+      req: {
+        policyId: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    needBody: true,
+    method: "POST",
+  });
+
+  ism.updateSMPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?if_seq_no=<%=ifSeqNo%>&if_primary_term=<%=ifPrimaryTerm%>&refresh=wait_for`,
+      req: {
+        policyId: {
+          type: "string",
+          required: true,
+        },
+        ifSeqNo: {
+          type: "string",
+          required: true,
+        },
+        ifPrimaryTerm: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    needBody: true,
+    method: "PUT",
+  });
+
+  ism.deleteSMPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=policyId%>?refresh=wait_for`,
+      req: {
+        policyId: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "DELETE",
+  });
+
+  ism.explainSnapshotPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_explain`,
+      req: {
+        id: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "GET",
+  });
+
+  ism.startSnapshotPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_start`,
+      req: {
+        id: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "POST",
+  });
+
+  ism.stopSnapshotPolicy = ca({
+    url: {
+      fmt: `${API.SM_POLICY_BASE}/<%=id%>/_stop`,
+      req: {
+        id: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "POST",
   });
 }

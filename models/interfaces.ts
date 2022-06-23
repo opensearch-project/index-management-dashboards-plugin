@@ -173,10 +173,18 @@ export interface ErrorNotification {
 
 export interface Notification {
   channel: Channel;
+  conditions?: SMNotificationCondition;
 }
 
 export interface Channel {
   id: string;
+}
+
+export interface SMNotificationCondition {
+  creation?: boolean;
+  deletion?: boolean;
+  failure?: boolean;
+  time_limit_exceeded?: boolean;
 }
 
 export interface Destination {

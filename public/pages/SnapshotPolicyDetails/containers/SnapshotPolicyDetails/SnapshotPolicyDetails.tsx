@@ -22,7 +22,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { SnapshotManagementService } from "../../../../services";
-import { SMMetadata, SMPolicy } from "../../../../../models/interfaces";
+import { SMMetadata, SMNotificationCondition, SMPolicy } from "../../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
@@ -34,6 +34,7 @@ import { humanCronExpression, parseCronExpression } from "../../../CreateSnapsho
 import { ModalConsumer } from "../../../../components/Modal";
 import InfoModal from "../../components/InfoModal";
 import { getAllowPartial, getIgnoreUnavailabel, getIncludeGlobalState } from "../../../CreateSnapshotPolicy/containers/helper";
+import { truncateSpan } from "../../../Snapshots/helper";
 
 interface SnapshotPolicyDetailsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -198,19 +199,23 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       );
     }
 
+    console.log(`sm dev policy ${JSON.stringify(policy)}`);
+
     const policySettingItems = [
-      { term: "Policy name", value: policyId },
+      { term: "Policy name", value: truncateSpan(policyId, 30) },
       { term: "Status", value: this.renderEnabledField(policy.enabled) },
       { term: "Last updated time", value: policy.last_updated_time },
       { term: "Indices", value: policy.snapshot_config.indices },
       { term: "Repository", value: policy.snapshot_config.repository },
-      { term: "Description", value: policy.description },
+      { term: "Description", value: truncateSpan(policy.description, 30) },
     ];
 
     const advancedSettingItems = [
       { term: "Include cluster state", value: `${getIncludeGlobalState(policy)}` },
       { term: "Ignore unavailable indices", value: `${getIgnoreUnavailabel(policy)}` },
       { term: "Allow partial snapshots", value: `${getAllowPartial(policy)}` },
+      { term: "Timestamp format", value: `${_.get(policy, "snapshot_config.date_format")}` },
+      { term: "Time zone of timestamp", value: `${_.get(policy, "snapshot_config.date_format_timezone")}` },
     ];
 
     const createCronExpression = policy.creation.schedule.cron.expression;
@@ -252,9 +257,22 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       }
     }
 
+    interface NotiConditions {
+      [condition: string]: boolean;
+    }
+    const notiConditions: NotiConditions = _.get(policy, "notification.conditions");
+    // _.get(policy, "notification.conditions")
+    let notiActivities = "None";
+    if (notiConditions) {
+      notiActivities = Object.keys(notiConditions)
+        .filter((key) => notiConditions[key])
+        .join(", ");
+    }
+    console.log(`sm dev notification ${notiActivities}`);
+
     const notificationItems = [
-      { term: "Notify on snapshot activities", value: "Started, deleted, failed" },
-      { term: "Channels", value: "IT_group_slack" },
+      { term: "Notify on snapshot activities", value: notiActivities },
+      { term: "Channels", value: _.get(policy, "notification.channel.id") },
     ];
 
     let creationLatestActivity: LatestActivities = { activityType: "Creation" };
@@ -302,6 +320,8 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
               </EuiFlexItem>
             ))}
           </EuiFlexGrid>
+
+          <EuiSpacer size="s" />
 
           <EuiAccordion id="advanced_settings_items" buttonContent="Advanced settings">
             <EuiSpacer size="s" />

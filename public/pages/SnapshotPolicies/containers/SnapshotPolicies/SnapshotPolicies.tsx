@@ -16,6 +16,7 @@ import {
   EuiContextMenuItem,
   EuiContextMenuPanel,
   EuiEmptyPrompt,
+  EuiHealth,
   EuiLink,
   EuiPopover,
   EuiSearchBar,
@@ -37,6 +38,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import DeleteModal from "../../../PolicyDetails/components/DeleteModal";
 import { OnSearchChangeArgs } from "../../../../models/interfaces";
 import { humanCronExpression, parseCronExpression } from "../../../CreateSnapshotPolicy/components/CronSchedule/helper";
+import { truncateSpan } from "../../../Snapshots/helper";
 
 interface SnapshotPoliciesProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -111,13 +113,22 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         sortable: true,
         dataType: "boolean",
         width: "100px",
-        render: (name: string, item: SMPolicy) => (item.enabled ? "Enabled" : "Disabled"),
+        render: (name: string, item: SMPolicy) => {
+          if (item.enabled) {
+            return <EuiHealth color="success">Enabled</EuiHealth>;
+          } else {
+            return <EuiHealth color="danger">Disabled</EuiHealth>;
+          }
+        },
       },
       {
         field: "snapshot_config.indices",
         name: "Indices",
         sortable: false,
         dataType: "string",
+        render: (value: string, item: SMPolicy) => {
+          return truncateSpan(value);
+        },
       },
       {
         field: "creation.schedule.cron.expression",
@@ -142,6 +153,9 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Description",
         sortable: false,
         dataType: "string",
+        render: (value: string, item: SMPolicy) => {
+          return truncateSpan(value);
+        },
       },
     ];
   }

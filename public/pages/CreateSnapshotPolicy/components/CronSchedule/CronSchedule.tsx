@@ -88,6 +88,7 @@ const CronSchedule = ({
   function onTypeChange(e: ChangeEvent<HTMLSelectElement>) {
     const frequencyType = e.target.value;
     onChangeFrequencyType(e);
+    if (frequencyType === "hourly") setMinute(0);
     changeCron({ frequencyType });
   }
 
@@ -96,6 +97,21 @@ const CronSchedule = ({
       <EuiCheckbox id={day} label={day} checked={checkedDay === day} onChange={(e) => onDayOfWeekChange(day)} compressed />
     </EuiFlexItem>
   );
+
+  let startTimeContent;
+  startTimeContent = (
+    <EuiDatePicker
+      showTimeSelect
+      showTimeSelectOnly
+      selected={startTime(hour, minute)}
+      onChange={onStartTimeChange}
+      dateFormat="HH:mm"
+      timeFormat="HH:mm"
+    />
+  );
+  if (frequencyType === "hourly") {
+    startTimeContent = <EuiText size="s">Start at the beginning of the hour.</EuiText>;
+  }
 
   let additionalContent;
   if (frequencyType === "weekly") {
@@ -158,14 +174,8 @@ const CronSchedule = ({
           ) : (
             <>
               <CustomLabel title="Start time" />
-              <EuiDatePicker
-                showTimeSelect
-                showTimeSelectOnly
-                selected={startTime(hour, minute)}
-                onChange={onStartTimeChange}
-                dateFormat="HH:mm"
-                timeFormat="HH:mm"
-              />
+              {startTimeContent}
+
               <EuiSpacer size="s" />
 
               {additionalContent}

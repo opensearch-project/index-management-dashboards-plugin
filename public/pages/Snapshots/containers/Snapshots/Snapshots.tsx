@@ -11,7 +11,7 @@ import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService, IndexService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { CatSnapshotWithRepoAndPolicy as snapshotsWithRepoAndPolicy } from "../../../../../server/models/interfaces";
+import { CatSnapshotWithRepoAndPolicy as SnapshotsWithRepoAndPolicy } from "../../../../../server/models/interfaces";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import SnapshotFlyout from "../../components/SnapshotFlyout/SnapshotFlyout";
 import CreateSnapshotFlyout from "../../components/CreateSnapshotFlyout/CreateSnapshotFlyout";
@@ -19,6 +19,7 @@ import { Snapshot } from "../../../../../models/interfaces";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
 import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
+import { snapshotStatusRender } from "../../helper";
 
 interface SnapshotsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -26,11 +27,11 @@ interface SnapshotsProps extends RouteComponentProps {
 }
 
 interface SnapshotsState {
-  snapshots: snapshotsWithRepoAndPolicy[];
+  snapshots: SnapshotsWithRepoAndPolicy[];
   existingPolicyNames: string[];
   loadingSnapshots: boolean;
 
-  selectedItems: snapshotsWithRepoAndPolicy[];
+  selectedItems: SnapshotsWithRepoAndPolicy[];
 
   showFlyout: boolean; // show snapshot details flyout
   flyoutSnapshotId: string;
@@ -45,7 +46,7 @@ interface SnapshotsState {
 
 export default class Snapshots extends Component<SnapshotsProps, SnapshotsState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<snapshotsWithRepoAndPolicy>[];
+  columns: EuiTableFieldDataColumnType<SnapshotsWithRepoAndPolicy>[];
 
   constructor(props: SnapshotsProps) {
     super(props);
@@ -69,27 +70,34 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Name",
         sortable: true,
         dataType: "string",
-        render: (name: string, item: snapshotsWithRepoAndPolicy) => (
-          <EuiLink onClick={() => this.setState({ showFlyout: true, flyoutSnapshotId: name, flyoutSnapshotRepo: item.repository })}>
-            {name}
-          </EuiLink>
-        ),
+        render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
+          const truncated = _.truncate(name, { length: 20 });
+          return (
+            <EuiLink onClick={() => this.setState({ showFlyout: true, flyoutSnapshotId: name, flyoutSnapshotRepo: item.repository })}>
+              <span title={name}>{truncated}</span>
+            </EuiLink>
+          );
+        },
       },
       {
         field: "status",
         name: "Status",
         sortable: true,
         dataType: "string",
-        width: "100px",
+        width: "150px",
+        render: (value: string) => {
+          return snapshotStatusRender(value);
+        },
       },
       {
         field: "policy",
         name: "Policy",
         sortable: false,
         dataType: "string",
-        render: (name: string, item: snapshotsWithRepoAndPolicy) => {
+        render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
+          const truncated = _.truncate(name, { length: 20 });
           if (!!item.policy) {
-            return <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>{name}</EuiLink>;
+            return <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>{truncated}</EuiLink>;
           }
           return "-";
         },
@@ -146,7 +154,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     }
   };
 
-  onSelectionChange = (selectedItems: snapshotsWithRepoAndPolicy[]): void => {
+  onSelectionChange = (selectedItems: SnapshotsWithRepoAndPolicy[]): void => {
     this.setState({ selectedItems });
   };
 
@@ -329,7 +337,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   getSelectedIds = () => {
     return this.state.selectedItems
-      .map((item: snapshotsWithRepoAndPolicy) => {
+      .map((item: SnapshotsWithRepoAndPolicy) => {
         return item.id;
       })
       .join(", ");
