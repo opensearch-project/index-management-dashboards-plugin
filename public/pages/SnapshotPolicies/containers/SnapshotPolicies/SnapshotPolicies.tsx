@@ -36,6 +36,7 @@ import { DEFAULT_PAGE_SIZE_OPTIONS } from "../../constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import DeleteModal from "../../../PolicyDetails/components/DeleteModal";
 import { OnSearchChangeArgs } from "../../../../models/interfaces";
+import { humanCronExpression, parseCronExpression } from "../../../CreateSnapshotPolicy/components/CronSchedule/helper";
 
 interface SnapshotPoliciesProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -124,7 +125,9 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         sortable: false,
         dataType: "string",
         render: (name: string, item: SMPolicy) => {
-          return `${name} (${item.creation.schedule.cron.timezone})`;
+          const expression = name;
+          const timezone = item.creation.schedule.cron.timezone;
+          return `${humanCronExpression(parseCronExpression(expression), expression, timezone)}`;
         },
       },
       {
@@ -188,10 +191,12 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   onTableChange = (criteria: Criteria<SMPolicy>): void => {
     const { from: prevFrom, size: prevSize, sortField, sortOrder } = this.state;
     const { page: { index, size } = {}, sort: { field, direction } = {} } = criteria;
+    console.log(`sm dev criteria ${JSON.stringify(criteria)}`);
 
-    // noinspection TypeScriptValidateTypes
+    // index could be 0, so need to explicitly check if it's undefined
+    const from = index !== undefined ? (size ? index * size : prevFrom) : prevFrom;
     this.setState({
-      from: index ? (size ? index * size : prevFrom) : prevFrom,
+      from: from,
       size: size ?? prevSize,
       sortField: field ?? sortField,
       sortOrder: direction ?? sortOrder,

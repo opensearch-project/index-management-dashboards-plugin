@@ -41,7 +41,7 @@ const SnapshotAdvancedSettings = ({
       label={
         <CustomLabel
           title="Ignore unavailable indices"
-          helpText="Instead of failing snapshot, ignore any indices that are unavailable or do not exist."
+          helpText="Instead of failing snapshot, ignore any indexes that are unavailable or do not exist."
         />
       }
       checked={ignoreUnavailable}

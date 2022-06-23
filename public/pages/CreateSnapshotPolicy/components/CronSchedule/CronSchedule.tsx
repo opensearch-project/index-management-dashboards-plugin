@@ -47,13 +47,13 @@ const CronSchedule = ({
   timezoneError,
 }: CronScheduleProps) => {
   const { minute: initMin, hour: initHour, dayOfWeek: initWeek, dayOfMonth: initMonth } = parseCronExpression(cronExpression);
-  console.log(`sm dev init week ${initWeek}`);
+  // console.log(`sm dev init week ${initWeek}`);
 
   const [minute, setMinute] = useState(initMin);
   const [hour, setHour] = useState(initHour);
   const [dayOfWeek, setWeek] = useState(initWeek);
   const [dayOfMonth, setMonth] = useState(initMonth);
-  console.log(`sm dev dayOfWeek ${initWeek}`);
+  // console.log(`sm dev dayOfWeek ${initWeek}`);
 
   useEffect(() => {
     changeCron();
@@ -114,9 +114,10 @@ const CronSchedule = ({
             <EuiFieldNumber
               value={dayOfMonth}
               onChange={(e) => {
-                console.log(`sm dev change day of month ${parseInt(e.target.value)}`);
                 onDayOfMonthChange(parseInt(e.target.value));
               }}
+              min={1}
+              max={31}
             />
           </EuiFlexItem>
         </EuiFlexGroup>

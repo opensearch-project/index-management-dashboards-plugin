@@ -123,10 +123,6 @@ export function formatNumberToHourMin(timeNumber: number) {
 }
 
 export function startTime(hourNumber: number, minuteNumber: number): moment.Moment {
-  const minute = formatNumberToHourMin(minuteNumber);
-  const hour = formatNumberToHourMin(hourNumber);
-  const timeStr = `2022-01-01 ${hour}:${minute}`;
   const timeMoment = moment().hours(hourNumber).minutes(minuteNumber);
-  console.log(`sm dev time moment ${timeMoment}`);
   return timeMoment;
 }

@@ -26,7 +26,9 @@ import {
   EuiHorizontalRule,
   EuiButtonIcon,
   EuiLink,
+  EuiComboBox,
 } from "@elastic/eui";
+import moment from "moment-timezone";
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -44,6 +46,7 @@ import ChannelNotification from "../../../VisualCreatePolicy/components/ChannelN
 import { DEFAULT_INDEX_OPTIONS, ERROR_PROMPT, getDefaultSMPolicy, maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS } from "../../constants";
 import { getIncludeGlobalState, getIgnoreUnavailabel, getAllowPartial } from "../helper";
 import { parseCronExpression } from "../../components/CronSchedule/helper";
+import { TIMEZONES } from "../../components/CronSchedule/constants";
 
 interface CreateSMPolicyProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -410,7 +413,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   render() {
-    console.log(`sm dev render state creation cron ${JSON.stringify(this.state.policy.creation.schedule.cron)}`);
+    console.log(`sm dev render state snapshotconfig ${JSON.stringify(this.state.policy.snapshot_config)}`);
     // console.log(`sm dev render state deletion cron ${JSON.stringify(this.state.policy.deletion?.schedule?.cron)}`);
     // console.log(`sm dev render state repository ${JSON.stringify(this.state.policy.snapshot_config.repository)}`);
     // console.log(`sm dev render state indices ${JSON.stringify(this.state.policy.snapshot_config)}`);
@@ -679,6 +682,39 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                 onPartialToggle={this.onPartialToggle}
                 width="200%"
               />
+
+              <div style={{ padding: "0px 10px" }}>
+                <EuiText size="s">
+                  <h4>Snapshot naming settings</h4>
+                </EuiText>
+                <span style={{ fontWeight: 200, fontSize: "12px" }}>Customize the naming format of snapshots.</span>
+
+                <EuiSpacer size="s" />
+
+                <CustomLabel title="Timestamp format" />
+                <EuiFieldText
+                  placeholder="e.g. yyyy-MM-dd-HH:mm"
+                  value={_.get(policy, "snapshot_config.date_format")}
+                  onChange={(e) => {
+                    this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format", e.target.value) });
+                  }}
+                />
+
+                <EuiSpacer size="s" />
+
+                <CustomLabel title="Time zone of timestamp" />
+                <EuiComboBox
+                  placeholder="Select a time zone"
+                  singleSelection={{ asPlainText: true }}
+                  options={TIMEZONES}
+                  renderOption={({ label: tz }) => `${tz} (${moment.tz(tz).format("Z")})`}
+                  selectedOptions={[{ label: _.get(policy, "snapshot_config.date_format_timezone") ?? "" }]}
+                  onChange={(options) => {
+                    const timezone = _.first(options)?.label;
+                    this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format_timezone", timezone) });
+                  }}
+                />
+              </div>
             </>
           )}
         </EuiPanel>

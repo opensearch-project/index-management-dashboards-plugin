@@ -161,7 +161,7 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
           <EuiFormRow isInvalid={!!locationError} error={locationError}>
             <EuiFieldText
               disabled={!!editRepo}
-              placeholder="e.g. /mnt/snapshots"
+              placeholder="e.g., /mnt/snapshots"
               value={location}
               onChange={(e) => this.setState({ location: e.target.value })}
             />
