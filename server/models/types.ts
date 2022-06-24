@@ -25,4 +25,5 @@ export type RollupsSort = {
   "rollup.rollup.last_updated_time": "rollup.last_updated_time";
 };
 
-export type ServerResponse<T> = { ok: false; error: string } | { ok: true; response: T };
+export type ServerResponse<T> = FailedServerResponse | { ok: true; response: T };
+export type FailedServerResponse = { ok: false; error: string };

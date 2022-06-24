@@ -11,8 +11,17 @@ import {
   RollupService,
   TransformService,
   NotificationService,
+  SnapshotManagementService,
 } from "../services";
-import { DocumentPolicy, DocumentRollup, DocumentTransform, ManagedIndexItem, Rollup, Transform } from "../../models/interfaces";
+import {
+  DocumentPolicy,
+  DocumentRollup,
+  DocumentSMPolicy,
+  DocumentTransform,
+  ManagedIndexItem,
+  Rollup,
+  Transform,
+} from "../../models/interfaces";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -22,6 +31,7 @@ export interface NodeServices {
   rollupService: RollupService;
   transformService: TransformService;
   notificationService: NotificationService;
+  snapshotManagementService: SnapshotManagementService;
 }
 
 export interface SearchResponse<T> {
@@ -272,6 +282,7 @@ export interface IndexManagementApi {
   readonly ROLLUP_JOBS_BASE: string;
   readonly TRANSFORM_BASE: string;
   readonly CHANNELS_BASE: string;
+  readonly SM_POLICY_BASE: string;
 }
 
 export interface DefaultHeaders {
@@ -326,4 +337,79 @@ export interface DataStreamIndex {
 
 export interface IndexToDataStream {
   [indexName: string]: string;
+}
+
+export interface GetSnapshotsResponse {
+  snapshots: CatSnapshotWithRepoAndPolicy[];
+  totalSnapshots: number;
+}
+
+export interface CatSnapshotWithRepoAndPolicy {
+  id: string;
+  status: string;
+  start_epoch: number;
+  end_epoch: number;
+  duration: number;
+  indices: number;
+  successful_shards: number;
+  failed_shards: number;
+  total_shards: number;
+  repository: string;
+  policy?: string;
+}
+
+export interface GetSnapshotResponse {
+  snapshots: GetSnapshot[];
+}
+
+export interface CreateSnapshotResponse {
+  snapshot: GetSnapshot;
+}
+
+export interface GetSnapshot {
+  snapshot: string;
+  uuid: string;
+  version: number;
+  state: string;
+  indices: string[];
+  data_streams: string[];
+  failures: any[];
+  include_global_state: boolean;
+  start_time: string;
+  start_time_in_millis: number;
+  end_time: string;
+  end_time_in_millis: number;
+  duration_in_millis: number;
+  shards: {
+    total: number;
+    successful: number;
+    failed: number;
+  };
+  metadata?: {
+    sm_policy?: string;
+  };
+}
+
+export interface CatRepository {
+  id: string;
+  type: string;
+  snapshotCount?: number;
+}
+
+export interface GetRepositoryResponse {
+  [repoName: string]: CreateRepositoryBody;
+}
+
+export interface CreateRepositorySettings {
+  location?: string;
+}
+
+export interface CreateRepositoryBody {
+  type: string;
+  settings: CreateRepositorySettings;
+}
+
+export interface GetSMPoliciesResponse {
+  policies: DocumentSMPolicy[];
+  totalPolicies: number;
 }

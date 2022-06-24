@@ -10,6 +10,7 @@ import PolicyService from "./PolicyService";
 import RollupService from "./RollupService";
 import TransformService from "./TransformService";
 import NotificationService from "./NotificationService";
+import SnapshotManagementService from "./SnapshotManagementService";
 
 export {
   ServicesConsumer,
@@ -20,4 +21,5 @@ export {
   RollupService,
   TransformService,
   NotificationService,
+  SnapshotManagementService,
 };

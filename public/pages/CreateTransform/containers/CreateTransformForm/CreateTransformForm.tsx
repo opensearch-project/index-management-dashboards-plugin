@@ -32,7 +32,6 @@ interface CreateTransformFormProps extends RouteComponentProps {
   rollupService: RollupService;
   transformService: TransformService;
   indexService: IndexService;
-  beenWarned: boolean;
 }
 
 interface CreateTransformFormState {
