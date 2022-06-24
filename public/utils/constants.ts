@@ -13,6 +13,11 @@ export const ACTIONS_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/
 export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#states";
 export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
 export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
+export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
+export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/index";
+export const REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshot-restore/#register-repository";
+export const FS_REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshot-restore/#shared-file-system";
+export const S3_REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshot-restore/#amazon-s3";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
@@ -30,6 +35,16 @@ export const ROUTES = Object.freeze({
   CREATE_TRANSFORM: "/create-transform",
   EDIT_TRANSFORM: "/edit-transform",
   TRANSFORM_DETAILS: "/transform-details",
+  SNAPSHOT_POLICIES: "/snapshot-policies",
+  SNAPSHOT_POLICY_DETAILS: "/snapshot-policy-details",
+  CREATE_SNAPSHOT_POLICY: "/create-snapshot-policy",
+  EDIT_SNAPSHOT_POLICY: "/edit-snapshot-policy",
+  SNAPSHOTS: "/snapshots",
+  CREATE_SNAPSHOT: "/create-snapshot",
+  EDIT_SNAPSHOT: "/edit-snapshot",
+  REPOSITORIES: "/repositories",
+  CREATE_REPOSITORY: "/create-repository",
+  EDIT_REPOSITORY: "/edit-repository",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -49,6 +64,21 @@ export const BREADCRUMBS = Object.freeze({
   CREATE_TRANSFORM: { text: "Create transform job" },
   EDIT_TRANSFORM: { text: "Edit transform job" },
   TRANSFORM_DETAILS: { text: "Transform details" },
+
+  SNAPSHOT_MANAGEMENT: { text: "Snapshot Management", href: `#${ROUTES.SNAPSHOT_POLICIES}` },
+
+  SNAPSHOT_POLICIES: { text: "Snapshot policies", href: `#${ROUTES.SNAPSHOT_POLICIES}` },
+  SNAPSHOT_POLICY_DETAILS: { text: "Snapshot policy details" },
+  CREATE_SNAPSHOT_POLICY: { text: "Create snapshot policy" },
+  EDIT_SNAPSHOT_POLICY: { text: "Edit snapshot policy" },
+
+  SNAPSHOTS: { text: "Snapshots", href: `#${ROUTES.SNAPSHOTS}` },
+  CREATE_SNAPSHOT: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
+  EDIT_SNAPSHOT: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
+
+  REPOSITORIES: { text: "Repositories", href: `#${ROUTES.REPOSITORIES}` },
+  CREATE_REPOSITORY: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
+  EDIT_REPOSITORY: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
 });
 
 // TODO: EUI has a SortDirection already

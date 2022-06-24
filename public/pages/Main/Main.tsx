@@ -28,6 +28,11 @@ import RollupDetails from "../RollupDetails/containers/RollupDetails";
 import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
 import queryString from "query-string";
+import CreateSnapshotPolicy from "../CreateSnapshotPolicy";
+import Repositories from "../Repositories";
+import SnapshotPolicies from "../SnapshotPolicies";
+import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
+import Snapshots from "../Snapshots";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -36,6 +41,10 @@ enum Navigation {
   Indices = "Indices",
   Rollups = "Rollup Jobs",
   Transforms = "Transform Jobs",
+  SnapshotManagement = "Snapshot Management",
+  Snapshots = "Snapshots",
+  SnapshotPolicies = "Snapshot Policies",
+  Repositories = "Repositories",
 }
 
 enum Pathname {
@@ -44,6 +53,9 @@ enum Pathname {
   Indices = "/indices",
   Rollups = "/rollups",
   Transforms = "/transforms",
+  Snapshots = "/snapshots",
+  SnapshotPolicies = "/snapshot-policies",
+  Repositories = "/repositories",
 }
 
 const HIDDEN_NAV_ROUTES = [
@@ -57,6 +69,9 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.EDIT_POLICY,
   ROUTES.POLICY_DETAILS,
   ROUTES.CHANGE_POLICY,
+  ROUTES.SNAPSHOT_POLICY_DETAILS,
+  ROUTES.CREATE_SNAPSHOT_POLICY,
+  ROUTES.EDIT_SNAPSHOT_POLICY,
 ];
 
 interface MainProps extends RouteComponentProps {}
@@ -104,6 +119,31 @@ export default class Main extends Component<MainProps, object> {
           },
         ],
       },
+      {
+        name: Navigation.SnapshotManagement,
+        id: 1,
+        href: `#${Pathname.SnapshotPolicies}`,
+        items: [
+          {
+            name: Navigation.SnapshotPolicies,
+            id: 1,
+            href: `#${Pathname.SnapshotPolicies}`,
+            isSelected: pathname === Pathname.SnapshotPolicies,
+          },
+          {
+            name: Navigation.Snapshots,
+            id: 2,
+            href: `#${Pathname.Snapshots}`,
+            isSelected: pathname === Pathname.Snapshots,
+          },
+          {
+            name: Navigation.Repositories,
+            id: 3,
+            href: `#${Pathname.Repositories}`,
+            isSelected: pathname === Pathname.Repositories,
+          },
+        ],
+      },
     ];
     return (
       <CoreServicesConsumer>
@@ -117,12 +157,64 @@ export default class Main extends Component<MainProps, object> {
                     <EuiPage restrictWidth="100%">
                       {/*Hide side navigation bar when creating or editing rollup job*/}
                       {!HIDDEN_NAV_ROUTES.includes(pathname) && (
-                        <EuiPageSideBar style={{ minWidth: 150 }}>
-                          <EuiSideNav style={{ width: 150 }} items={sideNav} />
+                        <EuiPageSideBar style={{ minWidth: 200 }}>
+                          <EuiSideNav style={{ width: 200 }} items={sideNav} />
                         </EuiPageSideBar>
                       )}
                       <EuiPageBody>
                         <Switch>
+                          <Route
+                            path={ROUTES.SNAPSHOTS}
+                            render={(props: RouteComponentProps) => (
+                              <Snapshots
+                                {...props}
+                                snapshotManagementService={services.snapshotManagementService}
+                                indexService={services.indexService}
+                              />
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.REPOSITORIES}
+                            render={(props: RouteComponentProps) => (
+                              <Repositories {...props} snapshotManagementService={services.snapshotManagementService} />
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SNAPSHOT_POLICIES}
+                            render={(props: RouteComponentProps) => (
+                              <SnapshotPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SNAPSHOT_POLICY_DETAILS}
+                            render={(props: RouteComponentProps) => (
+                              <SnapshotPolicyDetails {...props} snapshotManagementService={services.snapshotManagementService} />
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_SNAPSHOT_POLICY}
+                            render={(props: RouteComponentProps) => (
+                              <CreateSnapshotPolicy
+                                {...props}
+                                snapshotManagementService={services.snapshotManagementService}
+                                notificationService={services.notificationService}
+                                indexService={services.indexService}
+                                isEdit={false}
+                              />
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.EDIT_SNAPSHOT_POLICY}
+                            render={(props: RouteComponentProps) => (
+                              <CreateSnapshotPolicy
+                                {...props}
+                                snapshotManagementService={services.snapshotManagementService}
+                                notificationService={services.notificationService}
+                                indexService={services.indexService}
+                                isEdit={true}
+                              />
+                            )}
+                          />
                           <Route
                             path={ROUTES.CHANGE_POLICY}
                             render={(props: RouteComponentProps) => (

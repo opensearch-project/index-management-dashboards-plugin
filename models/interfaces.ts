@@ -5,6 +5,7 @@
 
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
+import { long } from "@opensearch-project/opensearch/api/types";
 import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
 
 export interface ManagedIndexMetaData {
@@ -78,14 +79,111 @@ export interface Policy {
   schema_version?: number;
 }
 
+export interface DocumentSMPolicy {
+  id: string;
+  seqNo: number;
+  primaryTerm: number;
+  policy: SMPolicy;
+}
+
+export interface DocumentSMPolicyWithMetadata {
+  id: string;
+  seqNo: number;
+  primaryTerm: number;
+  policy: SMPolicy;
+  metadata: SMMetadata;
+}
+
+export interface SMMetadata {
+  name: string;
+  creation?: SMWorkflowMetadata;
+  deletion?: SMWorkflowMetadata;
+  policy_seq_no?: number;
+  policy_primary_term?: number;
+  enabled: boolean;
+}
+
+export interface SMWorkflowMetadata {
+  trigger: {
+    time: number;
+  };
+  started: string[];
+  latest_execution: {
+    status: string;
+    start_time: long;
+    end_time?: long;
+    info?: {
+      message?: string;
+      cause?: string;
+    };
+  };
+}
+
+export interface SMPolicy {
+  name: string;
+  description: string;
+  creation: SMCreation;
+  deletion?: SMDeletion;
+  snapshot_config: SMSnapshotConfig;
+  enabled: boolean;
+  last_updated_time?: number;
+  notification?: Notification;
+}
+
+export interface Snapshot {
+  indices: string;
+  ignore_unavailable: boolean;
+  include_global_state: boolean;
+  partial: boolean;
+  metadata?: object;
+}
+
+export interface SMSnapshotConfig {
+  repository: string;
+  indices?: string;
+  ignore_unavailable?: boolean;
+  include_global_state?: boolean;
+  partial?: boolean;
+  date_expression?: string;
+}
+
+export interface SMCreation {
+  schedule: Cron;
+  time_limit?: string;
+}
+
+export interface SMDeletion {
+  schedule?: Cron;
+  condition?: SMDeleteCondition;
+  time_limit?: string;
+}
+
+export interface SMDeleteCondition {
+  max_count?: number;
+  max_age?: string;
+  min_count?: number;
+}
+
 export interface ErrorNotification {
   destination?: Destination;
   channel?: Channel;
   message_template: MessageTemplate;
 }
 
+export interface Notification {
+  channel: Channel;
+  conditions?: SMNotificationCondition;
+}
+
 export interface Channel {
   id: string;
+}
+
+export interface SMNotificationCondition {
+  creation?: boolean;
+  deletion?: boolean;
+  failure?: boolean;
+  time_limit_exceeded?: boolean;
 }
 
 export interface Destination {
