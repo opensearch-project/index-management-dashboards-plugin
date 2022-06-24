@@ -53,7 +53,6 @@ export default class SnapshotManagementService {
   createPolicy = async (policyId: string, policy: SMPolicy): Promise<ServerResponse<DocumentSMPolicy>> => {
     let url = `..${NODE_API.SMPolicies}/${policyId}`;
     const response = (await this.httpClient.post(url, { body: JSON.stringify(policy) })) as ServerResponse<DocumentSMPolicy>;
-    console.log(`sm dev public create sm policy response ${JSON.stringify(response)}`);
     return response;
   };
 
@@ -67,14 +66,12 @@ export default class SnapshotManagementService {
     const response = (await this.httpClient.put(url, { query: { seqNo, primaryTerm }, body: JSON.stringify(policy) })) as ServerResponse<
       DocumentSMPolicy
     >;
-    console.log(`sm dev public update sm policy response ${JSON.stringify(response)}`);
     return response;
   };
 
   getPolicies = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetSMPoliciesResponse>> => {
     let url = `..${NODE_API.SMPolicies}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetSMPoliciesResponse>;
-    console.log(`sm dev public get sm policies response ${JSON.stringify(response)}`);
     return response;
   };
 
@@ -105,28 +102,24 @@ export default class SnapshotManagementService {
   catRepositories = async (): Promise<ServerResponse<CatRepository[]>> => {
     const url = `..${NODE_API._REPOSITORIES}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<CatRepository[]>;
-    console.log(`sm dev get repositories ${JSON.stringify(response)}`);
     return response;
   };
 
   getRepository = async (repo: string): Promise<ServerResponse<any>> => {
     const url = `..${NODE_API._REPOSITORIES}/${repo}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<any>;
-    console.log(`sm dev get repository ${JSON.stringify(response)}`);
     return response;
   };
 
   createRepository = async (repo: string, createRepoBody: CreateRepositoryBody): Promise<ServerResponse<any>> => {
     const url = `..${NODE_API._REPOSITORIES}/${repo}`;
     const response = (await this.httpClient.put(url, { body: JSON.stringify(createRepoBody) })) as ServerResponse<any>;
-    console.log(`sm dev create repository ${JSON.stringify(response)}`);
     return response;
   };
 
   deleteRepository = async (repo: string): Promise<ServerResponse<any>> => {
     const url = `..${NODE_API._REPOSITORIES}/${repo}`;
     const response = (await this.httpClient.delete(url)) as ServerResponse<any>;
-    console.log(`sm dev delete repository ${JSON.stringify(response)}`);
     return response;
   };
 }

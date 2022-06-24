@@ -44,7 +44,6 @@ export default class SnapshotManagementService {
       let repositories: string[];
       if (getRepositoryRes.payload?.ok) {
         repositories = getRepositoryRes.payload?.response.map((repo) => repo.id);
-        console.log(`sm dev get repositories ${JSON.stringify(repositories)}`);
       } else {
         return response.custom({
           statusCode: 200,
@@ -83,24 +82,6 @@ export default class SnapshotManagementService {
         snapshots = [...snapshots, ...snapshotWithPolicy];
       }
 
-      // populate policy field for snapshot
-      // const getSMPoliciesRes = await this.getPolicies(context, request, response);
-      // if (getSMPoliciesRes.payload?.ok) {
-      //   const policyNames = getSMPoliciesRes.payload?.response.policies
-      //     .map((policy) => policy.policy.name)
-      //     .sort((a, b) => b.length - a.length);
-      //   console.log(`sm dev get snapshot policies ${policyNames}`);
-      //   function addPolicyField(snapshot: CatSnapshotWithRepoAndPolicy) {
-      //     for (let i = 0; i < policyNames.length; i++) {
-      //       if (snapshot.id.startsWith(policyNames[i])) {
-      //         return { ...snapshot, policy: policyNames[i] };
-      //       }
-      //     }
-      //     return snapshot;
-      //   }
-      //   snapshots = snapshots.map(addPolicyField);
-      // }
-
       return response.custom({
         statusCode: 200,
         body: {
@@ -136,7 +117,6 @@ export default class SnapshotManagementService {
         ignore_unavailable: true,
       });
 
-      console.log(`sm dev get snapshot response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -167,7 +147,6 @@ export default class SnapshotManagementService {
         snapshot: `${id}`,
       });
 
-      console.log(`sm dev delete snapshot response: ${JSON.stringify(resp)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -201,7 +180,6 @@ export default class SnapshotManagementService {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const resp: CreateSnapshotResponse = await callWithRequest("snapshot.create", params);
 
-      console.log(`sm dev createSnapshot response: ${JSON.stringify(resp)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -226,8 +204,6 @@ export default class SnapshotManagementService {
         body: JSON.stringify(request.body),
       };
 
-      console.log(`sm dev create policy ${JSON.stringify(request.body)}`);
-
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const rawRes = await callWithRequest("ism.createSMPolicy", params);
       const res: DocumentSMPolicy = {
@@ -236,8 +212,6 @@ export default class SnapshotManagementService {
         id: rawRes._id,
         policy: rawRes.sm_policy,
       };
-
-      console.log(`sm dev server create policy response: ${JSON.stringify(res)}`);
 
       return response.custom({
         statusCode: 200,
@@ -266,8 +240,6 @@ export default class SnapshotManagementService {
         body: JSON.stringify(request.body),
       };
 
-      console.log(`sm dev update policy ${JSON.stringify(request.body)}`);
-
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const rawRes = await callWithRequest("ism.updateSMPolicy", params);
       const res: DocumentSMPolicy = {
@@ -276,7 +248,6 @@ export default class SnapshotManagementService {
         id: rawRes._id,
         policy: rawRes.sm_policy,
       };
-      console.log(`sm dev server update policy response: ${JSON.stringify(res)}`);
 
       return response.custom({
         statusCode: 200,
@@ -312,7 +283,6 @@ export default class SnapshotManagementService {
         sortOrder,
         queryString: queryString.trim() ? `${queryString.trim()}` : "*",
       };
-      console.log(`sm dev get policies ${JSON.stringify(params)}`);
       const res = await callWithRequest("ism.getSMPolicies", params);
 
       const policies: DocumentSMPolicy[] = res.policies.map(
@@ -355,7 +325,6 @@ export default class SnapshotManagementService {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getResponse = await callWithRequest("ism.getSMPolicy", params);
       const metadata = await callWithRequest("ism.explainSnapshotPolicy", params);
-      console.log(`sm dev metadata ${JSON.stringify(metadata)}`);
       const documentPolicy = {
         id: id,
         seqNo: getResponse._seq_no,
@@ -477,7 +446,6 @@ export default class SnapshotManagementService {
       const res: CatRepository[] = await callWithRequest("cat.repositories", {
         format: "json",
       });
-      console.log(`sm dev cat repositories response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -510,7 +478,6 @@ export default class SnapshotManagementService {
         res[i].snapshotCount = getSnapshotRes.snapshots.length;
       }
 
-      console.log(`sm dev cat repositories with snapshot count response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -534,7 +501,6 @@ export default class SnapshotManagementService {
       const res: AcknowledgedResponse = await callWithRequest("snapshot.deleteRepository", {
         repository: id,
       });
-      console.log(`sm dev delete repository response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -558,7 +524,6 @@ export default class SnapshotManagementService {
       const res: GetRepositoryResponse = await callWithRequest("snapshot.getRepository", {
         repository: id,
       });
-      console.log(`sm dev get repository response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
@@ -582,10 +547,8 @@ export default class SnapshotManagementService {
         repository: id,
         body: JSON.stringify(request.body),
       };
-      console.log(`sm dev create repo params ${JSON.stringify(params)}`);
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const res: AcknowledgedResponse = await callWithRequest("snapshot.createRepository", params);
-      console.log(`sm dev create repository response: ${JSON.stringify(res)}`);
       return response.custom({
         statusCode: 200,
         body: {
