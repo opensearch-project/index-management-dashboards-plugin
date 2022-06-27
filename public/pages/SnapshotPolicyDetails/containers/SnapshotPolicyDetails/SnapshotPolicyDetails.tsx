@@ -21,7 +21,7 @@ import {
   EuiText,
   EuiTitle,
 } from "@elastic/eui";
-import { SnapshotManagementService } from "../../../../services";
+import { NotificationService, SnapshotManagementService } from "../../../../services";
 import { SMMetadata, SMPolicy } from "../../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -35,9 +35,11 @@ import { ModalConsumer } from "../../../../components/Modal";
 import InfoModal from "../../components/InfoModal";
 import { getAllowPartial, getIgnoreUnavailabel, getIncludeGlobalState } from "../../../CreateSnapshotPolicy/containers/helper";
 import { truncateSpan } from "../../../Snapshots/helper";
+import { NotificationConfig } from "../../../../../server/models/interfaces";
 
 interface SnapshotPolicyDetailsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
+  notificationService: NotificationService;
 }
 
 interface SnapshotPolicyDetailsState {
@@ -47,6 +49,8 @@ interface SnapshotPolicyDetailsState {
   metadata: SMMetadata | null;
 
   isDeleteModalVisible: boolean;
+
+  channel: NotificationConfig | null;
 }
 
 export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetailsProps, SnapshotPolicyDetailsState> {
@@ -61,6 +65,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       policy: null,
       metadata: null,
       isDeleteModalVisible: false,
+      channel: null,
     };
 
     this.columns = [
@@ -112,6 +117,12 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
     if (typeof id === "string") {
       this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES, { text: id }]);
       await this.getPolicy(id);
+
+      const channelId = _.get(this.state.policy, "notification.channel.id");
+      console.log(`sm dev channel id ${channelId}`);
+      if (channelId) {
+        this.getChannel(channelId);
+      }
     } else {
       this.context.notifications.toasts.addDanger(`Invalid policy id: ${id}`);
       this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
@@ -143,6 +154,21 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
     } catch (err) {
       this.context.notifications.toasts.addDanger(`Could not load the policy`);
       this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
+    }
+  };
+
+  getChannel = async (channelId: string): Promise<void> => {
+    try {
+      const { notificationService } = this.props;
+      const response = await notificationService.getChannel(channelId);
+
+      if (response.ok) {
+        this.setState({ channel: response.response.config_list[0] });
+      } else {
+        this.context.notifications.toasts.addDanger(`Could not load notification channel: ${response.error}`);
+      }
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not load the notification channel"));
     }
   };
 
@@ -188,7 +214,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
   };
 
   render() {
-    const { policyId, policy, metadata, isDeleteModalVisible } = this.state;
+    const { policyId, policy, metadata, isDeleteModalVisible, channel } = this.state;
 
     if (!policy) {
       return (
@@ -267,7 +293,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
 
     const notificationItems = [
       { term: "Notify on snapshot activities", value: notiActivities },
-      { term: "Channels", value: _.get(policy, "notification.channel.id") },
+      { term: "Channels", value: `${channel?.config.name} (${channel?.config_id})` },
     ];
 
     let creationLatestActivity: LatestActivities = { activityType: "Creation" };

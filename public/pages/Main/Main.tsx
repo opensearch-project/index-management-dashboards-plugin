@@ -188,7 +188,11 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOT_POLICY_DETAILS}
                             render={(props: RouteComponentProps) => (
-                              <SnapshotPolicyDetails {...props} snapshotManagementService={services.snapshotManagementService} />
+                              <SnapshotPolicyDetails
+                                {...props}
+                                snapshotManagementService={services.snapshotManagementService}
+                                notificationService={services.notificationService}
+                              />
                             )}
                           />
                           <Route
