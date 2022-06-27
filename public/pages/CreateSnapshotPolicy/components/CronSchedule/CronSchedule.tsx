@@ -34,6 +34,7 @@ interface CronScheduleProps {
   timezone?: string;
   onChangeTimezone?: (timezone: string) => void;
   timezoneError?: string;
+  frequencyTitle?: string;
 }
 
 const CronSchedule = ({
@@ -45,6 +46,7 @@ const CronSchedule = ({
   timezone,
   onChangeTimezone,
   timezoneError,
+  frequencyTitle = "Schedule frequency",
 }: CronScheduleProps) => {
   const { minute: initMin, hour: initHour, dayOfWeek: initWeek, dayOfMonth: initMonth } = parseCronExpression(cronExpression);
 
@@ -152,7 +154,7 @@ const CronSchedule = ({
 
   return (
     <>
-      <CustomLabel title="Schedule frequency" />
+      <CustomLabel title={frequencyTitle} />
       <EuiSelect id="creationCronScheduleType" options={CRON_SCHEDULE_FREQUENCY_TYPE} value={frequencyType} onChange={onTypeChange} />
 
       <EuiSpacer size="m" />

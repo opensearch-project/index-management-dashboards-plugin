@@ -16,6 +16,8 @@ export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plug
 
 export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org//docs/latest/opensearch/snapshots/snapshot-management/";
 export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
+export const RESTORE_SNAPSHOT_DOCUMENTATION_URL =
+  "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots";
 export const REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#register-repository";
 export const FS_REPOSITORY_DOCUMENTATION_URL =
   "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#shared-file-system";

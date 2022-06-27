@@ -572,6 +572,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
         <ContentPanel title="Snapshot schedule" titleSize="m">
           <CronSchedule
+            frequencyTitle="Snapshot frequency"
             frequencyType={creationScheduleFrequencyType}
             onChangeFrequencyType={(e) => {
               this.setState({ creationScheduleFrequencyType: e.target.value });
@@ -635,7 +636,11 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                   <EuiFlexItem grow={false}>
                     <CustomLabel title="Minumum" />
                     <EuiFormRow isInvalid={!!minCountError} error={minCountError}>
-                      <EuiFieldNumber min={1} value={_.get(policy, "deletion.condition.min_count", "")} onChange={this.onChangeMinCount} />
+                      <EuiFieldNumber
+                        min={1}
+                        value={_.get(policy, "deletion.condition.min_count") ?? "1"}
+                        onChange={this.onChangeMinCount}
+                      />
                     </EuiFormRow>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
@@ -648,15 +653,15 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
                 <EuiSpacer size="m" />
 
-                <EuiText>Deletion schedule</EuiText>
+                <EuiText>Deletion frequency</EuiText>
                 <span style={{ color: "grey", fontWeight: 200, fontSize: "12px" }}>
-                  Delete snapshots that are outside the retention period
+                  Configure time to delete snapshots that are outside the retention period
                 </span>
                 <EuiSpacer size="s" />
 
                 <EuiCheckbox
                   id="delete_schedule_checkbox"
-                  label="Use same schedule as snapshots"
+                  label="Same as snapshot frequency"
                   checked={!deletionScheduleEnabled}
                   onChange={(e) => {
                     this.setState({ deletionScheduleEnabled: !deletionScheduleEnabled });
@@ -666,6 +671,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
                 {deletionScheduleEnabled ? (
                   <CronSchedule
+                    frequencyTitle="Deletion frequency"
                     frequencyType={deletionScheduleFrequencyType}
                     onChangeFrequencyType={(e) => {
                       this.setState({ deletionScheduleFrequencyType: e.target.value });
