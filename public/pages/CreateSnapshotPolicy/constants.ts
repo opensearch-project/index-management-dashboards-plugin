@@ -34,7 +34,7 @@ export const maxAgeUnitOptions = [
   { value: "h", text: "Hours" },
 ];
 
-export const DEFAULT_INDEX_OPTIONS = [{ label: "*" }, { label: "-.opendistro_security" }];
+export const DEFAULT_INDEX_OPTIONS = [{ label: "*" }];
 
 export const ERROR_PROMPT = {
   NAME: "Name must be provided.",

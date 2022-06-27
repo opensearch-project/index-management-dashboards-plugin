@@ -97,7 +97,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Policy name",
         sortable: true,
         dataType: "string",
-        width: "180px",
+        width: "150px",
         render: (name: string, item: SMPolicy) => {
           const showSymbol = _.truncate(name, { length: 20 });
           return (
@@ -126,6 +126,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Indices",
         sortable: false,
         dataType: "string",
+        width: "150px",
         render: (value: string, item: SMPolicy) => {
           return truncateSpan(value);
         },

@@ -198,8 +198,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       );
     }
 
-    // console.log(`sm dev policy ${JSON.stringify(policy)}`);
-
     const policySettingItems = [
       { term: "Policy name", value: truncateSpan(policyId, 30) },
       { term: "Status", value: this.renderEnabledField(policy.enabled) },
@@ -266,7 +264,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
         .filter((key) => notiConditions[key])
         .join(", ");
     }
-    console.log(`sm dev notification ${notiActivities}`);
 
     const notificationItems = [
       { term: "Notify on snapshot activities", value: notiActivities },

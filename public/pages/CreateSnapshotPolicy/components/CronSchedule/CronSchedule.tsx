@@ -161,13 +161,15 @@ const CronSchedule = ({
         <EuiFlexItem style={{ maxWidth: 400 }}>
           {frequencyType === "custom" ? (
             <>
-              <CustomLabel title="Cron expression" helpText={cronExpressionHelpText} />
-              <EuiFieldText
-                value={cronExpression}
-                onChange={(e) => {
-                  onCronExpressionChange(e.target.value);
-                }}
-              />
+              <CustomLabel title="Cron expression" />
+              <EuiFormRow helpText={cronExpressionHelpText}>
+                <EuiFieldText
+                  value={cronExpression}
+                  onChange={(e) => {
+                    onCronExpressionChange(e.target.value);
+                  }}
+                />
+              </EuiFormRow>
             </>
           ) : (
             <>
