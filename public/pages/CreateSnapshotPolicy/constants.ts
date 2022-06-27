@@ -16,7 +16,7 @@ export const getDefaultSMPolicy = (): SMPolicy => ({
     schedule: {
       cron: {
         expression: "0 20 * * *",
-        timezone: "America/Los_Angeles",
+        timezone: "UTC",
       },
     },
   },
@@ -41,3 +41,6 @@ export const ERROR_PROMPT = {
   REPO: "Repository must be provided.",
   TIMEZONE: "Time zone must be provided.",
 };
+
+export const DEFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+export const DEFAULT_DATE_FORMAT_TIMEZONE = "UTC";

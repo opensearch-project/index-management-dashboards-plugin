@@ -39,7 +39,14 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexService, NotificationService, SnapshotManagementService } from "../../../../services";
 import { getErrorMessage, wildcardOption } from "../../../../utils/helpers";
 import CustomLabel from "../../../../components/CustomLabel";
-import { DEFAULT_INDEX_OPTIONS, ERROR_PROMPT, getDefaultSMPolicy, maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS } from "../../constants";
+import {
+  DEFAULT_DATE_FORMAT,
+  DEFAULT_DATE_FORMAT_TIMEZONE,
+  DEFAULT_INDEX_OPTIONS,
+  ERROR_PROMPT,
+  getDefaultSMPolicy,
+  maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS,
+} from "../../constants";
 import {
   getIncludeGlobalState,
   getIgnoreUnavailabel,
@@ -92,6 +99,8 @@ interface CreateSMPolicyState {
 
   showCreateRepoFlyout: boolean;
 
+  dateFormat: string;
+
   policyIdError: string;
   minCountError: string;
   repoError: string;
@@ -132,6 +141,8 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
       advancedSettingsOpen: false,
       showCreateRepoFlyout: false,
+
+      dateFormat: DEFAULT_DATE_FORMAT,
 
       policyIdError: "",
       repoError: "",
@@ -202,6 +213,9 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
           maxAgeUnit = maxAge[maxAge.length - 1];
         }
 
+        let dateFormat = policy.snapshot_config.date_format;
+        if (!dateFormat) dateFormat = DEFAULT_DATE_FORMAT;
+
         this.setState({
           policy,
           policyId: response.response.id,
@@ -215,6 +229,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
           deletionScheduleEnabled,
           maxAgeNum,
           maxAgeUnit,
+          dateFormat,
         });
       } else {
         const errorMessage = response.ok ? "Policy was empty" : response.error;
@@ -348,10 +363,11 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
         this.setState({ timezoneError: ERROR_PROMPT.TIMEZONE });
       } else {
         const policyFromState = this.buildPolicyFromState(policy);
-        // console.log(`sm dev policy from state ${JSON.stringify(policyFromState)}`);
+        console.log(`sm dev policy from state ${JSON.stringify(policyFromState)}`);
         if (isEdit) await this.updatePolicy(policyId, policyFromState);
         else await this.createPolicy(policyId, policyFromState);
       }
+      this.setState({ isSubmitting: false });
     } catch (err) {
       this.context.notifications.toasts.addDanger("Invalid Policy");
       console.error(err);
@@ -360,7 +376,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   buildPolicyFromState = (policy: SMPolicy): SMPolicy => {
-    const { deletionScheduleEnabled, maxAgeNum, maxAgeUnit, deleteConditionEnabled } = this.state;
+    const { deletionScheduleEnabled, maxAgeNum, maxAgeUnit, deleteConditionEnabled, dateFormat } = this.state;
 
     if (deleteConditionEnabled) {
       _.set(policy, "deletion.condition.max_age", maxAgeNum + maxAgeUnit);
@@ -373,6 +389,8 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     } else {
       delete policy.deletion?.schedule;
     }
+
+    this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format", dateFormat) });
 
     return policy;
   };
@@ -456,6 +474,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       deletionScheduleEnabled,
       advancedSettingsOpen,
       showCreateRepoFlyout,
+      dateFormat,
       policyIdError,
       repoError,
       minCountError,
@@ -759,10 +778,13 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
                 <CustomLabel title="Timestamp format" />
                 <EuiFieldText
-                  placeholder="e.g., yyyy-MM-dd-HH:mm"
-                  value={_.get(policy, "snapshot_config.date_format")}
+                  value={dateFormat}
                   onChange={(e) => {
-                    this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format", e.target.value) });
+                    let dateFormat = e.target.value;
+                    if (!dateFormat) {
+                      dateFormat = DEFAULT_DATE_FORMAT;
+                    }
+                    this.setState({ dateFormat });
                   }}
                 />
 
@@ -774,9 +796,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                   singleSelection={{ asPlainText: true }}
                   options={TIMEZONES}
                   renderOption={({ label: tz }) => `${tz} (${moment.tz(tz).format("Z")})`}
-                  selectedOptions={[{ label: _.get(policy, "snapshot_config.date_format_timezone") ?? "" }]}
+                  selectedOptions={[{ label: _.get(policy, "snapshot_config.date_format_timezone") ?? DEFAULT_DATE_FORMAT_TIMEZONE }]}
                   onChange={(options) => {
-                    const timezone = _.first(options)?.label;
+                    let timezone = _.first(options)?.label;
+                    if (!timezone) timezone = DEFAULT_DATE_FORMAT_TIMEZONE;
                     this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format_timezone", timezone) });
                   }}
                 />
