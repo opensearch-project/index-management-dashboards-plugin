@@ -5,6 +5,7 @@
 
 import {
   EuiAccordion,
+  EuiCallOut,
   EuiCodeEditor,
   EuiComboBox,
   EuiComboBoxOptionOption,
@@ -153,6 +154,16 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
       locationError,
     } = this.state;
 
+    const customConfigHelpText = (
+      <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
+        <p style={{ fontWeight: 200 }}>
+          Define a repository by custom type and settings.{" "}
+          <EuiLink href={S3_REPOSITORY_DOCUMENTATION_URL} target="_blank">
+            View sample configurations
+          </EuiLink>
+        </p>
+      </EuiText>
+    );
     let configuration;
     if (selectedRepoTypeOption == "fs") {
       configuration = (
@@ -197,14 +208,20 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
     if (selectedRepoTypeOption == "custom") {
       configuration = (
         <>
-          <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
-            <p style={{ fontWeight: 200 }}>
-              Define a repository by custom type and settings.{" "}
-              <EuiLink href={S3_REPOSITORY_DOCUMENTATION_URL} target="_blank">
-                View sample configurations
+          <EuiCallOut title="Install and configure for custom repository types">
+            <p>
+              To use custom repository with OpenSearch, such as Amazon S3 and Microsoft Azure, install and configure the repository plugins.
+              Then define your repository configuration below.{" "}
+              <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank">
+                Learn more
               </EuiLink>
             </p>
-          </EuiText>
+          </EuiCallOut>
+
+          <EuiSpacer size="s" />
+
+          <CustomLabel title="Custom configuration" helpText={customConfigHelpText} />
+
           <EuiCodeEditor
             mode="json"
             width="90%"
