@@ -13,11 +13,13 @@ export const ACTIONS_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/
 export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#states";
 export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
 export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
+
+export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org//docs/latest/opensearch/snapshots/snapshot-management/";
 export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
-export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/index";
-export const REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshot-restore/#register-repository";
-export const FS_REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshot-restore/#shared-file-system";
-export const S3_REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshot-restore/#amazon-s3";
+export const REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#register-repository";
+export const FS_REPOSITORY_DOCUMENTATION_URL =
+  "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#shared-file-system";
+export const S3_REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#amazon-s3";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
