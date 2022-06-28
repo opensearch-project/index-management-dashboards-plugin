@@ -16,7 +16,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import SnapshotFlyout from "../../components/SnapshotFlyout/SnapshotFlyout";
 import CreateSnapshotFlyout from "../../components/CreateSnapshotFlyout/CreateSnapshotFlyout";
 import { Snapshot } from "../../../../../models/interfaces";
-import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, RESTORE_SNAPSHOT_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
 import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
 import { snapshotStatusRender } from "../../helper";
@@ -71,7 +71,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         sortable: true,
         dataType: "string",
         render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
-          const truncated = _.truncate(name, { length: 20 });
+          const truncated = _.truncate(name, { length: 80 });
           return (
             <EuiLink onClick={() => this.setState({ showFlyout: true, flyoutSnapshotId: name, flyoutSnapshotRepo: item.repository })}>
               <span title={name}>{truncated}</span>
@@ -84,7 +84,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Status",
         sortable: true,
         dataType: "string",
-        width: "150px",
+        width: "130px",
         render: (value: string) => {
           return snapshotStatusRender(value);
         },
@@ -94,6 +94,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Policy",
         sortable: false,
         dataType: "string",
+        width: "150px",
         render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
           const truncated = _.truncate(name, { length: 20 });
           if (!!item.policy) {
@@ -106,6 +107,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         field: "repository",
         name: "Repository",
         sortable: false,
+        width: "120px",
         dataType: "string",
       },
       {
@@ -113,6 +115,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Start time",
         sortable: true,
         dataType: "date",
+        width: "130px",
         render: renderTimestampMillis,
       },
       {
@@ -120,6 +123,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "End time",
         sortable: true,
         dataType: "date",
+        width: "130px",
         render: renderTimestampMillis,
       },
     ];
@@ -267,7 +271,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const subTitleText = (
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
-          Snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository.
+          Snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository. <br />
+          To restore a snapshot, use the snapshot restore API.{" "}
+          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank">
+            Learn more
+          </EuiLink>
         </p>
       </EuiText>
     );

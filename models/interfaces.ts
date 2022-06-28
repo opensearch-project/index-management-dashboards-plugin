@@ -144,7 +144,8 @@ export interface SMSnapshotConfig {
   ignore_unavailable?: boolean;
   include_global_state?: boolean;
   partial?: boolean;
-  date_expression?: string;
+  date_format?: string;
+  date_format_timezone?: string;
 }
 
 export interface SMCreation {

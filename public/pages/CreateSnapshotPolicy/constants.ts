@@ -16,7 +16,7 @@ export const getDefaultSMPolicy = (): SMPolicy => ({
     schedule: {
       cron: {
         expression: "0 20 * * *",
-        timezone: "America/Los_Angeles",
+        timezone: "UTC",
       },
     },
   },
@@ -34,10 +34,13 @@ export const maxAgeUnitOptions = [
   { value: "h", text: "Hours" },
 ];
 
-export const DEFAULT_INDEX_OPTIONS = [{ label: "*" }, { label: "-.opendistro_security" }];
+export const DEFAULT_INDEX_OPTIONS = [{ label: "*" }];
 
 export const ERROR_PROMPT = {
   NAME: "Name must be provided.",
   REPO: "Repository must be provided.",
   TIMEZONE: "Time zone must be provided.",
 };
+
+export const DEFAULT_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+export const DEFAULT_DATE_FORMAT_TIMEZONE = "UTC";

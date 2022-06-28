@@ -26,9 +26,7 @@ import {
   EuiHorizontalRule,
   EuiButtonIcon,
   EuiLink,
-  EuiComboBox,
 } from "@elastic/eui";
-import moment from "moment-timezone";
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -38,22 +36,22 @@ import { BREADCRUMBS, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../.
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexService, NotificationService, SnapshotManagementService } from "../../../../services";
 import { getErrorMessage, wildcardOption } from "../../../../utils/helpers";
-import SnapshotIndicesRepoInput from "../../components/SnapshotIndicesRepoInput/SnapshotIndicesRepoInput";
-import CronSchedule from "../../components/CronSchedule/CronSchedule";
-import SnapshotAdvancedSettings from "../../components/SnapshotAdvancedSettings/SnapshotAdvancedSettings";
 import CustomLabel from "../../../../components/CustomLabel";
-import ChannelNotification from "../../../VisualCreatePolicy/components/ChannelNotification";
 import { DEFAULT_INDEX_OPTIONS, ERROR_PROMPT, getDefaultSMPolicy, maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS } from "../../constants";
 import {
   getIncludeGlobalState,
   getIgnoreUnavailabel,
   getAllowPartial,
+  showNotification,
   getNotifyCreation,
   getNotifyDeletion,
   getNotifyFailure,
 } from "../helper";
 import { parseCronExpression } from "../../components/CronSchedule/helper";
-import { TIMEZONES } from "../../components/CronSchedule/constants";
+import SnapshotIndicesRepoInput from "../../components/SnapshotIndicesRepoInput";
+import CronSchedule from "../../components/CronSchedule";
+import SnapshotAdvancedSettings from "../../components/SnapshotAdvancedSettings";
+import Notification from "../../components/Notification";
 
 interface CreateSMPolicyProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -86,7 +84,7 @@ interface CreateSMPolicyState {
   deletionScheduleFrequencyType: string;
 
   deleteConditionEnabled: boolean;
-  deletionScheduleEnabled: boolean;
+  deletionScheduleEnabled: boolean; // whether to use the same schedule as creation
 
   advancedSettingsOpen: boolean;
 
@@ -164,6 +162,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     }
     await this.getIndexOptions("");
     await this.getRepos();
+    await this.getChannels();
   }
 
   getPolicy = async (policyId: string): Promise<void> => {
@@ -172,8 +171,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       const response = await snapshotManagementService.getPolicy(policyId);
 
       if (response.ok) {
-        this.populatePolicyToState(response.response.policy);
-
+        // Populate policy into state
         const policy = response.response.policy;
         const indices = _.get(policy, "snapshot_config.indices", "");
         const selectedIndexOptions = indices
@@ -182,9 +180,25 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
           .map((label: string) => ({ label }));
         const selectedRepoValue = _.get(policy, "snapshot_config.repository", "");
 
-        // TODO SM parse frequency type
         const { frequencyType: creationScheduleFrequencyType } = parseCronExpression(_.get(policy, "creation.schedule.cron.expression"));
         const { frequencyType: deletionScheduleFrequencyType } = parseCronExpression(_.get(policy, "deletion.schedule.cron.expression"));
+
+        let deleteConditionEnabled = false;
+        let deletionScheduleEnabled = false;
+        if (!!_.get(policy, "deletion")) {
+          deleteConditionEnabled = true;
+          const creationScheduleExpression = _.get(policy, "creation.schedule.cron.expression");
+          const deletionScheduleExpression = _.get(policy, "deletion.schedule.cron.expression");
+          if (creationScheduleExpression !== deletionScheduleExpression) deletionScheduleEnabled = true;
+        }
+
+        const maxAge = policy.deletion?.condition?.max_age;
+        let maxAgeNum = 1;
+        let maxAgeUnit = "d";
+        if (maxAge) {
+          maxAgeNum = parseInt(maxAge.substring(0, maxAge.length - 1));
+          maxAgeUnit = maxAge[maxAge.length - 1];
+        }
 
         this.setState({
           policy,
@@ -195,6 +209,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
           selectedRepoValue,
           creationScheduleFrequencyType,
           deletionScheduleFrequencyType,
+          deleteConditionEnabled,
+          deletionScheduleEnabled,
+          maxAgeNum,
+          maxAgeUnit,
         });
       } else {
         const errorMessage = response.ok ? "Policy was empty" : response.error;
@@ -332,12 +350,12 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
         if (isEdit) await this.updatePolicy(policyId, policyFromState);
         else await this.createPolicy(policyId, policyFromState);
       }
+      this.setState({ isSubmitting: false });
     } catch (err) {
       this.context.notifications.toasts.addDanger("Invalid Policy");
       console.error(err);
       this.setState({ isSubmitting: false });
     }
-    this.setState({ isSubmitting: false });
   };
 
   buildPolicyFromState = (policy: SMPolicy): SMPolicy => {
@@ -353,6 +371,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       _.set(policy, "deletion.schedule.cron.timezone", _.get(policy, "creation.schedule.cron.timezone"));
     } else {
       delete policy.deletion?.schedule;
+    }
+
+    if (!showNotification(policy)) {
+      delete policy.notification;
     }
 
     return policy;
@@ -396,7 +418,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   getChannels = async (): Promise<void> => {
-    console.log(`sm dev get channels`);
     this.setState({ loadingChannels: true });
     try {
       const { notificationService } = this.props;
@@ -417,7 +438,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   render() {
-    // console.log(`sm dev render state snapshotconfig ${JSON.stringify(this.state.policy.snapshot_config)}`);
+    // console.log(`sm dev render state policy ${JSON.stringify(this.state.policy)}`);
 
     const { isEdit } = this.props;
     const {
@@ -468,14 +489,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       </EuiText>
     );
 
-    const notifyOnCreation = getNotifyCreation(policy);
-    const notifyOnDeletion = getNotifyDeletion(policy);
-    const notifyOnFailure = getNotifyFailure(policy);
-
-    let showNotificationChannel = false;
-    if (notifyOnCreation || notifyOnDeletion || notifyOnFailure) {
-      showNotificationChannel = true;
-    }
+    const showNotificationChannel = showNotification(policy);
 
     return (
       <div style={{ padding: "5px 50px" }}>
@@ -535,9 +549,15 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
         <ContentPanel title="Snapshot schedule" titleSize="m">
           <CronSchedule
+            frequencyTitle="Snapshot frequency"
             frequencyType={creationScheduleFrequencyType}
             onChangeFrequencyType={(e) => {
-              this.setState({ creationScheduleFrequencyType: e.target.value });
+              const frequencyType = e.target.value;
+              let maxAgeUnitToChange = maxAgeUnit;
+              if (frequencyType == "hourly" && !deleteConditionEnabled) {
+                maxAgeUnitToChange = "h";
+              }
+              this.setState({ creationScheduleFrequencyType: e.target.value, maxAgeUnit: maxAgeUnitToChange });
             }}
             showTimezone={true}
             timezone={_.get(policy, "creation.schedule.cron.timezone")}
@@ -598,7 +618,11 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                   <EuiFlexItem grow={false}>
                     <CustomLabel title="Minumum" />
                     <EuiFormRow isInvalid={!!minCountError} error={minCountError}>
-                      <EuiFieldNumber min={1} value={_.get(policy, "deletion.condition.min_count", "")} onChange={this.onChangeMinCount} />
+                      <EuiFieldNumber
+                        min={1}
+                        value={_.get(policy, "deletion.condition.min_count") ?? "1"}
+                        onChange={this.onChangeMinCount}
+                      />
                     </EuiFormRow>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
@@ -611,23 +635,25 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
                 <EuiSpacer size="m" />
 
-                <EuiText>Deletion schedule</EuiText>
+                <EuiText>Deletion frequency</EuiText>
                 <span style={{ color: "grey", fontWeight: 200, fontSize: "12px" }}>
-                  Delete snapshots that are outside the retention period
+                  Configure when to check retention conditions and delete snapshots.
                 </span>
                 <EuiSpacer size="s" />
 
                 <EuiCheckbox
                   id="delete_schedule_checkbox"
-                  label="Use same schedule as snapshots"
+                  label="Same as snapshot frequency"
                   checked={!deletionScheduleEnabled}
                   onChange={(e) => {
                     this.setState({ deletionScheduleEnabled: !deletionScheduleEnabled });
                   }}
                 />
+                <EuiSpacer size="s" />
 
                 {deletionScheduleEnabled ? (
                   <CronSchedule
+                    frequencyTitle="Deletion frequency"
                     frequencyType={deletionScheduleFrequencyType}
                     onChangeFrequencyType={(e) => {
                       this.setState({ deletionScheduleFrequencyType: e.target.value });
@@ -639,7 +665,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                     }}
                   />
                 ) : null}
-              </EuiAccordion>{" "}
+              </EuiAccordion>
             </>
           ) : null}
         </ContentPanel>
@@ -652,9 +678,9 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
             <EuiSpacer size="s" />
             <EuiCheckbox
-              id="creation"
-              label="When a snapshot gets created."
-              checked={notifyOnCreation}
+              id="notification-creation"
+              label="When a snapshot has been created."
+              checked={getNotifyCreation(policy)}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 this.setState({ policy: this.setPolicyHelper("notification.conditions.creation", e.target.checked) });
               }}
@@ -663,9 +689,9 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             <EuiSpacer size="s" />
 
             <EuiCheckbox
-              id="deletion"
-              label="when snapshots get deleted."
-              checked={notifyOnDeletion}
+              id="notification-deletion"
+              label="When a snapshots has been deleted."
+              checked={getNotifyDeletion(policy)}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 this.setState({ policy: this.setPolicyHelper("notification.conditions.deletion", e.target.checked) });
               }}
@@ -674,17 +700,17 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             <EuiSpacer size="s" />
 
             <EuiCheckbox
-              id="partial"
-              label="When a snapshot operation failed."
-              checked={notifyOnFailure}
+              id="notification-failure"
+              label="When a snapshot has failed."
+              checked={getNotifyFailure(policy)}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 this.setState({ policy: this.setPolicyHelper("notification.conditions.failure", e.target.checked) });
               }}
             />
           </div>
           {showNotificationChannel ? (
-            <ChannelNotification
-              channelId=""
+            <Notification
+              channelId={_.get(policy, "notification.channel.id") || ""}
               channels={channels}
               loadingChannels={loadingChannels}
               onChangeChannelId={this.onChangeChannelId}
@@ -730,7 +756,8 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                 width="200%"
               />
 
-              <div style={{ padding: "0px 10px" }}>
+              {/* TODO SM Haven't fininalized the design for this before 2.1 release */}
+              {/* <div style={{ padding: "0px 10px" }}>
                 <EuiText size="s">
                   <h4>Snapshot naming settings</h4>
                 </EuiText>
@@ -740,10 +767,13 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
                 <CustomLabel title="Timestamp format" />
                 <EuiFieldText
-                  placeholder="e.g. yyyy-MM-dd-HH:mm"
-                  value={_.get(policy, "snapshot_config.date_format")}
+                  value={dateFormat}
                   onChange={(e) => {
-                    this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format", e.target.value) });
+                    let dateFormat = e.target.value;
+                    if (!dateFormat) {
+                      dateFormat = DEFAULT_DATE_FORMAT;
+                    }
+                    this.setState({ dateFormat });
                   }}
                 />
 
@@ -755,13 +785,14 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                   singleSelection={{ asPlainText: true }}
                   options={TIMEZONES}
                   renderOption={({ label: tz }) => `${tz} (${moment.tz(tz).format("Z")})`}
-                  selectedOptions={[{ label: _.get(policy, "snapshot_config.date_format_timezone") ?? "" }]}
+                  selectedOptions={[{ label: _.get(policy, "snapshot_config.date_format_timezone") ?? DEFAULT_DATE_FORMAT_TIMEZONE }]}
                   onChange={(options) => {
-                    const timezone = _.first(options)?.label;
+                    let timezone = _.first(options)?.label;
+                    if (!timezone) timezone = DEFAULT_DATE_FORMAT_TIMEZONE;
                     this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format_timezone", timezone) });
                   }}
                 />
-              </div>
+              </div> */}
             </>
           )}
         </EuiPanel>
@@ -782,16 +813,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       </div>
     );
   }
-
-  populatePolicyToState = (policy: SMPolicy) => {
-    const maxAge = policy.deletion?.condition?.max_age;
-    if (maxAge) {
-      this.setState({
-        maxAgeNum: parseInt(maxAge.substring(0, maxAge.length - 1)),
-        maxAgeUnit: maxAge[maxAge.length - 1],
-      });
-    }
-  };
 
   onChangeMaxCount = (e: ChangeEvent<HTMLInputElement>) => {
     // Received NaN for the `value` attribute. If this is expected, cast the value to a string.

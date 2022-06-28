@@ -75,10 +75,6 @@ export default class SnapshotManagementService {
           repository: repositories[i],
           policy: s.metadata?.sm_policy,
         }));
-        // TODO SM try catch the missing snapshot exception
-        // const catSnapshotsRes: CatSnapshotWithRepoAndPolicy[] = await callWithRequest("snapshot.get", params);
-        // const snapshotsWithRepo = catSnapshotsRes.map((item) => ({ ...item, repository: repositories[i] }));
-        // console.log(`sm dev cat snapshot response: ${JSON.stringify(snapshotWithPolicy)}`);
         snapshots = [...snapshots, ...snapshotWithPolicy];
       }
 
@@ -93,7 +89,7 @@ export default class SnapshotManagementService {
         },
       });
     } catch (err) {
-      // TODO SM handle missing snapshot exception, return empty
+      // If getting a non-existing snapshot, need to handle the missing snapshot exception, and return empty
       return this.errorResponse(response, err, "getAllSnapshotsWithPolicy");
     }
   };
@@ -176,7 +172,6 @@ export default class SnapshotManagementService {
         snapshot: id,
         body: JSON.stringify(request.body),
       };
-      // TODO SM body indices, ignore_unavailable, include_global_state, partial
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const resp: CreateSnapshotResponse = await callWithRequest("snapshot.create", params);
 

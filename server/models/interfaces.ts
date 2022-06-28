@@ -107,6 +107,25 @@ export interface FeatureChannelList {
   is_enabled: boolean;
 }
 
+export interface GetNotificationConfigsResponse {
+  start_index: number;
+  total_hits: number;
+  total_hit_relation: string;
+  config_list: NotificationConfig[];
+}
+
+export interface NotificationConfig {
+  config_id: string;
+  last_updated_time_ms: number;
+  created_time_ms: number;
+  config: {
+    name: string;
+    description: string;
+    config_type: string;
+    is_enabled: boolean;
+  };
+}
+
 export interface GetFieldsResponse {
   result: string;
 }
@@ -282,6 +301,7 @@ export interface IndexManagementApi {
   readonly ROLLUP_JOBS_BASE: string;
   readonly TRANSFORM_BASE: string;
   readonly CHANNELS_BASE: string;
+  readonly NOTIFICATION_CONFIGS_BASE: string;
   readonly SM_POLICY_BASE: string;
 }
 
