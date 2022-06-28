@@ -690,7 +690,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
             <EuiCheckbox
               id="notification-deletion"
-              label="when a snapshots has been deleted."
+              label="When a snapshots has been deleted."
               checked={getNotifyDeletion(policy)}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 this.setState({ policy: this.setPolicyHelper("notification.conditions.deletion", e.target.checked) });
@@ -756,7 +756,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                 width="200%"
               />
 
-              {/* Haven't fininalized the design for this before 2.1 release */}
+              {/* TODO SM Haven't fininalized the design for this before 2.1 release */}
               {/* <div style={{ padding: "0px 10px" }}>
                 <EuiText size="s">
                   <h4>Snapshot naming settings</h4>

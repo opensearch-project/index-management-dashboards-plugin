@@ -162,7 +162,10 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       const response = await notificationService.getChannel(channelId);
 
       if (response.ok) {
-        this.setState({ channel: response.response.config_list[0] });
+        const configList = response.response.config_list;
+        let channel = null;
+        if (configList.length == 1) channel = configList[0];
+        this.setState({ channel });
       } else {
         this.context.notifications.toasts.addDanger(`Could not load notification channel: ${response.error}`);
       }
@@ -292,7 +295,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
     let channelDetail = <p>None</p>;
     if (!!channel?.config.name) {
       channelDetail = (
-        <EuiLink href={`notifications-dashboards#/channel-details/${channel.config_id}`}>
+        <EuiLink href={`notifications-dashboards#/channel-details/${channel.config_id}`} target="_blank">
           {channel?.config.name} ({channel?.config.config_type})
         </EuiLink>
       );
