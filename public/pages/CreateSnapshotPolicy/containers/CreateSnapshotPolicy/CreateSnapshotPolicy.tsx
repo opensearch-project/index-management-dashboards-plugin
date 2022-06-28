@@ -554,7 +554,12 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             frequencyTitle="Snapshot frequency"
             frequencyType={creationScheduleFrequencyType}
             onChangeFrequencyType={(e) => {
-              this.setState({ creationScheduleFrequencyType: e.target.value });
+              const frequencyType = e.target.value;
+              let maxAgeUnitToChange = maxAgeUnit;
+              if (frequencyType == "hourly" && !deleteConditionEnabled) {
+                maxAgeUnitToChange = "h";
+              }
+              this.setState({ creationScheduleFrequencyType: e.target.value, maxAgeUnit: maxAgeUnitToChange });
             }}
             showTimezone={true}
             timezone={_.get(policy, "creation.schedule.cron.timezone")}
