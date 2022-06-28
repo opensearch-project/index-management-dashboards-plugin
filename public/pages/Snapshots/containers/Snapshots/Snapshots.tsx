@@ -272,7 +272,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           Snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository. <br />
-          To restore a snapshot, use the snapshot API.{" "}
+          To restore a snapshot, use the snapshot restore API.{" "}
           <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank">
             Learn more
           </EuiLink>
