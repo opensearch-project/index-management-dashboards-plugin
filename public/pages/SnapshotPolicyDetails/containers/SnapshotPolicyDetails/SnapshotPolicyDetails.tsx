@@ -119,7 +119,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       await this.getPolicy(id);
 
       const channelId = _.get(this.state.policy, "notification.channel.id");
-      console.log(`sm dev channel id ${channelId}`);
       if (channelId) {
         this.getChannel(channelId);
       }
@@ -237,8 +236,8 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       { term: "Include cluster state", value: `${getIncludeGlobalState(policy)}` },
       { term: "Ignore unavailable indices", value: `${getIgnoreUnavailabel(policy)}` },
       { term: "Allow partial snapshots", value: `${getAllowPartial(policy)}` },
-      { term: "Timestamp format", value: `${_.get(policy, "snapshot_config.date_format")}` },
-      { term: "Time zone of timestamp", value: `${_.get(policy, "snapshot_config.date_format_timezone")}` },
+      // { term: "Timestamp format", value: `${_.get(policy, "snapshot_config.date_format")}` },
+      // { term: "Time zone of timestamp", value: `${_.get(policy, "snapshot_config.date_format_timezone")}` },
     ];
 
     const createCronExpression = policy.creation.schedule.cron.expression;
@@ -283,7 +282,6 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       [condition: string]: boolean;
     }
     const notiConditions: NotiConditions = _.get(policy, "notification.conditions");
-    // _.get(policy, "notification.conditions")
     let notiActivities = "None";
     if (notiConditions) {
       notiActivities = Object.keys(notiConditions)
@@ -291,9 +289,14 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
         .join(", ");
     }
 
+    let channelDetail = "None";
+    if (!!channel?.config.name) {
+      channelDetail = `${channel?.config.name} (${channel?.config.config_type})`;
+    }
+
     const notificationItems = [
       { term: "Notify on snapshot activities", value: notiActivities },
-      { term: "Channels", value: `${channel?.config.name} (${channel?.config_id})` },
+      { term: "Channel", value: channelDetail },
     ];
 
     let creationLatestActivity: LatestActivities = { activityType: "Creation" };

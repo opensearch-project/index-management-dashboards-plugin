@@ -363,7 +363,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
         this.setState({ timezoneError: ERROR_PROMPT.TIMEZONE });
       } else {
         const policyFromState = this.buildPolicyFromState(policy);
-        console.log(`sm dev policy from state ${JSON.stringify(policyFromState)}`);
+        // console.log(`sm dev policy from state ${JSON.stringify(policyFromState)}`);
         if (isEdit) await this.updatePolicy(policyId, policyFromState);
         else await this.createPolicy(policyId, policyFromState);
       }
@@ -390,7 +390,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       delete policy.deletion?.schedule;
     }
 
-    this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format", dateFormat) });
+    _.set(policy, "snapshot_config.date_format", dateFormat);
 
     return policy;
   };
@@ -774,7 +774,8 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                 width="200%"
               />
 
-              <div style={{ padding: "0px 10px" }}>
+              {/* Haven't fininalized the design for this before 2.1 release */}
+              {/* <div style={{ padding: "0px 10px" }}>
                 <EuiText size="s">
                   <h4>Snapshot naming settings</h4>
                 </EuiText>
@@ -809,7 +810,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                     this.setState({ policy: this.setPolicyHelper("snapshot_config.date_format_timezone", timezone) });
                   }}
                 />
-              </div>
+              </div> */}
             </>
           )}
         </EuiPanel>

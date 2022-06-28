@@ -58,13 +58,11 @@ export default class NotificationService {
       const { id } = request.params as {
         id: string;
       };
-      console.log(`sm dev get channel id ${id}`);
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getResponse: GetNotificationConfigsResponse = await callWithRequest("ism.getChannel", {
         id,
       });
-      console.log(`sm dev get channel response ${JSON.stringify(getResponse)}`);
 
       return response.custom({
         statusCode: 200,
