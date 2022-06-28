@@ -289,9 +289,13 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
         .join(", ");
     }
 
-    let channelDetail = "None";
+    let channelDetail = <p>None</p>;
     if (!!channel?.config.name) {
-      channelDetail = `${channel?.config.name} (${channel?.config.config_type})`;
+      channelDetail = (
+        <EuiLink href={`notifications-dashboards#/channel-details/${channel.config_id}`}>
+          {channel?.config.name} ({channel?.config.config_type})
+        </EuiLink>
+      );
     }
 
     const notificationItems = [

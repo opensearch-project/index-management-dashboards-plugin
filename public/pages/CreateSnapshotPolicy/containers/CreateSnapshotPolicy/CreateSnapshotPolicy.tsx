@@ -42,6 +42,7 @@ import {
   getIncludeGlobalState,
   getIgnoreUnavailabel,
   getAllowPartial,
+  showNotification,
   getNotifyCreation,
   getNotifyDeletion,
   getNotifyFailure,
@@ -372,6 +373,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       delete policy.deletion?.schedule;
     }
 
+    if (!showNotification(policy)) {
+      delete policy.notification;
+    }
+
     return policy;
   };
 
@@ -484,14 +489,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       </EuiText>
     );
 
-    const notifyOnCreation = getNotifyCreation(policy);
-    const notifyOnDeletion = getNotifyDeletion(policy);
-    const notifyOnFailure = getNotifyFailure(policy);
-
-    let showNotificationChannel = false;
-    if (notifyOnCreation || notifyOnDeletion || notifyOnFailure) {
-      showNotificationChannel = true;
-    }
+    const showNotificationChannel = showNotification(policy);
 
     return (
       <div style={{ padding: "5px 50px" }}>
@@ -682,7 +680,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             <EuiCheckbox
               id="notification-creation"
               label="When a snapshot has been created."
-              checked={notifyOnCreation}
+              checked={getNotifyCreation(policy)}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 this.setState({ policy: this.setPolicyHelper("notification.conditions.creation", e.target.checked) });
               }}
@@ -693,7 +691,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             <EuiCheckbox
               id="notification-deletion"
               label="when a snapshots has been deleted."
-              checked={notifyOnDeletion}
+              checked={getNotifyDeletion(policy)}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 this.setState({ policy: this.setPolicyHelper("notification.conditions.deletion", e.target.checked) });
               }}
@@ -704,7 +702,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             <EuiCheckbox
               id="notification-failure"
               label="When a snapshot has failed."
-              checked={notifyOnFailure}
+              checked={getNotifyFailure(policy)}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 this.setState({ policy: this.setPolicyHelper("notification.conditions.failure", e.target.checked) });
               }}
