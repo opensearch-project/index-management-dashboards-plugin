@@ -74,7 +74,9 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.EDIT_SNAPSHOT_POLICY,
 ];
 
-interface MainProps extends RouteComponentProps {}
+interface MainProps extends RouteComponentProps {
+  landingPage: string;
+}
 
 export default class Main extends Component<MainProps, object> {
   render() {
@@ -145,6 +147,9 @@ export default class Main extends Component<MainProps, object> {
         ],
       },
     ];
+
+    const { landingPage } = this.props;
+
     return (
       <CoreServicesConsumer>
         {(core: CoreStart | null) =>
@@ -188,7 +193,11 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOT_POLICY_DETAILS}
                             render={(props: RouteComponentProps) => (
-                              <SnapshotPolicyDetails {...props} snapshotManagementService={services.snapshotManagementService} />
+                              <SnapshotPolicyDetails
+                                {...props}
+                                snapshotManagementService={services.snapshotManagementService}
+                                notificationService={services.notificationService}
+                              />
                             )}
                           />
                           <Route
@@ -356,7 +365,7 @@ export default class Main extends Component<MainProps, object> {
                               </div>
                             )}
                           />
-                          <Redirect from="/" to={ROUTES.INDEX_POLICIES} />
+                          <Redirect from="/" to={landingPage} />
                         </Switch>
                       </EuiPageBody>
                     </EuiPage>

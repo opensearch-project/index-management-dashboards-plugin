@@ -376,6 +376,19 @@ export default function ismPlugin(Client: any, config: any, components: any) {
     method: "GET",
   });
 
+  ism.getChannel = ca({
+    url: {
+      fmt: `${API.NOTIFICATION_CONFIGS_BASE}/<%=id%>`,
+      req: {
+        id: {
+          type: "string",
+          required: true,
+        },
+      },
+    },
+    method: "GET",
+  });
+
   ism.getSMPolicy = ca({
     url: {
       fmt: `${API.SM_POLICY_BASE}/<%=id%>`,

@@ -28,3 +28,16 @@ export const getNotifyDeletion = (policy: SMPolicy) => {
 export const getNotifyFailure = (policy: SMPolicy) => {
   return String(_.get(policy, "notification.conditions.failure", false)) == "true";
 };
+
+export const showNotification = (policy: SMPolicy) => {
+  const notifyOnCreation = getNotifyCreation(policy);
+  const notifyOnDeletion = getNotifyDeletion(policy);
+  const notifyOnFailure = getNotifyFailure(policy);
+
+  let showNotificationChannel = false;
+  if (notifyOnCreation || notifyOnDeletion || notifyOnFailure) {
+    showNotificationChannel = true;
+  }
+
+  return showNotificationChannel;
+};

@@ -4,7 +4,7 @@
  */
 
 import { HttpSetup } from "opensearch-dashboards/public";
-import { GetChannelsResponse } from "../../server/models/interfaces";
+import { GetChannelsResponse, GetNotificationConfigsResponse } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { NODE_API } from "../../utils/constants";
 
@@ -18,6 +18,12 @@ export default class NotificationService {
   getChannels = async (): Promise<ServerResponse<GetChannelsResponse>> => {
     let url = `..${NODE_API.CHANNELS}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<GetChannelsResponse>;
+    return response;
+  };
+
+  getChannel = async (channelId: string): Promise<ServerResponse<GetNotificationConfigsResponse>> => {
+    let url = `..${NODE_API.CHANNELS}/${channelId}`;
+    const response = (await this.httpClient.get(url)) as ServerResponse<GetNotificationConfigsResponse>;
     return response;
   };
 }

@@ -22,7 +22,7 @@ import Main from "./pages/Main";
 import { CoreServicesContext } from "./components/core_services";
 import "./app.scss";
 
-export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
+export function renderApp(coreStart: CoreStart, params: AppMountParameters, landingPage: string) {
   const http = coreStart.http;
 
   const indexService = new IndexService(http);
@@ -51,7 +51,7 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters) {
           <DarkModeContext.Provider value={isDarkMode}>
             <ServicesContext.Provider value={services}>
               <CoreServicesContext.Provider value={coreStart}>
-                <Main {...props} />
+                <Main {...props} landingPage={landingPage} />
               </CoreServicesContext.Provider>
             </ServicesContext.Provider>
           </DarkModeContext.Provider>
