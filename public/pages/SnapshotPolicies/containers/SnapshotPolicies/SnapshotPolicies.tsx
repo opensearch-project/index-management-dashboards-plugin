@@ -97,9 +97,8 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Policy name",
         sortable: true,
         dataType: "string",
-        width: "180px",
         render: (name: string, item: SMPolicy) => {
-          const showSymbol = _.truncate(name, { length: 20 });
+          const showSymbol = _.truncate(name, { length: 60 });
           return (
             <EuiLink onClick={() => this.props.history.push(`${ROUTES.SNAPSHOT_POLICY_DETAILS}?id=${name}`)}>
               <span title={name}>{showSymbol}</span>
@@ -127,7 +126,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         sortable: false,
         dataType: "string",
         render: (value: string, item: SMPolicy) => {
-          return truncateSpan(value);
+          return truncateSpan(value, 60);
         },
       },
       {
@@ -135,6 +134,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Snapshot schedule",
         sortable: false,
         dataType: "string",
+        width: "180px",
         render: (name: string, item: SMPolicy) => {
           const expression = name;
           const timezone = item.creation.schedule.cron.timezone;
@@ -146,6 +146,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Time last updated",
         sortable: true,
         dataType: "date",
+        width: "130px",
         render: renderTimestampMillis,
       },
       {
@@ -153,6 +154,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Description",
         sortable: false,
         dataType: "string",
+        width: "150px",
         render: (value: string, item: SMPolicy) => {
           return truncateSpan(value);
         },
@@ -287,6 +289,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not start the policy"));
       }
     }
+    _.delay(this.getPolicies, 1000);
   };
 
   onClickStop = async () => {
@@ -305,6 +308,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not stop the policy"));
       }
     }
+    _.delay(this.getPolicies, 1000);
   };
 
   getSelectedPolicyIds = () => {
