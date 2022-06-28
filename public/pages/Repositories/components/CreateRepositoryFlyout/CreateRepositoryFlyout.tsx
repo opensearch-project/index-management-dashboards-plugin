@@ -210,8 +210,8 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
         <>
           <EuiCallOut title="Install and configure for custom repository types">
             <p>
-              To use custom repository with OpenSearch, such as Amazon S3 and Microsoft Azure, install and configure the repository plugins.
-              Then define your repository configuration below.{" "}
+              To use a custom repository, such as Amazon S3, Azure Blob Storage or similar, install and configure the respective repository
+              plugin on OpenSearch and then define the repository configuration below.{" "}
               <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank">
                 Learn more
               </EuiLink>

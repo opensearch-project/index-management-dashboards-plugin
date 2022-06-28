@@ -655,7 +655,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
                 <EuiText>Deletion frequency</EuiText>
                 <span style={{ color: "grey", fontWeight: 200, fontSize: "12px" }}>
-                  Configure time to delete snapshots that are outside the retention period
+                  Configure time to delete snapshots that are outside the retention condition.
                 </span>
                 <EuiSpacer size="s" />
 
