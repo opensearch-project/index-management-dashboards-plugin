@@ -26,9 +26,7 @@ import {
   EuiHorizontalRule,
   EuiButtonIcon,
   EuiLink,
-  EuiComboBox,
 } from "@elastic/eui";
-import moment from "moment-timezone";
 import React, { ChangeEvent, Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -39,14 +37,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexService, NotificationService, SnapshotManagementService } from "../../../../services";
 import { getErrorMessage, wildcardOption } from "../../../../utils/helpers";
 import CustomLabel from "../../../../components/CustomLabel";
-import {
-  DEFAULT_DATE_FORMAT,
-  DEFAULT_DATE_FORMAT_TIMEZONE,
-  DEFAULT_INDEX_OPTIONS,
-  ERROR_PROMPT,
-  getDefaultSMPolicy,
-  maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS,
-} from "../../constants";
+import { DEFAULT_INDEX_OPTIONS, ERROR_PROMPT, getDefaultSMPolicy, maxAgeUnitOptions as MAX_AGE_UNIT_OPTIONS } from "../../constants";
 import {
   getIncludeGlobalState,
   getIgnoreUnavailabel,
@@ -56,7 +47,6 @@ import {
   getNotifyFailure,
 } from "../helper";
 import { parseCronExpression } from "../../components/CronSchedule/helper";
-import { TIMEZONES } from "../../components/CronSchedule/constants";
 import SnapshotIndicesRepoInput from "../../components/SnapshotIndicesRepoInput";
 import CronSchedule from "../../components/CronSchedule";
 import SnapshotAdvancedSettings from "../../components/SnapshotAdvancedSettings";
@@ -99,8 +89,6 @@ interface CreateSMPolicyState {
 
   showCreateRepoFlyout: boolean;
 
-  dateFormat: string;
-
   policyIdError: string;
   minCountError: string;
   repoError: string;
@@ -141,8 +129,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
       advancedSettingsOpen: false,
       showCreateRepoFlyout: false,
-
-      dateFormat: DEFAULT_DATE_FORMAT,
 
       policyIdError: "",
       repoError: "",
@@ -213,9 +199,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
           maxAgeUnit = maxAge[maxAge.length - 1];
         }
 
-        let dateFormat = policy.snapshot_config.date_format;
-        if (!dateFormat) dateFormat = DEFAULT_DATE_FORMAT;
-
         this.setState({
           policy,
           policyId: response.response.id,
@@ -229,7 +212,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
           deletionScheduleEnabled,
           maxAgeNum,
           maxAgeUnit,
-          dateFormat,
         });
       } else {
         const errorMessage = response.ok ? "Policy was empty" : response.error;
@@ -376,7 +358,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   };
 
   buildPolicyFromState = (policy: SMPolicy): SMPolicy => {
-    const { deletionScheduleEnabled, maxAgeNum, maxAgeUnit, deleteConditionEnabled, dateFormat } = this.state;
+    const { deletionScheduleEnabled, maxAgeNum, maxAgeUnit, deleteConditionEnabled } = this.state;
 
     if (deleteConditionEnabled) {
       _.set(policy, "deletion.condition.max_age", maxAgeNum + maxAgeUnit);
@@ -389,8 +371,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     } else {
       delete policy.deletion?.schedule;
     }
-
-    _.set(policy, "snapshot_config.date_format", dateFormat);
 
     return policy;
   };
@@ -474,7 +454,6 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       deletionScheduleEnabled,
       advancedSettingsOpen,
       showCreateRepoFlyout,
-      dateFormat,
       policyIdError,
       repoError,
       minCountError,
