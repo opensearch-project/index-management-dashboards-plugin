@@ -23,6 +23,8 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import * as H from "history";
 import { ROUTES } from "../../../../utils/constants";
+import InfoModal from "../../../SnapshotPolicyDetails/components/InfoModal";
+import { ModalConsumer } from "../../../../components/Modal";
 
 interface SnapshotFlyoutProps {
   snapshotId: string;
@@ -88,11 +90,15 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
     ];
 
     let error;
-    if (snapshot?.state === "PARTIAL" || snapshot?.state === "FAILED") {
+    if (snapshot?.failures != null) {
       error = (
         <EuiText size="xs">
           <dt>Error details</dt>
-          <dd>{snapshot?.failures}</dd>
+          <dd>
+            <ModalConsumer>
+              {({ onShow }) => <EuiLink onClick={() => onShow(InfoModal, { info: snapshot.failures })}>failures</EuiLink>}
+            </ModalConsumer>
+          </dd>
         </EuiText>
       );
     }
