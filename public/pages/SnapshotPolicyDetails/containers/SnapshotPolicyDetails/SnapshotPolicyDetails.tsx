@@ -309,7 +309,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
     let creationLatestActivity: LatestActivities = { activityType: "Creation" };
     creationLatestActivity = { ...creationLatestActivity, ...metadata?.creation?.latest_execution };
     let latestActivities: LatestActivities[] = [creationLatestActivity];
-    if (policy.deletion != null) {
+    if (metadata?.deletion?.latest_execution != null) {
       let deletionLatestActivity: LatestActivities = { activityType: "Deletion" };
       deletionLatestActivity = { ...deletionLatestActivity, ...metadata?.deletion?.latest_execution };
       latestActivities = [...latestActivities, deletionLatestActivity];
@@ -320,7 +320,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
         <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem grow={false}>
             <EuiTitle size="m">
-              <h2>{policyId}</h2>
+              <span title={policyId}>{_.truncate(policyId)}</span>
             </EuiTitle>
           </EuiFlexItem>
 

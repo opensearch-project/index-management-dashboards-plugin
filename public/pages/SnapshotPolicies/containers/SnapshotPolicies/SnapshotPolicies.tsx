@@ -146,7 +146,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
         name: "Time last updated",
         sortable: true,
         dataType: "date",
-        width: "130px",
+        width: "150px",
         render: renderTimestampMillis,
       },
       {

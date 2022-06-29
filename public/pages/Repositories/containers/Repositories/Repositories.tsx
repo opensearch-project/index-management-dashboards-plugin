@@ -23,6 +23,7 @@ import CreateRepositoryFlyout from "../../components/CreateRepositoryFlyout";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import DeleteModal from "../../components/DeleteModal";
+import { truncateSpan } from "../../../Snapshots/helper";
 
 interface RepositoriesProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -67,6 +68,9 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
         dataType: "string",
         width: "15%",
         align: "left",
+        render: (value: string, item: CatRepository) => {
+          return truncateSpan(value, 30);
+        },
       },
       {
         field: "type",

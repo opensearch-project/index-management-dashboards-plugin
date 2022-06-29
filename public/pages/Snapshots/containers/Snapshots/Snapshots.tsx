@@ -19,7 +19,7 @@ import { Snapshot } from "../../../../../models/interfaces";
 import { BREADCRUMBS, RESTORE_SNAPSHOT_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
 import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
-import { snapshotStatusRender } from "../../helper";
+import { snapshotStatusRender, truncateSpan } from "../../helper";
 
 interface SnapshotsProps extends RouteComponentProps {
   snapshotManagementService: SnapshotManagementService;
@@ -94,7 +94,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Policy",
         sortable: false,
         dataType: "string",
-        width: "150px",
+        width: "160px",
         render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
           const truncated = _.truncate(name, { length: 20 });
           if (!!item.policy) {
@@ -107,15 +107,18 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         field: "repository",
         name: "Repository",
         sortable: false,
-        width: "120px",
+        width: "150px",
         dataType: "string",
+        render: (value: string, item: SnapshotsWithRepoAndPolicy) => {
+          return truncateSpan(value);
+        },
       },
       {
         field: "start_epoch",
         name: "Start time",
         sortable: true,
         dataType: "date",
-        width: "130px",
+        width: "150px",
         render: renderTimestampMillis,
       },
       {
@@ -123,7 +126,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "End time",
         sortable: true,
         dataType: "date",
-        width: "130px",
+        width: "150px",
         render: renderTimestampMillis,
       },
     ];
