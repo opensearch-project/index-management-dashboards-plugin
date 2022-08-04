@@ -3,10 +3,14 @@ on:
   pull_request:
     branches:
       - main
+      - 1.x
+      - 2.*
   push:
     branches:
       - main
       - development-*
+      - 1.x
+      - 2.*
 env:
   OPENSEARCH_DASHBOARDS_VERSION: '2.x'
   OPENSEARCH_VERSION: '2.1.0-SNAPSHOT'
