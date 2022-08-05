@@ -502,7 +502,25 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                       class="euiFormHelpText euiFormRow__text"
                       id="some_html_id-help-0"
                     >
-                      The index stores rollup results. You can look up or an existing index to reuse or type to create a new index.
+                      <div
+                        class="euiText euiText--extraSmall"
+                      >
+                        The target index stores rollup results. You can select an existing index or type in a new index name with embedded variables 
+                        <a
+                          class="euiLink euiLink--primary"
+                          href="https://opensearch.org/docs/latest/im-plugin/index-rollups/index/#step-1-set-up-indices"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Learn more
+                          EuiIconMock
+                          <span
+                            class="euiScreenReaderOnly"
+                          >
+                            (opens in a new tab or window)
+                          </span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
