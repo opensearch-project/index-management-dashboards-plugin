@@ -4,7 +4,7 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { EuiSpacer, EuiFormRow, EuiComboBox, EuiCallOut } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiComboBox, EuiCallOut, EuiText, EuiLink } from "@elastic/eui";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import _ from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -29,6 +29,8 @@ interface RollupIndicesState {
   indexOptions: { label: string; value?: IndexItem }[];
   targetIndexOptions: { label: string; value?: IndexItem }[];
 }
+
+export const ROLLUP_RESULTS_HELP_TEXT_LINK = "https://opensearch.org/docs/latest/im-plugin/index-rollups/index/#step-1-set-up-indices";
 
 export default class RollupIndices extends Component<RollupIndicesProps, RollupIndicesState> {
   static contextType = CoreServicesContext;
@@ -143,7 +145,18 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
             label="Target index"
             error={targetIndexError}
             isInvalid={targetIndexError != ""}
-            helpText="The index stores rollup results. You can look up or an existing index to reuse or type to create a new index."
+            helpText={
+              <EuiText size={"xs"}>
+                {
+                  "The target index stores rollup results. You can select an existing index or type in a new index name with embedded variables "
+                }
+                {
+                  <EuiLink external href={ROLLUP_RESULTS_HELP_TEXT_LINK} target={"_blank"}>
+                    Learn more
+                  </EuiLink>
+                }
+              </EuiText>
+            }
           >
             <EuiComboBox
               placeholder="Select or create target index"
