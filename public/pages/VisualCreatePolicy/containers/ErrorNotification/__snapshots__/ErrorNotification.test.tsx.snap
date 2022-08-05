@@ -61,8 +61,27 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
               target="_blank"
             >
               Learn more 
-              EuiIconMock
-              EuiIconMock
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--small euiIcon-isLoading"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <svg
+                aria-hidden="true"
+                aria-label="External link"
+                class="euiIcon euiIcon--small euiIcon-isLoading euiLink__externalIcon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
               <span
                 class="euiScreenReaderOnly"
               >
@@ -141,7 +160,16 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
                     <span
                       class="euiFormControlLayoutCustomIcon"
                     >
-                      EuiIconMock
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
                     </span>
                   </div>
                 </div>
@@ -161,7 +189,16 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
             <span
               class="euiButtonContent euiButton__content"
             >
-              EuiIconMock
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon--inherit euiIcon-isLoading euiButtonContent__icon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
               <span
                 class="euiButton__text"
               />
@@ -180,7 +217,16 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
             <span
               class="euiButtonContent euiButton__content"
             >
-              EuiIconMock
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon--inherit euiIcon-isLoading euiButtonContent__icon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
               <span
                 class="euiButton__text"
               >

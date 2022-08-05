@@ -2,14 +2,13 @@ name: E2E tests workflow
 on:
   pull_request:
     branches:
-      - main
+      - "*"
   push:
     branches:
-      - main
-      - development-*
+      - "*"
 env:
   OPENSEARCH_DASHBOARDS_VERSION: '2.x'
-  OPENSEARCH_VERSION: '2.1.0-SNAPSHOT'
+  OPENSEARCH_VERSION: '2.2.0-SNAPSHOT'
 jobs:
   tests:
     name: Run Cypress E2E tests
