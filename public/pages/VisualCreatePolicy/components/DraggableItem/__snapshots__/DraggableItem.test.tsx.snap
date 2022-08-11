@@ -32,7 +32,16 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
             role="button"
             tabindex="0"
           >
-            EuiIconMock
+            <svg
+              aria-hidden="true"
+              class="euiIcon euiIcon--medium euiIcon-isLoading"
+              focusable="false"
+              height="16"
+              role="img"
+              viewBox="0 0 16 16"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            />
           </div>
         </div>
         <div
@@ -52,7 +61,16 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
               data-test-subj="draggable-item-delete-button-some_html_id"
               type="button"
             >
-              EuiIconMock
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon--inherit euiIcon-isLoading euiButtonIcon__icon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
             </button>
           </span>
         </div>
@@ -68,7 +86,16 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
               data-test-subj="draggable-item-edit-button-some_html_id"
               type="button"
             >
-              EuiIconMock
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--medium euiIcon--inherit euiIcon-isLoading euiButtonIcon__icon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
             </button>
           </span>
         </div>
