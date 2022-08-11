@@ -2,7 +2,7 @@
 [![Integration tests](https://github.com/opensearch-project/index-management-dashboards-plugin/workflows/E2E%20tests%20workflow/badge.svg)](https://github.com/opensearch-project/index-management-dashboards-plugin/actions?query=workflow%3A%22E2E+tests+workflow%22)
 [![codecov](https://codecov.io/gh/opensearch-project/index-management-dashboards-plugin/branch/main/graph/badge.svg)](https://codecov.io/gh/opensearch-project/index-management-dashboards-plugin)
 [![Documentation](https://img.shields.io/badge/doc-reference-blue)](https://opensearch.org/docs/im-plugin/index/)
-[![Forum](https://img.shields.io/badge/chat-on%20forums-blue)](https://discuss.opendistrocommunity.dev/c/Use-this-category-for-all-questions-around-machine-learning-plugins)
+[![Forum](https://img.shields.io/badge/chat-on%20forums-blue)](https://forum.opensearch.org/c/plugins/index-management)
 ![PRs welcome!](https://img.shields.io/badge/PRs-welcome!-success)
 
 <img src="https://opensearch.org/assets/img/opensearch-logo-themed.svg" height="64px">
