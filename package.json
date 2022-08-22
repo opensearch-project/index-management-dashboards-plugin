@@ -43,7 +43,7 @@
     "json-schema": "^0.4.0",
     "ansi-regex": "^5.0.1",
     "minimist": "^1.2.6",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "async": "^3.2.3",
     "terser": "^4.8.1"
   },
