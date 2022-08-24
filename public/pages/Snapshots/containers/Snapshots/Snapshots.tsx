@@ -269,13 +269,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton onClick={this.onClickCreate} fill={true}>
         Take snapshot
       </EuiButton>,
-<<<<<<< HEAD
       <EuiButton disabled={!selectedItems.length} color="secondary">
         Restore
       </EuiButton>,
-=======
-      <EuiButton disabled={!selectedItems.length}>Restore</EuiButton>,
->>>>>>> 6145593 (Update jest snapshots, add ROUTE_STYLE variable)
     ];
 
     const subTitleText = (

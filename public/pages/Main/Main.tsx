@@ -173,15 +173,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOTS}
                             render={(props: RouteComponentProps) => (
-<<<<<<< HEAD
-<<<<<<< HEAD
                               <div style={ROUTE_STYLE}>
-=======
-                              <div style={{ padding: "25px 25px" }}>
->>>>>>> ede3cb1 (Change alignment of Snapshot Management panels in pages/Main/Main.tsx)
-=======
-                              <div style={ROUTE_STYLE}>
->>>>>>> 6145593 (Update jest snapshots, add ROUTE_STYLE variable)
                                 <Snapshots
                                   {...props}
                                   snapshotManagementService={services.snapshotManagementService}
@@ -193,15 +185,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.REPOSITORIES}
                             render={(props: RouteComponentProps) => (
-<<<<<<< HEAD
-<<<<<<< HEAD
                               <div style={ROUTE_STYLE}>
-=======
-                              <div style={{ padding: "25px 25px" }}>
->>>>>>> ede3cb1 (Change alignment of Snapshot Management panels in pages/Main/Main.tsx)
-=======
-                              <div style={ROUTE_STYLE}>
->>>>>>> 6145593 (Update jest snapshots, add ROUTE_STYLE variable)
                                 <Repositories {...props} snapshotManagementService={services.snapshotManagementService} />
                               </div>
                             )}
@@ -209,15 +193,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOT_POLICIES}
                             render={(props: RouteComponentProps) => (
-<<<<<<< HEAD
-<<<<<<< HEAD
                               <div style={ROUTE_STYLE}>
-=======
-                              <div style={{ padding: "25px 25px" }}>
->>>>>>> ede3cb1 (Change alignment of Snapshot Management panels in pages/Main/Main.tsx)
-=======
-                              <div style={ROUTE_STYLE}>
->>>>>>> 6145593 (Update jest snapshots, add ROUTE_STYLE variable)
                                 <SnapshotPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
                               </div>
                             )}
@@ -363,15 +339,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.TRANSFORMS}
                             render={(props: RouteComponentProps) => (
-<<<<<<< HEAD
-<<<<<<< HEAD
                               <div style={ROUTE_STYLE}>
-=======
-                              <div style={{ padding: "25px 25px" }}>
->>>>>>> ede3cb1 (Change alignment of Snapshot Management panels in pages/Main/Main.tsx)
-=======
-                              <div style={ROUTE_STYLE}>
->>>>>>> 6145593 (Update jest snapshots, add ROUTE_STYLE variable)
                                 <Transforms {...props} transformService={services.transformService} />
                               </div>
                             )}
