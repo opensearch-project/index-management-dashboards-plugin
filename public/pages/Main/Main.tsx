@@ -173,7 +173,11 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOTS}
                             render={(props: RouteComponentProps) => (
+<<<<<<< HEAD
                               <div style={ROUTE_STYLE}>
+=======
+                              <div style={{ padding: "25px 25px" }}>
+>>>>>>> ede3cb1 (Change alignment of Snapshot Management panels in pages/Main/Main.tsx)
                                 <Snapshots
                                   {...props}
                                   snapshotManagementService={services.snapshotManagementService}
@@ -185,7 +189,11 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.REPOSITORIES}
                             render={(props: RouteComponentProps) => (
+<<<<<<< HEAD
                               <div style={ROUTE_STYLE}>
+=======
+                              <div style={{ padding: "25px 25px" }}>
+>>>>>>> ede3cb1 (Change alignment of Snapshot Management panels in pages/Main/Main.tsx)
                                 <Repositories {...props} snapshotManagementService={services.snapshotManagementService} />
                               </div>
                             )}
@@ -193,7 +201,11 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOT_POLICIES}
                             render={(props: RouteComponentProps) => (
+<<<<<<< HEAD
                               <div style={ROUTE_STYLE}>
+=======
+                              <div style={{ padding: "25px 25px" }}>
+>>>>>>> ede3cb1 (Change alignment of Snapshot Management panels in pages/Main/Main.tsx)
                                 <SnapshotPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
                               </div>
                             )}
@@ -339,7 +351,11 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.TRANSFORMS}
                             render={(props: RouteComponentProps) => (
+<<<<<<< HEAD
                               <div style={ROUTE_STYLE}>
+=======
+                              <div style={{ padding: "25px 25px" }}>
+>>>>>>> ede3cb1 (Change alignment of Snapshot Management panels in pages/Main/Main.tsx)
                                 <Transforms {...props} transformService={services.transformService} />
                               </div>
                             )}
