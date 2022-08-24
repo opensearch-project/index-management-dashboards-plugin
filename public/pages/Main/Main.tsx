@@ -171,23 +171,29 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOTS}
                             render={(props: RouteComponentProps) => (
-                              <Snapshots
-                                {...props}
-                                snapshotManagementService={services.snapshotManagementService}
-                                indexService={services.indexService}
-                              />
+                              <div style={{ padding: "25px 25px" }}>
+                                <Snapshots
+                                  {...props}
+                                  snapshotManagementService={services.snapshotManagementService}
+                                  indexService={services.indexService}
+                                />
+                              </div>
                             )}
                           />
                           <Route
                             path={ROUTES.REPOSITORIES}
                             render={(props: RouteComponentProps) => (
-                              <Repositories {...props} snapshotManagementService={services.snapshotManagementService} />
+                              <div style={{ padding: "25px 25px" }}>
+                                <Repositories {...props} snapshotManagementService={services.snapshotManagementService} />
+                              </div>
                             )}
                           />
                           <Route
                             path={ROUTES.SNAPSHOT_POLICIES}
                             render={(props: RouteComponentProps) => (
-                              <SnapshotPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
+                              <div style={{ padding: "25px 25px" }}>
+                                <SnapshotPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
+                              </div>
                             )}
                           />
                           <Route
@@ -331,7 +337,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.TRANSFORMS}
                             render={(props: RouteComponentProps) => (
-                              <div>
+                              <div style={{ padding: "25px 25px" }}>
                                 <Transforms {...props} transformService={services.transformService} />
                               </div>
                             )}
