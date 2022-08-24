@@ -150,6 +150,8 @@ export default class Main extends Component<MainProps, object> {
 
     const { landingPage } = this.props;
 
+    const ROUTE_STYLE = { padding: "25px 25px" };
+
     return (
       <CoreServicesConsumer>
         {(core: CoreStart | null) =>
@@ -171,7 +173,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOTS}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <Snapshots
                                   {...props}
                                   snapshotManagementService={services.snapshotManagementService}
@@ -183,7 +185,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.REPOSITORIES}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <Repositories {...props} snapshotManagementService={services.snapshotManagementService} />
                               </div>
                             )}
@@ -191,7 +193,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.SNAPSHOT_POLICIES}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <SnapshotPolicies {...props} snapshotManagementService={services.snapshotManagementService} />
                               </div>
                             )}
@@ -273,7 +275,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.INDEX_POLICIES}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <Policies {...props} policyService={services.policyService} />
                               </div>
                             )}
@@ -281,7 +283,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.POLICY_DETAILS}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <PolicyDetails {...props} policyService={services.policyService} />
                               </div>
                             )}
@@ -289,7 +291,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.MANAGED_INDICES}
                             render={(props: RouteComponentProps) => (
-                              <div>
+                              <div style={ROUTE_STYLE}>
                                 <ManagedIndices {...props} managedIndexService={services.managedIndexService} />
                               </div>
                             )}
@@ -297,7 +299,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.INDICES}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <Indices {...props} indexService={services.indexService} />
                               </div>
                             )}
@@ -305,7 +307,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.ROLLUPS}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <Rollups {...props} rollupService={services.rollupService} />
                               </div>
                             )}
@@ -313,7 +315,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.CREATE_ROLLUP}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <CreateRollupForm {...props} rollupService={services.rollupService} indexService={services.indexService} />
                               </div>
                             )}
@@ -321,7 +323,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.EDIT_ROLLUP}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <EditRollup {...props} rollupService={services.rollupService} />
                               </div>
                             )}
@@ -329,7 +331,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.ROLLUP_DETAILS}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <RollupDetails {...props} rollupService={services.rollupService} />
                               </div>
                             )}
@@ -337,7 +339,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.TRANSFORMS}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <Transforms {...props} transformService={services.transformService} />
                               </div>
                             )}
@@ -345,7 +347,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.CREATE_TRANSFORM}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <CreateTransformForm
                                   {...props}
                                   rollupService={services.rollupService}
@@ -358,7 +360,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.EDIT_TRANSFORM}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <EditTransform {...props} transformService={services.transformService} />
                               </div>
                             )}
@@ -366,7 +368,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.TRANSFORM_DETAILS}
                             render={(props: RouteComponentProps) => (
-                              <div style={{ padding: "25px 25px" }}>
+                              <div style={ROUTE_STYLE}>
                                 <TransformDetails {...props} transformService={services.transformService} />
                               </div>
                             )}
