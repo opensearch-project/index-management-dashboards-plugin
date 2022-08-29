@@ -3,18 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  EuiAccordion,
-  EuiComboBoxOptionOption,
-  EuiFieldText,
-  EuiFlyout,
-  EuiFlyoutBody,
-  EuiFlyoutFooter,
-  EuiFlyoutHeader,
-  EuiFormRow,
-  EuiSpacer,
-  EuiTitle,
-} from "@elastic/eui";
+import { EuiComboBoxOptionOption, EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiSpacer, EuiTitle } from "@elastic/eui";
 import _ from "lodash";
 
 import React, { Component } from "react";

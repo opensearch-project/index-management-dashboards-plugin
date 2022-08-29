@@ -297,7 +297,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton onClick={this.onClickCreate} fill={true}>
         Take snapshot
       </EuiButton>,
-      <EuiButton disabled={!selectedItems.length} color="secondary">
+      <EuiButton disabled={!selectedItems.length} onClick={this.onClickRestore} color="secondary">
         Restore
       </EuiButton>,
     ];
@@ -358,7 +358,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
           <RestoreSnapshotFlyout
             snapshotManagementService={this.props.snapshotManagementService}
             indexService={this.props.indexService}
-            onCloseFlyout={this.onCloseCreateFlyout}
+            onCloseFlyout={this.onCloseRestoreFlyout}
             restoreSnapshot={this.restoreSnapshot}
           />
         )}
