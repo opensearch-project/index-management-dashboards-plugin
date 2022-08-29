@@ -25,6 +25,7 @@ interface RestoreSnapshotProps {
   indexService: IndexService;
   onCloseFlyout: () => void;
   restoreSnapshot: (snapshotId: string, repository: string) => void;
+  snapshotId: string;
 }
 
 interface RestoreSnapshotState {
@@ -167,8 +168,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   // };
 
   render() {
-    const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, snapshotId, repoError, snapshotIdError } = this.state;
+    const { onCloseFlyout, snapshotId } = this.props;
+    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, repoError } = this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
 
@@ -176,12 +177,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={1000} size="l" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
-            <h2 id="flyoutTitle"> Restore snapshot</h2>
+            <h2 id="flyoutTitle">Restore snapshot</h2>
           </EuiTitle>
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
           <CustomLabel title="Snapshot name" />
+          <h3>{snapshotId}</h3>
 
           <EuiSpacer size="m" />
 

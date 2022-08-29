@@ -360,6 +360,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             indexService={this.props.indexService}
             onCloseFlyout={this.onCloseRestoreFlyout}
             restoreSnapshot={this.restoreSnapshot}
+            snapshotId={snapshots[0].id}
           />
         )}
 
