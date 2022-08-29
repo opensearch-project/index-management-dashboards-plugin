@@ -23,6 +23,7 @@ import {
   GetRepositoryResponse,
   AcknowledgedResponse,
   CreateSnapshotResponse,
+  RestoreSnapshotResponse,
 } from "../models/interfaces";
 import { FailedServerResponse, ServerResponse } from "../models/types";
 
@@ -184,6 +185,37 @@ export default class SnapshotManagementService {
       });
     } catch (err) {
       return this.errorResponse(response, err, "createSnapshot");
+    }
+  };
+
+  restoreSnapshot = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<RestoreSnapshotResponse>>> => {
+    try {
+      const { id } = request.params as {
+        id: string;
+      };
+      const { repository } = request.query as {
+        repository: string;
+      };
+      const params = {
+        repository: repository,
+        snapshot: id,
+      };
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const resp: RestoreSnapshotResponse = await callWithRequest("snapshot.restore", params);
+
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: resp,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "restoreSnapshot");
     }
   };
 
