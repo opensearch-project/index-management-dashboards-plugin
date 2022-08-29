@@ -13,6 +13,7 @@ import {
   CreateRepositoryBody,
   AcknowledgedResponse,
   CreateSnapshotResponse,
+  RestoreSnapshotResponse,
 } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { DocumentSMPolicy, DocumentSMPolicyWithMetadata, SMPolicy, Snapshot } from "../../models/interfaces";
@@ -47,6 +48,12 @@ export default class SnapshotManagementService {
     const response = (await this.httpClient.put(url, { query: { repository }, body: JSON.stringify(snapshot) })) as ServerResponse<
       CreateSnapshotResponse
     >;
+    return response;
+  };
+
+  restoreSnapshot = async (snapshotId: string, repository: string): Promise<ServerResponse<RestoreSnapshotResponse>> => {
+    let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
+    const response = (await this.httpClient.put(url, { query: { repository } })) as ServerResponse<RestoreSnapshotResponse>;
     return response;
   };
 
