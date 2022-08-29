@@ -233,8 +233,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
   };
 
   onClickRestore = async () => {
-    const { selectedItems } = this.state;
-    await this.restoreSnapshot(selectedItems[0].id, selectedItems[0].repository);
     this.setState({ showRestoreFlyout: true });
   };
 

@@ -55,6 +55,7 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
   }
 
   getSnapshot = async (snapshotId: string, repository: string) => {
+    console.log("flyout");
     const { snapshotManagementService } = this.props;
     try {
       const response = await snapshotManagementService.getSnapshot(snapshotId, repository);
