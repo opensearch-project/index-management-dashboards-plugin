@@ -15,6 +15,7 @@ import { CatSnapshotWithRepoAndPolicy as SnapshotsWithRepoAndPolicy } from "../.
 import { ContentPanel } from "../../../../components/ContentPanel";
 import SnapshotFlyout from "../../components/SnapshotFlyout/SnapshotFlyout";
 import CreateSnapshotFlyout from "../../components/CreateSnapshotFlyout/CreateSnapshotFlyout";
+import RestoreSnapshotFlyout from "../../components/RestoreSnapshotFlyout/RestoreSnapshotFlyout";
 import { Snapshot } from "../../../../../models/interfaces";
 import { BREADCRUMBS, RESTORE_SNAPSHOT_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
@@ -38,6 +39,7 @@ interface SnapshotsState {
   flyoutSnapshotRepo: string;
 
   showCreateFlyout: boolean;
+  showRestoreFlyout: boolean;
 
   message?: React.ReactNode;
 
@@ -60,6 +62,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       flyoutSnapshotId: "",
       flyoutSnapshotRepo: "",
       showCreateFlyout: false,
+      showRestoreFlyout: false,
       message: null,
       isDeleteModalVisible: false,
     };
@@ -215,6 +218,30 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     }
   };
 
+  restoreSnapshot = async (snapshotId: string, repository: string) => {
+    try {
+      const { snapshotManagementService } = this.props;
+      const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository);
+      if (response.ok) {
+        this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.`);
+      } else {
+        this.context.notifications.toasts.addDanger(response.error);
+      }
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));
+    }
+  };
+
+  onClickRestore = async () => {
+    const { selectedItems } = this.state;
+    await this.restoreSnapshot(selectedItems[0].id, selectedItems[0].repository);
+    this.setState({ showRestoreFlyout: true });
+  };
+
+  onCloseRestoreFlyout = () => {
+    this.setState({ showRestoreFlyout: false });
+  };
+
   render() {
     const {
       snapshots,
@@ -225,6 +252,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       flyoutSnapshotId,
       flyoutSnapshotRepo,
       showCreateFlyout,
+      showRestoreFlyout,
       isDeleteModalVisible,
     } = this.state;
 
@@ -323,6 +351,15 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             indexService={this.props.indexService}
             onCloseFlyout={this.onCloseCreateFlyout}
             createSnapshot={this.createSnapshot}
+          />
+        )}
+
+        {showRestoreFlyout && (
+          <RestoreSnapshotFlyout
+            snapshotManagementService={this.props.snapshotManagementService}
+            indexService={this.props.indexService}
+            onCloseFlyout={this.onCloseCreateFlyout}
+            restoreSnapshot={this.restoreSnapshot}
           />
         )}
 
