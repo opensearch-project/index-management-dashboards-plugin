@@ -386,6 +386,10 @@ export interface CreateSnapshotResponse {
   snapshot: GetSnapshot;
 }
 
+export interface RestoreSnapshotResponse {
+  snapshot: GetSnapshot;
+}
+
 export interface GetSnapshot {
   snapshot: string;
   uuid: string;
