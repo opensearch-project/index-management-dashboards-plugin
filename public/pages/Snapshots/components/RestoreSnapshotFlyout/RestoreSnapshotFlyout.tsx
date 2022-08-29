@@ -5,19 +5,16 @@
 
 import { EuiComboBoxOptionOption, EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiSpacer, EuiTitle } from "@elastic/eui";
 import _ from "lodash";
-
 import React, { Component } from "react";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexService, SnapshotManagementService } from "../../../../services";
-import { getErrorMessage, wildcardOption } from "../../../../utils/helpers";
-import { IndexItem, Snapshot } from "../../../../../models/interfaces";
-import { CatRepository } from "../../../../../server/models/interfaces";
+import { getErrorMessage } from "../../../../utils/helpers";
+import { IndexItem } from "../../../../../models/interfaces";
+import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
-import { getEmptySnapshot } from "../CreateSnapshotFlyout/constants";
 import SnapshotAdvancedSettings from "../../../CreateSnapshotPolicy/components/SnapshotAdvancedSettings";
 import SnapshotIndicesRepoInput from "../../../CreateSnapshotPolicy/components/SnapshotIndicesRepoInput";
-import { ChangeEvent } from "react";
 import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
 
 interface RestoreSnapshotProps {
@@ -35,7 +32,7 @@ interface RestoreSnapshotState {
   repositories: CatRepository[];
   selectedRepoValue: string;
 
-  snapshot: Snapshot;
+  snapshot: GetSnapshot | null;
   snapshotId: string;
 
   repoError: string;
@@ -52,7 +49,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       selectedIndexOptions: [],
       repositories: [],
       selectedRepoValue: "",
-      snapshot: getEmptySnapshot(),
+      snapshot: null,
       snapshotId: "",
       repoError: "",
       snapshotIdError: "",
@@ -60,21 +57,24 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   }
 
   async componentDidMount() {
-    await this.getIndexOptions("");
     await this.getRepos();
+    await this.getIndexOptions();
   }
 
   onClickAction = () => {
-    const { restoreSnapshot } = this.props;
-    const { snapshotId, selectedRepoValue } = this.state;
+    const { restoreSnapshot, snapshotId } = this.props;
+    const { selectedRepoValue } = this.state;
     let repoError = "";
+    console.log("clicked");
     if (!snapshotId.trim()) {
       this.setState({ snapshotIdError: "Required" });
+
       return;
     }
     if (!selectedRepoValue) {
       repoError = ERROR_PROMPT.REPO;
       this.setState({ repoError });
+
       return;
     }
     restoreSnapshot(snapshotId, selectedRepoValue);
@@ -83,32 +83,30 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
     const selectedIndexOptions = selectedOptions.map((o) => o.label);
     let newJSON = this.state.snapshot;
-    newJSON.indices = selectedIndexOptions.toString();
+    // newJSON.indices = selectedIndexOptions.toString();
     this.setState({ snapshot: newJSON, selectedIndexOptions: selectedOptions });
   };
 
-  getIndexOptions = async (searchValue: string) => {
-    const { indexService } = this.props;
-    this.setState({ indexOptions: [] });
+  getSnapshot = async (snapshotId: string, repository: string) => {
+    console.log("flyout", [repository, snapshotId]);
+    console.log("repositories", [...this.state.repositories]);
+    const { snapshotManagementService } = this.props;
     try {
-      const optionsResponse = await indexService.getDataStreamsAndIndicesNames(searchValue);
-      if (optionsResponse.ok) {
-        // Adding wildcard to search value
-        const options = searchValue.trim() ? [{ label: wildcardOption(searchValue) }, { label: searchValue }] : [];
-        // const dataStreams = optionsResponse.response.dataStreams.map((label) => ({ label }));
-        const indices = optionsResponse.response.indices.map((label) => ({ label }));
-        // this.setState({ indexOptions: options.concat(dataStreams, indices)});
-        this.setState({ indexOptions: options.concat(indices) });
-      } else {
-        if (optionsResponse.error.startsWith("[index_not_found_exception]")) {
-          this.context.notifications.toasts.addDanger("No index available");
-        } else {
-          this.context.notifications.toasts.addDanger(optionsResponse.error);
-        }
+      const response = await snapshotManagementService.getSnapshot(snapshotId, repository);
+      console.log("my response", response);
+      if (response.ok) {
+        const newOptions = response.response.indices.map((index) => {
+          return { label: index };
+        });
+        this.setState({ snapshot: response.response, indexOptions: [...newOptions] });
       }
     } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem fetching index options."));
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshot."));
     }
+  };
+
+  getIndexOptions = () => {
+    this.getSnapshot(this.props.snapshotId, this.state.selectedRepoValue);
   };
 
   onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
@@ -151,21 +149,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
     this.setState({ selectedRepoValue: selectedRepo, repoError });
   };
-
-  // onIncludeGlobalStateToggle = (e: ChangeEvent<HTMLInputElement>) => {
-  //   this.setState({ snapshot: _.set(this.state.snapshot, "include_global_state", e.target.checked) });
-  // };
-
-  // onIgnoreUnavailableToggle = (e: ChangeEvent<HTMLInputElement>) => {
-  //   this.setState({ snapshot: _.set(this.state.snapshot, "ignore_unavailable", e.target.checked) });
-  // };
-
-  // onPartialToggle = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const { checked } = e.target;
-  //   let newJSON = this.state.snapshot;
-  //   newJSON.partial = checked;
-  //   this.setState({ snapshot: newJSON });
-  // };
 
   render() {
     const { onCloseFlyout, snapshotId } = this.props;
