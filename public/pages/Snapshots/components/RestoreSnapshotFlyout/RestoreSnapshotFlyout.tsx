@@ -78,6 +78,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       return;
     }
     restoreSnapshot(snapshotId, selectedRepoValue);
+    this.setState({ indexOptions: [] });
   };
 
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
