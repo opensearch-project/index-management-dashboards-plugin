@@ -3,9 +3,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiComboBoxOptionOption, EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiComboBoxOptionOption,
+  EuiFlyout,
+  EuiFlyoutBody,
+  EuiFlyoutFooter,
+  EuiFlyoutHeader,
+  EuiSpacer,
+  EuiTitle,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiRadioGroup,
+  EuiAccordion,
+} from "@elastic/eui";
 import _ from "lodash";
-import React, { Component } from "react";
+import React, { Component, ChangeEvent } from "react";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexService, SnapshotManagementService } from "../../../../services";
@@ -13,7 +25,7 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
 import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
-import SnapshotAdvancedSettings from "../../../CreateSnapshotPolicy/components/SnapshotAdvancedSettings";
+import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotIndicesRepoInput from "../../../CreateSnapshotPolicy/components/SnapshotIndicesRepoInput";
 import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
 
@@ -151,14 +163,38 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     this.setState({ selectedRepoValue: selectedRepo, repoError });
   };
 
+  onRestoreAliasesToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ snapshot: _.set(this.state.snapshot!, "restore_aliases", e.target.checked) });
+  };
+
+  onRestoreClusterStateToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ snapshot: _.set(this.state.snapshot!, "restore_cluster_state", e.target.checked) });
+  };
+
+  onIgnoreUnavailableToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ snapshot: _.set(this.state.snapshot!, "ignore_unavailable", e.target.checked) });
+  };
+
+  onRestorePartialToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ snapshot: _.set(this.state.snapshot!, "restore_partial", e.target.checked) });
+  };
+
+  onCustomizeIndexSettingsToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ snapshot: _.set(this.state.snapshot!, "customize_index_settings", e.target.checked) });
+  };
+
+  onIgnoreIndexSettingsToggle = (e: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ snapshot: _.set(this.state.snapshot!, "ignore_index_settings", e.target.checked) });
+  };
+
   render() {
-    const { onCloseFlyout, snapshotId } = this.props;
-    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, repoError } = this.state;
+    const { onCloseFlyout } = this.props;
+    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, restoreSpecific, repoError, snapshot } = this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
 
     return (
-      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={1000} size="l" hideCloseButton>
+      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle">Restore snapshot</h2>
@@ -171,17 +207,40 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
           <EuiSpacer size="m" />
 
-          <SnapshotIndicesRepoInput
-            indexOptions={indexOptions}
-            selectedIndexOptions={selectedIndexOptions}
-            onIndicesSelectionChange={this.onIndicesSelectionChange}
-            getIndexOptions={this.getIndexOptions}
-            onCreateOption={this.onCreateOption}
-            repoOptions={repoOptions}
-            selectedRepoValue={selectedRepoValue}
-            onRepoSelectionChange={this.onRepoSelectionChange}
-            repoError={repoError}
-          />
+          {restoreSpecific && (
+            <SnapshotIndicesRepoInput
+              indexOptions={indexOptions}
+              selectedIndexOptions={selectedIndexOptions}
+              onIndicesSelectionChange={this.onIndicesSelectionChange}
+              getIndexOptions={this.getIndexOptions}
+              onCreateOption={this.onCreateOption}
+              repoOptions={repoOptions}
+              selectedRepoValue={selectedRepoValue}
+              onRepoSelectionChange={this.onRepoSelectionChange}
+              repoError={repoError}
+            />
+          )}
+          <EuiSpacer size="xxl" />
+
+          <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">
+            <EuiSpacer size="m" />
+
+            <SnapshotRestoreAdvancedOptions
+              restoreAliases={String(_.get(snapshot, "restore_aliases", false)) == "true"}
+              onRestoreAliasesToggle={this.onRestoreAliasesToggle}
+              restoreClusterState={String(_.get(snapshot, "restore_cluster_state", false)) == "true"}
+              onRestoreClusterStateToggle={this.onRestoreClusterStateToggle}
+              ignoreUnavailable={String(_.get(snapshot, "ignore_unavailable", false)) == "true"}
+              onIgnoreUnavailableToggle={this.onIgnoreUnavailableToggle}
+              restorePartial={String(_.get(snapshot, "restore_partial", false)) == "true"}
+              onRestorePartialToggle={this.onRestorePartialToggle}
+              customizeIndexSettings={String(_.get(snapshot, "customize_index_settings", false)) == "true"}
+              onCustomizeIndexSettingsToggle={this.onCustomizeIndexSettingsToggle}
+              ignoreIndexSettings={String(_.get(snapshot, "ignore_index_settings", false)) == "true"}
+              onIgnoreIndexSettingsToggle={this.onIgnoreIndexSettingsToggle}
+              width="200%"
+            />
+          </EuiAccordion>
 
           <EuiSpacer size="l" />
         </EuiFlyoutBody>
