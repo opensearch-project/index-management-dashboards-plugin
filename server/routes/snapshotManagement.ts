@@ -75,6 +75,7 @@ export default function (services: NodeServices, router: IRouter) {
         query: schema.object({
           repository: schema.string(),
         }),
+        body: schema.any(),
       },
     },
     snapshotManagementService.restoreSnapshot

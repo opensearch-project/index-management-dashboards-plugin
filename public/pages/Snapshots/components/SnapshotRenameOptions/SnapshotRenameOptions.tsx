@@ -7,11 +7,7 @@ import { EuiRadio, EuiSpacer } from "@elastic/eui";
 import CustomLabel from "../../../../components/CustomLabel";
 import React, { ChangeEvent } from "react";
 
-interface SnapshotInitialOptionsProps {
-  restoreAllIndices: boolean;
-  onRestoreAllIndicesToggle: (e: ChangeEvent<HTMLInputElement>) => void;
-  restoreSpecificIndices: boolean;
-  onRestoreSpecificIndicesToggle: (e: ChangeEvent<HTMLInputElement>) => void;
+interface SnapshotRenameOptionsProps {
   doNotRename: boolean;
   onDoNotRenameToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   addPrefix: boolean;
@@ -21,11 +17,7 @@ interface SnapshotInitialOptionsProps {
   width: string;
 }
 
-const SnapshotRestoreInitialOptions = ({
-  restoreAllIndices,
-  onRestoreAllIndicesToggle,
-  restoreSpecificIndices,
-  onRestoreSpecificIndicesToggle,
+const SnapshotRenameOptions = ({
   doNotRename,
   onDoNotRenameToggle,
   addPrefix,
@@ -33,32 +25,8 @@ const SnapshotRestoreInitialOptions = ({
   renameIndices,
   onRenameIndicesToggle,
   width,
-}: SnapshotInitialOptionsProps) => (
+}: SnapshotRenameOptionsProps) => (
   <div style={{ width: width }}>
-    <h5>Specify restore option</h5>
-
-    <EuiSpacer size="m" />
-
-    <EuiRadio
-      id="restore_all_indices"
-      name="restore_option"
-      label={<CustomLabel title="Restore all indices in snapshot" />}
-      checked={restoreAllIndices}
-      onChange={onRestoreAllIndicesToggle}
-    />
-
-    <EuiSpacer size="s" />
-
-    <EuiRadio
-      id="restore_specific_indices"
-      name="restore_option"
-      label={<CustomLabel title="Restore specific indices" />}
-      checked={restoreSpecificIndices}
-      onChange={onRestoreSpecificIndicesToggle}
-    />
-
-    <EuiSpacer size="xxl" />
-
     <h5>Rename restored indices</h5>
 
     <EuiSpacer size="m" />
@@ -93,4 +61,4 @@ const SnapshotRestoreInitialOptions = ({
   </div>
 );
 
-export default SnapshotRestoreInitialOptions;
+export default SnapshotRenameOptions;
