@@ -14,7 +14,7 @@ export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/i
 export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
 export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
 
-export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org//docs/latest/opensearch/snapshots/snapshot-management/";
+export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-management/";
 export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
 export const RESTORE_SNAPSHOT_DOCUMENTATION_URL =
   "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots";
