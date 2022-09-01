@@ -8,7 +8,7 @@ import React from "react";
 import { IndexItem } from "../../../../../models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 
-interface SnapshotIndicesProps {
+interface SnapshotIndicesInputProps {
   indexOptions: EuiComboBoxOptionOption<IndexItem>[];
   selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
   onIndicesSelectionChange: (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => void;
@@ -24,12 +24,12 @@ const SnapshotIndicesInput = ({
   onIndicesSelectionChange,
   getIndexOptions,
   onCreateOption,
-}: SnapshotIndicesProps) => {
+}: SnapshotIndicesInputProps) => {
   return (
     <>
-      <CustomLabel title="Select or input source indexes or index patterns" />
+      <CustomLabel title="Select indices or input index patterns you want to restore" />
       <EuiComboBox
-        placeholder="Select or input indexes or index patterns"
+        placeholder="Select indices or input index patterns"
         options={indexOptions}
         selectedOptions={selectedIndexOptions}
         onChange={onIndicesSelectionChange}

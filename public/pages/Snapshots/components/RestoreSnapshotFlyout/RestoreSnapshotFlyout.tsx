@@ -27,6 +27,7 @@ import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotRestoreOption from "../SnapshotRestoreOption";
 import SnapshotRenameOptions from "../SnapshotRenameOptions";
+import AddPrefixInput from "../AddPrefixInput";
 // import SnapshotIndicesRepoInput from "../../../CreateSnapshotPolicy/components/SnapshotIndicesRepoInput";
 import SnapshotIndicesInput from "../SnapshotIndicesInput";
 import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
@@ -43,12 +44,15 @@ interface RestoreSnapshotState {
   indexOptions: EuiComboBoxOptionOption<IndexItem>[];
   selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
   renameIndices: string;
+  prefix: string;
 
   repositories: CatRepository[];
   selectedRepoValue: string;
 
   snapshot: GetSnapshot | null;
   snapshotId: string;
+  restoreSpecific: boolean;
+  restoreAliases: boolean;
 
   repoError: string;
   snapshotIdError: string;
@@ -62,11 +66,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       indexOptions: [],
       selectedIndexOptions: [],
       renameIndices: "add_prefix",
+      prefix: "",
       repositories: [],
       selectedRepoValue: "",
       snapshot: null,
       snapshotId: "",
       restoreSpecific: false,
+      restoreAliases: true,
       repoError: "",
       snapshotIdError: "",
     };
@@ -158,6 +164,10 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
   };
 
+  getPrefix = (prefix: string) => {
+    this.setState({ prefix: prefix });
+  };
+
   onToggle = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.id === "restore_specific_indices") {
       this.setState({ restoreSpecific: true, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
@@ -177,7 +187,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   render() {
     const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, restoreSpecific, snapshot, renameIndices } = this.state;
+    const { indexOptions, selectedIndexOptions, restoreAliases, selectedRepoValue, restoreSpecific, snapshot, renameIndices } = this.state;
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
@@ -201,6 +211,22 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
             width="200%"
           />
 
+          <EuiSpacer size="l" />
+
+          {restoreSpecific && (
+            <SnapshotIndicesInput
+              indexOptions={indexOptions}
+              selectedIndexOptions={selectedIndexOptions}
+              onIndicesSelectionChange={this.onIndicesSelectionChange}
+              getIndexOptions={this.getIndexOptions}
+              onCreateOption={this.onCreateOption}
+              selectedRepoValue={selectedRepoValue}
+              isClearable={true}
+            />
+          )}
+
+          <EuiSpacer size="l" />
+
           <SnapshotRenameOptions
             doNotRename={renameIndices === "do_not_rename"}
             onDoNotRenameToggle={this.onToggle}
@@ -210,6 +236,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
             onRenameIndicesToggle={this.onToggle}
             width="200%"
           />
+
+          {renameIndices === "add_prefix" && <AddPrefixInput getPrefix={this.getPrefix} />}
 
           <EuiSpacer size="xxl" />
           <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">
@@ -231,20 +259,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
               width="200%"
             />
           </EuiAccordion>
-
-          <EuiSpacer size="l" />
-
-          {restoreSpecific && (
-            <SnapshotIndicesInput
-              indexOptions={indexOptions}
-              selectedIndexOptions={selectedIndexOptions}
-              onIndicesSelectionChange={this.onIndicesSelectionChange}
-              getIndexOptions={this.getIndexOptions}
-              onCreateOption={this.onCreateOption}
-              selectedRepoValue={selectedRepoValue}
-              isClearable={true}
-            />
-          )}
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
