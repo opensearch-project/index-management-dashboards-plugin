@@ -218,10 +218,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     }
   };
 
-  restoreSnapshot = async (snapshotId: string, repository: string) => {
+  restoreSnapshot = async (snapshotId: string, repository: string, options: object) => {
     try {
       const { snapshotManagementService } = this.props;
-      const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository);
+      const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.`);
       } else {

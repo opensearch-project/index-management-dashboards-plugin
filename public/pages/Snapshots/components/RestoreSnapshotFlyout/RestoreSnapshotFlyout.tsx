@@ -36,7 +36,7 @@ interface RestoreSnapshotProps {
   snapshotManagementService: SnapshotManagementService;
   indexService: IndexService;
   onCloseFlyout: () => void;
-  restoreSnapshot: (snapshotId: string, repository: string, indices: string) => void;
+  restoreSnapshot: (snapshotId: string, repository: string, options: object) => void;
   snapshotId: string;
 }
 
@@ -53,6 +53,7 @@ interface RestoreSnapshotState {
   snapshotId: string;
   restoreSpecific: boolean;
   restoreAliases: boolean;
+  partial: boolean;
 
   repoError: string;
   snapshotIdError: string;
@@ -73,6 +74,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       snapshotId: "",
       restoreSpecific: false,
       restoreAliases: true,
+      partial: false,
       repoError: "",
       snapshotIdError: "",
     };
@@ -85,8 +87,17 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   onClickAction = () => {
     const { restoreSnapshot, snapshotId } = this.props;
-    const { selectedRepoValue, snapshot } = this.state;
-    const indices = snapshot?.indices.join(",");
+    const { selectedRepoValue, selectedIndexOptions, snapshot, partial, prefix } = this.state;
+    const selectedIndices = selectedIndexOptions.map((option) => option.label).join(",");
+    const options = {
+      indices: selectedIndices,
+      ignore_unavailable: snapshot?.ignore_unavailable || false,
+      include_global_state: snapshot?.include_global_state,
+      rename_pattern: snapshot?.rename_pattern || "",
+      rename_replacement: snapshot?.rename_replacement || "",
+      include_aliases: snapshot?.restore_aliases || false,
+      partial: snapshot?.partial || false,
+    };
     let repoError = "";
 
     if (!snapshotId.trim()) {
@@ -100,8 +111,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return;
     }
-    restoreSnapshot(snapshotId, selectedRepoValue, indices!);
-    this.setState({ indexOptions: [] });
+    console.log("to reqest", [snapshotId, selectedRepoValue, options]);
+    restoreSnapshot(snapshotId, selectedRepoValue, options);
   };
 
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
@@ -187,7 +198,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   render() {
     const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, restoreAliases, selectedRepoValue, restoreSpecific, snapshot, renameIndices } = this.state;
+    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices } = this.state;
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
@@ -246,11 +257,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
             <SnapshotRestoreAdvancedOptions
               restoreAliases={String(_.get(snapshot, "restore_aliases", false)) == "true"}
               onRestoreAliasesToggle={this.onToggle}
-              restoreClusterState={String(_.get(snapshot, "restore_cluster_state", false)) == "true"}
+              restoreClusterState={String(_.get(snapshot, "include_global_state", false)) == "true"}
               onRestoreClusterStateToggle={this.onToggle}
               ignoreUnavailable={String(_.get(snapshot, "ignore_unavailable", false)) == "true"}
               onIgnoreUnavailableToggle={this.onToggle}
-              restorePartial={String(_.get(snapshot, "restore_partial", false)) == "true"}
+              restorePartial={String(_.get(snapshot, "partial", false)) == "true"}
               onRestorePartialToggle={this.onToggle}
               customizeIndexSettings={String(_.get(snapshot, "customize_index_settings", false)) == "true"}
               onCustomizeIndexSettingsToggle={this.onToggle}

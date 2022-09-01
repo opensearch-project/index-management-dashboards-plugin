@@ -49,7 +49,7 @@ const SnapshotRestoreAdvancedOptions = ({
     <EuiSpacer size="s" />
 
     <EuiCheckbox
-      id="restore_cluster_state"
+      id="include_global_state"
       label={<CustomLabel title="Restore cluster state from snapshots" />}
       checked={restoreClusterState}
       onChange={onRestoreClusterStateToggle}
@@ -72,7 +72,7 @@ const SnapshotRestoreAdvancedOptions = ({
     <EuiSpacer size="s" />
 
     <EuiCheckbox
-      id="restore_partial"
+      id="partial"
       label={<CustomLabel title="Allow restore partial snapshots" />}
       checked={restorePartial}
       onChange={onRestorePartialToggle}
