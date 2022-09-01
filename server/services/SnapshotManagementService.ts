@@ -200,13 +200,10 @@ export default class SnapshotManagementService {
       const { repository } = request.query as {
         repository: string;
       };
-      const { indices } = request.body as {
-        indices: string;
-      };
       const params = {
         repository: repository,
         snapshot: id,
-        indices: indices,
+        body: JSON.stringify(request.body),
       };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const resp: RestoreSnapshotResponse = await callWithRequest("snapshot.restore", params);
