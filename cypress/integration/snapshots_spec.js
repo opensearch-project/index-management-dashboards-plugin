@@ -7,6 +7,9 @@ import { PLUGIN_NAME } from "../support/constants";
 
 describe("Snapshots", () => {
   before(() => {
+    // Delete any existing indices
+    cy.deleteAllIndices();
+
     // Load ecommerce data
     cy.request({
       method: "POST",
@@ -80,16 +83,30 @@ describe("Snapshots", () => {
       cy.get("button").contains("Take snapshot").click({ force: true });
 
       // Type in Snapshot name
-      cy.get(`input[data-test-subj="snapshotNameInput"]`).focus().type("test_snapshot");
+      cy.get(`input[data-test-subj="snapshotNameInput"]`).type("test_snapshot{enter}");
 
       // Select indexes to be included
-      cy.get(`button[data-test-subj="comboBoxToggleListButton"]`).first().click({ force: true });
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("open*{enter}");
 
       // Confirm test_repo exists
       cy.contains("test_repo");
 
       // Click 'Add' button to create snapshot
       cy.get("button").contains("Add").click({ force: true });
+
+      // check for success status and snapshot name
+      cy.contains("In_progress");
+      cy.contains("test_snapshot");
     });
   });
+
+  // describe("Snapshots can be restored", () => {
+  //   it("Successfully restores all indices", () => {
+  //     // Delete existing indices
+  //     cy.deleteAllIndices();
+
+  //     // Select snapshot to restore
+  //     cy.get("checkbox").contains("test")
+  //   })
+  // })
 });

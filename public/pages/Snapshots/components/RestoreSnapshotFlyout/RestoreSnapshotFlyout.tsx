@@ -45,6 +45,7 @@ interface RestoreSnapshotState {
   selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
   renameIndices: string;
   prefix: string;
+  listIndices: boolean;
 
   repositories: CatRepository[];
   selectedRepoValue: string;
@@ -68,6 +69,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       selectedIndexOptions: [],
       renameIndices: "add_prefix",
       prefix: "",
+      listIndices: false,
       repositories: [],
       selectedRepoValue: "",
       snapshot: null,
@@ -113,6 +115,10 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
     console.log("to reqest", [snapshotId, selectedRepoValue, options]);
     restoreSnapshot(snapshotId, selectedRepoValue, options);
+  };
+
+  onClickIndices = () => {
+    this.setState({ listIndices: true });
   };
 
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
@@ -198,7 +204,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   render() {
     const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices } = this.state;
+    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices, listIndices } = this.state;
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
@@ -209,8 +215,20 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
-          <CustomLabel title="Snapshot name" />
-          <h3>{snapshotId}</h3>
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <CustomLabel title="Snapshot name" />
+              <h3>{snapshot?.snapshot}</h3>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <CustomLabel title="Status" />
+              <h3>{snapshot?.state}</h3>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <CustomLabel title="Indices" />
+              <a onClick={this.onClickIndices}>{snapshot?.indices.length}</a>
+            </EuiFlexItem>
+          </EuiFlexGroup>
 
           <EuiSpacer size="xxl" />
 
