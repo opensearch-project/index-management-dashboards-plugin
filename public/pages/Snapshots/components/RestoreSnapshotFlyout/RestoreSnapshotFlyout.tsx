@@ -28,6 +28,7 @@ import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotRestoreOption from "../SnapshotRestoreOption";
 import SnapshotRenameOptions from "../SnapshotRenameOptions";
 import AddPrefixInput from "../AddPrefixInput";
+import RenameInput from "../RenameInput";
 // import SnapshotIndicesRepoInput from "../../../CreateSnapshotPolicy/components/SnapshotIndicesRepoInput";
 import SnapshotIndicesInput from "../SnapshotIndicesInput";
 import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
@@ -45,6 +46,8 @@ interface RestoreSnapshotState {
   selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
   renameIndices: string;
   prefix: string;
+  renamePattern: string;
+  renameReplacement: string;
   listIndices: boolean;
 
   repositories: CatRepository[];
@@ -69,6 +72,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       selectedIndexOptions: [],
       renameIndices: "add_prefix",
       prefix: "",
+      renamePattern: "",
+      renameReplacement: "",
       listIndices: false,
       repositories: [],
       selectedRepoValue: "",
@@ -89,15 +94,27 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   onClickAction = () => {
     const { restoreSnapshot, snapshotId } = this.props;
-    const { selectedRepoValue, selectedIndexOptions, snapshot, renameIndices, prefix } = this.state;
+    const {
+      selectedRepoValue,
+      restoreSpecific,
+      selectedIndexOptions,
+      indexOptions,
+      snapshot,
+      renameIndices,
+      prefix,
+      renamePattern,
+      renameReplacement,
+    } = this.state;
     const selectedIndices = selectedIndexOptions.map((option) => option.label).join(",");
-    const renamePattern = renameIndices === "add_prefix" ? "(?<![^ ])(?=[^ ])" : "";
+    const allIndices = indexOptions.map((option) => option.label).join(",");
+    const pattern = renameIndices === "add_prefix" ? "(?<![^ ])(?=[^ ])" : renamePattern;
+
     const options = {
-      indices: selectedIndices,
+      indices: restoreSpecific ? selectedIndices : allIndices,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
-      rename_pattern: renamePattern,
-      rename_replacement: renameIndices === "add_prefix" ? prefix : "",
+      rename_pattern: pattern,
+      rename_replacement: renameIndices === "add_prefix" ? prefix : renameReplacement,
       include_aliases: snapshot?.restore_aliases || false,
       partial: snapshot?.partial || false,
     };
@@ -186,6 +203,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     this.setState({ prefix: prefix });
   };
 
+  getRenamePattern = (renamePattern: string) => {
+    this.setState({ renamePattern: renamePattern });
+  };
+
+  getRenameReplacement = (renameReplacement: string) => {
+    this.setState({ renameReplacement: renameReplacement });
+  };
+
   onToggle = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.id === "restore_specific_indices") {
       this.setState({ restoreSpecific: true, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
@@ -205,7 +230,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   render() {
     const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices, listIndices } = this.state;
+    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices, renamePattern } = this.state;
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
@@ -268,6 +293,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
           />
 
           {renameIndices === "add_prefix" && <AddPrefixInput getPrefix={this.getPrefix} />}
+          {renameIndices === "rename_indices" && (
+            <RenameInput getRenamePattern={this.getRenamePattern} getRenameReplacement={this.getRenameReplacement} />
+          )}
 
           <EuiSpacer size="xxl" />
           <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">

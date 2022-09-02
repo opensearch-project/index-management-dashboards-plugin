@@ -54,8 +54,6 @@ export default class SnapshotManagementService {
   restoreSnapshot = async (snapshotId: string, repository: string, options: object): Promise<ServerResponse<RestoreSnapshotResponse>> => {
     let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
 
-    console.log("to be sent to server", [url, options]);
-
     const response = (await this.httpClient.post(url, {
       query: { repository },
       body: JSON.stringify(options),
