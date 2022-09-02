@@ -89,14 +89,15 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   onClickAction = () => {
     const { restoreSnapshot, snapshotId } = this.props;
-    const { selectedRepoValue, selectedIndexOptions, snapshot, partial, prefix } = this.state;
+    const { selectedRepoValue, selectedIndexOptions, snapshot, renameIndices, prefix } = this.state;
     const selectedIndices = selectedIndexOptions.map((option) => option.label).join(",");
+    const renamePattern = renameIndices === "add_prefix" ? "(?<![^ ])(?=[^ ])" : "";
     const options = {
       indices: selectedIndices,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
-      rename_pattern: snapshot?.rename_pattern || "",
-      rename_replacement: snapshot?.rename_replacement || "",
+      rename_pattern: renamePattern,
+      rename_replacement: renameIndices === "add_prefix" ? prefix : "",
       include_aliases: snapshot?.restore_aliases || false,
       partial: snapshot?.partial || false,
     };
