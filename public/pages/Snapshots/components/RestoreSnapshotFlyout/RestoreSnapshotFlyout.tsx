@@ -29,7 +29,6 @@ import SnapshotRestoreOption from "../SnapshotRestoreOption";
 import SnapshotRenameOptions from "../SnapshotRenameOptions";
 import AddPrefixInput from "../AddPrefixInput";
 import RenameInput from "../RenameInput";
-// import SnapshotIndicesRepoInput from "../../../CreateSnapshotPolicy/components/SnapshotIndicesRepoInput";
 import SnapshotIndicesInput from "../SnapshotIndicesInput";
 import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
 
@@ -131,7 +130,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return;
     }
-    console.log("to reqest", [snapshotId, selectedRepoValue, options]);
     restoreSnapshot(snapshotId, selectedRepoValue, options);
   };
 
@@ -230,7 +228,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   render() {
     const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices, renamePattern } = this.state;
+    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices } = this.state;
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
