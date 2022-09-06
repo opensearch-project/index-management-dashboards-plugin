@@ -65,7 +65,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const { restoreSnapshot, snapshotId } = this.props;
     const { selectedRepoValue } = this.state;
     let repoError = "";
-    console.log("clicked");
+
     if (!snapshotId.trim()) {
       this.setState({ snapshotIdError: "Required" });
 
@@ -84,7 +84,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
     const selectedIndexOptions = selectedOptions.map((o) => o.label);
     let newJSON = this.state.snapshot;
-    // newJSON.indices = selectedIndexOptions.toString();
+
     this.setState({ snapshot: newJSON, selectedIndexOptions: selectedOptions });
   };
 
