@@ -29,7 +29,7 @@ const SnapshotIndicesInput = ({
     <>
       <CustomLabel title="Select indices or input index patterns you want to restore" />
       <EuiComboBox
-        placeholder="Select indices or input index patterns"
+        placeholder="Select indices or input index patterns."
         options={indexOptions}
         selectedOptions={selectedIndexOptions}
         onChange={onIndicesSelectionChange}

@@ -27,9 +27,9 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
   };
 
   const patternHelpText =
-    "Use regular expressiojn to define how index names will be renamed. By default, input (.+) to reuse the entire index name [Learn more]";
+    "Use regular expressiojn to define how index names will be renamed. By default, input (.+) to reuse the entire index name. [Learn more]";
   const replacementHelpText =
-    "Define the format of renamed inices. Use $0 to include the entire matching index name, $1 to include the content of the first capture group, etc. [Learn more]";
+    "Define the format of renamed indices. Use $0 to include the entire matching index name, $1 to include the content of the first capture group, etc. [Learn more]";
 
   return (
     <>
