@@ -6,9 +6,12 @@
 import React, { ChangeEvent } from "react";
 import { EuiCheckbox, EuiSpacer, EuiText } from "@elastic/eui";
 import CustomLabel from "../../../../components/CustomLabel";
+import IndexSettingsInput from "../../components/IndexSettingsInput";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 
 interface SnapshotAdvancedOptionsProps {
+  ignore: boolean;
+  getIndexSettings: (indexSettings: string) => void;
   restoreAliases: boolean;
   onRestoreAliasesToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   restoreClusterState: boolean;
@@ -25,6 +28,8 @@ interface SnapshotAdvancedOptionsProps {
 }
 
 const SnapshotRestoreAdvancedOptions = ({
+  ignore,
+  getIndexSettings,
   restoreAliases,
   onRestoreAliasesToggle,
   ignoreUnavailable,
@@ -47,6 +52,7 @@ const SnapshotRestoreAdvancedOptions = ({
     customize_index_settings,
     ignore_index_settings,
   } = RESTORE_OPTIONS;
+
   return (
     <div style={{ padding: "10px 10px", width: width }}>
       <EuiCheckbox
@@ -91,7 +97,7 @@ const SnapshotRestoreAdvancedOptions = ({
       <EuiSpacer size="l" />
 
       <h5>Custom index settings</h5>
-      <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
+      <EuiText size="xs" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           By default, index settings are restored from indices in snapshots. You can choose to
           <br />
@@ -108,6 +114,8 @@ const SnapshotRestoreAdvancedOptions = ({
         onChange={onCustomizeIndexSettingsToggle}
       />
 
+      {customizeIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={ignore} />}
+
       <EuiSpacer size="s" />
 
       <EuiCheckbox
@@ -118,6 +126,8 @@ const SnapshotRestoreAdvancedOptions = ({
         checked={ignoreIndexSettings}
         onChange={onIgnoreIndexSettingsToggle}
       />
+
+      {ignoreIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={ignore} />}
     </div>
   );
 };
