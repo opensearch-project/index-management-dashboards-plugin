@@ -99,14 +99,4 @@ describe("Snapshots", () => {
       cy.contains("test_snapshot");
     });
   });
-
-  // describe("Snapshots can be restored", () => {
-  //   it("Successfully restores all indices", () => {
-  //     // Delete existing indices
-  //     cy.deleteAllIndices();
-
-  //     // Select snapshot to restore
-  //     cy.get("checkbox").contains("test")
-  //   })
-  // })
 });

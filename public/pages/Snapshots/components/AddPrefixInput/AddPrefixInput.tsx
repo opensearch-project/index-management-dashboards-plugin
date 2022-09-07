@@ -23,7 +23,7 @@ const AddPrefixesInput = ({ getPrefix }: AddPrefixesInputProps) => {
     <>
       <EuiSpacer size="l" />
 
-      <CustomLabel title="Specify prefix for restored index names" helpText="A prefix will be added to any restored index names" />
+      <CustomLabel title="Specify prefix for restored index names" helpText="A prefix will be added to any restored index names." />
       <EuiFormRow>
         <EuiFieldText value={prefix} onChange={onPrefixChange} />
       </EuiFormRow>

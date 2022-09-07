@@ -3,9 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import React, { ChangeEvent } from "react";
 import { EuiRadio, EuiSpacer } from "@elastic/eui";
 import CustomLabel from "../../../../components/CustomLabel";
-import React, { ChangeEvent } from "react";
+import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 
 interface SnapshotRestoreOptionProps {
   restoreAllIndices: boolean;
@@ -21,30 +22,34 @@ const SnapshotRestoreOption = ({
   restoreSpecificIndices,
   onRestoreSpecificIndicesToggle,
   width,
-}: SnapshotRestoreOptionProps) => (
-  <div style={{ width: width }}>
-    <h5>Specify restore option</h5>
+}: SnapshotRestoreOptionProps) => {
+  const { restore_all_indices, restore_specific_indices } = RESTORE_OPTIONS;
 
-    <EuiSpacer size="m" />
+  return (
+    <div style={{ width: width }}>
+      <h5>Specify restore option</h5>
 
-    <EuiRadio
-      id="restore_all_indices"
-      name="restore_option"
-      label={<CustomLabel title="Restore all indices in snapshot" />}
-      checked={restoreAllIndices}
-      onChange={onRestoreAllIndicesToggle}
-    />
+      <EuiSpacer size="m" />
 
-    <EuiSpacer size="s" />
+      <EuiRadio
+        id={restore_all_indices}
+        name="restore_option"
+        label={<CustomLabel title="Restore all indices in snapshot" />}
+        checked={restoreAllIndices}
+        onChange={onRestoreAllIndicesToggle}
+      />
 
-    <EuiRadio
-      id="restore_specific_indices"
-      name="restore_option"
-      label={<CustomLabel title="Restore specific indices" />}
-      checked={restoreSpecificIndices}
-      onChange={onRestoreSpecificIndicesToggle}
-    />
-  </div>
-);
+      <EuiSpacer size="s" />
+
+      <EuiRadio
+        id={restore_specific_indices}
+        name="restore_option"
+        label={<CustomLabel title="Restore specific indices" />}
+        checked={restoreSpecificIndices}
+        onChange={onRestoreSpecificIndicesToggle}
+      />
+    </div>
+  );
+};
 
 export default SnapshotRestoreOption;
