@@ -49,7 +49,7 @@ interface RestoreSnapshotState {
   renamePattern: string;
   renameReplacement: string;
   listIndices: boolean;
-  customIndexSettings: object;
+  customIndexSettings: string;
   ignoreSettings: string;
 
   repositories: CatRepository[];
@@ -116,7 +116,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
-      index_settings: snapshot?.ignore_index_settings ? "" : customIndexSettings,
+      index_settings: snapshot?.ignore_index_settings ? "" : JSON.parse(customIndexSettings),
       ignore_index_settings: snapshot?.ignore_index_settings ? ignoreSettings : "",
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,

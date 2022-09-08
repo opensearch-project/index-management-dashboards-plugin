@@ -26,7 +26,9 @@ const IndexSettingsInput = ({ getIndexSettings, ignore }: IndexSettingsInputProp
   const helperText = ignore
     ? "Specify a comma-delimited list of settings to exclude from a snapshot."
     : "Specify a comma-delimited list of settings to override in all restored indices.";
-  const placeholderText = ignore ? `Example: \n \"index.refresh_interval\"` : `Example: \n \"index.number_of_replicas: 0;\"`;
+  const placeholderText = ignore
+    ? `Example: \n \"index.refresh_interval\"`
+    : `Example: \n {\"index.number_of_replicas\": 0,\n\"index.auto_expand_replicas\": true}`;
 
   return (
     <>
