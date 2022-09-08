@@ -40,7 +40,7 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
   children,
 }) => (
   <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}>
-    <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
+    <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="flexStart">
       <EuiFlexItem>
         {typeof title === "string" ? (
           <EuiTitle size={titleSize}>
