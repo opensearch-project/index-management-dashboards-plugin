@@ -15,7 +15,7 @@ import {
   EuiFlexItem,
   EuiAccordion,
 } from "@elastic/eui";
-import _ from "lodash";
+import _, { result } from "lodash";
 import React, { Component, ChangeEvent } from "react";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -23,7 +23,7 @@ import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
-import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
+import { CatRepository, GetSnapshot, CatIndex } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotRestoreOption from "../SnapshotRestoreOption";
@@ -31,6 +31,7 @@ import SnapshotRenameOptions from "../SnapshotRenameOptions";
 import AddPrefixInput from "../AddPrefixInput";
 import RenameInput from "../RenameInput";
 import SnapshotIndicesInput from "../SnapshotIndicesInput";
+import IndexList from "../IndexList";
 import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
 
 interface RestoreSnapshotProps {
@@ -49,6 +50,7 @@ interface RestoreSnapshotState {
   renamePattern: string;
   renameReplacement: string;
   listIndices: boolean;
+  indicesList: CatIndex[];
 
   repositories: CatRepository[];
   selectedRepoValue: string;
@@ -74,6 +76,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       renamePattern: "",
       renameReplacement: "",
       listIndices: false,
+      indicesList: [],
       repositories: [],
       selectedRepoValue: "",
       snapshot: null,
@@ -134,7 +137,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   onClickIndices = () => {
+    const { indexOptions } = this.state;
+    const indices = indexOptions.map((index) => index.label).join(",");
+    console.log("indices", indices);
     this.setState({ listIndices: true });
+    this.getSnapshotIndices(indices);
   };
 
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
@@ -197,6 +204,23 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
   };
 
+  getSnapshotIndices = async (indices: string) => {
+    try {
+      const { snapshotManagementService } = this.props;
+      const response = await snapshotManagementService.catSnapshotIndices(indices);
+
+      if (response.ok) {
+        console.log("indices response", response);
+        this.setState({ indicesList: response.response });
+      } else {
+        this.context.notifications.toasts.addDanger(response.error);
+      }
+    } catch (err) {
+      console.log("this failed");
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the indices for this snapshot."));
+    }
+  };
+
   getPrefix = (prefix: string) => {
     this.setState({ prefix: prefix });
   };
@@ -230,7 +254,16 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   render() {
     const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices } = this.state;
+    const {
+      indexOptions,
+      selectedIndexOptions,
+      selectedRepoValue,
+      restoreSpecific,
+      snapshot,
+      renameIndices,
+      listIndices,
+      indicesList,
+    } = this.state;
 
     const {
       do_not_rename,
@@ -246,94 +279,99 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
-        <EuiFlyoutHeader hasBorder>
-          <EuiTitle size="m">
-            <h2 id="flyoutTitle">Restore snapshot</h2>
-          </EuiTitle>
-        </EuiFlyoutHeader>
+        {listIndices && <IndexList indices={indicesList} />}
+        {listIndices || (
+          <>
+            <EuiFlyoutHeader hasBorder>
+              <EuiTitle size="m">
+                <h2 id="flyoutTitle">Restore snapshot</h2>
+              </EuiTitle>
+            </EuiFlyoutHeader>
 
-        <EuiFlyoutBody>
-          <EuiFlexGroup>
-            <EuiFlexItem>
-              <CustomLabel title="Snapshot name" />
-              <h3>{snapshot?.snapshot}</h3>
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <CustomLabel title="Status" />
-              <h3>{snapshot?.state}</h3>
-            </EuiFlexItem>
-            <EuiFlexItem>
-              <CustomLabel title="Indices" />
-              <a onClick={this.onClickIndices}>{snapshot?.indices.length}</a>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+            <EuiFlyoutBody>
+              <EuiFlexGroup>
+                <EuiFlexItem>
+                  <CustomLabel title="Snapshot name" />
+                  <h3>{snapshot?.snapshot}</h3>
+                </EuiFlexItem>
+                <EuiFlexItem>
+                  <CustomLabel title="Status" />
+                  <h3>{snapshot?.state}</h3>
+                </EuiFlexItem>
+                <EuiFlexItem>
+                  <CustomLabel title="Indices" />
+                  <a onClick={this.onClickIndices}>{snapshot?.indices.length}</a>
+                </EuiFlexItem>
+              </EuiFlexGroup>
 
-          <EuiSpacer size="xxl" />
+              <EuiSpacer size="xxl" />
 
-          <SnapshotRestoreOption
-            restoreAllIndices={!restoreSpecific}
-            onRestoreAllIndicesToggle={this.onToggle}
-            restoreSpecificIndices={restoreSpecific}
-            onRestoreSpecificIndicesToggle={this.onToggle}
-            width="200%"
-          />
+              <SnapshotRestoreOption
+                restoreAllIndices={!restoreSpecific}
+                onRestoreAllIndicesToggle={this.onToggle}
+                restoreSpecificIndices={restoreSpecific}
+                onRestoreSpecificIndicesToggle={this.onToggle}
+                width="200%"
+              />
 
-          <EuiSpacer size="l" />
+              <EuiSpacer size="l" />
 
-          {restoreSpecific && (
-            <SnapshotIndicesInput
-              indexOptions={indexOptions}
-              selectedIndexOptions={selectedIndexOptions}
-              onIndicesSelectionChange={this.onIndicesSelectionChange}
-              getIndexOptions={this.getIndexOptions}
-              onCreateOption={this.onCreateOption}
-              selectedRepoValue={selectedRepoValue}
-              isClearable={true}
-            />
-          )}
+              {restoreSpecific && (
+                <SnapshotIndicesInput
+                  indexOptions={indexOptions}
+                  selectedIndexOptions={selectedIndexOptions}
+                  onIndicesSelectionChange={this.onIndicesSelectionChange}
+                  getIndexOptions={this.getIndexOptions}
+                  onCreateOption={this.onCreateOption}
+                  selectedRepoValue={selectedRepoValue}
+                  isClearable={true}
+                />
+              )}
 
-          <EuiSpacer size="l" />
+              <EuiSpacer size="l" />
 
-          <SnapshotRenameOptions
-            doNotRename={renameIndices === do_not_rename}
-            onDoNotRenameToggle={this.onToggle}
-            addPrefix={renameIndices === add_prefix}
-            onAddPrefixToggle={this.onToggle}
-            renameIndices={renameIndices === rename_indices}
-            onRenameIndicesToggle={this.onToggle}
-            width="200%"
-          />
+              <SnapshotRenameOptions
+                doNotRename={renameIndices === do_not_rename}
+                onDoNotRenameToggle={this.onToggle}
+                addPrefix={renameIndices === add_prefix}
+                onAddPrefixToggle={this.onToggle}
+                renameIndices={renameIndices === rename_indices}
+                onRenameIndicesToggle={this.onToggle}
+                width="200%"
+              />
 
-          {renameIndices === add_prefix && <AddPrefixInput getPrefix={this.getPrefix} />}
-          {renameIndices === rename_indices && (
-            <RenameInput getRenamePattern={this.getRenamePattern} getRenameReplacement={this.getRenameReplacement} />
-          )}
+              {renameIndices === add_prefix && <AddPrefixInput getPrefix={this.getPrefix} />}
+              {renameIndices === rename_indices && (
+                <RenameInput getRenamePattern={this.getRenamePattern} getRenameReplacement={this.getRenameReplacement} />
+              )}
 
-          <EuiSpacer size="xxl" />
-          <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">
-            <EuiSpacer size="m" />
+              <EuiSpacer size="xxl" />
+              <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">
+                <EuiSpacer size="m" />
 
-            <SnapshotRestoreAdvancedOptions
-              restoreAliases={String(_.get(snapshot, restore_aliases, true)) == "true"}
-              onRestoreAliasesToggle={this.onToggle}
-              restoreClusterState={String(_.get(snapshot, include_global_state, false)) == "true"}
-              onRestoreClusterStateToggle={this.onToggle}
-              ignoreUnavailable={String(_.get(snapshot, ignore_unavailable, false)) == "true"}
-              onIgnoreUnavailableToggle={this.onToggle}
-              restorePartial={String(_.get(snapshot, partial, false)) == "true"}
-              onRestorePartialToggle={this.onToggle}
-              customizeIndexSettings={String(_.get(snapshot, customize_index_settings, false)) == "true"}
-              onCustomizeIndexSettingsToggle={this.onToggle}
-              ignoreIndexSettings={String(_.get(snapshot, ignore_index_settings, false)) == "true"}
-              onIgnoreIndexSettingsToggle={this.onToggle}
-              width="200%"
-            />
-          </EuiAccordion>
-        </EuiFlyoutBody>
+                <SnapshotRestoreAdvancedOptions
+                  restoreAliases={String(_.get(snapshot, restore_aliases, true)) == "true"}
+                  onRestoreAliasesToggle={this.onToggle}
+                  restoreClusterState={String(_.get(snapshot, include_global_state, false)) == "true"}
+                  onRestoreClusterStateToggle={this.onToggle}
+                  ignoreUnavailable={String(_.get(snapshot, ignore_unavailable, false)) == "true"}
+                  onIgnoreUnavailableToggle={this.onToggle}
+                  restorePartial={String(_.get(snapshot, partial, false)) == "true"}
+                  onRestorePartialToggle={this.onToggle}
+                  customizeIndexSettings={String(_.get(snapshot, customize_index_settings, false)) == "true"}
+                  onCustomizeIndexSettingsToggle={this.onToggle}
+                  ignoreIndexSettings={String(_.get(snapshot, ignore_index_settings, false)) == "true"}
+                  onIgnoreIndexSettingsToggle={this.onToggle}
+                  width="200%"
+                />
+              </EuiAccordion>
+            </EuiFlyoutBody>
 
-        <EuiFlyoutFooter>
-          <FlyoutFooter edit={true} restore={true} action="" onClickAction={this.onClickAction} onClickCancel={onCloseFlyout} />
-        </EuiFlyoutFooter>
+            <EuiFlyoutFooter>
+              <FlyoutFooter edit={true} restore={true} action="" onClickAction={this.onClickAction} onClickCancel={onCloseFlyout} />
+            </EuiFlyoutFooter>
+          </>
+        )}
       </EuiFlyout>
     );
   }
