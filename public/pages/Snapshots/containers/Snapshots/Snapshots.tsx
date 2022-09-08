@@ -332,6 +332,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton onClick={this.onClickCreate} fill={true}>
         Take snapshot
       </EuiButton>,
+      <EuiButton disabled={!selectedItems.length} color="secondary">
+        Restore
+      </EuiButton>,
     ];
 
     const subTitleText = (
