@@ -56,7 +56,6 @@ interface RestoreSnapshotState {
   selectedRepoValue: string;
 
   snapshot: GetSnapshot | null;
-  snapshotId: string;
   restoreSpecific: boolean;
   partial: boolean;
 
@@ -80,7 +79,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       repositories: [],
       selectedRepoValue: "",
       snapshot: null,
-      snapshotId: "",
       restoreSpecific: false,
       partial: false,
       repoError: "",
@@ -144,6 +142,10 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     this.getSnapshotIndices(indices);
   };
 
+  onBackArrowClick = () => {
+    this.setState({ listIndices: false });
+  };
+
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
     const selectedIndexOptions = selectedOptions.map((o) => o.label);
     let newJSON = this.state.snapshot;
@@ -169,7 +171,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   getIndexOptions = () => {
-    this.getSnapshot(this.props.snapshotId, this.state.selectedRepoValue);
+    const { snapshotId } = this.props;
+    const { selectedRepoValue } = this.state;
+    this.getSnapshot(snapshotId, selectedRepoValue);
   };
 
   onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
@@ -253,7 +257,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   render() {
-    const { onCloseFlyout } = this.props;
+    const { onCloseFlyout, snapshotId } = this.props;
     const {
       indexOptions,
       selectedIndexOptions,
@@ -279,7 +283,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
-        {listIndices && <IndexList indices={indicesList} />}
+        {console.log("snapshot flyout", snapshotId)}
+        {listIndices && <IndexList indices={indicesList} snapshot={snapshotId} onClick={this.onBackArrowClick} />}
         {listIndices || (
           <>
             <EuiFlyoutHeader hasBorder>

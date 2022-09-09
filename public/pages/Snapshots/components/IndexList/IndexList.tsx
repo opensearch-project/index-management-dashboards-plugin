@@ -3,31 +3,41 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiBasicTable, EuiSpacer } from "@elastic/eui";
-import React, { useState, ChangeEvent, useEffect } from "react";
-import { IndexService } from "../../../../services";
+import { EuiInMemoryTable, EuiIcon, EuiSpacer, EuiFlyoutHeader, EuiTitle, Pagination } from "@elastic/eui";
+import React, { useState, ChangeEvent, useEffect, MouseEvent } from "react";
 import { CatIndex } from "../../../../../server/models/interfaces";
 
 interface IndexListProps {
   indices: CatIndex[];
+  snapshot: string;
+  onClick: (e: React.MouseEvent) => void;
 }
 
-const IndexList = ({ indices }: IndexListProps) => {
+const IndexList = ({ indices, snapshot, onClick }: IndexListProps) => {
+  const columns = [
+    {
+      field: "index",
+      name: "Index",
+    },
+    {
+      field: "store.size",
+      name: "Total size",
+    },
+  ];
+
   return (
     <>
-      <EuiSpacer size="l" />
-
-      {/* <EuiBasicTable
-      columns={indicesColumns(isDataStreamColumnVisible)}
-      isSelectable={true}
-      itemId="index"
-      items={indices}
-      noItemsMessage={<IndexEmptyPrompt filterIsApplied={filterIsApplied} loading={loadingIndices} resetFilters={this.resetFilters} />}
-      onChange={this.onTableChange}
-      pagination={pagination}
-      selection={selection}
-      sorting={sorting}
-      /> */}
+      <EuiFlyoutHeader hasBorder>
+        <EuiTitle size="m">
+          <h2 id="flyoutTitle">
+            <EuiIcon onClick={onClick} size="xl" color="primary" type="arrowLeft" style={{ cursor: "pointer" }} /> Indices in snapshot{" "}
+            {snapshot}
+          </h2>
+        </EuiTitle>
+      </EuiFlyoutHeader>
+      <div style={{ padding: "25px 25px" }}>
+        <EuiInMemoryTable tableCaption="Indices" items={indices} columns={columns} tableLayout="auto" pagination={true} />
+      </div>
     </>
   );
 };
