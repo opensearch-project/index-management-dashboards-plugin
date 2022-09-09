@@ -497,7 +497,7 @@ export default class SnapshotManagementService {
       const res: CatIndex[] = await callWithRequest("cat.indices", {
         format: "json",
       });
-      console.log("server");
+
       return response.custom({
         statusCode: 200,
         body: {

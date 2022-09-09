@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiInMemoryTable, EuiIcon, EuiSpacer, EuiFlyoutHeader, EuiTitle, Pagination } from "@elastic/eui";
-import React, { useState, ChangeEvent, useEffect, MouseEvent } from "react";
+import { EuiInMemoryTable, EuiIcon, EuiFlyoutHeader, EuiTitle } from "@elastic/eui";
+import React from "react";
 import { CatIndex } from "../../../../../server/models/interfaces";
 
 interface IndexListProps {
@@ -14,29 +14,41 @@ interface IndexListProps {
 }
 
 const IndexList = ({ indices, snapshot, onClick }: IndexListProps) => {
+  indices = indices.filter((index) => index.index.substring(0, 7) !== ".kibana");
+
   const columns = [
     {
       field: "index",
       name: "Index",
+      width: "70%",
+      sortable: true,
     },
     {
       field: "store.size",
       name: "Total size",
+      sortable: true,
     },
   ];
+
+  const sorting = {
+    sort: {
+      field: "index",
+      direction: "asc",
+    },
+  };
 
   return (
     <>
       <EuiFlyoutHeader hasBorder>
         <EuiTitle size="m">
           <h2 id="flyoutTitle">
-            <EuiIcon onClick={onClick} size="xl" color="primary" type="arrowLeft" style={{ cursor: "pointer" }} /> Indices in snapshot{" "}
-            {snapshot}
+            <EuiIcon onClick={onClick} size="xl" color="primary" type="arrowLeft" style={{ cursor: "pointer", padding: "0 0 5px 0" }} />{" "}
+            Indices in snapshot {snapshot} ({indices.length})
           </h2>
         </EuiTitle>
       </EuiFlyoutHeader>
-      <div style={{ padding: "25px 25px" }}>
-        <EuiInMemoryTable tableCaption="Indices" items={indices} columns={columns} tableLayout="auto" pagination={true} />
+      <div style={{ padding: "1rem 1.5rem" }}>
+        <EuiInMemoryTable tableCaption="Indices" items={indices} columns={columns} tableLayout="auto" pagination={true} sorting={sorting} />
       </div>
     </>
   );

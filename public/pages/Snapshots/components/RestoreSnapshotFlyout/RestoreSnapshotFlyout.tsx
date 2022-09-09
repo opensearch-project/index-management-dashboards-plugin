@@ -15,7 +15,7 @@ import {
   EuiFlexItem,
   EuiAccordion,
 } from "@elastic/eui";
-import _, { result } from "lodash";
+import _ from "lodash";
 import React, { Component, ChangeEvent } from "react";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -137,7 +137,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   onClickIndices = () => {
     const { indexOptions } = this.state;
     const indices = indexOptions.map((index) => index.label).join(",");
-    console.log("indices", indices);
+
     this.setState({ listIndices: true });
     this.getSnapshotIndices(indices);
   };
@@ -214,13 +214,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       const response = await snapshotManagementService.catSnapshotIndices(indices);
 
       if (response.ok) {
-        console.log("indices response", response);
         this.setState({ indicesList: response.response });
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
     } catch (err) {
-      console.log("this failed");
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the indices for this snapshot."));
     }
   };
@@ -283,7 +281,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
-        {console.log("snapshot flyout", snapshotId)}
         {listIndices && <IndexList indices={indicesList} snapshot={snapshotId} onClick={this.onBackArrowClick} />}
         {listIndices || (
           <>

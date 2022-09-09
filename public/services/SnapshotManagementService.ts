@@ -117,7 +117,6 @@ export default class SnapshotManagementService {
   };
 
   catSnapshotIndices = async (indices: string): Promise<ServerResponse<CatIndex[]>> => {
-    console.log("Indices client service", indices);
     const url = `..${NODE_API._INDICES}/${indices}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<CatIndex[]>;
     return response;
