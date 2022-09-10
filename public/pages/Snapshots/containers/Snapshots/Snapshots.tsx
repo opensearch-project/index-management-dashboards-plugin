@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, MouseEvent } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText } from "@elastic/eui";
+import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader, EuiSpacer } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService, IndexService } from "../../../../services";
@@ -16,6 +16,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import SnapshotFlyout from "../../components/SnapshotFlyout/SnapshotFlyout";
 import CreateSnapshotFlyout from "../../components/CreateSnapshotFlyout";
 import RestoreSnapshotFlyout from "../../components/RestoreSnapshotFlyout";
+import RestoreActivitiesPanel from "../../components/RestoreActivitiesPanel";
 import { Snapshot } from "../../../../../models/interfaces";
 import { BREADCRUMBS, RESTORE_SNAPSHOT_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
@@ -31,6 +32,7 @@ interface SnapshotsState {
   snapshots: SnapshotsWithRepoAndPolicy[];
   existingPolicyNames: string[];
   loadingSnapshots: boolean;
+  snapshotPanel: boolean;
 
   selectedItems: SnapshotsWithRepoAndPolicy[];
 
@@ -57,6 +59,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       snapshots: [],
       existingPolicyNames: [],
       loadingSnapshots: false,
+      snapshotPanel: true,
       selectedItems: [],
       showFlyout: false,
       flyoutSnapshotId: "",
@@ -240,12 +243,36 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     this.setState({ showRestoreFlyout: false });
   };
 
+  onClickTab = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const target = e.currentTarget;
+
+    const snapshotPanel = target.textContent === "Snapshots" ? true : false;
+    const prev = target.previousElementSibling;
+    const next = target.nextElementSibling;
+
+    target.ariaSelected = "true";
+    target.classList.add("euiTab-isSelected");
+
+    if (prev) {
+      prev.classList.remove("euiTab-isSelected");
+      prev.ariaSelected = "false";
+    }
+    if (next) {
+      next.classList.remove("euiTab-isSelected");
+      next.ariaSelected = "false";
+    }
+
+    this.setState({ snapshotPanel: snapshotPanel });
+  };
+
   render() {
     const {
       snapshots,
       existingPolicyNames,
       selectedItems,
       loadingSnapshots,
+      snapshotPanel,
       showFlyout,
       flyoutSnapshotId,
       flyoutSnapshotRepo,
@@ -314,24 +341,42 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
     return (
       <>
-        <ContentPanel title="Snapshots" actions={actions} subTitleText={subTitleText}>
-          <EuiInMemoryTable
-            items={snapshots}
-            itemId={(item) => `${item.repository}:${item.id}`}
-            columns={this.columns}
-            pagination={true}
-            sorting={{
-              sort: {
-                field: "end_epoch",
-                direction: "desc",
-              },
-            }}
-            isSelectable={true}
-            selection={{ onSelectionChange: this.onSelectionChange }}
-            search={search}
-            loading={loadingSnapshots}
-          />
-        </ContentPanel>
+        <EuiPageHeader
+          tabs={[
+            {
+              label: "Snapshots",
+              isSelected: true,
+              onClick: this.onClickTab,
+            },
+            {
+              label: "Restore activities in progress",
+              onClick: this.onClickTab,
+            },
+          ]}
+          paddingSize="l"
+          onClick={this.onClickTab}
+        />
+        {snapshotPanel || <RestoreActivitiesPanel />}
+        {snapshotPanel && (
+          <ContentPanel title="Snapshots" actions={actions} subTitleText={subTitleText}>
+            <EuiInMemoryTable
+              items={snapshots}
+              itemId={(item) => `${item.repository}:${item.id}`}
+              columns={this.columns}
+              pagination={true}
+              sorting={{
+                sort: {
+                  field: "end_epoch",
+                  direction: "desc",
+                },
+              }}
+              isSelectable={true}
+              selection={{ onSelectionChange: this.onSelectionChange }}
+              search={search}
+              loading={loadingSnapshots}
+            />
+          </ContentPanel>
+        )}
 
         {showFlyout && (
           <SnapshotFlyout
