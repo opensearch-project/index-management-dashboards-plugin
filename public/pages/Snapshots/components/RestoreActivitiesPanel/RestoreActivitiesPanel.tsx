@@ -36,27 +36,27 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
 
   const columns = [
     {
-      field: "id",
-      name: "Start time",
-    },
-    {
-      field: "status",
-      name: "Completion time",
-    },
-    {
-      field: "policy",
-      name: "Policy",
-    },
-    {
-      field: "repository",
-      name: "Snapshot name",
+      field: "index",
+      name: "Index",
     },
     {
       field: "start_epoch",
-      name: "Status",
+      name: "Start time",
     },
     {
       field: "end_epoch",
+      name: "Completion time",
+    },
+    {
+      field: "snapshot",
+      name: "Snapshot name",
+    },
+    {
+      field: "stage",
+      name: "Status",
+    },
+    {
+      field: "indices",
       name: "Indices being restored",
     },
   ];

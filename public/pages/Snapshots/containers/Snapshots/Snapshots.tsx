@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, MouseEvent } from "react";
+import React, { Component } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader, EuiSpacer } from "@elastic/eui";
+import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService, IndexService } from "../../../../services";
@@ -280,7 +280,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       showRestoreFlyout,
       isDeleteModalVisible,
     } = this.state;
-
+    const { indexService, snapshotManagementService } = this.props;
     const repos = [...new Set(snapshots.map((snapshot) => snapshot.repository))];
     const status = [...new Set(snapshots.map((snapshot) => snapshot.status))];
     const search = {
@@ -356,7 +356,13 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
           paddingSize="l"
           onClick={this.onClickTab}
         />
-        {snapshotPanel || <RestoreActivitiesPanel />}
+        {snapshotPanel || (
+          <RestoreActivitiesPanel
+            snapshotManagementService={snapshotManagementService}
+            indexService={indexService}
+            snapshotId={selectedItems[0].id}
+          />
+        )}
         {snapshotPanel && (
           <ContentPanel title="Snapshots" actions={actions} subTitleText={subTitleText}>
             <EuiInMemoryTable
