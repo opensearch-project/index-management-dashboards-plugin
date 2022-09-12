@@ -22,6 +22,7 @@ import {
   Rollup,
   Transform,
 } from "../../models/interfaces";
+import { integer } from "@opensearch-project/opensearch/api/types";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -362,6 +363,10 @@ export interface IndexToDataStream {
 export interface GetSnapshotsResponse {
   snapshots: CatSnapshotWithRepoAndPolicy[];
   totalSnapshots: number;
+}
+
+export interface CatIndexRecovery {
+  response: object;
 }
 
 export interface CatSnapshotWithRepoAndPolicy {

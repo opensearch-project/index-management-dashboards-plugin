@@ -184,6 +184,13 @@ export default function (services: NodeServices, router: IRouter) {
     snapshotManagementService.catRepositoriesWithSnapshotCount
   );
 
+  router.get(
+    {
+      path: NODE_API._RECOVERY,
+    },
+    snapshotManagementService.catIndexRecovery
+  );
+
   router.delete(
     {
       path: `${NODE_API._REPOSITORIES}/{id}`,
