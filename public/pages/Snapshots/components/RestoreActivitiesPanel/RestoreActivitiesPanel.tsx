@@ -5,23 +5,9 @@
 
 import { EuiInMemoryTable } from "@elastic/eui";
 import _ from "lodash";
-import React, { Component, ChangeEvent } from "react";
-import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
-import { CoreServicesContext } from "../../../../components/core_services";
+import React, { useEffect } from "react";
 import { IndexService, SnapshotManagementService } from "../../../../services";
-import { RESTORE_OPTIONS } from "../../../../models/interfaces";
-import { getErrorMessage } from "../../../../utils/helpers";
-import { IndexItem } from "../../../../../models/interfaces";
-import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
-import CustomLabel from "../../../../components/CustomLabel";
 import { ContentPanel } from "../../../../components/ContentPanel";
-import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
-import SnapshotRestoreOption from "../SnapshotRestoreOption";
-import SnapshotRenameOptions from "../SnapshotRenameOptions";
-import AddPrefixInput from "../AddPrefixInput";
-import RenameInput from "../RenameInput";
-import SnapshotIndicesInput from "../SnapshotIndicesInput";
-import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
 
 interface RestoreActivitiesPanelProps {
   snapshotManagementService: SnapshotManagementService;
@@ -30,8 +16,13 @@ interface RestoreActivitiesPanelProps {
 }
 
 export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService, snapshotId }: RestoreActivitiesPanelProps) => {
-  let getRestoreStatus = () => {
-    console.log("getting status");
+  useEffect(() => {
+    getRestoreStatus();
+  }, []);
+
+  const getRestoreStatus = async () => {
+    const status = await snapshotManagementService.catIndexRecovery();
+    console.log("status", status);
   };
 
   const columns = [
@@ -60,8 +51,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
       name: "Indices being restored",
     },
   ];
-
-  getRestoreStatus = _.debounce(getRestoreStatus, 500, { leading: true });
 
   return (
     <>
