@@ -61,9 +61,9 @@ export default class SnapshotManagementService {
     return response;
   };
 
-  catSnapshotRecovery = async (): Promise<ServerResponse<CatIndexRecovery[]>> => {
+  catIndexRecovery = async (): Promise<ServerResponse<CatIndexRecovery>> => {
     const url = `..${NODE_API._RECOVERY}`;
-    const response = (await this.httpClient.get(url)) as ServerResponse<CatIndexRecovery[]>;
+    const response = (await this.httpClient.get(url)) as ServerResponse<CatIndexRecovery>;
     return response;
   };
 
