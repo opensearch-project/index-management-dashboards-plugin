@@ -21,7 +21,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
   }, []);
 
   const getRestoreStatus = async () => {
-    const status = await snapshotManagementService.catIndexRecovery();
+    const status = await snapshotManagementService.getIndexRecovery();
     console.log("status", status);
   };
 
