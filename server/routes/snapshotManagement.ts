@@ -189,7 +189,7 @@ export default function (services: NodeServices, router: IRouter) {
       path: NODE_API._RECOVERY,
       validate: {},
     },
-    snapshotManagementService.catIndexRecovery
+    snapshotManagementService.getIndexRecovery
   );
 
   router.delete(

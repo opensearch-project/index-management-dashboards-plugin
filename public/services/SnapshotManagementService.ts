@@ -14,7 +14,7 @@ import {
   AcknowledgedResponse,
   CreateSnapshotResponse,
   RestoreSnapshotResponse,
-  CatIndexRecovery,
+  GetIndexRecoveryResponse,
 } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { DocumentSMPolicy, DocumentSMPolicyWithMetadata, SMPolicy, Snapshot } from "../../models/interfaces";
@@ -61,9 +61,10 @@ export default class SnapshotManagementService {
     return response;
   };
 
-  catIndexRecovery = async (): Promise<ServerResponse<CatIndexRecovery>> => {
-    const url = `..${NODE_API._RECOVERY}`;
-    const response = (await this.httpClient.get(url)) as ServerResponse<CatIndexRecovery>;
+  getIndexRecovery = async (): Promise<ServerResponse<GetIndexRecoveryResponse>> => {
+    const url = NODE_API._RECOVERY;
+    console.log("URL", url);
+    const response = (await this.httpClient.get(url)) as ServerResponse<GetIndexRecoveryResponse>;
     return response;
   };
 

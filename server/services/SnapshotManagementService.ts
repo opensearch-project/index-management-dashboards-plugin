@@ -15,7 +15,7 @@ import { SMPolicy, DocumentSMPolicy, DocumentSMPolicyWithMetadata } from "../../
 import {
   CatRepository,
   CatSnapshotWithRepoAndPolicy,
-  CatIndexRecovery,
+  GetIndexRecoveryResponse,
   GetSnapshotsResponse,
   GetSMPoliciesResponse,
   DeletePolicyResponse,
@@ -487,14 +487,14 @@ export default class SnapshotManagementService {
     }
   };
 
-  catIndexRecovery = async (
+  getIndexRecovery = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatIndexRecovery>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndexRecoveryResponse[]>>> => {
     try {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: CatIndexRecovery = await callWithRequest("cat.repositories", {
+      const res: GetIndexRecoveryResponse[] = await callWithRequest("indices.recovery", {
         format: "json",
       });
       return response.custom({
@@ -505,7 +505,7 @@ export default class SnapshotManagementService {
         },
       });
     } catch (err) {
-      return this.errorResponse(response, err, "catIndexRecovery");
+      return this.errorResponse(response, err, "getIndexRecovery");
     }
   };
 
