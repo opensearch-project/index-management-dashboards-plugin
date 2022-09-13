@@ -22,6 +22,7 @@ import {
   Rollup,
   Transform,
 } from "../../models/interfaces";
+import { getIndexToDataStreamMapping } from "../services/DataStreamService";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -365,7 +366,34 @@ export interface GetSnapshotsResponse {
 }
 
 export interface GetIndexRecoveryResponse {
-  response: any;
+  response: {
+    shards: [
+      {
+        source: {
+          index: string;
+          repository: string;
+          snapshot: string;
+        };
+        stage: string;
+        start_time_in_millis: number;
+        stop_time_in_millis: number;
+      }
+    ];
+  };
+}
+export interface IndexRecoveryResponse {
+  shards: [
+    {
+      source: {
+        index: string;
+        repository: string;
+        snapshot: string;
+      };
+      stage: string;
+      start_time_in_millis: number;
+      stop_time_in_millis: number;
+    }
+  ];
 }
 
 export interface CatSnapshotWithRepoAndPolicy {
