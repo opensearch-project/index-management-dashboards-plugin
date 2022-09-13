@@ -114,7 +114,7 @@ const SnapshotRestoreAdvancedOptions = ({
         onChange={onCustomizeIndexSettingsToggle}
       />
 
-      {customizeIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={ignore} />}
+      {customizeIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={false} />}
 
       <EuiSpacer size="s" />
 
@@ -127,7 +127,7 @@ const SnapshotRestoreAdvancedOptions = ({
         onChange={onIgnoreIndexSettingsToggle}
       />
 
-      {ignoreIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={ignore} />}
+      {ignoreIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={true} />}
     </div>
   );
 };
