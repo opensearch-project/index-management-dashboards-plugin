@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout } from "@elastic/eui";
+import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton } from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState } from "react";
 import { IndexService, SnapshotManagementService } from "../../../../services";
@@ -29,16 +29,14 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
 
   useEffect(() => {
     context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
-    if (stage.indexOf("DONE") < 0) {
-      getRestoreStatus();
-      const newInterval = setInterval(() => {
-        getRestoreStatus();
-      }, 2000);
-      return () => clearInterval(newInterval);
-    }
-  }, [stage]);
+    getRestoreStatus();
+  }, []);
 
   const getRestoreStatus = async () => {
+    if (stage.indexOf("DONE") >= 0) {
+      console.log("done");
+      return;
+    }
     try {
       const res = await snapshotManagementService.getIndexRecovery();
 
@@ -100,6 +98,12 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
     setStage(`${stages[stageIndex]} (${percent}%)`);
   };
 
+  const actions = [
+    <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton">
+      Refresh
+    </EuiButton>,
+  ];
+
   const indexes = `${indices.length} Indices`;
   const restoreStatus = [
     {
@@ -137,7 +141,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
   return (
     <>
       {flyout && <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m"></EuiFlyout>}
-      <ContentPanel title="Restore activities in progress">
+      <ContentPanel title="Restore activities in progress" actions={actions}>
         <EuiInMemoryTable items={restoreStatus} columns={columns} pagination={false} />
         <EuiSpacer size="xxl" />
         <EuiSpacer size="xxl" />
