@@ -53,6 +53,11 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
     }
   };
 
+  const onIndexesClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log("index clicked");
+  };
+
   const setRestoreStatus = (response: object) => {
     let minStartTime: number = 0;
     let maxStopTime: number = 0;
@@ -95,7 +100,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
       stop_time: stopTime,
       snapshot: snapshotId,
       status: stage,
-      indices: indexes,
+      indexes: indexes,
     },
   ];
   const columns = [
@@ -116,8 +121,9 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
       name: "Status",
     },
     {
-      field: "indices",
+      field: "indexes",
       name: "Indices being restored",
+      render: (text: object) => <EuiLink onClick={onIndexesClick}>{text}</EuiLink>,
     },
   ];
 
