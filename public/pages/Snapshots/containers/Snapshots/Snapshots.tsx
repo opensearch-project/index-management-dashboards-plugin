@@ -245,11 +245,18 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   onClickTab = (e: React.MouseEvent) => {
     e.stopPropagation();
+    const { selectedItems } = this.state;
     const target = e.currentTarget;
-
     const snapshotPanel = target.textContent === "Snapshots" ? true : false;
     const prev = target.previousElementSibling;
     const next = target.nextElementSibling;
+
+    if (selectedItems.length === 0) {
+      this.context.notifications.toasts.addDanger("Please select a snapshot to view restore activities");
+      return;
+    }
+
+    this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
 
     target.ariaSelected = "true";
     target.classList.add("euiTab-isSelected");

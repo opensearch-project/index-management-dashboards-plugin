@@ -3,15 +3,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiInMemoryTable, EuiSpacer, EuiLink } from "@elastic/eui";
+import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout } from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState } from "react";
 import { IndexService, SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { GetIndexRecoveryResponse } from "../../../../../server/models/interfaces";
+import { BREADCRUMBS } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
-import { info } from "console";
 
 interface RestoreActivitiesPanelProps {
   snapshotManagementService: SnapshotManagementService;
@@ -25,8 +25,10 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
   const [stopTime, setStopTime] = useState("");
   const [stage, setStage] = useState("");
   const [indices, setIndices] = useState([{}]);
+  const [flyout, setFlyout] = useState(false);
 
   useEffect(() => {
+    context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
     if (stage.indexOf("DONE") < 0) {
       getRestoreStatus();
       const newInterval = setInterval(() => {
@@ -55,7 +57,12 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
 
   const onIndexesClick = (e: React.MouseEvent) => {
     e.preventDefault();
+    setFlyout(true);
     console.log("index clicked");
+  };
+
+  const onCloseFlyout = () => {
+    setFlyout(false);
   };
 
   const setRestoreStatus = (response: object) => {
@@ -129,6 +136,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
 
   return (
     <>
+      {flyout && <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m"></EuiFlyout>}
       <ContentPanel title="Restore activities in progress">
         <EuiInMemoryTable items={restoreStatus} columns={columns} pagination={false} />
         <EuiSpacer size="xxl" />
