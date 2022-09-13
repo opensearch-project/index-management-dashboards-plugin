@@ -491,10 +491,10 @@ export default class SnapshotManagementService {
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
-  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndexRecoveryResponse[]>>> => {
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndexRecoveryResponse>>> => {
     try {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: GetIndexRecoveryResponse[] = await callWithRequest("indices.recovery", {
+      const res: GetIndexRecoveryResponse = await callWithRequest("indices.recovery", {
         format: "json",
       });
       return response.custom({
