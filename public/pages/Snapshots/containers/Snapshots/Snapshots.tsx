@@ -252,7 +252,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const next = target.nextElementSibling;
 
     if (selectedItems.length === 0) {
-      this.context.notifications.toasts.addDanger("Please select a snapshot to view restore activities");
+      this.context.notifications.toasts.addWarning("Please select a snapshot to view restore activities");
       return;
     }
 
