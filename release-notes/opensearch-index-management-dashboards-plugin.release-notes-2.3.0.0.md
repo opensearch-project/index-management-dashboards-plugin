@@ -1,7 +1,7 @@
 ## Version 2.3.0.0 2022-08-04
 
 Compatible with OpenSearch 2.3.0
-### Enhancement 
+### Enhancements 
 * Change alignment of Snapshot Management panels in pages/Main/Main.tsx ([#236](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/236))
 * Update Rollup help text ([#221](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/221))
 * Refactored dependency used by test mock. Adjusted OSD version used by test workflows ([#229](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/229))
