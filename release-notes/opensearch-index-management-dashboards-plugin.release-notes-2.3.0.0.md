@@ -2,6 +2,7 @@
 
 Compatible with OpenSearch 2.3.0
 
+
 ### Enhancements
 * Change alignment of Snapshot Management panels in pages/Main/Main.tsx ([#236](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/236))
 
