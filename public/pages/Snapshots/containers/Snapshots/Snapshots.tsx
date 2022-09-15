@@ -279,7 +279,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         <p style={{ fontWeight: 200 }}>
           Snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository. <br />
           To restore a snapshot, use the snapshot restore API.{" "}
-          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank">
+          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
             Learn more
           </EuiLink>
         </p>
