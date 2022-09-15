@@ -50,7 +50,7 @@ interface RestoreSnapshotState {
   renameReplacement: string;
   listIndices: boolean;
   customIndexSettings: string;
-  ignoreIndexSettings: string;
+  ignoreIndexSettings?: string;
 
   repositories: CatRepository[];
   selectedRepoValue: string;
@@ -127,6 +127,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
+    if (!options.index_settings) {
+      delete options.index_settings;
+    }
+    if (!options.ignore_index_settings) {
+      delete options.ignore_index_settings;
+    }
     if (!snapshotId.trim()) {
       this.setState({ snapshotIdError: "Required." });
 
