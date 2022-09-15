@@ -23,7 +23,7 @@ import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
-import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
+import { GetSnapshot } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotRestoreOption from "../SnapshotRestoreOption";
@@ -39,6 +39,7 @@ interface RestoreSnapshotProps {
   onCloseFlyout: () => void;
   restoreSnapshot: (snapshotId: string, repository: string, options: object) => void;
   snapshotId: string;
+  repository: string;
 }
 
 interface RestoreSnapshotState {
@@ -49,9 +50,6 @@ interface RestoreSnapshotState {
   renamePattern: string;
   renameReplacement: string;
   listIndices: boolean;
-
-  repositories: CatRepository[];
-  selectedRepoValue: string;
 
   snapshot: GetSnapshot | null;
   snapshotId: string;
@@ -74,8 +72,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       renamePattern: "",
       renameReplacement: "",
       listIndices: false,
-      repositories: [],
-      selectedRepoValue: "",
       snapshot: null,
       snapshotId: "",
       restoreSpecific: false,
@@ -86,14 +82,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   }
 
   async componentDidMount() {
-    await this.getRepos();
     await this.getIndexOptions();
   }
 
   onClickAction = () => {
-    const { restoreSnapshot, snapshotId } = this.props;
+    const { restoreSnapshot, snapshotId, repository } = this.props;
     const {
-      selectedRepoValue,
       restoreSpecific,
       selectedIndexOptions,
       indexOptions,
@@ -106,6 +100,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const { add_prefix } = RESTORE_OPTIONS;
     const selectedIndices = selectedIndexOptions.map((option) => option.label).join(",");
     const allIndices = indexOptions.map((option) => option.label).join(",");
+    // TODO replace unintelligible regex below with (.+) and add $1 to user provided prefix then add that to renameReplacement
     const pattern = renameIndices === add_prefix ? "(?<![^ ])(?=[^ ])" : renamePattern;
 
     const options = {
@@ -124,13 +119,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return;
     }
-    if (!selectedRepoValue) {
+    if (!repository) {
       repoError = ERROR_PROMPT.REPO;
       this.setState({ repoError });
 
       return;
     }
-    restoreSnapshot(snapshotId, selectedRepoValue, options);
+    restoreSnapshot(snapshotId, repository, options);
   };
 
   onClickIndices = () => {
@@ -162,7 +157,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   getIndexOptions = () => {
-    this.getSnapshot(this.props.snapshotId, this.state.selectedRepoValue);
+    this.getSnapshot(this.props.snapshotId, this.props.repository);
   };
 
   onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
@@ -180,21 +175,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const selectedIndexOptions = [...this.state.selectedIndexOptions, newOption];
     this.setState({ selectedIndexOptions: selectedIndexOptions });
-  };
-
-  getRepos = async () => {
-    try {
-      const { snapshotManagementService } = this.props;
-      const response = await snapshotManagementService.catRepositories();
-      if (response.ok) {
-        const selectedRepoValue = response.response.length > 0 ? response.response[0].id : "";
-        this.setState({ repositories: response.response, selectedRepoValue });
-      } else {
-        this.context.notifications.toasts.addDanger(response.error);
-      }
-    } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshots."));
-    }
   };
 
   getPrefix = (prefix: string) => {
@@ -229,8 +209,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   render() {
-    const { onCloseFlyout } = this.props;
-    const { indexOptions, selectedIndexOptions, selectedRepoValue, restoreSpecific, snapshot, renameIndices } = this.state;
+    const { onCloseFlyout, repository } = this.props;
+    const { indexOptions, selectedIndexOptions, restoreSpecific, snapshot, renameIndices } = this.state;
 
     const {
       do_not_rename,
@@ -287,7 +267,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
               onIndicesSelectionChange={this.onIndicesSelectionChange}
               getIndexOptions={this.getIndexOptions}
               onCreateOption={this.onCreateOption}
-              selectedRepoValue={selectedRepoValue}
+              selectedRepoValue={repository}
               isClearable={true}
             />
           )}
