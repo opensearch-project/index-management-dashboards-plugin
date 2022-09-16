@@ -23,7 +23,7 @@ import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
-import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
+import { CatRepository, GetSnapshot, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotRestoreOption from "../SnapshotRestoreOption";
@@ -51,6 +51,7 @@ interface RestoreSnapshotState {
   listIndices: boolean;
   customIndexSettings: string;
   ignoreIndexSettings?: string;
+  indicesList: CatSnapshotIndex[];
 
   repositories: CatRepository[];
   selectedRepoValue: string;
@@ -78,6 +79,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       listIndices: false,
       customIndexSettings: "",
       ignoreIndexSettings: "",
+      indicesList: [],
       repositories: [],
       selectedRepoValue: "",
       snapshot: null,
