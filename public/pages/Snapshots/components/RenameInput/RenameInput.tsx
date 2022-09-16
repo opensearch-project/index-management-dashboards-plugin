@@ -5,6 +5,7 @@
 
 import { EuiFormRow, EuiFieldText, EuiSpacer, EuiText } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
+import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
 interface RenameInputProps {
   getRenamePattern: (prefix: string) => void;
   getRenameReplacement: (prefix: string) => void;
@@ -24,11 +25,6 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
     getRenameReplacement(e.target.value);
   };
 
-  const renamePatternUrl =
-    "https://www.elastic.co/guide/en/elasticsearch/reference/7.10/restore-snapshot-api.html#restore-snapshot-api-rename-pattern";
-  const renameReplacementUrl =
-    "https://www.elastic.co/guide/en/elasticsearch/reference/7.10/restore-snapshot-api.html#restore-snapshot-api-rename-replacement";
-
   return (
     <>
       <EuiSpacer size="l" />
@@ -41,7 +37,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
           Use regular expression to define how index names will be renamed.
           <br />
           By default, input (.+) to reuse the entire index name.{" "}
-          <a href={renamePatternUrl} target="_blank">
+          <a href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
             [Learn more]
           </a>
         </p>
@@ -62,7 +58,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
           entire matching index name, $1 to include the content of the first
           <br />
           capture group, etc.{" "}
-          <a href={renameReplacementUrl} target="_blank">
+          <a href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
             [Learn more]
           </a>
         </p>
