@@ -359,6 +359,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             onCloseFlyout={this.onCloseRestoreFlyout}
             restoreSnapshot={this.restoreSnapshot}
             snapshotId={selectedItems[0].id}
+            repository={selectedItems[0].repository}
           />
         )}
 

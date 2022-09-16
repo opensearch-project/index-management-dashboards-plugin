@@ -40,6 +40,7 @@ interface RestoreSnapshotProps {
   onCloseFlyout: () => void;
   restoreSnapshot: (snapshotId: string, repository: string, options: object) => void;
   snapshotId: string;
+  repository: string;
 }
 
 interface RestoreSnapshotState {
@@ -51,9 +52,6 @@ interface RestoreSnapshotState {
   renameReplacement: string;
   listIndices: boolean;
   indicesList: CatIndex[];
-
-  repositories: CatRepository[];
-  selectedRepoValue: string;
 
   snapshot: GetSnapshot | null;
   restoreSpecific: boolean;
@@ -75,9 +73,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       renamePattern: "",
       renameReplacement: "",
       listIndices: false,
+<<<<<<< HEAD
       indicesList: [],
       repositories: [],
       selectedRepoValue: "",
+=======
+>>>>>>> update_branch_to_latest
       snapshot: null,
       restoreSpecific: false,
       partial: false,
@@ -87,14 +88,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   }
 
   async componentDidMount() {
-    await this.getRepos();
     await this.getIndexOptions();
   }
 
   onClickAction = () => {
-    const { restoreSnapshot, snapshotId } = this.props;
+    const { restoreSnapshot, snapshotId, repository } = this.props;
     const {
-      selectedRepoValue,
       restoreSpecific,
       selectedIndexOptions,
       indexOptions,
@@ -107,6 +106,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const { add_prefix } = RESTORE_OPTIONS;
     const selectedIndices = selectedIndexOptions.map((option) => option.label).join(",");
     const allIndices = indexOptions.map((option) => option.label).join(",");
+    // TODO replace unintelligible regex below with (.+) and add $1 to user provided prefix then add that to renameReplacement
     const pattern = renameIndices === add_prefix ? "(?<![^ ])(?=[^ ])" : renamePattern;
 
     const options = {
@@ -125,13 +125,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return;
     }
-    if (!selectedRepoValue) {
+    if (!repository) {
       repoError = ERROR_PROMPT.REPO;
       this.setState({ repoError });
 
       return;
     }
-    restoreSnapshot(snapshotId, selectedRepoValue, options);
+    restoreSnapshot(snapshotId, repository, options);
   };
 
   onClickIndices = () => {
@@ -171,9 +171,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   getIndexOptions = () => {
+<<<<<<< HEAD
     const { snapshotId } = this.props;
     const { selectedRepoValue } = this.state;
     this.getSnapshot(snapshotId, selectedRepoValue);
+=======
+    this.getSnapshot(this.props.snapshotId, this.props.repository);
+>>>>>>> update_branch_to_latest
   };
 
   onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
@@ -193,6 +197,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     this.setState({ selectedIndexOptions: selectedIndexOptions });
   };
 
+<<<<<<< HEAD
   getRepos = async () => {
     try {
       const { snapshotManagementService } = this.props;
@@ -223,6 +228,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
   };
 
+=======
+>>>>>>> update_branch_to_latest
   getPrefix = (prefix: string) => {
     this.setState({ prefix: prefix });
   };
@@ -255,6 +262,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   render() {
+<<<<<<< HEAD
     const { onCloseFlyout, snapshotId } = this.props;
     const {
       indexOptions,
@@ -266,6 +274,10 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       listIndices,
       indicesList,
     } = this.state;
+=======
+    const { onCloseFlyout, repository } = this.props;
+    const { indexOptions, selectedIndexOptions, restoreSpecific, snapshot, renameIndices } = this.state;
+>>>>>>> update_branch_to_latest
 
     const {
       do_not_rename,
@@ -318,17 +330,33 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
               <EuiSpacer size="l" />
 
-              {restoreSpecific && (
-                <SnapshotIndicesInput
-                  indexOptions={indexOptions}
-                  selectedIndexOptions={selectedIndexOptions}
-                  onIndicesSelectionChange={this.onIndicesSelectionChange}
-                  getIndexOptions={this.getIndexOptions}
-                  onCreateOption={this.onCreateOption}
-                  selectedRepoValue={selectedRepoValue}
-                  isClearable={true}
-                />
-              )}
+<<<<<<< HEAD
+    {
+      restoreSpecific && (
+        <SnapshotIndicesInput
+          indexOptions={indexOptions}
+          selectedIndexOptions={selectedIndexOptions}
+          onIndicesSelectionChange={this.onIndicesSelectionChange}
+          getIndexOptions={this.getIndexOptions}
+          onCreateOption={this.onCreateOption}
+          selectedRepoValue={selectedRepoValue}
+          isClearable={true}
+        />
+      )
+    }
+=======
+          {restoreSpecific && (
+            <SnapshotIndicesInput
+              indexOptions={indexOptions}
+              selectedIndexOptions={selectedIndexOptions}
+              onIndicesSelectionChange={this.onIndicesSelectionChange}
+              getIndexOptions={this.getIndexOptions}
+              onCreateOption={this.onCreateOption}
+              selectedRepoValue={repository}
+              isClearable={true}
+            />
+          )}
+>>>>>>> update_branch_to_latest
 
               <EuiSpacer size="l" />
 
@@ -342,10 +370,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 width="200%"
               />
 
-              {renameIndices === add_prefix && <AddPrefixInput getPrefix={this.getPrefix} />}
-              {renameIndices === rename_indices && (
-                <RenameInput getRenamePattern={this.getRenamePattern} getRenameReplacement={this.getRenameReplacement} />
-              )}
+    { renameIndices === add_prefix && <AddPrefixInput getPrefix={this.getPrefix} /> }
+    {
+      renameIndices === rename_indices && (
+        <RenameInput getRenamePattern={this.getRenamePattern} getRenameReplacement={this.getRenameReplacement} />
+      )
+    }
 
               <EuiSpacer size="xxl" />
               <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">
@@ -367,13 +397,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                   width="200%"
                 />
               </EuiAccordion>
-            </EuiFlyoutBody>
+            </EuiFlyoutBody >
 
-            <EuiFlyoutFooter>
-              <FlyoutFooter edit={true} restore={true} action="" onClickAction={this.onClickAction} onClickCancel={onCloseFlyout} />
-            </EuiFlyoutFooter>
+      <EuiFlyoutFooter>
+        <FlyoutFooter edit={true} restore={true} action="" onClickAction={this.onClickAction} onClickCancel={onCloseFlyout} />
+      </EuiFlyoutFooter>
           </>
-        )}
+        )
+  }
       </EuiFlyout>
     );
   }
