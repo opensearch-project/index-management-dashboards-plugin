@@ -5,16 +5,16 @@
 
 import { EuiInMemoryTable, EuiIcon, EuiFlyoutHeader, EuiTitle } from "@elastic/eui";
 import React from "react";
-import { CatIndex } from "../../../../../server/models/interfaces";
+import { CatSnapshotIndex } from "../../../../../server/models/interfaces";
 
 interface IndexListProps {
-  indices: CatIndex[];
+  indices: CatSnapshotIndex[];
   snapshot: string;
   onClick: (e: React.MouseEvent) => void;
 }
 
 const IndexList = ({ indices, snapshot, onClick }: IndexListProps) => {
-  indices = indices.filter((index) => index.index.substring(0, 7) !== ".kibana");
+  indices = indices.filter((index) => index.index?.substring(0, 7) !== ".kibana");
 
   const columns = [
     {
@@ -30,13 +30,6 @@ const IndexList = ({ indices, snapshot, onClick }: IndexListProps) => {
     },
   ];
 
-  const sorting = {
-    sort: {
-      field: "index",
-      direction: "asc",
-    },
-  };
-
   return (
     <>
       <EuiFlyoutHeader hasBorder>
@@ -48,7 +41,7 @@ const IndexList = ({ indices, snapshot, onClick }: IndexListProps) => {
         </EuiTitle>
       </EuiFlyoutHeader>
       <div style={{ padding: "1rem 1.5rem" }}>
-        <EuiInMemoryTable tableCaption="Indices" items={indices} columns={columns} tableLayout="auto" pagination={true} sorting={sorting} />
+        <EuiInMemoryTable tableCaption="Indices" items={indices} columns={columns} tableLayout="auto" pagination={true} sorting={true} />
       </div>
     </>
   );

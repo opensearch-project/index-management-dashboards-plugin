@@ -170,13 +170,13 @@ export interface IndexUpdateResponse {
   failedIndices: FailedIndex[];
 }
 
-export interface ApplyPolicyResponse extends IndexUpdateResponse {}
+export interface ApplyPolicyResponse extends IndexUpdateResponse { }
 
-export interface RemovePolicyResponse extends IndexUpdateResponse {}
+export interface RemovePolicyResponse extends IndexUpdateResponse { }
 
-export interface ChangePolicyResponse extends IndexUpdateResponse {}
+export interface ChangePolicyResponse extends IndexUpdateResponse { }
 
-export interface RetryManagedIndexResponse extends IndexUpdateResponse {}
+export interface RetryManagedIndexResponse extends IndexUpdateResponse { }
 
 export interface RetryParams {
   index: string;
@@ -331,6 +331,11 @@ export interface CatIndex {
   "store.size": string;
   uuid: string;
   data_stream: string | null;
+}
+
+export interface CatSnapshotIndex {
+  index?: string;
+  "store.size"?: string;
 }
 
 export interface ManagedCatIndex extends CatIndex {
