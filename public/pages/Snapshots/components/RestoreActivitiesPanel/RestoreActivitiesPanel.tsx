@@ -6,20 +6,20 @@
 import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton } from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState } from "react";
-import { IndexService, SnapshotManagementService } from "../../../../services";
+import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { GetIndexRecoveryResponse } from "../../../../../server/models/interfaces";
+import { GetIndexRecoveryResponse, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface RestoreActivitiesPanelProps {
   snapshotManagementService: SnapshotManagementService;
-  indexService: IndexService;
   snapshotId: string;
+  repository: string;
 }
 
-export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService, snapshotId }: RestoreActivitiesPanelProps) => {
+export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
@@ -63,30 +63,33 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, indexService
     setFlyout(false);
   };
 
-  const setRestoreStatus = (response: object) => {
+  const setRestoreStatus = (response: GetIndexRecoveryResponse) => {
     let minStartTime: number = 0;
     let maxStopTime: number = 0;
     let stageIndex: number = Infinity;
     let doneCount: number = 0;
-    const indexes: object[] = [];
+    const indexes: CatSnapshotIndex[] = [];
     const stages: string[] = ["START", "INIT", "INDEX", "FINALIZE", "DONE"];
 
     for (let item in response) {
-      const info = response[item].shards[0];
-      const stage = stages.indexOf(info.stage);
-      const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}MB`;
+      if (item.indexOf("kibana") < 0) {
+        const info = response[item as keyof GetIndexRecoveryResponse].shards[0]
+        const stage = stages.indexOf(info.stage);
+        const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
 
-      const time = {
-        start_time: info.start_time_in_millis,
-        stop_time: info.stop_time_in_millis,
-      };
+        const time = {
+          start_time: info.start_time_in_millis,
+          stop_time: info.stop_time_in_millis,
+        };
 
-      doneCount = stage === 4 ? doneCount + 1 : doneCount;
-      stageIndex = stage < stageIndex ? stage : stageIndex;
-      minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
-      maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
-      if (info.source.index) {
-        indexes.push({ index: info.source.index, size: size });
+        doneCount = stage === 4 ? doneCount + 1 : doneCount;
+        stageIndex = stage < stageIndex ? stage : stageIndex;
+        minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
+        maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
+
+        if (info.source.index) {
+          indexes.push({ index: info.source.index, "store.size": size });
+        }
       }
     }
     let percent = Math.floor((doneCount / indices.length) * 100);
