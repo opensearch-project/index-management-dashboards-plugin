@@ -45,6 +45,7 @@ $euiTextColor: $euiColorDarkestShade !default;
   text-decoration: none;
 }
 
+// Allows script field to use full width and resize vertically
 .scripted-metrics-panel {
   &__form-row {
     overflow: auto;
