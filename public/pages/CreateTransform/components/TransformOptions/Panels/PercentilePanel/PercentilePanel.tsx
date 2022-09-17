@@ -10,7 +10,7 @@ import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../model
 interface PercentilePanelProps {
   name: string;
   aggSelection: any;
-  handleAggSelectionChange: (aggItem: TransformAggItem) => void;
+  handleAggSelectionChange: (aggItem: TransformAggItem) => Promise<void>;
   closePopover: () => void;
 }
 

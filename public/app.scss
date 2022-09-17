@@ -44,3 +44,28 @@ $euiTextColor: $euiColorDarkestShade !default;
 .state-accordion:hover {
   text-decoration: none;
 }
+
+.scripted-metrics-panel {
+  &__form-row {
+    overflow: auto;
+    resize: vertical;
+
+    .euiFormRow__fieldWrapper {
+      flex: 1 1 auto;
+      width: 100%;
+
+      .euiCodeEditorWrapper {
+        height: 100% !important;
+      }
+    }
+  }
+
+  &__code-editor {
+    width: auto !important;
+    height: 100% !important;
+
+    .ace_scroller {
+      overflow-y: auto;
+    }
+  }
+}

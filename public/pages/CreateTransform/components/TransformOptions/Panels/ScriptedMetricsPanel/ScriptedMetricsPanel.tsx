@@ -10,7 +10,7 @@ import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../model
 interface ScriptedMetricsPanelProps {
   name: string;
   aggSelection: any;
-  handleAggSelectionChange: (aggItem: TransformAggItem) => void;
+  handleAggSelectionChange: (aggItem: TransformAggItem) => Promise<void>;
   closePopover: () => void;
 }
 
@@ -20,12 +20,14 @@ export default function ScriptedMetricsPanel({ name, aggSelection, handleAggSele
   return (
     <EuiPanel>
       <EuiForm>
-        <EuiFormRow label="Scripted metrics">
+        <EuiFormRow label="Scripted metrics" fullWidth className="scripted-metrics-panel__form-row">
           <EuiCodeEditor
-            style={{ width: 0.38 * window.innerWidth, height: 0.4 * window.innerHeight }}
+            style={{ minHeight: 0.4 * window.innerHeight }}
             value={script}
             onChange={(value: string) => setScript(value)}
             mode="json"
+            className="scripted-metrics-panel__code-editor"
+            maxLines={Infinity}
           />
         </EuiFormRow>
         <EuiSpacer />

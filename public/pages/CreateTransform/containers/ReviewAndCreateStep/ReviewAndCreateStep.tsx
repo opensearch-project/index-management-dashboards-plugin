@@ -34,7 +34,7 @@ interface ReviewAndCreateStepProps extends RouteComponentProps {
   onGroupSelectionChange: (selectedFields: TransformGroupItem[], aggItem: TransformAggItem) => void;
   selectedAggregations: any;
   aggList: TransformAggItem[];
-  onAggregationSelectionChange: (selectedFields: any, aggItem: TransformAggItem) => void;
+  onAggregationSelectionChange: (selectedFields: any, aggItem: TransformAggItem) => Promise<boolean>;
   onRemoveTransformation: (name: string) => void;
   previewTransform: any[];
 

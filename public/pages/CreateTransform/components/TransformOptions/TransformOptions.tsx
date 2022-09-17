@@ -29,7 +29,7 @@ interface TransformOptionsProps {
   onGroupSelectionChange: (selectedFields: TransformGroupItem[], aggItem: TransformAggItem) => void;
   selectedAggregations: any;
   aggList: TransformAggItem[];
-  onAggregationSelectionChange: (selectedFields: any, aggItem: TransformAggItem) => void;
+  onAggregationSelectionChange: (selectedFields: any, aggItem: TransformAggItem) => Promise<boolean>;
 }
 
 export default function TransformOptions({
@@ -62,9 +62,18 @@ export default function TransformOptions({
     });
     closePopover();
   };
-  const handleAggSelectionChange = (aggItem: TransformAggItem): void => {
-    onAggregationSelectionChange(aggSelection, aggItem);
-    closePopover();
+  const handleAggSelectionChange = async (aggItem: TransformAggItem): Promise<void> => {
+    // For scripted metric, wait until success to close
+    if (aggItem.type === TRANSFORM_AGG_TYPE.scripted_metric) {
+      const result = await onAggregationSelectionChange(aggSelection, aggItem);
+
+      if (result) {
+        closePopover();
+      }
+    } else {
+      onAggregationSelectionChange(aggSelection, aggItem);
+      closePopover();
+    }
   };
 
   const numberPanels: EuiContextMenuPanelDescriptor[] = [

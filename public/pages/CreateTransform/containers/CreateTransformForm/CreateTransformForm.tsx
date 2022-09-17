@@ -341,15 +341,20 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     else await this.onRemoveTransformation(aggItem.name);
   };
 
-  onAggregationSelectionChange = async (selectedAggregations: any, aggItem: TransformAggItem): Promise<void> => {
+  onAggregationSelectionChange = async (selectedAggregations: any, aggItem: TransformAggItem): Promise<boolean> => {
     const { aggList } = this.state;
     aggList.push(aggItem);
     this.updateAggregation();
     const previewSuccess = await this.previewTransform(this.state.transformJSON);
 
     // If preview successfully update aggregations, else remove from list of transformation
-    if (previewSuccess) this.setState({ selectedAggregations: selectedAggregations });
-    else await this.onRemoveTransformation(aggItem.name);
+    if (previewSuccess) {
+      this.setState({ selectedAggregations: selectedAggregations });
+      return true;
+    }
+
+    await this.onRemoveTransformation(aggItem.name);
+    return false;
   };
 
   onEditTransformation = async (oldName: string, newName: string): Promise<void> => {

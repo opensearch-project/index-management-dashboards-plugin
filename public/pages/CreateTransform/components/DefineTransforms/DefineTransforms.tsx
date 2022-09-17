@@ -25,7 +25,7 @@ interface DefineTransformsProps {
   onGroupSelectionChange: (selectedFields: TransformGroupItem[], aggItem: TransformAggItem) => void;
   selectedAggregations: any;
   aggList: TransformAggItem[];
-  onAggregationSelectionChange: (selectedFields: any, aggItem: TransformAggItem) => void;
+  onAggregationSelectionChange: (selectedFields: any, aggItem: TransformAggItem) => Promise<boolean>;
   onEditTransformation: (oldName: string, newName: string) => void;
   onRemoveTransformation: (name: string) => void;
   previewTransform: any[];
@@ -162,7 +162,7 @@ export default function DefineTransforms({
     }
     const val = data[rowIndex]._source[columnId];
     return val !== undefined ? JSON.stringify(val) : "-";
-  }
+  };
 
   //TODO: remove duplicate code here after extracting the first table as separate component
   if (isReadOnly)
