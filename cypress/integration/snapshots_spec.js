@@ -6,7 +6,11 @@
 import { PLUGIN_NAME } from "../support/constants";
 
 describe("Snapshots", () => {
+<<<<<<< HEAD
   before(() => {
+=======
+  beforeEach(() => {
+>>>>>>> 4f4e5d6 (Snapshots testing in progress)
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
@@ -41,8 +45,11 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be created", () => {
     it("successfully creates a new snapshot", () => {
+<<<<<<< HEAD
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/snapshots`);
 
+=======
+>>>>>>> 4f4e5d6 (Snapshots testing in progress)
       // delete any existing indices
       cy.deleteAllIndices();
 
