@@ -5,8 +5,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
-// @ts-ignore
+import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RenameInput from "./RenameInput";
 
@@ -30,7 +29,7 @@ describe("RenameInput component", () => {
 
     const { container } = render(<RenameInput {...testProps} />);
 
-    expect(container.firstChild).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
   it("accepts user input", () => {

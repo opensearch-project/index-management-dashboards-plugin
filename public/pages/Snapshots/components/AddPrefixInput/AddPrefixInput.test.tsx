@@ -6,7 +6,6 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, screen, cleanup } from "@testing-library/react";
-// @ts-ignore
 import userEvent from "@testing-library/user-event";
 import AddPrefixInput from "./AddPrefixInput";
 
@@ -30,7 +29,7 @@ describe("AddPrefixInput component", () => {
 
     const { container } = render(<AddPrefixInput {...testProps} />);
 
-    expect(container.firstChild).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
   it("accepts user input", () => {

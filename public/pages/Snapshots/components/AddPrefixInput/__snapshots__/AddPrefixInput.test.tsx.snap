@@ -1,7 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AddPrefixInput component renders without error 1`] = `
-<div
-  class="euiSpacer euiSpacer--l"
-/>
+<div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <h4>
+          Specify prefix for restored index names
+        </h4>
+      </div>
+    </div>
+  </div>
+  <span
+    style="font-weight: 200; font-size: 12px;"
+  >
+    A prefix will be added to any restored index names.
+  </span>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiFormRow"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText"
+            data-test-subj="prefixInput"
+            id="some_html_id"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--m"
+  />
+</div>
 `;
