@@ -23,7 +23,7 @@ afterEach(() => {
 describe("AddPrefixInput component", () => {
   it("renders without error", () => {
     expect(screen.getByText("Specify prefix for restored index names")).toBeInTheDocument();
-    expect(screen.getByTestId("prefixInput"));
+    expect(screen.getByTestId("prefixInput")).toBeInTheDocument();
 
     cleanup();
 
@@ -33,14 +33,12 @@ describe("AddPrefixInput component", () => {
   });
 
   it("accepts user input", () => {
-    // User enters text
     userEvent.type(screen.getByTestId("prefixInput"), "test_prefix_");
 
     expect(screen.getByTestId("prefixInput")).toHaveValue("test_prefix_");
   });
 
   it("sends user input to parent component via getPrefix", () => {
-    // User enters text into prefix input
     userEvent.type(screen.getByTestId("prefixInput"), "four");
 
     // getPrefix is prop sent from parent component to retrieve user input
