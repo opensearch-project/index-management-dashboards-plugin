@@ -91,7 +91,7 @@ describe("Snapshots", () => {
       cy.contains("Restore snapshot");
 
       // enter a prefix
-      cy.get(`input[data-test-subj="prefixInput"]`).type("pre_");
+      cy.get(`input[data-test-subj="prefixInput"]`).type("restored_");
 
       // Click restore snapshot button
       cy.get("button").contains("Restore snapshot").click({ force: true });
@@ -99,8 +99,10 @@ describe("Snapshots", () => {
       // Check for success toast
       cy.contains("Restored snapshot test_snapshot to repository test_repo");
 
-      cy.contains("automatically").click({ force: true })
+      cy.contains("automatically").click({ force: true });
 
+      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
+      cy.wait(6000);
     });
   });
 
@@ -111,11 +113,12 @@ describe("Snapshots", () => {
 
       // click "Delete" button
       cy.get("button").contains("Delete").click({ force: true });
-
-      // click "Delete snapshot" button on modal
-      cy.get("button").contains("Delete snapshot");
-
       cy.wait(3000);
+      // click "Delete snapshot" button on modal
+      cy.get("button").contains("Delete snapshot").click({ force: true });
+
+      cy.contains("Deleted snapshot");
+      cy.contains("No items found");
 
     });
   })
