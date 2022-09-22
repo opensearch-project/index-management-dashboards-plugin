@@ -107,7 +107,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
     </EuiButton>,
   ];
 
-  const indexes = `${indices.length} Indices`;
+  const indexes = `${indices.length} ${indices.length === 1 ? "Index" : "Indices"}`;
   const restoreStatus = [
     {
       start_time: startTime,
