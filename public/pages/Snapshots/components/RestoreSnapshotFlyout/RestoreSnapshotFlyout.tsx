@@ -5,6 +5,7 @@
 
 import {
   EuiComboBoxOptionOption,
+  EuiHealth,
   EuiFlyout,
   EuiFlyoutBody,
   EuiFlyoutFooter,
@@ -225,6 +226,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       ignore_index_settings,
     } = RESTORE_OPTIONS;
 
+    const status = snapshot ? snapshot?.state[0] + snapshot?.state.slice(1).toLowerCase() : undefined;
+
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
@@ -241,7 +244,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
             </EuiFlexItem>
             <EuiFlexItem>
               <CustomLabel title="Status" />
-              <h3>{snapshot?.state}</h3>
+              <EuiHealth textSize="m" color={`${status?.toLowerCase()}`} title={`${status} indicator icon`}> {status}</EuiHealth>
             </EuiFlexItem>
             <EuiFlexItem>
               <CustomLabel title="Indices" />
