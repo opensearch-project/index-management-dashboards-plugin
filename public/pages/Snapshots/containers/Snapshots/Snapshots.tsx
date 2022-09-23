@@ -326,7 +326,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton disabled={!selectedItems.length} onClick={this.showDeleteModal} data-test-subj="deleteButton" color="danger">
         Delete
       </EuiButton>,
-      <EuiButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="secondary" data-test-subj="restoreButton">
+      <EuiButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="primary" data-test-subj="restoreButton">
         Restore
       </EuiButton>,
       <EuiButton onClick={this.onClickCreate} fill={true}>
