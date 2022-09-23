@@ -68,7 +68,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       indexOptions: [],
       selectedIndexOptions: [],
       renameIndices: "add_prefix",
-      prefix: "",
+      prefix: "restored_",
       renamePattern: "",
       renameReplacement: "",
       listIndices: false,
@@ -86,7 +86,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   }
 
   onClickAction = () => {
-    const { restoreSnapshot, snapshotId, repository } = this.props;
+    const { restoreSnapshot, snapshotId, repository, onCloseFlyout } = this.props;
     const {
       restoreSpecific,
       selectedIndexOptions,
@@ -126,6 +126,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       return;
     }
     restoreSnapshot(snapshotId, repository, options);
+    onCloseFlyout()
   };
 
   onClickIndices = () => {

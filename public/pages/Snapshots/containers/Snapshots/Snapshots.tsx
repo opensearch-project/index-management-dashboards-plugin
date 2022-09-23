@@ -226,7 +226,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
       if (response.ok) {
-        this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.`);
+        this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.  View restore status in "Restore activities in progress" tab`);
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
