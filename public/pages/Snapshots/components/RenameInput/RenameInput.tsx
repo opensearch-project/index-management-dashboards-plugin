@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiFormRow, EuiFieldText, EuiSpacer, EuiText } from "@elastic/eui";
+import { EuiFormRow, EuiFieldText, EuiSpacer, EuiText, EuiLink } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
 import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
 interface RenameInputProps {
@@ -37,9 +37,9 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
           Use regular expression to define how index names will be renamed.
           <br />
           By default, input (.+) to reuse the entire index name.{" "}
-          <a href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-            [Learn more]
-          </a>
+          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer" external={true}>
+            Learn more
+          </EuiLink>
         </p>
       </EuiText>
       <EuiFormRow>
@@ -58,9 +58,9 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
           entire matching index name, $1 to include the content of the first
           <br />
           capture group, etc.{" "}
-          <a href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-            [Learn more]
-          </a>
+          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer" external={true}>
+            Learn more
+          </EuiLink>
         </p>
       </EuiText>
       <EuiFormRow>
