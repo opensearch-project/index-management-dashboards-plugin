@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiFormRow, EuiText, EuiTextArea, EuiSpacer } from "@elastic/eui";
+import { EuiFormRow, EuiText, EuiTextArea, EuiSpacer, EuiLink } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
 import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
 
@@ -38,9 +38,9 @@ const IndexSettingsInput = ({ getIndexSettings, ignore }: IndexSettingsInputProp
       <EuiText size="xs" style={{ padding: "0px 0px 5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           {helperText}
-          <a href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank">
-            [Learn more]
-          </a>
+          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank">
+            Learn more
+          </EuiLink>
         </p>
       </EuiText>
       <EuiFormRow>
