@@ -6,7 +6,7 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader } from "@elastic/eui";
+import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader, EuiTabs, EuiTab } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService, IndexService } from "../../../../services";
@@ -365,21 +365,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
     return (
       <>
-        <EuiPageHeader
-          tabs={[
-            {
-              label: "Snapshots",
-              isSelected: true,
-              onClick: this.onClickTab,
-            },
-            {
-              label: "Restore activities in progress",
-              onClick: this.onClickTab,
-            },
-          ]}
-          paddingSize="l"
-          onClick={this.onClickTab}
-        />
+        <EuiPageHeader>
+          <EuiTabs size="m" >
+            <EuiTab isSelected={true} onClick={this.onClickTab} >Snapshots</EuiTab>
+            <EuiTab onClick={this.onClickTab} >Restore activities in progress</EuiTab>
+          </EuiTabs>
+        </EuiPageHeader>
         {snapshotPanel || (
           <RestoreActivitiesPanel
             snapshotManagementService={snapshotManagementService}
