@@ -141,8 +141,25 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
   }
 
   async componentDidMount() {
+    const { snapshots } = this.state;
+    const snapshotSuccess = snapshots.every((snapshot) => {
+      return snapshot.status === "SUCCESS";
+    });
+    let getSnapshotInterval: ReturnType<typeof setInterval>;
+
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
+
     await this.getSnapshots();
+
+    if (!snapshotSuccess) {
+      getSnapshotInterval = setInterval(async () => {
+        await this.getSnapshots();
+      }, 5000)
+    }
+
+    return () => {
+      clearInterval(getSnapshotInterval);
+    }
   }
 
   getSnapshots = async () => {
