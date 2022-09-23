@@ -29,8 +29,20 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
 
   useEffect(() => {
     context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
+
     getRestoreStatus();
-  }, []);
+
+    let getStatusInterval: ReturnType<typeof setInterval>;
+    console.log(stage);
+    if (stage.slice(0, 4) !== "DONE") {
+      getStatusInterval = setInterval(() => {
+        getRestoreStatus();
+      }, 5000);
+    }
+    return () => {
+      clearInterval(getStatusInterval)
+    }
+  }, [stage]);
 
   const getRestoreStatus = async () => {
     if (stage.indexOf("DONE") >= 0) {
