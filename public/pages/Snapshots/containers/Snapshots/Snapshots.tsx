@@ -76,6 +76,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Name",
         sortable: true,
         dataType: "string",
+        width: "25%",
         render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
           const truncated = _.truncate(name, { length: 80 });
           return (
@@ -90,7 +91,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Snapshot status",
         sortable: true,
         dataType: "string",
-        width: "150px",
+        // width: "150px",
         render: (value: string) => {
           return snapshotStatusRender(value.replace("_", " "));
         },
@@ -100,7 +101,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Policy",
         sortable: false,
         dataType: "string",
-        width: "160px",
+        // width: "180px",
         render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
           const truncated = _.truncate(name, { length: 20 });
           if (!!item.policy) {
@@ -113,26 +114,26 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         field: "repository",
         name: "Repository",
         sortable: false,
-        width: "150px",
+        // width: "180px",
         dataType: "string",
         render: (value: string, item: SnapshotsWithRepoAndPolicy) => {
           return truncateSpan(value);
         },
       },
-      {
-        field: "start_epoch",
-        name: "Start time",
-        sortable: true,
-        dataType: "date",
-        width: "150px",
-        render: renderTimestampMillis,
-      },
+      // {
+      //   field: "start_epoch",
+      //   name: "Start time",
+      //   sortable: true,
+      //   dataType: "date",
+      //   width: "150px",
+      //   render: renderTimestampMillis,
+      // },
       {
         field: "end_epoch",
-        name: "End time",
+        name: "Time last updated",
         sortable: true,
         dataType: "date",
-        width: "150px",
+        // width: "180px",
         render: renderTimestampMillis,
       },
     ];
@@ -338,11 +339,8 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const subTitleText = (
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
-          Snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository. <br />
-          To restore a snapshot, use the snapshot restore API.{" "}
-          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank">
-            Learn more
-          </EuiLink>
+          Snapshots are taken automatically from snapshot policies, <br />or you can initiate manual snapshots to save to a repository.<br />
+          You can restore indices by selecting a snapshot.
         </p>
       </EuiText>
     );

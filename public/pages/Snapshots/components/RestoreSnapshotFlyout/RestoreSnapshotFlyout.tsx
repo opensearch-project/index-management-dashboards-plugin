@@ -232,7 +232,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
-            <h2 id="flyoutTitle">Restore snapshot</h2>
+            <h2 id="flyoutTitle">Restore a snapshot</h2>
           </EuiTitle>
         </EuiFlyoutHeader>
 
