@@ -45,7 +45,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
   }, [stage]);
 
   const getRestoreStatus = async () => {
-    if (stage.indexOf("DONE") >= 0) {
+    if (stage.indexOf("Done") >= 0) {
       console.log("done");
       return;
     }
@@ -110,7 +110,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
     setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
     setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
     setIndices(indexes);
-    setStage(`${stages[stageIndex]} (${percent}%)`);
+    setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
   };
 
   const actions = [
