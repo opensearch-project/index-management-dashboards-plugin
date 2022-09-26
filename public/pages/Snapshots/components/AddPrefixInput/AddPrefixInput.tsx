@@ -12,7 +12,7 @@ interface AddPrefixesInputProps {
 }
 
 const AddPrefixesInput = ({ getPrefix }: AddPrefixesInputProps) => {
-  const [prefix, setPrefix] = useState("");
+  const [prefix, setPrefix] = useState("restored_");
 
   const onPrefixChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPrefix(e.target.value);
@@ -25,7 +25,7 @@ const AddPrefixesInput = ({ getPrefix }: AddPrefixesInputProps) => {
 
       <CustomLabel title="Specify prefix for restored index names" helpText="A prefix will be added to any restored index names." />
       <EuiFormRow>
-        <EuiFieldText value={prefix} onChange={onPrefixChange} placeholder="Example: restored_" />
+        <EuiFieldText value={prefix} onChange={onPrefixChange} />
       </EuiFormRow>
 
       <EuiSpacer size="m" />

@@ -12,8 +12,8 @@ interface RenameInputProps {
 }
 
 const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProps) => {
-  const [renamePattern, setRenamePattern] = useState("");
-  const [renameReplacement, setRenameReplacement] = useState("");
+  const [renamePattern, setRenamePattern] = useState("(.+)");
+  const [renameReplacement, setRenameReplacement] = useState("restored_$1");
 
   const onPatternChange = (e: ChangeEvent<HTMLInputElement>) => {
     setRenamePattern(e.target.value);
@@ -43,7 +43,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
         </p>
       </EuiText>
       <EuiFormRow>
-        <EuiFieldText value={renamePattern} onChange={onPatternChange} placeholder="Example: (.+)" />
+        <EuiFieldText value={renamePattern} onChange={onPatternChange} />
       </EuiFormRow>
 
       <EuiSpacer size="m" />
@@ -64,7 +64,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
         </p>
       </EuiText>
       <EuiFormRow>
-        <EuiFieldText value={renameReplacement} onChange={onReplacementChange} placeholder="Example: restored_$1" />
+        <EuiFieldText value={renameReplacement} onChange={onReplacementChange} />
       </EuiFormRow>
     </>
   );
