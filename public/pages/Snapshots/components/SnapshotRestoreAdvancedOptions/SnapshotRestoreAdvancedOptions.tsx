@@ -18,8 +18,6 @@ interface SnapshotAdvancedOptionsProps {
   onRestoreClusterStateToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   ignoreUnavailable: boolean;
   onIgnoreUnavailableToggle: (e: ChangeEvent<HTMLInputElement>) => void;
-  restorePartial: boolean;
-  onRestorePartialToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   customizeIndexSettings: boolean;
   onCustomizeIndexSettingsToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   ignoreIndexSettings: boolean;
@@ -36,8 +34,6 @@ const SnapshotRestoreAdvancedOptions = ({
   onIgnoreUnavailableToggle,
   restoreClusterState,
   onRestoreClusterStateToggle,
-  restorePartial,
-  onRestorePartialToggle,
   customizeIndexSettings,
   onCustomizeIndexSettingsToggle,
   ignoreIndexSettings,
@@ -48,7 +44,6 @@ const SnapshotRestoreAdvancedOptions = ({
     restore_aliases,
     include_global_state,
     ignore_unavailable,
-    partial,
     customize_index_settings,
     ignore_index_settings,
   } = RESTORE_OPTIONS;
@@ -83,15 +78,6 @@ const SnapshotRestoreAdvancedOptions = ({
         }
         checked={ignoreUnavailable}
         onChange={onIgnoreUnavailableToggle}
-      />
-
-      <EuiSpacer size="s" />
-
-      <EuiCheckbox
-        id={partial}
-        label={<CustomLabel title="Allow restore partial snapshots" />}
-        checked={restorePartial}
-        onChange={onRestorePartialToggle}
       />
 
       <EuiSpacer size="l" />

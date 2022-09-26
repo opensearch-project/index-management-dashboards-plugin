@@ -14,6 +14,8 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiAccordion,
+  EuiCheckbox,
+  EuiCallOut
 } from "@elastic/eui";
 import _ from "lodash";
 import React, { Component, ChangeEvent } from "react";
@@ -318,6 +320,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
           )}
 
           <EuiSpacer size="xxl" />
+
           <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">
             <EuiSpacer size="m" />
 
@@ -330,8 +333,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
               onRestoreClusterStateToggle={this.onToggle}
               ignoreUnavailable={String(_.get(snapshot, ignore_unavailable, false)) == "true"}
               onIgnoreUnavailableToggle={this.onToggle}
-              restorePartial={String(_.get(snapshot, partial, false)) == "true"}
-              onRestorePartialToggle={this.onToggle}
               customizeIndexSettings={String(_.get(snapshot, customize_index_settings, false)) == "true"}
               onCustomizeIndexSettingsToggle={this.onToggle}
               ignoreIndexSettings={String(_.get(snapshot, ignore_index_settings, false)) == "true"}
@@ -339,6 +340,23 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
               width="200%"
             />
           </EuiAccordion>
+
+          <EuiSpacer size="l" />
+
+          {snapshot?.failed_shards || <EuiCallOut
+            title="Restoring a partial snapshot"
+            color="warning"
+          >
+            <p>You are about to restore a partial snapshot. One or more shards may be missing in this<br />snapshot. Do you want to continue?</p>
+            <EuiSpacer size="s" />
+            <EuiCheckbox
+              id={partial}
+              label={<CustomLabel title="Allow restore partial snapshots" />}
+              checked={String(_.get(snapshot, partial, false)) == "true"}
+              onChange={this.onToggle}
+            />
+          </EuiCallOut>}
+
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>

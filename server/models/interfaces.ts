@@ -417,6 +417,7 @@ export interface GetSnapshot {
   restore_aliases?: boolean;
   ignore_unavailable?: boolean;
   ignore_index_settings?: boolean;
+  failed_shards?: number;
   rename_pattern?: string;
   rename_replacement?: string;
   partial?: boolean;
