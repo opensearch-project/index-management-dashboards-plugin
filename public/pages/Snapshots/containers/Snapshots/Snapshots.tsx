@@ -33,6 +33,7 @@ interface SnapshotsState {
   existingPolicyNames: string[];
   loadingSnapshots: boolean;
   snapshotPanel: boolean;
+  restoreStart: number;
 
   selectedItems: SnapshotsWithRepoAndPolicy[];
 
@@ -60,6 +61,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       existingPolicyNames: [],
       loadingSnapshots: false,
       snapshotPanel: true,
+      restoreStart: 0,
       selectedItems: [],
       showFlyout: false,
       flyoutSnapshotId: "",
@@ -228,6 +230,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
       if (response.ok) {
+        console.log(response);
         this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.  View restore status in "Restore activities in progress" tab`);
       } else {
         this.context.notifications.toasts.addDanger(response.error);
@@ -236,6 +239,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));
     }
   };
+
+  getRestoreReferenceTime = (time: number) => {
+    this.setState({ restoreStart: time })
+  }
 
   onClickRestore = async () => {
     this.setState({ showRestoreFlyout: true });
@@ -282,6 +289,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       selectedItems,
       loadingSnapshots,
       snapshotPanel,
+      restoreStart,
       showFlyout,
       flyoutSnapshotId,
       flyoutSnapshotRepo,
@@ -289,7 +297,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       showRestoreFlyout,
       isDeleteModalVisible,
     } = this.state;
-    const { indexService, snapshotManagementService } = this.props;
+    const { snapshotManagementService } = this.props;
     const repos = [...new Set(snapshots.map((snapshot) => snapshot.repository))];
     const status = [...new Set(snapshots.map((snapshot) => snapshot.status))];
     const search = {
@@ -356,8 +364,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         {snapshotPanel || (
           <RestoreActivitiesPanel
             snapshotManagementService={snapshotManagementService}
-            indexService={indexService}
+            repository={selectedItems[0].repository}
             snapshotId={selectedItems[0].id}
+            restoreStartRef={restoreStart}
           />
         )}
         {snapshotPanel && (
@@ -405,6 +414,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             snapshotManagementService={this.props.snapshotManagementService}
             indexService={this.props.indexService}
             onCloseFlyout={this.onCloseRestoreFlyout}
+            getTime={this.getRestoreReferenceTime}
             restoreSnapshot={this.restoreSnapshot}
             snapshotId={selectedItems[0].id}
             repository={selectedItems[0].repository}

@@ -12,14 +12,16 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { GetIndexRecoveryResponse, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
+import IndexList from "../IndexList";
 
 interface RestoreActivitiesPanelProps {
   snapshotManagementService: SnapshotManagementService;
   snapshotId: string;
   repository: string;
+  restoreStartRef: number;
 }
 
-export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }: RestoreActivitiesPanelProps) => {
+export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, restoreStartRef }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
@@ -29,12 +31,12 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
 
   useEffect(() => {
     context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
-
     getRestoreStatus();
 
     let getStatusInterval: ReturnType<typeof setInterval>;
-    console.log(stage);
-    if (stage.slice(0, 4) !== "DONE") {
+
+    if (stage.slice(0, 4) !== "Done") {
+      console.log('Look here', stage.slice(0, 4))
       getStatusInterval = setInterval(() => {
         getRestoreStatus();
       }, 5000);
@@ -45,10 +47,15 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
   }, [stage]);
 
   const getRestoreStatus = async () => {
+    if (!restoreStartRef) {
+      setIndices([{}])
+      return;
+    }
     if (stage.indexOf("Done") >= 0) {
       console.log("done");
       return;
     }
+
     try {
       const res = await snapshotManagementService.getIndexRecovery();
 
@@ -58,9 +65,11 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
         setRestoreStatus(response);
         console.log(response);
       } else {
+        console.log('no indices')
         context?.notifications.toasts.addDanger(res.error);
       }
     } catch (err) {
+      console.log('no indices 2')
       context?.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the recovery."));
     }
   };
@@ -84,8 +93,10 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
     const stages: string[] = ["START", "INIT", "INDEX", "FINALIZE", "DONE"];
 
     for (let item in response) {
-      if (item.indexOf("kibana") < 0) {
-        const info = response[item as keyof GetIndexRecoveryResponse].shards[0]
+      if (item.indexOf("kibana") < 0 && response[item as keyof GetIndexRecoveryResponse].shards[0].start_time_in_millis >= restoreStartRef) {
+
+        console.log('recovery', response[item]);
+        const info = response[item as keyof GetIndexRecoveryResponse].shards[0];
         const stage = stages.indexOf(info.stage);
         const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
 
@@ -93,13 +104,13 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
           start_time: info.start_time_in_millis,
           stop_time: info.stop_time_in_millis,
         };
-
+        console.log("time", JSON.stringify(time))
         doneCount = stage === 4 ? doneCount + 1 : doneCount;
         stageIndex = stage < stageIndex ? stage : stageIndex;
         minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
 
-        if (info.source.index) {
+        if (info.source.index && info.source.snapshot === snapshotId) {
           indexes.push({ index: info.source.index, "store.size": size });
         }
       }
@@ -107,10 +118,15 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
     let percent = Math.floor((doneCount / indices.length) * 100);
     percent = stageIndex === 4 ? 100 : percent;
 
-    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
-    setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
     setIndices(indexes);
-    setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
+
+    if (indexes.length > 0) {
+      setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
+      let completionTime = maxStopTime > 0 ? new Date(maxStopTime).toLocaleString().replace(",", "  ") : "In progress"
+      console.log('completionTime', completionTime)
+      setStopTime(completionTime);
+      setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
+    }
   };
 
   const actions = [
@@ -119,7 +135,9 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
     </EuiButton>,
   ];
 
-  const indexes = `${indices.length} ${indices.length === 1 ? "Index" : "Indices"}`;
+  const indexText = `${indices.length === 1 && Object.keys(indices[0]).length > 0 ? "Index" : "Indices"}`
+  const indexes = `${indices.length === 1 && Object.keys(indices[0]).length === 0 ? "0" : indices.length} ${indexText}`;
+
   const restoreStatus = [
     {
       start_time: startTime,
@@ -129,6 +147,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
       indexes: indexes,
     },
   ];
+
   const columns = [
     {
       field: "start_time",
@@ -155,7 +174,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
 
   return (
     <>
-      {flyout && <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m"></EuiFlyout>}
+      {flyout && <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m"><IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored in" /></EuiFlyout>}
       <ContentPanel title="Restore activities in progress" actions={actions}>
         <EuiInMemoryTable items={restoreStatus} columns={columns} pagination={false} />
         <EuiSpacer size="xxl" />

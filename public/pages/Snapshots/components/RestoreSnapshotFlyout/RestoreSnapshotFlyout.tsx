@@ -39,6 +39,7 @@ interface RestoreSnapshotProps {
   snapshotManagementService: SnapshotManagementService;
   indexService: IndexService;
   onCloseFlyout: () => void;
+  getTime: (time: number) => void
   restoreSnapshot: (snapshotId: string, repository: string, options: object) => void;
   snapshotId: string;
   repository: string;
@@ -92,7 +93,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   }
 
   onClickAction = () => {
-    const { restoreSnapshot, snapshotId, repository, onCloseFlyout } = this.props;
+    const { restoreSnapshot, snapshotId, repository, onCloseFlyout, getTime } = this.props;
     const {
       restoreSpecific,
       selectedIndexOptions,
@@ -131,6 +132,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return;
     }
+    getTime(Date.now());
     restoreSnapshot(snapshotId, repository, options);
     onCloseFlyout()
   };
@@ -285,7 +287,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     return (
       <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m" hideCloseButton>
-        {listIndices && <IndexList indices={indicesList} snapshot={snapshotId} onClick={this.onBackArrowClick} />}
+        {listIndices && <IndexList indices={indicesList} snapshot={snapshotId} onClick={this.onBackArrowClick} title="Indices in snapshot" />}
         {listIndices || (
           <>
             <EuiFlyoutHeader hasBorder>

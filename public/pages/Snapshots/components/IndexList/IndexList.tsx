@@ -10,10 +10,11 @@ import { CatSnapshotIndex } from "../../../../../server/models/interfaces";
 interface IndexListProps {
   indices: CatSnapshotIndex[];
   snapshot: string;
+  title: string
   onClick: (e: React.MouseEvent) => void;
 }
 
-const IndexList = ({ indices, snapshot, onClick }: IndexListProps) => {
+const IndexList = ({ indices, snapshot, onClick, title }: IndexListProps) => {
   indices = indices.filter((index) => index.index?.substring(0, 7) !== ".kibana");
 
   const columns = [
@@ -36,7 +37,7 @@ const IndexList = ({ indices, snapshot, onClick }: IndexListProps) => {
         <EuiTitle size="m">
           <h2 id="flyoutTitle">
             <EuiIcon onClick={onClick} size="xl" color="primary" type="arrowLeft" style={{ cursor: "pointer", padding: "0 0 5px 0" }} />{" "}
-            Indices in snapshot {snapshot} ({indices.length})
+            {title} {snapshot} ({indices.length})
           </h2>
         </EuiTitle>
       </EuiFlyoutHeader>
