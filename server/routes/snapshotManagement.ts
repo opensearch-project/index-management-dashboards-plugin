@@ -186,10 +186,14 @@ export default function (services: NodeServices, router: IRouter) {
 
   router.get(
     {
-      path: NODE_API._RECOVERY,
-      validate: {},
+      path: `${NODE_API._INDICES}/{indices}`,
+      validate: {
+        params: schema.object({
+          indices: schema.string(),
+        }),
+      },
     },
-    snapshotManagementService.getIndexRecovery
+    snapshotManagementService.catSnapshotIndices
   );
 
   router.delete(
