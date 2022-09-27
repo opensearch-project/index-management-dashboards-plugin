@@ -161,7 +161,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     try {
       const response = await snapshotManagementService.getSnapshot(snapshotId, repository);
-      console.log(response);
+
       if (response.ok) {
         const newOptions = response.response.indices.map((index) => {
           return { label: index };
@@ -176,7 +176,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   getIndexOptions = () => {
     const { snapshotId, repository } = this.props;
-    console.log([repository, snapshotId])
+
     this.getSnapshot(snapshotId, repository);
   };
 
@@ -207,7 +207,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       const indexNames = snapshot?.indices
       if (response.ok) {
         let indicesResponse = response.response;
-        console.log("indicesResponse", indicesResponse);
         let currIndices = indicesResponse.filter((resItem: CatSnapshotIndex) => {
           if (indexNames!.includes(resItem.index)) {
             activeIndexNames.push(resItem.index);

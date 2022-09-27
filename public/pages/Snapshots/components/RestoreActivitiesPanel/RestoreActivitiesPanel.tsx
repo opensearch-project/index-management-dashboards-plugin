@@ -31,45 +31,39 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
   useEffect(() => {
     context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
-    getRestoreStatus();
 
     let getStatusInterval: ReturnType<typeof setInterval>;
 
     if (stage.slice(0, 4) !== "Done") {
-      console.log('Look here', stage.slice(0, 4))
       getStatusInterval = setInterval(() => {
         getRestoreStatus();
-      }, 5000);
-    }
-    return () => {
-      clearInterval(getStatusInterval)
+      }, 1000);
+      return () => {
+        clearInterval(getStatusInterval)
+      }
     }
   }, [stage]);
 
   const getRestoreStatus = async () => {
     if (!restoreStartRef) {
-      setIndices([{}])
-      return;
-    }
-    if (stage.indexOf("Done") >= 0) {
-      console.log("done");
       return;
     }
 
     try {
       const res = await snapshotManagementService.getIndexRecovery();
 
+      if (stage.indexOf("Done") >= 0) {
+        return;
+      }
+
       if (res.ok) {
         const response: GetIndexRecoveryResponse = res.response;
 
         setRestoreStatus(response);
-        console.log(response);
       } else {
-        console.log('no indices')
         context?.notifications.toasts.addDanger(res.error);
       }
     } catch (err) {
-      console.log('no indices 2')
       context?.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the recovery."));
     }
   };
@@ -77,7 +71,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
   const onIndexesClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setFlyout(true);
-    console.log("index clicked");
   };
 
   const onCloseFlyout = () => {
@@ -94,8 +87,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
     for (let item in response) {
       if (item.indexOf("kibana") < 0 && response[item as keyof GetIndexRecoveryResponse].shards[0].start_time_in_millis >= restoreStartRef) {
-
-        console.log('recovery', response[item]);
         const info = response[item as keyof GetIndexRecoveryResponse].shards[0];
         const stage = stages.indexOf(info.stage);
         const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
@@ -104,7 +95,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
           start_time: info.start_time_in_millis,
           stop_time: info.stop_time_in_millis,
         };
-        console.log("time", JSON.stringify(time))
+
         doneCount = stage === 4 ? doneCount + 1 : doneCount;
         stageIndex = stage < stageIndex ? stage : stageIndex;
         minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
@@ -119,14 +110,9 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     percent = stageIndex === 4 ? 100 : percent;
 
     setIndices(indexes);
-
-    if (indexes.length > 0) {
-      setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
-      let completionTime = maxStopTime > 0 ? new Date(maxStopTime).toLocaleString().replace(",", "  ") : "In progress"
-      console.log('completionTime', completionTime)
-      setStopTime(completionTime);
-      setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
-    }
+    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
+    setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  ") || "In progress");
+    setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
   };
 
   const actions = [
