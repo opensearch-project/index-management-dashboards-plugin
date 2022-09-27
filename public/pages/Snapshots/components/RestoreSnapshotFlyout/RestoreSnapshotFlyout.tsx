@@ -23,7 +23,7 @@ import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
-import { CatRepository, GetSnapshot, CatIndex } from "../../../../../server/models/interfaces";
+import { CatRepository, GetSnapshot, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotRestoreOption from "../SnapshotRestoreOption";
@@ -51,7 +51,7 @@ interface RestoreSnapshotState {
   renamePattern: string;
   renameReplacement: string;
   listIndices: boolean;
-  indicesList: CatIndex[];
+  indicesList: CatSnapshotIndex[];
 
   repositories: CatRepository[],
   selectedRepoValue: string,
@@ -133,12 +133,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     restoreSnapshot(snapshotId, repository, options);
   };
 
-  onClickIndices = () => {
-    const { indexOptions } = this.state;
-    const indices = indexOptions.map((index) => index.label).join(",");
+  onClickIndices = async () => {
+    const { snapshot } = this.state;
+    const indices = snapshot!.indices.join(",");
 
+    await this.getSnapshotIndices(indices);
     this.setState({ listIndices: true });
-    this.getSnapshotIndices(indices);
   };
 
   onBackArrowClick = () => {
@@ -157,11 +157,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     try {
       const response = await snapshotManagementService.getSnapshot(snapshotId, repository);
-
+      console.log(response);
       if (response.ok) {
         const newOptions = response.response.indices.map((index) => {
           return { label: index };
         });
+
         this.setState({ snapshot: response.response, indexOptions: [...newOptions] });
       }
     } catch (err) {
@@ -170,9 +171,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   getIndexOptions = () => {
-    const { snapshotId } = this.props;
-    const { selectedRepoValue } = this.state;
-    this.getSnapshot(snapshotId, selectedRepoValue);
+    const { snapshotId, repository } = this.props;
+    console.log([repository, snapshotId])
+    this.getSnapshot(snapshotId, repository);
   };
 
   onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
@@ -192,28 +193,28 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     this.setState({ selectedIndexOptions: selectedIndexOptions });
   };
 
-  getRepos = async () => {
-    try {
-      const { snapshotManagementService } = this.props;
-      const response = await snapshotManagementService.catRepositories();
-      if (response.ok) {
-        const selectedRepoValue = response.response.length > 0 ? response.response[0].id : "";
-        this.setState({ repositories: response.response, selectedRepoValue });
-      } else {
-        this.context.notifications.toasts.addDanger(response.error);
-      }
-    } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshots."));
-    }
-  };
-
   getSnapshotIndices = async (indices: string) => {
     try {
+      const { snapshot } = this.state;
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.catSnapshotIndices(indices);
+      const activeIndexNames: string[] = [];
 
+      const indexNames = snapshot?.indices
       if (response.ok) {
-        this.setState({ indicesList: response.response });
+        let indicesResponse = response.response;
+        console.log("indicesResponse", indicesResponse);
+        let currIndices = indicesResponse.filter((resItem: CatSnapshotIndex) => {
+          if (indexNames!.includes(resItem.index)) {
+            activeIndexNames.push(resItem.index);
+            return resItem;
+          }
+        });
+        const formattedIndices = currIndices.map((index) => ({ index: index.index, ["store.size"]: index["store.size"] }))
+        const inactiveIndices = snapshot?.indices.filter((index) => !activeIndexNames.includes(index) && index.length)
+          .map((index) => ({ index: index, "store.size": "unknown" }));
+
+        this.setState({ indicesList: [...formattedIndices, ...inactiveIndices] });
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
