@@ -296,18 +296,22 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
             </EuiFlyoutHeader>
 
             <EuiFlyoutBody>
-              <EuiFlexGroup>
+
+              <EuiFlexGroup alignItems="flexStart">
                 <EuiFlexItem>
                   <CustomLabel title="Snapshot name" />
-                  <h3>{snapshot?.snapshot}</h3>
+                  <EuiSpacer size="xs" />
+                  <h3 style={{ fontSize: "1.1rem" }}>{snapshot?.snapshot}</h3>
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <CustomLabel title="Status" />
-                  <h3>{snapshot?.state}</h3>
+                  <EuiHealth textSize="m" color={`${status?.toLowerCase()}`} title={`${status} indicator icon`}> {status}</EuiHealth>
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <CustomLabel title="Indices" />
-                  <a onClick={this.onClickIndices}>{snapshot?.indices.length}</a>
+                  <EuiSpacer size="xs" />
+
+                  <a onClick={this.onClickIndices} style={{ fontSize: "1.1rem" }}>{snapshot?.indices.length}</a>
                 </EuiFlexItem>
               </EuiFlexGroup>
 
