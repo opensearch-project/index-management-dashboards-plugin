@@ -154,7 +154,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       } else {
         const message = JSON.parse(response.error).error.root_cause[0].reason
         const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
-        this.context.notifications.toasts.addError(response.error, { title: `There was a problem getting the snapshots.`, toastMessage: trimmedMessage });
+        this.context.notifications.toasts.addError(response.error, {
+          title: `There was a problem getting the snapshots.`,
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+        });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshots."));
@@ -188,8 +191,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         this.context.notifications.toasts.addSuccess(`Deleted snapshot ${snapshotId} from repository ${repository}.`);
       } else {
         const message = JSON.parse(response.error).error.root_cause[0].reason
-        const trimmedMessage = message.slice(message.indexOf("]") + 1);
-        this.context.notifications.toasts.addError(response.error, { title: `There was a problem deleting the snapshot.`, toastMessage: trimmedMessage });
+        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+        this.context.notifications.toasts.addError(response.error, {
+          title: `There was a problem deleting the snapshot.`,
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+        });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem deleting the snapshot."));
@@ -214,8 +220,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         await this.getSnapshots();
       } else {
         const message = JSON.parse(response.error).error.root_cause[0].reason
-        const trimmedMessage = message.slice(message.indexOf("]") + 1);
-        this.context.notifications.toasts.addError(response.error, { title: `There was a problem creating the snapshot.`, toastMessage: trimmedMessage });
+        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+        this.context.notifications.toasts.addError(response.error, {
+          title: `There was a problem creating the snapshot.`,
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+        });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem creating the snapshot."));
@@ -230,8 +239,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.  View restore status in "Restore activities in progress" tab`);
       } else {
         const message = JSON.parse(response.error).error.root_cause[0].reason
-        const trimmedMessage = message.slice(message.indexOf("]") + 1);
-        this.context.notifications.toasts.addError(response.error, { title: `There was a problem restoring snapshot.`, toastMessage: trimmedMessage });
+        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+        this.context.notifications.toasts.addError(response.error, {
+          title: `There was a problem restoring the snapshot.`,
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+        });
+        console.log("^ This error is expected and is a result of necessary toast options");
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));

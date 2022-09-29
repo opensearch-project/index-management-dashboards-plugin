@@ -169,8 +169,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
         this.setState({ snapshot: response.response, indexOptions: [...newOptions] });
       } else {
         const message = JSON.parse(response.error).error.root_cause[0].reason
-        const trimmedMessage = message.slice(message.indexOf("]") + 1);
-        this.context.notifications.toasts.addError(response.error, { title: `There was a problem getting the snapshot`, toastMessage: trimmedMessage });
+        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+        this.context.notifications.toasts.addError(response.error, {
+          title: `There was a problem getting the snapshot`,
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+        });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshot."));
@@ -223,8 +226,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
         this.setState({ indicesList: [...formattedIndices, ...inactiveIndices] });
       } else {
         const message = JSON.parse(response.error).error.root_cause[0].reason
-        const trimmedMessage = message.slice(message.indexOf("]") + 1);
-        this.context.notifications.toasts.addError(response.error, { title: `There was a problem loading the indices for this snapshot`, toastMessage: trimmedMessage });
+        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+        this.context.notifications.toasts.addError(response.error, {
+          title: `There was a problem loading the indices for this snapshot`,
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+        });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the indices for this snapshot."));
