@@ -54,13 +54,11 @@ interface RestoreSnapshotState {
   renameReplacement: string;
   listIndices: boolean;
   indicesList: CatSnapshotIndex[];
-
   repositories: CatRepository[],
   selectedRepoValue: string,
   snapshot: GetSnapshot | null;
   restoreSpecific: boolean;
   partial: boolean;
-
   repoError: string;
   snapshotIdError: string;
 }
@@ -107,17 +105,15 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const { add_prefix } = RESTORE_OPTIONS;
     const selectedIndices = selectedIndexOptions.map((option) => option.label).join(",");
     const allIndices = indexOptions.map((option) => option.label).join(",");
-    // TODO replace unintelligible regex below with (.+) and add $1 to user provided prefix then add that to renameReplacement
-    const pattern = renameIndices === add_prefix ? "(?<![^ ])(?=[^ ])" : renamePattern;
+    const pattern = renameIndices === add_prefix ? "(.+)" : renamePattern;
     const restoreCount = restoreSpecific ? selectedIndexOptions.length : indexOptions.length;
-    console.log(restoreCount)
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
       rename_pattern: pattern,
-      rename_replacement: renameIndices === add_prefix ? prefix : renameReplacement,
+      rename_replacement: renameIndices === add_prefix ? `${prefix}$1` : renameReplacement,
       include_aliases: snapshot?.restore_aliases ? snapshot.restore_aliases : true,
       partial: snapshot?.partial || false,
     };

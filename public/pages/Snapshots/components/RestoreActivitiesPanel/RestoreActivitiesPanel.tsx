@@ -26,7 +26,7 @@ const intervalIds: ReturnType<typeof setInterval>[] = [];
 
 export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, restoreStartRef, restoreCount }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
-  const startTime = new Date(restoreStartRef).toLocaleString().replace(",", "  ");
+  const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
   const [stage, setStage] = useState("");
   const [indices, setIndices] = useState([{}]);
@@ -34,8 +34,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
   useEffect(() => {
     context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
-
-    console.log("recheck?", [stage, indices.length, restoreCount]);
 
     if (stage !== "Done (100%)" || indices.length < restoreCount) {
       intervalIds.push(setInterval(() => {
@@ -105,10 +103,11 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
         doneCount = stage === 4 ? doneCount + 1 : doneCount;
         stageIndex = stage < stageIndex ? stage : stageIndex;
-        minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
+
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
 
         if (info.source.index && info.source.snapshot === snapshotId) {
+          minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
           indexes.push({ index: info.source.index, "store.size": size });
         }
       }
@@ -117,6 +116,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
     setIndices(indexes);
     setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
+    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "))
 
     if (stages[stageIndex]) {
       stageIndex = (stageIndex === 4 && doneCount < restoreCount) ? 2 : stageIndex;
