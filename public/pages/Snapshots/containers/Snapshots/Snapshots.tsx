@@ -152,7 +152,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         ] as string[];
         this.setState({ snapshots, existingPolicyNames });
       } else {
-        this.context.notifications.toasts.addDanger(response.error);
+        const message = JSON.parse(response.error).error.root_cause[0].reason
+        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+        this.context.notifications.toasts.addError(response.error, { title: `There was a problem getting the snapshots.`, toastMessage: trimmedMessage });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the snapshots."));
@@ -185,7 +187,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Deleted snapshot ${snapshotId} from repository ${repository}.`);
       } else {
-        this.context.notifications.toasts.addDanger(response.error);
+        const message = JSON.parse(response.error).error.root_cause[0].reason
+        const trimmedMessage = message.slice(message.indexOf("]") + 1);
+        this.context.notifications.toasts.addError(response.error, { title: `There was a problem deleting the snapshot.`, toastMessage: trimmedMessage });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem deleting the snapshot."));
@@ -209,7 +213,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         this.context.notifications.toasts.addSuccess(`Created snapshot ${snapshotId} in repository ${repository}.`);
         await this.getSnapshots();
       } else {
-        this.context.notifications.toasts.addDanger(response.error);
+        const message = JSON.parse(response.error).error.root_cause[0].reason
+        const trimmedMessage = message.slice(message.indexOf("]") + 1);
+        this.context.notifications.toasts.addError(response.error, { title: `There was a problem creating the snapshot.`, toastMessage: trimmedMessage });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem creating the snapshot."));
@@ -223,7 +229,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.  View restore status in "Restore activities in progress" tab`);
       } else {
-        this.context.notifications.toasts.addDanger(response.error);
+        const message = JSON.parse(response.error).error.root_cause[0].reason
+        const trimmedMessage = message.slice(message.indexOf("]") + 1);
+        this.context.notifications.toasts.addError(response.error, { title: `There was a problem restoring snapshot.`, toastMessage: trimmedMessage });
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));
@@ -407,6 +415,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
           />
         )}
 
+        {/* Overlay added to preserve correct Delete/Restore button status, accurately depict selected snapshots upon leaving flyout */}
         {showRestoreFlyout && (
           <EuiOverlayMask onClick={this.onCloseRestoreFlyout} headerZindexLocation="below">
             <RestoreSnapshotFlyout

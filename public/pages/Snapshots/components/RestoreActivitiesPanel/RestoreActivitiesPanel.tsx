@@ -62,9 +62,12 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
         setRestoreStatus(response);
       } else {
         context?.notifications.toasts.addDanger(res.error);
+        const message = JSON.parse(res.error).error.root_cause[0].reason
+        const trimmedMessage = message.slice(message.indexOf("]") + 1);
+        context?.notifications.toasts.addError(JSON.parse(res.error), { title: `There was a problem loading the recovery status.`, toastMessage: trimmedMessage });
       }
     } catch (err) {
-      context?.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the recovery."));
+      context?.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the recovery status."));
     }
   };
 
