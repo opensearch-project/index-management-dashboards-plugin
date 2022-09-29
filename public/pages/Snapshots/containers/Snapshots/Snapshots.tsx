@@ -6,7 +6,7 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader, EuiTabs, EuiTab } from "@elastic/eui";
+import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader, EuiTabs, EuiTab, EuiOverlayMask } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService, IndexService } from "../../../../services";
@@ -163,7 +163,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   onSelectionChange = (selectedItems: SnapshotsWithRepoAndPolicy[]): void => {
     if (this.state.showRestoreFlyout) return;
-    console.log("setting selection")
     this.setState({ selectedItems });
   };
 
@@ -240,7 +239,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
   };
 
   onCloseRestoreFlyout = () => {
-    this.setState({ showRestoreFlyout: false, selectedItems: [] });
+    this.setState({ showRestoreFlyout: false });
   };
 
   onClickTab = (e: React.MouseEvent) => {
@@ -367,6 +366,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             restoreCount={restoreCount}
           />
         )}
+
         {snapshotPanel && (
           <ContentPanel title="Snapshots" actions={actions} subTitleText={subTitleText}>
             <EuiInMemoryTable
@@ -408,15 +408,17 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         )}
 
         {showRestoreFlyout && (
-          <RestoreSnapshotFlyout
-            snapshotManagementService={this.props.snapshotManagementService}
-            indexService={this.props.indexService}
-            onCloseFlyout={this.onCloseRestoreFlyout}
-            getRestoreInfo={this.getRestoreInfo}
-            restoreSnapshot={this.restoreSnapshot}
-            snapshotId={selectedItems[0].id}
-            repository={selectedItems[0].repository}
-          />
+          <EuiOverlayMask onClick={this.onCloseRestoreFlyout} headerZindexLocation="below">
+            <RestoreSnapshotFlyout
+              snapshotManagementService={this.props.snapshotManagementService}
+              indexService={this.props.indexService}
+              onCloseFlyout={this.onCloseRestoreFlyout}
+              getRestoreInfo={this.getRestoreInfo}
+              restoreSnapshot={this.restoreSnapshot}
+              snapshotId={selectedItems[0].id}
+              repository={selectedItems[0].repository}
+            />
+          </EuiOverlayMask>
         )}
 
         {isDeleteModalVisible && (
