@@ -39,7 +39,7 @@ interface RestoreSnapshotProps {
   snapshotManagementService: SnapshotManagementService;
   indexService: IndexService;
   onCloseFlyout: () => void;
-  getTime: (time: number) => void
+  getRestoreInfo: (time: number, count: number) => void
   restoreSnapshot: (snapshotId: string, repository: string, options: object) => void;
   snapshotId: string;
   repository: string;
@@ -93,14 +93,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   }
 
   onClickAction = () => {
-    const { restoreSnapshot, snapshotId, repository, onCloseFlyout, getTime } = this.props;
+    const { restoreSnapshot, snapshotId, repository, onCloseFlyout, getRestoreInfo } = this.props;
     const {
       restoreSpecific,
       selectedIndexOptions,
       indexOptions,
-      snapshot,
       renameIndices,
       prefix,
+      snapshot,
       renamePattern,
       renameReplacement,
     } = this.state;
@@ -109,6 +109,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const allIndices = indexOptions.map((option) => option.label).join(",");
     // TODO replace unintelligible regex below with (.+) and add $1 to user provided prefix then add that to renameReplacement
     const pattern = renameIndices === add_prefix ? "(?<![^ ])(?=[^ ])" : renamePattern;
+    const restoreCount = restoreSpecific ? selectedIndexOptions.length : indexOptions.length;
+    console.log(restoreCount)
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
@@ -132,7 +134,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return;
     }
-    getTime(Date.now());
+
+    getRestoreInfo(Date.now(), restoreCount);
     restoreSnapshot(snapshotId, repository, options);
     onCloseFlyout()
   };
@@ -214,7 +217,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
           }
         });
         const formattedIndices = currIndices.map((index) => ({ index: index.index, ["store.size"]: index["store.size"] }))
-        const inactiveIndices = snapshot?.indices.filter((index) => !activeIndexNames.includes(index) && index.length)
+        const inactiveIndices = snapshot?.indices.filter((index) => !activeIndexNames.includes(index) && index.length && index.indexOf("kibana") < 0)
           .map((index) => ({ index: index, "store.size": "unknown" }));
 
         this.setState({ indicesList: [...formattedIndices, ...inactiveIndices] });
@@ -310,7 +313,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 <EuiFlexItem>
                   <CustomLabel title="Indices" />
                   <EuiSpacer size="xs" />
-
                   <a onClick={this.onClickIndices} style={{ fontSize: "1.1rem" }}>{snapshot?.indices.length}</a>
                 </EuiFlexItem>
               </EuiFlexGroup>

@@ -19,11 +19,14 @@ interface RestoreActivitiesPanelProps {
   snapshotId: string;
   repository: string;
   restoreStartRef: number;
+  restoreCount: number
 }
 
-export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, restoreStartRef }: RestoreActivitiesPanelProps) => {
+const intervalIds: ReturnType<typeof setInterval>[] = [];
+
+export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, restoreStartRef, restoreCount }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
-  const [startTime, setStartTime] = useState("");
+  const startTime = new Date(restoreStartRef).toLocaleString().replace(",", "  ");
   const [stopTime, setStopTime] = useState("");
   const [stage, setStage] = useState("");
   const [indices, setIndices] = useState([{}]);
@@ -32,14 +35,17 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
   useEffect(() => {
     context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
 
-    let getStatusInterval: ReturnType<typeof setInterval>;
+    console.log("recheck?", [stage, indices.length, restoreCount]);
 
-    if (stage.slice(0, 4) !== "Done") {
-      getStatusInterval = setInterval(() => {
+    if (stage !== "Done (100%)" || indices.length < restoreCount) {
+      intervalIds.push(setInterval(() => {
         getRestoreStatus();
-      }, 1000);
+      }, 2000))
+
       return () => {
-        clearInterval(getStatusInterval)
+        intervalIds.forEach((id) => {
+          clearInterval(id);
+        })
       }
     }
   }, [stage]);
@@ -51,10 +57,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
     try {
       const res = await snapshotManagementService.getIndexRecovery();
-
-      if (stage.indexOf("Done") >= 0) {
-        return;
-      }
 
       if (res.ok) {
         const response: GetIndexRecoveryResponse = res.response;
@@ -68,8 +70,9 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     }
   };
 
-  const onIndexesClick = (e: React.MouseEvent) => {
+  const onIndexesClick = async (e: React.MouseEvent) => {
     e.preventDefault();
+    await getRestoreStatus();
     setFlyout(true);
   };
 
@@ -80,20 +83,24 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
   const setRestoreStatus = (response: GetIndexRecoveryResponse) => {
     let minStartTime: number = 0;
     let maxStopTime: number = 0;
-    let stageIndex: number = Infinity;
+    let stageIndex: number = 4;
     let doneCount: number = 0;
     const indexes: CatSnapshotIndex[] = [];
     const stages: string[] = ["START", "INIT", "INDEX", "FINALIZE", "DONE"];
 
     for (let item in response) {
-      if (item.indexOf("kibana") < 0 && response[item as keyof GetIndexRecoveryResponse].shards[0].start_time_in_millis >= restoreStartRef) {
+      if (
+        item.indexOf("kibana") < 0 &&
+        response[item as keyof GetIndexRecoveryResponse].shards &&
+        response[item as keyof GetIndexRecoveryResponse].shards[0].start_time_in_millis >= restoreStartRef
+      ) {
         const info = response[item as keyof GetIndexRecoveryResponse].shards[0];
         const stage = stages.indexOf(info.stage);
         const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
 
         const time = {
           start_time: info.start_time_in_millis,
-          stop_time: info.stop_time_in_millis,
+          stop_time: info.stop_time_in_millis ? info.stop_time_in_millis : Date.now()
         };
 
         doneCount = stage === 4 ? doneCount + 1 : doneCount;
@@ -106,13 +113,16 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
         }
       }
     }
-    let percent = Math.floor((doneCount / indices.length) * 100);
-    percent = stageIndex === 4 ? 100 : percent;
+    let percent = Math.floor((doneCount / restoreCount) * 100);
 
     setIndices(indexes);
-    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
-    setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  ") || "In progress");
-    setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
+    setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
+
+    if (stages[stageIndex]) {
+      stageIndex = (stageIndex === 4 && doneCount < restoreCount) ? 2 : stageIndex;
+      setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
+    }
+
   };
 
   const actions = [
@@ -121,8 +131,8 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     </EuiButton>,
   ];
 
-  const indexText = `${indices.length === 1 && Object.keys(indices[0]).length > 0 ? "Index" : "Indices"}`
-  const indexes = `${indices.length === 1 && Object.keys(indices[0]).length === 0 ? "0" : indices.length} ${indexText}`;
+  const indexText = `${restoreCount === 1 ? "Index" : "Indices"}`
+  const indexes = `${restoreCount} ${indexText}`;
 
   const restoreStatus = [
     {

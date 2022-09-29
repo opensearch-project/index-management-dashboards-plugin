@@ -22,6 +22,7 @@ const IndexList = ({ indices, snapshot, onClick, title }: IndexListProps) => {
       field: "index",
       name: "Index",
       width: "70%",
+      truncateText: true,
       sortable: true,
     },
     {
