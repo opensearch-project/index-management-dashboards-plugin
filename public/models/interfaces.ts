@@ -44,6 +44,13 @@ interface ArgsWithError {
 }
 export type OnSearchChangeArgs = ArgsWithQuery | ArgsWithError;
 
+export type Toast = {
+  id: string;
+  title?: string;
+  iconType?: string;
+  color?: string;
+  text?: JSX.Element;
+}
 export interface LatestActivities {
   activityType: "Creation" | "Deletion";
   status?: string;

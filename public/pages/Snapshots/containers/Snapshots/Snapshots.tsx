@@ -6,11 +6,12 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader, EuiTabs, EuiTab, EuiOverlayMask } from "@elastic/eui";
+import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader, EuiTabs, EuiTab, EuiOverlayMask, EuiGlobalToastList, EuiToast } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService, IndexService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
+import { Toast } from "../../../../models/interfaces"
 import { CatSnapshotWithRepoAndPolicy as SnapshotsWithRepoAndPolicy } from "../../../../../server/models/interfaces";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import SnapshotFlyout from "../../components/SnapshotFlyout/SnapshotFlyout";
@@ -21,6 +22,7 @@ import { Snapshot } from "../../../../../models/interfaces";
 import { BREADCRUMBS, RESTORE_SNAPSHOT_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
 import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
+import { getToasts } from "../../helper"
 import { snapshotStatusRender, truncateSpan } from "../../helper";
 
 interface SnapshotsProps extends RouteComponentProps {
@@ -35,6 +37,8 @@ interface SnapshotsState {
   snapshotPanel: boolean;
   restoreStart: number;
   restoreCount: number;
+  restoreSuccess: boolean;
+  toasts: Toast[];
 
   selectedItems: SnapshotsWithRepoAndPolicy[];
 
@@ -64,6 +68,8 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       snapshotPanel: true,
       restoreStart: 0,
       restoreCount: 0,
+      restoreSuccess: false,
+      toasts: [],
       selectedItems: [],
       showFlyout: false,
       flyoutSnapshotId: "",
@@ -236,13 +242,15 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
       if (response.ok) {
-        this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.  View restore status in "Restore activities in progress" tab`);
+        // this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.  View restore status in "Restore activities in progress" tab`);
+        this.onSuccessRestore();
       } else {
         const message = JSON.parse(response.error).error.root_cause[0].reason
         const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
         this.context.notifications.toasts.addError(response.error, {
           title: `There was a problem restoring the snapshot.`,
           toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+
         });
         console.log("^ This error is expected and is a result of necessary toast options");
       }
@@ -251,6 +259,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     }
   };
 
+  onSuccessRestore = () => {
+    const { selectedItems } = this.state;
+    const toasts = getToasts("restoreSuccess", selectedItems[0].id, selectedItems[0].repository, this.onClickTab);
+    this.setState({ toasts, restoreSuccess: true })
+  }
+
   getRestoreInfo = (time: number, count: number) => {
     this.setState({ restoreStart: time, restoreCount: count })
   }
@@ -258,6 +272,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
   onClickRestore = async () => {
     this.setState({ showRestoreFlyout: true });
   };
+
+  onToastEnd = () => {
+    this.setState({ restoreSuccess: false });
+  }
 
   onCloseRestoreFlyout = () => {
     this.setState({ showRestoreFlyout: false });
@@ -305,6 +323,8 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       selectedItems,
       loadingSnapshots,
       snapshotPanel,
+      restoreSuccess,
+      toasts,
       restoreStart,
       restoreCount,
       showFlyout,
@@ -441,6 +461,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
               repository={selectedItems[0].repository}
             />
           </EuiOverlayMask>
+        )}
+
+        {restoreSuccess && (
+          <EuiGlobalToastList toasts={toasts} dismissToast={this.onToastEnd} toastLifeTimeMs={6000} />
         )}
 
         {isDeleteModalVisible && (

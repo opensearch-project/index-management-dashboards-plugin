@@ -5,7 +5,8 @@
 
 import React from "react";
 import _ from "lodash";
-import { EuiHealth } from "@elastic/eui";
+import { Toast } from "../../models/interfaces"
+import { EuiHealth, EuiButton, EuiFlexGroup, EuiSpacer } from "@elastic/eui";
 
 export function truncateLongText(text: string, truncateLen: number = 20): string {
   if (text.length > truncateLen) {
@@ -27,4 +28,24 @@ export function snapshotStatusRender(value: string): React.ReactElement {
   if (capital == "Partial") color = "danger";
 
   return <EuiHealth color={color}>{capital}</EuiHealth>;
+}
+
+
+export const getToasts = (toastId: string, snapshotId: string, repository: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
+  return [
+    {
+      id: toastId,
+      title: `Restored snapshot ${snapshotId} to repository ${repository}.`,
+      iconType: "check",
+      color: "success",
+      text: (
+        <>
+          <EuiSpacer size="xl" />
+          <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
+            <EuiButton onClick={onClick}>View restore activities</EuiButton>
+          </EuiFlexGroup>
+        </>
+      )
+    }
+  ]
 }
