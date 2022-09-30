@@ -31,11 +31,11 @@ export function snapshotStatusRender(value: string): React.ReactElement {
 }
 
 
-export const getToasts = (toastId: string, snapshotId: string, repository: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
+export const getToasts = (toastId: string, snapshotId: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
   return [
     {
       id: toastId,
-      title: `Restored snapshot ${snapshotId} to repository ${repository}.`,
+      title: `Restore from snapshot "${snapshotId}" is in progress.`,
       iconType: "check",
       color: "success",
       text: (
@@ -46,6 +46,19 @@ export const getToasts = (toastId: string, snapshotId: string, repository: strin
           </EuiFlexGroup>
         </>
       )
-    }
+    },
+    // {
+    //   id: `${Number(toastId) + 1}`,
+    //   title: `Error restoring snapshot "${snapshotId}`,
+    //   color: "error",
+    //   text: (
+    //     <>
+    //       <EuiSpacer size="xl" />
+    //       <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
+    //         <EuiButton onClick={onClick}>View full error</EuiButton>
+    //       </EuiFlexGroup>
+    //     </>
+    //   )
+    // }
   ]
 }

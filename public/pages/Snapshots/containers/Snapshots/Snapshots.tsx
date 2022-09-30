@@ -136,6 +136,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       },
     ];
 
+    this.tabsRef = React.createRef<HTMLDivElement>();
     this.getSnapshots = _.debounce(this.getSnapshots, 500, { leading: true });
   }
 
@@ -261,7 +262,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   onSuccessRestore = () => {
     const { selectedItems } = this.state;
-    const toasts = getToasts("restoreSuccess", selectedItems[0].id, selectedItems[0].repository, this.onClickTab);
+    const toasts = getToasts("restoreSuccess", selectedItems[0].id, this.onClickTab);
     this.setState({ toasts, restoreSuccess: true })
   }
 
@@ -294,21 +295,33 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       return;
     }
 
+    console.log(this.tabsRef);
+
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
 
-    target.ariaSelected = "true";
-    target.classList.add("euiTab-isSelected");
+    if (target.textContent !== "View restore activities") {
+      target.ariaSelected = "true";
+      target.classList.add("euiTab-isSelected");
 
-    if (prev) {
-      prev.classList.remove("euiTab-isSelected");
-      prev.ariaSelected = "false";
+      if (prev) {
+        prev.classList.remove("euiTab-isSelected");
+        prev.ariaSelected = "false";
+      }
+
+      if (next) {
+        next.classList.remove("euiTab-isSelected");
+        next.ariaSelected = "false";
+      }
+    } else {
+      const firstTab = this.tabsRef.current.firstChild;
+      const secondTab = this.tabsRef.current.lastChild;
+
+      firstTab.ariaSelected = "false";
+      firstTab.classList.remove("euiTab-isSelected");
+
+      secondTab.ariaSelected = "true";
+      secondTab.classList.add("euiTab-isSelected");
     }
-
-    if (next) {
-      next.classList.remove("euiTab-isSelected");
-      next.ariaSelected = "false";
-    }
-
     let newState = { snapshotPanel: snapshotPanel, selectedItems }
 
     if (snapshotPanel) newState.selectedItems = [];
@@ -393,7 +406,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     return (
       <>
         <EuiPageHeader>
-          <EuiTabs size="m" >
+          <EuiTabs size="m" ref={this.tabsRef}>
             <EuiTab isSelected={true} onClick={this.onClickTab} >Snapshots</EuiTab>
             <EuiTab onClick={this.onClickTab} >Restore activities in progress</EuiTab>
           </EuiTabs>
