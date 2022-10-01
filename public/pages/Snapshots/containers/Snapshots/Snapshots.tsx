@@ -57,6 +57,7 @@ interface SnapshotsState {
 export default class Snapshots extends Component<SnapshotsProps, SnapshotsState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<SnapshotsWithRepoAndPolicy>[];
+  private tabsRef;
 
   constructor(props: SnapshotsProps) {
     super(props);
@@ -240,30 +241,35 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   restoreSnapshot = async (snapshotId: string, repository: string, options: object) => {
     try {
+      await this.setState({ toasts: [] })
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
       if (response.ok) {
         // this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.  View restore status in "Restore activities in progress" tab`);
-        this.onSuccessRestore();
+        this.onRestore(true);
       } else {
-        const message = JSON.parse(response.error).error.root_cause[0].reason
-        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
-        this.context.notifications.toasts.addError(response.error, {
-          title: `There was a problem restoring the snapshot.`,
-          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+        this.onRestore(false);
+        // const message = JSON.parse(response.error).error.root_cause[0].reason
+        // const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+        // this.context.notifications.toasts.addError(response.error, {
+        //   title: `There was a problem restoring the snapshot.`,
+        //   toastMessage: `${trimmedMessage} Open browser console & click below for details.`
 
-        });
-        console.log("^ This error is expected and is a result of necessary toast options");
+        // });
+        // console.log("^ This error is expected and is a result of necessary toast options");
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));
     }
   };
 
-  onSuccessRestore = () => {
+  onRestore = (success: boolean) => {
     const { selectedItems } = this.state;
-    const toasts = getToasts("restoreSuccess", selectedItems[0].id, this.onClickTab);
-    this.setState({ toasts, restoreSuccess: true })
+    const toasts = success ?
+      getToasts("success_restore_toast", selectedItems[0].id, this.onClickTab) :
+      getToasts("error_restore_toast", selectedItems[0].id, this.onClickTab);
+
+    this.setState({ toasts, restoreSuccess: success })
   }
 
   getRestoreInfo = (time: number, count: number) => {
@@ -313,14 +319,14 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         next.ariaSelected = "false";
       }
     } else {
-      const firstTab = this.tabsRef.current.firstChild;
-      const secondTab = this.tabsRef.current.lastChild;
+      const firstTab = this.tabsRef.current?.firstChild;
+      const secondTab = this.tabsRef.current?.lastChild;
 
-      firstTab.ariaSelected = "false";
-      firstTab.classList.remove("euiTab-isSelected");
+      firstTab!.ariaSelected = "false";
+      firstTab!.classList.remove("euiTab-isSelected");
 
-      secondTab.ariaSelected = "true";
-      secondTab.classList.add("euiTab-isSelected");
+      secondTab!.ariaSelected = "true";
+      secondTab!.classList.add("euiTab-isSelected");
     }
     let newState = { snapshotPanel: snapshotPanel, selectedItems }
 
@@ -479,6 +485,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         {restoreSuccess && (
           <EuiGlobalToastList toasts={toasts} dismissToast={this.onToastEnd} toastLifeTimeMs={6000} />
         )}
+
+        {restoreSuccess || (
+          <EuiGlobalToastList toasts={toasts} dismissToast={this.onToastEnd} toastLifeTimeMs={6000} />
+        )}
+
 
         {isDeleteModalVisible && (
           <DeleteModal

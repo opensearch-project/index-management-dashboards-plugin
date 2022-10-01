@@ -31,10 +31,10 @@ export function snapshotStatusRender(value: string): React.ReactElement {
 }
 
 
-export const getToasts = (toastId: string, snapshotId: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
-  return [
+export const getToasts = (id: string, snapshotId: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
+  const toasts = [
     {
-      id: toastId,
+      id: "success_restore_toast",
       title: `Restore from snapshot "${snapshotId}" is in progress.`,
       iconType: "check",
       color: "success",
@@ -47,18 +47,20 @@ export const getToasts = (toastId: string, snapshotId: string, onClick: (e: Reac
         </>
       )
     },
-    // {
-    //   id: `${Number(toastId) + 1}`,
-    //   title: `Error restoring snapshot "${snapshotId}`,
-    //   color: "error",
-    //   text: (
-    //     <>
-    //       <EuiSpacer size="xl" />
-    //       <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
-    //         <EuiButton onClick={onClick}>View full error</EuiButton>
-    //       </EuiFlexGroup>
-    //     </>
-    //   )
-    // }
+    {
+      id: "error_restore_toast",
+      title: `Error restoring snapshot "${snapshotId}`,
+      color: "danger",
+      text: (
+        <>
+          <EuiSpacer size="xl" />
+          <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
+            <EuiButton onClick={onClick} color="danger">View full error</EuiButton>
+          </EuiFlexGroup>
+        </>
+      )
+    }
   ]
+
+  return id === "success_restore_toast" ? [toasts[0]] : [toasts[1]];
 }

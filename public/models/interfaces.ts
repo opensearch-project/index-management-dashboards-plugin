@@ -44,7 +44,7 @@ interface ArgsWithError {
 }
 export type OnSearchChangeArgs = ArgsWithQuery | ArgsWithError;
 
-export type Toast = {
+export interface Toast {
   id: string;
   title?: string;
   iconType?: string;
