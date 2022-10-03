@@ -317,8 +317,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       return;
     }
 
-    console.log(this.tabsRef);
-
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
 
     if (target.textContent !== "View restore activities") {
