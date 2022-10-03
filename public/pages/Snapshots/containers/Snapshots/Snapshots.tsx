@@ -35,7 +35,7 @@ import CreateSnapshotFlyout from "../../components/CreateSnapshotFlyout";
 import RestoreSnapshotFlyout from "../../components/RestoreSnapshotFlyout";
 import RestoreActivitiesPanel from "../../components/RestoreActivitiesPanel";
 import { Snapshot } from "../../../../../models/interfaces";
-import { BREADCRUMBS, RESTORE_SNAPSHOT_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
 import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
 import { getToasts } from "../../helper"

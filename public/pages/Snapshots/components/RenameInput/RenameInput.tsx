@@ -43,7 +43,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
         </p>
       </EuiText>
       <EuiFormRow>
-        <EuiFieldText value={renamePattern} onChange={onPatternChange} />
+        <EuiFieldText value={renamePattern} onChange={onPatternChange} data-test-subj="renamePatternInput" />
       </EuiFormRow>
 
       <EuiSpacer size="m" />
@@ -64,7 +64,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
         </p>
       </EuiText>
       <EuiFormRow>
-        <EuiFieldText value={renameReplacement} onChange={onReplacementChange} />
+        <EuiFieldText value={renameReplacement} onChange={onReplacementChange} data-test-subj="renameReplacementInput" />
       </EuiFormRow>
     </>
   );
