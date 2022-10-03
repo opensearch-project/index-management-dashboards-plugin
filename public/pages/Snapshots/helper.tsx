@@ -49,7 +49,7 @@ export const getToasts = (id: string, snapshotId: string, onClick: (e: React.Mou
     },
     {
       id: "error_restore_toast",
-      title: `Error restoring snapshot "${snapshotId}`,
+      title: `Error restoring snapshot "${snapshotId}"`,
       color: "danger",
       text: (
         <>

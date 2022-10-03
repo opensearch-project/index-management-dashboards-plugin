@@ -4,6 +4,7 @@
  */
 
 import { Direction, Query } from "@elastic/eui";
+import { ReadSyncOptions } from "fs";
 import { SMPolicy } from "../../models/interfaces";
 import {
   IndexService,
@@ -45,12 +46,18 @@ interface ArgsWithError {
 export type OnSearchChangeArgs = ArgsWithQuery | ArgsWithError;
 
 export interface Toast {
-  id: string;
+  id?: string;
   title?: string;
   iconType?: string;
-  color?: string;
+  color: string;
   text?: JSX.Element;
 }
+
+export interface RestoreError {
+  reason?: string,
+  type?: string
+}
+
 export interface LatestActivities {
   activityType: "Creation" | "Deletion";
   status?: string;
