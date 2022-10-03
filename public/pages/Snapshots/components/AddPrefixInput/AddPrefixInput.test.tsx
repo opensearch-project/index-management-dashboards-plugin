@@ -25,15 +25,13 @@ describe("AddPrefixInput component", () => {
     expect(screen.getByText("Specify prefix for restored index names")).toBeInTheDocument();
     expect(screen.getByTestId("prefixInput")).toBeInTheDocument();
 
-    cleanup();
-
     const { container } = render(<AddPrefixInput {...testProps} />);
 
     expect(container).toMatchSnapshot();
   });
 
   it("accepts user input", () => {
-    userEvent.type(screen.getByTestId("prefixInput"), "test_prefix_");
+    userEvent.type(screen.getByTestId("prefixInput"), "{selectall}{del}test_prefix_");
 
     expect(screen.getByTestId("prefixInput")).toHaveValue("test_prefix_");
   });

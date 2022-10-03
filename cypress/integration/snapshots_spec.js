@@ -97,12 +97,8 @@ describe("Snapshots", () => {
       cy.get("button").contains("Restore snapshot").click({ force: true });
 
       // Check for success toast
-      cy.contains("Restored snapshot test_snapshot to repository test_repo");
+      cy.contains(`Restore from snapshot \"test_snapshot\" is in progress`);
 
-      cy.contains("automatically").click({ force: true });
-
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
-      cy.wait(6000);
     });
   });
 
