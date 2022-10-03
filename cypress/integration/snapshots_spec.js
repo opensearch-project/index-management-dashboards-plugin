@@ -114,8 +114,6 @@ describe("Snapshots", () => {
       cy.get("button").contains("Delete snapshot").click({ force: true });
 
       cy.contains("Deleted snapshot");
-      cy.contains("No items found");
-
     });
-  })
+  });
 });
