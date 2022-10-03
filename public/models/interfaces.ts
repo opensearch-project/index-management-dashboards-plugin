@@ -4,7 +4,6 @@
  */
 
 import { Direction, Query } from "@elastic/eui";
-import { ReadSyncOptions } from "fs";
 import { SMPolicy } from "../../models/interfaces";
 import {
   IndexService,

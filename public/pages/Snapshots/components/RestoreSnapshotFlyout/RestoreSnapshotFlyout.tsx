@@ -99,7 +99,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   onClickAction = () => {
     const { restoreSnapshot, snapshotId, repository, onCloseFlyout, getRestoreInfo } = this.props;
     const {
-      selectedRepoValue,
       customIndexSettings,
       ignoreIndexSettings,
       restoreSpecific,
@@ -419,7 +418,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
               <EuiSpacer size="l" />
 
-              {snapshot?.failed_shards || <EuiCallOut
+              {snapshot?.failed_shards && <EuiCallOut
                 title="Restoring a partial snapshot"
                 color="warning"
               >
