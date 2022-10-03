@@ -285,7 +285,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         <EuiText size="s">
           <p>
             Policies let you automatically perform administrative operations on indices.{" "}
-            <EuiLink href={POLICY_DOCUMENTATION_URL} target="_blank">
+            <EuiLink href={POLICY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
               Learn more <EuiIcon type="popout" size="s" />
             </EuiLink>
           </p>

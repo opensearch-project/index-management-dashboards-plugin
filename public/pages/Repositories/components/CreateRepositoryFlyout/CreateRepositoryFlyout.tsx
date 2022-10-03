@@ -158,7 +158,7 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
       <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           Define a repository by custom type and settings.{" "}
-          <EuiLink href={S3_REPOSITORY_DOCUMENTATION_URL} target="_blank">
+          <EuiLink href={S3_REPOSITORY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
             View sample configurations
           </EuiLink>
         </p>
@@ -186,7 +186,7 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
             <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
               <p style={{ fontWeight: 200 }}>
                 Define additional settings for this repository.{" "}
-                <EuiLink href={FS_REPOSITORY_DOCUMENTATION_URL} target="_blank">
+                <EuiLink href={FS_REPOSITORY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
                   Learn more
                 </EuiLink>
               </p>
@@ -212,7 +212,7 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
             <p>
               To use a custom repository, such as Amazon S3, Azure Blob Storage or similar, install and configure the respective repository
               plugin on OpenSearch and then define the repository configuration below.{" "}
-              <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank">
+              <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
                 Learn more
               </EuiLink>
             </p>
@@ -240,7 +240,7 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
       <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           Select a supported repository type. For additional types, install the latest repository plugins and choose Custom configuration.{" "}
-          <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank">
+          <EuiLink href={REPOSITORY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
             Learn more
           </EuiLink>
         </p>
