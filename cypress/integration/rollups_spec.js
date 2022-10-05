@@ -17,8 +17,8 @@ describe("Rollups", () => {
     cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory/sampleData`);
 
 
-    // // Click on "Sample data" tab
-    // cy.contains("Sample data").click({ force: true });
+    // Click on "Sample data" tab
+    cy.contains("Sample data").click({ force: true });
 
     // Load sample eCommerce data
     cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({ force: true });
