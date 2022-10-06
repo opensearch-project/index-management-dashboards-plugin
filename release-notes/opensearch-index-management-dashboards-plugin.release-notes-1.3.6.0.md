@@ -1,5 +1,5 @@
 ## Version 1.3.6.0 2022-10-06
-Compatible with OpenSearchDashboards 1.3.0
+Compatible with OpenSearchDashboards 1.3.6
 
 
 ### Documentation
