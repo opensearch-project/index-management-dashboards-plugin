@@ -73,6 +73,7 @@ const SnapshotIndicesRepoInput = ({
         onSearchChange={getIndexOptions}
         onCreateOption={onCreateOption}
         isClearable={true}
+        data-test-subj="indicesComboBoxInput"
       />
 
       <EuiSpacer size="m" />
