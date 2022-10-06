@@ -51,6 +51,7 @@ describe("Snapshots", () => {
       cy.createIndex("test_index_2");
       cy.createIndex("test_index_3");
 
+      cy.wait(5000);
       // Click Take snapshot button
       cy.get("button").contains("Take snapshot").click({ force: true });
 
@@ -61,7 +62,9 @@ describe("Snapshots", () => {
       cy.get(`input[data-test-subj="snapshotNameInput"]`).type("test_snapshot{enter}");
 
       // Select all indexes to be included
-      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("open*{enter}");
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_1{enter}");
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_iondex_3{enter}");
 
 
 
