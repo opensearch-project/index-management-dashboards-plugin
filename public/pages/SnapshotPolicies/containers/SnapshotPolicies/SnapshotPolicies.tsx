@@ -419,7 +419,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           Define an automated snapshot schedule and retention period with a snapshot policy.{" "}
-          <EuiLink href={SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL} target="_blank">
+          <EuiLink href={SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
             Learn more
           </EuiLink>
         </p>

@@ -145,7 +145,7 @@ const CronSchedule = ({
     <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
       <p style={{ fontWeight: 200, fontSize: "12px" }}>
         Use Cron expression to define complex schedule.{" "}
-        <EuiLink href={CRON_EXPRESSION_DOCUMENTATION_URL} target="_blank">
+        <EuiLink href={CRON_EXPRESSION_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
           Learn more
         </EuiLink>
       </p>
