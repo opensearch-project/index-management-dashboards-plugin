@@ -98,11 +98,6 @@ describe("Snapshots", () => {
 
       // Check for success toast
       cy.contains("Restored snapshot test_snapshot to repository test_repo");
-
-      cy.contains("automatically").click({ force: true });
-
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
-      cy.wait(6000);
     });
   });
 

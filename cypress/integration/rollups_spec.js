@@ -22,7 +22,7 @@ describe("Rollups", () => {
     // cy.contains("Add data").click({ force: true });
 
     // Click on "Sample data" tab
-    cy.contains("Sample data").click({ force: true });
+    // cy.contains("Sample data").click({ force: true });
 
     // Load sample eCommerce data
     cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({ force: true });
