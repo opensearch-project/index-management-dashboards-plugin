@@ -258,7 +258,12 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
         <EuiFlyoutBody>
           <CustomLabel title="Repository name" />
           <EuiFormRow isInvalid={!!repoNameError} error={repoNameError}>
-            <EuiFieldText disabled={!!editRepo} value={repoName} onChange={(e) => this.setState({ repoName: e.target.value })} />
+            <EuiFieldText
+              disabled={!!editRepo}
+              value={repoName}
+              data-test-subj="repoNameInput"
+              onChange={(e) => this.setState({ repoName: e.target.value })}
+            />
           </EuiFormRow>
 
           <EuiSpacer size="m" />

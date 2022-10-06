@@ -14,10 +14,12 @@ describe("Rollups", () => {
     localStorage.setItem("home:welcome:show", "true");
 
     // Go to sample data page
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory/sampleData`);
+    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory`);
 
-    // Click on "Sample data" tab
-    cy.contains("Sample data").click({ force: true });
+    cy.wait(10000)
+
+    // // Click on "Sample data" tab
+    // cy.contains("Add data").click({ force: true });
 
     // Load sample eCommerce data
     cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({ force: true });

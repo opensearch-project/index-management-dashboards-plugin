@@ -208,6 +208,7 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
               onChange={(e) => {
                 this.setState({ snapshotId: e.target.value });
               }}
+              data-test-subj="snapshotNameInput"
             />
           </EuiFormRow>
 

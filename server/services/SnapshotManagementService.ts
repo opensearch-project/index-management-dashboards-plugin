@@ -23,6 +23,7 @@ import {
   GetRepositoryResponse,
   AcknowledgedResponse,
   CreateSnapshotResponse,
+  RestoreSnapshotResponse,
 } from "../models/interfaces";
 import { FailedServerResponse, ServerResponse } from "../models/types";
 
@@ -187,6 +188,38 @@ export default class SnapshotManagementService {
     }
   };
 
+  restoreSnapshot = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<RestoreSnapshotResponse>>> => {
+    try {
+      const { id } = request.params as {
+        id: string;
+      };
+      const { repository } = request.query as {
+        repository: string;
+      };
+      const params = {
+        repository: repository,
+        snapshot: id,
+        body: JSON.stringify(request.body),
+      };
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const resp: RestoreSnapshotResponse = await callWithRequest("snapshot.restore", params);
+
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: resp,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "restoreSnapshot");
+    }
+  };
+
   createPolicy = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -279,7 +312,7 @@ export default class SnapshotManagementService {
         queryString: queryString.trim() ? `${queryString.trim()}` : "*",
       };
       const res = await callWithRequest("ism.getSMPolicies", params);
-
+      console.log("policy response", res);
       const policies: DocumentSMPolicy[] = res.policies.map(
         (p: { _id: string; _seq_no: number; _primary_term: number; sm_policy: SMPolicy }) => ({
           seqNo: p._seq_no,

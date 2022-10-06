@@ -67,6 +67,22 @@ export default function (services: NodeServices, router: IRouter) {
 
   router.post(
     {
+      path: `${NODE_API._SNAPSHOTS}/{id}`,
+      validate: {
+        params: schema.object({
+          id: schema.string(),
+        }),
+        query: schema.object({
+          repository: schema.string(),
+        }),
+        body: schema.any(),
+      },
+    },
+    snapshotManagementService.restoreSnapshot
+  );
+
+  router.post(
+    {
       path: `${NODE_API.SMPolicies}/{id}`,
       validate: {
         params: schema.object({
