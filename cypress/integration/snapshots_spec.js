@@ -6,11 +6,7 @@
 import { PLUGIN_NAME } from "../support/constants";
 
 describe("Snapshots", () => {
-<<<<<<< HEAD
   before(() => {
-=======
-  beforeEach(() => {
->>>>>>> 4f4e5d6 (Snapshots testing in progress)
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
@@ -45,11 +41,8 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be created", () => {
     it("successfully creates a new snapshot", () => {
-<<<<<<< HEAD
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/snapshots`);
 
-=======
->>>>>>> 4f4e5d6 (Snapshots testing in progress)
       // delete any existing indices
       cy.deleteAllIndices();
 
@@ -71,13 +64,9 @@ describe("Snapshots", () => {
       cy.get(`input[data-test-subj="snapshotNameInput"]`).type("test_snapshot{enter}");
 
       // Select all indexes to be included
-<<<<<<< HEAD
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_1{enter}");
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
-=======
-      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("open*{enter}");
->>>>>>> 1a305b2 (Update 2.4, TODO rollups_spec, remove 'wait' when possible snapshots_spec)
 
       // Click 'Add' button to create snapshot
       cy.get("button").contains("Add", { timeout: 3000 }).click({ force: true });
@@ -127,6 +116,7 @@ describe("Snapshots", () => {
 
       cy.contains("Deleted snapshot");
       cy.contains("No items found");
+
     });
   })
 });
