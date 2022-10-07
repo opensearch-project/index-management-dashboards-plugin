@@ -64,7 +64,7 @@ describe("Snapshots", () => {
       // Select all indexes to be included
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_1{enter}");
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
-      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_iondex_3{enter}");
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
 
 
 
