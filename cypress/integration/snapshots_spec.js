@@ -59,9 +59,9 @@ describe("Snapshots", () => {
       cy.get(`input[data-test-subj="snapshotNameInput"]`).type("test_snapshot{enter}");
 
       // Select all indexes to be included
-      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("open*{enter}");
-
-
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_1{enter}");
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
 
       // Click 'Add' button to create snapshot
       cy.get("button").contains("Add").click({ force: true });
