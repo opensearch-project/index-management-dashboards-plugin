@@ -16,6 +16,8 @@ describe("Rollups", () => {
     // Go to sample data page
     cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory/sampleData`);
 
+    cy.wait(5000);
+
     // Click on "Sample data" tab
     cy.contains("sample data").click({ force: true });
 
