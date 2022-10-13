@@ -18,9 +18,6 @@ describe("Rollups", () => {
 
     cy.wait(10000)
 
-    // // Click on "Sample data" tab
-    // cy.contains("Add data").click({ force: true });
-
     // Click on "Sample data" tab
     cy.contains("Sample data").click({ force: true });
 
