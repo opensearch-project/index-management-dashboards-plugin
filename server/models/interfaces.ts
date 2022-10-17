@@ -386,6 +386,10 @@ export interface CreateSnapshotResponse {
   snapshot: GetSnapshot;
 }
 
+export interface RestoreSnapshotResponse {
+  snapshot: GetSnapshot;
+}
+
 export interface GetSnapshot {
   snapshot: string;
   uuid: string;
@@ -405,6 +409,11 @@ export interface GetSnapshot {
     successful: number;
     failed: number;
   };
+  restore_aliases?: boolean;
+  ignore_unavailable?: boolean;
+  rename_pattern?: string;
+  rename_replacement?: string;
+  partial?: boolean;
   metadata?: {
     sm_policy?: string;
   };
