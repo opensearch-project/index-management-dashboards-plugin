@@ -18,11 +18,8 @@ describe("Rollups", () => {
 
     cy.wait(10000)
 
-    // TODO determine why line 24, line 27 are needed occasionally for rollups_spec to pass.  
-    // When the source of the issue is determined they will be removed/uncommented.
-
-    // // Click on "Sample data" tab
-    // cy.contains("Add data").click({ force: true });
+    // Click on "Sample data" tab
+    cy.contains("Sample data").click({ force: true });
 
     // Click on "Sample data" tab
     // cy.contains("Sample data").click({ force: true });
