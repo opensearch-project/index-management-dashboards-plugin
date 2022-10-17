@@ -69,9 +69,8 @@ describe("Snapshots", () => {
 
 
       // Click 'Add' button to create snapshot
-      cy.get("button").contains("Add").click({ force: true });
+      cy.get("button").contains("Add", { timeout: 3000 }).click({ force: true });
 
-      cy.wait(3000)
       // check for success status and snapshot name
       cy.get("button").contains("Refresh").click({ force: true });
 
@@ -110,8 +109,8 @@ describe("Snapshots", () => {
       cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
 
       // click "Delete" button
-      cy.get("button").contains("Delete").click({ force: true });
-      cy.wait(3000);
+      cy.get("button").contains("Delete", { timeout: 3000 }).click({ force: true });
+
       // click "Delete snapshot" button on modal
       cy.get("button").contains("Delete snapshot").click({ force: true });
 
