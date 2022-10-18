@@ -96,8 +96,15 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
   };
 
   render() {
-    const { sourceIndex, sourceIndexError, targetIndex, targetIndexError, onChangeSourceIndex, onChangeTargetIndex, hasAggregation } =
-      this.props;
+    const {
+      sourceIndex,
+      sourceIndexError,
+      targetIndex,
+      targetIndexError,
+      onChangeSourceIndex,
+      onChangeTargetIndex,
+      hasAggregation,
+    } = this.props;
     const { isLoading, indexOptions, targetIndexOptions } = this.state;
     return (
       <ContentPanel bodyStyles={{ padding: "initial" }} title="Indices" titleSize="m">
