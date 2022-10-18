@@ -77,7 +77,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
 
           <EuiText size="xs" style={{ fontWeight: 200 }}>
             Actions are the operations ISM performs when an index is in a certain state.{" "}
-            <EuiLink href={ACTIONS_DOCUMENTATION_URL} target="_blank">
+            <EuiLink href={ACTIONS_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
               Learn more <EuiIcon type="popout" size="s" />
             </EuiLink>
           </EuiText>

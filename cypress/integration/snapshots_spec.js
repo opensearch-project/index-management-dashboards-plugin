@@ -6,7 +6,11 @@
 import { PLUGIN_NAME } from "../support/constants";
 
 describe("Snapshots", () => {
+<<<<<<< HEAD
   beforeEach(() => {
+=======
+  before(() => {
+>>>>>>> basic_integration
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
@@ -41,6 +45,8 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be created", () => {
     it("successfully creates a new snapshot", () => {
+      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/snapshots`);
+
       // delete any existing indices
       cy.deleteAllIndices();
 
@@ -48,6 +54,9 @@ describe("Snapshots", () => {
       cy.createIndex("test_index_1");
       cy.createIndex("test_index_2");
       cy.createIndex("test_index_3");
+
+      // wait for button to be selectable
+      cy.wait(5000);
 
       // Click Take snapshot button
       cy.get("button").contains("Take snapshot").click({ force: true });
@@ -64,9 +73,8 @@ describe("Snapshots", () => {
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
 
       // Click 'Add' button to create snapshot
-      cy.get("button").contains("Add").click({ force: true });
+      cy.get("button").contains("Add", { timeout: 3000 }).click({ force: true });
 
-      cy.wait(3000)
       // check for success status and snapshot name
       cy.get("button").contains("Refresh").click({ force: true });
 
@@ -88,15 +96,30 @@ describe("Snapshots", () => {
       // Check for restore flyout
       cy.contains("Restore snapshot");
 
+      // enter a prefix
+      cy.get(`input[data-test-subj="prefixInput"]`).type("restored_");
+
       // Click restore snapshot button
       cy.get("button").contains("Restore snapshot").click({ force: true });
 
       // Check for success toast
       cy.contains("Restored snapshot test_snapshot to repository test_repo");
-
-    })
+    });
   });
 
   describe("Snapshot can be deleted", () => {
+    it("deletes snapshot successfully", async () => {
+      // Select test snapshot
+      cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
+
+      // click "Delete" button
+      cy.get("button").contains("Delete", { timeout: 3000 }).click({ force: true });
+
+      // click "Delete snapshot" button on modal
+      cy.get("button").contains("Delete snapshot").click({ force: true });
+
+      cy.contains("Deleted snapshot");
+      cy.contains("No items found");
+    });
   })
 });

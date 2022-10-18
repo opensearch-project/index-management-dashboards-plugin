@@ -37,14 +37,14 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
 
       <CustomLabel title="Rename Pattern" helpText={patternHelpText} />
       <EuiFormRow>
-        <EuiFieldText value={renamePattern} onChange={onPatternChange} />
+        <EuiFieldText value={renamePattern} onChange={onPatternChange} data-test-subj="renamePatternInput" />
       </EuiFormRow>
 
       <EuiSpacer size="m" />
 
       <CustomLabel title="Rename Replacement" helpText={replacementHelpText} />
       <EuiFormRow>
-        <EuiFieldText value={renameReplacement} onChange={onReplacementChange} />
+        <EuiFieldText value={renameReplacement} onChange={onReplacementChange} data-test-subj="renameReplacementInput" />
       </EuiFormRow>
     </>
   );
