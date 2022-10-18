@@ -373,6 +373,22 @@ export default class Main extends Component<MainProps, object> {
                               </div>
                             )}
                           />
+                          <Route
+                            path={`${ROUTES.CREATE_INDEX}/:index`}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
                           <Redirect from="/" to={landingPage} />
                         </Switch>
                       </EuiPageBody>

@@ -23,6 +23,8 @@ export const NODE_API = Object.freeze({
   SMPolicies: `${BASE_API_PATH}/smPolicies`,
   _SNAPSHOTS: `${BASE_API_PATH}/_snapshots`,
   _REPOSITORIES: `${BASE_API_PATH}/_repositores`,
+  PUT_INDEX: `${BASE_API_PATH}/putIndex`,
+  API_CALLER: `${BASE_API_PATH}/apiCaller`,
 });
 
 export const REQUEST = Object.freeze({

@@ -12,6 +12,7 @@ import {
   TransformService,
   NotificationService,
   SnapshotManagementService,
+  CommonService,
 } from "../services";
 import {
   DocumentPolicy,
@@ -32,6 +33,7 @@ export interface NodeServices {
   transformService: TransformService;
   notificationService: NotificationService;
   snapshotManagementService: SnapshotManagementService;
+  commonService: CommonService;
 }
 
 export interface SearchResponse<T> {
@@ -170,13 +172,13 @@ export interface IndexUpdateResponse {
   failedIndices: FailedIndex[];
 }
 
-export interface ApplyPolicyResponse extends IndexUpdateResponse { }
+export interface ApplyPolicyResponse extends IndexUpdateResponse {}
 
-export interface RemovePolicyResponse extends IndexUpdateResponse { }
+export interface RemovePolicyResponse extends IndexUpdateResponse {}
 
-export interface ChangePolicyResponse extends IndexUpdateResponse { }
+export interface ChangePolicyResponse extends IndexUpdateResponse {}
 
-export interface RetryManagedIndexResponse extends IndexUpdateResponse { }
+export interface RetryManagedIndexResponse extends IndexUpdateResponse {}
 
 export interface RetryParams {
   index: string;

@@ -13,6 +13,7 @@ import {
   TransformService,
   NotificationService,
   SnapshotManagementService,
+  CommonService,
 } from "../services";
 
 export interface BrowserServices {
@@ -23,6 +24,7 @@ export interface BrowserServices {
   transformService: TransformService;
   notificationService: NotificationService;
   snapshotManagementService: SnapshotManagementService;
+  commonService: CommonService;
 }
 
 export interface SMPoliciesQueryParams {
