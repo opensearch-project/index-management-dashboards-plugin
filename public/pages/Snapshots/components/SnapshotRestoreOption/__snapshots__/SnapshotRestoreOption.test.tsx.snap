@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SnapshotRestoreOption component renders without error 1`] = `
+<div>
+  <div>
+    <h5>
+      Specify restore option
+    </h5>
+    <div
+      class="euiSpacer euiSpacer--m"
+    />
+    <div
+      class="euiRadio"
+    >
+      <input
+        checked=""
+        class="euiRadio__input"
+        id="restore_all_indices"
+        name="restore_option"
+        type="radio"
+        value=""
+      />
+      <div
+        class="euiRadio__circle"
+      />
+      <label
+        class="euiRadio__label"
+        for="restore_all_indices"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <h4>
+                Restore all indices in snapshot
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+      </label>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--s"
+    />
+    <div
+      class="euiRadio"
+    >
+      <input
+        class="euiRadio__input"
+        id="restore_specific_indices"
+        name="restore_option"
+        type="radio"
+        value=""
+      />
+      <div
+        class="euiRadio__circle"
+      />
+      <label
+        class="euiRadio__label"
+        for="restore_specific_indices"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <h4>
+                Restore specific indices
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+      </label>
+    </div>
+  </div>
+</div>
+`;
