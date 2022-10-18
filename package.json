@@ -56,6 +56,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router-dom": "^5.3.2",
     "cypress": "^6.0.0",
+    "diff": "^4.0.1",
     "eslint-plugin-no-unsanitized": "^3.0.2",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "husky": "^3.0.0",
@@ -64,8 +65,5 @@
   },
   "engines": {
     "yarn": "^1.21.1"
-  },
-  "dependencies": {
-    "diff": "^5.1.0"
   }
 }
