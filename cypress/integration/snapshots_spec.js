@@ -49,9 +49,8 @@ describe("Snapshots", () => {
       // create test indices
       cy.createIndex("test_index_1");
       cy.createIndex("test_index_2");
-      cy.createIndex("test_index_3");
+      cy.createIndex("test_index_3", { timeout: 5000 });
 
-      cy.wait(5000);
       // Click Take snapshot button
       cy.get("button").contains("Take snapshot").click({ force: true });
 
