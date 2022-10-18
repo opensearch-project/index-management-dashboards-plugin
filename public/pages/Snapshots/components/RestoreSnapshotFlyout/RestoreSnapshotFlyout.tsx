@@ -23,7 +23,7 @@ import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
-import { GetSnapshot } from "../../../../../server/models/interfaces";
+import { CatRepository, GetSnapshot, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotRestoreOption from "../SnapshotRestoreOption";
@@ -50,7 +50,11 @@ interface RestoreSnapshotState {
   renamePattern: string;
   renameReplacement: string;
   listIndices: boolean;
-
+  customIndexSettings: string;
+  ignoreIndexSettings?: string;
+  indicesList: CatSnapshotIndex[];
+  selectedRepoValue: string;
+  repositories: CatRepository[];
   snapshot: GetSnapshot | null;
   snapshotId: string;
   restoreSpecific: boolean;
@@ -72,6 +76,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       renamePattern: "",
       renameReplacement: "",
       listIndices: false,
+      customIndexSettings: "",
+      ignoreIndexSettings: "",
+      indicesList: [],
+      repositories: [],
+      selectedRepoValue: "",
       snapshot: null,
       snapshotId: "",
       restoreSpecific: false,
@@ -88,6 +97,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   onClickAction = () => {
     const { restoreSnapshot, snapshotId, repository } = this.props;
     const {
+      selectedRepoValue,
+      customIndexSettings,
+      ignoreIndexSettings,
       restoreSpecific,
       selectedIndexOptions,
       indexOptions,
@@ -105,6 +117,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
+      index_settings: customIndexSettings.length ? JSON.parse(customIndexSettings) : "",
+      ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
       rename_pattern: pattern,
@@ -114,6 +128,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
+    if (!options.index_settings) {
+      delete options.index_settings;
+    }
+    if (!options.ignore_index_settings) {
+      delete options.ignore_index_settings;
+    }
     if (!snapshotId.trim()) {
       this.setState({ snapshotIdError: "Required." });
 
@@ -158,6 +178,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   getIndexOptions = () => {
     this.getSnapshot(this.props.snapshotId, this.props.repository);
+  };
+
+  getIndexSettings = (indexSettings: string) => {
+    const { snapshot } = this.state;
+    const ignore = snapshot?.ignore_index_settings ? snapshot.ignore_index_settings : false;
+
+    !ignore && this.setState({ customIndexSettings: indexSettings });
+    ignore && this.setState({ ignoreIndexSettings: indexSettings });
   };
 
   onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
@@ -225,7 +253,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     } = RESTORE_OPTIONS;
 
     return (
-      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton>
+      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} size="m" hideCloseButton outsideClickCloses>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle">Restore snapshot</h2>
@@ -294,6 +322,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
             <EuiSpacer size="m" />
 
             <SnapshotRestoreAdvancedOptions
+              ignore={snapshot?.ignore_index_settings ? snapshot.ignore_index_settings : false}
+              getIndexSettings={this.getIndexSettings}
               restoreAliases={String(_.get(snapshot, restore_aliases, true)) == "true"}
               onRestoreAliasesToggle={this.onToggle}
               restoreClusterState={String(_.get(snapshot, include_global_state, false)) == "true"}
