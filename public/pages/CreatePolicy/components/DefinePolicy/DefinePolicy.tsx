@@ -60,7 +60,7 @@ const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError }: Defi
     </div>
     <EuiSpacer size="m" />
     <DarkModeConsumer>
-      {isDarkMode => (
+      {(isDarkMode) => (
         <EuiCodeEditor
           mode="json"
           theme={isDarkMode ? "sense-dark" : "github"}
