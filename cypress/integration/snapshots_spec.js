@@ -6,11 +6,8 @@
 import { PLUGIN_NAME } from "../support/constants";
 
 describe("Snapshots", () => {
-<<<<<<< HEAD
-  beforeEach(() => {
-=======
+
   before(() => {
->>>>>>> basic_integration
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
