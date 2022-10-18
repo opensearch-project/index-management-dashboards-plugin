@@ -127,7 +127,6 @@ describe("Snapshots", () => {
 
       cy.contains("Deleted snapshot");
       cy.contains("No items found");
-
     });
   })
 });
