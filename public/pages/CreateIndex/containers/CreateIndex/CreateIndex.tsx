@@ -51,13 +51,16 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
   }
 
   get isEdit() {
-    return !!this.props.match.params.index;
+    return this.props.match.params.index !== undefined;
   }
 
   componentDidMount = async (): Promise<void> => {
     const isEdit = this.isEdit;
     if (isEdit) {
       try {
+        if (!this.index) {
+          throw new Error(`Invalid Index: ${this.index}`);
+        }
         const response: ServerResponse<Record<string, IndexItem>> = await this.props.commonService.apiCaller({
           endpoint: "indices.get",
           data: {
