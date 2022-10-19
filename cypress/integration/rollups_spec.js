@@ -18,8 +18,8 @@ describe("Rollups", () => {
 
     cy.wait(10000)
 
-    // // Click on "Sample data" tab
-    // cy.contains("Add data").click({ force: true });
+    // Click on "Sample data" tab
+    cy.contains("Add data").click({ force: true });
 
     // Load sample eCommerce data
     cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({ force: true });
