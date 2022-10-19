@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SnapshotRenameOptions component renders without error 1`] = `
+<div>
+  <div>
+    <h5>
+      Rename restored indices
+    </h5>
+    <div
+      class="euiSpacer euiSpacer--m"
+    />
+    <div
+      class="euiRadio"
+    >
+      <input
+        checked=""
+        class="euiRadio__input"
+        id="do_not_rename"
+        name="rename_option"
+        type="radio"
+        value=""
+      />
+      <div
+        class="euiRadio__circle"
+      />
+      <label
+        class="euiRadio__label"
+        for="do_not_rename"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <h4>
+                Do not rename
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+      </label>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--s"
+    />
+    <div
+      class="euiRadio"
+    >
+      <input
+        class="euiRadio__input"
+        id="add_prefix"
+        name="rename_option"
+        type="radio"
+        value=""
+      />
+      <div
+        class="euiRadio__circle"
+      />
+      <label
+        class="euiRadio__label"
+        for="add_prefix"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <h4>
+                Add prefix to restored index names
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+      </label>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--s"
+    />
+    <div
+      class="euiRadio"
+    >
+      <input
+        class="euiRadio__input"
+        id="rename_indices"
+        name="rename_option"
+        type="radio"
+        value=""
+      />
+      <div
+        class="euiRadio__circle"
+      />
+      <label
+        class="euiRadio__label"
+        for="rename_indices"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <div
+              class="euiText euiText--extraSmall"
+            >
+              <h4>
+                Rename using regular expression (Advanced)
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+      </label>
+    </div>
+  </div>
+</div>
+`;

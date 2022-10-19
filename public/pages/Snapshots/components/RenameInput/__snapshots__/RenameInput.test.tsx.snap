@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RenameInput component renders without error 1`] = `
+<div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <h4>
+          Rename Pattern
+        </h4>
+      </div>
+    </div>
+  </div>
+  <span
+    style="font-weight: 200; font-size: 12px;"
+  >
+    Use regular expressiojn to define how index names will be renamed. By default, input (.+) to reuse the entire index name. [Learn more]
+  </span>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiFormRow"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText"
+            data-test-subj="renamePatternInput"
+            id="some_html_id"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--m"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <h4>
+          Rename Replacement
+        </h4>
+      </div>
+    </div>
+  </div>
+  <span
+    style="font-weight: 200; font-size: 12px;"
+  >
+    Define the format of renamed indices. Use $0 to include the entire matching index name, $1 to include the content of the first capture group, etc. [Learn more]
+  </span>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiFormRow"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormControlLayout"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <input
+            class="euiFieldText"
+            data-test-subj="renameReplacementInput"
+            id="some_html_id"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
