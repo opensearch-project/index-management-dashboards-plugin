@@ -318,6 +318,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     } = RESTORE_OPTIONS;
 
     const status = snapshot ? snapshot?.state[0] + snapshot?.state.slice(1).toLowerCase() : undefined;
+    const restoreDisabled = snapshot?.failed_shards && !snapshot?.partial;
 
     return (
       <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m" hideCloseButton>
@@ -435,7 +436,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
             </EuiFlyoutBody>
 
             <EuiFlyoutFooter>
-              <FlyoutFooter edit={true} restore={true} action="" onClickAction={this.onClickAction} onClickCancel={onCloseFlyout} />
+              <FlyoutFooter
+                edit={true}
+                restore={true}
+                action=""
+                onClickAction={this.onClickAction}
+                onClickCancel={onCloseFlyout}
+                disabledAction={!!restoreDisabled} />
             </EuiFlyoutFooter>
           </>
         )
