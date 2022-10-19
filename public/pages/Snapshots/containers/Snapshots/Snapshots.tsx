@@ -17,11 +17,6 @@ import {
   EuiTab,
   EuiOverlayMask,
   EuiGlobalToastList,
-  EuiModal,
-  EuiModalHeader,
-  EuiModalHeaderTitle,
-  EuiModalBody,
-  EuiModalFooter
 } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -37,6 +32,7 @@ import RestoreActivitiesPanel from "../../components/RestoreActivitiesPanel";
 import { Snapshot } from "../../../../../models/interfaces";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
+import ErrorModal from "../../../Snapshots/components/ErrorModal/ErrorModal"
 import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
 import { getToasts } from "../../helper"
 import { snapshotStatusRender, truncateSpan } from "../../helper";
@@ -263,21 +259,29 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
       if (response.ok) {
-        this.onRestore(true);
+        console.log("this is what I want", response)
+        this.onRestore(true, response);
       } else {
-        this.onRestore(false, JSON.parse(response.error).error.root_cause[0]);
+        this.onRestore(false, response);
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));
     }
   };
 
-  onRestore = (success: boolean, error: RestoreError = {}) => {
+  onRestore = (success: boolean, response: object = {}) => {
     const { selectedItems } = this.state;
+    const statusCode = success ? 200 : JSON.parse(response.error).status;
+    const statusMessage = statusCode === 500 ?
+      "Internal server error: status code " :
+      statusCode === 200 ?
+        "Request accepted: status code " :
+        "Invalid request: status code ";
+    const status = `${statusMessage}${statusCode}`
     const toasts = success ?
-      getToasts("success_restore_toast", selectedItems[0].id, this.onClickTab) :
-      getToasts("error_restore_toast", selectedItems[0].id, this.onOpenError);
-    this.setState({ toasts, error: error });
+      getToasts("success_restore_toast", status, selectedItems[0].id, this.onClickTab) :
+      getToasts("error_restore_toast", status, selectedItems[0].id, this.onOpenError);
+    this.setState({ toasts });
   }
 
   onOpenError = () => {
@@ -500,19 +504,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         <EuiGlobalToastList toasts={toasts} dismissToast={this.onToastEnd} toastLifeTimeMs={6000} />
 
         {viewError && (
-          <EuiModal onClose={this.onCloseModal}>
-            <EuiModalHeader color="danger">
-              <EuiModalHeaderTitle><h1>{error.type}</h1></EuiModalHeaderTitle>
-            </EuiModalHeader>
-
-            <EuiModalBody>
-              <EuiText size="m" color="danger">{error.reason}.</EuiText>
-            </EuiModalBody>
-
-            <EuiModalFooter>
-              <EuiButton onClick={this.onCloseModal} fill>Close</EuiButton>
-            </EuiModalFooter>
-          </EuiModal>
+          <ErrorModal
+            onClick={this.onCloseModal}
+            onClose={this.onCloseModal}
+            error={error} />
         )}
 
         {isDeleteModalVisible && (
