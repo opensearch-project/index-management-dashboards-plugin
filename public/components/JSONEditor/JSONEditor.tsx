@@ -22,10 +22,13 @@ const JSONEditor: React.SFC<JSONEditorProps> = ({ value, onChange, ...others }) 
         mode="json"
         value={tempEditorValue}
         onChange={setTempEditorValue}
-        onBlur={(e) => {
+        onBlur={() => {
+          if (others.readOnly) {
+            return;
+          }
           try {
             JSON.parse(tempEditorValue);
-            onChange(tempEditorValue);
+            onChange && onChange(tempEditorValue);
           } catch (e) {
             setConfirmModalVisible(true);
           }
