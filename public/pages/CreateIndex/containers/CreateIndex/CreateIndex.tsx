@@ -9,7 +9,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { get, pick, set } from "lodash";
 import { diffArrays } from "diff";
 import IndexDetail from "../../components/IndexDetail";
-import { IAliasAction, IndexItem, MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
+import { IAliasAction, IndexItem, MappingsProperties } from "../../../../../models/interfaces";
 import { BREADCRUMBS, INDEX_DYNAMIC_SETTINGS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IIndexDetailRef, IndexDetailProps } from "../../components/IndexDetail/IndexDetail";

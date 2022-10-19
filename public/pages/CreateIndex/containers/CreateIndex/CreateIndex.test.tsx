@@ -8,7 +8,7 @@ import { MemoryRouter as Router, Redirect, Route, RouteComponentProps, Switch } 
 import { render, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";
-import CreatePolicy from "./CreatePolicy";
+import CreateIndex from "./CreateIndex";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -17,9 +17,7 @@ import { DEFAULT_POLICY } from "../../utils/constants";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
 
-jest.mock("../../components/DefinePolicy", () => require("../../components/DefinePolicy/__mocks__/DefinePolicyMock"));
-
-function renderCreatePolicyWithRouter(initialEntries = ["/"]) {
+function renderCreateIndexWithRouter(initialEntries = ["/"]) {
   return {
     ...render(
       <Router initialEntries={initialEntries}>
@@ -35,19 +33,18 @@ function renderCreatePolicyWithRouter(initialEntries = ["/"]) {
                           <ModalRoot services={services} />
                           <Switch>
                             <Route
-                              path={ROUTES.CREATE_POLICY}
+                              path={ROUTES.CREATE_INDEX}
                               render={(props: RouteComponentProps) => (
-                                <CreatePolicy {...props} isEdit={false} policyService={services.policyService} />
+                                <CreateIndex {...props} isEdit={false} commonService={services.commonService} />
                               )}
                             />
                             <Route
-                              path={ROUTES.EDIT_POLICY}
+                              path={`${ROUTES.CREATE_INDEX}/:index`}
                               render={(props: RouteComponentProps) => (
-                                <CreatePolicy {...props} isEdit={true} policyService={services.policyService} />
+                                <CreateIndex {...props} isEdit={false} commonService={services.commonService} />
                               )}
                             />
-                            <Route path={ROUTES.INDEX_POLICIES} render={(props: RouteComponentProps) => <div>Testing Policies</div>} />
-                            <Redirect from="/" to={ROUTES.CREATE_POLICY} />
+                            <Redirect from="/" to={ROUTES.CREATE_INDEX} />
                           </Switch>
                         </ModalProvider>
                       )
@@ -63,67 +60,93 @@ function renderCreatePolicyWithRouter(initialEntries = ["/"]) {
   };
 }
 
-describe("<CreatePolicy /> spec", () => {
+describe("<CreateIndex /> spec", () => {
   it("renders the create component", () => {
-    const { container } = renderCreatePolicyWithRouter();
+    const { container } = renderCreateIndexWithRouter();
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("renders the edit component", async () => {
-    browserServicesMock.policyService.getPolicy = jest
-      .fn()
-      .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy", policy: JSON.parse(DEFAULT_POLICY) } });
-    const { container } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy`]);
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: {
+        aliases: {
+          "2": {},
+        },
+        mappings: {
+          properties: {
+            "3": {
+              type: "text",
+            },
+            "34": {
+              type: "text",
+            },
+            "123": {
+              properties: {
+                "1234": {
+                  type: "text",
+                },
+              },
+            },
+            "4343": {
+              type: "text",
+            },
+            "NAME_YOUR_FIELD-1666147195251": {
+              type: "text",
+            },
+          },
+        },
+        settings: {
+          index: {
+            number_of_shards: "1",
+            number_of_replicas: "1",
+          },
+        },
+      },
+    });
+    const { container } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/some_index`]);
 
     await waitFor(() => {});
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it("routes back to policies if given bad id", async () => {
-    const { getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=one&id=two`]);
+  // TODO
+  it("routes back to indices if given bad index", async () => {
+    const { getByText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/`]);
 
     await waitFor(() => getByText("Testing Policies"));
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Invalid policy id: one,two");
   });
 
-  it("routes back to policies if getPolicy gracefully fails", async () => {
+  // TODO
+  it("routes back to indices if getIndices gracefully fails", async () => {
     browserServicesMock.policyService.getPolicy = jest.fn().mockResolvedValue({ ok: false, error: "some error" });
-    const { getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_id`]);
+    const { getByText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/error_index`]);
 
-    await waitFor(() => getByText("Testing Policies"));
+    await waitFor(() => getByText("error_index"));
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Could not load the policy: some error");
   });
 
-  it("routes back to policies if getPolicy gracefully fails", async () => {
-    browserServicesMock.policyService.getPolicy = jest.fn().mockRejectedValue(new Error("another error"));
-    const { getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_id`]);
+  // TODO
+  it("disallows editing index name when in edit", async () => {
+    browserServicesMock.policyService.getPolicy = jest.fn().mockResolvedValue({ ok: true, response: {} });
+    const { getByDisplayValue, getByPlaceholderText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/some_index`]);
 
-    await waitFor(() => getByText("Testing Policies"));
-    expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("another error");
-  });
-
-  it("disallows editing policy ID when in edit", async () => {
-    browserServicesMock.policyService.getPolicy = jest
-      .fn()
-      .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_id", policy: JSON.parse(DEFAULT_POLICY) } });
-    const { getByDisplayValue, getByPlaceholderText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_id`]);
-
-    await waitFor(() => getByDisplayValue("some_id"));
+    await waitFor(() => getByDisplayValue("some_index"));
 
     expect(getByPlaceholderText("hot_cold_workflow")).toHaveAttribute("readonly");
   });
 
-  it("shows error for policyId input when clicking create", async () => {
-    const { getByTestId, queryByText, getByPlaceholderText } = renderCreatePolicyWithRouter();
+  it("shows error for index name input when clicking create", async () => {
+    const { queryByText, getByPlaceholderText, getByText } = renderCreateIndexWithRouter();
 
     expect(queryByText("Required")).toBeNull();
 
-    userEvent.click(getByTestId("createPolicyCreateButton"));
+    userEvent.click(getByText("Create"));
 
     expect(queryByText("Required")).not.toBeNull();
 
@@ -136,7 +159,7 @@ describe("<CreatePolicy /> spec", () => {
 
   it("routes you back to policies and shows a success toaster when successfully creating a policy", async () => {
     browserServicesMock.policyService.putPolicy = jest.fn().mockResolvedValue({ ok: true, response: { _id: "some_policy_id" } });
-    const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
+    const { getByText, getByTestId, getByPlaceholderText } = renderCreateIndexWithRouter();
 
     fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
     userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
@@ -150,7 +173,7 @@ describe("<CreatePolicy /> spec", () => {
 
   it("shows a danger toaster when getting graceful error from create policy", async () => {
     browserServicesMock.policyService.putPolicy = jest.fn().mockResolvedValue({ ok: false, error: "bad policy" });
-    const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
+    const { getByText, getByTestId, getByPlaceholderText } = renderCreateIndexWithRouter();
 
     fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
     userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
@@ -163,7 +186,7 @@ describe("<CreatePolicy /> spec", () => {
 
   it("shows a danger toaster when getting error from create policy", async () => {
     browserServicesMock.policyService.putPolicy = jest.fn().mockRejectedValue(new Error("this is an error"));
-    const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
+    const { getByText, getByTestId, getByPlaceholderText } = renderCreateIndexWithRouter();
 
     fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
     userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
@@ -179,7 +202,7 @@ describe("<CreatePolicy /> spec", () => {
     browserServicesMock.policyService.getPolicy = jest
       .fn()
       .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
-    const { getByText, getByTestId, getByDisplayValue } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
+    const { getByText, getByTestId, getByDisplayValue } = renderCreateIndexWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
 
     await waitFor(() => getByDisplayValue("some_policy_id"));
 
@@ -194,7 +217,7 @@ describe("<CreatePolicy /> spec", () => {
     browserServicesMock.policyService.getPolicy = jest
       .fn()
       .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
-    const { getByTestId, getByDisplayValue, getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
+    const { getByTestId, getByDisplayValue, getByText } = renderCreateIndexWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
 
     await waitFor(() => getByDisplayValue("some_policy_id"));
 
@@ -208,7 +231,7 @@ describe("<CreatePolicy /> spec", () => {
     browserServicesMock.policyService.getPolicy = jest
       .fn()
       .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
-    const { getByText, getByTestId, getByDisplayValue } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
+    const { getByText, getByTestId, getByDisplayValue } = renderCreateIndexWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
 
     await waitFor(() => getByDisplayValue("some_policy_id"));
 
@@ -218,7 +241,7 @@ describe("<CreatePolicy /> spec", () => {
   });
 
   it("brings you back to policies when clicking cancel", async () => {
-    const { getByTestId, getByText } = renderCreatePolicyWithRouter();
+    const { getByTestId, getByText } = renderCreateIndexWithRouter();
 
     userEvent.click(getByTestId("createPolicyCancelButton"));
 
