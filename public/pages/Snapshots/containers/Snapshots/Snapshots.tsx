@@ -316,12 +316,13 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const prev = target.previousElementSibling;
     const next = target.nextElementSibling;
 
-    if (selectedItems.length === 0) {
+    if (selectedItems.length === 0 && !snapshotPanel) {
       this.context.notifications.toasts.addWarning("Please select a snapshot to view restore activities");
       return;
     }
-
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
+    if (snapshotPanel) {
+      this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
+    }
 
     if (target.textContent !== "View restore activities") {
       target.ariaSelected = "true";
