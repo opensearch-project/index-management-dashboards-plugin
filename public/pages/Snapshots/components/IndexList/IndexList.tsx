@@ -21,15 +21,10 @@ const IndexList = ({ indices, snapshot, onClick, title }: IndexListProps) => {
     {
       field: "index",
       name: "Index",
-      width: "70%",
+      width: "100%",
       truncateText: true,
       sortable: true,
-    },
-    {
-      field: "store.size",
-      name: "Total size",
-      sortable: true,
-    },
+    }
   ];
 
   return (
