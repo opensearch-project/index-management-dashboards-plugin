@@ -6,11 +6,7 @@
 import { PLUGIN_NAME } from "../support/constants";
 
 describe("Snapshots", () => {
-<<<<<<< HEAD
-  beforeEach(() => {
-=======
   before(() => {
->>>>>>> basic_integration
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
 
@@ -55,7 +51,8 @@ describe("Snapshots", () => {
       cy.createIndex("test_index_2");
       cy.createIndex("test_index_3");
 
-      // wait for button to be selectable
+      // wait needed here to enable cypress to find "Take snapshot" button.  Timeout 
+      // cannot be used with cy.createIndex
       cy.wait(5000);
 
       // Click Take snapshot button

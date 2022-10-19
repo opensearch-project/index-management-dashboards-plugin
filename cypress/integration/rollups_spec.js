@@ -21,10 +21,10 @@ describe("Rollups", () => {
     // TODO determine why line 25 and/or line 28 are needed occasionally for rollups_spec to pass.  
     // When the source of the issue is determined they will be removed/uncommented.
 
-    // Click on "Sample data" tab
+    //Click on "Sample data" tab
     cy.contains("Sample data").click({ force: true });
 
-    // // Click on "Add data" tab
+    // Click on "Add data" tab
     // cy.contains("Add data").click({ force: true });
 
     // Load sample eCommerce data
