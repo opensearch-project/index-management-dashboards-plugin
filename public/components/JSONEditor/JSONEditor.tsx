@@ -11,15 +11,15 @@ interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
   onChange?: (value: JSONEditorProps["value"]) => void;
 }
 
-const JSONEditor: React.SFC<JSONEditorProps> = ({ value, onChange }) => {
+const JSONEditor: React.SFC<JSONEditorProps> = ({ value, onChange, ...others }) => {
   const [tempEditorValue, setTempEditorValue] = useState(value);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
   return (
     <>
       <EuiCodeEditor
+        {...others}
         mode="json"
-        placeholder="The number of replica shards each primary shard should have."
         value={tempEditorValue}
         onChange={setTempEditorValue}
         onBlur={(e) => {

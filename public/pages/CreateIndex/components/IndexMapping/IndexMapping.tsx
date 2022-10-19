@@ -16,6 +16,8 @@ import {
   EuiButton,
   EuiSpacer,
   EuiButtonGroup,
+  EuiToolTip,
+  EuiButtonIcon,
 } from "@elastic/eui";
 import { set, get } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
@@ -41,15 +43,16 @@ export enum EDITOR_MODE {
 
 interface IMappingLabel {
   value: MappingsProperties[number];
-  onChange: (val: IMappingLabel["value"]) => void;
+  onChange: (val: IMappingLabel["value"], key: string, value: string) => void | string;
   // onFieldNameChange: (newFieldName: string, oldFieldName: string) => void;
   onAddSubField: () => void;
+  onDeleteField: () => void;
   disabled?: boolean;
 }
 
 const NEW_FIELD_PREFIX = "NAME_YOUR_FIELD";
 
-const MappingLabel = ({ value, onChange, disabled, onAddSubField }: IMappingLabel) => {
+const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField }: IMappingLabel) => {
   const { fieldName, ...fieldSettings } = value;
   const [fieldNameError, setFieldNameError] = useState("");
   const ref = useRef<any>(null);
@@ -58,7 +61,7 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField }: IMappingLabe
     (k, v) => {
       const newValue = { ...value };
       set(newValue, k, v);
-      onChange(newValue);
+      return onChange(newValue, k, v);
     },
     [value, onChange]
   );
@@ -90,9 +93,13 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField }: IMappingLabe
               onBlur={(e) => {
                 if (!fieldNameState) {
                   setFieldNameError("Field name is required, please input");
-                  e.target.focus();
+                  ref.current.focus();
                 } else {
-                  onFieldChange("fieldName", fieldNameState);
+                  const error = onFieldChange("fieldName", fieldNameState);
+                  if (error) {
+                    setFieldNameError(error);
+                    ref.current.focus();
+                  }
                 }
               }}
             />
@@ -110,22 +117,27 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField }: IMappingLabe
           />
         </EuiFormRow>
       </EuiFlexItem>
-      {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
+      {disabled ? null : (
         <EuiFlexItem grow={false}>
-          <EuiFormRow label="Extra parameters" display="rowCompressed">
-            <span
-              className="euiLink euiLink--primary"
+          <EuiFormRow label="actions" display="rowCompressed">
+            <div
               style={{ display: "flex", height: 32, alignItems: "center" }}
               onClick={(e) => {
                 e.stopPropagation();
-                onAddSubField();
               }}
             >
-              Add a sub field
-            </span>
+              {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
+                <EuiToolTip content="Add a sub field">
+                  <EuiButtonIcon onClick={onAddSubField} disabled={disabled} iconType="plusInCircleFilled" size="m" />
+                </EuiToolTip>
+              ) : null}
+              <EuiToolTip content="Delete current field">
+                <EuiButtonIcon onClick={onDeleteField} iconType="trash" size="m" color="danger" />
+              </EuiToolTip>
+            </div>
           </EuiFormRow>
         </EuiFlexItem>
-      ) : null}
+      )}
     </EuiFlexGroup>
   );
 };
@@ -141,6 +153,27 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
         fieldName,
         type: "text",
       });
+      if (pos) {
+        set(newValue, pos, nowProperties);
+      }
+      onChange(newValue);
+    },
+    [onChange, value]
+  );
+  const deleteField = useCallback(
+    (pos) => {
+      const newValue = [...(value || [])];
+      const splittedArray = pos.split(".");
+      const index = splittedArray[splittedArray.length - 1];
+      const prefix = splittedArray.slice(0, -1);
+      const prefixPos = prefix.join(".");
+      const nowProperties = ((prefixPos ? get(newValue, prefixPos) : (newValue as MappingsProperties)) || []) as MappingsProperties;
+      nowProperties.splice(index, 1);
+
+      if (prefixPos) {
+        set(newValue, prefixPos, nowProperties);
+      }
+
       onChange(newValue);
     },
     [onChange, value]
@@ -154,10 +187,21 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
           <MappingLabel
             disabled={isEdit && !!get(oldValue, id)}
             value={item}
-            onChange={(val) => {
+            onChange={(val, key, v) => {
               const newValue = [...(value || [])];
+              if (key === "fieldName") {
+                const hasDuplicateName = (formValue || [])
+                  .filter((sibItem, sibIndex) => sibIndex !== index)
+                  .some((sibItem) => sibItem.fieldName === v);
+                if (hasDuplicateName) {
+                  return `Duplicate field name [${v}], please change your field name`;
+                }
+              }
               set(newValue, id, val);
               onChange(newValue);
+            }}
+            onDeleteField={() => {
+              deleteField(id);
             }}
             onAddSubField={() => {
               addField(`${id}.properties`, `${NEW_FIELD_PREFIX}-${Date.now()}`);
@@ -216,7 +260,18 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
           <EuiButton onClick={() => addField("", `${NEW_FIELD_PREFIX}-${Date.now()}`)}>Add a field</EuiButton>
         </>
       ) : (
-        <JSONEditor value={JSON.stringify(value || {}, null, 2)} onChange={(val) => onChange(JSON.parse(val))} />
+        <>
+          {isEdit ? (
+            <>
+              <EuiButton size="s">See previous settings</EuiButton>
+              <EuiSpacer />
+            </>
+          ) : null}
+          <JSONEditor
+            value={JSON.stringify(transformArrayToObject(value || []), null, 2)}
+            onChange={(val) => onChange(transformObjectToArray(JSON.parse(val)))}
+          />
+        </>
       )}
     </>
   );
