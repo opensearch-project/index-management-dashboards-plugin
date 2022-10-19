@@ -61,15 +61,6 @@ export default class SnapshotManagementService {
     return response;
   };
 
-  restoreSnapshot = async (snapshotId: string, repository: string, options: object): Promise<ServerResponse<RestoreSnapshotResponse>> => {
-    let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
-    const response = (await this.httpClient.post(url, {
-      query: { repository },
-      body: JSON.stringify(options),
-    })) as ServerResponse<RestoreSnapshotResponse>;
-    return response;
-  };
-
   createPolicy = async (policyId: string, policy: SMPolicy): Promise<ServerResponse<DocumentSMPolicy>> => {
     let url = `..${NODE_API.SMPolicies}/${policyId}`;
     const response = (await this.httpClient.post(url, { body: JSON.stringify(policy) })) as ServerResponse<DocumentSMPolicy>;
