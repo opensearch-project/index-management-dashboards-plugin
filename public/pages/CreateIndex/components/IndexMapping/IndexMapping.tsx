@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useState, Ref, useEffect, useRef } from "react";
+import React, { forwardRef, useCallback, useState, Ref, useEffect, useRef, useMemo } from "react";
 import {
   EuiTreeView,
   EuiIcon,
@@ -21,6 +21,7 @@ import {
 } from "@elastic/eui";
 import { set, get } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
+import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
 import "./IndexMapping.scss";
@@ -128,11 +129,17 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField 
             >
               {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
                 <EuiToolTip content="Add a sub field">
-                  <EuiButtonIcon onClick={onAddSubField} disabled={disabled} iconType="plusInCircleFilled" size="m" />
+                  <EuiButtonIcon
+                    aria-label="Add a sub field"
+                    onClick={onAddSubField}
+                    disabled={disabled}
+                    iconType="plusInCircleFilled"
+                    size="m"
+                  />
                 </EuiToolTip>
               ) : null}
               <EuiToolTip content="Delete current field">
-                <EuiButtonIcon onClick={onDeleteField} iconType="trash" size="m" color="danger" />
+                <EuiButtonIcon aria-label="Delete current field" onClick={onDeleteField} iconType="trash" size="m" color="danger" />
               </EuiToolTip>
             </div>
           </EuiFormRow>
@@ -143,7 +150,6 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField 
 };
 
 const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, ref: Ref<IIndexDetailRef>) => {
-  const treeRef = useRef<EuiTreeView>(null);
   const [editorMode, setEditorMode] = useState<EDITOR_MODE>(EDITOR_MODE.VISUAL);
   const addField = useCallback(
     (pos, fieldName) => {
@@ -221,7 +227,11 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
       return payload;
     });
   };
-  const transformedTreeItems = transformValueToTreeItems(value);
+  const transformedTreeItems = useMemo(() => transformValueToTreeItems(value), [value]);
+  const newValue = useMemo(() => {
+    const oldValueKeys = (oldValue || []).map((item) => item.fieldName);
+    return value?.filter((item) => !oldValueKeys.includes(item.fieldName)) || [];
+  }, [oldValue, value]);
   return (
     <>
       <EuiSpacer />
@@ -247,7 +257,6 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
           {transformedTreeItems.length ? (
             <EuiTreeView
               key={JSON.stringify(value)}
-              ref={treeRef}
               expandByDefault
               className="index-mapping-tree"
               aria-labelledby="label"
@@ -263,13 +272,24 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
         <>
           {isEdit ? (
             <>
-              <EuiButton size="s">See previous settings</EuiButton>
+              <EuiButton
+                size="s"
+                onClick={() => {
+                  Modal.show({
+                    title: "Previous mappings",
+                    content: <JSONEditor readOnly value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} />,
+                    onOk: () => {},
+                  });
+                }}
+              >
+                See previous settings
+              </EuiButton>
               <EuiSpacer />
             </>
           ) : null}
           <JSONEditor
-            value={JSON.stringify(transformArrayToObject(value || []), null, 2)}
-            onChange={(val) => onChange(transformObjectToArray(JSON.parse(val)))}
+            value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
+            onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
           />
         </>
       )}
