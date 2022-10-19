@@ -12,7 +12,7 @@ interface AddPrefixesInputProps {
 }
 
 const AddPrefixesInput = ({ getPrefix }: AddPrefixesInputProps) => {
-  const [prefix, setPrefix] = useState("restored_");
+  const [prefix, setPrefix] = useState("");
 
   const onPrefixChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPrefix(e.target.value);
