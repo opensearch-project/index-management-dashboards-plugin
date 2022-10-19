@@ -115,7 +115,6 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, re
               }
             >
               <JSONEditor
-                placeholder="The number of replica shards each primary shard should have."
                 value={JSON.stringify(restSettingValue)}
                 onChange={(val: string) =>
                   onValueChange("settings.index", {
