@@ -292,7 +292,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton disabled={!selectedItems.length} onClick={this.showDeleteModal} data-test-subj="deleteButton" color="danger">
         Delete
       </EuiButton>,
-      <EuiButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="secondary">
+      <EuiButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="secondary" data-test-subj="restoreButton">
         Restore
       </EuiButton>,
       <EuiButton onClick={this.onClickCreate} fill={true}>
@@ -305,7 +305,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         <p style={{ fontWeight: 200 }}>
           Snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository. <br />
           To restore a snapshot, use the snapshot restore API.{" "}
-          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank">
+          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
             Learn more
           </EuiLink>
         </p>
