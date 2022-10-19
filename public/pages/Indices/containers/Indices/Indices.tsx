@@ -31,7 +31,7 @@ import IndexService from "../../../../services/IndexService";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { getURLQueryParams } from "../../utils/helpers";
 import { IndicesQueryParams } from "../../models/interfaces";
-import { BREADCRUMBS } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
@@ -224,6 +224,15 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                           indices: selectedItems.map((item: ManagedCatIndex) => item.index),
                           core: this.context,
                         }),
+                    },
+                  },
+                  {
+                    text: "Create Index",
+                    buttonProps: {
+                      fill: true,
+                      onClick: () => {
+                        this.props.history.push(ROUTES.CREATE_INDEX);
+                      },
                     },
                   },
                 ]}

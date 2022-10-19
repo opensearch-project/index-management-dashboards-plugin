@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConfigurePolicy /> spec renders the component 1`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  style="padding-left: 0px; padding-right: 0px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h3
+        class="euiTitle euiTitle--small"
+      >
+        Name policy
+      </h3>
+    </div>
+  </div>
+  <hr
+    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+  />
+  <div
+    style="padding: initial;"
+  >
+    <div
+      style="padding-left: 10px;"
+    >
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <p>
+          Policies let you automatically perform administrative operations on indices.
+        </p>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Policy ID
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                aria-describedby="some_html_id-help-0"
+                class="euiFieldText"
+                id="some_html_id"
+                placeholder="hot_cold_workflow"
+                type="text"
+                value="some_id"
+              />
+            </div>
+          </div>
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            id="some_html_id-help-0"
+          >
+            Specify a unique ID that is easy to recognize and remember.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

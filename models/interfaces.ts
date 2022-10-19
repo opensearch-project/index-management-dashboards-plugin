@@ -56,7 +56,6 @@ export interface IndexItem {
  * ManagedIndex item shown in the Managed Indices table
  */
 export interface ManagedIndexItem extends IndexItem {
-  indexUuid: string;
   dataStream: string | null;
   policyId: string;
   policySeqNo: number;
