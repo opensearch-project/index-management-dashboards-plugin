@@ -5,7 +5,7 @@
 
 import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton } from "@elastic/eui";
 import _ from "lodash";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
@@ -81,7 +81,7 @@ export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ 
           stop_time: info.stop_time_in_millis,
         };
 
-        doneCount = stage === 4 ? doneCount + 1 : doneCount;
+        doneCount = stage === stages.length - 1 ? doneCount + 1 : doneCount;
         stageIndex = stage < stageIndex ? stage : stageIndex;
         minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
@@ -92,7 +92,7 @@ export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ 
       }
     }
     let percent = Math.floor((doneCount / indices.length) * 100);
-    percent = stageIndex === 4 ? 100 : percent;
+    percent = stageIndex === stages.length - 1 ? 100 : percent;
 
     setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
     setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
@@ -100,11 +100,13 @@ export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ 
     setStage(`${stages[stageIndex]} (${percent}%)`);
   };
 
-  const actions = [
-    <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton">
-      Refresh
-    </EuiButton>,
-  ];
+  const actions = useMemo(() => {
+    [
+      <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton">
+        Refresh
+      </EuiButton>,
+    ];
+  }, [])
 
   const indexes = `${indices.length} ${indices.length === 1 ? "Index" : "Indices"}`;
   const restoreStatus = [
