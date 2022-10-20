@@ -316,10 +316,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const prev = target.previousElementSibling;
     const next = target.nextElementSibling;
 
-    if (selectedItems.length === 0 && !snapshotPanel) {
-      this.context.notifications.toasts.addWarning("Please select a snapshot to view restore activities");
-      return;
-    }
+    // if (selectedItems.length === 0 && !snapshotPanel) {
+    //   this.context.notifications.toasts.addWarning("Please select a snapshot to view restore activities");
+    //   return;
+    // }
     if (snapshotPanel) {
       this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
     }
@@ -440,10 +440,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         {snapshotPanel || (
           <RestoreActivitiesPanel
             snapshotManagementService={snapshotManagementService}
-            repository={selectedItems[0].repository}
-            snapshotId={selectedItems[0].id}
-            restoreStartRef={restoreStart}
-            restoreCount={restoreCount}
+            snapshotId={selectedItems[0]?.id || ""}
+            restoreStartRef={restoreStart || 0}
+            restoreCount={restoreCount || 0}
           />
         )}
 

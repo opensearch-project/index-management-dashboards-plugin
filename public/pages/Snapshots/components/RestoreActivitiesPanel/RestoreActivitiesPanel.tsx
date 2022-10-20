@@ -34,7 +34,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
   useEffect(() => {
     context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
 
-    if (stage !== "Done (100%)" || indices.length < restoreCount || !restoreStartRef) {
+    if (stage !== "Done (100%)" || indices.length < restoreCount) {
       intervalIds.push(setInterval(() => {
         getRestoreStatus();
       }, 2000))
@@ -173,13 +173,13 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     },
   ];
 
-  const message = (<EuiEmptyPrompt title={<h3>"No restore activities currently in progress"</h3>} titleSize="s" body=""></EuiEmptyPrompt>)
+  const message = (<EuiEmptyPrompt title={<h3>No restore activities currently in progress</h3>} titleSize="s" body=""></EuiEmptyPrompt>)
 
   return (
     <>
       {flyout && <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m"><IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored in" /></EuiFlyout>}
       <ContentPanel title="Restore activities in progress" actions={actions}>
-        <EuiInMemoryTable items={restoreStatus} columns={columns} pagination={false} message={message} />
+        <EuiInMemoryTable items={snapshotId && restoreCount ? restoreStatus : []} columns={columns} pagination={false} message={message} />
         <EuiSpacer size="xxl" />
         <EuiSpacer size="xxl" />
         <EuiSpacer size="xxl" />
