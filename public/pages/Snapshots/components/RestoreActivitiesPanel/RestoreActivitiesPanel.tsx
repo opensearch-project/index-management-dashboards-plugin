@@ -28,7 +28,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
   const [flyout, setFlyout] = useState(false);
 
   useEffect(() => {
-    context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
+    context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
     getRestoreStatus();
   }, []);
 
