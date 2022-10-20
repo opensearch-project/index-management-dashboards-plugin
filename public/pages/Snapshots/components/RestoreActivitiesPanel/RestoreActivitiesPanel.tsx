@@ -34,7 +34,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
 
   const getRestoreStatus = async () => {
     if (stage.indexOf("DONE") >= 0) {
-      console.log("done");
       return;
     }
     try {
@@ -44,7 +43,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
         const response: GetIndexRecoveryResponse = res.response;
 
         setRestoreStatus(response);
-        console.log(response);
       } else {
         context?.notifications.toasts.addDanger(res.error);
       }
@@ -56,7 +54,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }
   const onIndexesClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setFlyout(true);
-    console.log("index clicked");
   };
 
   const onCloseFlyout = () => {
