@@ -19,7 +19,7 @@ interface RestoreActivitiesPanelProps {
   repository: string;
 }
 
-export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId }: RestoreActivitiesPanelProps) => {
+export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ snapshotManagementService, snapshotId }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
