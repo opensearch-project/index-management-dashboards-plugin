@@ -259,7 +259,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
       if (response.ok) {
-        console.log("this is what I want", response)
         this.onRestore(true, response);
       } else {
         this.onRestore(false, response);
@@ -316,10 +315,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const prev = target.previousElementSibling;
     const next = target.nextElementSibling;
 
-    // if (selectedItems.length === 0 && !snapshotPanel) {
-    //   this.context.notifications.toasts.addWarning("Please select a snapshot to view restore activities");
-    //   return;
-    // }
     if (snapshotPanel) {
       this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
     }
