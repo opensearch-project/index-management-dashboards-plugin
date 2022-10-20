@@ -24,6 +24,7 @@ import {
 } from "../../../../src/core/server";
 import { getSearchString } from "../utils/helpers";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
+import { IndexItem } from "../../models/interfaces";
 
 export default class IndexService {
   osDriver: ILegacyCustomClusterClient;

@@ -33,6 +33,7 @@ import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
+import CreateIndex from "../CreateIndex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -105,7 +106,7 @@ export default class Main extends Component<MainProps, object> {
             name: Navigation.Indices,
             id: 3,
             href: `#${Pathname.Indices}`,
-            isSelected: pathname === Pathname.Indices,
+            isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
           },
           {
             name: Navigation.Rollups,
@@ -370,6 +371,22 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <TransformDetails {...props} transformService={services.transformService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_INDEX}/:index`}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
                               </div>
                             )}
                           />

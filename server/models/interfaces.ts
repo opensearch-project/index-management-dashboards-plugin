@@ -12,6 +12,7 @@ import {
   TransformService,
   NotificationService,
   SnapshotManagementService,
+  CommonService,
 } from "../services";
 import {
   DocumentPolicy,
@@ -32,6 +33,7 @@ export interface NodeServices {
   transformService: TransformService;
   notificationService: NotificationService;
   snapshotManagementService: SnapshotManagementService;
+  commonService: CommonService;
 }
 
 export interface SearchResponse<T> {

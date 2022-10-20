@@ -1,0 +1,12 @@
+.index-mapping-tree {
+    .euiTreeView__node {
+        max-height: unset;
+        line-height: unset;
+    }
+    .euiTreeView__nodeInner {
+        height: auto;
+        padding: 4px 0;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+}

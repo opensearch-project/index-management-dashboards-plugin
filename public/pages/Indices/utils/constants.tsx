@@ -5,8 +5,9 @@
 
 import React from "react";
 import { EuiButtonEmpty, EuiCopy, EuiHealth, EuiTableFieldDataColumnType } from "@elastic/eui";
+import { Link } from "react-router-dom";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";
-import { SortDirection } from "../../../utils/constants";
+import { ROUTES, SortDirection } from "../../../utils/constants";
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];
 
@@ -44,7 +45,9 @@ const INDICES_COLUMNS: EuiTableFieldDataColumnType<ManagedCatIndex>[] = [
           {(copy) => (
             <div>
               <EuiButtonEmpty size="xs" flush="right" iconType="copyClipboard" onClick={copy} color="text"></EuiButtonEmpty>
-              <span title={index}>{index}</span>
+              <Link to={`${ROUTES.CREATE_INDEX}/${index}`}>
+                <span title={index}>{index}</span>
+              </Link>
             </div>
           )}
         </EuiCopy>

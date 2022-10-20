@@ -179,16 +179,8 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
 
   render() {
     const { onCloseFlyout } = this.props;
-    const {
-      indexOptions,
-      selectedIndexOptions,
-      repositories,
-      selectedRepoValue,
-      snapshot,
-      snapshotId,
-      repoError,
-      snapshotIdError,
-    } = this.state;
+    const { indexOptions, selectedIndexOptions, repositories, selectedRepoValue, snapshot, snapshotId, repoError, snapshotIdError } =
+      this.state;
 
     const repoOptions = repositories.map((r) => ({ value: r.id, text: r.id }));
 
