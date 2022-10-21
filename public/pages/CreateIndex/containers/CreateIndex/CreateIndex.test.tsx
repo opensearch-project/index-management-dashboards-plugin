@@ -151,15 +151,13 @@ describe("<CreateIndex /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_error");
   });
 
-  // // TODO
-  // it("disallows editing index name when in edit", async () => {
-  //   browserServicesMock.policyService.getPolicy = jest.fn().mockResolvedValue({ ok: true, response: {} });
-  //   const { getByDisplayValue, getByPlaceholderText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/some_index`]);
+  it("disallows editing index name when in edit", async () => {
+    const { getByDisplayValue, getByPlaceholderText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/some_index`]);
 
-  //   await waitFor(() => getByDisplayValue("some_index"));
+    await waitFor(() => getByDisplayValue("some_index"));
 
-  //   expect(getByPlaceholderText("hot_cold_workflow")).toHaveAttribute("readonly");
-  // });
+    expect(getByPlaceholderText("Please enter the name for your index")).toHaveAttribute("disabled");
+  });
 
   // it("shows error for index name input when clicking create", async () => {
   //   const { queryByText, getByPlaceholderText, getByText } = renderCreateIndexWithRouter();
