@@ -21,7 +21,7 @@ interface RestoreActivitiesPanelProps {
   restoreStartRef: number;
 }
 
-export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, restoreStartRef }: RestoreActivitiesPanelProps) => {
+export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ snapshotManagementService, snapshotId, restoreStartRef }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
