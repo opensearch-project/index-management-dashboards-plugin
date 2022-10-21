@@ -77,6 +77,7 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_SNAPSHOT_POLICY: { text: "Edit snapshot policy" },
 
   SNAPSHOTS: { text: "Snapshots", href: `#${ROUTES.SNAPSHOTS}` },
+  SNAPSHOT_RESTORE: { text: "Restore activities in progress" },
   CREATE_SNAPSHOT: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
   EDIT_SNAPSHOT: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
 
