@@ -69,8 +69,6 @@ describe("Snapshots", () => {
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
 
-
-
       // Click 'Add' button to create snapshot
       cy.get("button").contains("Add", { timeout: 3000 }).click({ force: true });
 
@@ -119,7 +117,6 @@ describe("Snapshots", () => {
 
       cy.contains("Deleted snapshot");
       cy.contains("No items found");
-
     });
   })
 });

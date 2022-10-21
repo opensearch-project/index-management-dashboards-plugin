@@ -14,6 +14,7 @@ import {
   AcknowledgedResponse,
   CreateSnapshotResponse,
   RestoreSnapshotResponse,
+  GetIndexRecoveryResponse,
 } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { DocumentSMPolicy, DocumentSMPolicyWithMetadata, SMPolicy, Snapshot } from "../../models/interfaces";
@@ -57,6 +58,13 @@ export default class SnapshotManagementService {
       query: { repository },
       body: JSON.stringify(options),
     })) as ServerResponse<RestoreSnapshotResponse>;
+    return response;
+  };
+
+  getIndexRecovery = async (): Promise<ServerResponse<GetIndexRecoveryResponse>> => {
+    const url = NODE_API._RECOVERY;
+    console.log("URL", url);
+    const response = (await this.httpClient.get(url)) as ServerResponse<GetIndexRecoveryResponse>;
     return response;
   };
 
