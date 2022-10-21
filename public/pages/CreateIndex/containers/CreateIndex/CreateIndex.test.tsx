@@ -6,6 +6,7 @@
 import React from "react";
 import { MemoryRouter as Router, Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { CoreStart } from "opensearch-dashboards/public";
 import CreateIndex from "./CreateIndex";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
@@ -17,6 +18,14 @@ import { CoreServicesConsumer, CoreServicesContext } from "../../../../component
 
 browserServicesMock.commonService.apiCaller = async (payload) => {
   switch (payload.endpoint) {
+    case "indices.create":
+      if (payload.data?.index === "bad_index") {
+        return {
+          ok: false,
+          error: "bad_index",
+        };
+      }
+      break;
     case "cat.aliases":
       return {
         ok: true,
@@ -89,7 +98,7 @@ browserServicesMock.commonService.apiCaller = async (payload) => {
   };
 };
 
-function renderCreateIndexWithRouter(initialEntries = ["/"]) {
+function renderCreateIndexWithRouter(initialEntries = [ROUTES.CREATE_INDEX] as string[]) {
   return {
     ...render(
       <Router initialEntries={initialEntries}>
@@ -151,7 +160,7 @@ describe("<CreateIndex /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_error");
   });
 
-  it("disallows editing index name when in edit", async () => {
+  it("disallows editing index name when in edit mode", async () => {
     const { getByDisplayValue, getByPlaceholderText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/some_index`]);
 
     await waitFor(() => getByDisplayValue("some_index"));
@@ -159,110 +168,39 @@ describe("<CreateIndex /> spec", () => {
     expect(getByPlaceholderText("Please enter the name for your index")).toHaveAttribute("disabled");
   });
 
-  // it("shows error for index name input when clicking create", async () => {
-  //   const { queryByText, getByPlaceholderText, getByText } = renderCreateIndexWithRouter();
+  it("shows error for index name input when clicking create", async () => {
+    const { queryByText, getByText } = renderCreateIndexWithRouter();
 
-  //   expect(queryByText("Required")).toBeNull();
+    await waitFor(() => getByText("Define index"));
 
-  //   userEvent.click(getByText("Create"));
+    expect(queryByText("Index name can not be null.")).toBeNull();
 
-  //   expect(queryByText("Required")).not.toBeNull();
+    userEvent.click(getByText("Create"));
 
-  //   fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
-  //   userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
-  //   fireEvent.blur(getByPlaceholderText("hot_cold_workflow"));
+    expect(queryByText("Index name can not be null.")).not.toBeNull();
+  });
 
-  //   expect(queryByText("Required")).toBeNull();
-  // });
+  it("routes you back to indices and shows a success toast when successfully creating a index", async () => {
+    const { getByText, getByPlaceholderText } = renderCreateIndexWithRouter();
 
-  // it("routes you back to policies and shows a success toaster when successfully creating a policy", async () => {
-  //   browserServicesMock.policyService.putPolicy = jest.fn().mockResolvedValue({ ok: true, response: { _id: "some_policy_id" } });
-  //   const { getByText, getByTestId, getByPlaceholderText } = renderCreateIndexWithRouter();
+    await waitFor(() => getByText("Define index"));
 
-  //   fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
-  //   userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
-  //   fireEvent.blur(getByPlaceholderText("hot_cold_workflow"));
+    userEvent.type(getByPlaceholderText("Please enter the name for your index"), `some_index`);
+    userEvent.click(getByText("Create"));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  //   userEvent.click(getByTestId("createPolicyCreateButton"));
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("some_index has been successfully created.");
+  });
 
-  //   await waitFor(() => getByText("Testing Policies"));
-  //   expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Created policy: some_policy_id");
-  // });
+  it("shows a danger toast when getting graceful error from create index", async () => {
+    const { getByText, getByPlaceholderText } = renderCreateIndexWithRouter();
 
-  // it("shows a danger toaster when getting graceful error from create policy", async () => {
-  //   browserServicesMock.policyService.putPolicy = jest.fn().mockResolvedValue({ ok: false, error: "bad policy" });
-  //   const { getByText, getByTestId, getByPlaceholderText } = renderCreateIndexWithRouter();
+    await waitFor(() => getByText("Define index"));
 
-  //   fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
-  //   userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
-  //   fireEvent.blur(getByPlaceholderText("hot_cold_workflow"));
+    userEvent.type(getByPlaceholderText("Please enter the name for your index"), `bad_index`);
+    userEvent.click(getByText("Create"));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  //   userEvent.click(getByTestId("createPolicyCreateButton"));
-
-  //   await waitFor(() => getByText("bad policy"));
-  // });
-
-  // it("shows a danger toaster when getting error from create policy", async () => {
-  //   browserServicesMock.policyService.putPolicy = jest.fn().mockRejectedValue(new Error("this is an error"));
-  //   const { getByText, getByTestId, getByPlaceholderText } = renderCreateIndexWithRouter();
-
-  //   fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
-  //   userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
-  //   fireEvent.blur(getByPlaceholderText("hot_cold_workflow"));
-
-  //   userEvent.click(getByTestId("createPolicyCreateButton"));
-
-  //   await waitFor(() => getByText("this is an error"));
-  // });
-
-  // it("routes you back to policies and shows a success toaster when successfully updating a policy", async () => {
-  //   browserServicesMock.policyService.putPolicy = jest.fn().mockResolvedValue({ ok: true, response: { _id: "some_policy_id" } });
-  //   browserServicesMock.policyService.getPolicy = jest
-  //     .fn()
-  //     .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
-  //   const { getByText, getByTestId, getByDisplayValue } = renderCreateIndexWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
-
-  //   await waitFor(() => getByDisplayValue("some_policy_id"));
-
-  //   userEvent.click(getByTestId("createPolicyCreateButton"));
-
-  //   await waitFor(() => getByText("Testing Policies"));
-  //   expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Updated policy: some_policy_id");
-  // });
-
-  // it("shows error when getting graceful error from create policy", async () => {
-  //   browserServicesMock.policyService.putPolicy = jest.fn().mockResolvedValue({ ok: false, error: "bad policy" });
-  //   browserServicesMock.policyService.getPolicy = jest
-  //     .fn()
-  //     .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
-  //   const { getByTestId, getByDisplayValue, getByText } = renderCreateIndexWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
-
-  //   await waitFor(() => getByDisplayValue("some_policy_id"));
-
-  //   userEvent.click(getByTestId("createPolicyCreateButton"));
-
-  //   await waitFor(() => getByText("bad policy"));
-  // });
-
-  // it("shows a danger toaster when getting error from create policy", async () => {
-  //   browserServicesMock.policyService.putPolicy = jest.fn().mockRejectedValue(new Error("this is an error"));
-  //   browserServicesMock.policyService.getPolicy = jest
-  //     .fn()
-  //     .mockResolvedValue({ ok: true, response: { seqNo: 1, primaryTerm: 5, id: "some_policy_id", policy: JSON.parse(DEFAULT_POLICY) } });
-  //   const { getByText, getByTestId, getByDisplayValue } = renderCreateIndexWithRouter([`${ROUTES.EDIT_POLICY}?id=some_policy_id`]);
-
-  //   await waitFor(() => getByDisplayValue("some_policy_id"));
-
-  //   userEvent.click(getByTestId("createPolicyCreateButton"));
-
-  //   await waitFor(() => getByText("this is an error"));
-  // });
-
-  // it("brings you back to policies when clicking cancel", async () => {
-  //   const { getByTestId, getByText } = renderCreateIndexWithRouter();
-
-  //   userEvent.click(getByTestId("createPolicyCancelButton"));
-
-  //   await waitFor(() => getByText("Testing Policies"));
-  // });
+    expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_index");
+  });
 });
