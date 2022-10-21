@@ -57,6 +57,8 @@ interface RestoreSnapshotState {
 
   repositories: CatRepository[],
   selectedRepoValue: string,
+  customIndexSettings: string;
+  ignoreIndexSettings?: string;
   snapshot: GetSnapshot | null;
   restoreSpecific: boolean;
   partial: boolean;
@@ -77,6 +79,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       renamePattern: "",
       renameReplacement: "",
       listIndices: false,
+      customIndexSettings: "",
+      ignoreIndexSettings: "",
       indicesList: [],
       repositories: [],
       selectedRepoValue: "",
@@ -95,6 +99,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   onClickAction = () => {
     const { restoreSnapshot, snapshotId, repository, onCloseFlyout, getTime } = this.props;
     const {
+      selectedRepoValue,
+      customIndexSettings,
+      ignoreIndexSettings,
       restoreSpecific,
       selectedIndexOptions,
       indexOptions,
@@ -112,6 +119,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
+      index_settings: customIndexSettings.length ? JSON.parse(customIndexSettings) : "",
+      ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
       rename_pattern: pattern,
@@ -121,6 +130,12 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
+    if (!options.index_settings) {
+      delete options.index_settings;
+    }
+    if (!options.ignore_index_settings) {
+      delete options.ignore_index_settings;
+    }
     if (!snapshotId.trim()) {
       this.setState({ snapshotIdError: "Required." });
 
@@ -178,6 +193,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const { snapshotId, repository } = this.props;
 
     this.getSnapshot(snapshotId, repository);
+  };
+
+  getIndexSettings = (indexSettings: string) => {
+    const { snapshot } = this.state;
+    const ignore = snapshot?.ignore_index_settings ? snapshot.ignore_index_settings : false;
+
+    !ignore && this.setState({ customIndexSettings: indexSettings });
+    ignore && this.setState({ ignoreIndexSettings: indexSettings });
   };
 
   onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
@@ -361,6 +384,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 <EuiSpacer size="m" />
 
                 <SnapshotRestoreAdvancedOptions
+                  getIndexSettings={this.getIndexSettings}
                   restoreAliases={String(_.get(snapshot, restore_aliases, true)) == "true"}
                   onRestoreAliasesToggle={this.onToggle}
                   restoreClusterState={String(_.get(snapshot, include_global_state, false)) == "true"}

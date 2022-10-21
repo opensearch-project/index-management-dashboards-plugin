@@ -5,7 +5,7 @@
 
 import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton } from "@elastic/eui";
 import _ from "lodash";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
@@ -85,9 +85,11 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     const indexes: CatSnapshotIndex[] = [];
     const stages: string[] = ["START", "INIT", "INDEX", "FINALIZE", "DONE"];
 
+    // Loop through indices in response, filter out kibana index, 
+    // gather progress info then use it to create progress field values.
     for (let item in response) {
-      if (item.indexOf("kibana") < 0 && response[item as keyof GetIndexRecoveryResponse].shards[0].start_time_in_millis >= restoreStartRef) {
-        const info = response[item as keyof GetIndexRecoveryResponse].shards[0];
+      if (item.indexOf("kibana") < 0) {
+        const info = response[item as keyof GetIndexRecoveryResponse].shards[0]
         const stage = stages.indexOf(info.stage);
         const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
 
@@ -96,7 +98,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
           stop_time: info.stop_time_in_millis,
         };
 
-        doneCount = stage === 4 ? doneCount + 1 : doneCount;
+        doneCount = stage === stages.length - 1 ? doneCount + 1 : doneCount;
         stageIndex = stage < stageIndex ? stage : stageIndex;
         minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
@@ -115,11 +117,13 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
   };
 
-  const actions = [
-    <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton">
-      Refresh
-    </EuiButton>,
-  ];
+  const actions = useMemo(() => {
+    [
+      <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton">
+        Refresh
+      </EuiButton>,
+    ];
+  }, [])
 
   const indexText = `${indices.length === 1 && Object.keys(indices[0]).length > 0 ? "Index" : "Indices"}`
   const indexes = `${indices.length === 1 && Object.keys(indices[0]).length === 0 ? "0" : indices.length} ${indexText}`;
@@ -133,7 +137,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
       indexes: indexes,
     },
   ];
-
   const columns = [
     {
       field: "start_time",

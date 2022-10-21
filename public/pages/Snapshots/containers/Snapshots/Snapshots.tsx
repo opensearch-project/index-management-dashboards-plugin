@@ -347,8 +347,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const subTitleText = (
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
-          Snapshots are taken automatically from snapshot policies, <br />or you can initiate manual snapshots to save to a repository.<br />
-          You can restore indices by selecting a snapshot.
+          Snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository. <br />
+          To restore a snapshot, use the snapshot restore API.{" "}
+          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+            Learn more
+          </EuiLink>
         </p>
       </EuiText>
     );

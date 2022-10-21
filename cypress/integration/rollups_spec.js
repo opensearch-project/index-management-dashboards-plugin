@@ -14,12 +14,18 @@ describe("Rollups", () => {
     localStorage.setItem("home:welcome:show", "true");
 
     // Go to sample data page
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory/sampleData`);
+    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory`);
 
-    cy.wait(5000);
+    cy.wait(10000)
 
-    // Click on "Sample data" tab
-    cy.contains("sample data").click({ force: true });
+    // TODO determine why line 25 and/or line 28 are needed occasionally for rollups_spec to pass.  
+    // When the source of the issue is determined they will be removed/uncommented.
+
+    //Click on "Sample data" tab
+    cy.contains("Sample data").click({ force: true });
+
+    // Click on "Add data" tab
+    // cy.contains("Add data").click({ force: true });
 
     // Load sample eCommerce data
     cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({ force: true });
