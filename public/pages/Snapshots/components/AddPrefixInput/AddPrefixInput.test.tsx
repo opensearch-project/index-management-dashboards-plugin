@@ -35,10 +35,10 @@ describe("AddPrefixInput component", () => {
     // Below excess use of "backspace" is resolve in later PR.  
     // tests are newer than code at this state, so this line is adapted.
     userEvent.type(screen.getByTestId("prefixInput"),
-      "{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}{backspace}test_prefix_"
+      "test_prefix_"
     );
 
-    expect(screen.getByTestId("prefixInput")).toHaveValue("test_prefix_");
+    expect(screen.getByTestId("prefixInput")).toHaveValue("restored_test_prefix_");
   });
 
   it("sends user input to parent component via getPrefix", () => {
