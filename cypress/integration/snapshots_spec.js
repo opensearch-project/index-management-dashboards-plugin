@@ -72,7 +72,6 @@ describe("Snapshots", () => {
       // Click 'Add' button to create snapshot
       cy.get("button").contains("Add", { timeout: 3000 }).click({ force: true });
 
-      cy.wait(3000)
       // check for success status and snapshot name
       cy.get("button").contains("Refresh").click({ force: true });
 
