@@ -31,9 +31,6 @@ describe("AddPrefixInput component", () => {
   });
 
   it("accepts user input", () => {
-
-    // Below excess use of "backspace" is resolve in later PR.  
-    // tests are newer than code at this state, so this line is adapted.
     userEvent.type(screen.getByTestId("prefixInput"),
       "test_prefix_"
     );
