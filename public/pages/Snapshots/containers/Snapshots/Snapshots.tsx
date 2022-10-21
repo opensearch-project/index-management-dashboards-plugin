@@ -93,7 +93,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Snapshot status",
         sortable: true,
         dataType: "string",
-        // width: "150px",
         render: (value: string) => {
           return snapshotStatusRender(value.replace("_", " "));
         },
@@ -103,7 +102,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Policy",
         sortable: false,
         dataType: "string",
-        // width: "180px",
         render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
           const truncated = _.truncate(name, { length: 20 });
           if (!!item.policy) {
@@ -116,26 +114,16 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         field: "repository",
         name: "Repository",
         sortable: false,
-        // width: "180px",
         dataType: "string",
         render: (value: string, item: SnapshotsWithRepoAndPolicy) => {
           return truncateSpan(value);
         },
       },
-      // {
-      //   field: "start_epoch",
-      //   name: "Start time",
-      //   sortable: true,
-      //   dataType: "date",
-      //   width: "150px",
-      //   render: renderTimestampMillis,
-      // },
       {
         field: "end_epoch",
         name: "Time last updated",
         sortable: true,
         dataType: "date",
-        // width: "180px",
         render: renderTimestampMillis,
       },
     ];
