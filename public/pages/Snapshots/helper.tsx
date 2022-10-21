@@ -31,7 +31,7 @@ export function snapshotStatusRender(value: string): React.ReactElement {
 }
 
 
-export const getToasts = (id: string, status: string, snapshotId: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
+export const getToasts = (id: string, message: string | undefined, snapshotId: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
   const toasts = [
     {
       id: "success_restore_toast",
@@ -40,7 +40,6 @@ export const getToasts = (id: string, status: string, snapshotId: string, onClic
       color: "success",
       text: (
         <>
-          <EuiText size="s">{status}</EuiText>
           <EuiSpacer size="xl" />
           <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
             <EuiButton onClick={onClick}>View restore activities</EuiButton>
@@ -50,11 +49,11 @@ export const getToasts = (id: string, status: string, snapshotId: string, onClic
     },
     {
       id: "error_restore_toast",
-      title: `Error restoring snapshot "${snapshotId}"`,
+      title: `Failed to restore snapshot "${snapshotId}"`,
       color: "danger",
       text: (
         <>
-          <EuiText size="s">{status}</EuiText>
+          <EuiText size="s">{message}</EuiText>
           <EuiSpacer size="xl" />
           <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
             <EuiButton onClick={onClick} color="danger">View full error</EuiButton>

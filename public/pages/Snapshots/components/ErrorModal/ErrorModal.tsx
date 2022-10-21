@@ -13,21 +13,18 @@ interface ErrorModalProps {
 }
 
 const ErrorModal = ({ onClick, error }: ErrorModalProps) => {
+  console.log(error)
 
 
-  const newError = JSON.parse(error.error).error;
-  const status = JSON.parse(error.error).status;
-  const helpText = status === 500 ? "Internal server error" : "Invalid request"
   return (
     <>
       <EuiModal onClose={onClick}>
         <EuiModalHeader color="danger" style={{ flexDirection: "column", alignItems: "flex-start" }}>
-          <EuiModalHeaderTitle><h1>{newError.type}</h1></EuiModalHeaderTitle>
-          <EuiText>{`Status code: ${status} - ${helpText}`}</EuiText>
+          <EuiModalHeaderTitle><h1>{error.type}</h1></EuiModalHeaderTitle>
         </EuiModalHeader>
 
         <EuiModalBody>
-          <EuiText size="m" color="danger">{newError.reason}.</EuiText>
+          <EuiText size="m" color="danger">{error.reason}.</EuiText>
         </EuiModalBody>
 
         <EuiModalFooter>

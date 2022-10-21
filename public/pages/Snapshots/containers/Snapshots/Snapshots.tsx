@@ -243,6 +243,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       } else {
         const message = JSON.parse(response.error).error.root_cause[0].reason
         const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
+
         this.context.notifications.toasts.addError(response.error, {
           title: `There was a problem creating the snapshot.`,
           toastMessage: `${trimmedMessage} Open browser console & click below for details.`
@@ -261,26 +262,27 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       if (response.ok) {
         this.onRestore(true, response);
       } else {
-        this.onRestore(false, response);
+        this.onRestore(false, JSON.parse(response.error).error);
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));
     }
   };
 
-  onRestore = (success: boolean, response: object = {}) => {
+  onRestore = (success: boolean, error: object = {}) => {
     const { selectedItems } = this.state;
-    const statusCode = success ? 200 : JSON.parse(response.error).status;
-    const statusMessage = statusCode === 500 ?
-      "Internal server error: status code " :
-      statusCode === 200 ?
-        "Request accepted: status code " :
-        "Invalid request: status code ";
-    const status = `${statusMessage}${statusCode}`
+    let errorMessage: string | undefined;
+    if (!success) {
+      const rawMessage = error.reason;
+      const message = rawMessage.slice(rawMessage.indexOf("]") + 2).replace(/[\[\]]/g, '"');
+      errorMessage = message.charAt(0).toUpperCase() + message.slice(1);
+      errorMessage = errorMessage?.slice(0, 125) + "...";
+    }
+
     const toasts = success ?
-      getToasts("success_restore_toast", status, selectedItems[0].id, this.onClickTab) :
-      getToasts("error_restore_toast", status, selectedItems[0].id, this.onOpenError);
-    this.setState({ toasts });
+      getToasts("success_restore_toast", errorMessage, selectedItems[0].id, this.onClickTab) :
+      getToasts("error_restore_toast", errorMessage, selectedItems[0].id, this.onOpenError);
+    this.setState({ toasts, error: error });
   }
 
   onOpenError = () => {
