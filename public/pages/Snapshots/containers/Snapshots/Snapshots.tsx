@@ -274,7 +274,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     let errorMessage: string | undefined;
     if (!success) {
       const rawMessage = error.reason;
-      const message = rawMessage.slice(rawMessage.indexOf("]") + 2).replace(/[\[\]]/g, '"');
+      const index = rawMessage.indexOf("]") + 1;
+      const startIndex = rawMessage[index] === " " ? index + 1 : index;
+      const message = rawMessage.slice(startIndex).replace(/[\[\]]/g, '"');
       errorMessage = message.charAt(0).toUpperCase() + message.slice(1);
       errorMessage = errorMessage?.slice(0, 125) + "...";
     }

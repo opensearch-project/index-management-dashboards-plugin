@@ -118,7 +118,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
-      index_settings: customIndexSettings.length ? JSON.parse(customIndexSettings) : "",
+      index_settings: customIndexSettings.length ? this.testJSON(customIndexSettings) : "",
       ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
@@ -129,6 +129,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
+    if (options.index_settings === false) {
+      return;
+    }
     if (!options.index_settings) {
       delete options.index_settings;
     }
@@ -151,6 +154,16 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     restoreSnapshot(snapshotId, repository, options);
     onCloseFlyout()
   };
+
+  testJSON = (testString: string) => {
+    try {
+      return JSON.parse(testString);
+    } catch (err) {
+      console.log(err);
+      this.context.notifications.toasts.addError(err, { title: `Please enter valid JSON` });
+      return false;
+    }
+  }
 
   onClickIndices = async () => {
     const { snapshot } = this.state;
