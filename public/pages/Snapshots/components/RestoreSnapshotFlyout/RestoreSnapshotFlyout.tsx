@@ -117,7 +117,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const restoreCount = restoreSpecific ? selectedIndexOptions.length : indexOptions.length;
 
     const options = {
-      indices: restoreSpecific ? selectedIndices : allIndices,
+      indices: restoreSpecific ? this.checkSelectedIndices(selectedIndices) : allIndices,
       index_settings: customIndexSettings.length ? this.testJSON(customIndexSettings) : "",
       ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
@@ -129,7 +129,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
-    if (options.index_settings === false) {
+    if (typeof options.index_settings !== "string") {
       return;
     }
     if (!options.index_settings) {
@@ -159,8 +159,21 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     try {
       return JSON.parse(testString);
     } catch (err) {
-      console.log(err);
-      this.context.notifications.toasts.addError(err, { title: `Please enter valid JSON` });
+      this.context.notifications.toasts.addError(err, { title: `Please enter valid JSON.` });
+      return false;
+    }
+  }
+
+  checkSelectedIndices = (indices: string): string | boolean => {
+    const { restoreSpecific } = this.state;
+    try {
+      if (restoreSpecific && indices.length === 0) {
+        throw "No indices selected.";
+      } else {
+        return indices;
+      }
+    } catch (err) {
+
       return false;
     }
   }
