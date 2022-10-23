@@ -160,14 +160,6 @@ describe("<CreateIndex /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_error");
   });
 
-  it("disallows editing index name when in edit mode", async () => {
-    const { getByDisplayValue, getByPlaceholderText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/some_index`]);
-
-    await waitFor(() => getByDisplayValue("some_index"));
-
-    expect(getByPlaceholderText("Please enter the name for your index")).toHaveAttribute("disabled");
-  });
-
   it("shows error for index name input when clicking create", async () => {
     const { queryByText, getByText } = renderCreateIndexWithRouter();
 

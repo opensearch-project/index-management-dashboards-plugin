@@ -22,7 +22,7 @@ export interface IndexDetailProps {
 }
 
 export interface IIndexDetailRef {
-  validate: () => Promise<Boolean>;
+  validate: () => Promise<boolean>;
 }
 
 const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, ref: Ref<IIndexDetailRef>) => {
