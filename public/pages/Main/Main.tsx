@@ -301,7 +301,7 @@ export default class Main extends Component<MainProps, object> {
                             path={ROUTES.INDICES}
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
-                                <Indices {...props} indexService={services.indexService} />
+                                <Indices {...props} indexService={services.indexService} commonService={services.commonService} />
                               </div>
                             )}
                           />

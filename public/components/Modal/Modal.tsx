@@ -96,8 +96,6 @@ const ModalApp = (props: IShowOptions) => {
               {finalLocale.confirm}
             </EuiButton>
             <EuiButton
-              fill
-              color="secondary"
               onClick={async () => {
                 await onCancel();
                 close();
