@@ -13,6 +13,7 @@ export const NODE_API = Object.freeze({
   APPLY_POLICY: `${BASE_API_PATH}/applyPolicy`,
   EDIT_ROLLOVER_ALIAS: `${BASE_API_PATH}/editRolloverAlias`,
   POLICIES: `${BASE_API_PATH}/policies`,
+  _RECOVERY: `${BASE_API_PATH}/_recovery`,
   ROLLUPS: `${BASE_API_PATH}/rollups`,
   TRANSFORMS: `${BASE_API_PATH}/transforms`,
   MANAGED_INDICES: `${BASE_API_PATH}/managedIndices`,

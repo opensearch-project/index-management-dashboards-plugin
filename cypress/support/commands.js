@@ -4,6 +4,7 @@
  */
 
 const { API, INDEX, ADMIN_AUTH } = require("./constants");
+const { NODE_API } = require("../../server/utils/constants")
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -79,7 +80,7 @@ Cypress.Commands.overwrite("request", (originalFn, ...args) => {
 });
 
 Cypress.Commands.add("deleteAllIndices", () => {
-  cy.request("DELETE", `${Cypress.env("opensearch")}/index*,sample*,opensearch_dashboards*`);
+  cy.request("DELETE", `${Cypress.env("opensearch")}/index*,sample*,opensearch_dashboards*,test*`);
   cy.request("DELETE", `${Cypress.env("opensearch")}/.opendistro-ism*?expand_wildcards=all`);
 });
 
@@ -120,6 +121,10 @@ Cypress.Commands.add("createIndex", (index, policyID = null, settings = {}) => {
     cy.request("POST", `${Cypress.env("opensearch")}${API.ADD_POLICY_BASE}/${index}`, body);
   }
 });
+
+Cypress.Commands.add("deleteSnapshot", (repository, snapshot) => {
+  cy.request("DELETE", `${Cypress.env("opensearch")}${NODE_API._SNAPSHOTS}/${repository}/${snapshot}`)
+})
 
 Cypress.Commands.add("createRollup", (rollupId, rollupJSON) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.ROLLUP_JOBS_BASE}/${rollupId}`, rollupJSON);
