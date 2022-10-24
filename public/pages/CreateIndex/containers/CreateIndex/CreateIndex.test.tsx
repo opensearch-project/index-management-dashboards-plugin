@@ -143,14 +143,6 @@ describe("<CreateIndex /> spec", () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it("renders the edit component", async () => {
-    const { container } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/some_index`]);
-
-    await waitFor(() => {});
-
-    expect(container.firstChild).toMatchSnapshot();
-  });
-
   it("show a toast if getIndices gracefully fails", async () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     const { getByText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/bad_index`]);
