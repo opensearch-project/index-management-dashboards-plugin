@@ -386,21 +386,6 @@ export interface GetIndexRecoveryResponse {
     ];
   };
 }
-// export interface IndexRecoveryResponse {
-//   shards: [
-//     {
-//       source: {
-//         index: string;
-//         repository: string;
-//         snapshot: string;
-//       };
-//       stage: string;
-//       start_time_in_millis: number;
-//       stop_time_in_millis: number;
-//     }
-//   ];
-// }
-
 export interface CatSnapshotWithRepoAndPolicy {
   id: string;
   status: string;
