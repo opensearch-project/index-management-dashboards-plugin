@@ -250,6 +250,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                   {
                     children: (
                       <SimplePopover
+                        data-test-subj="More Action"
                         panelPaddingSize="none"
                         button={
                           <EuiButton iconType="arrowDown" iconSide="right">
@@ -266,6 +267,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                                 {
                                   name: "Delete",
                                   disabled: !this.state.selectedItems.length,
+                                  "data-test-subj": "Delete Action",
                                   icon: <EuiIcon type="trash" size="m" color="danger" />,
                                   onClick: () =>
                                     this.setState({

@@ -72,7 +72,13 @@ export default class DeleteIndexModal extends Component<DeleteIndexModalProps> {
 
         <EuiModalFooter>
           <EuiButtonEmpty onClick={onClose}>Cancel</EuiButtonEmpty>
-          <EuiButton onClick={onConfirm} fill color="danger" disabled={this.state.value !== "delete"}>
+          <EuiButton
+            data-test-subj="Delete Confirm button"
+            onClick={onConfirm}
+            fill
+            color="danger"
+            disabled={this.state.value !== "delete"}
+          >
             Delete
           </EuiButton>
         </EuiModalFooter>

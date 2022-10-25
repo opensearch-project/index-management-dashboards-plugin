@@ -155,4 +155,41 @@ describe("Indices", () => {
       cy.get(`tbody > tr:contains("${SAMPLE_INDEX}") > td`).filter(`:nth-child(4)`).contains("Yes");
     });
   });
+
+  describe("can make indices deleted", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.createIndex(SAMPLE_INDEX);
+    });
+
+    it("successfully", () => {
+      // Confirm we have our initial index
+      cy.contains(SAMPLE_INDEX);
+
+      // Click actions button
+      cy.get('[data-test-subj="More Action"]').click();
+
+      // Delete btn should be disabled if no items selected
+      cy.get('[data-test-subj="Delete Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // click any where to hide actions
+      cy.get("#_selection_column_sample_index-checkbox").click();
+      cy.get('[data-test-subj="Delete Action"]').should("not.exist");
+
+      // Click actions button
+      cy.get('[data-test-subj="More Action"]').click();
+      // Delete btn should be enabled
+      cy.get('[data-test-subj="Delete Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+      // The confirm button should be disabled
+      cy.get('[data-test-subj="Delete Confirm button"]').should("have.class", "euiButton-isDisabled");
+      // type delete
+      cy.get('[placeholder="delete"]').type("delete");
+      cy.get('[data-test-subj="Delete Confirm button"]').should("not.have.class", "euiContextMenuItem-isDisabled");
+      // click to delete
+      cy.get('[data-test-subj="Delete Confirm button"]').click();
+      // the sample_index should not exist
+      cy.wait(500);
+      cy.get("#_selection_column_sample_index-checkbox").should("not.exist");
+    });
+  });
 });
