@@ -111,6 +111,7 @@ HTMLCollection [
             </button>
             <button
               class="euiButton euiButton--danger euiButton--fill euiButton-isDisabled"
+              data-test-subj="Delete Confirm button"
               disabled=""
               type="button"
             >

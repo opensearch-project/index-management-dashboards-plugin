@@ -35,6 +35,7 @@ exports[`<Indices /> spec renders the component 1`] = `
             >
               <div
                 class="euiPopover euiPopover--anchorDownCenter"
+                data-test-subj="More Action"
               >
                 <div
                   class="euiPopover__anchor"
