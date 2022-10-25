@@ -27,9 +27,9 @@ describe("<IndexDetail /> spec", () => {
   it("disallows editing number_of_replicas when in edit mode", async () => {
     const { getByPlaceholderText } = render(<IndexDetail value={{ index: "some_index" }} isEdit onChange={() => {}} />);
 
-    await waitFor(() => getByPlaceholderText("The number of replica shards each primary shard should have."));
+    await waitFor(() => getByPlaceholderText("The number of primary shards in the index. Default is 1."));
 
-    expect(getByPlaceholderText("The number of replica shards each primary shard should have.")).toHaveAttribute("disabled");
+    expect(getByPlaceholderText("The number of primary shards in the index. Default is 1.")).toHaveAttribute("disabled");
   });
 
   it("validate should say error when the field name is required", async () => {
