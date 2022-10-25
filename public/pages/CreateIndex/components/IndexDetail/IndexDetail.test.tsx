@@ -9,15 +9,18 @@ import { renderHook } from "@testing-library/react-hooks";
 import IndexDetail, { IIndexDetailRef } from "./IndexDetail";
 
 const timeOut = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
+const refreshOptions = () => Promise.resolve({ ok: true, response: [] });
 
 describe("<IndexDetail /> spec", () => {
   it("renders the component", () => {
-    const { container } = render(<IndexDetail onChange={() => {}} />);
+    const { container } = render(<IndexDetail refreshOptions={refreshOptions} onChange={() => {}} />);
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("disallows editing index name when in edit mode", async () => {
-    const { getByDisplayValue } = render(<IndexDetail value={{ index: "some_index" }} isEdit onChange={() => {}} />);
+    const { getByDisplayValue } = render(
+      <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
+    );
 
     await waitFor(() => getByDisplayValue("some_index"));
 
@@ -25,7 +28,9 @@ describe("<IndexDetail /> spec", () => {
   });
 
   it("disallows editing number_of_replicas when in edit mode", async () => {
-    const { getByPlaceholderText } = render(<IndexDetail value={{ index: "some_index" }} isEdit onChange={() => {}} />);
+    const { getByPlaceholderText } = render(
+      <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
+    );
 
     await waitFor(() => getByPlaceholderText("The number of primary shards in the index. Default is 1."));
 
@@ -39,7 +44,7 @@ describe("<IndexDetail /> spec", () => {
       useEffect(() => {
         ref.current?.validate().then((flag) => setValidate(flag));
       }, []);
-      render(<IndexDetail ref={ref} value={{ index: "" }} onChange={() => {}} />);
+      render(<IndexDetail refreshOptions={refreshOptions} ref={ref} value={{ index: "" }} onChange={() => {}} />);
       return {
         validate,
       };

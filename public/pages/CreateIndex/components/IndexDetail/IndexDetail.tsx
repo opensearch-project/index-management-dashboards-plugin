@@ -8,7 +8,7 @@ import { EuiSpacer, EuiFormRow, EuiFieldText, EuiFieldNumber, EuiAccordion, EuiL
 import { set, get } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import JSONEditor from "../../../../components/JSONEditor";
-import AliasSelect from "../../containers/AliasSelect";
+import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem } from "../../../../../models/interfaces";
 import { Ref } from "react";
@@ -19,13 +19,14 @@ export interface IndexDetailProps {
   oldValue?: Partial<IndexItem>;
   onChange: (value: IndexDetailProps["value"]) => void;
   isEdit?: boolean;
+  refreshOptions: AliasSelectProps["refreshOptions"];
 }
 
 export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
 }
 
-const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, ref: Ref<IIndexDetailRef>) => {
+const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions }: IndexDetailProps, ref: Ref<IIndexDetailRef>) => {
   const onValueChange = useCallback(
     (name: string, val) => {
       let finalValue = value || {};
@@ -74,7 +75,7 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, re
             />
           </EuiFormRow>
           <EuiFormRow label="Index alias  - optional" helpText="Select existing aliases or specify a new alias">
-            <AliasSelect value={finalValue.aliases} onChange={(value) => onValueChange("aliases", value)} />
+            <AliasSelect refreshOptions={refreshOptions} value={finalValue.aliases} onChange={(value) => onValueChange("aliases", value)} />
           </EuiFormRow>
         </div>
       </ContentPanel>
