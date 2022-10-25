@@ -253,6 +253,17 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
           value={indexDetail}
           oldValue={oldIndexDetail}
           onChange={this.onDetailChange}
+          refreshOptions={(aliasName) =>
+            this.props.commonService.apiCaller({
+              endpoint: "cat.aliases",
+              method: "GET",
+              data: {
+                format: "json",
+                name: aliasName,
+                expand_wildcards: "open",
+              },
+            })
+          }
         />
         <EuiSpacer />
         <EuiSpacer />
