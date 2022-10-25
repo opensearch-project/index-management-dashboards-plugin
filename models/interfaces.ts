@@ -23,12 +23,39 @@ export interface ManagedIndexMetaData {
   info?: object;
 }
 
+export type MappingsPropertiesObject = Record<
+  string,
+  {
+    type: string;
+    properties?: MappingsPropertiesObject;
+  }
+>;
+
+export type MappingsProperties = {
+  fieldName: string;
+  type: string;
+  properties?: MappingsProperties;
+}[];
+
+export interface IndexItem {
+  index: string;
+  indexUuid?: string;
+  settings?: {
+    index: {
+      number_of_shards: number;
+      number_of_replicas: number;
+    };
+  };
+  aliases?: Record<string, {}>;
+  mappings?: {
+    properties?: MappingsProperties;
+  };
+}
+
 /**
  * ManagedIndex item shown in the Managed Indices table
  */
-export interface ManagedIndexItem {
-  index: string;
-  indexUuid: string;
+export interface ManagedIndexItem extends IndexItem {
   dataStream: string | null;
   policyId: string;
   policySeqNo: number;
@@ -36,10 +63,6 @@ export interface ManagedIndexItem {
   policy: Policy | null;
   enabled: boolean;
   managedIndexMetaData: ManagedIndexMetaData | null;
-}
-
-export interface IndexItem {
-  index: string;
 }
 
 /**
@@ -564,3 +587,10 @@ export enum TRANSFORM_AGG_TYPE {
   histogram = "histogram",
   date_histogram = "date_histogram",
 }
+export interface IAPICaller {
+  endpoint: string;
+  method?: string;
+  data?: any;
+}
+
+export type IAliasAction = Record<string, { index: string; alias: string }>;

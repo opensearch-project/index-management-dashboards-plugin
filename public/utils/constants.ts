@@ -49,6 +49,7 @@ export const ROUTES = Object.freeze({
   REPOSITORIES: "/repositories",
   CREATE_REPOSITORY: "/create-repository",
   EDIT_REPOSITORY: "/edit-repository",
+  CREATE_INDEX: "/create-index",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -83,6 +84,8 @@ export const BREADCRUMBS = Object.freeze({
   REPOSITORIES: { text: "Repositories", href: `#${ROUTES.REPOSITORIES}` },
   CREATE_REPOSITORY: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
   EDIT_REPOSITORY: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
+  CREATE_INDEX: { text: "Create Index", href: `#${ROUTES.CREATE_INDEX}` },
+  EDIT_INDEX: { text: "Edit Index", href: `#${ROUTES.CREATE_INDEX}` },
 });
 
 // TODO: EUI has a SortDirection already
@@ -113,3 +116,61 @@ export enum IntervalType {
   FIXED = "fixed",
   CALENDAR = "calendar",
 }
+
+export const INDEX_DYNAMIC_SETTINGS = [
+  "index.number_of_replicas",
+  "index.auto_expand_replicas",
+  "index.search.idle.after",
+  "index.refresh_interval",
+  "index.max_result_window",
+  "index.max_inner_result_window",
+  "index.max_rescore_window",
+  "index.max_docvalue_fields_search",
+  "index.max_script_fields",
+  "index.max_ngram_diff",
+  "index.max_shingle_diff",
+  "index.max_refresh_listeners",
+  "index.analyze.max_token_count",
+  "index.highlight.max_analyzed_offset",
+  "index.max_terms_count",
+  "index.max_regex_length",
+  "index.query.default_field",
+  "index.routing.allocation.enable",
+  "index.gc_deletes",
+  "index.default_pipeline",
+  "index.final_pipeline",
+  "index.hidden",
+];
+
+export const INDEX_MAPPING_TYPES = [
+  {
+    label: "null",
+  },
+  {
+    label: "boolean",
+  },
+  {
+    label: "float",
+  },
+  {
+    label: "double",
+  },
+  {
+    label: "integer",
+  },
+  {
+    label: "text",
+  },
+  {
+    label: "keyword",
+  },
+  {
+    label: "date",
+  },
+  {
+    label: "object",
+    hasChildren: true,
+  },
+];
+
+export const INDEX_MAPPING_TYPES_WITH_CHILDREN = INDEX_MAPPING_TYPES.filter((item) => item.hasChildren).map((item) => item.label);

@@ -12,6 +12,7 @@ interface ContentPanelActionsProps {
     text: string;
     buttonProps?: object;
     flexItemProps?: object;
+    children?: React.ReactChild;
     modal?: {
       onClickModal: (onShow: (component: any, props: object) => void) => () => void;
     };
@@ -20,8 +21,10 @@ interface ContentPanelActionsProps {
 
 const ContentPanelActions: React.SFC<ContentPanelActionsProps> = ({ actions }) => (
   <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-    {actions.map(({ text, buttonProps = {}, flexItemProps = {}, modal = null }, index) => {
-      let button = (
+    {actions.map(({ text, buttonProps = {}, flexItemProps = {}, modal = null, children }, index) => {
+      let button = children ? (
+        children
+      ) : (
         <EuiButton {...buttonProps} data-test-subj={`${text}Button`}>
           {text}
         </EuiButton>

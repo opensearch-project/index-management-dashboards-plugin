@@ -15,8 +15,9 @@ import {
   DataStreamService,
   NotificationService,
   SnapshotManagementService,
+  CommonService,
 } from "./services";
-import { indices, policies, managedIndices, rollups, transforms, notifications, snapshotManagement } from "../server/routes";
+import { indices, policies, managedIndices, rollups, transforms, notifications, snapshotManagement, common } from "../server/routes";
 import dataStreams from "./routes/dataStreams";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
@@ -35,6 +36,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const transformService = new TransformService(osDriver);
     const notificationService = new NotificationService(osDriver);
     const snapshotManagementService = new SnapshotManagementService(osDriver);
+    const commonService = new CommonService(osDriver);
     const services = {
       indexService,
       dataStreamService,
@@ -44,6 +46,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
       transformService,
       notificationService,
       snapshotManagementService,
+      commonService,
     };
 
     // create router
@@ -57,6 +60,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     transforms(services, router);
     notifications(services, router);
     snapshotManagement(services, router);
+    common(services, router);
 
     return {};
   }

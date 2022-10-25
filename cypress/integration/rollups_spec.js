@@ -16,7 +16,7 @@ describe("Rollups", () => {
     // Go to sample data page
     cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory`);
 
-    cy.wait(10000)
+    cy.wait(10000);
 
     // TODO determine why line 25 and/or line 28 are needed occasionally for rollups_spec to pass.  
     // When the source of the issue is determined they will be removed/uncommented.
