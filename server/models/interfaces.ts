@@ -22,7 +22,6 @@ import {
   Rollup,
   Transform,
 } from "../../models/interfaces";
-import { getIndexToDataStreamMapping } from "../services/DataStreamService";
 
 export interface NodeServices {
   indexService: IndexService;

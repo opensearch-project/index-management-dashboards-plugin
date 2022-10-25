@@ -9,12 +9,10 @@ import React from "react";
 
 interface ErrorModalProps {
   error: React.ErrorInfo;
-  onClick: (e: React.MouseEvent) => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ErrorModal = ({ onClick, error }: ErrorModalProps) => {
-  console.log(error)
-
 
   return (
     <>
