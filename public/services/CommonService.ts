@@ -30,11 +30,6 @@ export default class CommonService {
         endpoint: params.endpoint,
       });
     }
-    const response = (await this.httpClient.fetch(url, payload)) as ServerResponse<any>;
-    if (response.ok) {
-      return response;
-    } else {
-      throw new Error(response.error);
-    }
+    return (await this.httpClient.fetch(url, payload)) as ServerResponse<any>;
   };
 }
