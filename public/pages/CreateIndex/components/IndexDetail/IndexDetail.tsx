@@ -83,7 +83,7 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, re
         <div style={{ paddingLeft: "10px" }}>
           <EuiFormRow label="Number of shards" helpText="The number of primary shards in the index. Default is 1.">
             <EuiFieldNumber
-              disabled={isEdit && INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")}
+              disabled={isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")}
               placeholder="The number of primary shards in the index. Default is 1."
               value={finalValue?.settings?.index?.number_of_shards}
               onChange={(e) => onValueChange("settings.index.number_of_shards", e.target.value)}
@@ -91,7 +91,7 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, re
           </EuiFormRow>
           <EuiFormRow label="Number of replicas" helpText="The number of replica shards each primary shard should have.">
             <EuiFieldNumber
-              disabled={isEdit && INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")}
+              disabled={isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")}
               placeholder="The number of replica shards each primary shard should have."
               value={finalValue?.settings?.index?.number_of_replicas}
               onChange={(e) => onValueChange("settings.index.number_of_replicas", e.target.value)}
@@ -106,7 +106,7 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, re
                 <>
                   Specify a comma-delimited list of settings.
                   <EuiLink
-                    href="hhttps://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
+                    href="https://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
                     target="_blank"
                   >
                     View index settings

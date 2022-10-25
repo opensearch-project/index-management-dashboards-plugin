@@ -108,7 +108,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
 
   onSubmit = async (): Promise<void> => {
     const { indexDetail, oldIndexDetail } = this.state;
-    const { index, ...others } = indexDetail;
+    const { index, mappings, ...others } = indexDetail;
     if (!(await this.indexDetailRef?.validate())) {
       return;
     }
@@ -207,7 +207,12 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
             method: "PUT",
             data: {
               index,
-              body: others,
+              body: {
+                ...others,
+                mappings: {
+                  properties: transformArrayToObject(mappings?.properties || []),
+                },
+              },
             },
           });
         } catch (e: any) {
