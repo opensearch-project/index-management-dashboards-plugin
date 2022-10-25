@@ -147,3 +147,14 @@ const getColumns = (props?: IOptions): EuiTableFieldDataColumnType<ManagedCatInd
 export const indicesColumns = (isDataStreamColumnVisible: boolean, options?: IOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
   return isDataStreamColumnVisible ? getColumns(options) : getColumns(options).filter((col) => col["field"] !== "data_stream");
 };
+
+export const DEFAULT_QUERY = JSON.stringify({
+  query: {
+    match_all: {},
+  },
+});
+
+export const ERROR_PROMPT = {
+  DEST_REQUIRED: "Destination must be provided.",
+  DEST_DIFF_WITH_SOURCE: "Destination must be different with source",
+};

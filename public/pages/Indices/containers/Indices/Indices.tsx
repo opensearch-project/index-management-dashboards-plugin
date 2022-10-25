@@ -36,6 +36,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
 import IndicesActions from "../../components/IndicesActions";
 import { IndexItem } from "../../../../../models/interfaces";
+import ReindexFlyout from "../../components/ReindexFlyout";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
@@ -55,6 +56,8 @@ interface IndicesState {
   loadingIndices: boolean;
   showDataStreams: boolean;
   isDataStreamColumnVisible: boolean;
+  deleteIndexModalVisible: boolean;
+  isReindexFlyoutVisible: boolean;
 }
 
 export default class Indices extends Component<IndicesProps, IndicesState> {
@@ -75,6 +78,8 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       loadingIndices: true,
       showDataStreams,
       isDataStreamColumnVisible: showDataStreams,
+      deleteIndexModalVisible: false,
+      isReindexFlyoutVisible: false,
     };
 
     this.getIndices = _.debounce(this.getIndices, 500, { leading: true });
@@ -207,6 +212,8 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       loadingIndices,
       showDataStreams,
       isDataStreamColumnVisible,
+      deleteIndexModalVisible,
+      isReindexFlyoutVisible,
     } = this.state;
 
     const filterIsApplied = !!search;
@@ -232,23 +239,79 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     return (
       <ContentPanel
         actions={
-          <ContentPanelActions
-            actions={[
-              {
-                children: <IndicesActions {...this.props} onDelete={this.getIndices} selectedItems={this.state.selectedItems} />,
-                text: "",
-              },
-              {
-                text: "Create Index",
-                buttonProps: {
-                  fill: true,
-                  onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_INDEX);
+          <ModalConsumer>
+            {({ onShow }) => (
+              <ContentPanelActions
+                actions={[
+                  {
+                    children: (
+                      <SimplePopover
+                        data-test-subj="More Action"
+                        panelPaddingSize="none"
+                        button={
+                          <EuiButton iconType="arrowDown" iconSide="right">
+                            Actions
+                          </EuiButton>
+                        }
+                      >
+                        <EuiContextMenu
+                          initialPanelId={0}
+                          panels={[
+                            {
+                              id: 0,
+                              items: [
+                                {
+                                  name: "Delete",
+                                  disabled: !this.state.selectedItems.length,
+                                  "data-test-subj": "Delete Action",
+                                  icon: <EuiIcon type="trash" size="m" color="danger" />,
+                                  onClick: () =>
+                                    this.setState({
+                                      deleteIndexModalVisible: true,
+                                    }),
+                                },
+                                {
+                                  name: "Reindex",
+                                  disabled: !this.state.selectedItems.length,
+                                  "data-test-subj": "Reindex Action",
+                                  icon: "copy",
+                                  onClick: () =>
+                                    this.setState({
+                                      isReindexFlyoutVisible: true,
+                                    }),
+                                },
+                              ],
+                            },
+                          ]}
+                        />
+                      </SimplePopover>
+                    ),
+                    text: "",
                   },
-                },
-              },
-            ]}
-          />
+                  {
+                    text: "Apply policy",
+                    buttonProps: {
+                      disabled: !selectedItems.length,
+                      onClick: () =>
+                        onShow(ApplyPolicyModal, {
+                          indices: selectedItems.map((item: ManagedCatIndex) => item.index),
+                          core: this.context,
+                        }),
+                    },
+                  },
+                  {
+                    text: "Create Index",
+                    buttonProps: {
+                      fill: true,
+                      onClick: () => {
+                        this.props.history.push(ROUTES.CREATE_INDEX);
+                      },
+                    },
+                  },
+                ]}
+              />
+            )}
+          </ModalConsumer>
         }
         bodyStyles={{ padding: "initial" }}
         title="Indices"
@@ -278,6 +341,24 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           selection={selection}
           sorting={sorting}
         />
+
+        <DeleteIndexModal
+          selectedItems={selectedItems.map((item) => item.index)}
+          visible={deleteIndexModalVisible}
+          onClose={this.onDeleteIndexModalClose}
+          onConfirm={this.onDeleteIndexModalConfirm}
+        />
+
+        {isReindexFlyoutVisible && (
+          <ReindexFlyout
+            indexService={this.props.indexService}
+            commonService={this.props.commonService}
+            onCloseFlyout={() => {
+              this.setState({ isReindexFlyoutVisible: false });
+            }}
+            sourceIndices={selectedItems.map((item) => item.index)}
+          />
+        )}
       </ContentPanel>
     );
   }
