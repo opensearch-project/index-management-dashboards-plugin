@@ -93,7 +93,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
           aria-expanded="true"
           class="euiTreeView__nodeInner"
           data-test-subj="euiTreeViewButton-some_html_id"
-          id="0"
+          id="mapping-visual-editor-0"
         >
           <span
             class="euiTreeView__iconWrapper"
@@ -136,6 +136,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                       >
                         <input
                           class="euiFieldText euiFieldText--compressed"
+                          data-test-subj="mapping-visual-editor-0-field-name"
                           type="text"
                           value="object"
                         />
@@ -172,6 +173,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                       >
                         <select
                           class="euiSelect euiSelect--compressed"
+                          data-test-subj="mapping-visual-editor-0-field-type"
                           id="some_html_id"
                         >
                           <option
@@ -264,6 +266,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                         <button
                           aria-label="Add a sub field"
                           class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
+                          data-test-subj="mapping-visual-editor-0-add-sub-field"
                           type="button"
                         >
                           EuiIconMock
@@ -275,6 +278,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                         <button
                           aria-label="Delete current field"
                           class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
+                          data-test-subj="mapping-visual-editor-0-delete-field"
                           type="button"
                         >
                           EuiIconMock
@@ -294,7 +298,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
             class="euiText euiText--medium euiTreeView__wrapper"
           >
             <ul
-              aria-labelledby="0 label"
+              aria-labelledby="mapping-visual-editor-0 label"
               class="euiTreeView"
             >
               <li
@@ -305,7 +309,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                   aria-expanded="false"
                   class="euiTreeView__nodeInner"
                   data-test-subj="euiTreeViewButton-some_html_id"
-                  id="0.properties.0"
+                  id="mapping-visual-editor-0.properties.0"
                 >
                   <span
                     class="euiTreeView__iconWrapper"
@@ -348,6 +352,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               >
                                 <input
                                   class="euiFieldText euiFieldText--compressed"
+                                  data-test-subj="mapping-visual-editor-0.properties.0-field-name"
                                   type="text"
                                   value="text"
                                 />
@@ -384,6 +389,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               >
                                 <select
                                   class="euiSelect euiSelect--compressed"
+                                  data-test-subj="mapping-visual-editor-0.properties.0-field-type"
                                   id="some_html_id"
                                 >
                                   <option
@@ -476,6 +482,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                 <button
                                   aria-label="Delete current field"
                                   class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
+                                  data-test-subj="mapping-visual-editor-0.properties.0-delete-field"
                                   type="button"
                                 >
                                   EuiIconMock
@@ -503,6 +510,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
   />
   <button
     class="euiButton euiButton--primary"
+    data-test-subj="create index add field button"
     type="button"
   >
     <span
