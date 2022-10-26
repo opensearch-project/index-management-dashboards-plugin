@@ -46,7 +46,7 @@ exports[`AddPrefixInput component renders without error 1`] = `
             data-test-subj="prefixInput"
             id="some_html_id"
             type="text"
-            value=""
+            value="restored_"
           />
         </div>
       </div>
