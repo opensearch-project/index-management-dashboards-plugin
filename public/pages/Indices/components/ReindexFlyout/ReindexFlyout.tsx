@@ -37,6 +37,7 @@ interface ReindexProps {
 
 interface ReindexState {
   indexOptions: EuiComboBoxOptionOption<IndexItem>[];
+  dataStreams: EuiComboBoxOptionOption<IndexItem>[];
   selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
   jsonString: string;
   destError?: string;
@@ -49,6 +50,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
     this.state = {
       indexOptions: [],
+      dataStreams: [],
       selectedIndexOptions: [],
       jsonString: DEFAULT_QUERY,
     };
@@ -72,7 +74,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       if (optionsResponse.ok) {
         // Adding wildcard to search value
         const options = searchValue.trim() ? [{ label: searchValue }] : [];
-        // const dataStreams = optionsResponse.response.dataStreams.map((label) => ({ label }));
+        const dataStreams = optionsResponse.response.dataStreams.map((label) => ({ label }));
         const indices = optionsResponse.response.indices
           .filter((index) => {
             return sourceIndices.indexOf(index) == -1;
@@ -80,6 +82,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           .map((label) => ({ label }));
         // this.setState({ indexOptions: options.concat(dataStreams, indices)});
         this.setState({ indexOptions: options.concat(indices) });
+        this.setState({ dataStreams: dataStreams });
       } else {
         // @ts-ignore
         if (optionsResponse.error.startsWith("[index_not_found_exception]")) {
@@ -112,17 +115,20 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
   onClickAction = async () => {
     const { sourceIndices, onCloseFlyout } = this.props;
-    const { jsonString, selectedIndexOptions } = this.state;
+    const { jsonString, selectedIndexOptions, dataStreams } = this.state;
 
     if (!selectedIndexOptions || selectedIndexOptions.length != 1) {
       this.setState({ destError: ERROR_PROMPT.DEST_REQUIRED });
       return;
     }
-    let invalidDest: boolean = sourceIndices.indexOf(selectedIndexOptions.map((op) => op.label)[0]) !== -1;
+    let [dest] = selectedIndexOptions.map((op) => op.label);
+    let invalidDest: boolean = sourceIndices.indexOf(dest) !== -1;
     if (invalidDest) {
       this.setState({ destError: ERROR_PROMPT.DEST_DIFF_WITH_SOURCE });
       return;
     }
+
+    let isDestAsDataStream = dataStreams.map((ds) => ds.label).indexOf(dest) !== -1;
 
     let response = await this.props.commonService.apiCaller({
       endpoint: "reindex",
@@ -137,6 +143,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           },
           dest: {
             index: selectedIndexOptions.map((op) => op.label)[0],
+            opType: isDestAsDataStream ? "create" : "index",
           },
         },
       },
