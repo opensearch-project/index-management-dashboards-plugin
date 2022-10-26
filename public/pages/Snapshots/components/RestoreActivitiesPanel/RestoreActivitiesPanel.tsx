@@ -12,14 +12,16 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { GetIndexRecoveryResponse, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
+import IndexList from "../IndexList";
 
 interface RestoreActivitiesPanelProps {
   snapshotManagementService: SnapshotManagementService;
   snapshotId: string;
   repository: string;
+  restoreStartRef: number;
 }
 
-export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ snapshotManagementService, snapshotId }: RestoreActivitiesPanelProps) => {
+export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ snapshotManagementService, snapshotId, restoreStartRef }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
@@ -28,16 +30,31 @@ export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ 
   const [flyout, setFlyout] = useState(false);
 
   useEffect(() => {
-    context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
-    getRestoreStatus();
-  }, []);
+    context!.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
+
+    let getStatusInterval: ReturnType<typeof setInterval>;
+
+    if (stage.slice(0, 4) !== "Done") {
+      getStatusInterval = setInterval(() => {
+        getRestoreStatus();
+      }, 1000);
+      return () => {
+        clearInterval(getStatusInterval)
+      }
+    }
+  }, [stage]);
 
   const getRestoreStatus = async () => {
-    if (stage.indexOf("DONE") >= 0) {
+    if (!restoreStartRef) {
       return;
     }
+
     try {
       const res = await snapshotManagementService.getIndexRecovery();
+
+      if (stage.indexOf("Done") >= 0) {
+        return;
+      }
 
       if (res.ok) {
         const response: GetIndexRecoveryResponse = res.response;
@@ -86,18 +103,18 @@ export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ 
         minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
 
-        if (info.source.index) {
+        if (info.source.index && info.source.snapshot === snapshotId) {
           indexes.push({ index: info.source.index, "store.size": size });
         }
       }
     }
     let percent = Math.floor((doneCount / indices.length) * 100);
-    percent = stageIndex === stages.length - 1 ? 100 : percent;
+    percent = stageIndex === 4 ? 100 : percent;
 
-    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
-    setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
     setIndices(indexes);
-    setStage(`${stages[stageIndex]} (${percent}%)`);
+    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
+    setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  ") || "In progress");
+    setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
   };
 
   const actions = useMemo(() => {
@@ -108,7 +125,9 @@ export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ 
     ];
   }, [])
 
-  const indexes = `${indices.length} ${indices.length === 1 ? "Index" : "Indices"}`;
+  const indexText = `${indices.length === 1 && Object.keys(indices[0]).length > 0 ? "Index" : "Indices"}`
+  const indexes = `${indices.length === 1 && Object.keys(indices[0]).length === 0 ? "0" : indices.length} ${indexText}`;
+
   const restoreStatus = [
     {
       start_time: startTime,
@@ -144,7 +163,7 @@ export const RestoreActivitiesPanel: React.FC<RestoreActivitiesPanelProps> = ({ 
 
   return (
     <>
-      {flyout && <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m"></EuiFlyout>}
+      {flyout && <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m"><IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored in" /></EuiFlyout>}
       <ContentPanel title="Restore activities in progress" actions={actions}>
         <EuiInMemoryTable items={restoreStatus} columns={columns} pagination={false} />
         <EuiSpacer size="xxl" />
