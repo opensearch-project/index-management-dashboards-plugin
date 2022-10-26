@@ -16,7 +16,7 @@ import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
 
-browserServicesMock.commonService.apiCaller = async (payload) => {
+browserServicesMock.commonService.apiCaller = async (payload): Promise<any> => {
   switch (payload.endpoint) {
     case "indices.create":
       if (payload.data?.index === "bad_index") {

@@ -35,6 +35,7 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
 import IndicesActions from "../../components/IndicesActions";
+import { IndexItem } from "../../../../../models/interfaces";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
@@ -174,6 +175,26 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
 
+  getDetail = (index: string) => {
+    return this.props.commonService
+      .apiCaller<Record<string, IndexItem>>({
+        endpoint: "indices.get",
+        data: {
+          index,
+        },
+      })
+      .then((res) => {
+        if (!res.ok) {
+          return res;
+        }
+
+        return {
+          ...res,
+          response: res.response[index],
+        };
+      });
+  };
+
   render() {
     const {
       totalIndices,
@@ -214,7 +235,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           <ContentPanelActions
             actions={[
               {
-                children: <IndicesActions {...this.props} onDelete={() => this.getIndices()} selectedItems={this.state.selectedItems} />,
+                children: <IndicesActions {...this.props} onDelete={this.getIndices} selectedItems={this.state.selectedItems} />,
                 text: "",
               },
               {
@@ -245,7 +266,8 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
         <EuiBasicTable
           columns={indicesColumns(isDataStreamColumnVisible, {
-            onDelete: () => this.getIndices(),
+            onDelete: this.getIndices,
+            getDetail: this.getDetail,
           })}
           isSelectable={true}
           itemId="index"

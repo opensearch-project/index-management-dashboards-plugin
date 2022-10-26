@@ -342,6 +342,7 @@ export interface CatSnapshotIndex {
 
 export interface ManagedCatIndex extends CatIndex {
   managed: string;
+  managedPolicy: string;
 }
 
 export interface DataStream {

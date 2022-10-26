@@ -86,7 +86,11 @@ export default class IndexService {
         body: {
           ok: true,
           response: {
-            indices: paginatedIndices.map((catIndex: CatIndex) => ({ ...catIndex, managed: managedStatus[catIndex.index] || "N/A" })),
+            indices: paginatedIndices.map((catIndex: CatIndex) => ({
+              ...catIndex,
+              managed: managedStatus[catIndex.index] ? "Yes" : "No",
+              managedPolicy: managedStatus[catIndex.index],
+            })),
             totalIndices: filteredIndices.length,
           },
         },
@@ -126,7 +130,10 @@ export default class IndexService {
       for (const indexName in explainResponse) {
         if (indexName === "total_managed_indices") continue;
         const explain = explainResponse[indexName] as ExplainAPIManagedIndexMetaData;
-        managed[indexName] = explain["index.plugins.index_state_management.policy_id"] === null ? "No" : "Yes";
+        managed[indexName] =
+          explain["index.plugins.index_state_management.policy_id"] === null
+            ? ""
+            : explain["index.plugins.index_state_management.policy_id"];
       }
 
       return managed;

@@ -132,12 +132,10 @@ describe("Indices", () => {
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
 
       // Click apply policy button
+      cy.get('[data-test-subj="More Action"]').click();
       cy.get(`[data-test-subj="Apply policyButton"]`).click({ force: true });
 
-      cy.get(`input[data-test-subj="comboBoxSearchInput"]`).focus().type(POLICY_ID, {
-        parseSpecialCharSequences: false,
-        delay: 1,
-      });
+      cy.get(`input[data-test-subj="comboBoxSearchInput"]`).click().type(POLICY_ID);
 
       // Click the policy option
       cy.get(`button[role="option"]`).first().click({ force: true });
@@ -153,6 +151,10 @@ describe("Indices", () => {
 
       // Confirm our index is now being managed
       cy.get(`tbody > tr:contains("${SAMPLE_INDEX}") > td`).filter(`:nth-child(4)`).contains("Yes");
+
+      // Confirm the information shows in detail modal
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click();
+      cy.get(`[data-test-subj="index-detail-overview-item-Managed by policy"] .euiDescriptionList__description a`).contains(POLICY_ID);
     });
   });
 
@@ -190,6 +192,21 @@ describe("Indices", () => {
       // the sample_index should not exist
       cy.wait(500);
       cy.get("#_selection_column_sample_index-checkbox").should("not.exist");
+    });
+  });
+
+  describe("shows detail of a index when click the item", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.createIndex(SAMPLE_INDEX);
+    });
+
+    it("successfully", () => {
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click();
+      cy.get(`[data-test-subj="index-detail-overview-item-Index name"] .euiDescriptionList__description > span`).should(
+        "have.text",
+        SAMPLE_INDEX
+      );
     });
   });
 });

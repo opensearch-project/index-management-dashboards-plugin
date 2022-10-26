@@ -16,7 +16,6 @@ const IndexMappingOnChangeWrapper = (props: Partial<IndexMappingProps>) => {
       value={value}
       onChange={(val) => {
         setValue(val);
-        console.error("val", val);
       }}
     />
   );
