@@ -5,16 +5,17 @@
 import { PLUGIN_NAME } from "../support/constants";
 
 describe("Create Index", () => {
-  beforeEach(() => {
+  before(() => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
     cy.deleteAllIndices();
   });
 
   describe("can be created and updated", () => {
-    before(() => {
+    beforeEach(() => {
       // Visit ISM OSD
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
+      cy.contains("Rows per page", { timeout: 60000 });
     });
 
     it("Create a index successfully", () => {
@@ -34,8 +35,11 @@ describe("Create Index", () => {
       // The index should exist
       cy.get("#_selection_column_index_simple_index-checkbox").should("have.exist");
 
-      // update the index
-      cy.get('[title="index_simple_index"]').click();
+      // check the index detail
+      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]').click();
+      cy.get("#index-detail-modal-alias").click();
+      cy.get('[data-test-subj="detail-modal-edit"]').click();
+
       // index name and alias should exist
       cy.get('[value="index_simple_index"]')
         .should("have.exist")
@@ -46,6 +50,15 @@ describe("Create Index", () => {
         .get('[data-test-subj="mapping-visual-editor-0-field-type"]')
         .should("have.value", "text")
         .end();
+    });
+
+    it("Update alias successfully", () => {
+      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+        .click()
+        .get("#index-detail-modal-alias")
+        .click()
+        .get('[data-test-subj="detail-modal-edit"]')
+        .click();
 
       // add a alias and remove the exist alias
       cy.get('[data-test-subj="comboBoxSearchInput"]')
@@ -54,17 +67,16 @@ describe("Create Index", () => {
         .get('[title="some_test_alias"] .euiBadge__iconButton')
         .click()
         .end()
-        .get('[placeholder="The number of replica shards each primary shard should have."]')
-        .type(2)
-        .end()
-        .get('[data-test-subj="create index add field button"]')
-        .click()
-        .end()
         .get('[data-test-subj="createIndexCreateButton"]')
         .click();
 
-      // reenter the index simple index
-      cy.get('[title="index_simple_index"]').click();
+      // check the index
+      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+        .click()
+        .get("#index-detail-modal-alias")
+        .click()
+        .get('[data-test-subj="detail-modal-edit"]')
+        .click();
 
       cy.get('[value="index_simple_index"]')
         .should("exist")
@@ -74,15 +86,51 @@ describe("Create Index", () => {
         .end()
         .get('[title="some_new_test_alias"]')
         .should("exist")
+        .end();
+    });
+
+    it("Update settings successfully", () => {
+      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+        .click()
+        .get("#index-detail-modal-settings")
+        .click()
+        .get('[data-test-subj="detail-modal-edit"]')
+        .click();
+
+      cy.get('[placeholder="The number of replica shards each primary shard should have."]')
+        .type(2)
         .end()
-        .get('[data-test-subj="mapping-visual-editor-0-field-type"]')
-        .should("have.value", "text")
-        .end()
-        .get('[data-test-subj="mapping-visual-editor-1-field-type"]')
-        .should("have.value", "text")
-        .end()
-        .get('[placeholder="The number of replica shards each primary shard should have."]')
-        .should("have.value", 12);
+        .get('[data-test-subj="createIndexCreateButton"]')
+        .click();
+
+      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+        .click()
+        .get("#index-detail-modal-settings")
+        .click()
+        .get('[data-test-subj="detail-modal-edit"]')
+        .click();
+
+      cy.get('[placeholder="The number of replica shards each primary shard should have."]').should("have.value", 12);
+    });
+
+    it("Update mappings successfully", () => {
+      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+        .click()
+        .get("#index-detail-modal-mappings")
+        .click()
+        .get('[data-test-subj="detail-modal-edit"]')
+        .click();
+
+      cy.get('[data-test-subj="create index add field button"]').click().end().get('[data-test-subj="createIndexCreateButton"]').click();
+
+      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+        .click()
+        .get("#index-detail-modal-mappings")
+        .click()
+        .get('[data-test-subj="detail-modal-edit"]')
+        .click();
+
+      cy.get('[data-test-subj="mapping-visual-editor-1-field-type"]').should("have.value", "text").end();
     });
   });
 });

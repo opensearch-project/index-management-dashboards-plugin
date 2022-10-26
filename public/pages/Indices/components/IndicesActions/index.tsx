@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
   // @ts-ignore
   Criteria,
@@ -51,6 +51,8 @@ export default function IndicesActions(props: IndicesActionsProps) {
     }
   }, [selectedItems, onDelete, services, context, onDeleteIndexModalClose]);
 
+  const renderKey = useMemo(() => Date.now(), [selectedItems]);
+
   return (
     <>
       <ModalConsumer>
@@ -66,6 +68,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
           >
             <EuiContextMenu
               initialPanelId={0}
+              // The EuiContextMenu has bug when testing in jest
+              // the props change won't make it rerender
+              key={renderKey}
               panels={[
                 {
                   id: 0,

@@ -7,6 +7,8 @@ import React from "react";
 import { EuiHealth, EuiTableFieldDataColumnType } from "@elastic/eui";
 import IndexDetail from "../components/IndexDetail";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";
+import { IndexItem } from "../../../../models/interfaces";
+import { ServerResponse } from "../../../../server/models/types";
 import { SortDirection } from "../../../utils/constants";
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];
@@ -33,6 +35,7 @@ const HEALTH_TO_COLOR: {
 
 interface IOptions {
   onDelete?: () => void;
+  getDetail?: (index: string) => Promise<ServerResponse<IndexItem>>;
 }
 
 const getColumns = (props?: IOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
