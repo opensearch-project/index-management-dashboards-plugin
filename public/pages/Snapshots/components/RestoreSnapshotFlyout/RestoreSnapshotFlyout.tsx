@@ -229,8 +229,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       const indexNames = snapshot?.indices
       if (response.ok) {
-        let indicesResponse = response.response;
-        let currIndices = indicesResponse.filter((resItem: CatSnapshotIndex) => {
+        const indicesResponse = response.response;
+        const currIndices = indicesResponse.filter((resItem: CatSnapshotIndex) => {
           if (indexNames!.includes(resItem.index)) {
             activeIndexNames.push(resItem.index);
             return resItem;
