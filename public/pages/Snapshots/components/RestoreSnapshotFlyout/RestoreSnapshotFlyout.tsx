@@ -309,8 +309,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     return (
       <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m" hideCloseButton>
-        {listIndices && <IndexList indices={indicesList} snapshot={snapshotId} onClick={this.onBackArrowClick} title="Indices in snapshot" />}
-        {listIndices || (
+        {listIndices ? (
+          <IndexList
+            indices={indicesList}
+            snapshot={snapshotId}
+            onClick={this.onBackArrowClick}
+            title="Indices in snapshot"
+          />
+        ) : (
           <>
             <EuiFlyoutHeader hasBorder>
               <EuiTitle size="m">
