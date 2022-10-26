@@ -4,7 +4,6 @@
  */
 
 import {
-  EuiAccordion,
   EuiComboBox,
   EuiComboBoxOptionOption,
   EuiFlyout,
@@ -41,6 +40,7 @@ interface ReindexState {
   selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
   jsonString: string;
   destError?: string;
+  destSettingsJson?: string;
 }
 
 export default class ReindexFlyout extends Component<ReindexProps, ReindexState> {
@@ -53,6 +53,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       dataStreams: [],
       selectedIndexOptions: [],
       jsonString: DEFAULT_QUERY,
+      destSettingsJson: "{}",
     };
   }
 
@@ -72,7 +73,6 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     try {
       const optionsResponse = await indexService.getDataStreamsAndIndicesNames(searchValue);
       if (optionsResponse.ok) {
-        // Adding wildcard to search value
         const options = searchValue.trim() ? [{ label: searchValue }] : [];
         const dataStreams = optionsResponse.response.dataStreams.map((label) => ({ label }));
         const indices = optionsResponse.response.indices
@@ -80,7 +80,6 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             return sourceIndices.indexOf(index) == -1;
           })
           .map((label) => ({ label }));
-        // this.setState({ indexOptions: options.concat(dataStreams, indices)});
         this.setState({ indexOptions: options.concat(indices) });
         this.setState({ dataStreams: dataStreams });
       } else {
@@ -130,29 +129,32 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
     let isDestAsDataStream = dataStreams.map((ds) => ds.label).indexOf(dest) !== -1;
 
-    let response = await this.props.commonService.apiCaller({
-      endpoint: "reindex",
-      method: REQUEST.POST,
-      data: {
-        waitForCompletion: false,
-        refresh: true,
-        body: {
-          source: {
-            index: sourceIndices.join(","),
-            ...JSON.parse(jsonString),
-          },
-          dest: {
-            index: selectedIndexOptions.map((op) => op.label)[0],
-            opType: isDestAsDataStream ? "create" : "index",
+    try {
+      let res = await this.props.commonService.apiCaller({
+        endpoint: "reindex",
+        method: REQUEST.POST,
+        data: {
+          waitForCompletion: false,
+          body: {
+            source: {
+              index: sourceIndices.join(","),
+              ...JSON.parse(jsonString),
+            },
+            dest: {
+              index: selectedIndexOptions.map((op) => op.label)[0],
+              op_type: isDestAsDataStream ? "create" : "index",
+            },
           },
         },
-      },
-    });
-    if (response.ok) {
-      this.context.notifications.toasts.addSuccess(`Reindex triggered successfully`);
-      onCloseFlyout();
-    } else {
-      this.context.notifications.toasts.addDanger(`Reindex operation error happened ${response.error}`);
+      });
+      if (res.ok) {
+        this.context.notifications.toasts.addSuccess(`Reindex triggered successfully with taskId ${res.response.task}`);
+        onCloseFlyout();
+      } else {
+        this.context.notifications.toasts.addDanger(`Reindex operation error happened ${res.error}`);
+      }
+    } catch (error) {
+      this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);
     }
   };
 
@@ -160,12 +162,17 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     this.setState({ jsonString: value });
   };
 
+  onDestSettingsChange = (value: string) => {
+    const parsedJSON = JSON.parse(value);
+    this.setState({ destSettingsJson: JSON.stringify(parsedJSON, null, 4) });
+  };
+
   render() {
     const { onCloseFlyout, sourceIndices } = this.props;
-    const { indexOptions, selectedIndexOptions, jsonString, destError } = this.state;
+    const { indexOptions, selectedIndexOptions, jsonString, destError, destSettingsJson } = this.state;
 
     return (
-      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
+      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={800} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle"> Reindex </h2>
@@ -179,7 +186,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
               options={indexOptions}
               selectedOptions={sourceIndices.map((index) => ({ label: index }))}
               isDisabled
-              data-test-subj="indicesComboBoxInput"
+              data-test-subj="sourceIndicesComboInput"
             />
           </EuiFormRow>
 
@@ -190,18 +197,37 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             <EuiComboBox
               placeholder="Select or input indexes or index patterns"
               options={indexOptions}
+              async
               selectedOptions={selectedIndexOptions}
               onChange={this.onIndicesSelectionChange}
               onSearchChange={this.getIndexOptions}
               onCreateOption={this.onCreateOption}
               isClearable={true}
               singleSelection={{ asPlainText: true }}
-              data-test-subj="indicesComboBoxInput"
+              data-test-subj="destIndicesComboInput"
             />
           </EuiFormRow>
 
           <EuiSpacer size="l" />
+          {destSettingsJson && <CustomLabel title="Dest index settings & mappings" />}
+          {destSettingsJson && (
+            <DarkModeConsumer>
+              {(isDarkMode) => (
+                <JSONEditor
+                  mode="json"
+                  theme={isDarkMode ? "sense-dark" : "github"}
+                  width="100%"
+                  value={destSettingsJson}
+                  onChange={this.onDestSettingsChange}
+                  setOptions={{ fontSize: "14px" }}
+                  aria-label="Code Editor"
+                  data-test-subj="destSettingJsonEditor"
+                />
+              )}
+            </DarkModeConsumer>
+          )}
 
+          <EuiSpacer size="l" />
           <CustomLabel title="Type a query expression to reindex a subset of documents" isOptional={true} />
           <DarkModeConsumer>
             {(isDarkMode) => (
@@ -214,15 +240,10 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
                 setOptions={{ fontSize: "14px" }}
                 aria-label="Code Editor"
                 height="200px"
+                data-test-subj="queryJsonEditor"
               />
             )}
           </DarkModeConsumer>
-
-          <EuiSpacer size="m" />
-
-          <EuiAccordion id="advanced_settings_accordian" buttonContent="Advanced options">
-            <EuiSpacer size="m" />
-          </EuiAccordion>
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
