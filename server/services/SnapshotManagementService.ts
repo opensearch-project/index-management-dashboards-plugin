@@ -14,6 +14,7 @@ import {
 import { SMPolicy, DocumentSMPolicy, DocumentSMPolicyWithMetadata } from "../../models/interfaces";
 import {
   CatRepository,
+  CatSnapshotIndex,
   CatSnapshotWithRepoAndPolicy,
   GetIndexRecoveryResponse,
   GetSnapshotsResponse,
@@ -506,6 +507,30 @@ export default class SnapshotManagementService {
       });
     } catch (err) {
       return this.errorResponse(response, err, "getIndexRecovery");
+    }
+  };
+
+  catSnapshotIndices = async (
+    context: RequestHandlerContext,
+    request: OpenSearchDashboardsRequest,
+    response: OpenSearchDashboardsResponseFactory
+  ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatSnapshotIndex[]>>> => {
+    console.log(request);
+    try {
+      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const res: CatSnapshotIndex[] = await callWithRequest("cat.indices", {
+        format: "json",
+      });
+
+      return response.custom({
+        statusCode: 200,
+        body: {
+          ok: true,
+          response: res,
+        },
+      });
+    } catch (err) {
+      return this.errorResponse(response, err, "catSnapshotIndices");
     }
   };
 
