@@ -259,6 +259,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       await this.setState({ toasts: [] })
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
+
       if (response.ok) {
         this.onRestore(true, response);
       } else {

@@ -5,7 +5,7 @@
 
 import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton, EuiEmptyPrompt } from "@elastic/eui";
 import _ from "lodash";
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
@@ -91,6 +91,8 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     const indexes: CatSnapshotIndex[] = [];
     const stages: string[] = ["START", "INIT", "INDEX", "FINALIZE", "DONE"];
 
+    // Loop through indices in response, filter out kibana index, 
+    // gather progress info then use it to create progress field values.
     for (let item in response) {
       if (
         item.indexOf("kibana") < 0 &&
@@ -130,11 +132,13 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
   };
 
-  const actions = [
-    <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton" isDisabled={!!restoreStartRef}>
-      Refresh
-    </EuiButton>,
-  ];
+  const actions = useMemo(() => (
+    [
+      <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton" isDisabled={!!restoreStartRef}>
+        Refresh
+      </EuiButton>,
+    ]
+  ), []);
 
   const indexText = `${restoreCount === 1 ? "Index" : "Indices"}`
   const indexes = `${restoreCount} ${indexText}`;
@@ -148,7 +152,6 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
       indexes: indexes,
     },
   ];
-
   const columns = [
     {
       field: "start_time",

@@ -151,7 +151,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
                   "The target index stores rollup results. You can select an existing index or type in a new index name with embedded variables "
                 }
                 {
-                  <EuiLink external href={ROLLUP_RESULTS_HELP_TEXT_LINK} target={"_blank"}>
+                  <EuiLink external href={ROLLUP_RESULTS_HELP_TEXT_LINK} target={"_blank"} rel="noopener noreferrer">
                     Learn more
                   </EuiLink>
                 }

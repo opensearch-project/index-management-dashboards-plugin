@@ -64,7 +64,6 @@ export default class SnapshotManagementService {
 
   getIndexRecovery = async (): Promise<ServerResponse<GetIndexRecoveryResponse>> => {
     const url = NODE_API._RECOVERY;
-
     const response = (await this.httpClient.get(url)) as ServerResponse<GetIndexRecoveryResponse>;
     return response;
   };

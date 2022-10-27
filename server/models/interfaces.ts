@@ -385,6 +385,10 @@ export interface GetIndexRecoveryResponse {
     ];
   };
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> updated_main
 export interface CatSnapshotWithRepoAndPolicy {
   id: string;
   status: string;
@@ -433,7 +437,10 @@ export interface GetSnapshot {
   restore_aliases?: boolean;
   ignore_unavailable?: boolean;
   ignore_index_settings?: boolean;
+<<<<<<< HEAD
   failed_shards?: number;
+=======
+>>>>>>> updated_main
   rename_pattern?: string;
   rename_replacement?: string;
   partial?: boolean;

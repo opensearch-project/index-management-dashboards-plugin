@@ -51,6 +51,10 @@ describe("Snapshots", () => {
       cy.createIndex("test_index_2");
       cy.createIndex("test_index_3");
 
+      // wait needed here to enable cypress to find "Take snapshot" button.  Timeout 
+      // cannot be used with cy.createIndex
+      cy.wait(5000);
+
       // Click Take snapshot button
       cy.get("button").contains("Take snapshot").click({ force: true });
 
@@ -61,12 +65,12 @@ describe("Snapshots", () => {
       cy.get(`input[data-test-subj="snapshotNameInput"]`).type("test_snapshot{enter}");
 
       // Select all indexes to be included
-      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("open*{enter}");
-
-
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_1{enter}");
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
+      cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
 
       // Click 'Add' button to create snapshot
-      cy.get("button").contains("Add").click({ force: true });
+      cy.get("button").contains("Add", { timeout: 3000 }).click({ force: true });
 
       cy.wait(3000)
       // check for success status and snapshot name
@@ -97,8 +101,7 @@ describe("Snapshots", () => {
       cy.get("button").contains("Restore snapshot").click({ force: true });
 
       // Check for success toast
-      cy.contains(`Restore from snapshot \"test_snapshot\" is in progress`);
-
+      cy.contains("Restored snapshot test_snapshot to repository test_repo");
     });
   });
 
@@ -108,12 +111,13 @@ describe("Snapshots", () => {
       cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
 
       // click "Delete" button
-      cy.get("button").contains("Delete").click({ force: true });
-      cy.wait(3000);
+      cy.get("button").contains("Delete", { timeout: 3000 }).click({ force: true });
+
       // click "Delete snapshot" button on modal
       cy.get("button").contains("Delete snapshot").click({ force: true });
 
       cy.contains("Deleted snapshot");
+      cy.contains("No items found");
     });
-  });
+  })
 });

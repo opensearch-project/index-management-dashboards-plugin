@@ -45,7 +45,7 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
             You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
             <br />
             "Transitions" define when to move from one state to another.{" "}
-            <EuiLink href={STATES_DOCUMENTATION_URL} target="_blank">
+            <EuiLink href={STATES_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
               Learn more <EuiIcon type="popout" size="s" />
             </EuiLink>
           </p>
