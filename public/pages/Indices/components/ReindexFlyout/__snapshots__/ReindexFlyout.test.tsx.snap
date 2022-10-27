@@ -24,7 +24,7 @@ Object {
         <div
           class="euiFlyout euiFlyout--medium euiFlyout--paddingLarge"
           role="dialog"
-          style="max-width: 600px;"
+          style="max-width: 800px;"
           tabindex="-1"
         >
           <div
@@ -57,7 +57,7 @@ Object {
                       class="euiText euiText--extraSmall"
                     >
                       <h4>
-                        Source index
+                        Source indices
                       </h4>
                     </div>
                   </div>
@@ -76,7 +76,7 @@ Object {
                       aria-expanded="false"
                       aria-haspopup="listbox"
                       class="euiComboBox euiComboBox-isDisabled"
-                      data-test-subj="indicesComboBoxInput"
+                      data-test-subj="sourceIndicesComboInput"
                       role="combobox"
                     >
                       <div
@@ -153,7 +153,7 @@ Object {
                       class="euiText euiText--extraSmall"
                     >
                       <h4>
-                        Select or input destination indexes
+                        Destination index
                       </h4>
                     </div>
                   </div>
@@ -169,10 +169,11 @@ Object {
                     class="euiFormRow__fieldWrapper"
                   >
                     <div
+                      aria-describedby="some_html_id-help-0"
                       aria-expanded="false"
                       aria-haspopup="listbox"
                       class="euiComboBox"
-                      data-test-subj="indicesComboBoxInput"
+                      data-test-subj="destIndicesComboInput"
                       role="combobox"
                     >
                       <div
@@ -189,7 +190,7 @@ Object {
                             <p
                               class="euiComboBoxPlaceholder"
                             >
-                              Select or input indexes or index patterns
+                              Select dest index
                             </p>
                             <div
                               class="euiComboBox__input"
@@ -223,10 +224,19 @@ Object {
                         </div>
                       </div>
                     </div>
+                    <div
+                      class="euiFormHelpText euiFormRow__text"
+                      id="some_html_id-help-0"
+                    >
+                      Select an index from the list. If target index not created yet, create a new one.
+                    </div>
                   </div>
                 </div>
                 <div
-                  class="euiSpacer euiSpacer--l"
+                  class="euiSpacer euiSpacer--m"
+                />
+                <div
+                  class="euiSpacer euiSpacer--m"
                 />
                 <div
                   class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -238,7 +248,7 @@ Object {
                       class="euiText euiText--extraSmall"
                     >
                       <h4>
-                        Type a query expression to reindex a subset of documents
+                        Query expression to reindex a subset of documents
                       </h4>
                     </div>
                   </div>
@@ -262,8 +272,27 @@ Object {
                   class="euiSpacer euiSpacer--s"
                 />
                 <div
+                  class="euiText euiText--extraSmall"
+                >
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="https://opensearch.org/docs/opensearch/query-dsl/full-text/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    see Full-text queries 
+                    EuiIconMock
+                    EuiIconMock
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      (opens in a new tab or window)
+                    </span>
+                  </a>
+                </div>
+                <div
                   class="euiCodeEditorWrapper"
-                  data-test-subj="codeEditorContainer"
+                  data-test-subj="queryJsonEditor"
                   style="width: 100%; height: 200px;"
                 >
                   <button
@@ -369,52 +398,6 @@ Object {
                         style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
                       >
                         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="euiSpacer euiSpacer--m"
-                />
-                <div
-                  class="euiAccordion"
-                >
-                  <div
-                    class="euiAccordion__triggerWrapper"
-                  >
-                    <button
-                      aria-controls="advanced_settings_accordian"
-                      aria-expanded="false"
-                      class="euiAccordion__button"
-                      id="some_html_id"
-                      type="button"
-                    >
-                      <span
-                        class="euiAccordion__iconWrapper"
-                      >
-                        EuiIconMock
-                      </span>
-                      <span
-                        class="euiIEFlexWrapFix"
-                      >
-                        Advanced options
-                      </span>
-                    </button>
-                  </div>
-                  <div
-                    aria-labelledby="some_html_id"
-                    class="euiAccordion__childWrapper"
-                    id="advanced_settings_accordian"
-                    role="region"
-                    tabindex="-1"
-                  >
-                    <div>
-                      <div
-                        class=""
-                      >
-                        <div
-                          class="euiSpacer euiSpacer--m"
-                        />
                       </div>
                     </div>
                   </div>

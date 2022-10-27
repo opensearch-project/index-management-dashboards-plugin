@@ -18,16 +18,22 @@ import SimplePopover from "../../../../components/SimplePopover";
 import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
-import { ServicesContext } from "../../../../services";
+import { CommonService, IndexService, ServicesContext } from "../../../../services";
+import ReindexFlyout from "../ReindexFlyout";
+import { REQUEST } from "../../../../../utils/constants";
+import { ReindexRequest } from "../../models/interfaces";
 
 interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
   onDelete?: () => void;
+  indexService: IndexService;
+  commonService: CommonService;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete } = props;
+  const { selectedItems, onDelete, indexService, commonService } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [isReindexFlyoutVisible, setIsReindexFlyoutVisible] = useState(false);
   const context = useContext(CoreServicesContext);
   const services = useContext(ServicesContext);
 
@@ -50,6 +56,25 @@ export default function IndicesActions(props: IndicesActionsProps) {
       context?.notifications.toasts.addDanger(result?.error || "");
     }
   }, [selectedItems, onDelete, services, context, onDeleteIndexModalClose]);
+
+  const onReindexConfirmed = async (reindexRequest: ReindexRequest) => {
+    let res = await commonService.apiCaller({
+      endpoint: "reindex",
+      method: REQUEST.POST,
+      data: reindexRequest,
+    });
+    if (res.ok) {
+      // @ts-ignore
+      context?.notifications.toasts.addSuccess(`Reindex triggered successfully with taskId ${res.response.task}`);
+      onCloseReindexFlyout();
+    } else {
+      context?.notifications.toasts.addDanger(`Reindex operation error happened ${res.error}`);
+    }
+  };
+
+  const onCloseReindexFlyout = () => {
+    setIsReindexFlyoutVisible(false);
+  };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
@@ -91,6 +116,12 @@ export default function IndicesActions(props: IndicesActionsProps) {
                           core: context,
                         }),
                     },
+                    {
+                      name: "Reindex",
+                      disabled: !selectedItems.length,
+                      "data-test-subj": "Reindex Action",
+                      onClick: () => setIsReindexFlyoutVisible(true),
+                    },
                   ],
                 },
               ]}
@@ -104,6 +135,16 @@ export default function IndicesActions(props: IndicesActionsProps) {
         onClose={onDeleteIndexModalClose}
         onConfirm={onDeleteIndexModalConfirm}
       />
+
+      {isReindexFlyoutVisible && (
+        <ReindexFlyout
+          indexService={indexService}
+          commonService={commonService}
+          onCloseFlyout={onCloseReindexFlyout}
+          sourceIndices={selectedItems.map((item) => item.index)}
+          onReindexConfirmed={onReindexConfirmed}
+        />
+      )}
     </>
   );
 }

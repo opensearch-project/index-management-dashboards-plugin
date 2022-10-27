@@ -148,11 +148,15 @@ export const indicesColumns = (isDataStreamColumnVisible: boolean, options?: IOp
   return isDataStreamColumnVisible ? getColumns(options) : getColumns(options).filter((col) => col["field"] !== "data_stream");
 };
 
-export const DEFAULT_QUERY = JSON.stringify({
-  query: {
-    match_all: {},
+export const DEFAULT_QUERY = JSON.stringify(
+  {
+    query: {
+      match_all: {},
+    },
   },
-});
+  null,
+  4
+);
 
 export const ERROR_PROMPT = {
   DEST_REQUIRED: "Destination must be provided.",

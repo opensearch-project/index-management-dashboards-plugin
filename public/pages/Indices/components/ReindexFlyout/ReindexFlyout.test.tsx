@@ -6,11 +6,9 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import { browserServicesMock, coreServicesMock, httpClientMock } from "../../../../../test/mocks";
+import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import ReindexFlyout from "./ReindexFlyout";
 import { CoreServicesContext } from "../../../../components/core_services";
-import ApplyPolicyModal from "../ApplyPolicyModal";
-import { DEFAULT_QUERY } from "../../utils/constants";
 
 describe("<ReindexFlyout /> spec", () => {
   it("renders the component", async () => {
@@ -25,6 +23,7 @@ describe("<ReindexFlyout /> spec", () => {
     let component = render(
       <ReindexFlyout
         onCloseFlyout={() => {}}
+        onReindexConfirmed={() => {}}
         indexService={browserServicesMock.indexService}
         commonService={browserServicesMock.commonService}
         sourceIndices={["test-index-01"]}
@@ -48,6 +47,7 @@ describe("<ReindexFlyout /> spec", () => {
         render(
         <ReindexFlyout
           onCloseFlyout={() => {}}
+          onReindexConfirmed={() => {}}
           indexService={browserServicesMock.indexService}
           commonService={browserServicesMock.commonService}
           sourceIndices={["test-index-01"]}
@@ -75,6 +75,7 @@ describe("<ReindexFlyout /> spec", () => {
         render(
         <ReindexFlyout
           onCloseFlyout={() => {}}
+          onReindexConfirmed={() => {}}
           indexService={browserServicesMock.indexService}
           commonService={browserServicesMock.commonService}
           sourceIndices={["test-index-01"]}
@@ -100,6 +101,7 @@ describe("<ReindexFlyout /> spec", () => {
         render(
         <ReindexFlyout
           onCloseFlyout={() => {}}
+          onReindexConfirmed={() => {}}
           indexService={browserServicesMock.indexService}
           commonService={browserServicesMock.commonService}
           sourceIndices={["test-index-01"]}
@@ -128,6 +130,7 @@ describe("<ReindexFlyout /> spec", () => {
         render(
         <ReindexFlyout
           onCloseFlyout={() => {}}
+          onReindexConfirmed={() => {}}
           indexService={browserServicesMock.indexService}
           commonService={browserServicesMock.commonService}
           sourceIndices={["test-index-01"]}

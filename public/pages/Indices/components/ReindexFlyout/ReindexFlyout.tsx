@@ -11,7 +11,10 @@ import {
   EuiFlyoutFooter,
   EuiFlyoutHeader,
   EuiFormRow,
+  EuiIcon,
+  EuiLink,
   EuiSpacer,
+  EuiText,
   EuiTitle,
 } from "@elastic/eui";
 import _ from "lodash";
@@ -26,12 +29,15 @@ import { DarkModeConsumer } from "../../../../components/DarkMode";
 import { DEFAULT_QUERY, ERROR_PROMPT } from "../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
+import { ReindexRequest } from "../../models/interfaces";
+import { DSL_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 interface ReindexProps {
   commonService: CommonService;
   indexService: IndexService;
   sourceIndices: string[];
   onCloseFlyout: () => void;
+  onReindexConfirmed: (request: ReindexRequest) => void;
 }
 
 interface ReindexState {
@@ -109,9 +115,9 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   };
 
   populateSourceIndexSettings = async () => {
-    const { sourceIndices } = this.props;
+    const { sourceIndices, commonService } = this.props;
     if (sourceIndices.length === 1) {
-      const res = await this.props.commonService.apiCaller({
+      const res = await commonService.apiCaller({
         endpoint: "indices.get",
         method: REQUEST.GET,
         data: {
@@ -119,6 +125,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         },
       });
       if (res.ok) {
+        // @ts-ignore
         let index = res.response[sourceIndices[0]];
         _.unset(index.settings, "aliases");
         _.unset(index.settings, "index.provided_name");
@@ -131,7 +138,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   };
 
   onClickAction = async () => {
-    const { sourceIndices, onCloseFlyout } = this.props;
+    const { sourceIndices, onReindexConfirmed } = this.props;
     const { jsonString, selectedIndexOptions, dataStreams, destSettingsJson } = this.state;
 
     if (!selectedIndexOptions || selectedIndexOptions.length != 1) {
@@ -150,38 +157,32 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     try {
       if (destSettingsJson) {
         // create dest index first
-        await this.props.commonService.apiCaller({
+        const createRes = await this.props.commonService.apiCaller({
           endpoint: "indices.create",
           data: {
             index: dest,
             ...JSON.parse(destSettingsJson),
           },
         });
+        if (createRes.error) {
+          this.context.notifications.toasts.addDanger(`Create dest index error ${createRes.error}`);
+          return;
+        }
       }
 
-      let res = await this.props.commonService.apiCaller({
-        endpoint: "reindex",
-        method: REQUEST.POST,
-        data: {
-          waitForCompletion: false,
-          body: {
-            source: {
-              index: sourceIndices.join(","),
-              ...JSON.parse(jsonString),
-            },
-            dest: {
-              index: selectedIndexOptions.map((op) => op.label)[0],
-              op_type: isDestAsDataStream ? "create" : "index",
-            },
+      onReindexConfirmed({
+        waitForCompletion: false,
+        body: {
+          source: {
+            index: sourceIndices.join(","),
+            ...JSON.parse(jsonString),
+          },
+          dest: {
+            index: selectedIndexOptions.map((op) => op.label)[0],
+            op_type: isDestAsDataStream ? "create" : "index",
           },
         },
       });
-      if (res.ok) {
-        this.context.notifications.toasts.addSuccess(`Reindex triggered successfully with taskId ${res.response.task}`);
-        onCloseFlyout();
-      } else {
-        this.context.notifications.toasts.addDanger(`Reindex operation error happened ${res.error}`);
-      }
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);
     }
@@ -263,6 +264,11 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
           <EuiSpacer size="m" />
           <CustomLabel title="Query expression to reindex a subset of documents" isOptional={true} />
+          <EuiText size="xs">
+            <EuiLink href={DSL_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+              see Full-text queries <EuiIcon type="popout" size="s" />
+            </EuiLink>
+          </EuiText>
           <DarkModeConsumer>
             {(isDarkMode) => (
               <JSONEditor
