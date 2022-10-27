@@ -62,6 +62,8 @@ export const getToasts = (id: string, message: string | undefined, snapshotId: s
       )
     }
   ]
-
-  return id === "success_restore_toast" ? [toasts[0]] : [toasts[1]];
+  if (id === "success_restore_toast") {
+    return [toasts[0]]
+  }
+  return [toasts[1]];
 }

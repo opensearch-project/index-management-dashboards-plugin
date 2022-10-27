@@ -432,7 +432,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 <EuiSpacer size="m" />
 
                 <SnapshotRestoreAdvancedOptions
-                  ignore={snapshot?.ignore_index_settings ? snapshot.ignore_index_settings : false}
                   getIndexSettings={this.getIndexSettings}
                   restoreAliases={String(_.get(snapshot, restore_aliases, true)) == "true"}
                   onRestoreAliasesToggle={this.onToggle}
