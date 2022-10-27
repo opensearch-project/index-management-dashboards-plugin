@@ -62,26 +62,6 @@ exports[`<Indices /> spec renders the component 1`] = `
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
               <button
-                class="euiButton euiButton--primary euiButton-isDisabled"
-                data-test-subj="Apply policyButton"
-                disabled=""
-                type="button"
-              >
-                <span
-                  class="euiButtonContent euiButton__content"
-                >
-                  <span
-                    class="euiButton__text"
-                  >
-                    Apply policy
-                  </span>
-                </span>
-              </button>
-            </div>
-            <div
-              class="euiFlexItem euiFlexItem--flexGrowZero"
-            >
-              <button
                 class="euiButton euiButton--primary euiButton--fill"
                 data-test-subj="Create IndexButton"
                 type="button"

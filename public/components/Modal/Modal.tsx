@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiModal, EuiModalHeader, EuiModalHeaderTitle, EuiButton, EuiModalBody, EuiModalFooter } from "@elastic/eui";
-import React, { Component, createContext, useState } from "react";
+import { EuiModal, EuiModalHeader, EuiModalHeaderTitle, EuiButton, EuiModalBody, EuiModalFooter, EuiModalProps } from "@elastic/eui";
+import React, { Component, createContext, useEffect, useState } from "react";
 import { render } from "react-dom";
 
 const ModalContext = createContext({
@@ -42,10 +42,11 @@ class ModalProvider extends Component {
   }
 }
 
-interface IShowOptions {
+interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth"> {
   title?: React.ReactChild;
   content?: React.ReactChild;
   type?: "alert" | "confirm";
+  visible?: boolean;
   onOk?: () => void | Promise<any>;
   onCancel?: () => void | Promise<any>;
   onClose?: () => void;
@@ -58,8 +59,9 @@ interface IShowOptions {
 
 const blank = () => null;
 
-const ModalApp = (props: IShowOptions) => {
-  const { title, content, locale, onOk = blank, onCancel = blank, onClose = blank } = props;
+const SimpleModal = (props: IShowOptions) => {
+  const [modalVisible, setModalVisible] = useState(props.visible === undefined ? true : props.visible);
+  const { title, content, locale, onOk = blank, onCancel = blank, onClose = blank, ...others } = props;
   const defaultLocale: IShowOptions["locale"] = {
     ok: "OK",
     confirm: "Confirm",
@@ -69,15 +71,21 @@ const ModalApp = (props: IShowOptions) => {
     ...defaultLocale,
     ...locale,
   };
-  const [modalVisible, setModalVisible] = useState(true);
   const close = () => {
-    setModalVisible(false);
+    if (props.visible === undefined) {
+      setModalVisible(false);
+    }
     onClose();
   };
+  useEffect(() => {
+    if (props.visible !== undefined) {
+      setModalVisible(props.visible);
+    }
+  }, [props.visible]);
   return modalVisible ? (
-    <EuiModal onClose={close}>
+    <EuiModal {...others} onClose={close}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>
+        <EuiModalHeaderTitle style={{ width: "100%" }}>
           <h1>{title}</h1>
         </EuiModalHeaderTitle>
       </EuiModalHeader>
@@ -131,8 +139,9 @@ const Modal = {
       dom.remove();
     };
 
-    render(<ModalApp {...props} onClose={close} />, dom);
+    render(<SimpleModal {...props} onClose={close} />, dom);
   },
+  SimpleModal,
 };
 
 export { ModalConsumer, ModalProvider, Modal };

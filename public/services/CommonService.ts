@@ -15,7 +15,7 @@ export default class CommonService {
     this.httpClient = httpClient;
   }
 
-  apiCaller = async (params: IAPICaller): Promise<ServerResponse<any>> => {
+  apiCaller = async <T>(params: IAPICaller): Promise<ServerResponse<T>> => {
     let url = `${NODE_API.API_CALLER}`;
     const payload: HttpFetchOptions = {};
     payload.method = (params.method || "GET")?.toLowerCase();
@@ -30,11 +30,6 @@ export default class CommonService {
         endpoint: params.endpoint,
       });
     }
-    const response = (await this.httpClient.fetch(url, payload)) as ServerResponse<any>;
-    if (response.ok) {
-      return response;
-    } else {
-      throw new Error(response.error);
-    }
+    return (await this.httpClient.fetch(url, payload)) as ServerResponse<T>;
   };
 }

@@ -112,7 +112,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
@@ -140,9 +140,6 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   <div
                     class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
-                    <span
-                      class="euiLoadingSpinner euiLoadingSpinner--medium"
-                    />
                     <button
                       aria-label="Open list of options"
                       class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
@@ -457,7 +454,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                       Specify a comma-delimited list of settings.
                       <a
                         class="euiLink euiLink--primary"
-                        href="hhttps://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
+                        href="https://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
                         rel="noopener noreferrer"
                         target="_blank"
                       >
@@ -592,6 +589,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
             />
             <button
               class="euiButton euiButton--primary"
+              data-test-subj="create index add field button"
               type="button"
             >
               <span

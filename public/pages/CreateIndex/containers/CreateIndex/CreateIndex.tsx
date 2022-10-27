@@ -10,14 +10,14 @@ import { get, pick, set } from "lodash";
 import { diffArrays } from "diff";
 import IndexDetail from "../../components/IndexDetail";
 import { IAliasAction, IndexItem, MappingsProperties } from "../../../../../models/interfaces";
-import { BREADCRUMBS, INDEX_DYNAMIC_SETTINGS, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IIndexDetailRef, IndexDetailProps } from "../../components/IndexDetail/IndexDetail";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
 import { CommonService } from "../../../../services/index";
 import { ServerResponse } from "../../../../../server/models/types";
 
-interface CreateIndexProps extends RouteComponentProps<{ index?: string }> {
+interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
   isEdit?: boolean;
   commonService: CommonService;
 }
@@ -106,127 +106,168 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     });
   };
 
-  onSubmit = async (): Promise<void> => {
+  updateAlias = async (): Promise<ServerResponse<any>> => {
     const { indexDetail, oldIndexDetail } = this.state;
-    const { index, ...others } = indexDetail;
+    const { index } = indexDetail;
+    // handle the alias here
+    const diffedAliasArrayes = diffArrays(Object.keys(oldIndexDetail?.aliases || {}), Object.keys(indexDetail.aliases || {}));
+    const aliasActions: IAliasAction[] = diffedAliasArrayes.reduce((total: IAliasAction[], current) => {
+      if (current.added) {
+        return [
+          ...total,
+          ...current.value.map((item) => ({
+            add: {
+              index,
+              alias: item,
+            },
+          })),
+        ];
+      } else if (current.removed) {
+        return [
+          ...total,
+          ...current.value.map((item) => ({
+            remove: {
+              index,
+              alias: item,
+            },
+          })),
+        ];
+      }
+
+      return total;
+    }, [] as IAliasAction[]);
+
+    // alias may have many unexpected errors, do that before update index settings.
+    if (aliasActions.length) {
+      return await this.props.commonService.apiCaller({
+        endpoint: "indices.updateAliases",
+        method: "PUT",
+        data: {
+          body: {
+            actions: aliasActions,
+          },
+        },
+      });
+    }
+
+    return Promise.resolve({
+      ok: true,
+      response: {},
+    });
+  };
+  updateSettings = async (): Promise<ServerResponse<any>> => {
+    const { indexDetail } = this.state;
+    const { index } = indexDetail;
+    return await this.props.commonService.apiCaller({
+      endpoint: "indices.putSettings",
+      method: "PUT",
+      data: {
+        index,
+        // In edit mode, only dynamic settings can be modified
+        body: pick(indexDetail.settings, INDEX_DYNAMIC_SETTINGS),
+      },
+    });
+  };
+  updateMappings = async (): Promise<ServerResponse<any>> => {
+    const { indexDetail, oldIndexDetail } = this.state;
+    const { index } = indexDetail;
+    // handle the mappings here
+    const newMappingProperties = indexDetail?.mappings?.properties || [];
+    const diffedMappingArrayes = diffArrays(
+      (oldIndexDetail?.mappings?.properties || []).map((item) => item.fieldName),
+      newMappingProperties.map((item) => item.fieldName)
+    );
+    const newMappingFields: MappingsProperties = diffedMappingArrayes
+      .filter((item) => item.added)
+      .reduce((total, current) => [...total, ...current.value], [] as string[])
+      .map((current) => newMappingProperties.find((item) => item.fieldName === current) as MappingsProperties[number])
+      .filter((item) => item);
+
+    const newMappingSettings = transformArrayToObject(newMappingFields);
+
+    if (newMappingFields.length) {
+      return await this.props.commonService.apiCaller({
+        endpoint: "indices.putMapping",
+        method: "PUT",
+        data: {
+          index,
+          body: {
+            properties: newMappingSettings,
+          },
+        },
+      });
+    }
+
+    return Promise.resolve({
+      ok: true,
+      response: {},
+    });
+  };
+
+  chainPromise = async (promises: Promise<ServerResponse<any>>[]): Promise<ServerResponse<any>> => {
+    const newPromises = [...promises];
+    while (newPromises.length) {
+      const result = (await newPromises.shift()) as ServerResponse<any>;
+      if (!result?.ok) {
+        return result;
+      }
+    }
+
+    return {
+      ok: true,
+      response: {},
+    };
+  };
+
+  onSubmit = async (): Promise<void> => {
+    const { mode } = this.props.match.params;
+    const { indexDetail } = this.state;
+    const { index, mappings, ...others } = indexDetail;
     if (!(await this.indexDetailRef?.validate())) {
       return;
     }
     this.setState({ isSubmitting: true });
-    try {
-      let result: ServerResponse<any>;
-      if (this.isEdit) {
-        // handle the alias here
-        const diffedAliasArrayes = diffArrays(Object.keys(oldIndexDetail?.aliases || {}), Object.keys(indexDetail.aliases || {}));
-        const aliasActions: IAliasAction[] = diffedAliasArrayes.reduce((total: IAliasAction[], current) => {
-          if (current.added) {
-            return [
-              ...total,
-              ...current.value.map((item) => ({
-                add: {
-                  index,
-                  alias: item,
-                },
-              })),
-            ];
-          } else if (current.removed) {
-            return [
-              ...total,
-              ...current.value.map((item) => ({
-                remove: {
-                  index,
-                  alias: item,
-                },
-              })),
-            ];
-          }
-
-          return total;
-        }, [] as IAliasAction[]);
-
-        // handle the mappiings here
-        const newMappingProperties = indexDetail?.mappings?.properties || [];
-        const diffedMappingArrayes = diffArrays(
-          (oldIndexDetail?.mappings?.properties || []).map((item) => item.fieldName),
-          newMappingProperties.map((item) => item.fieldName)
-        );
-        const newMappingFields: MappingsProperties = diffedMappingArrayes
-          .filter((item) => item.added)
-          .reduce((total, current) => [...total, ...current.value], [] as string[])
-          .map((current) => newMappingProperties.find((item) => item.fieldName === current) as MappingsProperties[number])
-          .filter((item) => item);
-
-        const newMappingSettings = transformArrayToObject(newMappingFields);
-
-        try {
-          if (newMappingFields.length) {
-            result = await this.props.commonService.apiCaller({
-              endpoint: "indices.putMapping",
-              method: "PUT",
-              data: {
-                index,
-                body: {
-                  properties: newMappingSettings,
-                },
-              },
-            });
-          }
-
-          // alias may have many unexpected errors, do that before update index settings.
-          if (aliasActions.length) {
-            result = await this.props.commonService.apiCaller({
-              endpoint: "indices.updateAliases",
-              method: "PUT",
-              data: {
-                body: {
-                  actions: aliasActions,
-                },
-              },
-            });
-          }
-
-          result = await this.props.commonService.apiCaller({
-            endpoint: "indices.putSettings",
-            method: "PUT",
-            data: {
-              index,
-              // In edit mode, only dynamic settings can be modified
-              body: pick(indexDetail.settings, INDEX_DYNAMIC_SETTINGS),
-            },
-          });
-        } catch (e: any) {
-          result = {
-            ok: false,
-            error: e.message,
-          };
-        }
+    let result: ServerResponse<any>;
+    if (this.isEdit) {
+      let chainedPromises = [];
+      if (!mode) {
+        chainedPromises = [this.updateMappings(), this.updateAlias(), this.updateSettings()];
       } else {
-        try {
-          result = await this.props.commonService.apiCaller({
-            endpoint: "indices.create",
-            method: "PUT",
-            data: {
-              index,
-              body: others,
-            },
-          });
-        } catch (e: any) {
-          result = {
-            ok: false,
-            error: e.message,
-          };
+        switch (mode) {
+          case IndicesUpdateMode.alias:
+            chainedPromises.push(this.updateAlias());
+            break;
+          case IndicesUpdateMode.settings:
+            chainedPromises.push(this.updateSettings());
+            break;
+          case IndicesUpdateMode.mappings:
+            chainedPromises.push(this.updateMappings());
+            break;
         }
       }
+      result = await this.chainPromise(chainedPromises);
+    } else {
+      result = await this.props.commonService.apiCaller({
+        endpoint: "indices.create",
+        method: "PUT",
+        data: {
+          index,
+          body: {
+            ...others,
+            mappings: {
+              properties: transformArrayToObject(mappings?.properties || []),
+            },
+          },
+        },
+      });
+    }
 
-      // handle all the response here
-      if (result && result.ok) {
-        this.context.notifications.toasts.addSuccess(`${indexDetail.index} has been successfully ${this.isEdit ? "updated" : "created"}.`);
-        this.props.history.push(ROUTES.INDICES);
-      } else {
-        throw new Error(result.error);
-      }
-    } catch (err: any) {
-      this.context.notifications.toasts.addDanger(err.message);
+    // handle all the response here
+    if (result && result.ok) {
+      this.context.notifications.toasts.addSuccess(`${indexDetail.index} has been successfully ${this.isEdit ? "updated" : "created"}.`);
+      this.props.history.push(ROUTES.INDICES);
+    } else {
+      this.context.notifications.toasts.addDanger(result.error);
     }
 
     this.setState({ isSubmitting: false });
@@ -243,11 +284,23 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
         </EuiTitle>
         <EuiSpacer />
         <IndexDetail
+          mode={this.props.match.params.mode}
           ref={(ref) => (this.indexDetailRef = ref)}
           isEdit={this.isEdit}
           value={indexDetail}
           oldValue={oldIndexDetail}
           onChange={this.onDetailChange}
+          refreshOptions={(aliasName) =>
+            this.props.commonService.apiCaller({
+              endpoint: "cat.aliases",
+              method: "GET",
+              data: {
+                format: "json",
+                name: aliasName,
+                expand_wildcards: "open",
+              },
+            })
+          }
         />
         <EuiSpacer />
         <EuiSpacer />

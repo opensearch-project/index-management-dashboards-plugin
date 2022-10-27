@@ -49,11 +49,12 @@ interface IMappingLabel {
   onAddSubField: () => void;
   onDeleteField: () => void;
   disabled?: boolean;
+  id: string;
 }
 
 const NEW_FIELD_PREFIX = "NAME_YOUR_FIELD";
 
-const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField }: IMappingLabel) => {
+const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField, id }: IMappingLabel) => {
   const { fieldName, ...fieldSettings } = value;
   const [fieldNameError, setFieldNameError] = useState("");
   const ref = useRef<any>(null);
@@ -84,6 +85,7 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField 
               inputRef={ref}
               disabled={disabled}
               compressed
+              data-test-subj={`${id}-field-name`}
               value={fieldNameState}
               onChange={(e) => setFieldNameState(e.target.value)}
               onFocus={() => {
@@ -113,6 +115,7 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField 
             disabled={disabled}
             compressed
             value={type}
+            data-test-subj={`${id}-field-type`}
             onChange={(e) => onFieldChange("type", e.target.value)}
             options={INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }))}
           />
@@ -134,12 +137,20 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField 
                     onClick={onAddSubField}
                     disabled={disabled}
                     iconType="plusInCircleFilled"
+                    data-test-subj={`${id}-add-sub-field`}
                     size="m"
                   />
                 </EuiToolTip>
               ) : null}
               <EuiToolTip content="Delete current field">
-                <EuiButtonIcon aria-label="Delete current field" onClick={onDeleteField} iconType="trash" size="m" color="danger" />
+                <EuiButtonIcon
+                  data-test-subj={`${id}-delete-field`}
+                  aria-label="Delete current field"
+                  onClick={onDeleteField}
+                  iconType="trash"
+                  size="m"
+                  color="danger"
+                />
               </EuiToolTip>
             </div>
           </EuiFormRow>
@@ -193,6 +204,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
           <MappingLabel
             disabled={isEdit && !!get(oldValue, id)}
             value={item}
+            id={`mapping-visual-editor-${id}`}
             onChange={(val, key, v) => {
               const newValue = [...(value || [])];
               if (key === "fieldName") {
@@ -214,7 +226,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
             }}
           />
         ),
-        id,
+        id: `mapping-visual-editor-${id}`,
         icon: <EuiIcon type="arrowRight" style={{ visibility: "hidden" }} />,
         iconWhenExpanded: <EuiIcon type="arrowDown" style={{ visibility: "hidden" }} />,
       };
@@ -266,7 +278,9 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
             <p>You have no field mappings.</p>
           )}
           <EuiSpacer />
-          <EuiButton onClick={() => addField("", `${NEW_FIELD_PREFIX}-${Date.now()}`)}>Add a field</EuiButton>
+          <EuiButton data-test-subj="create index add field button" onClick={() => addField("", `${NEW_FIELD_PREFIX}-${Date.now()}`)}>
+            Add a field
+          </EuiButton>
         </>
       ) : (
         <>

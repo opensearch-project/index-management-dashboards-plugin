@@ -20,17 +20,11 @@ import {
   ArgsWithError,
   ArgsWithQuery,
   Query,
-  EuiButton,
-  EuiContextMenu,
-  EuiIcon,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import IndexControls from "../../components/IndexControls";
-import ApplyPolicyModal from "../../components/ApplyPolicyModal";
 import IndexEmptyPrompt from "../../components/IndexEmptyPrompt";
-import SimplePopover from "../../../../components/SimplePopover";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, indicesColumns } from "../../utils/constants";
-import { ModalConsumer } from "../../../../components/Modal";
 import IndexService from "../../../../services/IndexService";
 import CommonService from "../../../../services/CommonService";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
@@ -40,7 +34,8 @@ import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
-import DeleteIndexModal from "../../components/DeleteIndexModal";
+import IndicesActions from "../../components/IndicesActions";
+import { IndexItem } from "../../../../../models/interfaces";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
@@ -60,7 +55,6 @@ interface IndicesState {
   loadingIndices: boolean;
   showDataStreams: boolean;
   isDataStreamColumnVisible: boolean;
-  deleteIndexModalVisible: boolean;
 }
 
 export default class Indices extends Component<IndicesProps, IndicesState> {
@@ -81,7 +75,6 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       loadingIndices: true,
       showDataStreams,
       isDataStreamColumnVisible: showDataStreams,
-      deleteIndexModalVisible: false,
     };
 
     this.getIndices = _.debounce(this.getIndices, 500, { leading: true });
@@ -182,26 +175,24 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
 
-  onDeleteIndexModalConfirm = async () => {
-    const result = await this.props.commonService.apiCaller({
-      endpoint: "indices.delete",
-      data: {
-        index: this.state.selectedItems.map((item) => item.index).join(","),
-      },
-    });
-    if (result && result.ok) {
-      this.onDeleteIndexModalClose();
-      this.context.notifications.toasts.addSuccess("Delete successfully");
-      this.getIndices();
-    } else {
-      this.context.notifications.toasts.addDanger(result.error);
-    }
-  };
+  getDetail = (index: string) => {
+    return this.props.commonService
+      .apiCaller<Record<string, IndexItem>>({
+        endpoint: "indices.get",
+        data: {
+          index,
+        },
+      })
+      .then((res) => {
+        if (!res.ok) {
+          return res;
+        }
 
-  onDeleteIndexModalClose = () => {
-    this.setState({
-      deleteIndexModalVisible: false,
-    });
+        return {
+          ...res,
+          response: res.response[index],
+        };
+      });
   };
 
   render() {
@@ -212,12 +203,10 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       search,
       sortField,
       sortDirection,
-      selectedItems,
       indices,
       loadingIndices,
       showDataStreams,
       isDataStreamColumnVisible,
-      deleteIndexModalVisible,
     } = this.state;
 
     const filterIsApplied = !!search;
@@ -243,69 +232,23 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     return (
       <ContentPanel
         actions={
-          <ModalConsumer>
-            {({ onShow }) => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    children: (
-                      <SimplePopover
-                        data-test-subj="More Action"
-                        panelPaddingSize="none"
-                        button={
-                          <EuiButton iconType="arrowDown" iconSide="right">
-                            Actions
-                          </EuiButton>
-                        }
-                      >
-                        <EuiContextMenu
-                          initialPanelId={0}
-                          panels={[
-                            {
-                              id: 0,
-                              items: [
-                                {
-                                  name: "Delete",
-                                  disabled: !this.state.selectedItems.length,
-                                  "data-test-subj": "Delete Action",
-                                  icon: <EuiIcon type="trash" size="m" color="danger" />,
-                                  onClick: () =>
-                                    this.setState({
-                                      deleteIndexModalVisible: true,
-                                    }),
-                                },
-                              ],
-                            },
-                          ]}
-                        />
-                      </SimplePopover>
-                    ),
-                    text: "",
+          <ContentPanelActions
+            actions={[
+              {
+                children: <IndicesActions {...this.props} onDelete={this.getIndices} selectedItems={this.state.selectedItems} />,
+                text: "",
+              },
+              {
+                text: "Create Index",
+                buttonProps: {
+                  fill: true,
+                  onClick: () => {
+                    this.props.history.push(ROUTES.CREATE_INDEX);
                   },
-                  {
-                    text: "Apply policy",
-                    buttonProps: {
-                      disabled: !selectedItems.length,
-                      onClick: () =>
-                        onShow(ApplyPolicyModal, {
-                          indices: selectedItems.map((item: ManagedCatIndex) => item.index),
-                          core: this.context,
-                        }),
-                    },
-                  },
-                  {
-                    text: "Create Index",
-                    buttonProps: {
-                      fill: true,
-                      onClick: () => {
-                        this.props.history.push(ROUTES.CREATE_INDEX);
-                      },
-                    },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
+                },
+              },
+            ]}
+          />
         }
         bodyStyles={{ padding: "initial" }}
         title="Indices"
@@ -322,7 +265,10 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable
-          columns={indicesColumns(isDataStreamColumnVisible)}
+          columns={indicesColumns(isDataStreamColumnVisible, {
+            onDelete: this.getIndices,
+            getDetail: this.getDetail,
+          })}
           isSelectable={true}
           itemId="index"
           items={indices}
@@ -331,13 +277,6 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           pagination={pagination}
           selection={selection}
           sorting={sorting}
-        />
-
-        <DeleteIndexModal
-          selectedItems={selectedItems.map((item) => item.index)}
-          visible={deleteIndexModalVisible}
-          onClose={this.onDeleteIndexModalClose}
-          onConfirm={this.onDeleteIndexModalConfirm}
         />
       </ContentPanel>
     );

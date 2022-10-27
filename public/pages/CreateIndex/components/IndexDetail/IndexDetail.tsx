@@ -8,24 +8,26 @@ import { EuiSpacer, EuiFormRow, EuiFieldText, EuiFieldNumber, EuiAccordion, EuiL
 import { set, get } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import JSONEditor from "../../../../components/JSONEditor";
-import AliasSelect from "../../containers/AliasSelect";
+import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem } from "../../../../../models/interfaces";
 import { Ref } from "react";
-import { INDEX_DYNAMIC_SETTINGS } from "../../../../utils/constants";
+import { INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 
 export interface IndexDetailProps {
   value?: Partial<IndexItem>;
   oldValue?: Partial<IndexItem>;
   onChange: (value: IndexDetailProps["value"]) => void;
   isEdit?: boolean;
+  refreshOptions: AliasSelectProps["refreshOptions"];
+  mode?: IndicesUpdateMode;
 }
 
 export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
 }
 
-const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, ref: Ref<IIndexDetailRef>) => {
+const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }: IndexDetailProps, ref: Ref<IIndexDetailRef>) => {
   const onValueChange = useCallback(
     (name: string, val) => {
       let finalValue = value || {};
@@ -63,83 +65,102 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue }: IndexDetailProps, re
   }));
   return (
     <>
-      <ContentPanel title="Define index" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiFormRow label="Index name" helpText="Some reestrictrion text on domain" isInvalid={!!errors["index"]} error={errors["index"]}>
-            <EuiFieldText
-              placeholder="Please enter the name for your index"
-              value={finalValue.index}
-              onChange={(e) => onValueChange("index", e.target.value)}
-              disabled={isEdit}
-            />
-          </EuiFormRow>
-          <EuiFormRow label="Index alias  - optional" helpText="Select existing aliases or specify a new alias">
-            <AliasSelect value={finalValue.aliases} onChange={(value) => onValueChange("aliases", value)} />
-          </EuiFormRow>
-        </div>
-      </ContentPanel>
-      <EuiSpacer />
-      <ContentPanel title="Index settings" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiFormRow label="Number of shards" helpText="The number of primary shards in the index. Default is 1.">
-            <EuiFieldNumber
-              disabled={isEdit && INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")}
-              placeholder="The number of primary shards in the index. Default is 1."
-              value={finalValue?.settings?.index?.number_of_shards}
-              onChange={(e) => onValueChange("settings.index.number_of_shards", e.target.value)}
-            />
-          </EuiFormRow>
-          <EuiFormRow label="Number of replicas" helpText="The number of replica shards each primary shard should have.">
-            <EuiFieldNumber
-              disabled={isEdit && INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")}
-              placeholder="The number of replica shards each primary shard should have."
-              value={finalValue?.settings?.index?.number_of_replicas}
-              onChange={(e) => onValueChange("settings.index.number_of_replicas", e.target.value)}
-            />
-          </EuiFormRow>
-          <EuiSpacer size="m" />
-          <EuiAccordion id="accordion_for_create_index_settings" buttonContent={<h4>Advanced settings</h4>}>
-            <EuiSpacer size="m" />
-            <EuiFormRow
-              label="Specify advanced index settings"
-              helpText={
-                <>
-                  Specify a comma-delimited list of settings.
-                  <EuiLink
-                    href="hhttps://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
-                    target="_blank"
-                  >
-                    View index settings
-                  </EuiLink>
-                </>
-              }
-            >
-              <JSONEditor
-                value={JSON.stringify(restSettingValue)}
-                onChange={(val: string) =>
-                  onValueChange("settings.index", {
-                    ...get(value, "settings.index"),
-                    ...JSON.parse(val),
-                  })
-                }
+      {isEdit && mode && mode !== IndicesUpdateMode.alias ? null : (
+        <>
+          <ContentPanel title="Define index" titleSize="s">
+            <div style={{ paddingLeft: "10px" }}>
+              <EuiFormRow
+                label="Index name"
+                helpText="Some reestrictrion text on domain"
+                isInvalid={!!errors["index"]}
+                error={errors["index"]}
+              >
+                <EuiFieldText
+                  placeholder="Please enter the name for your index"
+                  value={finalValue.index}
+                  onChange={(e) => onValueChange("index", e.target.value)}
+                  disabled={isEdit}
+                />
+              </EuiFormRow>
+              <EuiFormRow label="Index alias  - optional" helpText="Select existing aliases or specify a new alias">
+                <AliasSelect
+                  refreshOptions={refreshOptions}
+                  value={finalValue.aliases}
+                  onChange={(value) => onValueChange("aliases", value)}
+                />
+              </EuiFormRow>
+            </div>
+          </ContentPanel>
+          <EuiSpacer />
+        </>
+      )}
+      {isEdit && mode && mode !== IndicesUpdateMode.settings ? null : (
+        <>
+          <ContentPanel title="Index settings" titleSize="s">
+            <div style={{ paddingLeft: "10px" }}>
+              <EuiFormRow label="Number of shards" helpText="The number of primary shards in the index. Default is 1.">
+                <EuiFieldNumber
+                  disabled={isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")}
+                  placeholder="The number of primary shards in the index. Default is 1."
+                  value={finalValue?.settings?.index?.number_of_shards}
+                  onChange={(e) => onValueChange("settings.index.number_of_shards", e.target.value)}
+                />
+              </EuiFormRow>
+              <EuiFormRow label="Number of replicas" helpText="The number of replica shards each primary shard should have.">
+                <EuiFieldNumber
+                  disabled={isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")}
+                  placeholder="The number of replica shards each primary shard should have."
+                  value={finalValue?.settings?.index?.number_of_replicas}
+                  onChange={(e) => onValueChange("settings.index.number_of_replicas", e.target.value)}
+                />
+              </EuiFormRow>
+              <EuiSpacer size="m" />
+              <EuiAccordion id="accordion_for_create_index_settings" buttonContent={<h4>Advanced settings</h4>}>
+                <EuiSpacer size="m" />
+                <EuiFormRow
+                  label="Specify advanced index settings"
+                  helpText={
+                    <>
+                      Specify a comma-delimited list of settings.
+                      <EuiLink
+                        href="https://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
+                        target="_blank"
+                      >
+                        View index settings
+                      </EuiLink>
+                    </>
+                  }
+                >
+                  <JSONEditor
+                    value={JSON.stringify(restSettingValue)}
+                    onChange={(val: string) =>
+                      onValueChange("settings.index", {
+                        ...get(value, "settings.index"),
+                        ...JSON.parse(val),
+                      })
+                    }
+                  />
+                </EuiFormRow>
+              </EuiAccordion>
+            </div>
+          </ContentPanel>
+          <EuiSpacer />
+        </>
+      )}
+      {isEdit && mode && mode !== IndicesUpdateMode.mappings ? null : (
+        <ContentPanel title="Index mappings - optional" titleSize="s">
+          <div style={{ paddingLeft: "10px" }}>
+            <EuiFormRow fullWidth>
+              <IndexMapping
+                isEdit={isEdit}
+                value={finalValue?.mappings?.properties}
+                oldValue={oldValue?.mappings?.properties}
+                onChange={(val) => onValueChange("mappings.properties", val)}
               />
             </EuiFormRow>
-          </EuiAccordion>
-        </div>
-      </ContentPanel>
-      <EuiSpacer />
-      <ContentPanel title="Index mappings - optional" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiFormRow fullWidth>
-            <IndexMapping
-              isEdit={isEdit}
-              value={finalValue?.mappings?.properties}
-              oldValue={oldValue?.mappings?.properties}
-              onChange={(val) => onValueChange("mappings.properties", val)}
-            />
-          </EuiFormRow>
-        </div>
-      </ContentPanel>
+          </div>
+        </ContentPanel>
+      )}
     </>
   );
 };
