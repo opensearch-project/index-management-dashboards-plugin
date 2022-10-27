@@ -20,9 +20,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: index-management-dashboards-plugin
-      - name: Shorten Path
+
+      # Enable longer filenames for windows
+      - name: Enable longer filenames
         if: ${{ matrix.os == 'windows-latest' }}
-        run: subst 'X:' .
+        run: git config --system core.longpaths true
+        
       - name: Checkout OpenSearch-Dashboards
         uses: actions/checkout@v2
         with:
