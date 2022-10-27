@@ -12,7 +12,11 @@ env:
 jobs:
   tests:
     name: Run Cypress E2E tests
-    runs-on: ubuntu-latest
+    strategy: 
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    
     env:
       # prevents extra Cypress installation progress messages
       CI: 1
@@ -85,11 +89,11 @@ jobs:
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-${{ matrix.os }}
           path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/screenshots
       # Test run video was always captured, so this action uses "always()" condition
       - uses: actions/upload-artifact@v1
         if: always()
         with:
-          name: cypress-videos
+          name: cypress-videos-${{ matrix.os }}
           path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/videos
