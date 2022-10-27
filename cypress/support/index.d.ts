@@ -104,5 +104,12 @@ declare namespace Cypress {
      * cy.disableJitter()
      */
     disableJitter(): Chainable<any>;
+
+    /**
+     * Delete template
+     * @example
+     * cy.deleteTemplate("some_template")
+     */
+    deleteTemplate(name: string);
   }
 }

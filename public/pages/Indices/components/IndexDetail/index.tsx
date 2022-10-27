@@ -158,7 +158,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                           valueContent = <ValueComponent detail={finalDetail} />;
                         }
                         return (
-                          <EuiFlexItem data-test-subj={`index-detail-overview-item-${item.label}`}>
+                          <EuiFlexItem key={item.label} data-test-subj={`index-detail-overview-item-${item.label}`}>
                             <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
                             <EuiDescriptionListDescription>{valueContent}</EuiDescriptionListDescription>
                           </EuiFlexItem>
