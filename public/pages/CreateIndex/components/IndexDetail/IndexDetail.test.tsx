@@ -9,7 +9,7 @@ import { renderHook } from "@testing-library/react-hooks";
 import IndexDetail, { IIndexDetailRef } from "./IndexDetail";
 
 const timeOut = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
-const refreshOptions = () => Promise.resolve({ ok: true, response: [] });
+const refreshOptions: () => Promise<{ ok: true; response: any[] }> = () => Promise.resolve({ ok: true, response: [] });
 
 describe("<IndexDetail /> spec", () => {
   it("renders the component", () => {

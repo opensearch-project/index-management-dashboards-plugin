@@ -26,7 +26,7 @@ import { Modal } from "../../../../components/Modal";
 import IndicesActions from "../IndicesActions";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
-import { ROUTES } from "../../../../utils/constants";
+import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
 
 export interface IndexDetailModalProps {
@@ -179,7 +179,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                         <h6>Advanced index settings</h6>
                       </EuiFlexItem>
                       <EuiFlexItem grow={false}>
-                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/settings`}>
+                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.settings}`}>
                           <EuiButton size="s" data-test-subj="detail-modal-edit">
                             Edit
                           </EuiButton>
@@ -206,7 +206,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                         <h6>Index mappings</h6>
                       </EuiFlexItem>
                       <EuiFlexItem grow={false}>
-                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/mappings`}>
+                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.mappings}`}>
                           <EuiButton size="s" data-test-subj="detail-modal-edit">
                             Edit
                           </EuiButton>
@@ -223,7 +223,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                 ),
               },
               {
-                id: "index-detail-modal-alias",
+                id: `index-detail-modal-${IndicesUpdateMode.alias}`,
                 name: "Alias",
                 content: (
                   <>
@@ -233,7 +233,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                         <h6>Index alias</h6>
                       </EuiFlexItem>
                       <EuiFlexItem grow={false}>
-                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/alias`}>
+                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.alias}`}>
                           <EuiButton size="s" data-test-subj="detail-modal-edit">
                             Edit
                           </EuiButton>

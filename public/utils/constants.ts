@@ -173,4 +173,10 @@ export const INDEX_MAPPING_TYPES = [
   },
 ];
 
+export enum IndicesUpdateMode {
+  mappings = "mappings",
+  settings = "settings",
+  alias = "alias",
+}
+
 export const INDEX_MAPPING_TYPES_WITH_CHILDREN = INDEX_MAPPING_TYPES.filter((item) => item.hasChildren).map((item) => item.label);

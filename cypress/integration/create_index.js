@@ -4,6 +4,8 @@
  */
 import { PLUGIN_NAME } from "../support/constants";
 
+const SAMPLE_INDEX = "index_simple_index";
+
 describe("Create Index", () => {
   before(() => {
     // Set welcome screen tracking to false
@@ -24,24 +26,22 @@ describe("Create Index", () => {
       cy.contains("Create index");
 
       // type field name
-      cy.get('[placeholder="Please enter the name for your index"]').type("index_simple_index");
+      cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX);
       cy.get('[data-test-subj="comboBoxSearchInput"]').type("some_test_alias{enter}");
       // add a field
       cy.get('[data-test-subj="create index add field button"]').click().end();
 
       // click create
-      cy.get('[data-test-subj="createIndexCreateButton"]').click();
+      cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
 
       // The index should exist
-      cy.get("#_selection_column_index_simple_index-checkbox").should("have.exist");
+      cy.get(`#_selection_column_${SAMPLE_INDEX}-checkbox`).should("have.exist");
 
       // check the index detail
-      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]').click();
-      cy.get("#index-detail-modal-alias").click();
-      cy.get('[data-test-subj="detail-modal-edit"]').click();
+      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/create-index/${SAMPLE_INDEX}`);
 
       // index name and alias should exist
-      cy.get('[value="index_simple_index"]')
+      cy.get(`[value="${SAMPLE_INDEX}"]`)
         .should("have.exist")
         .end()
         .get('[title="some_test_alias"]')
@@ -53,7 +53,7 @@ describe("Create Index", () => {
     });
 
     it("Update alias successfully", () => {
-      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-alias")
         .click()
@@ -68,17 +68,17 @@ describe("Create Index", () => {
         .click()
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
-        .click();
+        .click({ force: true });
 
       // check the index
-      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-alias")
         .click()
         .get('[data-test-subj="detail-modal-edit"]')
         .click();
 
-      cy.get('[value="index_simple_index"]')
+      cy.get(`[value="${SAMPLE_INDEX}"]`)
         .should("exist")
         .end()
         .get('[title="some_test_alias"]')
@@ -90,7 +90,7 @@ describe("Create Index", () => {
     });
 
     it("Update settings successfully", () => {
-      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-settings")
         .click()
@@ -101,9 +101,9 @@ describe("Create Index", () => {
         .type(2)
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
-        .click();
+        .click({ force: true });
 
-      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-settings")
         .click()
@@ -114,16 +114,20 @@ describe("Create Index", () => {
     });
 
     it("Update mappings successfully", () => {
-      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-mappings")
         .click()
         .get('[data-test-subj="detail-modal-edit"]')
         .click();
 
-      cy.get('[data-test-subj="create index add field button"]').click().end().get('[data-test-subj="createIndexCreateButton"]').click();
+      cy.get('[data-test-subj="create index add field button"]')
+        .click()
+        .end()
+        .get('[data-test-subj="createIndexCreateButton"]')
+        .click({ force: true });
 
-      cy.get('[data-test-subj="view-index-detail-button-index_simple_index"]')
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-mappings")
         .click()
