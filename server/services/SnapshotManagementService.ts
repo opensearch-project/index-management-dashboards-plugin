@@ -515,10 +515,6 @@ export default class SnapshotManagementService {
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatSnapshotIndex[]>>> => {
-<<<<<<< HEAD
-=======
-    console.log(request);
->>>>>>> updated_main
     try {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const res: CatSnapshotIndex[] = await callWithRequest("cat.indices", {
