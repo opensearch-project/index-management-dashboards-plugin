@@ -134,7 +134,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
   const actions = useMemo(() => (
     [
-      <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton" isDisabled={!!restoreStartRef}>
+      <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton" isDisabled={restoreStartRef ? false : true}>
         Refresh
       </EuiButton>,
     ]
