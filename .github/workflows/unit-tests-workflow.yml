@@ -25,12 +25,12 @@ jobs:
     runs-on: ${{ matrix.os}}
     steps:
       - name: Checkout Index Management Dashboards plugin
-      - name: Shorten Path
-      if: ${{ matrix.os == 'windows-latest' }}
-      run: subst 'X:' .
         uses: actions/checkout@v2
         with:
           path: index-management-dashboards-plugin
+      - name: Shorten Path
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: subst 'X:' .
       - name: Checkout OpenSearch-Dashboards
         uses: actions/checkout@v2
         with:

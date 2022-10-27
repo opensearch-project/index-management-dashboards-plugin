@@ -40,6 +40,9 @@ jobs:
           path: index-management
           repository: opensearch-project/index-management
           ref: 'main'
+      - name: Shorten Path
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: subst 'X:' .
       - name: Run opensearch with plugin
         run: |
           cd index-management
