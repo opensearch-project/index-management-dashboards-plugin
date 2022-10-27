@@ -11,8 +11,18 @@ env:
   OPENSEARCH_VERSION: '2.4.0-SNAPSHOT'
 jobs:
   tests:
-    name: Run Cypress E2E tests
-    runs-on: ubuntu-latest
+    name: Run Cypress E2E tests on ${{ matrix.os}}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        include:
+          - os: windows-latest
+            os_build_args: -x integTest -x jacocoTestReport
+            working_directory: X:\
+            os_java_options: -Xmx4096M
+          - os: macos-latest
+            os_build_args: -x integTest -x jacocoTestReport
+    runs-on: ${{ matrix.os }}
     env:
       # prevents extra Cypress installation progress messages
       CI: 1
@@ -85,11 +95,11 @@ jobs:
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-${{ matrix.os }}
           path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/screenshots
       # Test run video was always captured, so this action uses "always()" condition
       - uses: actions/upload-artifact@v1
         if: always()
         with:
-          name: cypress-videos
+          name: cypress-videos-${{ matrix.os }}
           path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/videos
