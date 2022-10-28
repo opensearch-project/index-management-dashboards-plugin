@@ -3,16 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from "react";
+import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { EuiSpacer, EuiFormRow, EuiFieldText, EuiFieldNumber, EuiAccordion, EuiLink } from "@elastic/eui";
-import { set, get } from "lodash";
+import { set, get, merge } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import JSONEditor from "../../../../components/JSONEditor";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
-import { IndexItem } from "../../../../../models/interfaces";
+import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
+import { ServerResponse } from "../../../../../server/models/types";
 import { Ref } from "react";
 import { INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
+import { Modal } from "../../../../components/Modal";
+import { transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 
 export interface IndexDetailProps {
   value?: Partial<IndexItem>;
@@ -21,18 +24,26 @@ export interface IndexDetailProps {
   isEdit?: boolean;
   refreshOptions: AliasSelectProps["refreshOptions"];
   mode?: IndicesUpdateMode;
+  onSimulateIndexTemplate?: (indexName: string) => Promise<ServerResponse<IndexItemRemote>>;
 }
 
 export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
 }
 
-const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }: IndexDetailProps, ref: Ref<IIndexDetailRef>) => {
+const IndexDetail = (
+  { value, onChange, isEdit, oldValue, refreshOptions, mode, onSimulateIndexTemplate }: IndexDetailProps,
+  ref: Ref<IIndexDetailRef>
+) => {
+  const hasEdit = useRef(false);
   const onValueChange = useCallback(
     (name: string, val) => {
       let finalValue = value || {};
       set(finalValue, name, val);
       onChange(finalValue);
+      if (name !== "index") {
+        hasEdit.current = true;
+      }
     },
     [onChange, value]
   );
@@ -63,6 +74,53 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }
       return Promise.resolve(true);
     },
   }));
+  const onIndexInputBlur = useCallback(async () => {
+    if (finalValue.index && onSimulateIndexTemplate) {
+      const result = await onSimulateIndexTemplate(finalValue.index);
+      if (result && result.ok) {
+        let onChangePromise: Promise<IndexItemRemote>;
+        if (hasEdit.current) {
+          onChangePromise = new Promise((resolve) => {
+            Modal.show({
+              title: "Confirm",
+              content: "The index name has matched one or more index templates, please choose which way to go on",
+              locale: {
+                ok: "Overwrite",
+                cancel: "Merge the template",
+              },
+              type: "confirm",
+              onOk: () => resolve(result.response),
+              onCancel: () => {
+                const formatValue: IndexItemRemote = {
+                  index: "",
+                  ...finalValue,
+                  mappings: {
+                    properties: transformArrayToObject(finalValue.mappings?.properties || []),
+                  },
+                };
+                const mergedValue: IndexItemRemote = {
+                  index: finalValue.index || "",
+                };
+                merge(mergedValue, result.response, formatValue);
+                resolve(mergedValue);
+              },
+            });
+          });
+        } else {
+          onChangePromise = Promise.resolve(result.response);
+        }
+        onChangePromise.then((data) => {
+          onChange({
+            ...data,
+            mappings: {
+              properties: transformObjectToArray(data.mappings?.properties || {}),
+            },
+          });
+          hasEdit.current = false;
+        });
+      }
+    }
+  }, [finalValue.index, onSimulateIndexTemplate]);
   return (
     <>
       {isEdit && mode && mode !== IndicesUpdateMode.alias ? null : (
@@ -79,6 +137,7 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }
                   placeholder="Please enter the name for your index"
                   value={finalValue.index}
                   onChange={(e) => onValueChange("index", e.target.value)}
+                  onBlur={onIndexInputBlur}
                   disabled={isEdit}
                 />
               </EuiFormRow>

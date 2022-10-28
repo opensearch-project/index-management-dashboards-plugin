@@ -129,6 +129,14 @@ Cypress.Commands.add("createIndexTemplate", (name, template) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.INDEX_TEMPLATE_BASE}/${name}`, template);
 });
 
+Cypress.Commands.add("deleteTemplate", (name) => {
+  cy.request({
+    url: `${Cypress.env("opensearch")}${API.INDEX_TEMPLATE_BASE}/${name}`,
+    failOnStatusCode: false,
+    method: "DELETE",
+  });
+});
+
 Cypress.Commands.add("createDataStream", (name) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.DATA_STREAM_BASE}/${name}`);
 });

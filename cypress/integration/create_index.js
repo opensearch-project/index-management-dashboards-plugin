@@ -4,13 +4,44 @@
  */
 import { PLUGIN_NAME } from "../support/constants";
 
-const SAMPLE_INDEX = "index_simple_index";
+const SAMPLE_INDEX = "index-specific-index";
 
 describe("Create Index", () => {
   before(() => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
     cy.deleteAllIndices();
+    cy.deleteTemplate("index-common-template");
+    cy.deleteTemplate("index-specific-template");
+    cy.createIndexTemplate("index-common-template", {
+      index_patterns: ["index-*"],
+      template: {
+        aliases: {
+          alias_for_common_1: {},
+          alias_for_common_2: {},
+        },
+        settings: {
+          number_of_shards: 2,
+          number_of_replicas: 1,
+        },
+      },
+    });
+    cy.createIndexTemplate("index-specific-template", {
+      index_patterns: ["index-specific-*"],
+      priority: 1,
+      template: {
+        aliases: {
+          alias_for_specific_1: {},
+        },
+        mappings: {
+          properties: {
+            text: {
+              type: "text",
+            },
+          },
+        },
+      },
+    });
   });
 
   describe("can be created and updated", () => {
@@ -26,7 +57,10 @@ describe("Create Index", () => {
       cy.contains("Create index");
 
       // type field name
-      cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX);
+      cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX).blur();
+
+      cy.get('[data-test-subj="comboBoxSearchInput"]').get('[title="alias_for_specific_1"]').should("exist");
+
       cy.get('[data-test-subj="comboBoxSearchInput"]').type("some_test_alias{enter}");
       // add a field
       cy.get('[data-test-subj="create index add field button"]').click().end();
