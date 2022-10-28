@@ -16,14 +16,13 @@ import {
   EuiSpacer,
   EuiFlexGroup,
   EuiButton,
-  EuiTable,
   EuiBasicTable,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
 import { IndexItem } from "../../../../../models/interfaces";
 import { Modal } from "../../../../components/Modal";
-import IndicesActions from "../IndicesActions";
+import IndicesActions, { IndicesActionsProps } from "../IndicesActions";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
 import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
@@ -32,7 +31,7 @@ import JSONEditor from "../../../../components/JSONEditor";
 export interface IndexDetailModalProps {
   index: string;
   record: ManagedCatIndex;
-  onDelete?: () => void;
+  onDelete: IndicesActionsProps["onDelete"];
   getDetail?: (index: string) => Promise<ServerResponse<IndexItem>>;
 }
 

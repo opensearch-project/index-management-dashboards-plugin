@@ -13,6 +13,7 @@ import {
 } from "@elastic/eui";
 
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
+import { ServerResponse } from "../../../../../server/models/types";
 import ApplyPolicyModal from "../../components/ApplyPolicyModal";
 import SimplePopover from "../../../../components/SimplePopover";
 import { ModalConsumer } from "../../../../components/Modal";
@@ -20,9 +21,9 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
 import { ServicesContext } from "../../../../services";
 
-interface IndicesActionsProps {
+export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
-  onDelete?: () => void;
+  onDelete: (indices: string) => Promise<ServerResponse<any>>;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
@@ -36,18 +37,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const onDeleteIndexModalConfirm = useCallback(async () => {
-    const result = await services?.commonService.apiCaller({
-      endpoint: "indices.delete",
-      data: {
-        index: selectedItems.map((item) => item.index).join(","),
-      },
-    });
+    const result = await onDelete(selectedItems.map((item) => item.index).join(","));
     if (result && result.ok) {
       onDeleteIndexModalClose();
-      context?.notifications.toasts.addSuccess("Delete successfully");
-      onDelete && onDelete();
-    } else {
-      context?.notifications.toasts.addDanger(result?.error || "");
     }
   }, [selectedItems, onDelete, services, context, onDeleteIndexModalClose]);
 

@@ -195,6 +195,23 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       });
   };
 
+  onDeleteIndice = async (indices: string) => {
+    const result = await this.props?.commonService.apiCaller({
+      endpoint: "indices.delete",
+      data: {
+        index: indices,
+      },
+    });
+    if (result && result.ok) {
+      this.context.notifications.toasts.addSuccess("Delete successfully");
+      this.getIndices();
+    } else {
+      this.context.notifications.toasts.addDanger(result?.error || "");
+    }
+
+    return result;
+  };
+
   render() {
     const {
       totalIndices,
@@ -235,7 +252,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           <ContentPanelActions
             actions={[
               {
-                children: <IndicesActions {...this.props} onDelete={this.getIndices} selectedItems={this.state.selectedItems} />,
+                children: <IndicesActions {...this.props} onDelete={this.onDeleteIndice} selectedItems={this.state.selectedItems} />,
                 text: "",
               },
               {
@@ -266,7 +283,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
         <EuiBasicTable
           columns={indicesColumns(isDataStreamColumnVisible, {
-            onDelete: this.getIndices,
+            onDelete: this.onDeleteIndice,
             getDetail: this.getDetail,
           })}
           isSelectable={true}

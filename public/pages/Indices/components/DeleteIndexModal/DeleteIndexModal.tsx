@@ -54,7 +54,7 @@ export default class DeleteIndexModal extends Component<DeleteIndexModalProps> {
             <p>The following index will be deleted permanently. This action cannot be undone.</p>
             <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
               {this.props.selectedItems.map((item) => (
-                <li>{item}</li>
+                <li key={item}>{item}</li>
               ))}
             </ul>
             <EuiSpacer />
