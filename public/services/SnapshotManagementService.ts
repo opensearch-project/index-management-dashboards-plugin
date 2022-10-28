@@ -10,6 +10,7 @@ import {
   GetSMPoliciesResponse,
   GetSnapshot,
   CatRepository,
+  CatIndex,
   CreateRepositoryBody,
   AcknowledgedResponse,
   CreateSnapshotResponse,
@@ -120,6 +121,12 @@ export default class SnapshotManagementService {
   catRepositories = async (): Promise<ServerResponse<CatRepository[]>> => {
     const url = `..${NODE_API._REPOSITORIES}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<CatRepository[]>;
+    return response;
+  };
+
+  catSnapshotIndices = async (indices: string): Promise<ServerResponse<CatIndex[]>> => {
+    const url = `..${NODE_API._INDICES}/${indices}`;
+    const response = (await this.httpClient.get(url)) as ServerResponse<CatIndex[]>;
     return response;
   };
 

@@ -6,7 +6,7 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader } from "@elastic/eui";
+import { EuiButton, EuiInMemoryTable, EuiLink, EuiTableFieldDataColumnType, EuiText, EuiPageHeader, EuiTabs, EuiTab } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService, IndexService } from "../../../../services";
@@ -33,6 +33,7 @@ interface SnapshotsState {
   existingPolicyNames: string[];
   loadingSnapshots: boolean;
   snapshotPanel: boolean;
+  restoreStart: number;
 
   selectedItems: SnapshotsWithRepoAndPolicy[];
 
@@ -60,6 +61,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       existingPolicyNames: [],
       loadingSnapshots: false,
       snapshotPanel: true,
+      restoreStart: 0,
       selectedItems: [],
       showFlyout: false,
       flyoutSnapshotId: "",
@@ -76,6 +78,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Name",
         sortable: true,
         dataType: "string",
+        width: "25%",
         render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
           const truncated = _.truncate(name, { length: 80 });
           return (
@@ -87,12 +90,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       },
       {
         field: "status",
-        name: "Status",
+        name: "Snapshot status",
         sortable: true,
         dataType: "string",
-        width: "130px",
         render: (value: string) => {
-          return snapshotStatusRender(value);
+          return snapshotStatusRender(value.replace("_", " "));
         },
       },
       {
@@ -100,7 +102,6 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         name: "Policy",
         sortable: false,
         dataType: "string",
-        width: "160px",
         render: (name: string, item: SnapshotsWithRepoAndPolicy) => {
           const truncated = _.truncate(name, { length: 20 });
           if (!!item.policy) {
@@ -113,26 +114,16 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         field: "repository",
         name: "Repository",
         sortable: false,
-        width: "150px",
         dataType: "string",
         render: (value: string, item: SnapshotsWithRepoAndPolicy) => {
           return truncateSpan(value);
         },
       },
       {
-        field: "start_epoch",
-        name: "Start time",
-        sortable: true,
-        dataType: "date",
-        width: "150px",
-        render: renderTimestampMillis,
-      },
-      {
         field: "end_epoch",
-        name: "End time",
+        name: "Time last updated",
         sortable: true,
         dataType: "date",
-        width: "150px",
         render: renderTimestampMillis,
       },
     ];
@@ -142,6 +133,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   async componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
+
     await this.getSnapshots();
   }
 
@@ -225,8 +217,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     try {
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
+
       if (response.ok) {
-        this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.`);
+        this.context.notifications.toasts.addSuccess(`Restored snapshot ${snapshotId} to repository ${repository}.  View restore status in "Restore activities in progress" tab`);
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
@@ -234,6 +227,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem restoring the snapshot."));
     }
   };
+
+  getRestoreReferenceTime = (time: number) => {
+    this.setState({ restoreStart: time })
+  }
 
   onClickRestore = async () => {
     this.setState({ showRestoreFlyout: true });
@@ -280,6 +277,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       selectedItems,
       loadingSnapshots,
       snapshotPanel,
+      restoreStart,
       showFlyout,
       flyoutSnapshotId,
       flyoutSnapshotRepo,
@@ -287,7 +285,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       showRestoreFlyout,
       isDeleteModalVisible,
     } = this.state;
-    const { indexService, snapshotManagementService } = this.props;
+    const { snapshotManagementService } = this.props;
     const repos = [...new Set(snapshots.map((snapshot) => snapshot.repository))];
     const status = [...new Set(snapshots.map((snapshot) => snapshot.status))];
     const search = {
@@ -326,7 +324,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton disabled={!selectedItems.length} onClick={this.showDeleteModal} data-test-subj="deleteButton" color="danger">
         Delete
       </EuiButton>,
-      <EuiButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="secondary" data-test-subj="restoreButton">
+      <EuiButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="primary" data-test-subj="restoreButton">
         Restore
       </EuiButton>,
       <EuiButton onClick={this.onClickCreate} fill={true}>
@@ -348,26 +346,18 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
     return (
       <>
-        <EuiPageHeader
-          tabs={[
-            {
-              label: "Snapshots",
-              isSelected: true,
-              onClick: this.onClickTab,
-            },
-            {
-              label: "Restore activities in progress",
-              onClick: this.onClickTab,
-            },
-          ]}
-          paddingSize="l"
-          onClick={this.onClickTab}
-        />
+        <EuiPageHeader>
+          <EuiTabs size="m" >
+            <EuiTab isSelected={true} onClick={this.onClickTab} >Snapshots</EuiTab>
+            <EuiTab onClick={this.onClickTab} >Restore activities in progress</EuiTab>
+          </EuiTabs>
+        </EuiPageHeader>
         {snapshotPanel || (
           <RestoreActivitiesPanel
             snapshotManagementService={snapshotManagementService}
-            indexService={indexService}
+            repository={selectedItems[0].repository}
             snapshotId={selectedItems[0].id}
+            restoreStartRef={restoreStart}
           />
         )}
         {snapshotPanel && (
@@ -415,6 +405,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             snapshotManagementService={this.props.snapshotManagementService}
             indexService={this.props.indexService}
             onCloseFlyout={this.onCloseRestoreFlyout}
+            getTime={this.getRestoreReferenceTime}
             restoreSnapshot={this.restoreSnapshot}
             snapshotId={selectedItems[0].id}
             repository={selectedItems[0].repository}

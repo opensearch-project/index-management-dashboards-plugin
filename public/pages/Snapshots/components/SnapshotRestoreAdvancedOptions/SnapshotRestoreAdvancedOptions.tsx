@@ -10,7 +10,6 @@ import IndexSettingsInput from "../../components/IndexSettingsInput";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 
 interface SnapshotAdvancedOptionsProps {
-  ignore: boolean;
   getIndexSettings: (indexSettings: string) => void;
   restoreAliases: boolean;
   onRestoreAliasesToggle: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -28,7 +27,6 @@ interface SnapshotAdvancedOptionsProps {
 }
 
 const SnapshotRestoreAdvancedOptions = ({
-  ignore,
   getIndexSettings,
   restoreAliases,
   onRestoreAliasesToggle,
