@@ -159,9 +159,12 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         // create dest index first
         const createRes = await this.props.commonService.apiCaller({
           endpoint: "indices.create",
+          method: REQUEST.PUT,
           data: {
             index: dest,
-            ...JSON.parse(destSettingsJson),
+            body: {
+              ...JSON.parse(destSettingsJson),
+            },
           },
         });
         if (createRes.error) {
@@ -226,7 +229,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           <EuiFormRow
             isInvalid={!!destError}
             error={destError}
-            helpText="Select an index from the list. If target index not created yet, create a new one."
+            helpText="Select an index from the list. If target index not exists, will create a new one."
           >
             <EuiComboBox
               placeholder="Select dest index"

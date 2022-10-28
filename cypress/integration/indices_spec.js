@@ -8,6 +8,7 @@ import samplePolicy from "../fixtures/sample_policy";
 
 const POLICY_ID = "test_policy_id";
 const SAMPLE_INDEX = "sample_index";
+const REINDEX_DEST = "index-reindex-01";
 
 describe("Indices", () => {
   beforeEach(() => {
@@ -207,6 +208,83 @@ describe("Indices", () => {
         "have.text",
         SAMPLE_INDEX
       );
+    });
+  });
+
+  describe("can perform reindex", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      // Load ecommerce data
+      cy.request({
+        method: "POST",
+        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/ecommerce`,
+        headers: {
+          "osd-xsrf": true,
+        },
+      }).then((response) => {
+        expect(response.status).equal(200);
+      });
+      cy.createIndex(SAMPLE_INDEX);
+    });
+
+    it("successfully", () => {
+      // Confirm we have our initial index
+      cy.contains(SAMPLE_INDEX);
+
+      // Click actions button
+      cy.get('[data-test-subj="More Action"]').click();
+
+      // Delete btn should be disabled if no items selected
+      cy.get('[data-test-subj="Reindex Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // click any where to hide actions
+      cy.get("#_selection_column_opensearch_dashboards_sample_data_ecommerce-checkbox").click();
+      cy.get('[data-test-subj="Reindex Action"]').should("not.exist");
+
+      // Click actions button
+      cy.get('[data-test-subj="More Action"]').click();
+      // Delete btn should be enabled
+      cy.get('[data-test-subj="Reindex Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // source index populated
+      cy.get('[data-test-subj="sourceIndicesComboInput"] .euiBadge__text').contains("opensearch_dashboards_sample_data_ecommerce");
+
+      cy.get(`div[data-test-subj="destIndicesComboInput"]`)
+        .find(`input[data-test-subj="comboBoxSearchInput"]`)
+        .focus()
+        .type(`${SAMPLE_INDEX}{enter}`, { delay: 10 });
+
+      cy.wait(500);
+      // dest index settings not show up
+      cy.get('div[data-test-subj="destSettingJsonEditor"]').should("not.exist");
+
+      cy.get(`div[data-test-subj="destIndicesComboInput"]`)
+        .find(`input[data-test-subj="comboBoxSearchInput"]`)
+        .focus()
+        .type(`${REINDEX_DEST}{enter}`);
+
+      // dest index settings show up
+      cy.get('div[data-test-subj="destSettingJsonEditor"]').should("exist");
+
+      // input query to reindex subset
+      cy.get('[data-test-subj="queryJsonEditor"] textarea')
+        .focus()
+        .clear()
+        .type('{"query":{"match":{"category":"Men\'s Clothing"}}}', { parseSpecialCharSequences: false });
+
+      // click to perform reindex
+      cy.get('[data-test-subj="flyout-footer-action-button"]').click();
+      cy.wait(20);
+      cy.contains(`Reindex triggered successfully with taskId`);
+
+      // Type in index_z in search input
+      cy.get(`input[type="search"]`).focus().type(REINDEX_DEST);
+
+      // Confirm we only see index_z in table
+      cy.get("tbody > tr").should(($tr) => {
+        expect($tr, "1 row").to.have.length(1);
+        expect($tr, "item").to.contain(REINDEX_DEST);
+      });
     });
   });
 });
