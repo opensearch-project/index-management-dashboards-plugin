@@ -187,6 +187,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
           maxWidth={600}
           onClose={onCloseFlyout}
           size="m"
+          hideCloseButton
         >
           <IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored in" />
         </EuiFlyout>
