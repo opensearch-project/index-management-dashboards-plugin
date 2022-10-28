@@ -181,7 +181,16 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
   return (
     <>
-      {flyout && <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m"><IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored in" /></EuiFlyout>}
+      {flyout &&
+        <EuiFlyout
+          ownFocus={false}
+          maxWidth={600}
+          onClose={onCloseFlyout}
+          size="m"
+        >
+          <IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored in" />
+        </EuiFlyout>
+      }
       <ContentPanel title="Restore activities in progress" actions={actions}>
         <EuiInMemoryTable items={snapshotId && restoreCount ? restoreStatus : []} columns={columns} pagination={false} message={message} />
         <EuiSpacer size="xxl" />
