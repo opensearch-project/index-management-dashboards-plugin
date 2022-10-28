@@ -94,12 +94,13 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     // Loop through indices in response, filter out kibana index, 
     // gather progress info then use it to create progress field values.
     for (let item in response) {
+      const responseItem = item as keyof GetIndexRecoveryResponse;
       if (
         item.indexOf("kibana") < 0 &&
-        response[item as keyof GetIndexRecoveryResponse].shards &&
-        response[item as keyof GetIndexRecoveryResponse].shards[0].start_time_in_millis >= restoreStartRef
+        response[responseItem].shards &&
+        response[responseItem].shards[0].start_time_in_millis >= restoreStartRef
       ) {
-        const info = response[item as keyof GetIndexRecoveryResponse].shards[0];
+        const info = response[responseItem].shards[0];
         const stage = stages.indexOf(info.stage);
         const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
 
@@ -176,7 +177,7 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
     },
   ];
 
-  const message = (<EuiEmptyPrompt title={<h3>No restore activities currently in progress</h3>} titleSize="s" body=""></EuiEmptyPrompt>)
+  const message = (<EuiEmptyPrompt body={<p>There are no restore activities.</p>} titleSize="s"></EuiEmptyPrompt>)
 
   return (
     <>

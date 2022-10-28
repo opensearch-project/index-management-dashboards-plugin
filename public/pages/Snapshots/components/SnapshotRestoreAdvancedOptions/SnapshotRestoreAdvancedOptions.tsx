@@ -50,7 +50,14 @@ const SnapshotRestoreAdvancedOptions = ({
     <div style={{ padding: "10px 10px", width: width }}>
       <EuiCheckbox
         id={restore_aliases}
-        label={<CustomLabel title="Restore aliases" helpText="Restore index aliases alongside their associated indices" />}
+        label={<>
+          <EuiText size="s">Restore aliases</EuiText>
+          <EuiText
+            size="xs"
+            style={{ fontWeight: "200" }}>
+            Restore index aliases alongside their associated indices
+          </EuiText>
+        </>}
         checked={restoreAliases}
         onChange={onRestoreAliasesToggle}
       />
@@ -59,7 +66,7 @@ const SnapshotRestoreAdvancedOptions = ({
 
       <EuiCheckbox
         id={include_global_state}
-        label={<CustomLabel title="Restore cluster state from snapshots" />}
+        label={<EuiText size="s">Restore cluster state from snapshots</EuiText>}
         checked={restoreClusterState}
         onChange={onRestoreClusterStateToggle}
       />
@@ -69,10 +76,14 @@ const SnapshotRestoreAdvancedOptions = ({
       <EuiCheckbox
         id={ignore_unavailable}
         label={
-          <CustomLabel
-            title="Ignore unavailable indices"
-            helpText="Instead of failing snapshot, ignore any indexes that are unavailable or do not exist."
-          />
+          <>
+            <EuiText size="s">Ignore unavailable indices</EuiText>
+            <EuiText
+              size="xs"
+              style={{ fontWeight: "200" }}>
+              Instead of failing snapshot, ignore any indexes that are unavailable or do not exist.
+            </EuiText>
+          </>
         }
         checked={ignoreUnavailable}
         onChange={onIgnoreUnavailableToggle}
@@ -93,7 +104,16 @@ const SnapshotRestoreAdvancedOptions = ({
 
       <EuiCheckbox
         id={customize_index_settings}
-        label={<CustomLabel title="Customize index settings" helpText="Overrides index settings on all restored indices." />}
+        label={
+          <>
+            <EuiText size="s">Customize index settings</EuiText>
+            <EuiText
+              size="xs"
+              style={{ fontWeight: "200" }}>
+              Overrides index settings on all restored indices.
+            </EuiText>
+          </>
+        }
         checked={customizeIndexSettings}
         onChange={onCustomizeIndexSettingsToggle}
       />
@@ -105,7 +125,14 @@ const SnapshotRestoreAdvancedOptions = ({
       <EuiCheckbox
         id={ignore_index_settings}
         label={
-          <CustomLabel title="Ignore index settings" helpText="Exclude index settings that you don't want to restore from a snapshot." />
+          <>
+            <EuiText size="s">Ignore index settings</EuiText>
+            <EuiText
+              size="xs"
+              style={{ fontWeight: "200" }}>
+              Exclude index settings that you don't want to restore from a snapshot.
+            </EuiText>
+          </>
         }
         checked={ignoreIndexSettings}
         onChange={onIgnoreIndexSettingsToggle}

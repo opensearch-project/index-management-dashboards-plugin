@@ -34,7 +34,7 @@ const SnapshotRestoreOption = ({
       <EuiRadio
         id={restore_all_indices}
         name="restore_option"
-        label={<CustomLabel title="Restore all indices in snapshot" />}
+        label="Restore all indices in snapshot"
         checked={restoreAllIndices}
         onChange={onRestoreAllIndicesToggle}
       />
@@ -44,7 +44,7 @@ const SnapshotRestoreOption = ({
       <EuiRadio
         id={restore_specific_indices}
         name="restore_option"
-        label={<CustomLabel title="Restore specific indices" />}
+        label="Restore specific indices"
         checked={restoreSpecificIndices}
         onChange={onRestoreSpecificIndicesToggle}
       />

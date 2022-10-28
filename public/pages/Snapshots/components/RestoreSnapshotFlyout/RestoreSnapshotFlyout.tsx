@@ -16,7 +16,8 @@ import {
   EuiFlexItem,
   EuiAccordion,
   EuiCheckbox,
-  EuiCallOut
+  EuiCallOut,
+  EuiText
 } from "@elastic/eui";
 import _ from "lodash";
 import React, { Component, ChangeEvent } from "react";
@@ -457,7 +458,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 <EuiSpacer size="s" />
                 <EuiCheckbox
                   id={partial}
-                  label={<CustomLabel title="Allow restore partial snapshots" />}
+                  label={<EuiText size="s">Allow restore partial snapshots</EuiText>}
                   checked={String(_.get(snapshot, partial, false)) == "true"}
                   onChange={this.onToggle}
                 />
