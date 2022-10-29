@@ -77,8 +77,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       selectedIndexOptions: [],
       renameIndices: "add_prefix",
       prefix: "restored_",
-      renamePattern: "",
-      renameReplacement: "",
+      renamePattern: "(.+)",
+      renameReplacement: "restored_$1",
       listIndices: false,
       customIndexSettings: "",
       ignoreIndexSettings: "",
@@ -118,7 +118,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const restoreCount = restoreSpecific ? selectedIndexOptions.length : indexOptions.length;
 
     const options = {
-      indices: restoreSpecific ? this.checkSelectedIndices(selectedIndices) : allIndices,
+      indices: restoreSpecific ? selectedIndices : allIndices,
       index_settings: customIndexSettings.length ? this.testJSON(customIndexSettings) : "",
       ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
@@ -130,9 +130,18 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
-    if (typeof options.index_settings !== "string") {
+    this.checkSelectedIndices(options.indices);
+    let isValidRegex = this.checkValidRegex(options.rename_pattern);
+    isValidRegex = isValidRegex ? this.checkValidReplacement(options.rename_replacement) : false;
+
+    if (
+      typeof options.index_settings !== "string" ||
+      options.indices.length === 0 ||
+      !isValidRegex
+    ) {
       return;
     }
+
     if (!options.index_settings) {
       delete options.index_settings;
     }
@@ -165,16 +174,32 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
   }
 
-  checkSelectedIndices = (indices: string): string | boolean => {
+  checkSelectedIndices = (indices: string): string | undefined => {
     const { restoreSpecific } = this.state;
-    try {
-      if (restoreSpecific && indices.length === 0) {
-        throw "No indices selected.";
-      } else {
-        return indices;
-      }
-    } catch (err) {
 
+    if (restoreSpecific && indices.length === 0) {
+      this.context.notifications.toasts.addWarning(null, { title: "There are no indices selected." });
+    }
+    return;
+  }
+
+  checkValidRegex = (regex: string): boolean => {
+    try {
+      const userRegex = new RegExp(regex);
+
+      return true;
+    } catch (err) {
+      this.context.notifications.toasts.addWarning(null, { title: "Please enter a valid regular expression." });
+      return false;
+    }
+  }
+
+  checkValidReplacement = (regex: string): boolean => {
+    const isValid = regex.indexOf("$") >= 0;
+    if (isValid) {
+      return this.checkValidRegex(regex);
+    } else {
+      this.context.notifications.toasts.addWarning(null, { title: "Please enter a valid regular expression." });
       return false;
     }
   }

@@ -30,11 +30,12 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
   const [stage, setStage] = useState("");
   const [indices, setIndices] = useState([{}]);
   const [flyout, setFlyout] = useState(false);
+  const [statusOk, setStatusOk] = useState(true)
 
   useEffect(() => {
     context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
 
-    if (stage !== "Done (100%)" || indices.length < restoreCount) {
+    if (statusOk && stage !== "Done (100%)" || indices.length < restoreCount) {
       intervalIds.push(setInterval(() => {
         getRestoreStatus();
       }, 2000))
@@ -69,7 +70,12 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
         });
       }
     } catch (err) {
+      setStatusOk(false);
       context?.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the recovery status."));
+      intervalIds.forEach((id) => {
+        clearInterval(id);
+      })
+      return;
     }
   };
 
