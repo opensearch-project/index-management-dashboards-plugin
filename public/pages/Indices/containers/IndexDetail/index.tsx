@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   EuiButtonEmpty,
   EuiCopy,
@@ -16,24 +16,22 @@ import {
   EuiSpacer,
   EuiFlexGroup,
   EuiButton,
-  EuiTable,
   EuiBasicTable,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
 import { IndexItem } from "../../../../../models/interfaces";
 import { Modal } from "../../../../components/Modal";
-import IndicesActions from "../IndicesActions";
+import IndicesActions, { IndicesActionsProps } from "../IndicesActions";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
-import { ServerResponse } from "../../../../../server/models/types";
 import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
+import { ServicesContext } from "../../../../services";
+import { BrowserServices } from "../../../../models/interfaces";
 
-export interface IndexDetailModalProps {
+export interface IndexDetailModalProps extends Pick<IndicesActionsProps, "onDelete"> {
   index: string;
   record: ManagedCatIndex;
-  onDelete?: () => void;
-  getDetail?: (index: string) => Promise<ServerResponse<IndexItem>>;
 }
 
 interface IFinalDetail extends ManagedCatIndex, IndexItem {}
@@ -97,7 +95,7 @@ const OVERVIEW_DISPLAY_INFO: {
 ];
 
 export default function IndexDetail(props: IndexDetailModalProps) {
-  const { index, record, onDelete, getDetail } = props;
+  const { index, record, onDelete } = props;
   const [visible, setVisible] = useState(false);
   const [detail, setDetail] = useState({} as IndexItem);
   const finalDetail: IFinalDetail = useMemo(
@@ -107,10 +105,28 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     }),
     [record, detail]
   );
+  const services = useContext(ServicesContext) as BrowserServices;
+
   useEffect(() => {
     if (visible) {
-      getDetail &&
-        getDetail(index).then((res) => {
+      services.commonService
+        .apiCaller<Record<string, IndexItem>>({
+          endpoint: "indices.get",
+          data: {
+            index,
+          },
+        })
+        .then((res) => {
+          if (!res.ok) {
+            return res;
+          }
+
+          return {
+            ...res,
+            response: res.response[index],
+          };
+        })
+        .then((res) => {
           if (res && res.ok) {
             setDetail(res.response);
           }

@@ -113,7 +113,7 @@ const IndexDetail = (
           onChange({
             ...data,
             mappings: {
-              properties: transformObjectToArray(data.mappings?.properties || {}),
+              properties: transformObjectToArray(data?.mappings?.properties || {}),
             },
           });
           hasEdit.current = false;
