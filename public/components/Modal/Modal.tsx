@@ -47,7 +47,7 @@ interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth"> {
   content?: React.ReactChild;
   type?: "alert" | "confirm";
   visible?: boolean;
-  "data-test-subj": string;
+  "data-test-subj"?: string;
   onOk?: () => void | Promise<any>;
   onCancel?: () => void | Promise<any>;
   onClose?: () => void;

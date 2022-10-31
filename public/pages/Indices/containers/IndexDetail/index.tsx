@@ -149,14 +149,13 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         }}
         onClose={() => setVisible(false)}
         title={
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span>{index}</span>
             <IndicesActions selectedItems={[record]} onDelete={onDelete} />
           </div>
         }
         content={
           <EuiTabbedContent
-            display="condensed"
             tabs={[
               {
                 id: "index-detail-modal-overview",
@@ -190,9 +189,9 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                 content: (
                   <>
                     <EuiSpacer />
-                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="flexEnd">
+                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
                       <EuiFlexItem grow={false}>
-                        <h6>Advanced index settings</h6>
+                        <h2>Advanced index settings</h2>
                       </EuiFlexItem>
                       <EuiFlexItem grow={false}>
                         <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.settings}`}>
@@ -217,9 +216,9 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                 content: (
                   <>
                     <EuiSpacer />
-                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="flexEnd">
+                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
                       <EuiFlexItem grow={false}>
-                        <h6>Index mappings</h6>
+                        <h2>Index mappings</h2>
                       </EuiFlexItem>
                       <EuiFlexItem grow={false}>
                         <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.mappings}`}>
@@ -244,9 +243,9 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                 content: (
                   <>
                     <EuiSpacer />
-                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="flexEnd">
+                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
                       <EuiFlexItem grow={false}>
-                        <h6>Index alias</h6>
+                        <h2>Index alias</h2>
                       </EuiFlexItem>
                       <EuiFlexItem grow={false}>
                         <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.alias}`}>
