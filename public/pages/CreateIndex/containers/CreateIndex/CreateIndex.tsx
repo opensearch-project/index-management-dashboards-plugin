@@ -8,6 +8,8 @@ import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmp
 import { RouteComponentProps } from "react-router-dom";
 import { get, pick, set } from "lodash";
 import { diffArrays } from "diff";
+// eui depends on react-ace, so we can import react-ace here
+import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
 import IndexDetail from "../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
 import { BREADCRUMBS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
@@ -16,6 +18,7 @@ import { IIndexDetailRef, IndexDetailProps } from "../../components/IndexDetail/
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
 import { CommonService } from "../../../../services/index";
 import { ServerResponse } from "../../../../../server/models/types";
+import { Modal } from "../../../../components/Modal";
 
 interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
   isEdit?: boolean;
@@ -219,6 +222,37 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     };
   };
 
+  showDiff = async (): Promise<ServerResponse<any>> => {
+    return new Promise((resolve, reject) => {
+      Modal.show({
+        title: "Please confirm the change.",
+        "data-test-subj": "change_diff_confirm",
+        type: "confirm",
+        content: (
+          <>
+            <h2>The following changes will be done once you click the confirm button, Please make sure you want to do all the changes.</h2>
+            <EuiSpacer />
+            <MonacoEditorDiffReact
+              options={{
+                readOnly: true,
+              }}
+              language="json"
+              width="100%"
+              height={600}
+              original={JSON.stringify(this.state.oldIndexDetail, null, 2)}
+              modified={JSON.stringify(this.state.indexDetail, null, 2)}
+            />
+          </>
+        ),
+        onOk: () =>
+          resolve({
+            ok: true,
+            response: {},
+          }),
+      });
+    });
+  };
+
   onSubmit = async (): Promise<void> => {
     const { mode } = this.props.match.params;
     const { indexDetail } = this.state;
@@ -229,9 +263,13 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     this.setState({ isSubmitting: true });
     let result: ServerResponse<any>;
     if (this.isEdit) {
-      let chainedPromises = [];
+      const diffConfirm = await this.showDiff();
+      if (!diffConfirm.ok) {
+        return;
+      }
+      let chainedPromises: Promise<ServerResponse<any>>[] = [];
       if (!mode) {
-        chainedPromises = [this.updateMappings(), this.updateAlias(), this.updateSettings()];
+        chainedPromises.push(...[this.updateMappings(), this.updateAlias(), this.updateSettings()]);
       } else {
         switch (mode) {
           case IndicesUpdateMode.alias:

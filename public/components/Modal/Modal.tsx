@@ -47,6 +47,7 @@ interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth"> {
   content?: React.ReactChild;
   type?: "alert" | "confirm";
   visible?: boolean;
+  "data-test-subj": string;
   onOk?: () => void | Promise<any>;
   onCancel?: () => void | Promise<any>;
   onClose?: () => void;
@@ -62,6 +63,7 @@ const blank = () => null;
 const SimpleModal = (props: IShowOptions) => {
   const [modalVisible, setModalVisible] = useState(props.visible === undefined ? true : props.visible);
   const { title, content, locale, onOk = blank, onCancel = blank, onClose = blank, ...others } = props;
+  const testSubj = props["data-test-subj"] || title || Date.now();
   const defaultLocale: IShowOptions["locale"] = {
     ok: "OK",
     confirm: "Confirm",
@@ -96,6 +98,7 @@ const SimpleModal = (props: IShowOptions) => {
             <EuiButton
               fill
               color="primary"
+              data-test-subj={`${testSubj}-confirm`}
               onClick={async () => {
                 await onOk();
                 close();
@@ -104,6 +107,7 @@ const SimpleModal = (props: IShowOptions) => {
               {finalLocale.confirm}
             </EuiButton>
             <EuiButton
+              data-test-subj={`${testSubj}-cancel`}
               onClick={async () => {
                 await onCancel();
                 close();
@@ -117,6 +121,7 @@ const SimpleModal = (props: IShowOptions) => {
             <EuiButton
               fill
               color="primary"
+              data-test-subj={`${testSubj}-ok`}
               onClick={async () => {
                 await onOk();
                 close();

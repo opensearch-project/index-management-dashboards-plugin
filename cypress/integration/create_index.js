@@ -102,7 +102,10 @@ describe("Create Index", () => {
         .click()
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
-        .click({ force: true });
+        .click({ force: true })
+        .end()
+        .get('[data-test-subj="change_diff_confirm-confirm"]')
+        .click();
 
       // check the index
       cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
@@ -135,7 +138,9 @@ describe("Create Index", () => {
         .type(2)
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
-        .click({ force: true });
+        .click({ force: true })
+        .get('[data-test-subj="change_diff_confirm-confirm"]')
+        .click();
 
       cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
@@ -159,7 +164,9 @@ describe("Create Index", () => {
         .click()
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
-        .click({ force: true });
+        .click({ force: true })
+        .get('[data-test-subj="change_diff_confirm-confirm"]')
+        .click();
 
       cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
