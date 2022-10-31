@@ -18,10 +18,12 @@ import SimplePopover from "../../../../components/SimplePopover";
 import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
-import { CommonService, IndexService, ServicesContext } from "../../../../services";
 import ReindexFlyout from "../ReindexFlyout";
 import { REQUEST } from "../../../../../utils/constants";
 import { ReindexRequest } from "../../models/interfaces";
+import IndexService from "../../../../services/IndexService";
+import CommonService from "../../../../services/CommonService";
+import { ServicesContext } from "../../../../services";
 
 interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
@@ -31,7 +33,7 @@ interface IndicesActionsProps {
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, indexService, commonService } = props;
+  const { selectedItems, onDelete, commonService } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [isReindexFlyoutVisible, setIsReindexFlyoutVisible] = useState(false);
   const context = useContext(CoreServicesContext);
@@ -138,8 +140,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
 
       {isReindexFlyoutVisible && (
         <ReindexFlyout
-          indexService={indexService}
-          commonService={commonService}
+          {...props}
           onCloseFlyout={onCloseReindexFlyout}
           sourceIndices={selectedItems.map((item) => item.index)}
           onReindexConfirmed={onReindexConfirmed}

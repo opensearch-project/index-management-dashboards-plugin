@@ -21,7 +21,6 @@ import _ from "lodash";
 import React, { Component } from "react";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CommonService, IndexService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
@@ -31,6 +30,7 @@ import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
 import { ReindexRequest } from "../../models/interfaces";
 import { DSL_DOCUMENTATION_URL } from "../../../../utils/constants";
+import { CommonService, IndexService } from "../../../../services";
 
 interface ReindexProps {
   commonService: CommonService;

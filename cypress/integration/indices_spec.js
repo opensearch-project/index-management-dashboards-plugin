@@ -254,7 +254,6 @@ describe("Indices", () => {
         .focus()
         .type(`${SAMPLE_INDEX}{enter}`, { delay: 10 });
 
-      cy.wait(500);
       // dest index settings not show up
       cy.get('div[data-test-subj="destSettingJsonEditor"]').should("not.exist");
 
@@ -277,10 +276,10 @@ describe("Indices", () => {
       cy.wait(20);
       cy.contains(`Reindex triggered successfully with taskId`);
 
-      // Type in index_z in search input
+      // Type in REINDEX_DEST in search input
       cy.get(`input[type="search"]`).focus().type(REINDEX_DEST);
 
-      // Confirm we only see index_z in table
+      // Confirm we only see REINDEX_DEST in table
       cy.get("tbody > tr").should(($tr) => {
         expect($tr, "1 row").to.have.length(1);
         expect($tr, "item").to.contain(REINDEX_DEST);
