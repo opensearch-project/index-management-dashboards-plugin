@@ -53,8 +53,10 @@ export interface Toast {
 }
 
 export interface RestoreError {
-  reason?: string,
-  type?: string
+  reason?: string;
+  type?: string;
+  ok?: boolean;
+  error?: string;
 }
 
 export interface LatestActivities {

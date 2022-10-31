@@ -8,7 +8,8 @@ import _ from "lodash";
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { getErrorMessage } from "../../../../utils/helpers";
+import { getToasts } from "../../helper"
+import { Toast } from "../../../../models/interfaces"
 import { GetIndexRecoveryResponse, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -16,6 +17,9 @@ import IndexList from "../IndexList";
 
 interface RestoreActivitiesPanelProps {
   snapshotManagementService: SnapshotManagementService;
+  onOpenError: () => void;
+  sendError: (error: object) => void;
+  sendToasts: (toasts: Toast[]) => void;
   snapshotId: string;
   restoreStartRef: number;
   restoreCount: number
@@ -23,7 +27,16 @@ interface RestoreActivitiesPanelProps {
 
 const intervalIds: ReturnType<typeof setInterval>[] = [];
 
-export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, restoreStartRef, restoreCount }: RestoreActivitiesPanelProps) => {
+export const RestoreActivitiesPanel = (
+  {
+    onOpenError,
+    sendError,
+    sendToasts,
+    snapshotManagementService,
+    snapshotId,
+    restoreStartRef,
+    restoreCount
+  }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
@@ -61,21 +74,32 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
         setRestoreStatus(response);
       } else {
-        context?.notifications.toasts.addDanger(res.error);
-        const message = JSON.parse(res.error).error.root_cause[0].reason
-        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
-        context?.notifications.toasts.addError(JSON.parse(res.error), {
-          title: `There was a problem loading the recovery status.`,
-          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
-        });
+        const toasts = getToasts(
+          "error_restore_toast",
+          `There was a problem preventing restore of snapshot ${snapshotId} from completing.`,
+          snapshotId,
+          onOpenError
+        );
+
+        res.error = res.error.concat(`, please check your connection`);
+        sendError(res);
+        sendToasts(toasts)
+        intervalIds.forEach((id) => {
+          clearInterval(id);
+        })
+        return;
       }
     } catch (err) {
+      const toasts = getToasts(
+        "error_restore_toast",
+        `There was a problem preventing restore of snapshot ${snapshotId} from completing.`,
+        snapshotId,
+        onOpenError
+      );
+
       setStatusOk(false);
-      context?.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the recovery status."));
-      intervalIds.forEach((id) => {
-        clearInterval(id);
-      })
-      return;
+      sendError(err);
+      sendToasts(toasts)
     }
   };
 
@@ -122,12 +146,12 @@ export const RestoreActivitiesPanel = ({ snapshotManagementService, snapshotId, 
 
         if (info.source.index && info.source.snapshot === snapshotId) {
           minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
-          indexes.push({ index: info.source.index, "store.size": size });
+          indexes.push({ index: info.source.index, "restore_status": size });
         }
       }
     }
     let percent = Math.floor((doneCount / restoreCount) * 100);
-
+    console.log("how many? ", indices.length)
     setIndices(indexes);
     setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
     setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "))

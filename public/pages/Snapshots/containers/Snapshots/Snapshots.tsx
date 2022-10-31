@@ -292,6 +292,14 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     this.setState({ viewError: true });
   }
 
+  collectError = (error: object) => {
+    this.setState(error);
+  }
+
+  collectToast = (toasts: Toast[]) => {
+    this.setState({ toasts: toasts })
+  }
+
   onCloseModal = () => {
     this.setState({ viewError: false, error: {} });
   }
@@ -440,6 +448,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         {snapshotPanel || (
           <RestoreActivitiesPanel
             snapshotManagementService={snapshotManagementService}
+            onOpenError={this.onOpenError}
+            sendError={this.collectError}
+            sendToasts={this.collectToast}
             snapshotId={selectedItems[0]?.id || ""}
             restoreStartRef={restoreStart || 0}
             restoreCount={restoreCount || 0}
