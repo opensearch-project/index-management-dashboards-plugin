@@ -11,7 +11,6 @@ import {
   EuiFlyoutFooter,
   EuiFlyoutHeader,
   EuiFormRow,
-  EuiIcon,
   EuiLink,
   EuiSpacer,
   EuiText,
@@ -30,14 +29,13 @@ import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
 import { ReindexRequest } from "../../models/interfaces";
 import { DSL_DOCUMENTATION_URL } from "../../../../utils/constants";
-import { CommonService, IndexService } from "../../../../services";
+import { BrowserServices } from "../../../../models/interfaces";
 
 interface ReindexProps {
-  commonService: CommonService;
-  indexService: IndexService;
+  services: BrowserServices;
   sourceIndices: string[];
   onCloseFlyout: () => void;
-  onReindexConfirmed: (request: ReindexRequest) => void;
+  onReindexConfirm: (request: ReindexRequest) => void;
 }
 
 interface ReindexState {
@@ -74,7 +72,10 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   };
 
   getIndexOptions = async (searchValue: string) => {
-    const { indexService, sourceIndices } = this.props;
+    const {
+      services: { indexService },
+      sourceIndices,
+    } = this.props;
     this.setState({ indexOptions: [] });
     try {
       const optionsResponse = await indexService.getDataStreamsAndIndicesNames(searchValue);
@@ -115,7 +116,10 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   };
 
   populateSourceIndexSettings = async () => {
-    const { sourceIndices, commonService } = this.props;
+    const {
+      services: { commonService },
+      sourceIndices,
+    } = this.props;
     if (sourceIndices.length === 1) {
       const res = await commonService.apiCaller({
         endpoint: "indices.get",
@@ -138,7 +142,11 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   };
 
   onClickAction = async () => {
-    const { sourceIndices, onReindexConfirmed } = this.props;
+    const {
+      sourceIndices,
+      onReindexConfirm,
+      services: { commonService },
+    } = this.props;
     const { jsonString, selectedIndexOptions, dataStreams, destSettingsJson } = this.state;
 
     if (!selectedIndexOptions || selectedIndexOptions.length != 1) {
@@ -157,7 +165,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     try {
       if (destSettingsJson) {
         // create dest index first
-        const createRes = await this.props.commonService.apiCaller({
+        const createRes = await commonService.apiCaller({
           endpoint: "indices.create",
           method: REQUEST.PUT,
           data: {
@@ -173,7 +181,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         }
       }
 
-      onReindexConfirmed({
+      onReindexConfirm({
         waitForCompletion: false,
         body: {
           source: {
@@ -205,7 +213,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     const { indexOptions, selectedIndexOptions, jsonString, destError, destSettingsJson } = this.state;
 
     return (
-      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={800} size="m" hideCloseButton>
+      <EuiFlyout ownFocus={true} onClose={onCloseFlyout} maxWidth={800} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle"> Reindex </h2>
@@ -229,7 +237,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           <EuiFormRow
             isInvalid={!!destError}
             error={destError}
-            helpText="Select an index from the list. If target index not exists, will create a new one."
+            helpText="Select an index from the list. If target index not exists, will create a new one based on source"
           >
             <EuiComboBox
               placeholder="Select dest index"
@@ -247,7 +255,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           </EuiFormRow>
 
           <EuiSpacer size="m" />
-          {destSettingsJson && <CustomLabel title="Dest index settings & mappings for creation" />}
+          {destSettingsJson && <CustomLabel title="Dest index configuration" />}
           {destSettingsJson && (
             <DarkModeConsumer>
               {(isDarkMode) => (
@@ -269,7 +277,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           <CustomLabel title="Query expression to reindex a subset of documents" isOptional={true} />
           <EuiText size="xs">
             <EuiLink href={DSL_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              see Full-text queries <EuiIcon type="popout" size="s" />
+              see Full-text queries
             </EuiLink>
           </EuiText>
           <DarkModeConsumer>

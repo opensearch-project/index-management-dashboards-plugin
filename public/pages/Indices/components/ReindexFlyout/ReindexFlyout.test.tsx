@@ -23,7 +23,7 @@ describe("<ReindexFlyout /> spec", () => {
     let component = render(
       <ReindexFlyout
         onCloseFlyout={() => {}}
-        onReindexConfirmed={() => {}}
+        onReindexConfirm={() => {}}
         indexService={browserServicesMock.indexService}
         commonService={browserServicesMock.commonService}
         sourceIndices={["test-index-01"]}
@@ -47,7 +47,7 @@ describe("<ReindexFlyout /> spec", () => {
         render(
         <ReindexFlyout
           onCloseFlyout={() => {}}
-          onReindexConfirmed={() => {}}
+          onReindexConfirm={() => {}}
           indexService={browserServicesMock.indexService}
           commonService={browserServicesMock.commonService}
           sourceIndices={["test-index-01"]}
@@ -75,7 +75,7 @@ describe("<ReindexFlyout /> spec", () => {
         render(
         <ReindexFlyout
           onCloseFlyout={() => {}}
-          onReindexConfirmed={() => {}}
+          onReindexConfirm={() => {}}
           indexService={browserServicesMock.indexService}
           commonService={browserServicesMock.commonService}
           sourceIndices={["test-index-01"]}
@@ -101,7 +101,7 @@ describe("<ReindexFlyout /> spec", () => {
         render(
         <ReindexFlyout
           onCloseFlyout={() => {}}
-          onReindexConfirmed={() => {}}
+          onReindexConfirm={() => {}}
           indexService={browserServicesMock.indexService}
           commonService={browserServicesMock.commonService}
           sourceIndices={["test-index-01"]}
@@ -130,7 +130,7 @@ describe("<ReindexFlyout /> spec", () => {
         render(
         <ReindexFlyout
           onCloseFlyout={() => {}}
-          onReindexConfirmed={() => {}}
+          onReindexConfirm={() => {}}
           indexService={browserServicesMock.indexService}
           commonService={browserServicesMock.commonService}
           sourceIndices={["test-index-01"]}

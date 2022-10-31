@@ -35,7 +35,6 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
 import IndicesActions from "../IndicesActions";
-import { IndexItem } from "../../../../../models/interfaces";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
@@ -215,7 +214,14 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           <ContentPanelActions
             actions={[
               {
-                children: <IndicesActions {...this.props} onDelete={this.getIndices} selectedItems={this.state.selectedItems} />,
+                children: (
+                  <IndicesActions
+                    {...this.props}
+                    onReindex={this.getIndices}
+                    onDelete={this.getIndices}
+                    selectedItems={this.state.selectedItems}
+                  />
+                ),
                 text: "",
               },
               {
@@ -247,6 +253,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
         <EuiBasicTable
           columns={indicesColumns(isDataStreamColumnVisible, {
             onDelete: this.getIndices,
+            onReindex: this.getIndices,
           })}
           isSelectable={true}
           itemId="index"

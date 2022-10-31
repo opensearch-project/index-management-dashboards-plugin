@@ -11,24 +11,21 @@ import SimplePopover from "../../../../components/SimplePopover";
 import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
-import ReindexFlyout from "../ReindexFlyout";
 import { REQUEST } from "../../../../../utils/constants";
 import { ReindexRequest } from "../../models/interfaces";
-import IndexService from "../../../../services/IndexService";
-import CommonService from "../../../../services/CommonService";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
+import ReindexFlyout from "../../components/ReindexFlyout";
 
 export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
   onDelete: () => void;
-  indexService: IndexService;
-  commonService: CommonService;
+  onReindex?: () => void;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, commonService } = props;
+  const { selectedItems, onDelete, onReindex } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [isReindexFlyoutVisible, setIsReindexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -54,18 +51,19 @@ export default function IndicesActions(props: IndicesActionsProps) {
     }
   }, [services, coreServices, props.onDelete, onDeleteIndexModalClose]);
 
-  const onReindexConfirmed = async (reindexRequest: ReindexRequest) => {
-    let res = await commonService.apiCaller({
+  const onReindexConfirm = async (reindexRequest: ReindexRequest) => {
+    let res = await services.commonService.apiCaller({
       endpoint: "reindex",
       method: REQUEST.POST,
       data: reindexRequest,
     });
     if (res.ok) {
       // @ts-ignore
-      context?.notifications.toasts.addSuccess(`Reindex triggered successfully with taskId ${res.response.task}`);
+      coreServices.notifications.toasts.addSuccess(`Reindex triggered successfully with taskId ${res.response.task}`);
       onCloseReindexFlyout();
+      onReindex && onReindex();
     } else {
-      context?.notifications.toasts.addDanger(`Reindex operation error happened ${res.error}`);
+      coreServices.notifications.toasts.addDanger(`Reindex operation error ${res.error}`);
     }
   };
 
@@ -135,10 +133,10 @@ export default function IndicesActions(props: IndicesActionsProps) {
 
       {isReindexFlyoutVisible && (
         <ReindexFlyout
-          {...props}
+          services={services}
           onCloseFlyout={onCloseReindexFlyout}
           sourceIndices={selectedItems.map((item) => item.index)}
-          onReindexConfirmed={onReindexConfirmed}
+          onReindexConfirm={onReindexConfirm}
         />
       )}
     </>
