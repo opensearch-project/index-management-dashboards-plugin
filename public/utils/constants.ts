@@ -22,6 +22,7 @@ export const REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/
 export const FS_REPOSITORY_DOCUMENTATION_URL =
   "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#shared-file-system";
 export const S3_REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#amazon-s3";
+export const SHRINK_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/api-reference/index-apis/shrink-index";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
