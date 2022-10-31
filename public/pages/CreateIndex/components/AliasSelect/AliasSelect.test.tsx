@@ -4,12 +4,14 @@
  */
 
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import AliasSelect from "./index";
 
 describe("<AliasSelect /> spec", () => {
-  it("renders the component", () => {
+  it("renders the component", async () => {
     const { container } = render(<AliasSelect refreshOptions={() => Promise.resolve({ ok: true, response: [] })} onChange={() => {}} />);
-    expect(container.firstChild).toMatchSnapshot();
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
   });
 });

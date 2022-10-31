@@ -3,14 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import {
-  // @ts-ignore
-  Criteria,
-  // @ts-ignore
-  Pagination,
-  EuiButton,
-  EuiContextMenu,
-} from "@elastic/eui";
+import { EuiButton, EuiContextMenu } from "@elastic/eui";
 
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import ApplyPolicyModal from "../../components/ApplyPolicyModal";
@@ -24,10 +17,12 @@ import { ReindexRequest } from "../../models/interfaces";
 import IndexService from "../../../../services/IndexService";
 import CommonService from "../../../../services/CommonService";
 import { ServicesContext } from "../../../../services";
+import { BrowserServices } from "../../../../models/interfaces";
+import { CoreStart } from "opensearch-dashboards/public";
 
-interface IndicesActionsProps {
+export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
-  onDelete?: () => void;
+  onDelete: () => void;
   indexService: IndexService;
   commonService: CommonService;
 }
@@ -36,28 +31,28 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const { selectedItems, onDelete, commonService } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [isReindexFlyoutVisible, setIsReindexFlyoutVisible] = useState(false);
-  const context = useContext(CoreServicesContext);
-  const services = useContext(ServicesContext);
+  const coreServices = useContext(CoreServicesContext) as CoreStart;
+  const services = useContext(ServicesContext) as BrowserServices;
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
   };
 
   const onDeleteIndexModalConfirm = useCallback(async () => {
-    const result = await services?.commonService.apiCaller({
+    const result = await services.commonService.apiCaller({
       endpoint: "indices.delete",
       data: {
         index: selectedItems.map((item) => item.index).join(","),
       },
     });
     if (result && result.ok) {
+      coreServices.notifications.toasts.addSuccess("Delete successfully");
       onDeleteIndexModalClose();
-      context?.notifications.toasts.addSuccess("Delete successfully");
-      onDelete && onDelete();
+      onDelete();
     } else {
-      context?.notifications.toasts.addDanger(result?.error || "");
+      coreServices.notifications.toasts.addDanger(result?.error || "");
     }
-  }, [selectedItems, onDelete, services, context, onDeleteIndexModalClose]);
+  }, [services, coreServices, props.onDelete, onDeleteIndexModalClose]);
 
   const onReindexConfirmed = async (reindexRequest: ReindexRequest) => {
     let res = await commonService.apiCaller({
@@ -115,7 +110,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       onClick: () =>
                         onShow(ApplyPolicyModal, {
                           indices: selectedItems.map((item: ManagedCatIndex) => item.index),
-                          core: context,
+                          core: CoreServicesContext,
                         }),
                     },
                     {

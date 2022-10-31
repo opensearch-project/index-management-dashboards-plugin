@@ -53,6 +53,12 @@ export interface IndexItem {
   };
 }
 
+export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
+  mappings?: {
+    properties?: MappingsPropertiesObject;
+  };
+}
+
 /**
  * ManagedIndex item shown in the Managed Indices table
  */

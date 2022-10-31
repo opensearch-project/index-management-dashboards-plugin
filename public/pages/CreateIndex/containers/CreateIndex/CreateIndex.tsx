@@ -9,7 +9,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { get, pick, set } from "lodash";
 import { diffArrays } from "diff";
 import IndexDetail from "../../components/IndexDetail";
-import { IAliasAction, IndexItem, MappingsProperties } from "../../../../../models/interfaces";
+import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
 import { BREADCRUMBS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IIndexDetailRef, IndexDetailProps } from "../../components/IndexDetail/IndexDetail";
@@ -273,6 +273,27 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     this.setState({ isSubmitting: false });
   };
 
+  onSimulateIndexTemplate = (indexName: string) => {
+    return this.props.commonService
+      .apiCaller<{ template: IndexItemRemote }>({
+        endpoint: "transport.request",
+        data: {
+          path: `/_index_template/_simulate_index/${indexName}`,
+          method: "POST",
+        },
+      })
+      .then((res) => {
+        if (res.ok) {
+          return {
+            ...res,
+            response: res.response.template,
+          };
+        }
+
+        return res;
+      });
+  };
+
   render() {
     const isEdit = this.isEdit;
     const { indexDetail, isSubmitting, oldIndexDetail } = this.state;
@@ -290,6 +311,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
           value={indexDetail}
           oldValue={oldIndexDetail}
           onChange={this.onDetailChange}
+          onSimulateIndexTemplate={this.onSimulateIndexTemplate}
           refreshOptions={(aliasName) =>
             this.props.commonService.apiCaller({
               endpoint: "cat.aliases",

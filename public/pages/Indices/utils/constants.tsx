@@ -5,10 +5,9 @@
 
 import React from "react";
 import { EuiHealth, EuiTableFieldDataColumnType } from "@elastic/eui";
-import IndexDetail from "../components/IndexDetail";
+import IndexDetail from "../containers/IndexDetail";
+import { IndicesActionsProps } from "../containers/IndicesActions";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";
-import { IndexItem } from "../../../../models/interfaces";
-import { ServerResponse } from "../../../../server/models/types";
 import { SortDirection } from "../../../utils/constants";
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];
@@ -33,12 +32,9 @@ const HEALTH_TO_COLOR: {
   red: "danger",
 };
 
-interface IOptions {
-  onDelete?: () => void;
-  getDetail?: (index: string) => Promise<ServerResponse<IndexItem>>;
-}
+interface IColumnOptions extends Omit<IndicesActionsProps, "selectedItems"> {}
 
-const getColumns = (props?: IOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
+const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
   return [
     {
       field: "index",
@@ -144,7 +140,10 @@ const getColumns = (props?: IOptions): EuiTableFieldDataColumnType<ManagedCatInd
   ];
 };
 
-export const indicesColumns = (isDataStreamColumnVisible: boolean, options?: IOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
+export const indicesColumns = (
+  isDataStreamColumnVisible: boolean,
+  options: IColumnOptions
+): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
   return isDataStreamColumnVisible ? getColumns(options) : getColumns(options).filter((col) => col["field"] !== "data_stream");
 };
 
