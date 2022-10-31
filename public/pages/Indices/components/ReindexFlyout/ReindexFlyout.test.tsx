@@ -5,10 +5,11 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor } from "@testing-library/react";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import ReindexFlyout from "./ReindexFlyout";
 import { CoreServicesContext } from "../../../../components/core_services";
+import userEvent from "@testing-library/user-event";
 
 describe("<ReindexFlyout /> spec", () => {
   it("renders the component", async () => {
@@ -24,8 +25,7 @@ describe("<ReindexFlyout /> spec", () => {
       <ReindexFlyout
         onCloseFlyout={() => {}}
         onReindexConfirm={() => {}}
-        indexService={browserServicesMock.indexService}
-        commonService={browserServicesMock.commonService}
+        services={browserServicesMock}
         sourceIndices={["test-index-01"]}
       />
     );
@@ -48,8 +48,7 @@ describe("<ReindexFlyout /> spec", () => {
         <ReindexFlyout
           onCloseFlyout={() => {}}
           onReindexConfirm={() => {}}
-          indexService={browserServicesMock.indexService}
-          commonService={browserServicesMock.commonService}
+          services={browserServicesMock}
           sourceIndices={["test-index-01"]}
         />
         );
@@ -76,8 +75,7 @@ describe("<ReindexFlyout /> spec", () => {
         <ReindexFlyout
           onCloseFlyout={() => {}}
           onReindexConfirm={() => {}}
-          indexService={browserServicesMock.indexService}
-          commonService={browserServicesMock.commonService}
+          services={browserServicesMock}
           sourceIndices={["test-index-01"]}
         />
         );
@@ -102,8 +100,7 @@ describe("<ReindexFlyout /> spec", () => {
         <ReindexFlyout
           onCloseFlyout={() => {}}
           onReindexConfirm={() => {}}
-          indexService={browserServicesMock.indexService}
-          commonService={browserServicesMock.commonService}
+          services={browserServicesMock}
           sourceIndices={["test-index-01"]}
         />
         );
@@ -131,8 +128,7 @@ describe("<ReindexFlyout /> spec", () => {
         <ReindexFlyout
           onCloseFlyout={() => {}}
           onReindexConfirm={() => {}}
-          indexService={browserServicesMock.indexService}
-          commonService={browserServicesMock.commonService}
+          services={browserServicesMock}
           sourceIndices={["test-index-01"]}
         />
         );
@@ -146,5 +142,37 @@ describe("<ReindexFlyout /> spec", () => {
     expect(spy).toHaveBeenCalledWith("");
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error");
+  });
+
+  it("dest index must provided", async () => {
+    browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
+      ok: true,
+      response: {
+        dataStreams: ["test-ds-01"],
+        indices: ["test-index-01", "test-index-02"],
+      },
+    });
+    const spy = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
+    render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        render(
+        <ReindexFlyout
+          onCloseFlyout={() => {}}
+          onReindexConfirm={() => {}}
+          services={browserServicesMock}
+          sourceIndices={["test-index-01"]}
+        />
+        );
+      </CoreServicesContext.Provider>
+    );
+
+    // wait 1 tick for the searchPolicies promise to resolve
+    await waitFor(() => {});
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith("");
+
+    userEvent.click(screen.getByText("Execute"));
+    expect(screen.getByText("Destination must be provided.")).toBeInTheDocument();
   });
 });

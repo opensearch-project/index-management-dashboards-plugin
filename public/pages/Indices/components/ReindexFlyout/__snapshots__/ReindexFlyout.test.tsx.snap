@@ -4,13 +4,15 @@ exports[`<ReindexFlyout /> spec renders the component 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body
-    class="euiBody--hasFlyout"
+    class="euiBody-hasOverlayMask euiBody--hasFlyout"
   >
     <div
       aria-hidden="true"
       data-aria-hidden="true"
     />
-    <div>
+    <div
+      class="euiOverlayMask euiOverlayMask--belowHeader"
+    >
       <div
         aria-hidden="true"
         data-aria-hidden="true"
@@ -228,7 +230,7 @@ Object {
                       class="euiFormHelpText euiFormRow__text"
                       id="some_html_id-help-0"
                     >
-                      Select an index from the list. If target index not created yet, create a new one.
+                      Select an index from the list. If target index not exists, will create a new one based on source
                     </div>
                   </div>
                 </div>
@@ -280,8 +282,7 @@ Object {
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    see Full-text queries 
-                    EuiIconMock
+                    see Full-text queries
                     EuiIconMock
                     <span
                       class="euiScreenReaderOnly"

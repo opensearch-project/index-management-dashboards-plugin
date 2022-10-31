@@ -86,7 +86,12 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             return sourceIndices.indexOf(index) == -1;
           })
           .map((label) => ({ label }));
-        this.setState({ indexOptions: indices });
+        this.setState({
+          indexOptions: [
+            { label: "indices", options: indices },
+            { label: "dataStreams", options: dataStreams },
+          ],
+        });
         this.setState({ dataStreams: dataStreams });
       } else {
         // @ts-ignore
@@ -101,26 +106,28 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     }
   };
 
-  onCreateOption = (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => {
+  onCreateOption = (searchValue: string, options: EuiComboBoxOptionOption<IndexItem>[]) => {
     const normalizedSearchValue = searchValue.trim().toLowerCase();
     if (!normalizedSearchValue) {
       return;
     }
     const newOption = {
-      label: searchValue,
+      label: normalizedSearchValue,
     };
 
-    this.setState({ selectedIndexOptions: [newOption] });
+    if (options.findIndex((option) => option.label.trim().toLowerCase() === normalizedSearchValue) === -1) {
+      this.populateSourceIndexSettings(searchValue);
+    }
 
-    this.populateSourceIndexSettings();
+    this.setState({ selectedIndexOptions: [newOption] });
   };
 
-  populateSourceIndexSettings = async () => {
+  populateSourceIndexSettings = async (dest: string) => {
     const {
       services: { commonService },
       sourceIndices,
     } = this.props;
-    if (sourceIndices.length === 1) {
+    if (sourceIndices.length === 1 && sourceIndices[0] != dest) {
       const res = await commonService.apiCaller({
         endpoint: "indices.get",
         method: REQUEST.GET,
@@ -176,7 +183,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           },
         });
         if (createRes.error) {
-          this.context.notifications.toasts.addDanger(`Create dest index error ${createRes.error}`);
+          this.context.notifications.toasts.addDanger(`Create dest index ${dest} with error ${createRes.error}`);
           return;
         }
       }
@@ -213,7 +220,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     const { indexOptions, selectedIndexOptions, jsonString, destError, destSettingsJson } = this.state;
 
     return (
-      <EuiFlyout ownFocus={true} onClose={onCloseFlyout} maxWidth={800} size="m" hideCloseButton>
+      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={800} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle"> Reindex </h2>
