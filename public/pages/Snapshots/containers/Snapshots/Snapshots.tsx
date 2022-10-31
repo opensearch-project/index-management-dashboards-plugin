@@ -304,8 +304,8 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     this.setState({ viewError: false, error: {} });
   }
 
-  getRestoreInfo = (time: number, count: number) => {
-    this.setState({ restoreStart: time, restoreCount: count })
+  getRestoreTime = (time: number) => {
+    this.setState({ restoreStart: time })
   }
 
   onClickRestore = async () => {
@@ -504,7 +504,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
               snapshotManagementService={this.props.snapshotManagementService}
               indexService={this.props.indexService}
               onCloseFlyout={this.onCloseRestoreFlyout}
-              getRestoreInfo={this.getRestoreInfo}
+              getRestoreTime={this.getRestoreTime}
               restoreSnapshot={this.restoreSnapshot}
               snapshotId={selectedItems[0].id}
               repository={selectedItems[0].repository}

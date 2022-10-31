@@ -11,6 +11,7 @@ import { RestoreError } from "../../../../models/interfaces"
 interface ErrorModalProps {
   error: RestoreError;
   onClick: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement> | undefined) => void;
+  onClose: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement> | undefined) => void;
 }
 
 const ErrorModal = ({ onClick, error }: ErrorModalProps) => {

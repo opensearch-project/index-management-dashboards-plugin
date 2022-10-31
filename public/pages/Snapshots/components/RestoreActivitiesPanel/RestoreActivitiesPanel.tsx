@@ -160,13 +160,18 @@ export const RestoreActivitiesPanel = (
 
     for (let index of indicesToRestore) {
       if (indicesStarted.indexOf(index) < 0) {
-        updatedIndices.push({ index, restore_status: "PENDING" })
+        updatedIndices.push({ index, restore_status: "Pending" })
       }
     }
 
+    const sortedUpdatedIndices = updatedIndices.sort((a, b) => {
+      if (a.index < b.index) return -1;
+      if (a.index > b.index) return 1;
+      return 0;
+    });
     const percent = Math.floor((doneCount / restoreCount) * 100);
 
-    setIndices(updatedIndices);
+    setIndices(sortedUpdatedIndices);
     setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
     setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "))
 
