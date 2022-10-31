@@ -90,7 +90,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     }
     this.context.chrome.setBreadcrumbs([
       BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDEX_POLICIES,
+      BREADCRUMBS.INDICES,
       isEdit ? BREADCRUMBS.EDIT_INDEX : BREADCRUMBS.CREATE_INDEX,
     ]);
   };
