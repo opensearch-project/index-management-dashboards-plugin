@@ -26,6 +26,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
+import { browseIndicesCols } from "../../../../utils/constants"
 import { IndexItem } from "../../../../../models/interfaces";
 import { CatRepository, GetSnapshot, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
@@ -378,6 +379,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
           <IndexList
             indices={indicesList}
             snapshot={snapshotId}
+            columns={browseIndicesCols}
             onClick={this.onBackArrowClick}
             title="Indices in snapshot"
           />

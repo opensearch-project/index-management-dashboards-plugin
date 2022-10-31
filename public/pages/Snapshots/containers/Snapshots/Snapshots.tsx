@@ -48,7 +48,7 @@ interface SnapshotsState {
   loadingSnapshots: boolean;
   snapshotPanel: boolean;
   restoreStart: number;
-  restoreCount: number;
+  indicesToRestore: string;
   toasts: Toast[];
   viewError: boolean;
   error: RestoreError;
@@ -81,7 +81,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       loadingSnapshots: false,
       snapshotPanel: true,
       restoreStart: 0,
-      restoreCount: 0,
+      indicesToRestore: "",
       toasts: [],
       error: {},
       viewError: false,
@@ -256,7 +256,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   restoreSnapshot = async (snapshotId: string, repository: string, options: object) => {
     try {
-      await this.setState({ toasts: [] })
+      await this.setState({ toasts: [], indicesToRestore: options.indices })
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
 
@@ -373,7 +373,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       viewError,
       error,
       restoreStart,
-      restoreCount,
+      indicesToRestore,
       showFlyout,
       flyoutSnapshotId,
       flyoutSnapshotRepo,
@@ -453,7 +453,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
             sendToasts={this.collectToast}
             snapshotId={selectedItems[0]?.id || ""}
             restoreStartRef={restoreStart || 0}
-            restoreCount={restoreCount || 0}
+            indicesToRestore={indicesToRestore.split(",")}
           />
         )}
 

@@ -52,6 +52,15 @@ export interface Toast {
   text?: JSX.Element;
 }
 
+export interface Column {
+  field: string;
+  name: string;
+  width: string;
+  truncateText?: boolean;
+  sortable: boolean;
+}
+
+
 export interface RestoreError {
   reason?: string;
   type?: string;

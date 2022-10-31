@@ -11,7 +11,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { getToasts } from "../../helper"
 import { Toast } from "../../../../models/interfaces"
 import { GetIndexRecoveryResponse, CatSnapshotIndex } from "../../../../../server/models/interfaces";
-import { BREADCRUMBS } from "../../../../utils/constants";
+import { BREADCRUMBS, restoreIndicesCols } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import IndexList from "../IndexList";
 
@@ -22,7 +22,7 @@ interface RestoreActivitiesPanelProps {
   sendToasts: (toasts: Toast[]) => void;
   snapshotId: string;
   restoreStartRef: number;
-  restoreCount: number
+  indicesToRestore: string[];
 }
 
 const intervalIds: ReturnType<typeof setInterval>[] = [];
@@ -35,7 +35,7 @@ export const RestoreActivitiesPanel = (
     snapshotManagementService,
     snapshotId,
     restoreStartRef,
-    restoreCount
+    indicesToRestore
   }: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
@@ -44,6 +44,8 @@ export const RestoreActivitiesPanel = (
   const [indices, setIndices] = useState([{}]);
   const [flyout, setFlyout] = useState(false);
   const [statusOk, setStatusOk] = useState(true)
+
+  const restoreCount = indicesToRestore.length;
 
   useEffect(() => {
     context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
@@ -86,7 +88,7 @@ export const RestoreActivitiesPanel = (
         sendToasts(toasts)
         intervalIds.forEach((id) => {
           clearInterval(id);
-        })
+        });
         return;
       }
     } catch (err) {
@@ -132,7 +134,7 @@ export const RestoreActivitiesPanel = (
       ) {
         const info = response[responseItem].shards[0];
         const stage = stages.indexOf(info.stage);
-        const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
+        // const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
 
         const time = {
           start_time: info.start_time_in_millis,
@@ -144,15 +146,27 @@ export const RestoreActivitiesPanel = (
 
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
 
+        const indexStatus = info.stage[0] + info.stage.slice(1).toLowerCase()
+
         if (info.source.index && info.source.snapshot === snapshotId) {
           minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
-          indexes.push({ index: info.source.index, "restore_status": size });
+          indexes.push({ index: info.source.index, "restore_status": indexStatus });
         }
       }
     }
-    let percent = Math.floor((doneCount / restoreCount) * 100);
-    console.log("how many? ", indices.length)
-    setIndices(indexes);
+
+    const updatedIndices = [...indexes];
+    const indicesStarted = indexes.map((index) => index.index);
+
+    for (let index of indicesToRestore) {
+      if (indicesStarted.indexOf(index) < 0) {
+        updatedIndices.push({ index, restore_status: "PENDING" })
+      }
+    }
+
+    const percent = Math.floor((doneCount / restoreCount) * 100);
+
+    setIndices(updatedIndices);
     setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
     setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "))
 
@@ -219,7 +233,7 @@ export const RestoreActivitiesPanel = (
           size="m"
           hideCloseButton
         >
-          <IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored in" />
+          <IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored" columns={restoreIndicesCols} />
         </EuiFlyout>
       }
       <ContentPanel title="Restore activities in progress" actions={actions}>
