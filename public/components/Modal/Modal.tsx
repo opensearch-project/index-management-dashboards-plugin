@@ -42,7 +42,7 @@ class ModalProvider extends Component {
   }
 }
 
-interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth"> {
+interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth" | "className"> {
   title?: React.ReactChild;
   content?: React.ReactChild;
   type?: "alert" | "confirm";
