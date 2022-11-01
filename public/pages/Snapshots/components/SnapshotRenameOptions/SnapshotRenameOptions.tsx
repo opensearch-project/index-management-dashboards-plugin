@@ -37,7 +37,7 @@ const SnapshotRenameOptions = ({
       <EuiRadio
         id={do_not_rename}
         name="rename_option"
-        label={<CustomLabel title="Do not rename" />}
+        label="Do not rename"
         checked={doNotRename}
         onChange={onDoNotRenameToggle}
       />
@@ -47,7 +47,7 @@ const SnapshotRenameOptions = ({
       <EuiRadio
         id={add_prefix}
         name="rename_option"
-        label={<CustomLabel title="Add prefix to restored index names" />}
+        label="Add prefix to restored index names"
         checked={addPrefix}
         onChange={onAddPrefixToggle}
       />
@@ -57,7 +57,7 @@ const SnapshotRenameOptions = ({
       <EuiRadio
         id={rename_indices}
         name="rename_option"
-        label={<CustomLabel title="Rename using regular expression (Advanced)" />}
+        label="Rename using regular expression (Advanced)"
         checked={renameIndices}
         onChange={onRenameIndicesToggle}
       />

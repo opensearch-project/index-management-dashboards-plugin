@@ -27,24 +27,7 @@ exports[`SnapshotRenameOptions component renders without error 1`] = `
         class="euiRadio__label"
         for="do_not_rename"
       >
-        <div
-          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
-        >
-          <div
-            class="euiFlexItem euiFlexItem--flexGrowZero"
-          >
-            <div
-              class="euiText euiText--extraSmall"
-            >
-              <h4>
-                Do not rename
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div
-          class="euiSpacer euiSpacer--s"
-        />
+        Do not rename
       </label>
     </div>
     <div
@@ -67,24 +50,7 @@ exports[`SnapshotRenameOptions component renders without error 1`] = `
         class="euiRadio__label"
         for="add_prefix"
       >
-        <div
-          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
-        >
-          <div
-            class="euiFlexItem euiFlexItem--flexGrowZero"
-          >
-            <div
-              class="euiText euiText--extraSmall"
-            >
-              <h4>
-                Add prefix to restored index names
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div
-          class="euiSpacer euiSpacer--s"
-        />
+        Add prefix to restored index names
       </label>
     </div>
     <div
@@ -107,24 +73,7 @@ exports[`SnapshotRenameOptions component renders without error 1`] = `
         class="euiRadio__label"
         for="rename_indices"
       >
-        <div
-          class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
-        >
-          <div
-            class="euiFlexItem euiFlexItem--flexGrowZero"
-          >
-            <div
-              class="euiText euiText--extraSmall"
-            >
-              <h4>
-                Rename using regular expression (Advanced)
-              </h4>
-            </div>
-          </div>
-        </div>
-        <div
-          class="euiSpacer euiSpacer--s"
-        />
+        Rename using regular expression (Advanced)
       </label>
     </div>
   </div>
