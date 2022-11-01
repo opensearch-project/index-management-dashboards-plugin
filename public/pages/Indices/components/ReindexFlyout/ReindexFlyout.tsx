@@ -4,6 +4,7 @@
  */
 
 import {
+  EuiCallOut,
   EuiComboBox,
   EuiComboBoxOptionOption,
   EuiFlyout,
@@ -45,6 +46,7 @@ interface ReindexState {
   jsonString: string;
   destError?: string;
   destSettingsJson?: string;
+  sourceErr?: string[];
 }
 
 export default class ReindexFlyout extends Component<ReindexProps, ReindexState> {
@@ -61,8 +63,40 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   }
 
   async componentDidMount() {
+    // check _source enabled for source
+    const { sourceIndices } = this.props;
+    await this.isSourceEnabled(sourceIndices);
     await this.getIndexOptions("");
   }
+
+  isSourceEnabled = async (sourceIndices: string[]) => {
+    // sourceIndices
+    const {
+      services: { commonService },
+    } = this.props;
+
+    const res = await commonService.apiCaller({
+      endpoint: "indices.getFieldMapping",
+      data: {
+        fields: "_source",
+        index: sourceIndices.join(","),
+      },
+    });
+    if (res.ok) {
+      let err = [];
+      for (let index of sourceIndices) {
+        const enabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
+        if (enabled === false) {
+          err.push(`${index} didn't store _source`);
+        }
+      }
+      if (err.length > 0) {
+        this.setState({ sourceErr: err });
+      }
+    } else {
+      // let reindex api to do the check
+    }
+  };
 
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
     this.setState({
@@ -78,10 +112,10 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     } = this.props;
     this.setState({ indexOptions: [] });
     try {
-      const optionsResponse = await indexService.getDataStreamsAndIndicesNames(searchValue);
-      if (optionsResponse.ok) {
-        const dataStreams = optionsResponse.response.dataStreams.map((label) => ({ label }));
-        const indices = optionsResponse.response.indices
+      const res = await indexService.getDataStreamsAndIndicesNames(searchValue);
+      if (res.ok) {
+        const dataStreams = res.response.dataStreams.map((label) => ({ label }));
+        const indices = res.response.indices
           .filter((index) => {
             return sourceIndices.indexOf(index) == -1;
           })
@@ -94,11 +128,10 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         });
         this.setState({ dataStreams: dataStreams });
       } else {
-        // @ts-ignore
-        if (optionsResponse.error.startsWith("[index_not_found_exception]")) {
+        if (res.error.startsWith("[index_not_found_exception]")) {
           this.context.notifications.toasts.addDanger("No index available");
         } else {
-          this.context.notifications.toasts.addDanger(optionsResponse.error);
+          this.context.notifications.toasts.addDanger(res.error);
         }
       }
     } catch (err) {
@@ -217,7 +250,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
   render() {
     const { onCloseFlyout, sourceIndices } = this.props;
-    const { indexOptions, selectedIndexOptions, jsonString, destError, destSettingsJson } = this.state;
+    const { indexOptions, selectedIndexOptions, jsonString, destError, destSettingsJson, sourceErr } = this.state;
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={800} size="m" hideCloseButton>
@@ -226,6 +259,16 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             <h2 id="flyoutTitle"> Reindex </h2>
           </EuiTitle>
         </EuiFlyoutHeader>
+
+        {sourceErr && sourceErr.length > 0 && (
+          <EuiCallOut title="Sorry, there was an error" color="danger" iconType="alert">
+            <ul>
+              {sourceErr.map((err) => (
+                <li key={err}>{err}</li>
+              ))}
+            </ul>
+          </EuiCallOut>
+        )}
 
         <EuiFlyoutBody>
           <CustomLabel title="Source indices" />
@@ -272,7 +315,6 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
                   width="100%"
                   value={destSettingsJson}
                   onChange={this.onDestSettingsChange}
-                  setOptions={{ fontSize: "14px" }}
                   aria-label="Code Editor"
                   data-test-subj="destSettingJsonEditor"
                 />
@@ -295,7 +337,6 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
                 width="100%"
                 value={jsonString}
                 onChange={this.onJsonChange}
-                setOptions={{ fontSize: "14px" }}
                 aria-label="Code Editor"
                 height="200px"
                 data-test-subj="queryJsonEditor"
@@ -305,7 +346,14 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
-          <FlyoutFooter edit={false} action="" text="Execute" onClickAction={this.onClickAction} onClickCancel={onCloseFlyout} />
+          <FlyoutFooter
+            edit={false}
+            action=""
+            disabledAction={sourceErr && sourceErr.length > 0}
+            text="Execute"
+            onClickAction={this.onClickAction}
+            onClickCancel={onCloseFlyout}
+          />
         </EuiFlyoutFooter>
       </EuiFlyout>
     );

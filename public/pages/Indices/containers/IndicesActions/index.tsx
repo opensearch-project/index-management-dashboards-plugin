@@ -52,14 +52,16 @@ export default function IndicesActions(props: IndicesActionsProps) {
   }, [services, coreServices, props.onDelete, onDeleteIndexModalClose]);
 
   const onReindexConfirm = async (reindexRequest: ReindexRequest) => {
-    let res = await services.commonService.apiCaller({
+    const res = await services.commonService.apiCaller({
       endpoint: "reindex",
       method: REQUEST.POST,
       data: reindexRequest,
     });
-    if (res.ok) {
+    if (res && res.ok) {
       // @ts-ignore
-      coreServices.notifications.toasts.addSuccess(`Reindex triggered successfully with taskId ${res.response.task}`);
+      coreServices.notifications.toasts.addSuccess(
+        `Reindex triggered success from ${reindexRequest.body.source.index} to ${reindexRequest.body.dest.index} with taskId ${res.response.task}`
+      );
       onCloseReindexFlyout();
       onReindex && onReindex();
     } else {

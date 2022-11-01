@@ -274,7 +274,7 @@ describe("Indices", () => {
       // click to perform reindex
       cy.get('[data-test-subj="flyout-footer-action-button"]').click();
       cy.wait(20);
-      cy.contains(`Reindex triggered successfully with taskId`);
+      cy.contains(/Reindex triggered success .* taskId .*/);
 
       // Type in REINDEX_DEST in search input
       cy.get(`input[type="search"]`).focus().type(REINDEX_DEST);
