@@ -10,8 +10,11 @@ env:
   OPENSEARCH_DASHBOARDS_VERSION: '2.x'
 jobs:
   tests:
+  strategy: 
+      matrix: 
+        os: [ubuntu-latest, windows-latest]
     name: Run unit tests
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
     steps:
       - name: Checkout Index Management Dashboards plugin
         uses: actions/checkout@v2

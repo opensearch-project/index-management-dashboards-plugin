@@ -7,8 +7,14 @@ on:
 
 jobs:
   build:
+  strategy: 
+      matrix: 
+        java: 
+          - 11
+          - 17
+        os: [ubuntu-latest, windows-latest]
     name: Build Index Management Dashboards
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
     steps:
       - name: Checkout Index Management Dashboards plugin
         uses: actions/checkout@v2
