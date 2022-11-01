@@ -70,6 +70,7 @@ interface RestoreSnapshotState {
   badJSON: boolean;
   badIgnore: boolean
   repoError: string;
+  noIndicesSelected: boolean;
   snapshotIdError: string;
 }
 
@@ -97,6 +98,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       badRename: false,
       badJSON: false,
       badIgnore: false,
+      noIndicesSelected: false,
       repoError: "",
       snapshotIdError: "",
     };
@@ -138,17 +140,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
-    this.checkSelectedIndices(options.indices);
     const badPattern = this.checkBadRegex(options.rename_pattern);
     const badRename = this.checkBadReplacement(options.rename_replacement);
     const badIgnore = this.checkCustomIgnoreConflict();
+    const noIndicesSelected = this.checkNoSelectedIndices(options.indices);
 
-    console.log(typeof customIndexSettings);
-
-
-
-    if (badPattern || badRename || badIgnore) {
-      this.setState({ badPattern, badRename, badIgnore });
+    if (badPattern || badRename || badIgnore || noIndicesSelected) {
+      this.setState({ badPattern, badRename, badIgnore, noIndicesSelected });
       return;
     }
 
@@ -175,7 +173,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return;
     }
-    console.log(options)
+
     getRestoreTime(Date.now());
     restoreSnapshot(snapshotId, repository, options);
     onCloseFlyout()
@@ -185,7 +183,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     try {
       const userObject = JSON.parse(testString);
 
-      return false
+      return false;
     } catch (err) {
       this.context.notifications.toasts.addWarning(null, { title: "Please enter valid JSON between curly brackets." });
       this.setState({ badJSON: true });
@@ -193,13 +191,16 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
   }
 
-  checkSelectedIndices = (indices: string): string | undefined => {
+  checkNoSelectedIndices = (indices: string): boolean => {
     const { restoreSpecific } = this.state;
+    let notSelected = false;
 
     if (restoreSpecific && indices.length === 0) {
       this.context.notifications.toasts.addWarning(null, { title: "There are no indices selected." });
+      notSelected = true;
     }
-    return;
+
+    return notSelected;
   }
 
   checkBadRegex = (regex: string): boolean => {
@@ -216,7 +217,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   checkBadReplacement = (regexString: string): boolean => {
     const isNotValid = regexString.indexOf("$") >= 0;
-    console.log('isvalid ', isNotValid)
+
     if (isNotValid) return false;
 
     this.context.notifications.toasts.addWarning(null, { title: "Please enter a valid rename replacement. Try including a '$'" });
@@ -359,7 +360,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       badPattern,
       badRename,
       badJSON,
-      badIgnore
+      badIgnore,
+      noIndicesSelected
     } = this.state;
 
     const {
@@ -436,6 +438,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                     getIndexOptions={this.getIndexOptions}
                     onCreateOption={this.onCreateOption}
                     selectedRepoValue={selectedRepoValue}
+                    showError={noIndicesSelected}
                     isClearable={true}
                   />
                 )

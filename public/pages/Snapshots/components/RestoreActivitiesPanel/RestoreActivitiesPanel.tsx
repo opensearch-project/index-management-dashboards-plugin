@@ -50,7 +50,7 @@ export const RestoreActivitiesPanel = (
   useEffect(() => {
     context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
 
-    if (statusOk && stage !== "Done (100%)" || indices.length < restoreCount) {
+    if (statusOk && stage !== "Done (100%)") {
       intervalIds.push(setInterval(() => {
         getRestoreStatus();
       }, 2000))
@@ -122,6 +122,7 @@ export const RestoreActivitiesPanel = (
     let doneCount: number = 0;
     const indexes: CatSnapshotIndex[] = [];
     const stages: string[] = ["START", "INIT", "INDEX", "FINALIZE", "DONE"];
+    const lastStage = stages.length - 1;
 
     // Loop through indices in response, filter out kibana index, 
     // gather progress info then use it to create progress field values.
@@ -134,14 +135,12 @@ export const RestoreActivitiesPanel = (
       ) {
         const info = response[responseItem].shards[0];
         const stage = stages.indexOf(info.stage);
-        // const size = `${(info.index.size.total_in_bytes / 1024 ** 2).toFixed(2)}mb`;
-
         const time = {
           start_time: info.start_time_in_millis,
           stop_time: info.stop_time_in_millis ? info.stop_time_in_millis : Date.now()
         };
 
-        doneCount = stage === 4 ? doneCount + 1 : doneCount;
+        doneCount = stage === lastStage ? doneCount + 1 : doneCount;
         stageIndex = stage < stageIndex ? stage : stageIndex;
 
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
@@ -176,7 +175,7 @@ export const RestoreActivitiesPanel = (
     setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "))
 
     if (stages[stageIndex]) {
-      stageIndex = (stageIndex === 4 && doneCount < restoreCount) ? 2 : stageIndex;
+      stageIndex = (stageIndex === lastStage && doneCount < restoreCount) ? 2 : stageIndex;
       setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
     }
 
@@ -190,8 +189,7 @@ export const RestoreActivitiesPanel = (
     ]
   ), []);
 
-  const indexText = `${restoreCount === 1 ? "Index" : "Indices"}`
-  const indexes = `${restoreCount} ${indexText}`;
+  const indexText = `${restoreCount === 1 ? "1 Index" : `${restoreCount} Indices`}`
 
   const restoreStatus = [
     {
@@ -199,7 +197,7 @@ export const RestoreActivitiesPanel = (
       stop_time: stopTime,
       snapshot: snapshotId,
       status: stage,
-      indexes: indexes,
+      indexes: indexText,
     },
   ];
   const columns = [

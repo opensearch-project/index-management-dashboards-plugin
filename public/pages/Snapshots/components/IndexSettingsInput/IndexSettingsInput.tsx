@@ -30,10 +30,8 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
     ? `Example: \nindex.refresh_interval,\nindex.max_script_fields `
     : `Example: \n {\n\"index.number_of_replicas\": 0,\n\"index.auto_expand_replicas\": true\n}`;
 
-  return (
+  const indexSettingsLabel = (
     <>
-      <EuiSpacer size="m" />
-
       <EuiText size="xs">
         <h4>{title}</h4>
       </EuiText>
@@ -45,8 +43,15 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
           </EuiLink>
         </p>
       </EuiText>
-      <EuiFormRow isInvalid={showError} error={inputError}>
-        <EuiTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} />
+    </>
+  );
+
+  return (
+    <>
+      <EuiSpacer size="m" />
+
+      <EuiFormRow isInvalid={showError} error={inputError} label={indexSettingsLabel}>
+        <EuiTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} isInvalid={showError} />
       </EuiFormRow>
 
       <EuiSpacer size="m" />

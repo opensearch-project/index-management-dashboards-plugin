@@ -10,7 +10,7 @@ import IndexSettingsInput from "../../components/IndexSettingsInput";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 
 interface SnapshotAdvancedOptionsProps {
-  getIndexSettings: (indexSettings: string) => void;
+  getIndexSettings: (indexSettings: string, ignore: boolean) => void;
   restoreAliases: boolean;
   onRestoreAliasesToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   restoreClusterState: boolean;
