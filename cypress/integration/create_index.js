@@ -178,4 +178,9 @@ describe("Create Index", () => {
       cy.get('[data-test-subj="mapping-visual-editor-1-field-type"]').should("have.value", "text").end();
     });
   });
+
+  after(() => {
+    cy.deleteTemplate("index-common-template");
+    cy.deleteTemplate("index-specific-template");
+  });
 });

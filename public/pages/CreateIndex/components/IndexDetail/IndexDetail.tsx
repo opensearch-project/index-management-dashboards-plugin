@@ -48,6 +48,7 @@ const IndexDetail = (
     [onChange, value]
   );
   const [errors, setErrors] = useState({} as Record<string, string>);
+  const [templateSimulateLoading, setTemplateSimulateLoading] = useState(false);
   const finalValue = value || {};
   const settingsRef = useRef<IFormGeneratorRef>(null);
   useImperativeHandle(ref, () => ({
@@ -68,6 +69,7 @@ const IndexDetail = (
   }));
   const onIndexInputBlur = useCallback(async () => {
     if (finalValue.index && onSimulateIndexTemplate) {
+      setTemplateSimulateLoading(true);
       const result = await onSimulateIndexTemplate(finalValue.index);
       if (result && result.ok) {
         let onChangePromise: Promise<IndexItemRemote>;
@@ -111,6 +113,7 @@ const IndexDetail = (
           hasEdit.current = false;
         });
       }
+      setTemplateSimulateLoading(false);
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
   const formFields: IField[] = useMemo(() => {
@@ -172,7 +175,8 @@ const IndexDetail = (
                   value={finalValue.index}
                   onChange={(e) => onValueChange("index", e.target.value)}
                   onBlur={onIndexInputBlur}
-                  disabled={isEdit}
+                  isLoading={templateSimulateLoading}
+                  disabled={isEdit || templateSimulateLoading}
                 />
               </EuiFormRow>
               <EuiFormRow label="Index alias  - optional" helpText="Select existing aliases or specify a new alias">
