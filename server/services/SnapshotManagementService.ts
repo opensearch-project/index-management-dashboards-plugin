@@ -314,7 +314,6 @@ export default class SnapshotManagementService {
         queryString: queryString.trim() ? `${queryString.trim()}` : "*",
       };
       const res = await callWithRequest("ism.getSMPolicies", params);
-      console.log("policy response", res);
       const policies: DocumentSMPolicy[] = res.policies.map(
         (p: { _id: string; _seq_no: number; _primary_term: number; sm_policy: SMPolicy }) => ({
           seqNo: p._seq_no,
@@ -515,7 +514,6 @@ export default class SnapshotManagementService {
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatSnapshotIndex[]>>> => {
-    console.log(request);
     try {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const res: CatSnapshotIndex[] = await callWithRequest("cat.indices", {

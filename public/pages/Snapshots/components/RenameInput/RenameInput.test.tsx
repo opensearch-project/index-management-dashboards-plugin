@@ -34,11 +34,11 @@ describe("RenameInput component", () => {
 
   it("accepts user input", () => {
     // User enters text
-    userEvent.type(screen.getByTestId("renamePatternInput"), "(.+)");
+    userEvent.type(screen.getByTestId("renamePatternInput"), "{selectall}{del}(.+)");
 
     expect(screen.getByTestId("renamePatternInput")).toHaveValue("(.+)");
 
-    userEvent.type(screen.getByTestId("renameReplacementInput"), "test_$1");
+    userEvent.type(screen.getByTestId("renameReplacementInput"), "{selectall}{del}test_$1");
 
     expect(screen.getByTestId("renameReplacementInput")).toHaveValue("test_$1");
   });

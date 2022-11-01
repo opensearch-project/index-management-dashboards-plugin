@@ -38,7 +38,7 @@ export default class IndexService {
 
   getDataStreamsAndIndicesNames = async (searchValue: string): Promise<ServerResponse<GetDataStreamsAndIndicesNamesResponse>> => {
     const [getIndicesResponse, getDataStreamsResponse] = await Promise.all([
-      this.getIndices({ from: 0, size: 10, search: searchValue, sortDirection: "desc", sortField: "index", showDataStreams: true }),
+      this.getIndices({ from: 0, size: 100, search: searchValue, sortDirection: "desc", sortField: "index", showDataStreams: true }),
       this.getDataStreams({ search: searchValue }),
     ]);
 
