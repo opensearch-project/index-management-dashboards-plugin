@@ -14,7 +14,7 @@ jobs:
     matrix: 
         os: [ubuntu-latest, windows-latest]
   name: Run unit tests
-  runs-on: ${{matrix.os}}
+  runs-on: ${{ matrix.os }}
   steps:
     - name: Checkout Index Management Dashboards plugin
       uses: actions/checkout@v2
