@@ -127,7 +127,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
-      index_settings: customIndexSettings.length ? customIndexSettings : "",
+      index_settings: customIndexSettings.length && this.checkBadJSON(customIndexSettings) ? JSON.parse(customIndexSettings) : "",
       ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
@@ -142,28 +142,21 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const badPattern = this.checkBadRegex(options.rename_pattern);
     const badRename = this.checkBadReplacement(options.rename_replacement);
     const badIgnore = this.checkCustomIgnoreConflict();
-    let badJSON = false;
+
+    console.log(typeof customIndexSettings);
 
 
 
-    // if (
-    //   typeof options.index_settings !== "string" ||
-    //   options.indices.length === 0 ||
-    //   !isValidRegex
-    // ) {
-    //   return;
-    // }
+    if (badPattern || badRename || badIgnore) {
+      this.setState({ badPattern, badRename, badIgnore });
+      return;
+    }
 
     if (options.index_settings.length === 0) {
       delete options.index_settings;
     } else {
-      badJSON = this.checkBadJSON(customIndexSettings);
-      console.log("badJSON", badJSON)
-    }
-
-    if (badPattern || badRename || badJSON || badIgnore) {
-      this.setState({ badJSON, badPattern, badRename, badIgnore });
-      return;
+      const badJSON = this.checkBadJSON(customIndexSettings);
+      this.setState({ badJSON })
     }
 
     if (!options.ignore_index_settings) {
@@ -175,13 +168,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return;
     }
+
     if (!repository) {
       repoError = ERROR_PROMPT.REPO;
       this.setState({ repoError });
 
       return;
     }
-
+    console.log(options)
     getRestoreTime(Date.now());
     restoreSnapshot(snapshotId, repository, options);
     onCloseFlyout()
@@ -194,6 +188,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       return false
     } catch (err) {
       this.context.notifications.toasts.addWarning(null, { title: "Please enter valid JSON between curly brackets." });
+      this.setState({ badJSON: true });
       return true;
     }
   }
@@ -231,14 +226,24 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   checkCustomIgnoreConflict = () => {
     const { customIndexSettings, ignoreIndexSettings } = this.state;
-    const customSettings = JSON.parse(customIndexSettings);
 
-    for (let setting in customSettings) {
-      if (ignoreIndexSettings && ignoreIndexSettings.indexOf(setting) >= 0) {
-        this.context.notifications.toasts.addWarning(null, { title: "Customized settings can not also be ignored." });
-        return true;
+    if (customIndexSettings.length > 0) {
+      const customSettingsBad = this.checkBadJSON(customIndexSettings);
+
+      if (customSettingsBad) {
+        return false;
+      }
+
+      const customSettings = JSON.parse(customIndexSettings);
+
+      for (let setting in customSettings) {
+        if (ignoreIndexSettings && ignoreIndexSettings.indexOf(setting) >= 0) {
+          this.context.notifications.toasts.addWarning(null, { title: "Customized settings can not also be ignored." });
+          return true;
+        }
       }
     }
+
     return false;
   }
 
@@ -288,10 +293,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     this.getSnapshot(snapshotId, repository);
   };
 
-  getIndexSettings = (indexSettings: string) => {
-    const { snapshot } = this.state;
-    const ignore = snapshot?.ignore_index_settings ? snapshot.ignore_index_settings : false;
-
+  getIndexSettings = (indexSettings: string, ignore: boolean) => {
     !ignore && this.setState({ customIndexSettings: indexSettings });
     ignore && this.setState({ ignoreIndexSettings: indexSettings });
   };

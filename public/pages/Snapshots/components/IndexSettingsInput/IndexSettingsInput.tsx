@@ -8,7 +8,7 @@ import React, { useState, ChangeEvent } from "react";
 import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
 
 interface IndexSettingsInputProps {
-  getIndexSettings: (indexSettings: string) => void;
+  getIndexSettings: (indexSettings: string, ignore: boolean) => void;
   showError: boolean;
   inputError: string;
   ignore: boolean;
@@ -19,7 +19,7 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
 
   const onSettingsChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setIndexSettings(e.target.value);
-    getIndexSettings(e.target.value);
+    getIndexSettings(e.target.value, ignore);
   };
 
   const title = ignore ? "Specify index settings to ignore" : "Specify custom index settings";
