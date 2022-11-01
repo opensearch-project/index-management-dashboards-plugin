@@ -78,7 +78,8 @@ export const RestoreActivitiesPanel = (
       } else {
         const toasts = getToasts(
           "error_restore_toast",
-          `There was a problem preventing restore of snapshot ${snapshotId} from completing.`,
+          // `There was a problem preventing restore of snapshot ${snapshotId} from completing.`,\
+          "",
           snapshotId,
           onOpenError
         );
@@ -94,7 +95,7 @@ export const RestoreActivitiesPanel = (
     } catch (err) {
       const toasts = getToasts(
         "error_restore_toast",
-        `There was a problem preventing restore of snapshot ${snapshotId} from completing.`,
+        "",
         snapshotId,
         onOpenError
       );
