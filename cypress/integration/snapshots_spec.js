@@ -100,7 +100,7 @@ describe("Snapshots", () => {
       cy.get("button").contains("Restore snapshot").click({ force: true });
 
       // Check for success toast
-      cy.contains("Restored snapshot test_snapshot to repository test_repo");
+      cy.contains(`Restore from snapshot "test_snapshot" is in progress.`);
     });
   });
 
