@@ -12,6 +12,7 @@ import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
 import { ServicesContext } from "../../../../services";
+import SplitIndexFlyout from "../../components/SplitIndexFlyout";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 
@@ -23,6 +24,7 @@ export interface IndicesActionsProps {
 export default function IndicesActions(props: IndicesActionsProps) {
   const { selectedItems, onDelete } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [splitIndexFlyoutVisible, setSplitIndexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -45,6 +47,33 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(result?.error || "");
     }
   }, [services, coreServices, props.onDelete, onDeleteIndexModalClose]);
+
+  const onCloseFlyout = () => {
+    setSplitIndexFlyoutVisible(false);
+  };
+
+  const splitIndex = async (targetIndex: String, numberOfShards: number) => {
+    const result = await services?.commonService.apiCaller({
+      endpoint: "indices.split",
+      method: "PUT",
+      data: {
+        index: selectedItems.map((item) => item.index).join(","),
+        target: targetIndex,
+        body: {
+          settings: {
+            "index.number_of_shards": numberOfShards,
+          },
+        },
+      },
+    });
+    if (result && result.ok) {
+      coreServices?.notifications.toasts.addSuccess(`Successfully submit split index request.`);
+      onDelete();
+    } else {
+      coreServices.notifications.toasts.addDanger(result?.error || "");
+    }
+    onCloseFlyout();
+  };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
@@ -86,6 +115,12 @@ export default function IndicesActions(props: IndicesActionsProps) {
                           core: CoreServicesContext,
                         }),
                     },
+                    {
+                      name: "Split",
+                      disabled: !selectedItems.length || selectedItems.length > 1,
+                      "data-test-subj": "Split Action",
+                      onClick: () => setSplitIndexFlyoutVisible(true),
+                    },
                   ],
                 },
               ]}
@@ -99,6 +134,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         onClose={onDeleteIndexModalClose}
         onConfirm={onDeleteIndexModalConfirm}
       />
+      {splitIndexFlyoutVisible && <SplitIndexFlyout onCloseFlyout={onCloseFlyout} onSplitIndex={splitIndex} />}
     </>
   );
 }

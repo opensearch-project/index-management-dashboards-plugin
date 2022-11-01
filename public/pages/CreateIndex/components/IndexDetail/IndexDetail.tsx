@@ -174,7 +174,11 @@ const IndexDetail = (
                 />
               </EuiFormRow>
               <EuiSpacer size="m" />
-              <EuiAccordion id="accordion_for_create_index_settings" buttonContent={<h4>Advanced settings</h4>}>
+              <EuiAccordion
+                data-test-subj="Click Advanced Settings"
+                id="accordion_for_create_index_settings"
+                buttonContent={<h4>Advanced settings</h4>}
+              >
                 <EuiSpacer size="m" />
                 <EuiFormRow
                   label="Specify advanced index settings"
@@ -198,6 +202,7 @@ const IndexDetail = (
                         ...JSON.parse(val),
                       })
                     }
+                    data-test-subj="Advanced Settings Content"
                   />
                 </EuiFormRow>
               </EuiAccordion>
