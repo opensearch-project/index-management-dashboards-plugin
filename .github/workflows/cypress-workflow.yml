@@ -13,7 +13,7 @@ jobs:
   tests:
     strategy: 
       matrix: 
-        os: [ubuntu-latest, windows-latest]
+          os: [ubuntu-latest, windows-latest]
     name: Run Cypress E2E tests
     runs-on: ${{matrix.os}}
     env:
