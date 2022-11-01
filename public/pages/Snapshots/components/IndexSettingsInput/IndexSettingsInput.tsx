@@ -9,10 +9,12 @@ import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
 
 interface IndexSettingsInputProps {
   getIndexSettings: (indexSettings: string) => void;
+  showError: boolean;
+  inputError: string;
   ignore: boolean;
 }
 
-const IndexSettingsInput = ({ getIndexSettings, ignore }: IndexSettingsInputProps) => {
+const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }: IndexSettingsInputProps) => {
   const [indexSettings, setIndexSettings] = useState("");
 
   const onSettingsChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -43,7 +45,7 @@ const IndexSettingsInput = ({ getIndexSettings, ignore }: IndexSettingsInputProp
           </EuiLink>
         </p>
       </EuiText>
-      <EuiFormRow>
+      <EuiFormRow isInvalid={showError} error={inputError}>
         <EuiTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} />
       </EuiFormRow>
 

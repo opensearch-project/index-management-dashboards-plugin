@@ -65,6 +65,10 @@ interface RestoreSnapshotState {
   snapshot: GetSnapshot | null;
   restoreSpecific: boolean;
   partial: boolean;
+  badPattern: boolean;
+  badRename: boolean;
+  badJSON: boolean;
+  badIgnore: boolean
   repoError: string;
   snapshotIdError: string;
 }
@@ -89,6 +93,10 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       snapshot: null,
       restoreSpecific: false,
       partial: false,
+      badPattern: false,
+      badRename: false,
+      badJSON: false,
+      badIgnore: false,
       repoError: "",
       snapshotIdError: "",
     };
@@ -116,11 +124,10 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const selectedIndices = selectedIndexOptions.map((option) => option.label).join(",");
     const allIndices = indexOptions.map((option) => option.label).join(",");
     const pattern = renameIndices === add_prefix ? "(.+)" : renamePattern;
-    const restoreCount = restoreSpecific ? selectedIndexOptions.length : indexOptions.length;
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
-      index_settings: customIndexSettings.length ? this.testJSON(customIndexSettings) : "",
+      index_settings: customIndexSettings.length ? customIndexSettings : "",
       ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
@@ -132,23 +139,37 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     let repoError = "";
 
     this.checkSelectedIndices(options.indices);
-    let isValidRegex = this.checkValidRegex(options.rename_pattern);
-    isValidRegex = isValidRegex ? this.checkValidReplacement(options.rename_replacement) : false;
+    const badPattern = this.checkBadRegex(options.rename_pattern);
+    const badRename = this.checkBadReplacement(options.rename_replacement);
+    const badIgnore = this.checkCustomIgnoreConflict();
+    let badJSON = false;
 
-    if (
-      typeof options.index_settings !== "string" ||
-      options.indices.length === 0 ||
-      !isValidRegex
-    ) {
+
+
+    // if (
+    //   typeof options.index_settings !== "string" ||
+    //   options.indices.length === 0 ||
+    //   !isValidRegex
+    // ) {
+    //   return;
+    // }
+
+    if (options.index_settings.length === 0) {
+      delete options.index_settings;
+    } else {
+      badJSON = this.checkBadJSON(customIndexSettings);
+      console.log("badJSON", badJSON)
+    }
+
+    if (badPattern || badRename || badJSON || badIgnore) {
+      this.setState({ badJSON, badPattern, badRename, badIgnore });
       return;
     }
 
-    if (!options.index_settings) {
-      delete options.index_settings;
-    }
     if (!options.ignore_index_settings) {
       delete options.ignore_index_settings;
     }
+
     if (!snapshotId.trim()) {
       this.setState({ snapshotIdError: "Required." });
 
@@ -166,12 +187,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     onCloseFlyout()
   };
 
-  testJSON = (testString: string) => {
+  checkBadJSON = (testString: string) => {
     try {
-      return JSON.parse(testString);
+      const userObject = JSON.parse(testString);
+
+      return false
     } catch (err) {
-      this.context.notifications.toasts.addError(err, { title: `Please enter valid JSON.` });
-      return false;
+      this.context.notifications.toasts.addWarning(null, { title: "Please enter valid JSON between curly brackets." });
+      return true;
     }
   }
 
@@ -184,25 +207,39 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     return;
   }
 
-  checkValidRegex = (regex: string): boolean => {
+  checkBadRegex = (regex: string): boolean => {
     try {
       const userRegex = new RegExp(regex);
 
-      return true;
+      return false;
     } catch (err) {
       this.context.notifications.toasts.addWarning(null, { title: "Please enter a valid regular expression." });
-      return false;
+
+      return true;
     }
   }
 
-  checkValidReplacement = (regex: string): boolean => {
-    const isValid = regex.indexOf("$") >= 0;
-    if (isValid) {
-      return this.checkValidRegex(regex);
-    } else {
-      this.context.notifications.toasts.addWarning(null, { title: "Please enter a valid regular expression." });
-      return false;
+  checkBadReplacement = (regexString: string): boolean => {
+    const isNotValid = regexString.indexOf("$") >= 0;
+    console.log('isvalid ', isNotValid)
+    if (isNotValid) return false;
+
+    this.context.notifications.toasts.addWarning(null, { title: "Please enter a valid rename replacement. Try including a '$'" });
+
+    return true;
+  }
+
+  checkCustomIgnoreConflict = () => {
+    const { customIndexSettings, ignoreIndexSettings } = this.state;
+    const customSettings = JSON.parse(customIndexSettings);
+
+    for (let setting in customSettings) {
+      if (ignoreIndexSettings && ignoreIndexSettings.indexOf(setting) >= 0) {
+        this.context.notifications.toasts.addWarning(null, { title: "Customized settings can not also be ignored." });
+        return true;
+      }
     }
+    return false;
   }
 
   onClickIndices = async () => {
@@ -317,6 +354,10 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       snapshot,
       renameIndices,
       listIndices,
+      badPattern,
+      badRename,
+      badJSON,
+      badIgnore
     } = this.state;
 
     const {
@@ -413,7 +454,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
               {renameIndices === add_prefix && <AddPrefixInput getPrefix={this.getPrefix} />}
               {
                 renameIndices === rename_indices && (
-                  <RenameInput getRenamePattern={this.getRenamePattern} getRenameReplacement={this.getRenameReplacement} />
+                  <RenameInput
+                    getRenamePattern={this.getRenamePattern}
+                    getRenameReplacement={this.getRenameReplacement}
+                    showPatternError={badPattern}
+                    showRenameError={badRename} />
                 )
               }
 
@@ -434,6 +479,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                   ignoreIndexSettings={String(_.get(snapshot, ignore_index_settings, false)) == "true"}
                   onIgnoreIndexSettingsToggle={this.onToggle}
                   width="200%"
+                  badJSONInput={badJSON}
+                  badIgnoreInput={badIgnore}
                 />
               </EuiAccordion>
 

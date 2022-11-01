@@ -9,11 +9,15 @@ import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
 interface RenameInputProps {
   getRenamePattern: (prefix: string) => void;
   getRenameReplacement: (prefix: string) => void;
+  showPatternError: boolean;
+  showRenameError: boolean
 }
 
-const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProps) => {
+const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError, showRenameError }: RenameInputProps) => {
   const [renamePattern, setRenamePattern] = useState("(.+)");
   const [renameReplacement, setRenameReplacement] = useState("restored_$1");
+  const badRenamePattern = "Please enter a valid Rename pattern.";
+  const badRenameReplacement = "Please enter a valid Rename replacement."
 
   const onPatternChange = (e: ChangeEvent<HTMLInputElement>) => {
     setRenamePattern(e.target.value);
@@ -42,7 +46,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
           </EuiLink>
         </p>
       </EuiText>
-      <EuiFormRow>
+      <EuiFormRow error={badRenamePattern} isInvalid={showPatternError}>
         <EuiFieldText value={renamePattern} onChange={onPatternChange} data-test-subj="renamePatternInput" />
       </EuiFormRow>
 
@@ -63,7 +67,7 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement }: RenameInputProp
           </EuiLink>
         </p>
       </EuiText>
-      <EuiFormRow>
+      <EuiFormRow error={badRenameReplacement} isInvalid={showRenameError}>
         <EuiFieldText value={renameReplacement} onChange={onReplacementChange} data-test-subj="renameReplacementInput" />
       </EuiFormRow>
     </>
