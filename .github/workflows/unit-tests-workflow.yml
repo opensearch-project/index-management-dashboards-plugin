@@ -13,45 +13,45 @@ jobs:
   strategy: 
     matrix: 
         os: [ubuntu-latest, windows-latest]
-  name: Run unit tests
-  runs-on: ${{ matrix.os }}
-  steps:
-    - name: Checkout Index Management Dashboards plugin
-      uses: actions/checkout@v2
-      with:
-        path: index-management-dashboards-plugin
-    - name: Checkout OpenSearch-Dashboards
-      uses: actions/checkout@v2
-      with:
-        repository: opensearch-project/OpenSearch-Dashboards
-        ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
-        path: OpenSearch-Dashboards
-    - name: Get node and yarn versions
-      id: versions
-      run: |
-        echo "::set-output name=node_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.node).match(/[.0-9]+/)[0]")"
-        echo "::set-output name=yarn_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
-    - name: Setup node
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ steps.versions.outputs.node_version }}
-        registry-url: 'https://registry.npmjs.org'
-    - name: Install correct yarn version for OpenSearch-Dashboards
-      run: |
-        npm uninstall -g yarn
-        echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
-        npm i -g yarn@${{ steps.versions.outputs.yarn_version }}
-    - name: Bootstrap plugin/OpenSearch-Dashboards
-      run: |
-        mkdir -p OpenSearch-Dashboards/plugins
-        mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
-        cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
-        yarn osd bootstrap
-    - name: Run tests
-      run: |
-        cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
-        yarn run test:jest --coverage
-    - name: Uploads coverage
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+    name: Run unit tests
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout Index Management Dashboards plugin
+        uses: actions/checkout@v2
+        with:
+          path: index-management-dashboards-plugin
+      - name: Checkout OpenSearch-Dashboards
+        uses: actions/checkout@v2
+        with:
+          repository: opensearch-project/OpenSearch-Dashboards
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
+          path: OpenSearch-Dashboards
+      - name: Get node and yarn versions
+        id: versions
+        run: |
+          echo "::set-output name=node_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.node).match(/[.0-9]+/)[0]")"
+          echo "::set-output name=yarn_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ steps.versions.outputs.node_version }}
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install correct yarn version for OpenSearch-Dashboards
+        run: |
+          npm uninstall -g yarn
+          echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
+          npm i -g yarn@${{ steps.versions.outputs.yarn_version }}
+      - name: Bootstrap plugin/OpenSearch-Dashboards
+        run: |
+          mkdir -p OpenSearch-Dashboards/plugins
+          mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
+          cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+          yarn osd bootstrap
+      - name: Run tests
+        run: |
+          cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+          yarn run test:jest --coverage
+      - name: Uploads coverage
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
