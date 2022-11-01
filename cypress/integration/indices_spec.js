@@ -251,7 +251,6 @@ describe("Indices", () => {
 
       cy.get(`div[data-test-subj="destIndicesComboInput"]`)
         .find(`input[data-test-subj="comboBoxSearchInput"]`)
-        .focus()
         .type(`${SAMPLE_INDEX}{enter}`, { delay: 10 });
 
       // dest index settings not show up
@@ -259,7 +258,6 @@ describe("Indices", () => {
 
       cy.get(`div[data-test-subj="destIndicesComboInput"]`)
         .find(`input[data-test-subj="comboBoxSearchInput"]`)
-        .focus()
         .type(`${REINDEX_DEST}{enter}`);
 
       // dest index settings show up

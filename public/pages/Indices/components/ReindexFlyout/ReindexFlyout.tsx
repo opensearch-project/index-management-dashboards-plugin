@@ -253,7 +253,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     const { indexOptions, selectedIndexOptions, jsonString, destError, destSettingsJson, sourceErr } = this.state;
 
     return (
-      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={800} size="m" hideCloseButton>
+      <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle"> Reindex </h2>
