@@ -12,28 +12,30 @@ interface IField {
   options?: InitOption;
 }
 
-interface IFormGeneratorProps<T> {
+export interface IFormGeneratorProps {
   formFields: IField[];
   hasAdvancedSettings?: boolean;
   fieldProps?: FieldOption;
-  value?: T;
-  onChange?: (val: IFormGeneratorProps<T>["value"]) => void;
+  value?: any;
+  onChange?: (val: IFormGeneratorProps["value"]) => void;
 }
 
-interface IFormGeneratorRef extends Field {}
+export interface IFormGeneratorRef extends Field {}
 
-export default forwardRef(function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGeneratorRef>) {
+export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref: React.Ref<IFormGeneratorRef>) {
   const { fieldProps, formFields } = props;
   const field = Field.useField(fieldProps);
-  const errorMessage = field.getErrors();
+  const errorMessage: Record<string, string[]> = field.getErrors();
   useImperativeHandle(ref, () => field);
   return (
     <EuiForm>
       {formFields.map((item) => {
         const RenderComponent = item.type ? AllBuiltInComponents[item.type] : item.component || (() => null);
         return (
-          <EuiFormRow error={errorMessage[item.name]} isInvalid={!!errorMessage[item.name]} label={item.label}>
-            <RenderComponent {...item.options?.props} {...field.init(item.name, item.options)} />
+          <EuiFormRow key={item.name} error={errorMessage[item.name]} isInvalid={!!errorMessage[item.name]} label={item.label}>
+            <>
+              <RenderComponent {...item.options?.props} {...field.init(item.name, item.options)} />
+            </>
           </EuiFormRow>
         );
       })}
