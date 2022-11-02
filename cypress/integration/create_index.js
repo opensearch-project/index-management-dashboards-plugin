@@ -134,10 +134,34 @@ describe("Create Index", () => {
         .get('[data-test-subj="detail-modal-edit"]')
         .click();
 
-      cy.get('[placeholder="The number of replica shards each primary shard should have."]')
-        .type(2)
+      cy.get('[aria-controls="accordion_for_create_index_settings"]')
+        .click()
         .end()
-        .get('[data-test-subj="createIndexCreateButton"]')
+        .get('[data-test-subj="codeEditorContainer"] textarea')
+        .focus()
+        .clear()
+        .type('{ "blocks.write": true, "number_of_shards": 2 }', { parseSpecialCharSequences: false })
+        .blur();
+
+      cy.get('[data-test-subj="createIndexCreateButton"]')
+        .click({ force: true })
+        .get('[data-test-subj="change_diff_confirm-confirm"]')
+        .click();
+
+      cy.contains(`Can't update non dynamic settings`).should("exist");
+
+      cy.get('[data-test-subj="codeEditorContainer"] textarea')
+        .focus()
+        .clear()
+        .type('{ "blocks.write": true }', { parseSpecialCharSequences: false })
+        .blur()
+        .end()
+        .wait(1000)
+        .get('[placeholder="The number of replica shards each primary shard should have."]')
+        .type(2)
+        .end();
+
+      cy.get('[data-test-subj="createIndexCreateButton"]')
         .click({ force: true })
         .get('[data-test-subj="change_diff_confirm-confirm"]')
         .click();

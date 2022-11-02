@@ -6,13 +6,13 @@
 import React, { Component } from "react";
 import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
-import { get, pick, set } from "lodash";
+import { get, set, differenceWith, isEqual } from "lodash";
 import { diffArrays } from "diff";
 // eui depends on react-ace, so we can import react-ace here
 import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
 import IndexDetail from "../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
-import { BREADCRUMBS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IIndexDetailRef, IndexDetailProps } from "../../components/IndexDetail/IndexDetail";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
@@ -159,15 +159,39 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     });
   };
   updateSettings = async (): Promise<ServerResponse<any>> => {
-    const { indexDetail } = this.state;
+    const { indexDetail, oldIndexDetail } = this.state;
     const { index } = indexDetail;
+
+    const newSettings = (indexDetail?.settings?.index || {}) as Required<IndexItem>["settings"]["index"];
+    const oldSettings = (oldIndexDetail?.settings?.index || {}) as Required<IndexItem>["settings"]["index"];
+    const differences = differenceWith(Object.entries(newSettings), Object.entries(oldSettings), isEqual);
+    if (!differences.length) {
+      return {
+        ok: true,
+        response: {},
+      };
+    }
+
+    const finalSettings = differences.reduce((total, current) => {
+      if (newSettings[current[0]] !== undefined) {
+        return {
+          ...total,
+          [current[0]]: newSettings[current[0]],
+        };
+      }
+
+      return total;
+    }, {});
+
     return await this.props.commonService.apiCaller({
       endpoint: "indices.putSettings",
       method: "PUT",
       data: {
         index,
         // In edit mode, only dynamic settings can be modified
-        body: pick(indexDetail.settings, INDEX_DYNAMIC_SETTINGS),
+        body: {
+          index: finalSettings,
+        },
       },
     });
   };

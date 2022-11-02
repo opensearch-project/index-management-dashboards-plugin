@@ -45,6 +45,7 @@ export interface IndexItem {
       number_of_shards: number;
       number_of_replicas: number;
       creation_date?: string;
+      [key: string]: any;
     };
   };
   aliases?: Record<string, {}>;
