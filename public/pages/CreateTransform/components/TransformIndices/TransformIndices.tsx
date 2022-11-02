@@ -164,8 +164,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
               label="Source index"
               error={sourceIndexError}
               isInvalid={sourceIndexError != ""}
-              helpText="The index where this transform job is performed on. Type in * as wildcard for index pattern.
-            Indices cannot be changed once the job is created. Please ensure that you select the right source index."
+              helpText="The index where this transform job is performed on. Type in * as wildcard for index pattern. Indices cannot be changed once the job is created. Please ensure that you select the right source index."
             >
               <EuiComboBox
                 placeholder="Select source index"
