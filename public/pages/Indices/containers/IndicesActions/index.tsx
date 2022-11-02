@@ -21,10 +21,13 @@ import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
   onDelete: () => void;
+  onOpen: () => void;
+  onClose: () => void;
+  onShrink: () => void;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete } = props;
+  const { selectedItems, onDelete, onOpen, onClose, onShrink } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
@@ -67,14 +70,14 @@ export default function IndicesActions(props: IndicesActionsProps) {
       if (result && result.ok) {
         onOpenIndexModalClose();
         coreServices.notifications.toasts.addSuccess("Open index successfully");
-        onDelete();
+        onOpen();
       } else {
         coreServices.notifications.toasts.addDanger(result.error);
       }
     } catch (err) {
       coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem opening index."));
     }
-  }, [services, coreServices, props.onDelete, onOpenIndexModalClose]);
+  }, [services, coreServices, props.onClose, onOpenIndexModalClose]);
 
   const onCloseIndexModalClose = () => {
     setCloseIndexModalVisible(false);
@@ -91,31 +94,27 @@ export default function IndicesActions(props: IndicesActionsProps) {
       if (result && result.ok) {
         onCloseIndexModalClose();
         coreServices.notifications.toasts.addSuccess("Close index successfully");
-        onDelete();
+        onClose();
       } else {
         coreServices.notifications.toasts.addDanger(result.error);
       }
     } catch (err) {
       coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem closing index."));
     }
-  }, [services, coreServices, props.onDelete, onCloseIndexModalClose]);
+  }, [services, coreServices, props.onClose, onCloseIndexModalClose]);
 
   const onShrinkIndexFlyoutClose = () => {
     setShrinkIndexFlyoutVisible(false);
   };
 
   const onShrinkIndexFlyoutConfirm = useCallback(
-    async (sourceIndexName: string, targetIndexName: string, numberOfShards: number, alias: string) => {
+    async (sourceIndexName: string, targetIndexName: string, numberOfShards: number) => {
       try {
         let requestBody = {
           settings: {
             "index.number_of_shards": numberOfShards,
           },
-          aliases: {},
         };
-        if (!!alias) {
-          requestBody["aliases"][alias] = {};
-        }
 
         const result = await services.commonService.apiCaller({
           endpoint: "indices.shrink",
@@ -128,7 +127,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         if (result && result.ok) {
           onShrinkIndexFlyoutClose();
           coreServices.notifications.toasts.addSuccess("Shrink index successfully");
-          onDelete();
+          onShrink();
         } else {
           coreServices.notifications.toasts.addDanger(result.error);
         }
@@ -136,7 +135,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem shrinking index."));
       }
     },
-    [services, coreServices, props.onDelete, onShrinkIndexFlyoutClose]
+    [services, coreServices, props.onShrink, onShrinkIndexFlyoutClose]
   );
 
   const getIndexSettings = async (indexName: string, flat: boolean): Promise<Object> => {
@@ -184,13 +183,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
                   items: [
                     {
                       name: "Open",
-                      disabled: !selectedItems.length || selectedItems[0].status == "open",
+                      disabled: !selectedItems.length,
                       "data-test-subj": "Open Action",
                       onClick: () => setOpenIndexModalVisible(true),
                     },
                     {
                       name: "Close",
-                      disabled: !selectedItems.length || selectedItems[0].status == "close",
+                      disabled: !selectedItems.length,
                       "data-test-subj": "Close Action",
                       onClick: () => setCloseIndexModalVisible(true),
                     },

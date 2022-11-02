@@ -39,7 +39,6 @@ interface ShrinkIndexProps {
 interface ShrinkIndexState {
   targetIndexName: string;
   numberOfShards: number;
-  alias: string;
   targetIndexNameError: string;
   numberOfShardsError: string;
   sourceIndexReady: boolean;
@@ -53,7 +52,6 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     this.state = {
       targetIndexName: "",
       numberOfShards: 1,
-      alias: "",
       targetIndexNameError: "",
       numberOfShardsError: "",
       sourceIndexReady: true,
@@ -67,13 +65,16 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
 
   onClickAction = () => {
     const { sourceIndex, onConfirm } = this.props;
-    const { targetIndexName, numberOfShards, alias } = this.state;
+    const { targetIndexName, numberOfShards } = this.state;
     let targetIndexNameError = "";
     if (!targetIndexName.trim()) {
-      this.setState({ targetIndexNameError: "Name of the target index required" });
+      this.setState({ targetIndexNameError: "Name of the target index required." });
       return;
     }
-    onConfirm(sourceIndex.index, targetIndexName, numberOfShards, alias);
+    if (!isValidNumberOfShards()) {
+      return;
+    }
+    onConfirm(sourceIndex.index, targetIndexName, numberOfShards);
   };
 
   isSourceIndexReady = async () => {
@@ -86,12 +87,16 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     }
 
     const indexSettings = await getIndexSettings(sourceIndex.index, true);
-    if (!!indexSettings && !indexSettings[sourceIndex.index]["settings"]["index.blocks.write"]) {
+    if (
+      !!indexSettings &&
+      indexSettings.hasOwnProperty(sourceIndex.index) &&
+      !indexSettings[sourceIndex.index]["settings"]["index.blocks.write"]
+    ) {
       reason = "Index setting `index.blocks.write` is not `true`.";
       sourceIndexNotReadyReasons.push(reason);
     }
 
-    if (!!indexSettings) {
+    if (!!indexSettings && indexSettings.hasOwnProperty(sourceIndex.index)) {
       let shardsAllocatedToOneNode = false;
       const settings = indexSettings[sourceIndex.index]["settings"];
       for (let settingKey in settings) {
@@ -125,7 +130,6 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     const {
       targetIndexName,
       numberOfShards,
-      alias,
       targetIndexNameError,
       numberOfShardsError,
       sourceIndexReady,
@@ -192,27 +196,16 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
               data-test-subj="numberOfShardsInput"
             />
           </EuiFormRow>
-          <EuiSpacer size="m" />
-          <EuiFormCustomLabel title="Alias" helpText={"The alias to be applied to the new shrunken index."} isOptional={true} />
-          <EuiFormRow>
-            <EuiFieldText
-              value={alias}
-              onChange={(e) => {
-                this.setState({ alias: e.target.value });
-              }}
-              data-test-subj="aliasInput"
-            />
-          </EuiFormRow>
         </EuiFlyoutBody>
         <EuiFlyoutFooter>
           <EuiFlexGroup justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onClose} flush="left" data-test-subj="flyout-footer-cancel-button">
+              <EuiButtonEmpty onClick={onClose} flush="left" data-test-subj="shrinkIndexCloseButton">
                 Cancel
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton onClick={this.onClickAction} fill data-test-subj="flyout-footer-action-button">
+              <EuiButton onClick={this.onClickAction} fill data-test-subj="shrinkIndexConfirmButton">
                 Shrink index
               </EuiButton>
             </EuiFlexItem>
