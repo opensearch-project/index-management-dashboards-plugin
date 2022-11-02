@@ -70,7 +70,6 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   }
 
   isSourceEnabled = async (sourceIndices: string[]) => {
-    // sourceIndices
     const {
       services: { commonService },
     } = this.props;
@@ -87,14 +86,14 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       for (let index of sourceIndices) {
         const enabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
         if (enabled === false) {
-          err.push(`${index} didn't store _source`);
+          err.push(`Index [${index}] didn't store _source, it's required by reindex`);
         }
       }
       if (err.length > 0) {
         this.setState({ sourceErr: err });
       }
     } else {
-      // let reindex api to do the check
+      // let reindex api to do the check when execute
     }
   };
 
@@ -171,7 +170,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       if (res.ok) {
         // @ts-ignore
         let index = res.response[sourceIndices[0]];
-        _.unset(index.settings, "aliases");
+        _.unset(index, "aliases");
         _.unset(index.settings, "index.provided_name");
         _.unset(index.settings, "index.creation_date");
         _.unset(index.settings, "index.uuid");
@@ -260,17 +259,19 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           </EuiTitle>
         </EuiFlyoutHeader>
 
-        {sourceErr && sourceErr.length > 0 && (
-          <EuiCallOut title="Sorry, there was an error" color="danger" iconType="alert">
-            <ul>
-              {sourceErr.map((err) => (
-                <li key={err}>{err}</li>
-              ))}
-            </ul>
-          </EuiCallOut>
-        )}
-
         <EuiFlyoutBody>
+          {sourceErr && sourceErr.length > 0 && (
+            <EuiCallOut title="Sorry, there was an error" color="danger" iconType="alert">
+              <ul>
+                {sourceErr.map((err) => (
+                  <li key={err}>{err}</li>
+                ))}
+              </ul>
+            </EuiCallOut>
+          )}
+
+          <EuiSpacer size="m" />
+
           <CustomLabel title="Source indices" />
           <EuiFormRow>
             <EuiComboBox

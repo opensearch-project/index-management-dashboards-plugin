@@ -4,15 +4,13 @@ exports[`<ReindexFlyout /> spec renders the component 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body
-    class="euiBody-hasOverlayMask euiBody--hasFlyout"
+    class="euiBody--hasFlyout"
   >
     <div
       aria-hidden="true"
       data-aria-hidden="true"
     />
-    <div
-      class="euiOverlayMask euiOverlayMask--belowHeader"
-    >
+    <div>
       <div
         aria-hidden="true"
         data-aria-hidden="true"
@@ -26,7 +24,7 @@ Object {
         <div
           class="euiFlyout euiFlyout--medium euiFlyout--paddingLarge"
           role="dialog"
-          style="max-width: 800px;"
+          style="max-width: 600px;"
           tabindex="-1"
         >
           <div
@@ -49,6 +47,9 @@ Object {
               <div
                 class="euiFlyoutBody__overflowContent"
               >
+                <div
+                  class="euiSpacer euiSpacer--m"
+                />
                 <div
                   class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
                 >
@@ -315,7 +316,7 @@ Object {
                   <div
                     class=" ace_editor ace-tm"
                     id="some_html_id"
-                    style="width: 100%; height: 200px; font-size: 14px;"
+                    style="width: 100%; height: 200px;"
                   >
                     <textarea
                       aria-label="Code Editor"
