@@ -27,6 +27,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const [splitIndexFlyoutVisible, setSplitIndexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
+  const HEALTH_STATUS_RED = "red";
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
@@ -117,7 +118,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     },
                     {
                       name: "Split",
-                      disabled: !selectedItems.length || selectedItems.length > 1,
+                      disabled: !selectedItems.length || selectedItems.length > 1 || HEALTH_STATUS_RED === selectedItems[0].health,
                       "data-test-subj": "Split Action",
                       onClick: () => setSplitIndexFlyoutVisible(true),
                     },
