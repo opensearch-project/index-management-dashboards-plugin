@@ -132,7 +132,7 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards"),
+            disabled: (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) || templateSimulateLoading,
             placeholder: "The number of primary shards in the index. Default is 1.",
           },
         },
@@ -151,7 +151,7 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas"),
+            disabled: (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) || templateSimulateLoading,
             placeholder: "The number of replica shards each primary shard should have.",
           },
         },
