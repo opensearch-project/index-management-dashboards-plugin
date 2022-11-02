@@ -33,7 +33,7 @@ HTMLCollection [
               <input
                 class="euiFieldText"
                 data-meta="Field"
-                id="test"
+                id="some_html_id"
                 type="text"
                 value=""
               />

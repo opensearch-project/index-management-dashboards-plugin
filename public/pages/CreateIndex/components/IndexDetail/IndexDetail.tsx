@@ -203,24 +203,26 @@ const IndexDetail = (
                 }}
                 formFields={formFields}
                 hasAdvancedSettings
-                advancedSettingsAccordionProps={{
-                  initialIsOpen: false,
-                  id: "accordion_for_create_index_settings",
-                  buttonContent: <h4>Advanced settings</h4>,
-                }}
-                advancedSettingsRowProps={{
-                  label: "Specify advanced index settings",
-                  helpText: (
-                    <>
-                      Specify a comma-delimited list of settings.
-                      <EuiLink
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                        target="_blank"
-                      >
-                        View index settings
-                      </EuiLink>
-                    </>
-                  ),
+                advancedSettingsProps={{
+                  accordionProps: {
+                    initialIsOpen: false,
+                    id: "accordion_for_create_index_settings",
+                    buttonContent: <h4>Advanced settings</h4>,
+                  },
+                  rowProps: {
+                    label: "Specify advanced index settings",
+                    helpText: (
+                      <>
+                        Specify a comma-delimited list of settings.
+                        <EuiLink
+                          href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                          target="_blank"
+                        >
+                          View index settings
+                        </EuiLink>
+                      </>
+                    ),
+                  },
                 }}
               />
             </div>

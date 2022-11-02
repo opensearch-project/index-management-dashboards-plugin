@@ -160,8 +160,9 @@ describe("<CreateIndex /> spec", () => {
     expect(queryByText("Index name can not be null.")).toBeNull();
 
     userEvent.click(getByText("Create"));
-
-    expect(queryByText("Index name can not be null.")).not.toBeNull();
+    await waitFor(() => {
+      expect(queryByText("Index name can not be null.")).not.toBeNull();
+    });
   });
 
   it("routes you back to indices and shows a success toast when successfully creating a index", async () => {
