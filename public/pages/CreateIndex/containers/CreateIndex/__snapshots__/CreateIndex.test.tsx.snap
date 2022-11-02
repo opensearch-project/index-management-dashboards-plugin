@@ -292,7 +292,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               class="euiAccordion__triggerWrapper"
             >
               <button
-                aria-controls="1667368589379-1"
+                aria-controls="accordion_for_create_index_settings"
                 aria-expanded="false"
                 class="euiAccordion__button"
                 id="some_html_id"
@@ -315,7 +315,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
             <div
               aria-labelledby="some_html_id"
               class="euiAccordion__childWrapper"
-              id="1667368589379-1"
+              id="accordion_for_create_index_settings"
               role="region"
               tabindex="-1"
             >

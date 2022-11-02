@@ -13,7 +13,7 @@ HTMLCollection [
         class="euiAccordion__triggerWrapper"
       >
         <button
-          aria-controls="1667368606971-38"
+          aria-controls="test"
           aria-expanded="false"
           class="euiAccordion__button"
           id="some_html_id"
@@ -32,7 +32,7 @@ HTMLCollection [
       <div
         aria-labelledby="some_html_id"
         class="euiAccordion__childWrapper"
-        id="1667368606971-38"
+        id="test"
         role="region"
         tabindex="-1"
       >

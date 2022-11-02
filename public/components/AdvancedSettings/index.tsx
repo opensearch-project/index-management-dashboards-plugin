@@ -13,8 +13,8 @@ export default function AdvancedSettings(props: IAdvancedSettingsProps) {
   const { value } = props;
 
   const accordionId = useMemo(() => {
-    return props.rowProps?.id || `${Date.now()}-${Math.floor(Math.random() * 100)}`;
-  }, [props.rowProps?.id]);
+    return props.accordionProps?.id || `${Date.now()}-${Math.floor(Math.random() * 100)}`;
+  }, [props.accordionProps?.id]);
 
   return (
     <>
