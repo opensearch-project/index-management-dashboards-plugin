@@ -174,7 +174,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
     userEvent.click(getByTestId("Shrink Action"));
     userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
-    userEvent.click(getByTestId("flyout-footer-action-button"));
+    userEvent.click(getByTestId("shrinkIndexConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);

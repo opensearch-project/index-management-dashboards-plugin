@@ -71,7 +71,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
       this.setState({ targetIndexNameError: "Name of the target index required." });
       return;
     }
-    if (!isValidNumberOfShards()) {
+    if (!this.isValidNumberOfShards()) {
       return;
     }
     onConfirm(sourceIndex.index, targetIndexName, numberOfShards);
