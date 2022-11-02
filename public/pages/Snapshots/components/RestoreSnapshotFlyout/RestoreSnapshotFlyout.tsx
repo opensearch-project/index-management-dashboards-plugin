@@ -146,17 +146,19 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const badIgnore = this.checkCustomIgnoreConflict();
     const noIndicesSelected = this.checkNoSelectedIndices(options.indices);
 
+    this.setState({ badPattern, badRename, badIgnore, noIndicesSelected });
+
     if (badPattern || badRename || badIgnore || noIndicesSelected) {
-      this.setState({ badPattern, badRename, badIgnore, noIndicesSelected });
       return;
     }
 
     if (options.index_settings.length === 0) {
       delete options.index_settings;
-    } else {
-      const badJSON = this.checkBadJSON(customIndexSettings);
-      this.setState({ badJSON })
     }
+    // } else {
+    //   const badJSON = this.checkBadJSON(customIndexSettings);
+    //   this.setState({ badJSON })
+    // }
 
     if (!options.ignore_index_settings) {
       delete options.ignore_index_settings;
@@ -183,11 +185,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   checkBadJSON = (testString: string) => {
     try {
       const userObject = JSON.parse(testString);
+      this.setState({ badJSON: false });
 
       return false;
     } catch (err) {
       this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
       this.setState({ badJSON: true });
+
       return true;
     }
   }
