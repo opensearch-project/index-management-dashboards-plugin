@@ -18,7 +18,6 @@ interface IndexListProps {
 
 const IndexList = ({ indices, snapshot, onClick, title, columns }: IndexListProps) => {
   indices = indices.filter((index) => index.index.substring(0, 7) !== ".kibana");
-  console.log("indexList indices", indices)
 
   return (
     <>
