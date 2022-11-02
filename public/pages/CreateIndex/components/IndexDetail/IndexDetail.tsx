@@ -4,10 +4,9 @@
  */
 
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiFieldText, EuiFieldNumber, EuiAccordion, EuiLink } from "@elastic/eui";
-import { set, get, merge } from "lodash";
+import { EuiSpacer, EuiFormRow, EuiFieldText, EuiLink } from "@elastic/eui";
+import { set, merge } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
-import JSONEditor from "../../../../components/JSONEditor";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
@@ -15,6 +14,7 @@ import { ServerResponse } from "../../../../../server/models/types";
 import { Ref } from "react";
 import { INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
+import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 
 export interface IndexDetailProps {
@@ -40,7 +40,7 @@ const IndexDetail = (
     (name: string, val) => {
       let finalValue = value || {};
       set(finalValue, name, val);
-      onChange(finalValue);
+      onChange({ ...finalValue });
       if (name !== "index") {
         hasEdit.current = true;
       }
@@ -49,29 +49,21 @@ const IndexDetail = (
   );
   const [errors, setErrors] = useState({} as Record<string, string>);
   const finalValue = value || {};
-  const indexSettings = get(value, "settings.index");
-  const restSettingValue = useMemo(() => {
-    const hiddenList = ["number_of_replicas", "number_of_shards"];
-    return Object.entries(indexSettings || {}).reduce((total, current) => {
-      if (hiddenList.includes(current[0])) {
-        return total;
-      }
-      return {
-        ...total,
-        [current[0]]: current[1],
-      };
-    }, {});
-  }, [indexSettings]);
+  const settingsRef = useRef<IFormGeneratorRef>(null);
   useImperativeHandle(ref, () => ({
-    validate: () => {
+    validate: async () => {
+      const result = await settingsRef.current?.validatePromise();
+      if (result?.errors) {
+        return false;
+      }
       if (!value?.index) {
         setErrors({
           index: "Index name can not be null.",
         });
-        return Promise.resolve(false);
+        return false;
       }
       setErrors({});
-      return Promise.resolve(true);
+      return true;
     },
   }));
   const onIndexInputBlur = useCallback(async () => {
@@ -121,6 +113,48 @@ const IndexDetail = (
       }
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
+  const formFields: IField[] = useMemo(() => {
+    return [
+      {
+        rowProps: {
+          label: "Number of shards",
+          helpText: "The number of primary shards in the index. Default is 1.",
+        },
+        name: "number_of_shards",
+        type: "Number",
+        options: {
+          rules: [
+            {
+              required: true,
+            },
+          ],
+          props: {
+            disabled: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards"),
+            placeholder: "The number of primary shards in the index. Default is 1.",
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Number of replicas",
+          helpText: "The number of replica shards each primary shard should have.",
+        },
+        name: "number_of_replicas",
+        type: "Number",
+        options: {
+          rules: [
+            {
+              required: true,
+            },
+          ],
+          props: {
+            disabled: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas"),
+            placeholder: "The number of replica shards each primary shard should have.",
+          },
+        },
+      },
+    ] as IField[];
+  }, [isEdit]);
   return (
     <>
       {isEdit && mode && mode !== IndicesUpdateMode.alias ? null : (
@@ -157,50 +191,38 @@ const IndexDetail = (
         <>
           <ContentPanel title="Index settings" titleSize="s">
             <div style={{ paddingLeft: "10px" }}>
-              <EuiFormRow label="Number of shards" helpText="The number of primary shards in the index. Default is 1.">
-                <EuiFieldNumber
-                  disabled={isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")}
-                  placeholder="The number of primary shards in the index. Default is 1."
-                  value={finalValue?.settings?.index?.number_of_shards}
-                  onChange={(e) => onValueChange("settings.index.number_of_shards", e.target.value)}
-                />
-              </EuiFormRow>
-              <EuiFormRow label="Number of replicas" helpText="The number of replica shards each primary shard should have.">
-                <EuiFieldNumber
-                  disabled={isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")}
-                  placeholder="The number of replica shards each primary shard should have."
-                  value={finalValue?.settings?.index?.number_of_replicas}
-                  onChange={(e) => onValueChange("settings.index.number_of_replicas", e.target.value)}
-                />
-              </EuiFormRow>
-              <EuiSpacer size="m" />
-              <EuiAccordion id="accordion_for_create_index_settings" buttonContent={<h4>Advanced settings</h4>}>
-                <EuiSpacer size="m" />
-                <EuiFormRow
-                  label="Specify advanced index settings"
-                  helpText={
+              <FormGenerator
+                ref={settingsRef}
+                value={{ ...finalValue.settings?.index }}
+                onChange={(totalValue, name, val) => {
+                  if (name) {
+                    onValueChange(`settings.index.${name}`, val);
+                  } else {
+                    onValueChange("settings.index", val);
+                  }
+                }}
+                formFields={formFields}
+                hasAdvancedSettings
+                advancedSettingsAccordionProps={{
+                  initialIsOpen: false,
+                  id: "accordion_for_create_index_settings",
+                  buttonContent: <h4>Advanced settings</h4>,
+                }}
+                advancedSettingsRowProps={{
+                  label: "Specify advanced index settings",
+                  helpText: (
                     <>
                       Specify a comma-delimited list of settings.
                       <EuiLink
-                        href="https://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
+                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
                         target="_blank"
                       >
                         View index settings
                       </EuiLink>
                     </>
-                  }
-                >
-                  <JSONEditor
-                    value={JSON.stringify(restSettingValue)}
-                    onChange={(val: string) =>
-                      onValueChange("settings.index", {
-                        ...get(value, "settings.index"),
-                        ...JSON.parse(val),
-                      })
-                    }
-                  />
-                </EuiFormRow>
-              </EuiAccordion>
+                  ),
+                }}
+              />
             </div>
           </ContentPanel>
           <EuiSpacer />

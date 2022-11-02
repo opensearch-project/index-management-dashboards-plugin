@@ -9,7 +9,9 @@ import FormGenerator, { IFormGeneratorProps, IFormGeneratorRef } from "./index";
 import { renderHook } from "@testing-library/react-hooks";
 const testFormFields: IFormGeneratorProps["formFields"] = [
   {
-    label: "test",
+    rowProps: {
+      label: "test",
+    },
     name: "test",
     type: "Input",
     options: {

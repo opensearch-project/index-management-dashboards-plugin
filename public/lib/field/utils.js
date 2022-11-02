@@ -150,9 +150,9 @@ function validateMap(rulesMap, rule, defaultTrigger) {
 }
 
 /**
- * Extract the trigger in the rule and do the mapping
- * @param  {Array} rules
- * @param  {String} defaultTrigger Triggered by default
+ * 提取rule里面的trigger并且做映射
+ * @param  {Array} rules   规则
+ * @param  {String} defaultTrigger 默认触发
  * @return {Object} {onChange:rule1, onBlur: rule2}
  */
 export function mapValidateRules(rules, defaultTrigger) {
@@ -181,6 +181,8 @@ if (
     }
   };
 }
+
+export const warning = warn;
 
 export function cloneAndAddKey(element) {
   if (element && isValidElement(element)) {
@@ -218,5 +220,3 @@ export function scrollToFirstError({ errorsGroup, options, instance }) {
     }
   }
 }
-
-export const warning = warn;

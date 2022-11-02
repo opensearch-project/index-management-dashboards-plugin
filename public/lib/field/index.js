@@ -1,13 +1,22 @@
 import { useState, useMemo } from "react";
-import { scrollToFirstError, cloneAndAddKey } from "./utils";
 import Validate from "../validate";
-import { getValueFromEvent, getErrorStrs, getParams, setIn, getIn, deleteIn, mapValidateRules, warning } from "./utils";
+import {
+  scrollToFirstError,
+  cloneAndAddKey,
+  getValueFromEvent,
+  getErrorStrs,
+  getParams,
+  setIn,
+  getIn,
+  deleteIn,
+  mapValidateRules,
+  warning,
+} from "./utils";
 
 const initMeta = {
   state: "",
   valueName: "value",
   trigger: "onChange",
-  inputValues: [],
 };
 
 class Field {
@@ -35,7 +44,6 @@ class Field {
     this.cachedBind = {};
     this.instance = {};
     this.instanceCount = {};
-    this.reRenders = {};
     // holds constructor values. Used for setting field defaults on init if no other value or initValue is passed.
     // Also used caching values when using `parseName: true` before a field is initialized
     this.values = Object.assign({}, options.values);
@@ -103,7 +111,6 @@ class Field {
       getValueFormatter = getValueFromEvent,
       setValueFormatter,
       autoValidate = true,
-      reRender,
     } = fieldOption;
     const { parseName } = this.options;
 
@@ -176,7 +183,7 @@ class Field {
       "data-meta": "Field",
       id: id || name,
       ref: this._getCacheBind(name, `${name}__ref`, this._saveRef),
-      [valueName]: setValueFormatter ? setValueFormatter(field.value, field.inputValues) : field.value,
+      [valueName]: setValueFormatter ? setValueFormatter(field.value) : field.value,
     };
 
     let rulesMap = {};
@@ -215,13 +222,8 @@ class Field {
       const rule = rulesMap[trigger];
       rule && this._validate(name, rule, trigger);
 
-      this._reRender(name, trigger);
+      this._reRender();
     };
-
-    // step3: save reRender function
-    if (reRender && typeof reRender === "function") {
-      this.reRenders[name] = reRender;
-    }
 
     delete originalProps[defaultValueName];
 
@@ -256,7 +258,6 @@ class Field {
     }
 
     field.value = field.getValueFormatter ? field.getValueFormatter.apply(this, others) : getValueFromEvent(e);
-    field.inputValues = others;
 
     if (this.options.parseName) {
       this.values = setIn(this.values, name, field.value);
@@ -314,7 +315,6 @@ class Field {
 
       // after destroy, delete data
       delete this.instance[name];
-      delete this.reRenders[name];
       this.remove(name);
       return;
     }
@@ -406,7 +406,7 @@ class Field {
         field.errors = newErrors;
         field.state = newState;
 
-        reRender && this._reRender(name, "validate");
+        reRender && this._reRender();
       }
     );
   }
@@ -446,7 +446,7 @@ class Field {
     } else {
       this.values[name] = value;
     }
-    reRender && this._reRender(name, "setValue");
+    reRender && this._reRender();
   }
 
   setValues(fieldsValue = {}, reRender = true) {
@@ -490,7 +490,7 @@ class Field {
       this.fieldsMeta[name].state = "";
     }
 
-    this._reRender(name, "setError");
+    this._reRender();
   }
 
   setErrors(fieldsErrors = {}) {
@@ -633,7 +633,7 @@ class Field {
 
       // eslint-disable-next-line callback-return
       callback && callback(errorsGroup, this.getValues(names ? fieldNames : []));
-      this._reRender(names, "validate");
+      this._reRender();
 
       if (typeof this.afterValidateRerender === "function") {
         this.afterValidateRerender({
@@ -719,7 +719,7 @@ class Field {
     } catch (error) {
       return error;
     }
-    this._reRender(names, "validate");
+    this._reRender();
 
     return callbackResults;
   }
@@ -800,7 +800,7 @@ class Field {
     });
 
     if (changed) {
-      this._reRender(names, "reset");
+      this._reRender();
     }
   }
 
@@ -859,7 +859,7 @@ class Field {
   _spliceArrayValue(key, index, howmany, ...argv) {
     const argc = argv.length;
     const offset = howmany - argc; // how the reset fieldMeta move
-    const startIndex = index + howmany; // Calculate the starting point
+    const startIndex = index + howmany; // 计算起点
 
     /**
      * eg: call _spliceArrayValue('key', 1) to delete 'key.1':
@@ -1029,19 +1029,7 @@ class Field {
   }
 
   //trigger rerender
-  _reRender(name, action) {
-    // A field list is specified and there is a corresponding custom rendering function for the field
-    if (name) {
-      const names = Array.isArray(name) ? name : [name];
-      if (names.length && names.every((n) => this.reRenders[n])) {
-        names.forEach((n) => {
-          const reRender = this.reRenders[n];
-          reRender(action);
-        });
-        return;
-      }
-    }
-
+  _reRender() {
     if (this.com) {
       if (!this.options.forceUpdate && this.com.setState) {
         this.com.setState({});
@@ -1053,14 +1041,6 @@ class Field {
 
   _get(name) {
     return name in this.fieldsMeta ? this.fieldsMeta[name] : null;
-  }
-
-  get(name) {
-    if (name) {
-      return this._get(name);
-    } else {
-      return this.fieldsMeta;
-    }
   }
 }
 
