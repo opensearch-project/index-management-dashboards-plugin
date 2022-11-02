@@ -93,3 +93,13 @@ export enum RESTORE_OPTIONS {
   customize_index_settings = "customize_index_settings",
   ignore_index_settings = "ignore_index_settings",
 }
+
+export interface ModifiedStages {
+  START: string;
+  INIT: string;
+  INDEX: string;
+  VERIFY_INDEX: string;
+  TRANSLOG: string;
+  FINALIZE: string;
+  DONE: string;
+}

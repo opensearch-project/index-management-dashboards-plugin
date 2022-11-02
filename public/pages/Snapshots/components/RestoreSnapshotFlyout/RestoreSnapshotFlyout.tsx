@@ -27,6 +27,7 @@ import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { browseIndicesCols } from "../../../../utils/constants"
+import { ERROR_TOAST_TITLE } from "../../constants"
 import { IndexItem } from "../../../../../models/interfaces";
 import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
@@ -185,7 +186,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return false;
     } catch (err) {
-      this.context.notifications.toasts.addWarning(null, { title: "Please enter valid JSON between curly brackets." });
+      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
       this.setState({ badJSON: true });
       return true;
     }
@@ -196,7 +197,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     let notSelected = false;
 
     if (restoreSpecific && indices.length === 0) {
-      this.context.notifications.toasts.addWarning(null, { title: "There are no indices selected." });
+      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
       notSelected = true;
     }
 
@@ -209,7 +210,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       return false;
     } catch (err) {
-      this.context.notifications.toasts.addWarning(null, { title: "Please enter a valid regular expression." });
+      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
 
       return true;
     }
@@ -219,8 +220,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const isNotValid = regexString.indexOf("$") >= 0;
 
     if (isNotValid) return false;
-
-    this.context.notifications.toasts.addWarning(null, { title: "Please enter a valid rename replacement. Try including a '$'" });
+    this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
 
     return true;
   }
@@ -239,12 +239,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
       for (let setting in customSettings) {
         if (ignoreIndexSettings && ignoreIndexSettings.indexOf(setting) >= 0) {
-          this.context.notifications.toasts.addWarning(null, { title: "Customized settings can not also be ignored." });
+          this.context.notifications.toasts.addDanger(null, {
+            title: "Cannot apply and ignore the same index settings",
+            text: "One or more index settings was declared in both Custom index settings and Ignore index settings. Remove the index setting from either fields."
+          });
           return true;
         }
       }
     }
-
     return false;
   }
 
@@ -495,7 +497,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 title="Restoring a partial snapshot"
                 color="warning"
               >
-                <p>You are about to restore a partial snapshot. One or more shards may be missing in this<br />snapshot. Do you want to continue?</p>
+                <p>
+                  You are about to restore a partial snapshot. One or more shards may be missing in this
+                  <br />
+                  snapshot. Do you want to continue?
+                </p>
                 <EuiSpacer size="s" />
                 <EuiCheckbox
                   id={partial}

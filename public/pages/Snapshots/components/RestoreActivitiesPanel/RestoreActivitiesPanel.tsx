@@ -9,7 +9,7 @@ import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getToasts } from "../../helper"
-import { Toast } from "../../../../models/interfaces"
+import { Toast, ModifiedStages } from "../../../../models/interfaces"
 import { GetIndexRecoveryResponse, CatSnapshotIndex } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS, restoreIndicesCols } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -78,7 +78,6 @@ export const RestoreActivitiesPanel = (
       } else {
         const toasts = getToasts(
           "error_restore_toast",
-          // `There was a problem preventing restore of snapshot ${snapshotId} from completing.`,\
           "",
           snapshotId,
           onOpenError
@@ -119,10 +118,19 @@ export const RestoreActivitiesPanel = (
   const setRestoreStatus = (response: GetIndexRecoveryResponse) => {
     let minStartTime: number = 0;
     let maxStopTime: number = 0;
-    let stageIndex: number = 4;
+    let stageIndex: number = 6;
     let doneCount: number = 0;
     const indexes: CatSnapshotIndex[] = [];
-    const stages: string[] = ["START", "INIT", "INDEX", "FINALIZE", "DONE"];
+    const stages: string[] = ["START", "INIT", "INDEX", "VERIFY_INDEX", "TRANSLOG", "FINALIZE", "DONE"];
+    const modifiedStages: ModifiedStages = {
+      START: "Starting",
+      INIT: "Initializing",
+      INDEX: "Copying",
+      VERIFY_INDEX: "Verifying",
+      TRANSLOG: "Replaying translog",
+      FINALIZE: "Cleaning up",
+      DONE: "Completed"
+    }
     const lastStage = stages.length - 1;
 
     // Loop through indices in response, filter out kibana index, 
@@ -146,7 +154,7 @@ export const RestoreActivitiesPanel = (
 
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
 
-        const indexStatus = info.stage[0] + info.stage.slice(1).toLowerCase()
+        const indexStatus = modifiedStages[info.stage as keyof ModifiedStages];
 
         if (info.source.index && info.source.snapshot === snapshotId) {
           minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
@@ -177,7 +185,7 @@ export const RestoreActivitiesPanel = (
 
     if (stages[stageIndex]) {
       stageIndex = (stageIndex === lastStage && doneCount < restoreCount) ? 2 : stageIndex;
-      setStage(`${stages[stageIndex][0] + stages[stageIndex].toLowerCase().slice(1)} (${percent}%)`);
+      setStage(`${modifiedStages[stages[stageIndex] as keyof ModifiedStages]} (${percent}%)`);
     }
 
   };

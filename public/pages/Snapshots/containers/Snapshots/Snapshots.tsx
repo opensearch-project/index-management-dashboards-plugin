@@ -313,7 +313,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     if (selectedItems[0].status !== "SUCCESS") {
       const errorMessage = `Only snapshots with a status of "Success" can be restored.`;
 
-      this.context.notifications.toasts.addWarning(null, { title: errorMessage });
+      this.context.notifications.toasts.addDanger(null, { title: errorMessage });
       return;
     }
     this.setState({ showRestoreFlyout: true });
