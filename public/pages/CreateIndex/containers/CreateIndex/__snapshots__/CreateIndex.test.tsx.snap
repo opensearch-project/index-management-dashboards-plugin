@@ -194,278 +194,286 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
         style="padding-left: 10px;"
       >
         <div
-          class="euiFormRow"
-          id="some_html_id-row"
+          class="euiForm"
         >
           <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              class="euiFormLabel euiFormRow__label"
-              for="some_html_id"
-            >
-              Number of shards
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
+            class="euiFormRow"
+            id="some_html_id-row"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="some_html_id"
+              >
+                Number of shards
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  aria-describedby="some_html_id-help-0"
-                  class="euiFieldNumber"
-                  id="some_html_id"
-                  placeholder="The number of primary shards in the index. Default is 1."
-                  type="number"
-                  value="1"
-                />
-              </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              The number of primary shards in the index. Default is 1.
-            </div>
-          </div>
-        </div>
-        <div
-          class="euiFormRow"
-          id="some_html_id-row"
-        >
-          <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              class="euiFormLabel euiFormRow__label"
-              for="some_html_id"
-            >
-              Number of replicas
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <div
-              class="euiFormControlLayout"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  aria-describedby="some_html_id-help-0"
-                  class="euiFieldNumber"
-                  id="some_html_id"
-                  placeholder="The number of replica shards each primary shard should have."
-                  type="number"
-                  value="1"
-                />
-              </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              The number of replica shards each primary shard should have.
-            </div>
-          </div>
-        </div>
-        <div
-          class="euiSpacer euiSpacer--m"
-        />
-        <div
-          class="euiAccordion"
-        >
-          <div
-            class="euiAccordion__triggerWrapper"
-          >
-            <button
-              aria-controls="accordion_for_create_index_settings"
-              aria-expanded="false"
-              class="euiAccordion__button"
-              id="some_html_id"
-              type="button"
-            >
-              <span
-                class="euiAccordion__iconWrapper"
-              >
-                EuiIconMock
-              </span>
-              <span
-                class="euiIEFlexWrapFix"
-              >
-                <h4>
-                  Advanced settings
-                </h4>
-              </span>
-            </button>
-          </div>
-          <div
-            aria-labelledby="some_html_id"
-            class="euiAccordion__childWrapper"
-            id="accordion_for_create_index_settings"
-            role="region"
-            tabindex="-1"
-          >
-            <div>
-              <div
-                class=""
+                class="euiFormControlLayout"
               >
                 <div
-                  class="euiSpacer euiSpacer--m"
-                />
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    aria-describedby="some_html_id-help-0"
+                    class="euiFieldNumber"
+                    data-meta="Field"
+                    id="some_html_id"
+                    placeholder="The number of primary shards in the index. Default is 1."
+                    type="number"
+                    value="1"
+                  />
+                </div>
+              </div>
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                id="some_html_id-help-0"
+              >
+                The number of primary shards in the index. Default is 1.
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiFormRow"
+            id="some_html_id-row"
+          >
+            <div
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="some_html_id"
+              >
+                Number of replicas
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
                 <div
-                  class="euiFormRow"
-                  id="some_html_id-row"
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    aria-describedby="some_html_id-help-0"
+                    class="euiFieldNumber"
+                    data-meta="Field"
+                    id="some_html_id"
+                    placeholder="The number of replica shards each primary shard should have."
+                    type="number"
+                    value="1"
+                  />
+                </div>
+              </div>
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                id="some_html_id-help-0"
+              >
+                The number of replica shards each primary shard should have.
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiSpacer euiSpacer--m"
+          />
+          <div
+            class="euiAccordion"
+          >
+            <div
+              class="euiAccordion__triggerWrapper"
+            >
+              <button
+                aria-controls="accordion_for_create_index_settings"
+                aria-expanded="false"
+                class="euiAccordion__button"
+                id="some_html_id"
+                type="button"
+              >
+                <span
+                  class="euiAccordion__iconWrapper"
+                >
+                  EuiIconMock
+                </span>
+                <span
+                  class="euiIEFlexWrapFix"
+                >
+                  <h4>
+                    Advanced settings
+                  </h4>
+                </span>
+              </button>
+            </div>
+            <div
+              aria-labelledby="some_html_id"
+              class="euiAccordion__childWrapper"
+              id="accordion_for_create_index_settings"
+              role="region"
+              tabindex="-1"
+            >
+              <div>
+                <div
+                  class=""
                 >
                   <div
-                    class="euiFormRow__labelWrapper"
-                  >
-                    <label
-                      class="euiFormLabel euiFormRow__label"
-                      for="some_html_id"
-                    >
-                      Specify advanced index settings
-                    </label>
-                  </div>
+                    class="euiSpacer euiSpacer--m"
+                  />
                   <div
-                    class="euiFormRow__fieldWrapper"
+                    class="euiFormRow"
+                    id="some_html_id-row"
                   >
                     <div
-                      class="euiCodeEditorWrapper"
-                      data-test-subj="codeEditorContainer"
+                      class="euiFormRow__labelWrapper"
                     >
-                      <button
-                        class="euiCodeEditorKeyboardHint"
-                        data-test-subj="codeEditorHint"
-                        id="some_html_id"
+                      <label
+                        class="euiFormLabel euiFormRow__label"
+                        for="some_html_id"
                       >
-                        <p
-                          class="euiText"
-                        >
-                          Press Enter to start editing.
-                        </p>
-                        <p
-                          class="euiText"
-                        >
-                          When you're done, press Escape to stop editing.
-                        </p>
-                      </button>
+                        Specify advanced index settings
+                      </label>
+                    </div>
+                    <div
+                      class="euiFormRow__fieldWrapper"
+                    >
                       <div
-                        class=" ace_editor ace-tm"
-                        id="some_html_id"
-                        style="width: 500px; height: 500px;"
+                        class="euiCodeEditorWrapper"
+                        data-test-subj="codeEditorContainer"
                       >
-                        <textarea
-                          aria-describedby="some_html_id-help-0"
-                          autocapitalize="off"
-                          autocorrect="off"
-                          class="ace_text-input"
-                          spellcheck="false"
-                          style="opacity: 0;"
-                          tabindex="-1"
-                          wrap="off"
-                        />
-                        <div
-                          aria-hidden="true"
-                          class="ace_gutter"
+                        <button
+                          class="euiCodeEditorKeyboardHint"
+                          data-test-subj="codeEditorHint"
+                          id="some_html_id"
                         >
-                          <div
-                            class="ace_layer ace_gutter-layer ace_folding-enabled"
+                          <p
+                            class="euiText"
+                          >
+                            Press Enter to start editing.
+                          </p>
+                          <p
+                            class="euiText"
+                          >
+                            When you're done, press Escape to stop editing.
+                          </p>
+                        </button>
+                        <div
+                          class=" ace_editor ace-tm"
+                          id="some_html_id"
+                          style="width: 500px; height: 500px;"
+                        >
+                          <textarea
+                            aria-describedby="some_html_id-help-0"
+                            autocapitalize="off"
+                            autocorrect="off"
+                            class="ace_text-input"
+                            spellcheck="false"
+                            style="opacity: 0;"
+                            tabindex="-1"
+                            wrap="off"
                           />
                           <div
-                            class="ace_gutter-active-line"
-                          />
-                        </div>
-                        <div
-                          class="ace_scroller"
-                        >
-                          <div
-                            class="ace_content"
+                            aria-hidden="true"
+                            class="ace_gutter"
                           >
                             <div
-                              class="ace_layer ace_print-margin-layer"
+                              class="ace_layer ace_gutter-layer ace_folding-enabled"
+                            />
+                            <div
+                              class="ace_gutter-active-line"
+                            />
+                          </div>
+                          <div
+                            class="ace_scroller"
+                          >
+                            <div
+                              class="ace_content"
                             >
                               <div
-                                class="ace_print-margin"
-                                style="left: 4px; visibility: visible;"
-                              />
-                            </div>
-                            <div
-                              class="ace_layer ace_marker-layer"
-                            />
-                            <div
-                              class="ace_layer ace_text-layer"
-                              style="padding: 0px 4px;"
-                            />
-                            <div
-                              class="ace_layer ace_marker-layer"
-                            />
-                            <div
-                              class="ace_layer ace_cursor-layer ace_hidden-cursors"
-                            >
+                                class="ace_layer ace_print-margin-layer"
+                              >
+                                <div
+                                  class="ace_print-margin"
+                                  style="left: 4px; visibility: visible;"
+                                />
+                              </div>
                               <div
-                                class="ace_cursor"
+                                class="ace_layer ace_marker-layer"
                               />
+                              <div
+                                class="ace_layer ace_text-layer"
+                                style="padding: 0px 4px;"
+                              />
+                              <div
+                                class="ace_layer ace_marker-layer"
+                              />
+                              <div
+                                class="ace_layer ace_cursor-layer ace_hidden-cursors"
+                              >
+                                <div
+                                  class="ace_cursor"
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div
-                          class="ace_scrollbar ace_scrollbar-v"
-                          style="display: none; width: 20px;"
-                        >
                           <div
-                            class="ace_scrollbar-inner"
-                            style="width: 20px;"
-                          />
-                        </div>
-                        <div
-                          class="ace_scrollbar ace_scrollbar-h"
-                          style="display: none; height: 20px;"
-                        >
-                          <div
-                            class="ace_scrollbar-inner"
-                            style="height: 20px;"
-                          />
-                        </div>
-                        <div
-                          style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
-                        >
-                          <div
-                            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                          />
-                          <div
-                            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                            class="ace_scrollbar ace_scrollbar-v"
+                            style="display: none; width: 20px;"
                           >
-                            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                            <div
+                              class="ace_scrollbar-inner"
+                              style="width: 20px;"
+                            />
+                          </div>
+                          <div
+                            class="ace_scrollbar ace_scrollbar-h"
+                            style="display: none; height: 20px;"
+                          >
+                            <div
+                              class="ace_scrollbar-inner"
+                              style="height: 20px;"
+                            />
+                          </div>
+                          <div
+                            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
+                          >
+                            <div
+                              style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                            />
+                            <div
+                              style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                            >
+                              XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="euiFormHelpText euiFormRow__text"
-                      id="some_html_id-help-0"
-                    >
-                      Specify a comma-delimited list of settings.
-                      <a
-                        class="euiLink euiLink--primary"
-                        href="https://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
-                        rel="noopener noreferrer"
-                        target="_blank"
+                      <div
+                        class="euiFormHelpText euiFormRow__text"
+                        id="some_html_id-help-0"
                       >
-                        View index settings
-                        EuiIconMock
-                        <span
-                          class="euiScreenReaderOnly"
+                        Specify a comma-delimited list of settings.
+                        <a
+                          class="euiLink euiLink--primary"
+                          href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
-                          (opens in a new tab or window)
-                        </span>
-                      </a>
+                          View index settings
+                          EuiIconMock
+                          <span
+                            class="euiScreenReaderOnly"
+                          >
+                            (opens in a new tab or window)
+                          </span>
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
