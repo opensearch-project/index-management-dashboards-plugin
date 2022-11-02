@@ -103,3 +103,7 @@ export interface ModifiedStages {
   FINALIZE: string;
   DONE: string;
 }
+
+export interface IndexItem {
+  index: string;
+}
