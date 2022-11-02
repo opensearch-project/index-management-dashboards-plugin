@@ -17,9 +17,9 @@
     "cypress:open": "cypress open",
     "osd": "node ../../scripts/osd",
     "opensearch": "node ../../scripts/opensearch",
-    "lint": "eslint .",
+    "lint": "node ../../scripts/eslint .",
     "plugin-helpers": "node ../../scripts/plugin_helpers",
-    "test:jest": "NODE_PATH=../../node_modules ../../node_modules/.bin/jest --config ./test/jest.config.js",
+    "test:jest": "../../node_modules/.bin/jest --config ./test/jest.config.js",
     "build": "yarn plugin-helpers build",
     "postbuild": "echo Renaming build artifact to [$npm_package_config_zip_name-$npm_package_version.zip] && mv build/$npm_package_config_id*.zip build/$npm_package_config_zip_name-$npm_package_version.zip"
   },
