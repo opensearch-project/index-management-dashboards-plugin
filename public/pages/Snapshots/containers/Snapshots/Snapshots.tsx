@@ -316,7 +316,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const inProgressText = "This snapshot is still being created. Try again once the snapshot has been completed."
 
     if (snapshot.status === "FAILED" || snapshot.status === "IN_PROGRESS") {
-      const errorText = snapshot.status === "IN_PROGRESS" ? failedText : inProgressText;
+      const errorText = snapshot.status === "IN_PROGRESS" ? inProgressText : failedText;
       this.context.notifications.toasts.addDanger(null, { title: errorMessage, text: errorText });
       return;
     }

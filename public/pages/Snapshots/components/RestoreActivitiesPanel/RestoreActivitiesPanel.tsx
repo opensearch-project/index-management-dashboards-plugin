@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton, EuiEmptyPrompt } from "@elastic/eui";
+import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton, EuiEmptyPrompt, EuiHealth } from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
@@ -201,7 +201,8 @@ export const RestoreActivitiesPanel = (
       </EuiButton>,
     ]
   ), []);
-
+  const currentStage = stage.slice(0, stage.indexOf(" "))
+  const color = currentStage === "Completed" ? "success" : currentStage === "Failed" ? "failure" : "primary";
   const indexText = `${restoreCount === 1 ? "1 Index" : `${restoreCount} Indices`}`
 
   const restoreStatus = [
@@ -229,11 +230,12 @@ export const RestoreActivitiesPanel = (
     {
       field: "status",
       name: "Status",
+      render: (text: string) => <EuiHealth color={color}>{text}</EuiHealth>
     },
     {
       field: "indexes",
       name: "Indices being restored",
-      render: (text: object) => <EuiLink onClick={onIndexesClick}>{text}</EuiLink>,
+      render: (text: string) => <EuiLink onClick={onIndexesClick}>{text}</EuiLink>,
     },
   ];
 
