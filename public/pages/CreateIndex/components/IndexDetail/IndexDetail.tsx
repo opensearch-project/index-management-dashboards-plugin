@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiFieldText, EuiLink } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiFieldText, EuiLink, EuiOverlayMask, EuiLoadingSpinner } from "@elastic/eui";
 import { set, merge } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -71,6 +71,7 @@ const IndexDetail = (
     if (finalValue.index && onSimulateIndexTemplate) {
       setTemplateSimulateLoading(true);
       const result = await onSimulateIndexTemplate(finalValue.index);
+      setTemplateSimulateLoading(false);
       if (result && result.ok) {
         let onChangePromise: Promise<IndexItemRemote>;
         if (hasEdit.current) {
@@ -113,7 +114,6 @@ const IndexDetail = (
           hasEdit.current = false;
         });
       }
-      setTemplateSimulateLoading(false);
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
   const formFields: IField[] = useMemo(() => {
@@ -132,7 +132,8 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled: (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) || templateSimulateLoading,
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) || templateSimulateLoading || !finalValue.index,
             placeholder: "The number of primary shards in the index. Default is 1.",
           },
         },
@@ -151,7 +152,8 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled: (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) || templateSimulateLoading,
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) || templateSimulateLoading || !finalValue.index,
             placeholder: "The number of replica shards each primary shard should have.",
           },
         },
@@ -179,7 +181,7 @@ const IndexDetail = (
         type: "Switch",
         options: {
           props: {
-            disabled: templateSimulateLoading,
+            disabled: templateSimulateLoading || !finalValue.index,
           },
         },
       },
@@ -192,7 +194,7 @@ const IndexDetail = (
         type: "Switch",
         options: {
           props: {
-            disabled: templateSimulateLoading,
+            disabled: templateSimulateLoading || !finalValue.index,
           },
         },
       },
@@ -206,7 +208,7 @@ const IndexDetail = (
         type: "Switch",
         options: {
           props: {
-            disabled: templateSimulateLoading,
+            disabled: templateSimulateLoading || !finalValue.index,
           },
         },
       },
@@ -219,12 +221,12 @@ const IndexDetail = (
         type: "Switch",
         options: {
           props: {
-            disabled: templateSimulateLoading,
+            disabled: templateSimulateLoading || !finalValue.index,
           },
         },
       },
     ] as IField[];
-  }, [isEdit]);
+  }, [isEdit, finalValue.index, templateSimulateLoading]);
   return (
     <>
       {isEdit && mode && mode !== IndicesUpdateMode.alias ? null : (
@@ -233,7 +235,7 @@ const IndexDetail = (
             <div style={{ paddingLeft: "10px" }}>
               <EuiFormRow
                 label="Index name"
-                helpText="Some reestrictrion text on domain"
+                helpText={finalValue.index ? "Some restriction text on domain" : "Please enter the name before moving to other fields"}
                 isInvalid={!!errors["index"]}
                 error={errors["index"]}
               >
@@ -251,6 +253,7 @@ const IndexDetail = (
                   refreshOptions={refreshOptions}
                   value={finalValue.aliases}
                   onChange={(value) => onValueChange("aliases", value)}
+                  isDisabled={!finalValue.index}
                 />
               </EuiFormRow>
             </div>
@@ -315,6 +318,12 @@ const IndexDetail = (
           </div>
         </ContentPanel>
       )}
+      {templateSimulateLoading ? (
+        <EuiOverlayMask headerZindexLocation="below">
+          <EuiLoadingSpinner size="l" />
+          We are simulating your template with existing templates, please wait for a second.
+        </EuiOverlayMask>
+      ) : null}
     </>
   );
 };

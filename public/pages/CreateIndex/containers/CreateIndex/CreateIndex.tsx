@@ -8,6 +8,7 @@ import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmp
 import { RouteComponentProps } from "react-router-dom";
 import { get, set, differenceWith, isEqual } from "lodash";
 import { diffArrays } from "diff";
+import flattern from "flat";
 // eui depends on react-ace, so we can import react-ace here
 import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
 import IndexDetail from "../../components/IndexDetail";
@@ -343,20 +344,19 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
       })
       .then((res) => {
         if (res.ok && res.response && res.response.template) {
-          if (res.response && res.response.template) {
-            return {
-              ...res,
-              response: res.response.template,
-            };
-          } else {
-            return {
-              ok: false,
-              error: "",
-            };
-          }
+          return {
+            ...res,
+            response: {
+              ...res.response.template,
+              settings: flattern(res.response.template?.settings || {}),
+            },
+          };
         }
 
-        return res;
+        return {
+          ok: false,
+          error: "",
+        } as ServerResponse<IndexItemRemote>;
       });
   };
 
