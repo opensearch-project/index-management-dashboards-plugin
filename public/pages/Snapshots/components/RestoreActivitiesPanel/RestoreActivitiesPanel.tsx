@@ -202,7 +202,7 @@ export const RestoreActivitiesPanel = (
     ]
   ), []);
   const currentStage = stage.slice(0, stage.indexOf(" "))
-  const color = currentStage === "Completed" ? "success" : currentStage === "Failed" ? "failure" : "primary";
+  const color = currentStage === "Completed" ? "success" : currentStage === "Failed" ? "failure" : "warning";
   const indexText = `${restoreCount === 1 ? "1 Index" : `${restoreCount} Indices`}`
 
   const restoreStatus = [
