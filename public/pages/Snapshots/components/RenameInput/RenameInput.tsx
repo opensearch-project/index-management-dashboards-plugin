@@ -59,13 +59,13 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError,
   return (
     <>
       <EuiSpacer size="l" />
-      <EuiFormRow error={BAD_RENAME_PATTERN_TEXT} isInvalid={showPatternError} label={patternLabel} >
+      <EuiFormRow error={BAD_RENAME_PATTERN_TEXT} isInvalid={showPatternError} label={patternLabel} id="rename_pattern">
         <EuiFieldText value={renamePattern} onChange={onPatternChange} isInvalid={showPatternError} data-test-subj="renamePatternInput" />
       </EuiFormRow>
 
       <EuiSpacer size="m" />
 
-      <EuiFormRow error={BAD_RENAME_REPLACEMENT_TEXT} isInvalid={showRenameError} label={renameLabel}>
+      <EuiFormRow error={BAD_RENAME_REPLACEMENT_TEXT} isInvalid={showRenameError} label={renameLabel} id="rename_replacement">
         <EuiFieldText value={renameReplacement} onChange={onReplacementChange} isInvalid={showRenameError} data-test-subj="renameReplacementInput" />
       </EuiFormRow>
     </>

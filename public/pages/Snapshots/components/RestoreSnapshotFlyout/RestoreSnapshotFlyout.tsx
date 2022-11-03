@@ -281,18 +281,48 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   onToggle = (e: ChangeEvent<HTMLInputElement>) => {
-    const { restore_specific_indices, restore_all_indices } = RESTORE_OPTIONS;
+    const { restore_specific_indices, restore_all_indices, customize_index_settings, ignore_index_settings } = RESTORE_OPTIONS;
 
     if (e.target.id === restore_specific_indices) {
+      console.log("specific");
       this.setState({ restoreSpecific: true, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
       return;
     }
+
     if (e.target.id === restore_all_indices) {
       this.setState({ restoreSpecific: false, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
       return;
     }
+
+    if (e.target.id === customize_index_settings) {
+      if (!e.target.checked) {
+        this.setState({ customIndexSettings: "", badJSON: false });
+      }
+    }
+
+    if (e.target.id === ignore_index_settings) {
+      if (!e.target.checked) {
+        this.setState({ ignoreIndexSettings: "", badIgnore: false });
+      }
+    }
+
     if (e.target.name === "rename_option") {
-      this.setState({ renameIndices: e.target.id, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
+      let renamePattern = this.state.renamePattern;
+      let renameReplacement = this.state.renameReplacement;
+
+      if (e.target.id !== "rename_indices") {
+        renamePattern = "(.+)"
+        renameReplacement = "restored_$1"
+      }
+
+      this.setState({
+        renameIndices: e.target.id,
+        renamePattern,
+        badPattern: false,
+        renameReplacement,
+        badRename: false,
+        snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked)
+      });
       return;
     }
 
