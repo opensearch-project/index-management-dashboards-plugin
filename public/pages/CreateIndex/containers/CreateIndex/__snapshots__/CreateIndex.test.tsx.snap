@@ -78,7 +78,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               class="euiFormHelpText euiFormRow__text"
               id="some_html_id-help-0"
             >
-              Some reestrictrion text on domain
+              Please enter the name before moving to other fields
             </div>
           </div>
         </div>
@@ -100,9 +100,10 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
+              aria-describedby="some_html_id-help-0"
               aria-expanded="false"
               aria-haspopup="listbox"
-              class="euiComboBox"
+              class="euiComboBox euiComboBox-isDisabled"
               role="combobox"
             >
               <div
@@ -112,7 +113,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
@@ -128,6 +129,8 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                       <input
                         aria-controls=""
                         data-test-subj="comboBoxSearchInput"
+                        disabled=""
+                        id="some_html_id"
                         role="textbox"
                         style="box-sizing: content-box; width: 2px;"
                         value=""
@@ -144,6 +147,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                       aria-label="Open list of options"
                       class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
                       data-test-subj="comboBoxToggleListButton"
+                      disabled=""
                       type="button"
                     >
                       EuiIconMock
@@ -198,6 +202,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
         >
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.number_of_shards"
             id="some_html_id-row"
           >
             <div
@@ -224,6 +229,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                     aria-describedby="some_html_id-help-0"
                     class="euiFieldNumber"
                     data-meta="Field"
+                    disabled=""
                     id="some_html_id"
                     placeholder="The number of primary shards in the index. Default is 1."
                     type="number"
@@ -241,6 +247,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
           </div>
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.number_of_replicas"
             id="some_html_id-row"
           >
             <div
@@ -267,6 +274,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                     aria-describedby="some_html_id-help-0"
                     class="euiFieldNumber"
                     data-meta="Field"
+                    disabled=""
                     id="some_html_id"
                     placeholder="The number of replica shards each primary shard should have."
                     type="number"
@@ -284,6 +292,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
           </div>
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.blocks.read_only"
             id="some_html_id-row"
           >
             <div
@@ -338,6 +347,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
           </div>
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.blocks.read_only_allow_delete"
             id="some_html_id-row"
           >
             <div
@@ -363,6 +373,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   aria-label=""
                   class="euiSwitch__button"
                   data-meta="Field"
+                  disabled=""
                   id="some_html_id"
                   role="switch"
                   type="button"
@@ -392,6 +403,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
           </div>
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.blocks.read"
             id="some_html_id-row"
           >
             <div
@@ -417,6 +429,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   aria-label=""
                   class="euiSwitch__button"
                   data-meta="Field"
+                  disabled=""
                   id="some_html_id"
                   role="switch"
                   type="button"
@@ -446,6 +459,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
           </div>
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.blocks.write"
             id="some_html_id-row"
           >
             <div
@@ -471,6 +485,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   aria-label=""
                   class="euiSwitch__button"
                   data-meta="Field"
+                  disabled=""
                   id="some_html_id"
                   role="switch"
                   type="button"
@@ -500,6 +515,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
           </div>
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.blocks.metadata"
             id="some_html_id-row"
           >
             <div
@@ -525,6 +541,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   aria-label=""
                   class="euiSwitch__button"
                   data-meta="Field"
+                  disabled=""
                   id="some_html_id"
                   role="switch"
                   type="button"

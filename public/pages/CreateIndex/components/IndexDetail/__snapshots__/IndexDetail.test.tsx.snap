@@ -66,7 +66,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             id="some_html_id-help-0"
           >
-            Some reestrictrion text on domain
+            Please enter the name before moving to other fields
           </div>
         </div>
       </div>
@@ -88,9 +88,10 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
           class="euiFormRow__fieldWrapper"
         >
           <div
+            aria-describedby="some_html_id-help-0"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox-isDisabled"
             role="combobox"
           >
             <div
@@ -100,7 +101,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >
@@ -116,6 +117,8 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                     <input
                       aria-controls=""
                       data-test-subj="comboBoxSearchInput"
+                      disabled=""
+                      id="some_html_id"
                       role="textbox"
                       style="box-sizing: content-box; width: 2px;"
                       value=""
@@ -132,6 +135,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                     aria-label="Open list of options"
                     class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
                     data-test-subj="comboBoxToggleListButton"
+                    disabled=""
                     type="button"
                   >
                     EuiIconMock

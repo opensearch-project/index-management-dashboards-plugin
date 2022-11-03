@@ -60,9 +60,6 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     const isEdit = this.isEdit;
     if (isEdit) {
       try {
-        if (!this.index) {
-          throw new Error(`Invalid Index: ${this.index}`);
-        }
         const response: ServerResponse<Record<string, IndexItem>> = await this.props.commonService.apiCaller({
           endpoint: "indices.get",
           data: {
@@ -271,6 +268,12 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
             ok: true,
             response: {},
           }),
+        onCancel: () => {
+          resolve({
+            ok: false,
+            error: "",
+          });
+        },
       });
     });
   };
@@ -287,6 +290,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     if (this.isEdit) {
       const diffConfirm = await this.showDiff();
       if (!diffConfirm.ok) {
+        this.setState({ isSubmitting: false });
         return;
       }
       let chainedPromises: Promise<ServerResponse<any>>[] = [];
@@ -321,6 +325,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
         },
       });
     }
+    this.setState({ isSubmitting: false });
 
     // handle all the response here
     if (result && result.ok) {
@@ -329,8 +334,6 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     } else {
       this.context.notifications.toasts.addDanger(result.error);
     }
-
-    this.setState({ isSubmitting: false });
   };
 
   onSimulateIndexTemplate = (indexName: string) => {

@@ -8,6 +8,7 @@ HTMLCollection [
     >
       <div
         class="euiFormRow"
+        data-test-subj="form-name-test"
         id="some_html_id-row"
       >
         <div

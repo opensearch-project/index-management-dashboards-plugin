@@ -54,7 +54,13 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
       {formFields.map((item) => {
         const RenderComponent = item.type ? AllBuiltInComponents[item.type] : item.component || (() => null);
         return (
-          <EuiFormRow key={item.name} {...item.rowProps} error={errorMessage[item.name]} isInvalid={!!errorMessage[item.name]}>
+          <EuiFormRow
+            data-test-subj={`form-name-${item.name}`}
+            key={item.name}
+            {...item.rowProps}
+            error={errorMessage[item.name]}
+            isInvalid={!!errorMessage[item.name]}
+          >
             <RenderComponent {...field.init(item.name, item.options)} />
           </EuiFormRow>
         );

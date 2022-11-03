@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { EuiComboBox, EuiComboBoxProps } from "@elastic/eui";
 import { useEffect } from "react";
 import { debounce } from "lodash";
@@ -27,8 +27,12 @@ const AliasSelect = (props: AliasSelectProps) => {
   const finalValue = transformObjToArray(value);
   const [allOptions, setAllOptions] = useState([] as { label: string }[]);
   const [isLoading, setIsLoading] = useState(false);
+  const destroyRef = useRef(false);
   const refreshOptions = useCallback(
     debounce(({ aliasName }) => {
+      if (destroyRef.current) {
+        return;
+      }
       setIsLoading(true);
       refreshOptionsFromProps(aliasName)
         .then((res: ServerResponse<{ alias: string }[]>) => {
@@ -48,6 +52,9 @@ const AliasSelect = (props: AliasSelectProps) => {
   );
   useEffect(() => {
     refreshOptions({});
+    return () => {
+      destroyRef.current = true;
+    };
   }, []);
   const onCreateOption = (searchValue: string, flattenedOptions: { label: string }[] = []) => {
     const normalizedSearchValue = searchValue.trim().toLowerCase();
