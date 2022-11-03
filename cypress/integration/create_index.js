@@ -102,7 +102,10 @@ describe("Create Index", () => {
         .click()
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
-        .click({ force: true });
+        .click({ force: true })
+        .end()
+        .get('[data-test-subj="change_diff_confirm-confirm"]')
+        .click();
 
       // check the index
       cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
@@ -131,11 +134,37 @@ describe("Create Index", () => {
         .get('[data-test-subj="detail-modal-edit"]')
         .click();
 
-      cy.get('[placeholder="The number of replica shards each primary shard should have."]')
-        .type(2)
+      cy.get('[aria-controls="accordion_for_create_index_settings"]')
+        .click()
         .end()
-        .get('[data-test-subj="createIndexCreateButton"]')
-        .click({ force: true });
+        .get('[data-test-subj="codeEditorContainer"] textarea')
+        .focus()
+        .clear()
+        .type('{ "index.blocks.write": true, "index.number_of_shards": 2 }', { parseSpecialCharSequences: false })
+        .blur();
+
+      cy.get('[data-test-subj="createIndexCreateButton"]')
+        .click({ force: true })
+        .get('[data-test-subj="change_diff_confirm-confirm"]')
+        .click();
+
+      cy.contains(`Can't update non dynamic settings`).should("exist");
+
+      cy.get('[data-test-subj="codeEditorContainer"] textarea')
+        .focus()
+        .clear()
+        .type('{ "index.blocks.write": true }', { parseSpecialCharSequences: false })
+        .blur()
+        .end()
+        .wait(1000)
+        .get('[placeholder="The number of replica shards each primary shard should have."]')
+        .type(2)
+        .end();
+
+      cy.get('[data-test-subj="createIndexCreateButton"]')
+        .click({ force: true })
+        .get('[data-test-subj="change_diff_confirm-confirm"]')
+        .click();
 
       cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
@@ -159,7 +188,9 @@ describe("Create Index", () => {
         .click()
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
-        .click({ force: true });
+        .click({ force: true })
+        .get('[data-test-subj="change_diff_confirm-confirm"]')
+        .click();
 
       cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
         .click()
@@ -170,5 +201,10 @@ describe("Create Index", () => {
 
       cy.get('[data-test-subj="mapping-visual-editor-1-field-type"]').should("have.value", "text").end();
     });
+  });
+
+  after(() => {
+    cy.deleteTemplate("index-common-template");
+    cy.deleteTemplate("index-specific-template");
   });
 });
