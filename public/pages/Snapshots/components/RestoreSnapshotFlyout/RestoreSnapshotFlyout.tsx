@@ -144,9 +144,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     if (options.index_settings?.length === 0) {
       delete options.index_settings;
-    } else {
-      const badJSON = checkBadJSON(customIndexSettings);
-      this.setState({ badJSON })
     }
 
     if (options.ignore_index_settings?.length === 0) {
