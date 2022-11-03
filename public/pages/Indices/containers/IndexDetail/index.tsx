@@ -17,15 +17,18 @@ import {
   EuiFlexGroup,
   EuiButton,
   EuiBasicTable,
+  EuiFlyout,
+  EuiFlyoutHeader,
+  EuiTitle,
+  EuiFlyoutBody,
+  EuiCodeBlock,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
 import { IndexItem } from "../../../../../models/interfaces";
-import { Modal } from "../../../../components/Modal";
 import IndicesActions, { IndicesActionsProps } from "../IndicesActions";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
-import JSONEditor from "../../../../components/JSONEditor";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 
@@ -141,140 +144,135 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       <EuiButtonEmpty onClick={() => setVisible(true)} data-test-subj={`view-index-detail-button-${index}`}>
         {index}
       </EuiButtonEmpty>
-      <Modal.SimpleModal
-        visible={visible}
-        maxWidth={false}
-        style={{
-          width: "60vw",
-        }}
-        onClose={() => setVisible(false)}
-        title={
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span>{index}</span>
-            <IndicesActions selectedItems={[record]} onDelete={onDelete} />
-          </div>
-        }
-        content={
-          <EuiTabbedContent
-            tabs={[
-              {
-                id: "index-detail-modal-overview",
-                name: "Overview",
-                content: (
-                  <EuiDescriptionList>
-                    <EuiSpacer />
-                    <EuiFlexGrid columns={3}>
-                      {OVERVIEW_DISPLAY_INFO.map((item) => {
-                        let valueContent = null;
-                        if (typeof item.value === "string") {
-                          valueContent = <span>{get(finalDetail, item.value)}</span>;
-                        } else {
-                          const ValueComponent = item.value;
-                          valueContent = <ValueComponent detail={finalDetail} />;
-                        }
-                        return (
-                          <EuiFlexItem key={item.label} data-test-subj={`index-detail-overview-item-${item.label}`}>
-                            <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
-                            <EuiDescriptionListDescription>{valueContent}</EuiDescriptionListDescription>
-                          </EuiFlexItem>
-                        );
-                      })}
-                    </EuiFlexGrid>
-                  </EuiDescriptionList>
-                ),
-              },
-              {
-                id: "index-detail-modal-settings",
-                name: "Settings",
-                content: (
-                  <>
-                    <EuiSpacer />
-                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                      <EuiFlexItem grow={false}>
-                        <h2>Advanced index settings</h2>
-                      </EuiFlexItem>
-                      <EuiFlexItem grow={false}>
-                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.settings}`}>
-                          <EuiButton size="s" data-test-subj="detail-modal-edit">
-                            Edit
-                          </EuiButton>
-                        </Link>
-                      </EuiFlexItem>
-                    </EuiFlexGroup>
-                    <EuiSpacer />
-                    <JSONEditor
-                      key="index-detail-modal-settings-editor"
-                      readOnly
-                      value={JSON.stringify(finalDetail.settings || {}, null, 2)}
-                    />
-                  </>
-                ),
-              },
-              {
-                id: "index-detail-modal-mappings",
-                name: "Mappings",
-                content: (
-                  <>
-                    <EuiSpacer />
-                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                      <EuiFlexItem grow={false}>
-                        <h2>Index mappings</h2>
-                      </EuiFlexItem>
-                      <EuiFlexItem grow={false}>
-                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.mappings}`}>
-                          <EuiButton size="s" data-test-subj="detail-modal-edit">
-                            Edit
-                          </EuiButton>
-                        </Link>
-                      </EuiFlexItem>
-                    </EuiFlexGroup>
-                    <EuiSpacer />
-                    <JSONEditor
-                      key="index-detail-modal-mappings-editor"
-                      readOnly
-                      value={JSON.stringify(finalDetail.mappings || {}, null, 2)}
-                    />
-                  </>
-                ),
-              },
-              {
-                id: `index-detail-modal-${IndicesUpdateMode.alias}`,
-                name: "Alias",
-                content: (
-                  <>
-                    <EuiSpacer />
-                    <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                      <EuiFlexItem grow={false}>
-                        <h2>Index alias</h2>
-                      </EuiFlexItem>
-                      <EuiFlexItem grow={false}>
-                        <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.alias}`}>
-                          <EuiButton size="s" data-test-subj="detail-modal-edit">
-                            Edit
-                          </EuiButton>
-                        </Link>
-                      </EuiFlexItem>
-                    </EuiFlexGroup>
-                    <EuiSpacer />
-                    <EuiBasicTable
-                      rowHeader="alias"
-                      noItemsMessage="No alias found"
-                      items={Object.keys(finalDetail.aliases || {}).map((item) => ({ alias: item }))}
-                      columns={[
-                        {
-                          field: "alias",
-                          name: "Alias name",
-                          render: (val: string, record: { alias: string }) => <Link to="somewhereto">{val}</Link>,
-                        },
-                      ]}
-                    />
-                  </>
-                ),
-              },
-            ]}
-          />
-        }
-      />
+      {visible ? (
+        <EuiFlyout onClose={() => setVisible(false)} hideCloseButton>
+          <EuiFlyoutHeader hasBorder>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <EuiTitle size="m">
+                <span>{index}</span>
+              </EuiTitle>
+              {/* <span>{index}</span> */}
+              <IndicesActions selectedItems={[record]} onDelete={onDelete} />
+            </div>
+          </EuiFlyoutHeader>
+          <EuiFlyoutBody>
+            <EuiTabbedContent
+              tabs={[
+                {
+                  id: "index-detail-modal-overview",
+                  name: "Overview",
+                  content: (
+                    <EuiDescriptionList>
+                      <EuiSpacer />
+                      <EuiFlexGrid columns={3}>
+                        {OVERVIEW_DISPLAY_INFO.map((item) => {
+                          let valueContent = null;
+                          if (typeof item.value === "string") {
+                            valueContent = <span>{get(finalDetail, item.value)}</span>;
+                          } else {
+                            const ValueComponent = item.value;
+                            valueContent = <ValueComponent detail={finalDetail} />;
+                          }
+                          return (
+                            <EuiFlexItem key={item.label} data-test-subj={`index-detail-overview-item-${item.label}`}>
+                              <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
+                              <EuiDescriptionListDescription>{valueContent}</EuiDescriptionListDescription>
+                            </EuiFlexItem>
+                          );
+                        })}
+                      </EuiFlexGrid>
+                    </EuiDescriptionList>
+                  ),
+                },
+                {
+                  id: "index-detail-modal-settings",
+                  name: "Settings",
+                  content: (
+                    <>
+                      <EuiSpacer />
+                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+                        <EuiFlexItem grow={false}>
+                          <h2>Advanced index settings</h2>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+                          <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.settings}`}>
+                            <EuiButton size="s" data-test-subj="detail-modal-edit">
+                              Edit
+                            </EuiButton>
+                          </Link>
+                        </EuiFlexItem>
+                      </EuiFlexGroup>
+                      <EuiSpacer />
+                      <EuiCodeBlock language="json" whiteSpace="pre">
+                        {JSON.stringify(finalDetail.settings || {}, null, 2)}
+                      </EuiCodeBlock>
+                    </>
+                  ),
+                },
+                {
+                  id: "index-detail-modal-mappings",
+                  name: "Mappings",
+                  content: (
+                    <>
+                      <EuiSpacer />
+                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+                        <EuiFlexItem grow={false}>
+                          <h2>Index mappings</h2>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+                          <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.mappings}`}>
+                            <EuiButton size="s" data-test-subj="detail-modal-edit">
+                              Edit
+                            </EuiButton>
+                          </Link>
+                        </EuiFlexItem>
+                      </EuiFlexGroup>
+                      <EuiSpacer />
+                      <EuiCodeBlock language="json" whiteSpace="pre">
+                        {JSON.stringify(finalDetail.mappings || {}, null, 2)}
+                      </EuiCodeBlock>
+                    </>
+                  ),
+                },
+                {
+                  id: `index-detail-modal-${IndicesUpdateMode.alias}`,
+                  name: "Alias",
+                  content: (
+                    <>
+                      <EuiSpacer />
+                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+                        <EuiFlexItem grow={false}>
+                          <h2>Index alias</h2>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+                          <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.alias}`}>
+                            <EuiButton size="s" data-test-subj="detail-modal-edit">
+                              Edit
+                            </EuiButton>
+                          </Link>
+                        </EuiFlexItem>
+                      </EuiFlexGroup>
+                      <EuiSpacer />
+                      <EuiBasicTable
+                        rowHeader="alias"
+                        noItemsMessage="No alias found"
+                        items={Object.keys(finalDetail.aliases || {}).map((item) => ({ alias: item }))}
+                        columns={[
+                          {
+                            field: "alias",
+                            name: "Alias name",
+                            render: (val: string, record: { alias: string }) => <Link to="somewhereto">{val}</Link>,
+                          },
+                        ]}
+                      />
+                    </>
+                  ),
+                },
+              ]}
+            />
+          </EuiFlyoutBody>
+        </EuiFlyout>
+      ) : null}
     </>
   );
 }
