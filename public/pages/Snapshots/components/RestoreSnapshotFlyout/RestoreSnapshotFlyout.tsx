@@ -144,6 +144,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     if (options.index_settings?.length === 0) {
       delete options.index_settings;
+    } else {
+      const badJSON = checkBadJSON(customIndexSettings);
+      this.setState({ badJSON })
     }
 
     if (options.ignore_index_settings?.length === 0) {
@@ -159,7 +162,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     if ((!badIgnore) && (badPattern || badRename || noIndicesSelected || badJSON)) {
       this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
-      // if (badJSON) this.setState({ customIndexSettings: "" });
     }
 
     if (badIgnore) {
