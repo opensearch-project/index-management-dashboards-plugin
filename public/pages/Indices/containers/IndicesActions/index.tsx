@@ -98,12 +98,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
                   id: 0,
                   items: [
                     {
-                      name: "Delete",
-                      disabled: !selectedItems.length,
-                      "data-test-subj": "Delete Action",
-                      onClick: () => setDeleteIndexModalVisible(true),
-                    },
-                    {
                       name: "Apply policy",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Apply policyButton",
@@ -112,6 +106,12 @@ export default function IndicesActions(props: IndicesActionsProps) {
                           indices: selectedItems.map((item: ManagedCatIndex) => item.index),
                           core: CoreServicesContext,
                         }),
+                    },
+                    {
+                      name: "Delete",
+                      disabled: !selectedItems.length,
+                      "data-test-subj": "Delete Action",
+                      onClick: () => setDeleteIndexModalVisible(true),
                     },
                     {
                       name: "Reindex",
