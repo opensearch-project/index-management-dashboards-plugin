@@ -14,11 +14,7 @@ exports[`RenameInput component renders without error 1`] = `
     >
       <label
         class="euiFormLabel euiFormRow__label"
-<<<<<<< HEAD
         for="rename_pattern"
-=======
-        for="some_html_id"
->>>>>>> nov_3_main
       >
         <div
           class="euiText euiText--extraSmall"
@@ -35,12 +31,7 @@ exports[`RenameInput component renders without error 1`] = `
 
   entire matching index name, $1 to include the content of the first
 
-<<<<<<< HEAD
   capture group, etc.} 
-=======
-  capture group, etc.
-           
->>>>>>> nov_3_main
           <a
             class="euiLink euiLink--primary"
             href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
@@ -90,11 +81,7 @@ exports[`RenameInput component renders without error 1`] = `
     >
       <label
         class="euiFormLabel euiFormRow__label"
-<<<<<<< HEAD
         for="rename_replacement"
-=======
-        for="some_html_id"
->>>>>>> nov_3_main
       >
         <div
           class="euiText euiText--extraSmall"
@@ -111,12 +98,7 @@ exports[`RenameInput component renders without error 1`] = `
 
   entire matching index name, $1 to include the content of the first
 
-<<<<<<< HEAD
   capture group, etc. 
-=======
-  capture group, etc.
-           
->>>>>>> nov_3_main
           <a
             class="euiLink euiLink--primary"
             href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
