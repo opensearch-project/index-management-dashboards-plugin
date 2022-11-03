@@ -11,28 +11,39 @@ import ReindexFlyout from "./ReindexFlyout";
 import { CoreServicesContext } from "../../../../components/core_services";
 import userEvent from "@testing-library/user-event";
 
-describe("<ReindexFlyout /> spec", () => {
-  it("renders the component", async () => {
-    browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        dataStreams: ["test-ds-01"],
-        indices: ["test-index-01", "test-index-02"],
-      },
-    });
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        "test-index-01": {
-          mappings: {
-            _source: {
-              full_name: "_source",
-              mapping: {},
-            },
-          },
+const indexResNormal = {
+  ok: true,
+  response: {
+    dataStreams: ["test-ds-01"],
+    indices: ["test-index-01", "test-index-02"],
+  },
+};
+
+const fileMappingResNormal = {
+  ok: true,
+  response: {
+    "test-index-01": {
+      mappings: {
+        _source: {
+          full_name: "_source",
+          mapping: {},
         },
       },
-    });
+    },
+  },
+};
+
+function mockIndexService(indexRes: Object) {
+  browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue(indexRes);
+}
+function mockCommonService(fileMappingRes: Object) {
+  browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue(fileMappingRes);
+}
+
+describe("<ReindexFlyout /> spec", () => {
+  it("renders the component", async () => {
+    mockIndexService(indexResNormal);
+    mockCommonService(fileMappingResNormal);
 
     let component = render(
       <ReindexFlyout
@@ -47,27 +58,11 @@ describe("<ReindexFlyout /> spec", () => {
   });
 
   it("successfully calls search indices on mount", async () => {
-    browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        dataStreams: ["test-ds-01"],
-        indices: ["test-index-01", "test-index-02"],
-      },
-    });
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        "test-index-01": {
-          mappings: {
-            _source: {
-              full_name: "_source",
-              mapping: {},
-            },
-          },
-        },
-      },
-    });
+    mockIndexService(indexResNormal);
+    mockCommonService(fileMappingResNormal);
+
     const spy = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
+
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
@@ -86,31 +81,15 @@ describe("<ReindexFlyout /> spec", () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith("");
+
     expect(coreServicesMock.notifications.toasts.addDanger).not.toHaveBeenCalled();
   });
 
-  it("query expression is default values", async () => {
-    browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        dataStreams: ["test-ds-01"],
-        indices: ["test-index-01", "test-index-02"],
-      },
-    });
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        "test-index-01": {
-          mappings: {
-            _source: {
-              full_name: "_source",
-              mapping: {},
-            },
-          },
-        },
-      },
-    });
-    const spy = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
+  it("successfully call _source enabled check on mount", async () => {
+    mockIndexService(indexResNormal);
+    mockCommonService(fileMappingResNormal);
+
+    const spy = jest.spyOn(browserServicesMock.commonService, "apiCaller");
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
@@ -128,9 +107,49 @@ describe("<ReindexFlyout /> spec", () => {
     await waitFor(() => {});
 
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith("");
+    expect(spy).toHaveBeenCalledWith({
+      endpoint: "indices.getFieldMapping",
+      data: {
+        fields: "_source",
+        index: "test-index-01",
+      },
+    });
+  });
 
-    // expect(data).toEqual(DEFAULT_QUERY);
+  it("call _source enabled check fail on mount", async () => {
+    mockIndexService(indexResNormal);
+    // call validation failed
+    mockCommonService({ ok: false, response: null });
+
+    const spy = jest.spyOn(browserServicesMock.commonService, "apiCaller");
+    const spyIndexService = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
+    render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        render(
+        <ReindexFlyout
+          onCloseFlyout={() => {}}
+          onReindexConfirm={() => {}}
+          services={browserServicesMock}
+          sourceIndices={["test-index-01"]}
+        />
+        );
+      </CoreServicesContext.Provider>
+    );
+
+    // wait 1 tick for the searchPolicies promise to resolve
+    await waitFor(() => {});
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledWith({
+      endpoint: "indices.getFieldMapping",
+      data: {
+        fields: "_source",
+        index: "test-index-01",
+      },
+    });
+
+    expect(spyIndexService).toHaveBeenCalledTimes(1);
+    expect(spyIndexService).toHaveBeenCalledWith("");
   });
 
   it("adds danger toaster on safe error", async () => {
@@ -190,14 +209,8 @@ describe("<ReindexFlyout /> spec", () => {
   });
 
   it("execute button disabled when _source is not enabled", async () => {
-    browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        dataStreams: ["test-ds-01"],
-        indices: ["test-index-01", "test-index-02"],
-      },
-    });
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+    mockIndexService(indexResNormal);
+    mockCommonService({
       ok: true,
       response: {
         "test-index-01": {
@@ -238,26 +251,8 @@ describe("<ReindexFlyout /> spec", () => {
   });
 
   it("dest index must provided", async () => {
-    browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        dataStreams: ["test-ds-01"],
-        indices: ["test-index-01", "test-index-02"],
-      },
-    });
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        "test-index-01": {
-          mappings: {
-            _source: {
-              full_name: "_source",
-              mapping: {},
-            },
-          },
-        },
-      },
-    });
+    mockIndexService(indexResNormal);
+    mockCommonService(fileMappingResNormal);
     const spy = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
@@ -278,7 +273,7 @@ describe("<ReindexFlyout /> spec", () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith("");
 
-    userEvent.click(screen.getByText("Execute"));
+    userEvent.click(screen.getByTestId("flyout-footer-action-button"));
     expect(screen.getByText("Destination must be provided.")).toBeInTheDocument();
   });
 });
