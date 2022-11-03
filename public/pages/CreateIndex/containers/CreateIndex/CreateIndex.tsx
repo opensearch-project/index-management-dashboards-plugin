@@ -95,8 +95,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
   };
 
   onCancel = (): void => {
-    if (this.props.isEdit) this.props.history.goBack();
-    else this.props.history.push(ROUTES.INDEX_POLICIES);
+    this.props.history.push(ROUTES.INDICES);
   };
 
   onDetailChange: IndexDetailProps["onChange"] = (value) => {
@@ -343,11 +342,18 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
         },
       })
       .then((res) => {
-        if (res.ok) {
-          return {
-            ...res,
-            response: res.response.template,
-          };
+        if (res.ok && res.response && res.response.template) {
+          if (res.response && res.response.template) {
+            return {
+              ...res,
+              response: res.response.template,
+            };
+          } else {
+            return {
+              ok: false,
+              error: "",
+            };
+          }
         }
 
         return res;
