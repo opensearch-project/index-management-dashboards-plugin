@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiComboBox, EuiComboBoxOptionOption, EuiSpacer } from "@elastic/eui";
+import { EuiComboBox, EuiComboBoxOptionOption, EuiSpacer, EuiFormRow } from "@elastic/eui";
 import React from "react";
 import { IndexItem } from "../../../../../models/interfaces";
-import CustomLabel from "../../../../components/CustomLabel";
 
 interface SnapshotIndicesInputProps {
   indexOptions: EuiComboBoxOptionOption<IndexItem>[];
@@ -15,6 +14,7 @@ interface SnapshotIndicesInputProps {
   getIndexOptions: (searchValue: string) => void;
   onCreateOption: (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   selectedRepoValue: string;
+  showError: boolean;
   isClearable: boolean;
 }
 
@@ -24,19 +24,24 @@ const SnapshotIndicesInput = ({
   onIndicesSelectionChange,
   getIndexOptions,
   onCreateOption,
+  showError
 }: SnapshotIndicesInputProps) => {
+  const selectionError = "You must select at least one index to restore.";
+
   return (
     <>
-      <CustomLabel title="Select indices or input index patterns you want to restore" />
-      <EuiComboBox
-        placeholder="Select indices or input index patterns."
-        options={indexOptions}
-        selectedOptions={selectedIndexOptions}
-        onChange={onIndicesSelectionChange}
-        onSearchChange={getIndexOptions}
-        onCreateOption={onCreateOption}
-        isClearable={true}
-      />
+      <EuiFormRow label="Select indices or input index patterns you want to restore" error={selectionError} isInvalid={showError}>
+        <EuiComboBox
+          isInvalid={showError}
+          placeholder="Select indices or input index patterns."
+          options={indexOptions}
+          selectedOptions={selectedIndexOptions}
+          onChange={onIndicesSelectionChange}
+          onSearchChange={getIndexOptions}
+          onCreateOption={onCreateOption}
+          isClearable={true}
+        />
+      </EuiFormRow>
 
       <EuiSpacer size="m" />
     </>

@@ -52,9 +52,20 @@ export interface Toast {
   text?: JSX.Element;
 }
 
+export interface Column {
+  field: string;
+  name: string;
+  width: string;
+  truncateText?: boolean;
+  sortable: boolean;
+}
+
+
 export interface RestoreError {
-  reason?: string,
-  type?: string
+  reason?: string;
+  type?: string;
+  ok?: boolean;
+  error?: string;
 }
 
 export interface LatestActivities {
@@ -81,4 +92,18 @@ export enum RESTORE_OPTIONS {
   partial = "partial",
   customize_index_settings = "customize_index_settings",
   ignore_index_settings = "ignore_index_settings",
+}
+
+export interface ModifiedStages {
+  START: string;
+  INIT: string;
+  INDEX: string;
+  VERIFY_INDEX: string;
+  TRANSLOG: string;
+  FINALIZE: string;
+  DONE: string;
+}
+
+export interface IndexItem {
+  index: string;
 }
