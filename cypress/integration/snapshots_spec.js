@@ -84,6 +84,12 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be restored", () => {
     it("Successfully restores indices from snapshot", () => {
+      // Must wait here before refreshing so snapshot status becomes 'success'
+      cy.wait(5000);
+
+      // Wait for snapshot to be created successfully
+      cy.get("button").contains("Refresh").click({ force: true });
+
       // Select test snapshot
       cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
 

@@ -48,7 +48,7 @@ interface SnapshotsState {
   loadingSnapshots: boolean;
   snapshotPanel: boolean;
   restoreStart: number;
-  restoreCount: number;
+  indicesToRestore: string;
   toasts: Toast[];
   viewError: boolean;
   error: RestoreError;
@@ -81,7 +81,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       loadingSnapshots: false,
       snapshotPanel: true,
       restoreStart: 0,
-      restoreCount: 0,
+      indicesToRestore: "",
       toasts: [],
       error: {},
       viewError: false,
@@ -256,7 +256,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   restoreSnapshot = async (snapshotId: string, repository: string, options: object) => {
     try {
-      await this.setState({ toasts: [] })
+      await this.setState({ toasts: [], indicesToRestore: options.indices })
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
 
@@ -274,12 +274,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const { selectedItems } = this.state;
     let errorMessage: string | undefined;
     if (!success) {
-      const rawMessage = error.reason;
-      const index = rawMessage.indexOf("]") + 1;
-      const startIndex = rawMessage[index] === " " ? index + 1 : index;
-      const message = rawMessage.slice(startIndex).replace(/[\[\]]/g, '"');
-      errorMessage = message.charAt(0).toUpperCase() + message.slice(1);
-      errorMessage = errorMessage?.slice(0, 125) + "...";
+      let optionalMessage = "";
+
+      if (error.reason.indexOf("open index with same name") >= 0) {
+        optionalMessage = "You have an index with the same name. Try a different prefix."
+      }
+      errorMessage = `${optionalMessage}`
     }
 
     const toasts = success ?
@@ -292,15 +292,30 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     this.setState({ viewError: true });
   }
 
+  collectError = (error: object) => {
+    this.setState(error);
+  }
+
+  collectToast = (toasts: Toast[]) => {
+    this.setState({ toasts: toasts })
+  }
+
   onCloseModal = () => {
     this.setState({ viewError: false, error: {} });
   }
 
-  getRestoreInfo = (time: number, count: number) => {
-    this.setState({ restoreStart: time, restoreCount: count })
+  getRestoreTime = (time: number) => {
+    this.setState({ restoreStart: time })
   }
 
   onClickRestore = async () => {
+    const { selectedItems } = this.state;
+    if (selectedItems[0].status !== "SUCCESS") {
+      const errorMessage = `Only snapshots with a status of "Success" can be restored.`;
+
+      this.context.notifications.toasts.addDanger(null, { title: errorMessage });
+      return;
+    }
     this.setState({ showRestoreFlyout: true });
   };
 
@@ -365,7 +380,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       viewError,
       error,
       restoreStart,
-      restoreCount,
+      indicesToRestore,
       showFlyout,
       flyoutSnapshotId,
       flyoutSnapshotRepo,
@@ -440,9 +455,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         {snapshotPanel || (
           <RestoreActivitiesPanel
             snapshotManagementService={snapshotManagementService}
+            onOpenError={this.onOpenError}
+            sendError={this.collectError}
+            sendToasts={this.collectToast}
             snapshotId={selectedItems[0]?.id || ""}
             restoreStartRef={restoreStart || 0}
-            restoreCount={restoreCount || 0}
+            indicesToRestore={indicesToRestore.split(",")}
           />
         )}
 
@@ -493,7 +511,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
               snapshotManagementService={this.props.snapshotManagementService}
               indexService={this.props.indexService}
               onCloseFlyout={this.onCloseRestoreFlyout}
-              getRestoreInfo={this.getRestoreInfo}
+              getRestoreTime={this.getRestoreTime}
               restoreSnapshot={this.restoreSnapshot}
               snapshotId={selectedItems[0].id}
               repository={selectedItems[0].repository}
@@ -507,6 +525,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
           <ErrorModal
             onClick={this.onCloseModal}
             onClose={this.onCloseModal}
+            snapshotId={selectedItems[0].id}
             error={error} />
         )}
 

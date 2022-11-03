@@ -26,8 +26,10 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
+import { browseIndicesCols } from "../../../../utils/constants"
+import { ERROR_TOAST_TITLE } from "../../constants"
 import { IndexItem } from "../../../../../models/interfaces";
-import { CatRepository, GetSnapshot, CatSnapshotIndex } from "../../../../../server/models/interfaces";
+import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotRestoreAdvancedOptions from "../SnapshotRestoreAdvancedOptions";
 import SnapshotRestoreOption from "../SnapshotRestoreOption";
@@ -42,7 +44,7 @@ interface RestoreSnapshotProps {
   snapshotManagementService: SnapshotManagementService;
   indexService: IndexService;
   onCloseFlyout: () => void;
-  getRestoreInfo: (time: number, count: number) => void
+  getRestoreTime: (time: number) => void
   restoreSnapshot: (snapshotId: string, repository: string, options: object) => void;
   snapshotId: string;
   repository: string;
@@ -58,13 +60,18 @@ interface RestoreSnapshotState {
   listIndices: boolean;
   customIndexSettings: string;
   ignoreIndexSettings?: string;
-  indicesList: CatSnapshotIndex[];
+  indicesList: string[];
   selectedRepoValue: string;
   repositories: CatRepository[];
   snapshot: GetSnapshot | null;
   restoreSpecific: boolean;
   partial: boolean;
+  badPattern: boolean;
+  badRename: boolean;
+  badJSON: boolean;
+  badIgnore: boolean
   repoError: string;
+  noIndicesSelected: boolean;
   snapshotIdError: string;
 }
 
@@ -77,8 +84,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       selectedIndexOptions: [],
       renameIndices: "add_prefix",
       prefix: "restored_",
-      renamePattern: "",
-      renameReplacement: "",
+      renamePattern: "(.+)",
+      renameReplacement: "restored_$1",
       listIndices: false,
       customIndexSettings: "",
       ignoreIndexSettings: "",
@@ -88,6 +95,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       snapshot: null,
       restoreSpecific: false,
       partial: false,
+      badPattern: false,
+      badRename: false,
+      badJSON: false,
+      badIgnore: false,
+      noIndicesSelected: false,
       repoError: "",
       snapshotIdError: "",
     };
@@ -98,7 +110,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   }
 
   onClickAction = () => {
-    const { restoreSnapshot, snapshotId, repository, onCloseFlyout, getRestoreInfo } = this.props;
+    const { restoreSnapshot, snapshotId, repository, onCloseFlyout, getRestoreTime } = this.props;
     const {
       customIndexSettings,
       ignoreIndexSettings,
@@ -115,11 +127,10 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const selectedIndices = selectedIndexOptions.map((option) => option.label).join(",");
     const allIndices = indexOptions.map((option) => option.label).join(",");
     const pattern = renameIndices === add_prefix ? "(.+)" : renamePattern;
-    const restoreCount = restoreSpecific ? selectedIndexOptions.length : indexOptions.length;
 
     const options = {
-      indices: restoreSpecific ? this.checkSelectedIndices(selectedIndices) : allIndices,
-      index_settings: customIndexSettings.length ? this.testJSON(customIndexSettings) : "",
+      indices: restoreSpecific ? selectedIndices : allIndices,
+      index_settings: customIndexSettings.length && this.checkBadJSON(customIndexSettings) ? JSON.parse(customIndexSettings) : "",
       ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
@@ -130,20 +141,33 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
-    if (typeof options.index_settings !== "string") {
+    const badPattern = this.checkBadRegex(options.rename_pattern);
+    const badRename = this.checkBadReplacement(options.rename_replacement);
+    const badIgnore = this.checkCustomIgnoreConflict();
+    const noIndicesSelected = this.checkNoSelectedIndices(options.indices);
+
+    if (badPattern || badRename || badIgnore || noIndicesSelected) {
+      this.setState({ badPattern, badRename, badIgnore, noIndicesSelected });
       return;
     }
-    if (!options.index_settings) {
+
+    if (options.index_settings.length === 0) {
       delete options.index_settings;
+    } else {
+      const badJSON = this.checkBadJSON(customIndexSettings);
+      this.setState({ badJSON })
     }
+
     if (!options.ignore_index_settings) {
       delete options.ignore_index_settings;
     }
+
     if (!snapshotId.trim()) {
       this.setState({ snapshotIdError: "Required." });
 
       return;
     }
+
     if (!repository) {
       repoError = ERROR_PROMPT.REPO;
       this.setState({ repoError });
@@ -151,39 +175,82 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       return;
     }
 
-    getRestoreInfo(Date.now(), restoreCount);
+    getRestoreTime(Date.now());
     restoreSnapshot(snapshotId, repository, options);
     onCloseFlyout()
   };
 
-  testJSON = (testString: string) => {
+  checkBadJSON = (testString: string) => {
     try {
-      return JSON.parse(testString);
-    } catch (err) {
-      this.context.notifications.toasts.addError(err, { title: `Please enter valid JSON.` });
+      const userObject = JSON.parse(testString);
+
       return false;
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
+      this.setState({ badJSON: true });
+      return true;
     }
   }
 
-  checkSelectedIndices = (indices: string): string | boolean => {
+  checkNoSelectedIndices = (indices: string): boolean => {
     const { restoreSpecific } = this.state;
+    let notSelected = false;
+
+    if (restoreSpecific && indices.length === 0) {
+      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
+      notSelected = true;
+    }
+
+    return notSelected;
+  }
+
+  checkBadRegex = (regex: string): boolean => {
     try {
-      if (restoreSpecific && indices.length === 0) {
-        throw "No indices selected.";
-      } else {
-        return indices;
-      }
-    } catch (err) {
+      const userRegex = new RegExp(regex);
 
       return false;
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
+
+      return true;
     }
+  }
+
+  checkBadReplacement = (regexString: string): boolean => {
+    const isNotValid = regexString.indexOf("$") >= 0;
+
+    if (isNotValid) return false;
+    this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
+
+    return true;
+  }
+
+  checkCustomIgnoreConflict = () => {
+    const { customIndexSettings, ignoreIndexSettings } = this.state;
+
+    if (customIndexSettings.length > 0) {
+      const customSettingsBad = this.checkBadJSON(customIndexSettings);
+
+      if (customSettingsBad) {
+        return false;
+      }
+
+      const customSettings = JSON.parse(customIndexSettings);
+
+      for (let setting in customSettings) {
+        if (ignoreIndexSettings && ignoreIndexSettings.indexOf(setting) >= 0) {
+          this.context.notifications.toasts.addDanger(null, {
+            title: "Cannot apply and ignore the same index settings",
+            text: "One or more index settings was declared in both Custom index settings and Ignore index settings. Remove the index setting from either fields."
+          });
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   onClickIndices = async () => {
-    const { snapshot } = this.state;
-    const indices = snapshot!.indices.join(",");
-
-    await this.getSnapshotIndices(indices);
     this.setState({ listIndices: true });
   };
 
@@ -229,10 +296,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     this.getSnapshot(snapshotId, repository);
   };
 
-  getIndexSettings = (indexSettings: string) => {
-    const { snapshot } = this.state;
-    const ignore = snapshot?.ignore_index_settings ? snapshot.ignore_index_settings : false;
-
+  getIndexSettings = (indexSettings: string, ignore: boolean) => {
     !ignore && this.setState({ customIndexSettings: indexSettings });
     ignore && this.setState({ ignoreIndexSettings: indexSettings });
   };
@@ -252,40 +316,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const selectedIndexOptions = [...this.state.selectedIndexOptions, newOption];
     this.setState({ selectedIndexOptions: selectedIndexOptions });
-  };
-
-  getSnapshotIndices = async (indices: string) => {
-    try {
-      const { snapshot } = this.state;
-      const { snapshotManagementService } = this.props;
-      const response = await snapshotManagementService.catSnapshotIndices(indices);
-      const activeIndexNames: string[] = [];
-
-      const indexNames = snapshot?.indices
-      if (response.ok) {
-        const indicesResponse = response.response;
-        const currIndices = indicesResponse.filter((resItem: CatSnapshotIndex) => {
-          if (indexNames!.includes(resItem.index)) {
-            activeIndexNames.push(resItem.index);
-            return resItem;
-          }
-        });
-        const formattedIndices = currIndices.map((index) => ({ index: index.index, ["store.size"]: index["store.size"] }))
-        const inactiveIndices = snapshot?.indices.filter((index) => !activeIndexNames.includes(index) && index.length && index.indexOf("kibana") < 0)
-          .map((index) => ({ index: index, "store.size": "unknown" }));
-
-        this.setState({ indicesList: [...formattedIndices, ...inactiveIndices] });
-      } else {
-        const message = JSON.parse(response.error).error.root_cause[0].reason
-        const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
-        this.context.notifications.toasts.addError(response.error, {
-          title: `There was a problem loading the indices for this snapshot`,
-          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
-        });
-      }
-    } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the indices for this snapshot."));
-    }
   };
 
   getPrefix = (prefix: string) => {
@@ -329,7 +359,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       snapshot,
       renameIndices,
       listIndices,
-      indicesList,
+      badPattern,
+      badRename,
+      badJSON,
+      badIgnore,
+      noIndicesSelected
     } = this.state;
 
     const {
@@ -346,13 +380,15 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const status = snapshot ? snapshot?.state[0] + snapshot?.state.slice(1).toLowerCase() : undefined;
     const restoreDisabled = snapshot?.failed_shards && !snapshot?.partial;
+    const snapshotIndices: IndexItem[] = snapshot?.indices.map((index) => ({ index: index }));
 
     return (
       <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m" hideCloseButton>
         {listIndices ? (
           <IndexList
-            indices={indicesList}
+            indices={snapshotIndices}
             snapshot={snapshotId}
+            columns={browseIndicesCols}
             onClick={this.onBackArrowClick}
             title="Indices in snapshot"
           />
@@ -404,6 +440,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                     getIndexOptions={this.getIndexOptions}
                     onCreateOption={this.onCreateOption}
                     selectedRepoValue={selectedRepoValue}
+                    showError={noIndicesSelected}
                     isClearable={true}
                   />
                 )
@@ -424,7 +461,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
               {renameIndices === add_prefix && <AddPrefixInput getPrefix={this.getPrefix} />}
               {
                 renameIndices === rename_indices && (
-                  <RenameInput getRenamePattern={this.getRenamePattern} getRenameReplacement={this.getRenameReplacement} />
+                  <RenameInput
+                    getRenamePattern={this.getRenamePattern}
+                    getRenameReplacement={this.getRenameReplacement}
+                    showPatternError={badPattern}
+                    showRenameError={badRename} />
                 )
               }
 
@@ -445,6 +486,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                   ignoreIndexSettings={String(_.get(snapshot, ignore_index_settings, false)) == "true"}
                   onIgnoreIndexSettingsToggle={this.onToggle}
                   width="200%"
+                  badJSONInput={badJSON}
+                  badIgnoreInput={badIgnore}
                 />
               </EuiAccordion>
 
@@ -454,7 +497,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 title="Restoring a partial snapshot"
                 color="warning"
               >
-                <p>You are about to restore a partial snapshot. One or more shards may be missing in this<br />snapshot. Do you want to continue?</p>
+                <p>
+                  You are about to restore a partial snapshot. One or more shards may be missing in this
+                  <br />
+                  snapshot. Do you want to continue?
+                </p>
                 <EuiSpacer size="s" />
                 <EuiCheckbox
                   id={partial}

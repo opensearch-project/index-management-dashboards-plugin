@@ -8,16 +8,18 @@ import React, { useState, ChangeEvent } from "react";
 import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
 
 interface IndexSettingsInputProps {
-  getIndexSettings: (indexSettings: string) => void;
+  getIndexSettings: (indexSettings: string, ignore: boolean) => void;
+  showError: boolean;
+  inputError: string;
   ignore: boolean;
 }
 
-const IndexSettingsInput = ({ getIndexSettings, ignore }: IndexSettingsInputProps) => {
+const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }: IndexSettingsInputProps) => {
   const [indexSettings, setIndexSettings] = useState("");
 
   const onSettingsChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setIndexSettings(e.target.value);
-    getIndexSettings(e.target.value);
+    getIndexSettings(e.target.value, ignore);
   };
 
   const title = ignore ? "Specify index settings to ignore" : "Specify custom index settings";
@@ -28,10 +30,8 @@ const IndexSettingsInput = ({ getIndexSettings, ignore }: IndexSettingsInputProp
     ? `Example: \nindex.refresh_interval,\nindex.max_script_fields `
     : `Example: \n {\n\"index.number_of_replicas\": 0,\n\"index.auto_expand_replicas\": true\n}`;
 
-  return (
+  const indexSettingsLabel = (
     <>
-      <EuiSpacer size="m" />
-
       <EuiText size="xs">
         <h4>{title}</h4>
       </EuiText>
@@ -43,8 +43,15 @@ const IndexSettingsInput = ({ getIndexSettings, ignore }: IndexSettingsInputProp
           </EuiLink>
         </p>
       </EuiText>
-      <EuiFormRow>
-        <EuiTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} />
+    </>
+  );
+
+  return (
+    <>
+      <EuiSpacer size="m" />
+
+      <EuiFormRow isInvalid={showError} error={inputError} label={indexSettingsLabel}>
+        <EuiTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} isInvalid={showError} />
       </EuiFormRow>
 
       <EuiSpacer size="m" />

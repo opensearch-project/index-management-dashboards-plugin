@@ -53,7 +53,7 @@ export const getToasts = (id: string, message: string | undefined, snapshotId: s
       color: "danger",
       text: (
         <>
-          <EuiText size="s">{message}</EuiText>
+          <EuiText size="s" >{message}</EuiText>
           <EuiSpacer size="xl" />
           <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
             <EuiButton onClick={onClick} color="danger">View full error</EuiButton>
