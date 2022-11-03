@@ -10,7 +10,7 @@ import IndexSettingsInput from "../../components/IndexSettingsInput";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 
 interface SnapshotAdvancedOptionsProps {
-  getIndexSettings: (indexSettings: string) => void;
+  getIndexSettings: (indexSettings: string, ignore: boolean) => void;
   restoreAliases: boolean;
   onRestoreAliasesToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   restoreClusterState: boolean;
@@ -22,6 +22,8 @@ interface SnapshotAdvancedOptionsProps {
   ignoreIndexSettings: boolean;
   onIgnoreIndexSettingsToggle: (e: ChangeEvent<HTMLInputElement>) => void;
   width?: string;
+  badJSONInput: boolean;
+  badIgnoreInput: boolean;
 }
 
 const SnapshotRestoreAdvancedOptions = ({
@@ -37,6 +39,8 @@ const SnapshotRestoreAdvancedOptions = ({
   ignoreIndexSettings,
   onIgnoreIndexSettingsToggle,
   width,
+  badJSONInput,
+  badIgnoreInput
 }: SnapshotAdvancedOptionsProps) => {
   const {
     restore_aliases,
@@ -45,6 +49,8 @@ const SnapshotRestoreAdvancedOptions = ({
     customize_index_settings,
     ignore_index_settings,
   } = RESTORE_OPTIONS;
+  const JSONerror = "Please enter valid JSON between curly brackets."
+  const ignoreListError = "Please enter a comma separated list of valid settings to ignore."
 
   return (
     <div style={{ padding: "10px 10px", width: width }}>
@@ -98,7 +104,7 @@ const SnapshotRestoreAdvancedOptions = ({
         onChange={onCustomizeIndexSettingsToggle}
       />
 
-      {customizeIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={false} />}
+      {customizeIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={false} showError={badJSONInput} inputError={JSONerror} />}
 
       <EuiSpacer size="s" />
 
@@ -114,7 +120,7 @@ const SnapshotRestoreAdvancedOptions = ({
         onChange={onIgnoreIndexSettingsToggle}
       />
 
-      {ignoreIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={true} />}
+      {ignoreIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={true} showError={badIgnoreInput} inputError={ignoreListError} />}
     </div>
   );
 };

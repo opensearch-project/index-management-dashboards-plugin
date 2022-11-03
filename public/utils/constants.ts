@@ -114,3 +114,29 @@ export enum IntervalType {
   FIXED = "fixed",
   CALENDAR = "calendar",
 }
+
+export const browseIndicesCols = [
+  {
+    field: "index",
+    name: "Index",
+    width: "100%",
+    truncateText: true,
+    sortable: true,
+  }
+];
+
+export const restoreIndicesCols = [
+  {
+    field: "index",
+    name: "Index",
+    width: "75%",
+    truncateText: true,
+    sortable: true,
+  },
+  {
+    field: "restore_status",
+    name: "Restore status",
+    width: "25%",
+    sortable: true
+  }
+];
