@@ -106,4 +106,5 @@ export interface ModifiedStages {
 
 export interface IndexItem {
   index: string;
+  restore_status?: string;
 }

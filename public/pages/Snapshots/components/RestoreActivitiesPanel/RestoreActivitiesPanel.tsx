@@ -9,8 +9,8 @@ import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getToasts } from "../../helper"
-import { Toast, ModifiedStages } from "../../../../models/interfaces"
-import { GetIndexRecoveryResponse, CatSnapshotIndex } from "../../../../../server/models/interfaces";
+import { Toast, ModifiedStages, IndexItem } from "../../../../models/interfaces"
+import { GetIndexRecoveryResponse } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS, restoreIndicesCols } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import IndexList from "../IndexList";
@@ -41,7 +41,7 @@ export const RestoreActivitiesPanel = (
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
   const [stage, setStage] = useState("");
-  const [indices, setIndices] = useState([{}]);
+  const [indices, setIndices] = useState<IndexItem[]>([]);
   const [flyout, setFlyout] = useState(false);
   const [statusOk, setStatusOk] = useState(true)
 
@@ -126,7 +126,7 @@ export const RestoreActivitiesPanel = (
     let maxStopTime: number = 0;
     let stageIndex: number = 6;
     let doneCount: number = 0;
-    const indexes: CatSnapshotIndex[] = [];
+    const indexes: IndexItem[] = [];
     const stages: string[] = ["START", "INIT", "INDEX", "VERIFY_INDEX", "TRANSLOG", "FINALIZE", "DONE"];
     const modifiedStages: ModifiedStages = {
       START: "Starting",
@@ -160,7 +160,7 @@ export const RestoreActivitiesPanel = (
 
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
 
-        const indexStatus = modifiedStages[info.stage as keyof ModifiedStages];
+        const indexStatus: string = modifiedStages[info.stage as keyof ModifiedStages];
 
         if (info.source.index && info.source.snapshot === snapshotId) {
           minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
@@ -169,7 +169,7 @@ export const RestoreActivitiesPanel = (
       }
     }
 
-    const updatedIndices = [...indexes];
+    const updatedIndices: IndexItem[] = [...indexes];
     const indicesStarted = indexes.map((index) => index.index);
 
     for (let index of indicesToRestore) {
@@ -179,9 +179,7 @@ export const RestoreActivitiesPanel = (
     }
 
     const sortedUpdatedIndices = updatedIndices.sort((a, b) => {
-      if (a.index < b.index) return -1;
-      if (a.index > b.index) return 1;
-      return 0;
+      return a.index - b.index;
     });
     const percent = Math.floor((doneCount / restoreCount) * 100);
 

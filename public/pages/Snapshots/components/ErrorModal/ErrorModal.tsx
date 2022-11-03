@@ -11,8 +11,8 @@ import { RestoreError } from "../../../../models/interfaces"
 interface ErrorModalProps {
   error: RestoreError;
   snapshotId: string;
-  onClick: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement> | undefined) => void;
-  onClose: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement> | undefined) => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement> | undefined) => void;
+  onClose: (event: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement> | undefined) => void;
 }
 
 const ErrorModal = ({ onClick, error, snapshotId }: ErrorModalProps) => {
@@ -25,7 +25,7 @@ const ErrorModal = ({ onClick, error, snapshotId }: ErrorModalProps) => {
         </EuiModalHeader>
 
         <EuiModalBody>
-          <EuiText size="m" color="danger">{error.reason ? error.reason : error}.</EuiText>
+          <EuiText size="m" color="danger">{error.reason ?? error}.</EuiText>
         </EuiModalBody>
 
         <EuiModalFooter>
