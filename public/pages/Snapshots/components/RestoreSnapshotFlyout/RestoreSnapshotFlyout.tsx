@@ -290,7 +290,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
 
     if (e.target.id === restore_all_indices) {
-      this.setState({ restoreSpecific: false, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
+      this.setState({ restoreSpecific: false, noIndicesSelected: false, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
       return;
     }
 
