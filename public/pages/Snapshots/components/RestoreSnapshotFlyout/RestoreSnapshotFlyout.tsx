@@ -149,7 +149,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     if (options.ignore_index_settings?.length == 0) {
       delete options.ignore_index_settings;
     }
-    console.log(options);
+
     const badJSON = options.index_settings ? checkBadJSON(options.index_settings) : false;
     const badPattern = checkBadRegex(options.rename_pattern);
     const badRename = checkBadReplacement(options.rename_replacement);
