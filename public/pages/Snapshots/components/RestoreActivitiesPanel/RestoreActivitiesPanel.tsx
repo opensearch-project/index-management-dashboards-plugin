@@ -64,6 +64,9 @@ export const RestoreActivitiesPanel = (
   }, [stage]);
 
   const getRestoreStatus = async () => {
+    const percent = stage.slice(stage.indexOf("("));
+    const failedStage = `Failed ${percent}`
+
     if (!restoreStartRef) {
       return;
     }
@@ -84,6 +87,8 @@ export const RestoreActivitiesPanel = (
         );
 
         res.error = res.error.concat(`, please check your connection`);
+
+        setStage(failedStage);
         sendError(res);
         sendToasts(toasts)
         intervalIds.forEach((id) => {
@@ -99,6 +104,7 @@ export const RestoreActivitiesPanel = (
         onOpenError
       );
 
+      setStage(failedStage);
       setStatusOk(false);
       sendError(err);
       sendToasts(toasts)

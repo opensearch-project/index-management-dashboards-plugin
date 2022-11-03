@@ -310,9 +310,13 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   onClickRestore = async () => {
     const { selectedItems } = this.state;
-    if (selectedItems[0].status !== "SUCCESS") {
-      const errorMessage = `Only snapshots with a status of "Success" can be restored.`;
+    const snapshot = selectedItems[0];
+    const failedMessage = `Snapshot ${snapshot.id} cannot be restored due to 'Failed' status.`;
+    const inProgressMessage = `Snapshot ${snapshot.id} cannot be restored due to 'In Progress' status. Try again when it is finished being created.`;
+    let errorMessage: string;
 
+    if (snapshot.status === "FAILED" || snapshot.status === "IN_PROGRESS") {
+      errorMessage = snapshot.status === "FAILED" ? failedMessage : inProgressMessage;
       this.context.notifications.toasts.addDanger(null, { title: errorMessage });
       return;
     }

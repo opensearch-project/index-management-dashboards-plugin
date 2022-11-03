@@ -110,6 +110,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   }
 
   onClickAction = () => {
+    console.log("clicked")
     const { restoreSnapshot, snapshotId, repository, onCloseFlyout, getRestoreTime } = this.props;
     const {
       customIndexSettings,
@@ -120,6 +121,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       renameIndices,
       prefix,
       snapshot,
+      badJSON,
       renamePattern,
       renameReplacement,
     } = this.state;
@@ -140,7 +142,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       partial: snapshot?.partial || false,
     };
     let repoError = "";
-
+    console.log(options);
     const badPattern = this.checkBadRegex(options.rename_pattern);
     const badRename = this.checkBadReplacement(options.rename_replacement);
     const badIgnore = this.checkCustomIgnoreConflict();
@@ -148,17 +150,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     this.setState({ badPattern, badRename, badIgnore, noIndicesSelected });
 
-    if (badPattern || badRename || badIgnore || noIndicesSelected) {
+    if (badPattern || badRename || badIgnore || noIndicesSelected || badJSON) {
       return;
     }
 
     if (options.index_settings.length === 0) {
       delete options.index_settings;
     }
-    // } else {
-    //   const badJSON = this.checkBadJSON(customIndexSettings);
-    //   this.setState({ badJSON })
-    // }
 
     if (!options.ignore_index_settings) {
       delete options.ignore_index_settings;
@@ -184,7 +182,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
   checkBadJSON = (testString: string) => {
     try {
-      const userObject = JSON.parse(testString);
+      JSON.parse(testString);
       this.setState({ badJSON: false });
 
       return false;

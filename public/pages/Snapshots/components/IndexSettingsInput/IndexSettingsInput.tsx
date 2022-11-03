@@ -37,7 +37,7 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
       </EuiText>
       <EuiText size="xs" style={{ padding: "0px 0px 5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
-          {helperText}
+          {helperText}{" "}
           <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" external={true} rel="noopener noreferrer">
             Learn more
           </EuiLink>
