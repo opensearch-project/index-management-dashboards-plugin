@@ -37,7 +37,7 @@ const IndexDetail = (
 ) => {
   const hasEdit = useRef(false);
   const onValueChange = useCallback(
-    (name: string, val) => {
+    (name: string | string[], val) => {
       let finalValue = value || {};
       set(finalValue, name, val);
       onChange({ ...finalValue });
@@ -123,7 +123,7 @@ const IndexDetail = (
           label: "Number of shards",
           helpText: "The number of primary shards in the index. Default is 1.",
         },
-        name: "number_of_shards",
+        name: "index.number_of_shards",
         type: "Number",
         options: {
           rules: [
@@ -142,7 +142,7 @@ const IndexDetail = (
           label: "Number of replicas",
           helpText: "The number of replica shards each primary shard should have.",
         },
-        name: "number_of_replicas",
+        name: "index.number_of_replicas",
         type: "Number",
         options: {
           rules: [
@@ -153,6 +153,73 @@ const IndexDetail = (
           props: {
             disabled: (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) || templateSimulateLoading,
             placeholder: "The number of replica shards each primary shard should have.",
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Index.blocks.read_only",
+          helpText: "Set to true to make the index and index metadata read only, false to allow writes and metadata changes.",
+        },
+        name: "index.blocks.read_only",
+        type: "Switch",
+        options: {
+          props: {
+            disabled: templateSimulateLoading,
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Index.blocks.read_only_allow_delete",
+          helpText:
+            "Similar to index.blocks.write, but also allows deleting the index to make more resources available. The disk-based shard allocator may add and remove this block automatically.",
+        },
+        name: "index.blocks.read_only_allow_delete",
+        type: "Switch",
+        options: {
+          props: {
+            disabled: templateSimulateLoading,
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Index.blocks.read",
+          helpText: "Set to true to disable read operations against the index.",
+        },
+        name: "index.blocks.read",
+        type: "Switch",
+        options: {
+          props: {
+            disabled: templateSimulateLoading,
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Index.blocks.write",
+          helpText:
+            "Set to true to disable data write operations against the index. Unlike read_only, this setting does not affect metadata. For instance, you can adjust the settings of an index with a write block, but you cannot adjust the settings of an index with a read_only block.",
+        },
+        name: "index.blocks.write",
+        type: "Switch",
+        options: {
+          props: {
+            disabled: templateSimulateLoading,
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Index.blocks.metadata",
+          helpText: "Set to true to disable index metadata reads and writes.",
+        },
+        name: "index.blocks.metadata",
+        type: "Switch",
+        options: {
+          props: {
+            disabled: templateSimulateLoading,
           },
         },
       },
@@ -197,12 +264,12 @@ const IndexDetail = (
             <div style={{ paddingLeft: "10px" }}>
               <FormGenerator
                 ref={settingsRef}
-                value={{ ...finalValue.settings?.index }}
+                value={{ ...finalValue.settings }}
                 onChange={(totalValue, name, val) => {
                   if (name) {
-                    onValueChange(`settings.index.${name}`, val);
+                    onValueChange(["settings", name], val);
                   } else {
-                    onValueChange("settings.index", val);
+                    onValueChange("settings", val);
                   }
                 }}
                 formFields={formFields}

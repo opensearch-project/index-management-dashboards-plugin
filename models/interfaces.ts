@@ -41,12 +41,13 @@ export interface IndexItem {
   index: string;
   indexUuid?: string;
   settings?: {
-    index: {
+    index?: {
       number_of_shards: number;
       number_of_replicas: number;
       creation_date?: string;
       [key: string]: any;
     };
+    [key: string]: any;
   };
   aliases?: Record<string, {}>;
   mappings?: {

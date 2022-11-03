@@ -140,7 +140,7 @@ describe("Create Index", () => {
         .get('[data-test-subj="codeEditorContainer"] textarea')
         .focus()
         .clear()
-        .type('{ "blocks.write": true, "number_of_shards": 2 }', { parseSpecialCharSequences: false })
+        .type('{ "index.blocks.write": true, "index.number_of_shards": 2 }', { parseSpecialCharSequences: false })
         .blur();
 
       cy.get('[data-test-subj="createIndexCreateButton"]')
@@ -153,7 +153,7 @@ describe("Create Index", () => {
       cy.get('[data-test-subj="codeEditorContainer"] textarea')
         .focus()
         .clear()
-        .type('{ "blocks.write": true }', { parseSpecialCharSequences: false })
+        .type('{ "index.blocks.write": true }', { parseSpecialCharSequences: false })
         .blur()
         .end()
         .wait(1000)

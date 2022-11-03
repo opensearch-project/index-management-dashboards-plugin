@@ -38,10 +38,8 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     indexDetail: {
       index: "",
       settings: {
-        index: {
-          number_of_shards: 1,
-          number_of_replicas: 1,
-        },
+        "index.number_of_shards": 1,
+        "index.number_of_replicas": 1,
       },
       mappings: {},
     },
@@ -68,6 +66,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
           endpoint: "indices.get",
           data: {
             index: this.index,
+            flat_settings: true,
           },
         });
         if (response.ok) {
@@ -162,8 +161,8 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     const { indexDetail, oldIndexDetail } = this.state;
     const { index } = indexDetail;
 
-    const newSettings = (indexDetail?.settings?.index || {}) as Required<IndexItem>["settings"]["index"];
-    const oldSettings = (oldIndexDetail?.settings?.index || {}) as Required<IndexItem>["settings"]["index"];
+    const newSettings = (indexDetail?.settings || {}) as Required<IndexItem>["settings"];
+    const oldSettings = (oldIndexDetail?.settings || {}) as Required<IndexItem>["settings"];
     const differences = differenceWith(Object.entries(newSettings), Object.entries(oldSettings), isEqual);
     if (!differences.length) {
       return {
@@ -188,10 +187,9 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
       method: "PUT",
       data: {
         index,
+        flat_settings: true,
         // In edit mode, only dynamic settings can be modified
-        body: {
-          index: finalSettings,
-        },
+        body: finalSettings,
       },
     });
   };
