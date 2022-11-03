@@ -142,14 +142,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
-    if (options.index_settings?.length === 0) {
+    if (options.index_settings?.length == 0) {
       delete options.index_settings;
     }
 
-    if (options.ignore_index_settings?.length === 0) {
+    if (options.ignore_index_settings?.length == 0) {
       delete options.ignore_index_settings;
     }
-
     console.log(options);
     const badJSON = options.index_settings ? checkBadJSON(options.index_settings) : false;
     const badPattern = checkBadRegex(options.rename_pattern);
@@ -283,7 +282,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const { restore_specific_indices, restore_all_indices, customize_index_settings, ignore_index_settings } = RESTORE_OPTIONS;
 
     if (e.target.id === restore_specific_indices) {
-      console.log("specific");
       this.setState({ restoreSpecific: true, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
       return;
     }
