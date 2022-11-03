@@ -6,43 +6,50 @@ exports[`RenameInput component renders without error 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiText euiText--extraSmall"
-  >
-    <h4>
-      Rename Pattern
-    </h4>
-  </div>
-  <div
-    class="euiText euiText--extraSmall"
-    style="padding: 0px 0px 5px 0px;"
-  >
-    <p
-      style="font-weight: 200;"
-    >
-      Use regular expression to define how index names will be renamed.
-      <br />
-      By default, input (.+) to reuse the entire index name.
-       
-      <a
-        class="euiLink euiLink--primary"
-        href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn more
-        EuiIconMock
-        <span
-          class="euiScreenReaderOnly"
-        >
-          (opens in a new tab or window)
-        </span>
-      </a>
-    </p>
-  </div>
-  <div
     class="euiFormRow"
     id="some_html_id-row"
   >
+    <div
+      class="euiFormRow__labelWrapper"
+    >
+      <label
+        class="euiFormLabel euiFormRow__label"
+        for="some_html_id"
+      >
+        <div
+          class="euiText euiText--extraSmall"
+        >
+          <h4>
+            Rename Pattern
+          </h4>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="padding: 0px 0px 5px 0px; font-weight: 200;"
+        >
+          Define the format of renamed indices. Use $0 to include the 
+
+  entire matching index name, $1 to include the content of the first
+
+  capture group, etc.
+           
+          <a
+            class="euiLink euiLink--primary"
+            href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+            EuiIconMock
+            <span
+              class="euiScreenReaderOnly"
+            >
+              (opens in a new tab or window)
+            </span>
+          </a>
+        </div>
+      </label>
+    </div>
     <div
       class="euiFormRow__fieldWrapper"
     >
@@ -67,45 +74,50 @@ exports[`RenameInput component renders without error 1`] = `
     class="euiSpacer euiSpacer--m"
   />
   <div
-    class="euiText euiText--extraSmall"
-  >
-    <h4>
-      Rename Replacement
-    </h4>
-  </div>
-  <div
-    class="euiText euiText--extraSmall"
-    style="padding: 0px 0px 5px 0px;"
-  >
-    <p
-      style="font-weight: 200;"
-    >
-      Define the format of renamed indices. Use $0 to include the
-      <br />
-      entire matching index name, $1 to include the content of the first
-      <br />
-      capture group, etc.
-       
-      <a
-        class="euiLink euiLink--primary"
-        href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn more
-        EuiIconMock
-        <span
-          class="euiScreenReaderOnly"
-        >
-          (opens in a new tab or window)
-        </span>
-      </a>
-    </p>
-  </div>
-  <div
     class="euiFormRow"
     id="some_html_id-row"
   >
+    <div
+      class="euiFormRow__labelWrapper"
+    >
+      <label
+        class="euiFormLabel euiFormRow__label"
+        for="some_html_id"
+      >
+        <div
+          class="euiText euiText--extraSmall"
+        >
+          <h4>
+            Rename Replacement
+          </h4>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="padding: 0px 0px 5px 0px; font-weight: 200;"
+        >
+          Define the format of renamed indices. Use $0 to include the
+
+  entire matching index name, $1 to include the content of the first
+
+  capture group, etc.
+           
+          <a
+            class="euiLink euiLink--primary"
+            href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+            EuiIconMock
+            <span
+              class="euiScreenReaderOnly"
+            >
+              (opens in a new tab or window)
+            </span>
+          </a>
+        </div>
+      </label>
+    </div>
     <div
       class="euiFormRow__fieldWrapper"
     >

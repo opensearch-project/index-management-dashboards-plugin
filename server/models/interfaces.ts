@@ -335,7 +335,7 @@ export interface CatIndex {
 
 export interface CatSnapshotIndex {
   index?: string;
-  "store.size"?: string;
+  "restore_status"?: string;
 }
 
 export interface ManagedCatIndex extends CatIndex {
