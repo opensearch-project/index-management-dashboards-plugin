@@ -6,7 +6,6 @@ import React, { Component } from "react";
 import {
   EuiButtonEmpty,
   EuiButton,
-  EuiFieldNumber,
   EuiFieldText,
   EuiFlexGroup,
   EuiFlyout,
@@ -14,9 +13,11 @@ import {
   EuiFlyoutFooter,
   EuiFlyoutHeader,
   EuiFormRow,
+  EuiLink,
+  EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
-import CustomLabel from "../../../../components/CustomLabel";
+import FormGenerator, { IField } from "../../../../components/FormGenerator";
 
 interface SplitIndexProps {
   onCloseFlyout: () => void;
@@ -26,11 +27,31 @@ interface SplitIndexProps {
 export default class SplitIndexFlyout extends Component<SplitIndexProps> {
   state = {
     targetIndex: "",
-    numberOfShards: 0,
+    value: {},
   };
 
   render() {
     const { onSplitIndex, onCloseFlyout } = this.props;
+
+    const formFields: IField[] = [
+      {
+        rowProps: {
+          label: "Number of shards",
+        },
+        name: "number_of_shards",
+        type: "Number",
+        options: {
+          rules: [
+            {
+              required: true,
+            },
+          ],
+          props: {
+            placeholder: "Should be N times of the original index.",
+          },
+        },
+      },
+    ];
 
     return (
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
@@ -41,30 +62,45 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
-          <CustomLabel title="New Index Name" />
-          <EuiFormRow>
+          <EuiFormRow label="Target Index Name">
             <EuiFieldText
               value={this.state.targetIndex}
               onChange={(e) => {
                 this.setState({ targetIndex: e.target.value });
               }}
-              data-test-subj="New Index Name"
+              required={true}
+              data-test-subj={"Target Index Name"}
             />
           </EuiFormRow>
-        </EuiFlyoutBody>
-
-        <EuiFlyoutBody>
-          <CustomLabel title="Number of shards" />
-          <EuiFormRow>
-            <EuiFieldNumber
-              value={this.state.numberOfShards}
-              min={2}
-              onChange={(e) => {
-                this.setState({ numberOfShards: e.target.value });
-              }}
-              data-test-subj="Number of shards"
-            />
-          </EuiFormRow>
+          <EuiSpacer />
+          <FormGenerator
+            value={this.state.value}
+            onChange={(totalValue) =>
+              this.setState({
+                value: totalValue,
+              })
+            }
+            formFields={formFields}
+            hasAdvancedSettings
+            advancedSettingsProps={{
+              accordionProps: {
+                initialIsOpen: false,
+                id: "accordion_for_create_index_settings",
+                buttonContent: <h4>Advanced settings</h4>,
+              },
+              rowProps: {
+                label: "Specify advanced index settings",
+                helpText: (
+                  <>
+                    Specify a comma-delimited list of settings.
+                    <EuiLink href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings" target="_blank">
+                      View index settings
+                    </EuiLink>
+                  </>
+                ),
+              },
+            }}
+          />
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
@@ -72,7 +108,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
             <EuiButtonEmpty onClick={onCloseFlyout}>Cancel</EuiButtonEmpty>
             <EuiButton
               data-test-subj="Split Index Confirm"
-              onClick={() => onSplitIndex(this.state.targetIndex, this.state.numberOfShards)}
+              onClick={() => onSplitIndex(this.state.targetIndex, this.state.value)}
               fill
               isDisabled={this.state.targetIndex === ""}
             >

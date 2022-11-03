@@ -15,6 +15,7 @@ import { ServicesContext } from "../../../../services";
 import SplitIndexFlyout from "../../components/SplitIndexFlyout";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
+import { IndexItem } from "../../../../../models/interfaces";
 
 export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
@@ -53,7 +54,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
     setSplitIndexFlyoutVisible(false);
   };
 
-  const splitIndex = async (targetIndex: String, numberOfShards: number) => {
+  const splitIndex = async (targetIndex: String, settingsPayload: IndexItem["settings"]) => {
     const result = await services?.commonService.apiCaller({
       endpoint: "indices.split",
       method: "PUT",
@@ -62,7 +63,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         target: targetIndex,
         body: {
           settings: {
-            "index.number_of_shards": numberOfShards,
+            index: settingsPayload,
           },
         },
       },

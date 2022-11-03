@@ -233,7 +233,7 @@ const IndexDetail = (
             <div style={{ paddingLeft: "10px" }}>
               <EuiFormRow
                 label="Index name"
-                helpText="Some reestrictrion text on domain"
+                helpText="Some restriction text on domain"
                 isInvalid={!!errors["index"]}
                 error={errors["index"]}
               >
@@ -276,11 +276,13 @@ const IndexDetail = (
                 hasAdvancedSettings
                 advancedSettingsProps={{
                   accordionProps: {
+                    placeholder: "Advanced Settings",
                     initialIsOpen: false,
                     id: "accordion_for_create_index_settings",
                     buttonContent: <h4>Advanced settings</h4>,
                   },
                   rowProps: {
+                    placeholder: "Specify advanced index settings",
                     label: "Specify advanced index settings",
                     helpText: (
                       <>

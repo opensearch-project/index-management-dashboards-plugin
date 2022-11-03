@@ -31,10 +31,10 @@ describe("Split Index", () => {
       cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX).end();
 
       // Update Index status to blocks write otherwise we can't apply split operation on it
-      cy.get('[data-test-subj="Click Advanced Settings"]')
+      cy.get('[placeholder="Advanced Settings"]')
         .click()
         .end()
-        .get('[data-test-subj="Advanced Settings Content"] textarea')
+        .get('[placeholder="Specify advanced index settings"] textarea')
         .focus()
         .clear({ force: true })
         .type('{"blocks.write": true}', { force: true, parseSpecialCharSequences: false })
@@ -82,10 +82,10 @@ describe("Split Index", () => {
         .get('[data-test-subj="Split Index Confirm"]')
         .should("be.disabled")
         .end()
-        .get('[data-test-subj="New Index Name"]')
+        .get('[data-test-subj="Target Index Name"]')
         .type(`${SAMPLE_INDEX_SPLIT}`)
         .end()
-        .get('[data-test-subj="Number of shards"]')
+        .get('[placeholder="Should be N times of the original index."]')
         .type(`${split_number}`)
         .end()
         .get('[data-test-subj="Split Index Confirm"]')
