@@ -5,24 +5,27 @@
 
 import { EuiModal, EuiText, EuiButton, EuiModalHeader, EuiModalFooter, EuiModalBody, EuiModalHeaderTitle } from "@elastic/eui";
 import React from "react";
+import { RestoreError } from "../../../../models/interfaces"
 
 
 interface ErrorModalProps {
-  error: React.ErrorInfo;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  error: RestoreError;
+  snapshotId: string;
+  onClick: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement> | undefined) => void;
+  onClose: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | React.KeyboardEvent<HTMLDivElement> | undefined) => void;
 }
 
-const ErrorModal = ({ onClick, error }: ErrorModalProps) => {
+const ErrorModal = ({ onClick, error, snapshotId }: ErrorModalProps) => {
 
   return (
     <>
       <EuiModal onClose={onClick}>
         <EuiModalHeader color="danger" style={{ flexDirection: "column", alignItems: "flex-start" }}>
-          <EuiModalHeaderTitle><h1>{error.type}</h1></EuiModalHeaderTitle>
+          <EuiModalHeaderTitle><h1>{`Failed to restore snapshot ${snapshotId}`}</h1></EuiModalHeaderTitle>
         </EuiModalHeader>
 
         <EuiModalBody>
-          <EuiText size="m" color="danger">{error.reason}.</EuiText>
+          <EuiText size="m" color="danger">{error.reason ? error.reason : error}.</EuiText>
         </EuiModalBody>
 
         <EuiModalFooter>

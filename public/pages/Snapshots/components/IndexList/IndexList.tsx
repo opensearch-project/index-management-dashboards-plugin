@@ -5,27 +5,19 @@
 
 import { EuiInMemoryTable, EuiIcon, EuiFlyoutHeader, EuiTitle } from "@elastic/eui";
 import React from "react";
-import { CatSnapshotIndex } from "../../../../../server/models/interfaces";
+import { Column } from "../../../../models/interfaces";
+import { IndexItem } from "../../../../models/interfaces"
 
 interface IndexListProps {
-  indices: CatSnapshotIndex[];
+  indices: IndexItem[];
   snapshot: string;
   title: string
+  columns: Column[];
   onClick: (e: React.MouseEvent) => void;
 }
 
-const IndexList = ({ indices, snapshot, onClick, title }: IndexListProps) => {
-  indices = indices.filter((index) => index.index?.substring(0, 7) !== ".kibana");
-
-  const columns = [
-    {
-      field: "index",
-      name: "Index",
-      width: "100%",
-      truncateText: true,
-      sortable: true,
-    }
-  ];
+const IndexList = ({ indices, snapshot, onClick, title, columns }: IndexListProps) => {
+  indices = indices.filter((index) => index.index.substring(0, 7) !== ".kibana");
 
   return (
     <>
@@ -38,7 +30,7 @@ const IndexList = ({ indices, snapshot, onClick, title }: IndexListProps) => {
         </EuiTitle>
       </EuiFlyoutHeader>
       <div style={{ padding: "1rem 1.5rem" }}>
-        <EuiInMemoryTable tableCaption="Indices" items={indices} columns={columns} tableLayout="auto" pagination={true} sorting={true} />
+        <EuiInMemoryTable tableCaption="Indices" items={indices} columns={columns} tableLayout="fixed" pagination={true} sorting={true} />
       </div>
     </>
   );
