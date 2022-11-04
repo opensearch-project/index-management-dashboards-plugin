@@ -52,26 +52,33 @@ describe("<IndexDetail /> spec", () => {
     expect(getByPlaceholderText("The number of primary shards in the index. Default is 1.")).toHaveAttribute("disabled");
   });
 
-  it("validate should say error when the field name is required", async () => {
+  it("validate should say error when field name is required", async () => {
     const { result } = renderHook(() => {
       const ref = useRef<IIndexDetailRef>(null);
-      const [validate, setValidate] = useState(true);
-      useEffect(() => {
-        ref.current?.validate().then((flag) => setValidate(flag));
-      }, []);
-      render(<IndexDetail refreshOptions={refreshOptions} ref={ref} value={{ index: "" }} onChange={() => {}} />);
+      const container = render(<IndexDetail refreshOptions={refreshOptions} ref={ref} value={{ index: "" }} onChange={() => {}} />);
       return {
-        validate,
+        ref,
+        container,
       };
     });
-
-    await waitFor(() => {
-      expect(result.current.validate).toBe(false);
+    await waitFor(async () => {
+      expect(await result.current.ref.current?.validate()).toBe(false);
+    });
+    const ref = result.current.ref;
+    const { getByTestId, getByPlaceholderText } = result.current.container;
+    userEvent.type(getByPlaceholderText("Please enter the name for your index"), "good_index");
+    await waitFor(async () => {
+      expect(await ref.current?.validate()).toBe(false);
+    });
+    userEvent.type(getByTestId("form-name-index.number_of_shards").querySelector("input") as Element, "2");
+    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
+    await waitFor(async () => {
+      expect(await ref.current?.validate()).toBe(true);
     });
   });
 
   it("inherit templates settings when create", async () => {
-    const { getByDisplayValue, getByPlaceholderText, getByText } = render(
+    const { getByDisplayValue, getByPlaceholderText, getByText, getByTestId } = render(
       <IndexDetailOnChangeWrapper
         refreshOptions={refreshOptions}
         value={{ index: "some_index" }}
@@ -82,6 +89,9 @@ describe("<IndexDetail /> spec", () => {
               index: "some_index",
               aliases: {
                 test: {},
+              },
+              settings: {
+                "index.number_of_replicas": 2,
               },
             },
           })
@@ -94,12 +104,29 @@ describe("<IndexDetail /> spec", () => {
     await waitFor(() => {
       expect(document.querySelector('[data-test-subj="comboBoxInput"] [title="test"]')).not.toBeNull();
     });
-    userEvent.type(getByPlaceholderText("The number of primary shards in the index. Default is 1."), "10");
+    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
     userEvent.click(getByDisplayValue("some_index"));
     userEvent.click(document.body);
     // The Dialog should show
     await waitFor(() => {
       expect(getByText("The index name has matched one or more index templates, please choose which way to go on")).toBeInTheDocument();
+    });
+    userEvent.click(getByTestId("simulate-confirm-confirm"));
+    await waitFor(() => {
+      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "2");
+    });
+
+    userEvent.clear(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element);
+    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
+    userEvent.click(getByDisplayValue("some_index"));
+    userEvent.click(document.body);
+    // The Dialog should show
+    await waitFor(() => {
+      expect(getByText("The index name has matched one or more index templates, please choose which way to go on")).toBeInTheDocument();
+    });
+    userEvent.click(getByTestId("simulate-confirm-cancel"));
+    await waitFor(() => {
+      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "10");
     });
   });
 });

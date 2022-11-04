@@ -53,10 +53,6 @@ const IndexDetail = (
   const settingsRef = useRef<IFormGeneratorRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {
-      const result = await settingsRef.current?.validatePromise();
-      if (result?.errors) {
-        return false;
-      }
       if (!value?.index) {
         setErrors({
           index: "Index name can not be null.",
@@ -64,6 +60,10 @@ const IndexDetail = (
         return false;
       }
       setErrors({});
+      const result = await settingsRef.current?.validatePromise();
+      if (result?.errors) {
+        return false;
+      }
       return true;
     },
   }));
@@ -80,10 +80,11 @@ const IndexDetail = (
               title: "Confirm",
               content: "The index name has matched one or more index templates, please choose which way to go on",
               locale: {
-                ok: "Overwrite",
+                confirm: "Overwrite",
                 cancel: "Merge the template",
               },
               type: "confirm",
+              "data-test-subj": "simulate-confirm",
               onOk: () => resolve(result.response),
               onCancel: () => {
                 const formatValue: IndexItemRemote = {
