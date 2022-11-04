@@ -37,7 +37,7 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
       </EuiText>
       <EuiText size="xs" style={{ padding: "0px 0px 5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
-          {helperText}
+          {`${helperText} `}
           <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" external={true} rel="noopener noreferrer">
             Learn more
           </EuiLink>
@@ -50,7 +50,7 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
     <>
       <EuiSpacer size="m" />
 
-      <EuiFormRow isInvalid={showError} error={inputError} label={indexSettingsLabel}>
+      <EuiFormRow isInvalid={showError} error={inputError} label={indexSettingsLabel} id={ignore ? "ignore_index_settings" : "customize_index_settings"}>
         <EuiTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} isInvalid={showError} />
       </EuiFormRow>
 
