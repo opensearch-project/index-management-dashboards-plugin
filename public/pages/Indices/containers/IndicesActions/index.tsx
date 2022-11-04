@@ -59,9 +59,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
     });
     if (res && res.ok) {
       // @ts-ignore
-      coreServices.notifications.toasts.addSuccess(
-        `Reindex triggered success from ${reindexRequest.body.source.index} to ${reindexRequest.body.dest.index} with taskId ${res.response.task}`
-      );
+      let toast = `Reindex from [${reindexRequest.body.source.index}] to [${reindexRequest.body.dest.index}]`;
+      if (reindexRequest.waitForCompletion) {
+        toast += ` finished!`;
+      } else {
+        toast += ` success with taskId ${res.response.task}`;
+      }
+      coreServices.notifications.toasts.addSuccess(toast);
       onCloseReindexFlyout();
       onReindex && onReindex();
     } else {

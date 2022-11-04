@@ -4,13 +4,15 @@ exports[`<ReindexFlyout /> spec renders the component 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body
-    class="euiBody--hasFlyout"
+    class="euiBody-hasOverlayMask euiBody--hasFlyout"
   >
     <div
       aria-hidden="true"
       data-aria-hidden="true"
     />
-    <div>
+    <div
+      class="euiOverlayMask euiOverlayMask--belowHeader"
+    >
       <div
         aria-hidden="true"
         data-aria-hidden="true"
@@ -24,7 +26,6 @@ Object {
         <div
           class="euiFlyout euiFlyout--medium euiFlyout--paddingLarge"
           role="dialog"
-          style="max-width: 600px;"
           tabindex="-1"
         >
           <div
@@ -48,6 +49,27 @@ Object {
                 class="euiFlyoutBody__overflowContent"
               >
                 <div
+                  class="euiCallOut euiCallOut--primary"
+                >
+                  <div
+                    class="euiText euiText--small"
+                  >
+                    <div
+                      class="euiTextColor euiTextColor--default"
+                    >
+                      <p>
+                        The destination should be configured as wanted before calling 
+                        <code>
+                          _reindex.
+                        </code>
+                      </p>
+                      <p>
+                        Reindex doesn't copy the settings from the source or its associated template. Mappings, shard counts, replicas, and so on must be configured ahead of time.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div
                   class="euiSpacer euiSpacer--m"
                 />
                 <div
@@ -60,7 +82,7 @@ Object {
                       class="euiText euiText--extraSmall"
                     >
                       <h4>
-                        Source indices
+                        Source
                       </h4>
                     </div>
                   </div>
@@ -156,7 +178,7 @@ Object {
                       class="euiText euiText--extraSmall"
                     >
                       <h4>
-                        Destination index
+                        Destination
                       </h4>
                     </div>
                   </div>
@@ -231,7 +253,7 @@ Object {
                       class="euiFormHelpText euiFormRow__text"
                       id="some_html_id-help-0"
                     >
-                      Select an index from the list. If target index not exists, will create a new one based on source
+                      Select or type a destination. If destination does not exists, will create a new index based on source
                     </div>
                   </div>
                 </div>
@@ -239,7 +261,7 @@ Object {
                   class="euiSpacer euiSpacer--m"
                 />
                 <div
-                  class="euiSpacer euiSpacer--m"
+                  class="euiSpacer euiSpacer--l"
                 />
                 <div
                   class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
@@ -251,7 +273,7 @@ Object {
                       class="euiText euiText--extraSmall"
                     >
                       <h4>
-                        Query expression to reindex a subset of documents
+                        Query expression to reindex a subset of source documents
                       </h4>
                     </div>
                   </div>
