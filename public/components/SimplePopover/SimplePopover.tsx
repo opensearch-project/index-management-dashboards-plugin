@@ -33,22 +33,34 @@ const SimplePopover: React.SFC<SimplePopoverProps> = (props) => {
   }
 
   const outsideClick = useCallback(() => {
+    if (!popVisible) {
+      return;
+    }
+    setTimeout(() => {
+      setPopVisible(false);
+    }, 100);
+  }, [popVisible, setPopVisible]);
+
+  const closePopover = useCallback(() => {
+    if (!popVisible) {
+      return;
+    }
     setPopVisible(false);
-  }, []);
+  }, [popVisible, setPopVisible]);
 
   useEffect(() => {
     window.addEventListener("click", outsideClick);
     return () => {
       window.removeEventListener("click", outsideClick);
     };
-  }, []);
+  }, [outsideClick]);
 
   return (
     <EuiPopover
       {...props}
       button={props.button && cloneElement(props.button, buttonProps)}
       isOpen={popVisible}
-      closePopover={() => setPopVisible(false)}
+      closePopover={closePopover}
     />
   );
 };
