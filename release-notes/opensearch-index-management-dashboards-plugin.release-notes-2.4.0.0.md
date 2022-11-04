@@ -18,4 +18,4 @@ Compatible with OpenSearch 2.4.0
 * Refactor: move api calls from components to containers ([#322](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/322))
 
 ### Documentation
-* Added release notes for 2.4 ([#342](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/342))
+* Added release notes for 2.4 ([#346](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/346))
