@@ -132,25 +132,25 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField,
             >
               {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
                 <EuiToolTip content="Add a sub field">
-                  <EuiButtonIcon
-                    aria-label="Add a sub field"
-                    onClick={onAddSubField}
-                    disabled={disabled}
-                    iconType="plusInCircleFilled"
+                  <span
+                    className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
                     data-test-subj={`${id}-add-sub-field`}
-                    size="m"
-                  />
+                    aria-label="Delete current field"
+                    onClick={onAddSubField}
+                  >
+                    <EuiIcon type="plusInCircleFilled" />
+                  </span>
                 </EuiToolTip>
               ) : null}
               <EuiToolTip content="Delete current field">
-                <EuiButtonIcon
+                <span
+                  className="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
                   data-test-subj={`${id}-delete-field`}
                   aria-label="Delete current field"
                   onClick={onDeleteField}
-                  iconType="trash"
-                  size="m"
-                  color="danger"
-                />
+                >
+                  <EuiIcon type="trash" />
+                </span>
               </EuiToolTip>
             </div>
           </EuiFormRow>

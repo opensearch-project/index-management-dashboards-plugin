@@ -34,6 +34,7 @@ module.exports = {
     "!<rootDir>/build/**",
     "!<rootDir>/cypress/**",
     "!**/vendor/**",
+    "!**/index.d.ts",
   ],
   clearMocks: true,
   testPathIgnorePatterns: ["<rootDir>/build/", "<rootDir>/node_modules/"],
