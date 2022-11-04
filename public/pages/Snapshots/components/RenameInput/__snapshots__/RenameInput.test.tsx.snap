@@ -7,14 +7,14 @@ exports[`RenameInput component renders without error 1`] = `
   />
   <div
     class="euiFormRow"
-    id="some_html_id-row"
+    id="rename_pattern-row"
   >
     <div
       class="euiFormRow__labelWrapper"
     >
       <label
         class="euiFormLabel euiFormRow__label"
-        for="some_html_id"
+        for="rename_pattern"
       >
         <div
           class="euiText euiText--extraSmall"
@@ -31,8 +31,7 @@ exports[`RenameInput component renders without error 1`] = `
 
   entire matching index name, $1 to include the content of the first
 
-  capture group, etc.
-           
+  capture group, etc.} 
           <a
             class="euiLink euiLink--primary"
             href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
@@ -62,7 +61,7 @@ exports[`RenameInput component renders without error 1`] = `
           <input
             class="euiFieldText"
             data-test-subj="renamePatternInput"
-            id="some_html_id"
+            id="rename_pattern"
             type="text"
             value="(.+)"
           />
@@ -75,14 +74,14 @@ exports[`RenameInput component renders without error 1`] = `
   />
   <div
     class="euiFormRow"
-    id="some_html_id-row"
+    id="rename_replacement-row"
   >
     <div
       class="euiFormRow__labelWrapper"
     >
       <label
         class="euiFormLabel euiFormRow__label"
-        for="some_html_id"
+        for="rename_replacement"
       >
         <div
           class="euiText euiText--extraSmall"
@@ -99,8 +98,7 @@ exports[`RenameInput component renders without error 1`] = `
 
   entire matching index name, $1 to include the content of the first
 
-  capture group, etc.
-           
+  capture group, etc. 
           <a
             class="euiLink euiLink--primary"
             href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
@@ -130,7 +128,7 @@ exports[`RenameInput component renders without error 1`] = `
           <input
             class="euiFieldText"
             data-test-subj="renameReplacementInput"
-            id="some_html_id"
+            id="rename_replacement"
             type="text"
             value="restored_$1"
           />

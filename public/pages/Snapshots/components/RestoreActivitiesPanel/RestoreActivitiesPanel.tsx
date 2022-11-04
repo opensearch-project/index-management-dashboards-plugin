@@ -3,14 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton, EuiEmptyPrompt } from "@elastic/eui";
+import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton, EuiEmptyPrompt, EuiHealth } from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getToasts } from "../../helper"
-import { Toast, ModifiedStages } from "../../../../models/interfaces"
-import { GetIndexRecoveryResponse, CatSnapshotIndex } from "../../../../../server/models/interfaces";
+import { Toast, ModifiedStages, IndexItem } from "../../../../models/interfaces"
+import { GetIndexRecoveryResponse } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS, restoreIndicesCols } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import IndexList from "../IndexList";
@@ -41,7 +41,7 @@ export const RestoreActivitiesPanel = (
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
   const [stage, setStage] = useState("");
-  const [indices, setIndices] = useState([{}]);
+  const [indices, setIndices] = useState<IndexItem[]>([]);
   const [flyout, setFlyout] = useState(false);
   const [statusOk, setStatusOk] = useState(true)
 
@@ -64,6 +64,9 @@ export const RestoreActivitiesPanel = (
   }, [stage]);
 
   const getRestoreStatus = async () => {
+    const percent = stage.slice(stage.indexOf("("));
+    const failedStage = `Failed ${percent}`
+
     if (!restoreStartRef) {
       return;
     }
@@ -84,6 +87,8 @@ export const RestoreActivitiesPanel = (
         );
 
         res.error = res.error.concat(`, please check your connection`);
+
+        setStage(failedStage);
         sendError(res);
         sendToasts(toasts)
         intervalIds.forEach((id) => {
@@ -99,6 +104,7 @@ export const RestoreActivitiesPanel = (
         onOpenError
       );
 
+      setStage(failedStage);
       setStatusOk(false);
       sendError(err);
       sendToasts(toasts)
@@ -120,7 +126,7 @@ export const RestoreActivitiesPanel = (
     let maxStopTime: number = 0;
     let stageIndex: number = 6;
     let doneCount: number = 0;
-    const indexes: CatSnapshotIndex[] = [];
+    const indexes: IndexItem[] = [];
     const stages: string[] = ["START", "INIT", "INDEX", "VERIFY_INDEX", "TRANSLOG", "FINALIZE", "DONE"];
     const modifiedStages: ModifiedStages = {
       START: "Starting",
@@ -154,7 +160,7 @@ export const RestoreActivitiesPanel = (
 
         maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
 
-        const indexStatus = modifiedStages[info.stage as keyof ModifiedStages];
+        const indexStatus: string = modifiedStages[info.stage as keyof ModifiedStages];
 
         if (info.source.index && info.source.snapshot === snapshotId) {
           minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
@@ -163,7 +169,7 @@ export const RestoreActivitiesPanel = (
       }
     }
 
-    const updatedIndices = [...indexes];
+    const updatedIndices: IndexItem[] = [...indexes];
     const indicesStarted = indexes.map((index) => index.index);
 
     for (let index of indicesToRestore) {
@@ -173,9 +179,7 @@ export const RestoreActivitiesPanel = (
     }
 
     const sortedUpdatedIndices = updatedIndices.sort((a, b) => {
-      if (a.index < b.index) return -1;
-      if (a.index > b.index) return 1;
-      return 0;
+      return a.index - b.index;
     });
     const percent = Math.floor((doneCount / restoreCount) * 100);
 
@@ -197,7 +201,8 @@ export const RestoreActivitiesPanel = (
       </EuiButton>,
     ]
   ), []);
-
+  const currentStage = stage.slice(0, stage.indexOf(" "))
+  const color = currentStage === "Completed" ? "success" : currentStage === "Failed" ? "failure" : "warning";
   const indexText = `${restoreCount === 1 ? "1 Index" : `${restoreCount} Indices`}`
 
   const restoreStatus = [
@@ -225,11 +230,12 @@ export const RestoreActivitiesPanel = (
     {
       field: "status",
       name: "Status",
+      render: (text: string) => <EuiHealth color={color}>{text}</EuiHealth>
     },
     {
       field: "indexes",
       name: "Indices being restored",
-      render: (text: object) => <EuiLink onClick={onIndexesClick}>{text}</EuiLink>,
+      render: (text: string) => <EuiLink onClick={onIndexesClick}>{text}</EuiLink>,
     },
   ];
 

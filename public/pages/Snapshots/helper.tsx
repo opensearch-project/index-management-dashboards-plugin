@@ -83,3 +83,60 @@ export const CheckBoxLabel = ({ title, helpText }: CheckboxLabelProps) => (
     </EuiText>
   </>
 );
+
+export const checkBadJSON = (testString: string) => {
+  try {
+    JSON.parse(testString);
+    return false;
+  } catch (err) {
+    return true;
+  }
+}
+
+export const checkNoSelectedIndices = (indices: string, restoreSpecific: boolean): boolean => {
+  let notSelected = false;
+
+  if (restoreSpecific && indices.length === 0) {
+    notSelected = true;
+  }
+
+  return notSelected;
+}
+
+export const checkBadRegex = (regex: string): boolean => {
+  try {
+    new RegExp(regex);
+
+    return false;
+  } catch (err) {
+
+    return true;
+  }
+}
+
+export const checkBadReplacement = (regexString: string): boolean => {
+  const isNotValid = regexString.indexOf("$") >= 0;
+
+  if (isNotValid) return false;
+
+  return true;
+}
+
+export const checkCustomIgnoreConflict = (customIndexSettings?: string, ignoreIndexSettings?: string) => {
+  if (customIndexSettings && customIndexSettings.length > 0) {
+    const customSettingsBad = checkBadJSON(customIndexSettings);
+
+    if (customSettingsBad) {
+      return false;
+    }
+
+    const customSettings = JSON.parse(customIndexSettings);
+
+    for (let setting in customSettings) {
+      if (ignoreIndexSettings && ignoreIndexSettings.indexOf(setting) >= 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
