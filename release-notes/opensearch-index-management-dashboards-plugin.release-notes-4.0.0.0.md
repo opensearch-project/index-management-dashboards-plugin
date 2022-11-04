@@ -4,9 +4,6 @@ Compatible with OpenSearch 2.4.0
 
 ### Features
 * Add Snapshot Restore functionality and UI([#338](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/338))
-* Feature/create index([#289](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/289))
-* Feature/index operation ([#295](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/295))
-* Feature/index detail ([#312](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/312))
 
 ### Enhancements
 * feat: add diff confirm modal in create wizard ([#323](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/323))
