@@ -1,4 +1,4 @@
-## Version 2.4.0.0 2022-11-04
+## Version -2.4.0.0 2022-11-04
 
 Compatible with OpenSearch 2.4.0
 
@@ -15,6 +15,7 @@ Compatible with OpenSearch 2.4.0
 ### Maintenance
 * Version bump 2.4.0 ([#283](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/283))
 * Add windows mac OS in CI ([#325](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/325))
+* Refactor: move api calls from components to containers ([#322](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/322))
 
 ### Documentation
 * Added release notes for 2.4 ([#342](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/342))
