@@ -50,7 +50,7 @@ export const RestoreActivitiesPanel = (
   useEffect(() => {
     context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
 
-    if (statusOk && stage !== "Done (100%)") {
+    if (statusOk && stage !== "Completed (100%)") {
       intervalIds.push(setInterval(() => {
         getRestoreStatus();
       }, 2000))
@@ -58,7 +58,7 @@ export const RestoreActivitiesPanel = (
       return () => {
         intervalIds.forEach((id) => {
           clearInterval(id);
-        })
+        });
       }
     }
   }, [stage]);
