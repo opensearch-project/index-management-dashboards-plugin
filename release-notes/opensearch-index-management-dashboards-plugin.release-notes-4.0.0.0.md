@@ -20,4 +20,4 @@ Compatible with OpenSearch 2.4.0
 * Add windows mac OS in CI ([#325](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/325))
 
 ### Documentation
-* Added release notes for 2.4 ()
+* Added release notes for 2.4 ([#342](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/342))
