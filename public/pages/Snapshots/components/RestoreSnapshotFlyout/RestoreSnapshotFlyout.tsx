@@ -26,6 +26,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
+import { checkBadJSON, checkBadRegex, checkBadReplacement, checkCustomIgnoreConflict, checkNoSelectedIndices } from "../../helper"
 import { browseIndicesCols } from "../../../../utils/constants"
 import { ERROR_TOAST_TITLE } from "../../constants"
 import { IndexItem } from "../../../../../models/interfaces";
@@ -58,7 +59,7 @@ interface RestoreSnapshotState {
   renamePattern: string;
   renameReplacement: string;
   listIndices: boolean;
-  customIndexSettings: string;
+  customIndexSettings?: string;
   ignoreIndexSettings?: string;
   indicesList: string[];
   selectedRepoValue: string;
@@ -130,7 +131,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const options = {
       indices: restoreSpecific ? selectedIndices : allIndices,
-      index_settings: customIndexSettings.length && this.checkBadJSON(customIndexSettings) ? JSON.parse(customIndexSettings) : "",
+      index_settings: customIndexSettings,
       ignore_index_settings: ignoreIndexSettings,
       ignore_unavailable: snapshot?.ignore_unavailable || false,
       include_global_state: snapshot?.include_global_state,
@@ -141,21 +142,35 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
-    const badPattern = this.checkBadRegex(options.rename_pattern);
-    const badRename = this.checkBadReplacement(options.rename_replacement);
-    const badIgnore = this.checkCustomIgnoreConflict();
-    const noIndicesSelected = this.checkNoSelectedIndices(options.indices);
-
-    if (badPattern || badRename || badIgnore || noIndicesSelected) {
-      this.setState({ badPattern, badRename, badIgnore, noIndicesSelected });
-      return;
+    if (options.index_settings?.length == 0) {
+      delete options.index_settings;
     }
 
-    if (options.index_settings.length === 0) {
-      delete options.index_settings;
-    } else {
-      const badJSON = this.checkBadJSON(customIndexSettings);
-      this.setState({ badJSON })
+    if (options.ignore_index_settings?.length == 0) {
+      delete options.ignore_index_settings;
+    }
+
+    const badJSON = options.index_settings ? checkBadJSON(options.index_settings) : false;
+    const badPattern = checkBadRegex(options.rename_pattern);
+    const badRename = checkBadReplacement(options.rename_replacement);
+    const badIgnore = options.ignore_index_settings ? checkCustomIgnoreConflict(customIndexSettings, ignoreIndexSettings) : false;
+    const noIndicesSelected = checkNoSelectedIndices(options.indices, restoreSpecific);
+
+    if ((!badIgnore) && (badPattern || badRename || noIndicesSelected || badJSON)) {
+      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
+    }
+
+    if (badIgnore) {
+      this.context.notifications.toasts.addDanger(null, {
+        title: "Cannot apply and ignore the same index settings",
+        text: "One or more index settings was declared in both Custom index settings and Ignore index settings. Remove the index setting from either fields."
+      });
+    }
+
+    this.setState({ badPattern, badRename, badIgnore, noIndicesSelected, badJSON });
+
+    if (badPattern || badRename || badIgnore || noIndicesSelected || badJSON) {
+      return;
     }
 
     if (!options.ignore_index_settings) {
@@ -175,80 +190,13 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       return;
     }
 
+    if (options.index_settings) {
+      options.index_settings = JSON.parse(options.index_settings)
+    }
     getRestoreTime(Date.now());
     restoreSnapshot(snapshotId, repository, options);
     onCloseFlyout()
   };
-
-  checkBadJSON = (testString: string) => {
-    try {
-      const userObject = JSON.parse(testString);
-
-      return false;
-    } catch (err) {
-      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
-      this.setState({ badJSON: true });
-      return true;
-    }
-  }
-
-  checkNoSelectedIndices = (indices: string): boolean => {
-    const { restoreSpecific } = this.state;
-    let notSelected = false;
-
-    if (restoreSpecific && indices.length === 0) {
-      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
-      notSelected = true;
-    }
-
-    return notSelected;
-  }
-
-  checkBadRegex = (regex: string): boolean => {
-    try {
-      const userRegex = new RegExp(regex);
-
-      return false;
-    } catch (err) {
-      this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
-
-      return true;
-    }
-  }
-
-  checkBadReplacement = (regexString: string): boolean => {
-    const isNotValid = regexString.indexOf("$") >= 0;
-
-    if (isNotValid) return false;
-    this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
-
-    return true;
-  }
-
-  checkCustomIgnoreConflict = () => {
-    const { customIndexSettings, ignoreIndexSettings } = this.state;
-
-    if (customIndexSettings.length > 0) {
-      const customSettingsBad = this.checkBadJSON(customIndexSettings);
-
-      if (customSettingsBad) {
-        return false;
-      }
-
-      const customSettings = JSON.parse(customIndexSettings);
-
-      for (let setting in customSettings) {
-        if (ignoreIndexSettings && ignoreIndexSettings.indexOf(setting) >= 0) {
-          this.context.notifications.toasts.addDanger(null, {
-            title: "Cannot apply and ignore the same index settings",
-            text: "One or more index settings was declared in both Custom index settings and Ignore index settings. Remove the index setting from either fields."
-          });
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 
   onClickIndices = async () => {
     this.setState({ listIndices: true });
@@ -331,18 +279,47 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   onToggle = (e: ChangeEvent<HTMLInputElement>) => {
-    const { restore_specific_indices, restore_all_indices } = RESTORE_OPTIONS;
+    const { restore_specific_indices, restore_all_indices, customize_index_settings, ignore_index_settings } = RESTORE_OPTIONS;
 
     if (e.target.id === restore_specific_indices) {
       this.setState({ restoreSpecific: true, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
       return;
     }
+
     if (e.target.id === restore_all_indices) {
-      this.setState({ restoreSpecific: false, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
+      this.setState({ restoreSpecific: false, noIndicesSelected: false, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
       return;
     }
+
+    if (e.target.id === customize_index_settings) {
+      if (!e.target.checked) {
+        this.setState({ customIndexSettings: "", badJSON: false });
+      }
+    }
+
+    if (e.target.id === ignore_index_settings) {
+      if (!e.target.checked) {
+        this.setState({ ignoreIndexSettings: "", badIgnore: false });
+      }
+    }
+
     if (e.target.name === "rename_option") {
-      this.setState({ renameIndices: e.target.id, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
+      let renamePattern = this.state.renamePattern;
+      let renameReplacement = this.state.renameReplacement;
+
+      if (e.target.id !== "rename_indices") {
+        renamePattern = "(.+)"
+        renameReplacement = "restored_$1"
+      }
+
+      this.setState({
+        renameIndices: e.target.id,
+        renamePattern,
+        badPattern: false,
+        renameReplacement,
+        badRename: false,
+        snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked)
+      });
       return;
     }
 
