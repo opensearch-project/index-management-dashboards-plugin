@@ -25,7 +25,6 @@ import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
-import CustomLabel from "../../../../components/CustomLabel";
 import { DEFAULT_QUERY, ERROR_PROMPT } from "../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
@@ -45,13 +44,15 @@ interface ReindexState {
   indexOptions: EuiComboBoxOptionOption<IndexItem>[];
   dataStreams: EuiComboBoxOptionOption<IndexItem>[];
   selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
-  jsonString: string;
+  queryJsonString: string;
   destError?: string;
   destSettingsJson?: string;
   sourceErr?: string[];
   slices: string;
   waitForComplete: boolean;
 }
+
+const DEFAULT_SLICE = "1";
 
 export default class ReindexFlyout extends Component<ReindexProps, ReindexState> {
   static contextType = CoreServicesContext;
@@ -62,9 +63,9 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       indexOptions: [],
       dataStreams: [],
       selectedIndexOptions: [],
-      jsonString: DEFAULT_QUERY,
+      queryJsonString: DEFAULT_QUERY,
       waitForComplete: false,
-      slices: "1",
+      slices: DEFAULT_SLICE,
     };
   }
 
@@ -87,7 +88,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         index: sourceIndices.join(","),
       },
     });
-    if (res.ok) {
+    if (res && res.ok) {
       let err = [];
       for (let index of sourceIndices) {
         const enabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
@@ -117,7 +118,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     } = this.props;
     this.setState({ indexOptions: [] });
     try {
-      const res = await indexService.getDataStreamsAndIndicesNames(searchValue);
+      const res = await indexService.getDataStreamsAndIndicesNames(searchValue.trim());
       if (res.ok) {
         const dataStreams = res.response.dataStreams.map((label) => ({ label }));
         const indices = res.response.indices
@@ -195,7 +196,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       onReindexConfirm,
       services: { commonService },
     } = this.props;
-    const { jsonString, selectedIndexOptions, dataStreams, destSettingsJson, waitForComplete, slices } = this.state;
+    const { queryJsonString, selectedIndexOptions, dataStreams, destSettingsJson, waitForComplete, slices } = this.state;
 
     if (!selectedIndexOptions || selectedIndexOptions.length != 1) {
       this.setState({ destError: ERROR_PROMPT.DEST_REQUIRED });
@@ -235,7 +236,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         body: {
           source: {
             index: sourceIndices.join(","),
-            ...JSON.parse(jsonString),
+            ...JSON.parse(queryJsonString),
           },
           dest: {
             index: selectedIndexOptions.map((op) => op.label)[0],
@@ -249,7 +250,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   };
 
   onJsonChange = (value: string) => {
-    this.setState({ jsonString: value });
+    this.setState({ queryJsonString: value });
   };
 
   onDestSettingsChange = (value: string) => {
@@ -267,27 +268,25 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
   render() {
     const { onCloseFlyout, sourceIndices } = this.props;
-    const { indexOptions, selectedIndexOptions, jsonString, destError, destSettingsJson, sourceErr, slices, waitForComplete } = this.state;
+    const { indexOptions, selectedIndexOptions, queryJsonString, destError, destSettingsJson, sourceErr, slices } = this.state;
     const banner = (
       <EuiCallOut>
         <p>
-          The destination should be configured as wanted before calling <code>_reindex.</code>
-        </p>
-        <p>
-          Reindex doesn't copy the settings from the source or its associated template. Mappings, shard counts, replicas, and so on must be
-          configured ahead of time.
+          It's recommended that destination be configured as wanted before calling <code>_reindex.</code>
+          Reindex doesn't copy the settings from the source or its associated template.
         </p>
       </EuiCallOut>
     );
     return (
-      <EuiFlyout onClose={onCloseFlyout} hideCloseButton>
+      <EuiFlyout onClose={() => {}} hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle"> Reindex </h2>
           </EuiTitle>
         </EuiFlyoutHeader>
 
-        <EuiFlyoutBody banner={banner}>
+        <EuiFlyoutBody>
+          {banner}
           {sourceErr && sourceErr.length > 0 && (
             <EuiCallOut title="Sorry, there was an error" color="danger" iconType="alert">
               <ul>
@@ -300,8 +299,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
           <EuiSpacer size="m" />
 
-          <CustomLabel title="Source" />
-          <EuiFormRow>
+          <EuiFormRow label="Source">
             <EuiComboBox
               options={indexOptions}
               selectedOptions={sourceIndices.map((index) => ({ label: index }))}
@@ -312,14 +310,15 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
           <EuiSpacer size="m" />
 
-          <CustomLabel title="Destination" />
           <EuiFormRow
+            label="Destination"
             isInvalid={!!destError}
             error={destError}
-            helpText="Select or type a destination. If destination does not exists, will create a new index based on source"
+            helpText="Select a pre-configured destination,
+             or type a new index name to create a new one, source configuration will show up below you need to customize to the wanted"
           >
             <EuiComboBox
-              placeholder="Select dest index"
+              placeholder="Select destination"
               options={indexOptions}
               async
               selectedOptions={selectedIndexOptions}
@@ -335,52 +334,50 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
           <EuiSpacer size="m" />
           {destSettingsJson && (
-            <EuiFormRow fullWidth>
-              <>
-                <CustomLabel
-                  title="Destination configuration"
-                  helpText="configurations are copied from source, you need to customize to wanted"
-                />
-                <JSONEditor
-                  mode="json"
-                  width="100%"
-                  value={destSettingsJson}
-                  onChange={this.onDestSettingsChange}
-                  aria-label="Code Editor"
-                  data-test-subj="destSettingJsonEditor"
-                />
-              </>
+            <EuiFormRow
+              label="Destination index configuration"
+              helpText="configurations are copied from source, you should customize it to wanted before click on execute"
+              fullWidth
+            >
+              <JSONEditor
+                mode="json"
+                width="100%"
+                value={destSettingsJson}
+                onChange={this.onDestSettingsChange}
+                aria-label="Code Editor"
+                data-test-subj="destSettingJsonEditor"
+              />
             </EuiFormRow>
           )}
 
           <EuiSpacer size="m" />
-          <CustomLabel title="Query expression to reindex a subset of source documents" isOptional={true} />
-          <EuiText size="xs">
-            <EuiLink href={DSL_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              see Full-text queries
-            </EuiLink>
-          </EuiText>
-          <JSONEditor
-            mode="json"
-            width="100%"
-            value={jsonString}
-            onChange={this.onJsonChange}
-            aria-label="Code Editor"
-            height="150px"
-            data-test-subj="queryJsonEditor"
-          />
+
+          <EuiFormRow
+            label="Query expression to reindex a subset of source documents"
+            labelAppend={
+              <EuiText size="xs">
+                <EuiLink href={DSL_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+                  learn more about query-dsl
+                </EuiLink>
+              </EuiText>
+            }
+          >
+            <JSONEditor
+              mode="json"
+              width="100%"
+              value={queryJsonString}
+              onChange={this.onJsonChange}
+              aria-label="Query DSL Editor"
+              height="150px"
+              data-test-subj="queryJsonEditor"
+            />
+          </EuiFormRow>
 
           <EuiSpacer size="m" />
 
           <EuiAccordion id="advancedReindexOptions" buttonContent="Advanced options">
             <EuiSpacer size="m" />
-            <ReindexOptions
-              slices={slices}
-              onSlicesChange={this.onSliceChange}
-              waitForComplete={waitForComplete}
-              onWaitForComplete={this.onWaitForCompleteChange}
-              width="200%"
-            />
+            <ReindexOptions slices={slices} onSlicesChange={this.onSliceChange} width="200%" />
           </EuiAccordion>
         </EuiFlyoutBody>
 

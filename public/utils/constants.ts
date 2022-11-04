@@ -13,7 +13,7 @@ export const ACTIONS_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/
 export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#states";
 export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
 export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
-export const DSL_DOCUMENTATION_URL = "https://opensearch.org/docs/opensearch/query-dsl/full-text/";
+export const DSL_DOCUMENTATION_URL = "https://opensearch.org/docs/opensearch/query-dsl/index/";
 
 export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-management/";
 export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
