@@ -256,10 +256,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
           {
             label: "Visual Editor",
             id: EDITOR_MODE.VISUAL,
+            "data-test-subj": "editor-type-visual-editor",
           },
           {
             label: "JSON Editor",
             id: EDITOR_MODE.JSON,
+            "data-test-subj": "editor-type-json-editor",
           },
         ]}
       />
@@ -288,10 +290,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
             <>
               <EuiButton
                 size="s"
+                data-test-subj="previous-mappings-json-button"
                 onClick={() => {
                   Modal.show({
                     title: "Previous mappings",
                     content: <JSONEditor readOnly value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} />,
+                    "data-test-subj": "previous-mappings-json-modal",
                     onOk: () => {},
                   });
                 }}
