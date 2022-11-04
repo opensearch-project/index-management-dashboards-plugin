@@ -11,7 +11,7 @@ import { ServerResponse } from "../../../../../server/models/types";
 
 export interface AliasSelectProps extends Omit<EuiComboBoxProps<{ label: string; value: string }>, "value" | "onChange"> {
   value?: Record<string, {}>;
-  onChange: (value: AliasSelectProps["value"]) => void;
+  onChange?: (value: AliasSelectProps["value"]) => void;
   refreshOptions: (aliasName: string) => Promise<ServerResponse<{ alias: string }[]>>;
 }
 
@@ -70,7 +70,7 @@ const AliasSelect = (props: AliasSelectProps) => {
     // Create the option if it doesn't exist.
     if (flattenedOptions.findIndex((option: { label: string }) => option.label.trim().toLowerCase() === normalizedSearchValue) === -1) {
       setAllOptions([...allOptions, newOption]);
-      onChange(transformArrayToObj([...finalValue, newOption]));
+      onChange && onChange(transformArrayToObj([...finalValue, newOption]));
     }
   };
   return (
@@ -79,7 +79,9 @@ const AliasSelect = (props: AliasSelectProps) => {
       placeholder="Select or create aliases"
       async
       selectedOptions={finalValue}
-      onChange={(value) => onChange(transformArrayToObj(value))}
+      onChange={(value) => {
+        onChange && onChange(transformArrayToObj(value));
+      }}
       options={allOptions}
       isLoading={isLoading}
       onSearchChange={(searchValue) => {
