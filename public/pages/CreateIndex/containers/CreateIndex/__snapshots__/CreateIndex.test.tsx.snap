@@ -233,7 +233,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                     id="some_html_id"
                     placeholder="The number of primary shards in the index. Default is 1."
                     type="number"
-                    value="1"
+                    value=""
                   />
                 </div>
               </div>
@@ -278,7 +278,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                     id="some_html_id"
                     placeholder="The number of replica shards each primary shard should have."
                     type="number"
-                    value="1"
+                    value=""
                   />
                 </div>
               </div>
@@ -615,6 +615,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   />
                   <div
                     class="euiFormRow"
+                    data-test-subj="form-name-advanced-settings"
                     id="some_html_id-row"
                   >
                     <div
@@ -824,6 +825,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               >
                 <label
                   class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small euiButtonGroupButton--fill euiButtonGroupButton-isSelected"
+                  data-test-subj="editor-type-visual-editor"
                   for="some_html_id"
                 >
                   <span
@@ -849,6 +851,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                 </label>
                 <label
                   class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
+                  data-test-subj="editor-type-json-editor"
                   for="some_html_id"
                 >
                   <span

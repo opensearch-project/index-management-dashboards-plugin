@@ -221,7 +221,7 @@ describe("<CreateIndex /> spec", () => {
 
     await waitFor(() => {
       // it shows detail and does not call any api when nothing modified
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
     });
   });
 
