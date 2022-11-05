@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef } from "react";
 import { EuiForm, EuiFormProps, EuiFormRow, EuiFormRowProps } from "@elastic/eui";
-import AllBuiltInComponents from "./built_in_components";
+import AllBuiltInComponents, { IComponentMap } from "./built_in_components";
 import Field, { InitOption, FieldOption } from "../../lib/field";
 import { useImperativeHandle } from "react";
 import AdvancedSettings, { IAdvancedSettingsProps } from "../AdvancedSettings";
@@ -10,7 +10,7 @@ export interface IField {
   rowProps: EuiFormRowProps;
   name: string;
   type?: keyof typeof AllBuiltInComponents;
-  component?: React.FC;
+  component?: IComponentMap[string];
   options?: InitOption;
 }
 
@@ -68,6 +68,10 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
       {props.hasAdvancedSettings ? (
         <AdvancedSettings
           {...props.advancedSettingsProps}
+          rowProps={{
+            "data-test-subj": "form-name-advanced-settings",
+            ...props.advancedSettingsProps?.rowProps,
+          }}
           value={field.getValues()}
           onChange={(val) => {
             field.setValues(val);
