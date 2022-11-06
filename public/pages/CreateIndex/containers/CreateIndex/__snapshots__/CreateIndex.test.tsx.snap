@@ -292,7 +292,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
           </div>
           <div
             class="euiFormRow"
-            data-test-subj="form-name-index.blocks.read_only"
+            data-test-subj="form-name-index.refresh_interval"
             id="some_html_id-row"
           >
             <div
@@ -303,269 +303,35 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                 class="euiFormLabel euiFormRow__label"
                 for="some_html_id"
               >
-                Index.blocks.read_only
+                Refresh interval of index
               </label>
             </div>
             <div
               class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiSwitch"
+                class="euiFormControlLayout"
               >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
                 >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
+                  <input
+                    aria-describedby="some_html_id-help-0"
+                    class="euiFieldText"
+                    data-meta="Field"
+                    disabled=""
+                    id="some_html_id"
+                    placeholder="Can be set to -1 to disable refreshing."
+                    type="text"
+                    value="1s"
+                  />
+                </div>
               </div>
               <div
                 class="euiFormHelpText euiFormRow__text"
                 id="some_html_id-help-0"
               >
-                Set to true to make the index and index metadata read only, false to allow writes and metadata changes.
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiFormRow"
-            data-test-subj="form-name-index.blocks.read_only_allow_delete"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index.blocks.read_only_allow_delete
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  disabled=""
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                Similar to index.blocks.write, but also allows deleting the index to make more resources available. The disk-based shard allocator may add and remove this block automatically.
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiFormRow"
-            data-test-subj="form-name-index.blocks.read"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index.blocks.read
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  disabled=""
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                Set to true to disable read operations against the index.
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiFormRow"
-            data-test-subj="form-name-index.blocks.write"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index.blocks.write
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  disabled=""
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                Set to true to disable data write operations against the index. Unlike read_only, this setting does not affect metadata. For instance, you can adjust the settings of an index with a write block, but you cannot adjust the settings of an index with a read_only block.
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiFormRow"
-            data-test-subj="form-name-index.blocks.metadata"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index.blocks.metadata
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  disabled=""
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                Set to true to disable index metadata reads and writes.
+                How often the index should refresh, which publishes its most recent changes and makes them available for searching.
               </div>
             </div>
           </div>
@@ -638,7 +404,8 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                       >
                         {
   "index.number_of_shards": 1,
-  "index.number_of_replicas": 1
+  "index.number_of_replicas": 1,
+  "index.refresh_interval": "1s"
 }
                       </textarea>
                       <div
