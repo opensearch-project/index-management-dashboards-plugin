@@ -631,6 +631,16 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                     <div
                       class="euiFormRow__fieldWrapper"
                     >
+                      <textarea
+                        data-test-subj="json-editor-value-display"
+                        readonly=""
+                        style="display: none;"
+                      >
+                        {
+  "index.number_of_shards": 1,
+  "index.number_of_replicas": 1
+}
+                      </textarea>
                       <div
                         class="euiCodeEditorWrapper"
                         data-test-subj="codeEditorContainer"

@@ -4,8 +4,9 @@
  */
 
 import React, { useRef } from "react";
-import { fireEvent, render } from "@testing-library/react";
+import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import FormGenerator, { IFormGeneratorProps, IFormGeneratorRef } from "./index";
+import { ValidateResults } from "../../lib/field";
 import { renderHook } from "@testing-library/react-hooks";
 import userEvent from "@testing-library/user-event";
 const testFormFields: IFormGeneratorProps["formFields"] = [
@@ -31,15 +32,16 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
       children: <h1>test</h1>,
     },
     name: "test_component",
-    component: ({ onChange, ...others }) => <input {...others} onChange={(e) => onChange(e.target.value)} />,
+    component: ({ onChange, value, ...others }) => <input {...others} value={value || ""} onChange={(e) => onChange(e.target.value)} />,
   },
 ];
 
 describe("<FormGenerator /> spec", () => {
-  it("render the component", () => {
+  it("render the component", async () => {
     render(<FormGenerator formFields={testFormFields} />);
     // EuiOverlayMask appends an element to the body so we should have three (used to be two, after upgrading appears to have 3 now), an empty div from react-test-library
     // and our EuiOverlayMask element
+    await waitFor(() => {});
     expect(document.body.children).toMatchSnapshot();
   });
 
@@ -62,12 +64,24 @@ describe("<FormGenerator /> spec", () => {
       };
     });
     const { ref } = result.current;
-    const validateResult = await ref.current?.validatePromise();
+    let validateResult: ValidateResults | undefined;
+    await act(async () => {
+      validateResult = await ref.current?.validatePromise();
+    });
     const { getByTestId } = result.current.renderResult;
 
     userEvent.type(getByTestId("form-name-test").querySelector("input") as Element, "3");
     fireEvent.focus(getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement);
-    for (let i = 0; i < 2; i++) {
+    const valueLength = (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value.length;
+    for (let i = 0; i < valueLength; i++) {
+      await fireEvent(
+        getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement,
+        new KeyboardEvent("keydown", {
+          keyCode: 40,
+        })
+      );
+    }
+    for (let i = 0; i < valueLength; i++) {
       await fireEvent(
         getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement,
         new KeyboardEvent("keydown", {
