@@ -233,7 +233,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                     id="some_html_id"
                     placeholder="The number of primary shards in the index. Default is 1."
                     type="number"
-                    value=""
+                    value="1"
                   />
                 </div>
               </div>
@@ -278,7 +278,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                     id="some_html_id"
                     placeholder="The number of replica shards each primary shard should have."
                     type="number"
-                    value=""
+                    value="1"
                   />
                 </div>
               </div>

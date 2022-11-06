@@ -1036,9 +1036,7 @@ class Field {
   _reRender() {
     if (this.com) {
       if (!this.options.forceUpdate && this.com.setState) {
-        setTimeout(() => {
-          this.com.setState({});
-        }, 0);
+        this.com.setState({});
       } else if (this.com.forceUpdate) {
         this.com.forceUpdate(); //forceUpdate Has a greater impact on performance, increasing exponentially
       }

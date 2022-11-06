@@ -28,8 +28,8 @@ const AliasSelect = (props: AliasSelectProps) => {
   const [allOptions, setAllOptions] = useState([] as { label: string }[]);
   const [isLoading, setIsLoading] = useState(false);
   const destroyRef = useRef(false);
-  const refreshOptions = useCallback(
-    debounce(({ aliasName }) => {
+  const refreshOptionsWithoutDebounce = useCallback(
+    ({ aliasName }) => {
       if (destroyRef.current) {
         return;
       }
@@ -47,11 +47,12 @@ const AliasSelect = (props: AliasSelectProps) => {
         .finally(() => {
           setIsLoading(false);
         });
-    }, 500),
+    },
     [refreshOptionsFromProps, setAllOptions, setIsLoading]
   );
+  const refreshOptions = useCallback(debounce(refreshOptionsWithoutDebounce, 500), [refreshOptionsWithoutDebounce]);
   useEffect(() => {
-    refreshOptions({});
+    refreshOptionsWithoutDebounce({});
     return () => {
       destroyRef.current = true;
     };
