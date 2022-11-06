@@ -41,6 +41,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
       settings: {
         "index.number_of_shards": 1,
         "index.number_of_replicas": 1,
+        "index.refresh_interval": "1s",
       },
       mappings: {},
     },
@@ -258,8 +259,26 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
               language="json"
               width="100%"
               height={600}
-              original={JSON.stringify(this.state.oldIndexDetail, null, 2)}
-              modified={JSON.stringify(this.state.indexDetail, null, 2)}
+              original={JSON.stringify(
+                {
+                  ...this.state.oldIndexDetail,
+                  mappings: {
+                    properties: transformArrayToObject(this.state.oldIndexDetail?.mappings?.properties || []),
+                  },
+                } as IndexItemRemote,
+                null,
+                2
+              )}
+              modified={JSON.stringify(
+                {
+                  ...this.state.indexDetail,
+                  mappings: {
+                    properties: transformArrayToObject(this.state.indexDetail?.mappings?.properties || []),
+                  },
+                },
+                null,
+                2
+              )}
             />
           </>
         ),

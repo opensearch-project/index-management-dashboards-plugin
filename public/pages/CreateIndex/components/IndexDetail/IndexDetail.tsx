@@ -161,68 +161,16 @@ const IndexDetail = (
       },
       {
         rowProps: {
-          label: "Index.blocks.read_only",
-          helpText: "Set to true to make the index and index metadata read only, false to allow writes and metadata changes.",
+          label: "Refresh interval of index",
+          helpText: "How often the index should refresh, which publishes its most recent changes and makes them available for searching.",
         },
-        name: "index.blocks.read_only",
-        type: "Switch",
+        name: "index.refresh_interval",
+        type: "Input",
         options: {
           props: {
-            disabled: templateSimulateLoading,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Index.blocks.read_only_allow_delete",
-          helpText:
-            "Similar to index.blocks.write, but also allows deleting the index to make more resources available. The disk-based shard allocator may add and remove this block automatically.",
-        },
-        name: "index.blocks.read_only_allow_delete",
-        type: "Switch",
-        options: {
-          props: {
-            disabled: templateSimulateLoading || !finalValue.index,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Index.blocks.read",
-          helpText: "Set to true to disable read operations against the index.",
-        },
-        name: "index.blocks.read",
-        type: "Switch",
-        options: {
-          props: {
-            disabled: templateSimulateLoading || !finalValue.index,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Index.blocks.write",
-          helpText:
-            "Set to true to disable data write operations against the index. Unlike read_only, this setting does not affect metadata. For instance, you can adjust the settings of an index with a write block, but you cannot adjust the settings of an index with a read_only block.",
-        },
-        name: "index.blocks.write",
-        type: "Switch",
-        options: {
-          props: {
-            disabled: templateSimulateLoading || !finalValue.index,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Index.blocks.metadata",
-          helpText: "Set to true to disable index metadata reads and writes.",
-        },
-        name: "index.blocks.metadata",
-        type: "Switch",
-        options: {
-          props: {
-            disabled: templateSimulateLoading || !finalValue.index,
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval")) || templateSimulateLoading || !finalValue.index,
+            placeholder: "Can be set to -1 to disable refreshing.",
           },
         },
       },
