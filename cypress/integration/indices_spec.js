@@ -209,4 +209,117 @@ describe("Indices", () => {
       );
     });
   });
+
+  describe("can search with reindex & recovery status", () => {
+    const reindexedIndex = "reindex_opensearch_dashboards_sample_data_ecommerce";
+    const splittedIndex = "split_opensearch_dashboards_sample_data_logs";
+    before(() => {
+      // Visit ISM OSD
+      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
+
+      // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
+      cy.contains("Rows per page", { timeout: 60000 });
+
+      cy.request({
+        method: "PUT",
+        url: `${Cypress.env("opensearch")}/opensearch_dashboards_sample_data_logs/_settings`,
+        body: {
+          "index.blocks.read_only": false,
+        },
+        failOnStatusCode: false,
+      });
+
+      cy.window().then((window) => {
+        const fetchMethod = (url, method) =>
+          window.fetch(url, {
+            method,
+            headers: {
+              "osd-version": "2.4.0",
+            },
+          });
+        return Promise.all([
+          fetchMethod("/api/sample_data/ecommerce", "DELETE").then(() => fetchMethod("/api/sample_data/ecommerce", "POST")),
+          fetchMethod("/api/sample_data/logs", "DELETE").then(() => fetchMethod("/api/sample_data/logs", "POST")),
+        ]);
+      });
+      cy.request({
+        method: "PUT",
+        url: `${Cypress.env("opensearch")}/${splittedIndex}/_settings`,
+        body: {
+          "index.blocks.read_only": false,
+        },
+        failOnStatusCode: false,
+      });
+      cy.request({
+        method: "DELETE",
+        url: `${Cypress.env("opensearch")}/${reindexedIndex}`,
+        failOnStatusCode: false,
+      });
+      cy.request({
+        method: "DELETE",
+        url: `${Cypress.env("opensearch")}/${splittedIndex}`,
+        failOnStatusCode: false,
+      });
+    });
+
+    it("Successfully", () => {
+      cy.request({
+        method: "PUT",
+        url: `${Cypress.env("opensearch")}/${reindexedIndex}`,
+        body: {
+          settings: {
+            index: {
+              number_of_shards: 1,
+              number_of_replicas: "0",
+            },
+          },
+        },
+      });
+      // do a simple reindex
+      cy.request("POST", `${Cypress.env("opensearch")}/_reindex?wait_for_completion=false`, {
+        source: {
+          index: "opensearch_dashboards_sample_data_ecommerce",
+        },
+        dest: {
+          index: reindexedIndex,
+        },
+      });
+
+      cy.get('[placeholder="Search"]').type("o");
+
+      // do a simple split
+      cy.request("PUT", `${Cypress.env("opensearch")}/opensearch_dashboards_sample_data_logs/_settings`, {
+        "index.blocks.read_only": true,
+      });
+
+      cy.window().then((window) => {
+        return Promise.race([
+          new Promise((resolve) => setTimeout(resolve, 2000)),
+          window.fetch(`/api/ism/apiCaller`, {
+            headers: {
+              "content-type": "application/json",
+              "osd-version": "2.4.0",
+            },
+            body: JSON.stringify({
+              endpoint: "indices.split",
+              data: {
+                index: "opensearch_dashboards_sample_data_logs",
+                target: splittedIndex,
+                body: {
+                  settings: {
+                    index: {
+                      number_of_shards: 2,
+                    },
+                  },
+                },
+              },
+            }),
+            method: "PUT",
+          }),
+        ]);
+      });
+
+      cy.get('[placeholder="Search"]').type("p");
+    });
+  });
 });
