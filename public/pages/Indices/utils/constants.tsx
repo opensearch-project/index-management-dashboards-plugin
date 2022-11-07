@@ -82,17 +82,12 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
     {
       field: "status",
       name: "Status",
-      sortable: true,
       truncateText: true,
       textOnly: true,
       align: "right",
-    },
-    {
-      field: "extraStatus",
-      name: "Extra status",
-      truncateText: true,
-      textOnly: true,
-      align: "right",
+      render: (status: string, item: ManagedCatIndex) => {
+        return item.extraStatus || status;
+      },
     },
     {
       field: "store.size",
