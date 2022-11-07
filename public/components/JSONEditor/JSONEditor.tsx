@@ -21,6 +21,12 @@ const JSONEditor: React.SFC<JSONEditorProps> = ({ value, onChange, ...others }) 
 
   return (
     <>
+      <textarea
+        readOnly
+        style={{ display: "none" }}
+        value={tempEditorValue}
+        data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
+      />
       <EuiCodeEditor
         {...others}
         mode="json"

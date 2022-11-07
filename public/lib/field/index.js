@@ -182,9 +182,13 @@ class Field {
     const inputProps = {
       "data-meta": "Field",
       id: id || name,
-      ref: this._getCacheBind(name, `${name}__ref`, this._saveRef),
+      // ref: this._getCacheBind(name, `${name}__ref`, this._saveRef),
       [valueName]: setValueFormatter ? setValueFormatter(field.value) : field.value,
     };
+
+    if (field.ref) {
+      inputProps.ref = this._getCacheBind(name, `${name}__ref`, this._saveRef);
+    }
 
     let rulesMap = {};
 
