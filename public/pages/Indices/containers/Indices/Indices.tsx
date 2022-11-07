@@ -214,7 +214,16 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           <ContentPanelActions
             actions={[
               {
-                children: <IndicesActions {...this.props} onDelete={this.getIndices} selectedItems={this.state.selectedItems} />,
+                children: (
+                  <IndicesActions
+                    {...this.props}
+                    onDelete={this.getIndices}
+                    onOpen={this.getIndices}
+                    onClose={this.getIndices}
+                    onShrink={this.getIndices}
+                    selectedItems={this.state.selectedItems}
+                  />
+                ),
                 text: "",
               },
               {
@@ -246,6 +255,9 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
         <EuiBasicTable
           columns={indicesColumns(isDataStreamColumnVisible, {
             onDelete: this.getIndices,
+            onOpen: this.getIndices,
+            onClose: this.getIndices,
+            onShrink: this.getIndices,
           })}
           isSelectable={true}
           itemId="index"
