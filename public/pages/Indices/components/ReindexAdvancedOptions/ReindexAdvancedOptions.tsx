@@ -4,7 +4,8 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFieldText, EuiFormRow } from "@elastic/eui";
+import { EuiFieldText } from "@elastic/eui";
+import CustomFormRow from "../../../../components/CustomFormRow";
 
 interface ReindexOptionsProps {
   slices: string;
@@ -17,12 +18,12 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
 
   return (
     <div style={{ padding: "10px 10px", width: width }}>
-      <EuiFormRow
+      <CustomFormRow
         label="Slices"
         helpText="Number of sub-tasks OpenSearch should divide this task into. Default is 1, which means OpenSearch should not divide this task. Setting this parameter to auto indicates to OpenSearch that it should automatically decide how many slices to split the task into."
       >
         <EuiFieldText id="slices" value={slices} onChange={onSlicesChange} />
-      </EuiFormRow>
+      </CustomFormRow>
     </div>
   );
 };

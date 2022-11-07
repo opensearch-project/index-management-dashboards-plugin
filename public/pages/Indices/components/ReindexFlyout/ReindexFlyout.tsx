@@ -12,7 +12,6 @@ import {
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
-  EuiFormRow,
   EuiLink,
   EuiSpacer,
   EuiSwitchEvent,
@@ -32,6 +31,7 @@ import { ReindexRequest } from "../../models/interfaces";
 import { DSL_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { BrowserServices } from "../../../../models/interfaces";
 import ReindexOptions from "../ReindexAdvancedOptions/ReindexAdvancedOptions";
+import CustomFormRow from "../../../../components/CustomFormRow";
 
 interface ReindexProps {
   services: BrowserServices;
@@ -299,18 +299,18 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
           <EuiSpacer size="m" />
 
-          <EuiFormRow label="Source">
+          <CustomFormRow label="Source">
             <EuiComboBox
               options={indexOptions}
               selectedOptions={sourceIndices.map((index) => ({ label: index }))}
               isDisabled
               data-test-subj="sourceIndicesComboInput"
             />
-          </EuiFormRow>
+          </CustomFormRow>
 
           <EuiSpacer size="m" />
 
-          <EuiFormRow
+          <CustomFormRow
             label="Destination"
             isInvalid={!!destError}
             error={destError}
@@ -330,11 +330,11 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
               data-test-subj="destIndicesComboInput"
               customOptionText="Create {searchValue} as your destination index"
             />
-          </EuiFormRow>
+          </CustomFormRow>
 
           <EuiSpacer size="m" />
           {destSettingsJson && (
-            <EuiFormRow
+            <CustomFormRow
               label="Destination index configuration"
               helpText="configurations are copied from source, you should customize it to wanted before click on execute"
               fullWidth
@@ -347,12 +347,12 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
                 aria-label="Code Editor"
                 data-test-subj="destSettingJsonEditor"
               />
-            </EuiFormRow>
+            </CustomFormRow>
           )}
 
           <EuiSpacer size="m" />
 
-          <EuiFormRow
+          <CustomFormRow
             label="Query expression to reindex a subset of source documents"
             labelAppend={
               <EuiText size="xs">
@@ -371,7 +371,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
               height="150px"
               data-test-subj="queryJsonEditor"
             />
-          </EuiFormRow>
+          </CustomFormRow>
 
           <EuiSpacer size="m" />
 
