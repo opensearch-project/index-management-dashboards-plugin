@@ -58,13 +58,11 @@ Object {
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The destination should be configured as wanted before calling 
+                        It's recommended that destination be configured as wanted before calling 
                         <code>
                           _reindex.
                         </code>
-                      </p>
-                      <p>
-                        Reindex doesn't copy the settings from the source or its associated template. Mappings, shard counts, replicas, and so on must be configured ahead of time.
+                        Reindex doesn't copy the settings from the source or its associated template.
                       </p>
                     </div>
                   </div>
@@ -73,27 +71,19 @@ Object {
                   class="euiSpacer euiSpacer--m"
                 />
                 <div
-                  class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
-                >
-                  <div
-                    class="euiFlexItem euiFlexItem--flexGrowZero"
-                  >
-                    <div
-                      class="euiText euiText--extraSmall"
-                    >
-                      <h4>
-                        Source
-                      </h4>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="euiSpacer euiSpacer--s"
-                />
-                <div
                   class="euiFormRow"
                   id="some_html_id-row"
                 >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
+                    >
+                      Source
+                    </label>
+                  </div>
                   <div
                     class="euiFormRow__fieldWrapper"
                   >
@@ -137,7 +127,6 @@ Object {
                                 aria-controls=""
                                 data-test-subj="comboBoxSearchInput"
                                 disabled=""
-                                id="some_html_id"
                                 role="textbox"
                                 style="box-sizing: content-box; width: 2px;"
                                 value=""
@@ -169,32 +158,30 @@ Object {
                   class="euiSpacer euiSpacer--m"
                 />
                 <div
-                  class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
-                >
-                  <div
-                    class="euiFlexItem euiFlexItem--flexGrowZero"
-                  >
-                    <div
-                      class="euiText euiText--extraSmall"
-                    >
-                      <h4>
-                        Destination
-                      </h4>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="euiSpacer euiSpacer--s"
-                />
-                <div
                   class="euiFormRow"
                   id="some_html_id-row"
                 >
                   <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      aria-invalid="false"
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
+                    >
+                      Destination
+                    </label>
+                  </div>
+                  <div
                     class="euiFormRow__fieldWrapper"
                   >
                     <div
-                      aria-describedby="some_html_id-help-0"
+                      class="euiFormHelpText euiFormRow__text"
+                      style="padding-top: 0px; padding-bottom: 4px;"
+                    >
+                      Select a pre-configured destination, or type a new index name to create a new one, source configuration will show up below you need to customize to the wanted
+                    </div>
+                    <div
                       aria-expanded="false"
                       aria-haspopup="listbox"
                       class="euiComboBox"
@@ -215,7 +202,7 @@ Object {
                             <p
                               class="euiComboBoxPlaceholder"
                             >
-                              Select dest index
+                              Select destination
                             </p>
                             <div
                               class="euiComboBox__input"
@@ -224,7 +211,6 @@ Object {
                               <input
                                 aria-controls=""
                                 data-test-subj="comboBoxSearchInput"
-                                id="some_html_id"
                                 role="textbox"
                                 style="box-sizing: content-box; width: 2px;"
                                 value=""
@@ -249,11 +235,172 @@ Object {
                         </div>
                       </div>
                     </div>
-                    <div
-                      class="euiFormHelpText euiFormRow__text"
-                      id="some_html_id-help-0"
+                  </div>
+                </div>
+                <div
+                  class="euiSpacer euiSpacer--m"
+                />
+                <div
+                  class="euiSpacer euiSpacer--m"
+                />
+                <div
+                  class="euiFormRow"
+                  id="some_html_id-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
                     >
-                      Select or type a destination. If destination does not exists, will create a new index based on source
+                      Query expression to reindex a subset of source documents
+                    </label>
+                     
+                    <div
+                      class="euiText euiText--extraSmall"
+                    >
+                      <a
+                        class="euiLink euiLink--primary"
+                        href="https://opensearch.org/docs/opensearch/query-dsl/index/"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        learn more about query-dsl
+                        EuiIconMock
+                        <span
+                          class="euiScreenReaderOnly"
+                        >
+                          (opens in a new tab or window)
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <textarea
+                      data-test-subj="queryJsonEditor-value-display"
+                      readonly=""
+                      style="display: none;"
+                    >
+                      {
+    "query": {
+        "match_all": {}
+    }
+}
+                    </textarea>
+                    <div
+                      class="euiCodeEditorWrapper"
+                      data-test-subj="queryJsonEditor"
+                      style="width: 100%; height: 150px;"
+                    >
+                      <button
+                        class="euiCodeEditorKeyboardHint"
+                        data-test-subj="codeEditorHint"
+                        id="some_html_id"
+                      >
+                        <p
+                          class="euiText"
+                        >
+                          Press Enter to start editing.
+                        </p>
+                        <p
+                          class="euiText"
+                        >
+                          When you're done, press Escape to stop editing.
+                        </p>
+                      </button>
+                      <div
+                        class=" ace_editor ace-tm"
+                        id="some_html_id"
+                        style="width: 100%; height: 150px;"
+                      >
+                        <textarea
+                          aria-label="Query DSL Editor"
+                          autocapitalize="off"
+                          autocorrect="off"
+                          class="ace_text-input"
+                          spellcheck="false"
+                          style="opacity: 0;"
+                          tabindex="-1"
+                          wrap="off"
+                        />
+                        <div
+                          aria-hidden="true"
+                          class="ace_gutter"
+                        >
+                          <div
+                            class="ace_layer ace_gutter-layer ace_folding-enabled"
+                          />
+                          <div
+                            class="ace_gutter-active-line"
+                          />
+                        </div>
+                        <div
+                          class="ace_scroller"
+                        >
+                          <div
+                            class="ace_content"
+                          >
+                            <div
+                              class="ace_layer ace_print-margin-layer"
+                            >
+                              <div
+                                class="ace_print-margin"
+                                style="left: 4px; visibility: visible;"
+                              />
+                            </div>
+                            <div
+                              class="ace_layer ace_marker-layer"
+                            />
+                            <div
+                              class="ace_layer ace_text-layer"
+                              style="padding: 0px 4px;"
+                            />
+                            <div
+                              class="ace_layer ace_marker-layer"
+                            />
+                            <div
+                              class="ace_layer ace_cursor-layer ace_hidden-cursors"
+                            >
+                              <div
+                                class="ace_cursor"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div
+                          class="ace_scrollbar ace_scrollbar-v"
+                          style="display: none; width: 20px;"
+                        >
+                          <div
+                            class="ace_scrollbar-inner"
+                            style="width: 20px;"
+                          />
+                        </div>
+                        <div
+                          class="ace_scrollbar ace_scrollbar-h"
+                          style="display: none; height: 20px;"
+                        >
+                          <div
+                            class="ace_scrollbar-inner"
+                            style="height: 20px;"
+                          />
+                        </div>
+                        <div
+                          style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
+                        >
+                          <div
+                            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                          />
+                          <div
+                            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                          >
+                            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -261,167 +408,166 @@ Object {
                   class="euiSpacer euiSpacer--m"
                 />
                 <div
-                  class="euiSpacer euiSpacer--l"
-                />
-                <div
-                  class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  class="euiAccordion"
                 >
                   <div
-                    class="euiFlexItem euiFlexItem--flexGrowZero"
+                    class="euiAccordion__triggerWrapper"
                   >
-                    <div
-                      class="euiText euiText--extraSmall"
+                    <button
+                      aria-controls="advancedReindexOptions"
+                      aria-expanded="false"
+                      class="euiAccordion__button"
+                      id="some_html_id"
+                      type="button"
                     >
-                      <h4>
-                        Query expression to reindex a subset of source documents
-                      </h4>
-                    </div>
+                      <span
+                        class="euiAccordion__iconWrapper"
+                      >
+                        EuiIconMock
+                      </span>
+                      <span
+                        class="euiIEFlexWrapFix"
+                      >
+                        Advanced options
+                      </span>
+                    </button>
                   </div>
                   <div
-                    class="euiFlexItem"
+                    aria-labelledby="some_html_id"
+                    class="euiAccordion__childWrapper"
+                    id="advancedReindexOptions"
+                    role="region"
+                    tabindex="-1"
                   >
-                    <div
-                      class="euiText euiText--extraSmall"
-                    >
+                    <div>
                       <div
-                        class="euiTextColor euiTextColor--subdued"
-                      >
-                        <i>
-                           - optional
-                        </i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="euiSpacer euiSpacer--s"
-                />
-                <div
-                  class="euiText euiText--extraSmall"
-                >
-                  <a
-                    class="euiLink euiLink--primary"
-                    href="https://opensearch.org/docs/opensearch/query-dsl/full-text/"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    see Full-text queries
-                    EuiIconMock
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      (opens in a new tab or window)
-                    </span>
-                  </a>
-                </div>
-                <div
-                  class="euiCodeEditorWrapper"
-                  data-test-subj="queryJsonEditor"
-                  style="width: 100%; height: 200px;"
-                >
-                  <button
-                    class="euiCodeEditorKeyboardHint"
-                    data-test-subj="codeEditorHint"
-                    id="some_html_id"
-                  >
-                    <p
-                      class="euiText"
-                    >
-                      Press Enter to start editing.
-                    </p>
-                    <p
-                      class="euiText"
-                    >
-                      When you're done, press Escape to stop editing.
-                    </p>
-                  </button>
-                  <div
-                    class=" ace_editor ace-tm"
-                    id="some_html_id"
-                    style="width: 100%; height: 200px;"
-                  >
-                    <textarea
-                      aria-label="Code Editor"
-                      autocapitalize="off"
-                      autocorrect="off"
-                      class="ace_text-input"
-                      spellcheck="false"
-                      style="opacity: 0;"
-                      tabindex="-1"
-                      wrap="off"
-                    />
-                    <div
-                      aria-hidden="true"
-                      class="ace_gutter"
-                    >
-                      <div
-                        class="ace_layer ace_gutter-layer ace_folding-enabled"
-                      />
-                      <div
-                        class="ace_gutter-active-line"
-                      />
-                    </div>
-                    <div
-                      class="ace_scroller"
-                    >
-                      <div
-                        class="ace_content"
+                        class=""
                       >
                         <div
-                          class="ace_layer ace_print-margin-layer"
+                          class="euiSpacer euiSpacer--m"
+                        />
+                        <div
+                          style="padding: 10px 10px;"
                         >
                           <div
-                            class="ace_print-margin"
-                            style="left: 4px; visibility: visible;"
-                          />
-                        </div>
-                        <div
-                          class="ace_layer ace_marker-layer"
-                        />
-                        <div
-                          class="ace_layer ace_text-layer"
-                          style="padding: 0px 4px;"
-                        />
-                        <div
-                          class="ace_layer ace_marker-layer"
-                        />
-                        <div
-                          class="ace_layer ace_cursor-layer ace_hidden-cursors"
-                        >
+                            class="euiFormRow"
+                            id="some_html_id-row"
+                          >
+                            <div
+                              class="euiFormRow__labelWrapper"
+                            >
+                              <label
+                                class="euiFormLabel euiFormRow__label"
+                                for="some_html_id"
+                              >
+                                Slices
+                              </label>
+                            </div>
+                            <div
+                              class="euiFormRow__fieldWrapper"
+                            >
+                              <div
+                                class="euiFormHelpText euiFormRow__text"
+                                style="padding-top: 0px; padding-bottom: 4px;"
+                              >
+                                Number of sub-tasks OpenSearch should divide this task into. Default is 1, which means OpenSearch should not divide this task. Setting this parameter to auto indicates to OpenSearch that it should automatically decide how many slices to split the task into.
+                              </div>
+                              <div
+                                class="euiFormControlLayout"
+                              >
+                                <div
+                                  class="euiFormControlLayout__childrenWrapper"
+                                >
+                                  <input
+                                    class="euiFieldText"
+                                    id="slices"
+                                    type="text"
+                                    value="1"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                           <div
-                            class="ace_cursor"
-                          />
+                            class="euiFormRow"
+                            id="some_html_id-row"
+                          >
+                            <div
+                              class="euiFormRow__labelWrapper"
+                            >
+                              <label
+                                class="euiFormLabel euiFormRow__label"
+                                for="some_html_id"
+                              >
+                                Pipeline
+                              </label>
+                            </div>
+                            <div
+                              class="euiFormRow__fieldWrapper"
+                            >
+                              <div
+                                class="euiFormHelpText euiFormRow__text"
+                                style="padding-top: 0px; padding-bottom: 4px;"
+                              >
+                                Pipeline pre-process documents before writing into destination
+                              </div>
+                              <div
+                                aria-expanded="false"
+                                aria-haspopup="listbox"
+                                aria-label="Ingest Pipeline"
+                                class="euiComboBox"
+                                role="combobox"
+                              >
+                                <div
+                                  class="euiFormControlLayout"
+                                >
+                                  <div
+                                    class="euiFormControlLayout__childrenWrapper"
+                                  >
+                                    <div
+                                      class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                                      data-test-subj="comboBoxInput"
+                                      tabindex="-1"
+                                    >
+                                      <p
+                                        class="euiComboBoxPlaceholder"
+                                      >
+                                        Select a single pipeline
+                                      </p>
+                                      <div
+                                        class="euiComboBox__input"
+                                        style="font-size: 14px; display: inline-block;"
+                                      >
+                                        <input
+                                          aria-controls=""
+                                          data-test-subj="comboBoxSearchInput"
+                                          role="textbox"
+                                          style="box-sizing: content-box; width: 2px;"
+                                          value=""
+                                        />
+                                        <div
+                                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                        />
+                                      </div>
+                                    </div>
+                                    <div
+                                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                                    >
+                                      <button
+                                        aria-label="Open list of options"
+                                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                                        data-test-subj="comboBoxToggleListButton"
+                                        type="button"
+                                      >
+                                        EuiIconMock
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                    <div
-                      class="ace_scrollbar ace_scrollbar-v"
-                      style="display: none; width: 20px;"
-                    >
-                      <div
-                        class="ace_scrollbar-inner"
-                        style="width: 20px;"
-                      />
-                    </div>
-                    <div
-                      class="ace_scrollbar ace_scrollbar-h"
-                      style="display: none; height: 20px;"
-                    >
-                      <div
-                        class="ace_scrollbar-inner"
-                        style="height: 20px;"
-                      />
-                    </div>
-                    <div
-                      style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
-                    >
-                      <div
-                        style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                      />
-                      <div
-                        style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                      >
-                        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                       </div>
                     </div>
                   </div>

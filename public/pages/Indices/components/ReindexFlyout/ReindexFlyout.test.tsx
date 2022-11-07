@@ -10,6 +10,7 @@ import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks
 import ReindexFlyout from "./ReindexFlyout";
 import { CoreServicesContext } from "../../../../components/core_services";
 import userEvent from "@testing-library/user-event";
+import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 
 const indexResNormal = {
   ok: true,
@@ -33,6 +34,24 @@ const fileMappingResNormal = {
   },
 };
 
+const selectedItem: ManagedCatIndex[] = [
+  {
+    "docs.count": "5",
+    "docs.deleted": "2",
+    health: "green",
+    index: "test-index-01",
+    pri: "1",
+    "pri.store.size": "100KB",
+    rep: "0",
+    status: "open",
+    "store.size": "100KB",
+    uuid: "some_uuid",
+    managed: "false",
+    managedPolicy: "",
+    data_stream: "",
+  },
+];
+
 function mockIndexService(indexRes: Object) {
   browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue(indexRes);
 }
@@ -46,12 +65,7 @@ describe("<ReindexFlyout /> spec", () => {
     mockCommonService(fileMappingResNormal);
 
     let component = render(
-      <ReindexFlyout
-        onCloseFlyout={() => {}}
-        onReindexConfirm={() => {}}
-        services={browserServicesMock}
-        sourceIndices={["test-index-01"]}
-      />
+      <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
     );
 
     expect(component).toMatchSnapshot();
@@ -66,12 +80,7 @@ describe("<ReindexFlyout /> spec", () => {
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={() => {}}
-          services={browserServicesMock}
-          sourceIndices={["test-index-01"]}
-        />
+        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
         );
       </CoreServicesContext.Provider>
     );
@@ -93,12 +102,7 @@ describe("<ReindexFlyout /> spec", () => {
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={() => {}}
-          services={browserServicesMock}
-          sourceIndices={["test-index-01"]}
-        />
+        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
         );
       </CoreServicesContext.Provider>
     );
@@ -106,7 +110,7 @@ describe("<ReindexFlyout /> spec", () => {
     // wait 1 tick for the searchPolicies promise to resolve
     await waitFor(() => {});
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
     expect(spy).toHaveBeenCalledWith({
       endpoint: "indices.getFieldMapping",
       data: {
@@ -126,12 +130,7 @@ describe("<ReindexFlyout /> spec", () => {
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={() => {}}
-          services={browserServicesMock}
-          sourceIndices={["test-index-01"]}
-        />
+        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
         );
       </CoreServicesContext.Provider>
     );
@@ -139,7 +138,7 @@ describe("<ReindexFlyout /> spec", () => {
     // wait 1 tick for the searchPolicies promise to resolve
     await waitFor(() => {});
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(2);
     expect(spy).toHaveBeenCalledWith({
       endpoint: "indices.getFieldMapping",
       data: {
@@ -161,12 +160,7 @@ describe("<ReindexFlyout /> spec", () => {
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={() => {}}
-          services={browserServicesMock}
-          sourceIndices={["test-index-01"]}
-        />
+        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
         );
       </CoreServicesContext.Provider>
     );
@@ -189,12 +183,7 @@ describe("<ReindexFlyout /> spec", () => {
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={() => {}}
-          services={browserServicesMock}
-          sourceIndices={["test-index-01"]}
-        />
+        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
         );
       </CoreServicesContext.Provider>
     );
@@ -231,12 +220,7 @@ describe("<ReindexFlyout /> spec", () => {
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={() => {}}
-          services={browserServicesMock}
-          sourceIndices={["test-index-01"]}
-        />
+        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
         );
       </CoreServicesContext.Provider>
     );
@@ -257,12 +241,7 @@ describe("<ReindexFlyout /> spec", () => {
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={() => {}}
-          services={browserServicesMock}
-          sourceIndices={["test-index-01"]}
-        />
+        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
         );
       </CoreServicesContext.Provider>
     );
