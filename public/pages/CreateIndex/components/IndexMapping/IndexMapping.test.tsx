@@ -4,9 +4,10 @@
  */
 
 import React, { useState } from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import IndexMapping, { IndexMappingProps } from "./IndexMapping";
+import IndexMapping, { IndexMappingProps, transformObjectToArray } from "./IndexMapping";
+import { MappingsProperties } from "../../../../../models/interfaces";
 
 const IndexMappingOnChangeWrapper = (props: Partial<IndexMappingProps>) => {
   const [value, setValue] = useState(props.value as any);
@@ -38,7 +39,7 @@ describe("<IndexMapping /> spec", () => {
   });
 
   it("render mappings with oldValue in edit mode and all operation works well", async () => {
-    const { getByTestId, getByText, findByTestId, queryByTestId } = render(
+    const { getByTestId, getByText, queryByTestId } = render(
       <IndexMappingOnChangeWrapper
         isEdit
         oldValue={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
@@ -82,8 +83,53 @@ describe("<IndexMapping /> spec", () => {
     // sub action for object
     expect(getByTestId("mapping-visual-editor-1-add-sub-field")).not.toBeNull();
     userEvent.click(getByTestId("mapping-visual-editor-1-add-sub-field"));
-
     // new sub field check
     expect((getByTestId("mapping-visual-editor-1.properties.0-field-type") as HTMLSelectElement).value).toBe("text");
+    await waitFor(() => {
+      userEvent.click(getByTestId("mapping-visual-editor-1.properties.0-delete-field"));
+    });
+
+    // add a new field
+    userEvent.click(getByTestId("create index add field button"));
+    // delete the new field
+    await waitFor(() => {});
+    userEvent.click(getByTestId("mapping-visual-editor-2-delete-field"));
+    expect(queryByTestId("mapping-visual-editor-2-delete-field")).toBeNull();
+
+    await userEvent.click(getByTestId("editor-type-json-editor").querySelector("input") as Element);
+    await waitFor(() => {});
+    userEvent.click(getByTestId("previous-mappings-json-button"));
+    await waitFor(() => {});
+    expect(queryByTestId("previous-mappings-json-modal-ok")).not.toBeNull();
+    userEvent.click(getByTestId("previous-mappings-json-modal-ok"));
+    await waitFor(() => {
+      expect(queryByTestId("previous-mappings-json-modal-ok")).toBeNull();
+    });
+  });
+
+  it("it transformObjectToArray", () => {
+    expect(
+      transformObjectToArray({
+        test: {
+          type: "text",
+          properties: {
+            test_children: {
+              type: "text",
+            },
+          },
+        },
+      })
+    ).toEqual([
+      {
+        fieldName: "test",
+        type: "text",
+        properties: [
+          {
+            fieldName: "test_children",
+            type: "text",
+          },
+        ],
+      },
+    ] as MappingsProperties);
   });
 });

@@ -50,6 +50,15 @@ HTMLCollection [
               <div
                 class="euiFormRow__fieldWrapper"
               >
+                <textarea
+                  data-test-subj="json-editor-value-display"
+                  readonly=""
+                  style="display: none;"
+                >
+                  {
+  "a": "foo"
+}
+                </textarea>
                 <div
                   class="euiCodeEditorWrapper"
                   data-test-subj="codeEditorContainer"

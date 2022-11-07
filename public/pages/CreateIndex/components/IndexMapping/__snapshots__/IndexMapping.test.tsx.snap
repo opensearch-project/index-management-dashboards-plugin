@@ -18,6 +18,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
     >
       <label
         class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small euiButtonGroupButton--fill euiButtonGroupButton-isSelected"
+        data-test-subj="editor-type-visual-editor"
         for="some_html_id"
       >
         <span
@@ -43,6 +44,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
       </label>
       <label
         class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
+        data-test-subj="editor-type-json-editor"
         for="some_html_id"
       >
         <span
@@ -263,26 +265,24 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                       <span
                         class="euiToolTipAnchor"
                       >
-                        <button
-                          aria-label="Add a sub field"
+                        <span
+                          aria-label="Delete current field"
                           class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
                           data-test-subj="mapping-visual-editor-0-add-sub-field"
-                          type="button"
                         >
                           EuiIconMock
-                        </button>
+                        </span>
                       </span>
                       <span
                         class="euiToolTipAnchor"
                       >
-                        <button
+                        <span
                           aria-label="Delete current field"
                           class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
                           data-test-subj="mapping-visual-editor-0-delete-field"
-                          type="button"
                         >
                           EuiIconMock
-                        </button>
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -479,14 +479,13 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               <span
                                 class="euiToolTipAnchor"
                               >
-                                <button
+                                <span
                                   aria-label="Delete current field"
                                   class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
                                   data-test-subj="mapping-visual-editor-0.properties.0-delete-field"
-                                  type="button"
                                 >
                                   EuiIconMock
-                                </button>
+                                </span>
                               </span>
                             </div>
                           </div>

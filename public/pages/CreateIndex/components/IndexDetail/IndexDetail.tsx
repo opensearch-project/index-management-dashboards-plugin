@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiFieldText, EuiLink } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiFieldText, EuiLink, EuiOverlayMask, EuiLoadingSpinner } from "@elastic/eui";
 import { set, merge } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -53,10 +53,6 @@ const IndexDetail = (
   const settingsRef = useRef<IFormGeneratorRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {
-      const result = await settingsRef.current?.validatePromise();
-      if (result?.errors) {
-        return false;
-      }
       if (!value?.index) {
         setErrors({
           index: "Index name can not be null.",
@@ -64,6 +60,10 @@ const IndexDetail = (
         return false;
       }
       setErrors({});
+      const result = await settingsRef.current?.validatePromise();
+      if (result?.errors) {
+        return false;
+      }
       return true;
     },
   }));
@@ -71,6 +71,7 @@ const IndexDetail = (
     if (finalValue.index && onSimulateIndexTemplate) {
       setTemplateSimulateLoading(true);
       const result = await onSimulateIndexTemplate(finalValue.index);
+      setTemplateSimulateLoading(false);
       if (result && result.ok) {
         let onChangePromise: Promise<IndexItemRemote>;
         if (hasEdit.current) {
@@ -79,10 +80,11 @@ const IndexDetail = (
               title: "Confirm",
               content: "The index name has matched one or more index templates, please choose which way to go on",
               locale: {
-                ok: "Overwrite",
+                confirm: "Overwrite",
                 cancel: "Merge the template",
               },
               type: "confirm",
+              "data-test-subj": "simulate-confirm",
               onOk: () => resolve(result.response),
               onCancel: () => {
                 const formatValue: IndexItemRemote = {
@@ -113,7 +115,6 @@ const IndexDetail = (
           hasEdit.current = false;
         });
       }
-      setTemplateSimulateLoading(false);
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
   const formFields: IField[] = useMemo(() => {
@@ -132,7 +133,8 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled: (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) || templateSimulateLoading,
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) || templateSimulateLoading || !finalValue.index,
             placeholder: "The number of primary shards in the index. Default is 1.",
           },
         },
@@ -151,80 +153,29 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled: (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) || templateSimulateLoading,
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) || templateSimulateLoading || !finalValue.index,
             placeholder: "The number of replica shards each primary shard should have.",
           },
         },
       },
       {
         rowProps: {
-          label: "Index.blocks.read_only",
-          helpText: "Set to true to make the index and index metadata read only, false to allow writes and metadata changes.",
+          label: "Refresh interval of index",
+          helpText: "How often the index should refresh, which publishes its most recent changes and makes them available for searching.",
         },
-        name: "index.blocks.read_only",
-        type: "Switch",
+        name: "index.refresh_interval",
+        type: "Input",
         options: {
           props: {
-            disabled: templateSimulateLoading,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Index.blocks.read_only_allow_delete",
-          helpText:
-            "Similar to index.blocks.write, but also allows deleting the index to make more resources available. The disk-based shard allocator may add and remove this block automatically.",
-        },
-        name: "index.blocks.read_only_allow_delete",
-        type: "Switch",
-        options: {
-          props: {
-            disabled: templateSimulateLoading,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Index.blocks.read",
-          helpText: "Set to true to disable read operations against the index.",
-        },
-        name: "index.blocks.read",
-        type: "Switch",
-        options: {
-          props: {
-            disabled: templateSimulateLoading,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Index.blocks.write",
-          helpText:
-            "Set to true to disable data write operations against the index. Unlike read_only, this setting does not affect metadata. For instance, you can adjust the settings of an index with a write block, but you cannot adjust the settings of an index with a read_only block.",
-        },
-        name: "index.blocks.write",
-        type: "Switch",
-        options: {
-          props: {
-            disabled: templateSimulateLoading,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Index.blocks.metadata",
-          helpText: "Set to true to disable index metadata reads and writes.",
-        },
-        name: "index.blocks.metadata",
-        type: "Switch",
-        options: {
-          props: {
-            disabled: templateSimulateLoading,
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval")) || templateSimulateLoading || !finalValue.index,
+            placeholder: "Can be set to -1 to disable refreshing.",
           },
         },
       },
     ] as IField[];
-  }, [isEdit]);
+  }, [isEdit, finalValue.index, templateSimulateLoading]);
   return (
     <>
       {isEdit && mode && mode !== IndicesUpdateMode.alias ? null : (
@@ -233,7 +184,7 @@ const IndexDetail = (
             <div style={{ paddingLeft: "10px" }}>
               <EuiFormRow
                 label="Index name"
-                helpText="Some reestrictrion text on domain"
+                helpText={finalValue.index ? "Some restriction text on domain" : "Please enter the name before moving to other fields"}
                 isInvalid={!!errors["index"]}
                 error={errors["index"]}
               >
@@ -251,6 +202,7 @@ const IndexDetail = (
                   refreshOptions={refreshOptions}
                   value={finalValue.aliases}
                   onChange={(value) => onValueChange("aliases", value)}
+                  isDisabled={!finalValue.index}
                 />
               </EuiFormRow>
             </div>
@@ -315,6 +267,12 @@ const IndexDetail = (
           </div>
         </ContentPanel>
       )}
+      {templateSimulateLoading ? (
+        <EuiOverlayMask headerZindexLocation="below">
+          <EuiLoadingSpinner size="l" />
+          We are simulating your template with existing templates, please wait for a second.
+        </EuiOverlayMask>
+      ) : null}
     </>
   );
 };

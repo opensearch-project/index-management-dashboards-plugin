@@ -5,11 +5,15 @@
 
 import React from "react";
 import { render } from "@testing-library/react";
-import AdvancedSettings from "./index";
+import CustomFormRow from "./index";
 
 describe("<FormGenerator /> spec", () => {
   it("render the component", () => {
-    render(<AdvancedSettings value={{ a: "foo" }} accordionProps={{ id: "test", initialIsOpen: false }} />);
+    render(
+      <CustomFormRow helpText="test">
+        <h1>test custom form row</h1>
+      </CustomFormRow>
+    );
     expect(document.body.children).toMatchSnapshot();
   });
 });

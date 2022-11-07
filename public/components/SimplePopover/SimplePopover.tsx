@@ -13,7 +13,7 @@ interface SimplePopoverProps extends Partial<EuiPopoverProps> {
 }
 
 const SimplePopover: React.SFC<SimplePopoverProps> = (props) => {
-  const { triggerType = "click" } = props;
+  const { triggerType = "click", ...others } = props;
   const [popVisible, setPopVisible] = useState(false);
   const buttonProps: Partial<React.HTMLAttributes<HTMLButtonElement>> = {};
   if (triggerType === "click") {
@@ -33,23 +33,23 @@ const SimplePopover: React.SFC<SimplePopoverProps> = (props) => {
   }
 
   const outsideClick = useCallback(() => {
-    setPopVisible(false);
-  }, []);
+    if (!popVisible) {
+      return;
+    }
+    setTimeout(() => {
+      setPopVisible(false);
+    }, 0);
+  }, [popVisible, setPopVisible]);
 
   useEffect(() => {
     window.addEventListener("click", outsideClick);
     return () => {
       window.removeEventListener("click", outsideClick);
     };
-  }, []);
+  }, [outsideClick]);
 
   return (
-    <EuiPopover
-      {...props}
-      button={props.button && cloneElement(props.button, buttonProps)}
-      isOpen={popVisible}
-      closePopover={() => setPopVisible(false)}
-    />
+    <EuiPopover {...others} button={props.button && cloneElement(props.button, buttonProps)} isOpen={popVisible} closePopover={() => {}} />
   );
 };
 

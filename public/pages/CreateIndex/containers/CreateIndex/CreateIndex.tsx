@@ -8,6 +8,7 @@ import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmp
 import { RouteComponentProps } from "react-router-dom";
 import { get, set, differenceWith, isEqual } from "lodash";
 import { diffArrays } from "diff";
+import flattern from "flat";
 // eui depends on react-ace, so we can import react-ace here
 import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
 import IndexDetail from "../../components/IndexDetail";
@@ -40,6 +41,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
       settings: {
         "index.number_of_shards": 1,
         "index.number_of_replicas": 1,
+        "index.refresh_interval": "1s",
       },
       mappings: {},
     },
@@ -59,9 +61,6 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     const isEdit = this.isEdit;
     if (isEdit) {
       try {
-        if (!this.index) {
-          throw new Error(`Invalid Index: ${this.index}`);
-        }
         const response: ServerResponse<Record<string, IndexItem>> = await this.props.commonService.apiCaller({
           endpoint: "indices.get",
           data: {
@@ -95,8 +94,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
   };
 
   onCancel = (): void => {
-    if (this.props.isEdit) this.props.history.goBack();
-    else this.props.history.push(ROUTES.INDEX_POLICIES);
+    this.props.history.push(ROUTES.INDICES);
   };
 
   onDetailChange: IndexDetailProps["onChange"] = (value) => {
@@ -261,8 +259,26 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
               language="json"
               width="100%"
               height={600}
-              original={JSON.stringify(this.state.oldIndexDetail, null, 2)}
-              modified={JSON.stringify(this.state.indexDetail, null, 2)}
+              original={JSON.stringify(
+                {
+                  ...this.state.oldIndexDetail,
+                  mappings: {
+                    properties: transformArrayToObject(this.state.oldIndexDetail?.mappings?.properties || []),
+                  },
+                } as IndexItemRemote,
+                null,
+                2
+              )}
+              modified={JSON.stringify(
+                {
+                  ...this.state.indexDetail,
+                  mappings: {
+                    properties: transformArrayToObject(this.state.indexDetail?.mappings?.properties || []),
+                  },
+                },
+                null,
+                2
+              )}
             />
           </>
         ),
@@ -271,6 +287,12 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
             ok: true,
             response: {},
           }),
+        onCancel: () => {
+          resolve({
+            ok: false,
+            error: "",
+          });
+        },
       });
     });
   };
@@ -287,6 +309,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     if (this.isEdit) {
       const diffConfirm = await this.showDiff();
       if (!diffConfirm.ok) {
+        this.setState({ isSubmitting: false });
         return;
       }
       let chainedPromises: Promise<ServerResponse<any>>[] = [];
@@ -321,6 +344,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
         },
       });
     }
+    this.setState({ isSubmitting: false });
 
     // handle all the response here
     if (result && result.ok) {
@@ -329,8 +353,6 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     } else {
       this.context.notifications.toasts.addDanger(result.error);
     }
-
-    this.setState({ isSubmitting: false });
   };
 
   onSimulateIndexTemplate = (indexName: string) => {
@@ -343,14 +365,20 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
         },
       })
       .then((res) => {
-        if (res.ok) {
+        if (res.ok && res.response && res.response.template) {
           return {
             ...res,
-            response: res.response.template,
+            response: {
+              ...res.response.template,
+              settings: flattern(res.response.template?.settings || {}),
+            },
           };
         }
 
-        return res;
+        return {
+          ok: false,
+          error: "",
+        } as ServerResponse<IndexItemRemote>;
       });
   };
 
