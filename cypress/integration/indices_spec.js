@@ -289,7 +289,7 @@ describe("Indices", () => {
 
       // do a simple split
       cy.request("PUT", `${Cypress.env("opensearch")}/opensearch_dashboards_sample_data_logs/_settings`, {
-        "index.blocks.read_only": true,
+        "index.blocks.write": true,
       });
 
       cy.window().then((window) => {
