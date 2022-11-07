@@ -30,12 +30,13 @@ import { REQUEST } from "../../../../../utils/constants";
 import { ReindexRequest } from "../../models/interfaces";
 import { DSL_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { BrowserServices } from "../../../../models/interfaces";
-import ReindexOptions from "../ReindexAdvancedOptions/ReindexAdvancedOptions";
+import ReindexAdvancedOptions from "../ReindexAdvancedOptions/ReindexAdvancedOptions";
 import CustomFormRow from "../../../../components/CustomFormRow";
+import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 
 interface ReindexProps {
   services: BrowserServices;
-  sourceIndices: string[];
+  sourceIndices: ManagedCatIndex[];
   onCloseFlyout: () => void;
   onReindexConfirm: (request: ReindexRequest) => void;
 }
@@ -50,12 +51,16 @@ interface ReindexState {
   sourceErr?: string[];
   slices: string;
   waitForComplete: boolean;
+  pipelines: EuiComboBoxOptionOption<void>[];
+  selectedPipelines?: EuiComboBoxOptionOption<void>[];
 }
 
 const DEFAULT_SLICE = "1";
 
 export default class ReindexFlyout extends Component<ReindexProps, ReindexState> {
   static contextType = CoreServicesContext;
+  private readonly sourceIndicesNames: string[];
+
   constructor(props: ReindexProps) {
     super(props);
 
@@ -66,38 +71,49 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       queryJsonString: DEFAULT_QUERY,
       waitForComplete: false,
       slices: DEFAULT_SLICE,
+      pipelines: [],
     };
+
+    this.sourceIndicesNames = this.props.sourceIndices.map((idx) => idx.index);
   }
 
   async componentDidMount() {
     // check _source enabled for source
     const { sourceIndices } = this.props;
-    await this.isSourceEnabled(sourceIndices);
+    await this.sourceValidation(sourceIndices);
     await this.getIndexOptions("");
+    await this.getAllPipelines();
   }
 
-  isSourceEnabled = async (sourceIndices: string[]) => {
+  sourceValidation = async (sourceIndices: ManagedCatIndex[]) => {
     const {
       services: { commonService },
     } = this.props;
+
+    let errors = [];
+
+    sourceIndices
+      .filter((item) => item.status.toLowerCase() === "close")
+      .forEach((item) => {
+        errors.push(`Index [${item.index}] status is closed`);
+      });
 
     const res = await commonService.apiCaller({
       endpoint: "indices.getFieldMapping",
       data: {
         fields: "_source",
-        index: sourceIndices.join(","),
+        index: sourceIndices.map((idx) => idx.index).join(","),
       },
     });
     if (res && res.ok) {
-      let err = [];
-      for (let index of sourceIndices) {
-        const enabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
-        if (enabled === false) {
-          err.push(`Index [${index}] didn't store _source, it's required by reindex`);
+      for (let index of this.sourceIndicesNames) {
+        const sourceEnabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
+        if (sourceEnabled === false) {
+          errors.push(`Index [${index}] didn't store _source, it's required by reindex`);
         }
       }
-      if (err.length > 0) {
-        this.setState({ sourceErr: err });
+      if (errors.length > 0) {
+        this.setState({ sourceErr: errors });
       }
     } else {
       // let reindex api to do the check when execute
@@ -114,7 +130,6 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   getIndexOptions = async (searchValue: string) => {
     const {
       services: { indexService },
-      sourceIndices,
     } = this.props;
     this.setState({ indexOptions: [] });
     try {
@@ -123,7 +138,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         const dataStreams = res.response.dataStreams.map((label) => ({ label }));
         const indices = res.response.indices
           .filter((index) => {
-            return sourceIndices.indexOf(index) === -1 && !index.startsWith(".ds-");
+            return this.sourceIndicesNames.indexOf(index) === -1 && !index.startsWith(".ds-");
           })
           .map((label) => ({ label }));
         this.setState({
@@ -164,14 +179,13 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   populateSourceIndexSettings = async (dest: string) => {
     const {
       services: { commonService },
-      sourceIndices,
     } = this.props;
-    if (sourceIndices.length === 1 && sourceIndices[0] != dest) {
+    if (this.sourceIndicesNames.length === 1 && this.sourceIndicesNames[0] != dest) {
       const res = await commonService.apiCaller({
         endpoint: "indices.get",
         method: REQUEST.GET,
         data: {
-          index: sourceIndices[0],
+          index: this.sourceIndicesNames[0],
         },
       });
       if (res.ok) {
@@ -190,20 +204,32 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     }
   };
 
+  getAllPipelines = async () => {
+    const {
+      services: { commonService },
+    } = this.props;
+
+    const pipelineRes = await commonService.apiCaller({
+      endpoint: "ingest.getPipeline",
+    });
+    if (pipelineRes && pipelineRes.ok) {
+      this.setState({ pipelines: _.keys(pipelineRes.response).map((label) => ({ label })) });
+    }
+  };
+
   onClickAction = async () => {
     const {
-      sourceIndices,
       onReindexConfirm,
       services: { commonService },
     } = this.props;
-    const { queryJsonString, selectedIndexOptions, dataStreams, destSettingsJson, waitForComplete, slices } = this.state;
+    const { queryJsonString, selectedIndexOptions, dataStreams, destSettingsJson, waitForComplete, slices, selectedPipelines } = this.state;
 
     if (!selectedIndexOptions || selectedIndexOptions.length != 1) {
       this.setState({ destError: ERROR_PROMPT.DEST_REQUIRED });
       return;
     }
     let [dest] = selectedIndexOptions.map((op) => op.label);
-    let invalidDest: boolean = sourceIndices.indexOf(dest) !== -1;
+    let invalidDest: boolean = this.sourceIndicesNames.indexOf(dest) !== -1;
     if (invalidDest) {
       this.setState({ destError: ERROR_PROMPT.DEST_DIFF_WITH_SOURCE });
       return;
@@ -229,13 +255,12 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           return;
         }
       }
-
-      onReindexConfirm({
+      let reindexReq: ReindexRequest = {
         waitForCompletion: waitForComplete,
         slices: slices,
         body: {
           source: {
-            index: sourceIndices.join(","),
+            index: this.sourceIndicesNames.join(","),
             ...JSON.parse(queryJsonString),
           },
           dest: {
@@ -243,7 +268,13 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             op_type: isDestAsDataStream ? "create" : "index",
           },
         },
-      });
+      };
+      // set pipeline if available
+      if (selectedPipelines && selectedPipelines.length > 0) {
+        // @ts-ignore
+        reindexReq.body.dest.pipeline = selectedPipelines[0].label;
+      }
+      onReindexConfirm(reindexReq);
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);
     }
@@ -266,6 +297,10 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     this.setState({ waitForComplete: e.target.checked });
   };
 
+  onPipelineChange = (selectedOptions: EuiComboBoxOptionOption<void>[]) => {
+    this.setState({ selectedPipelines: selectedOptions });
+  };
+
   render() {
     const { onCloseFlyout, sourceIndices } = this.props;
     const { indexOptions, selectedIndexOptions, queryJsonString, destError, destSettingsJson, sourceErr, slices } = this.state;
@@ -286,9 +321,9 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
-          {banner}
+          {!sourceErr && banner}
           {sourceErr && sourceErr.length > 0 && (
-            <EuiCallOut title="Sorry, there was an error" color="danger" iconType="alert">
+            <EuiCallOut title="Source validation error" color="danger" iconType="alert">
               <ul>
                 {sourceErr.map((err) => (
                   <li key={err}>{err}</li>
@@ -302,7 +337,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           <CustomFormRow label="Source">
             <EuiComboBox
               options={indexOptions}
-              selectedOptions={sourceIndices.map((index) => ({ label: index }))}
+              selectedOptions={sourceIndices.map((item) => ({ label: item.index }))}
               isDisabled
               data-test-subj="sourceIndicesComboInput"
             />
@@ -377,7 +412,13 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
           <EuiAccordion id="advancedReindexOptions" buttonContent="Advanced options">
             <EuiSpacer size="m" />
-            <ReindexOptions slices={slices} onSlicesChange={this.onSliceChange} width="200%" />
+            <ReindexAdvancedOptions
+              slices={slices}
+              onSlicesChange={this.onSliceChange}
+              pipelines={this.state.pipelines}
+              selectedPipelines={this.state.selectedPipelines}
+              onSelectedPipelinesChange={this.onPipelineChange}
+            />
           </EuiAccordion>
         </EuiFlyoutBody>
 

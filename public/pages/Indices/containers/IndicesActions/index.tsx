@@ -145,7 +145,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         <ReindexFlyout
           services={services}
           onCloseFlyout={onCloseReindexFlyout}
-          sourceIndices={selectedItems.map((item) => item.index)}
+          sourceIndices={selectedItems}
           onReindexConfirm={onReindexConfirm}
         />
       )}
