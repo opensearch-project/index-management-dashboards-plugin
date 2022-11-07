@@ -53,9 +53,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
 
   const onReindexConfirm = async (reindexRequest: ReindexRequest) => {
     const res = await services.commonService.apiCaller({
-      endpoint: "reindex",
+      endpoint: "transport.request",
       method: REQUEST.POST,
-      data: reindexRequest,
+      data: {
+        path: `_reindex?slices=${reindexRequest.slices}&wait_for_completion=${reindexRequest.waitForCompletion}`,
+        method: REQUEST.POST,
+        body: reindexRequest.body,
+      },
     });
     if (res && res.ok) {
       // @ts-ignore
@@ -112,16 +116,16 @@ export default function IndicesActions(props: IndicesActionsProps) {
                         }),
                     },
                     {
-                      name: "Delete",
-                      disabled: !selectedItems.length,
-                      "data-test-subj": "Delete Action",
-                      onClick: () => setDeleteIndexModalVisible(true),
-                    },
-                    {
                       name: "Reindex",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Reindex Action",
                       onClick: () => setIsReindexFlyoutVisible(true),
+                    },
+                    {
+                      name: "Delete",
+                      disabled: !selectedItems.length,
+                      "data-test-subj": "Delete Action",
+                      onClick: () => setDeleteIndexModalVisible(true),
                     },
                   ],
                 },
