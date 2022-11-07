@@ -31,7 +31,7 @@ import { REQUEST } from "../../../../../utils/constants";
 import { ReindexRequest } from "../../models/interfaces";
 import { DSL_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { BrowserServices } from "../../../../models/interfaces";
-import ReindexOptions from "../ReindexAdvancedOptions/ReindexAdvancedOptions";
+import ReindexAdvancedOptions from "../ReindexAdvancedOptions/ReindexAdvancedOptions";
 
 interface ReindexProps {
   services: BrowserServices;
@@ -50,6 +50,8 @@ interface ReindexState {
   sourceErr?: string[];
   slices: string;
   waitForComplete: boolean;
+  pipelines: EuiComboBoxOptionOption<void>[];
+  selectedPipelines?: EuiComboBoxOptionOption<void>[];
 }
 
 const DEFAULT_SLICE = "1";
@@ -66,6 +68,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       queryJsonString: DEFAULT_QUERY,
       waitForComplete: false,
       slices: DEFAULT_SLICE,
+      pipelines: [],
     };
   }
 
@@ -74,6 +77,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     const { sourceIndices } = this.props;
     await this.isSourceEnabled(sourceIndices);
     await this.getIndexOptions("");
+    await this.getAllPipelines();
   }
 
   isSourceEnabled = async (sourceIndices: string[]) => {
@@ -190,13 +194,26 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     }
   };
 
+  getAllPipelines = async () => {
+    const {
+      services: { commonService },
+    } = this.props;
+
+    const pipelineRes = await commonService.apiCaller({
+      endpoint: "ingest.getPipeline",
+    });
+    if (pipelineRes && pipelineRes.ok) {
+      this.setState({ pipelines: _.keys(pipelineRes.response).map((label) => ({ label })) });
+    }
+  };
+
   onClickAction = async () => {
     const {
       sourceIndices,
       onReindexConfirm,
       services: { commonService },
     } = this.props;
-    const { queryJsonString, selectedIndexOptions, dataStreams, destSettingsJson, waitForComplete, slices } = this.state;
+    const { queryJsonString, selectedIndexOptions, dataStreams, destSettingsJson, waitForComplete, slices, selectedPipelines } = this.state;
 
     if (!selectedIndexOptions || selectedIndexOptions.length != 1) {
       this.setState({ destError: ERROR_PROMPT.DEST_REQUIRED });
@@ -229,8 +246,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           return;
         }
       }
-
-      onReindexConfirm({
+      let reindexReq: ReindexRequest = {
         waitForCompletion: waitForComplete,
         slices: slices,
         body: {
@@ -243,7 +259,13 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             op_type: isDestAsDataStream ? "create" : "index",
           },
         },
-      });
+      };
+      // set pipeline if available
+      if (selectedPipelines && selectedPipelines.length > 0) {
+        // @ts-ignore
+        reindexReq.body.dest.pipeline = selectedPipelines[0].label;
+      }
+      onReindexConfirm(reindexReq);
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);
     }
@@ -264,6 +286,10 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
   onWaitForCompleteChange = (e: EuiSwitchEvent) => {
     this.setState({ waitForComplete: e.target.checked });
+  };
+
+  onPipelineChange = (selectedOptions: EuiComboBoxOptionOption<void>[]) => {
+    this.setState({ selectedPipelines: selectedOptions });
   };
 
   render() {
@@ -377,7 +403,13 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
           <EuiAccordion id="advancedReindexOptions" buttonContent="Advanced options">
             <EuiSpacer size="m" />
-            <ReindexOptions slices={slices} onSlicesChange={this.onSliceChange} width="200%" />
+            <ReindexAdvancedOptions
+              slices={slices}
+              onSlicesChange={this.onSliceChange}
+              pipelines={this.state.pipelines}
+              selectedPipelines={this.state.selectedPipelines}
+              onSelectedPipelinesChange={this.onPipelineChange}
+            />
           </EuiAccordion>
         </EuiFlyoutBody>
 
