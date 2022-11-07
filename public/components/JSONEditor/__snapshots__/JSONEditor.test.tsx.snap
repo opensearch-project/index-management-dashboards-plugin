@@ -3,6 +3,13 @@
 exports[`<JSONEditor /> spec renders the component 1`] = `
 HTMLCollection [
   <div>
+    <textarea
+      data-test-subj="json-editor-value-display"
+      readonly=""
+      style="display: none;"
+    >
+      {"name":"test"}
+    </textarea>
     <div
       class="euiCodeEditorWrapper"
       data-test-subj="codeEditorContainer"

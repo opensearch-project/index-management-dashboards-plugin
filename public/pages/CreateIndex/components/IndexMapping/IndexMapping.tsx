@@ -132,25 +132,25 @@ const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField,
             >
               {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
                 <EuiToolTip content="Add a sub field">
-                  <EuiButtonIcon
-                    aria-label="Add a sub field"
-                    onClick={onAddSubField}
-                    disabled={disabled}
-                    iconType="plusInCircleFilled"
+                  <span
+                    className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
                     data-test-subj={`${id}-add-sub-field`}
-                    size="m"
-                  />
+                    aria-label="Delete current field"
+                    onClick={onAddSubField}
+                  >
+                    <EuiIcon type="plusInCircleFilled" />
+                  </span>
                 </EuiToolTip>
               ) : null}
               <EuiToolTip content="Delete current field">
-                <EuiButtonIcon
+                <span
+                  className="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
                   data-test-subj={`${id}-delete-field`}
                   aria-label="Delete current field"
                   onClick={onDeleteField}
-                  iconType="trash"
-                  size="m"
-                  color="danger"
-                />
+                >
+                  <EuiIcon type="trash" />
+                </span>
               </EuiToolTip>
             </div>
           </EuiFormRow>
@@ -256,10 +256,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
           {
             label: "Visual Editor",
             id: EDITOR_MODE.VISUAL,
+            "data-test-subj": "editor-type-visual-editor",
           },
           {
             label: "JSON Editor",
             id: EDITOR_MODE.JSON,
+            "data-test-subj": "editor-type-json-editor",
           },
         ]}
       />
@@ -288,10 +290,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
             <>
               <EuiButton
                 size="s"
+                data-test-subj="previous-mappings-json-button"
                 onClick={() => {
                   Modal.show({
                     title: "Previous mappings",
                     content: <JSONEditor readOnly value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} />,
+                    "data-test-subj": "previous-mappings-json-modal",
                     onOk: () => {},
                   });
                 }}

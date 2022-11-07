@@ -78,7 +78,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               class="euiFormHelpText euiFormRow__text"
               id="some_html_id-help-0"
             >
-              Some reestrictrion text on domain
+              Please enter the name before moving to other fields
             </div>
           </div>
         </div>
@@ -100,9 +100,10 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
+              aria-describedby="some_html_id-help-0"
               aria-expanded="false"
               aria-haspopup="listbox"
-              class="euiComboBox"
+              class="euiComboBox euiComboBox-isDisabled"
               role="combobox"
             >
               <div
@@ -112,7 +113,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
@@ -128,6 +129,8 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                       <input
                         aria-controls=""
                         data-test-subj="comboBoxSearchInput"
+                        disabled=""
+                        id="some_html_id"
                         role="textbox"
                         style="box-sizing: content-box; width: 2px;"
                         value=""
@@ -140,10 +143,14 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   <div
                     class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
+                    <span
+                      class="euiLoadingSpinner euiLoadingSpinner--medium"
+                    />
                     <button
                       aria-label="Open list of options"
                       class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
                       data-test-subj="comboBoxToggleListButton"
+                      disabled=""
                       type="button"
                     >
                       EuiIconMock
@@ -198,6 +205,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
         >
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.number_of_shards"
             id="some_html_id-row"
           >
             <div
@@ -215,32 +223,33 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               class="euiFormRow__fieldWrapper"
             >
               <div
+                class="euiFormHelpText euiFormRow__text"
+                style="padding-top: 0px; padding-bottom: 4px;"
+              >
+                The number of primary shards in the index. Default is 1.
+              </div>
+              <div
                 class="euiFormControlLayout"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    aria-describedby="some_html_id-help-0"
                     class="euiFieldNumber"
                     data-meta="Field"
-                    id="some_html_id"
+                    disabled=""
+                    id="index.number_of_shards"
                     placeholder="The number of primary shards in the index. Default is 1."
                     type="number"
                     value="1"
                   />
                 </div>
               </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                The number of primary shards in the index. Default is 1.
-              </div>
             </div>
           </div>
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.number_of_replicas"
             id="some_html_id-row"
           >
             <div
@@ -258,32 +267,33 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               class="euiFormRow__fieldWrapper"
             >
               <div
+                class="euiFormHelpText euiFormRow__text"
+                style="padding-top: 0px; padding-bottom: 4px;"
+              >
+                The number of replica shards each primary shard should have.
+              </div>
+              <div
                 class="euiFormControlLayout"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    aria-describedby="some_html_id-help-0"
                     class="euiFieldNumber"
                     data-meta="Field"
-                    id="some_html_id"
+                    disabled=""
+                    id="index.number_of_replicas"
                     placeholder="The number of replica shards each primary shard should have."
                     type="number"
                     value="1"
                   />
                 </div>
               </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                The number of replica shards each primary shard should have.
-              </div>
             </div>
           </div>
           <div
             class="euiFormRow"
+            data-test-subj="form-name-index.refresh_interval"
             id="some_html_id-row"
           >
             <div
@@ -294,261 +304,34 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                 class="euiFormLabel euiFormRow__label"
                 for="some_html_id"
               >
-                Index.blocks.read_only
+                Refresh interval of index
               </label>
             </div>
             <div
               class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
                 class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
+                style="padding-top: 0px; padding-bottom: 4px;"
               >
-                Set to true to make the index and index metadata read only, false to allow writes and metadata changes.
+                How often the index should refresh, which publishes its most recent changes and makes them available for searching.
               </div>
-            </div>
-          </div>
-          <div
-            class="euiFormRow"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index.blocks.read_only_allow_delete
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
               <div
-                class="euiSwitch"
+                class="euiFormControlLayout"
               >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
                 >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                Similar to index.blocks.write, but also allows deleting the index to make more resources available. The disk-based shard allocator may add and remove this block automatically.
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiFormRow"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index.blocks.read
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                Set to true to disable read operations against the index.
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiFormRow"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index.blocks.write
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                Set to true to disable data write operations against the index. Unlike read_only, this setting does not affect metadata. For instance, you can adjust the settings of an index with a write block, but you cannot adjust the settings of an index with a read_only block.
-              </div>
-            </div>
-          </div>
-          <div
-            class="euiFormRow"
-            id="some_html_id-row"
-          >
-            <div
-              class="euiFormRow__labelWrapper"
-            >
-              <label
-                aria-invalid="false"
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                Index.blocks.metadata
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-describedby="some_html_id-help-0"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  data-meta="Field"
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                Set to true to disable index metadata reads and writes.
+                  <input
+                    class="euiFieldText"
+                    data-meta="Field"
+                    disabled=""
+                    id="index.refresh_interval"
+                    placeholder="Can be set to -1 to disable refreshing."
+                    type="text"
+                    value="1s"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -598,6 +381,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   />
                   <div
                     class="euiFormRow"
+                    data-test-subj="form-name-advanced-settings"
                     id="some_html_id-row"
                   >
                     <div
@@ -613,6 +397,17 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                     <div
                       class="euiFormRow__fieldWrapper"
                     >
+                      <textarea
+                        data-test-subj="json-editor-value-display"
+                        readonly=""
+                        style="display: none;"
+                      >
+                        {
+  "index.number_of_shards": 1,
+  "index.number_of_replicas": 1,
+  "index.refresh_interval": "1s"
+}
+                      </textarea>
                       <div
                         class="euiCodeEditorWrapper"
                         data-test-subj="codeEditorContainer"
@@ -807,6 +602,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               >
                 <label
                   class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small euiButtonGroupButton--fill euiButtonGroupButton-isSelected"
+                  data-test-subj="editor-type-visual-editor"
                   for="some_html_id"
                 >
                   <span
@@ -832,6 +628,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                 </label>
                 <label
                   class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
+                  data-test-subj="editor-type-json-editor"
                   for="some_html_id"
                 >
                   <span

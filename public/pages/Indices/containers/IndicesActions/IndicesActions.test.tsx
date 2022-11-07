@@ -48,8 +48,27 @@ describe("<IndicesActions /> spec", () => {
 
   it("delete index by calling commonService", async () => {
     const onDelete = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
-    const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
+    let times = 0;
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "indices.delete") {
+          if (times >= 1) {
+            return {
+              ok: true,
+              response: {},
+            };
+          } else {
+            times++;
+            return {
+              ok: false,
+              error: "test error",
+            };
+          }
+        }
+        return { ok: true, response: {} };
+      }
+    );
+    const { container, getByTestId, getByPlaceholderText, findByTestId } = renderWithRouter({
       selectedItems: [
         {
           "docs.count": "5",
@@ -87,6 +106,15 @@ describe("<IndicesActions /> spec", () => {
           index: "test_index",
         },
       });
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("test error");
+      expect(onDelete).toHaveBeenCalledTimes(0);
+    });
+
+    userEvent.click(getByTestId("Delete Confirm button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
