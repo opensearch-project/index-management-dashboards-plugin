@@ -1,10 +1,9 @@
-import React, { forwardRef, useRef } from "react";
-import { EuiForm, EuiFormProps, EuiFormRow, EuiFormRowProps } from "@elastic/eui";
-import AllBuiltInComponents, { IComponentMap } from "./built_in_components";
+import React, { forwardRef, useRef, useImperativeHandle, useEffect } from "react";
+import { EuiForm, EuiFormProps, EuiFormRowProps } from "@elastic/eui";
+import AllBuiltInComponents from "./built_in_components";
 import Field, { InitOption, FieldOption } from "../../lib/field";
-import { useImperativeHandle } from "react";
 import AdvancedSettings, { IAdvancedSettingsProps } from "../AdvancedSettings";
-import { useEffect } from "react";
+import CustomFormRow from "../CustomFormRow";
 
 export interface IField {
   rowProps: EuiFormRowProps;
@@ -54,7 +53,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
       {formFields.map((item) => {
         const RenderComponent = item.type ? AllBuiltInComponents[item.type] : item.component || (() => null);
         return (
-          <EuiFormRow
+          <CustomFormRow
             data-test-subj={`form-name-${item.name}`}
             key={item.name}
             {...item.rowProps}
@@ -62,7 +61,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
             isInvalid={!!errorMessage[item.name]}
           >
             <RenderComponent {...field.init(item.name, item.options)} />
-          </EuiFormRow>
+          </CustomFormRow>
         );
       })}
       {props.hasAdvancedSettings ? (
