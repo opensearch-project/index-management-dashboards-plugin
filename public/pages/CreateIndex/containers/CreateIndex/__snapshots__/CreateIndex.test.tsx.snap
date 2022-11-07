@@ -223,28 +223,27 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               class="euiFormRow__fieldWrapper"
             >
               <div
+                class="euiFormHelpText euiFormRow__text"
+                style="padding-top: 0px; padding-bottom: 4px;"
+              >
+                The number of primary shards in the index. Default is 1.
+              </div>
+              <div
                 class="euiFormControlLayout"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    aria-describedby="some_html_id-help-0"
                     class="euiFieldNumber"
                     data-meta="Field"
                     disabled=""
-                    id="some_html_id"
+                    id="index.number_of_shards"
                     placeholder="The number of primary shards in the index. Default is 1."
                     type="number"
                     value="1"
                   />
                 </div>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                The number of primary shards in the index. Default is 1.
               </div>
             </div>
           </div>
@@ -268,28 +267,27 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               class="euiFormRow__fieldWrapper"
             >
               <div
+                class="euiFormHelpText euiFormRow__text"
+                style="padding-top: 0px; padding-bottom: 4px;"
+              >
+                The number of replica shards each primary shard should have.
+              </div>
+              <div
                 class="euiFormControlLayout"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    aria-describedby="some_html_id-help-0"
                     class="euiFieldNumber"
                     data-meta="Field"
                     disabled=""
-                    id="some_html_id"
+                    id="index.number_of_replicas"
                     placeholder="The number of replica shards each primary shard should have."
                     type="number"
                     value="1"
                   />
                 </div>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                The number of replica shards each primary shard should have.
               </div>
             </div>
           </div>
@@ -313,28 +311,27 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
               class="euiFormRow__fieldWrapper"
             >
               <div
+                class="euiFormHelpText euiFormRow__text"
+                style="padding-top: 0px; padding-bottom: 4px;"
+              >
+                How often the index should refresh, which publishes its most recent changes and makes them available for searching.
+              </div>
+              <div
                 class="euiFormControlLayout"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    aria-describedby="some_html_id-help-0"
                     class="euiFieldText"
                     data-meta="Field"
                     disabled=""
-                    id="some_html_id"
+                    id="index.refresh_interval"
                     placeholder="Can be set to -1 to disable refreshing."
                     type="text"
                     value="1s"
                   />
                 </div>
-              </div>
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                How often the index should refresh, which publishes its most recent changes and makes them available for searching.
               </div>
             </div>
           </div>
