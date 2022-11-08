@@ -24,7 +24,7 @@ interface IFormGeneratorAdvancedSettings extends IAdvancedSettingsProps {
 }
 
 export interface IField {
-  rowProps: EuiFormRowProps;
+  rowProps: Pick<EuiFormRowProps, "label" | "helpText">;
   name: string;
   type?: keyof typeof AllBuiltInComponents;
   component?: typeof AllBuiltInComponents["Input"];
