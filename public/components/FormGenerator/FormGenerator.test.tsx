@@ -44,7 +44,22 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
       children: <h1>test</h1>,
     },
     name: "test_component",
+    options: {
+      rules: [
+        {
+          required: false,
+        },
+      ],
+    },
     component: ({ onChange, value, ...others }) => <input {...others} value={value || ""} onChange={(e) => onChange(e.target.value)} />,
+  },
+  {
+    rowProps: {
+      label: "component test",
+      children: <h1>test</h1>,
+    },
+    name: "test_component_2",
+    type: "Input",
   },
 ];
 
@@ -67,7 +82,10 @@ describe("<FormGenerator /> spec", () => {
           formFields={testFormFields}
           ref={ref}
           hasAdvancedSettings
-          advancedSettingsProps={{ accordionProps: { initialIsOpen: true, id: "test" } }}
+          advancedSettingsProps={{
+            accordionProps: { initialIsOpen: true, id: "test" },
+            blockedNameList: [testFormFields[0].name],
+          }}
         />
       );
       return {
@@ -84,7 +102,9 @@ describe("<FormGenerator /> spec", () => {
     });
 
     fireEvent.focus(getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement);
-    const valueLength = (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value.length;
+    const value = (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value;
+    const valueLength = value.length;
+    expect(JSON.parse(value)).toEqual({});
     for (let i = 0; i < valueLength; i++) {
       await fireEvent(
         getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement,
@@ -132,6 +152,16 @@ describe("<FormGenerator /> spec", () => {
       {
         test: "1",
       }
+    );
+
+    userEvent.type(getByTestId("form-name-test_component").querySelector("input") as Element, "1");
+    expect(onChangeMock).toBeCalledWith(
+      {
+        test: "1",
+        test_component: "1",
+      },
+      "test_component",
+      "1"
     );
   });
 

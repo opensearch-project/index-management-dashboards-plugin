@@ -19,6 +19,10 @@ interface IInitOption extends InitOption {
   rules?: IRule[];
 }
 
+interface IFormGeneratorAdvancedSettings extends IAdvancedSettingsProps {
+  blockedNameList?: string[];
+}
+
 export interface IField {
   rowProps: EuiFormRowProps;
   name: string;
@@ -30,7 +34,7 @@ export interface IField {
 export interface IFormGeneratorProps {
   formFields: IField[];
   hasAdvancedSettings?: boolean;
-  advancedSettingsProps?: IAdvancedSettingsProps;
+  advancedSettingsProps?: IFormGeneratorAdvancedSettings;
   fieldProps?: FieldOption;
   formProps?: EuiFormProps;
   value?: Record<string, any>;
@@ -40,7 +44,8 @@ export interface IFormGeneratorProps {
 export interface IFormGeneratorRef extends Field {}
 
 export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref: React.Ref<IFormGeneratorRef>) {
-  const { fieldProps, formFields } = props;
+  const { fieldProps, formFields, advancedSettingsProps } = props;
+  const { blockedNameList } = advancedSettingsProps || {};
   const propsRef = useRef(props);
   propsRef.current = props;
   const field = Field.useField({
@@ -93,6 +98,25 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
       };
     });
   }, [formFields, field]);
+
+  const finalValue: Record<string, any> = useMemo(() => {
+    const value = field.getValues();
+    if (!blockedNameList) {
+      return field.getValues();
+    }
+
+    return Object.entries(value || {}).reduce((total, [key, value]) => {
+      if (blockedNameList.includes(key)) {
+        return total;
+      }
+
+      return {
+        ...total,
+        [key]: value,
+      };
+    }, {});
+  }, [field.getValues(), blockedNameList]);
+
   return (
     <EuiForm {...props.formProps}>
       {formattedFormFields.map((item) => {
@@ -116,10 +140,14 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
             "data-test-subj": "form-name-advanced-settings",
             ...props.advancedSettingsProps?.rowProps,
           }}
-          value={field.getValues()}
+          value={finalValue}
           onChange={(val) => {
             field.setValues(val);
-            props.onChange && props.onChange(val, undefined, val);
+            const totalValue = {
+              ...field.getValues<any>(),
+              ...val,
+            };
+            props.onChange && props.onChange(totalValue, undefined, val);
           }}
         />
       ) : null}
