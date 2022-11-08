@@ -156,6 +156,7 @@ describe("<FormGenerator /> spec", () => {
               ref={(ref) => (this.formRef = ref)}
               value={{
                 test: "1",
+                test_component: "",
               }}
             />
             <EuiButton data-test-subj="submit" onClick={this.onSubmit}>
@@ -179,6 +180,20 @@ describe("<FormGenerator /> spec", () => {
       },
       values: {
         test: "1",
+        test_component: "",
+      },
+    });
+
+    await act(async () => {
+      await userEvent.clear(getByTestId("form-name-test").querySelector("input") as Element);
+      await userEvent.click(getByTestId("submit"));
+    });
+
+    expect(onValidate).toBeCalledWith({
+      errors: null,
+      values: {
+        test: "",
+        test_component: "",
       },
     });
   });
@@ -204,6 +219,7 @@ describe("<FormGenerator /> spec", () => {
             ref={formRef}
             value={{
               test: "1",
+              test_component: "",
             }}
           />
           <EuiButton data-test-subj="submit" onClick={onSubmit}>
@@ -226,6 +242,20 @@ describe("<FormGenerator /> spec", () => {
       },
       values: {
         test: "1",
+        test_component: "",
+      },
+    });
+
+    await act(async () => {
+      await userEvent.clear(getByTestId("form-name-test").querySelector("input") as Element);
+      await userEvent.click(getByTestId("submit"));
+    });
+
+    expect(onValidate).toBeCalledWith({
+      errors: null,
+      values: {
+        test: "",
+        test_component: "",
       },
     });
   });
