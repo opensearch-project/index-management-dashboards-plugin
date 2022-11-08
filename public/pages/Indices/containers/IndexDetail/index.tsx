@@ -85,7 +85,20 @@ const OVERVIEW_DISPLAY_INFO: {
   },
   {
     label: "Index blocks",
-    value: () => <span>-</span>,
+    value: ({ detail }) => {
+      const blocks = Object.entries(detail.settings?.index?.blocks || {}).filter(([key, value]) => value === "true");
+      if (!blocks.length) {
+        return <span>-</span>;
+      }
+
+      return (
+        <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+          {blocks.map(([key, value]) => (
+            <li>{key}</li>
+          ))}
+        </ul>
+      );
+    },
   },
   {
     label: "Managed by policy",
@@ -164,7 +177,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   content: (
                     <EuiDescriptionList>
                       <EuiSpacer />
-                      <EuiFlexGrid columns={3}>
+                      <div>
                         {OVERVIEW_DISPLAY_INFO.map((item) => {
                           let valueContent = null;
                           if (typeof item.value === "string") {
@@ -174,13 +187,19 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                             valueContent = <ValueComponent detail={finalDetail} />;
                           }
                           return (
-                            <EuiFlexItem key={item.label} data-test-subj={`index-detail-overview-item-${item.label}`}>
+                            <div
+                              style={{ display: "inline-block", width: "33%", verticalAlign: "top", marginBottom: "20px", padding: "0 1%" }}
+                              key={item.label}
+                              data-test-subj={`index-detail-overview-item-${item.label}`}
+                            >
                               <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
-                              <EuiDescriptionListDescription>{valueContent}</EuiDescriptionListDescription>
-                            </EuiFlexItem>
+                              <EuiDescriptionListDescription style={{ wordBreak: item.label === "Index name" ? "break-word" : undefined }}>
+                                {valueContent}
+                              </EuiDescriptionListDescription>
+                            </div>
                           );
                         })}
-                      </EuiFlexGrid>
+                      </div>
                     </EuiDescriptionList>
                   ),
                 },

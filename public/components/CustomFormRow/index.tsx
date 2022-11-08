@@ -1,7 +1,7 @@
 import React from "react";
 import { EuiFormRow, EuiFormRowProps } from "@elastic/eui";
 
-export default function FormGenerator(props: EuiFormRowProps) {
+export default function CustomFormRow(props: EuiFormRowProps) {
   const { helpText, children, ...others } = props;
   return (
     <EuiFormRow {...others}>
