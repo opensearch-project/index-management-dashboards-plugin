@@ -17,7 +17,6 @@ import {
   EuiSpacer,
   EuiButtonGroup,
   EuiToolTip,
-  EuiButtonIcon,
 } from "@elastic/eui";
 import { set, get } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
@@ -52,8 +51,6 @@ interface IMappingLabel {
   disabled?: boolean;
   id: string;
 }
-
-const NEW_FIELD_PREFIX = "NAME_YOUR_FIELD";
 
 const MappingLabel = forwardRef(
   (
@@ -110,11 +107,6 @@ const MappingLabel = forwardRef(
                 data-test-subj={`${id}-field-name`}
                 value={fieldNameState}
                 onChange={(e) => setFieldNameState(e.target.value)}
-                onFocus={() => {
-                  if (fieldNameState && fieldNameState.startsWith(NEW_FIELD_PREFIX)) {
-                    setFieldNameState("");
-                  }
-                }}
                 onBlur={async (e) => {
                   const error = await onValidate();
                   if (!error) {

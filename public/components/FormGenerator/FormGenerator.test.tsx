@@ -14,7 +14,6 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
   {
     rowProps: {
       label: "test",
-      children: <h1>test</h1>,
     },
     name: "test",
     type: "Input",
@@ -41,7 +40,6 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
   {
     rowProps: {
       label: "component test",
-      children: <h1>test</h1>,
     },
     name: "test_component",
     options: {
@@ -56,7 +54,6 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
   {
     rowProps: {
       label: "component test",
-      children: <h1>test</h1>,
     },
     name: "test_component_2",
     type: "Input",
