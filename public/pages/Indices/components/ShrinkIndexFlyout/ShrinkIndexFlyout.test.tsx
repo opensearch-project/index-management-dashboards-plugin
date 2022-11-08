@@ -97,7 +97,7 @@ describe("<ShrinkIndexFlyout /> spec", () => {
     fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
     await waitFor(() => {
       expect(
-        queryByText("The number of new primary shards must be a positive factor of the number of primary shards in the source index.")
+        queryByText("The number of new primary shards must be a positive factor of the number of primary shards in the source index[3].")
       ).not.toBeNull();
     });
   });

@@ -4,12 +4,9 @@
  */
 
 import {
-  EuiAccordion,
   EuiButton,
-  EuiText,
   EuiButtonEmpty,
   EuiCallOut,
-  EuiFieldNumber,
   EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
@@ -19,15 +16,15 @@ import {
   EuiFlyoutHeader,
   EuiLink,
   EuiSpacer,
-  EuiCodeEditor,
   EuiTitle,
 } from "@elastic/eui";
 import React, { Component } from "react";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
-import { CoreServicesContext } from "../../../../components/core_services";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import CustomFormRow from "../../../../components/CustomFormRow";
+import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
+import { IndexItem } from "../../../../../models/interfaces";
 import { SHRINK_DOCUMENTATION_URL, INDEX_SETTINGS_URL } from "../../../../utils/constants";
 import {
   DEDAULT_ADVANCED_INDEX_SETTINGS,
@@ -49,25 +46,20 @@ interface ShrinkIndexProps {
 
 interface ShrinkIndexState {
   targetIndexName: string;
-  numberOfShards: number;
-  advancedIndexSettingsString: string;
+  indexSettings: IndexItem["settings"];
   targetIndexNameError: string;
-  numberOfShardsError: string;
   sourceIndexCannotShrinkErrors: string[];
   sourceIndexNotReadyReasons: string[];
 }
 
 export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, ShrinkIndexState> {
-  static contextType = CoreServicesContext;
   constructor(props: ShrinkIndexProps) {
     super(props);
 
     this.state = {
       targetIndexName: "",
-      numberOfShards: 1,
-      advancedIndexSettingsString: JSON.stringify(DEDAULT_ADVANCED_INDEX_SETTINGS, null, 4),
+      indexSettings: DEDAULT_ADVANCED_INDEX_SETTINGS,
       targetIndexNameError: TARGET_INDEX_NAME_REQUIRED_MESSAGE,
-      numberOfShardsError: "",
       sourceIndexCannotShrinkErrors: [],
       sourceIndexNotReadyReasons: [],
     };
@@ -77,23 +69,20 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     await this.isSourceIndexReady();
   }
 
-  onClickAction = () => {
+  formRef: IFormGeneratorRef | null = null;
+
+  onClickAction = async () => {
     const { sourceIndex, onConfirm } = this.props;
-    const { targetIndexName, targetIndexNameError, numberOfShards, numberOfShardsError, advancedIndexSettingsString } = this.state;
-    if (!!targetIndexNameError || !!numberOfShardsError) {
+    const { targetIndexName, targetIndexNameError, indexSettings } = this.state;
+    if (!!targetIndexNameError) {
       return;
     }
 
-    let indexSettings = {};
-    try {
-      if (!!advancedIndexSettingsString) {
-        indexSettings = JSON.parse(advancedIndexSettingsString);
-      }
-      indexSettings[INDEX_NUMBER_OF_SHARDS_SETTING] = numberOfShards;
-    } catch (err) {
-      this.context.notifications.toasts.addDanger("Invalid advanced settings JSON");
+    const result = await this.formRef?.validatePromise();
+    if (result?.errors) {
       return;
     }
+
     onConfirm(sourceIndex.index, targetIndexName, indexSettings);
   };
 
@@ -158,7 +147,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     // This check may not be correct in the following situations:
     // 1. the cluster only has one node, so the source index's shards are allocated to the same node.
     // 2. the primary shards of the source index are just allocated to the same node, not manually.
-    // 3. the user set `index.routing.rebalance.enable` to `none` and then manually move one copy of every shards to one node.
+    // 3. the user set `index.routing.rebalance.enable` to `none` and then manually move each shard's copy to one node.
     // In the above situations, the source index does not have a `index.routing.allocation.require._*` setting which can
     // rellocate one copy of every shard to one node, but it can also execute shrinking successfully if other conditions are met.
     // But in most cases, source index always have many shards distributed on different node,
@@ -197,73 +186,49 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     });
   };
 
-  checkNumberOfShardsValid = (sourceShardsNum: number, targetShardsNum: number): string => {
-    let err = "";
+  isNumberOfShardsValid = (sourceShardsNum: number, targetShardsNum: number): boolean => {
     if (targetShardsNum <= 0 || sourceShardsNum % targetShardsNum != 0) {
-      err = "The number of new primary shards must be a positive factor of the number of primary shards in the source index.";
+      return false;
     }
-    return err;
-  };
-
-  onNumberOfShardsChange = (value: number) => {
-    const { sourceIndex } = this.props;
-    const { advancedIndexSettingsString } = this.state;
-    const shardsNumErr = this.checkNumberOfShardsValid(sourceIndex.pri, value);
-
-    let indexSettings;
-    try {
-      indexSettings = JSON.parse(advancedIndexSettingsString);
-      indexSettings[INDEX_NUMBER_OF_SHARDS_SETTING] = value;
-      this.setState({
-        numberOfShards: value,
-        numberOfShardsError: shardsNumErr,
-        advancedIndexSettingsString: JSON.stringify(indexSettings, null, 4),
-      });
-    } catch (err) {
-      this.setState({
-        numberOfShards: value,
-        numberOfShardsError: shardsNumErr,
-      });
-    }
-  };
-
-  onAdvancedIndexSettingsChange = (value: string) => {
-    const { sourceIndex } = this.props;
-    const { numberOfShards } = this.state;
-    let indexSettings;
-    try {
-      indexSettings = JSON.parse(value);
-      const newNumberOfShards = indexSettings[INDEX_NUMBER_OF_SHARDS_SETTING];
-      if (!!newNumberOfShards && newNumberOfShards != numberOfShards) {
-        const err = this.checkNumberOfShardsValid(sourceIndex.pri, newNumberOfShards);
-        this.setState({
-          numberOfShards: newNumberOfShards,
-          numberOfShardsError: err,
-          advancedIndexSettingsString: value,
-        });
-      } else {
-        this.setState({
-          advancedIndexSettingsString: value,
-        });
-      }
-    } catch (err) {
-      this.setState({
-        advancedIndexSettingsString: value,
-      });
-    }
+    return true;
   };
 
   render() {
     const { onClose } = this.props;
-    const {
-      targetIndexName,
-      numberOfShards,
-      advancedIndexSettingsString,
-      targetIndexNameError,
-      numberOfShardsError,
-      sourceIndexCannotShrinkErrors,
-      sourceIndexNotReadyReasons,
-    } = this.state;
+    const { targetIndexName, targetIndexNameError, indexSettings, sourceIndexCannotShrinkErrors, sourceIndexNotReadyReasons } = this.state;
+
+    const formFields: IField[] = [
+      {
+        rowProps: {
+          label: "Number of shards",
+          helpText: "The number of primary shards in the new shrunken index.",
+        },
+        name: "index.number_of_shards",
+        type: "Number",
+        options: {
+          rules: [
+            {
+              required: true,
+              message:
+                "The number of new primary shards must be a positive factor of the number of primary shards in the source index[" +
+                this.props.sourceIndex.pri +
+                "].",
+              validator: (rule, value, callback) => {
+                if (!this.isNumberOfShardsValid(this.props.sourceIndex.pri, value)) {
+                  return Promise.reject("not valid");
+                }
+                return Promise.resolve();
+              },
+            },
+          ],
+          props: {
+            "data-test-subj": "numberOfShardsInput",
+            min: 1,
+            max: Number(this.props.sourceIndex.pri),
+          },
+        },
+      },
+    ];
 
     return (
       <EuiFlyout ownFocus={true} onClose={() => {}} maxWidth={600} size="m" hideCloseButton>
@@ -320,45 +285,35 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
             />
           </CustomFormRow>
           <EuiSpacer size="m" />
-          <CustomFormRow
-            label="Number of shards"
-            helpText={"The number of primary shards in the new shrunken index."}
-            isInvalid={!!numberOfShardsError}
-            error={numberOfShardsError}
-          >
-            <EuiFieldNumber
-              value={numberOfShards}
-              onChange={(e) => {
-                this.onNumberOfShardsChange(e.target.value);
-              }}
-              min={1}
-              max={Number(this.props.sourceIndex.pri)}
-              isInvalid={!!numberOfShardsError}
-              data-test-subj="numberOfShardsInput"
-            />
-          </CustomFormRow>
-          <EuiSpacer size="m" />
-          <EuiAccordion id="shrink_index_advanced_settings" buttonContent="Advanced settings">
-            <EuiSpacer size="s" />
-            <EuiText color="subdued" size="xs" style={{ padding: "5px 0px" }}>
-              <p style={{ fontWeight: 200 }}>
-                Specify more index settings for the target index.{" "}
-                <EuiLink href={INDEX_SETTINGS_URL} target="_blank" rel="noopener noreferrer">
-                  Learn more
-                </EuiLink>
-              </p>
-            </EuiText>
-            <EuiCodeEditor
-              mode="json"
-              width="90%"
-              height="250px"
-              value={advancedIndexSettingsString}
-              onChange={(str) => {
-                this.onAdvancedIndexSettingsChange(str);
-              }}
-              setOptions={{ fontSize: "14px" }}
-            />
-          </EuiAccordion>
+          <FormGenerator
+            ref={(ref) => (this.formRef = ref)}
+            value={indexSettings}
+            onChange={(value) => {
+              this.setState({
+                indexSettings: value,
+              });
+            }}
+            formFields={formFields}
+            hasAdvancedSettings
+            advancedSettingsProps={{
+              accordionProps: {
+                initialIsOpen: false,
+                id: "accordion_for_create_index_settings",
+                buttonContent: <h4>Advanced settings</h4>,
+              },
+              rowProps: {
+                label: "Specify advanced index settings",
+                helpText: (
+                  <>
+                    Specify a comma-delimited list of settings.
+                    <EuiLink href={INDEX_SETTINGS_URL} target="_blank">
+                      View index settings
+                    </EuiLink>
+                  </>
+                ),
+              },
+            }}
+          />
         </EuiFlyoutBody>
         <EuiFlyoutFooter>
           <EuiFlexGroup justifyContent="flexEnd">
