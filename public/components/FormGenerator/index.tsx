@@ -49,6 +49,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
   const propsRef = useRef(props);
   propsRef.current = props;
   const field = Field.useField({
+    scrollDom: document.body,
     ...fieldProps,
     onChange(name, value) {
       propsRef.current.onChange &&

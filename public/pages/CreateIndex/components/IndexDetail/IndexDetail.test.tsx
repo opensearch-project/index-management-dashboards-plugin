@@ -3,24 +3,25 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, forwardRef, useState } from "react";
 import { render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
 import userEvent from "@testing-library/user-event";
 
-const IndexDetailOnChangeWrapper = (props: Omit<IndexDetailProps, "onChange">) => {
+const IndexDetailOnChangeWrapper = forwardRef((props: Omit<IndexDetailProps, "onChange">, ref: any) => {
   const [value, setValue] = useState(props.value as any);
   return (
     <IndexDetail
       {...props}
+      ref={ref}
       value={value}
       onChange={(val) => {
         setValue(val);
       }}
     />
   );
-};
+});
 
 const refreshOptions: () => Promise<{ ok: true; response: any[] }> = () => Promise.resolve({ ok: true, response: [{ alias: "test" }] });
 
@@ -55,7 +56,7 @@ describe("<IndexDetail /> spec", () => {
   it("validate should say error when field name is required", async () => {
     const { result } = renderHook(() => {
       const ref = useRef<IIndexDetailRef>(null);
-      const container = render(<IndexDetail refreshOptions={refreshOptions} ref={ref} value={{ index: "" }} onChange={() => {}} />);
+      const container = render(<IndexDetailOnChangeWrapper refreshOptions={refreshOptions} ref={ref} />);
       return {
         ref,
         container,

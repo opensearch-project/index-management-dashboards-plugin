@@ -38,6 +38,11 @@ export type FieldOption = {
    * Initialization data
    */
   values?: {};
+
+  /**
+   * Scroll dom, window as default
+   */
+  scrollDom?: HTMLElement;
 };
 
 export type InitResult<T> = {

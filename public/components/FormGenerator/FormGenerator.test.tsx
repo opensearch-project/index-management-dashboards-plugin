@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useRef } from "react";
+import React, { forwardRef, useRef } from "react";
 import { act, fireEvent, render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import userEvent from "@testing-library/user-event";
@@ -49,7 +49,9 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
         },
       ],
     },
-    component: ({ onChange, value, ...others }) => <input {...others} value={value || ""} onChange={(e) => onChange(e.target.value)} />,
+    component: forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
+      <input ref={ref} value={value || ""} onChange={(e) => onChange(e.target.value)} />
+    )),
   },
   {
     rowProps: {
