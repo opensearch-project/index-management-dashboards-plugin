@@ -190,7 +190,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       });
       if (res.ok) {
         // @ts-ignore
-        let index = res.response[sourceIndices[0]];
+        let index = res.response[this.sourceIndicesNames[0]];
         _.unset(index, "aliases");
         _.unset(index.settings, "index.resize");
         _.unset(index.settings, "index.blocks");
@@ -349,8 +349,8 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             label="Destination"
             isInvalid={!!destError}
             error={destError}
-            helpText="Select a pre-configured destination,
-             or type a new index name to create a new one, source configuration will show up below you need to customize to the wanted"
+            helpText="Destination where documents writing into could be pre-configured index, data streams or newly created index,
+            for newly created index, configuration will show up below you need to customize to wanted"
           >
             <EuiComboBox
               placeholder="Select destination"

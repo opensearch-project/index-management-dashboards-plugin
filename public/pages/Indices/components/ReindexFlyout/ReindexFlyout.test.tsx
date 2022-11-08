@@ -34,6 +34,10 @@ const fileMappingResNormal = {
   },
 };
 
+const allPipelines = {
+  "bump-orderId": { description: "Bump orderId", processors: [{ set: { field: "order_id", value: "200{{order_id}}" } }] },
+};
+
 const selectedItem: ManagedCatIndex[] = [
   {
     "docs.count": "5",
@@ -52,11 +56,37 @@ const selectedItem: ManagedCatIndex[] = [
   },
 ];
 
+const closedItem: ManagedCatIndex[] = [
+  {
+    "docs.count": "5",
+    "docs.deleted": "2",
+    health: "green",
+    index: "test-index-01",
+    pri: "1",
+    "pri.store.size": "100KB",
+    rep: "0",
+    status: "close",
+    "store.size": "100KB",
+    uuid: "some_uuid",
+    managed: "false",
+    managedPolicy: "",
+    data_stream: "",
+  },
+];
+
 function mockIndexService(indexRes: Object) {
   browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue(indexRes);
 }
-function mockCommonService(fileMappingRes: Object) {
-  browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue(fileMappingRes);
+
+function mockCommonService(filedMapping?: Object, pipelines?: Object) {
+  browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((args) => {
+    if (args.endpoint === "ingest.getPipeline") {
+      return Promise.resolve(pipelines ? pipelines : allPipelines);
+    } else if (args.endpoint === "indices.getFieldMapping") {
+      return Promise.resolve(filedMapping ? filedMapping : fileMappingResNormal);
+    }
+    return Promise.resolve(null);
+  });
 }
 
 describe("<ReindexFlyout /> spec", () => {
@@ -94,7 +124,7 @@ describe("<ReindexFlyout /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addDanger).not.toHaveBeenCalled();
   });
 
-  it("successfully call _source enabled check on mount", async () => {
+  it("successfully call source validation on mount", async () => {
     mockIndexService(indexResNormal);
     mockCommonService(fileMappingResNormal);
 
@@ -117,6 +147,10 @@ describe("<ReindexFlyout /> spec", () => {
         fields: "_source",
         index: "test-index-01",
       },
+    });
+
+    expect(spy).toHaveBeenCalledWith({
+      endpoint: "ingest.getPipeline",
     });
   });
 
@@ -145,6 +179,9 @@ describe("<ReindexFlyout /> spec", () => {
         fields: "_source",
         index: "test-index-01",
       },
+    });
+    expect(spy).toHaveBeenCalledWith({
+      endpoint: "ingest.getPipeline",
     });
 
     expect(spyIndexService).toHaveBeenCalledTimes(1);
@@ -230,6 +267,23 @@ describe("<ReindexFlyout /> spec", () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith("");
+
+    expect(screen.getByTestId("flyout-footer-action-button")).toBeDisabled();
+  });
+
+  it("execute button disabled when status is closed", async () => {
+    mockIndexService(indexResNormal);
+    mockCommonService();
+    render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        render(
+        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={closedItem} />
+        );
+      </CoreServicesContext.Provider>
+    );
+
+    // wait 1 tick for the searchPolicies promise to resolve
+    await waitFor(() => {});
 
     expect(screen.getByTestId("flyout-footer-action-button")).toBeDisabled();
   });
