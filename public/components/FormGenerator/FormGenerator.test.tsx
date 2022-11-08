@@ -5,10 +5,11 @@
 
 import React, { useRef } from "react";
 import { act, fireEvent, render, waitFor } from "@testing-library/react";
-import FormGenerator, { IFormGeneratorProps, IFormGeneratorRef } from "./index";
-import { ValidateResults } from "../../lib/field";
 import { renderHook } from "@testing-library/react-hooks";
 import userEvent from "@testing-library/user-event";
+import { EuiButton } from "@elastic/eui";
+import FormGenerator, { IFormGeneratorProps, IFormGeneratorRef } from "./index";
+import { ValidateResults } from "../../lib/field";
 const testFormFields: IFormGeneratorProps["formFields"] = [
   {
     rowProps: {
@@ -20,8 +21,19 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
     options: {
       rules: [
         {
-          required: true,
-          message: "error",
+          validator: (rule, value, callback, values) => {
+            // let's use a validation that the values.test_component should be the same as values.test
+            // you can custom validation here as you want
+            if (values.test_component !== values.test) {
+              // do not pass the validation
+              // return a rejected promise with error message
+              return Promise.reject("values.test_component !== values.test");
+            }
+
+            // pass the validation
+            // return a resolved promise
+            return Promise.resolve();
+          },
         },
       ],
     },
@@ -64,13 +76,13 @@ describe("<FormGenerator /> spec", () => {
       };
     });
     const { ref } = result.current;
+    const { getByTestId } = result.current.renderResult;
+    userEvent.type(getByTestId("form-name-test").querySelector("input") as Element, "3");
     let validateResult: ValidateResults | undefined;
     await act(async () => {
       validateResult = await ref.current?.validatePromise();
     });
-    const { getByTestId } = result.current.renderResult;
 
-    userEvent.type(getByTestId("form-name-test").querySelector("input") as Element, "3");
     fireEvent.focus(getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement);
     const valueLength = (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value.length;
     for (let i = 0; i < valueLength; i++) {
@@ -100,7 +112,7 @@ describe("<FormGenerator /> spec", () => {
 
     expect(validateResult?.errors).toEqual({
       test: {
-        errors: ["error"],
+        errors: ["values.test_component !== values.test"],
       },
     });
 
@@ -121,5 +133,100 @@ describe("<FormGenerator /> spec", () => {
         test: "1",
       }
     );
+  });
+
+  it("shows error with custom validation in class component", async () => {
+    class FormGeneratorUsedInClassComponent extends React.Component<{ onValidate: (validateResult: any) => void }> {
+      formRef: IFormGeneratorRef | null = null;
+      onSubmit = async () => {
+        // trigger the validation manually here
+        const validateResult = await this.formRef?.validatePromise();
+        this.props.onValidate(validateResult);
+        const { errors } = validateResult || {};
+        if (errors) {
+          return;
+        }
+        // you can submit your data here.
+      };
+      render() {
+        return (
+          <>
+            <FormGenerator
+              formFields={testFormFields}
+              ref={(ref) => (this.formRef = ref)}
+              value={{
+                test: "1",
+              }}
+            />
+            <EuiButton data-test-subj="submit" onClick={this.onSubmit}>
+              submit here
+            </EuiButton>
+          </>
+        );
+      }
+    }
+    const onValidate = jest.fn();
+    const { getByTestId } = render(<FormGeneratorUsedInClassComponent onValidate={onValidate} />);
+    await act(async () => {
+      await userEvent.click(getByTestId("submit"));
+    });
+
+    expect(onValidate).toBeCalledWith({
+      errors: {
+        test: {
+          errors: ["values.test_component !== values.test"],
+        },
+      },
+      values: {
+        test: "1",
+      },
+    });
+  });
+
+  it("shows error with custom validation in function component", async () => {
+    const FormGeneratorUsedInFunctionComponent = function (props: { onValidate: (validateResult: any) => void }) {
+      const formRef = useRef<IFormGeneratorRef>(null);
+
+      const onSubmit = async () => {
+        // trigger the validation manually here
+        const validateResult = await formRef.current?.validatePromise();
+        props.onValidate(validateResult);
+        const { errors } = validateResult || {};
+        if (errors) {
+          return;
+        }
+        // you can submit your data here.
+      };
+      return (
+        <>
+          <FormGenerator
+            formFields={testFormFields}
+            ref={formRef}
+            value={{
+              test: "1",
+            }}
+          />
+          <EuiButton data-test-subj="submit" onClick={onSubmit}>
+            submit here
+          </EuiButton>
+        </>
+      );
+    };
+    const onValidate = jest.fn();
+    const { getByTestId } = render(<FormGeneratorUsedInFunctionComponent onValidate={onValidate} />);
+    await act(async () => {
+      await userEvent.click(getByTestId("submit"));
+    });
+
+    expect(onValidate).toBeCalledWith({
+      errors: {
+        test: {
+          errors: ["values.test_component !== values.test"],
+        },
+      },
+      values: {
+        test: "1",
+      },
+    });
   });
 });

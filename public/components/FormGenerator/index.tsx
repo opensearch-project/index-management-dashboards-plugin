@@ -1,16 +1,30 @@
-import React, { forwardRef, useRef, useImperativeHandle, useEffect } from "react";
+import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } from "react";
 import { EuiForm, EuiFormProps, EuiFormRowProps } from "@elastic/eui";
 import AllBuiltInComponents from "./built_in_components";
-import Field, { InitOption, FieldOption } from "../../lib/field";
+import Field, { InitOption, FieldOption, Rule } from "../../lib/field";
 import AdvancedSettings, { IAdvancedSettingsProps } from "../AdvancedSettings";
 import CustomFormRow from "../CustomFormRow";
+
+type ParametersOfValidator = Parameters<Required<Rule>["validator"]>;
+interface IRule extends Omit<Rule, "validator"> {
+  validator?: (
+    rule: ParametersOfValidator[0],
+    value: ParametersOfValidator[1],
+    callback: ParametersOfValidator[2],
+    values: Record<string, any>
+  ) => ReturnType<Required<Rule>["validator"]>;
+}
+
+interface IInitOption extends InitOption {
+  rules?: IRule[];
+}
 
 export interface IField {
   rowProps: EuiFormRowProps;
   name: string;
   type?: keyof typeof AllBuiltInComponents;
-  component?: IComponentMap[string];
-  options?: InitOption;
+  component?: typeof AllBuiltInComponents["Input"];
+  options?: IInitOption;
 }
 
 export interface IFormGeneratorProps {
@@ -48,9 +62,40 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
   useEffect(() => {
     field.setValues(props.value);
   }, [props.value]);
+  const formattedFormFields = useMemo(() => {
+    return formFields.map((item) => {
+      const { rules } = item.options || {};
+      let arrayedRules: IRule[];
+      if (rules) {
+        arrayedRules = rules;
+      } else {
+        arrayedRules = [];
+      }
+
+      const formattedRules = arrayedRules.map((ruleItem) => {
+        if (ruleItem.validator) {
+          return {
+            ...ruleItem,
+            validator: ((rule, value, callback) =>
+              ruleItem.validator?.apply(field, [rule, value, callback, field.getValues()] as any)) as Rule["validator"],
+          };
+        }
+
+        return ruleItem;
+      });
+
+      return {
+        ...item,
+        options: {
+          ...item.options,
+          rules: formattedRules,
+        },
+      };
+    });
+  }, [formFields, field]);
   return (
     <EuiForm {...props.formProps}>
-      {formFields.map((item) => {
+      {formattedFormFields.map((item) => {
         const RenderComponent = item.type ? AllBuiltInComponents[item.type] : item.component || (() => null);
         return (
           <CustomFormRow
