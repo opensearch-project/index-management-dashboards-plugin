@@ -60,30 +60,26 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
   componentDidMount = async (): Promise<void> => {
     const isEdit = this.isEdit;
     if (isEdit) {
-      try {
-        const response: ServerResponse<Record<string, IndexItem>> = await this.props.commonService.apiCaller({
-          endpoint: "indices.get",
-          data: {
-            index: this.index,
-            flat_settings: true,
-          },
-        });
-        if (response.ok) {
-          const payload = {
-            ...response.response[this.index || ""],
-            index: this.index,
-          };
-          set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
+      const response: ServerResponse<Record<string, IndexItem>> = await this.props.commonService.apiCaller({
+        endpoint: "indices.get",
+        data: {
+          index: this.index,
+          flat_settings: true,
+        },
+      });
+      if (response.ok) {
+        const payload = {
+          ...response.response[this.index || ""],
+          index: this.index,
+        };
+        set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
 
-          this.setState({
-            indexDetail: payload,
-            oldIndexDetail: JSON.parse(JSON.stringify(payload)),
-          });
-        } else {
-          throw Error(response.error);
-        }
-      } catch (e: any) {
-        this.context.notifications.toasts.addDanger(e.message);
+        this.setState({
+          indexDetail: payload,
+          oldIndexDetail: JSON.parse(JSON.stringify(payload)),
+        });
+      } else {
+        this.context.notifications.toasts.addDanger(response.error);
       }
     }
     this.context.chrome.setBreadcrumbs([
