@@ -24,7 +24,7 @@ import {
 } from "../../../../src/core/server";
 import { getSearchString } from "../utils/helpers";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
-import { IndexItem } from "../../models/interfaces";
+import { IRecoveryItem, IReindexItem, ITaskItem } from "../../models/interfaces";
 
 export default class IndexService {
   osDriver: ILegacyCustomClusterClient;
@@ -59,14 +59,62 @@ export default class IndexService {
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
 
-      const [indicesResponse, indexToDataStreamMapping]: [CatIndex[], IndexToDataStream] = await Promise.all([
+      const [recoverys, tasks, indicesResponse, indexToDataStreamMapping]: [
+        IRecoveryItem[],
+        ITaskItem[],
+        CatIndex[],
+        IndexToDataStream
+      ] = await Promise.all([
+        callWithRequest("cat.recovery", {
+          format: "json",
+          detailed: true,
+        }),
+        callWithRequest("cat.tasks", {
+          format: "json",
+          detailed: true,
+          actions: "indices:data/write/reindex",
+        }),
         callWithRequest("cat.indices", params),
         getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
       ]);
 
+      const formattedTasks: IReindexItem[] = tasks.map(
+        (item): IReindexItem => {
+          const { description } = item;
+          const regexp = /reindex from \[([^\]]+)\] to \[([^\]]+)\]/i;
+          const matchResult = description.match(regexp);
+          if (matchResult) {
+            const [, fromIndex, toIndex] = matchResult;
+            return { ...item, fromIndex, toIndex };
+          } else {
+            return {
+              ...item,
+              fromIndex: "",
+              toIndex: "",
+            };
+          }
+        }
+      );
+
+      const onGoingRecovery = recoverys.filter((item) => item.stage !== "done");
+
       // Augment the indices with their parent data stream name.
       indicesResponse.forEach((index) => {
         index.data_stream = indexToDataStreamMapping[index.index] || null;
+        let extraStatus: "recovery" | "reindex" | "" = "";
+        if (index.health === "green") {
+          if (formattedTasks.find((item) => item.toIndex === index.index)) {
+            extraStatus = "reindex";
+          }
+        } else {
+          if (onGoingRecovery.find((item) => item.index === index.index)) {
+            extraStatus = "recovery";
+          }
+        }
+
+        if (extraStatus) {
+          index.extraStatus = extraStatus;
+        }
       });
 
       // Filtering out indices that belong to a data stream. This must be done before pagination.

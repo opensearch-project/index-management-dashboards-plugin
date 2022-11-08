@@ -602,4 +602,19 @@ export interface IAPICaller {
   data?: any;
 }
 
+export interface IRecoveryItem {
+  index: string;
+  stage: "done" | "translog";
+}
+
+export interface ITaskItem {
+  action: string;
+  description: string;
+}
+
+export interface IReindexItem extends ITaskItem {
+  fromIndex: string;
+  toIndex: string;
+}
+
 export type IAliasAction = Record<string, { index: string; alias: string }>;

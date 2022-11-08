@@ -1,9 +1,9 @@
 import React from "react";
 import { EuiFieldNumber, EuiFieldText, EuiSwitch } from "@elastic/eui";
 
-export type IComponentMap = Record<string, React.FC<{ onChange: (val: any) => void; value?: any }>>;
+type ComponentMapEnum = "Input" | "Number" | "Switch";
 
-const componentMap: IComponentMap = {
+const componentMap: Record<ComponentMapEnum, React.FC<{ onChange: (val: any) => void; value?: any }>> = {
   Input: ({ onChange, value, ...others }) => <EuiFieldText value={value || ""} onChange={(e) => onChange(e.target.value)} {...others} />,
   Number: ({ onChange, value, ...others }) => <EuiFieldNumber onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />,
   Switch: ({ value, onChange, ...others }) => (

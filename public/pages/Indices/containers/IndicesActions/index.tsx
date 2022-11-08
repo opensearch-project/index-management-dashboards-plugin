@@ -48,7 +48,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
     } else {
       coreServices.notifications.toasts.addDanger(result?.error || "");
     }
-  }, [services, coreServices, props.onDelete, onDeleteIndexModalClose]);
+  }, [selectedItems, services, coreServices, onDelete, onDeleteIndexModalClose]);
 
   const onCloseFlyout = () => {
     setSplitIndexFlyoutVisible(false);
