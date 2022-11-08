@@ -155,6 +155,8 @@ describe("<CreateIndex /> spec", () => {
   it("renders the create component", async () => {
     const { container } = renderCreateIndexWithRouter();
 
+    await waitFor(() => {});
+
     expect(container.firstChild).toMatchSnapshot();
   });
 

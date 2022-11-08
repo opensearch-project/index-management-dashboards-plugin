@@ -59,26 +59,24 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Please enter the name before moving to other fields
+            </div>
+            <div
               class="euiFormControlLayout"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  aria-describedby="some_html_id-help-0"
                   class="euiFieldText"
-                  id="some_html_id"
                   placeholder="Please enter the name for your index"
                   type="text"
                   value=""
                 />
               </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              Please enter the name before moving to other fields
             </div>
           </div>
         </div>
@@ -100,7 +98,12 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              aria-describedby="some_html_id-help-0"
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Select existing aliases or specify a new alias
+            </div>
+            <div
               aria-expanded="false"
               aria-haspopup="listbox"
               class="euiComboBox euiComboBox-isDisabled"
@@ -113,7 +116,7 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading"
+                    class="euiComboBox__inputWrap"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
@@ -130,7 +133,6 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                         aria-controls=""
                         data-test-subj="comboBoxSearchInput"
                         disabled=""
-                        id="some_html_id"
                         role="textbox"
                         style="box-sizing: content-box; width: 2px;"
                         value=""
@@ -143,9 +145,6 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   <div
                     class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
-                    <span
-                      class="euiLoadingSpinner euiLoadingSpinner--medium"
-                    />
                     <button
                       aria-label="Open list of options"
                       class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
@@ -158,12 +157,6 @@ exports[`<CreateIndex /> spec renders the create component 1`] = `
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              Select existing aliases or specify a new alias
             </div>
           </div>
         </div>
