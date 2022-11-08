@@ -14,8 +14,9 @@ import { ServerResponse } from "../../../../../server/models/types";
 import { Ref } from "react";
 import { INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
+import CustomFormRow from "../../../../components/CustomFormRow";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
-import { transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
+import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 
 export interface IndexDetailProps {
   value?: Partial<IndexItem>;
@@ -51,6 +52,7 @@ const IndexDetail = (
   const [templateSimulateLoading, setTemplateSimulateLoading] = useState(false);
   const finalValue = value || {};
   const settingsRef = useRef<IFormGeneratorRef>(null);
+  const mappingsRef = useRef<IIndexMappingsRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {
       if (!value?.index) {
@@ -60,6 +62,12 @@ const IndexDetail = (
         return false;
       }
       setErrors({});
+
+      const mappingsValidateResult = await mappingsRef.current?.validate();
+      if (mappingsValidateResult) {
+        return false;
+      }
+
       const result = await settingsRef.current?.validatePromise();
       if (result?.errors) {
         return false;
@@ -182,7 +190,7 @@ const IndexDetail = (
         <>
           <ContentPanel title="Define index" titleSize="s">
             <div style={{ paddingLeft: "10px" }}>
-              <EuiFormRow
+              <CustomFormRow
                 label="Index name"
                 helpText={finalValue.index ? "Some restriction text on domain" : "Please enter the name before moving to other fields"}
                 isInvalid={!!errors["index"]}
@@ -196,15 +204,15 @@ const IndexDetail = (
                   isLoading={templateSimulateLoading}
                   disabled={isEdit || templateSimulateLoading}
                 />
-              </EuiFormRow>
-              <EuiFormRow label="Index alias  - optional" helpText="Select existing aliases or specify a new alias">
+              </CustomFormRow>
+              <CustomFormRow label="Index alias  - optional" helpText="Select existing aliases or specify a new alias">
                 <AliasSelect
                   refreshOptions={refreshOptions}
                   value={finalValue.aliases}
                   onChange={(value) => onValueChange("aliases", value)}
                   isDisabled={!finalValue.index}
                 />
-              </EuiFormRow>
+              </CustomFormRow>
             </div>
           </ContentPanel>
           <EuiSpacer />
@@ -262,6 +270,7 @@ const IndexDetail = (
                 value={finalValue?.mappings?.properties}
                 oldValue={oldValue?.mappings?.properties}
                 onChange={(val) => onValueChange("mappings.properties", val)}
+                ref={mappingsRef}
               />
             </EuiFormRow>
           </div>
