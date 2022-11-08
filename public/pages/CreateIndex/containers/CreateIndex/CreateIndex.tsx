@@ -355,7 +355,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     }
   };
 
-  onSimulateIndexTemplate = (indexName: string) => {
+  onSimulateIndexTemplate = (indexName: string): Promise<ServerResponse<IndexItemRemote>> => {
     return this.props.commonService
       .apiCaller<{ template: IndexItemRemote }>({
         endpoint: "transport.request",
