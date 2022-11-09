@@ -5,7 +5,7 @@
 
 import { EuiFormRow, EuiText, EuiTextArea, EuiSpacer, EuiLink } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
-import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
+import { INDEX_SETTINGS_URL } from "../../../../utils/constants"
 
 interface IndexSettingsInputProps {
   getIndexSettings: (indexSettings: string, ignore: boolean) => void;
@@ -38,7 +38,7 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
       <EuiText size="xs" style={{ padding: "0px 0px 5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           {`${helperText} `}
-          <EuiLink href={RESTORE_SNAPSHOT_DOCUMENTATION_URL} target="_blank" external={true} rel="noopener noreferrer">
+          <EuiLink href={INDEX_SETTINGS_URL} target="_blank" external={true} rel="noopener noreferrer">
             Learn more
           </EuiLink>
         </p>
