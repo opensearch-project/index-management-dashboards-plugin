@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { EuiCodeEditor, EuiConfirmModal, EuiCodeEditorProps } from "@elastic/eui";
 
 interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
@@ -15,8 +15,18 @@ const JSONEditor: React.SFC<JSONEditorProps> = ({ value, onChange, ...others }) 
   const [tempEditorValue, setTempEditorValue] = useState(value);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
+  useEffect(() => {
+    setTempEditorValue(value);
+  }, [value]);
+
   return (
     <>
+      <textarea
+        readOnly
+        style={{ display: "none" }}
+        value={tempEditorValue}
+        data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
+      />
       <EuiCodeEditor
         {...others}
         mode="json"
@@ -39,7 +49,7 @@ const JSONEditor: React.SFC<JSONEditorProps> = ({ value, onChange, ...others }) 
           title="Format validate error"
           onCancel={() => setConfirmModalVisible(false)}
           onConfirm={() => {
-            onChange(value);
+            onChange && onChange(value);
             setTempEditorValue(value);
             setConfirmModalVisible(false);
           }}

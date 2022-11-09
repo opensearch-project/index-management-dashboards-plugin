@@ -6,15 +6,30 @@
 import React, { useRef, useEffect, useState } from "react";
 import { render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
-import IndexDetail, { IIndexDetailRef } from "./IndexDetail";
+import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
+import userEvent from "@testing-library/user-event";
 
-const timeOut = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
-const refreshOptions: () => Promise<{ ok: true; response: any[] }> = () => Promise.resolve({ ok: true, response: [] });
+const IndexDetailOnChangeWrapper = (props: Omit<IndexDetailProps, "onChange">) => {
+  const [value, setValue] = useState(props.value as any);
+  return (
+    <IndexDetail
+      {...props}
+      value={value}
+      onChange={(val) => {
+        setValue(val);
+      }}
+    />
+  );
+};
+
+const refreshOptions: () => Promise<{ ok: true; response: any[] }> = () => Promise.resolve({ ok: true, response: [{ alias: "test" }] });
 
 describe("<IndexDetail /> spec", () => {
-  it("renders the component", () => {
+  it("renders the component", async () => {
     const { container } = render(<IndexDetail refreshOptions={refreshOptions} onChange={() => {}} />);
-    expect(container.firstChild).toMatchSnapshot();
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
   });
 
   it("disallows editing index name when in edit mode", async () => {
@@ -37,20 +52,81 @@ describe("<IndexDetail /> spec", () => {
     expect(getByPlaceholderText("The number of primary shards in the index. Default is 1.")).toHaveAttribute("disabled");
   });
 
-  it("validate should say error when the field name is required", async () => {
+  it("validate should say error when field name is required", async () => {
     const { result } = renderHook(() => {
       const ref = useRef<IIndexDetailRef>(null);
-      const [validate, setValidate] = useState(true);
-      useEffect(() => {
-        ref.current?.validate().then((flag) => setValidate(flag));
-      }, []);
-      render(<IndexDetail refreshOptions={refreshOptions} ref={ref} value={{ index: "" }} onChange={() => {}} />);
+      const container = render(<IndexDetail refreshOptions={refreshOptions} ref={ref} value={{ index: "" }} onChange={() => {}} />);
       return {
-        validate,
+        ref,
+        container,
       };
     });
+    await waitFor(async () => {
+      expect(await result.current.ref.current?.validate()).toBe(false);
+    });
+    const ref = result.current.ref;
+    const { getByTestId, getByPlaceholderText } = result.current.container;
+    userEvent.type(getByPlaceholderText("Please enter the name for your index"), "good_index");
+    await waitFor(async () => {
+      expect(await ref.current?.validate()).toBe(false);
+    });
+    userEvent.type(getByTestId("form-name-index.number_of_shards").querySelector("input") as Element, "2");
+    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
+    await waitFor(async () => {
+      expect(await ref.current?.validate()).toBe(true);
+    });
+  });
 
-    await timeOut(1000);
-    expect(result.current.validate).toBe(false);
+  it("inherit templates settings when create", async () => {
+    const { getByDisplayValue, getByPlaceholderText, getByText, getByTestId } = render(
+      <IndexDetailOnChangeWrapper
+        refreshOptions={refreshOptions}
+        value={{ index: "some_index" }}
+        onSimulateIndexTemplate={() =>
+          Promise.resolve({
+            ok: true,
+            response: {
+              index: "some_index",
+              aliases: {
+                test: {},
+              },
+              settings: {
+                "index.number_of_replicas": 2,
+              },
+            },
+          })
+        }
+      />
+    );
+    await waitFor(() => getByDisplayValue("some_index"));
+    userEvent.click(getByDisplayValue("some_index"));
+    userEvent.click(document.body);
+    await waitFor(() => {
+      expect(document.querySelector('[data-test-subj="comboBoxInput"] [title="test"]')).not.toBeNull();
+    });
+    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
+    userEvent.click(getByDisplayValue("some_index"));
+    userEvent.click(document.body);
+    // The Dialog should show
+    await waitFor(() => {
+      expect(getByText("The index name has matched one or more index templates, please choose which way to go on")).toBeInTheDocument();
+    });
+    userEvent.click(getByTestId("simulate-confirm-confirm"));
+    await waitFor(() => {
+      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "2");
+    });
+
+    userEvent.clear(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element);
+    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
+    userEvent.click(getByDisplayValue("some_index"));
+    userEvent.click(document.body);
+    // The Dialog should show
+    await waitFor(() => {
+      expect(getByText("The index name has matched one or more index templates, please choose which way to go on")).toBeInTheDocument();
+    });
+    userEvent.click(getByTestId("simulate-confirm-cancel"));
+    await waitFor(() => {
+      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "10");
+    });
   });
 });

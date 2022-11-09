@@ -3,16 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiFieldText, EuiFieldNumber, EuiAccordion, EuiLink } from "@elastic/eui";
-import { set, get } from "lodash";
+import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { EuiSpacer, EuiFormRow, EuiFieldText, EuiLink, EuiOverlayMask, EuiLoadingSpinner } from "@elastic/eui";
+import { set, merge } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
-import JSONEditor from "../../../../components/JSONEditor";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
-import { IndexItem } from "../../../../../models/interfaces";
+import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
+import { ServerResponse } from "../../../../../server/models/types";
 import { Ref } from "react";
 import { INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
+import { Modal } from "../../../../components/Modal";
+import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
+import { transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 
 export interface IndexDetailProps {
   value?: Partial<IndexItem>;
@@ -21,48 +24,158 @@ export interface IndexDetailProps {
   isEdit?: boolean;
   refreshOptions: AliasSelectProps["refreshOptions"];
   mode?: IndicesUpdateMode;
+  onSimulateIndexTemplate?: (indexName: string) => Promise<ServerResponse<IndexItemRemote>>;
 }
 
 export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
 }
 
-const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }: IndexDetailProps, ref: Ref<IIndexDetailRef>) => {
+const IndexDetail = (
+  { value, onChange, isEdit, oldValue, refreshOptions, mode, onSimulateIndexTemplate }: IndexDetailProps,
+  ref: Ref<IIndexDetailRef>
+) => {
+  const hasEdit = useRef(false);
   const onValueChange = useCallback(
-    (name: string, val) => {
+    (name: string | string[], val) => {
       let finalValue = value || {};
       set(finalValue, name, val);
-      onChange(finalValue);
+      onChange({ ...finalValue });
+      if (name !== "index") {
+        hasEdit.current = true;
+      }
     },
     [onChange, value]
   );
   const [errors, setErrors] = useState({} as Record<string, string>);
+  const [templateSimulateLoading, setTemplateSimulateLoading] = useState(false);
   const finalValue = value || {};
-  const indexSettings = get(value, "settings.index");
-  const restSettingValue = useMemo(() => {
-    const hiddenList = ["number_of_replicas", "number_of_shards"];
-    return Object.entries(indexSettings || {}).reduce((total, current) => {
-      if (hiddenList.includes(current[0])) {
-        return total;
-      }
-      return {
-        ...total,
-        [current[0]]: current[1],
-      };
-    }, {});
-  }, [indexSettings]);
+  const settingsRef = useRef<IFormGeneratorRef>(null);
   useImperativeHandle(ref, () => ({
-    validate: () => {
+    validate: async () => {
       if (!value?.index) {
         setErrors({
           index: "Index name can not be null.",
         });
-        return Promise.resolve(false);
+        return false;
       }
       setErrors({});
-      return Promise.resolve(true);
+      const result = await settingsRef.current?.validatePromise();
+      if (result?.errors) {
+        return false;
+      }
+      return true;
     },
   }));
+  const onIndexInputBlur = useCallback(async () => {
+    if (finalValue.index && onSimulateIndexTemplate) {
+      setTemplateSimulateLoading(true);
+      const result = await onSimulateIndexTemplate(finalValue.index);
+      setTemplateSimulateLoading(false);
+      if (result && result.ok) {
+        let onChangePromise: Promise<IndexItemRemote>;
+        if (hasEdit.current) {
+          onChangePromise = new Promise((resolve) => {
+            Modal.show({
+              title: "Confirm",
+              content: "The index name has matched one or more index templates, please choose which way to go on",
+              locale: {
+                confirm: "Overwrite",
+                cancel: "Merge the template",
+              },
+              type: "confirm",
+              "data-test-subj": "simulate-confirm",
+              onOk: () => resolve(result.response),
+              onCancel: () => {
+                const formatValue: IndexItemRemote = {
+                  index: "",
+                  ...finalValue,
+                  mappings: {
+                    properties: transformArrayToObject(finalValue.mappings?.properties || []),
+                  },
+                };
+                const mergedValue: IndexItemRemote = {
+                  index: finalValue.index || "",
+                };
+                merge(mergedValue, result.response, formatValue);
+                resolve(mergedValue);
+              },
+            });
+          });
+        } else {
+          onChangePromise = Promise.resolve(result.response);
+        }
+        onChangePromise.then((data) => {
+          onChange({
+            ...data,
+            mappings: {
+              properties: transformObjectToArray(data?.mappings?.properties || {}),
+            },
+          });
+          hasEdit.current = false;
+        });
+      }
+    }
+  }, [finalValue.index, onSimulateIndexTemplate]);
+  const formFields: IField[] = useMemo(() => {
+    return [
+      {
+        rowProps: {
+          label: "Number of shards",
+          helpText: "The number of primary shards in the index. Default is 1.",
+        },
+        name: "index.number_of_shards",
+        type: "Number",
+        options: {
+          rules: [
+            {
+              required: true,
+            },
+          ],
+          props: {
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) || templateSimulateLoading || !finalValue.index,
+            placeholder: "The number of primary shards in the index. Default is 1.",
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Number of replicas",
+          helpText: "The number of replica shards each primary shard should have.",
+        },
+        name: "index.number_of_replicas",
+        type: "Number",
+        options: {
+          rules: [
+            {
+              required: true,
+            },
+          ],
+          props: {
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) || templateSimulateLoading || !finalValue.index,
+            placeholder: "The number of replica shards each primary shard should have.",
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Refresh interval of index",
+          helpText: "How often the index should refresh, which publishes its most recent changes and makes them available for searching.",
+        },
+        name: "index.refresh_interval",
+        type: "Input",
+        options: {
+          props: {
+            disabled:
+              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval")) || templateSimulateLoading || !finalValue.index,
+            placeholder: "Can be set to -1 to disable refreshing.",
+          },
+        },
+      },
+    ] as IField[];
+  }, [isEdit, finalValue.index, templateSimulateLoading]);
   return (
     <>
       {isEdit && mode && mode !== IndicesUpdateMode.alias ? null : (
@@ -71,7 +184,7 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }
             <div style={{ paddingLeft: "10px" }}>
               <EuiFormRow
                 label="Index name"
-                helpText="Some reestrictrion text on domain"
+                helpText={finalValue.index ? "Some restriction text on domain" : "Please enter the name before moving to other fields"}
                 isInvalid={!!errors["index"]}
                 error={errors["index"]}
               >
@@ -79,7 +192,9 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }
                   placeholder="Please enter the name for your index"
                   value={finalValue.index}
                   onChange={(e) => onValueChange("index", e.target.value)}
-                  disabled={isEdit}
+                  onBlur={onIndexInputBlur}
+                  isLoading={templateSimulateLoading}
+                  disabled={isEdit || templateSimulateLoading}
                 />
               </EuiFormRow>
               <EuiFormRow label="Index alias  - optional" helpText="Select existing aliases or specify a new alias">
@@ -87,6 +202,7 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }
                   refreshOptions={refreshOptions}
                   value={finalValue.aliases}
                   onChange={(value) => onValueChange("aliases", value)}
+                  isDisabled={!finalValue.index}
                 />
               </EuiFormRow>
             </div>
@@ -98,50 +214,40 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }
         <>
           <ContentPanel title="Index settings" titleSize="s">
             <div style={{ paddingLeft: "10px" }}>
-              <EuiFormRow label="Number of shards" helpText="The number of primary shards in the index. Default is 1.">
-                <EuiFieldNumber
-                  disabled={isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")}
-                  placeholder="The number of primary shards in the index. Default is 1."
-                  value={finalValue?.settings?.index?.number_of_shards}
-                  onChange={(e) => onValueChange("settings.index.number_of_shards", e.target.value)}
-                />
-              </EuiFormRow>
-              <EuiFormRow label="Number of replicas" helpText="The number of replica shards each primary shard should have.">
-                <EuiFieldNumber
-                  disabled={isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")}
-                  placeholder="The number of replica shards each primary shard should have."
-                  value={finalValue?.settings?.index?.number_of_replicas}
-                  onChange={(e) => onValueChange("settings.index.number_of_replicas", e.target.value)}
-                />
-              </EuiFormRow>
-              <EuiSpacer size="m" />
-              <EuiAccordion id="accordion_for_create_index_settings" buttonContent={<h4>Advanced settings</h4>}>
-                <EuiSpacer size="m" />
-                <EuiFormRow
-                  label="Specify advanced index settings"
-                  helpText={
-                    <>
-                      Specify a comma-delimited list of settings.
-                      <EuiLink
-                        href="https://opensearch.org/docs/latest/opensearch/rest-api/index-apis/create-index/#index-settings"
-                        target="_blank"
-                      >
-                        View index settings
-                      </EuiLink>
-                    </>
+              <FormGenerator
+                ref={settingsRef}
+                value={{ ...finalValue.settings }}
+                onChange={(totalValue, name, val) => {
+                  if (name) {
+                    onValueChange(["settings", name], val);
+                  } else {
+                    onValueChange("settings", val);
                   }
-                >
-                  <JSONEditor
-                    value={JSON.stringify(restSettingValue)}
-                    onChange={(val: string) =>
-                      onValueChange("settings.index", {
-                        ...get(value, "settings.index"),
-                        ...JSON.parse(val),
-                      })
-                    }
-                  />
-                </EuiFormRow>
-              </EuiAccordion>
+                }}
+                formFields={formFields}
+                hasAdvancedSettings
+                advancedSettingsProps={{
+                  accordionProps: {
+                    initialIsOpen: false,
+                    id: "accordion_for_create_index_settings",
+                    buttonContent: <h4>Advanced settings</h4>,
+                  },
+                  rowProps: {
+                    label: "Specify advanced index settings",
+                    helpText: (
+                      <>
+                        Specify a comma-delimited list of settings.
+                        <EuiLink
+                          href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                          target="_blank"
+                        >
+                          View index settings
+                        </EuiLink>
+                      </>
+                    ),
+                  },
+                }}
+              />
             </div>
           </ContentPanel>
           <EuiSpacer />
@@ -161,6 +267,12 @@ const IndexDetail = ({ value, onChange, isEdit, oldValue, refreshOptions, mode }
           </div>
         </ContentPanel>
       )}
+      {templateSimulateLoading ? (
+        <EuiOverlayMask headerZindexLocation="below">
+          <EuiLoadingSpinner size="l" />
+          We are simulating your template with existing templates, please wait for a second.
+        </EuiOverlayMask>
+      ) : null}
     </>
   );
 };

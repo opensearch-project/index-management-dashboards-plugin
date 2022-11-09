@@ -41,15 +41,23 @@ export interface IndexItem {
   index: string;
   indexUuid?: string;
   settings?: {
-    index: {
+    index?: {
       number_of_shards: number;
       number_of_replicas: number;
       creation_date?: string;
+      [key: string]: any;
     };
+    [key: string]: any;
   };
   aliases?: Record<string, {}>;
   mappings?: {
     properties?: MappingsProperties;
+  };
+}
+
+export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
+  mappings?: {
+    properties?: MappingsPropertiesObject;
   };
 }
 
@@ -592,6 +600,21 @@ export interface IAPICaller {
   endpoint: string;
   method?: string;
   data?: any;
+}
+
+export interface IRecoveryItem {
+  index: string;
+  stage: "done" | "translog";
+}
+
+export interface ITaskItem {
+  action: string;
+  description: string;
+}
+
+export interface IReindexItem extends ITaskItem {
+  fromIndex: string;
+  toIndex: string;
 }
 
 export type IAliasAction = Record<string, { index: string; alias: string }>;

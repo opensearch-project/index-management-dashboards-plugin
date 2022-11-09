@@ -324,7 +324,7 @@ export interface QueryStringQuery<T extends string> {
 export interface CatIndex {
   "docs.count": string;
   "docs.deleted": string;
-  health: string;
+  health: "red" | "yellow" | "green";
   index: string;
   pri: string;
   "pri.store.size": string;
@@ -333,6 +333,7 @@ export interface CatIndex {
   "store.size": string;
   uuid: string;
   data_stream: string | null;
+  extraStatus?: "recovery" | "reindex" | "";
 }
 
 export interface CatSnapshotIndex {

@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormGenerator /> spec render the component 1`] = `
+HTMLCollection [
+  <div>
+    <div
+      class="euiForm"
+    >
+      <div
+        class="euiFormRow"
+        data-test-subj="form-name-test"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            test
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText"
+                data-meta="Field"
+                id="test"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        data-test-subj="form-name-test_component"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            component test
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <input
+            data-meta="Field"
+            id="test_component"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        data-test-subj="form-name-test_component_2"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            component test
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <input
+                class="euiFieldText"
+                data-meta="Field"
+                id="test_component_2"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;

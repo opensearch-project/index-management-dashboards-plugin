@@ -6,16 +6,20 @@
 import React, { Component } from "react";
 import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
-import { get, pick, set } from "lodash";
+import { get, set, differenceWith, isEqual } from "lodash";
 import { diffArrays } from "diff";
+import flattern from "flat";
+// eui depends on react-ace, so we can import react-ace here
+import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
 import IndexDetail from "../../components/IndexDetail";
-import { IAliasAction, IndexItem, MappingsProperties } from "../../../../../models/interfaces";
-import { BREADCRUMBS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
+import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
+import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IIndexDetailRef, IndexDetailProps } from "../../components/IndexDetail/IndexDetail";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
 import { CommonService } from "../../../../services/index";
 import { ServerResponse } from "../../../../../server/models/types";
+import { Modal } from "../../../../components/Modal";
 
 interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
   isEdit?: boolean;
@@ -35,10 +39,9 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     indexDetail: {
       index: "",
       settings: {
-        index: {
-          number_of_shards: 1,
-          number_of_replicas: 1,
-        },
+        "index.number_of_shards": 1,
+        "index.number_of_replicas": 1,
+        "index.refresh_interval": "1s",
       },
       mappings: {},
     },
@@ -57,44 +60,37 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
   componentDidMount = async (): Promise<void> => {
     const isEdit = this.isEdit;
     if (isEdit) {
-      try {
-        if (!this.index) {
-          throw new Error(`Invalid Index: ${this.index}`);
-        }
-        const response: ServerResponse<Record<string, IndexItem>> = await this.props.commonService.apiCaller({
-          endpoint: "indices.get",
-          data: {
-            index: this.index,
-          },
-        });
-        if (response.ok) {
-          const payload = {
-            ...response.response[this.index || ""],
-            index: this.index,
-          };
-          set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
+      const response: ServerResponse<Record<string, IndexItem>> = await this.props.commonService.apiCaller({
+        endpoint: "indices.get",
+        data: {
+          index: this.index,
+          flat_settings: true,
+        },
+      });
+      if (response.ok) {
+        const payload = {
+          ...response.response[this.index || ""],
+          index: this.index,
+        };
+        set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
 
-          this.setState({
-            indexDetail: payload,
-            oldIndexDetail: JSON.parse(JSON.stringify(payload)),
-          });
-        } else {
-          throw Error(response.error);
-        }
-      } catch (e: any) {
-        this.context.notifications.toasts.addDanger(e.message);
+        this.setState({
+          indexDetail: payload,
+          oldIndexDetail: JSON.parse(JSON.stringify(payload)),
+        });
+      } else {
+        this.context.notifications.toasts.addDanger(response.error);
       }
     }
     this.context.chrome.setBreadcrumbs([
       BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDEX_POLICIES,
+      BREADCRUMBS.INDICES,
       isEdit ? BREADCRUMBS.EDIT_INDEX : BREADCRUMBS.CREATE_INDEX,
     ]);
   };
 
   onCancel = (): void => {
-    if (this.props.isEdit) this.props.history.goBack();
-    else this.props.history.push(ROUTES.INDEX_POLICIES);
+    this.props.history.push(ROUTES.INDICES);
   };
 
   onDetailChange: IndexDetailProps["onChange"] = (value) => {
@@ -156,15 +152,38 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     });
   };
   updateSettings = async (): Promise<ServerResponse<any>> => {
-    const { indexDetail } = this.state;
+    const { indexDetail, oldIndexDetail } = this.state;
     const { index } = indexDetail;
+
+    const newSettings = (indexDetail?.settings || {}) as Required<IndexItem>["settings"];
+    const oldSettings = (oldIndexDetail?.settings || {}) as Required<IndexItem>["settings"];
+    const differences = differenceWith(Object.entries(newSettings), Object.entries(oldSettings), isEqual);
+    if (!differences.length) {
+      return {
+        ok: true,
+        response: {},
+      };
+    }
+
+    const finalSettings = differences.reduce((total, current) => {
+      if (newSettings[current[0]] !== undefined) {
+        return {
+          ...total,
+          [current[0]]: newSettings[current[0]],
+        };
+      }
+
+      return total;
+    }, {});
+
     return await this.props.commonService.apiCaller({
       endpoint: "indices.putSettings",
       method: "PUT",
       data: {
         index,
+        flat_settings: true,
         // In edit mode, only dynamic settings can be modified
-        body: pick(indexDetail.settings, INDEX_DYNAMIC_SETTINGS),
+        body: finalSettings,
       },
     });
   };
@@ -219,6 +238,61 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     };
   };
 
+  showDiff = async (): Promise<ServerResponse<any>> => {
+    return new Promise((resolve, reject) => {
+      Modal.show({
+        title: "Please confirm the change.",
+        "data-test-subj": "change_diff_confirm",
+        type: "confirm",
+        content: (
+          <>
+            <h2>The following changes will be done once you click the confirm button, Please make sure you want to do all the changes.</h2>
+            <EuiSpacer />
+            <MonacoEditorDiffReact
+              options={{
+                readOnly: true,
+              }}
+              language="json"
+              width="100%"
+              height={600}
+              original={JSON.stringify(
+                {
+                  ...this.state.oldIndexDetail,
+                  mappings: {
+                    properties: transformArrayToObject(this.state.oldIndexDetail?.mappings?.properties || []),
+                  },
+                } as IndexItemRemote,
+                null,
+                2
+              )}
+              modified={JSON.stringify(
+                {
+                  ...this.state.indexDetail,
+                  mappings: {
+                    properties: transformArrayToObject(this.state.indexDetail?.mappings?.properties || []),
+                  },
+                },
+                null,
+                2
+              )}
+            />
+          </>
+        ),
+        onOk: () =>
+          resolve({
+            ok: true,
+            response: {},
+          }),
+        onCancel: () => {
+          resolve({
+            ok: false,
+            error: "",
+          });
+        },
+      });
+    });
+  };
+
   onSubmit = async (): Promise<void> => {
     const { mode } = this.props.match.params;
     const { indexDetail } = this.state;
@@ -229,9 +303,14 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     this.setState({ isSubmitting: true });
     let result: ServerResponse<any>;
     if (this.isEdit) {
-      let chainedPromises = [];
+      const diffConfirm = await this.showDiff();
+      if (!diffConfirm.ok) {
+        this.setState({ isSubmitting: false });
+        return;
+      }
+      let chainedPromises: Promise<ServerResponse<any>>[] = [];
       if (!mode) {
-        chainedPromises = [this.updateMappings(), this.updateAlias(), this.updateSettings()];
+        chainedPromises.push(...[this.updateMappings(), this.updateAlias(), this.updateSettings()]);
       } else {
         switch (mode) {
           case IndicesUpdateMode.alias:
@@ -261,6 +340,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
         },
       });
     }
+    this.setState({ isSubmitting: false });
 
     // handle all the response here
     if (result && result.ok) {
@@ -269,8 +349,33 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     } else {
       this.context.notifications.toasts.addDanger(result.error);
     }
+  };
 
-    this.setState({ isSubmitting: false });
+  onSimulateIndexTemplate = (indexName: string): Promise<ServerResponse<IndexItemRemote>> => {
+    return this.props.commonService
+      .apiCaller<{ template: IndexItemRemote }>({
+        endpoint: "transport.request",
+        data: {
+          path: `/_index_template/_simulate_index/${indexName}`,
+          method: "POST",
+        },
+      })
+      .then((res) => {
+        if (res.ok && res.response && res.response.template) {
+          return {
+            ...res,
+            response: {
+              ...res.response.template,
+              settings: flattern(res.response.template?.settings || {}),
+            },
+          };
+        }
+
+        return {
+          ok: false,
+          error: "",
+        } as ServerResponse<IndexItemRemote>;
+      });
   };
 
   render() {
@@ -290,6 +395,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
           value={indexDetail}
           oldValue={oldIndexDetail}
           onChange={this.onDetailChange}
+          onSimulateIndexTemplate={this.onSimulateIndexTemplate}
           refreshOptions={(aliasName) =>
             this.props.commonService.apiCaller({
               endpoint: "cat.aliases",
