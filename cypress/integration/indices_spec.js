@@ -215,6 +215,7 @@ describe("Indices", () => {
     const reindexedIndex = "reindex_opensearch_dashboards_sample_data_ecommerce";
     const splittedIndex = "split_opensearch_dashboards_sample_data_logs";
     before(() => {
+      cy.deleteAllIndices();
       // Visit ISM OSD
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
 
@@ -222,35 +223,25 @@ describe("Indices", () => {
       cy.contains("Rows per page", { timeout: 60000 });
 
       cy.request({
-        method: "PUT",
-        url: `${Cypress.env("opensearch")}/opensearch_dashboards_sample_data_logs/_settings`,
-        body: {
-          "index.blocks.read_only": false,
+        method: "POST",
+        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/ecommerce`,
+        headers: {
+          "osd-xsrf": true,
         },
-        failOnStatusCode: false,
+      }).then((response) => {
+        expect(response.status).equal(200);
       });
 
-      cy.window().then((window) => {
-        const fetchMethod = (url, method) =>
-          window.fetch(url, {
-            method,
-            headers: {
-              "osd-version": "2.4.0",
-            },
-          });
-        return Promise.all([
-          fetchMethod("/api/sample_data/ecommerce", "DELETE").then(() => fetchMethod("/api/sample_data/ecommerce", "POST")),
-          fetchMethod("/api/sample_data/logs", "DELETE").then(() => fetchMethod("/api/sample_data/logs", "POST")),
-        ]);
-      });
       cy.request({
-        method: "PUT",
-        url: `${Cypress.env("opensearch")}/${splittedIndex}/_settings`,
-        body: {
-          "index.blocks.read_only": false,
+        method: "POST",
+        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/logs`,
+        headers: {
+          "osd-xsrf": true,
         },
-        failOnStatusCode: false,
+      }).then((response) => {
+        expect(response.status).equal(200);
       });
+
       cy.request({
         method: "DELETE",
         url: `${Cypress.env("opensearch")}/${reindexedIndex}`,
@@ -299,7 +290,6 @@ describe("Indices", () => {
           window.fetch(`/api/ism/apiCaller`, {
             headers: {
               "content-type": "application/json",
-              "osd-version": "2.4.0",
             },
             body: JSON.stringify({
               endpoint: "indices.split",
