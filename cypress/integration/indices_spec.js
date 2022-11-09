@@ -322,4 +322,119 @@ describe("Indices", () => {
       cy.get('[placeholder="Search"]').type("p");
     });
   });
+
+  describe("can shrink an index", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.createIndex(SAMPLE_INDEX, null, {
+        settings: { "index.blocks.write": true, "index.number_of_shards": 2, "index.number_of_replicas": 0 },
+      });
+    });
+
+    it("successfully shrink an index", () => {
+      // Type in SAMPLE_INDEX in search input
+      cy.get(`input[type="search"]`).focus().type(SAMPLE_INDEX);
+
+      // Confirm we have our initial index
+      cy.contains(SAMPLE_INDEX);
+
+      cy.get('[data-test-subj="More Action"]').click();
+      // Shrink btn should be disabled if no items selected
+      cy.get('[data-test-subj="Shrink Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select an index
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+
+      cy.get('[data-test-subj="More Action"]').click();
+      // Shrink btn should be enabled
+      cy.get('[data-test-subj="Shrink Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for Shrink index flyout
+      cy.contains("Shrink index");
+
+      // Enter target index name
+      cy.get(`input[data-test-subj="targetIndexNameInput"]`).type(`${SAMPLE_INDEX}_shrunken`);
+
+      // Click shrink index button
+      cy.get("button").contains("Shrink index").click({ force: true });
+
+      // Check for success toast
+      cy.contains("Shrink index successfully");
+    });
+  });
+
+  describe("can close and open an index", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.createIndex(SAMPLE_INDEX);
+    });
+
+    it("successfully close an index", () => {
+      cy.contains(SAMPLE_INDEX);
+
+      cy.get('[data-test-subj="More Action"]').click();
+      // Close btn should be disabled if no items selected
+      cy.get('[data-test-subj="Close Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select an index
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+
+      cy.get('[data-test-subj="More Action"]').click();
+      // Close btn should be enabled
+      cy.get('[data-test-subj="Close Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for close index modal
+      cy.contains("Close indices");
+
+      // Close confirm button should be disabled
+      cy.get('[data-test-subj="Close Confirm button"]').should("have.class", "euiButton-isDisabled");
+      // type close
+      cy.get('[placeholder="close"]').type("close");
+      cy.get('[data-test-subj="Close Confirm button"]').should("not.have.class", "euiContextMenuItem-isDisabled");
+
+      // Click close confirm button
+      cy.get('[data-test-subj="Close Confirm button"]').click();
+
+      // Check for success toast
+      cy.contains("Close index successfully");
+
+      // Confirm the index is closed
+      cy.get(`input[type="search"]`).focus().type(SAMPLE_INDEX);
+      cy.get("tbody > tr").should(($tr) => {
+        expect($tr, "1 row").to.have.length(1);
+        expect($tr, "item").to.contain("close");
+      });
+    });
+
+    it("successfully open an index", () => {
+      // Confirm we have our initial index
+      cy.contains(SAMPLE_INDEX);
+
+      cy.get('[data-test-subj="More Action"]').click();
+      // Open btn should be disabled if no items selected
+      cy.get('[data-test-subj="Open Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select an index
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+
+      cy.get('[data-test-subj="More Action"]').click();
+      // Open btn should be enabled
+      cy.get('[data-test-subj="Open Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for open index modal
+      cy.contains("Open indices");
+
+      cy.get('[data-test-subj="Open Confirm button"]').click();
+
+      // Check for success toast
+      cy.contains("Open index successfully");
+
+      // Confirm the index is open
+      cy.get(`input[type="search"]`).focus().type(SAMPLE_INDEX);
+      cy.get("tbody > tr").should(($tr) => {
+        expect($tr, "1 row").to.have.length(1);
+        expect($tr, "item").to.contain("open");
+      });
+    });
+  });
 });
