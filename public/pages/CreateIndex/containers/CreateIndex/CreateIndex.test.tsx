@@ -152,14 +152,6 @@ function renderCreateIndexWithRouter(initialEntries = [ROUTES.CREATE_INDEX] as s
 }
 
 describe("<CreateIndex /> spec", () => {
-  it("renders the create component", async () => {
-    const { container } = renderCreateIndexWithRouter();
-
-    await waitFor(() => {});
-
-    expect(container.firstChild).toMatchSnapshot();
-  });
-
   it("show a toast if getIndices gracefully fails", async () => {
     const { getByText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/bad_index`]);
 
