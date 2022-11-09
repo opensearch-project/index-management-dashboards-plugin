@@ -77,7 +77,7 @@ const SnapshotRestoreAdvancedOptions = ({
         label={
           <CheckBoxLabel
             title="Ignore unavailable indices"
-            helpText="Instead of failing snapshot, ignore any indexes that are unavailable or do not exist."
+            helpText="Instead of failing restore operation, ignore any indices that are unavailable or do not exist."
           />
         }
         checked={ignoreUnavailable}
