@@ -482,13 +482,6 @@ describe("Indices", () => {
 
       cy.get(`div[data-test-subj="destIndicesComboInput"]`)
         .find(`input[data-test-subj="comboBoxSearchInput"]`)
-        .type(`${SAMPLE_INDEX}{enter}`, { delay: 10 });
-
-      // dest index settings not show up
-      cy.get('div[data-test-subj="destSettingJsonEditor"]').should("not.exist");
-
-      cy.get(`div[data-test-subj="destIndicesComboInput"]`)
-        .find(`input[data-test-subj="comboBoxSearchInput"]`)
         .type(`${REINDEX_DEST}{enter}`);
 
       // dest index settings show up
