@@ -21,6 +21,9 @@ import OpenIndexModal from "../../components/OpenIndexModal";
 import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 import { getErrorMessage } from "../../../../utils/helpers";
 import ReindexFlyout from "../../components/ReindexFlyout";
+import SplitIndexFlyout from "../../components/SplitIndexFlyout";
+import {IndexItem} from "../../../../../models/interfaces";
+import {ServerResponse} from "../../../../../server/models/types";
 
 export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
@@ -38,6 +41,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
   const [shrinkIndexFlyoutVisible, setShrinkIndexFlyoutVisible] = useState(false);
   const [isReindexFlyoutVisible, setIsReindexFlyoutVisible] = useState(false);
+  const [splitIndexFlyoutVisible, setSplitIndexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -60,6 +64,34 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(result?.error || "");
     }
   }, [selectedItems, services, coreServices, onDelete, onDeleteIndexModalClose]);
+
+  const onCloseFlyout = () => {
+    setSplitIndexFlyoutVisible(false);
+  };
+
+  const splitIndex = async (targetIndex: String, settingsPayload: Required<IndexItem>["settings"]) => {
+    const result = await services?.commonService.apiCaller({
+      endpoint: "indices.split",
+      method: "PUT",
+      data: {
+        index: selectedItems.map((item) => item.index).join(","),
+        target: targetIndex,
+        body: {
+          settings: {
+            ...settingsPayload
+          },
+        },
+      },
+    });
+    if (result && result.ok) {
+      coreServices?.notifications.toasts.addSuccess(`Successfully submit split index request.`);
+      onDelete();
+      onCloseFlyout();
+    } else {
+      coreServices.notifications.toasts.addDanger(result?.error ||
+        "There was a problem submit split index request, please check with admin");
+    }
+  };
 
   const onOpenIndexModalClose = () => {
     setOpenIndexModalVisible(false);
@@ -142,22 +174,20 @@ export default function IndicesActions(props: IndicesActionsProps) {
     [services, coreServices, props.onShrink, onShrinkIndexFlyoutClose]
   );
 
-  const getIndexSettings = async (indexName: string, flat: boolean): Promise<Object> => {
-    try {
-      const result = await services.commonService.apiCaller({
-        endpoint: "indices.getSettings",
-        data: {
-          index: indexName,
-          flat_settings: flat,
-        },
-      });
-      if (result && result.ok) {
-        return result.response;
-      } else {
-        coreServices.notifications.toasts.addDanger(result.error);
-      }
-    } catch (err) {
-      coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem getting index settings."));
+  const getIndexSettings = async (indexName: string, flat: boolean): Promise<Record<string, IndexItem>> => {
+    const result : ServerResponse<Record<string, IndexItem>> = await services.commonService.apiCaller({
+      endpoint: "indices.getSettings",
+      data: {
+        index: indexName,
+        flat_settings: flat,
+      },
+    });
+    if (result && result.ok) {
+      return result.response;
+    } else {
+      const errorMessage = `There is a problem getting index setting for ${indexName}, please check with Admin`;
+      coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
+      throw new Error(result?.error || errorMessage);
     }
   };
 
@@ -250,6 +280,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       onClick: () => setShrinkIndexFlyoutVisible(true),
                     },
                     {
+                      name: "Split",
+                      "data-test-subj": "Split Action",
+                      disabled: !selectedItems.length
+                        || selectedItems.length > 1,
+                      onClick: () => setSplitIndexFlyoutVisible(true),
+                    },
+                    {
                       name: "Delete",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Delete Action",
@@ -300,6 +337,15 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onReindexConfirm={onReindexConfirm}
         />
       )}
+
+      {splitIndexFlyoutVisible &&
+        <SplitIndexFlyout
+          sourceIndex={selectedItems[0]}
+          onCloseFlyout={onCloseFlyout}
+          onSplitIndex={splitIndex}
+          getIndexSettings={getIndexSettings}
+          coreServices={coreServices}
+        />}
     </>
   );
 }

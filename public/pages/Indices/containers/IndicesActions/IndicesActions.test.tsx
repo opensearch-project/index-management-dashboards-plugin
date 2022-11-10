@@ -46,13 +46,14 @@ describe("<IndicesActions /> spec", () => {
       expect(getByTestId("Shrink Action")).toBeDisabled();
       expect(getByTestId("Delete Action")).toBeDisabled();
       expect(getByTestId("Apply policyButton")).toBeDisabled();
+      expect(getByTestId("Split Action")).toBeDisabled();
     });
   });
 
   it("open index by calling commonService", async () => {
     const onOpen = jest.fn();
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
-    const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
+    const { container, getByTestId } = renderWithRouter({
       selectedItems: [
         {
           "docs.count": "5",
@@ -225,7 +226,7 @@ describe("<IndicesActions /> spec", () => {
         return { ok: true, response: {} };
       }
     );
-    const { container, getByTestId, getByPlaceholderText, findByTestId } = renderWithRouter({
+    const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
       selectedItems: [
         {
           "docs.count": "5",
