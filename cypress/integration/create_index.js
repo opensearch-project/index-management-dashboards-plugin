@@ -59,11 +59,14 @@ describe("Create Index", () => {
       // type field name
       cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX).blur();
 
+      cy.wait(1000);
+
       cy.get('[data-test-subj="comboBoxSearchInput"]').get('[title="alias_for_specific_1"]').should("exist");
 
       cy.get('[data-test-subj="comboBoxSearchInput"]').type("some_test_alias{enter}");
       // add a field
       cy.get('[data-test-subj="create index add field button"]').click().end();
+      cy.get('[data-test-subj="mapping-visual-editor-1-field-name"]').type("text_mappings");
 
       // click create
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
@@ -83,6 +86,9 @@ describe("Create Index", () => {
         .end()
         .get('[data-test-subj="mapping-visual-editor-0-field-type"]')
         .should("have.value", "text")
+        .end()
+        .get('[data-test-subj="mapping-visual-editor-1-field-name"]')
+        .should("have.value", "text_mappings")
         .end();
     });
 
@@ -187,6 +193,9 @@ describe("Create Index", () => {
       cy.get('[data-test-subj="create index add field button"]')
         .click()
         .end()
+        .get('[data-test-subj="mapping-visual-editor-2-field-name"]')
+        .type("text_mappings_2")
+        .end()
         .get('[data-test-subj="createIndexCreateButton"]')
         .click({ force: true })
         .get('[data-test-subj="change_diff_confirm-confirm"]')
@@ -199,7 +208,7 @@ describe("Create Index", () => {
         .get('[data-test-subj="detail-modal-edit"]')
         .click();
 
-      cy.get('[data-test-subj="mapping-visual-editor-1-field-type"]').should("have.value", "text").end();
+      cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.value", "text").end();
     });
   });
 

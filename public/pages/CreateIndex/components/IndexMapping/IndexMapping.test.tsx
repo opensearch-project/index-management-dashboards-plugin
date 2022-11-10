@@ -3,24 +3,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import React, { forwardRef, Ref, useRef, useState } from "react";
+import { render, fireEvent, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import IndexMapping, { IndexMappingProps, transformObjectToArray } from "./IndexMapping";
+import IndexMapping, { IIndexMappingsRef, IndexMappingProps, transformObjectToArray } from "./IndexMapping";
 import { MappingsProperties } from "../../../../../models/interfaces";
+import { renderHook } from "@testing-library/react-hooks";
 
-const IndexMappingOnChangeWrapper = (props: Partial<IndexMappingProps>) => {
+const IndexMappingOnChangeWrapper = forwardRef((props: Partial<IndexMappingProps>, ref: Ref<IIndexMappingsRef>) => {
   const [value, setValue] = useState(props.value as any);
   return (
     <IndexMapping
       {...props}
+      ref={ref}
       value={value}
       onChange={(val) => {
         setValue(val);
       }}
     />
   );
-};
+});
 
 describe("<IndexMapping /> spec", () => {
   it("renders the component", () => {
@@ -39,13 +41,24 @@ describe("<IndexMapping /> spec", () => {
   });
 
   it("render mappings with oldValue in edit mode and all operation works well", async () => {
-    const { getByTestId, getByText, queryByTestId } = render(
-      <IndexMappingOnChangeWrapper
-        isEdit
-        oldValue={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
-        value={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
-      />
-    );
+    const { result } = renderHook(() => {
+      const ref = useRef<IIndexMappingsRef>(null);
+      const renderResult = render(
+        <IndexMappingOnChangeWrapper
+          ref={ref}
+          isEdit
+          oldValue={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
+          value={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
+        />
+      );
+
+      return {
+        renderResult,
+        ref,
+      };
+    });
+    const { renderResult, ref } = result.current;
+    const { getByTestId, getByText, queryByTestId, queryByText } = renderResult;
 
     // old field disable check
     expect(getByTestId("mapping-visual-editor-0-field-name")).toHaveAttribute("disabled");
@@ -63,12 +76,22 @@ describe("<IndexMapping /> spec", () => {
     // empty and duplicate validation for field name
     userEvent.click(document.querySelector('[data-test-subj="mapping-visual-editor-1-field-name"]') as Element);
     expect(getByTestId("mapping-visual-editor-1-field-name")).toHaveValue("");
+    expect(queryByText("Field name is required, please input")).toBeNull();
     userEvent.click(document.body);
     expect(getByText("Field name is required, please input")).not.toBeNull();
     userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "object");
     userEvent.click(document.body);
     expect(getByText("Duplicate field name [object], please change your field name")).not.toBeNull();
+    await act(async () => {
+      expect(await ref.current?.validate()).toEqual("with error");
+    });
+    userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
     userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "new_object");
+    await act(async () => {
+      expect(await ref.current?.validate()).toEqual("");
+    });
+    expect(queryByText("Duplicate field name [object], please change your field name")).toBeNull();
+    userEvent.click(document.body);
 
     // only show the sub action for type of object
     expect(queryByTestId("mapping-visual-editor-1-add-sub-field")).toBeNull();

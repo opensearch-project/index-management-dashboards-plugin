@@ -56,6 +56,7 @@ class Field {
         parseName: false,
         forceUpdate: false,
         scrollToFirstError: true,
+        scrollDom: window,
         first: false,
         onChange: () => {},
         autoUnmount: true,
@@ -182,13 +183,9 @@ class Field {
     const inputProps = {
       "data-meta": "Field",
       id: id || name,
-      // ref: this._getCacheBind(name, `${name}__ref`, this._saveRef),
+      ref: this._getCacheBind(name, `${name}__ref`, this._saveRef),
       [valueName]: setValueFormatter ? setValueFormatter(field.value) : field.value,
     };
-
-    if (field.ref) {
-      inputProps.ref = this._getCacheBind(name, `${name}__ref`, this._saveRef);
-    }
 
     let rulesMap = {};
 
@@ -724,6 +721,14 @@ class Field {
       return error;
     }
     this._reRender();
+
+    if (this.options.scrollToFirstError) {
+      scrollToFirstError({
+        errorsGroup,
+        options: this.options,
+        instance: this.instance,
+      });
+    }
 
     return callbackResults;
   }
