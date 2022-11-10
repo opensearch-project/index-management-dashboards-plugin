@@ -1,0 +1,457 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SplitIndexFlyout /> spec renders the component 1`] = `
+HTMLCollection [
+  <div
+    aria-hidden="true"
+    data-aria-hidden="true"
+  />,
+  <div
+    class="euiOverlayMask euiOverlayMask--belowHeader"
+  >
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+    <div
+      data-focus-lock-disabled="false"
+    >
+      <div
+        class="euiFlyout euiFlyout--medium euiFlyout--paddingLarge"
+        role="dialog"
+        tabindex="-1"
+      >
+        <div
+          class="euiFlyoutHeader euiFlyoutHeader--hasBorder"
+        >
+          <h2
+            class="euiTitle euiTitle--medium"
+            id="flyoutTitle"
+          >
+             Split Index
+          </h2>
+        </div>
+        <div
+          class="euiCallOut euiCallOut--warning"
+          data-test-subj="Source Index Warning"
+          hidden=""
+        >
+          <div
+            class="euiText euiText--small"
+          >
+            <div
+              class="euiTextColor euiTextColor--default"
+            >
+              <div
+                style="line-height: 1.5;"
+              >
+                <p>
+                  The source index is not ready to split, may due to the following reasons:
+                </p>
+                <ul />
+                <a
+                  class="euiLink euiLink--primary"
+                  href="https://opensearch.org/docs/1.2/opensearch/rest-api/index-apis/split/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more
+                  EuiIconMock
+                  <span
+                    class="euiScreenReaderOnly"
+                  >
+                    (opens in a new tab or window)
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlyoutBody"
+        >
+          <div
+            class="euiFlyoutBody__overflow"
+            tabindex="0"
+          >
+            <div
+              class="euiFlyoutBody__overflowContent"
+            >
+              <div
+                class="euiFormRow"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="some_html_id"
+                  >
+                    Source Index Name
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    class="euiText euiText--medium"
+                    data-test-subj="Source Index Name"
+                  />
+                </div>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--l"
+              />
+              <div
+                class="euiForm"
+              >
+                <div
+                  class="euiFormRow"
+                  data-test-subj="form-name-targetIndex"
+                  id="some_html_id-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      aria-invalid="false"
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
+                    >
+                      Target Index Name
+                    </label>
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <div
+                      class="euiFormControlLayout"
+                    >
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <input
+                          class="euiFieldText"
+                          data-meta="Field"
+                          id="targetIndex"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiFormRow"
+                  data-test-subj="form-name-index.number_of_shards"
+                  id="some_html_id-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      aria-invalid="false"
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
+                    >
+                      Number of shards
+                    </label>
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <div
+                      class="euiFormHelpText euiFormRow__text"
+                      style="padding-top: 0px; padding-bottom: 4px;"
+                    >
+                      Must be a multi of undefined
+                    </div>
+                    <div
+                      class="euiFormControlLayout"
+                    >
+                      <div
+                        class="euiFormControlLayout__childrenWrapper"
+                      >
+                        <input
+                          class="euiFieldNumber"
+                          data-meta="Field"
+                          id="index.number_of_shards"
+                          type="number"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="euiSpacer euiSpacer--m"
+                />
+                <div
+                  class="euiAccordion"
+                >
+                  <div
+                    class="euiAccordion__triggerWrapper"
+                  >
+                    <button
+                      aria-controls="accordion_for_create_index_settings"
+                      aria-expanded="false"
+                      class="euiAccordion__button"
+                      id="some_html_id"
+                      type="button"
+                    >
+                      <span
+                        class="euiAccordion__iconWrapper"
+                      >
+                        EuiIconMock
+                      </span>
+                      <span
+                        class="euiIEFlexWrapFix"
+                      >
+                        <h4>
+                          Advanced settings
+                        </h4>
+                      </span>
+                    </button>
+                  </div>
+                  <div
+                    aria-labelledby="some_html_id"
+                    class="euiAccordion__childWrapper"
+                    id="accordion_for_create_index_settings"
+                    role="region"
+                    tabindex="-1"
+                  >
+                    <div>
+                      <div
+                        class=""
+                      >
+                        <div
+                          class="euiSpacer euiSpacer--m"
+                        />
+                        <div
+                          class="euiFormRow"
+                          data-test-subj="form-name-advanced-settings"
+                          id="some_html_id-row"
+                        >
+                          <div
+                            class="euiFormRow__labelWrapper"
+                          >
+                            <label
+                              class="euiFormLabel euiFormRow__label"
+                              for="some_html_id"
+                            >
+                              Specify advanced index settings
+                            </label>
+                          </div>
+                          <div
+                            class="euiFormRow__fieldWrapper"
+                          >
+                            <textarea
+                              data-test-subj="json-editor-value-display"
+                              readonly=""
+                              style="display: none;"
+                            >
+                              {}
+                            </textarea>
+                            <div
+                              class="euiCodeEditorWrapper"
+                              data-test-subj="codeEditorContainer"
+                            >
+                              <button
+                                class="euiCodeEditorKeyboardHint"
+                                data-test-subj="codeEditorHint"
+                                id="some_html_id"
+                              >
+                                <p
+                                  class="euiText"
+                                >
+                                  Press Enter to start editing.
+                                </p>
+                                <p
+                                  class="euiText"
+                                >
+                                  When you're done, press Escape to stop editing.
+                                </p>
+                              </button>
+                              <div
+                                class=" ace_editor ace-tm"
+                                id="some_html_id"
+                                style="width: 500px; height: 500px;"
+                              >
+                                <textarea
+                                  aria-describedby="some_html_id-help-0"
+                                  autocapitalize="off"
+                                  autocorrect="off"
+                                  class="ace_text-input"
+                                  spellcheck="false"
+                                  style="opacity: 0;"
+                                  tabindex="-1"
+                                  wrap="off"
+                                />
+                                <div
+                                  aria-hidden="true"
+                                  class="ace_gutter"
+                                >
+                                  <div
+                                    class="ace_layer ace_gutter-layer ace_folding-enabled"
+                                  />
+                                  <div
+                                    class="ace_gutter-active-line"
+                                  />
+                                </div>
+                                <div
+                                  class="ace_scroller"
+                                >
+                                  <div
+                                    class="ace_content"
+                                  >
+                                    <div
+                                      class="ace_layer ace_print-margin-layer"
+                                    >
+                                      <div
+                                        class="ace_print-margin"
+                                        style="left: 4px; visibility: visible;"
+                                      />
+                                    </div>
+                                    <div
+                                      class="ace_layer ace_marker-layer"
+                                    />
+                                    <div
+                                      class="ace_layer ace_text-layer"
+                                      style="padding: 0px 4px;"
+                                    />
+                                    <div
+                                      class="ace_layer ace_marker-layer"
+                                    />
+                                    <div
+                                      class="ace_layer ace_cursor-layer ace_hidden-cursors"
+                                    >
+                                      <div
+                                        class="ace_cursor"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div
+                                  class="ace_scrollbar ace_scrollbar-v"
+                                  style="display: none; width: 20px;"
+                                >
+                                  <div
+                                    class="ace_scrollbar-inner"
+                                    style="width: 20px;"
+                                  />
+                                </div>
+                                <div
+                                  class="ace_scrollbar ace_scrollbar-h"
+                                  style="display: none; height: 20px;"
+                                >
+                                  <div
+                                    class="ace_scrollbar-inner"
+                                    style="height: 20px;"
+                                  />
+                                </div>
+                                <div
+                                  style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
+                                >
+                                  <div
+                                    style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                                  />
+                                  <div
+                                    style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+                                  >
+                                    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="euiFormHelpText euiFormRow__text"
+                              id="some_html_id-help-0"
+                            >
+                              Specify a comma-delimited list of settings.
+                              <a
+                                class="euiLink euiLink--primary"
+                                href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                View index settings
+                                EuiIconMock
+                                <span
+                                  class="euiScreenReaderOnly"
+                                >
+                                  (opens in a new tab or window)
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlyoutFooter"
+        >
+          <div
+            class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+          >
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <button
+                class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--flushLeft"
+                data-test-subj="flyout-footer-cancel-button"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButtonEmpty__content"
+                >
+                  <span
+                    class="euiButtonEmpty__text"
+                  >
+                    Cancel
+                  </span>
+                </span>
+              </button>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
+              <button
+                class="euiButton euiButton--primary euiButton--fill"
+                data-test-subj="flyout-footer-action-button"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButton__content"
+                >
+                  <span
+                    class="euiButton__text"
+                  >
+                    Add Split
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+  </div>,
+]
+`;

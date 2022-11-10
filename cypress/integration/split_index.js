@@ -30,17 +30,6 @@ describe("Split Index", () => {
       // type field name
       cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX).end();
 
-      // Update Index status to blocks write otherwise we can't apply split operation on it
-      cy.get('[placeholder="Advanced Settings"]')
-        .click()
-        .end()
-        .get('[placeholder="Specify advanced index settings"] textarea')
-        .focus()
-        .clear({ force: true })
-        .type('{"blocks.write": true}', { force: true, parseSpecialCharSequences: false })
-        .blur()
-        .end();
-
       // click create
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true }).end();
 
@@ -62,11 +51,8 @@ describe("Split Index", () => {
       });
 
       // Update Index status to blocks write otherwise we can't apply split operation on it
-      /*
       cy.updateIndexSettings(SAMPLE_INDEX, {"index.blocks.write":"true"})
         .end()
-
-       */
     });
 
     it("Split successfully", () => {
@@ -79,16 +65,19 @@ describe("Split Index", () => {
         .get('[data-test-subj="Split Action"]')
         .click()
         .end()
-        .get('[data-test-subj="Split Index Confirm"]')
-        .should("be.disabled")
+        /*
+        .get('[data-test-subj="Source Index Name"]').should("have.value", `${SAMPLE_INDEX}`)
         .end()
-        .get('[data-test-subj="Target Index Name"]')
+        .get('[data-test-subj="Source Index Warning"]').should("not.exist")
+        .end()
+         */
+        .get('[id="targetIndex"]')
         .type(`${SAMPLE_INDEX_SPLIT}`)
         .end()
-        .get('[placeholder="Should be N times of the original index."]')
+        .get('[id="index.number_of_shards"]')
         .type(`${split_number}`)
         .end()
-        .get('[data-test-subj="Split Index Confirm"]')
+        .get('[data-test-subj="flyout-footer-action-button"]')
         .click()
         .end();
 
@@ -107,5 +96,20 @@ describe("Split Index", () => {
 
       cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
     }); // Split
+
+    it("Split failure", () => {
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
+        .click()
+        .end()
+        .get('[data-test-subj="More Action"]')
+        .click()
+        .end()
+        .get('[data-test-subj="Split Action"]')
+        .click()
+        .end()
+        .get('[data-test-subj="flyout-footer-action-button"]')
+        .click()
+        .end();
+    })
   });
 });
