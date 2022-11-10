@@ -62,8 +62,6 @@ HTMLCollection [
           class="euiFormRow__fieldWrapper"
         >
           <input
-            data-meta="Field"
-            id="test_component"
             value=""
           />
         </div>

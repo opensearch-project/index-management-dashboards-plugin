@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, forwardRef } from "react";
 import { EuiComboBox, EuiComboBoxProps } from "@elastic/eui";
 import { useEffect } from "react";
 import { debounce } from "lodash";
@@ -22,7 +22,7 @@ const transformArrayToObj = (array: { label: string }[]): AliasSelectProps["valu
   return array.reduce((total, current) => ({ ...total, [current.label]: {} }), {});
 };
 
-const AliasSelect = (props: AliasSelectProps) => {
+const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInputElement>) => {
   const { value, onChange, refreshOptions: refreshOptionsFromProps, ...others } = props;
   const finalValue = transformObjToArray(value);
   const [allOptions, setAllOptions] = useState([] as { label: string }[]);
@@ -77,6 +77,7 @@ const AliasSelect = (props: AliasSelectProps) => {
   return (
     <EuiComboBox
       {...others}
+      inputRef={ref as (instance: HTMLInputElement | null) => void}
       placeholder="Select or create aliases"
       async
       selectedOptions={finalValue}
@@ -93,7 +94,7 @@ const AliasSelect = (props: AliasSelectProps) => {
       onCreateOption={onCreateOption}
     />
   );
-};
+});
 
 // @ts-ignore
 export default AliasSelect;
