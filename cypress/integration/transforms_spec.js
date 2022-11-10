@@ -27,7 +27,6 @@ describe("Transforms", () => {
 
   beforeEach(() => {
     // delete test transform and index
-    cy.request("DELETE", `${Cypress.env("opensearch")}/test_transform*`);
     cy.request({
       method: "POST",
       url: `${Cypress.env("opensearch")}/_plugins/_transform/${TRANSFORM_ID}/_stop`,

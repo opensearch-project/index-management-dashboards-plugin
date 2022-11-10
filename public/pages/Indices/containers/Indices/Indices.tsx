@@ -220,6 +220,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                     onDelete={this.getIndices}
                     onOpen={this.getIndices}
                     onClose={this.getIndices}
+                    onReindex={this.getIndices}
                     onShrink={this.getIndices}
                     selectedItems={this.state.selectedItems}
                   />
@@ -258,6 +259,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
             onOpen: this.getIndices,
             onClose: this.getIndices,
             onShrink: this.getIndices,
+            onReindex: this.getIndices,
           })}
           isSelectable={true}
           itemId="index"

@@ -148,3 +148,19 @@ export const indicesColumns = (
 ): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
   return isDataStreamColumnVisible ? getColumns(options) : getColumns(options).filter((col) => col["field"] !== "data_stream");
 };
+
+export const DEFAULT_QUERY = JSON.stringify(
+  {
+    query: {
+      match_all: {},
+    },
+  },
+  null,
+  4
+);
+
+export const REINDEX_ERROR_PROMPT = {
+  DEST_REQUIRED: "Destination is required.",
+  DEST_DIFF_WITH_SOURCE: "Destination must be different with source",
+  SLICES_FORMAT_ERROR: "Slices must be positive integer or auto",
+};
