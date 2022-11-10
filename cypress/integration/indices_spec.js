@@ -254,6 +254,19 @@ describe("Indices", () => {
       });
     });
 
+    after(() => {
+      cy.request({
+        method: "DELETE",
+        url: `${Cypress.env("opensearch")}/${reindexedIndex}`,
+        failOnStatusCode: false,
+      });
+      cy.request({
+        method: "DELETE",
+        url: `${Cypress.env("opensearch")}/${splittedIndex}`,
+        failOnStatusCode: false,
+      });
+    });
+
     it("Successfully", () => {
       cy.request({
         method: "PUT",

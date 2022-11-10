@@ -79,7 +79,7 @@ Cypress.Commands.overwrite("request", (originalFn, ...args) => {
 });
 
 Cypress.Commands.add("deleteAllIndices", () => {
-  cy.request("DELETE", `${Cypress.env("opensearch")}/index*,sample*,opensearch_dashboards*`);
+  cy.request("DELETE", `${Cypress.env("opensearch")}/index*,sample*,opensearch_dashboards*,test*`);
   cy.request("DELETE", `${Cypress.env("opensearch")}/.opendistro-ism*?expand_wildcards=all`);
 });
 
