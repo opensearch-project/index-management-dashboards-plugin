@@ -11,6 +11,8 @@ import SimplePopover from "../../../../components/SimplePopover";
 import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
+import { REQUEST } from "../../../../../utils/constants";
+import { ReindexRequest } from "../../models/interfaces";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -18,6 +20,7 @@ import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
 import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 import { getErrorMessage } from "../../../../utils/helpers";
+import ReindexFlyout from "../../components/ReindexFlyout";
 
 export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
@@ -25,14 +28,16 @@ export interface IndicesActionsProps {
   onOpen: () => void;
   onClose: () => void;
   onShrink: () => void;
+  onReindex?: () => void;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, onOpen, onClose, onShrink } = props;
+  const { selectedItems, onDelete, onOpen, onClose, onShrink, onReindex } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
   const [shrinkIndexFlyoutVisible, setShrinkIndexFlyoutVisible] = useState(false);
+  const [isReindexFlyoutVisible, setIsReindexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -156,6 +161,36 @@ export default function IndicesActions(props: IndicesActionsProps) {
     }
   };
 
+  const onReindexConfirm = async (reindexRequest: ReindexRequest) => {
+    const res = await services.commonService.apiCaller({
+      endpoint: "transport.request",
+      method: REQUEST.POST,
+      data: {
+        path: `_reindex?slices=${reindexRequest.slices}&wait_for_completion=${reindexRequest.waitForCompletion}`,
+        method: REQUEST.POST,
+        body: reindexRequest.body,
+      },
+    });
+    if (res && res.ok) {
+      // @ts-ignore
+      let toast = `Reindex from [${reindexRequest.body.source.index}] to [${reindexRequest.body.dest.index}]`;
+      if (reindexRequest.waitForCompletion) {
+        toast += ` finished!`;
+      } else {
+        toast += ` success with taskId ${res.response.task}`;
+      }
+      coreServices.notifications.toasts.addSuccess(toast);
+      onCloseReindexFlyout();
+      onReindex && onReindex();
+    } else {
+      coreServices.notifications.toasts.addDanger(`Reindex operation error ${res.error}`);
+    }
+  };
+
+  const onCloseReindexFlyout = () => {
+    setIsReindexFlyoutVisible(false);
+  };
+
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
   return (
@@ -181,24 +216,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
                   id: 0,
                   items: [
                     {
-                      name: "Open",
-                      disabled: !selectedItems.length,
-                      "data-test-subj": "Open Action",
-                      onClick: () => setOpenIndexModalVisible(true),
-                    },
-                    {
-                      name: "Close",
-                      disabled: !selectedItems.length,
-                      "data-test-subj": "Close Action",
-                      onClick: () => setCloseIndexModalVisible(true),
-                    },
-                    {
-                      name: "Shrink",
-                      disabled: !selectedItems.length || selectedItems.length != 1,
-                      "data-test-subj": "Shrink Action",
-                      onClick: () => setShrinkIndexFlyoutVisible(true),
-                    },
-                    {
                       name: "Apply policy",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Apply policyButton",
@@ -207,6 +224,30 @@ export default function IndicesActions(props: IndicesActionsProps) {
                           indices: selectedItems.map((item: ManagedCatIndex) => item.index),
                           core: CoreServicesContext,
                         }),
+                    },
+                    {
+                      name: "Close",
+                      disabled: !selectedItems.length,
+                      "data-test-subj": "Close Action",
+                      onClick: () => setCloseIndexModalVisible(true),
+                    },
+                    {
+                      name: "Open",
+                      disabled: !selectedItems.length,
+                      "data-test-subj": "Open Action",
+                      onClick: () => setOpenIndexModalVisible(true),
+                    },
+                    {
+                      name: "Reindex",
+                      disabled: !selectedItems.length,
+                      "data-test-subj": "Reindex Action",
+                      onClick: () => setIsReindexFlyoutVisible(true),
+                    },
+                    {
+                      name: "Shrink",
+                      disabled: !selectedItems.length || selectedItems.length != 1,
+                      "data-test-subj": "Shrink Action",
+                      onClick: () => setShrinkIndexFlyoutVisible(true),
                     },
                     {
                       name: "Delete",
@@ -248,6 +289,15 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onClose={onShrinkIndexFlyoutClose}
           onConfirm={onShrinkIndexFlyoutConfirm}
           getIndexSettings={getIndexSettings}
+        />
+      )}
+
+      {isReindexFlyoutVisible && (
+        <ReindexFlyout
+          services={services}
+          onCloseFlyout={onCloseReindexFlyout}
+          sourceIndices={selectedItems}
+          onReindexConfirm={onReindexConfirm}
         />
       )}
     </>

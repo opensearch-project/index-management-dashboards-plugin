@@ -5,7 +5,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ShrinkIndexFlyout from "./ShrinkIndexFlyout";
 
@@ -80,11 +80,11 @@ describe("<ShrinkIndexFlyout /> spec", () => {
 
   it("shows error when number of shards is not valid", async () => {
     const onClose = jest.fn();
-    const { getByTestId, queryByText, debug } = render(
+    const { getByTestId, getByText } = render(
       <ShrinkIndexFlyout
         sourceIndex={{
           health: "green",
-          index: "test_index",
+          index: "test_index123",
           pri: "3",
           rep: "0",
           status: "open",
@@ -97,12 +97,12 @@ describe("<ShrinkIndexFlyout /> spec", () => {
     );
 
     userEvent.type(getByTestId("numberOfShardsInput"), "2");
-    fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
-    await waitFor(() => {
-      expect(
-        queryByText("The number of new primary shards must be a positive factor of the number of primary shards in the source index.")
-      ).not.toBeNull();
+    await act(async () => {
+      await userEvent.click(getByTestId("shrinkIndexConfirmButton"));
     });
+    expect(
+      getByText("The number of new primary shards must be a positive factor of the number of primary shards in the source index.")
+    ).not.toBeNull();
   });
 
   it("no error when number of shards is valid", async () => {
