@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useState, Ref, useEffect, useRef, useMemo } from "react";
+import React, { forwardRef, useCallback, useState, Ref, useEffect, useRef, useMemo, useImperativeHandle } from "react";
 import {
   EuiTreeView,
   EuiIcon,
@@ -17,7 +17,6 @@ import {
   EuiSpacer,
   EuiButtonGroup,
   EuiToolTip,
-  EuiButtonIcon,
 } from "@elastic/eui";
 import { set, get } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
@@ -33,8 +32,8 @@ export interface IndexMappingProps {
   isEdit?: boolean;
 }
 
-export interface IIndexDetailRef {
-  validate: () => Promise<Boolean>;
+export interface IIndexMappingsRef {
+  validate: () => Promise<string>;
 }
 
 export enum EDITOR_MODE {
@@ -45,6 +44,7 @@ export enum EDITOR_MODE {
 interface IMappingLabel {
   value: MappingsProperties[number];
   onChange: (val: IMappingLabel["value"], key: string, value: string) => void | string;
+  onFieldNameCheck: (val: string) => string;
   // onFieldNameChange: (newFieldName: string, oldFieldName: string) => void;
   onAddSubField: () => void;
   onDeleteField: () => void;
@@ -52,115 +52,131 @@ interface IMappingLabel {
   id: string;
 }
 
-const NEW_FIELD_PREFIX = "NAME_YOUR_FIELD";
+const MappingLabel = forwardRef(
+  (
+    { value, onChange, onFieldNameCheck, disabled, onAddSubField, onDeleteField, id }: IMappingLabel,
+    forwardedRef: React.Ref<IIndexMappingsRef>
+  ) => {
+    const { fieldName, ...fieldSettings } = value;
+    const [fieldNameError, setFieldNameError] = useState("");
+    const [fieldNameState, setFieldNameState] = useState(fieldName);
+    const ref = useRef<any>(null);
+    const firstInitRef = useRef<boolean>(true);
+    const type = fieldSettings.type ? fieldSettings.type : "object";
+    const onValidate = () => {
+      let error = "";
+      if (!fieldNameState) {
+        error = "Field name is required, please input";
+      } else {
+        error = onFieldNameCheck(fieldNameState);
+      }
 
-const MappingLabel = ({ value, onChange, disabled, onAddSubField, onDeleteField, id }: IMappingLabel) => {
-  const { fieldName, ...fieldSettings } = value;
-  const [fieldNameError, setFieldNameError] = useState("");
-  const ref = useRef<any>(null);
-  const type = fieldSettings.type ? fieldSettings.type : "object";
-  const onFieldChange = useCallback(
-    (k, v) => {
-      const newValue = { ...value };
-      set(newValue, k, v);
-      return onChange(newValue, k, v);
-    },
-    [value, onChange]
-  );
-  const [fieldNameState, setFieldNameState] = useState(fieldName);
-  useEffect(() => {
-    setFieldNameState(fieldNameState);
-  }, [fieldName]);
-  useEffect(() => {
-    if (fieldNameState) {
-      setFieldNameError("");
-    }
-  }, [fieldNameState]);
-  return (
-    <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
-      <EuiFlexItem style={{ width: 240 }} grow={false}>
-        <EuiFormRow isInvalid={!!fieldNameError} error={fieldNameError} label="Field name" display="rowCompressed">
-          <>
-            <EuiFieldText
-              inputRef={ref}
-              disabled={disabled}
-              compressed
-              data-test-subj={`${id}-field-name`}
-              value={fieldNameState}
-              onChange={(e) => setFieldNameState(e.target.value)}
-              onFocus={() => {
-                if (fieldNameState && fieldNameState.startsWith(NEW_FIELD_PREFIX)) {
-                  setFieldNameState("");
-                }
-              }}
-              onBlur={(e) => {
-                if (!fieldNameState) {
-                  setFieldNameError("Field name is required, please input");
-                  ref.current.focus();
-                } else {
-                  const error = onFieldChange("fieldName", fieldNameState);
-                  if (error) {
-                    setFieldNameError(error);
-                    ref.current.focus();
+      setFieldNameError(error);
+      return Promise.resolve(error);
+    };
+    useImperativeHandle(forwardedRef, () => ({
+      validate: onValidate,
+    }));
+    const onFieldChange = useCallback(
+      (k, v) => {
+        const newValue = { ...value };
+        set(newValue, k, v);
+        return onChange(newValue, k, v);
+      },
+      [value, onChange]
+    );
+    useEffect(() => {
+      setFieldNameState(fieldNameState);
+    }, [fieldName]);
+    useEffect(() => {
+      if (firstInitRef.current) {
+        firstInitRef.current = false;
+        return;
+      }
+      onValidate();
+    }, [fieldNameState]);
+    return (
+      <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
+        <EuiFlexItem style={{ width: 240 }} grow={false}>
+          <EuiFormRow isInvalid={!!fieldNameError} error={fieldNameError} label="Field name" display="rowCompressed">
+            <>
+              <EuiFieldText
+                inputRef={ref}
+                disabled={disabled}
+                compressed
+                data-test-subj={`${id}-field-name`}
+                value={fieldNameState}
+                onChange={(e) => setFieldNameState(e.target.value)}
+                onBlur={async (e) => {
+                  const error = await onValidate();
+                  if (!error) {
+                    onFieldChange("fieldName", fieldNameState);
                   }
-                }
-              }}
-            />
-          </>
-        </EuiFormRow>
-      </EuiFlexItem>
-      <EuiFlexItem grow={false}>
-        <EuiFormRow label="Field type" display="rowCompressed">
-          <EuiSelect
-            disabled={disabled}
-            compressed
-            value={type}
-            data-test-subj={`${id}-field-type`}
-            onChange={(e) => onFieldChange("type", e.target.value)}
-            options={INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }))}
-          />
-        </EuiFormRow>
-      </EuiFlexItem>
-      {disabled ? null : (
-        <EuiFlexItem grow={false}>
-          <EuiFormRow label="actions" display="rowCompressed">
-            <div
-              style={{ display: "flex", height: 32, alignItems: "center" }}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
-                <EuiToolTip content="Add a sub field">
-                  <span
-                    className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
-                    data-test-subj={`${id}-add-sub-field`}
-                    aria-label="Delete current field"
-                    onClick={onAddSubField}
-                  >
-                    <EuiIcon type="plusInCircleFilled" />
-                  </span>
-                </EuiToolTip>
-              ) : null}
-              <EuiToolTip content="Delete current field">
-                <span
-                  className="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
-                  data-test-subj={`${id}-delete-field`}
-                  aria-label="Delete current field"
-                  onClick={onDeleteField}
-                >
-                  <EuiIcon type="trash" />
-                </span>
-              </EuiToolTip>
-            </div>
+                }}
+              />
+            </>
           </EuiFormRow>
         </EuiFlexItem>
-      )}
-    </EuiFlexGroup>
-  );
-};
+        <EuiFlexItem grow={false}>
+          <EuiFormRow label="Field type" display="rowCompressed">
+            <EuiSelect
+              disabled={disabled}
+              compressed
+              value={type}
+              data-test-subj={`${id}-field-type`}
+              onChange={(e) => onFieldChange("type", e.target.value)}
+              options={INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }))}
+            />
+          </EuiFormRow>
+        </EuiFlexItem>
+        {disabled ? null : (
+          <EuiFlexItem grow={false}>
+            <EuiFormRow label="actions" display="rowCompressed">
+              <div
+                style={{ display: "flex", height: 32, alignItems: "center" }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
+                  <EuiToolTip content="Add a sub field">
+                    <span
+                      className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
+                      data-test-subj={`${id}-add-sub-field`}
+                      aria-label="Delete current field"
+                      onClick={onAddSubField}
+                    >
+                      <EuiIcon type="plusInCircleFilled" />
+                    </span>
+                  </EuiToolTip>
+                ) : null}
+                <EuiToolTip content="Delete current field">
+                  <span
+                    className="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
+                    data-test-subj={`${id}-delete-field`}
+                    aria-label="Delete current field"
+                    onClick={onDeleteField}
+                  >
+                    <EuiIcon type="trash" />
+                  </span>
+                </EuiToolTip>
+              </div>
+            </EuiFormRow>
+          </EuiFlexItem>
+        )}
+      </EuiFlexGroup>
+    );
+  }
+);
 
-const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, ref: Ref<IIndexDetailRef>) => {
+const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
+  const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
+  useImperativeHandle(ref, () => ({
+    validate: async () => {
+      const values = await Promise.all(Object.values(allFieldsRef.current).map((item) => item.validate()));
+      return values.some((item) => item) ? "with error" : "";
+    },
+  }));
   const [editorMode, setEditorMode] = useState<EDITOR_MODE>(EDITOR_MODE.VISUAL);
   const addField = useCallback(
     (pos, fieldName) => {
@@ -202,19 +218,28 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
       const payload: EuiTreeViewProps["items"][number] = {
         label: (
           <MappingLabel
+            ref={(ref) => {
+              if (ref) {
+                allFieldsRef.current[id] = ref;
+              } else {
+                delete allFieldsRef.current[id];
+              }
+            }}
             disabled={isEdit && !!get(oldValue, id)}
             value={item}
             id={`mapping-visual-editor-${id}`}
+            onFieldNameCheck={(fieldName) => {
+              const hasDuplicateName = (formValue || [])
+                .filter((sibItem, sibIndex) => sibIndex !== index)
+                .some((sibItem) => sibItem.fieldName === fieldName);
+              if (hasDuplicateName) {
+                return `Duplicate field name [${fieldName}], please change your field name`;
+              }
+
+              return "";
+            }}
             onChange={(val, key, v) => {
               const newValue = [...(value || [])];
-              if (key === "fieldName") {
-                const hasDuplicateName = (formValue || [])
-                  .filter((sibItem, sibIndex) => sibIndex !== index)
-                  .some((sibItem) => sibItem.fieldName === v);
-                if (hasDuplicateName) {
-                  return `Duplicate field name [${v}], please change your field name`;
-                }
-              }
               set(newValue, id, val);
               onChange(newValue);
             }}
@@ -222,7 +247,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
               deleteField(id);
             }}
             onAddSubField={() => {
-              addField(`${id}.properties`, `${NEW_FIELD_PREFIX}-${Date.now()}`);
+              addField(`${id}.properties`, ``);
             }}
           />
         ),
@@ -280,7 +305,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
             <p>You have no field mappings.</p>
           )}
           <EuiSpacer />
-          <EuiButton data-test-subj="create index add field button" onClick={() => addField("", `${NEW_FIELD_PREFIX}-${Date.now()}`)}>
+          <EuiButton data-test-subj="create index add field button" onClick={() => addField("", ``)}>
             Add a field
           </EuiButton>
         </>

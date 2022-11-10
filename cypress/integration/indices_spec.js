@@ -297,30 +297,26 @@ describe("Indices", () => {
         "index.blocks.write": true,
       });
 
-      cy.window().then((window) => {
-        return Promise.race([
-          new Promise((resolve) => setTimeout(resolve, 2000)),
-          window.fetch(`/api/ism/apiCaller`, {
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify({
-              endpoint: "indices.split",
-              data: {
-                index: "opensearch_dashboards_sample_data_logs",
-                target: splittedIndex,
-                body: {
-                  settings: {
-                    index: {
-                      number_of_shards: 2,
-                    },
-                  },
+      cy.request({
+        method: "PUT",
+        url: `${Cypress.env("opensearch_dashboards")}/api/ism/apiCaller`,
+        headers: {
+          "osd-xsrf": true,
+        },
+        body: {
+          endpoint: "indices.split",
+          data: {
+            index: "opensearch_dashboards_sample_data_logs",
+            target: splittedIndex,
+            body: {
+              settings: {
+                index: {
+                  number_of_shards: 2,
                 },
               },
-            }),
-            method: "PUT",
-          }),
-        ]);
+            },
+          },
+        },
       });
 
       cy.get('[placeholder="Search"]').type("p");

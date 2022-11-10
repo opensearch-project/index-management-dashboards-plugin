@@ -15,7 +15,7 @@ import { Ref } from "react";
 import { INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
-import { transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
+import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 
 export interface IndexDetailProps {
   value?: Partial<IndexItem>;
@@ -47,19 +47,23 @@ const IndexDetail = (
     },
     [onChange, value]
   );
-  const [errors, setErrors] = useState({} as Record<string, string>);
   const [templateSimulateLoading, setTemplateSimulateLoading] = useState(false);
   const finalValue = value || {};
+  const aliasesRef = useRef<IFormGeneratorRef>(null);
   const settingsRef = useRef<IFormGeneratorRef>(null);
+  const mappingsRef = useRef<IIndexMappingsRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {
-      if (!value?.index) {
-        setErrors({
-          index: "Index name can not be null.",
-        });
+      const aliasesValidateResult = await aliasesRef.current?.validatePromise();
+      if (aliasesValidateResult?.errors) {
         return false;
       }
-      setErrors({});
+
+      const mappingsValidateResult = await mappingsRef.current?.validate();
+      if (mappingsValidateResult) {
+        return false;
+      }
+
       const result = await settingsRef.current?.validatePromise();
       if (result?.errors) {
         return false;
@@ -182,29 +186,56 @@ const IndexDetail = (
         <>
           <ContentPanel title="Define index" titleSize="s">
             <div style={{ paddingLeft: "10px" }}>
-              <EuiFormRow
-                label="Index name"
-                helpText="Some reestrictrion text on domain"
-                isInvalid={!!errors["index"]}
-                error={errors["index"]}
-              >
-                <EuiFieldText
-                  placeholder="Please enter the name for your index"
-                  value={finalValue.index}
-                  onChange={(e) => onValueChange("index", e.target.value)}
-                  onBlur={onIndexInputBlur}
-                  isLoading={templateSimulateLoading}
-                  disabled={isEdit || templateSimulateLoading}
-                />
-              </EuiFormRow>
-              <EuiFormRow label="Index alias  - optional" helpText="Select existing aliases or specify a new alias">
-                <AliasSelect
-                  refreshOptions={refreshOptions}
-                  value={finalValue.aliases}
-                  onChange={(value) => onValueChange("aliases", value)}
-                  isDisabled={!finalValue.index}
-                />
-              </EuiFormRow>
+              <FormGenerator
+                ref={aliasesRef}
+                formFields={[
+                  {
+                    name: "index",
+                    rowProps: {
+                      label: "Index name",
+                      helpText: finalValue.index
+                        ? "Some restriction text on domain"
+                        : "Please enter the name before moving to other fields",
+                    },
+                    type: "Input",
+                    options: {
+                      props: {
+                        placeholder: "Please enter the name for your index",
+                        onBlur: onIndexInputBlur,
+                        isLoading: templateSimulateLoading,
+                        disabled: isEdit || templateSimulateLoading,
+                      },
+                      rules: [
+                        {
+                          required: true,
+                          message: "Index name can not be null.",
+                        },
+                      ],
+                    },
+                  },
+                  {
+                    name: "aliases",
+                    rowProps: {
+                      label: "Index alias  - optional",
+                      helpText: "Select existing aliases or specify a new alias",
+                    },
+                    options: {
+                      props: {
+                        refreshOptions: refreshOptions,
+                        isDisabled: !finalValue.index,
+                      },
+                    },
+                    component: AliasSelect as any,
+                  },
+                ]}
+                value={{
+                  index: finalValue.index,
+                  aliases: finalValue.aliases,
+                }}
+                onChange={(totalValue, name, val) => {
+                  onValueChange(name as string, val);
+                }}
+              />
             </div>
           </ContentPanel>
           <EuiSpacer />
@@ -228,13 +259,11 @@ const IndexDetail = (
                 hasAdvancedSettings
                 advancedSettingsProps={{
                   accordionProps: {
-                    placeholder: "Advanced Settings",
                     initialIsOpen: false,
                     id: "accordion_for_create_index_settings",
                     buttonContent: <h4>Advanced settings</h4>,
                   },
                   rowProps: {
-                    placeholder: "Specify advanced index settings",
                     label: "Specify advanced index settings",
                     helpText: (
                       <>
@@ -264,6 +293,7 @@ const IndexDetail = (
                 value={finalValue?.mappings?.properties}
                 oldValue={oldValue?.mappings?.properties}
                 onChange={(val) => onValueChange("mappings.properties", val)}
+                ref={mappingsRef}
               />
             </EuiFormRow>
           </div>
