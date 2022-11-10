@@ -12,7 +12,7 @@ import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
 import { REQUEST } from "../../../../../utils/constants";
-import { ReindexRequest } from "../../models/interfaces";
+import { ReindexRequest, ReindexResponse } from "../../models/interfaces";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -162,7 +162,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const onReindexConfirm = async (reindexRequest: ReindexRequest) => {
-    const res = await services.commonService.apiCaller({
+    const res = await services.commonService.apiCaller<ReindexResponse>({
       endpoint: "transport.request",
       method: REQUEST.POST,
       data: {
@@ -183,7 +183,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
       onCloseReindexFlyout();
       onReindex && onReindex();
     } else {
-      coreServices.notifications.toasts.addDanger(`Reindex operation error ${res.error}`);
+      coreServices.notifications.toasts.addDanger(`Reindex operation error ${res?.error}`);
     }
   };
 

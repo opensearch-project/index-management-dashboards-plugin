@@ -27,3 +27,6 @@ export interface ReindexRequest {
   maxDocs?: number;
   body: object;
 }
+export interface ReindexResponse {
+  task: string;
+}

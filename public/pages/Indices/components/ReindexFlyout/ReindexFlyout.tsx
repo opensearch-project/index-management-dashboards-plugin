@@ -190,16 +190,18 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       if (res.ok) {
         // @ts-ignore
         let index = res.response[this.sourceIndicesNames[0]];
-        _.unset(index, "aliases");
-        _.unset(index.settings, "index.resize");
-        _.unset(index.settings, "index.verified_before_close");
-        _.unset(index.settings, "index.blocks");
-        _.unset(index.settings, "index.routing");
-        _.unset(index.settings, "index.provided_name");
-        _.unset(index.settings, "index.creation_date");
-        _.unset(index.settings, "index.uuid");
-        _.unset(index.settings, "index.version");
-        this.setState({ destSettingsJson: JSON.stringify(index, null, 4) });
+        if (index && index.settings) {
+          _.unset(index, "aliases");
+          _.unset(index.settings, "index.resize");
+          _.unset(index.settings, "index.verified_before_close");
+          _.unset(index.settings, "index.blocks");
+          _.unset(index.settings, "index.routing");
+          _.unset(index.settings, "index.provided_name");
+          _.unset(index.settings, "index.creation_date");
+          _.unset(index.settings, "index.uuid");
+          _.unset(index.settings, "index.version");
+          this.setState({ destSettingsJson: JSON.stringify(index, null, 4) });
+        }
       }
     }
   };

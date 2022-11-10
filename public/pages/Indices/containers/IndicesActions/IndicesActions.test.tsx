@@ -5,7 +5,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -275,6 +275,58 @@ describe("<IndicesActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("reindex index by calling commonService", async () => {
+    const onReindex = jest.fn();
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((args) => {
+      if (args.endpoint === "indices.get") {
+        return Promise.resolve({
+          ok: true,
+          response: { test_index: { settings: {} } },
+        });
+      } else {
+        return Promise.resolve({ ok: true, response: {} });
+      }
+    });
+
+    const { container, getByTestId } = renderWithRouter({
+      onClose(): void {},
+      onDelete(): void {},
+      onOpen(): void {},
+      onShrink(): void {},
+      onReindex,
+      selectedItems: [
+        {
+          "docs.count": "5",
+          "docs.deleted": "2",
+          health: "green",
+          index: "test_index",
+          pri: "3",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          "store.size": "100KB",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+          data_stream: "",
+        },
+      ],
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(getByTestId("Reindex Action"));
+    userEvent.type(getByTestId("destIndicesComboInput").querySelector("input") as Element, "reindex-dest");
+    userEvent.click(screen.getByTestId("flyout-footer-action-button"));
+
+    await waitFor(() => {
+      expect(onReindex).toHaveBeenCalledTimes(1);
     });
   });
 });
