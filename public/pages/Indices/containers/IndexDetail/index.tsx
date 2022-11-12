@@ -32,7 +32,7 @@ import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 
-export interface IndexDetailModalProps extends Pick<IndicesActionsProps, "onDelete"> {
+export interface IndexDetailModalProps extends Omit<IndicesActionsProps, "selectedItems"> {
   index: string;
   record: ManagedCatIndex;
 }
@@ -57,7 +57,7 @@ const OVERVIEW_DISPLAY_INFO: {
   },
   {
     label: "Creation date",
-    value: ({ detail }) => <span>{new Date(parseInt(detail.settings?.index.creation_date || "0")).toLocaleString()}</span>,
+    value: ({ detail }) => <span>{new Date(parseInt(detail.settings?.index?.creation_date || "0")).toLocaleString()}</span>,
   },
   {
     label: "Total size",
@@ -111,7 +111,7 @@ const OVERVIEW_DISPLAY_INFO: {
 ];
 
 export default function IndexDetail(props: IndexDetailModalProps) {
-  const { index, record, onDelete } = props;
+  const { index, record, ...others } = props;
   const [visible, setVisible] = useState(false);
   const [detail, setDetail] = useState({} as IndexItem);
   const finalDetail: IFinalDetail = useMemo(
@@ -164,8 +164,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
               <EuiTitle size="m">
                 <span>{index}</span>
               </EuiTitle>
-              {/* <span>{index}</span> */}
-              <IndicesActions selectedItems={[record]} onDelete={onDelete} />
+              <IndicesActions selectedItems={[record]} {...others} />
             </div>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>

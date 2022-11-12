@@ -49,6 +49,10 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
   };
   indexDetailRef: IIndexDetailRef | null = null;
 
+  get commonService() {
+    return this.props.commonService;
+  }
+
   get index() {
     return this.props.match.params.index || "";
   }
@@ -60,7 +64,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
   componentDidMount = async (): Promise<void> => {
     const isEdit = this.isEdit;
     if (isEdit) {
-      const response: ServerResponse<Record<string, IndexItem>> = await this.props.commonService.apiCaller({
+      const response: ServerResponse<Record<string, IndexItem>> = await this.commonService.apiCaller({
         endpoint: "indices.get",
         data: {
           index: this.index,
@@ -135,7 +139,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
 
     // alias may have many unexpected errors, do that before update index settings.
     if (aliasActions.length) {
-      return await this.props.commonService.apiCaller({
+      return await this.commonService.apiCaller({
         endpoint: "indices.updateAliases",
         method: "PUT",
         data: {
@@ -176,7 +180,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
       return total;
     }, {});
 
-    return await this.props.commonService.apiCaller({
+    return await this.commonService.apiCaller({
       endpoint: "indices.putSettings",
       method: "PUT",
       data: {
@@ -205,7 +209,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     const newMappingSettings = transformArrayToObject(newMappingFields);
 
     if (newMappingFields.length) {
-      return await this.props.commonService.apiCaller({
+      return await this.commonService.apiCaller({
         endpoint: "indices.putMapping",
         method: "PUT",
         data: {
@@ -345,7 +349,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
       }
       result = await this.chainPromise(chainedPromises);
     } else {
-      result = await this.props.commonService.apiCaller({
+      result = await this.commonService.apiCaller({
         endpoint: "indices.create",
         method: "PUT",
         data: {
@@ -371,7 +375,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
   };
 
   onSimulateIndexTemplate = (indexName: string): Promise<ServerResponse<IndexItemRemote>> => {
-    return this.props.commonService
+    return this.commonService
       .apiCaller<{ template: IndexItemRemote }>({
         endpoint: "transport.request",
         data: {
@@ -416,7 +420,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
           onChange={this.onDetailChange}
           onSimulateIndexTemplate={this.onSimulateIndexTemplate}
           refreshOptions={(aliasName) =>
-            this.props.commonService.apiCaller({
+            this.commonService.apiCaller({
               endpoint: "cat.aliases",
               method: "GET",
               data: {
