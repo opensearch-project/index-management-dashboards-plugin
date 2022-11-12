@@ -238,12 +238,29 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
     };
   };
 
+  getOrderedJson = (json: Record<string, any>) => {
+    const entries = Object.entries(json);
+    entries.sort((a, b) => (a[0] < b[0] ? -1 : 1));
+    return entries.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
+  };
+
   showDiff = async (): Promise<ServerResponse<any>> => {
     return new Promise((resolve, reject) => {
+      if (this.props.match.params.mode === IndicesUpdateMode.alias) {
+        resolve({
+          ok: true,
+          response: {},
+        });
+        return;
+      }
       Modal.show({
         title: "Please confirm the change.",
         "data-test-subj": "change_diff_confirm",
         type: "confirm",
+        maxWidth: "100%",
+        style: {
+          width: "70vw",
+        },
         content: (
           <>
             <h2>The following changes will be done once you click the confirm button, Please make sure you want to do all the changes.</h2>
@@ -258,6 +275,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
               original={JSON.stringify(
                 {
                   ...this.state.oldIndexDetail,
+                  settings: this.getOrderedJson(this.state.oldIndexDetail?.settings || {}),
                   mappings: {
                     properties: transformArrayToObject(this.state.oldIndexDetail?.mappings?.properties || []),
                   },
@@ -268,6 +286,7 @@ export default class CreateIndex extends Component<CreateIndexProps, CreateIndex
               modified={JSON.stringify(
                 {
                   ...this.state.indexDetail,
+                  settings: this.getOrderedJson(this.state.indexDetail.settings || {}),
                   mappings: {
                     properties: transformArrayToObject(this.state.indexDetail?.mappings?.properties || []),
                   },
