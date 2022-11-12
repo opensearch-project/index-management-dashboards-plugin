@@ -94,7 +94,7 @@ const OVERVIEW_DISPLAY_INFO: {
       return (
         <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
           {blocks.map(([key, value]) => (
-            <li>{key}</li>
+            <li key={key}>{key}</li>
           ))}
         </ul>
       );

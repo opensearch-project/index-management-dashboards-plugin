@@ -336,7 +336,7 @@ describe("<CreateIndex /> spec", () => {
     });
   });
 
-  it("shows detail settings and update settings only", async () => {
+  it("shows detail mappings and update mappings only", async () => {
     const { getByText, getByTestId } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/good_index/${IndicesUpdateMode.mappings}`]);
 
     await waitFor(() => {});
@@ -372,7 +372,7 @@ describe("<CreateIndex /> spec", () => {
     });
   });
 
-  it("shows detail mappings and update mappings only", async () => {
+  it("shows detail settings and update settings only", async () => {
     const { getByText, getByTestId } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/good_index/${IndicesUpdateMode.settings}`]);
 
     await waitFor(() => {});
@@ -383,7 +383,6 @@ describe("<CreateIndex /> spec", () => {
     userEvent.click(getByTestId("change_diff_confirm-confirm"));
 
     await waitFor(() => {
-      // shows detail mappings and update mappings only
       expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
 
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
