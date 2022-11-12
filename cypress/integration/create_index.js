@@ -109,9 +109,7 @@ describe("Create Index", () => {
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
         .click({ force: true })
-        .end()
-        .get('[data-test-subj="change_diff_confirm-confirm"]')
-        .click();
+        .end();
 
       // check the index
       cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
