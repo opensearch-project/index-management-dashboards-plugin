@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import {
   EuiButtonEmpty,
   EuiCopy,
@@ -11,17 +11,11 @@ import {
   EuiDescriptionList,
   EuiDescriptionListTitle,
   EuiDescriptionListDescription,
-  EuiFlexGrid,
-  EuiFlexItem,
   EuiSpacer,
-  EuiFlexGroup,
-  EuiButton,
-  EuiBasicTable,
   EuiFlyout,
   EuiFlyoutHeader,
   EuiTitle,
   EuiFlyoutBody,
-  EuiCodeBlock,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
@@ -31,10 +25,12 @@ import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
+import IndexForm from "../../../CreateIndex/containers/IndexForm";
 
 export interface IndexDetailModalProps extends Omit<IndicesActionsProps, "selectedItems"> {
   index: string;
   record: ManagedCatIndex;
+  onUpdateIndex: () => void;
 }
 
 interface IFinalDetail extends ManagedCatIndex, IndexItem {}
@@ -111,7 +107,7 @@ const OVERVIEW_DISPLAY_INFO: {
 ];
 
 export default function IndexDetail(props: IndexDetailModalProps) {
-  const { index, record, ...others } = props;
+  const { index, record, onUpdateIndex, ...others } = props;
   const [visible, setVisible] = useState(false);
   const [detail, setDetail] = useState({} as IndexItem);
   const finalDetail: IFinalDetail = useMemo(
@@ -149,6 +145,21 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         });
     }
   }, [visible]);
+
+  const onCloseFlyout = useCallback(() => {
+    setVisible(false);
+  }, [setVisible]);
+
+  const indexFormCommonProps = {
+    index: props.index,
+    commonService: services.commonService,
+    onCancel: onCloseFlyout,
+    onSubmitSuccess: () => {
+      onCloseFlyout();
+      onUpdateIndex();
+    },
+  };
+
   return (
     <>
       <EuiCopy textToCopy={index}>
@@ -158,7 +169,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         {index}
       </EuiButtonEmpty>
       {visible ? (
-        <EuiFlyout onClose={() => setVisible(false)} hideCloseButton>
+        <EuiFlyout onClose={onCloseFlyout} hideCloseButton>
           <EuiFlyoutHeader hasBorder>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <EuiTitle size="m">
@@ -208,22 +219,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   content: (
                     <>
                       <EuiSpacer />
-                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                        <EuiFlexItem grow={false}>
-                          <h2>Advanced index settings</h2>
-                        </EuiFlexItem>
-                        <EuiFlexItem grow={false}>
-                          <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.settings}`}>
-                            <EuiButton size="s" data-test-subj="detail-modal-edit">
-                              Edit
-                            </EuiButton>
-                          </Link>
-                        </EuiFlexItem>
-                      </EuiFlexGroup>
-                      <EuiSpacer />
-                      <EuiCodeBlock language="json" whiteSpace="pre">
-                        {JSON.stringify(finalDetail.settings || {}, null, 2)}
-                      </EuiCodeBlock>
+                      <IndexForm {...indexFormCommonProps} mode={IndicesUpdateMode.settings} />
                     </>
                   ),
                 },
@@ -233,22 +229,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   content: (
                     <>
                       <EuiSpacer />
-                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                        <EuiFlexItem grow={false}>
-                          <h2>Index mappings</h2>
-                        </EuiFlexItem>
-                        <EuiFlexItem grow={false}>
-                          <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.mappings}`}>
-                            <EuiButton size="s" data-test-subj="detail-modal-edit">
-                              Edit
-                            </EuiButton>
-                          </Link>
-                        </EuiFlexItem>
-                      </EuiFlexGroup>
-                      <EuiSpacer />
-                      <EuiCodeBlock language="json" whiteSpace="pre">
-                        {JSON.stringify(finalDetail.mappings || {}, null, 2)}
-                      </EuiCodeBlock>
+                      <IndexForm {...indexFormCommonProps} mode={IndicesUpdateMode.mappings} />
                     </>
                   ),
                 },
@@ -258,31 +239,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   content: (
                     <>
                       <EuiSpacer />
-                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                        <EuiFlexItem grow={false}>
-                          <h2>Index alias</h2>
-                        </EuiFlexItem>
-                        <EuiFlexItem grow={false}>
-                          <Link to={`${ROUTES.CREATE_INDEX}/${index}/${IndicesUpdateMode.alias}`}>
-                            <EuiButton size="s" data-test-subj="detail-modal-edit">
-                              Edit
-                            </EuiButton>
-                          </Link>
-                        </EuiFlexItem>
-                      </EuiFlexGroup>
-                      <EuiSpacer />
-                      <EuiBasicTable
-                        rowHeader="alias"
-                        noItemsMessage="No alias found"
-                        items={Object.keys(finalDetail.aliases || {}).map((item) => ({ alias: item }))}
-                        columns={[
-                          {
-                            field: "alias",
-                            name: "Alias name",
-                            render: (val: string, record: { alias: string }) => <Link to="somewhereto">{val}</Link>,
-                          },
-                        ]}
-                      />
+                      <IndexForm {...indexFormCommonProps} mode={IndicesUpdateMode.alias} />
                     </>
                   ),
                 },

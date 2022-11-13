@@ -260,6 +260,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
             onClose: this.getIndices,
             onShrink: this.getIndices,
             onReindex: this.getIndices,
+            onUpdateIndex: this.getIndices,
           })}
           isSelectable={true}
           itemId="index"
