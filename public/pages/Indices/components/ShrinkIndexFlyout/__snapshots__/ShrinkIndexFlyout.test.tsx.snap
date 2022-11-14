@@ -233,24 +233,28 @@ HTMLCollection [
                     >
                       The number of primary shards in the new shrunken index.
                     </div>
-                    <div
-                      class="euiFormControlLayout"
+                    <span
+                      class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                     >
                       <div
-                        class="euiFormControlLayout__childrenWrapper"
+                        class="euiFormControlLayout"
                       >
-                        <input
-                          class="euiFieldNumber"
-                          data-meta="Field"
-                          data-test-subj="numberOfShardsInput"
-                          id="index.number_of_shards"
-                          max="3"
-                          min="1"
-                          type="number"
-                          value="1"
-                        />
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <input
+                            class="euiFieldNumber"
+                            data-meta="Field"
+                            data-test-subj="numberOfShardsInput"
+                            id="index.number_of_shards"
+                            max="3"
+                            min="1"
+                            type="number"
+                            value="1"
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </span>
                   </div>
                 </div>
                 <div

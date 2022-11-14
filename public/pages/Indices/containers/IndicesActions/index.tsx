@@ -22,8 +22,8 @@ import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 import { getErrorMessage } from "../../../../utils/helpers";
 import ReindexFlyout from "../../components/ReindexFlyout";
 import SplitIndexFlyout from "../../components/SplitIndexFlyout";
-import {IndexItem} from "../../../../../models/interfaces";
-import {ServerResponse} from "../../../../../server/models/types";
+import { IndexItem } from "../../../../../models/interfaces";
+import { ServerResponse } from "../../../../../server/models/types";
 
 export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
@@ -50,14 +50,15 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const onDeleteIndexModalConfirm = useCallback(async () => {
+    const indexPayload = selectedItems.map((item) => item.index).join(",");
     const result = await services.commonService.apiCaller({
       endpoint: "indices.delete",
       data: {
-        index: selectedItems.map((item) => item.index).join(","),
+        index: indexPayload,
       },
     });
     if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess("Delete successfully");
+      coreServices.notifications.toasts.addSuccess(`Delete [${indexPayload}] successfully`);
       onDeleteIndexModalClose();
       onDelete();
     } else {
@@ -78,7 +79,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         target: targetIndex,
         body: {
           settings: {
-            ...settingsPayload
+            ...settingsPayload,
           },
         },
       },
@@ -88,8 +89,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
       onDelete();
       onCloseFlyout();
     } else {
-      coreServices.notifications.toasts.addDanger(result?.error ||
-        "There was a problem submit split index request, please check with admin");
+      coreServices.notifications.toasts.addDanger(
+        result?.error || "There was a problem submit split index request, please check with admin"
+      );
     }
   };
 
@@ -175,7 +177,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   );
 
   const getIndexSettings = async (indexName: string, flat: boolean): Promise<Record<string, IndexItem>> => {
-    const result : ServerResponse<Record<string, IndexItem>> = await services.commonService.apiCaller({
+    const result: ServerResponse<Record<string, IndexItem>> = await services.commonService.apiCaller({
       endpoint: "indices.getSettings",
       data: {
         index: indexName,
@@ -282,8 +284,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     {
                       name: "Split",
                       "data-test-subj": "Split Action",
-                      disabled: !selectedItems.length
-                        || selectedItems.length > 1,
+                      disabled: !selectedItems.length || selectedItems.length > 1,
                       onClick: () => setSplitIndexFlyoutVisible(true),
                     },
                     {
@@ -338,14 +339,15 @@ export default function IndicesActions(props: IndicesActionsProps) {
         />
       )}
 
-      {splitIndexFlyoutVisible &&
+      {splitIndexFlyoutVisible && (
         <SplitIndexFlyout
           sourceIndex={selectedItems[0]}
           onCloseFlyout={onCloseFlyout}
           onSplitIndex={splitIndex}
           getIndexSettings={getIndexSettings}
           coreServices={coreServices}
-        />}
+        />
+      )}
     </>
   );
 }

@@ -24,6 +24,7 @@ import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
 import "./IndexMapping.scss";
+import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 
 export interface IndexMappingProps {
   value?: MappingsProperties;
@@ -51,6 +52,11 @@ interface IMappingLabel {
   disabled?: boolean;
   id: string;
 }
+
+const OLD_VALUE_DISABLED_REASON = "Old mappings can not be modified";
+
+const EuiFieldTextWrapped = EuiToolTipWrapper(EuiFieldText);
+const EuiSelectWrapped = EuiToolTipWrapper(EuiSelect);
 
 const MappingLabel = forwardRef(
   (
@@ -99,28 +105,28 @@ const MappingLabel = forwardRef(
       <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
         <EuiFlexItem style={{ width: 240 }} grow={false}>
           <EuiFormRow isInvalid={!!fieldNameError} error={fieldNameError} label="Field name" display="rowCompressed">
-            <>
-              <EuiFieldText
-                inputRef={ref}
-                disabled={disabled}
-                compressed
-                data-test-subj={`${id}-field-name`}
-                value={fieldNameState}
-                onChange={(e) => setFieldNameState(e.target.value)}
-                onBlur={async (e) => {
-                  const error = await onValidate();
-                  if (!error) {
-                    onFieldChange("fieldName", fieldNameState);
-                  }
-                }}
-              />
-            </>
+            <EuiFieldTextWrapped
+              inputRef={ref}
+              disabled={disabled}
+              disabledReason={OLD_VALUE_DISABLED_REASON}
+              compressed
+              data-test-subj={`${id}-field-name`}
+              value={fieldNameState}
+              onChange={(e) => setFieldNameState(e.target.value)}
+              onBlur={async (e) => {
+                const error = await onValidate();
+                if (!error) {
+                  onFieldChange("fieldName", fieldNameState);
+                }
+              }}
+            />
           </EuiFormRow>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiFormRow label="Field type" display="rowCompressed">
-            <EuiSelect
+            <EuiSelectWrapped
               disabled={disabled}
+              disabledReason={OLD_VALUE_DISABLED_REASON}
               compressed
               value={type}
               data-test-subj={`${id}-field-type`}

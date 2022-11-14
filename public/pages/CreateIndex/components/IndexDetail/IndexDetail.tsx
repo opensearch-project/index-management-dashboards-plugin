@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiFieldText, EuiLink, EuiOverlayMask, EuiLoadingSpinner } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner } from "@elastic/eui";
 import { set, merge } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -15,7 +15,15 @@ import { Ref } from "react";
 import { INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
+import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
+import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
+
+const indexNameEmptyTips = "Please fill in the index name before editing other fields";
+const staticSettingsTips = "This field can not be modified in edit mode";
+const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
+  disabledKey: "isDisabled",
+});
 
 export interface IndexDetailProps {
   value?: Partial<IndexItem>;
@@ -137,9 +145,17 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled:
-              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) || templateSimulateLoading || !finalValue.index,
             placeholder: "The number of primary shards in the index. Default is 1.",
+            disabledReason: [
+              {
+                visible: !finalValue.index,
+                message: indexNameEmptyTips,
+              },
+              {
+                visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards"),
+                message: staticSettingsTips,
+              },
+            ],
           },
         },
       },
@@ -157,9 +173,17 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled:
-              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) || templateSimulateLoading || !finalValue.index,
             placeholder: "The number of replica shards each primary shard should have.",
+            disabledReason: [
+              {
+                visible: !finalValue.index,
+                message: indexNameEmptyTips,
+              },
+              {
+                visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas"),
+                message: staticSettingsTips,
+              },
+            ],
           },
         },
       },
@@ -172,9 +196,17 @@ const IndexDetail = (
         type: "Input",
         options: {
           props: {
-            disabled:
-              (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval")) || templateSimulateLoading || !finalValue.index,
             placeholder: "Can be set to -1 to disable refreshing.",
+            disabledReason: [
+              {
+                visible: !finalValue.index,
+                message: indexNameEmptyTips,
+              },
+              {
+                visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval"),
+                message: staticSettingsTips,
+              },
+            ],
           },
         },
       },
@@ -204,6 +236,7 @@ const IndexDetail = (
                         onBlur: onIndexInputBlur,
                         isLoading: templateSimulateLoading,
                         disabled: isEdit || templateSimulateLoading,
+                        disabledReason: "Index name can not be modified",
                       },
                       rules: [
                         {
@@ -223,9 +256,10 @@ const IndexDetail = (
                       props: {
                         refreshOptions: refreshOptions,
                         isDisabled: !finalValue.index,
+                        disabledReason: indexNameEmptyTips,
                       },
                     },
-                    component: AliasSelect as any,
+                    component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
                   },
                 ]}
                 value={{

@@ -130,20 +130,26 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                   <div
                     class="euiFormRow__fieldWrapper"
                   >
-                    <div
-                      class="euiFormControlLayout euiFormControlLayout--compressed"
+                    <span
+                      class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                     >
                       <div
-                        class="euiFormControlLayout__childrenWrapper"
+                        class="euiFormControlLayout euiFormControlLayout--compressed"
                       >
-                        <input
-                          class="euiFieldText euiFieldText--compressed"
-                          data-test-subj="mapping-visual-editor-0-field-name"
-                          type="text"
-                          value="object"
-                        />
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <input
+                            class="euiFieldText euiFieldText--compressed"
+                            data-test-subj="mapping-visual-editor-0-field-name"
+                            disabled=""
+                            id="some_html_id"
+                            type="text"
+                            value="object"
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -167,74 +173,79 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                   <div
                     class="euiFormRow__fieldWrapper"
                   >
-                    <div
-                      class="euiFormControlLayout euiFormControlLayout--compressed"
+                    <span
+                      class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                     >
                       <div
-                        class="euiFormControlLayout__childrenWrapper"
+                        class="euiFormControlLayout euiFormControlLayout--compressed"
                       >
-                        <select
-                          class="euiSelect euiSelect--compressed"
-                          data-test-subj="mapping-visual-editor-0-field-type"
-                          id="some_html_id"
-                        >
-                          <option
-                            value="null"
-                          >
-                            null
-                          </option>
-                          <option
-                            value="boolean"
-                          >
-                            boolean
-                          </option>
-                          <option
-                            value="float"
-                          >
-                            float
-                          </option>
-                          <option
-                            value="double"
-                          >
-                            double
-                          </option>
-                          <option
-                            value="integer"
-                          >
-                            integer
-                          </option>
-                          <option
-                            value="text"
-                          >
-                            text
-                          </option>
-                          <option
-                            value="keyword"
-                          >
-                            keyword
-                          </option>
-                          <option
-                            value="date"
-                          >
-                            date
-                          </option>
-                          <option
-                            value="object"
-                          >
-                            object
-                          </option>
-                        </select>
                         <div
-                          class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          class="euiFormControlLayout__childrenWrapper"
                         >
-                          <span
-                            class="euiFormControlLayoutCustomIcon"
+                          <select
+                            class="euiSelect euiSelect--compressed"
+                            data-test-subj="mapping-visual-editor-0-field-type"
+                            disabled=""
+                            id="some_html_id"
                           >
-                            EuiIconMock
-                          </span>
+                            <option
+                              value="null"
+                            >
+                              null
+                            </option>
+                            <option
+                              value="boolean"
+                            >
+                              boolean
+                            </option>
+                            <option
+                              value="float"
+                            >
+                              float
+                            </option>
+                            <option
+                              value="double"
+                            >
+                              double
+                            </option>
+                            <option
+                              value="integer"
+                            >
+                              integer
+                            </option>
+                            <option
+                              value="text"
+                            >
+                              text
+                            </option>
+                            <option
+                              value="keyword"
+                            >
+                              keyword
+                            </option>
+                            <option
+                              value="date"
+                            >
+                              date
+                            </option>
+                            <option
+                              value="object"
+                            >
+                              object
+                            </option>
+                          </select>
+                          <div
+                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          >
+                            <span
+                              class="euiFormControlLayoutCustomIcon"
+                            >
+                              EuiIconMock
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -344,20 +355,26 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                           <div
                             class="euiFormRow__fieldWrapper"
                           >
-                            <div
-                              class="euiFormControlLayout euiFormControlLayout--compressed"
+                            <span
+                              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                             >
                               <div
-                                class="euiFormControlLayout__childrenWrapper"
+                                class="euiFormControlLayout euiFormControlLayout--compressed"
                               >
-                                <input
-                                  class="euiFieldText euiFieldText--compressed"
-                                  data-test-subj="mapping-visual-editor-0.properties.0-field-name"
-                                  type="text"
-                                  value="text"
-                                />
+                                <div
+                                  class="euiFormControlLayout__childrenWrapper"
+                                >
+                                  <input
+                                    class="euiFieldText euiFieldText--compressed"
+                                    data-test-subj="mapping-visual-editor-0.properties.0-field-name"
+                                    disabled=""
+                                    id="some_html_id"
+                                    type="text"
+                                    value="text"
+                                  />
+                                </div>
                               </div>
-                            </div>
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -381,74 +398,79 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                           <div
                             class="euiFormRow__fieldWrapper"
                           >
-                            <div
-                              class="euiFormControlLayout euiFormControlLayout--compressed"
+                            <span
+                              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                             >
                               <div
-                                class="euiFormControlLayout__childrenWrapper"
+                                class="euiFormControlLayout euiFormControlLayout--compressed"
                               >
-                                <select
-                                  class="euiSelect euiSelect--compressed"
-                                  data-test-subj="mapping-visual-editor-0.properties.0-field-type"
-                                  id="some_html_id"
-                                >
-                                  <option
-                                    value="null"
-                                  >
-                                    null
-                                  </option>
-                                  <option
-                                    value="boolean"
-                                  >
-                                    boolean
-                                  </option>
-                                  <option
-                                    value="float"
-                                  >
-                                    float
-                                  </option>
-                                  <option
-                                    value="double"
-                                  >
-                                    double
-                                  </option>
-                                  <option
-                                    value="integer"
-                                  >
-                                    integer
-                                  </option>
-                                  <option
-                                    value="text"
-                                  >
-                                    text
-                                  </option>
-                                  <option
-                                    value="keyword"
-                                  >
-                                    keyword
-                                  </option>
-                                  <option
-                                    value="date"
-                                  >
-                                    date
-                                  </option>
-                                  <option
-                                    value="object"
-                                  >
-                                    object
-                                  </option>
-                                </select>
                                 <div
-                                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                                  class="euiFormControlLayout__childrenWrapper"
                                 >
-                                  <span
-                                    class="euiFormControlLayoutCustomIcon"
+                                  <select
+                                    class="euiSelect euiSelect--compressed"
+                                    data-test-subj="mapping-visual-editor-0.properties.0-field-type"
+                                    disabled=""
+                                    id="some_html_id"
                                   >
-                                    EuiIconMock
-                                  </span>
+                                    <option
+                                      value="null"
+                                    >
+                                      null
+                                    </option>
+                                    <option
+                                      value="boolean"
+                                    >
+                                      boolean
+                                    </option>
+                                    <option
+                                      value="float"
+                                    >
+                                      float
+                                    </option>
+                                    <option
+                                      value="double"
+                                    >
+                                      double
+                                    </option>
+                                    <option
+                                      value="integer"
+                                    >
+                                      integer
+                                    </option>
+                                    <option
+                                      value="text"
+                                    >
+                                      text
+                                    </option>
+                                    <option
+                                      value="keyword"
+                                    >
+                                      keyword
+                                    </option>
+                                    <option
+                                      value="date"
+                                    >
+                                      date
+                                    </option>
+                                    <option
+                                      value="object"
+                                    >
+                                      object
+                                    </option>
+                                  </select>
+                                  <div
+                                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                                  >
+                                    <span
+                                      class="euiFormControlLayoutCustomIcon"
+                                    >
+                                      EuiIconMock
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
+                            </span>
                           </div>
                         </div>
                       </div>

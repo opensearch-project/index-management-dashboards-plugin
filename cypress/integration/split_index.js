@@ -36,23 +36,14 @@ describe("Split Index", () => {
       // The index should exist
       cy.get(`#_selection_column_${SAMPLE_INDEX}-checkbox`).should("have.exist").end();
 
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
-        .click()
-        .end()
-        .get("#index-detail-modal-settings")
-        .click()
-        .end()
-        .get('[data-test-subj="detail-modal-edit"]')
-        .click()
-        .end();
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click().end().get("#index-detail-modal-settings").click().end();
 
       cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').then(($shardNumber) => {
         split_number = $shardNumber.val() * 2;
       });
 
       // Update Index status to blocks write otherwise we can't apply split operation on it
-      cy.updateIndexSettings(SAMPLE_INDEX, {"index.blocks.write":"true"})
-        .end()
+      cy.updateIndexSettings(SAMPLE_INDEX, { "index.blocks.write": "true" }).end();
     });
 
     it("Split successfully", () => {
@@ -89,9 +80,6 @@ describe("Split Index", () => {
         .end()
         .get("#index-detail-modal-settings")
         .click()
-        .end()
-        .get('[data-test-subj="detail-modal-edit"]')
-        .click()
         .end();
 
       cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
@@ -110,6 +98,6 @@ describe("Split Index", () => {
         .get('[data-test-subj="flyout-footer-action-button"]')
         .click()
         .end();
-    })
+    });
   });
 });
