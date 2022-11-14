@@ -25,21 +25,25 @@ HTMLCollection [
         <div
           class="euiFormRow__fieldWrapper"
         >
-          <div
-            class="euiFormControlLayout"
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout__childrenWrapper"
+              class="euiFormControlLayout"
             >
-              <input
-                class="euiFieldText"
-                data-meta="Field"
-                id="test"
-                type="text"
-                value=""
-              />
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  data-meta="Field"
+                  id="test"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
-          </div>
+          </span>
         </div>
       </div>
       <div
@@ -85,21 +89,25 @@ HTMLCollection [
         <div
           class="euiFormRow__fieldWrapper"
         >
-          <div
-            class="euiFormControlLayout"
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout__childrenWrapper"
+              class="euiFormControlLayout"
             >
-              <input
-                class="euiFieldText"
-                data-meta="Field"
-                id="test_component_2"
-                type="text"
-                value=""
-              />
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  data-meta="Field"
+                  id="test_component_2"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
-          </div>
+          </span>
         </div>
       </div>
     </div>

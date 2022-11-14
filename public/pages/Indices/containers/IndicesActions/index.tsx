@@ -50,14 +50,15 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const onDeleteIndexModalConfirm = useCallback(async () => {
+    const indexPayload = selectedItems.map((item) => item.index).join(",");
     const result = await services.commonService.apiCaller({
       endpoint: "indices.delete",
       data: {
-        index: selectedItems.map((item) => item.index).join(","),
+        index: indexPayload,
       },
     });
     if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess("Delete successfully");
+      coreServices.notifications.toasts.addSuccess(`Delete [${indexPayload}] successfully`);
       onDeleteIndexModalClose();
       onDelete();
     } else {
