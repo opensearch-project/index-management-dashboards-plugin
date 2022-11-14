@@ -14,12 +14,12 @@ import {
   EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
-import {get} from 'lodash';
-import FormGenerator, {IField, IFormGeneratorRef} from "../../../../components/FormGenerator";
-import {IndexItem} from "../../../../../models/interfaces";
+import { get } from "lodash";
+import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
+import { IndexItem } from "../../../../../models/interfaces";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
-import {CatIndex} from "../../../../../server/models/interfaces";
-import {CoreStart} from "opensearch-dashboards/public";
+import { CatIndex } from "../../../../../server/models/interfaces";
+import { CoreStart } from "opensearch-dashboards/public";
 import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 
@@ -70,8 +70,8 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
     const { sourceIndex, onCloseFlyout, setIndexSettings, openIndex, onChange } = this.props;
     const { sourceIndexSettings } = this.state;
 
-    const blockNameList = ["targetIndex"]
-    const reasons: string[] = [];
+    const blockNameList = ["targetIndex"];
+    const reasons: React.ReactChild[] = [];
     const sourceSettings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
     const blocksWriteValue = get(sourceSettings, ["index.blocks.write"]);
 
@@ -86,19 +86,22 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
           <EuiButton fill onClick={() => openIndex()} data-test-subj={"open-index-button"}>
             Open index
           </EuiButton>
-        </>);
+        </>
+      );
     }
 
-    if (sourceSettings &&
-      (!blocksWriteValue || blocksWriteValue !== "true")) {
+    if (sourceSettings && (!blocksWriteValue || blocksWriteValue !== "true")) {
       const flat = true;
-      const blocksWriteSetting = {"index.blocks.write":"true"};
+      const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(
         <>
           Source index must be in block write status.
           <EuiButton
             fill
-            onClick={() => setIndexSettings(sourceIndex.index, flat, blocksWriteSetting, onChange)}
+            onClick={async () => {
+              await setIndexSettings(sourceIndex.index, flat, blocksWriteSetting);
+              this.isSourceIndexReady();
+            }}
             data-test-subj={"set-indexsetting-button"}
           >
             Set to block write
@@ -152,8 +155,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
                   return Promise.reject("Number of shards is required");
                 }
 
-                if (Number(value) < 1 ||
-                  Number(value) % Number(sourceIndex.pri) != 0) {
+                if (Number(value) < 1 || Number(value) % Number(sourceIndex.pri) != 0) {
                   return Promise.reject(`${value} must be a multiple of ${sourceIndex.pri}`);
                 }
 
@@ -172,13 +174,13 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
     ];
 
     if (reasons.length > 0) {
-      console.log("blocks.write="+(blocksWriteValue?blocksWriteValue:"null")
-        + " health="+sourceIndex.health
-        + " status=" + sourceIndex.status);
+      console.log(
+        "blocks.write=" + (blocksWriteValue ? blocksWriteValue : "null") + " health=" + sourceIndex.health + " status=" + sourceIndex.status
+      );
     }
 
     return (
-      <EuiFlyout ownFocus={true} onClose={()=>{}} size="m" hideCloseButton>
+      <EuiFlyout ownFocus={true} onClose={() => {}} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle"> Split Index</h2>
@@ -186,10 +188,8 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
-          <IndexDetail indices={[sourceIndex.index]} >
-            <EuiCallOut color="warning"
-                        hidden={reasons.length == 0}
-                        data-test-subj="Source Index Warning">
+          <IndexDetail indices={[sourceIndex.index]}>
+            <EuiCallOut color="warning" hidden={reasons.length == 0} data-test-subj="Source Index Warning">
               <div style={{ lineHeight: 1.5 }}>
                 <ul>
                   {reasons.map((reason, reasonIndex) => (
@@ -199,13 +199,14 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
                 <EuiLink
                   href={"https://opensearch.org/docs/1.2/opensearch/rest-api/index-apis/split/"}
                   target="_blank"
-                  rel="noopener noreferrer">
+                  rel="noopener noreferrer"
+                >
                   Learn more
                 </EuiLink>
               </div>
             </EuiCallOut>
           </IndexDetail>
-          <EuiSpacer/>
+          <EuiSpacer />
 
           <ContentPanel title="Configure target index" titleSize="s">
             <FormGenerator
@@ -229,7 +230,10 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
                   helpText: (
                     <>
                       Specify a comma-delimited list of settings.
-                      <EuiLink href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings" target="_blank">
+                      <EuiLink
+                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                        target="_blank"
+                      >
                         View index settings
                       </EuiLink>
                     </>
@@ -247,7 +251,8 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
             edit={false}
             disabledAction={reasons.length > 0}
             onClickAction={this.onSubmit}
-            onClickCancel={onCloseFlyout} />
+            onClickCancel={onCloseFlyout}
+          />
         </EuiFlyoutFooter>
       </EuiFlyout>
     );
