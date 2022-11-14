@@ -23,14 +23,18 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         visible
         onConfirm={() => {}}
         onClose={() => {}}
-        getIndexSettings={() => {}}
+        getIndexSettings={async () => {
+          return {};
+        }}
       />
     );
 
-    expect(document.body.children).toMatchSnapshot();
+    await waitFor(() => {
+      expect(document.body.children).toMatchSnapshot();
+    });
   });
 
-  it("calls close when cancel button clicked", () => {
+  it("calls close when cancel button clicked", async () => {
     const onClose = jest.fn();
     const { getByTestId } = render(
       <ShrinkIndexFlyout
@@ -44,16 +48,21 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         visible
         onConfirm={() => {}}
         onClose={onClose}
-        getIndexSettings={() => {}}
+        getIndexSettings={async () => {
+          return {};
+        }}
       />
     );
 
-    fireEvent.click(getByTestId("shrinkIndexCloseButton"));
-    expect(onClose).toHaveBeenCalled();
+    await waitFor(() => {
+      fireEvent.click(getByTestId("shrinkIndexCloseButton"));
+      expect(onClose).toHaveBeenCalled();
+    });
   });
 
-  it("shows error when target index name is not set", () => {
+  it("shows error when source index cannot shrink", async () => {
     const onClose = jest.fn();
+    const updateIndexSettings = jest.fn();
     const { getByTestId, queryByText } = render(
       <ShrinkIndexFlyout
         sourceIndex={{
@@ -66,25 +75,37 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         visible
         onConfirm={() => {}}
         onClose={onClose}
-        getIndexSettings={() => {}}
+        getIndexSettings={async () => {
+          return {};
+        }}
+        updateIndexSettings={updateIndexSettings}
       />
     );
 
-    expect(queryByText("Name of the target index required.")).not.toBeNull();
-    userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
-    expect(queryByText("Name of the target index required.")).toBeNull();
-    userEvent.clear(getByTestId("targetIndexNameInput"));
-    fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
-    expect(queryByText("Name of the target index required.")).not.toBeNull();
+    await waitFor(async () => {
+      expect(queryByText("The source index cannot shrink, due to the following reasons:")).not.toBeNull();
+      expect(queryByText("The source index's write operations must be blocked.")).not.toBeNull();
+      fireEvent.click(getByTestId("onSetIndexWriteBlockButton"));
+      expect(updateIndexSettings).toHaveBeenCalled();
+    });
   });
 
-  it("shows error when number of shards is not valid", async () => {
+  it("shows error when target index name is not set", async () => {
     const onClose = jest.fn();
-    const { getByTestId, getByText } = render(
+    const testIndexSettings = {
+      test_index: {
+        settings: {
+          "index.blocks.write": true,
+          "index.routing.allocation.require._name": "node1",
+        },
+      },
+    };
+    const getIndexSettings = jest.fn().mockResolvedValue(testIndexSettings);
+    const { getByTestId, queryByText } = render(
       <ShrinkIndexFlyout
         sourceIndex={{
           health: "green",
-          index: "test_index123",
+          index: "test_index",
           pri: "3",
           rep: "0",
           status: "open",
@@ -92,44 +113,77 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         visible
         onConfirm={() => {}}
         onClose={onClose}
-        getIndexSettings={() => {}}
+        getIndexSettings={getIndexSettings}
       />
     );
 
-    userEvent.type(getByTestId("numberOfShardsInput"), "2");
-    await act(async () => {
-      await userEvent.click(getByTestId("shrinkIndexConfirmButton"));
+    await waitFor(async () => {
+      expect(queryByText("Target index name required.")).toBeNull();
     });
-    expect(
-      getByText("The number of new primary shards must be a positive factor of the number of primary shards in the source index.")
-    ).not.toBeNull();
+
+    await act(async () => {
+      userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
+    });
+    await waitFor(async () => {
+      expect(queryByText("Target index name required.")).toBeNull();
+    });
+
+    await act(async () => {
+      userEvent.clear(getByTestId("targetIndexNameInput"));
+    });
+    await act(async () => {
+      fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
+    });
+    await waitFor(() => {
+      expect(queryByText("Target index name required.")).not.toBeNull();
+    });
   });
 
-  it("no error when number of shards is valid", async () => {
+  it("shows error when number of replicas is not valid", async () => {
     const onClose = jest.fn();
-    const onConfirm = jest.fn();
-    const { getByTestId, queryByText, debug } = render(
+    const testIndexSettings = {
+      test_index: {
+        settings: {
+          "index.blocks.write": true,
+          "index.routing.allocation.require._name": "node1",
+        },
+      },
+    };
+    const getIndexSettings = jest.fn().mockResolvedValue(testIndexSettings);
+    const { getByTestId, queryByText } = render(
       <ShrinkIndexFlyout
         sourceIndex={{
           health: "green",
           index: "test_index",
-          pri: "10",
+          pri: "3",
           rep: "0",
           status: "open",
         }}
         visible
-        onConfirm={onConfirm}
+        onConfirm={() => {}}
         onClose={onClose}
-        getIndexSettings={() => {}}
+        getIndexSettings={getIndexSettings}
       />
     );
 
-    userEvent.type(getByTestId("numberOfShardsInput"), "5");
-    fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
-    await waitFor(() => {
-      expect(
-        queryByText("The number of new primary shards must be a positive factor of the number of primary shards in the source index.")
-      ).toBeNull();
+    await waitFor(async () => {
+      expect(queryByText("Number of replicas must be greater than or equal to 0.")).toBeNull();
+    });
+
+    await act(async () => {
+      userEvent.clear(getByTestId("numberOfReplicasInput"));
+    });
+
+    await waitFor(async () => {
+      expect(queryByText("Number of replicas must be greater than or equal to 0.")).not.toBeNull();
+    });
+
+    await act(async () => {
+      userEvent.type(getByTestId("numberOfReplicasInput"), "-1");
+    });
+
+    await waitFor(async () => {
+      expect(queryByText("Number of replicas must be greater than or equal to 0.")).not.toBeNull();
     });
   });
 
@@ -158,9 +212,9 @@ describe("<ShrinkIndexFlyout /> spec", () => {
 
     await waitFor(() => {
       expect(queryByText("The source index cannot shrink, due to the following reasons:")).not.toBeNull();
-      expect(queryByText("The index's health status is [red]!")).not.toBeNull();
-      expect(queryByText("The index has only one primary shard!")).not.toBeNull();
-      expect(queryByText("The index is closed!")).not.toBeNull();
+      expect(queryByText("The source index's health status is [red]!")).not.toBeNull();
+      expect(queryByText("The source index has only one primary shard!")).not.toBeNull();
+      expect(queryByText("The source index must be in open status!")).not.toBeNull();
       expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     });
   });
@@ -174,7 +228,7 @@ describe("<ShrinkIndexFlyout /> spec", () => {
       },
     };
     const getIndexSettings = jest.fn().mockResolvedValue(testIndexSettings);
-    const { getByTestId, queryByText } = render(
+    const { queryByText } = render(
       <ShrinkIndexFlyout
         sourceIndex={{
           health: "yellow",
@@ -193,14 +247,10 @@ describe("<ShrinkIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(queryByText("The source index is not ready to shrink, may due to the following reasons:")).not.toBeNull();
       expect(
-        queryByText(
-          "Index setting [index.blocks.read_only] or [index.blocks.metadata] is [true]," +
-            " this will cause the new shrunken index's shards to be unassigned."
-        )
+        queryByText("Index setting [index.blocks.read_only] is [true], this will cause the new shrunken index's shards to be unassigned.")
       ).not.toBeNull();
-      expect(queryByText("The index's health is not green.")).not.toBeNull();
-      expect(queryByText("Index setting [index.blocks.write] is not [true].")).not.toBeNull();
-      expect(queryByText("One copy of every shard should be allocated to one node.")).not.toBeNull();
+      expect(queryByText("The source index's health is not green.")).not.toBeNull();
+      expect(queryByText("One copy of every shard may not allocated to one node.")).not.toBeNull();
     });
   });
 
@@ -214,7 +264,7 @@ describe("<ShrinkIndexFlyout /> spec", () => {
       },
     };
     const getIndexSettings = jest.fn().mockResolvedValue(testIndexSettings);
-    const { getByTestId, queryByText } = render(
+    const { queryByText } = render(
       <ShrinkIndexFlyout
         sourceIndex={{
           health: "green",
@@ -232,8 +282,7 @@ describe("<ShrinkIndexFlyout /> spec", () => {
 
     await waitFor(() => {
       expect(queryByText("The source index's health is not green.")).toBeNull();
-      expect(queryByText("Index setting [index.blocks.write] is not [true].")).toBeNull();
-      expect(queryByText("One copy of every shard should be allocated to one node.")).toBeNull();
+      expect(queryByText("One copy of every shard may not allocated to one node.")).toBeNull();
     });
   });
 });

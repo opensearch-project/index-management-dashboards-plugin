@@ -91,7 +91,7 @@ describe("<IndicesActions /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Open index successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Open [test_index] successfully");
       expect(onOpen).toHaveBeenCalledTimes(1);
     });
   });
@@ -138,14 +138,57 @@ describe("<IndicesActions /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Close index successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Close [test_index] successfully");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
 
   it("shrink index by calling commonService", async () => {
     const onShrink = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "cat.indices":
+            return {
+              ok: true,
+              response: [
+                {
+                  health: "green",
+                  status: "open",
+                  index: "test_index",
+                  uuid: "HuHWuUOMSkKD5XBTbqQ5gg",
+                  pri: "3",
+                  rep: "0",
+                  "docs.count": null,
+                  "docs.deleted": null,
+                  "store.size": null,
+                  "pri.store.size": null,
+                },
+              ],
+            };
+          case "indices.getSettings":
+            return {
+              ok: true,
+              response: {
+                test_index: {
+                  settings: {
+                    "index.blocks.write": true,
+                  },
+                },
+              },
+            };
+          case "indices.shrink":
+            return {
+              ok: true,
+              response: {},
+            };
+        }
+        return {
+          ok: true,
+          response: {},
+        };
+      }
+    );
 
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [
@@ -174,11 +217,27 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
     userEvent.click(getByTestId("Shrink Action"));
-    userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
-    userEvent.click(getByTestId("shrinkIndexConfirmButton"));
+    await waitFor(() => {
+      userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
+      userEvent.click(getByTestId("shrinkIndexConfirmButton"));
+    });
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.getSettings",
+        data: {
+          index: "test_index",
+          flat_settings: true,
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cat.indices",
+        data: {
+          index: ["test_index"],
+          format: "json",
+        },
+      });
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.shrink",
         data: {
@@ -186,16 +245,10 @@ describe("<IndicesActions /> spec", () => {
           target: "test_index_shrunken",
           body: {
             settings: {
-              "index.number_of_shards": 1,
+              "index.number_of_shards": "1",
+              "index.number_of_replicas": "1",
             },
           },
-        },
-      });
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.getSettings",
-        data: {
-          index: "test_index",
-          flat_settings: true,
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
