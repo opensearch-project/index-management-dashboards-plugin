@@ -36,7 +36,7 @@ export default function IndexDetail(props: IIndexDetailProps) {
       props.onGetIndicesDetail && props.onGetIndicesDetail(finalResponse);
       setLoading(false);
     })();
-  }, [props.indices, setLoading, setItems, coreServices]);
+  }, [props.indices.join(","), setLoading, setItems, coreServices]);
   return (
     <ContentPanel title="Source index details" titleSize="s">
       <EuiBasicTable

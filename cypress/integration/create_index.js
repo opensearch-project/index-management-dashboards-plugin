@@ -93,12 +93,7 @@ describe("Create Index", () => {
     });
 
     it("Update alias successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#index-detail-modal-alias")
-        .click()
-        .get('[data-test-subj="detail-modal-edit"]')
-        .click();
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click().get("#index-detail-modal-alias").click();
 
       // add a alias and remove the exist alias
       cy.get('[data-test-subj="comboBoxSearchInput"]')
@@ -109,17 +104,10 @@ describe("Create Index", () => {
         .end()
         .get('[data-test-subj="createIndexCreateButton"]')
         .click({ force: true })
-        .end()
-        .get('[data-test-subj="change_diff_confirm-confirm"]')
-        .click();
+        .end();
 
       // check the index
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#index-detail-modal-alias")
-        .click()
-        .get('[data-test-subj="detail-modal-edit"]')
-        .click();
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click().get("#index-detail-modal-alias").click();
 
       cy.get(`[value="${SAMPLE_INDEX}"]`)
         .should("exist")
@@ -133,12 +121,7 @@ describe("Create Index", () => {
     });
 
     it("Update settings successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#index-detail-modal-settings")
-        .click()
-        .get('[data-test-subj="detail-modal-edit"]')
-        .click();
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click().get("#index-detail-modal-settings").click();
 
       cy.get('[aria-controls="accordion_for_create_index_settings"]')
         .click()
@@ -172,23 +155,13 @@ describe("Create Index", () => {
         .get('[data-test-subj="change_diff_confirm-confirm"]')
         .click();
 
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#index-detail-modal-settings")
-        .click()
-        .get('[data-test-subj="detail-modal-edit"]')
-        .click();
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click().get("#index-detail-modal-settings").click();
 
       cy.get('[placeholder="The number of replica shards each primary shard should have."]').should("have.value", 12);
     });
 
     it("Update mappings successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#index-detail-modal-mappings")
-        .click()
-        .get('[data-test-subj="detail-modal-edit"]')
-        .click();
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click().get("#index-detail-modal-mappings").click();
 
       cy.get('[data-test-subj="create index add field button"]')
         .click()
@@ -201,12 +174,7 @@ describe("Create Index", () => {
         .get('[data-test-subj="change_diff_confirm-confirm"]')
         .click();
 
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#index-detail-modal-mappings")
-        .click()
-        .get('[data-test-subj="detail-modal-edit"]')
-        .click();
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click().get("#index-detail-modal-mappings").click();
 
       cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.value", "text").end();
     });

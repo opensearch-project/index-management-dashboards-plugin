@@ -6,13 +6,14 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-// @ts-ignore
 import userEvent from "@testing-library/user-event";
-import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
+import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
 import IndexDetail, { IndexDetailModalProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
+
+apiCallerMock(browserServicesMock);
 
 function renderWithRouter(props: IndexDetailModalProps) {
   return {
@@ -29,24 +30,9 @@ function renderWithRouter(props: IndexDetailModalProps) {
 }
 
 describe("container <IndexDetail /> spec", () => {
+  const onUpdateSuccessMock = jest.fn();
   it("render the component", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
-      ok: true,
-      response: {
-        test_index: {
-          aliases: {},
-          mappings: {},
-          settings: {
-            index: {
-              number_of_shards: "1",
-              number_of_replicas: "1",
-              provided_name: "test_index",
-            },
-          },
-        },
-      },
-    });
-    const { container, getByTestId } = renderWithRouter({
+    const { container, getByTestId, getByDisplayValue } = renderWithRouter({
       index: "test_index",
       record: {
         "docs.count": "5",
@@ -64,6 +50,10 @@ describe("container <IndexDetail /> spec", () => {
         data_stream: "",
       },
       onDelete: () => null,
+      onUpdateIndex: onUpdateSuccessMock,
+      onClose: () => null,
+      onOpen: () => null,
+      onShrink: () => null,
     });
 
     await waitFor(() => {
@@ -81,6 +71,15 @@ describe("container <IndexDetail /> spec", () => {
           index: "test_index",
         },
       });
+    });
+
+    userEvent.click(document.getElementById("index-detail-modal-alias") as Element);
+    await waitFor(() => {
+      expect(getByDisplayValue("test_index")).not.toBeNull();
+    });
+    userEvent.click(getByTestId("createIndexCreateButton"));
+    await waitFor(() => {
+      expect(onUpdateSuccessMock).toBeCalledTimes(1);
     });
   });
 });

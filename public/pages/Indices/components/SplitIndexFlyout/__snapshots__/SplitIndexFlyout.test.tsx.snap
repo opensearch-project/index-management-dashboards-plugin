@@ -128,21 +128,25 @@ HTMLCollection [
                   <div
                     class="euiFormRow__fieldWrapper"
                   >
-                    <div
-                      class="euiFormControlLayout"
+                    <span
+                      class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                     >
                       <div
-                        class="euiFormControlLayout__childrenWrapper"
+                        class="euiFormControlLayout"
                       >
-                        <input
-                          class="euiFieldText"
-                          data-meta="Field"
-                          id="targetIndex"
-                          type="text"
-                          value=""
-                        />
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <input
+                            class="euiFieldText"
+                            data-meta="Field"
+                            id="targetIndex"
+                            type="text"
+                            value=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </span>
                   </div>
                 </div>
                 <div
@@ -170,21 +174,25 @@ HTMLCollection [
                     >
                       Must be a multi of undefined
                     </div>
-                    <div
-                      class="euiFormControlLayout"
+                    <span
+                      class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                     >
                       <div
-                        class="euiFormControlLayout__childrenWrapper"
+                        class="euiFormControlLayout"
                       >
-                        <input
-                          class="euiFieldNumber"
-                          data-meta="Field"
-                          id="index.number_of_shards"
-                          type="number"
-                          value=""
-                        />
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <input
+                            class="euiFieldNumber"
+                            data-meta="Field"
+                            id="index.number_of_shards"
+                            type="number"
+                            value=""
+                          />
+                        </div>
                       </div>
-                    </div>
+                    </span>
                   </div>
                 </div>
                 <div

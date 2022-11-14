@@ -113,7 +113,14 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
       if (getIndicesResponse.ok) {
         const { indices, totalIndices } = getIndicesResponse.response;
-        this.setState({ indices, totalIndices });
+        const payload = {
+          indices,
+          totalIndices,
+          selectedItems: this.state.selectedItems
+            .map((item) => indices.find((remoteItem) => remoteItem.index === item.index))
+            .filter((item) => item),
+        } as IndicesState;
+        this.setState(payload);
       } else {
         this.context.notifications.toasts.addDanger(getIndicesResponse.error);
       }
@@ -260,6 +267,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
             onClose: this.getIndices,
             onShrink: this.getIndices,
             onReindex: this.getIndices,
+            onUpdateIndex: this.getIndices,
           })}
           isSelectable={true}
           itemId="index"
