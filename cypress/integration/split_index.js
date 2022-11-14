@@ -56,12 +56,6 @@ describe("Split Index", () => {
         .get('[data-test-subj="Split Action"]')
         .click()
         .end()
-        /*
-        .get('[data-test-subj="Source Index Name"]').should("have.value", `${SAMPLE_INDEX}`)
-        .end()
-        .get('[data-test-subj="Source Index Warning"]').should("not.exist")
-        .end()
-         */
         .get('[id="targetIndex"]')
         .type(`${SAMPLE_INDEX_SPLIT}`)
         .end()
@@ -85,7 +79,8 @@ describe("Split Index", () => {
       cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
     }); // Split
 
-    it("Split failure", () => {
+    it("Update blocks write to true", () => {
+      cy.updateIndexSettings(SAMPLE_INDEX, { "index.blocks.write": "false" }).end();
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
         .click()
         .end()
@@ -94,6 +89,10 @@ describe("Split Index", () => {
         .end()
         .get('[data-test-subj="Split Action"]')
         .click()
+        .end()
+        .get('[data-test-subj="flyout-footer-action-button"]').should("have.class", "euiButton-isDisabled")
+        .end()
+        .get('[data-test-subj="set-indexsetting-button"]')
         .end()
         .get('[data-test-subj="flyout-footer-action-button"]')
         .click()
