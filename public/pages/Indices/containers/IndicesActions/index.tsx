@@ -22,8 +22,8 @@ import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 import { getErrorMessage } from "../../../../utils/helpers";
 import ReindexFlyout from "../../components/ReindexFlyout";
 import SplitIndexFlyout from "../../components/SplitIndexFlyout";
-import {IndexItem} from "../../../../../models/interfaces";
-import {ServerResponse} from "../../../../../server/models/types";
+import { IndexItem } from "../../../../../models/interfaces";
+import { ServerResponse } from "../../../../../server/models/types";
 
 export interface IndicesActionsProps {
   selectedItems: ManagedCatIndex[];
@@ -78,7 +78,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         target: targetIndex,
         body: {
           settings: {
-            ...settingsPayload
+            ...settingsPayload,
           },
         },
       },
@@ -88,8 +88,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
       onDelete();
       onCloseFlyout();
     } else {
-      coreServices.notifications.toasts.addDanger(result?.error ||
-        "There was a problem submit split index request, please check with admin");
+      coreServices.notifications.toasts.addDanger(
+        result?.error || "There was a problem submit split index request, please check with admin"
+      );
     }
   };
 
@@ -97,14 +98,18 @@ export default function IndicesActions(props: IndicesActionsProps) {
     setOpenIndexModalVisible(false);
   };
 
+  const openIndices = async (indices: string) => {
+    return await services.commonService.apiCaller({
+      endpoint: "indices.open",
+      data: {
+        index: indices,
+      },
+    });
+  };
+
   const onOpenIndexModalConfirm = useCallback(async () => {
     try {
-      const result = await services.commonService.apiCaller({
-        endpoint: "indices.open",
-        data: {
-          index: selectedItems.map((item) => item.index).join(","),
-        },
-      });
+      const result = await openIndices(selectedItems.map((item) => item.index).join(","));
       if (result && result.ok) {
         onOpenIndexModalClose();
         coreServices.notifications.toasts.addSuccess("Open index successfully");
@@ -175,7 +180,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   );
 
   const getIndexSettings = async (indexName: string, flat: boolean): Promise<Record<string, IndexItem>> => {
-    const result : ServerResponse<Record<string, IndexItem>> = await services.commonService.apiCaller({
+    const result: ServerResponse<Record<string, IndexItem>> = await services.commonService.apiCaller({
       endpoint: "indices.getSettings",
       data: {
         index: indexName,
@@ -282,8 +287,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     {
                       name: "Split",
                       "data-test-subj": "Split Action",
-                      disabled: !selectedItems.length
-                        || selectedItems.length > 1,
+                      disabled: !selectedItems.length || selectedItems.length > 1,
                       onClick: () => setSplitIndexFlyoutVisible(true),
                     },
                     {
@@ -335,17 +339,19 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onCloseFlyout={onCloseReindexFlyout}
           sourceIndices={selectedItems}
           onReindexConfirm={onReindexConfirm}
+          openIndex={openIndices}
         />
       )}
 
-      {splitIndexFlyoutVisible &&
+      {splitIndexFlyoutVisible && (
         <SplitIndexFlyout
           sourceIndex={selectedItems[0]}
           onCloseFlyout={onCloseFlyout}
           onSplitIndex={splitIndex}
           getIndexSettings={getIndexSettings}
           coreServices={coreServices}
-        />}
+        />
+      )}
     </>
   );
 }

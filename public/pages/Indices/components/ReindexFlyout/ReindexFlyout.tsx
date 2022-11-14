@@ -4,18 +4,19 @@
  */
 
 import {
-  EuiAccordion,
+  EuiButton,
+  EuiButtonIcon,
   EuiCallOut,
   EuiComboBox,
   EuiComboBoxOptionOption,
+  EuiFlexGroup,
+  EuiFlexItem,
   EuiFlyout,
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
-  EuiLink,
   EuiSpacer,
   EuiSwitchEvent,
-  EuiText,
   EuiTitle,
 } from "@elastic/eui";
 import _ from "lodash";
@@ -28,17 +29,20 @@ import { DEFAULT_QUERY, REINDEX_ERROR_PROMPT } from "../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
 import { ReindexRequest } from "../../models/interfaces";
-import { DSL_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { BrowserServices } from "../../../../models/interfaces";
 import ReindexAdvancedOptions from "../ReindexAdvancedOptions/ReindexAdvancedOptions";
 import CustomFormRow from "../../../../components/CustomFormRow";
-import { ManagedCatIndex } from "../../../../../server/models/interfaces";
+import { CatIndex, ManagedCatIndex } from "../../../../../server/models/interfaces";
+import IndexDetail from "../../../../containers/IndexDetail";
+import { ContentPanel } from "../../../../components/ContentPanel";
+import { ServerResponse } from "../../../../../server/models/types";
 
 interface ReindexProps {
   services: BrowserServices;
   sourceIndices: ManagedCatIndex[];
   onCloseFlyout: () => void;
   onReindexConfirm: (request: ReindexRequest) => void;
+  openIndex: (index: string) => Promise<ServerResponse<any>>;
 }
 
 interface ReindexState {
@@ -48,12 +52,20 @@ interface ReindexState {
   queryJsonString: string;
   destError?: string;
   destSettingsJson?: string;
-  sourceErr?: string[];
+  sourceErr?: ReindexActonItem[];
   slices: string;
   sliceError?: string;
   waitForComplete: boolean;
   pipelines: EuiComboBoxOptionOption<void>[];
   selectedPipelines?: EuiComboBoxOptionOption<void>[];
+  advancedSettingsOpen: boolean;
+  conflicts: string;
+}
+
+interface ReindexActonItem {
+  desc: string;
+  key: string;
+  action?: React.ReactChild;
 }
 
 const DEFAULT_SLICE = "1";
@@ -73,6 +85,8 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       waitForComplete: false,
       slices: DEFAULT_SLICE,
       pipelines: [],
+      advancedSettingsOpen: false,
+      conflicts: "abort",
     };
 
     this.sourceIndicesNames = this.props.sourceIndices.map((idx) => idx.index);
@@ -86,7 +100,17 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     await this.getAllPipelines();
   }
 
-  sourceValidation = async (sourceIndices: ManagedCatIndex[]) => {
+  onOpenIndex = async (indices: string) => {
+    const { openIndex } = this.props;
+    const res = await openIndex(indices);
+    if (res && res.ok) {
+      this.context.notifications.toasts.addSuccess(`Open index ${indices} successfully`);
+    } else {
+      this.context.notifications.toasts.addDanger(res?.error);
+    }
+  };
+
+  sourceValidation = async (sourceIndices: CatIndex[]) => {
     const {
       services: { commonService },
     } = this.props;
@@ -96,7 +120,15 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     sourceIndices
       .filter((item) => item.status.toLowerCase() === "close")
       .forEach((item) => {
-        errors.push(`Index [${item.index}] status is closed`);
+        errors.push({
+          desc: `Index [${item.index}] status is closed`,
+          key: `${item.index}-close`,
+          action: (
+            <EuiButton size="s" onClick={() => this.onOpenIndex(item.index)}>
+              Open it
+            </EuiButton>
+          ),
+        });
       });
 
     const res = await commonService.apiCaller({
@@ -107,10 +139,13 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       },
     });
     if (res && res.ok) {
-      for (let index of this.sourceIndicesNames) {
+      for (const index of this.sourceIndicesNames) {
         const sourceEnabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
         if (sourceEnabled === false) {
-          errors.push(`Index [${index}] didn't store _source, it's required by reindex`);
+          errors.push({
+            desc: `Index [${index}] didn't store _source, it's required by reindex`,
+            key: `${index} - _source`,
+          });
         }
       }
     }
@@ -225,6 +260,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       services: { commonService },
     } = this.props;
     const { queryJsonString, selectedIndexOptions, dataStreams, destSettingsJson, waitForComplete, slices, selectedPipelines } = this.state;
+    const { conflicts } = this.state;
 
     if (!this.validateDestination(selectedIndexOptions) || !this.validateSlices(slices)) {
       return;
@@ -256,6 +292,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         waitForCompletion: waitForComplete,
         slices: slices,
         body: {
+          conflicts: conflicts,
           source: {
             index: this.sourceIndicesNames.join(","),
             ...JSON.parse(queryJsonString),
@@ -325,17 +362,51 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     this.setState({ selectedPipelines: selectedOptions });
   };
 
+  onConflictsChange = (val: string): void => {
+    this.setState({ conflicts: val });
+  };
+
   render() {
-    const { onCloseFlyout, sourceIndices } = this.props;
-    const { indexOptions, selectedIndexOptions, queryJsonString, destError, destSettingsJson, sourceErr, slices } = this.state;
+    const { onCloseFlyout } = this.props;
+    const {
+      indexOptions,
+      selectedIndexOptions,
+      queryJsonString,
+      destError,
+      destSettingsJson,
+      slices,
+      sourceErr,
+      advancedSettingsOpen,
+    } = this.state;
+    const { conflicts } = this.state;
     const banner = (
       <EuiCallOut>
         <p>
           It's recommended that destination be configured as wanted before calling <code>_reindex.</code>
-          Reindex doesn't copy the settings from the source or its associated template.
         </p>
       </EuiCallOut>
     );
+
+    const advanceTitle = (
+      <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
+        <EuiFlexItem grow={false}>
+          <EuiButtonIcon
+            iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
+            color="text"
+            onClick={() => {
+              this.setState({ advancedSettingsOpen: !this.state.advancedSettingsOpen });
+            }}
+            aria-label="drop down icon"
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiTitle size="s">
+            <h3>Advanced Options</h3>
+          </EuiTitle>
+        </EuiFlexItem>
+      </EuiFlexGroup>
+    );
+
     return (
       <EuiFlyout onClose={() => {}} hideCloseButton>
         <EuiFlyoutHeader hasBorder>
@@ -346,105 +417,92 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
 
         <EuiFlyoutBody>
           {!sourceErr && banner}
-          {sourceErr && sourceErr.length > 0 && (
-            <EuiCallOut title="Source validation error" color="danger" iconType="alert">
-              <ul>
-                {sourceErr.map((err) => (
-                  <li key={err}>{err}</li>
-                ))}
-              </ul>
-            </EuiCallOut>
+
+          <EuiSpacer size="m" />
+
+          <IndexDetail onGetIndicesDetail={this.sourceValidation} indices={this.props.sourceIndices.map((item) => item.index)}>
+            <>
+              {sourceErr && sourceErr.length > 0 && (
+                <EuiCallOut color="danger">
+                  <ul>
+                    {sourceErr.map((err) => (
+                      <li key={err.desc}>
+                        {err.desc} {err.action}
+                      </li>
+                    ))}
+                  </ul>
+                </EuiCallOut>
+              )}
+            </>
+          </IndexDetail>
+
+          {!sourceErr && (
+            <>
+              <EuiSpacer size="m" />
+
+              <ContentPanel title="Configure destination" titleSize="s">
+                <CustomFormRow
+                  label="Destination"
+                  isInvalid={!!destError}
+                  error={destError}
+                  fullWidth
+                  helpText="Destination where documents writing into could be pre-configured index, data streams or newly created index,
+              for newly created index, configuration will show up below you need to customize to wanted"
+                >
+                  <EuiComboBox
+                    placeholder="Select destination"
+                    options={indexOptions}
+                    async
+                    selectedOptions={selectedIndexOptions}
+                    onChange={this.onIndicesSelectionChange}
+                    onSearchChange={this.getIndexOptions}
+                    onCreateOption={this.onCreateOption}
+                    isClearable={true}
+                    singleSelection={{ asPlainText: true }}
+                    data-test-subj="destIndicesComboInput"
+                    customOptionText="Create {searchValue} as your destination index"
+                  />
+                </CustomFormRow>
+
+                <EuiSpacer size="m" />
+                {destSettingsJson && (
+                  <CustomFormRow
+                    label="Destination index configuration"
+                    helpText="configurations are copied from source, you should customize it to wanted before click on execute"
+                    fullWidth
+                  >
+                    <JSONEditor
+                      mode="json"
+                      width="100%"
+                      value={destSettingsJson}
+                      onChange={this.onDestSettingsChange}
+                      aria-label="Code Editor"
+                      data-test-subj="destSettingJsonEditor"
+                    />
+                  </CustomFormRow>
+                )}
+              </ContentPanel>
+
+              <EuiSpacer size="m" />
+
+              <ContentPanel title={advanceTitle}>
+                {advancedSettingsOpen && (
+                  <ReindexAdvancedOptions
+                    slices={slices}
+                    onSlicesChange={this.onSliceChange}
+                    sliceErr={this.state.sliceError}
+                    pipelines={this.state.pipelines}
+                    selectedPipelines={this.state.selectedPipelines}
+                    onSelectedPipelinesChange={this.onPipelineChange}
+                    queryJsonString={queryJsonString}
+                    onQueryJsonChange={this.onJsonChange}
+                    conflicts={conflicts}
+                    onConflictsChange={this.onConflictsChange}
+                  />
+                )}
+              </ContentPanel>
+            </>
           )}
-
-          <EuiSpacer size="m" />
-
-          <CustomFormRow label="Source">
-            <EuiComboBox
-              options={indexOptions}
-              selectedOptions={sourceIndices.map((item) => ({ label: item.index }))}
-              isDisabled
-              data-test-subj="sourceIndicesComboInput"
-            />
-          </CustomFormRow>
-
-          <EuiSpacer size="m" />
-
-          <CustomFormRow
-            label="Destination"
-            isInvalid={!!destError}
-            error={destError}
-            helpText="Destination where documents writing into could be pre-configured index, data streams or newly created index,
-            for newly created index, configuration will show up below you need to customize to wanted"
-          >
-            <EuiComboBox
-              placeholder="Select destination"
-              options={indexOptions}
-              async
-              selectedOptions={selectedIndexOptions}
-              onChange={this.onIndicesSelectionChange}
-              onSearchChange={this.getIndexOptions}
-              onCreateOption={this.onCreateOption}
-              isClearable={true}
-              singleSelection={{ asPlainText: true }}
-              data-test-subj="destIndicesComboInput"
-              customOptionText="Create {searchValue} as your destination index"
-            />
-          </CustomFormRow>
-
-          <EuiSpacer size="m" />
-          {destSettingsJson && (
-            <CustomFormRow
-              label="Destination index configuration"
-              helpText="configurations are copied from source, you should customize it to wanted before click on execute"
-              fullWidth
-            >
-              <JSONEditor
-                mode="json"
-                width="100%"
-                value={destSettingsJson}
-                onChange={this.onDestSettingsChange}
-                aria-label="Code Editor"
-                data-test-subj="destSettingJsonEditor"
-              />
-            </CustomFormRow>
-          )}
-
-          <EuiSpacer size="m" />
-
-          <CustomFormRow
-            label="Query expression to reindex a subset of source documents"
-            labelAppend={
-              <EuiText size="xs">
-                <EuiLink href={DSL_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                  learn more about query-dsl
-                </EuiLink>
-              </EuiText>
-            }
-          >
-            <JSONEditor
-              mode="json"
-              width="100%"
-              value={queryJsonString}
-              onChange={this.onJsonChange}
-              aria-label="Query DSL Editor"
-              height="150px"
-              data-test-subj="queryJsonEditor"
-            />
-          </CustomFormRow>
-
-          <EuiSpacer size="m" />
-
-          <EuiAccordion id="advancedReindexOptions" buttonContent="Advanced options">
-            <EuiSpacer size="m" />
-            <ReindexAdvancedOptions
-              slices={slices}
-              onSlicesChange={this.onSliceChange}
-              sliceErr={this.state.sliceError}
-              pipelines={this.state.pipelines}
-              selectedPipelines={this.state.selectedPipelines}
-              onSelectedPipelinesChange={this.onPipelineChange}
-            />
-          </EuiAccordion>
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
