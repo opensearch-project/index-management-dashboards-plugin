@@ -193,7 +193,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
     }
   };
 
-  const setIndexSettings = async (indexName: string, flat: boolean, settings: {}, callBack) => {
+  const setIndexSettings = async (indexName: string, flat: boolean, settings: {}) => {
     const result = await services.commonService.apiCaller({
       endpoint: "indices.putSettings",
       method: "PUT",
@@ -202,20 +202,19 @@ export default function IndicesActions(props: IndicesActionsProps) {
         flat_settings: flat,
         body: {
           settings: {
-            ...settings
+            ...settings,
           },
         },
       },
     });
     if (result && result.ok) {
       coreServices.notifications.toasts.addSuccess(`Successfully update index setting for ${indexName}`);
-      await callBack();
     } else {
       const errorMessage = `There is a problem set index setting for ${indexName}, please check with Admin`;
       coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
       throw new Error(result?.error || errorMessage);
     }
-  }
+  };
 
   const onReindexConfirm = async (reindexRequest: ReindexRequest) => {
     const res = await services.commonService.apiCaller({
