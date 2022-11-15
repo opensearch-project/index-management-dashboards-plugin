@@ -35,24 +35,24 @@ import CustomFormRow from "../../../../components/CustomFormRow";
 import { CatIndex, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
 import { ContentPanel } from "../../../../components/ContentPanel";
-import { ServerResponse } from "../../../../../server/models/types";
 
 interface ReindexProps {
   services: BrowserServices;
   sourceIndices: ManagedCatIndex[];
   onCloseFlyout: () => void;
   onReindexConfirm: (request: ReindexRequest) => void;
-  openIndex: (index: string) => Promise<ServerResponse<any>>;
+  openIndex: (indices: string[], callback: any) => Promise<void>;
+  getIndices: () => Promise<void>;
 }
 
 interface ReindexState {
   indexOptions: EuiComboBoxOptionOption<IndexItem>[];
   dataStreams: EuiComboBoxOptionOption<IndexItem>[];
-  selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
+  destSelectedOption: EuiComboBoxOptionOption<IndexItem>[];
   queryJsonString: string;
   destError?: string;
   destSettingsJson?: string;
-  sourceErr?: ReindexActonItem[];
+  sourceErr: ReindexActonItem[];
   slices: string;
   sliceError?: string;
   waitForComplete: boolean;
@@ -60,6 +60,7 @@ interface ReindexState {
   selectedPipelines?: EuiComboBoxOptionOption<void>[];
   advancedSettingsOpen: boolean;
   conflicts: string;
+  subset: boolean;
 }
 
 interface ReindexActonItem {
@@ -80,37 +81,34 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     this.state = {
       indexOptions: [],
       dataStreams: [],
-      selectedIndexOptions: [],
+      destSelectedOption: [],
       queryJsonString: DEFAULT_QUERY,
       waitForComplete: false,
       slices: DEFAULT_SLICE,
       pipelines: [],
       advancedSettingsOpen: false,
       conflicts: "abort",
+      sourceErr: [],
+      subset: false,
     };
 
     this.sourceIndicesNames = this.props.sourceIndices.map((idx) => idx.index);
   }
 
   async componentDidMount() {
-    // check _source enabled for source
-    const { sourceIndices } = this.props;
-    await this.sourceValidation(sourceIndices);
     await this.getIndexOptions("");
     await this.getAllPipelines();
   }
 
-  onOpenIndex = async (indices: string) => {
-    const { openIndex } = this.props;
-    const res = await openIndex(indices);
-    if (res && res.ok) {
-      this.context.notifications.toasts.addSuccess(`Open index ${indices} successfully`);
-    } else {
-      this.context.notifications.toasts.addDanger(res?.error);
-    }
+  onOpenIndex = async (index: string) => {
+    const { openIndex, getIndices } = this.props;
+    await openIndex([index], async () => {
+      await getIndices();
+      await this.sourceValidation(this.props.sourceIndices, false);
+    });
   };
 
-  sourceValidation = async (sourceIndices: CatIndex[]) => {
+  sourceValidation = async (sourceIndices: CatIndex[], validateSourceEnabled = true) => {
     const {
       services: { commonService },
     } = this.props;
@@ -131,32 +129,33 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         });
       });
 
-    const res = await commonService.apiCaller({
-      endpoint: "indices.getFieldMapping",
-      data: {
-        fields: "_source",
-        index: sourceIndices.map((idx) => idx.index).join(","),
-      },
-    });
-    if (res && res.ok) {
-      for (const index of this.sourceIndicesNames) {
-        const sourceEnabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
-        if (sourceEnabled === false) {
-          errors.push({
-            desc: `Index [${index}] didn't store _source, it's required by reindex`,
-            key: `${index} - _source`,
-          });
+    if (validateSourceEnabled) {
+      const res = await commonService.apiCaller({
+        endpoint: "indices.getFieldMapping",
+        data: {
+          fields: "_source",
+          index: sourceIndices.map((idx) => idx.index).join(","),
+        },
+      });
+      if (res && res.ok) {
+        for (const index of this.sourceIndicesNames) {
+          const sourceEnabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
+          if (sourceEnabled === false) {
+            errors.push({
+              desc: `Index [${index}] didn't store _source, it's required by reindex`,
+              key: `${index} - _source`,
+            });
+          }
         }
       }
     }
-    if (errors.length > 0) {
-      this.setState({ sourceErr: errors });
-    }
+
+    this.setState({ sourceErr: errors });
   };
 
   onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
     this.setState({
-      selectedIndexOptions: selectedOptions,
+      destSelectedOption: selectedOptions,
       destSettingsJson: undefined,
       destError: undefined,
     });
@@ -214,17 +213,19 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       services: { commonService },
       sourceIndices,
     } = this.props;
-    if (sourceIndices.length === 1 && sourceIndices[0].index != dest) {
+    const duplicateDest = sourceIndices.map((item) => item.index).indexOf(dest) !== -1;
+    const source = this.sourceIndicesNames[0];
+    if (!duplicateDest) {
       const res = await commonService.apiCaller({
         endpoint: "indices.get",
         method: REQUEST.GET,
         data: {
-          index: this.sourceIndicesNames[0],
+          index: source, // get first source configuration
         },
       });
-      if (res.ok) {
+      if (res && res.ok) {
         // @ts-ignore
-        let index = res.response[this.sourceIndicesNames[0]];
+        let index = res.response[source];
         if (index && index.settings) {
           _.unset(index, "aliases");
           _.unset(index.settings, "index.resize");
@@ -259,14 +260,14 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       onReindexConfirm,
       services: { commonService },
     } = this.props;
-    const { queryJsonString, selectedIndexOptions, dataStreams, destSettingsJson, waitForComplete, slices, selectedPipelines } = this.state;
+    const { queryJsonString, destSelectedOption, dataStreams, destSettingsJson, waitForComplete, slices, selectedPipelines } = this.state;
     const { conflicts } = this.state;
 
-    if (!this.validateDestination(selectedIndexOptions) || !this.validateSlices(slices)) {
+    if (!this.validateDestination(destSelectedOption) || !this.validateSlices(slices)) {
       return;
     }
 
-    const [dest] = selectedIndexOptions.map((op) => op.label);
+    const [dest] = destSelectedOption.map((op) => op.label);
 
     let isDestAsDataStream = dataStreams.map((ds) => ds.label).indexOf(dest) !== -1;
 
@@ -298,7 +299,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             ...JSON.parse(queryJsonString),
           },
           dest: {
-            index: selectedIndexOptions.map((op) => op.label)[0],
+            index: destSelectedOption.map((op) => op.label)[0],
             op_type: isDestAsDataStream ? "create" : "index",
           },
         },
@@ -331,7 +332,8 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
   };
 
   validateSlices = (slices: string): boolean => {
-    if (!/^[1-9][0-9]*$|^auto$/.test(slices)) {
+    const sliceRegex = /^[1-9][0-9]*$|^auto$/;
+    if (!sliceRegex.test(slices)) {
       this.setState({ sliceError: REINDEX_ERROR_PROMPT.SLICES_FORMAT_ERROR });
       return false;
     }
@@ -366,11 +368,15 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     this.setState({ conflicts: val });
   };
 
+  onSubsetChange = (event: EuiSwitchEvent) => {
+    this.setState({ subset: event.target.checked });
+  };
+
   render() {
     const { onCloseFlyout } = this.props;
     const {
       indexOptions,
-      selectedIndexOptions,
+      destSelectedOption,
       queryJsonString,
       destError,
       destSettingsJson,
@@ -378,7 +384,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       sourceErr,
       advancedSettingsOpen,
     } = this.state;
-    const { conflicts } = this.state;
+    const { conflicts, subset } = this.state;
     const banner = (
       <EuiCallOut>
         <p>
@@ -393,6 +399,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           <EuiButtonIcon
             iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
             color="text"
+            data-test-subj="advanceOptionToggle"
             onClick={() => {
               this.setState({ advancedSettingsOpen: !this.state.advancedSettingsOpen });
             }}
@@ -416,13 +423,13 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
-          {!sourceErr && banner}
+          {sourceErr.length === 0 && banner}
 
           <EuiSpacer size="m" />
 
           <IndexDetail onGetIndicesDetail={this.sourceValidation} indices={this.props.sourceIndices.map((item) => item.index)}>
             <>
-              {sourceErr && sourceErr.length > 0 && (
+              {sourceErr.length > 0 && (
                 <EuiCallOut color="danger">
                   <ul>
                     {sourceErr.map((err) => (
@@ -436,7 +443,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             </>
           </IndexDetail>
 
-          {!sourceErr && (
+          {sourceErr.length === 0 && (
             <>
               <EuiSpacer size="m" />
 
@@ -453,7 +460,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
                     placeholder="Select destination"
                     options={indexOptions}
                     async
-                    selectedOptions={selectedIndexOptions}
+                    selectedOptions={destSelectedOption}
                     onChange={this.onIndicesSelectionChange}
                     onSearchChange={this.getIndexOptions}
                     onCreateOption={this.onCreateOption}
@@ -498,6 +505,8 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
                     onQueryJsonChange={this.onJsonChange}
                     conflicts={conflicts}
                     onConflictsChange={this.onConflictsChange}
+                    subset={subset}
+                    onSubsetChange={this.onSubsetChange}
                   />
                 )}
               </ContentPanel>

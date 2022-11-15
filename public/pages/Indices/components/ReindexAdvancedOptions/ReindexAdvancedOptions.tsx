@@ -3,9 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent } from "react";
 import CustomFormRow from "../../../../components/CustomFormRow";
-import { EuiComboBox, EuiComboBoxOptionOption, EuiFieldText, EuiLink, EuiRadioGroup, EuiSpacer, EuiSwitch, EuiText } from "@elastic/eui";
+import {
+  EuiComboBox,
+  EuiComboBoxOptionOption,
+  EuiFieldText,
+  EuiLink,
+  EuiRadioGroup,
+  EuiSpacer,
+  EuiSwitch,
+  EuiSwitchEvent,
+  EuiText,
+} from "@elastic/eui";
 import { DSL_DOCUMENTATION_URL } from "../../../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
 
@@ -20,7 +30,8 @@ interface ReindexOptionsProps {
   onQueryJsonChange: (val: string) => void;
   conflicts: string;
   onConflictsChange: (val: string) => void;
-  width?: string;
+  subset: boolean;
+  onSubsetChange: (event: EuiSwitchEvent) => void;
 }
 
 const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
@@ -33,15 +44,21 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
     onSelectedPipelinesChange,
     queryJsonString,
     onQueryJsonChange,
-    width,
   } = props;
   const { conflicts, onConflictsChange } = props;
-  const [subset, setSubset] = useState(false);
+  const { subset, onSubsetChange } = props;
 
   return (
-    <div style={{ padding: "10px 10px", width: width }}>
+    <div style={{ padding: "10px 10px" }}>
       <CustomFormRow label="Reindex subset of source">
-        <EuiSwitch label="Reindex subset of source" showLabel={false} compressed checked={subset} onChange={() => setSubset(!subset)} />
+        <EuiSwitch
+          label="Reindex subset of source"
+          data-test-subj="subsetSwitch"
+          showLabel={false}
+          compressed
+          checked={subset}
+          onChange={onSubsetChange}
+        />
       </CustomFormRow>
 
       {subset && (
@@ -106,6 +123,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
         <EuiComboBox
           aria-label="Ingest Pipeline"
           placeholder="Select a single pipeline"
+          data-test-subj="pipelineCombobox"
           singleSelection={{ asPlainText: true }}
           options={pipelines}
           selectedOptions={selectedPipelines}

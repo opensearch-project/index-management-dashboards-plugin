@@ -153,6 +153,10 @@ Cypress.Commands.add("createTransform", (transformId, transformJSON) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.TRANSFORM_JOBS_BASE}/${transformId}`, transformJSON);
 });
 
+Cypress.Commands.add("createPipeline", (pipelineId, pipelineJSON) => {
+  cy.request("PUT", `${Cypress.env("opensearch")}/_ingest/pipeline/${pipelineId}`, pipelineJSON);
+});
+
 Cypress.Commands.add("disableJitter", () => {
   // Sets the jitter to 0 in the ISM plugin cluster settings
   const jitterJson = {

@@ -32,6 +32,7 @@ export interface IndicesActionsProps {
   onClose: () => void;
   onShrink: () => void;
   onReindex?: () => void;
+  getIndices: () => Promise<void>;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
@@ -99,28 +100,33 @@ export default function IndicesActions(props: IndicesActionsProps) {
     setOpenIndexModalVisible(false);
   };
 
-  const openIndices = async (indices: string) => {
-    return await services.commonService.apiCaller({
-      endpoint: "indices.open",
-      data: {
-        index: indices,
-      },
-    });
-  };
-
-  const onOpenIndexModalConfirm = useCallback(async () => {
+  const openIndices = async (indices: string[], callback: any) => {
     try {
-      const result = await openIndices(selectedItems.map((item) => item.index).join(","));
+      const result = await services.commonService.apiCaller({
+        endpoint: "indices.open",
+        data: {
+          index: indices.join(","),
+        },
+      });
       if (result && result.ok) {
-        onOpenIndexModalClose();
         coreServices.notifications.toasts.addSuccess("Open index successfully");
-        onOpen();
+        callback && callback();
       } else {
         coreServices.notifications.toasts.addDanger(result.error);
       }
     } catch (err) {
       coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem opening index."));
     }
+  };
+
+  const onOpenIndexModalConfirm = useCallback(async () => {
+    await openIndices(
+      selectedItems.map((item) => item.index),
+      () => {
+        onOpenIndexModalClose();
+        onOpen();
+      }
+    );
   }, [services, coreServices, props.onClose, onOpenIndexModalClose]);
 
   const onCloseIndexModalClose = () => {
@@ -341,6 +347,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
           sourceIndices={selectedItems}
           onReindexConfirm={onReindexConfirm}
           openIndex={openIndices}
+          {...props}
         />
       )}
 

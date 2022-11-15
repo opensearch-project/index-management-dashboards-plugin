@@ -230,6 +230,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                     onReindex={this.getIndices}
                     onShrink={this.getIndices}
                     selectedItems={this.state.selectedItems}
+                    getIndices={this.getIndices}
                   />
                 ),
                 text: "",
@@ -268,6 +269,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
             onShrink: this.getIndices,
             onReindex: this.getIndices,
             onUpdateIndex: this.getIndices,
+            getIndices: this.getIndices,
           })}
           isSelectable={true}
           itemId="index"

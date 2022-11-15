@@ -111,5 +111,12 @@ declare namespace Cypress {
      * cy.deleteTemplate("some_template")
      */
     deleteTemplate(name: string);
+
+    /**
+     * Create a ingest pipeline
+     * @example
+     * cy.createPipeline("pipelineId", {"description": "sample description", "processors": []})
+     */
+    createPipeline(pipelineId: string, pipeline: object);
   }
 }
