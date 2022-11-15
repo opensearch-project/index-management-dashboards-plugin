@@ -69,17 +69,7 @@ HTMLCollection [
                         target="_blank"
                       >
                         Learn more
-                        <svg
-                          aria-hidden="true"
-                          aria-label="External link"
-                          class="euiIcon euiIcon--small euiIcon-isLoading euiLink__externalIcon"
-                          focusable="false"
-                          height="16"
-                          role="img"
-                          viewBox="0 0 16 16"
-                          width="16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        />
+                        EuiIconMock
                         <span
                           class="euiScreenReaderOnly"
                         >
@@ -114,17 +104,7 @@ HTMLCollection [
                         target="_blank"
                       >
                         Learn more
-                        <svg
-                          aria-hidden="true"
-                          aria-label="External link"
-                          class="euiIcon euiIcon--small euiIcon-isLoading euiLink__externalIcon"
-                          focusable="false"
-                          height="16"
-                          role="img"
-                          viewBox="0 0 16 16"
-                          width="16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        />
+                        EuiIconMock
                         <span
                           class="euiScreenReaderOnly"
                         >
@@ -140,14 +120,14 @@ HTMLCollection [
               />
               <div
                 class="euiFormRow"
-                id="i1f016641-649a-11ed-b7d2-f15b391e92e7-row"
+                id="some_html_id-row"
               >
                 <div
                   class="euiFormRow__labelWrapper"
                 >
                   <label
                     class="euiFormLabel euiFormRow__label"
-                    for="i1f016641-649a-11ed-b7d2-f15b391e92e7"
+                    for="some_html_id"
                   >
                     Source index
                   </label>
@@ -177,7 +157,7 @@ HTMLCollection [
               />
               <div
                 class="euiFormRow"
-                id="i1f020281-649a-11ed-b7d2-f15b391e92e7-row"
+                id="some_html_id-row"
               >
                 <div
                   class="euiFormRow__labelWrapper"
@@ -185,7 +165,7 @@ HTMLCollection [
                   <label
                     aria-invalid="true"
                     class="euiFormLabel euiFormRow__label euiFormLabel-isInvalid"
-                    for="i1f020281-649a-11ed-b7d2-f15b391e92e7"
+                    for="some_html_id"
                   >
                     Target index
                   </label>
@@ -216,7 +196,7 @@ HTMLCollection [
                   <div
                     aria-live="polite"
                     class="euiFormErrorText euiFormRow__text"
-                    id="i1f020281-649a-11ed-b7d2-f15b391e92e7-error-0"
+                    id="some_html_id-error-0"
                   >
                     Name of the target index required.
                   </div>
@@ -231,7 +211,7 @@ HTMLCollection [
                 <div
                   class="euiFormRow"
                   data-test-subj="form-name-index.number_of_shards"
-                  id="i1f0277b1-649a-11ed-b7d2-f15b391e92e7-row"
+                  id="some_html_id-row"
                 >
                   <div
                     class="euiFormRow__labelWrapper"
@@ -239,7 +219,7 @@ HTMLCollection [
                     <label
                       aria-invalid="false"
                       class="euiFormLabel euiFormRow__label"
-                      for="i1f0277b1-649a-11ed-b7d2-f15b391e92e7"
+                      for="some_html_id"
                     >
                       Number of shards
                     </label>
@@ -290,22 +270,13 @@ HTMLCollection [
                       aria-controls="accordion_for_create_index_settings"
                       aria-expanded="false"
                       class="euiAccordion__button"
-                      id="i1f0b7861-649a-11ed-b7d2-f15b391e92e7"
+                      id="some_html_id"
                       type="button"
                     >
                       <span
                         class="euiAccordion__iconWrapper"
                       >
-                        <svg
-                          aria-hidden="true"
-                          class="euiIcon euiIcon--medium euiIcon-isLoading euiAccordion__icon"
-                          focusable="false"
-                          height="16"
-                          role="img"
-                          viewBox="0 0 16 16"
-                          width="16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        />
+                        EuiIconMock
                       </span>
                       <span
                         class="euiIEFlexWrapFix"
@@ -317,7 +288,7 @@ HTMLCollection [
                     </button>
                   </div>
                   <div
-                    aria-labelledby="i1f0b7861-649a-11ed-b7d2-f15b391e92e7"
+                    aria-labelledby="some_html_id"
                     class="euiAccordion__childWrapper"
                     id="accordion_for_create_index_settings"
                     role="region"
@@ -333,14 +304,14 @@ HTMLCollection [
                         <div
                           class="euiFormRow"
                           data-test-subj="form-name-advanced-settings"
-                          id="i1f033b01-649a-11ed-b7d2-f15b391e92e7-row"
+                          id="some_html_id-row"
                         >
                           <div
                             class="euiFormRow__labelWrapper"
                           >
                             <label
                               class="euiFormLabel euiFormRow__label"
-                              for="i1f033b01-649a-11ed-b7d2-f15b391e92e7"
+                              for="some_html_id"
                             >
                               Specify advanced index settings
                             </label>
@@ -364,7 +335,7 @@ HTMLCollection [
                               <button
                                 class="euiCodeEditorKeyboardHint"
                                 data-test-subj="codeEditorHint"
-                                id="i1f038922-649a-11ed-b7d2-f15b391e92e7_codeEditor"
+                                id="some_html_id"
                               >
                                 <p
                                   class="euiText"
@@ -379,15 +350,14 @@ HTMLCollection [
                               </button>
                               <div
                                 class=" ace_editor ace-tm"
-                                id="i1f038921-649a-11ed-b7d2-f15b391e92e7"
+                                id="some_html_id"
                                 style="width: 500px; height: 500px;"
                               >
                                 <textarea
-                                  aria-describedby="i1f033b01-649a-11ed-b7d2-f15b391e92e7-help-0"
+                                  aria-describedby="some_html_id-help-0"
                                   autocapitalize="off"
                                   autocorrect="off"
                                   class="ace_text-input"
-                                  id="i1f033b01-649a-11ed-b7d2-f15b391e92e7"
                                   spellcheck="false"
                                   style="opacity: 0;"
                                   tabindex="-1"
@@ -471,7 +441,7 @@ HTMLCollection [
                             </div>
                             <div
                               class="euiFormHelpText euiFormRow__text"
-                              id="i1f033b01-649a-11ed-b7d2-f15b391e92e7-help-0"
+                              id="some_html_id-help-0"
                             >
                               Specify a comma-delimited list of settings.
                               <a
@@ -481,17 +451,7 @@ HTMLCollection [
                                 target="_blank"
                               >
                                 View index settings
-                                <svg
-                                  aria-hidden="true"
-                                  aria-label="External link"
-                                  class="euiIcon euiIcon--small euiIcon-isLoading euiLink__externalIcon"
-                                  focusable="false"
-                                  height="16"
-                                  role="img"
-                                  viewBox="0 0 16 16"
-                                  width="16"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                />
+                                EuiIconMock
                                 <span
                                   class="euiScreenReaderOnly"
                                 >
