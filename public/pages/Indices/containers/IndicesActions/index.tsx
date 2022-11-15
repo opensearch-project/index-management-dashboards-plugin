@@ -371,7 +371,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
           coreServices={coreServices}
           setIndexSettings={setIndexSettings}
           openIndex={onOpenIndexModalConfirm}
-          onChange={onClose}
         />
       )}
     </>

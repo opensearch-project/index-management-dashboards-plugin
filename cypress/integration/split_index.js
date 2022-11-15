@@ -44,7 +44,7 @@ describe("Split Index", () => {
 
       // Update Index status to blocks write otherwise we can't apply split operation on it
       cy.updateIndexSettings(SAMPLE_INDEX, { "index.blocks.write": "true" }).end();
-    });
+    }); // create index
 
     it("Split successfully", () => {
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
@@ -56,9 +56,11 @@ describe("Split Index", () => {
         .get('[data-test-subj="Split Action"]')
         .click()
         .end()
+        // Target Index Name is required
         .get('[id="targetIndex"]')
         .type(`${SAMPLE_INDEX_SPLIT}`)
         .end()
+        // Number of shards after split is required
         .get('[id="index.number_of_shards"]')
         .type(`${split_number}`)
         .end()
@@ -79,7 +81,48 @@ describe("Split Index", () => {
       cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
     }); // Split
 
+    it("Split successfully with advanced setting", () => {
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
+        .click()
+        .end()
+        .get('[data-test-subj="More Action"]')
+        .click()
+        .end()
+        .get('[data-test-subj="Split Action"]')
+        .click()
+        .end()
+        .get('[id="targetIndex"]')
+        .type(`${SAMPLE_INDEX_SPLIT}-1`)
+        .end()
+        // Instead of input shard number at shard field, another option is to populate it in advanced setting
+        .get('[aria-controls="accordion_for_create_index_settings"]')
+        .click()
+        .end()
+        .get('[data-test-subj="codeEditorContainer"] textarea')
+        .focus()
+        // Need to remove the default {} in advanced setting
+        .clear()
+        .type(`{"index.number_of_shards": "${split_number}"}`, { parseSpecialCharSequences: false })
+        .end()
+        .get('[data-test-subj="flyout-footer-action-button"]')
+        .click()
+        .end();
+
+      // The index should exist
+      cy.get(`#_selection_column_${SAMPLE_INDEX_SPLIT}-checkbox`).should("have.exist");
+
+      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX_SPLIT}"]`)
+        .click()
+        .end()
+        .get("#index-detail-modal-settings")
+        .click()
+        .end();
+
+      cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
+    }); // advanced setting
+
     it("Update blocks write to true", () => {
+      // Set index to not blocks write
       cy.updateIndexSettings(SAMPLE_INDEX, { "index.blocks.write": "false" }).end();
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
         .click()
@@ -90,13 +133,17 @@ describe("Split Index", () => {
         .get('[data-test-subj="Split Action"]')
         .click()
         .end()
+        // Index can't be split if it's blocks write status is not true
         .get('[data-test-subj="flyout-footer-action-button"]').should("have.class", "euiButton-isDisabled")
         .end()
+        // Set index to blocks write
         .get('[data-test-subj="set-indexsetting-button"]')
+        .click()
         .end()
         .get('[data-test-subj="flyout-footer-action-button"]')
         .click()
         .end();
-    });
+    }); // Blocks write
+
   });
 });

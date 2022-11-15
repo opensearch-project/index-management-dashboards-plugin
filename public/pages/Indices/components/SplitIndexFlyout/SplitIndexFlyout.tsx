@@ -31,7 +31,6 @@ interface SplitIndexProps {
   setIndexSettings: (indexName: string, flat: boolean, setting: {}) => void;
   openIndex: () => void;
   coreServices: CoreStart;
-  onChange: () => void;
 }
 
 export default class SplitIndexFlyout extends Component<SplitIndexProps> {
@@ -67,7 +66,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
   };
 
   render() {
-    const { sourceIndex, onCloseFlyout, setIndexSettings, openIndex, onChange } = this.props;
+    const { sourceIndex, onCloseFlyout, setIndexSettings, openIndex } = this.props;
     const { sourceIndexSettings } = this.state;
 
     const blockNameList = ["targetIndex"];
@@ -82,8 +81,15 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
     if (sourceIndex.status === "close") {
       reasons.push(
         <>
-          Source index must not be in close status.
-          <EuiButton fill onClick={() => openIndex()} data-test-subj={"open-index-button"}>
+          Source index must not be in close status. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <EuiButton
+            fill
+            onClick={async () => {
+              await openIndex();
+              await this.isSourceIndexReady();
+            }}
+            data-test-subj={"open-index-button"}
+          >
             Open index
           </EuiButton>
         </>
@@ -95,12 +101,12 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(
         <>
-          Source index must be in block write status.
+          Source index must be in block write status. &nbsp;&nbsp;
           <EuiButton
             fill
             onClick={async () => {
               await setIndexSettings(sourceIndex.index, flat, blocksWriteSetting);
-              this.isSourceIndexReady();
+              await this.isSourceIndexReady();
             }}
             data-test-subj={"set-indexsetting-button"}
           >
@@ -175,7 +181,8 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
 
     if (reasons.length > 0) {
       console.log(
-        "blocks.write=" + (blocksWriteValue ? blocksWriteValue : "null") + " health=" + sourceIndex.health + " status=" + sourceIndex.status
+        "Status has " + reasons.length + " problems. Blocks.write=" + (blocksWriteValue ? blocksWriteValue : "null")
+        + " health=" + sourceIndex.health + " status=" + sourceIndex.status
       );
     }
 
@@ -189,8 +196,8 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
 
         <EuiFlyoutBody>
           <IndexDetail indices={[sourceIndex.index]}>
-            <EuiCallOut color="warning" hidden={reasons.length == 0} data-test-subj="Source Index Warning">
-              <div style={{ lineHeight: 1.5 }}>
+            <EuiCallOut color="danger" hidden={reasons.length == 0} data-test-subj="Source Index Warning">
+              <div style={{ lineHeight:3 }}>
                 <ul>
                   {reasons.map((reason, reasonIndex) => (
                     <li key={reasonIndex}>{reason}</li>
@@ -208,40 +215,42 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
           </IndexDetail>
           <EuiSpacer />
 
-          <ContentPanel title="Configure target index" titleSize="s">
-            <FormGenerator
-              onChange={(totalValue) =>
-                this.setState({
-                  settings: totalValue,
-                })
-              }
-              formFields={formFields}
-              ref={(ref) => (this.formRef = ref)}
-              hasAdvancedSettings={true}
-              advancedSettingsProps={{
-                accordionProps: {
-                  initialIsOpen: false,
-                  id: "accordion_for_create_index_settings",
-                  buttonContent: <h4>Advanced settings</h4>,
-                },
-                blockedNameList: blockNameList,
-                rowProps: {
-                  label: "Specify advanced index settings",
-                  helpText: (
-                    <>
-                      Specify a comma-delimited list of settings.
-                      <EuiLink
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                        target="_blank"
-                      >
-                        View index settings
-                      </EuiLink>
-                    </>
-                  ),
-                },
-              }}
-            />
-          </ContentPanel>
+          {reasons.length == 0 &&
+            <ContentPanel title="Configure target index" titleSize="s">
+              <FormGenerator
+                onChange={(totalValue) =>
+                  this.setState({
+                    settings: totalValue,
+                  })
+                }
+                formFields={formFields}
+                ref={(ref) => (this.formRef = ref)}
+                hasAdvancedSettings={true}
+                advancedSettingsProps={{
+                  accordionProps: {
+                    initialIsOpen: false,
+                    id: "accordion_for_create_index_settings",
+                    buttonContent: <h4>Advanced settings</h4>,
+                  },
+                  blockedNameList: blockNameList,
+                  rowProps: {
+                    label: "Specify advanced index settings",
+                    helpText: (
+                      <>
+                        Specify a comma-delimited list of settings.
+                        <EuiLink
+                          href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                          target="_blank"
+                        >
+                          View index settings
+                        </EuiLink>
+                      </>
+                    ),
+                  },
+                }}
+              />
+            </ContentPanel>
+          }
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
