@@ -61,6 +61,7 @@ interface ReindexState {
   advancedSettingsOpen: boolean;
   conflicts: string;
   subset: boolean;
+  executing: boolean;
 }
 
 interface ReindexActonItem {
@@ -90,6 +91,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       conflicts: "abort",
       sourceErr: [],
       subset: false,
+      executing: false,
     };
 
     this.sourceIndicesNames = this.props.sourceIndices.map((idx) => idx.index);
@@ -104,11 +106,11 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     const { openIndex, getIndices } = this.props;
     await openIndex([index], async () => {
       await getIndices();
-      await this.sourceValidation(this.props.sourceIndices, false);
+      await this.sourceValidation(this.props.sourceIndices);
     });
   };
 
-  sourceValidation = async (sourceIndices: CatIndex[], validateSourceEnabled = true) => {
+  sourceValidation = async (sourceIndices: CatIndex[]) => {
     const {
       services: { commonService },
     } = this.props;
@@ -122,32 +124,36 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           desc: `Index [${item.index}] status is closed`,
           key: `${item.index}-close`,
           action: (
-            <EuiButton size="s" onClick={() => this.onOpenIndex(item.index)}>
-              Open it
+            <EuiButton data-test-subj={`${item.index}-close`} size="s" onClick={() => this.onOpenIndex(item.index)}>
+              open
             </EuiButton>
           ),
         });
       });
 
-    if (validateSourceEnabled) {
-      const res = await commonService.apiCaller({
-        endpoint: "indices.getFieldMapping",
-        data: {
-          fields: "_source",
-          index: sourceIndices.map((idx) => idx.index).join(","),
-        },
-      });
-      if (res && res.ok) {
-        for (const index of this.sourceIndicesNames) {
-          const sourceEnabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
-          if (sourceEnabled === false) {
-            errors.push({
-              desc: `Index [${index}] didn't store _source, it's required by reindex`,
-              key: `${index} - _source`,
-            });
-          }
+    // validate _source for non-closed indices only, closed index won't return the mapping
+    const res = await commonService.apiCaller({
+      endpoint: "indices.getFieldMapping",
+      data: {
+        fields: "_source",
+        index: sourceIndices
+          .filter((item) => item.status !== "close")
+          .map((item) => item.index)
+          .join(","),
+      },
+    });
+    if (res && res.ok) {
+      for (const index of this.sourceIndicesNames) {
+        const sourceEnabled = _.get(res.response, [index, "mappings", "_source", "mapping", "_source", "enabled"]);
+        if (sourceEnabled === false) {
+          errors.push({
+            desc: `Index [${index}] didn't store _source, it's required by reindex`,
+            key: `${index} - _source`,
+          });
         }
       }
+    } else {
+      this.context.notifications.toasts.addDanger(res?.error || "can't validate whether _source is enabled for source");
     }
 
     this.setState({ sourceErr: errors });
@@ -238,6 +244,8 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
           _.unset(index.settings, "index.version");
           this.setState({ destSettingsJson: JSON.stringify(index, null, 4) });
         }
+      } else {
+        this.context.notifications.toasts.addDanger(`Get source index ${source} setting/mappings error ${res?.error}`);
       }
     }
   };
@@ -272,6 +280,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
     let isDestAsDataStream = dataStreams.map((ds) => ds.label).indexOf(dest) !== -1;
 
     try {
+      this.setState({ executing: true });
       if (destSettingsJson) {
         // create dest index first
         const createRes = await commonService.apiCaller({
@@ -312,6 +321,8 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       onReindexConfirm(reindexReq);
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);
+    } finally {
+      this.setState({ executing: false });
     }
   };
 
@@ -384,7 +395,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
       sourceErr,
       advancedSettingsOpen,
     } = this.state;
-    const { conflicts, subset } = this.state;
+    const { conflicts, subset, executing } = this.state;
     const banner = (
       <EuiCallOut>
         <p>
@@ -520,6 +531,7 @@ export default class ReindexFlyout extends Component<ReindexProps, ReindexState>
             action=""
             disabledAction={sourceErr && sourceErr.length > 0}
             text="Execute"
+            isLoading={executing}
             onClickAction={this.onClickAction}
             onClickCancel={onCloseFlyout}
           />

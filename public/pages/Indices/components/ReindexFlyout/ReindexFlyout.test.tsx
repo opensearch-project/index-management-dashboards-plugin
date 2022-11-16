@@ -5,10 +5,11 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, act } from "@testing-library/react";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import ReindexFlyout from "./ReindexFlyout";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { ServicesContext } from "../../../../services";
 import userEvent from "@testing-library/user-event";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 
@@ -35,7 +36,10 @@ const fileMappingResNormal = {
 };
 
 const allPipelines = {
-  "bump-orderId": { description: "Bump orderId", processors: [{ set: { field: "order_id", value: "200{{order_id}}" } }] },
+  "bump-orderId": {
+    description: "Bump orderId",
+    processors: [{ set: { field: "order_id", value: "200{{order_id}}" } }],
+  },
 };
 
 const selectedItem: ManagedCatIndex[] = [
@@ -104,8 +108,10 @@ function mockCommonService(filedMapping?: Object, pipelines?: Object) {
           },
         },
       });
+    } else if (args.endpoint === "cat.indices") {
+      return Promise.resolve({ ok: true, response: selectedItem });
     }
-    return Promise.resolve(null);
+    return Promise.resolve({ ok: true });
   });
 }
 
@@ -114,9 +120,22 @@ describe("<ReindexFlyout /> spec", () => {
     mockIndexService(indexResNormal);
     mockCommonService(fileMappingResNormal);
 
-    let component = render(
-      <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
-    );
+    let component = await act(async () => {
+      render(
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <ReindexFlyout
+              onCloseFlyout={() => {}}
+              onReindexConfirm={() => {}}
+              services={browserServicesMock}
+              sourceIndices={selectedItem}
+              getIndices={() => Promise.resolve()}
+              openIndex={() => Promise.resolve()}
+            />
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      );
+    });
 
     expect(component).toMatchSnapshot();
   });
@@ -127,13 +146,22 @@ describe("<ReindexFlyout /> spec", () => {
 
     const spy = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
 
-    render(
-      <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
-        );
-      </CoreServicesContext.Provider>
-    );
+    await act(async () => {
+      render(
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <ReindexFlyout
+              onCloseFlyout={() => {}}
+              onReindexConfirm={() => {}}
+              services={browserServicesMock}
+              sourceIndices={selectedItem}
+              getIndices={() => Promise.resolve()}
+              openIndex={() => Promise.resolve()}
+            />
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      );
+    });
 
     // wait 1 tick for the searchPolicies promise to resolve
     await waitFor(() => {});
@@ -149,18 +177,34 @@ describe("<ReindexFlyout /> spec", () => {
     mockCommonService(fileMappingResNormal);
 
     const spy = jest.spyOn(browserServicesMock.commonService, "apiCaller");
-    render(
-      <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
-        );
-      </CoreServicesContext.Provider>
-    );
+    await act(async () => {
+      render(
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <ReindexFlyout
+              onCloseFlyout={() => {}}
+              onReindexConfirm={() => {}}
+              services={browserServicesMock}
+              sourceIndices={selectedItem}
+              getIndices={() => Promise.resolve()}
+              openIndex={() => Promise.resolve()}
+            />
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      );
+    });
 
     // wait 1 tick for the searchPolicies promise to resolve
     await waitFor(() => {});
 
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(3);
+    expect(spy).toHaveBeenCalledWith({
+      endpoint: "cat.indices",
+      data: {
+        index: ["test-index-01"],
+        format: "json",
+      },
+    });
     expect(spy).toHaveBeenCalledWith({
       endpoint: "indices.getFieldMapping",
       data: {
@@ -181,18 +225,34 @@ describe("<ReindexFlyout /> spec", () => {
 
     const spy = jest.spyOn(browserServicesMock.commonService, "apiCaller");
     const spyIndexService = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
-    render(
-      <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
-        );
-      </CoreServicesContext.Provider>
-    );
+    await act(async () => {
+      render(
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <ReindexFlyout
+              onCloseFlyout={() => {}}
+              onReindexConfirm={() => {}}
+              services={browserServicesMock}
+              sourceIndices={selectedItem}
+              getIndices={() => Promise.resolve()}
+              openIndex={() => Promise.resolve()}
+            />
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      );
+    });
 
     // wait 1 tick for the searchPolicies promise to resolve
     await waitFor(() => {});
 
-    expect(spy).toHaveBeenCalledTimes(2);
+    expect(spy).toHaveBeenCalledTimes(3);
+    expect(spy).toHaveBeenCalledWith({
+      endpoint: "cat.indices",
+      data: {
+        index: ["test-index-01"],
+        format: "json",
+      },
+    });
     expect(spy).toHaveBeenCalledWith({
       endpoint: "indices.getFieldMapping",
       data: {
@@ -206,21 +266,33 @@ describe("<ReindexFlyout /> spec", () => {
 
     expect(spyIndexService).toHaveBeenCalledTimes(1);
     expect(spyIndexService).toHaveBeenCalledWith("");
+
+    expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalled();
   });
 
   it("adds danger toaster on safe error", async () => {
+    mockCommonService();
     browserServicesMock.indexService.getDataStreamsAndIndicesNames = jest.fn().mockResolvedValue({
       ok: false,
       error: "some error",
     });
     const spy = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
-    render(
-      <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
-        );
-      </CoreServicesContext.Provider>
-    );
+    await act(async () => {
+      render(
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <ReindexFlyout
+              onCloseFlyout={() => {}}
+              onReindexConfirm={() => {}}
+              services={browserServicesMock}
+              sourceIndices={selectedItem}
+              getIndices={() => Promise.resolve()}
+              openIndex={() => Promise.resolve()}
+            />
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      );
+    });
 
     // wait 1 tick for the searchPolicies promise to resolve
     await waitFor(() => {});
@@ -251,13 +323,22 @@ describe("<ReindexFlyout /> spec", () => {
       },
     });
     const spy = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
-    render(
-      <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
-        );
-      </CoreServicesContext.Provider>
-    );
+    await act(async () => {
+      render(
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <ReindexFlyout
+              onCloseFlyout={() => {}}
+              onReindexConfirm={() => {}}
+              services={browserServicesMock}
+              sourceIndices={selectedItem}
+              getIndices={() => Promise.resolve()}
+              openIndex={() => Promise.resolve()}
+            />
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      );
+    });
 
     // wait 1 tick for the searchPolicies promise to resolve
     await waitFor(() => {});
@@ -266,16 +347,29 @@ describe("<ReindexFlyout /> spec", () => {
     expect(spy).toHaveBeenCalledWith("");
 
     expect(screen.getByTestId("flyout-footer-action-button")).toBeDisabled();
+    expect(screen.queryByTestId("destIndicesComboInput")).toBeNull();
   });
 
   it("execute button disabled when status is closed", async () => {
     mockIndexService(indexResNormal);
     mockCommonService();
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((args) => {
+      if (args.endpoint === "cat.indices") {
+        return Promise.resolve({ ok: true, response: closedItem });
+      }
+    });
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={closedItem} />
-        );
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ReindexFlyout
+            onCloseFlyout={() => {}}
+            onReindexConfirm={() => {}}
+            services={browserServicesMock}
+            sourceIndices={closedItem}
+            getIndices={() => Promise.resolve()}
+            openIndex={() => Promise.resolve()}
+          />
+        </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
 
@@ -283,6 +377,44 @@ describe("<ReindexFlyout /> spec", () => {
     await waitFor(() => {});
 
     expect(screen.getByTestId("flyout-footer-action-button")).toBeDisabled();
+    expect(screen.queryByTestId("destIndicesComboInput")).toBeNull();
+  });
+
+  it("Show open button for closed index", async () => {
+    mockIndexService(indexResNormal);
+    mockCommonService();
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((args) => {
+      if (args.endpoint === "cat.indices") {
+        return Promise.resolve({ ok: true, response: closedItem });
+      }
+    });
+
+    let sourceIndices = closedItem;
+    render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ReindexFlyout
+            onCloseFlyout={() => {}}
+            onReindexConfirm={() => {}}
+            services={browserServicesMock}
+            sourceIndices={sourceIndices}
+            getIndices={async () => {
+              sourceIndices = selectedItem;
+            }}
+            openIndex={() => Promise.resolve()}
+          />
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+
+    // wait 1 tick for the searchPolicies promise to resolve
+    await waitFor(() => {});
+
+    expect(screen.getByTestId("flyout-footer-action-button")).toBeDisabled();
+    expect(screen.queryByTestId("destIndicesComboInput")).toBeNull();
+    expect(screen.queryByTestId("test-index-01-close")).not.toBeNull();
+
+    userEvent.click(screen.getByTestId("test-index-01-close"));
   });
 
   it("dest index must provided", async () => {
@@ -291,9 +423,16 @@ describe("<ReindexFlyout /> spec", () => {
     const spy = jest.spyOn(browserServicesMock.indexService, "getDataStreamsAndIndicesNames");
     render(
       <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
-        );
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ReindexFlyout
+            onCloseFlyout={() => {}}
+            onReindexConfirm={() => {}}
+            services={browserServicesMock}
+            sourceIndices={selectedItem}
+            getIndices={() => Promise.resolve()}
+            openIndex={() => Promise.resolve()}
+          />
+        </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
 
@@ -312,9 +451,16 @@ describe("<ReindexFlyout /> spec", () => {
     mockCommonService(fileMappingResNormal);
     const { getByTestId } = render(
       <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout onCloseFlyout={() => {}} onReindexConfirm={() => {}} services={browserServicesMock} sourceIndices={selectedItem} />
-        );
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ReindexFlyout
+            onCloseFlyout={() => {}}
+            onReindexConfirm={() => {}}
+            services={browserServicesMock}
+            sourceIndices={selectedItem}
+            getIndices={() => Promise.resolve()}
+            openIndex={() => Promise.resolve()}
+          />
+        </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
 
@@ -338,14 +484,16 @@ describe("<ReindexFlyout /> spec", () => {
     const spy = jest.spyOn(actionContainer, "onReindexConfirm");
     const { getByTestId } = render(
       <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={actionContainer.onReindexConfirm}
-          services={browserServicesMock}
-          sourceIndices={selectedItem}
-        />
-        );
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ReindexFlyout
+            onCloseFlyout={() => {}}
+            onReindexConfirm={actionContainer.onReindexConfirm}
+            services={browserServicesMock}
+            sourceIndices={selectedItem}
+            getIndices={() => Promise.resolve()}
+            openIndex={() => Promise.resolve()}
+          />
+        </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
 
@@ -355,7 +503,7 @@ describe("<ReindexFlyout /> spec", () => {
     userEvent.type(getByTestId("destIndicesComboInput").querySelector("input") as Element, "test-index-02");
 
     userEvent.click(screen.getByTestId("flyout-footer-action-button"));
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it("success perform reindex with creating new index", async () => {
@@ -367,25 +515,32 @@ describe("<ReindexFlyout /> spec", () => {
     };
     actionContainer.onReindexConfirm = jest.fn().mockResolvedValue({ ok: true });
     const spy = jest.spyOn(actionContainer, "onReindexConfirm");
-    const { getByTestId } = render(
+    const apiCallerSpy = jest.spyOn(browserServicesMock.commonService, "apiCaller");
+    const { getByTestId } = await render(
       <CoreServicesContext.Provider value={coreServicesMock}>
-        render(
-        <ReindexFlyout
-          onCloseFlyout={() => {}}
-          onReindexConfirm={actionContainer.onReindexConfirm}
-          services={browserServicesMock}
-          sourceIndices={selectedItem}
-        />
-        );
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ReindexFlyout
+            onCloseFlyout={() => {}}
+            onReindexConfirm={actionContainer.onReindexConfirm}
+            services={browserServicesMock}
+            sourceIndices={selectedItem}
+            getIndices={() => Promise.resolve()}
+            openIndex={() => Promise.resolve()}
+          />
+        </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
 
     // wait 1 tick for the searchPolicies promise to resolve
+    userEvent.type(getByTestId("destIndicesComboInput").querySelector("input") as Element, "test-index-03{enter}");
     await waitFor(() => {});
 
-    userEvent.type(getByTestId("destIndicesComboInput").querySelector("input") as Element, "test-index-03{enter}");
-
     userEvent.click(screen.getByTestId("flyout-footer-action-button"));
-    expect(spy).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(apiCallerSpy).toHaveBeenLastCalledWith({
+        endpoint: "indices.create",
+      });
+    });
   });
 });

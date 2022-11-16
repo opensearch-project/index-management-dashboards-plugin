@@ -16,6 +16,12 @@ describe("<ReindexAdvancedOptions /> spec", () => {
         pipelines={[]}
         selectedPipelines={[]}
         onSelectedPipelinesChange={() => {}}
+        conflicts="proceed"
+        onConflictsChange={() => {}}
+        onQueryJsonChange={() => {}}
+        onSubsetChange={() => {}}
+        queryJsonString="{}"
+        subset={true}
       />
     );
 
@@ -31,6 +37,12 @@ describe("<ReindexAdvancedOptions /> spec", () => {
         pipelines={[]}
         selectedPipelines={[]}
         onSelectedPipelinesChange={() => {}}
+        conflicts="proceed"
+        onConflictsChange={() => {}}
+        onQueryJsonChange={() => {}}
+        onSubsetChange={() => {}}
+        queryJsonString="{}"
+        subset={false}
       />
     );
 
