@@ -368,7 +368,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onCloseFlyout={onCloseFlyout}
           onSplitIndex={splitIndex}
           getIndexSettings={getIndexSettings}
-          coreServices={coreServices}
           setIndexSettings={setIndexSettings}
           openIndex={onOpenIndexModalConfirm}
         />
