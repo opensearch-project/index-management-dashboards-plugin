@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import {render, waitFor} from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import SplitIndexFlyout from "./SplitIndexFlyout";
 import userEvent from "@testing-library/user-event";
 
@@ -15,17 +15,14 @@ describe("<SplitIndexFlyout /> spec", () => {
   it("renders the component", async () => {
     render(
       <SplitIndexFlyout
-        sourceIndex={{}}
+        sourceIndex={{} as any}
         onCloseFlyout={closeFlyout}
         onSplitIndex={onSplitIndex}
-        getIndexSettings={() => {
+        getIndexSettings={async () => {
+          return {};
         }}
-        setIndexSettings={() => {
-        }}
-        openIndex={() => {
-        }}
-        coreServices={() => {
-        }}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
       />
     );
 
@@ -35,30 +32,32 @@ describe("<SplitIndexFlyout /> spec", () => {
   });
 
   it("Successful split an index", async () => {
-    const {getByTestId} = render(
+    const { getByTestId } = render(
       <SplitIndexFlyout
-        sourceIndex={{
-          health: "green",
-          index: "split_test_index",
-          pri: "2",
-          rep: "0",
-          status: "open",
-        }}
+        sourceIndex={
+          {
+            health: "green",
+            index: "split_test_index",
+            pri: "2",
+            rep: "0",
+            status: "open",
+          } as any
+        }
         onCloseFlyout={closeFlyout}
         onSplitIndex={onSplitIndex}
-        getIndexSettings={() => {
+        getIndexSettings={async () => {
           return {
-            "split_test_index": {
-              "settings": {
-                "index.blocks.write": "true"
-              }
-            }
-          }
+            split_test_index: {
+              index: "1",
+              settings: {
+                "index.blocks.write": "true",
+              },
+            },
+          };
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
-        coreServices={() => {}}
-      />,
+      />
     );
 
     await waitFor(() => {
@@ -77,30 +76,32 @@ describe("<SplitIndexFlyout /> spec", () => {
   });
 
   it("Error message if index name or shards number is not specified", async () => {
-    const {getByTestId, getByText} = render(
+    const { getByTestId, getByText } = render(
       <SplitIndexFlyout
-        sourceIndex={{
-          health: "green",
-          index: "split_test_index",
-          pri: "2",
-          rep: "0",
-          status: "open",
-        }}
+        sourceIndex={
+          {
+            health: "green",
+            index: "split_test_index",
+            pri: "2",
+            rep: "0",
+            status: "open",
+          } as any
+        }
         onCloseFlyout={closeFlyout}
         onSplitIndex={onSplitIndex}
-        getIndexSettings={() => {
+        getIndexSettings={async () => {
           return {
-            "split_test_index": {
-              "settings": {
-                "index.blocks.write": "true"
-              }
-            }
-          }
+            split_test_index: {
+              index: "split_test_index",
+              settings: {
+                "index.blocks.write": "true",
+              },
+            },
+          };
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
-        coreServices={() => {}}
-      />,
+      />
     );
 
     await waitFor(() => {
@@ -114,30 +115,32 @@ describe("<SplitIndexFlyout /> spec", () => {
   });
 
   it("Incorrect number of shards is not allowed", async () => {
-    const {getByTestId, getByText} = render(
+    const { getByTestId, getByText } = render(
       <SplitIndexFlyout
-        sourceIndex={{
-          health: "green",
-          index: "split_test_index",
-          pri: "2",
-          rep: "0",
-          status: "open",
-        }}
+        sourceIndex={
+          {
+            health: "green",
+            index: "split_test_index",
+            pri: "2",
+            rep: "0",
+            status: "open",
+          } as any
+        }
         onCloseFlyout={closeFlyout}
         onSplitIndex={onSplitIndex}
-        getIndexSettings={() => {
+        getIndexSettings={async () => {
           return {
-            "split_test_index": {
-              "settings": {
-                "index.blocks.write": "true"
-              }
-            }
-          }
+            split_test_index: {
+              index: "split_test_index",
+              settings: {
+                "index.blocks.write": "true",
+              },
+            },
+          };
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
-        coreServices={() => {}}
-      />,
+      />
     );
 
     await waitFor(() => {
@@ -151,149 +154,155 @@ describe("<SplitIndexFlyout /> spec", () => {
   });
 
   it("Red Index is not ready for split", async () => {
-    const {getByTestId, findByText} = render(
+    const { getByTestId, queryByText } = render(
       <SplitIndexFlyout
-        sourceIndex={{
-          health: "red",
-          index: "test_index",
-          pri: "2",
-          rep: "0",
-          status: "open",
-        }}
+        sourceIndex={
+          {
+            health: "red",
+            index: "test_index",
+            pri: "2",
+            rep: "0",
+            status: "open",
+          } as any
+        }
         onCloseFlyout={() => {}}
         onSplitIndex={() => {}}
-        getIndexSettings={() => {
+        getIndexSettings={async () => {
           return {
-            "test_index": {
-              "settings": {
-                "index.blocks.write": "true"
-              }
-            }
-          }
+            test_index: {
+              index: "test_index",
+              settings: {
+                "index.blocks.write": "true",
+              },
+            },
+          };
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
-        coreServices={() => {}}
       />
     );
 
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).toBeDisabled();
-      expect(findByText("Source index health must not be red.")).not.toBeNull();
+      expect(queryByText("Source index health must not be red.")).not.toBeNull();
     });
   });
 
   it("Closed Index is not ready for split", async () => {
-    const {getByTestId, findByText} = render(
+    const { getByTestId, queryByText } = render(
       <SplitIndexFlyout
-        sourceIndex={{
-          health: "green",
-          index: "test_index",
-          pri: "2",
-          rep: "0",
-          status: "close",
-        }}
+        sourceIndex={
+          {
+            health: "green",
+            index: "test_index",
+            pri: "2",
+            rep: "0",
+            status: "close",
+          } as any
+        }
         onCloseFlyout={() => {}}
         onSplitIndex={() => {}}
-        getIndexSettings={() => {
+        getIndexSettings={async () => {
           return {
-            "test_index": {
-              "settings": {
-                "index.blocks.write": "true"
-              }
-            }
-          }
+            test_index: {
+              index: "test_index",
+              settings: {
+                "index.blocks.write": "true",
+              },
+            },
+          };
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
-        coreServices={() => {}}
       />
     );
 
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).toBeDisabled();
-      expect(findByText("Source index must not be in close status.")).not.toBeNull();
+      expect(queryByText("Source index must not be in close status.")).not.toBeNull();
       expect(getByTestId("open-index-button")).toBeVisible();
-    })
+    });
   });
 
   it("blocks.write is not set to true, Index is not ready for split", async () => {
-    const {getByTestId, findByText} = render(
+    const { getByTestId, queryByText } = render(
       <SplitIndexFlyout
-        sourceIndex={{
-          health: "green",
-          index: "test_index",
-          pri: "2",
-          rep: "0",
-          status: "open",
-        }}
+        sourceIndex={
+          {
+            health: "green",
+            index: "test_index",
+            pri: "2",
+            rep: "0",
+            status: "open",
+          } as any
+        }
         onCloseFlyout={() => {}}
         onSplitIndex={() => {}}
-        getIndexSettings={() => {
+        getIndexSettings={async () => {
           return {
-            "test_index": {
-              "settings": {
-                "index.blocks.write": "false"
-              }
-            }
-          }
+            test_index: {
+              index: "test_index",
+              settings: {
+                "index.blocks.write": "false",
+              },
+            },
+          };
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
-        coreServices={() => {}}
       />
     );
 
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).toBeDisabled();
-      expect(findByText("Source index must be in block write status.")).not.toBeNull();
+      expect(queryByText("Source index must be in block write status.")).not.toBeNull();
       expect(getByTestId("set-indexsetting-button")).not.toBeNull();
     });
   });
 
   it("blocks.write is not set, Index is not ready for split", async () => {
-    const {getByTestId, findByText} = render(
+    const { getByTestId, queryByText } = render(
       <SplitIndexFlyout
-        sourceIndex={{
-          health: "green",
-          index: "test_index",
-          pri: "2",
-          rep: "0",
-          status: "open",
-        }}
+        sourceIndex={
+          {
+            health: "green",
+            index: "test_index",
+            pri: "2",
+            rep: "0",
+            status: "open",
+          } as any
+        }
         onCloseFlyout={() => {}}
         onSplitIndex={() => {}}
-        getIndexSettings={() => {
+        getIndexSettings={async () => {
           return {
-            "test_index": {
-              "settings": {
-              }
-            }
-          }
+            test_index: {
+              index: "test_index",
+              settings: {},
+            },
+          };
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
-        coreServices={() => {}}
       />
     );
 
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).toBeDisabled();
-      expect(findByText("Source index must be in block write status.")).not.toBeNull();
+      expect(queryByText("Source index must be in block write status.")).not.toBeNull();
       expect(getByTestId("set-indexsetting-button")).not.toBeNull();
     });
   });
 
-  it("Cancel works", async () =>  {
-    const {getByTestId} = render(
+  it("Cancel works", async () => {
+    const { getByTestId } = render(
       <SplitIndexFlyout
-        sourceIndex={{}}
+        sourceIndex={{} as any}
         onCloseFlyout={closeFlyout}
         onSplitIndex={onSplitIndex}
-        getIndexSettings={() => {}}
+        getIndexSettings={async () => ({})}
         setIndexSettings={() => {}}
         openIndex={() => {}}
-        coreServices={() => {}}
       />
     );
 
@@ -305,5 +314,4 @@ describe("<SplitIndexFlyout /> spec", () => {
       expect(closeFlyout).toHaveBeenCalled();
     });
   });
-
-})
+});
