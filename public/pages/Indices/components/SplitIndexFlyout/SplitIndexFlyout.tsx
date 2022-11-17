@@ -19,7 +19,6 @@ import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components
 import { IndexItem } from "../../../../../models/interfaces";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CatIndex } from "../../../../../server/models/interfaces";
-import { CoreStart } from "opensearch-dashboards/public";
 import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 
@@ -30,7 +29,6 @@ interface SplitIndexProps {
   getIndexSettings: (indexName: string, flat: boolean) => Promise<Record<string, IndexItem>>;
   setIndexSettings: (indexName: string, flat: boolean, setting: {}) => void;
   openIndex: () => void;
-  coreServices: CoreStart;
 }
 
 export default class SplitIndexFlyout extends Component<SplitIndexProps> {
@@ -181,8 +179,14 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
 
     if (reasons.length > 0) {
       console.log(
-        "Status has " + reasons.length + " problems. Blocks.write=" + (blocksWriteValue ? blocksWriteValue : "null")
-        + " health=" + sourceIndex.health + " status=" + sourceIndex.status
+        "Status has " +
+          reasons.length +
+          " problems. Blocks.write=" +
+          (blocksWriteValue ? blocksWriteValue : "null") +
+          " health=" +
+          sourceIndex.health +
+          " status=" +
+          sourceIndex.status
       );
     }
 
@@ -197,7 +201,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
         <EuiFlyoutBody>
           <IndexDetail indices={[sourceIndex.index]}>
             <EuiCallOut color="danger" hidden={reasons.length == 0} data-test-subj="Source Index Warning">
-              <div style={{ lineHeight:3 }}>
+              <div style={{ lineHeight: 3 }}>
                 <ul>
                   {reasons.map((reason, reasonIndex) => (
                     <li key={reasonIndex}>{reason}</li>
@@ -215,7 +219,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
           </IndexDetail>
           <EuiSpacer />
 
-          {reasons.length == 0 &&
+          {reasons.length == 0 && (
             <ContentPanel title="Configure target index" titleSize="s">
               <FormGenerator
                 onChange={(totalValue) =>
@@ -250,7 +254,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
                 }}
               />
             </ContentPanel>
-          }
+          )}
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
