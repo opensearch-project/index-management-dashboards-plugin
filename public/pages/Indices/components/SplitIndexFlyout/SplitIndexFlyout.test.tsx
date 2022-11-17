@@ -64,16 +64,9 @@ describe("<SplitIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
     });
-
     userEvent.type(getByTestId("Target Index Name"), "split_test_index-split");
-
-    await waitFor(() => {
-      userEvent.type(getByTestId("Number of shards"), "4");
-    });
-
-    await waitFor(() => {
-      userEvent.click(getByTestId("flyout-footer-action-button"));
-    });
+    userEvent.type(getByTestId("Number of shards"), "4");
+    userEvent.click(getByTestId("flyout-footer-action-button"));
 
     await waitFor(() => {
       expect(onSplitIndex).toHaveBeenCalled();
@@ -148,9 +141,7 @@ describe("<SplitIndexFlyout /> spec", () => {
       expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
     });
     userEvent.type(getByTestId("Number of shards"), "3");
-    await waitFor(() => {
-      userEvent.click(getByTestId("flyout-footer-action-button"));
-    });
+    userEvent.click(getByTestId("flyout-footer-action-button"));
     await waitFor(() => {
       expect(getByText("3 must be a multiple of 2")).not.toBeNull();
     });
