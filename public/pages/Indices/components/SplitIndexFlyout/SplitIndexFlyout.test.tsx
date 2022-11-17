@@ -61,13 +61,23 @@ describe("<SplitIndexFlyout /> spec", () => {
       />,
     );
 
-    expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
+    await waitFor(() => {
+      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
+    });
+
     userEvent.type(getByTestId("Target Index Name"), "split_test_index-split");
-    userEvent.type(getByTestId("Number of shards"), "4");
+
+    await waitFor(() => {
+      userEvent.type(getByTestId("Number of shards"), "4");
+    });
+
     await waitFor(() => {
       userEvent.click(getByTestId("flyout-footer-action-button"));
     });
-    expect(onSplitIndex).toHaveBeenCalled();
+
+    await waitFor(() => {
+      expect(onSplitIndex).toHaveBeenCalled();
+    });
   });
 
   it("Error message if index name or shards number is not specified", async () => {
@@ -97,12 +107,14 @@ describe("<SplitIndexFlyout /> spec", () => {
       />,
     );
 
-    expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
     await waitFor(() => {
-      userEvent.click(getByTestId("flyout-footer-action-button"));
+      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
     });
-    expect(getByText("Target Index Name is required")).not.toBeNull();
-    expect(getByText("Number of shards is required")).not.toBeNull();
+    userEvent.click(getByTestId("flyout-footer-action-button"));
+    await waitFor(() => {
+      expect(getByText("Target Index Name is required")).not.toBeNull();
+      expect(getByText("Number of shards is required")).not.toBeNull();
+    });
   });
 
   it("Incorrect number of shards is not allowed", async () => {
@@ -132,12 +144,16 @@ describe("<SplitIndexFlyout /> spec", () => {
       />,
     );
 
-    expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
+    await waitFor(() => {
+      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
+    });
     userEvent.type(getByTestId("Number of shards"), "3");
     await waitFor(() => {
       userEvent.click(getByTestId("flyout-footer-action-button"));
     });
-    expect(getByText("3 must be a multiple of 2")).not.toBeNull();
+    await waitFor(() => {
+      expect(getByText("3 must be a multiple of 2")).not.toBeNull();
+    });
   });
 
   it("Red Index is not ready for split", async () => {
@@ -289,6 +305,9 @@ describe("<SplitIndexFlyout /> spec", () => {
 
     await waitFor(() => {
       userEvent.click(getByTestId("flyout-footer-cancel-button"));
+    });
+
+    await waitFor(() => {
       expect(closeFlyout).toHaveBeenCalled();
     });
   });
