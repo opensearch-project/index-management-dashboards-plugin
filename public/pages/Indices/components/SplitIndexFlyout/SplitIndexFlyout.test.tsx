@@ -66,7 +66,10 @@ describe("<SplitIndexFlyout /> spec", () => {
     });
     userEvent.type(getByTestId("Target Index Name"), "split_test_index-split");
     userEvent.type(getByTestId("Number of shards"), "4");
-    userEvent.click(getByTestId("flyout-footer-action-button"));
+
+    await waitFor(() => {
+      userEvent.click(getByTestId("flyout-footer-action-button"));
+    });
 
     await waitFor(() => {
       expect(onSplitIndex).toHaveBeenCalled();
