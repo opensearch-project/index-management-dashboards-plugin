@@ -11,8 +11,6 @@ import SimplePopover from "../../../../components/SimplePopover";
 import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
-import { REQUEST } from "../../../../../utils/constants";
-import { ReindexRequest, ReindexResponse } from "../../models/interfaces";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -20,12 +18,13 @@ import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
 import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 import { getErrorMessage } from "../../../../utils/helpers";
-import ReindexFlyout from "../../components/ReindexFlyout";
 import SplitIndexFlyout from "../../components/SplitIndexFlyout";
 import { IndexItem } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
+import { ROUTES } from "../../../../utils/constants";
+import { RouteComponentProps } from "react-router-dom";
 
-export interface IndicesActionsProps {
+export interface IndicesActionsProps extends RouteComponentProps {
   selectedItems: ManagedCatIndex[];
   onDelete: () => void;
   onOpen: () => void;
@@ -36,12 +35,11 @@ export interface IndicesActionsProps {
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, onOpen, onClose, onShrink, onReindex } = props;
+  const { selectedItems, onDelete, onOpen, onClose, onShrink } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
   const [shrinkIndexFlyoutVisible, setShrinkIndexFlyoutVisible] = useState(false);
-  const [isReindexFlyoutVisible, setIsReindexFlyoutVisible] = useState(false);
   const [splitIndexFlyoutVisible, setSplitIndexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
@@ -203,36 +201,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
     }
   };
 
-  const onReindexConfirm = async (reindexRequest: ReindexRequest) => {
-    const res = await services.commonService.apiCaller<ReindexResponse>({
-      endpoint: "transport.request",
-      method: REQUEST.POST,
-      data: {
-        path: `_reindex?slices=${reindexRequest.slices}&wait_for_completion=${reindexRequest.waitForCompletion}`,
-        method: REQUEST.POST,
-        body: reindexRequest.body,
-      },
-    });
-    if (res && res.ok) {
-      // @ts-ignore
-      let toast = `Reindex from [${reindexRequest.body.source.index}] to [${reindexRequest.body.dest.index}]`;
-      if (reindexRequest.waitForCompletion) {
-        toast += ` finished!`;
-      } else {
-        toast += ` success with taskId ${res.response.task}`;
-      }
-      coreServices.notifications.toasts.addSuccess(toast);
-      onCloseReindexFlyout();
-      onReindex && onReindex();
-    } else {
-      coreServices.notifications.toasts.addDanger(`Reindex operation error ${res?.error}`);
-    }
-  };
-
-  const onCloseReindexFlyout = () => {
-    setIsReindexFlyoutVisible(false);
-  };
-
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
   return (
@@ -281,9 +249,14 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     },
                     {
                       name: "Reindex",
-                      disabled: !selectedItems.length,
                       "data-test-subj": "Reindex Action",
-                      onClick: () => setIsReindexFlyoutVisible(true),
+                      onClick: () => {
+                        let source = "";
+                        if (selectedItems.length > 0) {
+                          source = `?source=${selectedItems.map((item) => item.index).join(",")}`;
+                        }
+                        props.history.push(`${ROUTES.REINDEX}${source}`);
+                      },
                     },
                     {
                       name: "Shrink",
@@ -337,17 +310,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onClose={onShrinkIndexFlyoutClose}
           onConfirm={onShrinkIndexFlyoutConfirm}
           getIndexSettings={getIndexSettings}
-        />
-      )}
-
-      {isReindexFlyoutVisible && (
-        <ReindexFlyout
-          services={services}
-          onCloseFlyout={onCloseReindexFlyout}
-          sourceIndices={selectedItems}
-          onReindexConfirm={onReindexConfirm}
-          openIndex={openIndices}
-          {...props}
         />
       )}
 

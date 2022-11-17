@@ -11,5 +11,6 @@ import transforms from "./transforms";
 import notifications from "./notifications";
 import snapshotManagement from "./snapshotManagement";
 import common from "./common";
+import aliases from "./aliases";
 
-export { indices, policies, managedIndices, rollups, transforms, notifications, snapshotManagement, common };
+export { indices, policies, managedIndices, rollups, transforms, notifications, snapshotManagement, common, aliases };

@@ -23,6 +23,7 @@ import {
   Rollup,
   Transform,
 } from "../../models/interfaces";
+import AliasServices from "../services/AliasServices";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -34,6 +35,7 @@ export interface NodeServices {
   notificationService: NotificationService;
   snapshotManagementService: SnapshotManagementService;
   commonService: CommonService;
+  aliasService: AliasServices;
 }
 
 export interface SearchResponse<T> {
@@ -451,4 +453,18 @@ export interface CreateRepositoryBody {
 export interface GetSMPoliciesResponse {
   policies: DocumentSMPolicy[];
   totalPolicies: number;
+}
+
+export interface Alias {
+  alias: string;
+  index: string;
+  filter: string;
+  is_write_index: string;
+  "routing.index": string;
+  "routing.search": string;
+}
+
+export interface GetAliasesResponse {
+  aliases: Alias[];
+  total: number;
 }

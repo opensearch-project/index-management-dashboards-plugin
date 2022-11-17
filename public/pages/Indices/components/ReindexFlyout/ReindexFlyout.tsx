@@ -30,7 +30,7 @@ import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
 import { ReindexRequest } from "../../models/interfaces";
 import { BrowserServices } from "../../../../models/interfaces";
-import ReindexAdvancedOptions from "../ReindexAdvancedOptions/ReindexAdvancedOptions";
+import ReindexAdvancedOptions from "../../../Reindex/components/ReindexAdvancedOptions/ReindexAdvancedOptions";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { CatIndex, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";

@@ -25,7 +25,7 @@ export interface IndexFormProps {
   mode?: IndicesUpdateMode;
   commonService: CommonService;
   onCancel?: () => void;
-  onSubmitSuccess?: () => void;
+  onSubmitSuccess?: (indexName: string) => void;
 }
 
 interface CreateIndexState {
@@ -375,7 +375,7 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     // handle all the response here
     if (result && result.ok) {
       this.context.notifications.toasts.addSuccess(`[${indexDetail.index}] has been successfully ${this.isEdit ? "updated" : "created"}.`);
-      this.props.onSubmitSuccess && this.props.onSubmitSuccess();
+      this.props.onSubmitSuccess && this.props.onSubmitSuccess(indexDetail.index);
     } else {
       this.context.notifications.toasts.addDanger(result.error);
     }
