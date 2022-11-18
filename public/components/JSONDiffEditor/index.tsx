@@ -9,7 +9,7 @@ import { DiffEditorProps } from "@monaco-editor/react";
 import * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { MonacoEditorDiffReact } from "../MonacoEditor";
 
-interface JSONDiffEditorProps extends Partial<DiffEditorProps> {
+export interface JSONDiffEditorProps extends Partial<DiffEditorProps> {
   value: string;
   onChange?: (value: JSONDiffEditorProps["value"]) => void;
   "data-test-subj"?: string;

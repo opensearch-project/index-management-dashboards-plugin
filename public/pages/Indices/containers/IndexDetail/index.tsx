@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   EuiButtonEmpty,
   EuiCopy,
@@ -20,9 +20,7 @@ import {
   EuiFlyoutHeader,
   EuiTitle,
   EuiFlyoutBody,
-  EuiCodeBlock,
   EuiIcon,
-  EuiIconTip,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
@@ -119,6 +117,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   const [editVisible, setEditVisible] = useState(false);
   const [editMode, setEditMode] = useState(IndicesUpdateMode.settings);
   const [detail, setDetail] = useState({} as IndexItem);
+  const ref = useRef<IndexForm>(null);
   const finalDetail: IFinalDetail = useMemo(
     () => ({
       ...record,
@@ -168,10 +167,18 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     commonService: services.commonService,
     onCancel: () => setEditVisible(false),
     onSubmitSuccess: () => {
+      ref.current?.refreshIndex();
       setEditVisible(false);
       onUpdateIndex();
       fetchIndicesDetail();
     },
+  };
+
+  const indexFormReadonlyCommonProps = {
+    ...indexFormCommonProps,
+    hideButtons: true,
+    readonly: true,
+    ref,
   };
 
   const onEdit = (editMode: IndicesUpdateMode) => {
@@ -249,9 +256,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                         </EuiFlexItem>
                       </EuiFlexGroup>
                       <EuiSpacer />
-                      <EuiCodeBlock language="json" whiteSpace="pre">
-                        {JSON.stringify(finalDetail.settings || {}, null, 2)}
-                      </EuiCodeBlock>
+                      <IndexForm {...indexFormReadonlyCommonProps} mode={IndicesUpdateMode.settings} />
                     </>
                   ),
                 },
@@ -272,9 +277,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                         </EuiFlexItem>
                       </EuiFlexGroup>
                       <EuiSpacer />
-                      <EuiCodeBlock language="json" whiteSpace="pre">
-                        {JSON.stringify(finalDetail.mappings || {}, null, 2)}
-                      </EuiCodeBlock>
+                      <IndexForm {...indexFormReadonlyCommonProps} mode={IndicesUpdateMode.mappings} />
                     </>
                   ),
                 },

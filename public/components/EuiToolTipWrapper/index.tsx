@@ -36,7 +36,7 @@ export default function EuiToolTipWrapper<T>(
     } else {
       formattedReason = disabledReason;
     }
-    formattedReason = formattedReason?.filter((item) => item.visible);
+    formattedReason = formattedReason?.filter((item) => item.visible && item.message);
     const propsDisabled = (others as Record<string, any>)[finalOptions.disabledKey];
     const disabled = propsDisabled === undefined ? !!formattedReason?.length : propsDisabled;
     const finalProps: IEuiToolTipWrapperProps = {
