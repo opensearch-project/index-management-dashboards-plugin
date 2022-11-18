@@ -2,9 +2,6 @@
 
 exports[`<IndexMapping /> spec render mappings with object type 1`] = `
 <div>
-  <div
-    class="euiSpacer euiSpacer--l"
-  />
   <fieldset
     class="euiButtonGroup euiButtonGroup--small euiButtonGroup--text"
   >
@@ -548,7 +545,68 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
 `;
 
 exports[`<IndexMapping /> spec renders the component 1`] = `
-<div
-  class="euiSpacer euiSpacer--l"
-/>
+<fieldset
+  class="euiButtonGroup euiButtonGroup--small euiButtonGroup--text"
+>
+  <legend
+    class="euiScreenReaderOnly"
+  >
+    Editor Type
+  </legend>
+  <div
+    class="euiButtonGroup__buttons"
+  >
+    <label
+      class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small euiButtonGroupButton--fill euiButtonGroupButton-isSelected"
+      data-test-subj="editor-type-visual-editor"
+      for="some_html_id"
+    >
+      <span
+        class="euiButtonContent euiButton__content"
+      >
+        <span
+          class="euiButton__text euiButtonGroupButton__textShift"
+          data-text="Visual Editor"
+          title="Visual Editor"
+        >
+          <input
+            checked=""
+            class="euiScreenReaderOnly"
+            data-test-subj="VISUAL"
+            id="some_html_id"
+            name="some_html_id"
+            type="radio"
+            value=""
+          />
+          Visual Editor
+        </span>
+      </span>
+    </label>
+    <label
+      class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
+      data-test-subj="editor-type-json-editor"
+      for="some_html_id"
+    >
+      <span
+        class="euiButtonContent euiButton__content"
+      >
+        <span
+          class="euiButton__text euiButtonGroupButton__textShift"
+          data-text="JSON Editor"
+          title="JSON Editor"
+        >
+          <input
+            class="euiScreenReaderOnly"
+            data-test-subj="JSON"
+            id="some_html_id"
+            name="some_html_id"
+            type="radio"
+            value=""
+          />
+          JSON Editor
+        </span>
+      </span>
+    </label>
+  </div>
+</fieldset>
 `;

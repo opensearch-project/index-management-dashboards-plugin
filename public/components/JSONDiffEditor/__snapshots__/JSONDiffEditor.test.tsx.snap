@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<JSONDiffEditor /> spec renders the component 1`] = `
+HTMLCollection [
+  <div>
+    <div
+      style="height: 600px;"
+    >
+      <textarea
+        data-test-subj="json-editor-value-display"
+        readonly=""
+        style="display: none;"
+        title="editor-is-ready-false"
+      >
+        {"name":"test"}
+      </textarea>
+      <section
+        style="display: flex; position: relative; text-align: initial; width: 100%; height: 100%;"
+      >
+        <div
+          style="display: flex; height: 100%; width: 100%; justify-content: center; align-items: center;"
+        >
+          Loading...
+        </div>
+        <div
+          style="width: 100%; display: none;"
+        />
+      </section>
+    </div>
+  </div>,
+  <script
+    src="https://cdn.jsdelivr.net/npm/monaco-editor@0.21.2/min/vs/loader.js"
+  />,
+]
+`;

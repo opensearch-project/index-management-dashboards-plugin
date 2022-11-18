@@ -71,6 +71,7 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
         readOnly
         style={{ display: "none" }}
         value={value}
+        title={`editor-is-ready-${isReady}`}
         data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
       />
       <MonacoEditorDiffReact
