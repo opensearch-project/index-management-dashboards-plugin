@@ -323,7 +323,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         </EuiFlyout>
       ) : null}
       {editVisible ? (
-        <EuiFlyout onClose={() => null} hideCloseButton>
+        <EuiFlyout data-test-subj="index-form-in-index-detail" onClose={() => null} hideCloseButton>
           <EuiFlyoutHeader hasBorder>
             <EuiTitle size="m">
               <span onClick={() => setEditVisible(false)} style={{ cursor: "pointer" }}>

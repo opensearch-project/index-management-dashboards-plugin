@@ -20,6 +20,7 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const focusedRef = useRef(false);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const editorRef = useRef<monacoEditor.editor.IStandaloneDiffEditor | null>(null);
   const setValue = useCallback(
     (val) => {
@@ -53,12 +54,17 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
   useEffect(() => {
     if (isReady) {
       setValue(value);
+      inputRef.current?.setAttribute("value", value);
+      if (inputRef.current) {
+        inputRef.current.value = value;
+      }
     }
   }, [value, isReady]);
 
   useEffect(() => {
     document.body.addEventListener("click", onClickOutsideHandler.current);
     editorRef.current?.getDomNode().addEventListener("click", onClickContainer.current);
+    editorRef.current?.getModifiedEditor().getDomNode()?.setAttribute("data-test-subj", "codeEditorContainer");
     return () => {
       document.body.removeEventListener("click", onClickOutsideHandler.current);
       editorRef.current?.getDomNode().addEventListener("click", onClickContainer.current);
@@ -68,9 +74,16 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
   return (
     <div style={{ height: "600px" }}>
       <textarea
-        readOnly
         style={{ display: "none" }}
-        value={value}
+        ref={inputRef}
+        onChange={(e) => {
+          try {
+            JSON.parse(e.target.value);
+            onChange && onChange(e.target.value);
+          } catch (e) {
+            // do nothing
+          }
+        }}
         title={`editor-is-ready-${isReady}`}
         data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
       />
