@@ -48,19 +48,16 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
 
   return (
     <div style={{ padding: "10px 10px" }}>
-      <CustomFormRow
-        label="How to handle conflicts"
-        helpText="Set to proceed to continue reindexing even if there are conflicts. Defaults to abort"
-      >
+      <CustomFormRow label="Specify conflicts option" helpText="Set to proceed to continue reindexing even if there are conflicts.">
         <EuiRadioGroup
           options={[
             {
               id: "proceed",
-              label: "proceed",
+              label: "Continue to proceed reindexing",
             },
             {
               id: "abort",
-              label: "abort",
+              label: "Abort reindexing",
             },
           ]}
           idSelected={conflicts}

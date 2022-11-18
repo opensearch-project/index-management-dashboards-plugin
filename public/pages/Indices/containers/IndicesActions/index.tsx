@@ -30,7 +30,6 @@ export interface IndicesActionsProps extends RouteComponentProps {
   onOpen: () => void;
   onClose: () => void;
   onShrink: () => void;
-  onReindex?: () => void;
   getIndices: () => Promise<void>;
 }
 

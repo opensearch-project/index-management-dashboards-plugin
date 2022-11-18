@@ -4,20 +4,21 @@
  */
 
 import { EuiComboBox, EuiComboBoxOptionOption } from "@elastic/eui";
+import { _EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { CoreStart } from "opensearch-dashboards/public";
 import React, { useContext, useEffect, useState } from "react";
-import { CatIndex } from "../../../../../server/models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { IndexSelectItem } from "../../models/interfaces";
 
-interface IndexSelectProps {
-  getIndexOptions: (searchValue: string) => Promise<EuiComboBoxOptionOption<CatIndex>[]>;
-  onSelectedOptions: (options: EuiComboBoxOptionOption<CatIndex>[]) => void;
+interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "data-test-subj"> {
+  getIndexOptions: (searchValue: string) => Promise<EuiComboBoxOptionOption<IndexSelectItem>[]>;
+  onSelectedOptions: (options: EuiComboBoxOptionOption<IndexSelectItem>[]) => void;
   singleSelect: boolean;
-  selectedOption: EuiComboBoxOptionOption<CatIndex>[];
+  selectedOption: EuiComboBoxOptionOption<IndexSelectItem>[];
 }
 
 export default function IndexSelect(props: IndexSelectProps) {
-  const initPipeline: EuiComboBoxOptionOption<CatIndex>[] = [];
+  const initPipeline: EuiComboBoxOptionOption<IndexSelectItem>[] = [];
   const [indexOptions, setIndexOptions] = useState(initPipeline);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
 
@@ -43,6 +44,7 @@ export default function IndexSelect(props: IndexSelectProps) {
   return (
     <div>
       <EuiComboBox
+        data-test-subj={props["data-test-subj"]}
         placeholder="Select indexes or data streams"
         options={indexOptions}
         async
@@ -51,7 +53,6 @@ export default function IndexSelect(props: IndexSelectProps) {
         onSearchChange={onSearchChange}
         isClearable={true}
         singleSelection={props.singleSelect ? { asPlainText: true } : false}
-        data-test-subj="indexSelectComboBox"
       />
     </div>
   );

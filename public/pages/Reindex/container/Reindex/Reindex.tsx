@@ -21,9 +21,8 @@ import _ from "lodash";
 import React, { ChangeEvent, Component } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { ReindexRequest } from "../../models/interfaces";
+import { IndexSelectItem, ReindexRequest } from "../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
-import { CatIndex } from "../../../../../server/models/interfaces";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import ReindexAdvancedOptions from "../../components/ReindexAdvancedOptions";
 import { BREADCRUMBS, DSL_DOCUMENTATION_URL, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
@@ -43,11 +42,10 @@ interface ReindexProps extends RouteComponentProps {
 }
 
 interface ReindexState {
-  indexOptions: EuiComboBoxOptionOption<CatIndex>[];
-  dataStreams: EuiComboBoxOptionOption<CatIndex>[];
-  sources: EuiComboBoxOptionOption<CatIndex>[];
+  indexOptions: EuiComboBoxOptionOption<IndexSelectItem>[];
+  sources: EuiComboBoxOptionOption<IndexSelectItem>[];
   sourceErr: string[];
-  destination: EuiComboBoxOptionOption<CatIndex>[];
+  destination: EuiComboBoxOptionOption<IndexSelectItem>[];
   destError: string | null;
   subset: boolean;
   sourceQuery: string;
@@ -70,7 +68,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     this.state = {
       sources: [],
       indexOptions: [],
-      dataStreams: [],
       destination: [],
       sourceQuery: DEFAULT_QUERY,
       slices: DEFAULT_SLICE,
@@ -86,40 +83,95 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   }
 
   async componentDidMount() {
+    const { indexService } = this.props;
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES, BREADCRUMBS.REINDEX]);
 
     const { source } = queryString.parse(this.props.location.search);
+
+    if (typeof source === "string") {
+      const res = await indexService.getIndices({
+        from: 0,
+        size: 10,
+        search: source,
+        terms: source,
+        sortDirection: "desc",
+        sortField: "index",
+        showDataStreams: false,
+      });
+      if (res && res.ok) {
+        const arr = source.split(",");
+        const selectedSource = res.response.indices
+          .filter((item) => arr.indexOf(item.index) !== -1)
+          .map((item) => ({
+            label: item.index,
+            value: {
+              isIndex: true,
+              status: item.status,
+              health: item.health,
+            },
+          }));
+        await this.onSourceSelection(selectedSource);
+      } else {
+        this.context.notifications.toasts.addDanger(res?.error || "Get index detail error");
+      }
+    }
+
     this.setState({ sources: typeof source === "string" ? source.split(",").map((index) => ({ label: index })) : [] });
   }
 
   getIndexOptions = async (searchValue: string) => {
     const { indexService } = this.props;
-    const { sources } = this.state;
-    const sourceIndexNames = sources.map((op) => op.label);
-    let options: EuiComboBoxOptionOption<CatIndex>[] = [];
+    let options: EuiComboBoxOptionOption<IndexSelectItem>[] = [];
     try {
-      const [res, aliasResponse] = await Promise.all([
-        indexService.getDataStreamsAndIndicesNames(searchValue.trim()),
+      const [indexResponse, dataStreamResponse, aliasResponse] = await Promise.all([
+        indexService.getIndices({
+          from: 0,
+          size: 10,
+          search: searchValue,
+          terms: [searchValue.trim()],
+          sortDirection: "desc",
+          sortField: "index",
+          showDataStreams: false,
+        }),
+        indexService.getDataStreams({ search: searchValue.trim() }),
         indexService.getAliases({ search: searchValue.trim() }),
       ]);
-      if (res.ok) {
-        const dataStreams = res.response.dataStreams.map((label) => ({ label }));
-        const indices = res.response.indices
+      if (indexResponse.ok) {
+        const indices = indexResponse.response.indices
           .filter((index) => {
-            return sourceIndexNames.indexOf(index) === -1 && !index.startsWith(".ds-");
+            return !index.index.startsWith(".ds-");
           })
-          .map((label) => ({ label }));
+          .map((index) => ({
+            label: index.index,
+            disabled: index.status === "close" || index.health === "red",
+            value: { isIndex: true, status: index.status, health: index.health },
+          }));
         options.push({ label: "indices", options: indices });
-        options.push({ label: "dataStreams", options: dataStreams });
       } else {
-        this.context.notifications.toasts.addDanger(res.error);
+        this.context.notifications.toasts.addDanger(indexResponse.error);
+      }
+
+      if (dataStreamResponse && dataStreamResponse.ok) {
+        const dataStreams = dataStreamResponse.response.dataStreams.map((ds) => ({
+          label: ds.name,
+          disabled: ds.status.toLowerCase() === "red",
+          health: ds.status.toLowerCase(),
+          value: { isDataStream: true },
+        }));
+        options.push({ label: "dataStreams", options: dataStreams });
       }
 
       if (aliasResponse && aliasResponse.ok) {
         const aliases = _.uniq(aliasResponse.response.aliases.map((alias) => alias.alias))
           // TODO system alias
           .filter((alias) => !alias.startsWith("."))
-          .map((label) => ({ label }));
+          .map((name) => ({
+            label: name,
+            value: {
+              isAlias: true,
+              indices: aliasResponse.response.aliases.filter((alias) => alias.alias === name).map((alias) => alias.index),
+            },
+          }));
         options.push({ label: "aliases", options: aliases });
       } else {
         this.context.notifications.toasts.addDanger(aliasResponse.error);
@@ -139,21 +191,21 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     if (pipelineRes && pipelineRes.ok) {
       pipelines = _.keys(pipelineRes.response).map((pipeline) => ({ label: pipeline }));
     } else {
-      throw new Error(pipelineRes?.error || "");
+      if (pipelineRes.error.indexOf("Not Found") === -1) {
+        throw new Error(pipelineRes?.error || "");
+      }
     }
     return pipelines;
   };
 
   onClickAction = async () => {
-    const { sourceQuery, destination, dataStreams, slices, selectedPipelines, conflicts, sources } = this.state;
+    const { sourceQuery, destination, slices, selectedPipelines, conflicts, sources } = this.state;
 
-    if (!this.validateDestination(destination) || !this.validateSlices(slices)) {
+    if (!(await this.validateSource(sources)) || !this.validateDestination(destination) || !this.validateSlices(slices)) {
       return;
     }
 
-    const [dest] = destination.map((op) => op.label);
-
-    let isDestAsDataStream = dataStreams.map((ds) => ds.label).indexOf(dest) !== -1;
+    const [isDestAsDataStream] = destination.map((dest) => dest.value?.isDataStream);
 
     try {
       this.setState({ executing: true });
@@ -206,24 +258,41 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   };
 
   // validation
-  validateDestination = (selectedOptions: EuiComboBoxOptionOption<CatIndex>[]): boolean => {
+  validateDestination = (selectedOptions: EuiComboBoxOptionOption<IndexSelectItem>[]): boolean => {
     const { sources } = this.state;
     if (!selectedOptions || selectedOptions.length != 1) {
       this.setState({ destError: REINDEX_ERROR_PROMPT.DEST_REQUIRED });
       return false;
     }
-    const [dest] = selectedOptions.map((op) => op.label);
-    // TODO expand with alias
-    const invalidDest = sources.map((index) => index.label).indexOf(dest) !== -1;
-    if (invalidDest) {
-      this.setState({ destError: REINDEX_ERROR_PROMPT.DEST_DIFF_WITH_SOURCE });
+
+    const [dest] = selectedOptions;
+    if (dest.value?.health === "red") {
+      this.setState({ destError: REINDEX_ERROR_PROMPT.DEST_HEALTH_RED });
+    }
+
+    let expandedSource: string[] = [],
+      expandedDestination: string[] = [];
+    sources.forEach((item) => {
+      expandedSource.push(item.label);
+      item.value?.isAlias && item.value.indices && expandedSource.push(...item.value.indices);
+    });
+
+    selectedOptions.forEach((item) => {
+      expandedDestination.push(item.label);
+      item.value?.isAlias && item.value.indices && expandedDestination.push(...item.value.indices);
+    });
+
+    const duplication = _.intersection(expandedSource, expandedDestination);
+    if (duplication.length > 0) {
+      this.setState({ destError: `index [${duplication.join(",")}] both exists in source and destination` });
       return false;
     }
     return true;
   };
-  validateSource = async (sourceIndices: EuiComboBoxOptionOption<CatIndex>[]) => {
+
+  validateSource = async (sourceIndices: EuiComboBoxOptionOption<IndexSelectItem>[]): Promise<boolean> => {
     if (sourceIndices.length == 0) {
-      return;
+      return true;
     }
 
     const { commonService } = this.props;
@@ -231,7 +300,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     let errors = [];
 
     sourceIndices
-      .filter((item) => item.value?.status.toLowerCase() === "close")
+      .filter((item) => item.value?.status === "close")
       .forEach((item) => {
         errors.push(`Index [${item.label}] status is closed`);
       });
@@ -242,7 +311,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       data: {
         fields: "_source",
         index: sourceIndices
-          .filter((item) => item.value?.status.toLowerCase() !== "close")
+          .filter((item) => item.value?.status !== "close")
           .map((item) => item.label)
           .join(","),
       },
@@ -251,7 +320,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       for (const index of sourceIndices) {
         const sourceEnabled = _.get(res.response, [index.label, "mappings", "_source", "mapping", "_source", "enabled"]);
         if (sourceEnabled === false) {
-          errors.push(`Index [${index}] didn't store _source, it's required by reindex`);
+          errors.push(`Index [${index.label}] _sources is not enabled`);
         }
       }
     } else {
@@ -259,6 +328,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     }
 
     this.setState({ sourceErr: errors });
+    return errors.length === 0;
   };
 
   validateSlices = (slices: string): boolean => {
@@ -275,12 +345,12 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   };
 
   onCreateIndexSuccess = (indexName: string) => {
-    const option: EuiComboBoxOptionOption<CatIndex>[] = [{ label: indexName }];
-    this.setState({ destination: option });
+    const option: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: indexName }];
+    this.setState({ destination: option, showCreateIndexFlyout: false, destError: null });
   };
 
   // onChange
-  onSourceSelection = async (selectedOptions: EuiComboBoxOptionOption<CatIndex>[]) => {
+  onSourceSelection = async (selectedOptions: EuiComboBoxOptionOption<IndexSelectItem>[]) => {
     this.setState({
       sources: selectedOptions,
       sourceErr: [],
@@ -289,7 +359,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     await this.validateSource(selectedOptions);
   };
 
-  onDestinationSelection = (selectedOptions: EuiComboBoxOptionOption<CatIndex>[]) => {
+  onDestinationSelection = (selectedOptions: EuiComboBoxOptionOption<IndexSelectItem>[]) => {
     this.setState({
       destination: selectedOptions,
       destError: null,
@@ -373,6 +443,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
             helpText="Specify one or more indexes or data streams you want to reindex from."
           >
             <IndexSelect
+              data-test-subj="sourceSelector"
               getIndexOptions={this.getIndexOptions}
               onSelectedOptions={this.onSourceSelection}
               singleSelect={false}
@@ -399,6 +470,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                   this.setState({ subset: id === "subset" });
                 }}
                 name="subsetOption"
+                data-test-subj="subsetOption"
                 legend={{
                   children: <span>Specify a reindex option</span>,
                 }}
@@ -438,6 +510,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
             <EuiFlexItem style={{ maxWidth: "400px" }}>
               <CustomFormRow label="Specify destination index or data streams" isInvalid={!!destError} error={destError}>
                 <IndexSelect
+                  data-test-subj="destinationSelector"
                   getIndexOptions={this.getIndexOptions}
                   onSelectedOptions={this.onDestinationSelection}
                   singleSelect={true}

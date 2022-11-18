@@ -24,3 +24,12 @@ export interface ReindexRequest {
 export interface ReindexResponse {
   task: string;
 }
+
+export interface IndexSelectItem {
+  status?: string;
+  health?: string;
+  isIndex?: boolean;
+  isDataStream?: boolean;
+  isAlias?: boolean;
+  indices?: string[];
+}
