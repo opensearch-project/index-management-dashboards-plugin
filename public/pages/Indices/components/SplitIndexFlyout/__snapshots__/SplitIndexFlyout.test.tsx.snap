@@ -318,7 +318,7 @@ HTMLCollection [
                       class="euiSpacer euiSpacer--m"
                     />
                     <div
-                      class="euiAccordion"
+                      class="euiAccordion accordion-in-advanced-settings"
                     >
                       <div
                         class="euiAccordion__triggerWrapper"
@@ -355,9 +355,6 @@ HTMLCollection [
                           <div
                             class=""
                           >
-                            <div
-                              class="euiSpacer euiSpacer--m"
-                            />
                             <div
                               class="euiFormRow"
                               data-test-subj="form-name-advanced-settings"

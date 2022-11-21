@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from "react";
 import { EuiCodeEditor, EuiConfirmModal, EuiCodeEditorProps } from "@elastic/eui";
 
-interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
+export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
   value: string;
   onChange?: (value: JSONEditorProps["value"]) => void;
 }

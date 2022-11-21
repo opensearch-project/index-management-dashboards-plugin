@@ -6,3 +6,4 @@
 import IndexDetail from "./IndexDetail";
 
 export default IndexDetail;
+export * from "./IndexDetail";

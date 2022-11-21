@@ -10,22 +10,22 @@ import { diffArrays } from "diff";
 import flattern from "flat";
 // eui depends on react-ace, so we can import react-ace here
 import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
-import IndexDetail from "../../components/IndexDetail";
+import IndexDetail, { IndexDetailProps, IIndexDetailRef } from "../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
 import { BREADCRUMBS, IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { IIndexDetailRef, IndexDetailProps } from "../../components/IndexDetail/IndexDetail";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
 import { CommonService } from "../../../../services/index";
 import { ServerResponse } from "../../../../../server/models/types";
 import { Modal } from "../../../../components/Modal";
 
-export interface IndexFormProps {
+export interface IndexFormProps extends Pick<IndexDetailProps, "readonly"> {
   index?: string;
   mode?: IndicesUpdateMode;
   commonService: CommonService;
   onCancel?: () => void;
   onSubmitSuccess?: () => void;
+  hideButtons?: boolean;
 }
 
 interface CreateIndexState {
@@ -68,30 +68,34 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     return this.props.mode;
   }
 
+  refreshIndex = async () => {
+    const response: ServerResponse<Record<string, IndexItemRemote>> = await this.commonService.apiCaller({
+      endpoint: "indices.get",
+      data: {
+        index: this.index,
+        flat_settings: true,
+      },
+    });
+    if (response.ok) {
+      const payload = {
+        ...response.response[this.index || ""],
+        index: this.index,
+      };
+      set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
+
+      this.setState({
+        indexDetail: payload as IndexItem,
+        oldIndexDetail: JSON.parse(JSON.stringify(payload)),
+      });
+    } else {
+      this.context.notifications.toasts.addDanger(response.error);
+    }
+  };
+
   componentDidMount = async (): Promise<void> => {
     const isEdit = this.isEdit;
     if (isEdit) {
-      const response: ServerResponse<Record<string, IndexItemRemote>> = await this.commonService.apiCaller({
-        endpoint: "indices.get",
-        data: {
-          index: this.index,
-          flat_settings: true,
-        },
-      });
-      if (response.ok) {
-        const payload = {
-          ...response.response[this.index || ""],
-          index: this.index,
-        };
-        set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
-
-        this.setState({
-          indexDetail: payload as IndexItem,
-          oldIndexDetail: JSON.parse(JSON.stringify(payload)),
-        });
-      } else {
-        this.context.notifications.toasts.addDanger(response.error);
-      }
+      this.refreshIndex();
     }
     this.context.chrome.setBreadcrumbs([
       BREADCRUMBS.INDEX_MANAGEMENT,
@@ -333,11 +337,6 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     this.setState({ isSubmitting: true });
     let result: ServerResponse<any>;
     if (this.isEdit) {
-      const diffConfirm = await this.showDiff();
-      if (!diffConfirm.ok) {
-        this.setState({ isSubmitting: false });
-        return;
-      }
       let chainedPromises: Promise<ServerResponse<any>>[] = [];
       if (!mode) {
         chainedPromises.push(...[this.updateMappings(), this.updateAlias(), this.updateSettings()]);
@@ -410,11 +409,13 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
 
   render() {
     const isEdit = this.isEdit;
+    const { hideButtons, readonly } = this.props;
     const { indexDetail, isSubmitting, oldIndexDetail } = this.state;
 
     return (
       <>
         <IndexDetail
+          readonly={readonly}
           mode={this.mode}
           ref={(ref) => (this.indexDetailRef = ref)}
           isEdit={this.isEdit}
@@ -434,20 +435,24 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
             })
           }
         />
-        <EuiSpacer />
-        <EuiSpacer />
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-          <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="createIndexCancelButton">
-              Cancel
-            </EuiButtonEmpty>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createIndexCreateButton">
-              {isEdit ? "Update" : "Create"}
-            </EuiButton>
-          </EuiFlexItem>
-        </EuiFlexGroup>
+        {hideButtons ? null : (
+          <>
+            <EuiSpacer />
+            <EuiSpacer />
+            <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+              <EuiFlexItem grow={false}>
+                <EuiButtonEmpty onClick={this.onCancel} data-test-subj="createIndexCancelButton">
+                  Cancel
+                </EuiButtonEmpty>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createIndexCreateButton">
+                  {isEdit ? "Update" : "Create"}
+                </EuiButton>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </>
+        )}
       </>
     );
   }

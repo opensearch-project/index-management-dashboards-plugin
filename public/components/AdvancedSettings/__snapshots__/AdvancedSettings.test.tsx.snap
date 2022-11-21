@@ -7,7 +7,7 @@ HTMLCollection [
       class="euiSpacer euiSpacer--m"
     />
     <div
-      class="euiAccordion"
+      class="euiAccordion accordion-in-advanced-settings"
     >
       <div
         class="euiAccordion__triggerWrapper"
@@ -40,9 +40,6 @@ HTMLCollection [
           <div
             class=""
           >
-            <div
-              class="euiSpacer euiSpacer--m"
-            />
             <div
               class="euiFormRow"
               id="some_html_id-row"

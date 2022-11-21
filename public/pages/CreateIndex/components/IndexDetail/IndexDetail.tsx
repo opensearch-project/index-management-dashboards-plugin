@@ -18,6 +18,7 @@ import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
+import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 
 const indexNameEmptyTips = "Please fill in the index name before editing other fields";
 const staticSettingsTips = "This field can not be modified in edit mode";
@@ -30,6 +31,8 @@ export interface IndexDetailProps {
   oldValue?: Partial<IndexItem>;
   onChange: (value: IndexDetailProps["value"]) => void;
   isEdit?: boolean;
+  readonly?: boolean;
+  withoutPanel?: boolean;
   refreshOptions: AliasSelectProps["refreshOptions"];
   mode?: IndicesUpdateMode;
   onSimulateIndexTemplate?: (indexName: string) => Promise<ServerResponse<IndexItemRemote>>;
@@ -39,8 +42,14 @@ export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
 }
 
+const getOrderedJson = (json: Record<string, any>) => {
+  const entries = Object.entries(json);
+  entries.sort((a, b) => (a[0] < b[0] ? -1 : 1));
+  return entries.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
+};
+
 const IndexDetail = (
-  { value, onChange, isEdit, oldValue, refreshOptions, mode, onSimulateIndexTemplate }: IndexDetailProps,
+  { value, onChange, isEdit, readonly, oldValue, refreshOptions, mode, onSimulateIndexTemplate, withoutPanel }: IndexDetailProps,
   ref: Ref<IIndexDetailRef>
 ) => {
   const hasEdit = useRef(false);
@@ -146,16 +155,19 @@ const IndexDetail = (
           ],
           props: {
             placeholder: "The number of primary shards in the index. Default is 1.",
-            disabledReason: [
-              {
-                visible: !finalValue.index,
-                message: indexNameEmptyTips,
-              },
-              {
-                visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards"),
-                message: staticSettingsTips,
-              },
-            ],
+            disabled: readonly,
+            disabledReason: readonly
+              ? []
+              : [
+                  {
+                    visible: !finalValue.index,
+                    message: indexNameEmptyTips,
+                  },
+                  {
+                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards"),
+                    message: staticSettingsTips,
+                  },
+                ],
           },
         },
       },
@@ -173,17 +185,20 @@ const IndexDetail = (
             },
           ],
           props: {
+            disabled: readonly,
             placeholder: "The number of replica shards each primary shard should have.",
-            disabledReason: [
-              {
-                visible: !finalValue.index,
-                message: indexNameEmptyTips,
-              },
-              {
-                visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas"),
-                message: staticSettingsTips,
-              },
-            ],
+            disabledReason: readonly
+              ? []
+              : [
+                  {
+                    visible: !finalValue.index,
+                    message: indexNameEmptyTips,
+                  },
+                  {
+                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas"),
+                    message: staticSettingsTips,
+                  },
+                ],
           },
         },
       },
@@ -197,16 +212,19 @@ const IndexDetail = (
         options: {
           props: {
             placeholder: "Can be set to -1 to disable refreshing.",
-            disabledReason: [
-              {
-                visible: !finalValue.index,
-                message: indexNameEmptyTips,
-              },
-              {
-                visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval"),
-                message: staticSettingsTips,
-              },
-            ],
+            disabled: readonly,
+            disabledReason: readonly
+              ? []
+              : [
+                  {
+                    visible: !finalValue.index,
+                    message: indexNameEmptyTips,
+                  },
+                  {
+                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval"),
+                    message: staticSettingsTips,
+                  },
+                ],
           },
         },
       },
@@ -214,10 +232,10 @@ const IndexDetail = (
   }, [isEdit, finalValue.index, templateSimulateLoading]);
   return (
     <>
-      {isEdit && mode && mode !== IndicesUpdateMode.alias ? null : (
-        <>
-          <ContentPanel title="Define index" titleSize="s">
-            <div style={{ paddingLeft: "10px" }}>
+      {isEdit && mode && mode !== IndicesUpdateMode.alias
+        ? null
+        : (() => {
+            const content = (
               <FormGenerator
                 ref={aliasesRef}
                 formFields={[
@@ -235,8 +253,8 @@ const IndexDetail = (
                         placeholder: "Please enter the name for your index",
                         onBlur: onIndexInputBlur,
                         isLoading: templateSimulateLoading,
-                        disabled: isEdit || templateSimulateLoading,
-                        disabledReason: "Index name can not be modified",
+                        disabled: readonly || isEdit || templateSimulateLoading,
+                        disabledReason: readonly ? "" : "Index name can not be modified",
                       },
                       rules: [
                         {
@@ -255,8 +273,15 @@ const IndexDetail = (
                     options: {
                       props: {
                         refreshOptions: refreshOptions,
-                        isDisabled: !finalValue.index,
-                        disabledReason: indexNameEmptyTips,
+                        isDisabled: readonly,
+                        disabledReason: readonly
+                          ? []
+                          : [
+                              {
+                                visible: !finalValue.index,
+                                message: indexNameEmptyTips,
+                              },
+                            ],
                       },
                     },
                     component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
@@ -270,15 +295,23 @@ const IndexDetail = (
                   onValueChange(name as string, val);
                 }}
               />
-            </div>
-          </ContentPanel>
-          <EuiSpacer />
-        </>
-      )}
-      {isEdit && mode && mode !== IndicesUpdateMode.settings ? null : (
-        <>
-          <ContentPanel title="Index settings" titleSize="s">
-            <div style={{ paddingLeft: "10px" }}>
+            );
+            if (mode && mode === IndicesUpdateMode.alias) {
+              return content;
+            }
+            return (
+              <>
+                <ContentPanel title="Define index" titleSize="s">
+                  <div style={{ paddingLeft: "10px" }}>{content}</div>
+                </ContentPanel>
+                <EuiSpacer />
+              </>
+            );
+          })()}
+      {isEdit && mode && mode !== IndicesUpdateMode.settings
+        ? null
+        : (() => {
+            const content = (
               <FormGenerator
                 ref={settingsRef}
                 value={{ ...finalValue.settings }}
@@ -292,6 +325,19 @@ const IndexDetail = (
                 formFields={formFields}
                 hasAdvancedSettings
                 advancedSettingsProps={{
+                  editorProps: {
+                    readOnly: readonly,
+                  },
+                  renderProps: readonly
+                    ? undefined
+                    : ({ value, onChange }) => (
+                        <JSONDiffEditor
+                          disabled={readonly}
+                          original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
+                          value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
+                          onChange={(val) => onChange(JSON.parse(val))}
+                        />
+                      ),
                   accordionProps: {
                     initialIsOpen: false,
                     id: "accordion_for_create_index_settings",
@@ -299,6 +345,9 @@ const IndexDetail = (
                   },
                   rowProps: {
                     label: "Specify advanced index settings",
+                    style: {
+                      maxWidth: "800px",
+                    },
                     helpText: (
                       <>
                         Specify a comma-delimited list of settings.
@@ -313,26 +362,46 @@ const IndexDetail = (
                   },
                 }}
               />
-            </div>
-          </ContentPanel>
-          <EuiSpacer />
-        </>
-      )}
-      {isEdit && mode && mode !== IndicesUpdateMode.mappings ? null : (
-        <ContentPanel title="Index mappings - optional" titleSize="s">
-          <div style={{ paddingLeft: "10px" }}>
-            <EuiFormRow fullWidth>
-              <IndexMapping
-                isEdit={isEdit}
-                value={finalValue?.mappings?.properties}
-                oldValue={oldValue?.mappings?.properties}
-                onChange={(val) => onValueChange("mappings.properties", val)}
-                ref={mappingsRef}
-              />
-            </EuiFormRow>
-          </div>
-        </ContentPanel>
-      )}
+            );
+            if (mode && mode === IndicesUpdateMode.settings) {
+              return content;
+            }
+
+            return (
+              <>
+                <ContentPanel title="Index settings" titleSize="s">
+                  <div style={{ paddingLeft: "10px" }}>{content}</div>
+                </ContentPanel>
+                <EuiSpacer />
+              </>
+            );
+          })()}
+      {isEdit && mode && mode !== IndicesUpdateMode.mappings
+        ? null
+        : (() => {
+            const content = (
+              <EuiFormRow fullWidth>
+                <IndexMapping
+                  isEdit={isEdit}
+                  value={finalValue?.mappings?.properties}
+                  oldValue={oldValue?.mappings?.properties}
+                  onChange={(val) => onValueChange("mappings.properties", val)}
+                  ref={mappingsRef}
+                  readonly={readonly}
+                />
+              </EuiFormRow>
+            );
+
+            if (mode && mode === IndicesUpdateMode.mappings) {
+              return content;
+            }
+
+            return (
+              <ContentPanel title="Index mappings - optional" titleSize="s">
+                <div style={{ paddingLeft: "10px" }}>{content}</div>
+              </ContentPanel>
+            );
+          })()}
       {templateSimulateLoading ? (
         <EuiOverlayMask headerZindexLocation="below">
           <EuiLoadingSpinner size="l" />
