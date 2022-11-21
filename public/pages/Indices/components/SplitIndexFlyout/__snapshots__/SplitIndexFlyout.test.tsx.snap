@@ -254,9 +254,7 @@ HTMLCollection [
                             >
                               <input
                                 class="euiFieldText"
-                                data-meta="Field"
                                 data-test-subj="Target Index Name"
-                                id="targetIndex"
                                 type="text"
                                 value=""
                               />
@@ -301,9 +299,7 @@ HTMLCollection [
                             >
                               <input
                                 class="euiFieldNumber"
-                                data-meta="Field"
                                 data-test-subj="Number of shards"
-                                id="index.number_of_shards"
                                 min="NaN"
                                 step="NaN"
                                 type="number"

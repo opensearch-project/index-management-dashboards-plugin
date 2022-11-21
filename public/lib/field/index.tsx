@@ -68,7 +68,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
             errorInfo = result;
           }
         } catch (e) {
-          errorInfo = e;
+          errorInfo = e || item.message;
         }
 
         return errorInfo;
@@ -120,7 +120,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
         errors: resultArray.length
           ? resultArray.reduce((total, current) => ({ ...total, ...current }), {} as Record<string, string[]>)
           : null,
-        values,
+        values: values.current,
       };
     },
     setError,
