@@ -124,26 +124,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
     setCloseIndexModalVisible(false);
   };
 
-  const updateIndexSettings = async (indexName: string, indexSettings: {}): Promise<void> => {
-    const errorMessage = `There is a problem updating index settings for [${indexName}], please check with Admin`;
-    try {
-      const result = await services.commonService.apiCaller({
-        endpoint: "indices.putSettings",
-        data: {
-          index: indexName,
-          body: indexSettings,
-        },
-      });
-      if (result && result.ok) {
-        coreServices.notifications.toasts.addSuccess("Update index settings for [" + indexName + "] successfully");
-      } else {
-        coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
-      }
-    } catch (err) {
-      coreServices.notifications.toasts.addDanger(getErrorMessage(err, errorMessage));
-    }
-  };
-
   const onCloseIndexModalConfirm = useCallback(async () => {
     try {
       const indexPayload = selectedItems.map((item) => item.index).join(",");
@@ -373,7 +353,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onClose={onShrinkIndexFlyoutClose}
           onConfirm={onShrinkIndexFlyoutConfirm}
           getIndexSettings={getIndexSettings}
-          updateIndexSettings={updateIndexSettings}
+          setIndexSettings={setIndexSettings}
         />
       )}
 

@@ -62,7 +62,7 @@ describe("<ShrinkIndexFlyout /> spec", () => {
 
   it("shows error when source index cannot shrink", async () => {
     const onClose = jest.fn();
-    const updateIndexSettings = jest.fn();
+    const setIndexSettings = jest.fn();
     const { getByTestId, queryByText } = render(
       <ShrinkIndexFlyout
         sourceIndex={{
@@ -78,7 +78,7 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         getIndexSettings={async () => {
           return {};
         }}
-        updateIndexSettings={updateIndexSettings}
+        setIndexSettings={setIndexSettings}
       />
     );
 
@@ -86,7 +86,7 @@ describe("<ShrinkIndexFlyout /> spec", () => {
       expect(queryByText("The source index cannot shrink, due to the following reasons:")).not.toBeNull();
       expect(queryByText("The source index's write operations must be blocked.")).not.toBeNull();
       fireEvent.click(getByTestId("onSetIndexWriteBlockButton"));
-      expect(updateIndexSettings).toHaveBeenCalled();
+      expect(setIndexSettings).toHaveBeenCalled();
     });
   });
 

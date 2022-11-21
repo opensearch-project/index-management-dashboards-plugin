@@ -38,7 +38,7 @@ interface ShrinkIndexProps {
   onClose: () => void;
   onConfirm: (sourceIndexName: string, targetIndexName: string, indexSettings: {}) => void;
   getIndexSettings: (indexName: string, flat: boolean) => Promise<Object>;
-  updateIndexSettings: (sourceIndex: string, indexSettings: {}) => Promise<void>;
+  setIndexSettings: (indexName: string, flat: boolean, setting: {}) => void;
 }
 
 interface ShrinkIndexState {
@@ -82,8 +82,8 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
   };
 
   onUpdateIndexSettings = async (indexName: string, settings: {}) => {
-    const { updateIndexSettings, getIndexSettings } = this.props;
-    await updateIndexSettings(indexName, settings);
+    const { setIndexSettings, getIndexSettings } = this.props;
+    await setIndexSettings(indexName, true, settings);
 
     const indexSettings = await getIndexSettings(indexName, true);
     this.setState({
