@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IndexControls /> spec renders the component 1`] = `
+<div
+  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+  style="padding: 0px 5px;"
+>
+  <div
+    class="euiFlexItem"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+    >
+      <div
+        class="euiFlexItem euiSearchBar__searchHolder"
+      >
+        <div
+          class="euiFormControlLayout euiFormControlLayout--fullWidth"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <input
+              aria-label="This is a search bar. After typing your query, hit enter to filter the results lower in the page."
+              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+              placeholder="Search..."
+              type="search"
+              value="testing"
+            />
+            <div
+              class="euiFormControlLayoutIcons"
+            >
+              <span
+                class="euiFormControlLayoutCustomIcon"
+              >
+                EuiIconMock
+              </span>
+            </div>
+            <div
+              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+            >
+              <button
+                aria-label="Clear input"
+                class="euiFormControlLayoutClearButton"
+                type="button"
+              >
+                EuiIconMock
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

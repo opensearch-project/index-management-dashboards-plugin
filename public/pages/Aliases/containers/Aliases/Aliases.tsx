@@ -7,7 +7,16 @@ import React, { Component, useContext } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
-import { EuiBasicTable, Criteria, EuiTableSortingType, Direction, Pagination, EuiTableSelectionType, Query } from "@elastic/eui";
+import {
+  EuiHorizontalRule,
+  EuiBasicTable,
+  Criteria,
+  EuiTableSortingType,
+  Direction,
+  Pagination,
+  EuiTableSelectionType,
+  Query,
+} from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
@@ -16,6 +25,7 @@ import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
+import IndexControls from "../../components/IndexControls";
 
 interface AliasesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -81,14 +91,6 @@ class Aliases extends Component<AliasesProps, AliasesState> {
     }, {} as AliasesState);
   };
 
-  async componentDidUpdate(prevProps: AliasesProps, prevState: AliasesState) {
-    const prevQuery = this.getQueryState(prevState);
-    const currQuery = this.getQueryState(this.state);
-    if (!_.isEqual(prevQuery, currQuery)) {
-      this.getAliases();
-    }
-  }
-
   getAliases = async (): Promise<void> => {
     this.setState({ loading: true });
     try {
@@ -102,9 +104,6 @@ class Aliases extends Component<AliasesProps, AliasesState> {
         data: {
           format: "json",
         },
-        // data: {
-        //   ...queryObject,
-        // }
       });
 
       if (getIndicesResponse.ok) {
@@ -151,6 +150,11 @@ class Aliases extends Component<AliasesProps, AliasesState> {
     this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
 
+  onSearchChange = ({ query }: { query: string }): void => {
+    this.setState({ from: "0", search: query });
+    this.getAliases();
+  };
+
   render() {
     const { totalAliases, from, size, sortField, sortDirection, aliases } = this.state;
 
@@ -191,6 +195,9 @@ class Aliases extends Component<AliasesProps, AliasesState> {
         bodyStyles={{ padding: "initial" }}
         title="Aliases"
       >
+        <IndexControls search={this.state.search} onSearchChange={this.onSearchChange} />
+        <EuiHorizontalRule margin="xs" />
+
         <EuiBasicTable
           columns={[
             {
