@@ -55,6 +55,7 @@ export const ROUTES = Object.freeze({
   EDIT_REPOSITORY: "/edit-repository",
   CREATE_INDEX: "/create-index",
   REINDEX: "/reindex",
+  ALIASES: "/aliases",
 });
 
 export const BREADCRUMBS = Object.freeze({

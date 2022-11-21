@@ -35,6 +35,7 @@ import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
 import CreateIndex from "../CreateIndex";
 import Reindex from "../Reindex/container/Reindex";
+import Aliases from "../Aliases";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -47,6 +48,7 @@ enum Navigation {
   Snapshots = "Snapshots",
   SnapshotPolicies = "Snapshot Policies",
   Repositories = "Repositories",
+  Aliases = "Alias Management",
 }
 
 enum Pathname {
@@ -75,6 +77,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.CREATE_SNAPSHOT_POLICY,
   ROUTES.EDIT_SNAPSHOT_POLICY,
   ROUTES.REINDEX,
+  ROUTES.CREATE_INDEX,
 ];
 
 interface MainProps extends RouteComponentProps {
@@ -103,6 +106,12 @@ export default class Main extends Component<MainProps, object> {
             id: 2,
             href: `#${Pathname.ManagedIndices}`,
             isSelected: pathname === Pathname.ManagedIndices,
+          },
+          {
+            name: Navigation.Aliases,
+            id: 6,
+            href: `#${ROUTES.ALIASES}`,
+            isSelected: ROUTES.ALIASES === pathname,
           },
           {
             name: Navigation.Indices,
@@ -405,6 +414,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.ALIASES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Aliases {...props} />
                               </div>
                             )}
                           />
