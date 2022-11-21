@@ -220,7 +220,6 @@ HTMLCollection [
                 />
                 <div
                   style="padding: 0px 10px;"
-                  class="euiAccordion accordion-in-advanced-settings"
                 >
                   <div
                     class="euiForm"
@@ -233,10 +232,19 @@ HTMLCollection [
                       <div
                         class="euiFormRow__labelWrapper"
                       >
-                        <div
-                          class="euiFormRow"
-                          data-test-subj="form-name-advanced-settings"
-                          id="some_html_id-row"
+                        <label
+                          aria-invalid="false"
+                          class="euiFormLabel euiFormRow__label"
+                          for="some_html_id"
+                        >
+                          Target Index Name
+                        </label>
+                      </div>
+                      <div
+                        class="euiFormRow__fieldWrapper"
+                      >
+                        <span
+                          class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                         >
                           <div
                             class="euiFormControlLayout"
@@ -310,7 +318,7 @@ HTMLCollection [
                       class="euiSpacer euiSpacer--m"
                     />
                     <div
-                      class="euiAccordion"
+                      class="euiAccordion accordion-in-advanced-settings"
                     >
                       <div
                         class="euiAccordion__triggerWrapper"
@@ -347,9 +355,6 @@ HTMLCollection [
                           <div
                             class=""
                           >
-                            <div
-                              class="euiSpacer euiSpacer--m"
-                            />
                             <div
                               class="euiFormRow"
                               data-test-subj="form-name-advanced-settings"
