@@ -145,7 +145,7 @@ describe("<IndicesActions /> spec", () => {
 
   it("shrink index by calling commonService", async () => {
     const onShrink = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn(
+    browserServicesMock.commonService.apiCaller = jest.setTimeout(20000).fn(
       async (payload): Promise<any> => {
         switch (payload.endpoint) {
           case "cat.indices":
