@@ -39,6 +39,7 @@
     "glob-parent": "^5.1.2",
     "ssri": "^6.0.2",
     "lodash": "^4.17.21",
+    "loader-utils": "^1.4.1",
     "hosted-git-info": "^2.8.9",
     "json-schema": "^0.4.0",
     "ansi-regex": "^5.0.1",
