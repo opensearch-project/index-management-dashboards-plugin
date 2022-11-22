@@ -16,15 +16,18 @@ import {
   Pagination,
   EuiTableSelectionType,
   EuiButtonEmpty,
+  EuiButton,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
 import { IAlias } from "../../interface";
-import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls from "../../components/IndexControls";
+import CreateAlias from "../CreateAlias";
+import AliasesActions from "../AliasActions";
 
 interface AliasesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -40,6 +43,7 @@ interface AliasesState {
   selectedItems: IAlias[];
   aliases: IAlias[];
   loading: boolean;
+  aliasCreateFlyoutVisible: boolean;
 }
 
 function IndexNameDisplay(props: { indices: string[] }) {
@@ -83,6 +87,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       selectedItems: [],
       aliases: [],
       loading: false,
+      aliasCreateFlyoutVisible: false,
     };
 
     this.getAliases = _.debounce(this.getAliases, 500, { leading: true });
@@ -204,11 +209,17 @@ class Aliases extends Component<AliasesProps, AliasesState> {
           <ContentPanelActions
             actions={[
               {
+                text: "",
+                children: <AliasesActions selectedItems={this.state.selectedItems} onDelete={this.getAliases} />,
+              },
+              {
                 text: "Create Alias",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_INDEX);
+                    this.setState({
+                      aliasCreateFlyoutVisible: true,
+                    });
                   },
                 },
               },
@@ -243,6 +254,37 @@ class Aliases extends Component<AliasesProps, AliasesState> {
           pagination={pagination}
           selection={selection}
           sorting={sorting}
+          noItemsMessage={
+            <div
+              style={{
+                textAlign: "center",
+              }}
+            >
+              <h4>You have no aliases.</h4>
+              <EuiButton
+                fill
+                color="primary"
+                style={{
+                  marginTop: 20,
+                }}
+                onClick={() => {
+                  this.setState({
+                    aliasCreateFlyoutVisible: true,
+                  });
+                }}
+              >
+                Create alias
+              </EuiButton>
+            </div>
+          }
+        />
+        <CreateAlias
+          visible={this.state.aliasCreateFlyoutVisible}
+          onSuccess={() => {
+            this.getAliases();
+            this.setState({ aliasCreateFlyoutVisible: false });
+          }}
+          onClose={() => this.setState({ aliasCreateFlyoutVisible: false })}
         />
       </ContentPanel>
     );

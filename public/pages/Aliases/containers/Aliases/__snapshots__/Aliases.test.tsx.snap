@@ -33,6 +33,34 @@ exports[`<Indices /> spec renders the component 1`] = `
             <div
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
+              <div
+                class="euiPopover euiPopover--anchorDownCenter"
+                data-test-subj="More Action"
+              >
+                <div
+                  class="euiPopover__anchor"
+                >
+                  <button
+                    class="euiButton euiButton--primary"
+                    type="button"
+                  >
+                    <span
+                      class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+                    >
+                      EuiIconMock
+                      <span
+                        class="euiButton__text"
+                      >
+                        Actions
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
               <button
                 class="euiButton euiButton--primary euiButton--fill"
                 data-test-subj="Create AliasButton"
@@ -264,7 +292,28 @@ exports[`<Indices /> spec renders the component 1`] = `
                   <span
                     class="euiTableCellContent__text"
                   >
-                    No items found
+                    <div
+                      style="text-align: center;"
+                    >
+                      <h4>
+                        You have no aliases.
+                      </h4>
+                      <button
+                        class="euiButton euiButton--primary euiButton--fill"
+                        style="margin-top: 20px;"
+                        type="button"
+                      >
+                        <span
+                          class="euiButtonContent euiButton__content"
+                        >
+                          <span
+                            class="euiButton__text"
+                          >
+                            Create alias
+                          </span>
+                        </span>
+                      </button>
+                    </div>
                   </span>
                 </div>
               </td>

@@ -18,11 +18,6 @@ exports[`<AliasSelect /> spec renders the component 1`] = `
         data-test-subj="comboBoxInput"
         tabindex="-1"
       >
-        <p
-          class="euiComboBoxPlaceholder"
-        >
-          Select or create aliases
-        </p>
         <div
           class="euiComboBox__input"
           style="font-size: 14px; display: inline-block;"
@@ -77,11 +72,6 @@ exports[`<AliasSelect /> spec renders with error 1`] = `
         data-test-subj="comboBoxInput"
         tabindex="-1"
       >
-        <p
-          class="euiComboBoxPlaceholder"
-        >
-          Select or create aliases
-        </p>
         <div
           class="euiComboBox__input"
           style="font-size: 14px; display: inline-block;"

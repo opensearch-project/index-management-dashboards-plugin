@@ -67,7 +67,7 @@ export type Rule = {
   /**
    * Custom verification, (don't forget to execute callback() when the verification is successful, otherwise the verification will not return)
    */
-  validator?: (rule: Rule, value: string | number | object | boolean | Date | null) => string | Promise<string>;
+  validator?: (rule: Rule, value: string | number | object | boolean | Date | null | any) => string | Promise<string>;
 
   /**
    * The name of the event that triggered the validation

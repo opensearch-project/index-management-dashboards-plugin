@@ -12,7 +12,7 @@ import { ServerResponse } from "../../../server/models/types";
 export interface RemoteSelectProps extends Omit<EuiComboBoxProps<{ label: string }>, "value" | "onChange"> {
   value?: string[];
   onChange?: (value: Required<RemoteSelectProps>["value"]) => void;
-  refreshOptions: (params: { searchValue: string }) => Promise<ServerResponse<{ label: string }[]>>;
+  refreshOptions: (params: { searchValue?: string }) => Promise<ServerResponse<{ label: string }[]>>;
 }
 
 const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLInputElement>) => {
@@ -42,7 +42,7 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
   );
   const refreshOptions = useCallback(debounce(refreshOptionsWithoutDebounce, 500), [refreshOptionsWithoutDebounce]);
   useEffect(() => {
-    refreshOptionsWithoutDebounce({});
+    refreshOptionsWithoutDebounce({ searchValue: "" });
     return () => {
       destroyRef.current = true;
     };
@@ -66,10 +66,9 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
   };
   return (
     <EuiComboBox
-      placeholder="Select or create aliases"
-      customOptionText={"Add {searchValue} as a new alias"}
-      async
+      onCreateOption={onCreateOption}
       {...others}
+      async
       inputRef={ref as (instance: HTMLInputElement | null) => void}
       selectedOptions={value?.map((item) => ({ label: item }))}
       onChange={(value) => {
@@ -81,7 +80,6 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
         setIsLoading(true);
         refreshOptions({ searchValue });
       }}
-      onCreateOption={onCreateOption}
     />
   );
 });
