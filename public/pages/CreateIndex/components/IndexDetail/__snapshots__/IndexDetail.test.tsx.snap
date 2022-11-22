@@ -67,8 +67,6 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                 >
                   <input
                     class="euiFieldText"
-                    data-meta="Field"
-                    id="index"
                     placeholder="Please enter the name for your index"
                     type="text"
                     value=""
@@ -110,7 +108,6 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                 aria-expanded="false"
                 aria-haspopup="listbox"
                 class="euiComboBox euiComboBox-isDisabled"
-                data-meta="Field"
                 role="combobox"
               >
                 <div
@@ -137,7 +134,6 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                           aria-controls=""
                           data-test-subj="comboBoxSearchInput"
                           disabled=""
-                          id="aliases"
                           role="textbox"
                           style="box-sizing: content-box; width: 2px;"
                           value=""

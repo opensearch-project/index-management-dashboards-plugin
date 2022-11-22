@@ -36,8 +36,6 @@ HTMLCollection [
               >
                 <input
                   class="euiFieldText"
-                  data-meta="Field"
-                  id="test"
                   type="text"
                   value=""
                 />
@@ -100,8 +98,6 @@ HTMLCollection [
               >
                 <input
                   class="euiFieldText"
-                  data-meta="Field"
-                  id="test_component_2"
                   type="text"
                   value=""
                 />
