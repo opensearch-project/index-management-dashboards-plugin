@@ -81,7 +81,7 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     }
 
     this.context.notifications.toasts.addDanger(response.error);
-    throw new Error(response.error);
+    return new Promise(() => {});
   };
 
   refreshIndex = async () => {
