@@ -17,9 +17,10 @@ interface CreateIndexFlyoutProps extends IndexFormProps {
 export default class CreateIndexFlyout extends React.Component<CreateIndexFlyoutProps> {
   static contextType = CoreServicesContext;
 
+  createIndexRef: CreateIndex | null = null;
+
   render() {
     const { onCloseFlyout } = this.props;
-    const createIndexRef = React.createRef<CreateIndex>();
     return (
       <EuiFlyout onClose={() => {}} hideCloseButton>
         <EuiFlyoutHeader hasBorder>
@@ -29,11 +30,17 @@ export default class CreateIndexFlyout extends React.Component<CreateIndexFlyout
         </EuiFlyoutHeader>
 
         <EuiFlyoutBody>
-          <CreateIndex ref={createIndexRef} hideButtons={true} {...this.props} />
+          <CreateIndex ref={(ref) => (this.createIndexRef = ref)} hideButtons={true} {...this.props} />
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
-          <FlyoutFooter action="" text="Create" edit={false} onClickCancel={onCloseFlyout} onClickAction={() => {}} />
+          <FlyoutFooter
+            action=""
+            text="Create"
+            edit={false}
+            onClickCancel={onCloseFlyout}
+            onClickAction={() => this.createIndexRef?.onSubmit()}
+          />
         </EuiFlyoutFooter>
       </EuiFlyout>
     );
