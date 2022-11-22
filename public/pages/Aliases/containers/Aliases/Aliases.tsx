@@ -36,7 +36,6 @@ interface AliasesState {
   from: string;
   size: string;
   search: string;
-  query: Query;
   sortField: keyof IAlias;
   sortDirection: Direction;
   selectedItems: IAlias[];
@@ -66,7 +65,6 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       from,
       size,
       search,
-      query: Query.parse(search),
       sortField,
       sortDirection,
       selectedItems: [],
@@ -103,6 +101,8 @@ class Aliases extends Component<AliasesProps, AliasesState> {
         endpoint: "cat.aliases",
         data: {
           format: "json",
+          name: queryObject.search,
+          s: `${queryObject.sortField}:${queryObject.sortDirection}`,
         },
       });
 
@@ -134,25 +134,23 @@ class Aliases extends Component<AliasesProps, AliasesState> {
   onTableChange = ({ page: tablePage, sort }: Criteria<IAlias>): void => {
     const { index: page, size } = tablePage || {};
     const { field: sortField, direction: sortDirection } = sort || {};
-    this.setState({
-      from: "" + page,
-      size: "" + size,
-      sortField: sortField || DEFAULT_QUERY_PARAMS.sortField,
-      sortDirection: sortDirection as Direction,
-    });
+    this.setState(
+      {
+        from: "" + page,
+        size: "" + size,
+        sortField: sortField || DEFAULT_QUERY_PARAMS.sortField,
+        sortDirection: sortDirection as Direction,
+      },
+      () => this.getAliases()
+    );
   };
 
   onSelectionChange = (selectedItems: IAlias[]): void => {
     this.setState({ selectedItems });
   };
 
-  resetFilters = (): void => {
-    this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
-  };
-
   onSearchChange = ({ query }: { query: string }): void => {
-    this.setState({ from: "0", search: query });
-    this.getAliases();
+    this.setState({ from: "0", search: query }, () => this.getAliases());
   };
 
   render() {
