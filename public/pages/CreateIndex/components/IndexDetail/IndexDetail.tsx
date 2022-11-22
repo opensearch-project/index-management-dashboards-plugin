@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner } from "@elastic/eui";
 import { set, merge } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -64,6 +64,7 @@ const IndexDetail = (
     },
     [onChange, value]
   );
+  const destroyRef = useRef<boolean>(false);
   const [templateSimulateLoading, setTemplateSimulateLoading] = useState(false);
   const finalValue = value || {};
   const aliasesRef = useRef<IFormGeneratorRef>(null);
@@ -89,9 +90,16 @@ const IndexDetail = (
     },
   }));
   const onIndexInputBlur = useCallback(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    if (destroyRef.current) {
+      return;
+    }
     if (finalValue.index && onSimulateIndexTemplate) {
       setTemplateSimulateLoading(true);
       const result = await onSimulateIndexTemplate(finalValue.index);
+      if (destroyRef.current) {
+        return;
+      }
       setTemplateSimulateLoading(false);
       if (result && result.ok) {
         let onChangePromise: Promise<IndexItemRemote>;
@@ -230,6 +238,11 @@ const IndexDetail = (
       },
     ] as IField[];
   }, [isEdit, finalValue.index, templateSimulateLoading]);
+  useEffect(() => {
+    return () => {
+      destroyRef.current = true;
+    };
+  }, []);
   return (
     <>
       {isEdit && mode && mode !== IndicesUpdateMode.alias
