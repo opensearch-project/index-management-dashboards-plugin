@@ -232,29 +232,21 @@ exports[`<Indices /> spec renders the component 1`] = `
                 </button>
               </th>
               <th
-                aria-live="polite"
-                aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_index_1"
+                data-test-subj="tableHeaderCell_indexArray_1"
                 role="columnheader"
                 scope="col"
               >
-                <button
-                  class="euiTableHeaderButton"
-                  data-test-subj="tableHeaderSortButton"
-                  type="button"
+                <span
+                  class="euiTableCellContent"
                 >
                   <span
-                    class="euiTableCellContent"
+                    class="euiTableCellContent__text"
+                    title="Index Name"
                   >
-                    <span
-                      class="euiTableCellContent__text"
-                      title="Index Name"
-                    >
-                      Index Name
-                    </span>
+                    Index Name
                   </span>
-                </button>
+                </span>
               </th>
             </tr>
           </thead>
