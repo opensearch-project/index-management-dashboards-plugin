@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton } from "@elastic/eui";
 import { set, merge } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -19,6 +19,7 @@ import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
 import JSONDiffEditor from "../../../../components/JSONDiffEditor";
+import SimplePopover from "../../../../components/SimplePopover";
 
 const indexNameEmptyTips = "Please fill in the index name before editing other fields";
 const staticSettingsTips = "This field can not be modified in edit mode";
@@ -32,10 +33,11 @@ export interface IndexDetailProps {
   onChange: (value: IndexDetailProps["value"]) => void;
   isEdit?: boolean;
   readonly?: boolean;
-  withoutPanel?: boolean;
   refreshOptions: AliasSelectProps["refreshOptions"];
   mode?: IndicesUpdateMode;
   onSimulateIndexTemplate?: (indexName: string) => Promise<ServerResponse<IndexItemRemote>>;
+  onGetIndexDetail?: (indexName: string) => Promise<IndexItemRemote>;
+  sourceIndices?: string[];
 }
 
 export interface IIndexDetailRef {
@@ -49,7 +51,18 @@ const getOrderedJson = (json: Record<string, any>) => {
 };
 
 const IndexDetail = (
-  { value, onChange, isEdit, readonly, oldValue, refreshOptions, mode, onSimulateIndexTemplate, withoutPanel }: IndexDetailProps,
+  {
+    value,
+    onChange,
+    isEdit,
+    readonly,
+    oldValue,
+    refreshOptions,
+    mode,
+    onSimulateIndexTemplate,
+    sourceIndices = [],
+    onGetIndexDetail,
+  }: IndexDetailProps,
   ref: Ref<IIndexDetailRef>
 ) => {
   const hasEdit = useRef(false);
@@ -146,6 +159,33 @@ const IndexDetail = (
       }
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
+  const onImportSettings = async ({ index }: { index: string }) => {
+    if (onGetIndexDetail) {
+      const indexDetail: IndexItemRemote = await new Promise((resolve) => {
+        if (hasEdit.current) {
+          Modal.show({
+            type: "confirm",
+            title: "Confirm",
+            content: "We find that you made some changes to this draft, what action do you want to make?",
+            locale: {
+              confirm: "Overwrite",
+              cancel: "do not import",
+            },
+            onOk: async () => onGetIndexDetail(index).then(resolve),
+          });
+        } else {
+          onGetIndexDetail(index).then(resolve);
+        }
+      });
+      onChange({
+        ...indexDetail,
+        mappings: {
+          properties: transformObjectToArray(indexDetail?.mappings?.properties || {}),
+        },
+      });
+      hasEdit.current = false;
+    }
+  };
   const formFields: IField[] = useMemo(() => {
     return [
       {
@@ -321,6 +361,37 @@ const IndexDetail = (
               </>
             );
           })()}
+      {sourceIndices.length ? (
+        <>
+          <SimplePopover
+            data-test-subj="More Action"
+            panelPaddingSize="none"
+            button={
+              <EuiButton iconType="arrowDown" iconSide="right">
+                Import settings and mappings
+              </EuiButton>
+            }
+          >
+            <EuiContextMenu
+              initialPanelId={0}
+              // The EuiContextMenu has bug when testing in jest
+              // the props change won't make it rerender
+              key={sourceIndices.join(",")}
+              panels={[
+                {
+                  id: 0,
+                  items: sourceIndices.map((sourceIndex) => ({
+                    name: sourceIndex,
+                    "data-test-subj": `import-settings-${sourceIndex}`,
+                    onClick: () => onImportSettings({ index: sourceIndex }),
+                  })),
+                },
+              ]}
+            />
+          </SimplePopover>
+          <EuiSpacer />
+        </>
+      ) : null}
       {isEdit && mode && mode !== IndicesUpdateMode.settings
         ? null
         : (() => {
