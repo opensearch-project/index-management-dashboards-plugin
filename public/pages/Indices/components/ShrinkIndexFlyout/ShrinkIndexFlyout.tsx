@@ -209,10 +209,17 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
           rules: [
             {
               required: true,
-              message: "The number of new primary shards must be a positive factor of the number of primary shards in the source index.",
-              validator: (rule, value, callback) => {
+              message: "Number of new primary shards is required.",
+            },
+            {
+              validator: (rule, value) => {
+                if (!value) {
+                  return Promise.resolve();
+                }
                 if (!this.isNumberOfShardsValid(this.props.sourceIndex.pri, value)) {
-                  return Promise.reject("not valid");
+                  return Promise.reject(
+                    "The number of new primary shards must be a positive factor of the number of primary shards in the source index."
+                  );
                 }
                 return Promise.resolve();
               },

@@ -244,9 +244,7 @@ HTMLCollection [
                         >
                           <input
                             class="euiFieldNumber"
-                            data-meta="Field"
                             data-test-subj="numberOfShardsInput"
-                            id="index.number_of_shards"
                             max="3"
                             min="1"
                             type="number"
