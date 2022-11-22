@@ -15,14 +15,12 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  Query,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
 import { IAlias } from "../../interface";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
-import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls from "../../components/IndexControls";
@@ -75,9 +73,9 @@ class Aliases extends Component<AliasesProps, AliasesState> {
     this.getAliases = _.debounce(this.getAliases, 500, { leading: true });
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES]);
-    await this.getAliases();
+    this.getAliases();
   }
 
   getQueryState = (state: AliasesState) => {
@@ -89,42 +87,47 @@ class Aliases extends Component<AliasesProps, AliasesState> {
     }, {} as AliasesState);
   };
 
+  groupResponse = (array: IAlias[]) => {
+    const groupedMap: Record<string, IAlias> = {};
+    array.forEach((item) => {
+      groupedMap[item.alias] = {
+        ...item,
+        indexArray: [item.index],
+      };
+    });
+    return Object.values(array);
+  };
+
   getAliases = async (): Promise<void> => {
     this.setState({ loading: true });
-    try {
-      const { history, commonService } = this.props;
-      const queryObject = this.getQueryState(this.state);
-      const queryParamsString = queryString.stringify(queryObject);
-      history.replace({ ...this.props.location, search: queryParamsString });
+    const { history, commonService } = this.props;
+    const queryObject = this.getQueryState(this.state);
+    const queryParamsString = queryString.stringify(queryObject);
+    history.replace({ ...this.props.location, search: queryParamsString });
 
-      const getIndicesResponse = await commonService.apiCaller<IAlias[]>({
-        endpoint: "cat.aliases",
-        data: {
-          format: "json",
-          name: queryObject.search,
-          s: `${queryObject.sortField}:${queryObject.sortDirection}`,
-        },
-      });
+    const getIndicesResponse = await commonService.apiCaller<IAlias[]>({
+      endpoint: "cat.aliases",
+      data: {
+        format: "json",
+        name: queryObject.search,
+        s: `${queryObject.sortField}:${queryObject.sortDirection}`,
+      },
+    });
 
-      if (getIndicesResponse.ok) {
-        const aliases: IAlias[] = getIndicesResponse.response.map((item) => ({
-          ...item,
-          aliasId: `${item.alias}-${item.index}`,
-        }));
-        const totalAliases = aliases.length;
-        const payload = {
-          aliases,
-          totalAliases,
-          selectedItems: this.state.selectedItems
-            .map((item) => aliases.find((remoteItem) => remoteItem.index === item.index))
-            .filter((item) => item),
-        } as AliasesState;
-        this.setState(payload);
-      } else {
-        this.context.notifications.toasts.addDanger(getIndicesResponse.error);
-      }
-    } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the indices"));
+    if (getIndicesResponse.ok) {
+      // group by alias name
+      const responseGroupByAliasName = this.groupResponse(getIndicesResponse.response);
+      const totalAliases = responseGroupByAliasName.length;
+      const payload = {
+        aliases: responseGroupByAliasName,
+        totalAliases,
+        selectedItems: this.state.selectedItems
+          .map((item) => responseGroupByAliasName.find((remoteItem) => remoteItem.index === item.index))
+          .filter((item) => item),
+      } as AliasesState;
+      this.setState(payload);
+    } else {
+      this.context.notifications.toasts.addDanger(getIndicesResponse.error);
     }
 
     // Avoiding flicker by showing/hiding the "Data stream" column only after the results are loaded.
@@ -206,11 +209,10 @@ class Aliases extends Component<AliasesProps, AliasesState> {
             {
               field: "index",
               name: "Index Name",
-              sortable: true,
             },
           ]}
           isSelectable={true}
-          itemId="aliasId"
+          itemId="alias"
           items={aliases}
           onChange={this.onTableChange}
           pagination={pagination}

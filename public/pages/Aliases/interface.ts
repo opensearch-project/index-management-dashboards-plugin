@@ -5,4 +5,5 @@ export interface IAlias {
   "routing.index": string;
   "routing.search": string;
   is_write_index: string;
+  indexArray: string[];
 }
