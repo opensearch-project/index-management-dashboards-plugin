@@ -311,6 +311,93 @@ HTMLCollection [
                       </div>
                     </div>
                     <div
+                      class="euiFormRow"
+                      data-test-subj="form-name-aliases"
+                      id="some_html_id-row"
+                    >
+                      <div
+                        class="euiFormRow__labelWrapper"
+                      >
+                        <label
+                          aria-invalid="false"
+                          class="euiFormLabel euiFormRow__label"
+                          for="some_html_id"
+                        >
+                          Index alias  - optional
+                        </label>
+                      </div>
+                      <div
+                        class="euiFormRow__fieldWrapper"
+                      >
+                        <div
+                          class="euiFormHelpText euiFormRow__text"
+                          style="padding-top: 0px; padding-bottom: 4px;"
+                        >
+                          Select existing aliases or specify a new alias
+                        </div>
+                        <span
+                          class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                        >
+                          <div
+                            aria-expanded="false"
+                            aria-haspopup="listbox"
+                            class="euiComboBox"
+                            role="combobox"
+                          >
+                            <div
+                              class="euiFormControlLayout"
+                            >
+                              <div
+                                class="euiFormControlLayout__childrenWrapper"
+                              >
+                                <div
+                                  class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                                  data-test-subj="comboBoxInput"
+                                  tabindex="-1"
+                                >
+                                  <p
+                                    class="euiComboBoxPlaceholder"
+                                  >
+                                    Select or create aliases
+                                  </p>
+                                  <div
+                                    class="euiComboBox__input"
+                                    style="font-size: 14px; display: inline-block;"
+                                  >
+                                    <input
+                                      aria-controls=""
+                                      data-test-subj="comboBoxSearchInput"
+                                      role="textbox"
+                                      style="box-sizing: content-box; width: 2px;"
+                                      value=""
+                                    />
+                                    <div
+                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                                >
+                                  <span
+                                    class="euiLoadingSpinner euiLoadingSpinner--medium"
+                                  />
+                                  <button
+                                    aria-label="Open list of options"
+                                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                                    data-test-subj="comboBoxToggleListButton"
+                                    type="button"
+                                  >
+                                    EuiIconMock
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                    <div
                       class="euiSpacer euiSpacer--m"
                     />
                     <div

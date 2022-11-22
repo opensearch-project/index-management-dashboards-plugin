@@ -71,6 +71,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const splitIndex = async (targetIndex: String, settingsPayload: Required<IndexItem>["settings"]) => {
+    const { aliases, ...settings } = settingsPayload;
     const result = await services?.commonService.apiCaller({
       endpoint: "indices.split",
       method: "PUT",
@@ -79,8 +80,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
         target: targetIndex,
         body: {
           settings: {
-            ...settingsPayload,
+            ...settings,
           },
+          aliases,
         },
       },
     });
@@ -245,6 +247,18 @@ export default function IndicesActions(props: IndicesActionsProps) {
     }
   };
 
+  const getAlias = async (aliasName: string) => {
+    return await services.commonService.apiCaller({
+      endpoint: "cat.aliases",
+      method: "GET",
+      data: {
+        format: "json",
+        name: aliasName,
+        expand_wildcards: "open",
+      },
+    });
+  };
+
   const onCloseReindexFlyout = () => {
     setIsReindexFlyoutVisible(false);
   };
@@ -374,6 +388,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
           getIndexSettings={getIndexSettings}
           setIndexSettings={setIndexSettings}
           openIndex={onOpenIndexModalConfirm}
+          getAlias={getAlias}
         />
       )}
     </>

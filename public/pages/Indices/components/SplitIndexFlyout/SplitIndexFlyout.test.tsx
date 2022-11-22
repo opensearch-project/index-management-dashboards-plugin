@@ -23,6 +23,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -57,6 +60,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -101,6 +107,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -140,6 +149,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -179,6 +191,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -214,6 +229,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -250,6 +268,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -284,6 +305,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -303,6 +327,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         getIndexSettings={async () => ({})}
         setIndexSettings={() => {}}
         openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
