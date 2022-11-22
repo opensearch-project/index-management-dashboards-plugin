@@ -170,3 +170,39 @@ Cypress.Commands.add("disableJitter", () => {
   };
   cy.request("PUT", `${Cypress.env("opensearch")}/_cluster/settings`, jitterJson);
 });
+
+Cypress.Commands.add("addAlias", (alias, index) => {
+  cy.request({
+    url: `${Cypress.env("opensearch")}/_aliases`,
+    method: "POST",
+    body: {
+      actions: [
+        {
+          add: {
+            index,
+            alias,
+          },
+        },
+      ],
+    },
+    failOnStatusCode: false,
+  });
+});
+
+Cypress.Commands.add("removeAlias", (alias) => {
+  cy.request({
+    url: `${Cypress.env("opensearch")}/_aliases`,
+    method: "POST",
+    body: {
+      actions: [
+        {
+          remove: {
+            index: "*",
+            alias,
+          },
+        },
+      ],
+    },
+    failOnStatusCode: false,
+  });
+});

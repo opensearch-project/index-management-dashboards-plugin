@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
+import React, { Component, useContext, useState } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -15,6 +15,7 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
+  EuiButtonEmpty,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -39,6 +40,20 @@ interface AliasesState {
   selectedItems: IAlias[];
   aliases: IAlias[];
   loading: boolean;
+}
+
+function IndexNameDisplay(props: { indices: string[] }) {
+  const [hide, setHide] = useState(true);
+  const finalIndices = hide ? props.indices.slice(0, 3) : props.indices;
+
+  return (
+    <>
+      <span>{finalIndices.join(",")}</span>
+      {props.indices.length < 3 ? null : (
+        <EuiButtonEmpty onClick={() => setHide(!hide)}>{hide ? `${props.indices.length - 3} more` : "hide"}</EuiButtonEmpty>
+      )}
+    </>
+  );
 }
 
 class Aliases extends Component<AliasesProps, AliasesState> {
@@ -88,18 +103,25 @@ class Aliases extends Component<AliasesProps, AliasesState> {
   };
 
   groupResponse = (array: IAlias[]) => {
-    const groupedMap: Record<string, IAlias> = {};
-    array.forEach((item) => {
-      groupedMap[item.alias] = {
+    const groupedMap: Record<string, IAlias & { order: number }> = {};
+    array.forEach((item, index) => {
+      groupedMap[item.alias] = groupedMap[item.alias] || {
         ...item,
-        indexArray: [item.index],
+        order: index,
+        indexArray: [],
       };
+      groupedMap[item.alias].indexArray.push(item.index);
     });
-    return Object.values(array);
+    const result = Object.values(groupedMap);
+    result.sort((a, b) => a.order - b.order);
+    return Object.values(groupedMap).sort();
   };
 
   getAliases = async (): Promise<void> => {
     this.setState({ loading: true });
+    const { from, size } = this.state;
+    const fromNumber = Number(from);
+    const sizeNumber = Number(size);
     const { history, commonService } = this.props;
     const queryObject = this.getQueryState(this.state);
     const queryParamsString = queryString.stringify(queryObject);
@@ -109,17 +131,17 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       endpoint: "cat.aliases",
       data: {
         format: "json",
-        name: queryObject.search,
+        name: `${queryObject.search}*`,
         s: `${queryObject.sortField}:${queryObject.sortDirection}`,
       },
     });
 
     if (getIndicesResponse.ok) {
       // group by alias name
-      const responseGroupByAliasName = this.groupResponse(getIndicesResponse.response);
+      const responseGroupByAliasName: IAlias[] = this.groupResponse(getIndicesResponse.response);
       const totalAliases = responseGroupByAliasName.length;
       const payload = {
-        aliases: responseGroupByAliasName,
+        aliases: responseGroupByAliasName.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
         totalAliases,
         selectedItems: this.state.selectedItems
           .map((item) => responseGroupByAliasName.find((remoteItem) => remoteItem.index === item.index))
@@ -152,8 +174,8 @@ class Aliases extends Component<AliasesProps, AliasesState> {
     this.setState({ selectedItems });
   };
 
-  onSearchChange = ({ query }: { query: string }): void => {
-    this.setState({ from: "0", search: query }, () => this.getAliases());
+  onSearchChange = ({ query }: { query: { text: string } }): void => {
+    this.setState({ from: "0", search: query.text }, () => this.getAliases());
   };
 
   render() {
@@ -207,8 +229,11 @@ class Aliases extends Component<AliasesProps, AliasesState> {
               sortable: true,
             },
             {
-              field: "index",
+              field: "indexArray",
               name: "Index Name",
+              render: (value: string[]) => {
+                return <IndexNameDisplay indices={value} />;
+              },
             },
           ]}
           isSelectable={true}
