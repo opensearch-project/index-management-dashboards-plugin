@@ -466,5 +466,5 @@ export interface Alias {
 
 export interface GetAliasesResponse {
   aliases: Alias[];
-  total: number;
+  totalAliases: number;
 }

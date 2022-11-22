@@ -25,7 +25,7 @@ import { IndexSelectItem, ReindexRequest } from "../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import ReindexAdvancedOptions from "../../components/ReindexAdvancedOptions";
-import { BREADCRUMBS, DSL_DOCUMENTATION_URL, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
+import { BREADCRUMBS, DSL_DOCUMENTATION_URL, REINDEX_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { CommonService, IndexService } from "../../../../services";
 import { RouteComponentProps } from "react-router-dom";
 import IndexSelect from "../../components/IndexSelect";
@@ -143,7 +143,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           })
           .map((index) => ({
             label: index.index,
-            disabled: index.status === "close" || index.health === "red",
             value: { isIndex: true, status: index.status, health: index.health },
           }));
         options.push({ label: "indices", options: indices });
@@ -154,7 +153,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       if (dataStreamResponse && dataStreamResponse.ok) {
         const dataStreams = dataStreamResponse.response.dataStreams.map((ds) => ({
           label: ds.name,
-          disabled: ds.status.toLowerCase() === "red",
           health: ds.status.toLowerCase(),
           value: { isDataStream: true },
         }));
@@ -267,7 +265,13 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
     const [dest] = selectedOptions;
     if (dest.value?.health === "red") {
-      this.setState({ destError: REINDEX_ERROR_PROMPT.DEST_HEALTH_RED });
+      this.setState({ destError: `Index [${dest.label}] ${REINDEX_ERROR_PROMPT.HEALTH_RED}` });
+      return false;
+    }
+
+    if (dest.value?.status === "close") {
+      this.setState({ destError: `Index [${dest.label}] status is closed` });
+      return false;
     }
 
     let expandedSource: string[] = [],
@@ -292,12 +296,19 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
   validateSource = async (sourceIndices: EuiComboBoxOptionOption<IndexSelectItem>[]): Promise<boolean> => {
     if (sourceIndices.length == 0) {
-      return true;
+      this.setState({ sourceErr: [REINDEX_ERROR_PROMPT.SOURCE_REQUIRED] });
+      return false;
+    }
+
+    let errors = [];
+
+    for (const source of sourceIndices) {
+      if (source.value?.health === "red") {
+        errors.push(`Index [${source.label}] ${REINDEX_ERROR_PROMPT.HEALTH_RED}`);
+      }
     }
 
     const { commonService } = this.props;
-
-    let errors = [];
 
     sourceIndices
       .filter((item) => item.value?.status === "close")
@@ -418,7 +429,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           With the reindex operation, you can copy all or a subset of documents that you select through a query to another index{" "}
-          <EuiLink href={SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+          <EuiLink href={REINDEX_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
             Learn more
           </EuiLink>
         </p>

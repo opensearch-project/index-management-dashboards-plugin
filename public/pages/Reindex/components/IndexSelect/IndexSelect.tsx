@@ -29,7 +29,7 @@ export default function IndexSelect(props: IndexSelectProps) {
         setIndexOptions(options);
       })
       .catch((err) => {
-        coreServices.notifications.toasts.addDanger(`fetch pipelines error ${err}`);
+        coreServices.notifications.toasts.addDanger(`fetch indices error ${err}`);
       });
   }, [props.getIndexOptions]);
 

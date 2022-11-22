@@ -19,207 +19,7 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Reindex subset of source
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <div
-              class="euiSwitch euiSwitch--compressed"
-            >
-              <button
-                aria-checked="true"
-                aria-label="Reindex subset of source"
-                class="euiSwitch__button"
-                data-test-subj="subsetSwitch"
-                id="some_html_id"
-                role="switch"
-                type="button"
-              >
-                <span
-                  class="euiSwitch__body"
-                >
-                  <span
-                    class="euiSwitch__thumb"
-                  />
-                  <span
-                    class="euiSwitch__track"
-                  />
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div
-          class="euiFormRow"
-          id="some_html_id-row"
-        >
-          <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              class="euiFormLabel euiFormRow__label"
-              for="some_html_id"
-            >
-              Query expression
-            </label>
-             
-            <div
-              class="euiText euiText--extraSmall"
-            >
-              <a
-                class="euiLink euiLink--primary"
-                href="https://opensearch.org/docs/opensearch/query-dsl/index/"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                learn more about query-dsl
-                EuiIconMock
-                <span
-                  class="euiScreenReaderOnly"
-                >
-                  (opens in a new tab or window)
-                </span>
-              </a>
-            </div>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <textarea
-              data-test-subj="queryJsonEditor-value-display"
-              readonly=""
-              style="display: none;"
-            >
-              {}
-            </textarea>
-            <div
-              class="euiCodeEditorWrapper"
-              data-test-subj="queryJsonEditor"
-              style="width: 100%; height: 150px;"
-            >
-              <button
-                class="euiCodeEditorKeyboardHint"
-                data-test-subj="codeEditorHint"
-                id="some_html_id"
-              >
-                <p
-                  class="euiText"
-                >
-                  Press Enter to start editing.
-                </p>
-                <p
-                  class="euiText"
-                >
-                  When you're done, press Escape to stop editing.
-                </p>
-              </button>
-              <div
-                class=" ace_editor ace-tm"
-                id="some_html_id"
-                style="width: 100%; height: 150px;"
-              >
-                <textarea
-                  aria-label="Query DSL Editor"
-                  autocapitalize="off"
-                  autocorrect="off"
-                  class="ace_text-input"
-                  spellcheck="false"
-                  style="opacity: 0;"
-                  tabindex="-1"
-                  wrap="off"
-                />
-                <div
-                  aria-hidden="true"
-                  class="ace_gutter"
-                >
-                  <div
-                    class="ace_layer ace_gutter-layer ace_folding-enabled"
-                  />
-                  <div
-                    class="ace_gutter-active-line"
-                  />
-                </div>
-                <div
-                  class="ace_scroller"
-                >
-                  <div
-                    class="ace_content"
-                  >
-                    <div
-                      class="ace_layer ace_print-margin-layer"
-                    >
-                      <div
-                        class="ace_print-margin"
-                        style="left: 4px; visibility: visible;"
-                      />
-                    </div>
-                    <div
-                      class="ace_layer ace_marker-layer"
-                    />
-                    <div
-                      class="ace_layer ace_text-layer"
-                      style="padding: 0px 4px;"
-                    />
-                    <div
-                      class="ace_layer ace_marker-layer"
-                    />
-                    <div
-                      class="ace_layer ace_cursor-layer ace_hidden-cursors"
-                    >
-                      <div
-                        class="ace_cursor"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="ace_scrollbar ace_scrollbar-v"
-                  style="display: none; width: 20px;"
-                >
-                  <div
-                    class="ace_scrollbar-inner"
-                    style="width: 20px;"
-                  />
-                </div>
-                <div
-                  class="ace_scrollbar ace_scrollbar-h"
-                  style="display: none; height: 20px;"
-                >
-                  <div
-                    class="ace_scrollbar-inner"
-                    style="height: 20px;"
-                  />
-                </div>
-                <div
-                  style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
-                >
-                  <div
-                    style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                  />
-                  <div
-                    style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                  >
-                    XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="euiFormRow euiFormRow--fullWidth"
-          id="some_html_id-row"
-        >
-          <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              class="euiFormLabel euiFormRow__label"
-              for="some_html_id"
-            >
-              How to handle conflicts
+              Specify conflicts option
             </label>
           </div>
           <div
@@ -229,7 +29,7 @@ Object {
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              Set to proceed to continue reindexing even if there are conflicts. Defaults to abort
+              Set to proceed to continue reindexing even if there are conflicts.
             </div>
             <div>
               <div
@@ -250,7 +50,7 @@ Object {
                   class="euiRadio__label"
                   for="proceed"
                 >
-                  proceed
+                  Continue to proceed reindexing
                 </label>
               </div>
               <div
@@ -270,17 +70,17 @@ Object {
                   class="euiRadio__label"
                   for="abort"
                 >
-                  abort
+                  Abort reindexing
                 </label>
               </div>
             </div>
           </div>
         </div>
         <div
-          class="euiSpacer euiSpacer--m"
+          class="euiSpacer euiSpacer--l"
         />
         <div
-          class="euiFormRow euiFormRow--fullWidth"
+          class="euiFormRow"
           id="some_html_id-row"
         >
           <div
@@ -320,7 +120,7 @@ Object {
           </div>
         </div>
         <div
-          class="euiSpacer euiSpacer--m"
+          class="euiSpacer euiSpacer--l"
         />
         <div
           class="euiFormRow"
@@ -420,207 +220,7 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Reindex subset of source
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiSwitch euiSwitch--compressed"
-          >
-            <button
-              aria-checked="true"
-              aria-label="Reindex subset of source"
-              class="euiSwitch__button"
-              data-test-subj="subsetSwitch"
-              id="some_html_id"
-              role="switch"
-              type="button"
-            >
-              <span
-                class="euiSwitch__body"
-              >
-                <span
-                  class="euiSwitch__thumb"
-                />
-                <span
-                  class="euiSwitch__track"
-                />
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <div
-        class="euiFormRow"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Query expression
-          </label>
-           
-          <div
-            class="euiText euiText--extraSmall"
-          >
-            <a
-              class="euiLink euiLink--primary"
-              href="https://opensearch.org/docs/opensearch/query-dsl/index/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              learn more about query-dsl
-              EuiIconMock
-              <span
-                class="euiScreenReaderOnly"
-              >
-                (opens in a new tab or window)
-              </span>
-            </a>
-          </div>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <textarea
-            data-test-subj="queryJsonEditor-value-display"
-            readonly=""
-            style="display: none;"
-          >
-            {}
-          </textarea>
-          <div
-            class="euiCodeEditorWrapper"
-            data-test-subj="queryJsonEditor"
-            style="width: 100%; height: 150px;"
-          >
-            <button
-              class="euiCodeEditorKeyboardHint"
-              data-test-subj="codeEditorHint"
-              id="some_html_id"
-            >
-              <p
-                class="euiText"
-              >
-                Press Enter to start editing.
-              </p>
-              <p
-                class="euiText"
-              >
-                When you're done, press Escape to stop editing.
-              </p>
-            </button>
-            <div
-              class=" ace_editor ace-tm"
-              id="some_html_id"
-              style="width: 100%; height: 150px;"
-            >
-              <textarea
-                aria-label="Query DSL Editor"
-                autocapitalize="off"
-                autocorrect="off"
-                class="ace_text-input"
-                spellcheck="false"
-                style="opacity: 0;"
-                tabindex="-1"
-                wrap="off"
-              />
-              <div
-                aria-hidden="true"
-                class="ace_gutter"
-              >
-                <div
-                  class="ace_layer ace_gutter-layer ace_folding-enabled"
-                />
-                <div
-                  class="ace_gutter-active-line"
-                />
-              </div>
-              <div
-                class="ace_scroller"
-              >
-                <div
-                  class="ace_content"
-                >
-                  <div
-                    class="ace_layer ace_print-margin-layer"
-                  >
-                    <div
-                      class="ace_print-margin"
-                      style="left: 4px; visibility: visible;"
-                    />
-                  </div>
-                  <div
-                    class="ace_layer ace_marker-layer"
-                  />
-                  <div
-                    class="ace_layer ace_text-layer"
-                    style="padding: 0px 4px;"
-                  />
-                  <div
-                    class="ace_layer ace_marker-layer"
-                  />
-                  <div
-                    class="ace_layer ace_cursor-layer ace_hidden-cursors"
-                  >
-                    <div
-                      class="ace_cursor"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                class="ace_scrollbar ace_scrollbar-v"
-                style="display: none; width: 20px;"
-              >
-                <div
-                  class="ace_scrollbar-inner"
-                  style="width: 20px;"
-                />
-              </div>
-              <div
-                class="ace_scrollbar ace_scrollbar-h"
-                style="display: none; height: 20px;"
-              >
-                <div
-                  class="ace_scrollbar-inner"
-                  style="height: 20px;"
-                />
-              </div>
-              <div
-                style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
-              >
-                <div
-                  style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                />
-                <div
-                  style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                >
-                  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="euiFormRow euiFormRow--fullWidth"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            How to handle conflicts
+            Specify conflicts option
           </label>
         </div>
         <div
@@ -630,7 +230,7 @@ Object {
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Set to proceed to continue reindexing even if there are conflicts. Defaults to abort
+            Set to proceed to continue reindexing even if there are conflicts.
           </div>
           <div>
             <div
@@ -651,7 +251,7 @@ Object {
                 class="euiRadio__label"
                 for="proceed"
               >
-                proceed
+                Continue to proceed reindexing
               </label>
             </div>
             <div
@@ -671,17 +271,17 @@ Object {
                 class="euiRadio__label"
                 for="abort"
               >
-                abort
+                Abort reindexing
               </label>
             </div>
           </div>
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--m"
+        class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow"
         id="some_html_id-row"
       >
         <div
@@ -721,7 +321,7 @@ Object {
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--m"
+        class="euiSpacer euiSpacer--l"
       />
       <div
         class="euiFormRow"
