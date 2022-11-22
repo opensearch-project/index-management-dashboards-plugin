@@ -64,7 +64,6 @@ const ChannelNotification = ({
         </EuiFlexGroup>
       </CustomFormRow>
 
-
       {!!channelId && (
         <>
           <EuiSpacer size="m" />

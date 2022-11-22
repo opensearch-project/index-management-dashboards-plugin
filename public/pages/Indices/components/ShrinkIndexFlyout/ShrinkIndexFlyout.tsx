@@ -7,7 +7,6 @@ import {
   EuiButton,
   EuiButtonEmpty,
   EuiCallOut,
-  EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
   EuiFlyout,
@@ -21,35 +20,30 @@ import {
 import React, { Component } from "react";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
-import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
-import CustomFormRow from "../../../../components/CustomFormRow";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
+import { ContentPanel } from "../../../../components/ContentPanel";
+import IndexDetail from "../../../../containers/IndexDetail";
 import { IndexItem } from "../../../../../models/interfaces";
 import { SHRINK_DOCUMENTATION_URL, INDEX_SETTINGS_URL } from "../../../../utils/constants";
 import {
   DEDAULT_ADVANCED_INDEX_SETTINGS,
-  INDEX_NUMBER_OF_SHARDS_SETTING,
   INDEX_BLOCKS_WRITE_SETTING,
   INDEX_BLOCKS_READONLY_SETTING,
-  INDEX_BLOCKS_METADATA_SETTING,
   INDEX_ROUTING_ALLOCATION_SETTING,
-  TARGET_INDEX_NAME_REQUIRED_MESSAGE,
 } from "./constants";
-import _ from "lodash";
+import { get } from "lodash";
 
 interface ShrinkIndexProps {
   sourceIndex: CatIndex;
   onClose: () => void;
   onConfirm: (sourceIndexName: string, targetIndexName: string, indexSettings: {}) => void;
   getIndexSettings: (indexName: string, flat: boolean) => Promise<Object>;
+  setIndexSettings: (indexName: string, flat: boolean, setting: {}) => void;
 }
 
 interface ShrinkIndexState {
-  targetIndexName: string;
-  indexSettings: IndexItem["settings"];
-  targetIndexNameError: string;
-  sourceIndexCannotShrinkErrors: string[];
-  sourceIndexNotReadyReasons: string[];
+  indexSettings: Required<IndexItem>["settings"];
+  sourceIndexSettings: Object;
 }
 
 export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, ShrinkIndexState> {
@@ -57,11 +51,8 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     super(props);
 
     this.state = {
-      targetIndexName: "",
       indexSettings: DEDAULT_ADVANCED_INDEX_SETTINGS,
-      targetIndexNameError: TARGET_INDEX_NAME_REQUIRED_MESSAGE,
-      sourceIndexCannotShrinkErrors: [],
-      sourceIndexNotReadyReasons: [],
+      sourceIndexSettings: {},
     };
   }
 
@@ -73,89 +64,100 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
 
   onClickAction = async () => {
     const { sourceIndex, onConfirm } = this.props;
-    const { targetIndexName, targetIndexNameError, indexSettings } = this.state;
-    if (!!targetIndexNameError) {
-      return;
-    }
+    const { targetIndex, ...others } = this.state.indexSettings;
 
     const result = await this.formRef?.validatePromise();
     if (result?.errors) {
       return;
     }
-
-    onConfirm(sourceIndex.index, targetIndexName, indexSettings);
+    onConfirm(sourceIndex.index, targetIndex, others);
   };
 
   isSourceIndexReady = async () => {
     const { sourceIndex, getIndexSettings } = this.props;
-    const sourceIndexCannotShrinkErrors = [];
-    let reason = "";
-
-    // Show danger errors and disable the Shrink button if the source index is red or closed, or only has one primary shard.
-    if (sourceIndex.health == "red") {
-      sourceIndexCannotShrinkErrors.push("The index's health status is [red]!");
-    }
-    if (sourceIndex.pri == "1") {
-      sourceIndexCannotShrinkErrors.push("The index has only one primary shard!");
-    }
-    if (sourceIndex.status == "close") {
-      sourceIndexCannotShrinkErrors.push("The index is closed!");
-    }
-    if (sourceIndexCannotShrinkErrors.length > 0) {
-      this.setState({
-        sourceIndexCannotShrinkErrors: sourceIndexCannotShrinkErrors,
-      });
-      return;
-    }
-
-    const sourceIndexNotReadyReasons = [];
     const indexSettings = await getIndexSettings(sourceIndex.index, true);
+    this.setState({
+      sourceIndexSettings: indexSettings,
+    });
+  };
 
-    // Check whether `index.blocks.read_only` or `index.blocks.metadata` is set firstly,
-    // because shrink operation will timeout and then the new shrunkend index's shards cannot be allocated.
-    if (!!indexSettings && indexSettings.hasOwnProperty(sourceIndex.index)) {
-      if (
-        !!indexSettings[sourceIndex.index]["settings"][INDEX_BLOCKS_READONLY_SETTING] ||
-        !!indexSettings[sourceIndex.index]["settings"][INDEX_BLOCKS_METADATA_SETTING]
-      ) {
-        reason =
-          "Index setting [" +
-          INDEX_BLOCKS_READONLY_SETTING +
-          "] or [" +
-          INDEX_BLOCKS_METADATA_SETTING +
-          "] is [true], this will cause the new shrunken index's shards to be unassigned.";
-        sourceIndexNotReadyReasons.push(reason);
+  onUpdateIndexSettings = async (indexName: string, settings: {}) => {
+    const { setIndexSettings, getIndexSettings } = this.props;
+    await setIndexSettings(indexName, true, settings);
+
+    const indexSettings = await getIndexSettings(indexName, true);
+    this.setState({
+      sourceIndexSettings: indexSettings,
+    });
+  };
+
+  render() {
+    const { onClose, sourceIndex } = this.props;
+    const { indexSettings, sourceIndexSettings } = this.state;
+    const sourceIndexCannotShrinkErrors: React.ReactChild[] = [];
+    const sourceIndexNotReadyReasons = [];
+    const blockNameList = ["targetIndex"];
+
+    if (sourceIndex.health == "red") {
+      sourceIndexCannotShrinkErrors.push(<>The source index's health status is [red]!</>);
+    }
+
+    if (sourceIndex.pri == "1") {
+      sourceIndexCannotShrinkErrors.push(<>The source index has only one primary shard!</>);
+    }
+
+    if (sourceIndex.status !== "open") {
+      sourceIndexCannotShrinkErrors.push(<>The source index must be in open status!</>);
+    }
+
+    if (sourceIndexCannotShrinkErrors.length == 0) {
+      const indexWriteBlock = get(sourceIndexSettings, [sourceIndex.index, "settings", INDEX_BLOCKS_WRITE_SETTING]);
+      if (!indexWriteBlock) {
+        const indexWriteBlockSettings = {
+          "index.blocks.write": true,
+        };
+        sourceIndexCannotShrinkErrors.push(
+          <>
+            The source index's write operations must be blocked.
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <EuiButton
+                onClick={() => {
+                  this.onUpdateIndexSettings(sourceIndex.index, indexWriteBlockSettings);
+                }}
+                data-test-subj="onSetIndexWriteBlockButton"
+              >
+                Set write block{" "}
+              </EuiButton>
+            </div>
+          </>
+        );
       }
-    }
 
-    // It's better to do shrink when the source index is green.
-    if (sourceIndex.health != "green") {
-      reason = "The index's health is not green.";
-      sourceIndexNotReadyReasons.push(reason);
-    }
+      // It's better to do shrink when the source index is green.
+      if (sourceIndex.health != "green") {
+        sourceIndexNotReadyReasons.push("The source index's health is not green.");
+      }
 
-    // `index.blocks.write` setting is required.
-    if (
-      !!indexSettings &&
-      indexSettings.hasOwnProperty(sourceIndex.index) &&
-      !indexSettings[sourceIndex.index]["settings"][INDEX_BLOCKS_WRITE_SETTING]
-    ) {
-      reason = "Index setting [index.blocks.write] is not [true].";
-      sourceIndexNotReadyReasons.push(reason);
-    }
+      // Check whether `index.blocks.read_only` is set to `true`,
+      // because shrink operation will timeout and then the new shrunken index's shards cannot be allocated.
+      const indexReadOnlyBlock = get(sourceIndexSettings, [sourceIndex.index, "settings", INDEX_BLOCKS_READONLY_SETTING]);
+      if (!!indexReadOnlyBlock) {
+        sourceIndexNotReadyReasons.push(
+          "Index setting [index.blocks.read_only] is [true], this will cause the new shrunken index's shards to be unassigned."
+        );
+      }
 
-    // This check may not be correct in the following situations:
-    // 1. the cluster only has one node, so the source index's shards are allocated to the same node.
-    // 2. the primary shards of the source index are just allocated to the same node, not manually.
-    // 3. the user set `index.routing.rebalance.enable` to `none` and then manually move each shard's copy to one node.
-    // In the above situations, the source index does not have a `index.routing.allocation.require._*` setting which can
-    // rellocate one copy of every shard to one node, but it can also execute shrinking successfully if other conditions are met.
-    // But in most cases, source index always have many shards distributed on different node,
-    // so index.routing.allocation.require._*` setting is required.
-    // In above, we just show a warning in the page, it does not affect any button or form.
-    if (!!indexSettings && indexSettings.hasOwnProperty(sourceIndex.index)) {
+      // This check may not be correct in the following situations:
+      // 1. the cluster only has one node, so the source index's primary shards are allocated to the same node.
+      // 2. the primary shards of the source index are just allocated to the same node, not manually.
+      // 3. the user set `index.routing.rebalance.enable` to `none` and then manually move each shard's copy to one node.
+      // In the above situations, the source index does not have a `index.routing.allocation.require._*` setting which can
+      // rellocate one copy of every shard to one node, but it can also execute shrinking successfully if other conditions are met.
+      // But in most cases, source index always have many shards distributed on different node,
+      // so index.routing.allocation.require._*` setting is required.
+      // In above, we just show a warning in the page, it does not affect any button or form.
+      const settings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
       let shardsAllocatedToOneNode = false;
-      const settings = indexSettings[sourceIndex.index]["settings"];
       for (let settingKey in settings) {
         if (settingKey.startsWith(INDEX_ROUTING_ALLOCATION_SETTING)) {
           shardsAllocatedToOneNode = true;
@@ -163,131 +165,123 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
         }
       }
       if (!shardsAllocatedToOneNode) {
-        reason = "One copy of every shard should be allocated to one node.";
-        sourceIndexNotReadyReasons.push(reason);
+        sourceIndexNotReadyReasons.push("One copy of every shard may not allocated to one node.");
       }
     }
 
-    if (sourceIndexNotReadyReasons.length > 0) {
-      this.setState({
-        sourceIndexNotReadyReasons: sourceIndexNotReadyReasons,
-      });
+    const numberOfShardsSelectOptions = [];
+    const sourceIndexSharsNum = Number(sourceIndex.pri);
+    for (let i = 1; i <= sourceIndexSharsNum; i++) {
+      if (sourceIndexSharsNum % i == 0) {
+        numberOfShardsSelectOptions.push({
+          value: i.toString(),
+          text: i,
+        });
+      }
     }
-  };
-
-  onTargetIndexNameChange = (value: string) => {
-    let err = "";
-    if (!value.trim()) {
-      err = TARGET_INDEX_NAME_REQUIRED_MESSAGE;
-    }
-    this.setState({
-      targetIndexName: value,
-      targetIndexNameError: err,
-    });
-  };
-
-  isNumberOfShardsValid = (sourceShardsNum: number, targetShardsNum: number): boolean => {
-    if (targetShardsNum <= 0 || sourceShardsNum % targetShardsNum != 0) {
-      return false;
-    }
-    return true;
-  };
-
-  render() {
-    const { onClose } = this.props;
-    const { targetIndexName, targetIndexNameError, indexSettings, sourceIndexCannotShrinkErrors, sourceIndexNotReadyReasons } = this.state;
 
     const formFields: IField[] = [
       {
         rowProps: {
-          label: "Number of shards",
-          helpText: "The number of primary shards in the new shrunken index.",
+          label: "Target index name",
+          helpText: "Specify a name for the new shrunken index.",
         },
-        name: "index.number_of_shards",
-        type: "Number",
+        name: "targetIndex",
+        type: "Input",
         options: {
           rules: [
             {
-              required: true,
-              message: "Number of new primary shards is required.",
-            },
-            {
-              validator: (rule, value) => {
-                if (!value) {
-                  return Promise.resolve();
-                }
-                if (!this.isNumberOfShardsValid(this.props.sourceIndex.pri, value)) {
-                  return Promise.reject(
-                    "The number of new primary shards must be a positive factor of the number of primary shards in the source index."
-                  );
+              validator: (_, value) => {
+                if (!value || !value.toString().trim()) {
+                  return Promise.reject("Target index name required.");
                 }
                 return Promise.resolve();
               },
             },
           ],
           props: {
+            "data-test-subj": "targetIndexNameInput",
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Specify primary shard count",
+          helpText: `Specify the number of shards for the new shrunken index.
+          The number must be a factor of primary shard count in the source index.`,
+        },
+        name: "index.number_of_shards",
+        type: "Select",
+        options: {
+          rules: [],
+          props: {
             "data-test-subj": "numberOfShardsInput",
-            min: 1,
-            max: Number(this.props.sourceIndex.pri),
+            options: numberOfShardsSelectOptions,
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Number of replicas",
+          helpText: "The number of replica shards each primary shard should have.",
+        },
+        name: "index.number_of_replicas",
+        type: "Number",
+        options: {
+          rules: [
+            {
+              validator: (_, value) => {
+                if (!value || Number(value) < 0) {
+                  return Promise.reject("Number of replicas must be greater than or equal to 0.");
+                }
+                return Promise.resolve();
+              },
+            },
+          ],
+          props: {
+            "data-test-subj": "numberOfReplicasInput",
+            min: 0,
           },
         },
       },
     ];
 
-    return (
-      <EuiFlyout ownFocus={true} onClose={() => {}} maxWidth={600} size="m" hideCloseButton>
-        <EuiFlyoutHeader hasBorder>
-          <EuiTitle size="m">
-            <h2 id="flyoutTitle"> Shrink index</h2>
-          </EuiTitle>
-        </EuiFlyoutHeader>
-        <EuiFlyoutBody>
-          <EuiCallOut color="danger" hidden={sourceIndexCannotShrinkErrors.length == 0}>
-            <div style={{ lineHeight: 1.5 }}>
-              <p>The source index cannot shrink, due to the following reasons:</p>
-              <ul>
-                {sourceIndexCannotShrinkErrors.map((reason) => (
-                  <li key={reason}>{reason}</li>
-                ))}
-              </ul>
-              <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                Learn more
-              </EuiLink>
-            </div>
-          </EuiCallOut>
-          <EuiCallOut color="warning" hidden={sourceIndexCannotShrinkErrors.length != 0 || sourceIndexNotReadyReasons.length == 0}>
-            <div style={{ lineHeight: 1.5 }}>
-              <p>The source index is not ready to shrink, may due to the following reasons:</p>
-              <ul>
-                {sourceIndexNotReadyReasons.map((reason) => (
-                  <li key={reason}>{reason}</li>
-                ))}
-              </ul>
-              <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                Learn more
-              </EuiLink>
-            </div>
-          </EuiCallOut>
-          <EuiSpacer size="m" />
-          <CustomFormRow label="Source index">
-            <EuiFieldText value={this.props.sourceIndex.index} data-test-subj="sourceIndexForm" readOnly />
-          </CustomFormRow>
-          <EuiSpacer size="m" />
-          <CustomFormRow
-            label="Target index"
-            helpText={"The name of the new shrunken index."}
-            isInvalid={!!targetIndexNameError}
-            error={targetIndexNameError}
-          >
-            <EuiFieldText
-              value={targetIndexName}
-              onChange={(e) => {
-                this.onTargetIndexNameChange(e.target.value);
-              }}
-              isInvalid={!!targetIndexNameError}
-              data-test-subj="targetIndexNameInput"
-            />
-          </CustomFormRow>
+    const indices = [this.props.sourceIndex.index];
+    const indexDetailChildren = (
+      <>
+        <EuiCallOut color="danger" hidden={sourceIndexCannotShrinkErrors.length == 0}>
+          <div style={{ lineHeight: 1.5 }}>
+            <p>The source index cannot shrink, due to the following reasons:</p>
+            <ul key="error">
+              {sourceIndexCannotShrinkErrors.map((reason, index) => (
+                <li key={index}>{reason}</li>
+              ))}
+            </ul>
+            <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+              Learn more
+            </EuiLink>
+          </div>
+        </EuiCallOut>
+        <EuiCallOut color="warning" hidden={sourceIndexCannotShrinkErrors.length != 0 || sourceIndexNotReadyReasons.length == 0}>
+          <div style={{ lineHeight: 1.5 }}>
+            <p>The source index is not ready to shrink, may due to the following reasons:</p>
+            <ul key="reason">
+              {sourceIndexNotReadyReasons.map((reason, index) => (
+                <li key={index}>{reason}</li>
+              ))}
+            </ul>
+            <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+              Learn more
+            </EuiLink>
+          </div>
+        </EuiCallOut>
+      </>
+    );
+
+    const configurationChildren: React.ReactChild = (
+      <>
+        <EuiSpacer size="m" />
+        <ContentPanel title="Configure target index" titleSize="s">
           <EuiSpacer size="m" />
           <FormGenerator
             ref={(ref) => (this.formRef = ref)}
@@ -305,6 +299,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
                 id: "accordion_for_create_index_settings",
                 buttonContent: <h4>Advanced settings</h4>,
               },
+              blockedNameList: blockNameList,
               rowProps: {
                 label: "Specify advanced index settings",
                 helpText: (
@@ -318,6 +313,21 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
               },
             }}
           />
+        </ContentPanel>
+        <EuiSpacer size="m" />
+      </>
+    );
+
+    return (
+      <EuiFlyout ownFocus={true} onClose={() => {}} maxWidth={600} size="m" hideCloseButton>
+        <EuiFlyoutHeader hasBorder>
+          <EuiTitle size="m">
+            <h2 id="flyoutTitle"> Shrink index</h2>
+          </EuiTitle>
+        </EuiFlyoutHeader>
+        <EuiFlyoutBody>
+          <IndexDetail indices={indices} children={indexDetailChildren} />
+          {sourceIndexCannotShrinkErrors.length > 0 ? null : configurationChildren}
         </EuiFlyoutBody>
         <EuiFlyoutFooter>
           <EuiFlexGroup justifyContent="flexEnd">
@@ -331,7 +341,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
                 onClick={this.onClickAction}
                 fill
                 data-test-subj="shrinkIndexConfirmButton"
-                disabled={sourceIndexCannotShrinkErrors.length != 0}
+                disabled={sourceIndexCannotShrinkErrors.length > 0}
               >
                 Shrink index
               </EuiButton>

@@ -8,7 +8,7 @@ import { EuiFormRow, EuiCallOut, EuiButton, EuiSpacer } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { DarkModeConsumer } from "../../components/DarkMode";
-import JSONEditor from '../../components/JSONEditor';
+import JSONEditor from "../../components/JSONEditor";
 
 interface LegacyNotificationProps {
   value: Record<string, any>;
@@ -17,11 +17,7 @@ interface LegacyNotificationProps {
   actionNotification?: boolean;
 }
 
-const LegacyNotification = ({
-  value,
-  onChange,
-  onSwitchToChannels,
-}: LegacyNotificationProps) => {
+const LegacyNotification = ({ value, onChange, onSwitchToChannels }: LegacyNotificationProps) => {
   return (
     <>
       <EuiCallOut title="Update your notifications to use Channel ID" iconType="iInCircle" size="s">
@@ -39,7 +35,7 @@ const LegacyNotification = ({
               theme={isDarkMode ? "sense-dark" : "github"}
               width="100%"
               value={JSON.stringify(value, null, 2)}
-              onChange={val => onChange(JSON.parse(val))}
+              onChange={(val) => onChange(JSON.parse(val))}
               setOptions={{ fontSize: "14px" }}
               aria-label="Code Editor"
               height="300px"

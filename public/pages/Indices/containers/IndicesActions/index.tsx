@@ -101,15 +101,16 @@ export default function IndicesActions(props: IndicesActionsProps) {
 
   const onOpenIndexModalConfirm = useCallback(async () => {
     try {
+      const indexPayload = selectedItems.map((item) => item.index).join(",");
       const result = await services.commonService.apiCaller({
         endpoint: "indices.open",
         data: {
-          index: selectedItems.map((item) => item.index).join(","),
+          index: indexPayload,
         },
       });
       if (result && result.ok) {
         onOpenIndexModalClose();
-        coreServices.notifications.toasts.addSuccess("Open index successfully");
+        coreServices.notifications.toasts.addSuccess(`Open [${indexPayload}] successfully`);
         onOpen();
       } else {
         coreServices.notifications.toasts.addDanger(result.error);
@@ -125,15 +126,16 @@ export default function IndicesActions(props: IndicesActionsProps) {
 
   const onCloseIndexModalConfirm = useCallback(async () => {
     try {
+      const indexPayload = selectedItems.map((item) => item.index).join(",");
       const result = await services.commonService.apiCaller({
         endpoint: "indices.close",
         data: {
-          index: selectedItems.map((item) => item.index).join(","),
+          index: indexPayload,
         },
       });
       if (result && result.ok) {
         onCloseIndexModalClose();
-        coreServices.notifications.toasts.addSuccess("Close index successfully");
+        coreServices.notifications.toasts.addSuccess(`Close [${indexPayload}] successfully`);
         onClose();
       } else {
         coreServices.notifications.toasts.addDanger(result.error);
@@ -187,6 +189,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
     if (result && result.ok) {
       return result.response;
     } else {
+      console.log("result:" + JSON.stringify(result));
       const errorMessage = `There is a problem getting index setting for ${indexName}, please check with Admin`;
       coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
       throw new Error(result?.error || errorMessage);
@@ -350,6 +353,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onClose={onShrinkIndexFlyoutClose}
           onConfirm={onShrinkIndexFlyoutConfirm}
           getIndexSettings={getIndexSettings}
+          setIndexSettings={setIndexSettings}
         />
       )}
 

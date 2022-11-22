@@ -11,7 +11,7 @@ import "brace/mode/json";
 import { FeatureChannelList } from "../../../server/models/interfaces";
 import { BrowserServices } from "../../models/interfaces";
 import { ErrorNotification as IErrorNotification } from "../../../models/interfaces";
-import { ServicesContext } from '../../services';
+import { ServicesContext } from "../../services";
 import { getErrorMessage } from "../../utils/helpers";
 import { CoreServicesContext } from "../../components/core_services";
 import ChannelNotification from "../../components/ChannelNotification";
@@ -67,12 +67,11 @@ class ErrorNotification extends Component<ErrorNotificationProps, ErrorNotificat
     const id = e.target.value;
     onChangeChannelId && onChangeChannelId(id);
     onChange({
-        ...value,
-        channel: {
-          id,
-        },
+      ...value,
+      channel: {
+        id,
       },
-    );
+    });
   };
 
   onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -97,13 +96,10 @@ class ErrorNotification extends Component<ErrorNotificationProps, ErrorNotificat
         source: "",
       },
     });
-  }
+  };
 
   render() {
-    const {
-      value: errorNotification,
-      onChange
-    } = this.props;
+    const { value: errorNotification, onChange } = this.props;
     const { channels, loadingChannels } = this.state;
     const hasDestination = !!errorNotification?.destination;
 
@@ -121,13 +117,7 @@ class ErrorNotification extends Component<ErrorNotificationProps, ErrorNotificat
 
     // If we have a destination in the error notification then it's either an older policy or they created through the API
     if (hasDestination) {
-      content = (
-        <LegacyNotification
-          value={errorNotification}
-          onChange={onChange}
-          onSwitchToChannels={this.onSwitchToChannels}
-        />
-      );
+      content = <LegacyNotification value={errorNotification} onChange={onChange} onSwitchToChannels={this.onSwitchToChannels} />;
     }
 
     return (
@@ -165,9 +155,7 @@ class ErrorNotification extends Component<ErrorNotificationProps, ErrorNotificat
   }
 }
 
-export default function ErrorNotificationContainer(props: Omit<ErrorNotificationProps, 'browserServices'>) {
+export default function ErrorNotificationContainer(props: Omit<ErrorNotificationProps, "browserServices">) {
   const browserServices = useContext(ServicesContext) as BrowserServices;
-  return (
-    <ErrorNotification {...props} browserServices={browserServices} />
-  );
+  return <ErrorNotification {...props} browserServices={browserServices} />;
 }

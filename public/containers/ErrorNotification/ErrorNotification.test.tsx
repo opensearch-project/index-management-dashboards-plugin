@@ -11,18 +11,16 @@ import { ServicesContext } from "../../services";
 import { browserServicesMock } from "../../../test/mocks";
 import { ErrorNotification as IErrorNotification } from "../../../models/interfaces";
 
-const ErrorNotification = (props: Pick<ErrorNotificationProps, 'value'>) => {
+const ErrorNotification = (props: Pick<ErrorNotificationProps, "value">) => {
   const [value, onChange] = useState(props.value);
-  return <ErrorNotificationContainer {...props} value={value} onChange={onChange} />
-}
+  return <ErrorNotificationContainer {...props} value={value} onChange={onChange} />;
+};
 
 function renderErrorNotification(errorNotification: IErrorNotification) {
   return {
     ...render(
       <ServicesContext.Provider value={browserServicesMock}>
-        <ErrorNotification
-          value={errorNotification}
-        />
+        <ErrorNotification value={errorNotification} />
       </ServicesContext.Provider>
     ),
   };
@@ -31,9 +29,7 @@ function renderErrorNotification(errorNotification: IErrorNotification) {
 describe("<ErrorNotification /> spec", () => {
   it("renders the component", () => {
     const { container } = render(
-      <ErrorNotification
-        value={{ channel: { id: "some_id" }, message_template: { source: "some source message" } }}
-      />
+      <ErrorNotification value={{ channel: { id: "some_id" }, message_template: { source: "some source message" } }} />
     );
     expect(container.firstChild).toMatchSnapshot();
   });
