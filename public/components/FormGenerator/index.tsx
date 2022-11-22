@@ -1,21 +1,17 @@
 import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } from "react";
 import { EuiForm, EuiFormProps, EuiFormRowProps } from "@elastic/eui";
 import AllBuiltInComponents from "./built_in_components";
-import Field, { InitOption, FieldOption, Rule } from "../../lib/field";
+// import Field, { InitOption, FieldOption, Rule } from "../../lib/field";
+import useField, { InitOption, FieldOption, Rule, FieldInstance } from "../../lib/field";
 import AdvancedSettings, { IAdvancedSettingsProps } from "../AdvancedSettings";
 import CustomFormRow from "../CustomFormRow";
 
 type ParametersOfValidator = Parameters<Required<Rule>["validator"]>;
 interface IRule extends Omit<Rule, "validator"> {
-  validator?: (
-    rule: ParametersOfValidator[0],
-    value: ParametersOfValidator[1],
-    callback: ParametersOfValidator[2],
-    values: Record<string, any>
-  ) => ReturnType<Required<Rule>["validator"]>;
+  validator?: (rule: ParametersOfValidator[0], value: ParametersOfValidator[1], values: Record<string, any>) => Promise<string | void>;
 }
 
-interface IInitOption extends InitOption {
+interface IInitOption extends Omit<InitOption, "rules"> {
   rules?: IRule[];
 }
 
@@ -28,7 +24,7 @@ export interface IField {
   name: string;
   type?: keyof typeof AllBuiltInComponents;
   component?: typeof AllBuiltInComponents["Input"];
-  options?: IInitOption;
+  options?: Omit<IInitOption, "name">;
 }
 
 export interface IFormGeneratorProps {
@@ -41,17 +37,16 @@ export interface IFormGeneratorProps {
   onChange?: (totalValue: IFormGeneratorProps["value"], key?: string, value?: any) => void;
 }
 
-export interface IFormGeneratorRef extends Field {}
+export interface IFormGeneratorRef extends FieldInstance {}
 
 export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref: React.Ref<IFormGeneratorRef>) {
   const { fieldProps, formFields, advancedSettingsProps } = props;
   const { blockedNameList } = advancedSettingsProps || {};
   const propsRef = useRef(props);
   propsRef.current = props;
-  const field = Field.useField({
-    scrollDom: document.body,
+  const field = useField({
     ...fieldProps,
-    onChange(name, value) {
+    onChange(name: string, value: any) {
       propsRef.current.onChange &&
         propsRef.current.onChange(
           {
@@ -82,8 +77,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
         if (ruleItem.validator) {
           return {
             ...ruleItem,
-            validator: ((rule, value, callback) =>
-              ruleItem.validator?.apply(field, [rule, value, callback, field.getValues()] as any)) as Rule["validator"],
+            validator: (rule: Rule, value: any) => ruleItem.validator?.apply(field, [rule, value, field.getValues()] as any) as any,
           };
         }
 
@@ -130,7 +124,12 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
             error={errorMessage[item.name]}
             isInvalid={!!errorMessage[item.name]}
           >
-            <RenderComponent {...field.init(item.name, item.options)} />
+            <RenderComponent
+              {...field.registerField({
+                ...(item.options as InitOption),
+                name: item.name,
+              })}
+            />
           </CustomFormRow>
         );
       })}
@@ -145,7 +144,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
           onChange={(val) => {
             field.setValues(val);
             const totalValue = {
-              ...field.getValues<any>(),
+              ...field.getValues(),
               ...val,
             };
             props.onChange && props.onChange(totalValue, undefined, val);

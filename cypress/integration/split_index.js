@@ -55,13 +55,15 @@ describe("Split Index", () => {
         .end()
         .get('[data-test-subj="Split Action"]')
         .click()
-        .end()
+        .end();
+
+      cy.wait(1000)
         // Target Index Name is required
-        .get('[id="targetIndex"]')
+        .get('[data-test-subj="form-name-targetIndex"] input')
         .type(`${SAMPLE_INDEX_SPLIT}`)
         .end()
         // Number of shards after split is required
-        .get('[id="index.number_of_shards"]')
+        .get('[data-test-subj="form-name-index.number_of_shards"] input')
         .type(`${split_number}`)
         .end()
         .get('[data-test-subj="flyout-footer-action-button"]')
@@ -90,8 +92,10 @@ describe("Split Index", () => {
         .end()
         .get('[data-test-subj="Split Action"]')
         .click()
-        .end()
-        .get('[id="targetIndex"]')
+        .end();
+
+      cy.wait(1000)
+        .get('[data-test-subj="form-name-targetIndex"] input')
         .type(`${SAMPLE_INDEX_SPLIT}-1`)
         .end()
         // Instead of input shard number at shard field, another option is to populate it in advanced setting
