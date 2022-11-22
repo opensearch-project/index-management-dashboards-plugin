@@ -7,6 +7,7 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Route, Switch, HashRouter as Router } from "react-router-dom";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
 import IndexDetail, { IndexDetailModalProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
@@ -18,13 +19,17 @@ apiCallerMock(browserServicesMock);
 function renderWithRouter(props: IndexDetailModalProps) {
   return {
     ...render(
-      <CoreServicesContext.Provider value={coreServicesMock}>
-        <ServicesContext.Provider value={browserServicesMock}>
-          <ModalProvider>
-            <IndexDetail {...props} />
-          </ModalProvider>
-        </ServicesContext.Provider>
-      </CoreServicesContext.Provider>
+      <Router>
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <ModalProvider>
+              <Switch>
+                <Route path="/" render={() => <IndexDetail {...props} />} />
+              </Switch>
+            </ModalProvider>
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      </Router>
     ),
   };
 }
@@ -32,7 +37,7 @@ function renderWithRouter(props: IndexDetailModalProps) {
 describe("container <IndexDetail /> spec", () => {
   const onUpdateSuccessMock = jest.fn();
   it("render the component", async () => {
-    const { container, getByTestId, getByDisplayValue } = renderWithRouter({
+    const { container, getByTestId, queryByText } = renderWithRouter({
       index: "test_index",
       record: {
         "docs.count": "5",
@@ -75,8 +80,10 @@ describe("container <IndexDetail /> spec", () => {
 
     userEvent.click(document.getElementById("index-detail-modal-alias") as Element);
     await waitFor(() => {
-      expect(getByDisplayValue("test_index")).not.toBeNull();
+      expect(queryByText("Index alias")).not.toBeNull();
     });
+    userEvent.click(getByTestId("detail-modal-edit"));
+    await waitFor(() => {});
     userEvent.click(getByTestId("createIndexCreateButton"));
     await waitFor(() => {
       expect(onUpdateSuccessMock).toBeCalledTimes(1);

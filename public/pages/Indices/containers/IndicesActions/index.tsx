@@ -84,8 +84,8 @@ export default function IndicesActions(props: IndicesActionsProps) {
     });
     if (result && result.ok) {
       coreServices?.notifications.toasts.addSuccess(`Successfully submit split index request.`);
-      onDelete();
       onCloseFlyout();
+      onDelete();
     } else {
       coreServices.notifications.toasts.addDanger(
         result?.error || "There was a problem submit split index request, please check with admin"
@@ -195,6 +195,29 @@ export default function IndicesActions(props: IndicesActionsProps) {
       return result.response;
     } else {
       const errorMessage = `There is a problem getting index setting for ${indexName}, please check with Admin`;
+      coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
+      throw new Error(result?.error || errorMessage);
+    }
+  };
+
+  const setIndexSettings = async (indexName: string, flat: boolean, settings: {}) => {
+    const result = await services.commonService.apiCaller({
+      endpoint: "indices.putSettings",
+      method: "PUT",
+      data: {
+        index: indexName,
+        flat_settings: flat,
+        body: {
+          settings: {
+            ...settings,
+          },
+        },
+      },
+    });
+    if (result && result.ok) {
+      coreServices.notifications.toasts.addSuccess(`Successfully update index setting for ${indexName}`);
+    } else {
+      const errorMessage = `There is a problem set index setting for ${indexName}, please check with Admin`;
       coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
       throw new Error(result?.error || errorMessage);
     }
@@ -318,7 +341,8 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onCloseFlyout={onCloseFlyout}
           onSplitIndex={splitIndex}
           getIndexSettings={getIndexSettings}
-          coreServices={coreServices}
+          setIndexSettings={setIndexSettings}
+          openIndex={onOpenIndexModalConfirm}
         />
       )}
     </>

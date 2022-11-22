@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
   EuiButtonEmpty,
   EuiCopy,
@@ -11,11 +11,16 @@ import {
   EuiDescriptionList,
   EuiDescriptionListTitle,
   EuiDescriptionListDescription,
+  EuiFlexItem,
   EuiSpacer,
+  EuiFlexGroup,
+  EuiButton,
+  EuiBasicTable,
   EuiFlyout,
   EuiFlyoutHeader,
   EuiTitle,
   EuiFlyoutBody,
+  EuiIcon,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
@@ -109,7 +114,10 @@ const OVERVIEW_DISPLAY_INFO: {
 export default function IndexDetail(props: IndexDetailModalProps) {
   const { index, record, onUpdateIndex, ...others } = props;
   const [visible, setVisible] = useState(false);
+  const [editVisible, setEditVisible] = useState(false);
+  const [editMode, setEditMode] = useState(IndicesUpdateMode.settings);
   const [detail, setDetail] = useState({} as IndexItem);
+  const ref = useRef<IndexForm>(null);
   const finalDetail: IFinalDetail = useMemo(
     () => ({
       ...record,
@@ -119,30 +127,34 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   );
   const services = useContext(ServicesContext) as BrowserServices;
 
+  const fetchIndicesDetail = () => {
+    services.commonService
+      .apiCaller<Record<string, IndexItem>>({
+        endpoint: "indices.get",
+        data: {
+          index,
+        },
+      })
+      .then((res) => {
+        if (!res.ok) {
+          return res;
+        }
+
+        return {
+          ...res,
+          response: res.response[index],
+        };
+      })
+      .then((res) => {
+        if (res && res.ok) {
+          setDetail(res.response);
+        }
+      });
+  };
+
   useEffect(() => {
     if (visible) {
-      services.commonService
-        .apiCaller<Record<string, IndexItem>>({
-          endpoint: "indices.get",
-          data: {
-            index,
-          },
-        })
-        .then((res) => {
-          if (!res.ok) {
-            return res;
-          }
-
-          return {
-            ...res,
-            response: res.response[index],
-          };
-        })
-        .then((res) => {
-          if (res && res.ok) {
-            setDetail(res.response);
-          }
-        });
+      fetchIndicesDetail();
     }
   }, [visible]);
 
@@ -153,11 +165,25 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   const indexFormCommonProps = {
     index: props.index,
     commonService: services.commonService,
-    onCancel: onCloseFlyout,
+    onCancel: () => setEditVisible(false),
     onSubmitSuccess: () => {
-      onCloseFlyout();
+      ref.current?.refreshIndex();
+      setEditVisible(false);
       onUpdateIndex();
+      fetchIndicesDetail();
     },
+  };
+
+  const indexFormReadonlyCommonProps = {
+    ...indexFormCommonProps,
+    hideButtons: true,
+    readonly: true,
+    ref,
+  };
+
+  const onEdit = (editMode: IndicesUpdateMode) => {
+    setEditMode(editMode);
+    setEditVisible(true);
   };
 
   return (
@@ -219,7 +245,18 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   content: (
                     <>
                       <EuiSpacer />
-                      <IndexForm {...indexFormCommonProps} mode={IndicesUpdateMode.settings} />
+                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+                        <EuiFlexItem grow={false}>
+                          <h2>Advanced index settings</h2>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+                          <EuiButton size="s" data-test-subj="detail-modal-edit" onClick={() => onEdit(IndicesUpdateMode.settings)}>
+                            Edit
+                          </EuiButton>
+                        </EuiFlexItem>
+                      </EuiFlexGroup>
+                      <EuiSpacer />
+                      <IndexForm {...indexFormReadonlyCommonProps} mode={IndicesUpdateMode.settings} />
                     </>
                   ),
                 },
@@ -229,7 +266,18 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   content: (
                     <>
                       <EuiSpacer />
-                      <IndexForm {...indexFormCommonProps} mode={IndicesUpdateMode.mappings} />
+                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+                        <EuiFlexItem grow={false}>
+                          <h2>Index mappings</h2>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+                          <EuiButton size="s" data-test-subj="detail-modal-edit" onClick={() => onEdit(IndicesUpdateMode.mappings)}>
+                            Edit
+                          </EuiButton>
+                        </EuiFlexItem>
+                      </EuiFlexGroup>
+                      <EuiSpacer />
+                      <IndexForm {...indexFormReadonlyCommonProps} mode={IndicesUpdateMode.mappings} />
                     </>
                   ),
                 },
@@ -239,12 +287,53 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   content: (
                     <>
                       <EuiSpacer />
-                      <IndexForm {...indexFormCommonProps} mode={IndicesUpdateMode.alias} />
+                      <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+                        <EuiFlexItem grow={false}>
+                          <h2>Index alias</h2>
+                        </EuiFlexItem>
+                        <EuiFlexItem grow={false}>
+                          <EuiButton size="s" data-test-subj="detail-modal-edit" onClick={() => onEdit(IndicesUpdateMode.alias)}>
+                            Edit
+                          </EuiButton>
+                        </EuiFlexItem>
+                      </EuiFlexGroup>
+                      <EuiSpacer />
+                      <EuiBasicTable
+                        rowHeader="alias"
+                        noItemsMessage="No alias found"
+                        items={Object.keys(finalDetail.aliases || {}).map((item) => ({ alias: item }))}
+                        columns={[
+                          {
+                            field: "alias",
+                            name: "Alias name",
+                            render: (val: string, record: { alias: string }) => (
+                              <Link to="somewhereto">
+                                <span title={val}>{val}</span>
+                              </Link>
+                            ),
+                          },
+                        ]}
+                      />
                     </>
                   ),
                 },
               ]}
             />
+          </EuiFlyoutBody>
+        </EuiFlyout>
+      ) : null}
+      {editVisible ? (
+        <EuiFlyout data-test-subj="index-form-in-index-detail" onClose={() => null} hideCloseButton>
+          <EuiFlyoutHeader hasBorder>
+            <EuiTitle size="m">
+              <span onClick={() => setEditVisible(false)} style={{ cursor: "pointer" }}>
+                <EuiIcon type="arrowLeft" size="l" />
+                Edit index {editMode}
+              </span>
+            </EuiTitle>
+          </EuiFlyoutHeader>
+          <EuiFlyoutBody>
+            <IndexForm {...indexFormCommonProps} mode={editMode} />
           </EuiFlyoutBody>
         </EuiFlyout>
       ) : null}
