@@ -55,7 +55,9 @@ describe("Split Index", () => {
         .end()
         .get('[data-test-subj="Split Action"]')
         .click()
-        .end()
+        .end();
+
+      cy.wait(1000)
         // Target Index Name is required
         .get('[id="targetIndex"]')
         .type(`${SAMPLE_INDEX_SPLIT}`)
@@ -90,7 +92,9 @@ describe("Split Index", () => {
         .end()
         .get('[data-test-subj="Split Action"]')
         .click()
-        .end()
+        .end();
+
+      cy.wait(1000)
         .get('[id="targetIndex"]')
         .type(`${SAMPLE_INDEX_SPLIT}-1`)
         .end()
@@ -134,7 +138,8 @@ describe("Split Index", () => {
         .click()
         .end()
         // Index can't be split if it's blocks write status is not true
-        .get('[data-test-subj="flyout-footer-action-button"]').should("have.class", "euiButton-isDisabled")
+        .get('[data-test-subj="flyout-footer-action-button"]')
+        .should("have.class", "euiButton-isDisabled")
         .end()
         // Set index to blocks write
         .get('[data-test-subj="set-indexsetting-button"]')
@@ -144,6 +149,5 @@ describe("Split Index", () => {
         .click()
         .end();
     }); // Blocks write
-
   });
 });
