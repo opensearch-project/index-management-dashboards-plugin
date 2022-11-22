@@ -579,7 +579,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
             commonService={this.props.commonService}
             onSubmitSuccess={this.onCreateIndexSuccess}
             sourceIndices={sources.map((item) => item.label)}
-            onCancel={() => this.setState({ showCreateIndexFlyout: false })}
+            onCloseFlyout={() => this.setState({ showCreateIndexFlyout: false })}
           />
         )}
       </div>
