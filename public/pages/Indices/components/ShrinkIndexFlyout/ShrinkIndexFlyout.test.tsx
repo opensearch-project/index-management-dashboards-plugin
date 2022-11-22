@@ -264,7 +264,8 @@ describe("<ShrinkIndexFlyout /> spec", () => {
       },
     };
     const getIndexSettings = jest.fn().mockResolvedValue(testIndexSettings);
-    const { queryByText } = render(
+    const onConfirm = jest.fn();
+    const { queryByText, getByTestId } = render(
       <ShrinkIndexFlyout
         sourceIndex={{
           health: "green",
@@ -274,7 +275,7 @@ describe("<ShrinkIndexFlyout /> spec", () => {
           status: "open",
         }}
         visible
-        onConfirm={() => {}}
+        onConfirm={onConfirm}
         onClose={() => {}}
         getIndexSettings={getIndexSettings}
       />
@@ -283,6 +284,16 @@ describe("<ShrinkIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(queryByText("The source index's health is not green.")).toBeNull();
       expect(queryByText("One copy of every shard may not allocated to one node.")).toBeNull();
+    });
+
+    await act(async () => {
+      userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
+    });
+    await act(async () => {
+      fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
+    });
+    await waitFor(() => {
+      expect(onConfirm).toHaveBeenCalled();
     });
   });
 });
