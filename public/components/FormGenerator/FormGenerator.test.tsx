@@ -20,7 +20,7 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
     options: {
       rules: [
         {
-          validator: (rule, value, callback, values) => {
+          validator: (rule, value, values) => {
             // let's use a validation that the values.test_component should be the same as values.test
             // you can custom validation here as you want
             if (values.test_component !== values.test) {
@@ -130,9 +130,7 @@ describe("<FormGenerator /> spec", () => {
     fireEvent.blur(getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement);
 
     expect(validateResult?.errors).toEqual({
-      test: {
-        errors: ["values.test_component !== values.test"],
-      },
+      test: ["values.test_component !== values.test"],
     });
 
     expect(onChangeMock).toBeCalledWith(
@@ -203,9 +201,7 @@ describe("<FormGenerator /> spec", () => {
 
     expect(onValidate).toBeCalledWith({
       errors: {
-        test: {
-          errors: ["values.test_component !== values.test"],
-        },
+        test: ["values.test_component !== values.test"],
       },
       values: {
         test: "1",
@@ -265,9 +261,7 @@ describe("<FormGenerator /> spec", () => {
 
     expect(onValidate).toBeCalledWith({
       errors: {
-        test: {
-          errors: ["values.test_component !== values.test"],
-        },
+        test: ["values.test_component !== values.test"],
       },
       values: {
         test: "1",

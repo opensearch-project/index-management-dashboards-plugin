@@ -25,12 +25,14 @@ import { MappingsProperties, MappingsPropertiesObject } from "../../../../../mod
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
 import "./IndexMapping.scss";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
+import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 
 export interface IndexMappingProps {
   value?: MappingsProperties;
   oldValue?: MappingsProperties;
   onChange: (value: IndexMappingProps["value"]) => void;
   isEdit?: boolean;
+  readonly?: boolean;
 }
 
 export interface IIndexMappingsRef {
@@ -46,10 +48,10 @@ interface IMappingLabel {
   value: MappingsProperties[number];
   onChange: (val: IMappingLabel["value"], key: string, value: string) => void | string;
   onFieldNameCheck: (val: string) => string;
-  // onFieldNameChange: (newFieldName: string, oldFieldName: string) => void;
   onAddSubField: () => void;
   onDeleteField: () => void;
   disabled?: boolean;
+  readonly?: boolean;
   id: string;
 }
 
@@ -60,7 +62,7 @@ const EuiSelectWrapped = EuiToolTipWrapper(EuiSelect);
 
 const MappingLabel = forwardRef(
   (
-    { value, onChange, onFieldNameCheck, disabled, onAddSubField, onDeleteField, id }: IMappingLabel,
+    { value, onChange, onFieldNameCheck, disabled, onAddSubField, onDeleteField, id, readonly }: IMappingLabel,
     forwardedRef: React.Ref<IIndexMappingsRef>
   ) => {
     const { fieldName, ...fieldSettings } = value;
@@ -107,8 +109,8 @@ const MappingLabel = forwardRef(
           <EuiFormRow isInvalid={!!fieldNameError} error={fieldNameError} label="Field name" display="rowCompressed">
             <EuiFieldTextWrapped
               inputRef={ref}
-              disabled={disabled}
-              disabledReason={OLD_VALUE_DISABLED_REASON}
+              disabled={readonly || disabled}
+              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
               compressed
               data-test-subj={`${id}-field-name`}
               value={fieldNameState}
@@ -125,8 +127,8 @@ const MappingLabel = forwardRef(
         <EuiFlexItem grow={false}>
           <EuiFormRow label="Field type" display="rowCompressed">
             <EuiSelectWrapped
-              disabled={disabled}
-              disabledReason={OLD_VALUE_DISABLED_REASON}
+              disabled={readonly || disabled}
+              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
               compressed
               value={type}
               data-test-subj={`${id}-field-type`}
@@ -175,7 +177,7 @@ const MappingLabel = forwardRef(
   }
 );
 
-const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
+const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
   const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
   useImperativeHandle(ref, () => ({
     validate: async () => {
@@ -231,6 +233,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
                 delete allFieldsRef.current[id];
               }
             }}
+            readonly={readonly}
             disabled={isEdit && !!get(oldValue, id)}
             value={item}
             id={`mapping-visual-editor-${id}`}
@@ -277,7 +280,6 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
   }, [oldValue, value]);
   return (
     <>
-      <EuiSpacer />
       <EuiButtonGroup
         type="single"
         idSelected={editorMode as string}
@@ -310,14 +312,18 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
           ) : (
             <p>You have no field mappings.</p>
           )}
-          <EuiSpacer />
-          <EuiButton data-test-subj="create index add field button" onClick={() => addField("", ``)}>
-            Add a field
-          </EuiButton>
+          {readonly ? null : (
+            <>
+              <EuiSpacer />
+              <EuiButton data-test-subj="create index add field button" onClick={() => addField("", ``)}>
+                Add a field
+              </EuiButton>
+            </>
+          )}
         </>
       ) : (
         <>
-          {isEdit ? (
+          {isEdit && !readonly ? (
             <>
               <EuiButton
                 size="s"
@@ -336,10 +342,15 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue }: IndexMappingProps, 
               <EuiSpacer />
             </>
           ) : null}
-          <JSONEditor
-            value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
-            onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
-          />
+          {readonly ? (
+            <JSONEditor value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} readOnly={readonly} />
+          ) : (
+            <JSONDiffEditor
+              original={JSON.stringify({}, null, 2)}
+              value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
+              onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
+            />
+          )}
         </>
       )}
     </>

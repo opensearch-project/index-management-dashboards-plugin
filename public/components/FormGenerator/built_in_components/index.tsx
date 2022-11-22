@@ -1,8 +1,8 @@
 import React, { forwardRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch } from "@elastic/eui";
+import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
 
-type ComponentMapEnum = "Input" | "Number" | "Switch";
+type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select";
 
 export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
   onChange: (val: IFieldComponentProps["value"]) => void;
@@ -28,6 +28,9 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
       </div>
     )) as React.ComponentType<IFieldComponentProps>
   ),
+  Select: forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
+    <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
+  )),
 };
 
 export default componentMap;

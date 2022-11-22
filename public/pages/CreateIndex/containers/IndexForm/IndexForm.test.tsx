@@ -29,7 +29,7 @@ function renderCreateIndexWithRouter(props: Omit<IndexFormProps, "commonService"
   };
 }
 
-describe("<CreateIndex /> spec", () => {
+describe("<IndexForm /> spec", () => {
   it("show a toast if getIndices gracefully fails", async () => {
     const { getByText } = renderCreateIndexWithRouter({
       index: "bad_index",
@@ -93,13 +93,11 @@ describe("<CreateIndex /> spec", () => {
   });
 
   it("it shows detail and does not call any api when nothing modified", async () => {
-    const { getByText, getByTestId } = renderCreateIndexWithRouter({
+    const { getByText } = renderCreateIndexWithRouter({
       index: "good_index",
     });
     await waitFor(() => getByText("Define index"));
     userEvent.click(getByText("Update"));
-    await waitFor(() => {});
-    userEvent.click(getByTestId("change_diff_confirm-confirm"));
 
     await waitFor(() => {
       // it shows detail and does not call any api when nothing modified
@@ -123,8 +121,6 @@ describe("<CreateIndex /> spec", () => {
     await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "test_mapping_2");
     await userEvent.click(document.body);
     userEvent.click(getByText("Update"));
-    await waitFor(() => {});
-    userEvent.click(getByTestId("change_diff_confirm-confirm"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
@@ -236,15 +232,8 @@ describe("<CreateIndex /> spec", () => {
     await userEvent.click(document.body);
     await waitFor(() => {});
     userEvent.click(getByText("Update"));
-    await waitFor(() => {});
-    userEvent.click(getByTestId("change_diff_confirm-cancel"));
-    await waitFor(() => {});
-    userEvent.click(getByText("Update"));
-    await waitFor(() => {});
-    userEvent.click(getByTestId("change_diff_confirm-confirm"));
 
     await waitFor(() => {
-      // shows detail settings and update settings only
       expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);
 
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
@@ -274,8 +263,6 @@ describe("<CreateIndex /> spec", () => {
 
     userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
     userEvent.click(getByText("Update"));
-    await waitFor(() => {});
-    userEvent.click(getByTestId("change_diff_confirm-confirm"));
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledTimes(1);

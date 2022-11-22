@@ -200,7 +200,7 @@ export interface SMDeleteCondition {
 export interface ErrorNotification {
   destination?: Destination;
   channel?: Channel;
-  message_template: MessageTemplate;
+  message_template?: MessageTemplate;
 }
 
 export interface Notification {

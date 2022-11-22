@@ -6,7 +6,6 @@ export default {
     email: "%s is not a valid email address",
     url: "%s is not a valid URL address",
     tel: "%s is not a valid phone number",
-    IDNumber: "%s is not a valid ID number",
   },
   number: {
     length: "%s length must be %s",

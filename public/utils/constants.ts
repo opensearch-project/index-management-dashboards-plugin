@@ -183,3 +183,14 @@ export enum IndicesUpdateMode {
 }
 
 export const INDEX_MAPPING_TYPES_WITH_CHILDREN = INDEX_MAPPING_TYPES.filter((item) => item.hasChildren).map((item) => item.label);
+
+export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
+  destination: {
+    slack: {
+      url: "<url>",
+    },
+  },
+  message_template: {
+    source: "The index {{ctx.index}} failed during policy execution.",
+  },
+};
