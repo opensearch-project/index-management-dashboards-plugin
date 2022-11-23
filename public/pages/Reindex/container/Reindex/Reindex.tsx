@@ -580,7 +580,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
-              Execute
+              Reindex
             </EuiButton>
           </EuiFlexItem>
         </EuiFlexGroup>

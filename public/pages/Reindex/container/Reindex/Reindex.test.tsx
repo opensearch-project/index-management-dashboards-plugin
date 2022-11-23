@@ -210,13 +210,13 @@ describe("<Reindex /> spec", () => {
 
   it("source is required", async () => {
     mockApi();
-    const { getByText } = renderWithRouter();
+    const { getByText, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
       getByText("Configure source index");
     });
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     expect(getByText("Source is required")).toBeInTheDocument();
   });
@@ -242,7 +242,7 @@ describe("<Reindex /> spec", () => {
         ],
       },
     });
-    const { getByText, getAllByTestId } = renderWithRouter();
+    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
       getByText("Configure source index");
@@ -252,7 +252,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {});
 
@@ -282,7 +282,7 @@ describe("<Reindex /> spec", () => {
         ],
       },
     });
-    const { getByText, getAllByTestId } = renderWithRouter();
+    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
       getByText("Configure source index");
@@ -292,7 +292,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {}, { timeout: 4000 });
 
@@ -324,7 +324,7 @@ describe("<Reindex /> spec", () => {
         });
       }
     });
-    const { getByText, getAllByTestId } = renderWithRouter();
+    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
       getByText("Configure source index");
@@ -334,7 +334,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {}, { timeout: 4000 });
 
@@ -345,7 +345,7 @@ describe("<Reindex /> spec", () => {
 
   it("destination is required", async () => {
     mockApi();
-    const { getByText, getAllByTestId } = renderWithRouter();
+    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
       getByText("Configure source index");
@@ -356,7 +356,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
     await waitFor(() => {});
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {
       expect(getByText("Destination is required")).toBeInTheDocument();
@@ -365,7 +365,7 @@ describe("<Reindex /> spec", () => {
 
   it("destination is closed", async () => {
     mockApi();
-    const { getByText, getAllByTestId } = renderWithRouter();
+    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
       getByText("Configure source index");
@@ -402,7 +402,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
     await waitFor(() => {});
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {
       expect(getByText("Index [index-dest] status is closed")).toBeInTheDocument();
@@ -411,7 +411,7 @@ describe("<Reindex /> spec", () => {
 
   it("destination health status is red", async () => {
     mockApi();
-    const { getByText, getAllByTestId } = renderWithRouter();
+    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
       getByText("Configure source index");
@@ -448,7 +448,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
     await waitFor(() => {});
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {
       expect(getByText("Index [index-dest] health status is red")).toBeInTheDocument();
@@ -479,7 +479,7 @@ describe("<Reindex /> spec", () => {
     // slices
     userEvent.type(getByTestId("slices"), "not a number");
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {
       expect(getByText("Slices must be positive integer or auto")).toBeInTheDocument();
@@ -516,7 +516,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[2], { key: "Enter", code: "Enter" });
     await waitFor(() => {});
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {
       expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
@@ -529,13 +529,13 @@ describe("<Reindex /> spec", () => {
       ok: false,
       error: "service not available",
     });
-    const { getByText } = renderWithRouter();
+    const { getByText, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
       getByText("Configure source index");
     });
 
-    userEvent.click(getByText("Execute"));
+    userEvent.click(getByTestId("reindexConfirmButton"));
 
     expect(coreServicesMock.notifications.toasts.addDanger).toBeCalled();
   });
