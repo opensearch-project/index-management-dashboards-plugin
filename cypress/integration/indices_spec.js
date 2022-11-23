@@ -315,6 +315,19 @@ describe("Indices", () => {
 
       cy.get('[placeholder="Search"]').type("p");
     });
+
+    after(() => {
+      cy.request({
+        method: "DELETE",
+        url: `${Cypress.env("opensearch")}/${reindexedIndex}`,
+        failOnStatusCode: false,
+      });
+      cy.request({
+        method: "DELETE",
+        url: `${Cypress.env("opensearch")}/${splittedIndex}`,
+        failOnStatusCode: false,
+      });
+    });
   });
 
   describe("can shrink an index", () => {

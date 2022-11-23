@@ -76,7 +76,7 @@ describe("Reindex", () => {
         expect(response.status).equal(200);
       });
 
-      cy.createIndex(REINDEX_DEST);
+      cy.createIndex(REINDEX_DEST, null, { settings: { "index.number_of_replicas": 0 } });
 
       cy.createPipeline("bumpOrderId", {
         description: "sample description",
@@ -131,7 +131,7 @@ describe("Reindex", () => {
       cy.wait(10);
       cy.contains(/Reindex .* success .* taskId .*/);
 
-      cy.wait(5000);
+      cy.wait(10000);
       // Type in REINDEX_DEST in search input
       cy.get(`input[type="search"]`).focus().type(REINDEX_DEST);
 
