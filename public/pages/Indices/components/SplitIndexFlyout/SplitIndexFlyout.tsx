@@ -198,19 +198,6 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       },
     ];
 
-    if (reasons.length > 0) {
-      console.log(
-        "Status has " +
-          reasons.length +
-          " problems. Blocks.write=" +
-          (blocksWriteValue ? blocksWriteValue : "null") +
-          " health=" +
-          sourceIndex.health +
-          " status=" +
-          sourceIndex.status
-      );
-    }
-
     return (
       <EuiFlyout ownFocus={true} onClose={() => {}} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
