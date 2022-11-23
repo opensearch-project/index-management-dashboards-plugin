@@ -115,8 +115,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         this.context.notifications.toasts.addDanger(res?.error || "Get index detail error");
       }
     }
-
-    this.setState({ sources: typeof source === "string" ? source.split(",").map((index) => ({ label: index })) : [] });
   }
 
   getIndexOptions = async (searchValue: string) => {
