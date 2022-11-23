@@ -132,7 +132,6 @@ describe("Split Index", () => {
         .type(`${split_number}`)
         .end()
         .get('[data-test-subj="comboBoxSearchInput"]')
-        .focus()
         .type(`${SAMPLE_ALIAS}{enter}${alias}{enter}`)
         .end()
         .get('[data-test-subj="flyout-footer-action-button"]')

@@ -253,7 +253,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
       method: "GET",
       data: {
         format: "json",
-        name: aliasName,
+        name: `${aliasName || ""}*`,
         expand_wildcards: "open",
       },
     });
