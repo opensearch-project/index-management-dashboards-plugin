@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { EuiAccordion, EuiAccordionProps, EuiFormRow, EuiSpacer, EuiFormRowProps } from "@elastic/eui";
 import JSONEditor, { JSONEditorProps } from "../JSONEditor";
 import "./index.scss";
@@ -7,18 +7,20 @@ export interface IAdvancedSettingsProps {
   rowProps?: Omit<EuiFormRowProps, "children">;
   accordionProps?: EuiAccordionProps;
   value?: Record<string, any>;
-  onChange?: (totalValue: IAdvancedSettingsProps["value"], key?: string, value?: any) => void;
+  onChange?: (totalValue: IAdvancedSettingsProps["value"]) => void;
   renderProps?: (options: Pick<Required<IAdvancedSettingsProps>, "value" | "onChange">) => React.ReactChild;
   editorProps?: Partial<JSONEditorProps>;
 }
 
 export default function AdvancedSettings(props: IAdvancedSettingsProps) {
   const { value, renderProps, editorProps } = props;
+  const propsRef = useRef<IAdvancedSettingsProps>(props);
+  propsRef.current = props;
 
   const onChangeInRenderProps = useCallback(
     (val: string) => {
       const parsedValue = JSON.parse(val);
-      props.onChange && props.onChange(parsedValue, undefined, parsedValue);
+      propsRef.current.onChange && propsRef.current.onChange(parsedValue);
     },
     [props.onChange]
   );
@@ -33,7 +35,14 @@ export default function AdvancedSettings(props: IAdvancedSettingsProps) {
       <EuiAccordion {...props.accordionProps} className="accordion-in-advanced-settings" id={accordionId}>
         <EuiFormRow {...(props.rowProps as EuiFormRowProps)}>
           {renderProps ? (
-            (renderProps({ value: value || {}, onChange: props.onChange || (() => null) }) as any)
+            (renderProps({
+              value: propsRef.current.value || {},
+              onChange: (val) => {
+                if (propsRef.current?.onChange) {
+                  propsRef.current?.onChange(val);
+                }
+              },
+            }) as any)
           ) : (
             <JSONEditor {...editorProps} value={JSON.stringify(value, null, 2)} onChange={onChangeInRenderProps} />
           )}
