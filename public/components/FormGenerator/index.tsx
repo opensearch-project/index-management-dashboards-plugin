@@ -147,7 +147,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
               ...field.getValues(),
               ...val,
             };
-            props.onChange && props.onChange(totalValue, undefined, val);
+            propsRef.current.onChange && propsRef.current.onChange(totalValue, undefined, val);
           }}
         />
       ) : null}

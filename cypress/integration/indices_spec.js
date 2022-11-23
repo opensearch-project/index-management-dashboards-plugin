@@ -342,6 +342,7 @@ describe("Indices", () => {
       // Type in SAMPLE_INDEX in search input
       cy.get(`input[type="search"]`).focus().type(SAMPLE_INDEX);
 
+      cy.wait(1000).get(".euiTableRow").should("have.length", 1);
       // Confirm we have our initial index
       cy.contains(SAMPLE_INDEX);
 

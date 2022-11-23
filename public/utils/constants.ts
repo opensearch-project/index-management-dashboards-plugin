@@ -123,6 +123,17 @@ export enum IntervalType {
   CALENDAR = "calendar",
 }
 
+export const INDEX_BLOCKED_SETTINGS = [
+  "index.resize",
+  "index.verified_before_close",
+  "index.blocks",
+  "index.routing",
+  "index.creation_date",
+  "index.provided_name",
+  "index.uuid",
+  "index.version.created",
+];
+
 export const INDEX_DYNAMIC_SETTINGS = [
   "index.number_of_replicas",
   "index.auto_expand_replicas",

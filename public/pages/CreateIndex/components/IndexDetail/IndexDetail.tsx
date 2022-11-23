@@ -4,15 +4,15 @@
  */
 
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton } from "@elastic/eui";
-import { set, merge } from "lodash";
+import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton, EuiToast } from "@elastic/eui";
+import { set, merge, omit } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
 import { Ref } from "react";
-import { INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
+import { INDEX_BLOCKED_SETTINGS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
@@ -20,6 +20,7 @@ import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } fro
 import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
 import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 import SimplePopover from "../../../../components/SimplePopover";
+import { SimpleEuiToast } from "../../../../components/Toast";
 
 const indexNameEmptyTips = "Please fill in the index name before editing other fields";
 const staticSettingsTips = "This field can not be modified in edit mode";
@@ -177,12 +178,17 @@ const IndexDetail = (
           onGetIndexDetail(index).then(resolve);
         }
       });
+
       onChange({
-        ...indexDetail,
+        // omit alias
+        ...omit(indexDetail, "aliases"),
         mappings: {
           properties: transformObjectToArray(indexDetail?.mappings?.properties || {}),
         },
+        // omit some metadata in index
+        settings: omit(indexDetail?.settings || {}, INDEX_BLOCKED_SETTINGS),
       });
+      SimpleEuiToast.addSuccess(`Settings and mappings of [${index}] have been import successfully`);
       hasEdit.current = false;
     }
   };
