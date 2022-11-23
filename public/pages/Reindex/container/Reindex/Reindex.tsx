@@ -21,7 +21,7 @@ import _ from "lodash";
 import React, { ChangeEvent, Component } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { IndexSelectItem, ReindexRequest } from "../../models/interfaces";
+import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import ReindexAdvancedOptions from "../../components/ReindexAdvancedOptions";
@@ -31,7 +31,6 @@ import { RouteComponentProps } from "react-router-dom";
 import IndexSelect from "../../components/IndexSelect";
 import { DEFAULT_QUERY, DEFAULT_SLICE, REINDEX_ERROR_PROMPT } from "../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
-import { ReindexResponse } from "../../../Indices/models/interfaces";
 import { REQUEST } from "../../../../../utils/constants";
 import CreateIndexFlyout from "../../components/CreateIndexFlyout";
 import queryString from "query-string";
@@ -115,8 +114,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         this.context.notifications.toasts.addDanger(res?.error || "Get index detail error");
       }
     }
-
-    this.setState({ sources: typeof source === "string" ? source.split(",").map((index) => ({ label: index })) : [] });
   }
 
   getIndexOptions = async (searchValue: string) => {
@@ -580,7 +577,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
-              Execute
+              Reindex
             </EuiButton>
           </EuiFlexItem>
         </EuiFlexGroup>
