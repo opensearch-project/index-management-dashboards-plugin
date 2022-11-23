@@ -154,7 +154,10 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         const dataStreams = dataStreamResponse.response.dataStreams.map((ds) => ({
           label: ds.name,
           health: ds.status.toLowerCase(),
-          value: { isDataStream: true },
+          value: {
+            isDataStream: true,
+            indices: ds.indices.map((item) => item.index_name).slice(0, 1),
+          },
         }));
         options.push({ label: "dataStreams", options: dataStreams });
       }
@@ -253,6 +256,17 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     } else {
       this.context.notifications.toasts.addDanger(`Reindex operation error ${res?.error}`);
     }
+  };
+
+  getAllSelectedIndices = (): string[] => {
+    const { sources } = this.state;
+    let result: string[] = [];
+    sources.forEach((item) => {
+      item.value?.isIndex && result.push(item.label);
+      item.value?.isAlias && item.value.indices && result.push(...item.value.indices);
+      item.value?.isDataStream && item.value.indices && result.push(...item.value.indices);
+    });
+    return result;
   };
 
   // validation
@@ -436,6 +450,9 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       </EuiText>
     );
 
+    // expand data streams and aliases
+    const allSelectedIndices = this.getAllSelectedIndices();
+
     return (
       <div style={{ padding: "0px 50px" }}>
         <EuiTitle size="l">
@@ -487,7 +504,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                 }}
               />
               <EuiSpacer />
-              {subset && (
+              {subset ? (
                 <CustomFormRow
                   label="Query expression"
                   labelAppend={
@@ -508,7 +525,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                     data-test-subj="queryJsonEditor"
                   />
                 </CustomFormRow>
-              )}
+              ) : null}
             </>
           </CustomFormRow>
         </ContentPanel>
@@ -562,26 +579,20 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
-              fill
-              disabled={sourceErr.length > 0}
-              onClick={this.onClickAction}
-              isLoading={executing}
-              data-test-subj="reindexConfirmButton"
-            >
+            <EuiButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
               Execute
             </EuiButton>
           </EuiFlexItem>
         </EuiFlexGroup>
 
-        {showCreateIndexFlyout && (
+        {showCreateIndexFlyout ? (
           <CreateIndexFlyout
             commonService={this.props.commonService}
             onSubmitSuccess={this.onCreateIndexSuccess}
-            sourceIndices={sources.map((item) => item.label)}
+            sourceIndices={allSelectedIndices}
             onCloseFlyout={() => this.setState({ showCreateIndexFlyout: false })}
           />
-        )}
+        ) : null}
       </div>
     );
   }

@@ -59,8 +59,6 @@ describe("Reindex", () => {
       cy.get('[data-test-subj="Reindex Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
       cy.contains(/_sources is not enabled/);
-
-      expect(cy.get('[data-test-subj="reindexConfirmButton"]')).to.disabled();
     });
   });
 

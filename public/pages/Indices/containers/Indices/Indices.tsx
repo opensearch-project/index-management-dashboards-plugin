@@ -215,6 +215,9 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     const selection: EuiTableSelectionType<ManagedCatIndex> = {
       onSelectionChange: this.onSelectionChange,
     };
+
+    const { history, location, match } = this.props;
+
     return (
       <ContentPanel
         actions={
@@ -227,7 +230,6 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                     onDelete={this.getIndices}
                     onOpen={this.getIndices}
                     onClose={this.getIndices}
-                    onReindex={this.getIndices}
                     onShrink={this.getIndices}
                     selectedItems={this.state.selectedItems}
                     getIndices={this.getIndices}
@@ -267,9 +269,11 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
             onOpen: this.getIndices,
             onClose: this.getIndices,
             onShrink: this.getIndices,
-            onReindex: this.getIndices,
             onUpdateIndex: this.getIndices,
             getIndices: this.getIndices,
+            history,
+            location,
+            match,
           })}
           isSelectable={true}
           itemId="index"
