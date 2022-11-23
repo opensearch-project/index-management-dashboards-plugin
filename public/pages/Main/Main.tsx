@@ -48,7 +48,7 @@ enum Navigation {
   Snapshots = "Snapshots",
   SnapshotPolicies = "Snapshot Policies",
   Repositories = "Repositories",
-  Aliases = "Alias Management",
+  Aliases = "Aliases",
 }
 
 enum Pathname {
@@ -108,16 +108,16 @@ export default class Main extends Component<MainProps, object> {
             isSelected: pathname === Pathname.ManagedIndices,
           },
           {
-            name: Navigation.Aliases,
-            id: 6,
-            href: `#${ROUTES.ALIASES}`,
-            isSelected: ROUTES.ALIASES === pathname,
-          },
-          {
             name: Navigation.Indices,
             id: 3,
             href: `#${Pathname.Indices}`,
             isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
+          },
+          {
+            name: Navigation.Aliases,
+            id: 6,
+            href: `#${ROUTES.ALIASES}`,
+            isSelected: ROUTES.ALIASES === pathname,
           },
           {
             name: Navigation.Rollups,
