@@ -113,8 +113,9 @@ describe("Split Index", () => {
       cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
     }); // advanced setting
 
-    it("Split successfully with existing alias", () => {
+    it("Split successfully with alias", () => {
       const targetIndex = `${SAMPLE_INDEX}` + "-alias";
+      const alias = "alias-new";
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
         .click()
         .end()
@@ -132,38 +133,7 @@ describe("Split Index", () => {
         .end()
         .get('[data-test-subj="comboBoxSearchInput"]')
         .focus()
-        .type(`${SAMPLE_ALIAS}`)
-        .end()
-        .get('[data-test-subj="flyout-footer-action-button"]')
-        .click()
-        .end();
-
-      cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end().get("#index-detail-modal-alias").click().end();
-
-      cy.get(`[title="${SAMPLE_ALIAS}"]`).should("exist").end();
-    }); // Create with alias
-
-    it("Split successfully with new alias", () => {
-      const alias = "newalias";
-      const targetIndex = `${SAMPLE_INDEX}` + "-newalias";
-      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
-        .click()
-        .end()
-        .get('[data-test-subj="More Action"]')
-        .click()
-        .end()
-        .get('[data-test-subj="Split Action"]')
-        .click()
-        .end()
-        .get('[data-test-subj="form-name-targetIndex"]')
-        .type(`${targetIndex}`)
-        .end()
-        .get('[data-test-subj="Number of shards"]')
-        .type(`${split_number}`)
-        .end()
-        .get('[data-test-subj="comboBoxSearchInput"]')
-        .focus()
-        .type(`${alias}`)
+        .type(`${SAMPLE_ALIAS}{enter}${alias}{enter}`)
         .end()
         .get('[data-test-subj="flyout-footer-action-button"]')
         .click()
@@ -172,6 +142,8 @@ describe("Split Index", () => {
       cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end().get("#index-detail-modal-alias").click().end();
 
       cy.get(`[title="${alias}"]`).should("exist").end();
+
+      cy.get(`[title="${SAMPLE_ALIAS}"]`).should("exist").end();
     }); // Create with alias
 
     it("Update blocks write to true", () => {
