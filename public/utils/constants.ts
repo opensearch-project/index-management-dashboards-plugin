@@ -14,6 +14,7 @@ export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/i
 export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
 export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
 export const DSL_DOCUMENTATION_URL = "https://opensearch.org/docs/opensearch/query-dsl/index/";
+export const REINDEX_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/reindex-data/";
 
 export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-management/";
 export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
@@ -53,6 +54,7 @@ export const ROUTES = Object.freeze({
   CREATE_REPOSITORY: "/create-repository",
   EDIT_REPOSITORY: "/edit-repository",
   CREATE_INDEX: "/create-index",
+  REINDEX: "/reindex",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -89,6 +91,7 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_REPOSITORY: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
   CREATE_INDEX: { text: "Create Index", href: `#${ROUTES.CREATE_INDEX}` },
   EDIT_INDEX: { text: "Edit Index", href: `#${ROUTES.CREATE_INDEX}` },
+  REINDEX: { text: "Reindex", href: `#${ROUTES.REINDEX}` },
 });
 
 // TODO: EUI has a SortDirection already
@@ -119,6 +122,17 @@ export enum IntervalType {
   FIXED = "fixed",
   CALENDAR = "calendar",
 }
+
+export const INDEX_BLOCKED_SETTINGS = [
+  "index.resize",
+  "index.verified_before_close",
+  "index.blocks",
+  "index.routing",
+  "index.creation_date",
+  "index.provided_name",
+  "index.uuid",
+  "index.version.created",
+];
 
 export const INDEX_DYNAMIC_SETTINGS = [
   "index.number_of_replicas",

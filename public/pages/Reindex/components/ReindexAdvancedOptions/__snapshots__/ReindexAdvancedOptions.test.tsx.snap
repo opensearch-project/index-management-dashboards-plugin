@@ -16,6 +16,77 @@ Object {
             class="euiFormRow__labelWrapper"
           >
             <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Specify conflicts option
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Set to proceed to continue reindexing even if there are conflicts.
+            </div>
+            <div>
+              <div
+                class="euiRadio euiRadioGroup__item"
+              >
+                <input
+                  checked=""
+                  class="euiRadio__input"
+                  id="proceed"
+                  name="conflicts group"
+                  type="radio"
+                  value=""
+                />
+                <div
+                  class="euiRadio__circle"
+                />
+                <label
+                  class="euiRadio__label"
+                  for="proceed"
+                >
+                  Continue to proceed reindexing
+                </label>
+              </div>
+              <div
+                class="euiRadio euiRadioGroup__item"
+              >
+                <input
+                  class="euiRadio__input"
+                  id="abort"
+                  name="conflicts group"
+                  type="radio"
+                  value=""
+                />
+                <div
+                  class="euiRadio__circle"
+                />
+                <label
+                  class="euiRadio__label"
+                  for="abort"
+                >
+                  Abort reindexing
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
               aria-invalid="false"
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
@@ -49,6 +120,9 @@ Object {
           </div>
         </div>
         <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
           class="euiFormRow"
           id="some_html_id-row"
         >
@@ -76,6 +150,7 @@ Object {
               aria-haspopup="listbox"
               aria-label="Ingest Pipeline"
               class="euiComboBox"
+              data-test-subj="pipelineCombobox"
               role="combobox"
             >
               <div
@@ -142,6 +217,77 @@ Object {
           class="euiFormRow__labelWrapper"
         >
           <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Specify conflicts option
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Set to proceed to continue reindexing even if there are conflicts.
+          </div>
+          <div>
+            <div
+              class="euiRadio euiRadioGroup__item"
+            >
+              <input
+                checked=""
+                class="euiRadio__input"
+                id="proceed"
+                name="conflicts group"
+                type="radio"
+                value=""
+              />
+              <div
+                class="euiRadio__circle"
+              />
+              <label
+                class="euiRadio__label"
+                for="proceed"
+              >
+                Continue to proceed reindexing
+              </label>
+            </div>
+            <div
+              class="euiRadio euiRadioGroup__item"
+            >
+              <input
+                class="euiRadio__input"
+                id="abort"
+                name="conflicts group"
+                type="radio"
+                value=""
+              />
+              <div
+                class="euiRadio__circle"
+              />
+              <label
+                class="euiRadio__label"
+                for="abort"
+              >
+                Abort reindexing
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
             aria-invalid="false"
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
@@ -175,6 +321,9 @@ Object {
         </div>
       </div>
       <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
         class="euiFormRow"
         id="some_html_id-row"
       >
@@ -202,6 +351,7 @@ Object {
             aria-haspopup="listbox"
             aria-label="Ingest Pipeline"
             class="euiComboBox"
+            data-test-subj="pipelineCombobox"
             role="combobox"
           >
             <div

@@ -20,10 +20,3 @@ export interface IndicesQueryParams {
   sortDirection: Direction;
   showDataStreams: boolean;
 }
-
-export interface ReindexRequest {
-  waitForCompletion: boolean;
-  slices?: number | string;
-  maxDocs?: number;
-  body: object;
-}

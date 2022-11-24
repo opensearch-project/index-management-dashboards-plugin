@@ -34,6 +34,7 @@ import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
 import CreateIndex from "../CreateIndex";
+import Reindex from "../Reindex/container/Reindex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -73,6 +74,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.SNAPSHOT_POLICY_DETAILS,
   ROUTES.CREATE_SNAPSHOT_POLICY,
   ROUTES.EDIT_SNAPSHOT_POLICY,
+  ROUTES.REINDEX,
 ];
 
 interface MainProps extends RouteComponentProps {
@@ -395,6 +397,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.REINDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
                               </div>
                             )}
                           />

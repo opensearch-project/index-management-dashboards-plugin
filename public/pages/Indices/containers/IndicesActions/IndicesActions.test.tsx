@@ -13,6 +13,8 @@ import IndicesActions, { IndicesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { createMemoryHistory } from "history";
+import { ROUTES } from "../../../../utils/constants";
 
 function renderWithRouter(props: IndicesActionsProps) {
   return {
@@ -47,6 +49,7 @@ describe("<IndicesActions /> spec", () => {
       expect(getByTestId("Delete Action")).toBeDisabled();
       expect(getByTestId("Apply policyButton")).toBeDisabled();
       expect(getByTestId("Split Action")).toBeDisabled();
+      expect(getByTestId("Reindex Action")).toBeEnabled();
     });
   });
 
@@ -331,4 +334,70 @@ describe("<IndicesActions /> spec", () => {
       expect(onShrink).toHaveBeenCalledTimes(1);
     });
   }, 30000);
+
+  it("click reindex goes to new page with selected item ", async () => {
+    const history = createMemoryHistory();
+
+    const { getByTestId } = renderWithRouter({
+      getIndices(): Promise<void> {
+        return Promise.resolve(undefined);
+      },
+      history: history,
+      location: history.location,
+      match: { path: "/", url: "/", isExact: true, params: {} },
+      onClose(): void {},
+      onDelete(): void {},
+      onOpen(): void {},
+      onShrink(): void {},
+      selectedItems: [
+        {
+          "docs.count": "5",
+          "docs.deleted": "2",
+          health: "green",
+          index: "test_index",
+          pri: "1",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          "store.size": "100KB",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+          data_stream: "",
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(getByTestId("Reindex Action"));
+
+    expect(history.length).toBe(2);
+    expect(history.location.pathname).toBe(ROUTES.REINDEX);
+    expect(history.location.search).toBe("?source=test_index");
+  });
+
+  it("click reindex goes to new page without selected item", async () => {
+    const history = createMemoryHistory();
+
+    const { getByTestId } = renderWithRouter({
+      getIndices(): Promise<void> {
+        return Promise.resolve(undefined);
+      },
+      history: history,
+      location: history.location,
+      match: { path: "/", url: "/", isExact: true, params: {} },
+      onClose(): void {},
+      onDelete(): void {},
+      onOpen(): void {},
+      onShrink(): void {},
+      selectedItems: [],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(getByTestId("Reindex Action"));
+
+    expect(history.length).toBe(2);
+    expect(history.location.pathname).toBe(ROUTES.REINDEX);
+    expect(history.location.search).toBe("");
+  });
 });

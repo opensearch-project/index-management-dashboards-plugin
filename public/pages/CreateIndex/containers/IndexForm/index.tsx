@@ -19,12 +19,12 @@ import { CommonService } from "../../../../services/index";
 import { ServerResponse } from "../../../../../server/models/types";
 import { Modal } from "../../../../components/Modal";
 
-export interface IndexFormProps extends Pick<IndexDetailProps, "readonly"> {
+export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices"> {
   index?: string;
   mode?: IndicesUpdateMode;
   commonService: CommonService;
   onCancel?: () => void;
-  onSubmitSuccess?: () => void;
+  onSubmitSuccess?: (indexName: string) => void;
   hideButtons?: boolean;
 }
 
@@ -68,28 +68,34 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     return this.props.mode;
   }
 
-  refreshIndex = async () => {
-    const response: ServerResponse<Record<string, IndexItemRemote>> = await this.commonService.apiCaller({
+  getIndexDetail = async (indexName: string): Promise<IndexItemRemote> => {
+    const response = await this.commonService.apiCaller<Record<string, IndexItemRemote>>({
       endpoint: "indices.get",
       data: {
-        index: this.index,
+        index: indexName,
         flat_settings: true,
       },
     });
     if (response.ok) {
-      const payload = {
-        ...response.response[this.index || ""],
-        index: this.index,
-      };
-      set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
-
-      this.setState({
-        indexDetail: payload as IndexItem,
-        oldIndexDetail: JSON.parse(JSON.stringify(payload)),
-      });
-    } else {
-      this.context.notifications.toasts.addDanger(response.error);
+      return response.response[indexName];
     }
+
+    this.context.notifications.toasts.addDanger(response.error);
+    return new Promise(() => {});
+  };
+
+  refreshIndex = async () => {
+    const indexDetail = await this.getIndexDetail(this.index as string);
+    const payload = {
+      ...indexDetail,
+      index: this.index,
+    };
+    set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
+
+    this.setState({
+      indexDetail: payload as IndexItem,
+      oldIndexDetail: JSON.parse(JSON.stringify(payload)),
+    });
   };
 
   componentDidMount = async (): Promise<void> => {
@@ -374,7 +380,7 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     // handle all the response here
     if (result && result.ok) {
       this.context.notifications.toasts.addSuccess(`[${indexDetail.index}] has been successfully ${this.isEdit ? "updated" : "created"}.`);
-      this.props.onSubmitSuccess && this.props.onSubmitSuccess();
+      this.props.onSubmitSuccess && this.props.onSubmitSuccess(indexDetail.index);
     } else {
       this.context.notifications.toasts.addDanger(result.error);
     }
@@ -423,6 +429,8 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
           oldValue={oldIndexDetail}
           onChange={this.onDetailChange}
           onSimulateIndexTemplate={this.onSimulateIndexTemplate}
+          sourceIndices={this.props.sourceIndices}
+          onGetIndexDetail={this.getIndexDetail}
           refreshOptions={(aliasName) =>
             this.commonService.apiCaller({
               endpoint: "cat.aliases",

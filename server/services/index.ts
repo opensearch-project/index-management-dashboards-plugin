@@ -12,6 +12,7 @@ import TransformService from "./TransformService";
 import NotificationService from "./NotificationService";
 import SnapshotManagementService from "./SnapshotManagementService";
 import CommonService from "./CommonService";
+import AliasServices from "./AliasServices";
 
 export {
   IndexService,
@@ -23,4 +24,5 @@ export {
   NotificationService,
   SnapshotManagementService,
   CommonService,
+  AliasServices,
 };
