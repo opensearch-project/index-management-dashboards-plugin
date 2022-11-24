@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   EuiButton,
   EuiButtonEmpty,
@@ -16,25 +16,50 @@ import {
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
+import { ServicesContext } from "../../../../services";
+import { CoreServicesContext } from "../../../../components/core_services";
+import { CoreStart } from "opensearch-dashboards/public";
 
 interface DeleteAliasModalProps {
   selectedItems: string[];
   visible: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onDelete: () => void;
 }
 
 export default function DeleteAliasModal(props: DeleteAliasModalProps) {
   const [value, setValue] = useState("");
-  const { onClose, onConfirm, visible, selectedItems } = props;
+  const { onClose, visible, selectedItems, onDelete } = props;
+  const services = useContext(ServicesContext);
+  const coreServices = useContext(CoreServicesContext) as CoreStart;
   useEffect(() => {
     if (visible) {
       setValue("");
     }
   }, [visible]);
+
+  const onConfirm = useCallback(async () => {
+    if (services) {
+      const result = await services.commonService.apiCaller({
+        endpoint: "indices.deleteAlias",
+        data: {
+          index: "_all",
+          name: selectedItems,
+        },
+      });
+      if (result && result.ok) {
+        coreServices.notifications.toasts.addSuccess(`Delete [${selectedItems.join(",")}] successfully`);
+        onDelete();
+      } else {
+        coreServices.notifications.toasts.addDanger(result?.error || "");
+      }
+    }
+  }, [selectedItems, services, coreServices, onDelete]);
+
   if (!visible) {
     return null;
   }
+  console.log(123123);
 
   return (
     <EuiModal onClose={onClose}>
