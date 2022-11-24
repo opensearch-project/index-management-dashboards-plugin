@@ -21,6 +21,13 @@ import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CatIndex } from "../../../../../server/models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
+import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
+import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
+import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
+
+const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
+  disabledKey: "isDisabled",
+});
 
 interface SplitIndexProps {
   sourceIndex: CatIndex;
@@ -29,6 +36,7 @@ interface SplitIndexProps {
   getIndexSettings: (indexName: string, flat: boolean) => Promise<Record<string, IndexItem>>;
   setIndexSettings: (indexName: string, flat: boolean, setting: {}) => void;
   openIndex: () => void;
+  getAlias: (aliasName: string) => Promise<AliasSelectProps["refreshOptions"]>;
 }
 
 export default class SplitIndexFlyout extends Component<SplitIndexProps> {
@@ -175,20 +183,20 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
           },
         },
       },
+      {
+        name: "aliases",
+        rowProps: {
+          label: "Index alias  - optional",
+          helpText: "Select existing aliases or specify a new alias",
+        },
+        options: {
+          props: {
+            refreshOptions: this.props.getAlias,
+          },
+        },
+        component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
+      },
     ];
-
-    if (reasons.length > 0) {
-      console.log(
-        "Status has " +
-          reasons.length +
-          " problems. Blocks.write=" +
-          (blocksWriteValue ? blocksWriteValue : "null") +
-          " health=" +
-          sourceIndex.health +
-          " status=" +
-          sourceIndex.status
-      );
-    }
 
     return (
       <EuiFlyout ownFocus={true} onClose={() => {}} size="m" hideCloseButton>
