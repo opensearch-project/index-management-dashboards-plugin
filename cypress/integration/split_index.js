@@ -5,7 +5,7 @@
 import { PLUGIN_NAME } from "../support/constants";
 
 const SAMPLE_INDEX = "index-split";
-const SAMPLE_INDEX_SPLIT = `${SAMPLE_INDEX}-target`;
+const SAMPLE_ALIAS = "alias-split";
 
 describe("Split Index", () => {
   before(() => {
@@ -30,6 +30,8 @@ describe("Split Index", () => {
       // type field name
       cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX).end();
 
+      cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${SAMPLE_ALIAS}`).end();
+
       // click create
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true }).end();
 
@@ -42,11 +44,16 @@ describe("Split Index", () => {
         split_number = $shardNumber.val() * 2;
       });
 
+      cy.get("#index-detail-modal-alias").click().end();
+
+      cy.get(`[title="${SAMPLE_ALIAS}"]`).should("exist").end();
+
       // Update Index status to blocks write otherwise we can't apply split operation on it
       cy.updateIndexSettings(SAMPLE_INDEX, { "index.blocks.write": "true" }).end();
     }); // create index
 
     it("Split successfully", () => {
+      const targetIndex = `${SAMPLE_INDEX}` + "-target";
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
         .click()
         .end()
@@ -55,35 +62,26 @@ describe("Split Index", () => {
         .end()
         .get('[data-test-subj="Split Action"]')
         .click()
-        .end();
-
-      cy.wait(1000)
+        .end()
         // Target Index Name is required
-        .get('[data-test-subj="form-name-targetIndex"] input')
-        .type(`${SAMPLE_INDEX_SPLIT}`)
+        .get('[data-test-subj="form-name-targetIndex"]')
+        .type(`${targetIndex}`)
         .end()
         // Number of shards after split is required
-        .get('[data-test-subj="form-name-index.number_of_shards"] input')
+        .get('[data-test-subj="Number of shards"]')
         .type(`${split_number}`)
         .end()
         .get('[data-test-subj="flyout-footer-action-button"]')
         .click()
         .end();
 
-      // The index should exist
-      cy.get(`#_selection_column_${SAMPLE_INDEX_SPLIT}-checkbox`).should("have.exist");
-
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX_SPLIT}"]`)
-        .click()
-        .end()
-        .get("#index-detail-modal-settings")
-        .click()
-        .end();
+      cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end().get("#index-detail-modal-settings").click().end();
 
       cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
     }); // Split
 
     it("Split successfully with advanced setting", () => {
+      const targetIndex = `${SAMPLE_INDEX}` + "-setting";
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
         .click()
         .end()
@@ -92,11 +90,9 @@ describe("Split Index", () => {
         .end()
         .get('[data-test-subj="Split Action"]')
         .click()
-        .end();
-
-      cy.wait(1000)
-        .get('[data-test-subj="form-name-targetIndex"] input')
-        .type(`${SAMPLE_INDEX_SPLIT}-1`)
+        .end()
+        .get('[data-test-subj="form-name-targetIndex"]')
+        .type(`${targetIndex}`)
         .end()
         // Instead of input shard number at shard field, another option is to populate it in advanced setting
         .get('[aria-controls="accordion_for_create_index_settings"]')
@@ -112,18 +108,42 @@ describe("Split Index", () => {
         .click()
         .end();
 
-      // The index should exist
-      cy.get(`#_selection_column_${SAMPLE_INDEX_SPLIT}-checkbox`).should("have.exist");
-
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX_SPLIT}"]`)
-        .click()
-        .end()
-        .get("#index-detail-modal-settings")
-        .click()
-        .end();
+      cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end().get("#index-detail-modal-settings").click().end();
 
       cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
     }); // advanced setting
+
+    it("Split successfully with alias", () => {
+      const targetIndex = `${SAMPLE_INDEX}` + "-alias";
+      const alias = "alias-new";
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`)
+        .click()
+        .end()
+        .get('[data-test-subj="More Action"]')
+        .click()
+        .end()
+        .get('[data-test-subj="Split Action"]')
+        .click()
+        .end()
+        .get('[data-test-subj="form-name-targetIndex"]')
+        .type(`${targetIndex}`)
+        .end()
+        .get('[data-test-subj="Number of shards"]')
+        .type(`${split_number}`)
+        .end()
+        .get('[data-test-subj="comboBoxSearchInput"]')
+        .type(`${SAMPLE_ALIAS}{enter}${alias}{enter}`)
+        .end()
+        .get('[data-test-subj="flyout-footer-action-button"]')
+        .click()
+        .end();
+
+      cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end().get("#index-detail-modal-alias").click().end();
+
+      cy.get(`[title="${alias}"]`).should("exist").end();
+
+      cy.get(`[title="${SAMPLE_ALIAS}"]`).should("exist").end();
+    }); // Create with alias
 
     it("Update blocks write to true", () => {
       // Set index to not blocks write

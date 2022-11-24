@@ -79,17 +79,12 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
       {...others}
       inputRef={ref as (instance: HTMLInputElement | null) => void}
       placeholder="Select or create aliases"
-      async
       selectedOptions={finalValue}
       onChange={(value) => {
         onChange && onChange(transformArrayToObj(value));
       }}
       options={allOptions}
       isLoading={isLoading}
-      onSearchChange={(searchValue) => {
-        setIsLoading(true);
-        refreshOptions({ aliasName: searchValue });
-      }}
       customOptionText={"Add {searchValue} as a new alias"}
       onCreateOption={onCreateOption}
     />
