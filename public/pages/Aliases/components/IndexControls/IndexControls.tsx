@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiSelect } from "@elastic/eui";
+import { EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiSelect } from "@elastic/eui";
 import { ALIAS_STATUS_OPTIONS } from "../../../../utils/constants";
 
 export interface SearchControlsProps {
@@ -41,8 +41,19 @@ export default class SearchControls extends Component<SearchControlsProps, Searc
             }}
           />
         </EuiFlexItem>
-        <EuiFlexItem>
-          <EuiSelect value={this.state.status} options={ALIAS_STATUS_OPTIONS} onChange={(e) => this.onChange("status", e.target.value)} />
+        <EuiFlexItem grow={false}>
+          <EuiComboBox
+            style={{
+              width: 150,
+            }}
+            singleSelection={{
+              asPlainText: true,
+            }}
+            placeholder="Status"
+            options={ALIAS_STATUS_OPTIONS}
+            selectedOptions={this.state.status ? [{ label: this.state.status }] : []}
+            onChange={(val) => this.onChange("status", val[0].label)}
+          />
         </EuiFlexItem>
       </EuiFlexGroup>
     );

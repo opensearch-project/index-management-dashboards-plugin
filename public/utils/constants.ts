@@ -211,6 +211,6 @@ export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
 };
 
 export const ALIAS_STATUS_OPTIONS = ["open", "closed", "hidden", "none", "all"].map((item) => ({
-  text: item,
+  label: item,
   value: item,
 }));
