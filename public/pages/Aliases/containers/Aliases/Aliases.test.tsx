@@ -195,5 +195,5 @@ describe("<Indices /> spec", () => {
     userEvent.click(getByText("Rows per page: 10"));
     userEvent.click(getByTestId("tablePagination-25-rows"));
     userEvent.click(getByTestId("euiFlyoutCloseButton"));
-  });
+  }, 30000);
 });
