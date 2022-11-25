@@ -32,6 +32,7 @@ describe("<IndicesActions /> spec", () => {
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
+      onUpdateAlias: () => null,
       onDelete: () => null,
     });
 
@@ -79,6 +80,7 @@ describe("<IndicesActions /> spec", () => {
           indexArray: ["test_index"],
         },
       ],
+      onUpdateAlias: () => null,
       onDelete,
     });
 
