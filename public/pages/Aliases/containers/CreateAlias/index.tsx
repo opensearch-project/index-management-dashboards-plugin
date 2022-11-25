@@ -53,7 +53,7 @@ export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (
 
 export default function CreateAlias(props: ICreateAliasProps) {
   const formGenerateRef = useRef<IFormGeneratorRef>(null);
-  const services = useContext(ServicesContext);
+  const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext);
   const isEdit = !!props.alias;
 
@@ -136,11 +136,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
                 return;
               }
 
-              if (!services) {
-                return;
-              }
-
-              let result: { ok: boolean };
+              let result: { ok: boolean; error?: string };
 
               if (isEdit) {
                 const actions = getAliasActionsByDiffArray(props.alias?.indexArray || [], values.indexArray || [], (index) => ({

@@ -87,6 +87,11 @@ describe("<Indices /> spec", () => {
             },
           ],
         };
+      } else if (payload?.data?.name === multiIndexAliasId) {
+        return {
+          ok: false,
+          error: "alias exist",
+        };
       }
 
       return {
@@ -176,11 +181,22 @@ describe("<Indices /> spec", () => {
     userEvent.click(getByTestId("cancelCreateAliasButton"));
     userEvent.click(getByTestId("Create AliasButton"));
     await findByTestId("createAliasButton");
-    userEvent.type(getByPlaceholderText("Specify alias name"), testAliasId);
+    userEvent.click(getByTestId("createAliasButton"));
+    await waitFor(() => {
+      expect(getByText("Alias name is required")).not.toBeNull();
+    });
+    userEvent.type(getByPlaceholderText("Specify alias name"), multiIndexAliasId);
     userEvent.type(getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "1{enter}");
     userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(10);
+      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("alias exist");
+    });
+    userEvent.clear(getByPlaceholderText("Specify alias name"));
+    userEvent.type(getByPlaceholderText("Specify alias name"), testAliasId);
+    userEvent.click(getByTestId("createAliasButton"));
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(12);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         data: {
           index: ["1"],
