@@ -24,7 +24,7 @@ const transformArrayToObj = (array: { label: string }[]): AliasSelectProps["valu
 const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInputElement>) => {
   const { value, onChange, refreshOptions: refreshOptionsFromProps } = props;
   const refreshOptions: RemoteSelectProps["refreshOptions"] = ({ searchValue }) => {
-    return refreshOptionsFromProps(searchValue).then((res) => {
+    return refreshOptionsFromProps(searchValue || "").then((res) => {
       if (res.ok) {
         return {
           ...res,
@@ -39,6 +39,7 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
   };
   return (
     <RemoteSelect
+      isDisabled={props.isDisabled}
       placeholder="Select or create aliases"
       customOptionText="Add {searchValue} as a new alias"
       refreshOptions={refreshOptions}
@@ -49,6 +50,8 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
     />
   );
 });
+
+AliasSelect.displayName = "AliasSelect";
 
 // @ts-ignore
 export default AliasSelect;

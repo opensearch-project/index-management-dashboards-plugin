@@ -84,5 +84,7 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
   );
 });
 
+RemoteSelect.displayName = "RemoteSelect";
+
 // @ts-ignore
 export default RemoteSelect;
