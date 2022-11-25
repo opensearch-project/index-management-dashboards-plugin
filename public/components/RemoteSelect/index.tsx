@@ -68,7 +68,6 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
     <EuiComboBox
       onCreateOption={onCreateOption}
       {...others}
-      async
       inputRef={ref as (instance: HTMLInputElement | null) => void}
       selectedOptions={value?.map((item) => ({ label: item }))}
       onChange={(value) => {
