@@ -17,6 +17,10 @@ import {
   EuiTableSelectionType,
   EuiButtonEmpty,
   EuiButton,
+  EuiFlyout,
+  EuiFlyoutHeader,
+  EuiFlyoutBody,
+  EuiText,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -47,15 +51,45 @@ interface AliasesState {
   aliasEditFlyoutVisible: boolean;
 }
 
-function IndexNameDisplay(props: { indices: string[] }) {
+function IndexNameDisplay(props: { indices: string[]; alias: string }) {
   const [hide, setHide] = useState(true);
-  const finalIndices = hide ? props.indices.slice(0, 3) : props.indices;
+  const [tableParams, setTableParams] = useState<Criteria<IAlias>>({});
+  const { index, size } = tableParams.page || {
+    index: 0,
+    size: 10,
+  };
 
   return (
     <>
-      <span>{finalIndices.join(",")}</span>
-      {props.indices.length <= 3 ? null : (
-        <EuiButtonEmpty onClick={() => setHide(!hide)}>{hide ? `${props.indices.length - 3} more` : "hide"}</EuiButtonEmpty>
+      <span>{props.indices.slice(0, 3).join(",")}</span>
+      {props.indices.length <= 3 ? null : <EuiButtonEmpty onClick={() => setHide(!hide)}>{props.indices.length - 3} more</EuiButtonEmpty>}
+      {hide ? null : (
+        <EuiFlyout onClose={() => setHide(!hide)}>
+          <EuiFlyoutHeader hasBorder>
+            <EuiText size="m">
+              <h2>
+                Indices in {props.alias} ({props.indices.length})
+              </h2>
+            </EuiText>
+          </EuiFlyoutHeader>
+          <EuiFlyoutBody>
+            <EuiBasicTable
+              columns={[
+                {
+                  name: "Index",
+                  field: "index",
+                },
+              ]}
+              items={props.indices.slice(index * size, (index + 1) * size).map((index) => ({ index }))}
+              onChange={setTableParams}
+              pagination={{
+                pageIndex: index,
+                pageSize: size,
+                totalItemCount: props.indices.length,
+              }}
+            />
+          </EuiFlyoutBody>
+        </EuiFlyout>
       )}
     </>
   );
@@ -252,8 +286,8 @@ class Aliases extends Component<AliasesProps, AliasesState> {
             {
               field: "indexArray",
               name: "Index Name",
-              render: (value: string[]) => {
-                return <IndexNameDisplay indices={value} />;
+              render: (value: string[], record) => {
+                return <IndexNameDisplay indices={value} alias={record.alias} />;
               },
             },
           ]}
