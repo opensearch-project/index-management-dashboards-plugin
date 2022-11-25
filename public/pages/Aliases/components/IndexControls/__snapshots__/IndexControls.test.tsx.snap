@@ -9,44 +9,89 @@ exports[`<IndexControls /> spec renders the component 1`] = `
     class="euiFlexItem"
   >
     <div
-      class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive euiFlexGroup--wrap"
+      class="euiFormControlLayout euiFormControlLayout--fullWidth"
     >
       <div
-        class="euiFlexItem euiSearchBar__searchHolder"
+        class="euiFormControlLayout__childrenWrapper"
+      >
+        <input
+          class="euiFieldSearch euiFieldSearch--fullWidth"
+          placeholder="Search..."
+          type="search"
+        />
+        <div
+          class="euiFormControlLayoutIcons"
+        >
+          <span
+            class="euiFormControlLayoutCustomIcon"
+          >
+            EuiIconMock
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexItem euiFlexItem--flexGrowZero"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      class="euiComboBox"
+      role="combobox"
+      style="width: 150px;"
+    >
+      <div
+        class="euiFormControlLayout"
       >
         <div
-          class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          class="euiFormControlLayout__childrenWrapper"
         >
           <div
-            class="euiFormControlLayout__childrenWrapper"
+            class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+            data-test-subj="comboBoxInput"
+            tabindex="-1"
           >
-            <input
-              aria-label="This is a search bar. After typing your query, hit enter to filter the results lower in the page."
-              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
-              placeholder="Search..."
-              type="search"
-              value="testing"
-            />
-            <div
-              class="euiFormControlLayoutIcons"
+            <span
+              class="euiComboBoxPill euiComboBoxPill--plainText"
             >
-              <span
-                class="euiFormControlLayoutCustomIcon"
-              >
-                EuiIconMock
-              </span>
-            </div>
+              1
+            </span>
             <div
-              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              class="euiComboBox__input"
+              style="font-size: 14px; display: inline-block;"
             >
-              <button
-                aria-label="Clear input"
-                class="euiFormControlLayoutClearButton"
-                type="button"
-              >
-                EuiIconMock
-              </button>
+              <input
+                aria-controls=""
+                data-test-subj="comboBoxSearchInput"
+                role="textbox"
+                style="box-sizing: content-box; width: 2px;"
+                value=""
+              />
+              <div
+                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+              />
             </div>
+          </div>
+          <div
+            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+          >
+            <button
+              aria-label="Clear input"
+              class="euiFormControlLayoutClearButton"
+              data-test-subj="comboBoxClearButton"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+            <button
+              aria-label="Open list of options"
+              class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+              data-test-subj="comboBoxToggleListButton"
+              type="button"
+            >
+              EuiIconMock
+            </button>
           </div>
         </div>
       </div>

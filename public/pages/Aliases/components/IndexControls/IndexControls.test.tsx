@@ -12,7 +12,7 @@ import IndexControls from "./IndexControls";
 
 describe("<IndexControls /> spec", () => {
   it("renders the component", async () => {
-    const { container } = render(<IndexControls search={"testing"} onSearchChange={() => {}} />);
+    const { container } = render(<IndexControls value={{ search: "testing", status: "1" }} onSearchChange={() => {}} />);
 
     expect(container.firstChild).toMatchSnapshot();
   });

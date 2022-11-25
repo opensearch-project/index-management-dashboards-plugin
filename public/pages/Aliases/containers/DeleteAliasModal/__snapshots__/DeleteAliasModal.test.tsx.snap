@@ -83,6 +83,7 @@ HTMLCollection [
                   >
                     <input
                       class="euiFieldText euiFieldText--fullWidth"
+                      data-test-subj="delete-input"
                       placeholder="delete"
                       type="text"
                       value=""
