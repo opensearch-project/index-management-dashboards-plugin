@@ -12,10 +12,11 @@ import { IAlias } from "../../interface";
 export interface IndicesActionsProps {
   selectedItems: IAlias[];
   onDelete: () => void;
+  onUpdateAlias: () => void;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete } = props;
+  const { selectedItems, onDelete, onUpdateAlias } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
@@ -44,6 +45,12 @@ export default function IndicesActions(props: IndicesActionsProps) {
             {
               id: 0,
               items: [
+                {
+                  name: "Edit",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "Edit Action",
+                  onClick: onUpdateAlias,
+                },
                 {
                   name: "Delete",
                   disabled: !selectedItems.length,

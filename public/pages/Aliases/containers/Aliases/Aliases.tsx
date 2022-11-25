@@ -44,6 +44,7 @@ interface AliasesState {
   aliases: IAlias[];
   loading: boolean;
   aliasCreateFlyoutVisible: boolean;
+  aliasEditFlyoutVisible: boolean;
 }
 
 function IndexNameDisplay(props: { indices: string[] }) {
@@ -53,7 +54,7 @@ function IndexNameDisplay(props: { indices: string[] }) {
   return (
     <>
       <span>{finalIndices.join(",")}</span>
-      {props.indices.length < 3 ? null : (
+      {props.indices.length <= 3 ? null : (
         <EuiButtonEmpty onClick={() => setHide(!hide)}>{hide ? `${props.indices.length - 3} more` : "hide"}</EuiButtonEmpty>
       )}
     </>
@@ -88,6 +89,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       aliases: [],
       loading: false,
       aliasCreateFlyoutVisible: false,
+      aliasEditFlyoutVisible: false,
     };
 
     this.getAliases = _.debounce(this.getAliases, 500, { leading: true });
@@ -210,7 +212,15 @@ class Aliases extends Component<AliasesProps, AliasesState> {
             actions={[
               {
                 text: "",
-                children: <AliasesActions selectedItems={this.state.selectedItems} onDelete={this.getAliases} />,
+                children: (
+                  <AliasesActions
+                    onUpdateAlias={() => {
+                      this.setState({ aliasEditFlyoutVisible: true });
+                    }}
+                    selectedItems={this.state.selectedItems}
+                    onDelete={this.getAliases}
+                  />
+                ),
               },
               {
                 text: "Create Alias",
@@ -285,6 +295,15 @@ class Aliases extends Component<AliasesProps, AliasesState> {
             this.setState({ aliasCreateFlyoutVisible: false });
           }}
           onClose={() => this.setState({ aliasCreateFlyoutVisible: false })}
+        />
+        <CreateAlias
+          visible={this.state.aliasEditFlyoutVisible}
+          onSuccess={() => {
+            this.getAliases();
+            this.setState({ aliasEditFlyoutVisible: false });
+          }}
+          onClose={() => this.setState({ aliasEditFlyoutVisible: false })}
+          alias={this.state.selectedItems[0]}
         />
       </ContentPanel>
     );

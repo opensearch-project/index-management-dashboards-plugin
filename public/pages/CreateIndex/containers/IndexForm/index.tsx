@@ -19,6 +19,33 @@ import { CommonService } from "../../../../services/index";
 import { ServerResponse } from "../../../../../server/models/types";
 import { Modal } from "../../../../components/Modal";
 
+export const getAliasActionsByDiffArray = (
+  oldAliases: string[],
+  newAliases: string[],
+  callback: (val: string) => IAliasAction[string]
+): IAliasAction[] => {
+  const diffedAliasArrayes = diffArrays(oldAliases, newAliases);
+  return diffedAliasArrayes.reduce((total: IAliasAction[], current) => {
+    if (current.added) {
+      return [
+        ...total,
+        ...current.value.map((item) => ({
+          add: callback(item),
+        })),
+      ];
+    } else if (current.removed) {
+      return [
+        ...total,
+        ...current.value.map((item) => ({
+          remove: callback(item),
+        })),
+      ];
+    }
+
+    return total;
+  }, [] as IAliasAction[]);
+};
+
 export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices"> {
   index?: string;
   mode?: IndicesUpdateMode;
@@ -126,35 +153,15 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
   updateAlias = async (): Promise<ServerResponse<any>> => {
     const { indexDetail, oldIndexDetail } = this.state;
     const { index } = indexDetail;
-    // handle the alias here
-    const diffedAliasArrayes = diffArrays(Object.keys(oldIndexDetail?.aliases || {}), Object.keys(indexDetail.aliases || {}));
-    const aliasActions: IAliasAction[] = diffedAliasArrayes.reduce((total: IAliasAction[], current) => {
-      if (current.added) {
-        return [
-          ...total,
-          ...current.value.map((item) => ({
-            add: {
-              index,
-              alias: item,
-            },
-          })),
-        ];
-      } else if (current.removed) {
-        return [
-          ...total,
-          ...current.value.map((item) => ({
-            remove: {
-              index,
-              alias: item,
-            },
-          })),
-        ];
-      }
+    const aliasActions = getAliasActionsByDiffArray(
+      Object.keys(oldIndexDetail?.aliases || {}),
+      Object.keys(indexDetail.aliases || {}),
+      (alias) => ({
+        index,
+        alias,
+      })
+    );
 
-      return total;
-    }, [] as IAliasAction[]);
-
-    // alias may have many unexpected errors, do that before update index settings.
     if (aliasActions.length) {
       return await this.commonService.apiCaller({
         endpoint: "indices.updateAliases",

@@ -1,15 +1,18 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { EuiButton, EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorRef } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { IAlias } from "../../interface";
+import { getAliasActionsByDiffArray } from "../../../CreateIndex/containers/IndexForm";
 
 export interface ICreateAliasProps {
   visible: boolean;
   onSuccess: () => void;
   onClose: () => void;
+  alias?: IAlias;
 }
 
 export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (val: string[]) => void }) {
@@ -17,9 +20,10 @@ export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (
   return (
     <RemoteSelect
       placeholder="Select indices"
-      onCreateOption={undefined}
+      onSearchChange={undefined}
       value={value}
       onChange={onChange}
+      customOptionText="Add {searchValue} as index pattern"
       refreshOptions={({ searchValue }) => {
         const payload: { index?: string; format: string } = {
           format: "json",
@@ -51,16 +55,25 @@ export default function CreateAlias(props: ICreateAliasProps) {
   const formGenerateRef = useRef<IFormGeneratorRef>(null);
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext);
+  const isEdit = !!props.alias;
+
+  useEffect(() => {
+    if (props.visible) {
+      formGenerateRef.current?.setValues(props.alias);
+    }
+  }, [props.visible]);
+
   if (!props.visible) {
     return null;
   }
 
   return (
     <EuiFlyout hideCloseButton onClose={() => {}}>
-      <EuiFlyoutHeader>Create alias</EuiFlyoutHeader>
+      <EuiFlyoutHeader>{isEdit ? "Update" : "Create"} alias</EuiFlyoutHeader>
       <EuiFlyoutBody>
         <FormGenerator
           ref={formGenerateRef}
+          value={{ ...props.alias }}
           formFields={[
             {
               name: "alias",
@@ -71,6 +84,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
               options: {
                 props: {
                   placeholder: "Specify alias name",
+                  disabled: isEdit,
                 },
                 rules: [
                   {
@@ -81,7 +95,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
               },
             },
             {
-              name: "index",
+              name: "indexArray",
               component: IndexSelect,
               rowProps: {
                 label: "Specify indexes",
@@ -121,22 +135,44 @@ export default function CreateAlias(props: ICreateAliasProps) {
                 return;
               }
 
-              const result = await services?.commonService.apiCaller({
-                endpoint: "indices.putAlias",
-                data: {
-                  index: values.index,
-                  name: values.alias,
-                },
-              });
+              if (!services) {
+                return;
+              }
+
+              let result: { ok: boolean };
+
+              if (isEdit) {
+                const actions = getAliasActionsByDiffArray(props.alias?.indexArray || [], values.indexArray || [], (index) => ({
+                  alias: values.alias,
+                  index,
+                }));
+                result = await services?.commonService.apiCaller({
+                  endpoint: "indices.updateAliases",
+                  data: {
+                    body: {
+                      actions,
+                    },
+                  },
+                });
+              } else {
+                result = await services?.commonService.apiCaller({
+                  endpoint: "indices.putAlias",
+                  data: {
+                    index: values.indexArray,
+                    name: values.alias,
+                  },
+                });
+              }
+
               if (result?.ok) {
-                coreServices?.notifications.toasts.addSuccess(`[${values.alias}] has been successfully created`);
+                coreServices?.notifications.toasts.addSuccess(`[${values.alias}] has been successfully ${isEdit ? "updated" : "created"}`);
                 props.onSuccess();
               } else {
                 coreServices?.notifications.toasts.addDanger(result?.error || "");
               }
             }}
           >
-            Create alias
+            {isEdit ? "Save changes" : "Create alias"}
           </EuiButton>
         </div>
       </EuiFlyoutFooter>
