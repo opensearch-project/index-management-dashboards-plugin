@@ -29,7 +29,7 @@ import { IAlias } from "../../interface";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
-import IndexControls from "../../components/IndexControls";
+import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import CreateAlias from "../CreateAlias";
 import AliasesActions from "../AliasActions";
 
@@ -42,6 +42,7 @@ interface AliasesState {
   from: string;
   size: string;
   search: string;
+  status: string;
   sortField: keyof IAlias;
   sortDirection: Direction;
   selectedItems: IAlias[];
@@ -105,17 +106,20 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       search = DEFAULT_QUERY_PARAMS.search,
       sortField = DEFAULT_QUERY_PARAMS.sortField,
       sortDirection = DEFAULT_QUERY_PARAMS.sortDirection,
+      status = DEFAULT_QUERY_PARAMS.status,
     } = queryString.parse(location.search) as {
       from: string;
       size: string;
       search: string;
       sortField: keyof IAlias;
       sortDirection: Direction;
+      status: string;
     };
     this.state = {
       totalAliases: 0,
       from,
       size,
+      status,
       search,
       sortField,
       sortDirection,
@@ -160,7 +164,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
 
   getAliases = async (): Promise<void> => {
     this.setState({ loading: true });
-    const { from, size } = this.state;
+    const { from, size, status } = this.state;
     const fromNumber = Number(from);
     const sizeNumber = Number(size);
     const { history, commonService } = this.props;
@@ -174,6 +178,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
         format: "json",
         name: `${queryObject.search}*`,
         s: `${queryObject.sortField}:${queryObject.sortDirection}`,
+        expand_wildcards: status,
       },
     });
 
@@ -215,8 +220,8 @@ class Aliases extends Component<AliasesProps, AliasesState> {
     this.setState({ selectedItems });
   };
 
-  onSearchChange = ({ query }: { query: { text: string } }): void => {
-    this.setState({ from: "0", search: query.text }, () => this.getAliases());
+  onSearchChange = (params: Parameters<SearchControlsProps["onSearchChange"]>[0]): void => {
+    this.setState({ from: "0", ...params }, () => this.getAliases());
   };
 
   render() {
@@ -273,7 +278,13 @@ class Aliases extends Component<AliasesProps, AliasesState> {
         bodyStyles={{ padding: "initial" }}
         title="Aliases"
       >
-        <IndexControls search={this.state.search} onSearchChange={this.onSearchChange} />
+        <IndexControls
+          value={{
+            search: this.state.search,
+            status: this.state.status,
+          }}
+          onSearchChange={this.onSearchChange}
+        />
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable

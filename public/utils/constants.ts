@@ -209,3 +209,8 @@ export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
     source: "The index {{ctx.index}} failed during policy execution.",
   },
 };
+
+export const ALIAS_STATUS_OPTIONS = ["open", "closed", "hidden", "none", "all"].map((item) => ({
+  text: item,
+  value: item,
+}));

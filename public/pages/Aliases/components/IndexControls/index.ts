@@ -5,4 +5,5 @@
 
 import IndexControls from "./IndexControls";
 
+export * from "./IndexControls";
 export default IndexControls;

@@ -13,4 +13,5 @@ export const DEFAULT_QUERY_PARAMS = {
   search: "",
   sortField: "alias" as keyof IAlias,
   sortDirection: SortDirection.DESC,
+  status: "all",
 };
