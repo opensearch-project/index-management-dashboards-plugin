@@ -63,7 +63,11 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
   return (
     <>
       <span>{props.indices.slice(0, 3).join(",")}</span>
-      {props.indices.length <= 3 ? null : <EuiButtonEmpty onClick={() => setHide(!hide)}>{props.indices.length - 3} more</EuiButtonEmpty>}
+      {props.indices.length <= 3 ? null : (
+        <EuiButtonEmpty data-test-subj={`${props.indices.length - 3} more`} onClick={() => setHide(!hide)}>
+          {props.indices.length - 3} more
+        </EuiButtonEmpty>
+      )}
       {hide ? null : (
         <EuiFlyout onClose={() => setHide(!hide)}>
           <EuiFlyoutHeader hasBorder>
@@ -75,6 +79,7 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
             <EuiBasicTable
+              data-test-subj="indices-table"
               columns={[
                 {
                   name: "Index",
@@ -172,14 +177,19 @@ class Aliases extends Component<AliasesProps, AliasesState> {
     const queryParamsString = queryString.stringify(queryObject);
     history.replace({ ...this.props.location, search: queryParamsString });
 
+    const payload: any = {
+      format: "json",
+      name: `${queryObject.search}*`,
+      s: `${queryObject.sortField}:${queryObject.sortDirection}`,
+      expand_wildcards: status,
+    };
+    if (!status) {
+      delete payload.expand_wildcards;
+    }
+
     const getIndicesResponse = await commonService.apiCaller<IAlias[]>({
       endpoint: "cat.aliases",
-      data: {
-        format: "json",
-        name: `${queryObject.search}*`,
-        s: `${queryObject.sortField}:${queryObject.sortDirection}`,
-        expand_wildcards: status,
-      },
+      data: payload,
     });
 
     if (getIndicesResponse.ok) {
@@ -190,7 +200,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
         aliases: responseGroupByAliasName.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
         totalAliases,
         selectedItems: this.state.selectedItems
-          .map((item) => responseGroupByAliasName.find((remoteItem) => remoteItem.index === item.index))
+          .map((item) => responseGroupByAliasName.find((remoteItem) => remoteItem.alias === item.alias))
           .filter((item) => item),
       } as AliasesState;
       this.setState(payload);
@@ -288,6 +298,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable
+          data-test-subj="aliases-table"
           columns={[
             {
               field: "alias",

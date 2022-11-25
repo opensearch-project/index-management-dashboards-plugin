@@ -59,7 +59,6 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
   if (!visible) {
     return null;
   }
-  console.log(123123);
 
   return (
     <EuiModal onClose={onClose}>
@@ -79,7 +78,13 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
           <EuiText color="subdued">
             To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
           </EuiText>
-          <EuiFieldText placeholder="delete" fullWidth value={value} onChange={(e) => setValue(e.target.value)} />
+          <EuiFieldText
+            data-test-subj="delete-input"
+            placeholder="delete"
+            fullWidth
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
         </div>
       </EuiModalBody>
 
