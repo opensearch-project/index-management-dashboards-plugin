@@ -37,10 +37,12 @@ export default class SearchControls extends Component<SearchControlsProps, Searc
           <EuiFieldSearch
             fullWidth
             placeholder="Search..."
-            onSearch={(search) => {
-              this.onChange("search", search);
+            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
+              if (e.key === "Enter") {
+                e.defaultPrevented = true;
+                this.onChange("search", e.currentTarget.value);
+              }
             }}
-            onKeyUp={() => {}}
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
