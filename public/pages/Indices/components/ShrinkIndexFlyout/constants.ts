@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-export const DEDAULT_ADVANCED_INDEX_SETTINGS = {
+export const DEFAULT_INDEX_SETTINGS = {
   "index.number_of_shards": "1",
   "index.number_of_replicas": "1",
 };

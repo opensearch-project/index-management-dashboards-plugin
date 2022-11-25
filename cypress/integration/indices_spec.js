@@ -364,7 +364,7 @@ describe("Indices", () => {
       cy.get(`input[data-test-subj="targetIndexNameInput"]`).type(`${SAMPLE_INDEX}_shrunken`);
 
       // Click shrink index button
-      cy.get("button").contains("Shrink index").click({ force: true });
+      cy.get("button").contains("Shrink").click({ force: true });
 
       // Check for success toast
       cy.contains("Shrink index successfully");

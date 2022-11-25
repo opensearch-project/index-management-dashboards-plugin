@@ -24,25 +24,34 @@ import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components
 import { ContentPanel } from "../../../../components/ContentPanel";
 import IndexDetail from "../../../../containers/IndexDetail";
 import { IndexItem } from "../../../../../models/interfaces";
+import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
+import AliasSelect from "../../../CreateIndex/components/AliasSelect";
+import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { SHRINK_DOCUMENTATION_URL, INDEX_SETTINGS_URL } from "../../../../utils/constants";
 import {
-  DEDAULT_ADVANCED_INDEX_SETTINGS,
+  DEFAULT_INDEX_SETTINGS,
   INDEX_BLOCKS_WRITE_SETTING,
   INDEX_BLOCKS_READONLY_SETTING,
   INDEX_ROUTING_ALLOCATION_SETTING,
 } from "./constants";
 import { get } from "lodash";
 
+const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
+  disabledKey: "isDisabled",
+});
+
 interface ShrinkIndexProps {
   sourceIndex: CatIndex;
   onClose: () => void;
-  onConfirm: (sourceIndexName: string, targetIndexName: string, indexSettings: {}) => void;
+  onConfirm: (sourceIndexName: string, targetIndexName: string, requestPayload: Required<IndexItem>["settings"]) => void;
   getIndexSettings: (indexName: string, flat: boolean) => Promise<Object>;
   setIndexSettings: (indexName: string, flat: boolean, setting: {}) => void;
+  openIndex: () => void;
+  getAlias: (aliasName: string) => Promise<any>;
 }
 
 interface ShrinkIndexState {
-  indexSettings: Required<IndexItem>["settings"];
+  requestPayload: Required<IndexItem>["settings"];
   sourceIndexSettings: Object;
 }
 
@@ -51,7 +60,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     super(props);
 
     this.state = {
-      indexSettings: DEDAULT_ADVANCED_INDEX_SETTINGS,
+      requestPayload: DEFAULT_INDEX_SETTINGS,
       sourceIndexSettings: {},
     };
   }
@@ -64,7 +73,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
 
   onClickAction = async () => {
     const { sourceIndex, onConfirm } = this.props;
-    const { targetIndex, ...others } = this.state.indexSettings;
+    const { targetIndex, ...others } = this.state.requestPayload;
 
     const result = await this.formRef?.validatePromise();
     if (result?.errors) {
@@ -91,9 +100,19 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     });
   };
 
+  onOpenIndex = async () => {
+    const { sourceIndex, openIndex, getIndexSettings } = this.props;
+    await openIndex();
+
+    const indexSettings = await getIndexSettings(sourceIndex.index, true);
+    this.setState({
+      sourceIndexSettings: indexSettings,
+    });
+  };
+
   render() {
     const { onClose, sourceIndex } = this.props;
-    const { indexSettings, sourceIndexSettings } = this.state;
+    const { requestPayload, sourceIndexSettings } = this.state;
     const sourceIndexCannotShrinkErrors: React.ReactChild[] = [];
     const sourceIndexNotReadyReasons = [];
     const blockNameList = ["targetIndex"];
@@ -106,11 +125,25 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
       sourceIndexCannotShrinkErrors.push(<>The source index has only one primary shard!</>);
     }
 
-    if (sourceIndex.status !== "open") {
-      sourceIndexCannotShrinkErrors.push(<>The source index must be in open status!</>);
-    }
-
     if (sourceIndexCannotShrinkErrors.length == 0) {
+      if (sourceIndex.status == "close") {
+        sourceIndexCannotShrinkErrors.push(
+          <>
+            The source index must not be in close status!
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <EuiButton
+                onClick={() => {
+                  this.onOpenIndex();
+                }}
+                data-test-subj="onOpenIndexButton"
+              >
+                Open index{" "}
+              </EuiButton>
+            </div>
+          </>
+        );
+      }
+
       const indexWriteBlock = get(sourceIndexSettings, [sourceIndex.index, "settings", INDEX_BLOCKS_WRITE_SETTING]);
       if (!indexWriteBlock) {
         const indexWriteBlockSettings = {
@@ -206,7 +239,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
       },
       {
         rowProps: {
-          label: "Specify primary shard count",
+          label: "Number of shards",
           helpText: `Specify the number of shards for the new shrunken index.
           The number must be a factor of primary shard count in the source index.`,
         },
@@ -243,6 +276,20 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
             min: 0,
           },
         },
+      },
+      {
+        name: "aliases",
+        rowProps: {
+          label: "Index alias  - optional",
+          helpText: "Select existing aliases or specify a new alias",
+        },
+        options: {
+          props: {
+            "data-test-subj": "aliasesInput",
+            refreshOptions: this.props.getAlias,
+          },
+        },
+        component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
       },
     ];
 
@@ -285,11 +332,13 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
           <EuiSpacer size="m" />
           <FormGenerator
             ref={(ref) => (this.formRef = ref)}
-            value={indexSettings}
+            value={requestPayload}
             onChange={(value) => {
-              this.setState({
-                indexSettings: value,
-              });
+              if (!!value) {
+                this.setState({
+                  requestPayload: value,
+                });
+              }
             }}
             formFields={formFields}
             hasAdvancedSettings
@@ -301,7 +350,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
               },
               blockedNameList: blockNameList,
               rowProps: {
-                label: "Specify advanced index settings",
+                label: "Specify advanced settings and aliases",
                 helpText: (
                   <>
                     Specify a comma-delimited list of settings.
@@ -343,7 +392,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
                 data-test-subj="shrinkIndexConfirmButton"
                 disabled={sourceIndexCannotShrinkErrors.length > 0}
               >
-                Shrink index
+                Shrink
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>

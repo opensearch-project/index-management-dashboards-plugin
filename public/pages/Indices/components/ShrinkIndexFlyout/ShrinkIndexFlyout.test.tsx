@@ -26,6 +26,10 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         getIndexSettings={async () => {
           return {};
         }}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -49,6 +53,11 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         onConfirm={() => {}}
         onClose={onClose}
         getIndexSettings={async () => {
+          return {};
+        }}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
+        getAlias={async () => {
           return {};
         }}
       />
@@ -79,6 +88,10 @@ describe("<ShrinkIndexFlyout /> spec", () => {
           return {};
         }}
         setIndexSettings={setIndexSettings}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -114,6 +127,11 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         onConfirm={() => {}}
         onClose={onClose}
         getIndexSettings={getIndexSettings}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -163,6 +181,11 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         onConfirm={() => {}}
         onClose={onClose}
         getIndexSettings={getIndexSettings}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -207,6 +230,11 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         onConfirm={() => {}}
         onClose={() => {}}
         getIndexSettings={getIndexSettings}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -214,8 +242,60 @@ describe("<ShrinkIndexFlyout /> spec", () => {
       expect(queryByText("The source index cannot shrink, due to the following reasons:")).not.toBeNull();
       expect(queryByText("The source index's health status is [red]!")).not.toBeNull();
       expect(queryByText("The source index has only one primary shard!")).not.toBeNull();
-      expect(queryByText("The source index must be in open status!")).not.toBeNull();
       expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
+    });
+  });
+
+  it("shows button when source index cannot shrink", async () => {
+    const testIndexSettings = {
+      test_index: {
+        settings: {},
+      },
+    };
+    const getIndexSettings = jest.fn().mockResolvedValue(testIndexSettings);
+    const setIndexSettings = jest.fn();
+    const openIndex = jest.fn();
+    const getAlias = jest.fn();
+    const { getByTestId, queryByText } = render(
+      <ShrinkIndexFlyout
+        sourceIndex={{
+          health: "green",
+          index: "test_index",
+          pri: "10",
+          rep: "1",
+          status: "close",
+        }}
+        visible
+        onConfirm={() => {}}
+        onClose={() => {}}
+        getIndexSettings={getIndexSettings}
+        setIndexSettings={setIndexSettings}
+        openIndex={openIndex}
+        getAlias={getAlias}
+      />
+    );
+
+    await waitFor(() => {
+      expect(queryByText("The source index cannot shrink, due to the following reasons:")).not.toBeNull();
+      expect(queryByText("The source index must not be in close status!")).not.toBeNull();
+      expect(queryByText("The source index's write operations must be blocked.")).not.toBeNull();
+      expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
+      expect(getByTestId("onOpenIndexButton")).not.toBeNull();
+      expect(getByTestId("onSetIndexWriteBlockButton")).not.toBeNull();
+    });
+
+    await act(async () => {
+      fireEvent.click(getByTestId("onOpenIndexButton"));
+    });
+    await waitFor(() => {
+      expect(openIndex).toHaveBeenCalled();
+    });
+
+    await act(async () => {
+      fireEvent.click(getByTestId("onSetIndexWriteBlockButton"));
+    });
+    await waitFor(() => {
+      expect(setIndexSettings).toHaveBeenCalled();
     });
   });
 
@@ -241,6 +321,11 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         onConfirm={() => {}}
         onClose={() => {}}
         getIndexSettings={getIndexSettings}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -278,6 +363,11 @@ describe("<ShrinkIndexFlyout /> spec", () => {
         onConfirm={onConfirm}
         onClose={() => {}}
         getIndexSettings={getIndexSettings}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
       />
     );
 
@@ -288,7 +378,9 @@ describe("<ShrinkIndexFlyout /> spec", () => {
 
     await act(async () => {
       userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
+      userEvent.type(getByTestId("aliasesInput"), "test_index_alias");
     });
+
     await act(async () => {
       fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
     });
