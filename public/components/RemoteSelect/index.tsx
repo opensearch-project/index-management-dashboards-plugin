@@ -28,6 +28,9 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
       setIsLoading(true);
       refreshOptionsFromProps(params)
         .then((res: ServerResponse<{ label: string }[]>) => {
+          if (destroyRef.current) {
+            return;
+          }
           if (res.ok && res.response) {
             setAllOptions(res.response);
           } else {
@@ -35,6 +38,9 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
           }
         })
         .finally(() => {
+          if (destroyRef.current) {
+            return;
+          }
           setIsLoading(false);
         });
     },

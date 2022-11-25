@@ -72,7 +72,7 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
         <EuiFlyout onClose={() => setHide(!hide)}>
           <EuiFlyoutHeader hasBorder>
             <EuiText size="m">
-              <h2>
+              <h2 title={`Indices in ${props.alias} (${props.indices.length})`}>
                 Indices in {props.alias} ({props.indices.length})
               </h2>
             </EuiText>
@@ -187,14 +187,14 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       delete payload.expand_wildcards;
     }
 
-    const getIndicesResponse = await commonService.apiCaller<IAlias[]>({
+    const getAliasesResponse = await commonService.apiCaller<IAlias[]>({
       endpoint: "cat.aliases",
       data: payload,
     });
 
-    if (getIndicesResponse.ok) {
+    if (getAliasesResponse.ok) {
       // group by alias name
-      const responseGroupByAliasName: IAlias[] = this.groupResponse(getIndicesResponse.response);
+      const responseGroupByAliasName: IAlias[] = this.groupResponse(getAliasesResponse.response);
       const totalAliases = responseGroupByAliasName.length;
       const payload = {
         aliases: responseGroupByAliasName.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
@@ -205,7 +205,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       } as AliasesState;
       this.setState(payload);
     } else {
-      this.context.notifications.toasts.addDanger(getIndicesResponse.error);
+      this.context.notifications.toasts.addDanger(getAliasesResponse.error);
     }
 
     // Avoiding flicker by showing/hiding the "Data stream" column only after the results are loaded.

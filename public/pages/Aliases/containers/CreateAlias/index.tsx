@@ -123,12 +123,13 @@ export default function CreateAlias(props: ICreateAliasProps) {
       </EuiFlyoutBody>
       <EuiFlyoutFooter>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <EuiButton style={{ marginRight: 20 }} onClick={props.onClose}>
+          <EuiButton data-test-subj="cancelCreateAliasButton" style={{ marginRight: 20 }} onClick={props.onClose}>
             Cancel
           </EuiButton>
           <EuiButton
             fill
             color="primary"
+            data-test-subj="createAliasButton"
             onClick={async () => {
               const { errors, values } = (await formGenerateRef.current?.validatePromise()) || {};
               if (errors) {
