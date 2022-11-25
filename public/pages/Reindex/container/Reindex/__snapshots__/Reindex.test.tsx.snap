@@ -338,6 +338,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
         >
           <button
             class="euiButton euiButton--primary"
+            data-test-subj="createIndexButton"
             type="button"
           >
             <span

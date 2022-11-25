@@ -163,13 +163,24 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         const aliases = _.uniq(aliasResponse.response.aliases.map((alias) => alias.alias))
           // TODO system alias
           .filter((alias) => !alias.startsWith("."))
-          .map((name) => ({
-            label: name,
-            value: {
-              isAlias: true,
-              indices: aliasResponse.response.aliases.filter((alias) => alias.alias === name).map((alias) => alias.index),
-            },
-          }));
+          .map((name) => {
+            const indexBelongsToAlias = aliasResponse.response.aliases.filter((alias) => alias.alias === name).map((alias) => alias.index);
+            let writingIndex = aliasResponse.response.aliases
+              .filter((alias) => alias.alias === name && alias.is_write_index === "true")
+              .map((alias) => alias.index);
+            if (writingIndex.length === 0 && indexBelongsToAlias.length === 1) {
+              // set writing index when there is only 1 index for alias
+              writingIndex = indexBelongsToAlias;
+            }
+            return {
+              label: name,
+              value: {
+                isAlias: true,
+                indices: indexBelongsToAlias,
+                writingIndex: writingIndex,
+              },
+            };
+          });
         options.push({ label: "aliases", options: aliases });
       } else {
         this.context.notifications.toasts.addDanger(aliasResponse.error);
@@ -285,6 +296,14 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       return false;
     }
 
+    // if destination is alias, then it must have a writing index behind it
+    if (dest.value?.isAlias) {
+      if (!dest.value?.writingIndex || dest.value.writingIndex.length !== 1) {
+        this.setState({ destError: `Alias [${dest.label}] don't have writing index behind it` });
+        return false;
+      }
+    }
+
     let expandedSource: string[] = [],
       expandedDestination: string[] = [];
     sources.forEach((item) => {
@@ -294,12 +313,12 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
     selectedOptions.forEach((item) => {
       expandedDestination.push(item.label);
-      item.value?.isAlias && item.value.indices && expandedDestination.push(...item.value.indices);
+      item.value?.isAlias && item.value.writingIndex && expandedDestination.push(...item.value.writingIndex);
     });
 
     const duplication = _.intersection(expandedSource, expandedDestination);
     if (duplication.length > 0) {
-      this.setState({ destError: `index [${duplication.join(",")}] both exists in source and destination` });
+      this.setState({ destError: `Index [${duplication.join(",")}] both exists in source and destination` });
       return false;
     }
     return true;
@@ -544,7 +563,9 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
               </CustomFormRow>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton onClick={() => this.setState({ showCreateIndexFlyout: true })}>Create Index</EuiButton>
+              <EuiButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
+                Create Index
+              </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </ContentPanel>

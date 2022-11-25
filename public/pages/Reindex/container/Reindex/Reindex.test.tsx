@@ -80,6 +80,18 @@ const indices = [
     "store.size": "100KB",
     uuid: "some_uuid",
   },
+  {
+    "docs.count": 5,
+    "docs.deleted": 2,
+    health: "green",
+    index: "index-source-2",
+    pri: "1",
+    "pri.store.size": "100KB",
+    rep: "0",
+    status: "open",
+    "store.size": "100KB",
+    uuid: "some_uuid",
+  },
 ];
 
 const dataStreams = [
@@ -98,6 +110,30 @@ const aliases = [
     alias: "alias-1",
     index: "index-source",
     filter: "-",
+    is_write_index: "false",
+    "routing.index": "-",
+    "routing.search": "-",
+  },
+  {
+    alias: "alias-1",
+    index: "index-source-2",
+    filter: "-",
+    is_write_index: "true",
+    "routing.index": "-",
+    "routing.search": "-",
+  },
+  {
+    alias: "alias-2",
+    index: "index-test-1",
+    filter: "-",
+    is_write_index: "-",
+    "routing.index": "-",
+    "routing.search": "-",
+  },
+  {
+    alias: "alias-2",
+    index: "index-test-2",
+    filter: "-",
     is_write_index: "-",
     "routing.index": "-",
     "routing.search": "-",
@@ -110,14 +146,18 @@ const mockApi = () => {
     response: { indices: args.search.length > 0 ? indices.filter((index) => index.index.startsWith(args.search)) : indices },
   }));
 
-  browserServicesMock.indexService.getDataStreams = jest.fn().mockResolvedValue({
+  browserServicesMock.indexService.getDataStreams = jest.fn().mockImplementation((args) => ({
     ok: true,
-    response: { dataStreams: dataStreams, totalDataStreams: 1 },
-  });
-  browserServicesMock.indexService.getAliases = jest.fn().mockResolvedValue({
+    response: {
+      dataStreams: args.search.length > 0 ? dataStreams.filter((ds) => ds.name.startsWith(args.search)) : dataStreams,
+    },
+  }));
+  browserServicesMock.indexService.getAliases = jest.fn().mockImplementation((args) => ({
     ok: true,
-    response: { aliases: aliases, totalAliases: 1 },
-  });
+    response: {
+      aliases: args.search.length > 0 ? aliases.filter((alias) => alias.alias.startsWith(args.search)) : aliases,
+    },
+  }));
 
   browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((args) => {
     if (args.endpoint === "transport.request") {
@@ -452,6 +492,78 @@ describe("<Reindex /> spec", () => {
 
     await waitFor(() => {
       expect(getByText("Index [index-dest] health status is red")).toBeInTheDocument();
+    });
+  });
+
+  it("source and destination must be different", async () => {
+    mockApi();
+    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
+
+    await waitFor(() => {
+      getByText("Configure source index");
+    });
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await waitFor(() => {});
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
+    await waitFor(() => {});
+
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-source");
+    await waitFor(() => {});
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
+    await waitFor(() => {});
+
+    userEvent.click(getByTestId("reindexConfirmButton"));
+
+    await waitFor(() => {
+      expect(getByText("Index [index-source] both exists in source and destination")).toBeInTheDocument();
+    });
+
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "{Backspace}index-source-2");
+    await waitFor(() => {});
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
+    await waitFor(() => {});
+
+    // change to alias
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "alias-1");
+    await waitFor(() => {});
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
+    await waitFor(() => {});
+
+    userEvent.click(getByTestId("reindexConfirmButton"));
+
+    await waitFor(() => {
+      expect(getByText("Index [index-source-2] both exists in source and destination")).toBeInTheDocument();
+    });
+  });
+
+  it("destination alias must have writing index behind", async () => {
+    mockApi();
+    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
+
+    await waitFor(() => {
+      getByText("Configure source index");
+    });
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await waitFor(() => {});
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
+    await waitFor(() => {});
+
+    // change to alias
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "alias-2");
+    await waitFor(() => {});
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
+    await waitFor(() => {});
+
+    userEvent.click(getByTestId("reindexConfirmButton"));
+
+    await waitFor(() => {
+      expect(getByText("Alias [alias-2] don't have writing index behind it")).toBeInTheDocument();
     });
   });
 
