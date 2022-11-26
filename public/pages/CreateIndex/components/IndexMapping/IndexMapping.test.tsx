@@ -90,7 +90,11 @@ describe("<IndexMapping /> spec", () => {
     await act(async () => {
       expect(await ref.current?.validate()).toEqual("");
     });
-    expect(queryByText("Duplicate field name [object], please change your field name")).toBeNull();
+
+    await waitFor(() => {
+      expect(queryByText("Duplicate field name [object], please change your field name")).toBeNull();
+    });
+
     userEvent.click(document.body);
 
     // only show the sub action for type of object

@@ -8,6 +8,7 @@ import { render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
 import userEvent from "@testing-library/user-event";
+import { resolve } from "dns";
 
 const IndexDetailOnChangeWrapper = forwardRef((props: Omit<IndexDetailProps, "onChange">, ref: any) => {
   const [value, setValue] = useState(props.value as any);
@@ -79,7 +80,7 @@ describe("<IndexDetail /> spec", () => {
   });
 
   it("inherit templates settings when create", async () => {
-    const { getByDisplayValue, getByPlaceholderText, getByText, getByTestId } = render(
+    const { findByDisplayValue, getByDisplayValue, getByText, getByTestId } = render(
       <IndexDetailOnChangeWrapper
         refreshOptions={refreshOptions}
         value={{ index: "some_index" }}
@@ -99,7 +100,7 @@ describe("<IndexDetail /> spec", () => {
         }
       />
     );
-    await waitFor(() => getByDisplayValue("some_index"));
+    await findByDisplayValue("some_index");
     userEvent.click(getByDisplayValue("some_index"));
     userEvent.click(document.body);
     await waitFor(() => {
