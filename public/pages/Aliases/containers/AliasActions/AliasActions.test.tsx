@@ -91,7 +91,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
     userEvent.click(getByTestId("Delete Action"));
     userEvent.type(getByPlaceholderText("delete"), "delete");
-    userEvent.click(getByTestId("Delete Confirm button"));
+    userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -107,7 +107,7 @@ describe("<IndicesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(0);
     });
 
-    userEvent.click(getByTestId("Delete Confirm button"));
+    userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);

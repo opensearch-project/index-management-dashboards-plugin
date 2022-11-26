@@ -6,12 +6,12 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
-import DeleteAliasModal from "./DeleteAliasModal";
+import CreateAlias from "./index";
 
 describe("<DeleteIndexModal /> spec", () => {
   it("renders the component", async () => {
-    // the main unit test case is in AliasActions.test.tsx
-    render(<DeleteAliasModal selectedItems={[]} visible onDelete={() => {}} onClose={() => {}} />);
+    // the main unit test case is in Aliases.test.tsx
+    render(<CreateAlias visible onClose={() => {}} onSuccess={() => {}} />);
     expect(document.body.children).toMatchSnapshot();
   });
 });

@@ -79,7 +79,7 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
             To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
           </EuiText>
           <EuiFieldText
-            data-test-subj="delete-input"
+            data-test-subj="deleteInput"
             placeholder="delete"
             fullWidth
             value={value}
@@ -90,7 +90,7 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
 
       <EuiModalFooter>
         <EuiButtonEmpty onClick={onClose}>Cancel</EuiButtonEmpty>
-        <EuiButton data-test-subj="Delete Confirm button" onClick={onConfirm} fill color="danger" disabled={value !== "delete"}>
+        <EuiButton data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger" disabled={value !== "delete"}>
           Delete
         </EuiButton>
       </EuiModalFooter>
