@@ -17,6 +17,7 @@ import {
   EuiSpacer,
   EuiButtonGroup,
   EuiToolTip,
+  EuiCode,
 } from "@elastic/eui";
 import { set, get } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
@@ -107,34 +108,42 @@ const MappingLabel = forwardRef(
       <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
         <EuiFlexItem style={{ width: 240 }} grow={false}>
           <EuiFormRow isInvalid={!!fieldNameError} error={fieldNameError} label="Field name" display="rowCompressed">
-            <EuiFieldTextWrapped
-              inputRef={ref}
-              disabled={readonly || disabled}
-              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-              compressed
-              data-test-subj={`${id}-field-name`}
-              value={fieldNameState}
-              onChange={(e) => setFieldNameState(e.target.value)}
-              onBlur={async (e) => {
-                const error = await onValidate();
-                if (!error) {
-                  onFieldChange("fieldName", fieldNameState);
-                }
-              }}
-            />
+            {readonly ? (
+              <EuiCode>{fieldNameState}</EuiCode>
+            ) : (
+              <EuiFieldTextWrapped
+                inputRef={ref}
+                disabled={readonly || disabled}
+                disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
+                compressed
+                data-test-subj={`${id}-field-name`}
+                value={fieldNameState}
+                onChange={(e) => setFieldNameState(e.target.value)}
+                onBlur={async (e) => {
+                  const error = await onValidate();
+                  if (!error) {
+                    onFieldChange("fieldName", fieldNameState);
+                  }
+                }}
+              />
+            )}
           </EuiFormRow>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiFormRow label="Field type" display="rowCompressed">
-            <EuiSelectWrapped
-              disabled={readonly || disabled}
-              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-              compressed
-              value={type}
-              data-test-subj={`${id}-field-type`}
-              onChange={(e) => onFieldChange("type", e.target.value)}
-              options={INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }))}
-            />
+            {readonly ? (
+              <EuiCode>{type}</EuiCode>
+            ) : (
+              <EuiSelectWrapped
+                disabled={readonly || disabled}
+                disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
+                compressed
+                value={type}
+                data-test-subj={`${id}-field-type`}
+                onChange={(e) => onFieldChange("type", e.target.value)}
+                options={INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }))}
+              />
+            )}
           </EuiFormRow>
         </EuiFlexItem>
         {disabled ? null : (

@@ -60,6 +60,13 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
     name: "test_component_2",
     type: "Input",
   },
+  {
+    rowProps: {
+      label: "Text component",
+    },
+    name: "test_component_3",
+    type: "Text",
+  },
 ];
 
 describe("<FormGenerator /> spec", () => {

@@ -35,3 +35,28 @@ export const REQUEST = Object.freeze({
   POST: "POST",
   HEAD: "HEAD",
 });
+
+export const SYSTEM_INDEX = [
+  ".plugins-ml-model",
+  ".plugins-ml-task",
+  ".opendistro-alerting-config",
+  ".opendistro-alerting-alert*",
+  ".opendistro-anomaly-results*",
+  ".opendistro-anomaly-detector*",
+  ".opendistro-anomaly-checkpoints",
+  ".opendistro-anomaly-detection-state",
+  ".opendistro-reports-*",
+  ".opensearch-notifications-*",
+  ".opensearch-notebooks",
+  ".opensearch-observability",
+  ".opendistro-asynchronous-search-response*",
+  ".opendistro_security",
+  ".opendistro-job-scheduler-lock",
+  ".opendistro-ism-config",
+  ".replication-metadata-store",
+  "kibana*",
+  ".kibana*",
+  ".tasks",
+];
+
+export const SYSTEM_ALIAS = [".plugins*", ".opendistro*", ".opensearch*", ".replication-metadata-store", "kibana*", ".kibana*", ".tasks"];

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { EuiButton, EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader } from "@elastic/eui";
+import { EuiButton, EuiCallOut, EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiSpacer } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorRef } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
@@ -7,6 +7,8 @@ import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IAlias } from "../../interface";
 import { getAliasActionsByDiffArray } from "../../../CreateIndex/containers/IndexForm";
+import { filterByMinimatch } from "../../../../../utils/helper";
+import { SYSTEM_ALIAS } from "../../../../../utils/constants";
 
 export interface ICreateAliasProps {
   visible: boolean;
@@ -71,6 +73,12 @@ export default function CreateAlias(props: ICreateAliasProps) {
     <EuiFlyout hideCloseButton onClose={() => {}}>
       <EuiFlyoutHeader>{isEdit ? "Update" : "Create"} alias</EuiFlyoutHeader>
       <EuiFlyoutBody>
+        {isEdit && filterByMinimatch(props.alias?.alias || "", SYSTEM_ALIAS) ? (
+          <>
+            <EuiCallOut color="warning">You are editing a system-like alias, please be careful before you do any change to it.</EuiCallOut>
+            <EuiSpacer />
+          </>
+        ) : null}
         <FormGenerator
           ref={formGenerateRef}
           value={{ ...props.alias }}

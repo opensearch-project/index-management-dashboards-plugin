@@ -106,6 +106,36 @@ HTMLCollection [
           </span>
         </div>
       </div>
+      <div
+        class="euiFormRow"
+        data-test-subj="form-name-test_component_3"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Text component
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <span
+            class="euiCodeBlock euiCodeBlock--fontSmall euiCodeBlock--paddingLarge euiCodeBlock--inline prismjs language-none"
+          >
+            <code
+              class="euiCodeBlock__code"
+            >
+              -
+            </code>
+          </span>
+        </div>
+      </div>
     </div>
   </div>,
 ]
