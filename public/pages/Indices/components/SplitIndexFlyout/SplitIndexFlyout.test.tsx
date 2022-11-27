@@ -84,7 +84,7 @@ describe("<SplitIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(onSplitIndex).toHaveBeenCalled();
     });
-  });
+  }, 15000);
 
   it("Successful split an index whose shards number is 1", async () => {
     const { getByTestId } = render(
