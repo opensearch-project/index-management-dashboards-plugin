@@ -162,32 +162,107 @@ export const INDEX_DYNAMIC_SETTINGS = [
 
 export const INDEX_MAPPING_TYPES = [
   {
-    label: "null",
+    label: "alias", // path must be set
+    options: {
+      fields: ["path"],
+    },
+  },
+  {
+    label: "annotated-text", // no handler
   },
   {
     label: "boolean",
   },
   {
-    label: "float",
+    label: "binary",
   },
   {
-    label: "double",
+    label: "completion",
   },
   {
-    label: "integer",
-  },
-  {
-    label: "text",
-  },
-  {
-    label: "keyword",
+    label: "constant_keyword", // no handler
   },
   {
     label: "date",
   },
   {
+    label: "date_range",
+  },
+  {
+    label: "dense_vector", // no handler
+  },
+  {
+    label: "double",
+  },
+  {
+    label: "double_range",
+  },
+  {
+    label: "float",
+  },
+  {
+    label: "geo_point",
+  },
+  {
+    label: "geo_shape",
+  },
+  {
+    label: "histogram", // no handler
+  },
+  {
+    label: "integer",
+  },
+  {
+    label: "ip",
+  },
+  {
+    label: "ip_range",
+  },
+  {
+    label: "keyword",
+  },
+  {
+    label: "long",
+  },
+  {
+    label: "long_range",
+  },
+  {
+    label: "murmur3", // no handler
+  },
+  {
     label: "object",
     hasChildren: true,
+  },
+  {
+    label: "percolator",
+  },
+  {
+    label: "point", // no handler
+  },
+  {
+    label: "rank_feature",
+  },
+  {
+    label: "rank_features",
+  },
+  {
+    label: "search_as_you_type",
+  },
+  {
+    label: "shape", // no handler
+  },
+  {
+    label: "sparse_vector", // no handler
+  },
+  {
+    label: "text",
+  },
+  {
+    label: "token_count", // Analyzer must be set for field [6] but wasn't.
+  },
+  {
+    label: "wildcard", // no handler
   },
 ];
 
