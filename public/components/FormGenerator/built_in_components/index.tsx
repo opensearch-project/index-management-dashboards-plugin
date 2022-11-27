@@ -28,7 +28,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
       </div>
     )) as React.ComponentType<IFieldComponentProps>
   ),
-  Text: (({ value }) => <EuiCode>{value || "-"}</EuiCode>) as React.ComponentType<IFieldComponentProps>,
+  Text: (({ value }) => <EuiCode title={value || "-"}>{value || "-"}</EuiCode>) as React.ComponentType<IFieldComponentProps>,
   Select: forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
     <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
   )),

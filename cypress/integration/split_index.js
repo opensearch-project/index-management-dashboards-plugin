@@ -40,8 +40,8 @@ describe("Split Index", () => {
 
       cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click().end().get("#index-detail-modal-settings").click().end();
 
-      cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').then(($shardNumber) => {
-        split_number = $shardNumber.val() * 2;
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').then(($shardNumber) => {
+        split_number = $shardNumber.attr("title") * 2;
       });
 
       cy.get("#index-detail-modal-alias").click().end();
@@ -77,7 +77,7 @@ describe("Split Index", () => {
 
       cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end().get("#index-detail-modal-settings").click().end();
 
-      cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiCodeBlock__code').should("have.text", `${split_number}`).end();
     }); // Split
 
     it("Split successfully with advanced setting", () => {
@@ -110,7 +110,7 @@ describe("Split Index", () => {
 
       cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end().get("#index-detail-modal-settings").click().end();
 
-      cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${split_number}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiCodeBlock__code').should("have.text", `${split_number}`).end();
     }); // advanced setting
 
     it("Split successfully with alias", () => {
