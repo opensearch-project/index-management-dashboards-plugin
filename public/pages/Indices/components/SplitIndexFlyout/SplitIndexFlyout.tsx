@@ -25,7 +25,7 @@ import { IFieldComponentProps } from "../../../../components/FormGenerator/built
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 
-const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
+const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
 });
 
@@ -43,18 +43,52 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
   state = {
     settings: {} as Required<IndexItem>["settings"],
     sourceIndexSettings: {} as IndexItem,
+    shardsSelectOptions: [],
   };
 
   async componentDidMount() {
     await this.isSourceIndexReady();
+    this.calculateShardsOption();
   }
 
   isSourceIndexReady = async () => {
-    const { sourceIndex } = this.props;
     const { getIndexSettings } = this.props;
-    const sourceIndexSettings = await getIndexSettings(sourceIndex.index, true);
+    const sourceIndexSettings = await getIndexSettings(this.props.sourceIndex.index, true);
     this.setState({
       sourceIndexSettings,
+    });
+  };
+
+  calculateShardsOption = () => {
+    const sourceShards = Number(this.props.sourceIndex.pri);
+    const shardsSelectOptions = [];
+    if (sourceShards == 1) {
+      for (let i = 2; i <= 1024; i++) {
+        shardsSelectOptions.push({
+          value: i.toString(),
+          text: i,
+        });
+      }
+    } else {
+      const SHARDS_HARD_LIMIT = 1024 / 2;
+      let shardsLimit = sourceShards;
+      for (let i = 1; shardsLimit <= SHARDS_HARD_LIMIT; i++) {
+        shardsLimit = shardsLimit * 2;
+      }
+
+      for (let i = sourceShards * 2; i <= shardsLimit; ) {
+        if (shardsLimit % i == 0) {
+          shardsSelectOptions.push({
+            value: i.toString(),
+            text: i,
+          });
+          i = i * 2;
+        }
+      }
+    }
+
+    this.setState({
+      shardsSelectOptions,
     });
   };
 
@@ -145,7 +179,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
             },
           ],
           props: {
-            "data-test-subj": "Target Index Name",
+            "data-test-subj": "targetIndexNameInput",
           },
         },
       },
@@ -155,31 +189,25 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
           helpText: `Must be a multi of ${sourceIndex.pri}`,
         },
         name: "index.number_of_shards",
+        type: "Select",
+        options: {
+          props: {
+            "data-test-subj": "numberOfShardsInput",
+            options: this.state.shardsSelectOptions,
+          },
+        },
+      },
+      {
+        rowProps: {
+          label: "Number of replicas",
+          helpText: "The number of replica shards each shard should have.",
+        },
+        name: "index.number_of_replicas",
         type: "Number",
         options: {
-          rules: [
-            {
-              trigger: "onBlur",
-              validator: (rule, value) => {
-                if (!value || value === "") {
-                  // do not pass the validation
-                  // return a rejected promise with error message
-                  return Promise.reject("Number of shards is required");
-                }
-
-                if (Number(value) < 1 || Number(value) % Number(sourceIndex.pri) != 0) {
-                  return Promise.reject(`${value} must be a multiple of ${sourceIndex.pri}`);
-                }
-
-                // pass the validation, return a resolved promise
-                return Promise.resolve();
-              },
-            },
-          ],
           props: {
-            "data-test-subj": "Number of shards",
-            min: Number(sourceIndex.pri) * 2,
-            step: Number(sourceIndex.pri),
+            "data-test-subj": "numberOfReplicasInput",
+            min: 0,
           },
         },
       },
@@ -198,6 +226,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       },
     ];
 
+    const readyForSplit = reasons.length === 0;
     return (
       <EuiFlyout ownFocus={true} onClose={() => {}} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
@@ -208,7 +237,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
 
         <EuiFlyoutBody>
           <IndexDetail indices={[sourceIndex.index]}>
-            <EuiCallOut color="danger" hidden={reasons.length == 0} data-test-subj="Source Index Warning">
+            <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
               <div style={{ lineHeight: 3 }}>
                 <ul>
                   {reasons.map((reason, reasonIndex) => (
@@ -227,7 +256,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
           </IndexDetail>
           <EuiSpacer />
 
-          {reasons.length == 0 && (
+          {readyForSplit && (
             <ContentPanel title="Configure target index" titleSize="s">
               <FormGenerator
                 onChange={(totalValue) =>
@@ -268,9 +297,9 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
         <EuiFlyoutFooter>
           <FlyoutFooter
             action=""
-            text="Split"
+            text="Split Index"
             edit={false}
-            disabledAction={reasons.length > 0}
+            disabledAction={!readyForSplit}
             onClickAction={this.onSubmit}
             onClickCancel={onCloseFlyout}
           />

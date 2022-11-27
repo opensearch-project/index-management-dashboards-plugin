@@ -11,6 +11,18 @@ import userEvent from "@testing-library/user-event";
 describe("<SplitIndexFlyout /> spec", () => {
   const onSplitIndex = jest.fn();
   const closeFlyout = jest.fn();
+  const openIndex = jest.fn();
+  const setIndexSettings = jest.fn();
+
+  const indexSettings = {
+    split_test_index: {
+      index: "split_test_index",
+      settings: {
+        "index.blocks.write": "true",
+      },
+    },
+  };
+  const getIndexSettings = jest.fn().mockResolvedValue(indexSettings);
 
   it("renders the component", async () => {
     render(
@@ -18,9 +30,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         sourceIndex={{} as any}
         onCloseFlyout={closeFlyout}
         onSplitIndex={onSplitIndex}
-        getIndexSettings={async () => {
-          return {};
-        }}
+        getIndexSettings={getIndexSettings}
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
@@ -34,7 +44,7 @@ describe("<SplitIndexFlyout /> spec", () => {
     });
   });
 
-  it("Successful split an index", async () => {
+  it("Successful split an index whose shards number is greater than 1", async () => {
     const { getByTestId } = render(
       <SplitIndexFlyout
         sourceIndex={
@@ -48,16 +58,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         }
         onCloseFlyout={closeFlyout}
         onSplitIndex={onSplitIndex}
-        getIndexSettings={async () => {
-          return {
-            split_test_index: {
-              index: "1",
-              settings: {
-                "index.blocks.write": "true",
-              },
-            },
-          };
-        }}
+        getIndexSettings={getIndexSettings}
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
@@ -69,19 +70,63 @@ describe("<SplitIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
     });
-    userEvent.type(getByTestId("Target Index Name"), "split_test_index-split");
-    userEvent.type(getByTestId("Number of shards"), "4");
+
+    userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
 
     await waitFor(() => {
-      userEvent.click(getByTestId("flyout-footer-action-button"));
+      userEvent.selectOptions(getByTestId("numberOfShardsInput"), "4");
     });
+
+    userEvent.type(getByTestId("numberOfReplicasInput"), "1");
+
+    userEvent.click(getByTestId("flyout-footer-action-button"));
 
     await waitFor(() => {
       expect(onSplitIndex).toHaveBeenCalled();
     });
   });
 
-  it("Error message if index name or shards number is not specified", async () => {
+  it("Successful split an index whose shards number is 1", async () => {
+    const { getByTestId } = render(
+      <SplitIndexFlyout
+        sourceIndex={
+          {
+            health: "green",
+            index: "split_test_index",
+            pri: "1",
+            rep: "0",
+            status: "open",
+          } as any
+        }
+        onCloseFlyout={closeFlyout}
+        onSplitIndex={onSplitIndex}
+        getIndexSettings={getIndexSettings}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
+      />
+    );
+
+    await waitFor(() => {
+      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
+    });
+
+    userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
+
+    await waitFor(() => {
+      userEvent.selectOptions(getByTestId("numberOfShardsInput"), "2");
+    });
+
+    userEvent.click(getByTestId("flyout-footer-action-button"));
+
+    await waitFor(() => {
+      expect(onSplitIndex).toHaveBeenCalled();
+    });
+  }, 15000); // set timeout to 15s to overwrite the default 10s because this case takes a little long
+
+  it("Error message if index name is not specified", async () => {
     const { getByTestId, getByText } = render(
       <SplitIndexFlyout
         sourceIndex={
@@ -95,16 +140,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         }
         onCloseFlyout={closeFlyout}
         onSplitIndex={onSplitIndex}
-        getIndexSettings={async () => {
-          return {
-            split_test_index: {
-              index: "split_test_index",
-              settings: {
-                "index.blocks.write": "true",
-              },
-            },
-          };
-        }}
+        getIndexSettings={getIndexSettings}
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
@@ -116,52 +152,11 @@ describe("<SplitIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
     });
+
     userEvent.click(getByTestId("flyout-footer-action-button"));
+
     await waitFor(() => {
       expect(getByText("Target Index Name is required")).not.toBeNull();
-      expect(getByText("Number of shards is required")).not.toBeNull();
-    });
-  });
-
-  it("Incorrect number of shards is not allowed", async () => {
-    const { getByTestId, getByText } = render(
-      <SplitIndexFlyout
-        sourceIndex={
-          {
-            health: "green",
-            index: "split_test_index",
-            pri: "2",
-            rep: "0",
-            status: "open",
-          } as any
-        }
-        onCloseFlyout={closeFlyout}
-        onSplitIndex={onSplitIndex}
-        getIndexSettings={async () => {
-          return {
-            split_test_index: {
-              index: "split_test_index",
-              settings: {
-                "index.blocks.write": "true",
-              },
-            },
-          };
-        }}
-        setIndexSettings={() => {}}
-        openIndex={() => {}}
-        getAlias={async () => {
-          return {};
-        }}
-      />
-    );
-
-    await waitFor(() => {
-      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
-    });
-    userEvent.type(getByTestId("Number of shards"), "3");
-    userEvent.click(getByTestId("flyout-footer-action-button"));
-    await waitFor(() => {
-      expect(getByText("3 must be a multiple of 2")).not.toBeNull();
     });
   });
 
@@ -171,7 +166,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         sourceIndex={
           {
             health: "red",
-            index: "test_index",
+            index: "split_test_index",
             pri: "2",
             rep: "0",
             status: "open",
@@ -179,16 +174,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         }
         onCloseFlyout={() => {}}
         onSplitIndex={() => {}}
-        getIndexSettings={async () => {
-          return {
-            test_index: {
-              index: "test_index",
-              settings: {
-                "index.blocks.write": "true",
-              },
-            },
-          };
-        }}
+        getIndexSettings={getIndexSettings}
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
@@ -209,7 +195,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         sourceIndex={
           {
             health: "green",
-            index: "test_index",
+            index: "split_test_index",
             pri: "2",
             rep: "0",
             status: "close",
@@ -217,18 +203,9 @@ describe("<SplitIndexFlyout /> spec", () => {
         }
         onCloseFlyout={() => {}}
         onSplitIndex={() => {}}
-        getIndexSettings={async () => {
-          return {
-            test_index: {
-              index: "test_index",
-              settings: {
-                "index.blocks.write": "true",
-              },
-            },
-          };
-        }}
+        getIndexSettings={getIndexSettings}
         setIndexSettings={() => {}}
-        openIndex={() => {}}
+        openIndex={openIndex}
         getAlias={async () => {
           return {};
         }}
@@ -238,7 +215,10 @@ describe("<SplitIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).toBeDisabled();
       expect(queryByText("Source index must not be in close status.")).not.toBeNull();
-      expect(getByTestId("open-index-button")).toBeVisible();
+    });
+    userEvent.click(getByTestId("open-index-button"));
+    await waitFor(() => {
+      expect(openIndex).toHaveBeenCalled();
     });
   });
 
@@ -248,7 +228,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         sourceIndex={
           {
             health: "green",
-            index: "test_index",
+            index: "split_test_index",
             pri: "2",
             rep: "0",
             status: "open",
@@ -258,15 +238,15 @@ describe("<SplitIndexFlyout /> spec", () => {
         onSplitIndex={() => {}}
         getIndexSettings={async () => {
           return {
-            test_index: {
-              index: "test_index",
+            split_test_index: {
+              index: "split_test_index",
               settings: {
                 "index.blocks.write": "false",
               },
             },
           };
         }}
-        setIndexSettings={() => {}}
+        setIndexSettings={setIndexSettings}
         openIndex={() => {}}
         getAlias={async () => {
           return {};
@@ -277,7 +257,11 @@ describe("<SplitIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).toBeDisabled();
       expect(queryByText("Source index must be in block write status.")).not.toBeNull();
-      expect(getByTestId("set-indexsetting-button")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("set-indexsetting-button"));
+    await waitFor(() => {
+      expect(setIndexSettings).toHaveBeenCalled();
     });
   });
 
@@ -287,7 +271,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         sourceIndex={
           {
             health: "green",
-            index: "test_index",
+            index: "split_test_index",
             pri: "2",
             rep: "0",
             status: "open",
@@ -297,13 +281,13 @@ describe("<SplitIndexFlyout /> spec", () => {
         onSplitIndex={() => {}}
         getIndexSettings={async () => {
           return {
-            test_index: {
-              index: "test_index",
+            split_test_index: {
+              index: "split_test_index",
               settings: {},
             },
           };
         }}
-        setIndexSettings={() => {}}
+        setIndexSettings={setIndexSettings}
         openIndex={() => {}}
         getAlias={async () => {
           return {};
@@ -314,7 +298,11 @@ describe("<SplitIndexFlyout /> spec", () => {
     await waitFor(() => {
       expect(getByTestId("flyout-footer-action-button")).toBeDisabled();
       expect(queryByText("Source index must be in block write status.")).not.toBeNull();
-      expect(getByTestId("set-indexsetting-button")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("set-indexsetting-button"));
+    await waitFor(() => {
+      expect(setIndexSettings).toHaveBeenCalled();
     });
   });
 
