@@ -187,6 +187,7 @@ describe("<Indices /> spec", () => {
     });
     userEvent.type(getByPlaceholderText("Specify alias name"), multiIndexAliasId);
     userEvent.type(getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "1{enter}");
+    await waitFor(() => {});
     userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledTimes(1);
