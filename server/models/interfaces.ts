@@ -335,7 +335,7 @@ export interface CatIndex {
   "store.size": string;
   uuid: string;
   data_stream: string | null;
-  extraStatus?: "recovery" | "reindex" | "";
+  extraStatus?: "recovery" | "reindex" | "open" | "close";
 }
 
 export interface CatSnapshotIndex {

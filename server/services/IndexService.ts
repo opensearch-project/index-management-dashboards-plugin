@@ -101,7 +101,7 @@ export default class IndexService {
       // Augment the indices with their parent data stream name.
       indicesResponse.forEach((index) => {
         index.data_stream = indexToDataStreamMapping[index.index] || null;
-        let extraStatus: "recovery" | "reindex" | "" = "";
+        let extraStatus: CatIndex["extraStatus"] = index.status as "open" | "close";
         if (index.health === "green") {
           if (formattedTasks.find((item) => item.toIndex === index.index)) {
             extraStatus = "reindex";
@@ -116,6 +116,22 @@ export default class IndexService {
           index.extraStatus = extraStatus;
         }
       });
+
+      if (sortField === "status") {
+        // add new more status to status field so we need to sort
+        indicesResponse.sort((a, b) => {
+          let flag;
+          const aStatus = a.extraStatus as string;
+          const bStatus = b.extraStatus as string;
+          if (sortDirection === "asc") {
+            flag = aStatus < bStatus;
+          } else {
+            flag = aStatus > bStatus;
+          }
+
+          return flag ? -1 : 1;
+        });
+      }
 
       // Filtering out indices that belong to a data stream. This must be done before pagination.
       const filteredIndices = showDataStreams ? indicesResponse : indicesResponse.filter((index) => index.data_stream === null);
