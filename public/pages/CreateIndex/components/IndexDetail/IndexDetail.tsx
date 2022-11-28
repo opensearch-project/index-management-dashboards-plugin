@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton, EuiToast } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton } from "@elastic/eui";
 import { set, merge, omit } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -373,7 +373,7 @@ const IndexDetail = (
             data-test-subj="More Action"
             panelPaddingSize="none"
             button={
-              <EuiButton iconType="arrowDown" iconSide="right">
+              <EuiButton iconType="arrowDown" iconSide="right" data-test-subj="importSettingMappingBtn">
                 Import settings and mappings
               </EuiButton>
             }

@@ -50,7 +50,7 @@ export default class AliasServices {
           ok: true,
           response: {
             aliases: aliases,
-            total: aliases.length,
+            totalAliases: aliases.length,
           },
         },
       });
