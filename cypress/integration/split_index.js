@@ -37,13 +37,13 @@ describe("Split Index", () => {
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true }).end();
 
       // The index should exist
-      cy.get(`#_selection_column_${SAMPLE_INDEX}-checkbox`).should("have.exist").end();
+      cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
 
       cy.get(`[data-test-subj="view-index-detail-button-${sampleIndex}"]`).click().end();
       cy.get("#index-detail-modal-settings").click().end();
 
       cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').then(($shardNumber) => {
-        split_number = $shardNumber.attr("title") * 2;
+        splitNumber = $shardNumber.attr("title") * 2;
       });
 
       cy.get("#index-detail-modal-alias").click().end();
