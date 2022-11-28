@@ -34,7 +34,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );
@@ -62,7 +62,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );
@@ -74,7 +74,7 @@ describe("<SplitIndexFlyout /> spec", () => {
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
 
     await waitFor(() => {
-      userEvent.selectOptions(getByTestId("numberOfShardsInput"), "4");
+      userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "4{enter}");
     });
 
     userEvent.type(getByTestId("numberOfReplicasInput"), "1");
@@ -104,7 +104,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );
@@ -116,7 +116,7 @@ describe("<SplitIndexFlyout /> spec", () => {
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
 
     await waitFor(() => {
-      userEvent.selectOptions(getByTestId("numberOfShardsInput"), "2");
+      userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "2{enter}");
     });
 
     userEvent.click(getByTestId("flyout-footer-action-button"));
@@ -144,7 +144,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );
@@ -178,7 +178,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );
@@ -207,7 +207,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={() => {}}
         openIndex={openIndex}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );
@@ -249,7 +249,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={setIndexSettings}
         openIndex={() => {}}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );
@@ -290,7 +290,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={setIndexSettings}
         openIndex={() => {}}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );
@@ -316,7 +316,7 @@ describe("<SplitIndexFlyout /> spec", () => {
         setIndexSettings={() => {}}
         openIndex={() => {}}
         getAlias={async () => {
-          return {};
+          return { ok: true, response: [] };
         }}
       />
     );

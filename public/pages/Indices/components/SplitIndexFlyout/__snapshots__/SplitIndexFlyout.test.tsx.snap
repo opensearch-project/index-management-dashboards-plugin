@@ -288,27 +288,59 @@ HTMLCollection [
                         >
                           Must be a multi of undefined
                         </div>
-                        <div
-                          class="euiFormControlLayout"
+                        <span
+                          class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                         >
                           <div
-                            class="euiFormControlLayout__childrenWrapper"
+                            aria-expanded="false"
+                            aria-haspopup="listbox"
+                            class="euiComboBox"
+                            data-test-subj="numberOfShardsInput"
+                            role="combobox"
                           >
-                            <select
-                              class="euiSelect"
-                              data-test-subj="numberOfShardsInput"
-                            />
                             <div
-                              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                              class="euiFormControlLayout"
                             >
-                              <span
-                                class="euiFormControlLayoutCustomIcon"
+                              <div
+                                class="euiFormControlLayout__childrenWrapper"
                               >
-                                EuiIconMock
-                              </span>
+                                <div
+                                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                                  data-test-subj="comboBoxInput"
+                                  tabindex="-1"
+                                >
+                                  <div
+                                    class="euiComboBox__input"
+                                    style="font-size: 14px; display: inline-block;"
+                                  >
+                                    <input
+                                      aria-controls=""
+                                      data-test-subj="comboBoxSearchInput"
+                                      role="textbox"
+                                      style="box-sizing: content-box; width: 2px;"
+                                      value=""
+                                    />
+                                    <div
+                                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                                    />
+                                  </div>
+                                </div>
+                                <div
+                                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                                >
+                                  <button
+                                    aria-label="Open list of options"
+                                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                                    data-test-subj="comboBoxToggleListButton"
+                                    type="button"
+                                  >
+                                    EuiIconMock
+                                  </button>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </span>
                       </div>
                     </div>
                     <div
