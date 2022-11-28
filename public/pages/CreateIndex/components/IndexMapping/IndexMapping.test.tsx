@@ -77,11 +77,10 @@ describe("<IndexMapping /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="mapping-visual-editor-1-field-name"]') as Element);
     expect(getByTestId("mapping-visual-editor-1-field-name")).toHaveValue("");
     expect(queryByText("Field name is required, please input")).toBeNull();
-    userEvent.click(document.body);
-    expect(getByText("Field name is required, please input")).not.toBeNull();
     userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "object");
-    userEvent.click(document.body);
-    expect(getByText("Duplicate field name [object], please change your field name")).not.toBeNull();
+    await waitFor(() => {
+      expect(getByText("Duplicate field name [object], please change your field name")).not.toBeNull();
+    });
     await act(async () => {
       expect(await ref.current?.validate()).toEqual("with error");
     });
@@ -94,8 +93,6 @@ describe("<IndexMapping /> spec", () => {
     await waitFor(() => {
       expect(queryByText("Duplicate field name [object], please change your field name")).toBeNull();
     });
-
-    userEvent.click(document.body);
 
     // only show the sub action for type of object
     expect(queryByTestId("mapping-visual-editor-1-add-sub-field")).toBeNull();

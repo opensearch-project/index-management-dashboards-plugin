@@ -6,6 +6,8 @@ import useField, { InitOption, FieldOption, Rule, FieldInstance } from "../../li
 import AdvancedSettings, { IAdvancedSettingsProps } from "../AdvancedSettings";
 import CustomFormRow from "../CustomFormRow";
 
+export * from "./built_in_components";
+
 type ParametersOfValidator = Parameters<Required<Rule>["validator"]>;
 interface IRule extends Omit<Rule, "validator"> {
   validator?: (rule: ParametersOfValidator[0], value: ParametersOfValidator[1], values: Record<string, any>) => Promise<string | void>;
@@ -38,6 +40,8 @@ export interface IFormGeneratorProps {
 }
 
 export interface IFormGeneratorRef extends FieldInstance {}
+
+export { AllBuiltInComponents };
 
 export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref: React.Ref<IFormGeneratorRef>) {
   const { fieldProps, formFields, advancedSettingsProps } = props;

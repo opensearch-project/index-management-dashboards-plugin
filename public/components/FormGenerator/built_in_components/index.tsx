@@ -12,8 +12,8 @@ export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
 
 const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponentProps>> = {
   Input: EuiToolTipWrapper(
-    forwardRef(({ onChange, value, disabledReason, disabled, ...others }, ref: React.Ref<HTMLInputElement>) => (
-      <EuiFieldText inputRef={ref} value={value || ""} onChange={(e) => onChange(e.target.value)} disabled={disabled} {...others} />
+    forwardRef(({ onChange, value, ...others }, ref: React.Ref<HTMLInputElement>) => (
+      <EuiFieldText inputRef={ref} value={value || ""} onChange={(e) => onChange(e.target.value)} {...others} />
     )) as React.ComponentType<IFieldComponentProps>
   ),
   Number: EuiToolTipWrapper(
@@ -29,9 +29,11 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
     )) as React.ComponentType<IFieldComponentProps>
   ),
   Text: (({ value }) => <EuiCode title={value || "-"}>{value || "-"}</EuiCode>) as React.ComponentType<IFieldComponentProps>,
-  Select: forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
-    <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
-  )),
+  Select: EuiToolTipWrapper(
+    forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
+      <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
+    )) as React.ComponentType<IFieldComponentProps>
+  ),
 };
 
 export default componentMap;

@@ -1,14 +1,18 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Rule, FieldOption, FieldInstance, InitOption, InitResult, ValidateFunction } from "./interfaces";
 import buildInRules from "./rules";
 
 export default function useField<T>(options?: FieldOption): FieldInstance {
   const [, setValuesState] = useState((options?.values || {}) as Record<string, any>);
   const [, setErrorsState] = useState({} as Record<string, null | string[]>);
+  const destroyRef = useRef<boolean>(false);
   const values = useRef<Record<string, any>>(options?.values || {});
   const errors = useRef<Record<string, null | string[]>>({});
   const fieldsMapRef = useRef<Record<string, InitOption<any>>>({});
   const setValues = (obj: Record<string, any>) => {
+    if (destroyRef.current) {
+      return;
+    }
     values.current = {
       ...values.current,
       ...obj,
@@ -22,6 +26,9 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     });
   };
   const setErrors: FieldInstance["setErrors"] = (errs) => {
+    if (destroyRef.current) {
+      return;
+    }
     errors.current = {
       ...errors.current,
       ...errs,
@@ -82,6 +89,11 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
 
     return fieldErrors;
   };
+  useEffect(() => {
+    return () => {
+      destroyRef.current = true;
+    };
+  }, []);
   return {
     registerField: (initOptions: InitOption): InitResult<any> => {
       fieldsMapRef.current[initOptions.name] = initOptions;

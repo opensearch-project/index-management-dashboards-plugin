@@ -3,15 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useState, Ref, useEffect, useRef, useMemo, useImperativeHandle } from "react";
+import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
 import {
   EuiTreeView,
   EuiIcon,
   EuiFlexGroup,
   EuiFlexItem,
   EuiFormRow,
-  EuiFieldText,
-  EuiSelect,
   EuiTreeViewProps,
   EuiButton,
   EuiSpacer,
@@ -21,12 +19,54 @@ import {
 } from "@elastic/eui";
 import { set, get } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
+import JSONDiffEditor from "../../../../components/JSONDiffEditor";
+import { AllBuiltInComponents } from "../../../../components/FormGenerator";
+import useField from "../../../../lib/field";
 import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
 import "./IndexMapping.scss";
-import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import JSONDiffEditor from "../../../../components/JSONDiffEditor";
+
+export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
+  return Object.entries(obj).map(([fieldName, fieldSettings]) => {
+    const { properties, ...others } = fieldSettings;
+    const payload: MappingsProperties[number] = {
+      ...others,
+      fieldName,
+    };
+    if (properties) {
+      payload.properties = transformObjectToArray(properties);
+    }
+    return payload;
+  });
+};
+
+export const transformArrayToObject = (array: MappingsProperties): MappingsPropertiesObject => {
+  return array.reduce((total, current) => {
+    const { fieldName, properties, ...others } = current;
+    const payload: MappingsPropertiesObject[string] = {
+      ...others,
+    };
+    if (properties) {
+      payload.properties = transformArrayToObject(properties);
+    }
+    return {
+      ...total,
+      [current.fieldName]: payload,
+    };
+  }, {} as MappingsPropertiesObject);
+};
+
+const countNodesInTree = (array: MappingsProperties) => {
+  return array.reduce((total, current) => {
+    total = total + 1;
+    const { properties } = current;
+    if (properties) {
+      total = total + countNodesInTree(properties);
+    }
+    return total;
+  }, 0);
+};
 
 export interface IndexMappingProps {
   value?: MappingsProperties;
@@ -58,133 +98,131 @@ interface IMappingLabel {
 
 const OLD_VALUE_DISABLED_REASON = "Old mappings can not be modified";
 
-const EuiFieldTextWrapped = EuiToolTipWrapper(EuiFieldText);
-const EuiSelectWrapped = EuiToolTipWrapper(EuiSelect);
-
-const MappingLabel = forwardRef(
-  (
-    { value, onChange, onFieldNameCheck, disabled, onAddSubField, onDeleteField, id, readonly }: IMappingLabel,
-    forwardedRef: React.Ref<IIndexMappingsRef>
-  ) => {
-    const { fieldName, ...fieldSettings } = value;
-    const [fieldNameError, setFieldNameError] = useState("");
-    const [fieldNameState, setFieldNameState] = useState(fieldName);
-    const ref = useRef<any>(null);
-    const firstInitRef = useRef<boolean>(true);
-    const type = fieldSettings.type ? fieldSettings.type : "object";
-    const onValidate = () => {
-      let error = "";
-      if (!fieldNameState) {
-        error = "Field name is required, please input";
+const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<IIndexMappingsRef>) => {
+  const { onFieldNameCheck, disabled, onAddSubField, onDeleteField, id, readonly } = props;
+  const propsRef = useRef(props);
+  propsRef.current = props;
+  const onFieldChange = useCallback(
+    (k, v) => {
+      const newValue = { ...propsRef.current.value };
+      set(newValue, k, v);
+      return propsRef.current.onChange(newValue, k, v);
+    },
+    [propsRef.current.value, propsRef.current.onChange]
+  );
+  const field = useField({
+    values: propsRef.current.value,
+    onChange: onFieldChange,
+  });
+  const value = field.getValues();
+  const type = value.type ? value.type : "object";
+  useImperativeHandle(forwardedRef, () => ({
+    validate: async () => {
+      const { errors } = await field.validatePromise();
+      if (errors) {
+        return "Validate Error";
       } else {
-        error = onFieldNameCheck(fieldNameState);
+        return "";
       }
+    },
+  }));
 
-      setFieldNameError(error);
-      return Promise.resolve(error);
-    };
-    useImperativeHandle(forwardedRef, () => ({
-      validate: onValidate,
-    }));
-    const onFieldChange = useCallback(
-      (k, v) => {
-        const newValue = { ...value };
-        set(newValue, k, v);
-        return onChange(newValue, k, v);
-      },
-      [value, onChange]
-    );
-    useEffect(() => {
-      setFieldNameState(fieldNameState);
-    }, [fieldName]);
-    useEffect(() => {
-      if (firstInitRef.current) {
-        firstInitRef.current = false;
-        return;
-      }
-      onValidate();
-    }, [fieldNameState]);
-    return (
-      <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
-        <EuiFlexItem style={{ width: 240 }} grow={false}>
-          <EuiFormRow isInvalid={!!fieldNameError} error={fieldNameError} label="Field name" display="rowCompressed">
-            {readonly ? (
-              <EuiCode>{fieldNameState}</EuiCode>
-            ) : (
-              <EuiFieldTextWrapped
-                inputRef={ref}
-                disabled={readonly || disabled}
-                disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-                compressed
-                data-test-subj={`${id}-field-name`}
-                value={fieldNameState}
-                onChange={(e) => setFieldNameState(e.target.value)}
-                onBlur={async (e) => {
-                  const error = await onValidate();
-                  if (!error) {
-                    onFieldChange("fieldName", fieldNameState);
-                  }
-                }}
-              />
-            )}
-          </EuiFormRow>
-        </EuiFlexItem>
+  return (
+    <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
+      <EuiFlexItem style={{ width: 240 }} grow={false}>
+        <EuiFormRow
+          isInvalid={!!field.getError("fieldName")}
+          error={field.getError("fieldName")}
+          label="Field name"
+          display="rowCompressed"
+        >
+          {readonly ? (
+            <EuiCode>{field.getValue("fieldName")}</EuiCode>
+          ) : (
+            <AllBuiltInComponents.Input
+              {...field.registerField({
+                name: "fieldName",
+                rules: [
+                  {
+                    required: true,
+                    message: "Field name is required, please input",
+                  },
+                  {
+                    validator: (rule, value) => {
+                      const checkResult = onFieldNameCheck(value);
+                      if (checkResult) {
+                        return Promise.reject(checkResult);
+                      }
+
+                      return Promise.resolve("");
+                    },
+                  },
+                ],
+              })}
+              disabled={readonly || disabled}
+              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
+              compressed
+              data-test-subj={`${id}-field-name`}
+            />
+          )}
+        </EuiFormRow>
+      </EuiFlexItem>
+      <EuiFlexItem grow={false}>
+        <EuiFormRow label="Field type" display="rowCompressed">
+          {readonly ? (
+            <EuiCode>{type}</EuiCode>
+          ) : (
+            <AllBuiltInComponents.Select
+              disabled={readonly || disabled}
+              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
+              compressed
+              {...field.registerField({
+                name: "type",
+              })}
+              data-test-subj={`${id}-field-type`}
+              options={INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }))}
+            />
+          )}
+        </EuiFormRow>
+      </EuiFlexItem>
+      {disabled ? null : (
         <EuiFlexItem grow={false}>
-          <EuiFormRow label="Field type" display="rowCompressed">
-            {readonly ? (
-              <EuiCode>{type}</EuiCode>
-            ) : (
-              <EuiSelectWrapped
-                disabled={readonly || disabled}
-                disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-                compressed
-                value={type}
-                data-test-subj={`${id}-field-type`}
-                onChange={(e) => onFieldChange("type", e.target.value)}
-                options={INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }))}
-              />
-            )}
-          </EuiFormRow>
-        </EuiFlexItem>
-        {disabled ? null : (
-          <EuiFlexItem grow={false}>
-            <EuiFormRow label="actions" display="rowCompressed">
-              <div
-                style={{ display: "flex", height: 32, alignItems: "center" }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
-                  <EuiToolTip content="Add a sub field">
-                    <span
-                      className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
-                      data-test-subj={`${id}-add-sub-field`}
-                      aria-label="Delete current field"
-                      onClick={onAddSubField}
-                    >
-                      <EuiIcon type="plusInCircleFilled" />
-                    </span>
-                  </EuiToolTip>
-                ) : null}
-                <EuiToolTip content="Delete current field">
+          <EuiFormRow label="actions" display="rowCompressed">
+            <div
+              style={{ display: "flex", height: 32, alignItems: "center" }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
+                <EuiToolTip content="Add a sub field">
                   <span
-                    className="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
-                    data-test-subj={`${id}-delete-field`}
+                    className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
+                    data-test-subj={`${id}-add-sub-field`}
                     aria-label="Delete current field"
-                    onClick={onDeleteField}
+                    onClick={onAddSubField}
                   >
-                    <EuiIcon type="trash" />
+                    <EuiIcon type="plusInCircleFilled" />
                   </span>
                 </EuiToolTip>
-              </div>
-            </EuiFormRow>
-          </EuiFlexItem>
-        )}
-      </EuiFlexGroup>
-    );
-  }
-);
+              ) : null}
+              <EuiToolTip content="Delete current field">
+                <span
+                  className="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
+                  data-test-subj={`${id}-delete-field`}
+                  aria-label="Delete current field"
+                  onClick={onDeleteField}
+                >
+                  <EuiIcon type="trash" />
+                </span>
+              </EuiToolTip>
+            </div>
+          </EuiFormRow>
+        </EuiFlexItem>
+      )}
+    </EuiFlexGroup>
+  );
+});
 
 const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
   const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
@@ -248,7 +286,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
             id={`mapping-visual-editor-${id}`}
             onFieldNameCheck={(fieldName) => {
               const hasDuplicateName = (formValue || [])
-                .filter((sibItem, sibIndex) => sibIndex !== index)
+                .filter((sibItem, sibIndex) => sibIndex < index)
                 .some((sibItem) => sibItem.fieldName === fieldName);
               if (hasDuplicateName) {
                 return `Duplicate field name [${fieldName}], please change your field name`;
@@ -287,6 +325,9 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
     const oldValueKeys = (oldValue || []).map((item) => item.fieldName);
     return value?.filter((item) => !oldValueKeys.includes(item.fieldName)) || [];
   }, [oldValue, value]);
+  const renderKey = useMemo(() => {
+    return countNodesInTree(value || []);
+  }, [value]);
   return (
     <>
       <EuiButtonGroup
@@ -312,7 +353,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
         <>
           {transformedTreeItems.length ? (
             <EuiTreeView
-              key={JSON.stringify(value)}
+              key={renderKey}
               expandByDefault
               className="index-mapping-tree"
               aria-labelledby="label"
@@ -368,33 +409,3 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
 
 // @ts-ignore
 export default forwardRef(IndexMapping);
-
-export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
-  return Object.entries(obj).map(([fieldName, fieldSettings]) => {
-    const { properties, ...others } = fieldSettings;
-    const payload: MappingsProperties[number] = {
-      ...others,
-      fieldName,
-    };
-    if (properties) {
-      payload.properties = transformObjectToArray(properties);
-    }
-    return payload;
-  });
-};
-
-export const transformArrayToObject = (array: MappingsProperties): MappingsPropertiesObject => {
-  return array.reduce((total, current) => {
-    const { fieldName, properties, ...others } = current;
-    const payload: MappingsPropertiesObject[string] = {
-      ...others,
-    };
-    if (properties) {
-      payload.properties = transformArrayToObject(properties);
-    }
-    return {
-      ...total,
-      [current.fieldName]: payload,
-    };
-  }, {} as MappingsPropertiesObject);
-};
