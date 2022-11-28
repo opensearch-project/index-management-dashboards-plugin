@@ -168,9 +168,6 @@ export const INDEX_MAPPING_TYPES = [
     },
   },
   {
-    label: "annotated-text", // no handler
-  },
-  {
     label: "boolean",
   },
   {
@@ -180,16 +177,10 @@ export const INDEX_MAPPING_TYPES = [
     label: "completion",
   },
   {
-    label: "constant_keyword", // no handler
-  },
-  {
     label: "date",
   },
   {
     label: "date_range",
-  },
-  {
-    label: "dense_vector", // no handler
   },
   {
     label: "double",
@@ -205,9 +196,6 @@ export const INDEX_MAPPING_TYPES = [
   },
   {
     label: "geo_shape",
-  },
-  {
-    label: "histogram", // no handler
   },
   {
     label: "integer",
@@ -228,17 +216,11 @@ export const INDEX_MAPPING_TYPES = [
     label: "long_range",
   },
   {
-    label: "murmur3", // no handler
-  },
-  {
     label: "object",
     hasChildren: true,
   },
   {
     label: "percolator",
-  },
-  {
-    label: "point", // no handler
   },
   {
     label: "rank_feature",
@@ -250,19 +232,10 @@ export const INDEX_MAPPING_TYPES = [
     label: "search_as_you_type",
   },
   {
-    label: "shape", // no handler
-  },
-  {
-    label: "sparse_vector", // no handler
-  },
-  {
     label: "text",
   },
   {
     label: "token_count", // Analyzer must be set for field [6] but wasn't.
-  },
-  {
-    label: "wildcard", // no handler
   },
 ];
 
