@@ -43,7 +43,7 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
   };
   return (
     <RemoteSelect
-      isDisabled={props.isDisabled}
+      {...(props as Partial<EuiComboBoxProps<any>>)}
       placeholder="Select or create aliases"
       customOptionText="Add {searchValue} as a new alias"
       refreshOptions={refreshOptions}
