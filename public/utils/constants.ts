@@ -3,6 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { InitOption } from "../lib/field";
+import { ComponentMapEnum } from "../components/FormGenerator";
+
 export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 
 export const DEFAULT_EMPTY_DATA = "-";
@@ -160,11 +163,29 @@ export const INDEX_DYNAMIC_SETTINGS = [
   "index.hidden",
 ];
 
-export const INDEX_MAPPING_TYPES = [
+export const INDEX_MAPPING_TYPES: {
+  label?: string;
+  hasChildren?: boolean;
+  options?: {
+    fields?: (InitOption & { label: string; type: ComponentMapEnum; initValue?: any })[];
+  };
+}[] = [
   {
-    label: "alias", // path must be set
+    label: "alias",
     options: {
-      fields: ["path"],
+      fields: [
+        {
+          label: "path for alias",
+          name: "path",
+          type: "Input",
+          rules: [
+            {
+              required: true,
+              message: "Path is required for field type: alias.",
+            },
+          ],
+        },
+      ],
     },
   },
   {
@@ -235,7 +256,23 @@ export const INDEX_MAPPING_TYPES = [
     label: "text",
   },
   {
-    label: "token_count", // Analyzer must be set for field [6] but wasn't.
+    label: "token_count",
+    options: {
+      fields: [
+        {
+          label: "Analyzer",
+          name: "analyzer",
+          initValue: "standard",
+          type: "Input",
+          rules: [
+            {
+              required: true,
+              message: "Path is required for field type: alias.",
+            },
+          ],
+        },
+      ],
+    },
   },
 ];
 

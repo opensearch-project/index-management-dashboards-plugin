@@ -34,6 +34,8 @@ export type MappingsPropertiesObject = Record<
 export type MappingsProperties = {
   fieldName: string;
   type: string;
+  path?: string;
+  analyzer?: string;
   properties?: MappingsProperties;
 }[];
 

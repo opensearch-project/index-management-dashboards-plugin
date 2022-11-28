@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Rule, FieldOption, FieldInstance, InitOption, InitResult, ValidateFunction } from "./interfaces";
 import buildInRules from "./rules";
 
@@ -8,7 +8,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
   const destroyRef = useRef<boolean>(false);
   const values = useRef<Record<string, any>>(options?.values || {});
   const errors = useRef<Record<string, null | string[]>>({});
-  const fieldsMapRef = useRef<Record<string, InitOption<any>>>({});
+  const fieldsMapRef = useRef<Record<string, InitOption>>({});
   const setValues = (obj: Record<string, any>) => {
     if (destroyRef.current) {
       return;
@@ -94,10 +94,11 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
       destroyRef.current = true;
     };
   }, []);
+  const refCallbacks = useRef<Record<string, React.Ref<any>>>({});
   return {
     registerField: (initOptions: InitOption): InitResult<any> => {
       fieldsMapRef.current[initOptions.name] = initOptions;
-      return {
+      const payload: InitResult<any> = {
         ...initOptions.props,
         value: values.current[initOptions.name],
         onChange: (val) => {
@@ -106,6 +107,18 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
           options?.onChange && options?.onChange(initOptions.name, val);
         },
       };
+      if (options?.unmountComponent) {
+        if (!refCallbacks.current[initOptions.name]) {
+          refCallbacks.current[initOptions.name] = (ref: any) => {
+            if (!ref) {
+              delete fieldsMapRef.current[initOptions.name];
+              delete refCallbacks.current[initOptions.name];
+            }
+          };
+        }
+        payload.ref = refCallbacks.current[initOptions.name] as React.RefCallback<any>;
+      }
+      return payload;
     },
     setValue,
     setValues,

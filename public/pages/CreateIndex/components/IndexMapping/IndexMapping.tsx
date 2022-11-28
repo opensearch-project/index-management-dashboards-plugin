@@ -17,7 +17,7 @@ import {
   EuiToolTip,
   EuiCode,
 } from "@elastic/eui";
-import { set, get } from "lodash";
+import { set, get, pick } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
 import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
@@ -104,8 +104,27 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
   propsRef.current = props;
   const onFieldChange = useCallback(
     (k, v) => {
-      const newValue = { ...propsRef.current.value };
+      let newValue = { ...propsRef.current.value };
       set(newValue, k, v);
+      if (k === "type") {
+        newValue = pick(newValue, ["fieldName", "type"]);
+        const findItem = INDEX_MAPPING_TYPES.find((item) => item.label === v);
+        const initValues = (findItem?.options?.fields || []).reduce((total, current) => {
+          if (current && current.initValue !== undefined) {
+            return {
+              ...total,
+              [current.name]: current.initValue,
+            };
+          }
+
+          return total;
+        }, {});
+        newValue = {
+          ...newValue,
+          ...initValues,
+        };
+        field.setValues(newValue);
+      }
       return propsRef.current.onChange(newValue, k, v);
     },
     [propsRef.current.value, propsRef.current.onChange]
@@ -113,6 +132,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
   const field = useField({
     values: propsRef.current.value,
     onChange: onFieldChange,
+    unmountComponent: true,
   });
   const value = field.getValues();
   const type = value.type ? value.type : "object";
@@ -127,9 +147,12 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
     },
   }));
 
+  const findItem = INDEX_MAPPING_TYPES.find((item) => item.label === type);
+  const moreFields = findItem?.options?.fields || [];
+
   return (
     <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
-      <EuiFlexItem style={{ width: 240 }} grow={false}>
+      <EuiFlexItem grow={false}>
         <EuiFormRow
           isInvalid={!!field.getError("fieldName")}
           error={field.getError("fieldName")}
@@ -159,6 +182,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
                   },
                 ],
               })}
+              style={{ width: 240 }}
               disabled={readonly || disabled}
               disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
               compressed
@@ -185,6 +209,22 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
           )}
         </EuiFormRow>
       </EuiFlexItem>
+      {moreFields.map((item) => {
+        const { label, type, ...others } = item;
+        const RenderComponent = readonly ? AllBuiltInComponents.Text : AllBuiltInComponents[type];
+        return (
+          <EuiFlexItem grow={false} key={others.name}>
+            <EuiFormRow label={label} display="rowCompressed" isInvalid={!!field.getError(others.name)} error={field.getError(others.name)}>
+              <RenderComponent
+                {...field.registerField(others)}
+                disabled={readonly || disabled}
+                disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
+                compressed
+              />
+            </EuiFormRow>
+          </EuiFlexItem>
+        );
+      })}
       {disabled ? null : (
         <EuiFlexItem grow={false}>
           <EuiFormRow label="actions" display="rowCompressed">
