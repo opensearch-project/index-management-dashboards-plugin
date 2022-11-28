@@ -159,18 +159,21 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const onShrinkIndexFlyoutConfirm = useCallback(
-    async (sourceIndexName: string, targetIndexName: string, indexSettings: {}) => {
+    async (sourceIndexName: string, targetIndexName: string, requestPayload: Required<IndexItem>["settings"]) => {
       try {
-        const requestBody = {
-          settings: indexSettings,
-        };
+        const { aliases, ...settings } = requestPayload;
 
         const result = await services.commonService.apiCaller({
           endpoint: "indices.shrink",
           data: {
             index: sourceIndexName,
             target: targetIndexName,
-            body: requestBody,
+            body: {
+              settings: {
+                ...settings,
+              },
+              aliases,
+            },
           },
         });
         if (result && result.ok) {
@@ -350,6 +353,8 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onConfirm={onShrinkIndexFlyoutConfirm}
           getIndexSettings={getIndexSettings}
           setIndexSettings={setIndexSettings}
+          openIndex={onOpenIndexModalConfirm}
+          getAlias={getAlias}
         />
       )}
 

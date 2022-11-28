@@ -1,8 +1,8 @@
 import React, { forwardRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiCode } from "@elastic/eui";
+import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiCode, EuiComboBox } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
 
-export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text";
+export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle";
 
 export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
   onChange: (val: IFieldComponentProps["value"]) => void;
@@ -38,6 +38,32 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
       <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
     )) as React.ComponentType<IFieldComponentProps>
   ),
+  ComboBoxSingle: EuiToolTipWrapper(
+    forwardRef(({ onChange, value, options, ...others }, ref: React.Ref<any>) => {
+      return (
+        <EuiComboBox
+          {...others}
+          options={options}
+          onCreateOption={(searchValue) => {
+            const findItem = options.find((item: { label: string }) => item.label === searchValue);
+            if (findItem) {
+              onChange(searchValue);
+            }
+          }}
+          singleSelection={{ asPlainText: true }}
+          ref={ref}
+          onChange={(selectedOptions) => {
+            if (selectedOptions && selectedOptions[0]) {
+              onChange(selectedOptions[0].label);
+            } else {
+              onChange(undefined);
+            }
+          }}
+          selectedOptions={[value].filter((item) => item !== undefined).map((label) => ({ label }))}
+        />
+      );
+    })
+  ) as React.ComponentType<IFieldComponentProps>,
 };
 
 export default componentMap;

@@ -400,7 +400,7 @@ const IndexDetail = (
             data-test-subj="More Action"
             panelPaddingSize="none"
             button={
-              <EuiButton iconType="arrowDown" iconSide="right">
+              <EuiButton iconType="arrowDown" iconSide="right" data-test-subj="importSettingMappingBtn">
                 Import settings and mappings
               </EuiButton>
             }

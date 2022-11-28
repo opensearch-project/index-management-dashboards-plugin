@@ -255,6 +255,20 @@ describe("<IndicesActions /> spec", () => {
                 },
               },
             };
+          case "cat.aliases":
+            return {
+              ok: true,
+              response: [
+                {
+                  alias: "a1",
+                  index: "acvxcvxc",
+                  filter: "-",
+                  "routing.index": "-",
+                  "routing.search": "-",
+                  is_write_index: "-",
+                },
+              ],
+            };
           case "indices.shrink":
             return {
               ok: true,
@@ -268,7 +282,7 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const { container, getByTestId, findByTestId } = renderWithRouter({
+    const { container, getByTestId } = renderWithRouter({
       selectedItems: [
         {
           "docs.count": "5",
@@ -301,7 +315,7 @@ describe("<IndicesActions /> spec", () => {
     });
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.getSettings",
         data: {
@@ -314,6 +328,15 @@ describe("<IndicesActions /> spec", () => {
         data: {
           index: ["test_index"],
           format: "json",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cat.aliases",
+        method: "GET",
+        data: {
+          format: "json",
+          name: "*",
+          expand_wildcards: "open",
         },
       });
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({

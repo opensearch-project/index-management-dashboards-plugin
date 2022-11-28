@@ -6,6 +6,7 @@
 import { PLUGIN_NAME } from "../support/constants";
 const REINDEX_DEST = "test-ecomm-rdx";
 const REINDEX_DEST_NO_SOURCE = "test-reindex-nosource";
+const REINDEX_NEW_CREATED = "test-logs-new";
 
 describe("Reindex", () => {
   beforeEach(() => {
@@ -141,6 +142,85 @@ describe("Reindex", () => {
         expect($tr, "item").to.contain(REINDEX_DEST);
         // subset data number
         expect($tr, "item").to.contain(4213);
+      });
+    });
+  });
+
+  describe("Reindex successfully for newly created index", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      // Load logs data
+      cy.request({
+        method: "POST",
+        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/logs`,
+        headers: {
+          "osd-xsrf": true,
+        },
+      }).then((response) => {
+        expect(response.status).equal(200);
+      });
+    });
+
+    it("successfully", () => {
+      // search
+      cy.get(`input[type="search"]`).focus().type("opensearch_dashboards_sample_data_logs");
+
+      cy.wait(1000);
+
+      // Confirm we have our initial index
+      cy.contains("opensearch_dashboards_sample_data_logs");
+
+      // select logs index
+      cy.get("#_selection_column_opensearch_dashboards_sample_data_logs-checkbox").click();
+
+      // Click actions button
+      cy.get('[data-test-subj="More Action"]').click();
+      // Reindex should show as activate
+      cy.get('[data-test-subj="Reindex Action"]').click();
+
+      // open advance option
+      cy.get('[data-test-subj="advanceOptionToggle"]').click();
+
+      // enable subset query
+      cy.get('[data-test-subj="subsetOption"] #subset').click({ force: true });
+
+      // input query to reindex subset
+      cy.get('[data-test-subj="queryJsonEditor"] textarea')
+        .focus()
+        .clear()
+        .type('{"query":{"match":{"ip":"135.201.60.64"}}}', { parseSpecialCharSequences: false });
+
+      // create destination
+      cy.get('[data-test-subj="createIndexButton"]').click();
+      cy.contains("Create Index");
+
+      cy.get('[placeholder="Please enter the name for your index"]').type(REINDEX_NEW_CREATED).blur();
+      cy.wait(1000);
+
+      // import setting and mapping
+      cy.get('[data-test-subj="importSettingMappingBtn"]').click();
+      cy.get('[data-test-subj="import-settings-opensearch_dashboards_sample_data_logs"]').click();
+
+      cy.wait(10);
+      cy.contains(/have been import successfully/);
+
+      cy.get('[data-test-subj="flyout-footer-action-button"]').click({ force: true });
+
+      // click to perform reindex
+      cy.get('[data-test-subj="reindexConfirmButton"]').click();
+      cy.wait(10);
+      cy.contains(/Reindex .* success .* taskId .*/);
+
+      cy.wait(10000);
+      // Type in REINDEX_DEST in search input
+      cy.get(`input[type="search"]`).focus().type(REINDEX_NEW_CREATED);
+
+      // Confirm we only see REINDEX_DEST in table
+      cy.get("tbody > tr").should(($tr) => {
+        expect($tr, "1 row").to.have.length(1);
+        expect($tr, "item").to.contain(REINDEX_NEW_CREATED);
+        // subset data number
+        expect($tr, "item").to.contain(13);
       });
     });
   });
