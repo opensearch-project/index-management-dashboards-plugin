@@ -165,6 +165,8 @@ describe("Reindex", () => {
       // search
       cy.get(`input[type="search"]`).focus().type("opensearch_dashboards_sample_data_logs");
 
+      cy.wait(1000);
+
       // Confirm we have our initial index
       cy.contains("opensearch_dashboards_sample_data_logs");
 
@@ -198,6 +200,9 @@ describe("Reindex", () => {
       // import setting and mapping
       cy.get('[data-test-subj="importSettingMappingBtn"]').click();
       cy.get('[data-test-subj="import-settings-opensearch_dashboards_sample_data_logs"]').click();
+
+      cy.wait(10);
+      cy.contains(/have been import successfully/);
 
       cy.get('[data-test-subj="flyout-footer-action-button"]').click({ force: true });
 
