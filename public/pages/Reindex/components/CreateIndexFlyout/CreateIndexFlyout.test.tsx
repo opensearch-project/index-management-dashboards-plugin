@@ -8,6 +8,7 @@ import React from "react";
 import CreateIndexFlyout from "./CreateIndexFlyout";
 import { coreServicesMock, browserServicesMock, apiCallerMock } from "../../../../../test/mocks";
 import { CoreServicesContext } from "../../../../components/core_services";
+import userEvent from "@testing-library/user-event";
 
 apiCallerMock(browserServicesMock);
 
@@ -28,7 +29,7 @@ describe("<CreateIndexFlyout /> spec", () => {
       </CoreServicesContext.Provider>
     );
     // click create button
-    getByTestId("flyout-footer-action-button").click();
+    userEvent.click(getByTestId("flyout-footer-action-button"));
 
     await waitFor(() => {
       expect(getByText("Index name can not be null.")).toBeInTheDocument();
