@@ -8,7 +8,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { IAlias } from "../../interface";
 import { getAliasActionsByDiffArray } from "../../../CreateIndex/containers/IndexForm";
 import { filterByMinimatch } from "../../../../../utils/helper";
-import { SYSTEM_ALIAS } from "../../../../../utils/constants";
+import { SYSTEM_ALIAS, SYSTEM_INDEX } from "../../../../../utils/constants";
 
 export interface ICreateAliasProps {
   visible: boolean;
@@ -42,7 +42,9 @@ export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (
             if (res.ok) {
               return {
                 ...res,
-                response: res.response.map((item) => ({ label: item.index })),
+                response: res.response
+                  .map((item) => ({ label: item.index }))
+                  .filter((item) => !filterByMinimatch(item.label, SYSTEM_INDEX)),
               };
             } else {
               return res;

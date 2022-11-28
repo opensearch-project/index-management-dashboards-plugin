@@ -7,6 +7,8 @@ import React, { forwardRef } from "react";
 import { EuiComboBoxProps } from "@elastic/eui";
 import RemoteSelect, { RemoteSelectProps } from "../../../../components/RemoteSelect";
 import { ServerResponse } from "../../../../../server/models/types";
+import { filterByMinimatch } from "../../../../../utils/helper";
+import { SYSTEM_ALIAS } from "../../../../../utils/constants";
 
 export interface AliasSelectProps extends Omit<EuiComboBoxProps<{ label: string; value: string }>, "value" | "onChange"> {
   value?: Record<string, {}>;
@@ -28,9 +30,11 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
       if (res.ok) {
         return {
           ...res,
-          response: [...new Set(res.response.map((item) => item.alias).filter((item) => !item.startsWith(".")))].map((item) => ({
-            label: item,
-          })),
+          response: [...new Set(res.response.map((item) => item.alias).filter((item) => !filterByMinimatch(item, SYSTEM_ALIAS)))].map(
+            (item) => ({
+              label: item,
+            })
+          ),
         };
       } else {
         return res;
