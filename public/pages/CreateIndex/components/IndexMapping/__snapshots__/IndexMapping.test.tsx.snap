@@ -191,11 +191,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               alias
                             </option>
                             <option
-                              value="annotated-text"
-                            >
-                              annotated-text
-                            </option>
-                            <option
                               value="boolean"
                             >
                               boolean
@@ -211,11 +206,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               completion
                             </option>
                             <option
-                              value="constant_keyword"
-                            >
-                              constant_keyword
-                            </option>
-                            <option
                               value="date"
                             >
                               date
@@ -224,11 +214,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               value="date_range"
                             >
                               date_range
-                            </option>
-                            <option
-                              value="dense_vector"
-                            >
-                              dense_vector
                             </option>
                             <option
                               value="double"
@@ -254,11 +239,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               value="geo_shape"
                             >
                               geo_shape
-                            </option>
-                            <option
-                              value="histogram"
-                            >
-                              histogram
                             </option>
                             <option
                               value="integer"
@@ -291,11 +271,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               long_range
                             </option>
                             <option
-                              value="murmur3"
-                            >
-                              murmur3
-                            </option>
-                            <option
                               value="object"
                             >
                               object
@@ -304,11 +279,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               value="percolator"
                             >
                               percolator
-                            </option>
-                            <option
-                              value="point"
-                            >
-                              point
                             </option>
                             <option
                               value="rank_feature"
@@ -326,16 +296,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               search_as_you_type
                             </option>
                             <option
-                              value="shape"
-                            >
-                              shape
-                            </option>
-                            <option
-                              value="sparse_vector"
-                            >
-                              sparse_vector
-                            </option>
-                            <option
                               value="text"
                             >
                               text
@@ -344,11 +304,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               value="token_count"
                             >
                               token_count
-                            </option>
-                            <option
-                              value="wildcard"
-                            >
-                              wildcard
                             </option>
                           </select>
                           <div
@@ -536,11 +491,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       alias
                                     </option>
                                     <option
-                                      value="annotated-text"
-                                    >
-                                      annotated-text
-                                    </option>
-                                    <option
                                       value="boolean"
                                     >
                                       boolean
@@ -556,11 +506,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       completion
                                     </option>
                                     <option
-                                      value="constant_keyword"
-                                    >
-                                      constant_keyword
-                                    </option>
-                                    <option
                                       value="date"
                                     >
                                       date
@@ -569,11 +514,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       value="date_range"
                                     >
                                       date_range
-                                    </option>
-                                    <option
-                                      value="dense_vector"
-                                    >
-                                      dense_vector
                                     </option>
                                     <option
                                       value="double"
@@ -599,11 +539,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       value="geo_shape"
                                     >
                                       geo_shape
-                                    </option>
-                                    <option
-                                      value="histogram"
-                                    >
-                                      histogram
                                     </option>
                                     <option
                                       value="integer"
@@ -636,11 +571,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       long_range
                                     </option>
                                     <option
-                                      value="murmur3"
-                                    >
-                                      murmur3
-                                    </option>
-                                    <option
                                       value="object"
                                     >
                                       object
@@ -649,11 +579,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       value="percolator"
                                     >
                                       percolator
-                                    </option>
-                                    <option
-                                      value="point"
-                                    >
-                                      point
                                     </option>
                                     <option
                                       value="rank_feature"
@@ -671,16 +596,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       search_as_you_type
                                     </option>
                                     <option
-                                      value="shape"
-                                    >
-                                      shape
-                                    </option>
-                                    <option
-                                      value="sparse_vector"
-                                    >
-                                      sparse_vector
-                                    </option>
-                                    <option
                                       value="text"
                                     >
                                       text
@@ -689,11 +604,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       value="token_count"
                                     >
                                       token_count
-                                    </option>
-                                    <option
-                                      value="wildcard"
-                                    >
-                                      wildcard
                                     </option>
                                   </select>
                                   <div
