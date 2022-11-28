@@ -8,7 +8,6 @@ import { render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
 import userEvent from "@testing-library/user-event";
-import { resolve } from "dns";
 
 const IndexDetailOnChangeWrapper = forwardRef((props: Omit<IndexDetailProps, "onChange">, ref: any) => {
   const [value, setValue] = useState(props.value as any);
@@ -80,7 +79,7 @@ describe("<IndexDetail /> spec", () => {
   });
 
   it("inherit templates settings when create", async () => {
-    const { findByDisplayValue, getByDisplayValue, getByText, getByTestId } = render(
+    const { findByDisplayValue, getByDisplayValue, getByText, getByTestId, queryByText } = render(
       <IndexDetailOnChangeWrapper
         refreshOptions={refreshOptions}
         value={{ index: "some_index" }}
@@ -116,6 +115,7 @@ describe("<IndexDetail /> spec", () => {
     userEvent.click(getByTestId("simulate-confirm-confirm"));
     await waitFor(() => {
       expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "2");
+      expect(queryByText("The index name matches one or more index templates")).toBeInTheDocument();
     });
 
     userEvent.clear(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element);

@@ -20,7 +20,7 @@ interface IFormGeneratorAdvancedSettings extends IAdvancedSettingsProps {
 }
 
 export interface IField {
-  rowProps: Pick<EuiFormRowProps, "label" | "helpText">;
+  rowProps: Pick<EuiFormRowProps, "label" | "helpText" | "fullWidth">;
   name: string;
   type?: keyof typeof AllBuiltInComponents;
   component?: React.ComponentType<IFieldComponentProps>;

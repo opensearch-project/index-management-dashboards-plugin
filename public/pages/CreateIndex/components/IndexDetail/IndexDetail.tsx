@@ -53,6 +53,14 @@ const getOrderedJson = (json: Record<string, any>) => {
   return entries.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
 };
 
+const TemplateInfoCallout = (props: { visible: boolean }) => {
+  return props.visible ? (
+    <EuiCallOut title="The index name matches one or more index templates">
+      Index alias, settings, and mappings are automatically inherited from matching index templates.
+    </EuiCallOut>
+  ) : null;
+};
+
 const IndexDetail = (
   {
     value,
@@ -82,6 +90,7 @@ const IndexDetail = (
   );
   const destroyRef = useRef<boolean>(false);
   const [templateSimulateLoading, setTemplateSimulateLoading] = useState(false);
+  const [isMatchingTemplate, setIsMatchingTemplate] = useState(false);
   const finalValue = value || {};
   const aliasesRef = useRef<IFormGeneratorRef>(null);
   const settingsRef = useRef<IFormGeneratorRef>(null);
@@ -126,7 +135,7 @@ const IndexDetail = (
               content: "The index name has matched one or more index templates, please choose which way to go on",
               locale: {
                 confirm: "Overwrite",
-                cancel: "Merge the template",
+                cancel: "Merge your changes with template",
               },
               type: "confirm",
               "data-test-subj": "simulate-confirm",
@@ -158,7 +167,10 @@ const IndexDetail = (
             },
           });
           hasEdit.current = false;
+          setIsMatchingTemplate(true);
         });
+      } else {
+        setIsMatchingTemplate(false);
       }
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
@@ -330,6 +342,13 @@ const IndexDetail = (
                         },
                       ],
                     },
+                  },
+                  {
+                    name: "templateMessage",
+                    rowProps: {
+                      fullWidth: true,
+                    },
+                    component: () => <TemplateInfoCallout visible={!isEdit && isMatchingTemplate} />,
                   },
                   {
                     name: "aliases",

@@ -126,6 +126,15 @@ Object {
                           </div>
                         </div>
                         <div
+                          class="euiFormRow euiFormRow--fullWidth"
+                          data-test-subj="form-name-templateMessage"
+                          id="some_html_id-row"
+                        >
+                          <div
+                            class="euiFormRow__fieldWrapper"
+                          />
+                        </div>
+                        <div
                           class="euiFormRow"
                           data-test-subj="form-name-aliases"
                           id="some_html_id-row"
