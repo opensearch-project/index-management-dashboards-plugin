@@ -59,6 +59,15 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
     });
   };
 
+  /*
+   ** When splitting an index, the valid value of number_of_shards in the target index depends on the source index’s primary shards count:
+   ** (1) If the source index’s primary shards count is equal to 1,
+   **     then the valid value is an arbitrary number between 1 and 1024(includes 1 and 1024).
+   ** (2) If the source index’s primary shards count is greater than 1,
+   **     the valid value is obtained by continuously multiplying the source index’s primary shards count by 2
+   **     as long as it's not larger than 1024.
+   **     For example, if the source index has 3 primary shards, then all the valid value are 3,6,12,24,…,768.
+   */
   calculateShardsOption = () => {
     const sourceShards = Number(this.props.sourceIndex.pri);
     const shardsSelectOptions = [];
@@ -188,11 +197,25 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       {
         rowProps: {
           label: "Number of shards",
-          helpText: `Must be a multi of ${sourceIndex.pri}`,
+          helpText: "The number of primary shards in the target index",
         },
         name: "index.number_of_shards",
         type: "ComboBoxSingle",
         options: {
+          rules: [
+            {
+              trigger: "onBlur",
+              validator: (rule, value) => {
+                if (!value || value === "") {
+                  // do not pass the validation
+                  // return a rejected promise with error message
+                  return Promise.reject("Number of shards is required");
+                }
+                // pass the validation, return a resolved promise
+                return Promise.resolve();
+              },
+            },
+          ],
           props: {
             "data-test-subj": "numberOfShardsInput",
             options: this.state.shardsSelectOptions,
@@ -202,7 +225,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       {
         rowProps: {
           label: "Number of replicas",
-          helpText: "The number of replica shards each shard should have.",
+          helpText: "The number of replica shards each primary shard should have.",
         },
         name: "index.number_of_replicas",
         type: "Number",

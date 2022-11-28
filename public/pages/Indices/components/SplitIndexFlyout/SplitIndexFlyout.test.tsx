@@ -160,6 +160,41 @@ describe("<SplitIndexFlyout /> spec", () => {
     });
   });
 
+  it("Error message if index name or number of shards is not specified", async () => {
+    const { getByTestId, getByText } = render(
+      <SplitIndexFlyout
+        sourceIndex={
+          {
+            health: "green",
+            index: "split_test_index",
+            pri: "2",
+            rep: "0",
+            status: "open",
+          } as any
+        }
+        onCloseFlyout={closeFlyout}
+        onSplitIndex={onSplitIndex}
+        getIndexSettings={getIndexSettings}
+        setIndexSettings={() => {}}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return { ok: true, response: [] };
+        }}
+      />
+    );
+
+    await waitFor(() => {
+      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
+    });
+
+    userEvent.click(getByTestId("flyout-footer-action-button"));
+
+    await waitFor(() => {
+      expect(getByText("Target Index Name is required")).not.toBeNull();
+      expect(getByText("Number of shards is required")).not.toBeNull();
+    });
+  });
+
   it("Red Index is not ready for split", async () => {
     const { getByTestId, queryByText } = render(
       <SplitIndexFlyout
