@@ -36,7 +36,7 @@ interface SplitIndexProps {
   getIndexSettings: (indexName: string, flat: boolean) => Promise<Record<string, IndexItem>>;
   setIndexSettings: (indexName: string, flat: boolean, setting: {}) => void;
   openIndex: () => void;
-  getAlias: (aliasName: string) => Promise<AliasSelectProps["refreshOptions"]>;
+  getAlias: AliasSelectProps["refreshOptions"];
 }
 
 export default class SplitIndexFlyout extends Component<SplitIndexProps> {
@@ -65,8 +65,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
     if (sourceShards == 1) {
       for (let i = 2; i <= 1024; i++) {
         shardsSelectOptions.push({
-          value: i.toString(),
-          text: i,
+          label: i.toString(),
         });
       }
     } else {
@@ -79,8 +78,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       for (let i = sourceShards * 2; i <= shardsLimit; ) {
         if (shardsLimit % i == 0) {
           shardsSelectOptions.push({
-            value: i.toString(),
-            text: i,
+            label: i.toString(),
           });
           i = i * 2;
         }
@@ -108,6 +106,10 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
   render() {
     const { sourceIndex, onCloseFlyout, setIndexSettings, openIndex } = this.props;
     const { sourceIndexSettings } = this.state;
+
+    if (!sourceIndex) {
+      return null;
+    }
 
     const blockNameList = ["targetIndex"];
     const reasons: React.ReactChild[] = [];
@@ -189,7 +191,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
           helpText: `Must be a multi of ${sourceIndex.pri}`,
         },
         name: "index.number_of_shards",
-        type: "Select",
+        type: "ComboBoxSingle",
         options: {
           props: {
             "data-test-subj": "numberOfShardsInput",
