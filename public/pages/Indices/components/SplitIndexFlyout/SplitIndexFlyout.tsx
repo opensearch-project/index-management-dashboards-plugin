@@ -322,7 +322,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
         <EuiFlyoutFooter>
           <FlyoutFooter
             action=""
-            text="Split Index"
+            text="Split"
             edit={false}
             disabledAction={!readyForSplit}
             onClickAction={this.onSubmit}
