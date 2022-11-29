@@ -307,7 +307,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                             field: "alias",
                             name: "Alias name",
                             render: (val: string, record: { alias: string }) => (
-                              <Link to="somewhereto">
+                              <Link to={`${ROUTES.ALIASES}?search=${val}`}>
                                 <span title={val}>{val}</span>
                               </Link>
                             ),

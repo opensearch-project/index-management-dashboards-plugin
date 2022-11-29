@@ -105,6 +105,7 @@ exports[`<Indices /> spec renders the component 1`] = `
               class="euiFieldSearch euiFieldSearch--fullWidth"
               placeholder="Search..."
               type="search"
+              value=""
             />
             <div
               class="euiFormControlLayoutIcons"

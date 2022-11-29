@@ -107,6 +107,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
             >
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
+                style="width: 300px;"
               >
                 <div
                   class="euiFormRow euiFormRow--compressed"
@@ -140,7 +141,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                             data-test-subj="mapping-visual-editor-0-field-name"
                             disabled=""
                             id="some_html_id"
-                            style="width: 240px;"
                             type="text"
                             value="object"
                           />
@@ -152,6 +152,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
               </div>
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
+                style="width: 100px;"
               >
                 <div
                   class="euiFormRow euiFormRow--compressed"
@@ -407,6 +408,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                     >
                       <div
                         class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="width: 300px;"
                       >
                         <div
                           class="euiFormRow euiFormRow--compressed"
@@ -440,7 +442,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                     data-test-subj="mapping-visual-editor-0.properties.0-field-name"
                                     disabled=""
                                     id="some_html_id"
-                                    style="width: 240px;"
                                     type="text"
                                     value="text"
                                   />
@@ -452,6 +453,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                       </div>
                       <div
                         class="euiFlexItem euiFlexItem--flexGrowZero"
+                        style="width: 100px;"
                       >
                         <div
                           class="euiFormRow euiFormRow--compressed"
