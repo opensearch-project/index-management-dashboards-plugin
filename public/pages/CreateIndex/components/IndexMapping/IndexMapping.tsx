@@ -152,7 +152,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
 
   return (
     <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
-      <EuiFlexItem grow={false}>
+      <EuiFlexItem grow={false} style={{ width: 300 }}>
         <EuiFormRow
           isInvalid={!!field.getError("fieldName")}
           error={field.getError("fieldName")}
@@ -182,7 +182,6 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
                   },
                 ],
               })}
-              style={{ width: 240 }}
               disabled={readonly || disabled}
               disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
               compressed
@@ -191,7 +190,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
           )}
         </EuiFormRow>
       </EuiFlexItem>
-      <EuiFlexItem grow={false}>
+      <EuiFlexItem grow={false} style={{ width: 100 }}>
         <EuiFormRow label="Field type" display="rowCompressed">
           {readonly ? (
             <EuiCode>{type}</EuiCode>
@@ -213,7 +212,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
         const { label, type, ...others } = item;
         const RenderComponent = readonly ? AllBuiltInComponents.Text : AllBuiltInComponents[type];
         return (
-          <EuiFlexItem grow={false} key={others.name}>
+          <EuiFlexItem grow={false} key={others.name} style={{ width: 100 }}>
             <EuiFormRow label={label} display="rowCompressed" isInvalid={!!field.getError(others.name)} error={field.getError(others.name)}>
               <RenderComponent
                 {...field.registerField(others)}
@@ -394,7 +393,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
           {transformedTreeItems.length ? (
             <EuiTreeView
               key={renderKey}
-              expandByDefault
+              expandByDefault={!readonly}
               className="index-mapping-tree"
               aria-labelledby="label"
               items={transformValueToTreeItems(value)}

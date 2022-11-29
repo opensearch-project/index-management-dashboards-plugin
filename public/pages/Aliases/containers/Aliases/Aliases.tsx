@@ -112,7 +112,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       sortField = DEFAULT_QUERY_PARAMS.sortField,
       sortDirection = DEFAULT_QUERY_PARAMS.sortDirection,
       status = DEFAULT_QUERY_PARAMS.status,
-    } = queryString.parse(location.search) as {
+    } = queryString.parse(props.history.location.search) as {
       from: string;
       size: string;
       search: string;
