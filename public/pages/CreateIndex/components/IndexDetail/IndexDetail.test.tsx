@@ -79,7 +79,7 @@ describe("<IndexDetail /> spec", () => {
   });
 
   it("inherit templates settings when create", async () => {
-    const { getByDisplayValue, getByPlaceholderText, getByText, getByTestId } = render(
+    const { findByDisplayValue, getByDisplayValue, getByText, getByTestId, queryByText } = render(
       <IndexDetailOnChangeWrapper
         refreshOptions={refreshOptions}
         value={{ index: "some_index" }}
@@ -99,7 +99,7 @@ describe("<IndexDetail /> spec", () => {
         }
       />
     );
-    await waitFor(() => getByDisplayValue("some_index"));
+    await findByDisplayValue("some_index");
     userEvent.click(getByDisplayValue("some_index"));
     userEvent.click(document.body);
     await waitFor(() => {
@@ -115,6 +115,7 @@ describe("<IndexDetail /> spec", () => {
     userEvent.click(getByTestId("simulate-confirm-confirm"));
     await waitFor(() => {
       expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "2");
+      expect(queryByText("The index name matches one or more index templates")).toBeInTheDocument();
     });
 
     userEvent.clear(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element);

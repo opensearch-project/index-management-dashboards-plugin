@@ -82,6 +82,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
     {
       field: "status",
       name: "Status",
+      sortable: true,
       truncateText: true,
       textOnly: true,
       align: "right",

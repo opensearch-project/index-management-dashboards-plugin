@@ -37,10 +37,13 @@ describe("Split Index", () => {
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true }).end();
 
       // The index should exist
+      cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
+
       cy.get(`[data-test-subj="view-index-detail-button-${sampleIndex}"]`).click().end();
       cy.get("#index-detail-modal-settings").click().end();
-      cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').then(($shardNumber) => {
-        splitNumber = $shardNumber.val() * 2;
+
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').then(($shardNumber) => {
+        splitNumber = $shardNumber.attr("title") * 2;
       });
 
       cy.get("#index-detail-modal-alias").click().end();
@@ -78,8 +81,8 @@ describe("Split Index", () => {
 
       cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end();
       cy.get("#index-detail-modal-settings").click().end();
-      cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${splitNumber}`).end();
-      cy.get('[placeholder="The number of replica shards each primary shard should have."]').should("have.value", `${replicaNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiCodeBlock__code').should("have.text", `${splitNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').should("have.text", `${replicaNumber}`).end();
     }); // Split
 
     it("Split successfully with advanced setting", () => {
@@ -114,8 +117,8 @@ describe("Split Index", () => {
 
       cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end();
       cy.get("#index-detail-modal-settings").click().end();
-      cy.get('[placeholder="The number of primary shards in the index. Default is 1."]').should("have.value", `${splitNumber}`).end();
-      cy.get('[placeholder="The number of replica shards each primary shard should have."]').should("have.value", `${replicaNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiCodeBlock__code').should("have.text", `${splitNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').should("have.text", `${replicaNumber}`).end();
     }); // advanced setting
 
     it("Split successfully with alias", () => {

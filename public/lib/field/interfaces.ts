@@ -1,13 +1,17 @@
+import React from "react";
+
 export type FieldOption = {
   /**
    * All component changes will arrive here [set value will not trigger this function]
    */
-  onChange?: (name: string, value: any) => void;
+  onChange?: (name: string, value?: any) => void;
 
   /**
    * Initialization data
    */
   values?: {};
+
+  unmountComponent?: boolean;
 };
 
 export type ValidateResults = {
@@ -18,6 +22,7 @@ export type ValidateResults = {
 export type InitResult<T> = {
   value?: T;
   onChange(value: T): void;
+  ref?: React.RefCallback<any>;
 };
 
 export type Rule = {
@@ -67,7 +72,7 @@ export type Rule = {
   /**
    * Custom verification, (don't forget to execute callback() when the verification is successful, otherwise the verification will not return)
    */
-  validator?: (rule: Rule, value: string | number | object | boolean | Date | null) => string | Promise<string>;
+  validator?: (rule: Rule, value: string | number | object | boolean | Date | null | any) => string | Promise<string>;
 
   /**
    * The name of the event that triggered the validation
@@ -75,20 +80,11 @@ export type Rule = {
   trigger?: "onChange" | "onBlur" | string;
 };
 
-export type InitOption<T = any> = {
+export type InitOption = {
   /**
    * The name of the field
    */
   name: string;
-  /**
-   * The attribute name of the component value, such as Checkbox is checked, Input is value
-   */
-  valueName?: string;
-
-  /**
-   * The initial value of the component (the component will only be read when it is rendered for the first time, and it will be invalid to modify this value later), similar to the default value
-   */
-  initValue?: T | T[];
 
   /**
    * The name of the event that triggered the data change

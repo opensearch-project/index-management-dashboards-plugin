@@ -1,10 +1,12 @@
 import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } from "react";
 import { EuiForm, EuiFormProps, EuiFormRowProps } from "@elastic/eui";
-import AllBuiltInComponents from "./built_in_components";
+import AllBuiltInComponents, { IFieldComponentProps } from "./built_in_components";
 // import Field, { InitOption, FieldOption, Rule } from "../../lib/field";
 import useField, { InitOption, FieldOption, Rule, FieldInstance } from "../../lib/field";
 import AdvancedSettings, { IAdvancedSettingsProps } from "../AdvancedSettings";
 import CustomFormRow from "../CustomFormRow";
+
+export * from "./built_in_components";
 
 type ParametersOfValidator = Parameters<Required<Rule>["validator"]>;
 interface IRule extends Omit<Rule, "validator"> {
@@ -20,10 +22,10 @@ interface IFormGeneratorAdvancedSettings extends IAdvancedSettingsProps {
 }
 
 export interface IField {
-  rowProps: Pick<EuiFormRowProps, "label" | "helpText">;
+  rowProps: Pick<EuiFormRowProps, "label" | "helpText" | "fullWidth">;
   name: string;
   type?: keyof typeof AllBuiltInComponents;
-  component?: typeof AllBuiltInComponents["Input"];
+  component?: React.ComponentType<IFieldComponentProps>;
   options?: Omit<IInitOption, "name">;
 }
 
@@ -38,6 +40,8 @@ export interface IFormGeneratorProps {
 }
 
 export interface IFormGeneratorRef extends FieldInstance {}
+
+export { AllBuiltInComponents };
 
 export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref: React.Ref<IFormGeneratorRef>) {
   const { fieldProps, formFields, advancedSettingsProps } = props;

@@ -147,7 +147,7 @@ describe("Create Index", () => {
 
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
 
-      cy.wait(1000).get('[placeholder="The number of replica shards each primary shard should have."]').should("have.value", "2");
+      cy.wait(1000).get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').should("have.text", "2");
     });
 
     it("Update mappings successfully", () => {

@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton, EuiCallOut } from "@elastic/eui";
 import { set, merge, omit } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -21,6 +21,8 @@ import { IFieldComponentProps } from "../../../../components/FormGenerator/built
 import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 import SimplePopover from "../../../../components/SimplePopover";
 import { SimpleEuiToast } from "../../../../components/Toast";
+import { filterByMinimatch } from "../../../../../utils/helper";
+import { SYSTEM_INDEX } from "../../../../../utils/constants";
 
 const indexNameEmptyTips = "Please fill in the index name before editing other fields";
 const staticSettingsTips = "This field can not be modified in edit mode";
@@ -49,6 +51,14 @@ const getOrderedJson = (json: Record<string, any>) => {
   const entries = Object.entries(json);
   entries.sort((a, b) => (a[0] < b[0] ? -1 : 1));
   return entries.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
+};
+
+const TemplateInfoCallout = (props: { visible: boolean }) => {
+  return props.visible ? (
+    <EuiCallOut title="The index name matches one or more index templates">
+      Index alias, settings, and mappings are automatically inherited from matching index templates.
+    </EuiCallOut>
+  ) : null;
 };
 
 const IndexDetail = (
@@ -80,6 +90,7 @@ const IndexDetail = (
   );
   const destroyRef = useRef<boolean>(false);
   const [templateSimulateLoading, setTemplateSimulateLoading] = useState(false);
+  const [isMatchingTemplate, setIsMatchingTemplate] = useState(false);
   const finalValue = value || {};
   const aliasesRef = useRef<IFormGeneratorRef>(null);
   const settingsRef = useRef<IFormGeneratorRef>(null);
@@ -124,7 +135,7 @@ const IndexDetail = (
               content: "The index name has matched one or more index templates, please choose which way to go on",
               locale: {
                 confirm: "Overwrite",
-                cancel: "Merge the template",
+                cancel: "Merge your changes with template",
               },
               type: "confirm",
               "data-test-subj": "simulate-confirm",
@@ -156,7 +167,10 @@ const IndexDetail = (
             },
           });
           hasEdit.current = false;
+          setIsMatchingTemplate(true);
         });
+      } else {
+        setIsMatchingTemplate(false);
       }
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
@@ -200,7 +214,7 @@ const IndexDetail = (
           helpText: "The number of primary shards in the index. Default is 1.",
         },
         name: "index.number_of_shards",
-        type: "Number",
+        type: readonly ? "Text" : "Number",
         options: {
           rules: [
             {
@@ -231,7 +245,7 @@ const IndexDetail = (
           helpText: "The number of replica shards each primary shard should have.",
         },
         name: "index.number_of_replicas",
-        type: "Number",
+        type: readonly ? "Text" : "Number",
         options: {
           rules: [
             {
@@ -262,7 +276,7 @@ const IndexDetail = (
           helpText: "How often the index should refresh, which publishes its most recent changes and makes them available for searching.",
         },
         name: "index.refresh_interval",
-        type: "Input",
+        type: readonly ? "Text" : "Input",
         options: {
           props: {
             placeholder: "Can be set to -1 to disable refreshing.",
@@ -291,6 +305,12 @@ const IndexDetail = (
   }, []);
   return (
     <>
+      {isEdit && !readonly && filterByMinimatch(value?.index as string, SYSTEM_INDEX) ? (
+        <>
+          <EuiCallOut color="warning">You are editing a system-like index, please be careful before you do any change to it.</EuiCallOut>
+          <EuiSpacer />
+        </>
+      ) : null}
       {isEdit && mode && mode !== IndicesUpdateMode.alias
         ? null
         : (() => {
@@ -306,7 +326,7 @@ const IndexDetail = (
                         ? "Some restriction text on domain"
                         : "Please enter the name before moving to other fields",
                     },
-                    type: "Input",
+                    type: readonly ? "Text" : "Input",
                     options: {
                       props: {
                         placeholder: "Please enter the name for your index",
@@ -322,6 +342,13 @@ const IndexDetail = (
                         },
                       ],
                     },
+                  },
+                  {
+                    name: "templateMessage",
+                    rowProps: {
+                      fullWidth: true,
+                    },
+                    component: () => <TemplateInfoCallout visible={!isEdit && isMatchingTemplate} />,
                   },
                   {
                     name: "aliases",

@@ -8,6 +8,7 @@ import { EuiConfirmModal } from "@elastic/eui";
 import { DiffEditorProps } from "@monaco-editor/react";
 import * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { MonacoEditorDiffReact } from "../MonacoEditor";
+import CustomFormRow from "../CustomFormRow";
 
 export interface JSONDiffEditorProps extends Partial<DiffEditorProps> {
   value: string;
@@ -72,7 +73,7 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
   }, [isReady]);
 
   return (
-    <div style={{ height: "600px" }}>
+    <div>
       <textarea
         style={{ display: "none" }}
         ref={inputRef}
@@ -87,6 +88,18 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
         title={`editor-is-ready-${isReady}`}
         data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
       />
+      <div style={{ display: "flex", marginBottom: 12 }}>
+        <div style={{ flexGrow: 1 }}>
+          <CustomFormRow label="Original" helpText="The original value">
+            <></>
+          </CustomFormRow>
+        </div>
+        <div style={{ flexGrow: 1 }}>
+          <CustomFormRow label="Modified" helpText="The value you modified">
+            <></>
+          </CustomFormRow>
+        </div>
+      </div>
       <MonacoEditorDiffReact
         {...others}
         language="json"
@@ -98,6 +111,7 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
           editorRef.current = editor;
           setIsReady(true);
         }}
+        height="600px"
       />
       {confirmModalVisible ? (
         <EuiConfirmModal

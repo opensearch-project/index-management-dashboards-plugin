@@ -292,7 +292,7 @@ describe("Indices", () => {
       });
 
       cy.request({
-        method: "PUT",
+        method: "POST",
         url: `${Cypress.env("opensearch_dashboards")}/api/ism/apiCaller`,
         headers: {
           "osd-xsrf": true,

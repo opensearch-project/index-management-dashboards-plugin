@@ -107,7 +107,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
             >
               <div
                 class="euiFlexItem euiFlexItem--flexGrowZero"
-                style="width: 240px;"
               >
                 <div
                   class="euiFormRow euiFormRow--compressed"
@@ -141,6 +140,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                             data-test-subj="mapping-visual-editor-0-field-name"
                             disabled=""
                             id="some_html_id"
+                            style="width: 240px;"
                             type="text"
                             value="object"
                           />
@@ -186,9 +186,9 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                             id="some_html_id"
                           >
                             <option
-                              value="null"
+                              value="alias"
                             >
-                              null
+                              alias
                             </option>
                             <option
                               value="boolean"
@@ -196,29 +196,14 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               boolean
                             </option>
                             <option
-                              value="float"
+                              value="binary"
                             >
-                              float
+                              binary
                             </option>
                             <option
-                              value="double"
+                              value="completion"
                             >
-                              double
-                            </option>
-                            <option
-                              value="integer"
-                            >
-                              integer
-                            </option>
-                            <option
-                              value="text"
-                            >
-                              text
-                            </option>
-                            <option
-                              value="keyword"
-                            >
-                              keyword
+                              completion
                             </option>
                             <option
                               value="date"
@@ -226,9 +211,99 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               date
                             </option>
                             <option
+                              value="date_range"
+                            >
+                              date_range
+                            </option>
+                            <option
+                              value="double"
+                            >
+                              double
+                            </option>
+                            <option
+                              value="double_range"
+                            >
+                              double_range
+                            </option>
+                            <option
+                              value="float"
+                            >
+                              float
+                            </option>
+                            <option
+                              value="geo_point"
+                            >
+                              geo_point
+                            </option>
+                            <option
+                              value="geo_shape"
+                            >
+                              geo_shape
+                            </option>
+                            <option
+                              value="integer"
+                            >
+                              integer
+                            </option>
+                            <option
+                              value="ip"
+                            >
+                              ip
+                            </option>
+                            <option
+                              value="ip_range"
+                            >
+                              ip_range
+                            </option>
+                            <option
+                              value="keyword"
+                            >
+                              keyword
+                            </option>
+                            <option
+                              value="long"
+                            >
+                              long
+                            </option>
+                            <option
+                              value="long_range"
+                            >
+                              long_range
+                            </option>
+                            <option
                               value="object"
                             >
                               object
+                            </option>
+                            <option
+                              value="percolator"
+                            >
+                              percolator
+                            </option>
+                            <option
+                              value="rank_feature"
+                            >
+                              rank_feature
+                            </option>
+                            <option
+                              value="rank_features"
+                            >
+                              rank_features
+                            </option>
+                            <option
+                              value="search_as_you_type"
+                            >
+                              search_as_you_type
+                            </option>
+                            <option
+                              value="text"
+                            >
+                              text
+                            </option>
+                            <option
+                              value="token_count"
+                            >
+                              token_count
                             </option>
                           </select>
                           <div
@@ -332,7 +407,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                     >
                       <div
                         class="euiFlexItem euiFlexItem--flexGrowZero"
-                        style="width: 240px;"
                       >
                         <div
                           class="euiFormRow euiFormRow--compressed"
@@ -366,6 +440,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                     data-test-subj="mapping-visual-editor-0.properties.0-field-name"
                                     disabled=""
                                     id="some_html_id"
+                                    style="width: 240px;"
                                     type="text"
                                     value="text"
                                   />
@@ -411,9 +486,9 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                     id="some_html_id"
                                   >
                                     <option
-                                      value="null"
+                                      value="alias"
                                     >
-                                      null
+                                      alias
                                     </option>
                                     <option
                                       value="boolean"
@@ -421,29 +496,14 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       boolean
                                     </option>
                                     <option
-                                      value="float"
+                                      value="binary"
                                     >
-                                      float
+                                      binary
                                     </option>
                                     <option
-                                      value="double"
+                                      value="completion"
                                     >
-                                      double
-                                    </option>
-                                    <option
-                                      value="integer"
-                                    >
-                                      integer
-                                    </option>
-                                    <option
-                                      value="text"
-                                    >
-                                      text
-                                    </option>
-                                    <option
-                                      value="keyword"
-                                    >
-                                      keyword
+                                      completion
                                     </option>
                                     <option
                                       value="date"
@@ -451,9 +511,99 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       date
                                     </option>
                                     <option
+                                      value="date_range"
+                                    >
+                                      date_range
+                                    </option>
+                                    <option
+                                      value="double"
+                                    >
+                                      double
+                                    </option>
+                                    <option
+                                      value="double_range"
+                                    >
+                                      double_range
+                                    </option>
+                                    <option
+                                      value="float"
+                                    >
+                                      float
+                                    </option>
+                                    <option
+                                      value="geo_point"
+                                    >
+                                      geo_point
+                                    </option>
+                                    <option
+                                      value="geo_shape"
+                                    >
+                                      geo_shape
+                                    </option>
+                                    <option
+                                      value="integer"
+                                    >
+                                      integer
+                                    </option>
+                                    <option
+                                      value="ip"
+                                    >
+                                      ip
+                                    </option>
+                                    <option
+                                      value="ip_range"
+                                    >
+                                      ip_range
+                                    </option>
+                                    <option
+                                      value="keyword"
+                                    >
+                                      keyword
+                                    </option>
+                                    <option
+                                      value="long"
+                                    >
+                                      long
+                                    </option>
+                                    <option
+                                      value="long_range"
+                                    >
+                                      long_range
+                                    </option>
+                                    <option
                                       value="object"
                                     >
                                       object
+                                    </option>
+                                    <option
+                                      value="percolator"
+                                    >
+                                      percolator
+                                    </option>
+                                    <option
+                                      value="rank_feature"
+                                    >
+                                      rank_feature
+                                    </option>
+                                    <option
+                                      value="rank_features"
+                                    >
+                                      rank_features
+                                    </option>
+                                    <option
+                                      value="search_as_you_type"
+                                    >
+                                      search_as_you_type
+                                    </option>
+                                    <option
+                                      value="text"
+                                    >
+                                      text
+                                    </option>
+                                    <option
+                                      value="token_count"
+                                    >
+                                      token_count
                                     </option>
                                   </select>
                                   <div

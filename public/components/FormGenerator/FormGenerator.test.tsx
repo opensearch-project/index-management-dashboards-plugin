@@ -60,6 +60,13 @@ const testFormFields: IFormGeneratorProps["formFields"] = [
     name: "test_component_2",
     type: "Input",
   },
+  {
+    rowProps: {
+      label: "Text component",
+    },
+    name: "test_component_3",
+    type: "Text",
+  },
 ];
 
 describe("<FormGenerator /> spec", () => {
@@ -152,14 +159,16 @@ describe("<FormGenerator /> spec", () => {
     );
 
     userEvent.type(getByTestId("form-name-test_component").querySelector("input") as Element, "1");
-    expect(onChangeMock).toBeCalledWith(
-      {
-        test: "1",
-        test_component: "1",
-      },
-      "test_component",
-      "1"
-    );
+    await waitFor(() => {
+      expect(onChangeMock).toBeCalledWith(
+        {
+          test: "1",
+          test_component: "1",
+        },
+        "test_component",
+        "1"
+      );
+    });
   });
 
   it("shows error with custom validation in class component", async () => {

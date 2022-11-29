@@ -1,8 +1,8 @@
 import React, { forwardRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiComboBox } from "@elastic/eui";
+import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiCode, EuiComboBox } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
 
-type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "ComboBoxSingle";
+export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle";
 
 export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
   onChange: (val: IFieldComponentProps["value"]) => void;
@@ -12,8 +12,8 @@ export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
 
 const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponentProps>> = {
   Input: EuiToolTipWrapper(
-    forwardRef(({ onChange, value, disabledReason, disabled, ...others }, ref: React.Ref<HTMLInputElement>) => (
-      <EuiFieldText inputRef={ref} value={value || ""} onChange={(e) => onChange(e.target.value)} disabled={disabled} {...others} />
+    forwardRef(({ onChange, value, ...others }, ref: React.Ref<HTMLInputElement>) => (
+      <EuiFieldText inputRef={ref} value={value || ""} onChange={(e) => onChange(e.target.value)} {...others} />
     )) as React.ComponentType<IFieldComponentProps>
   ),
   Number: EuiToolTipWrapper(
@@ -28,11 +28,16 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
       </div>
     )) as React.ComponentType<IFieldComponentProps>
   ),
+  Text: forwardRef(({ value }, ref: React.Ref<any>) => (
+    <div ref={ref}>
+      <EuiCode title={value || "-"}>{value || "-"}</EuiCode>
+    </div>
+  )) as React.ComponentType<IFieldComponentProps>,
   Select: EuiToolTipWrapper(
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
       <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
-    ))
-  ) as React.ComponentType<IFieldComponentProps>,
+    )) as React.ComponentType<IFieldComponentProps>
+  ),
   ComboBoxSingle: EuiToolTipWrapper(
     forwardRef(({ onChange, value, options, ...others }, ref: React.Ref<any>) => {
       return (

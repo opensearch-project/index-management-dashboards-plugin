@@ -3,6 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { InitOption } from "../lib/field";
+import { ComponentMapEnum } from "../components/FormGenerator";
+
 export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 
 export const DEFAULT_EMPTY_DATA = "-";
@@ -55,6 +58,7 @@ export const ROUTES = Object.freeze({
   EDIT_REPOSITORY: "/edit-repository",
   CREATE_INDEX: "/create-index",
   REINDEX: "/reindex",
+  ALIASES: "/aliases",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -159,34 +163,116 @@ export const INDEX_DYNAMIC_SETTINGS = [
   "index.hidden",
 ];
 
-export const INDEX_MAPPING_TYPES = [
+export const INDEX_MAPPING_TYPES: {
+  label?: string;
+  hasChildren?: boolean;
+  options?: {
+    fields?: (InitOption & { label: string; type: ComponentMapEnum; initValue?: any })[];
+  };
+}[] = [
   {
-    label: "null",
+    label: "alias",
+    options: {
+      fields: [
+        {
+          label: "path for alias",
+          name: "path",
+          type: "Input",
+          rules: [
+            {
+              required: true,
+              message: "Path is required for field type: alias.",
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     label: "boolean",
   },
   {
-    label: "float",
+    label: "binary",
   },
   {
-    label: "double",
-  },
-  {
-    label: "integer",
-  },
-  {
-    label: "text",
-  },
-  {
-    label: "keyword",
+    label: "completion",
   },
   {
     label: "date",
   },
   {
+    label: "date_range",
+  },
+  {
+    label: "double",
+  },
+  {
+    label: "double_range",
+  },
+  {
+    label: "float",
+  },
+  {
+    label: "geo_point",
+  },
+  {
+    label: "geo_shape",
+  },
+  {
+    label: "integer",
+  },
+  {
+    label: "ip",
+  },
+  {
+    label: "ip_range",
+  },
+  {
+    label: "keyword",
+  },
+  {
+    label: "long",
+  },
+  {
+    label: "long_range",
+  },
+  {
     label: "object",
     hasChildren: true,
+  },
+  {
+    label: "percolator",
+  },
+  {
+    label: "rank_feature",
+  },
+  {
+    label: "rank_features",
+  },
+  {
+    label: "search_as_you_type",
+  },
+  {
+    label: "text",
+  },
+  {
+    label: "token_count",
+    options: {
+      fields: [
+        {
+          label: "Analyzer",
+          name: "analyzer",
+          initValue: "standard",
+          type: "Input",
+          rules: [
+            {
+              required: true,
+              message: "Path is required for field type: alias.",
+            },
+          ],
+        },
+      ],
+    },
   },
 ];
 
@@ -208,3 +294,8 @@ export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
     source: "The index {{ctx.index}} failed during policy execution.",
   },
 };
+
+export const ALIAS_STATUS_OPTIONS = ["open", "closed", "hidden", "none", "all"].map((item) => ({
+  label: item,
+  value: item,
+}));

@@ -118,5 +118,7 @@ declare namespace Cypress {
      * cy.createPipeline("pipelineId", {"description": "sample description", "processors": []})
      */
     createPipeline(pipelineId: string, pipeline: object);
+    addAlias(alias: string, index: string);
+    removeAlias(alias: string);
   }
 }

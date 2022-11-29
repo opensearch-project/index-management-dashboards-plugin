@@ -23,8 +23,5 @@ export default function (services: NodeServices, router: IRouter) {
     },
   };
 
-  router.get(payload, commonService.apiCaller);
   router.post(payload, commonService.apiCaller);
-  router.put(payload, commonService.apiCaller);
-  router.delete(payload, commonService.apiCaller);
 }
