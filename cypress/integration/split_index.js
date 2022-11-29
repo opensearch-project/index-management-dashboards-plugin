@@ -5,7 +5,7 @@
 import { PLUGIN_NAME } from "../support/constants";
 
 const sampleIndex = "index-split";
-const sampelAlias = "alias-split";
+const sampleAlias = "alias-split";
 
 describe("Split Index", () => {
   before(() => {
@@ -31,7 +31,7 @@ describe("Split Index", () => {
       // type field name
       cy.get('[placeholder="Please enter the name for your index"]').type(sampleIndex).end();
 
-      cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${sampelAlias}`).end();
+      cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${sampleAlias}`).end();
 
       // click create
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true }).end();
@@ -42,12 +42,12 @@ describe("Split Index", () => {
       cy.get(`[data-test-subj="view-index-detail-button-${sampleIndex}"]`).click().end();
       cy.get("#index-detail-modal-settings").click().end();
 
-      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').then(($shardNumber) => {
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiCodeBlock__code').then(($shardNumber) => {
         splitNumber = $shardNumber.attr("title") * 2;
       });
 
       cy.get("#index-detail-modal-alias").click().end();
-      cy.get(`[title="${sampelAlias}"]`).should("exist").end();
+      cy.get(`[title="${sampleAlias}"]`).should("exist").end();
 
       // Update Index status to blocks write otherwise we can't apply split operation on it
       cy.updateIndexSettings(sampleIndex, { "index.blocks.write": "true" }).end();
@@ -141,7 +141,7 @@ describe("Split Index", () => {
         .end()
         // Assign to an existing alias and a new alias
         .get('[data-test-subj="form-name-aliases"] [data-test-subj="comboBoxSearchInput"]')
-        .type(`${sampelAlias}{enter}${newAlias}{enter}`)
+        .type(`${sampleAlias}{enter}${newAlias}{enter}`)
         .end()
         .get('[data-test-subj="flyout-footer-action-button"]')
         .click()
@@ -151,7 +151,7 @@ describe("Split Index", () => {
       // Verify alias associated with the new index
       cy.get("#index-detail-modal-alias").click().end();
       cy.get(`[title="${newAlias}"]`).should("exist").end();
-      cy.get(`[title="${sampelAlias}"]`).should("exist").end();
+      cy.get(`[title="${sampleAlias}"]`).should("exist").end();
     }); // Create with alias
 
     it("Update blocks write to true", () => {
