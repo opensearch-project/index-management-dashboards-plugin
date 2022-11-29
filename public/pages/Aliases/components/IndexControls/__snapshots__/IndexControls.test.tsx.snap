@@ -15,9 +15,10 @@ exports[`<IndexControls /> spec renders the component 1`] = `
         class="euiFormControlLayout__childrenWrapper"
       >
         <input
-          class="euiFieldSearch euiFieldSearch--fullWidth"
+          class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
           placeholder="Search..."
           type="search"
+          value="testing"
         />
         <div
           class="euiFormControlLayoutIcons"
@@ -27,6 +28,17 @@ exports[`<IndexControls /> spec renders the component 1`] = `
           >
             EuiIconMock
           </span>
+        </div>
+        <div
+          class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+        >
+          <button
+            aria-label="Clear input"
+            class="euiFormControlLayoutClearButton"
+            type="button"
+          >
+            EuiIconMock
+          </button>
         </div>
       </div>
     </div>

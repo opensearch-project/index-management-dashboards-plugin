@@ -98,6 +98,7 @@ describe("<Indices /> spec", () => {
         ok: true,
       };
     }) as any;
+    window.location.hash = "/";
   });
   it("renders the component", async () => {
     const { container, getByTestId, queryByText } = renderWithRouter();
