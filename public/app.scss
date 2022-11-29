@@ -19,7 +19,9 @@ $euiTextColor: $euiColorDarkestShade !default;
 @function tintOrShade($color, $tint, $shade) {
   @if (lightness($euiTextColor) > 50) {
     @return shade($color, $shade);
-  } @else {
+  }
+
+  @else {
     @return tint($color, $tint);
   }
 }
@@ -34,6 +36,7 @@ $euiTextColor: $euiColorDarkestShade !default;
 
 .refresh-button {
   min-width: 0;
+
   .euiButtonContent {
     .euiButton__text {
       margin: 0;
@@ -43,4 +46,10 @@ $euiTextColor: $euiColorDarkestShade !default;
 
 .state-accordion:hover {
   text-decoration: none;
+}
+
+.euiFilterGroup__popoverPanel {
+  width: fit-content;
+  width: -moz-fit-content;
+  max-width: 90vw;
 }
