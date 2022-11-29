@@ -181,7 +181,7 @@ export const INDEX_MAPPING_TYPES: {
           rules: [
             {
               required: true,
-              message: "Path is required for field type: alias.",
+              message: "Path is required.",
             },
           ],
         },
@@ -267,7 +267,7 @@ export const INDEX_MAPPING_TYPES: {
           rules: [
             {
               required: true,
-              message: "Path is required for field type: alias.",
+              message: "Analyzer is required.",
             },
           ],
         },
