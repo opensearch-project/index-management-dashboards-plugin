@@ -9,13 +9,13 @@ import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
 import { IAlias } from "../../interface";
 
-export interface IndicesActionsProps {
+export interface AliasesActionsProps {
   selectedItems: IAlias[];
   onDelete: () => void;
   onUpdateAlias: () => void;
 }
 
-export default function IndicesActions(props: IndicesActionsProps) {
+export default function AliasesActions(props: AliasesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
 

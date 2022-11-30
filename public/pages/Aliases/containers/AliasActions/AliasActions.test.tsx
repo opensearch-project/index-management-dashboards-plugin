@@ -9,18 +9,18 @@ import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
-import IndicesActions, { IndicesActionsProps } from "./index";
+import AliasesActions, { AliasesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-function renderWithRouter(props: IndicesActionsProps) {
+function renderWithRouter(props: AliasesActionsProps) {
   return {
     ...render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
           <ModalProvider>
-            <IndicesActions {...props} />
+            <AliasesActions {...props} />
           </ModalProvider>
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
@@ -28,7 +28,7 @@ function renderWithRouter(props: IndicesActionsProps) {
   };
 }
 
-describe("<IndicesActions /> spec", () => {
+describe("<AliasesActions /> spec", () => {
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
