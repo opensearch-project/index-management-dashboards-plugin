@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IndexControls /> spec renders the component 1`] = `
+<div
+  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+  style="padding: 0px 5px;"
+>
+  <div
+    class="euiFlexItem"
+  >
+    <div
+      class="euiFormControlLayout euiFormControlLayout--fullWidth"
+    >
+      <div
+        class="euiFormControlLayout__childrenWrapper"
+      >
+        <input
+          class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+          placeholder="Search..."
+          type="search"
+          value="testing"
+        />
+        <div
+          class="euiFormControlLayoutIcons"
+        >
+          <span
+            class="euiFormControlLayoutCustomIcon"
+          >
+            EuiIconMock
+          </span>
+        </div>
+        <div
+          class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+        >
+          <button
+            aria-label="Clear input"
+            class="euiFormControlLayoutClearButton"
+            type="button"
+          >
+            EuiIconMock
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiFlexItem euiFlexItem--flexGrowZero"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      class="euiComboBox"
+      role="combobox"
+      style="width: 150px;"
+    >
+      <div
+        class="euiFormControlLayout"
+      >
+        <div
+          class="euiFormControlLayout__childrenWrapper"
+        >
+          <div
+            class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+            data-test-subj="comboBoxInput"
+            tabindex="-1"
+          >
+            <span
+              class="euiComboBoxPill euiComboBoxPill--plainText"
+            >
+              1
+            </span>
+            <div
+              class="euiComboBox__input"
+              style="font-size: 14px; display: inline-block;"
+            >
+              <input
+                aria-controls=""
+                data-test-subj="comboBoxSearchInput"
+                role="textbox"
+                style="box-sizing: content-box; width: 2px;"
+                value=""
+              />
+              <div
+                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+              />
+            </div>
+          </div>
+          <div
+            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+          >
+            <button
+              aria-label="Clear input"
+              class="euiFormControlLayoutClearButton"
+              data-test-subj="comboBoxClearButton"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+            <button
+              aria-label="Open list of options"
+              class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+              data-test-subj="comboBoxToggleListButton"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

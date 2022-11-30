@@ -36,6 +36,7 @@ import Snapshots from "../Snapshots";
 import CreateIndex from "../CreateIndex";
 import Reindex from "../Reindex/container/Reindex";
 import Aliases from "../Aliases";
+import Templates from "../Templates";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -49,6 +50,7 @@ enum Navigation {
   SnapshotPolicies = "Snapshot Policies",
   Repositories = "Repositories",
   Aliases = "Aliases",
+  Templates = "Templates",
 }
 
 enum Pathname {
@@ -112,6 +114,12 @@ export default class Main extends Component<MainProps, object> {
             id: 3,
             href: `#${Pathname.Indices}`,
             isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
+          },
+          {
+            name: Navigation.Templates,
+            id: 7,
+            href: `#${ROUTES.TEMPLATES}`,
+            isSelected: ROUTES.TEMPLATES === pathname,
           },
           {
             name: Navigation.Aliases,
@@ -422,6 +430,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <Aliases {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.TEMPLATES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Templates {...props} />
                               </div>
                             )}
                           />

@@ -59,6 +59,7 @@ export const ROUTES = Object.freeze({
   CREATE_INDEX: "/create-index",
   REINDEX: "/reindex",
   ALIASES: "/aliases",
+  TEMPLATES: "/templates",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -97,6 +98,7 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_INDEX: { text: "Edit Index", href: `#${ROUTES.CREATE_INDEX}` },
   REINDEX: { text: "Reindex", href: `#${ROUTES.REINDEX}` },
   ALIASES: { text: "Aliases", href: `#${ROUTES.ALIASES}` },
+  TEMPLATES: { text: "Templates", href: `#${ROUTES.TEMPLATES}` },
 });
 
 // TODO: EUI has a SortDirection already
