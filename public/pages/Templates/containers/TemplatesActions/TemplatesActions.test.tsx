@@ -51,7 +51,7 @@ describe("<TemplatesActions /> spec", () => {
     let times = 0;
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        if (payload.endpoint === "indices.deleteTemplate") {
+        if (payload.data?.path?.startsWith("/_index_template/")) {
           if (times >= 1) {
             return {
               ok: true,
@@ -93,9 +93,10 @@ describe("<TemplatesActions /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.deleteTemplate",
+        endpoint: "transport.request",
         data: {
-          name: "test_template",
+          path: `/_index_template/test_template`,
+          method: "DELETE",
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);

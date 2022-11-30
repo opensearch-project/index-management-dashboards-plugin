@@ -47,13 +47,13 @@ export default function TemplatesActions(props: TemplatesActionsProps) {
               items: [
                 {
                   name: "Edit",
-                  disabled: !selectedItems.length,
+                  disabled: selectedItems.length !== 1,
                   "data-test-subj": "Edit Action",
                   onClick: onUpdateAlias,
                 },
                 {
                   name: "Delete",
-                  disabled: !selectedItems.length,
+                  disabled: selectedItems.length !== 1,
                   "data-test-subj": "Delete Action",
                   onClick: () => setDeleteIndexModalVisible(true),
                 },
