@@ -9,13 +9,13 @@ import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteTemplatesModal";
 import { ITemplate } from "../../interface";
 
-export interface IndicesActionsProps {
+export interface TemplatesActionsProps {
   selectedItems: ITemplate[];
   onDelete: () => void;
   onUpdateAlias: () => void;
 }
 
-export default function IndicesActions(props: IndicesActionsProps) {
+export default function TemplatesActions(props: TemplatesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
 
@@ -63,7 +63,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         />
       </SimplePopover>
       <DeleteIndexModal
-        selectedItems={selectedItems.map((item) => item.alias)}
+        selectedItems={selectedItems.map((item) => item.name)}
         visible={deleteIndexModalVisible}
         onClose={onDeleteIndexModalClose}
         onDelete={() => {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Indices /> spec renders the component 1`] = `
+exports[`<Templates /> spec renders the component 1`] = `
 <div
   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   style="padding-left: 0px; padding-right: 0px;"
@@ -63,7 +63,7 @@ exports[`<Indices /> spec renders the component 1`] = `
             >
               <button
                 class="euiButton euiButton--primary euiButton--fill"
-                data-test-subj="Create AliasButton"
+                data-test-subj="Create TemplatesButton"
                 type="button"
               >
                 <span
@@ -72,7 +72,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                   <span
                     class="euiButton__text"
                   >
-                    Create Alias
+                    Create Templates
                   </span>
                 </span>
               </button>
@@ -287,7 +287,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                 aria-live="polite"
                 aria-sort="descending"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_alias_0"
+                data-test-subj="tableHeaderCell_name_0"
                 role="columnheader"
                 scope="col"
               >
@@ -301,30 +301,88 @@ exports[`<Indices /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Alias Name"
+                      title="Template Name"
                     >
-                      Alias Name
+                      Template Name
                     </span>
                     EuiIconMock
                   </span>
                 </button>
               </th>
               <th
+                aria-live="polite"
+                aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_indexArray_1"
+                data-test-subj="tableHeaderCell_index_patterns_1"
                 role="columnheader"
                 scope="col"
               >
-                <span
-                  class="euiTableCellContent"
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
                 >
                   <span
-                    class="euiTableCellContent__text"
-                    title="Index Name"
+                    class="euiTableCellContent"
                   >
-                    Index Name
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Index Patterns"
+                    >
+                      Index Patterns
+                    </span>
                   </span>
-                </span>
+                </button>
+              </th>
+              <th
+                aria-live="polite"
+                aria-sort="none"
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_order_2"
+                role="columnheader"
+                scope="col"
+              >
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
+                >
+                  <span
+                    class="euiTableCellContent"
+                  >
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Order"
+                    >
+                      Order
+                    </span>
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-live="polite"
+                aria-sort="none"
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_version_3"
+                role="columnheader"
+                scope="col"
+              >
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
+                >
+                  <span
+                    class="euiTableCellContent"
+                  >
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Version"
+                    >
+                      Version
+                    </span>
+                  </span>
+                </button>
               </th>
             </tr>
           </thead>
@@ -334,7 +392,7 @@ exports[`<Indices /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="3"
+                colspan="5"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"
@@ -346,7 +404,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                       style="text-align: center;"
                     >
                       <h4>
-                        You have no aliases.
+                        You have no index templates.
                       </h4>
                       <button
                         class="euiButton euiButton--primary euiButton--fill"
@@ -359,7 +417,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                           <span
                             class="euiButton__text"
                           >
-                            Create alias
+                            Create index template
                           </span>
                         </span>
                       </button>

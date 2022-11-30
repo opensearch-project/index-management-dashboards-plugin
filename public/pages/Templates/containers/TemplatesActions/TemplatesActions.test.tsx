@@ -9,18 +9,18 @@ import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
-import IndicesActions, { IndicesActionsProps } from "./index";
+import TemplatesActions, { TemplatesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-function renderWithRouter(props: IndicesActionsProps) {
+function renderWithRouter(props: TemplatesActionsProps) {
   return {
     ...render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
           <ModalProvider>
-            <IndicesActions {...props} />
+            <TemplatesActions {...props} />
           </ModalProvider>
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
@@ -28,7 +28,7 @@ function renderWithRouter(props: IndicesActionsProps) {
   };
 }
 
-describe("<IndicesActions /> spec", () => {
+describe("<TemplatesActions /> spec", () => {
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
@@ -51,7 +51,7 @@ describe("<IndicesActions /> spec", () => {
     let times = 0;
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        if (payload.endpoint === "indices.deleteAlias") {
+        if (payload.endpoint === "indices.deleteTemplate") {
           if (times >= 1) {
             return {
               ok: true,
@@ -71,13 +71,10 @@ describe("<IndicesActions /> spec", () => {
     const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
       selectedItems: [
         {
-          index: "test_index",
-          templates: "1",
-          filter: "1",
-          "routing.index": "1",
-          "routing.search": "1",
-          is_write_index: "1",
-          indexArray: ["test_index"],
+          name: "test_template",
+          index_patterns: "1",
+          version: "1",
+          order: 0,
         },
       ],
       onUpdateAlias: () => null,
@@ -96,10 +93,9 @@ describe("<IndicesActions /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.deleteAlias",
+        endpoint: "indices.deleteTemplate",
         data: {
-          index: "_all",
-          name: ["1"],
+          name: "test_template",
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
@@ -112,7 +108,7 @@ describe("<IndicesActions /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [1] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_template] successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
     });
   });

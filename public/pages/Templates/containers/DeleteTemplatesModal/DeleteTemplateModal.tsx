@@ -43,8 +43,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
       const result = await services.commonService.apiCaller({
         endpoint: "indices.deleteTemplate",
         data: {
-          index: "_all",
-          name: selectedItems,
+          name: selectedItems[0],
         },
       });
       if (result && result.ok) {
@@ -68,7 +67,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
 
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
-          <p>The following alias will be deleted permanently. This action cannot be undone.</p>
+          <p>The following template will be deleted permanently. This action cannot be undone.</p>
           <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
             {selectedItems.map((item) => (
               <li key={item}>{item}</li>

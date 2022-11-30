@@ -56,7 +56,7 @@ HTMLCollection [
                       class="euiFormLabel euiFormRow__label"
                       for="some_html_id"
                     >
-                      Template name
+                      Alias name
                     </label>
                   </div>
                   <div
