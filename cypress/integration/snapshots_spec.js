@@ -51,7 +51,7 @@ describe("Snapshots", () => {
       cy.createIndex("test_index_2");
       cy.createIndex("test_index_3");
 
-      // wait needed here to enable cypress to find "Take snapshot" button.  Timeout 
+      // wait needed here to enable cypress to find "Take snapshot" button.  Timeout
       // cannot be used with cy.createIndex
       cy.wait(5000);
 
@@ -124,5 +124,5 @@ describe("Snapshots", () => {
       cy.contains("Deleted snapshot");
       cy.contains("No items found");
     });
-  })
+  });
 });
