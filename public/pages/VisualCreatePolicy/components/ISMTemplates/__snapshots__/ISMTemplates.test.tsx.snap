@@ -2,7 +2,7 @@
 
 exports[`<ISMTemplates /> spec renders the component 1`] = `
 <div
-  class="euiPanel euiPanel--paddingMedium"
+  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   style="padding-left: 0px; padding-right: 0px;"
 >
   <div
@@ -61,7 +61,32 @@ exports[`<ISMTemplates /> spec renders the component 1`] = `
               target="_blank"
             >
               Learn more 
-              EuiIconMock
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--small euiIcon-isLoading"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <svg
+                aria-hidden="true"
+                aria-label="External link"
+                class="euiIcon euiIcon--small euiIcon-isLoading euiLink__externalIcon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <span
+                class="euiScreenReaderOnly"
+              >
+                (opens in a new tab or window)
+              </span>
             </a>
           </p>
         </div>
@@ -81,14 +106,14 @@ exports[`<ISMTemplates /> spec renders the component 1`] = `
         class="euiEmptyPrompt"
         style="max-width: 37em;"
       >
+        <h2
+          class="euiTitle euiTitle--small"
+        >
+          No ISM templates
+        </h2>
         <span
           class="euiTextColor euiTextColor--subdued"
         >
-          <h2
-            class="euiTitle euiTitle--small"
-          >
-            No ISM templates
-          </h2>
           <div
             class="euiSpacer euiSpacer--m"
           />
@@ -102,9 +127,6 @@ exports[`<ISMTemplates /> spec renders the component 1`] = `
         </span>
         <div
           class="euiSpacer euiSpacer--l"
-        />
-        <div
-          class="euiSpacer euiSpacer--s"
         />
         <button
           class="euiButton euiButton--primary"

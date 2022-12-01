@@ -13,7 +13,7 @@ describe("<CreatePolicyModal /> spec", () => {
     render(<CreatePolicyModal isEdit={false} onClose={() => {}} onClickContinue={() => {}} />);
     // EuiOverlayMask appends an element to the body so we should have two, an empty div from react-test-library
     // and our EuiOverlayMask element
-    expect(document.body.children).toHaveLength(2);
+    expect(document.body.children).toHaveLength(3);
     expect(document.body.children[1]).toMatchSnapshot();
   });
 
@@ -21,7 +21,7 @@ describe("<CreatePolicyModal /> spec", () => {
     render(<CreatePolicyModal isEdit={true} onClose={() => {}} onClickContinue={() => {}} />);
     // EuiOverlayMask appends an element to the body so we should have two, an empty div from react-test-library
     // and our EuiOverlayMask element
-    expect(document.body.children).toHaveLength(2);
+    expect(document.body.children).toHaveLength(3);
     expect(document.body.children[1]).toMatchSnapshot();
   });
 

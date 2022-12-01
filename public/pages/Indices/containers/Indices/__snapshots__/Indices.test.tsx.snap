@@ -2,7 +2,7 @@
 
 exports[`<Indices /> spec renders the component 1`] = `
 <div
-  class="euiPanel euiPanel--paddingMedium"
+  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   style="padding-left: 0px; padding-right: 0px;"
 >
   <div
@@ -82,7 +82,7 @@ exports[`<Indices /> spec renders the component 1`] = `
               >
                 <input
                   aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
-                  class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+                  class="euiFieldSearch euiFieldSearch--fullWidth"
                   placeholder="Search"
                   type="search"
                   value=""
@@ -93,7 +93,16 @@ exports[`<Indices /> spec renders the component 1`] = `
                   <span
                     class="euiFormControlLayoutCustomIcon"
                   >
-                    EuiIconMock
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
                   </span>
                 </div>
               </div>
@@ -125,8 +134,26 @@ exports[`<Indices /> spec renders the component 1`] = `
               <span
                 class="euiSwitch__track"
               >
-                EuiIconMock
-                EuiIconMock
+                <svg
+                  aria-hidden="true"
+                  class="euiIcon euiIcon--medium euiIcon-isLoading euiSwitch__icon"
+                  focusable="false"
+                  height="16"
+                  role="img"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                />
+                <svg
+                  aria-hidden="true"
+                  class="euiIcon euiIcon--medium euiIcon-isLoading euiSwitch__icon euiSwitch__icon--checked"
+                  focusable="false"
+                  height="16"
+                  role="img"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                />
               </span>
             </span>
           </button>
@@ -153,7 +180,6 @@ exports[`<Indices /> spec renders the component 1`] = `
             >
               <div
                 class="euiPopover euiPopover--anchorDownLeft"
-                id="QuickSelectPopover"
               >
                 <div
                   class="euiPopover__anchor euiQuickSelectPopover__anchor"
@@ -167,11 +193,29 @@ exports[`<Indices /> spec renders the component 1`] = `
                     <span
                       class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
                     >
-                      EuiIconMock
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--small euiIcon--inherit euiIcon-isLoading euiButtonContent__icon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
                       <span
                         class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
                       >
-                        EuiIconMock
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiIcon-isLoading"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
                       </span>
                     </span>
                   </button>
@@ -251,7 +295,16 @@ exports[`<Indices /> spec renders the component 1`] = `
                       <span
                         class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
                       >
-                        EuiIconMock
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--small euiIcon--inherit euiIcon-isLoading euiButtonContent__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
                         <span
                           class="euiButtonEmpty__text"
                         >
@@ -318,16 +371,20 @@ exports[`<Indices /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Index; Sorted in descending order"
+                      title="Index"
                     >
                       Index
                     </span>
-                    EuiIconMock
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
-                    </span>
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiIcon-isLoading euiTableSortIcon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
                   </span>
                 </button>
               </th>
@@ -353,11 +410,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                     >
                       Health
                     </span>
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
-                    </span>
                   </span>
                 </button>
               </th>
@@ -368,7 +420,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                 scope="col"
                 style="width: 140px;"
               >
-                <div
+                <span
                   class="euiTableCellContent euiTableCellContent--alignRight"
                 >
                   <span
@@ -377,7 +429,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                   >
                     Managed by Policy
                   </span>
-                </div>
+                </span>
               </th>
               <th
                 aria-live="polite"
@@ -400,11 +452,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                       title="Status"
                     >
                       Status
-                    </span>
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
                     </span>
                   </span>
                 </button>
@@ -431,11 +478,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                     >
                       Total size
                     </span>
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
-                    </span>
                   </span>
                 </button>
               </th>
@@ -460,11 +502,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                       title="Primaries size"
                     >
                       Primaries size
-                    </span>
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
                     </span>
                   </span>
                 </button>
@@ -491,11 +528,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                     >
                       Total documents
                     </span>
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
-                    </span>
                   </span>
                 </button>
               </th>
@@ -520,11 +552,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                       title="Deleted documents"
                     >
                       Deleted documents
-                    </span>
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
                     </span>
                   </span>
                 </button>
@@ -551,11 +578,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                     >
                       Primaries
                     </span>
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
-                    </span>
                   </span>
                 </button>
               </th>
@@ -580,11 +602,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                       title="Replicas"
                     >
                       Replicas
-                    </span>
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      Click to sort in ascending order
                     </span>
                   </span>
                 </button>

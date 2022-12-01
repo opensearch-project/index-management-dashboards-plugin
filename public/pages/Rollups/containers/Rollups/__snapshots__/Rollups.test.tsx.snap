@@ -5,7 +5,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
   style="padding: 25px 25px;"
 >
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -38,7 +38,16 @@ exports[`<Rollups /> spec renders the component 1`] = `
               <span
                 class="euiButtonContent euiButton__content"
               >
-                EuiIconMock
+                <svg
+                  aria-hidden="true"
+                  class="euiIcon euiIcon--medium euiIcon--inherit euiIcon-isLoading euiButtonContent__icon"
+                  focusable="false"
+                  height="16"
+                  role="img"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                />
                 <span
                   class="euiButton__text"
                 >
@@ -107,7 +116,16 @@ exports[`<Rollups /> spec renders the component 1`] = `
                   <span
                     class="euiButtonContent euiButtonContent--iconRight euiButton__content"
                   >
-                    EuiIconMock
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiIcon--inherit euiIcon-isLoading euiButtonContent__icon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
                     <span
                       class="euiButton__text"
                     >
@@ -157,7 +175,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+                class="euiFieldSearch euiFieldSearch--fullWidth"
                 placeholder="Search"
                 type="search"
                 value=""
@@ -168,7 +186,16 @@ exports[`<Rollups /> spec renders the component 1`] = `
                 <span
                   class="euiFormControlLayoutCustomIcon"
                 >
-                  EuiIconMock
+                  <svg
+                    aria-hidden="true"
+                    class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                    focusable="false"
+                    height="16"
+                    role="img"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  />
                 </span>
               </div>
             </div>
@@ -231,7 +258,16 @@ exports[`<Rollups /> spec renders the component 1`] = `
                         <span
                           class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
                         >
-                          EuiIconMock
+                          <svg
+                            aria-hidden="true"
+                            class="euiIcon euiIcon--small euiIcon--inherit euiIcon-isLoading euiButtonContent__icon"
+                            focusable="false"
+                            height="16"
+                            role="img"
+                            viewBox="0 0 16 16"
+                            width="16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          />
                           <span
                             class="euiButtonEmpty__text"
                           >
@@ -297,16 +333,20 @@ exports[`<Rollups /> spec renders the component 1`] = `
                     >
                       <span
                         class="euiTableCellContent__text"
-                        title="Name; Sorted in descending order"
+                        title="Name"
                       >
                         Name
                       </span>
-                      EuiIconMock
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiTableSortIcon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
                     </span>
                   </button>
                 </th>
@@ -331,11 +371,6 @@ exports[`<Rollups /> spec renders the component 1`] = `
                         title="Source index"
                       >
                         Source index
-                      </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
                       </span>
                     </span>
                   </button>
@@ -362,11 +397,6 @@ exports[`<Rollups /> spec renders the component 1`] = `
                       >
                         Target index
                       </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -391,11 +421,6 @@ exports[`<Rollups /> spec renders the component 1`] = `
                         title="Job state"
                       >
                         Job state
-                      </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
                       </span>
                     </span>
                   </button>
@@ -422,11 +447,6 @@ exports[`<Rollups /> spec renders the component 1`] = `
                       >
                         Continuous
                       </span>
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        Click to sort in ascending order
-                      </span>
                     </span>
                   </button>
                 </th>
@@ -436,7 +456,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
                   role="columnheader"
                   scope="col"
                 >
-                  <div
+                  <span
                     class="euiTableCellContent"
                   >
                     <span
@@ -445,7 +465,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
                     >
                       Next rollup window
                     </span>
-                  </div>
+                  </span>
                 </th>
                 <th
                   class="euiTableHeaderCell"
@@ -453,7 +473,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
                   role="columnheader"
                   scope="col"
                 >
-                  <div
+                  <span
                     class="euiTableCellContent"
                   >
                     <span
@@ -462,7 +482,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
                     >
                       Rollup job status
                     </span>
-                  </div>
+                  </span>
                 </th>
               </tr>
             </thead>
