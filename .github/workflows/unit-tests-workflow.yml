@@ -13,12 +13,15 @@ env:
 jobs:
   tests:
     name: Run unit tests
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, mac-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout Index Management Dashboards plugin
-        uses: actions/checkout@v2
-        with:
-          path: index-management-dashboards-plugin
+      # Enable longer filenames for windows
+      - name: Enable longer filenames
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: git config --system core.longpaths true
       - name: Checkout OpenSearch-Dashboards
         uses: actions/checkout@v2
         with:
@@ -40,10 +43,12 @@ jobs:
           npm uninstall -g yarn
           echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
           npm i -g yarn@${{ steps.versions.outputs.yarn_version }}
+      - name: Checkout Index Management Dashboards plugin
+        uses: actions/checkout@v2
+        with:
+          path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
       - name: Bootstrap plugin/OpenSearch-Dashboards
         run: |
-          mkdir -p OpenSearch-Dashboards/plugins
-          mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
           cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
           yarn osd bootstrap
       - name: Run tests
@@ -51,6 +56,5 @@ jobs:
           cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
           yarn run test:jest --coverage
       - name: Uploads coverage
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
