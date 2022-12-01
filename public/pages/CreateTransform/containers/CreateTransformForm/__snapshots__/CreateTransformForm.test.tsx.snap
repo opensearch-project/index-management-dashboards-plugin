@@ -29,12 +29,21 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 <div
                   class="euiStep__titleWrapper"
                 >
-                  <div
-                    aria-label="Step 1"
+                  <span
                     class="euiStepNumber euiStep__circle"
                   >
-                    1
-                  </div>
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      Step 1
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="euiStepNumber__number"
+                    >
+                      1
+                    </span>
+                  </span>
                   <h6
                     class="euiTitle euiTitle--small euiStep__title"
                   >
@@ -46,17 +55,26 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep"
+                class="euiStep euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
-                  <div
-                    aria-label="Step 2"
+                  <span
                     class="euiStepNumber euiStepNumber--disabled euiStep__circle"
                   >
-                    2
-                  </div>
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      Step 2 is disabled
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="euiStepNumber__number"
+                    >
+                      2
+                    </span>
+                  </span>
                   <h6
                     class="euiTitle euiTitle--small euiStep__title"
                   >
@@ -68,17 +86,26 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep"
+                class="euiStep euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
-                  <div
-                    aria-label="Step 3"
+                  <span
                     class="euiStepNumber euiStepNumber--disabled euiStep__circle"
                   >
-                    3
-                  </div>
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      Step 3 is disabled
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="euiStepNumber__number"
+                    >
+                      3
+                    </span>
+                  </span>
                   <h6
                     class="euiTitle euiTitle--small euiStep__title"
                   >
@@ -90,17 +117,26 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 />
               </div>
               <div
-                class="euiStep"
+                class="euiStep euiStep-isDisabled"
               >
                 <div
                   class="euiStep__titleWrapper"
                 >
-                  <div
-                    aria-label="Step 4"
+                  <span
                     class="euiStepNumber euiStepNumber--disabled euiStep__circle"
                   >
-                    4
-                  </div>
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      Step 4 is disabled
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      class="euiStepNumber__number"
+                    >
+                      4
+                    </span>
+                  </span>
                   <h6
                     class="euiTitle euiTitle--small euiStep__title"
                   >
@@ -126,7 +162,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
             class="euiSpacer euiSpacer--l"
           />
           <div
-            class="euiPanel euiPanel--paddingMedium"
+            class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
             style="padding: 20px 20px;"
           >
             <div
@@ -175,7 +211,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                         class="euiFormControlLayout__childrenWrapper"
                       >
                         <input
-                          aria-describedby="some_html_id-help"
+                          aria-describedby="some_html_id-help-0"
                           class="euiFieldText"
                           id="some_html_id"
                           placeholder="my-transformjob1"
@@ -186,7 +222,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     </div>
                     <div
                       class="euiFormHelpText euiFormRow__text"
-                      id="some_html_id-help"
+                      id="some_html_id-help-0"
                     >
                       Specify a unique, descriptive name.
                     </div>
@@ -251,7 +287,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
           />
           <div>
             <div
-              class="euiPanel euiPanel--paddingMedium"
+              class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
               style="padding: 20px 20px;"
             >
               <div
@@ -294,7 +330,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                       class="euiFormRow__fieldWrapper"
                     >
                       <div
-                        aria-describedby="some_html_id-help"
+                        aria-describedby="some_html_id-help-0"
                         aria-expanded="false"
                         aria-haspopup="listbox"
                         class="euiComboBox"
@@ -346,7 +382,16 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                                 data-test-subj="comboBoxToggleListButton"
                                 type="button"
                               >
-                                EuiIconMock
+                                <svg
+                                  aria-hidden="true"
+                                  class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                                  focusable="false"
+                                  height="16"
+                                  role="img"
+                                  viewBox="0 0 16 16"
+                                  width="16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                />
                               </button>
                             </div>
                           </div>
@@ -354,7 +399,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                       </div>
                       <div
                         class="euiFormHelpText euiFormRow__text"
-                        id="some_html_id-help"
+                        id="some_html_id-help-0"
                       >
                         The index where this transform job is performed on. Type in * as wildcard for index pattern. Indices cannot be changed once the job is created. Please ensure that you select the right source index.
                       </div>
@@ -414,7 +459,22 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                     >
                        
                       Learn more
-                      EuiIconMock
+                      <svg
+                        aria-hidden="true"
+                        aria-label="External link"
+                        class="euiIcon euiIcon--small euiIcon-isLoading euiLink__externalIcon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
+                      <span
+                        class="euiScreenReaderOnly"
+                      >
+                        (opens in a new tab or window)
+                      </span>
                     </a>
                   </div>
                   <div
@@ -435,8 +495,18 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                         aria-label="Clear Source Index Filter"
                         class="euiBadge__iconButton"
                         title="Clear Source Index Filter"
+                        type="button"
                       >
-                        EuiIconMock
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--small euiIcon--inherit euiIcon-isLoading euiBadge__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
                       </button>
                     </span>
                   </span>
@@ -495,7 +565,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                       class="euiFormRow__fieldWrapper"
                     >
                       <div
-                        aria-describedby="some_html_id-help"
+                        aria-describedby="some_html_id-help-0"
                         aria-expanded="false"
                         aria-haspopup="listbox"
                         class="euiComboBox"
@@ -547,7 +617,16 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                                 data-test-subj="comboBoxToggleListButton"
                                 type="button"
                               >
-                                EuiIconMock
+                                <svg
+                                  aria-hidden="true"
+                                  class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                                  focusable="false"
+                                  height="16"
+                                  role="img"
+                                  viewBox="0 0 16 16"
+                                  width="16"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                />
                               </button>
                             </div>
                           </div>
@@ -555,7 +634,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                       </div>
                       <div
                         class="euiFormHelpText euiFormRow__text"
-                        id="some_html_id-help"
+                        id="some_html_id-help-0"
                       >
                         The index stores transform results. You can look up an existing index to reuse or type to create a new index.
                       </div>
@@ -573,9 +652,13 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
               <div
                 class="euiText euiText--small"
               >
-                <p>
-                  You can't change indices after creating a job. Double-check the source and target index names before proceeding.
-                </p>
+                <div
+                  class="euiTextColor euiTextColor--default"
+                >
+                  <p>
+                    You can't change indices after creating a job. Double-check the source and target index names before proceeding.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

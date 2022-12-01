@@ -13,7 +13,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -67,7 +67,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  aria-describedby="some_html_id-help"
+                  aria-describedby="some_html_id-help-0"
                   class="euiFieldText"
                   disabled=""
                   id="some_html_id"
@@ -79,7 +79,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
             </div>
             <div
               class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help"
+              id="some_html_id-help-0"
             >
               Specify a unique, descriptive name.
             </div>
@@ -143,7 +143,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -216,7 +216,16 @@ exports[`<EditRollup /> spec renders the component 1`] = `
                   <span
                     class="euiFormControlLayoutCustomIcon"
                   >
-                    EuiIconMock
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
                   </span>
                 </div>
               </div>
@@ -311,7 +320,16 @@ exports[`<EditRollup /> spec renders the component 1`] = `
                       <span
                         class="euiFormControlLayoutCustomIcon"
                       >
-                        EuiIconMock
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
                       </span>
                     </div>
                   </div>
@@ -347,7 +365,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  aria-describedby="some_html_id-help"
+                  aria-describedby="some_html_id-help-0"
                   class="euiFieldNumber"
                   id="some_html_id"
                   min="1"
@@ -359,7 +377,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
             </div>
             <div
               class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help"
+              id="some_html_id-help-0"
             >
               The number of pages every execution processes. A larger number means faster execution and higher costs on memory.
             </div>
@@ -477,7 +495,16 @@ exports[`<EditRollup /> spec renders the component 1`] = `
                       <span
                         class="euiFormControlLayoutCustomIcon"
                       >
-                        EuiIconMock
+                        <svg
+                          aria-hidden="true"
+                          class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                          focusable="false"
+                          height="16"
+                          role="img"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        />
                       </span>
                     </div>
                   </div>

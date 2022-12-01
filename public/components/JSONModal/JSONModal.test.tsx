@@ -20,7 +20,7 @@ describe("<JSONModal /> spec", () => {
     );
     // EuiOverlayMask appends an element to the body so we should have two, an empty div from react-test-library
     // and our EuiOverlayMask element
-    expect(document.body.children).toHaveLength(2);
+    expect(document.body.children).toHaveLength(3);
     expect(document.body.children[1]).toMatchSnapshot();
   });
 

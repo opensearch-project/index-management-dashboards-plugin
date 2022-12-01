@@ -13,7 +13,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -61,7 +61,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              aria-describedby="some_html_id-help"
+              aria-describedby="some_html_id-help-0"
               aria-expanded="false"
               aria-haspopup="listbox"
               class="euiComboBox"
@@ -104,7 +104,16 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
                       data-test-subj="comboBoxToggleListButton"
                       type="button"
                     >
-                      EuiIconMock
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
                     </button>
                   </div>
                 </div>
@@ -112,7 +121,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             </div>
             <div
               class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help"
+              id="some_html_id-help-0"
             >
               You can use * as wildcards to form index patterns.
             </div>
@@ -136,7 +145,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              aria-describedby="some_html_id-help"
+              aria-describedby="some_html_id-help-0"
               aria-expanded="false"
               aria-haspopup="listbox"
               class="euiComboBox euiComboBox-isDisabled"
@@ -186,7 +195,16 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
                       disabled=""
                       type="button"
                     >
-                      EuiIconMock
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
                     </button>
                   </div>
                 </div>
@@ -194,7 +212,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
             </div>
             <div
               class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help"
+              id="some_html_id-help-0"
             >
               Apply new policy only on managed indices in these states.
             </div>
@@ -207,7 +225,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiPanel euiPanel--paddingMedium"
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
     <div
@@ -246,7 +264,32 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
               target="_blank"
             >
               Learn more 
-              EuiIconMock
+              <svg
+                aria-hidden="true"
+                class="euiIcon euiIcon--small euiIcon-isLoading"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <svg
+                aria-hidden="true"
+                aria-label="External link"
+                class="euiIcon euiIcon--small euiIcon-isLoading euiLink__externalIcon"
+                focusable="false"
+                height="16"
+                role="img"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              />
+              <span
+                class="euiScreenReaderOnly"
+              >
+                (opens in a new tab or window)
+              </span>
             </a>
           </p>
         </div>
@@ -314,7 +357,16 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
                       data-test-subj="comboBoxToggleListButton"
                       type="button"
                     >
-                      EuiIconMock
+                      <svg
+                        aria-hidden="true"
+                        class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                        focusable="false"
+                        height="16"
+                        role="img"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      />
                     </button>
                   </div>
                 </div>
@@ -395,7 +447,16 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
                   <span
                     class="euiFormControlLayoutCustomIcon"
                   >
-                    EuiIconMock
+                    <svg
+                      aria-hidden="true"
+                      class="euiIcon euiIcon--medium euiIcon-isLoading euiFormControlLayoutCustomIcon__icon"
+                      focusable="false"
+                      height="16"
+                      role="img"
+                      viewBox="0 0 16 16"
+                      width="16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    />
                   </span>
                 </div>
               </div>
