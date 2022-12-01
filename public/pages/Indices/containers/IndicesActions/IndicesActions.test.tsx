@@ -297,7 +297,7 @@ describe("<IndicesActions /> spec", () => {
           uuid: "some_uuid",
           managed: "",
           managedPolicy: "",
-          data_stream: "",
+          data_stream: null,
         },
       ],
       onShrink,
@@ -357,6 +357,87 @@ describe("<IndicesActions /> spec", () => {
       expect(onShrink).toHaveBeenCalledTimes(1);
     });
   }, 30000);
+
+  it("shrink action is disabled if multiple indices are selected", async () => {
+    const onShrink = jest.fn();
+
+    const { container, getByTestId } = renderWithRouter({
+      selectedItems: [
+        {
+          "docs.count": "5",
+          "docs.deleted": "2",
+          health: "green",
+          index: "test_index1",
+          pri: "3",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          "store.size": "100KB",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+        },
+        {
+          "docs.count": "5",
+          "docs.deleted": "2",
+          health: "green",
+          index: "test_index2",
+          pri: "3",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          "store.size": "100KB",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+        },
+      ],
+      onShrink,
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    await waitFor(() => {
+      expect(getByTestId("Shrink Action")).toBeDisabled();
+    });
+  });
+
+  it("shrink action is disabled if the selected index is data_stream", async () => {
+    const onShrink = jest.fn();
+
+    const { container, getByTestId } = renderWithRouter({
+      selectedItems: [
+        {
+          "docs.count": "5",
+          "docs.deleted": "2",
+          health: "green",
+          index: "test_index",
+          pri: "3",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          "store.size": "100KB",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+          data_stream: "test",
+        },
+      ],
+      onShrink,
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    await waitFor(() => {
+      expect(getByTestId("Shrink Action")).toBeDisabled();
+    });
+  });
 
   it("click reindex goes to new page with selected item ", async () => {
     const history = createMemoryHistory();
