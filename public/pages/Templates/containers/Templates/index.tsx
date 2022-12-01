@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext, useState } from "react";
+import React, { Component, useContext } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -15,12 +15,7 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButtonEmpty,
   EuiButton,
-  EuiFlyout,
-  EuiFlyoutHeader,
-  EuiFlyoutBody,
-  EuiText,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -37,12 +32,10 @@ interface TemplatesProps extends RouteComponentProps {
   commonService: CommonService;
 }
 
-interface TemplatesState {
+type TemplatesState = {
   totalTemplates: number;
   from: string;
   size: string;
-  search: string;
-  status: string;
   sortField: keyof ITemplate;
   sortDirection: Direction;
   selectedItems: ITemplate[];
@@ -50,7 +43,7 @@ interface TemplatesState {
   loading: boolean;
   createFlyoutVisible: boolean;
   editFlyoutVisible: boolean;
-}
+} & SearchControlsProps["value"];
 
 class Templates extends Component<TemplatesProps, TemplatesState> {
   static contextType = CoreServicesContext;
@@ -62,20 +55,17 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       search = DEFAULT_QUERY_PARAMS.search,
       sortField = DEFAULT_QUERY_PARAMS.sortField,
       sortDirection = DEFAULT_QUERY_PARAMS.sortDirection,
-      status = DEFAULT_QUERY_PARAMS.status,
     } = queryString.parse(props.history.location.search) as {
       from: string;
       size: string;
       search: string;
       sortField: keyof ITemplate;
       sortDirection: Direction;
-      status: string;
     };
     this.state = {
       totalTemplates: 0,
       from,
       size,
-      status,
       search,
       sortField,
       sortDirection,
@@ -105,7 +95,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
 
   getTemplates = async (): Promise<void> => {
     this.setState({ loading: true });
-    const { from, size, status } = this.state;
+    const { from, size } = this.state;
     const fromNumber = Number(from);
     const sizeNumber = Number(size);
     const { history, commonService } = this.props;
@@ -117,11 +107,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       format: "json",
       name: `${queryObject.search}*`,
       s: `${queryObject.sortField}:${queryObject.sortDirection}`,
-      expand_wildcards: status,
     };
-    if (!status) {
-      delete payload.expand_wildcards;
-    }
 
     const getTemplatesResponse = await commonService.apiCaller<ITemplate[]>({
       endpoint: "cat.templates",
@@ -227,7 +213,6 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
         <IndexControls
           value={{
             search: this.state.search,
-            status: this.state.status,
           }}
           onSearchChange={this.onSearchChange}
         />

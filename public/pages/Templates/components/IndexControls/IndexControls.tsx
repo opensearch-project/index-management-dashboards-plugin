@@ -4,13 +4,11 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { EuiComboBox, EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
-import { ALIAS_STATUS_OPTIONS } from "../../../../utils/constants";
+import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 
 export interface SearchControlsProps {
   value: {
     search: string;
-    status: string;
   };
   onSearchChange: (args: SearchControlsProps["value"]) => void;
 }
@@ -42,20 +40,6 @@ export default function SearchControls(props: SearchControlsProps) {
               onChange("search", e.currentTarget.value);
             }
           }}
-        />
-      </EuiFlexItem>
-      <EuiFlexItem grow={false}>
-        <EuiComboBox
-          style={{
-            width: 150,
-          }}
-          singleSelection={{
-            asPlainText: true,
-          }}
-          placeholder="Status"
-          options={ALIAS_STATUS_OPTIONS}
-          selectedOptions={state.status ? [{ label: state.status }] : []}
-          onChange={(val) => onChange("status", val[0]?.label)}
         />
       </EuiFlexItem>
     </EuiFlexGroup>

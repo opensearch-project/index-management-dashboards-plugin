@@ -12,29 +12,20 @@ import IndexControls from "./IndexControls";
 
 describe("<IndexControls /> spec", () => {
   it("renders the component", async () => {
-    const { container } = render(<IndexControls value={{ search: "testing", status: "1" }} onSearchChange={() => {}} />);
+    const { container } = render(<IndexControls value={{ search: "testing" }} onSearchChange={() => {}} />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("onChange with right data", async () => {
     const onSearchChangeMock = jest.fn();
-    const { getByTestId, getByPlaceholderText } = render(
-      <IndexControls value={{ search: "", status: "" }} onSearchChange={onSearchChangeMock} />
-    );
+    const { getByPlaceholderText } = render(<IndexControls value={{ search: "" }} onSearchChange={onSearchChangeMock} />);
 
-    userEvent.type(getByTestId("comboBoxSearchInput"), "closed{enter}");
-    expect(onSearchChangeMock).toBeCalledTimes(1);
-    expect(onSearchChangeMock).toBeCalledWith({
-      search: "",
-      status: "closed",
-    });
     userEvent.type(getByPlaceholderText("Search..."), "test{enter}");
     await waitFor(() => {
-      expect(onSearchChangeMock).toBeCalledTimes(2);
+      expect(onSearchChangeMock).toBeCalledTimes(1);
       expect(onSearchChangeMock).toBeCalledWith({
         search: "test",
-        status: "closed",
       });
     });
   });
