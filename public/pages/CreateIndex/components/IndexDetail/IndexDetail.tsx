@@ -195,8 +195,7 @@ const IndexDetail = (
 
       onChange({
         // omit alias
-        ...omit(indexDetail, "aliases"),
-        ...omit(indexDetail, "data_stream"),
+        ...omit(indexDetail, ["aliases", "data_stream"]),
         mappings: {
           properties: transformObjectToArray(indexDetail?.mappings?.properties || {}),
         },
