@@ -360,7 +360,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   };
 
   onCreateIndexSuccess = (indexName: string) => {
-    const option: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: indexName }];
+    const option: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: indexName, value: { isIndex: true } }];
     this.setState({ destination: option, showCreateIndexFlyout: false, destError: null });
   };
 
