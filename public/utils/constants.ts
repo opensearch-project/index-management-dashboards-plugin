@@ -96,6 +96,7 @@ export const BREADCRUMBS = Object.freeze({
   CREATE_INDEX: { text: "Create Index", href: `#${ROUTES.CREATE_INDEX}` },
   EDIT_INDEX: { text: "Edit Index", href: `#${ROUTES.CREATE_INDEX}` },
   REINDEX: { text: "Reindex", href: `#${ROUTES.REINDEX}` },
+  ALIASES: { text: "Aliases", href: `#${ROUTES.ALIASES}` },
 });
 
 // TODO: EUI has a SortDirection already
@@ -181,7 +182,7 @@ export const INDEX_MAPPING_TYPES: {
           rules: [
             {
               required: true,
-              message: "Path is required for field type: alias.",
+              message: "Path is required.",
             },
           ],
         },
@@ -267,7 +268,7 @@ export const INDEX_MAPPING_TYPES: {
           rules: [
             {
               required: true,
-              message: "Path is required for field type: alias.",
+              message: "Analyzer is required.",
             },
           ],
         },

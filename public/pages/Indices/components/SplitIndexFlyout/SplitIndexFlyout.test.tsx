@@ -72,18 +72,13 @@ describe("<SplitIndexFlyout /> spec", () => {
     });
 
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-
-    await waitFor(() => {
-      userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "4{enter}");
-    });
-
+    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "4{enter}");
     userEvent.type(getByTestId("numberOfReplicasInput"), "1");
-
     userEvent.click(getByTestId("flyout-footer-action-button"));
 
-    await waitFor(() => {
-      expect(onSplitIndex).toHaveBeenCalled();
-    });
+    // wait for next tick
+    await waitFor(() => {});
+    expect(onSplitIndex).toBeCalledTimes(1);
   }, 15000);
 
   it("Successful split an index whose shards number is 1", async () => {
@@ -114,16 +109,12 @@ describe("<SplitIndexFlyout /> spec", () => {
     });
 
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-
-    await waitFor(() => {
-      userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "2{enter}");
-    });
-
+    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "2{enter}");
     userEvent.click(getByTestId("flyout-footer-action-button"));
 
-    await waitFor(() => {
-      expect(onSplitIndex).toHaveBeenCalled();
-    });
+    // wait for next tick
+    await waitFor(() => {});
+    expect(onSplitIndex).toHaveBeenCalled();
   }, 15000); // set timeout to 15s to overwrite the default 10s because this case takes a little long
 
   it("Error message if index name is not specified", async () => {
