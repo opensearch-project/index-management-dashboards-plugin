@@ -46,9 +46,7 @@
     "minimist": "^1.2.6",
     "moment": "^2.29.4",
     "async": "^3.2.3",
-    "terser": "^4.8.1",
-    "ts-loader": "^8.4.0",
-    "webpack": "^5.75.0"
+    "terser": "^4.8.1"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
