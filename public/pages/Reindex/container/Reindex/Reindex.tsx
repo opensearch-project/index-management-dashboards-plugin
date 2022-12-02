@@ -35,6 +35,8 @@ import { REQUEST } from "../../../../../utils/constants";
 import CreateIndexFlyout from "../../components/CreateIndexFlyout";
 import queryString from "query-string";
 import { parseIndexNames, checkDuplicate } from "../../utils/helper";
+import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
+import { ReindexJobMetaData } from "../../../../models/interfaces";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -221,6 +223,16 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         reindexReq.body.dest.pipeline = selectedPipelines[0].label;
       }
       await this.onReindexConfirm(reindexReq);
+      jobSchedulerInstance.addJob({
+        timeout: 1000 * 60 * 60 * 5,
+        type: "reindex",
+        extras: {
+          sourceIndex: sources.map((item) => item.label).join(","),
+          destIndex: destination.map((item) => item.label)[0],
+          isDataStream: isDestAsDataStream,
+        },
+        cron: "0 */2 * * * *",
+      } as ReindexJobMetaData);
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);
     } finally {

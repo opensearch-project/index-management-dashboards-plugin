@@ -2,7 +2,7 @@ export interface IJobItemMetadata {
   id?: string; // a number to indicate the job
   cron: string; // cron expression to indicate the time of next excusion
   type: "reindex" | "recovery"; // enum for job type
-  extras: Record<string, any>; // extra fields to store job-related info
+  extras: any; // extra fields to store job-related info
   createTime: number; // the time when this job is created
   // the timeout for job to do, once the time goes beyond the timeout
   // a timeout error toast will show.
@@ -14,7 +14,8 @@ export type JobItemMetadata = IJobItemMetadata & { id: Required<IJobItemMetadata
 export interface IJobSchedulerOptions {
   callbacks: {
     listenType?: IJobItemMetadata["type"];
-    callback: (params: JobItemMetadata) => Promise<boolean>;
+    callback: (params: IJobItemMetadata) => Promise<boolean>;
+    callbackName: string;
   }[];
   storage?: IStorage;
 }

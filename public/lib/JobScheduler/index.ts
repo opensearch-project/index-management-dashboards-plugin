@@ -27,16 +27,6 @@ export class JobScheduler {
 
     return formattedJob as JobItemMetadata;
   }
-  async addJob(job: IJobItemMetadata): Promise<boolean> {
-    const formattedJob = this.formatJob(job);
-    if (this.runningJobMap[formattedJob.id]) {
-      return false;
-    }
-
-    await this.storage.set(formattedJob.id, formattedJob);
-    this.loopJob();
-    return true;
-  }
   private async loopJob() {
     const jobs = await this.storage.getAll();
     // loop all the jobs to see if any job do not exist in runningJobMap
@@ -63,13 +53,40 @@ export class JobScheduler {
     const filteredCallbacks = this.options.callbacks.filter(
       (callbackItem) => callbackItem.listenType === job.type || !callbackItem.listenType
     );
-    const result = await Promise.all(filteredCallbacks.map((callbackItem) => callbackItem.callback(job)));
+    const result = await Promise.all(
+      filteredCallbacks.map(async (callbackItem) => {
+        try {
+          return await callbackItem.callback(job);
+        } catch (e) {
+          return false;
+        }
+      })
+    );
     const hasFinish = result.some((res) => res === true);
     this.deleteJob(job.id);
     if (!hasFinish) {
       this.addJob(job);
       this.loopJob();
     }
+  }
+  addCallback(callback: IJobSchedulerOptions["callbacks"][number]) {
+    this.options.callbacks.push(callback);
+  }
+  deleteCallback(callbackName: string) {
+    const findIndex = this.options.callbacks.findIndex((item) => item.callbackName === callbackName);
+    if (findIndex > -1) {
+      this.options.callbacks.splice(findIndex, 1);
+    }
+  }
+  async addJob(job: IJobItemMetadata): Promise<boolean> {
+    const formattedJob = this.formatJob(job);
+    if (this.runningJobMap[formattedJob.id]) {
+      return false;
+    }
+
+    await this.storage.set(formattedJob.id, formattedJob);
+    this.loopJob();
+    return true;
   }
   async deleteJob(jobId: JobItemMetadata["id"]): Promise<boolean> {
     delete this.runningJobMap[jobId];

@@ -8,6 +8,9 @@ import { IndexManagementPluginSetup } from ".";
 import { IndexManagementPluginStart } from ".";
 import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 import { ROUTES } from "./utils/constants";
+import { jobSchedulerInstance } from "./context/JobSchedulerContext";
+import { IndexService } from "./services";
+import { ReindexJobMetaData } from "./models/interfaces";
 
 export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   constructor(private readonly initializerContext: PluginInitializerContext) {
@@ -15,6 +18,37 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
   }
 
   public setup(core: CoreSetup): IndexManagementPluginSetup {
+    const indexService = new IndexService(core.http);
+    jobSchedulerInstance.addCallback({
+      callbackName: "callbackForReindex",
+      callback: async (job: ReindexJobMetaData) => {
+        const extras = job.extras;
+        const indexResult = await indexService.getIndices({
+          from: 0,
+          size: 10,
+          search: extras.destIndex,
+          terms: extras.destIndex,
+          sortField: "index",
+          sortDirection: "desc",
+          showDataStreams: extras.isDataStream || false,
+        });
+        if (indexResult.ok) {
+          const [firstItem] = indexResult.response.indices || [];
+          if (firstItem && firstItem.status !== "reindex") {
+            core.notifications.toasts.addSuccess(
+              `Reindex from [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`,
+              {
+                toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+              }
+            );
+            return true;
+          }
+        }
+
+        return false;
+      },
+      listenType: "reindex",
+    });
     core.application.register({
       id: "opensearch_index_management_dashboards",
       title: "Index Management",
