@@ -45,7 +45,7 @@ describe("<SplitIndexFlyout /> spec", () => {
   });
 
   it("Successful split an index whose shards number is greater than 1", async () => {
-    const { getByTestId, findByTestId } = render(
+    const { getByTestId } = render(
       <SplitIndexFlyout
         sourceIndex={
           {
