@@ -44,7 +44,6 @@ interface ApplyPolicyModalState {
   hasRolloverAction: boolean;
   policyOptions: PolicyOption[];
   rolloverAlias: string;
-  rolloverAliasError: string;
   hasSubmitted: boolean;
 }
 
@@ -57,7 +56,6 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
     hasRolloverAction: false,
     policyOptions: [],
     rolloverAlias: "",
-    rolloverAliasError: "",
     hasSubmitted: false,
   };
 
@@ -159,30 +157,20 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
     const rolloverAlias = e.target.value;
     this.setState({
       rolloverAlias,
-      rolloverAliasError: this.getRolloverAliasError(rolloverAlias),
     });
   };
 
   onSubmit = async (): Promise<void> => {
     const { selectedPolicy, rolloverAlias } = this.state;
     const selectedPolicyError = this.getSelectedPolicyError(selectedPolicy);
-    const rolloverAliasError = this.getRolloverAliasError(rolloverAlias);
-    const hasSubmitError = !!selectedPolicyError || !!rolloverAliasError;
+    const hasSubmitError = !!selectedPolicyError;
+
     if (hasSubmitError) {
-      this.setState({ selectedPolicyError, rolloverAliasError, hasSubmitted: true });
+      this.setState({ selectedPolicyError, hasSubmitted: true });
     } else {
       // @ts-ignore
       await this.onApplyPolicy(selectedPolicy, this.hasRolloverAction(selectedPolicy), rolloverAlias);
     }
-  };
-
-  getRolloverAliasError = (rolloverAlias: string): string => {
-    const { hasRolloverAction } = this.state;
-    const { indices } = this.props;
-    const hasSingleIndexSelected = indices.length === 1;
-    const requiresAlias = hasRolloverAction && hasSingleIndexSelected;
-    const hasAliasError = requiresAlias && !rolloverAlias;
-    return hasAliasError ? "Required" : "";
   };
 
   getSelectedPolicyError = (selectedPolicy: PolicyOption | null): string => (selectedPolicy ? "" : "You must select a policy");
@@ -191,7 +179,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
     _.get(selectedPolicy, "policy.states", []).some((state: State) => state.actions.some((action) => action.hasOwnProperty("rollover")));
 
   renderRollover = (): React.ReactNode | null => {
-    const { rolloverAlias, hasRolloverAction, rolloverAliasError, hasSubmitted } = this.state;
+    const { rolloverAlias, hasRolloverAction } = this.state;
     const { indices } = this.props;
     const hasSingleIndexSelected = indices.length === 1;
 
@@ -204,24 +192,16 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
           helpText={
             <EuiText size="xs" grow={false}>
               <p>
-                This policy includes a rollover action. Specify a rollover alias.{" "}
+                This policy includes a rollover action. Specify a rollover alias - (optional).{" "}
                 <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
                   Learn more <EuiIcon type="popout" size="s" />
                 </EuiLink>
               </p>
             </EuiText>
           }
-          isInvalid={hasSubmitted && !!rolloverAliasError}
-          error={rolloverAliasError}
           fullWidth
         >
-          <EuiFieldText
-            isInvalid={hasSubmitted && !!rolloverAliasError}
-            placeholder="Rollover alias"
-            value={rolloverAlias}
-            onChange={this.onChangeRolloverAlias}
-            fullWidth
-          />
+          <EuiFieldText placeholder="Rollover alias" value={rolloverAlias} onChange={this.onChangeRolloverAlias} fullWidth />
         </EuiFormRow>
       );
     }
