@@ -32,5 +32,5 @@ export interface IndexSelectItem {
   isDataStream?: boolean;
   isAlias?: boolean;
   indices?: string[];
-  writingIndex?: string[];
+  writingIndex?: string;
 }

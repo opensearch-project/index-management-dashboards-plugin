@@ -99,6 +99,7 @@ const dataStreams = [
     name: "log-redis-daily",
     timestamp_field: "@timestamp",
     indices: [".ds-log-redis-daily-000001", ".ds-log-redis-daily-000002"],
+    writingIndex: ".ds-log-redis-daily-000002",
     generation: 2,
     status: "GREEN",
     template: "",
