@@ -5,14 +5,14 @@
 
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton, EuiCallOut } from "@elastic/eui";
-import { set, merge, omit } from "lodash";
+import { set, merge, omit, pick } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
 import { Ref } from "react";
-import { INDEX_BLOCKED_SETTINGS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
+import { INDEX_IMPORT_SETTINGS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
@@ -196,11 +196,12 @@ const IndexDetail = (
       onChange({
         // omit alias
         ...omit(indexDetail, "aliases"),
+        ...omit(indexDetail, "data_stream"),
         mappings: {
           properties: transformObjectToArray(indexDetail?.mappings?.properties || {}),
         },
-        // omit some metadata in index
-        settings: omit(indexDetail?.settings || {}, INDEX_BLOCKED_SETTINGS),
+        // pick some metadata in index
+        settings: pick(indexDetail?.settings || {}, INDEX_IMPORT_SETTINGS),
       });
       SimpleEuiToast.addSuccess(`Settings and mappings of [${index}] have been import successfully`);
       hasEdit.current = false;

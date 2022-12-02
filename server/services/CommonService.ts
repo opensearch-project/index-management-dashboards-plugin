@@ -36,7 +36,7 @@ export default class IndexService {
       const usedParam = (useQuery ? request.query : request.body) as IAPICaller;
       const { endpoint, data } = usedParam || {};
       const payload = useQuery ? JSON.parse(data || "{}") : data;
-      const commonCallerResponse = await callWithRequest(endpoint, payload);
+      const commonCallerResponse = await callWithRequest(endpoint, payload || {});
       return response.custom({
         statusCode: 200,
         body: {
