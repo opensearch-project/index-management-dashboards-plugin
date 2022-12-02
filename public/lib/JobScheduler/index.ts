@@ -41,12 +41,17 @@ export class JobScheduler {
     const jobs = await this.storage.getAll();
     // loop all the jobs to see if any job do not exist in runningJobMap
     jobs.forEach((job) => {
-      if (![this.runningJobMap[job.id]]) {
+      if (!this.runningJobMap[job.id]) {
         const cronInstance = new CronTime(job.cron);
         const timeoutCallback = setTimeout(() => {
           this.runJob(job.id);
         }, cronInstance.getTimeout());
         this.runningJobMap[job.id] = timeoutCallback;
+      }
+
+      // if a job is staled, remove that
+      if (job.timeout + job.createTime < Date.now()) {
+        this.deleteJob(job.id);
       }
     });
   }
@@ -62,6 +67,7 @@ export class JobScheduler {
     const hasFinish = result.some((res) => res === true);
     this.deleteJob(job.id);
     if (!hasFinish) {
+      this.addJob(job);
       this.loopJob();
     }
   }
