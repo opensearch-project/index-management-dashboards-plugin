@@ -54,6 +54,7 @@
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
     "@testing-library/user-event": "^13.1.9",
+    "@types/cron": "^2.0.0",
     "@types/diff": "^5.0.2",
     "@types/flat": "^5.0.2",
     "@types/react-dom": "^16.9.8",
@@ -71,6 +72,7 @@
     "yarn": "^1.21.1"
   },
   "dependencies": {
-    "@monaco-editor/react": "^3.8.3"
+    "@monaco-editor/react": "^3.8.3",
+    "cron": "^2.1.0"
   }
 }
