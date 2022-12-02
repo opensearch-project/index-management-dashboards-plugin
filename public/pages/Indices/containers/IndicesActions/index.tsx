@@ -302,7 +302,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     },
                     {
                       name: "Shrink",
-                      disabled: !selectedItems.length || selectedItems.length != 1,
+                      disabled: !selectedItems.length || selectedItems.length > 1 || !!selectedItems[0].data_stream,
                       "data-test-subj": "Shrink Action",
                       onClick: () => setShrinkIndexFlyoutVisible(true),
                     },
