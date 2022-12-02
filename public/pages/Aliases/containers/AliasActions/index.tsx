@@ -47,7 +47,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
               items: [
                 {
                   name: "Edit",
-                  disabled: !selectedItems.length,
+                  disabled: selectedItems.length !== 1,
                   "data-test-subj": "Edit Action",
                   onClick: onUpdateAlias,
                 },
