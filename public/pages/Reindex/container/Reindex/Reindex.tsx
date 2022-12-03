@@ -97,7 +97,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     }
   }
 
-  getIndexOptions = async (searchValue: string): Promise<EuiComboBoxOptionOption<IndexSelectItem>[]> => {
+  getIndexOptions = async (searchValue: string, excludeDataStreamIndex?: boolean): Promise<EuiComboBoxOptionOption<IndexSelectItem>[]> => {
     const { indexService } = this.props;
     let options: EuiComboBoxOptionOption<IndexSelectItem>[] = [];
     try {
@@ -111,7 +111,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           terms: [actualSearchValue.join(",")],
           sortDirection: "desc",
           sortField: "index",
-          showDataStreams: true,
+          showDataStreams: !excludeDataStreamIndex,
         }),
         indexService.getDataStreams({ search: searchValue.trim() }),
         indexService.getAliases({ search: searchValue.trim() }),
@@ -533,6 +533,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                   onSelectedOptions={this.onDestinationSelection}
                   singleSelect={true}
                   selectedOption={destination}
+                  excludeDataStreamIndex={true}
                 />
               </CustomFormRow>
             </EuiFlexItem>
