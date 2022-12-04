@@ -5,6 +5,8 @@
 
 export const DEFAULT_SLICE = "1";
 
+export const DATA_STREAM_REGEX = /^.ds-(.*)-\d{6}$/;
+
 export const DEFAULT_QUERY = JSON.stringify({ query: { match_all: {} } }, null, 2);
 
 export const REINDEX_ERROR_PROMPT = {

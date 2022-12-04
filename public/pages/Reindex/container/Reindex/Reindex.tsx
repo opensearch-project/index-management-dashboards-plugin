@@ -34,6 +34,7 @@ import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
 import CreateIndexFlyout from "../../components/CreateIndexFlyout";
 import queryString from "query-string";
+import { parseIndexNames, checkDuplicate } from "../../utils/helper";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -82,66 +83,44 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   }
 
   async componentDidMount() {
-    const { indexService } = this.props;
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES, BREADCRUMBS.REINDEX]);
 
     const { source } = queryString.parse(this.props.location.search);
 
     if (typeof source === "string") {
-      const res = await indexService.getIndices({
-        from: 0,
-        size: 10,
-        search: source,
-        terms: source,
-        sortDirection: "desc",
-        sortField: "index",
-        showDataStreams: false,
-      });
-      if (res && res.ok) {
-        const arr = source.split(",");
-        const selectedSource = res.response.indices
-          .filter((item) => arr.indexOf(item.index) !== -1)
-          .map((item) => ({
-            label: item.index,
-            value: {
-              isIndex: true,
-              status: item.status,
-              health: item.health,
-            },
-          }));
+      const allOptions = await this.getIndexOptions(source);
+      const arr = source.split(",");
+      if (allOptions && allOptions.length > 0 && allOptions[0].options) {
+        const selectedSource = allOptions[0].options.filter((item) => arr.indexOf(item.label) !== -1);
         await this.onSourceSelection(selectedSource);
-      } else {
-        this.context.notifications.toasts.addDanger(res?.error || "Get index detail error");
       }
     }
   }
 
-  getIndexOptions = async (searchValue: string) => {
+  getIndexOptions = async (searchValue: string, excludeDataStreamIndex?: boolean): Promise<EuiComboBoxOptionOption<IndexSelectItem>[]> => {
     const { indexService } = this.props;
     let options: EuiComboBoxOptionOption<IndexSelectItem>[] = [];
     try {
+      let actualSearchValue = parseIndexNames(searchValue);
+
       const [indexResponse, dataStreamResponse, aliasResponse] = await Promise.all([
         indexService.getIndices({
           from: 0,
           size: 10,
-          search: searchValue,
-          terms: [searchValue.trim()],
+          search: actualSearchValue.join(","),
+          terms: [actualSearchValue.join(",")],
           sortDirection: "desc",
           sortField: "index",
-          showDataStreams: false,
+          showDataStreams: !excludeDataStreamIndex,
         }),
         indexService.getDataStreams({ search: searchValue.trim() }),
         indexService.getAliases({ search: searchValue.trim() }),
       ]);
       if (indexResponse.ok) {
-        const indices = indexResponse.response.indices
-          .filter((index) => {
-            return !index.index.startsWith(".ds-");
-          })
-          .map((index) => ({
-            label: index.index,
-            value: { isIndex: true, status: index.status, health: index.health },
-          }));
+        const indices = indexResponse.response.indices.map((index) => ({
+          label: index.index,
+          value: { isIndex: true, status: index.status, health: index.health },
+        }));
         options.push({ label: "indices", options: indices });
       } else {
         this.context.notifications.toasts.addDanger(indexResponse.error);
@@ -153,7 +132,11 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           health: ds.status.toLowerCase(),
           value: {
             isDataStream: true,
-            indices: ds.indices.map((item) => item.index_name).slice(0, 1),
+            indices: ds.indices.map((item) => item.index_name),
+            writingIndex: ds.indices
+              .map((item) => item.index_name)
+              .sort()
+              .reverse()[0],
           },
         }));
         options.push({ label: "dataStreams", options: dataStreams });
@@ -177,7 +160,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
               value: {
                 isAlias: true,
                 indices: indexBelongsToAlias,
-                writingIndex: writingIndex,
+                writingIndex: writingIndex[0],
               },
             };
           });
@@ -272,7 +255,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     sources.forEach((item) => {
       item.value?.isIndex && result.push(item.label);
       item.value?.isAlias && item.value.indices && result.push(...item.value.indices);
-      item.value?.isDataStream && item.value.indices && result.push(...item.value.indices);
+      item.value?.isDataStream && item.value.writingIndex && result.push(item.value.writingIndex);
     });
     return result;
   };
@@ -298,27 +281,15 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
     // if destination is alias, then it must have a writing index behind it
     if (dest.value?.isAlias) {
-      if (!dest.value?.writingIndex || dest.value.writingIndex.length !== 1) {
+      if (!dest.value?.writingIndex) {
         this.setState({ destError: `Alias [${dest.label}] don't have writing index behind it` });
         return false;
       }
     }
 
-    let expandedSource: string[] = [],
-      expandedDestination: string[] = [];
-    sources.forEach((item) => {
-      expandedSource.push(item.label);
-      item.value?.isAlias && item.value.indices && expandedSource.push(...item.value.indices);
-    });
-
-    selectedOptions.forEach((item) => {
-      expandedDestination.push(item.label);
-      item.value?.isAlias && item.value.writingIndex && expandedDestination.push(...item.value.writingIndex);
-    });
-
-    const duplication = _.intersection(expandedSource, expandedDestination);
-    if (duplication.length > 0) {
-      this.setState({ destError: `Index [${duplication.join(",")}] both exists in source and destination` });
+    const error = checkDuplicate(sources, selectedOptions);
+    if (error) {
+      this.setState({ destError: error });
       return false;
     }
     return true;
@@ -368,6 +339,9 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       this.context.notifications.toasts.addDanger(res?.error || "can't validate whether _source is enabled for source");
     }
 
+    const error = checkDuplicate(sourceIndices, this.state.destination);
+    error && this.setState({ destError: error });
+
     this.setState({ sourceErr: errors });
     return errors.length === 0;
   };
@@ -386,7 +360,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   };
 
   onCreateIndexSuccess = (indexName: string) => {
-    const option: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: indexName }];
+    const option: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: indexName, value: { isIndex: true } }];
     this.setState({ destination: option, showCreateIndexFlyout: false, destError: null });
   };
 
@@ -559,6 +533,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                   onSelectedOptions={this.onDestinationSelection}
                   singleSelect={true}
                   selectedOption={destination}
+                  excludeDataStreamIndex={true}
                 />
               </CustomFormRow>
             </EuiFlexItem>

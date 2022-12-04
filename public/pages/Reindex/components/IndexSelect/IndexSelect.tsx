@@ -11,20 +11,20 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexSelectItem } from "../../models/interfaces";
 
 interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "data-test-subj"> {
-  getIndexOptions: (searchValue: string) => Promise<EuiComboBoxOptionOption<IndexSelectItem>[]>;
+  getIndexOptions: (searchValue: string, excludeDataStreamIndex?: boolean) => Promise<EuiComboBoxOptionOption<IndexSelectItem>[]>;
   onSelectedOptions: (options: EuiComboBoxOptionOption<IndexSelectItem>[]) => void;
   singleSelect: boolean;
   selectedOption: EuiComboBoxOptionOption<IndexSelectItem>[];
+  excludeDataStreamIndex?: boolean;
 }
 
 export default function IndexSelect(props: IndexSelectProps) {
-  const initPipeline: EuiComboBoxOptionOption<IndexSelectItem>[] = [];
-  const [indexOptions, setIndexOptions] = useState(initPipeline);
+  const [indexOptions, setIndexOptions] = useState([] as EuiComboBoxOptionOption<IndexSelectItem>[]);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
 
   useEffect(() => {
     props
-      .getIndexOptions("")
+      .getIndexOptions("", props.excludeDataStreamIndex)
       .then((options) => {
         setIndexOptions(options);
       })
@@ -35,7 +35,7 @@ export default function IndexSelect(props: IndexSelectProps) {
 
   const onSearchChange = async (searchValue: string) => {
     if (searchValue.trim()) {
-      props.getIndexOptions(searchValue).then((options) => {
+      props.getIndexOptions(searchValue, props.excludeDataStreamIndex).then((options) => {
         setIndexOptions(options);
       });
     }
