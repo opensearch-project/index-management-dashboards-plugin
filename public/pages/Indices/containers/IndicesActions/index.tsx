@@ -30,11 +30,12 @@ export interface IndicesActionsProps extends RouteComponentProps {
   onOpen: () => void;
   onClose: () => void;
   onShrink: () => void;
+  onSplit: () => void;
   getIndices: () => Promise<void>;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, onOpen, onClose, onShrink } = props;
+  const { selectedItems, onDelete, onOpen, onClose, onShrink, onSplit } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
@@ -87,7 +88,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
     if (result && result.ok) {
       coreServices?.notifications.toasts.addSuccess(`Successfully submit split index request.`);
       onCloseFlyout();
-      onDelete();
+      onSplit();
     } else {
       coreServices.notifications.toasts.addDanger(
         result?.error || "There was a problem submit split index request, please check with admin"
@@ -309,7 +310,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     {
                       name: "Split",
                       "data-test-subj": "Split Action",
-                      disabled: !selectedItems.length || selectedItems.length > 1,
+                      disabled: !selectedItems.length || selectedItems.length > 1 || selectedItems[0].data_stream !== null,
                       onClick: () => setSplitIndexFlyoutVisible(true),
                     },
                     {

@@ -231,6 +231,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                     onOpen={this.getIndices}
                     onClose={this.getIndices}
                     onShrink={this.getIndices}
+                    onSplit={this.getIndices}
                     selectedItems={this.state.selectedItems}
                     getIndices={this.getIndices}
                   />
@@ -269,6 +270,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
             onOpen: this.getIndices,
             onClose: this.getIndices,
             onShrink: this.getIndices,
+            onSplit: this.getIndices,
             onUpdateIndex: this.getIndices,
             getIndices: this.getIndices,
             history,

@@ -1,5 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<IndicesActions /> spec Split index by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="More Action"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<IndicesActions /> spec close index by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
@@ -163,6 +190,60 @@ exports[`<IndicesActions /> spec shrink action is disabled if the selected index
 `;
 
 exports[`<IndicesActions /> spec shrink index by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="More Action"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<IndicesActions /> spec split action is disabled if multiple indices are selected 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="More Action"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<IndicesActions /> spec split action is disabled if the selected index is data_stream 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="More Action"
