@@ -224,14 +224,13 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       }
       await this.onReindexConfirm(reindexReq);
       jobSchedulerInstance.addJob({
-        timeout: 1000 * 60 * 60 * 5,
         type: "reindex",
         extras: {
           sourceIndex: sources.map((item) => item.label).join(","),
           destIndex: destination.map((item) => item.label)[0],
           isDataStream: isDestAsDataStream,
         },
-        cron: "0 */2 * * * *",
+        cron: "0/30 * * * * *",
       } as ReindexJobMetaData);
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);

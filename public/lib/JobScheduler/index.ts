@@ -25,6 +25,14 @@ export class JobScheduler {
       formattedJob.id = this.getId();
     }
 
+    if (!formattedJob.createTime) {
+      formattedJob.createTime = Date.now();
+    }
+
+    if (!formattedJob.timeout) {
+      formattedJob.timeout = 1000 * 60 * 5;
+    }
+
     return formattedJob as JobItemMetadata;
   }
   private async loopJob() {

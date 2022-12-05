@@ -80,3 +80,10 @@ export interface ReindexJobMetaData extends IJobItemMetadata {
     isDataStream: boolean;
   };
 }
+
+export interface RecoveryJobMetaData extends IJobItemMetadata {
+  extras: {
+    sourceIndex: string;
+    destIndex: string;
+  };
+}

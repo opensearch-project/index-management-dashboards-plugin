@@ -1,15 +1,15 @@
 export interface IJobItemMetadata {
-  id?: string; // a number to indicate the job
   cron: string; // cron expression to indicate the time of next excusion
-  type: "reindex" | "recovery"; // enum for job type
   extras: any; // extra fields to store job-related info
-  createTime: number; // the time when this job is created
+  type: "reindex" | "split" | "shrink"; // enum for job type
+  id?: string; // a number to indicate the job
+  createTime?: number; // the time when this job is created
   // the timeout for job to do, once the time goes beyond the timeout
   // a timeout error toast will show.
-  timeout: number;
+  timeout?: number;
 }
 
-export type JobItemMetadata = IJobItemMetadata & { id: Required<IJobItemMetadata>["id"] };
+export type JobItemMetadata = IJobItemMetadata & Required<Pick<IJobItemMetadata, "id" | "createTime" | "timeout">>;
 
 export interface IJobSchedulerOptions {
   callbacks: {

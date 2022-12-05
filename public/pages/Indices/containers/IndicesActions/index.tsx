@@ -12,7 +12,7 @@ import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
 import { ServicesContext } from "../../../../services";
-import { BrowserServices } from "../../../../models/interfaces";
+import { BrowserServices, RecoveryJobMetaData } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
@@ -23,6 +23,7 @@ import { IndexItem } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
 import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
+import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 
 export interface IndicesActionsProps extends RouteComponentProps {
   selectedItems: ManagedCatIndex[];
@@ -89,6 +90,14 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices?.notifications.toasts.addSuccess(`Successfully submit split index request.`);
       onCloseFlyout();
       onSplit();
+      jobSchedulerInstance.addJob({
+        cron: "0/30 * * * * *",
+        extras: {
+          sourceIndex: selectedItems.map((item) => item.index).join(","),
+          destIndex: targetIndex,
+        },
+        type: "split",
+      } as RecoveryJobMetaData);
     } else {
       coreServices.notifications.toasts.addDanger(
         result?.error || "There was a problem submit split index request, please check with admin"
@@ -181,6 +190,14 @@ export default function IndicesActions(props: IndicesActionsProps) {
           onShrinkIndexFlyoutClose();
           coreServices.notifications.toasts.addSuccess("Shrink index successfully");
           onShrink();
+          jobSchedulerInstance.addJob({
+            cron: "0/30 * * * * *",
+            extras: {
+              sourceIndex: sourceIndexName,
+              destIndex: targetIndexName,
+            },
+            type: "shrink",
+          } as RecoveryJobMetaData);
         } else {
           coreServices.notifications.toasts.addDanger(result.error);
         }
@@ -233,7 +250,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const getAlias = async (aliasName: string) => {
-    return await services.commonService.apiCaller({
+    return await services.commonService.apiCaller<{ alias: string }[]>({
       endpoint: "cat.aliases",
       method: "GET",
       data: {
