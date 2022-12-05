@@ -8,7 +8,7 @@ import { IndexManagementPluginSetup } from ".";
 import { IndexManagementPluginStart } from ".";
 import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 import { ROUTES } from "./utils/constants";
-import { JobHandlerRegister } from "./job-handler";
+import { JobHandlerRegister } from "./JobHandler";
 
 export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   constructor(private readonly initializerContext: PluginInitializerContext) {
