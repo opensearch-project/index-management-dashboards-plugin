@@ -2,12 +2,10 @@ name: Unit tests workflow
 on:
   pull_request:
     branches:
-      - main
-      - 1.*
+      - "*"
   push:
     branches:
-      - main
-      - development-*
+      - "*"
 env:
   OPENSEARCH_DASHBOARDS_VERSION: '1.3'
 jobs:
@@ -19,6 +17,9 @@ jobs:
         os: [ ubuntu-latest , windows-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Enable longer filenames
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: git config --system core.longpaths true
       - name: Checkout Index Management Dashboards plugin
         uses: actions/checkout@v2
         with:
