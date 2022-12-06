@@ -31,18 +31,7 @@ export default function SearchControls(props: SearchControlsProps) {
   return (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch
-          fullWidth
-          placeholder="Search..."
-          value={state.search}
-          onChange={(e) => setState({ ...state, search: e.target.value })}
-          onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === "Enter") {
-              e.defaultPrevented = true;
-              onChange("search", e.currentTarget.value);
-            }
-          }}
-        />
+        <EuiFieldSearch fullWidth placeholder="Search..." value={state.search} onChange={(e) => onChange("search", e.target.value)} />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
         <EuiComboBox
