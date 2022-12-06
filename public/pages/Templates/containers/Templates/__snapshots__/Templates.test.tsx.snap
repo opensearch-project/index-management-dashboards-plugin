@@ -243,9 +243,9 @@ exports[`<Templates /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Template Name"
+                      title="Template name"
                     >
-                      Template Name
+                      Template name
                     </span>
                     EuiIconMock
                   </span>
@@ -269,9 +269,9 @@ exports[`<Templates /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Index Patterns"
+                      title="Index patterns or wildcard"
                     >
-                      Index Patterns
+                      Index patterns or wildcard
                     </span>
                   </span>
                 </button>
@@ -294,34 +294,9 @@ exports[`<Templates /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Order"
+                      title="Priority"
                     >
-                      Order
-                    </span>
-                  </span>
-                </button>
-              </th>
-              <th
-                aria-live="polite"
-                aria-sort="none"
-                class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_version_3"
-                role="columnheader"
-                scope="col"
-              >
-                <button
-                  class="euiTableHeaderButton"
-                  data-test-subj="tableHeaderSortButton"
-                  type="button"
-                >
-                  <span
-                    class="euiTableCellContent"
-                  >
-                    <span
-                      class="euiTableCellContent__text"
-                      title="Version"
-                    >
-                      Version
+                      Priority
                     </span>
                   </span>
                 </button>
@@ -334,7 +309,7 @@ exports[`<Templates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="5"
+                colspan="4"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"
@@ -346,7 +321,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                       style="text-align: center;"
                     >
                       <h4>
-                        You have no index templates.
+                        You have no templates.
                       </h4>
                       <button
                         class="euiButton euiButton--primary euiButton--fill"
@@ -359,7 +334,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                           <span
                             class="euiButton__text"
                           >
-                            Create index template
+                            Create template
                           </span>
                         </span>
                       </button>
