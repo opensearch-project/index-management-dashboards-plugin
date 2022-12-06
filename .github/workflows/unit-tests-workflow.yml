@@ -2,19 +2,24 @@ name: Unit tests workflow
 on:
   pull_request:
     branches:
-      - main
-      - 1.*
+      - "*"
   push:
     branches:
-      - main
-      - development-*
+      - "*"
 env:
   OPENSEARCH_DASHBOARDS_VERSION: '1.x'
 jobs:
   tests:
     name: Run unit tests
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest , windows-latest ]
+    runs-on: ${{ matrix.os }}
     steps:
+      - name: Enable longer filenames
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: git config --system core.longpaths true
       - name: Checkout Index Management Dashboards plugin
         uses: actions/checkout@v2
         with:
@@ -30,6 +35,7 @@ jobs:
         run: |
           echo "::set-output name=node_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.node).match(/[.0-9]+/)[0]")"
           echo "::set-output name=yarn_version::$(node -p "(require('./OpenSearch-Dashboards/package.json').engines.yarn).match(/[.0-9]+/)[0]")"
+        shell: bash
       - name: Setup node
         uses: actions/setup-node@v1
         with:
@@ -40,12 +46,14 @@ jobs:
           npm uninstall -g yarn
           echo "Installing yarn ${{ steps.versions_step.outputs.yarn_version }}"
           npm i -g yarn@${{ steps.versions.outputs.yarn_version }}
+        shell: bash
       - name: Bootstrap plugin/OpenSearch-Dashboards
         run: |
           mkdir -p OpenSearch-Dashboards/plugins
           mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
           cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
           yarn osd bootstrap
+        shell: bash
       - name: Run tests
         run: |
           cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
