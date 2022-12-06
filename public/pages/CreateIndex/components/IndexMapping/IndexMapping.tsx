@@ -158,15 +158,19 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
   const findItem = INDEX_MAPPING_TYPES.find((item) => item.label === type);
   const moreFields = findItem?.options?.fields || [];
 
-  if (readonly) {
+  if (readonly || disabled) {
     return (
       <EuiText>
         <li className="ism-index-mappings-field-line">
           <EuiIcon type="dot" size="s" />
-          <span>{field.getValue("fieldName")}</span>
-          <EuiBadge color="hollow">{type}</EuiBadge>
+          <span data-test-subj={`${id}-field-name`} title={field.getValue("fieldName")}>
+            {field.getValue("fieldName")}
+          </span>
+          <EuiBadge color="hollow" title={type}>
+            {type}
+          </EuiBadge>
           {moreFields.map((extraField) => (
-            <EuiBadge key={extraField.name} color="hollow">
+            <EuiBadge key={extraField.name} color="hollow" title={field.getValue(extraField.name)}>
               {extraField.label}: {field.getValue(extraField.name)}
             </EuiBadge>
           ))}

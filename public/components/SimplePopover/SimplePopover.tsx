@@ -53,7 +53,7 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
   }, [popVisible, setPopVisible]);
 
   const outsideHover = useCallback(
-    throttle((e: React.SyntheticEvent<HTMLElement>) => {
+    throttle((e: MouseEvent) => {
       if (popVisible && popoverRef.current && panelRef.current) {
         const path = loopToGetPath(e.target as HTMLElement);
         if (!(path.includes(popoverRef.current) || path.includes(panelRef.current))) {

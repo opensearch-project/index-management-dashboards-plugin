@@ -681,7 +681,8 @@ Object {
                           />
                           <button
                             class="euiButton euiButton--primary"
-                            data-test-subj="create index add field button"
+                            data-test-subj="createIndexAddFieldButton"
+                            style="margin-right: 8px;"
                             type="button"
                           >
                             <span
@@ -690,7 +691,22 @@ Object {
                               <span
                                 class="euiButton__text"
                               >
-                                Add a field
+                                Add new field
+                              </span>
+                            </span>
+                          </button>
+                          <button
+                            class="euiButton euiButton--primary"
+                            data-test-subj="createIndexAddObjectFieldButton"
+                            type="button"
+                          >
+                            <span
+                              class="euiButtonContent euiButton__content"
+                            >
+                              <span
+                                class="euiButton__text"
+                              >
+                                Add new object
                               </span>
                             </span>
                           </button>

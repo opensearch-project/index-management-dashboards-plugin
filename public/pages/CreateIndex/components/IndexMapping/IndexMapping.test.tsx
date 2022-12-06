@@ -61,8 +61,8 @@ describe("<IndexMapping /> spec", () => {
     const { getByTestId, getByText, queryByTestId, queryByText } = renderResult;
 
     // old field disable check
-    expect(getByTestId("mapping-visual-editor-0-field-name")).toHaveAttribute("disabled");
-    expect(getByTestId("mapping-visual-editor-0.properties.0-field-name")).toHaveAttribute("disabled");
+    expect(getByTestId("mapping-visual-editor-0-field-name")).toHaveAttribute("title", "object");
+    expect(getByTestId("mapping-visual-editor-0.properties.0-field-name")).toHaveAttribute("title", "text");
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-0-delete-field"]')).toBeNull();
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-0.properties.0-add-sub-field"]')).toBeNull();
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-0.properties.0-delete-field"]')).toBeNull();

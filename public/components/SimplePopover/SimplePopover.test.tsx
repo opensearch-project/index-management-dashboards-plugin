@@ -16,15 +16,18 @@ describe("<SimplePopover /> spec", () => {
 
   it("render the component with hover", async () => {
     const { getByTestId, queryByText } = render(
-      <SimplePopover triggerType="hover" button={<div data-test-subj="test">button</div>}>
-        content in popover
-      </SimplePopover>
+      <>
+        <SimplePopover triggerType="hover" button={<div data-test-subj="test">button</div>}>
+          content in popover
+        </SimplePopover>
+        <div data-test-subj="anotherElement">another element</div>
+      </>
     );
     userEvent.hover(getByTestId("test"));
     await waitFor(() => {
       expect(queryByText("content in popover")).not.toBeNull();
     });
-    userEvent.unhover(getByTestId("test"));
+    userEvent.hover(getByTestId("anotherElement"));
     await waitFor(() => {
       expect(queryByText("content in popover")).toBeNull();
     });
