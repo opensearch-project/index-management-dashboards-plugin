@@ -223,22 +223,17 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
           columns={[
             {
               field: "name",
-              name: "Template Name",
+              name: "Template name",
               sortable: true,
             },
             {
               field: "index_patterns",
-              name: "Index Patterns",
+              name: "Index patterns or wildcard",
               sortable: true,
             },
             {
               field: "order",
-              name: "Order",
-              sortable: true,
-            },
-            {
-              field: "version",
-              name: "Version",
+              name: "Priority",
               sortable: true,
             },
           ]}
@@ -255,7 +250,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                 textAlign: "center",
               }}
             >
-              <h4>You have no index templates.</h4>
+              <h4>You have no templates.</h4>
               <EuiButton
                 fill
                 color="primary"
@@ -268,7 +263,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                   });
                 }}
               >
-                Create index template
+                Create template
               </EuiButton>
             </div>
           }
