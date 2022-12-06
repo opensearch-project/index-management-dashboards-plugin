@@ -218,7 +218,17 @@ const IndexDetail = (
         options: {
           rules: [
             {
-              required: true,
+              min: 1,
+              message: "Number of shards can not smaller than 1",
+            },
+            {
+              validator(rule, value, values) {
+                if (Number(value) !== parseInt(value)) {
+                  return Promise.reject("Number of shards must be an integer");
+                }
+
+                return Promise.resolve();
+              },
             },
           ],
           props: {
@@ -249,7 +259,17 @@ const IndexDetail = (
         options: {
           rules: [
             {
-              required: true,
+              min: 0,
+              message: "Number of replicas can not smaller than 0",
+            },
+            {
+              validator(rule, value, values) {
+                if (Number(value) !== parseInt(value)) {
+                  return Promise.reject("Number of replicas must be an integer");
+                }
+
+                return Promise.resolve();
+              },
             },
           ],
           props: {

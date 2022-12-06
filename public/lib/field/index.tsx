@@ -60,7 +60,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
           validateFunction = buildInRules.required;
         } else if (item.format) {
           validateFunction = buildInRules.format;
-        } else if (item.min || item.max) {
+        } else if (typeof item.min === "number" || typeof item.max === "number") {
           validateFunction = buildInRules.size;
         } else if (item.pattern) {
           validateFunction = buildInRules.pattern;

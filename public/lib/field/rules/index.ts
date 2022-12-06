@@ -65,9 +65,9 @@ const rules = {
       }
 
       if (val < min) {
-        return messageFormat(messages[key].min, rule.aliasName || rule.field, "" + rule.min);
+        return messageFormat(rule.message || messages[key].min, rule.aliasName || rule.field, "" + rule.min);
       } else if (val > max) {
-        return messageFormat(messages[key].max, rule.aliasName || rule.field, "" + rule.max);
+        return messageFormat(rule.message || messages[key].max, rule.aliasName || rule.field, "" + rule.max);
       }
     }
   },
@@ -80,7 +80,7 @@ const rules = {
       } else if (typeof rule.pattern === "string") {
         const _pattern = new RegExp(rule.pattern);
         if (!_pattern.test(value)) {
-          return messageFormat(messages.pattern, rule.aliasName || rule.field, value, rule.pattern);
+          return messageFormat(rule.message || messages.pattern, rule.aliasName || rule.field, value, rule.pattern);
         }
       }
     }
