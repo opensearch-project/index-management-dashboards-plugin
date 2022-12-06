@@ -85,10 +85,10 @@ describe("Create Index", () => {
         .should("have.exist")
         .end()
         .get('[data-test-subj="mapping-visual-editor-0-field-type"]')
-        .should("have.value", "text")
+        .should("have.attr", "title", "text")
         .end()
         .get('[data-test-subj="mapping-visual-editor-1-field-name"]')
-        .should("have.value", "text_mappings")
+        .should("have.attr", "title", "text_mappings")
         .end();
     });
 
@@ -168,7 +168,7 @@ describe("Create Index", () => {
         .get('[data-test-subj="createIndexCreateButton"]')
         .click({ force: true });
 
-      cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.value", "text").end();
+      cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.attr", "title", "text").end();
     });
   });
 

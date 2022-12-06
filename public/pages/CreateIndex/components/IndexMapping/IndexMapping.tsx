@@ -166,7 +166,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
           <span data-test-subj={`${id}-field-name`} title={field.getValue("fieldName")}>
             {field.getValue("fieldName")}
           </span>
-          <EuiBadge color="hollow" title={type}>
+          <EuiBadge color="hollow" title={type} data-test-subj={`${id}-field-type`}>
             {type}
           </EuiBadge>
           {moreFields.map((extraField) => (
