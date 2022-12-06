@@ -19,6 +19,13 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     };
     setValuesState(values.current);
   };
+  const resetValues = (obj: Record<string, any>) => {
+    if (destroyRef.current) {
+      return;
+    }
+    values.current = obj;
+    setValuesState(values.current);
+  };
   const setValue: FieldInstance["setValue"] = (name, value) => {
     setValues({
       ...values.current,
@@ -150,6 +157,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     },
     setError,
     setErrors,
+    resetValues,
   };
 }
 

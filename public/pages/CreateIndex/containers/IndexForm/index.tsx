@@ -130,11 +130,6 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     if (isEdit) {
       this.refreshIndex();
     }
-    this.context.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      isEdit ? BREADCRUMBS.EDIT_INDEX : BREADCRUMBS.CREATE_INDEX,
-    ]);
   };
 
   onCancel = () => {

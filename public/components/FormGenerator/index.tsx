@@ -65,7 +65,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
   const errorMessage: Record<string, string[]> = field.getErrors();
   useImperativeHandle(ref, () => field);
   useEffect(() => {
-    field.setValues(props.value);
+    field.resetValues(props.value);
   }, [props.value]);
   const formattedFormFields = useMemo(() => {
     return formFields.map((item) => {
