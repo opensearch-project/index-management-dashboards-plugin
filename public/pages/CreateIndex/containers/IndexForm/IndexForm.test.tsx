@@ -115,7 +115,7 @@ describe("<IndexForm /> spec", () => {
     userEvent.click(getByTitle("update_test_1").querySelector("button") as Element);
     userEvent.type(getByTestId("comboBoxSearchInput"), "test_1{enter}");
     userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
-    userEvent.click(getByTestId("create index add field button"));
+    userEvent.click(getByTestId("createIndexAddFieldButton"));
     await waitFor(() => {});
     await userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
     await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "test_mapping_2");
@@ -225,7 +225,7 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("create index add field button"));
+    userEvent.click(getByTestId("createIndexAddFieldButton"));
     await waitFor(() => {});
     await userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
     await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "test_mapping_2");

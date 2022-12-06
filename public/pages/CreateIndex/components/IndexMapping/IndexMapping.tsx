@@ -16,6 +16,9 @@ import {
   EuiButtonGroup,
   EuiToolTip,
   EuiCode,
+  EuiBadge,
+  EuiText,
+  EuiContextMenu,
 } from "@elastic/eui";
 import { set, get, pick } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
@@ -26,6 +29,7 @@ import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
 import "./IndexMapping.scss";
+import SimplePopover from "../../../../components/SimplePopover";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
   return Object.entries(obj).map(([fieldName, fieldSettings]) => {
@@ -90,6 +94,7 @@ interface IMappingLabel {
   onChange: (val: IMappingLabel["value"], key: string, value: string) => void | string;
   onFieldNameCheck: (val: string) => string;
   onAddSubField: () => void;
+  onAddSubObject: () => void;
   onDeleteField: () => void;
   disabled?: boolean;
   readonly?: boolean;
@@ -99,7 +104,7 @@ interface IMappingLabel {
 const OLD_VALUE_DISABLED_REASON = "Old mappings can not be modified";
 
 const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<IIndexMappingsRef>) => {
-  const { onFieldNameCheck, disabled, onAddSubField, onDeleteField, id, readonly } = props;
+  const { onFieldNameCheck, disabled, onAddSubField, onAddSubObject, onDeleteField, id, readonly } = props;
   const propsRef = useRef(props);
   propsRef.current = props;
   const onFieldChange = useCallback(
@@ -130,12 +135,15 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
     [propsRef.current.value, propsRef.current.onChange]
   );
   const field = useField({
-    values: propsRef.current.value,
+    values: {
+      ...propsRef.current.value,
+      type: propsRef.current.value.type || "object",
+    },
     onChange: onFieldChange,
     unmountComponent: true,
   });
   const value = field.getValues();
-  const type = value.type ? value.type : "object";
+  const type = value.type;
   useImperativeHandle(forwardedRef, () => ({
     validate: async () => {
       const { errors } = await field.validatePromise();
@@ -149,6 +157,23 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
 
   const findItem = INDEX_MAPPING_TYPES.find((item) => item.label === type);
   const moreFields = findItem?.options?.fields || [];
+
+  if (readonly) {
+    return (
+      <EuiText>
+        <li className="ism-index-mappings-field-line">
+          <EuiIcon type="dot" size="s" />
+          <span>{field.getValue("fieldName")}</span>
+          <EuiBadge color="hollow">{type}</EuiBadge>
+          {moreFields.map((extraField) => (
+            <EuiBadge key={extraField.name} color="hollow">
+              {extraField.label}: {field.getValue(extraField.name)}
+            </EuiBadge>
+          ))}
+        </li>
+      </EuiText>
+    );
+  }
 
   return (
     <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
@@ -234,16 +259,40 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
               }}
             >
               {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
-                <EuiToolTip content="Add a sub field">
-                  <span
-                    className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
-                    data-test-subj={`${id}-add-sub-field`}
-                    aria-label="Delete current field"
-                    onClick={onAddSubField}
-                  >
-                    <EuiIcon type="plusInCircleFilled" />
-                  </span>
-                </EuiToolTip>
+                <SimplePopover
+                  triggerType="hover"
+                  panelPaddingSize="none"
+                  button={
+                    <span
+                      className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
+                      data-test-subj={`${id}-add-sub-field`}
+                      aria-label="Delete current field"
+                      onClick={onAddSubField}
+                    >
+                      <EuiIcon type="plusInCircleFilled" />
+                    </span>
+                  }
+                >
+                  <EuiContextMenu
+                    initialPanelId={0}
+                    panels={[
+                      {
+                        id: 0,
+                        title: "",
+                        items: [
+                          {
+                            name: "Add nested field",
+                            onClick: onAddSubField,
+                          },
+                          {
+                            name: "Add nested object",
+                            onClick: onAddSubObject,
+                          },
+                        ],
+                      },
+                    ]}
+                  />
+                </SimplePopover>
               ) : null}
               <EuiToolTip content="Delete current field">
                 <span
@@ -273,12 +322,13 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
   }));
   const [editorMode, setEditorMode] = useState<EDITOR_MODE>(EDITOR_MODE.VISUAL);
   const addField = useCallback(
-    (pos, fieldName) => {
+    (pos, fieldSettings?: Partial<MappingsProperties[number]>) => {
       const newValue = [...(value || [])];
       const nowProperties = ((pos ? get(newValue, pos) : (newValue as MappingsProperties)) || []) as MappingsProperties;
       nowProperties.push({
-        fieldName,
+        fieldName: fieldSettings?.fieldName || "",
         type: "text",
+        ...fieldSettings,
       });
       if (pos) {
         set(newValue, pos, nowProperties);
@@ -342,7 +392,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
               deleteField(id);
             }}
             onAddSubField={() => {
-              addField(`${id}.properties`, ``);
+              addField(`${id}.properties`);
+            }}
+            onAddSubObject={() => {
+              addField(`${id}.properties`, {
+                type: "",
+              });
             }}
           />
         ),
@@ -404,8 +459,18 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
           {readonly ? null : (
             <>
               <EuiSpacer />
-              <EuiButton data-test-subj="create index add field button" onClick={() => addField("", ``)}>
-                Add a field
+              <EuiButton style={{ marginRight: 8 }} data-test-subj="createIndexAddFieldButton" onClick={() => addField("")}>
+                Add new field
+              </EuiButton>
+              <EuiButton
+                data-test-subj="createIndexAddObjectFieldButton"
+                onClick={() =>
+                  addField("", {
+                    type: "",
+                  })
+                }
+              >
+                Add new object
               </EuiButton>
             </>
           )}

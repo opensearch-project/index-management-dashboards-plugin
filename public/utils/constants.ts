@@ -167,7 +167,7 @@ export const INDEX_MAPPING_TYPES: {
     options: {
       fields: [
         {
-          label: "path for alias",
+          label: "Path",
           name: "path",
           type: "Input",
           rules: [

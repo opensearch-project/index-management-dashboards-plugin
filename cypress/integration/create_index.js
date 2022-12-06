@@ -65,7 +65,7 @@ describe("Create Index", () => {
 
       cy.get('[data-test-subj="comboBoxSearchInput"]').type("some_test_alias{enter}");
       // add a field
-      cy.get('[data-test-subj="create index add field button"]').click().end();
+      cy.get('[data-test-subj="createIndexAddFieldButton"]').click().end();
       cy.get('[data-test-subj="mapping-visual-editor-1-field-name"]').type("text_mappings");
 
       // click create
@@ -159,7 +159,7 @@ describe("Create Index", () => {
         .click()
         .end();
 
-      cy.get('[data-test-subj="create index add field button"]')
+      cy.get('[data-test-subj="createIndexAddFieldButton"]')
         .click()
         .end()
         .get('[data-test-subj="mapping-visual-editor-2-field-name"]')
