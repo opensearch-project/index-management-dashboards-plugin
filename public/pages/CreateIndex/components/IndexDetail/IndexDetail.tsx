@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton, EuiCallOut } from "@elastic/eui";
 import { set, merge, omit, pick } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -11,7 +11,6 @@ import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
-import { Ref } from "react";
 import { INDEX_IMPORT_SETTINGS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -29,6 +28,16 @@ const staticSettingsTips = "This field can not be modified in edit mode";
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
 });
+
+export const defaultIndexSettings = {
+  index: "",
+  settings: {
+    "index.number_of_shards": 1,
+    "index.number_of_replicas": 1,
+    "index.refresh_interval": "1s",
+  },
+  mappings: {},
+};
 
 export interface IndexDetailProps {
   value?: Partial<IndexItem>;
@@ -97,21 +106,12 @@ const IndexDetail = (
   const mappingsRef = useRef<IIndexMappingsRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {
-      const aliasesValidateResult = await aliasesRef.current?.validatePromise();
-      if (aliasesValidateResult?.errors) {
-        return false;
-      }
-
-      const mappingsValidateResult = await mappingsRef.current?.validate();
-      if (mappingsValidateResult) {
-        return false;
-      }
-
-      const result = await settingsRef.current?.validatePromise();
-      if (result?.errors) {
-        return false;
-      }
-      return true;
+      const result = await Promise.all([
+        aliasesRef.current?.validatePromise().then((result) => result.errors),
+        mappingsRef.current?.validate(),
+        settingsRef.current?.validatePromise().then((result) => result.errors),
+      ]);
+      return result.every((item) => !item);
     },
   }));
   const onIndexInputBlur = useCallback(async () => {
@@ -461,6 +461,7 @@ const IndexDetail = (
                 }}
                 formFields={formFields}
                 hasAdvancedSettings
+                resetValuesWhenPropsValueChange
                 advancedSettingsProps={{
                   editorProps: {
                     readOnly: readonly,

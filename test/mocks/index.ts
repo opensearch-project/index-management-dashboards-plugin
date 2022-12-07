@@ -27,6 +27,7 @@ const apiCallerMock = (browserServicesMockObject: typeof browserServicesMock) =>
                   settings: {
                     index: {
                       number_of_replicas: "10",
+                      number_of_shards: "1",
                     },
                   },
                 },

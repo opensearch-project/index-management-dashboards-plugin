@@ -5,12 +5,12 @@
 
 import React, { Component } from "react";
 import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty } from "@elastic/eui";
-import { get, set, differenceWith, isEqual } from "lodash";
+import { get, set, differenceWith, isEqual, merge } from "lodash";
 import { diffArrays } from "diff";
 import flattern from "flat";
 // eui depends on react-ace, so we can import react-ace here
 import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
-import IndexDetail, { IndexDetailProps, IIndexDetailRef } from "../../components/IndexDetail";
+import IndexDetail, { IndexDetailProps, IIndexDetailRef, defaultIndexSettings } from "../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -65,15 +65,7 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
   static contextType = CoreServicesContext;
   state: CreateIndexState = {
     isSubmitting: false,
-    indexDetail: {
-      index: "",
-      settings: {
-        "index.number_of_shards": 1,
-        "index.number_of_replicas": 1,
-        "index.refresh_interval": "1s",
-      },
-      mappings: {},
-    },
+    indexDetail: merge({}, defaultIndexSettings),
     oldIndexDetail: undefined,
   };
 

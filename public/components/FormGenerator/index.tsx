@@ -31,6 +31,7 @@ export interface IField {
 
 export interface IFormGeneratorProps {
   formFields: IField[];
+  resetValuesWhenPropsValueChange?: boolean;
   hasAdvancedSettings?: boolean;
   advancedSettingsProps?: IFormGeneratorAdvancedSettings;
   fieldProps?: FieldOption;
@@ -81,7 +82,11 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
     },
   }));
   useEffect(() => {
-    field.resetValues(props.value);
+    if (propsRef.current.resetValuesWhenPropsValueChange) {
+      field.resetValues(props.value);
+    } else {
+      field.setValues(props.value);
+    }
   }, [props.value]);
   const formattedFormFields = useMemo(() => {
     return formFields.map((item) => {

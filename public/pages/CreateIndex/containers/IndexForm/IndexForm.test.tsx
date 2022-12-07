@@ -70,26 +70,21 @@ describe("<IndexForm /> spec", () => {
     userEvent.clear(indexNameInput);
     userEvent.type(indexNameInput, `good_index`);
     userEvent.click(document.body);
-    await waitFor(() => {
-      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input")).toHaveAttribute("value", "10");
-    });
+    await waitFor(() => expect(getByTestId("form-name-index.number_of_replicas").querySelector("input")).toHaveAttribute("value", "10"));
     userEvent.click(getByText("Create"));
-    await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("[good_index] has been successfully created.");
-    });
+    await waitFor(() =>
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("[good_index] has been successfully created.")
+    );
   });
 
   it("shows a danger toast when getting graceful error from create index", async () => {
     const { getByText, getByPlaceholderText } = renderCreateIndexWithRouter({});
 
     await waitFor(() => getByText("Define index"));
-
     userEvent.type(getByPlaceholderText("Please enter the name for your index"), `bad_index`);
     userEvent.click(getByText("Create"));
 
-    await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_index");
-    });
+    await waitFor(() => expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_index"));
   });
 
   it("it shows detail and does not call any api when nothing modified", async () => {
