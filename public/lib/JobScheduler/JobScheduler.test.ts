@@ -10,12 +10,14 @@ describe("JobScheduler spec", () => {
     const callback = jest.fn(async () => {
       return false;
     });
+    const timeoutCallback = jest.fn();
     // setup job scheduler
     const jobScheduler = new JobScheduler({
       callbacks: [
         {
           callback,
           callbackName: "test",
+          timeoutCallback,
         },
       ],
     });
@@ -24,7 +26,7 @@ describe("JobScheduler spec", () => {
     // add a job
     const addedJob = await jobScheduler.addJob({
       interval: 1000,
-      timeout: 3000,
+      timeout: 2500,
       extras: {},
       type: "reindex",
     });
@@ -48,7 +50,7 @@ describe("JobScheduler spec", () => {
         timeout: 10000,
       }
     );
-    expect(callback).toBeCalledTimes(2);
+    expect(callback).toBeCalledTimes(3);
 
     // setup a long timeout job
     const testJob = await jobScheduler.addJob({
@@ -69,6 +71,7 @@ describe("JobScheduler spec", () => {
     jobScheduler.addCallback({
       callbackName: "test1",
       callback: async () => false,
+      timeoutCallback,
     });
 
     // delete the callback
@@ -88,12 +91,14 @@ describe("JobScheduler spec", () => {
 
   it("jobs when resume", async () => {
     const callback = jest.fn(() => Promise.reject(false));
+    const timeoutCallback = jest.fn();
     // setup job scheduler
     const jobScheduler = new JobScheduler({
       callbacks: [
         {
           callback,
           callbackName: "test",
+          timeoutCallback,
         },
       ],
     });
@@ -107,7 +112,8 @@ describe("JobScheduler spec", () => {
     jobScheduler.init();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     expect(jobScheduler.getAllJobs()).resolves.toHaveLength(0);
-    expect(callback).toBeCalledTimes(0);
+    expect(callback).toBeCalledTimes(1);
+    expect(timeoutCallback).toBeCalledTimes(1);
     const result = await jobScheduler.changeJob("1", {});
     expect(result).toBe(false);
   });

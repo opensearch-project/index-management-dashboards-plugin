@@ -4,6 +4,7 @@ export interface IJobItemMetadata {
   type: "reindex" | "split" | "shrink"; // enum for job type
   id?: string; // a number to indicate the job
   createTime?: number; // the time when this job is created
+  latestRunTime?: number; // the time when the job latest run, will be used to check if the job is staled
   // the timeout for job to do, once the time goes beyond the timeout
   // a timeout error toast will show.
   timeout?: number;
@@ -15,6 +16,7 @@ export interface IJobSchedulerOptions {
   callbacks: {
     listenType?: IJobItemMetadata["type"];
     callback: (params: IJobItemMetadata) => Promise<boolean>;
+    timeoutCallback: (params: IJobItemMetadata) => void;
     callbackName: string;
   }[];
   storage?: IStorage;

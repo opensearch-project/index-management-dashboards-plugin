@@ -28,35 +28,60 @@ export class JobScheduler {
     }
 
     if (!formattedJob.timeout) {
-      formattedJob.timeout = 1000 * 60 * 5;
+      formattedJob.timeout = 1000 * 60 * 60;
     }
 
     return formattedJob as JobItemMetadata;
   }
-  private checkJobIsStaled(job: JobItemMetadata) {
-    return job.timeout + job.createTime < Date.now();
+  private isStaledJob(job: JobItemMetadata) {
+    if (!job.latestRunTime) {
+      // haven't run once, return false
+      return false;
+    }
+
+    return job.timeout + job.createTime < job.latestRunTime;
   }
   private async loopJob() {
     const jobs = await this.storage.getAll();
     // loop all the jobs to see if any job do not exist in runningJobMap
-    jobs.forEach((job) => {
+    jobs.forEach(async (job) => {
       // if a job is staled, remove that
-      if (this.checkJobIsStaled(job)) {
-        this.deleteJob(job.id);
+      if (this.isStaledJob(job)) {
+        await this.runStaledJob(job.id);
+        await this.deleteJob(job.id);
         return;
       }
 
       if (!this.runningJobMap[job.id]) {
-        const timeoutCallback = setTimeout(() => {
-          if (!this.checkJobIsStaled(job)) {
+        const timeoutCallback = setTimeout(async () => {
+          if (!this.isStaledJob(job)) {
             this.runJob(job.id);
           } else {
-            this.deleteJob(job.id);
+            await this.runStaledJob(job.id);
+            await this.deleteJob(job.id);
           }
         }, job.interval);
         this.runningJobMap[job.id] = timeoutCallback;
       }
     });
+  }
+  private async runStaledJob(jobId: JobItemMetadata["id"]): Promise<void> {
+    const job = await this.getJob(jobId);
+    if (!job) {
+      return undefined;
+    }
+    const filteredCallbacks = this.options.callbacks.filter(
+      (callbackItem) => callbackItem.listenType === job.type || !callbackItem.listenType
+    );
+    await Promise.all(
+      filteredCallbacks.map(async (callbackItem) => {
+        try {
+          return callbackItem.timeoutCallback(job);
+        } catch (e) {
+          return false;
+        }
+      })
+    );
   }
   private async runJob(jobId: JobItemMetadata["id"]): Promise<void> {
     const job = await this.getJob(jobId);
@@ -66,6 +91,7 @@ export class JobScheduler {
     const filteredCallbacks = this.options.callbacks.filter(
       (callbackItem) => callbackItem.listenType === job.type || !callbackItem.listenType
     );
+    job.latestRunTime = Date.now();
     const result = await Promise.all(
       filteredCallbacks.map(async (callbackItem) => {
         try {
@@ -79,7 +105,6 @@ export class JobScheduler {
     await this.deleteJob(job.id);
     if (!hasFinish) {
       await this.addJob(job);
-      this.loopJob();
     }
   }
   addCallback(callback: IJobSchedulerOptions["callbacks"][number]) {

@@ -84,6 +84,15 @@ export function JobHandlerRegister(core: CoreSetup) {
 
       return false;
     },
+    timeoutCallback(job: ReindexJobMetaData) {
+      const extras = job.extras;
+      core.notifications.toasts.addDanger(
+        `Reindex from [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the task [${extras.taskId}] manually`,
+        {
+          toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+        }
+      );
+    },
     listenType: "reindex",
   });
   jobSchedulerInstance.addCallback({
@@ -101,7 +110,7 @@ export function JobHandlerRegister(core: CoreSetup) {
       });
       if (indexResult.ok) {
         const [firstItem] = indexResult.response.indices || [];
-        if (firstItem && firstItem.status !== "recovery") {
+        if (firstItem && firstItem.health !== "red") {
           core.notifications.toasts.addSuccess(`Split [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`, {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           });
@@ -110,6 +119,15 @@ export function JobHandlerRegister(core: CoreSetup) {
       }
 
       return false;
+    },
+    timeoutCallback(job: RecoveryJobMetaData) {
+      const extras = job.extras;
+      core.notifications.toasts.addDanger(
+        `Split [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the index manually`,
+        {
+          toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+        }
+      );
     },
     listenType: "split",
   });
@@ -128,7 +146,7 @@ export function JobHandlerRegister(core: CoreSetup) {
       });
       if (indexResult.ok) {
         const [firstItem] = indexResult.response.indices || [];
-        if (firstItem && firstItem.status !== "recovery") {
+        if (firstItem && firstItem.health !== "red") {
           core.notifications.toasts.addSuccess(`Shrink [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`, {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           });
@@ -137,6 +155,15 @@ export function JobHandlerRegister(core: CoreSetup) {
       }
 
       return false;
+    },
+    timeoutCallback(job: RecoveryJobMetaData) {
+      const extras = job.extras;
+      core.notifications.toasts.addDanger(
+        `Shrink [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the index manually`,
+        {
+          toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+        }
+      );
     },
     listenType: "shrink",
   });
