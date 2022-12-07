@@ -223,15 +223,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         reindexReq.body.dest.pipeline = selectedPipelines[0].label;
       }
       await this.onReindexConfirm(reindexReq);
-      jobSchedulerInstance.addJob({
-        type: "reindex",
-        extras: {
-          sourceIndex: sources.map((item) => item.label).join(","),
-          destIndex: destination.map((item) => item.label)[0],
-          isDataStream: isDestAsDataStream,
-        },
-        interval: 30000,
-      } as ReindexJobMetaData);
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);
     } finally {
@@ -255,6 +246,15 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       // back to indices page
       this.onCancel();
       this.context.notifications.toasts.addSuccess(toast);
+      jobSchedulerInstance.addJob({
+        type: "reindex",
+        extras: {
+          sourceIndex: reindexRequest.body.source.index,
+          destIndex: reindexRequest.body.dest.index,
+          taskId: res.response.task,
+        },
+        interval: 30000,
+      } as ReindexJobMetaData);
     } else {
       this.context.notifications.toasts.addDanger(`Reindex operation error ${res?.error}`);
     }

@@ -77,7 +77,7 @@ export interface ReindexJobMetaData extends IJobItemMetadata {
   extras: {
     sourceIndex: string;
     destIndex: string;
-    isDataStream: boolean;
+    taskId: string;
   };
 }
 
