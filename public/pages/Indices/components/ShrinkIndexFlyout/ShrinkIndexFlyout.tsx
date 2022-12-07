@@ -145,7 +145,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
       }
 
       const indexWriteBlock = get(sourceIndexSettings, [sourceIndex.index, "settings", INDEX_BLOCKS_WRITE_SETTING]);
-      if (!indexWriteBlock) {
+      if (indexWriteBlock != "true" && indexWriteBlock != true) {
         const indexWriteBlockSettings = {
           "index.blocks.write": true,
         };
@@ -174,7 +174,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
       // Check whether `index.blocks.read_only` is set to `true`,
       // because shrink operation will timeout and then the new shrunken index's shards cannot be allocated.
       const indexReadOnlyBlock = get(sourceIndexSettings, [sourceIndex.index, "settings", INDEX_BLOCKS_READONLY_SETTING]);
-      if (!!indexReadOnlyBlock) {
+      if (indexReadOnlyBlock == "true" || indexReadOnlyBlock == true) {
         sourceIndexNotReadyReasons.push(
           "Index setting [index.blocks.read_only] is [true], this will cause the new shrunken index's shards to be unassigned."
         );
@@ -368,7 +368,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     );
 
     return (
-      <EuiFlyout ownFocus={true} onClose={() => {}} maxWidth={600} size="m" hideCloseButton>
+      <EuiFlyout ownFocus={true} onClose={() => {}} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle"> Shrink index</h2>

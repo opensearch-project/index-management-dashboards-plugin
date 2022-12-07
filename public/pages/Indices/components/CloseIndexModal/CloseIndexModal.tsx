@@ -14,8 +14,11 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiSpacer,
+  EuiCallOut,
   EuiText,
 } from "@elastic/eui";
+import { filterByMinimatch } from "../../../../../utils/helper";
+import { SYSTEM_INDEX } from "../../../../../utils/constants";
 
 interface CloseIndexModalProps {
   selectedItems: string[];
@@ -36,6 +39,8 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
     return null;
   }
 
+  const showWarning = selectedItems.map((item) => filterByMinimatch(item as string, SYSTEM_INDEX)).filter((it) => it).length > 0;
+
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
@@ -43,6 +48,12 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
       </EuiModalHeader>
 
       <EuiModalBody>
+        <>
+          <EuiCallOut color="warning" hidden={!showWarning}>
+            You are closing system-like index, please be careful before you do any change to it.
+          </EuiCallOut>
+          <EuiSpacer />
+        </>
         <div style={{ lineHeight: 1.5 }}>
           <p>The following index will be closed. It is not possible to index documents or to search for documents in a closed index.</p>
           <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
