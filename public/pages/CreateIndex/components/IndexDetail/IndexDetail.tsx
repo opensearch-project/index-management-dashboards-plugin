@@ -467,12 +467,13 @@ const IndexDetail = (
                   },
                   renderProps: readonly
                     ? undefined
-                    : ({ value, onChange }) => (
+                    : ({ value, onChange, ref }) => (
                         <JSONDiffEditor
                           disabled={readonly}
                           original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
                           value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
                           onChange={(val) => onChange(JSON.parse(val))}
+                          ref={ref}
                         />
                       ),
                   accordionProps: {

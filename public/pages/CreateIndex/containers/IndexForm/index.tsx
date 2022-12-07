@@ -12,7 +12,7 @@ import flattern from "flat";
 import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
 import IndexDetail, { IndexDetailProps, IIndexDetailRef } from "../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
-import { BREADCRUMBS, IndicesUpdateMode } from "../../../../utils/constants";
+import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
 import { CommonService } from "../../../../services/index";
