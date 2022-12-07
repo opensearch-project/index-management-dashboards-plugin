@@ -230,7 +230,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           destIndex: destination.map((item) => item.label)[0],
           isDataStream: isDestAsDataStream,
         },
-        cron: "0/30 * * * * *",
+        interval: 30000,
       } as ReindexJobMetaData);
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);

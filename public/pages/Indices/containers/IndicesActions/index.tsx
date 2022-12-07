@@ -91,7 +91,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
       onCloseFlyout();
       onSplit();
       jobSchedulerInstance.addJob({
-        cron: "0/30 * * * * *",
+        interval: 30000,
         extras: {
           sourceIndex: selectedItems.map((item) => item.index).join(","),
           destIndex: targetIndex,
@@ -191,7 +191,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
           coreServices.notifications.toasts.addSuccess("Shrink index successfully");
           onShrink();
           jobSchedulerInstance.addJob({
-            cron: "0/30 * * * * *",
+            interval: 30000,
             extras: {
               sourceIndex: sourceIndexName,
               destIndex: targetIndexName,

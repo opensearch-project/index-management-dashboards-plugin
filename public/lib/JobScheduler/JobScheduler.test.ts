@@ -23,7 +23,7 @@ describe("JobScheduler spec", () => {
 
     // add a job
     const addedJob = await jobScheduler.addJob({
-      cron: "* * * * * *",
+      interval: 1000,
       timeout: 3000,
       extras: {},
       type: "reindex",
@@ -48,11 +48,11 @@ describe("JobScheduler spec", () => {
         timeout: 10000,
       }
     );
-    expect(callback).toBeCalledTimes(3);
+    expect(callback).toBeCalledTimes(2);
 
     // setup a long timeout job
     const testJob = await jobScheduler.addJob({
-      cron: "* * * * * *",
+      interval: 1000,
       type: "reindex",
       extras: {},
       id: "test",
@@ -77,7 +77,7 @@ describe("JobScheduler spec", () => {
 
     // add a job
     const testDeleteJob = await jobScheduler.addJob({
-      cron: "* * * * * *",
+      interval: 1000,
       type: "reindex",
       extras: {},
       id: "testDeleteJob",
@@ -100,7 +100,7 @@ describe("JobScheduler spec", () => {
     jobScheduler.addJob({
       createTime: Date.now() - 20 * 1000,
       timeout: 2000,
-      cron: "* * * * * *",
+      interval: 1000,
       type: "reindex",
       extras: {},
     });

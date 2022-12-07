@@ -1,5 +1,5 @@
 export interface IJobItemMetadata {
-  cron: string; // cron expression to indicate the time of next excusion
+  interval: number;
   extras: any; // extra fields to store job-related info
   type: "reindex" | "split" | "shrink"; // enum for job type
   id?: string; // a number to indicate the job

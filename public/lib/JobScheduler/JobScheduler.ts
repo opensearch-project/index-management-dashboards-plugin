@@ -1,6 +1,5 @@
 import { IJobSchedulerOptions, IJobItemMetadata, IStorage, JobItemMetadata, TimeoutId } from "./interface";
 import { StoreLocalStorage } from "./store-localstorage";
-import { CronTime } from "cron";
 
 export class JobScheduler {
   private options: IJobSchedulerOptions;
@@ -48,14 +47,13 @@ export class JobScheduler {
       }
 
       if (!this.runningJobMap[job.id]) {
-        const cronInstance = new CronTime(job.cron);
         const timeoutCallback = setTimeout(() => {
           if (!this.checkJobIsStaled(job)) {
             this.runJob(job.id);
           } else {
             this.deleteJob(job.id);
           }
-        }, cronInstance.getTimeout());
+        }, job.interval);
         this.runningJobMap[job.id] = timeoutCallback;
       }
     });
