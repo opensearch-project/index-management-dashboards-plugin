@@ -8,6 +8,14 @@ import { IndexSelectItem } from "../models/interfaces";
 import { EuiComboBoxOptionOption } from "@elastic/eui";
 import _ from "lodash";
 
+/**
+ * parse index names to extract data stream name if the index is a backing index of data stream,
+ * otherwise using whatever it is
+ *
+ * the reason for this is that GET _cat/indices/*.ds* will not return any result, it will need data stream name
+ * to pull all data stream indices
+ * @param indices
+ */
 export const parseIndexNames = (indices: string): string[] => {
   let indexArray: string[] = [];
   indices &&

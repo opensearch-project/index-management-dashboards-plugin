@@ -108,9 +108,9 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       const [indexResponse, dataStreamResponse, aliasResponse] = await Promise.all([
         indexService.getIndices({
           from: 0,
-          size: 10,
+          size: 50, // max page size value
           search: actualSearchValue.join(","),
-          terms: [actualSearchValue.join(",")],
+          indices: [actualSearchValue.join(",")],
           sortDirection: "desc",
           sortField: "index",
           showDataStreams: !excludeDataStreamIndex,

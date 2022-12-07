@@ -45,7 +45,7 @@ export default function IndexSelect(props: IndexSelectProps) {
     <div>
       <EuiComboBox
         data-test-subj={props["data-test-subj"]}
-        placeholder="Select indexes or data streams"
+        placeholder="Type or select indexes,data streams or aliases"
         options={indexOptions}
         async
         selectedOptions={props.selectedOption}
