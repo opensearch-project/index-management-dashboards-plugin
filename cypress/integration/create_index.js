@@ -82,7 +82,7 @@ describe("Create Index", () => {
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/create-index/${SAMPLE_INDEX}`);
 
       // index name and alias should exist
-      cy.get(`[value="${SAMPLE_INDEX}"]`)
+      cy.get(`[title="${SAMPLE_INDEX}"]`)
         .should("have.exist")
         .end()
         .get('[title="some_test_alias"]')
