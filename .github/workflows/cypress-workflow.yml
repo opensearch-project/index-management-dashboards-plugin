@@ -8,7 +8,7 @@ on:
       - "*"
 env:
   OPENSEARCH_DASHBOARDS_VERSION: '2.4'
-  OPENSEARCH_VERSION: '2.4.0-SNAPSHOT'
+  OPENSEARCH_VERSION: '2.4.1-SNAPSHOT'
 jobs:
   tests:
     name: Run Cypress E2E tests
