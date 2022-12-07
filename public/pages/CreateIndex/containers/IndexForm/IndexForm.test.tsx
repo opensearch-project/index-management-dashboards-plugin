@@ -7,22 +7,19 @@ import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import IndexForm, { IndexFormProps } from "./index";
-import { ServicesConsumer, ServicesContext } from "../../../../services";
+import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
-import { BrowserServices } from "../../../../models/interfaces";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
 apiCallerMock(browserServicesMock);
 
-function renderCreateIndexWithRouter(props: Omit<IndexFormProps, "commonService">) {
+function renderCreateIndexWithRouter(props: IndexFormProps) {
   return {
     ...render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
-          <ServicesConsumer>
-            {(services: BrowserServices | null) => services && <IndexForm {...props} commonService={services.commonService} />}
-          </ServicesConsumer>
+          <IndexForm {...props} />
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     ),
@@ -31,13 +28,12 @@ function renderCreateIndexWithRouter(props: Omit<IndexFormProps, "commonService"
 
 describe("<IndexForm /> spec", () => {
   it("show a toast if getIndices gracefully fails", async () => {
-    const { getByText } = renderCreateIndexWithRouter({
+    const { findByText } = renderCreateIndexWithRouter({
       index: "bad_index",
     });
 
-    await waitFor(() => {
-      getByText("Update");
-    });
+    await findByText("Update");
+
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_error");
   });

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import CreateIndex, { IndexFormProps } from "../../../CreateIndex/containers/IndexForm";
+import CreateIndex, { IndexFormProps, IndexForm } from "../../../CreateIndex/containers/IndexForm";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiTitle } from "@elastic/eui";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
@@ -17,7 +17,7 @@ interface CreateIndexFlyoutProps extends IndexFormProps {
 export default class CreateIndexFlyout extends React.Component<CreateIndexFlyoutProps> {
   static contextType = CoreServicesContext;
 
-  createIndexRef: CreateIndex | null = null;
+  createIndexRef: IndexForm | null = null;
 
   render() {
     const { onCloseFlyout } = this.props;

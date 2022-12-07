@@ -33,6 +33,10 @@ describe("Create Index", () => {
         aliases: {
           alias_for_specific_1: {},
         },
+        settings: {
+          number_of_shards: 3,
+          number_of_replicas: 2,
+        },
         mappings: {
           properties: {
             text: {
@@ -129,7 +133,10 @@ describe("Create Index", () => {
         .end()
         .get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="json-editor-value-display"]')
         .clear({ force: true })
-        .type('{ "index.blocks.write": true, "index.number_of_shards": 2 }', { parseSpecialCharSequences: false, force: true });
+        .type('{ "index.blocks.write": true, "index.number_of_shards": 2, "index.number_of_replicas": 3 }', {
+          parseSpecialCharSequences: false,
+          force: true,
+        });
 
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
 

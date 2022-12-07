@@ -69,8 +69,5 @@
   },
   "engines": {
     "yarn": "^1.21.1"
-  },
-  "dependencies": {
-    "@monaco-editor/react": "^3.8.3"
   }
 }
