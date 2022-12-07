@@ -3,12 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { forwardRef, useState, useEffect, useRef, useCallback, useImperativeHandle } from "react";
 import { EuiConfirmModal } from "@elastic/eui";
 import { DiffEditorProps } from "@monaco-editor/react";
 import * as monacoEditor from "monaco-editor/esm/vs/editor/editor.api";
 import { MonacoEditorDiffReact } from "../MonacoEditor";
 import CustomFormRow from "../CustomFormRow";
+import { IJSONEditorRef } from "../JSONEditor";
 
 export interface JSONDiffEditorProps extends Partial<DiffEditorProps> {
   value: string;
@@ -17,7 +18,7 @@ export interface JSONDiffEditorProps extends Partial<DiffEditorProps> {
   disabled?: boolean;
 }
 
-const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...others }) => {
+const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const focusedRef = useRef(false);
@@ -71,6 +72,19 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
       editorRef.current?.getDomNode().addEventListener("click", onClickContainer.current);
     };
   }, [isReady]);
+
+  useImperativeHandle(ref, () => ({
+    validate: () =>
+      new Promise((resolve, reject) => {
+        try {
+          JSON.parse(editorRef.current?.getModifiedEditor().getValue() || "{}");
+          resolve("");
+        } catch (e) {
+          setConfirmModalVisible(true);
+          reject("Format validate error");
+        }
+      }),
+  }));
 
   return (
     <div>
@@ -136,6 +150,6 @@ const JSONDiffEditor: React.SFC<JSONDiffEditorProps> = ({ value, onChange, ...ot
       ) : null}
     </div>
   );
-};
+});
 
 export default JSONDiffEditor;

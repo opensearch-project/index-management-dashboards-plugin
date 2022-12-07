@@ -3,7 +3,7 @@ import { EuiForm, EuiFormProps, EuiFormRowProps } from "@elastic/eui";
 import AllBuiltInComponents, { IFieldComponentProps } from "./built_in_components";
 // import Field, { InitOption, FieldOption, Rule } from "../../lib/field";
 import useField, { InitOption, FieldOption, Rule, FieldInstance } from "../../lib/field";
-import AdvancedSettings, { IAdvancedSettingsProps } from "../AdvancedSettings";
+import AdvancedSettings, { IAdvancedSettingsProps, IAdvancedSettingsRef } from "../AdvancedSettings";
 import CustomFormRow from "../CustomFormRow";
 
 export * from "./built_in_components";
@@ -47,6 +47,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
   const { fieldProps, formFields, advancedSettingsProps } = props;
   const { blockedNameList } = advancedSettingsProps || {};
   const propsRef = useRef(props);
+  const advancedRef = useRef<IAdvancedSettingsRef>(null);
   propsRef.current = props;
   const field = useField({
     ...fieldProps,
@@ -63,7 +64,22 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
     },
   });
   const errorMessage: Record<string, string[]> = field.getErrors();
-  useImperativeHandle(ref, () => field);
+  useImperativeHandle(ref, () => ({
+    ...field,
+    validatePromise: async () => {
+      const result = await field.validatePromise();
+      if (advancedRef.current?.validate) {
+        try {
+          await advancedRef.current.validate();
+        } catch (e: any) {
+          result.errors = result.errors || {};
+          result.errors._advancedSettings = [e];
+        }
+      }
+
+      return result;
+    },
+  }));
   useEffect(() => {
     field.resetValues(props.value);
   }, [props.value]);
@@ -140,6 +156,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
       {props.hasAdvancedSettings ? (
         <AdvancedSettings
           {...props.advancedSettingsProps}
+          ref={advancedRef}
           rowProps={{
             "data-test-subj": "form-name-advanced-settings",
             ...props.advancedSettingsProps?.rowProps,

@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from "react";
 import { EuiAccordion, EuiAccordionProps, EuiFormRow, EuiSpacer, EuiFormRowProps } from "@elastic/eui";
-import JSONEditor, { JSONEditorProps } from "../JSONEditor";
+import JSONEditor, { IJSONEditorRef, JSONEditorProps } from "../JSONEditor";
 import "./index.scss";
 
 export interface IAdvancedSettingsProps {
@@ -8,13 +8,20 @@ export interface IAdvancedSettingsProps {
   accordionProps?: EuiAccordionProps;
   value?: Record<string, any>;
   onChange?: (totalValue: IAdvancedSettingsProps["value"]) => void;
-  renderProps?: (options: Pick<Required<IAdvancedSettingsProps>, "value" | "onChange">) => React.ReactChild;
+  renderProps?: (
+    options: Pick<Required<IAdvancedSettingsProps>, "value" | "onChange"> & { ref: React.Ref<IJSONEditorRef> }
+  ) => React.ReactChild;
   editorProps?: Partial<JSONEditorProps>;
 }
 
-export default function AdvancedSettings(props: IAdvancedSettingsProps) {
+export interface IAdvancedSettingsRef {
+  validate: () => Promise<string>;
+}
+
+export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProps, ref: React.Ref<IAdvancedSettingsRef>) {
   const { value, renderProps, editorProps } = props;
   const propsRef = useRef<IAdvancedSettingsProps>(props);
+  const editorRef = useRef<IJSONEditorRef>(null);
   propsRef.current = props;
 
   const onChangeInRenderProps = useCallback(
@@ -29,6 +36,16 @@ export default function AdvancedSettings(props: IAdvancedSettingsProps) {
     return props.accordionProps?.id || `${Date.now()}-${Math.floor(Math.random() * 100)}`;
   }, [props.accordionProps?.id]);
 
+  useImperativeHandle(ref, () => ({
+    validate: () => {
+      if (editorRef.current) {
+        return editorRef.current.validate();
+      }
+
+      return Promise.resolve("");
+    },
+  }));
+
   return (
     <>
       <EuiSpacer size="m" />
@@ -42,12 +59,13 @@ export default function AdvancedSettings(props: IAdvancedSettingsProps) {
                   propsRef.current?.onChange(val);
                 }
               },
+              ref: editorRef,
             }) as any)
           ) : (
-            <JSONEditor {...editorProps} value={JSON.stringify(value, null, 2)} onChange={onChangeInRenderProps} />
+            <JSONEditor {...editorProps} ref={editorRef} value={JSON.stringify(value, null, 2)} onChange={onChangeInRenderProps} />
           )}
         </EuiFormRow>
       </EuiAccordion>
     </>
   );
-}
+});
