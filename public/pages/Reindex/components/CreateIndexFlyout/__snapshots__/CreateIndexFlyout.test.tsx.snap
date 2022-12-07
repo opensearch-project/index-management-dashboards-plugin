@@ -165,7 +165,7 @@ Object {
                               <div
                                 aria-expanded="false"
                                 aria-haspopup="listbox"
-                                class="euiComboBox euiComboBox-isDisabled"
+                                class="euiComboBox"
                                 role="combobox"
                               >
                                 <div
@@ -175,7 +175,7 @@ Object {
                                     class="euiFormControlLayout__childrenWrapper"
                                   >
                                     <div
-                                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading"
+                                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
                                       data-test-subj="comboBoxInput"
                                       tabindex="-1"
                                     >
@@ -191,7 +191,6 @@ Object {
                                         <input
                                           aria-controls=""
                                           data-test-subj="comboBoxSearchInput"
-                                          disabled=""
                                           role="textbox"
                                           style="box-sizing: content-box; width: 2px;"
                                           value=""
@@ -211,7 +210,6 @@ Object {
                                         aria-label="Open list of options"
                                         class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
                                         data-test-subj="comboBoxToggleListButton"
-                                        disabled=""
                                         type="button"
                                       >
                                         EuiIconMock
@@ -296,7 +294,6 @@ Object {
                                 >
                                   <input
                                     class="euiFieldNumber"
-                                    disabled=""
                                     placeholder="The number of primary shards in the index. Default is 1."
                                     type="number"
                                     value="1"
@@ -342,7 +339,6 @@ Object {
                                 >
                                   <input
                                     class="euiFieldNumber"
-                                    disabled=""
                                     placeholder="The number of replica shards each primary shard should have."
                                     type="number"
                                     value="1"
@@ -388,7 +384,6 @@ Object {
                                 >
                                   <input
                                     class="euiFieldText"
-                                    disabled=""
                                     placeholder="Can be set to -1 to disable refreshing."
                                     type="text"
                                     value="1s"

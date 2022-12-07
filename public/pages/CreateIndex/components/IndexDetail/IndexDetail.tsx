@@ -214,7 +214,7 @@ const IndexDetail = (
           helpText: "The number of primary shards in the index. Default is 1.",
         },
         name: "index.number_of_shards",
-        type: readonly ? "Text" : "Number",
+        type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) ? "Text" : "Number",
         options: {
           rules: [
             {
@@ -233,19 +233,6 @@ const IndexDetail = (
           ],
           props: {
             placeholder: "The number of primary shards in the index. Default is 1.",
-            disabled: readonly,
-            disabledReason: readonly
-              ? []
-              : [
-                  {
-                    visible: !finalValue.index,
-                    message: indexNameEmptyTips,
-                  },
-                  {
-                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards"),
-                    message: staticSettingsTips,
-                  },
-                ],
           },
         },
       },
@@ -255,7 +242,7 @@ const IndexDetail = (
           helpText: "The number of replica shards each primary shard should have.",
         },
         name: "index.number_of_replicas",
-        type: readonly ? "Text" : "Number",
+        type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
         options: {
           rules: [
             {
@@ -273,20 +260,7 @@ const IndexDetail = (
             },
           ],
           props: {
-            disabled: readonly,
             placeholder: "The number of replica shards each primary shard should have.",
-            disabledReason: readonly
-              ? []
-              : [
-                  {
-                    visible: !finalValue.index,
-                    message: indexNameEmptyTips,
-                  },
-                  {
-                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas"),
-                    message: staticSettingsTips,
-                  },
-                ],
           },
         },
       },
@@ -300,19 +274,6 @@ const IndexDetail = (
         options: {
           props: {
             placeholder: "Can be set to -1 to disable refreshing.",
-            disabled: readonly,
-            disabledReason: readonly
-              ? []
-              : [
-                  {
-                    visible: !finalValue.index,
-                    message: indexNameEmptyTips,
-                  },
-                  {
-                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval"),
-                    message: staticSettingsTips,
-                  },
-                ],
           },
         },
       },
@@ -346,14 +307,12 @@ const IndexDetail = (
                         ? "Some restriction text on domain"
                         : "Please enter the name before moving to other fields",
                     },
-                    type: readonly ? "Text" : "Input",
+                    type: readonly || isEdit ? "Text" : "Input",
                     options: {
                       props: {
                         placeholder: "Please enter the name for your index",
                         onBlur: onIndexInputBlur,
                         isLoading: templateSimulateLoading,
-                        disabled: readonly || isEdit || templateSimulateLoading,
-                        disabledReason: readonly ? "" : "Index name can not be modified",
                       },
                       rules: [
                         {
@@ -379,15 +338,6 @@ const IndexDetail = (
                     options: {
                       props: {
                         refreshOptions: refreshOptions,
-                        isDisabled: readonly,
-                        disabledReason: readonly
-                          ? []
-                          : [
-                              {
-                                visible: !finalValue.index,
-                                message: indexNameEmptyTips,
-                              },
-                            ],
                       },
                     },
                     component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
