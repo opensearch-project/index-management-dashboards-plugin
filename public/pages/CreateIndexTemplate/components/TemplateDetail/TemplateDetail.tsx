@@ -11,12 +11,7 @@ import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/A
 import IndexMapping, { IIndexMappingsRef } from "../../../CreateIndex/components/IndexMapping";
 import { TemplateItem } from "../../../../../models/interfaces";
 import { Ref } from "react";
-import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import useField from "../../../../lib/field";
-
-const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
-  disabledKey: "isDisabled",
-});
 
 export interface TemplateDetailProps {
   value?: Partial<TemplateItem>;
@@ -77,8 +72,8 @@ const TemplateDetail = (
   }, []);
   return (
     <>
-      {() => {
-        const content = (
+      <ContentPanel title="Index mapping" titleSize="s">
+        <div style={{ paddingLeft: "10px" }}>
           <EuiFormRow fullWidth>
             <IndexMapping
               isEdit={isEdit}
@@ -89,14 +84,8 @@ const TemplateDetail = (
               readonly={readonly}
             />
           </EuiFormRow>
-        );
-
-        return (
-          <ContentPanel title="Index mappings - optional" titleSize="s">
-            <div style={{ paddingLeft: "10px" }}>{content}</div>
-          </ContentPanel>
-        );
-      }}
+        </div>
+      </ContentPanel>
     </>
   );
 };

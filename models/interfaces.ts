@@ -63,6 +63,15 @@ export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
   };
 }
 
+interface ITemplateExtras {
+  name: string;
+  version: string;
+  priority: string;
+}
+
+export interface TemplateItem extends Pick<IndexItem, "aliases" | "mappings" | "settings">, ITemplateExtras {}
+export interface TemplateItemRemote extends Pick<IndexItemRemote, "aliases" | "mappings" | "settings">, ITemplateExtras {}
+
 /**
  * ManagedIndex item shown in the Managed Indices table
  */

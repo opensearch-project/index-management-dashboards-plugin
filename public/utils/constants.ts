@@ -60,6 +60,7 @@ export const ROUTES = Object.freeze({
   REINDEX: "/reindex",
   ALIASES: "/aliases",
   TEMPLATES: "/templates",
+  CREATE_TEMPLATE: "/create-template",
 });
 
 export const BREADCRUMBS = Object.freeze({

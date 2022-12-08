@@ -37,6 +37,7 @@ import CreateIndex from "../CreateIndex";
 import Reindex from "../Reindex/container/Reindex";
 import Aliases from "../Aliases";
 import Templates from "../Templates";
+import CreateIndexTemplate from "../CreateIndexTemplate";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -80,6 +81,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.EDIT_SNAPSHOT_POLICY,
   ROUTES.REINDEX,
   ROUTES.CREATE_INDEX,
+  ROUTES.CREATE_TEMPLATE,
 ];
 
 interface MainProps extends RouteComponentProps {
@@ -438,6 +440,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <Templates {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_TEMPLATE}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
                               </div>
                             )}
                           />

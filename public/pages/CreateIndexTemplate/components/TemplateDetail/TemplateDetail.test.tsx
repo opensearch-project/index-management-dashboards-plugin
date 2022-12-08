@@ -6,13 +6,13 @@
 import React, { useRef, forwardRef, useState } from "react";
 import { render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
-import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
+import TemplateDetail, { ITemplateDetailRef, TemplateDetailProps } from "./TemplateDetail";
 import userEvent from "@testing-library/user-event";
 
-const IndexDetailOnChangeWrapper = forwardRef((props: Omit<IndexDetailProps, "onChange">, ref: any) => {
+const TemplateDetailOnChangeWrapper = forwardRef((props: Omit<TemplateDetailProps, "onChange">, ref: any) => {
   const [value, setValue] = useState(props.value as any);
   return (
-    <IndexDetail
+    <TemplateDetail
       {...props}
       ref={ref}
       value={value}
@@ -25,9 +25,9 @@ const IndexDetailOnChangeWrapper = forwardRef((props: Omit<IndexDetailProps, "on
 
 const refreshOptions: () => Promise<{ ok: true; response: any[] }> = () => Promise.resolve({ ok: true, response: [{ alias: "test" }] });
 
-describe("<IndexDetail /> spec", () => {
+describe("<TemplateDetail /> spec", () => {
   it("renders the component", async () => {
-    const { container } = render(<IndexDetail refreshOptions={refreshOptions} onChange={() => {}} />);
+    const { container } = render(<TemplateDetail refreshOptions={refreshOptions} onChange={() => {}} />);
     await waitFor(() => {
       expect(container.firstChild).toMatchSnapshot();
     });
@@ -35,7 +35,7 @@ describe("<IndexDetail /> spec", () => {
 
   it("disallows editing index name when in edit mode", async () => {
     const { getByDisplayValue } = render(
-      <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
+      <TemplateDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
     );
 
     await waitFor(() => getByDisplayValue("some_index"));
@@ -45,7 +45,7 @@ describe("<IndexDetail /> spec", () => {
 
   it("disallows editing number_of_replicas when in edit mode", async () => {
     const { getByPlaceholderText } = render(
-      <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
+      <TemplateDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
     );
 
     await waitFor(() => getByPlaceholderText("The number of primary shards in the index. Default is 1."));
@@ -55,8 +55,8 @@ describe("<IndexDetail /> spec", () => {
 
   it("validate should say error when field name is required", async () => {
     const { result } = renderHook(() => {
-      const ref = useRef<IIndexDetailRef>(null);
-      const container = render(<IndexDetailOnChangeWrapper refreshOptions={refreshOptions} ref={ref} />);
+      const ref = useRef<ITemplateDetailRef>(null);
+      const container = render(<TemplateDetailOnChangeWrapper refreshOptions={refreshOptions} ref={ref} />);
       return {
         ref,
         container,
@@ -80,7 +80,7 @@ describe("<IndexDetail /> spec", () => {
 
   it("inherit templates settings when create", async () => {
     const { findByDisplayValue, getByDisplayValue, getByText, getByTestId, queryByText } = render(
-      <IndexDetailOnChangeWrapper
+      <TemplateDetailOnChangeWrapper
         refreshOptions={refreshOptions}
         value={{ index: "some_index" }}
         onSimulateIndexTemplate={() =>

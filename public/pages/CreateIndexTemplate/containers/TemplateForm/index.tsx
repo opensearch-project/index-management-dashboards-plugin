@@ -14,7 +14,7 @@ import { transformArrayToObject, transformObjectToArray } from "../../../CreateI
 import { CommonService } from "../../../../services/index";
 import { ServerResponse } from "../../../../../server/models/types";
 
-export interface TemplateFormProps extends Pick<TemplateDetailProps, "readonly" | "sourceIndices"> {
+export interface TemplateFormProps {
   index?: string;
   mode?: IndicesUpdateMode;
   commonService: CommonService;
@@ -163,21 +163,17 @@ export default class CreateIndexTemplate extends Component<TemplateFormProps, Cr
 
   render() {
     const isEdit = this.isEdit;
-    const { hideButtons, readonly } = this.props;
+    const { hideButtons } = this.props;
     const { templateDetail, isSubmitting, oldTemplateDetail } = this.state;
 
     return (
       <>
         <TemplateDetail
-          readonly={readonly}
-          mode={this.mode}
           ref={(ref) => (this.TemplateDetailRef = ref)}
           isEdit={this.isEdit}
           value={templateDetail}
           oldValue={oldTemplateDetail}
           onChange={this.onDetailChange}
-          sourceIndices={this.props.sourceIndices}
-          onGetTemplateDetail={this.getTemplateDetail}
           refreshOptions={(aliasName: string) =>
             this.commonService.apiCaller({
               endpoint: "cat.aliases",

@@ -21,11 +21,10 @@ import { ContentPanel, ContentPanelActions } from "../../../../components/Conten
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
 import { ITemplate } from "../../interface";
-import { BREADCRUMBS } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
-import CreateTemplate from "../CreateTemplates";
 import TemplatesActions from "../TemplatesActions";
 
 interface TemplatesProps extends RouteComponentProps {
@@ -41,8 +40,6 @@ type TemplatesState = {
   selectedItems: ITemplate[];
   templates: ITemplate[];
   loading: boolean;
-  createFlyoutVisible: boolean;
-  editFlyoutVisible: boolean;
 } & SearchControlsProps["value"];
 
 class Templates extends Component<TemplatesProps, TemplatesState> {
@@ -72,8 +69,6 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       selectedItems: [],
       templates: [],
       loading: false,
-      createFlyoutVisible: false,
-      editFlyoutVisible: false,
     };
 
     this.getTemplates = _.debounce(this.getTemplates, 500, { leading: true });
@@ -198,9 +193,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                 buttonProps: {
                   fill: true,
                   onClick: () => {
-                    this.setState({
-                      createFlyoutVisible: true,
-                    });
+                    this.props.history.push(ROUTES.CREATE_TEMPLATE);
                   },
                 },
               },
@@ -258,32 +251,13 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                   marginTop: 20,
                 }}
                 onClick={() => {
-                  this.setState({
-                    createFlyoutVisible: true,
-                  });
+                  this.props.history.push(ROUTES.CREATE_TEMPLATE);
                 }}
               >
                 Create template
               </EuiButton>
             </div>
           }
-        />
-        <CreateTemplate
-          visible={this.state.createFlyoutVisible}
-          onSuccess={() => {
-            this.getTemplates();
-            this.setState({ createFlyoutVisible: false });
-          }}
-          onClose={() => this.setState({ createFlyoutVisible: false })}
-        />
-        <CreateTemplate
-          visible={this.state.editFlyoutVisible}
-          onSuccess={() => {
-            this.getTemplates();
-            this.setState({ editFlyoutVisible: false });
-          }}
-          onClose={() => this.setState({ editFlyoutVisible: false })}
-          alias={this.state.selectedItems[0]}
         />
       </ContentPanel>
     );
