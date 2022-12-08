@@ -24,6 +24,8 @@ describe("<ReindexAdvancedOptions /> spec", () => {
         />
       </CoreServicesContext.Provider>
     );
+    // wait for one tick
+    await waitFor(() => {});
     expect(component).toMatchSnapshot();
   });
 
@@ -42,6 +44,9 @@ describe("<ReindexAdvancedOptions /> spec", () => {
         />
       </CoreServicesContext.Provider>
     );
+
+    // wait for one tick
+    await waitFor(() => {});
     expect(findByText("slice must be positive integer or auto")).not.toBeNull();
   });
 
@@ -60,8 +65,29 @@ describe("<ReindexAdvancedOptions /> spec", () => {
       </CoreServicesContext.Provider>
     );
 
-    await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
-    });
+    // wait for one tick
+    await waitFor(() => {});
+    expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+  });
+
+  it("get pipeline api been called", async () => {
+    const getPipeline = jest.fn().mockResolvedValue([{ label: "test1" }]);
+    render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ReindexAdvancedOptions
+          slices="1"
+          onSlicesChange={() => {}}
+          selectedPipelines={[]}
+          onSelectedPipelinesChange={() => {}}
+          conflicts="proceed"
+          onConflictsChange={() => {}}
+          getAllPipelines={getPipeline}
+        />
+      </CoreServicesContext.Provider>
+    );
+
+    // wait for one tick
+    await waitFor(() => {});
+    expect(getPipeline).toBeCalledTimes(1);
   });
 });
