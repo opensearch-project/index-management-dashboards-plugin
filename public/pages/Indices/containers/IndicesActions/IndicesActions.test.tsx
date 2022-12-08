@@ -509,7 +509,6 @@ describe("<IndicesActions /> spec", () => {
     const onSplit = jest.fn();
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        console.log(payload.endpoint);
         switch (payload.endpoint) {
           case "cat.indices":
             return {
@@ -568,7 +567,7 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const { container, getByTestId, findByText } = renderWithRouter({
+    const { container, getByTestId, getByText } = renderWithRouter({
       selectedItems: [
         {
           "docs.count": "5",
@@ -596,17 +595,19 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
     userEvent.click(getByTestId("Split Action"));
 
-    expect(findByText("100KB")).not.toBeNull();
     await waitFor(() => {
-      userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-      userEvent.click(getByTestId("flyout-footer-action-button"));
+      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
+      expect(getByText("100KB")).toBeInTheDocument();
     });
-    /*
-    await waitFor( () => {
+
+    userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
+    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "6{enter}");
+    userEvent.click(getByTestId("flyout-footer-action-button"));
+
+    await waitFor(() => {
       expect(onSplit).toHaveBeenCalled();
     });
- */
-  });
+  }, 20000);
 
   it("split action is disabled if multiple indices are selected", async () => {
     const { container, getByTestId } = renderWithRouter({

@@ -21,7 +21,7 @@ import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CatIndex } from "../../../../../server/models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
-import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
+import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 
@@ -82,15 +82,9 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       let shardsLimit = sourceShards;
       for (let i = 1; shardsLimit <= SHARDS_HARD_LIMIT; i++) {
         shardsLimit = shardsLimit * 2;
-      }
-
-      for (let i = sourceShards * 2; i <= shardsLimit; ) {
-        if (shardsLimit % i == 0) {
-          shardsSelectOptions.push({
-            label: i.toString(),
-          });
-          i = i * 2;
-        }
+        shardsSelectOptions.push({
+          label: shardsLimit.toString(),
+        });
       }
     }
 
@@ -147,7 +141,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       );
     }
 
-    if (sourceSettings && (!blocksWriteValue || blocksWriteValue !== "true")) {
+    if (sourceSettings && (!blocksWriteValue || (blocksWriteValue !== "true" && blocksWriteValue !== true))) {
       const flat = true;
       const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(
@@ -270,7 +264,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
                   ))}
                 </ul>
                 <EuiLink
-                  href={"https://opensearch.org/docs/1.2/opensearch/rest-api/index-apis/split/"}
+                  href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
