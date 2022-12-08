@@ -65,8 +65,9 @@ export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
 
 interface ITemplateExtras {
   name: string;
-  version: string;
-  priority: string;
+  version: number;
+  priority: number;
+  index_patterns: string[];
 }
 
 export interface TemplateItem extends Pick<IndexItem, "aliases" | "mappings" | "settings">, ITemplateExtras {}

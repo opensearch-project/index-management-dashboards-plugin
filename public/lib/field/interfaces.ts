@@ -1,10 +1,14 @@
 import React from "react";
 
+// if it's a string[], the value will become nested.
+// registerField({ name: ['a', 'b', 'c.d'] }) => { a: { b: { c,d: '' } } }
+export type FieldName = string | string[];
+
 export type FieldOption = {
   /**
    * All component changes will arrive here [set value will not trigger this function]
    */
-  onChange?: (name: string, value?: any) => void;
+  onChange?: (name: FieldName, value?: any) => void;
 
   /**
    * Initialization data
@@ -84,7 +88,7 @@ export type InitOption = {
   /**
    * The name of the field
    */
-  name: string;
+  name: FieldName;
 
   /**
    * The name of the event that triggered the data change
@@ -111,21 +115,21 @@ export type FieldInstance = {
 
   /**
    * check
-   * @param names
+   * @param name
    */
-  validatePromise(names?: string[] | string): Promise<ValidateResults>;
+  validatePromise(name?: FieldName): Promise<ValidateResults>;
 
   /**
    * 	Get the value of a single input control
    * @param field name
    */
-  getValue(name: string): any;
+  getValue(name: FieldName): any;
 
   /**
    * Get the values ​​of a set of input controls, if no parameters are passed in, get the values ​​of all components
    * @param names
    */
-  getValues(names?: string[]): any;
+  getValues(): any;
 
   /**
    * Set the value of a single input control (will trigger render, please follow the timing of react)
@@ -145,20 +149,20 @@ export type FieldInstance = {
   /**
    * Get the Error of a single input control
    */
-  getError(name: string): null | string[];
+  getError(name: FieldName): null | string[];
 
   /**
    * Get the Error for a set of input controls
    * @param names field name
    */
-  getErrors(names?: string[]): any;
+  getErrors(): any;
 
   /**
    * Sets the Error for a single input control
    * @param name
    * @param errors
    */
-  setError(name: string, errors: null | string[]): void;
+  setError(name: FieldName, errors: null | string[]): void;
 
   /**
    * Sets the Error for a set of input controls

@@ -12,11 +12,12 @@ import { ServerResponse } from "../../../server/models/types";
 export interface RemoteSelectProps extends Omit<EuiComboBoxProps<{ label: string }>, "value" | "onChange"> {
   value?: string[];
   onChange?: (value: Required<RemoteSelectProps>["value"]) => void;
-  refreshOptions: (params: { searchValue?: string }) => Promise<ServerResponse<{ label: string }[]>>;
+  onOptionsChange?: (options: { label: string; [key: string]: any }[]) => void;
+  refreshOptions: (params: { searchValue?: string }) => Promise<ServerResponse<{ label: string; [key: string]: any }[]>>;
 }
 
 const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLInputElement>) => {
-  const { value = [], onChange, refreshOptions: refreshOptionsFromProps, ...others } = props;
+  const { value = [], onChange, refreshOptions: refreshOptionsFromProps, onOptionsChange, ...others } = props;
   const [allOptions, setAllOptions] = useState([] as { label: string }[]);
   const [isLoading, setIsLoading] = useState(false);
   const destroyRef = useRef(false);
@@ -53,6 +54,9 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
       destroyRef.current = true;
     };
   }, []);
+  useEffect(() => {
+    onOptionsChange && onOptionsChange(allOptions);
+  }, [allOptions]);
   const onCreateOption = (searchValue: string, flattenedOptions: { label: string }[] = []) => {
     const normalizedSearchValue = searchValue.trim().toLowerCase();
 

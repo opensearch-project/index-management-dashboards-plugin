@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
+import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef } from "react";
 import { EuiFormRow, EuiFormRowProps, EuiSpacer } from "@elastic/eui";
 import { set } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -14,6 +14,9 @@ import { Ref } from "react";
 import useField from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
+import RemoteSelect from "../../../../components/RemoteSelect";
+import { ServicesContext } from "../../../../services";
+import { BrowserServices } from "../../../../models/interfaces";
 
 export interface TemplateDetailProps {
   value?: Partial<TemplateItem>;
@@ -32,9 +35,10 @@ const TemplateDetail = (
   { value, onChange, isEdit, readonly, oldValue, refreshOptions }: TemplateDetailProps,
   ref: Ref<ITemplateDetailRef>
 ) => {
+  const services = useContext(ServicesContext) as BrowserServices;
   const field = useField();
   const getCommonFormRowProps = useCallback(
-    (name: string): Partial<EuiFormRowProps> => {
+    (name: string | string[]): Partial<EuiFormRowProps> => {
       return {
         isInvalid: !!field.getError(name),
         error: field.getError(name),
@@ -72,6 +76,7 @@ const TemplateDetail = (
       destroyRef.current = true;
     };
   }, []);
+  console.log(field.getValues());
   return (
     <>
       <ContentPanel title="Define template" titleSize="s">
@@ -96,15 +101,84 @@ const TemplateDetail = (
             helpText="Specify the index patterns or index wildcard. Settings in this template
             will be applied to indexes with names matching index patterns or wildcards."
           >
-            <AllBuiltInComponents.Input
+            <RemoteSelect
               {...field.registerField({
-                name: "name",
+                name: "index_patterns",
+                rules: [
+                  {
+                    validator(rule, value) {
+                      if (!value || !value.length) {
+                        return Promise.reject("Index patterns must be defined");
+                      }
+
+                      return Promise.reject("");
+                    },
+                  },
+                ],
+              })}
+              refreshOptions={() =>
+                Promise.resolve({
+                  ok: true,
+                  response: [],
+                })
+              }
+              placeholder="Select index patterns or input wildcards"
+            />
+          </CustomFormRow>
+          <EuiSpacer />
+          <CustomFormRow {...getCommonFormRowProps("priority")} label="Priority">
+            <AllBuiltInComponents.Number
+              {...field.registerField({
+                name: "priority",
                 rules: [
                   {
                     required: true,
-                    message: "Template name is required",
+                    message: "Priority is required",
+                  },
+                  {
+                    min: 0,
+                    message: "Priority should not be smaller than zero",
                   },
                 ],
+              })}
+            />
+          </CustomFormRow>
+        </div>
+      </ContentPanel>
+      <EuiSpacer />
+      <ContentPanel title="Index alias" titleSize="s">
+        <div style={{ paddingLeft: "10px" }}>
+          <CustomFormRow {...getCommonFormRowProps("aliases")} label="Index alias">
+            <AliasSelect
+              {...field.registerField({
+                name: "aliases",
+              })}
+              refreshOptions={(aliasName) =>
+                services?.commonService.apiCaller({
+                  endpoint: "cat.aliases",
+                  method: "GET",
+                  data: {
+                    format: "json",
+                    name: aliasName,
+                    expand_wildcards: "open",
+                  },
+                })
+              }
+            />
+          </CustomFormRow>
+        </div>
+      </ContentPanel>
+      <EuiSpacer />
+      <ContentPanel title="Index settings" titleSize="s">
+        <div style={{ paddingLeft: "10px" }}>
+          <CustomFormRow
+            label="Number of shards"
+            helpText="The number of primary shards in the index. Default is 1."
+            {...getCommonFormRowProps(["settings", "index.number_of_shards"])}
+          >
+            <AllBuiltInComponents.Number
+              {...field.registerField({
+                name: ["settings", "index.number_of_shards"],
               })}
             />
           </CustomFormRow>
