@@ -9,7 +9,10 @@ export interface ReindexRequest {
   maxDocs?: number;
   body: {
     conflicts?: string;
-    source: object;
+    source: {
+      index: string;
+      [key: string]: any;
+    };
     dest: {
       index: string;
       pipeline?: string;

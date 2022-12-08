@@ -36,7 +36,6 @@ module.exports = {
     "!**/vendor/**",
     "!**/index.d.ts",
     "!**/lib/field/**",
-    "!**/lib/validate/**",
   ],
   clearMocks: true,
   testPathIgnorePatterns: ["<rootDir>/build/", "<rootDir>/node_modules/"],

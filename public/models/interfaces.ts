@@ -5,6 +5,7 @@
 
 import { Direction, Query } from "@elastic/eui";
 import { SMPolicy } from "../../models/interfaces";
+import { IJobItemMetadata } from "../lib/JobScheduler";
 import {
   IndexService,
   ManagedIndexService,
@@ -70,4 +71,19 @@ export enum RESTORE_OPTIONS {
   partial = "partial",
   customize_index_settings = "customize_index_settings",
   ignore_index_settings = "ignore_index_settings",
+}
+
+export interface ReindexJobMetaData extends IJobItemMetadata {
+  extras: {
+    sourceIndex: string;
+    destIndex: string;
+    taskId: string;
+  };
+}
+
+export interface RecoveryJobMetaData extends IJobItemMetadata {
+  extras: {
+    sourceIndex: string;
+    destIndex: string;
+  };
 }

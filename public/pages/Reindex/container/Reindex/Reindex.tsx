@@ -35,6 +35,8 @@ import { REQUEST } from "../../../../../utils/constants";
 import CreateIndexFlyout from "../../components/CreateIndexFlyout";
 import queryString from "query-string";
 import { parseIndexNames, checkDuplicate } from "../../utils/helper";
+import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
+import { ReindexJobMetaData } from "../../../../models/interfaces";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -244,6 +246,15 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       // back to indices page
       this.onCancel();
       this.context.notifications.toasts.addSuccess(toast);
+      jobSchedulerInstance.addJob({
+        type: "reindex",
+        extras: {
+          sourceIndex: reindexRequest.body.source.index,
+          destIndex: reindexRequest.body.dest.index,
+          taskId: res.response.task,
+        },
+        interval: 30000,
+      } as ReindexJobMetaData);
     } else {
       this.context.notifications.toasts.addDanger(`Reindex operation error ${res?.error}`);
     }
