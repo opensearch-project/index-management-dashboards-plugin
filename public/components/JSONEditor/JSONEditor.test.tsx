@@ -3,11 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
+import React, { useRef } from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import JSONEditor from "./JSONEditor";
+import JSONEditor, { IJSONEditorRef } from "./JSONEditor";
 import userEvent from "@testing-library/user-event";
+import { renderHook } from "@testing-library/react-hooks";
 
 describe("<JSONEditor /> spec", () => {
   it("renders the component", () => {
@@ -15,6 +16,26 @@ describe("<JSONEditor /> spec", () => {
     // EuiOverlayMask appends an element to the body so we should have three (used to be two, after upgrading appears to have 3 now), an empty div from react-test-library
     // and our EuiOverlayMask element
     expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("ref hook validate", async () => {
+    const { result } = renderHook(() => {
+      const refCorrect = useRef<IJSONEditorRef>(null);
+      const refError = useRef<IJSONEditorRef>(null);
+      render(
+        <>
+          <JSONEditor ref={refCorrect} value={JSON.stringify({ name: "test" })} />
+          <JSONEditor ref={refError} value='{ "name": "test }' />
+        </>
+      );
+      return {
+        refCorrect,
+        refError,
+      };
+    });
+    const { refCorrect, refError } = result.current;
+    await waitFor(() => expect(refCorrect.current?.validate()).resolves.toEqual(""));
+    await waitFor(() => expect(refError.current?.validate()).rejects.toEqual("Format validate error"));
   });
 
   it("it do not trigger onBlur when readonly", async () => {
