@@ -435,12 +435,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
         legend="Editor Type"
         options={[
           {
-            label: "Visual Editor",
+            label: "Visual editor",
             id: EDITOR_MODE.VISUAL,
             "data-test-subj": "editor-type-visual-editor",
           },
           {
-            label: "JSON Editor",
+            label: "JSON editor",
             id: EDITOR_MODE.JSON,
             "data-test-subj": "editor-type-json-editor",
           },

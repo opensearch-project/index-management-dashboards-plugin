@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
-import { EuiFormRow, EuiFormRowProps } from "@elastic/eui";
+import { EuiFormRow, EuiFormRowProps, EuiSpacer } from "@elastic/eui";
 import { set } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
@@ -12,6 +12,8 @@ import IndexMapping, { IIndexMappingsRef } from "../../../CreateIndex/components
 import { TemplateItem } from "../../../../../models/interfaces";
 import { Ref } from "react";
 import useField from "../../../../lib/field";
+import CustomFormRow from "../../../../components/CustomFormRow";
+import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 
 export interface TemplateDetailProps {
   value?: Partial<TemplateItem>;
@@ -72,6 +74,43 @@ const TemplateDetail = (
   }, []);
   return (
     <>
+      <ContentPanel title="Define template" titleSize="s">
+        <div style={{ paddingLeft: "10px" }}>
+          <CustomFormRow {...getCommonFormRowProps("name")} label="Template name">
+            <AllBuiltInComponents.Input
+              {...field.registerField({
+                name: "name",
+                rules: [
+                  {
+                    required: true,
+                    message: "Template name is required",
+                  },
+                ],
+              })}
+            />
+          </CustomFormRow>
+          <EuiSpacer />
+          <CustomFormRow
+            {...getCommonFormRowProps("index_patterns")}
+            label="Index patterns or wildcards"
+            helpText="Specify the index patterns or index wildcard. Settings in this template
+            will be applied to indexes with names matching index patterns or wildcards."
+          >
+            <AllBuiltInComponents.Input
+              {...field.registerField({
+                name: "name",
+                rules: [
+                  {
+                    required: true,
+                    message: "Template name is required",
+                  },
+                ],
+              })}
+            />
+          </CustomFormRow>
+        </div>
+      </ContentPanel>
+      <EuiSpacer />
       <ContentPanel title="Index mapping" titleSize="s">
         <div style={{ paddingLeft: "10px" }}>
           <EuiFormRow fullWidth>

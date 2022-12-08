@@ -36,13 +36,13 @@ export class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
     const isEdit = this.isEdit;
     this.context.chrome.setBreadcrumbs([
       BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      isEdit ? BREADCRUMBS.EDIT_INDEX : BREADCRUMBS.CREATE_INDEX,
+      BREADCRUMBS.TEMPLATES,
+      isEdit ? BREADCRUMBS.EDIT_TEMPLATE : BREADCRUMBS.CREATE_TEMPLATE,
     ]);
   };
 
   onCancel = (): void => {
-    this.props.history.push(ROUTES.INDICES);
+    this.props.history.push(ROUTES.TEMPLATES);
   };
 
   render() {
@@ -71,7 +71,6 @@ export class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
         <TemplateForm
           index={this.index}
           commonService={this.commonService}
-          mode={this.props.match.params.mode}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}
         />

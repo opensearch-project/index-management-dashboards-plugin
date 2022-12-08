@@ -100,6 +100,8 @@ export const BREADCRUMBS = Object.freeze({
   REINDEX: { text: "Reindex", href: `#${ROUTES.REINDEX}` },
   ALIASES: { text: "Aliases", href: `#${ROUTES.ALIASES}` },
   TEMPLATES: { text: "Templates", href: `#${ROUTES.TEMPLATES}` },
+  CREATE_TEMPLATE: { text: "Create template", href: `#${ROUTES.CREATE_TEMPLATE}` },
+  EDIT_TEMPLATE: { text: "Edit template", href: `#${ROUTES.CREATE_TEMPLATE}` },
 });
 
 // TODO: EUI has a SortDirection already
