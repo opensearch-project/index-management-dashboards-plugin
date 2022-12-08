@@ -39,7 +39,7 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
     return null;
   }
 
-  const showWarning = selectedItems.map((item) => filterByMinimatch(item as string, SYSTEM_INDEX)).filter((it) => it).length > 0;
+  const showWarning = selectedItems.filter((item) => filterByMinimatch(item as string, SYSTEM_INDEX)).length > 0;
 
   return (
     <EuiModal onClose={onClose}>
