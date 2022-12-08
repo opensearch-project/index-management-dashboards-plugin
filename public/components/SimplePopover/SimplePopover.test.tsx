@@ -5,13 +5,17 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import SimplePopover from "./SimplePopover";
+import SimplePopover, { loopToGetPath } from "./SimplePopover";
 import userEvent from "@testing-library/user-event";
 
 describe("<SimplePopover /> spec", () => {
   it("renders the component", () => {
     render(<SimplePopover button={<div>123</div>} />);
     expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("return [] when element is null", () => {
+    expect(loopToGetPath(null)).toEqual([]);
   });
 
   it("render the component with hover", async () => {

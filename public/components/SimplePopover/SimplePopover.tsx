@@ -13,7 +13,7 @@ interface SimplePopoverProps extends Partial<EuiPopoverProps> {
   button: React.ReactElement;
 }
 
-const loopToGetPath = (element: HTMLElement | ParentNode | null) => {
+export const loopToGetPath = (element: HTMLElement | ParentNode | null) => {
   if (!element) {
     return [];
   }
@@ -44,9 +44,6 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
   }
 
   const outsideClick = useCallback(() => {
-    if (!popVisible) {
-      return;
-    }
     setTimeout(() => {
       setPopVisible(false);
     }, 0);
@@ -65,7 +62,7 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
   );
 
   useEffect(() => {
-    if (triggerType === "click") {
+    if (popVisible && triggerType === "click") {
       window.addEventListener("click", outsideClick);
     }
     return () => {
