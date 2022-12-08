@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { EuiToolTip } from "@elastic/eui";
+import BetterTooltip from "../BetterToolTip";
 
 interface IEuiToolTipWrapperOptions {
   disabledKey?: string;
@@ -44,7 +44,7 @@ export default function EuiToolTipWrapper<T>(
       [finalOptions.disabledKey]: disabled,
     };
     return (
-      <EuiToolTip
+      <BetterTooltip
         content={
           disabled && formattedReason?.length ? (
             <>
@@ -73,7 +73,7 @@ export default function EuiToolTipWrapper<T>(
         <>
           <Component {...(finalProps as T)} ref={ref} />
         </>
-      </EuiToolTip>
+      </BetterTooltip>
     );
   }) as React.ComponentType<T & IEuiToolTipWrapperProps>;
 }
