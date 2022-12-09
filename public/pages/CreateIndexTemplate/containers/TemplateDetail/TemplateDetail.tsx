@@ -97,220 +97,212 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
   return (
     <>
       <ContentPanel title="Define template" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <CustomFormRow {...getCommonFormRowProps("name")} label="Template name">
-            <Component
-              {...field.registerField({
-                name: "name",
-                rules: [
-                  {
-                    required: true,
-                    message: "Template name is required",
-                  },
-                ],
-              })}
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          <CustomFormRow
-            {...getCommonFormRowProps("index_patterns")}
-            label="Index patterns or wildcards"
-            helpText="Specify the index patterns or index wildcard. Settings in this template
+        <CustomFormRow {...getCommonFormRowProps("name")} label="Template name">
+          <Component
+            {...field.registerField({
+              name: "name",
+              rules: [
+                {
+                  required: true,
+                  message: "Template name is required",
+                },
+              ],
+            })}
+          />
+        </CustomFormRow>
+        <EuiSpacer />
+        <CustomFormRow
+          {...getCommonFormRowProps("index_patterns")}
+          label="Index patterns or wildcards"
+          helpText="Specify the index patterns or index wildcard. Settings in this template
             will be applied to indexes with names matching index patterns or wildcards."
-          >
-            <RemoteSelect
-              {...field.registerField({
-                name: "index_patterns",
-                rules: [
-                  {
-                    validator(rule, value) {
-                      if (!value || !value.length) {
-                        return Promise.reject("Index patterns must be defined");
-                      }
+        >
+          <RemoteSelect
+            {...field.registerField({
+              name: "index_patterns",
+              rules: [
+                {
+                  validator(rule, value) {
+                    if (!value || !value.length) {
+                      return Promise.reject("Index patterns must be defined");
+                    }
 
-                      return Promise.reject("");
-                    },
+                    return Promise.reject("");
                   },
-                ],
-              })}
-              refreshOptions={() =>
-                Promise.resolve({
-                  ok: true,
-                  response: [],
-                })
-              }
-              placeholder="Select index patterns or input wildcards"
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          <CustomFormRow {...getCommonFormRowProps("priority")} label="Priority">
-            <AllBuiltInComponents.Number
-              {...field.registerField({
-                name: "priority",
-                rules: [
-                  {
-                    required: true,
-                    message: "Priority is required",
-                  },
-                  {
-                    min: 0,
-                    message: "Priority should not be smaller than zero",
-                  },
-                ],
-              })}
-            />
-          </CustomFormRow>
-        </div>
+                },
+              ],
+            })}
+            refreshOptions={() =>
+              Promise.resolve({
+                ok: true,
+                response: [],
+              })
+            }
+            placeholder="Select index patterns or input wildcards"
+          />
+        </CustomFormRow>
+        <EuiSpacer />
+        <CustomFormRow {...getCommonFormRowProps("priority")} label="Priority">
+          <AllBuiltInComponents.Number
+            {...field.registerField({
+              name: "priority",
+              rules: [
+                {
+                  required: true,
+                  message: "Priority is required",
+                },
+                {
+                  min: 0,
+                  message: "Priority should not be smaller than zero",
+                },
+              ],
+            })}
+          />
+        </CustomFormRow>
       </ContentPanel>
       <EuiSpacer />
       <ContentPanel title="Index alias" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <CustomFormRow {...getCommonFormRowProps(["template", "aliases"])} label="Index alias">
-            <AliasSelect
-              {...field.registerField({
-                name: ["template", "aliases"],
-              })}
-              refreshOptions={(aliasName) =>
-                services?.commonService.apiCaller({
-                  endpoint: "cat.aliases",
-                  method: "GET",
-                  data: {
-                    format: "json",
-                    name: aliasName,
-                    expand_wildcards: "open",
-                  },
-                })
-              }
-            />
-          </CustomFormRow>
-        </div>
+        <CustomFormRow {...getCommonFormRowProps(["template", "aliases"])} label="Index alias">
+          <AliasSelect
+            {...field.registerField({
+              name: ["template", "aliases"],
+            })}
+            refreshOptions={(aliasName) =>
+              services?.commonService.apiCaller({
+                endpoint: "cat.aliases",
+                method: "GET",
+                data: {
+                  format: "json",
+                  name: aliasName,
+                  expand_wildcards: "open",
+                },
+              })
+            }
+          />
+        </CustomFormRow>
       </ContentPanel>
       <EuiSpacer />
       <ContentPanel title="Index settings" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <CustomFormRow
-            label="Number of shards"
-            helpText="The number of primary shards in the index. Default is 1."
-            {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"])}
-          >
-            <AllBuiltInComponents.Number
-              {...field.registerField({
-                name: ["template", "settings", "index.number_of_shards"],
-                rules: [
-                  {
-                    validator(rule, value) {
-                      if (value === "") {
-                        return Promise.resolve("");
-                      }
-                      if (Number(value) !== parseInt(value)) {
-                        return Promise.reject("Number of shards must be an integer");
-                      }
-
+        <CustomFormRow
+          label="Number of shards"
+          helpText="The number of primary shards in the index. Default is 1."
+          {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"])}
+        >
+          <AllBuiltInComponents.Number
+            {...field.registerField({
+              name: ["template", "settings", "index.number_of_shards"],
+              rules: [
+                {
+                  validator(rule, value) {
+                    if (value === "") {
                       return Promise.resolve("");
-                    },
-                  },
-                ],
-              })}
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          <CustomFormRow
-            label="Number of replicas"
-            helpText="The number of replica shards each primary shard should have."
-            {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"])}
-          >
-            <AllBuiltInComponents.Number
-              {...field.registerField({
-                name: ["template", "settings", "index.number_of_replicas"],
-                rules: [
-                  {
-                    validator(rule, value) {
-                      if (value === "") {
-                        return Promise.resolve("");
-                      }
-                      if (Number(value) !== parseInt(value)) {
-                        return Promise.reject("Number of replicas must be an integer");
-                      }
+                    }
+                    if (Number(value) !== parseInt(value)) {
+                      return Promise.reject("Number of shards must be an integer");
+                    }
 
-                      return Promise.resolve("");
-                    },
+                    return Promise.resolve("");
                   },
-                ],
-              })}
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          <CustomFormRow
-            label="Refresh interval of index"
-            helpText="How often the index should refresh, which publishes its most recent changes and makes them available for searching."
-            {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"])}
-          >
-            <AllBuiltInComponents.Input
-              {...field.registerField({
-                name: ["template", "settings", "index.refresh_interval"],
-              })}
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          <AdvancedSettings
-            value={field.getValues().template.settings || {}}
-            onChange={(totalValue) => field.setValue(["template", "settings"], totalValue)}
-            accordionProps={{
-              initialIsOpen: false,
-              id: "accordion_for_create_index_template_settings",
-              buttonContent: <h4>Advanced settings</h4>,
-            }}
-            rowProps={{
-              label: "Specify advanced index settings",
-              style: {
-                maxWidth: "800px",
-              },
-              helpText: (
-                <>
-                  Specify a comma-delimited list of settings.
-                  <EuiLink
-                    href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                    target="_blank"
-                    external
-                  >
-                    View index settings
-                  </EuiLink>
-                </>
-              ),
-            }}
+                },
+              ],
+            })}
           />
-        </div>
+        </CustomFormRow>
+        <EuiSpacer />
+        <CustomFormRow
+          label="Number of replicas"
+          helpText="The number of replica shards each primary shard should have."
+          {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"])}
+        >
+          <AllBuiltInComponents.Number
+            {...field.registerField({
+              name: ["template", "settings", "index.number_of_replicas"],
+              rules: [
+                {
+                  validator(rule, value) {
+                    if (value === "") {
+                      return Promise.resolve("");
+                    }
+                    if (Number(value) !== parseInt(value)) {
+                      return Promise.reject("Number of replicas must be an integer");
+                    }
+
+                    return Promise.resolve("");
+                  },
+                },
+              ],
+            })}
+          />
+        </CustomFormRow>
+        <EuiSpacer />
+        <CustomFormRow
+          label="Refresh interval of index"
+          helpText="How often the index should refresh, which publishes its most recent changes and makes them available for searching."
+          {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"])}
+        >
+          <AllBuiltInComponents.Input
+            {...field.registerField({
+              name: ["template", "settings", "index.refresh_interval"],
+            })}
+          />
+        </CustomFormRow>
+        <EuiSpacer />
+        <AdvancedSettings
+          value={field.getValues().template.settings || {}}
+          onChange={(totalValue) => field.setValue(["template", "settings"], totalValue)}
+          accordionProps={{
+            initialIsOpen: false,
+            id: "accordion_for_create_index_template_settings",
+            buttonContent: <h4>Advanced settings</h4>,
+          }}
+          rowProps={{
+            label: "Specify advanced index settings",
+            style: {
+              maxWidth: "800px",
+            },
+            helpText: (
+              <>
+                Specify a comma-delimited list of settings.
+                <EuiLink
+                  href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                  target="_blank"
+                  external
+                >
+                  View index settings
+                </EuiLink>
+              </>
+            ),
+          }}
+        />
       </ContentPanel>
       <EuiSpacer />
       <ContentPanel title="Index mapping" titleSize="s">
-        <div style={{ paddingLeft: "10px" }}>
-          <EuiFormRow fullWidth>
-            <IndexMapping
-              {...field.registerField({
-                name: ["template", "mappings", "properties"],
-                rules: [
-                  {
-                    validator() {
-                      if (!mappingsRef.current?.validate) {
-                        return Promise.reject("");
+        <EuiFormRow fullWidth>
+          <IndexMapping
+            {...field.registerField({
+              name: ["template", "mappings", "properties"],
+              rules: [
+                {
+                  validator() {
+                    if (!mappingsRef.current?.validate) {
+                      return Promise.reject("");
+                    }
+                    return mappingsRef.current?.validate()?.then((result) => {
+                      if (result) {
+                        return Promise.reject(result);
                       }
-                      return mappingsRef.current?.validate()?.then((result) => {
-                        if (result) {
-                          return Promise.reject(result);
-                        }
 
-                        return Promise.resolve("");
-                      });
-                    },
+                      return Promise.resolve("");
+                    });
                   },
-                ],
-              })}
-              isEdit={isEdit}
-              originalValue={oldValue.current?.template?.mappings?.properties}
-              ref={mappingsRef}
-            />
-          </EuiFormRow>
-        </div>
+                },
+              ],
+            })}
+            isEdit={isEdit}
+            originalValue={oldValue.current?.template?.mappings?.properties}
+            ref={mappingsRef}
+          />
+        </EuiFormRow>
       </ContentPanel>
       <EuiSpacer />
       <EuiSpacer />

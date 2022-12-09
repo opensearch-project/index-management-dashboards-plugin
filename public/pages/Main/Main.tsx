@@ -84,6 +84,8 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.CREATE_TEMPLATE,
 ];
 
+const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE];
+
 interface MainProps extends RouteComponentProps {
   landingPage: string;
 }
@@ -185,11 +187,11 @@ export default class Main extends Component<MainProps, object> {
                     <ModalRoot services={services} />
                     <EuiPage restrictWidth="100%">
                       {/*Hide side navigation bar when creating or editing rollup job*/}
-                      {!HIDDEN_NAV_ROUTES.includes(pathname) && (
+                      {!HIDDEN_NAV_ROUTES.includes(pathname) && !HIDDEN_NAV_STARTS_WITH_ROUTE.some((item) => pathname.startsWith(item)) ? (
                         <EuiPageSideBar style={{ minWidth: 200 }}>
                           <EuiSideNav style={{ width: 200 }} items={sideNav} />
                         </EuiPageSideBar>
-                      )}
+                      ) : null}
                       <EuiPageBody>
                         <Switch>
                           <Route
