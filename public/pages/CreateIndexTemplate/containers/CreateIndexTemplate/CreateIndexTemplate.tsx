@@ -29,7 +29,12 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
     this.context.chrome.setBreadcrumbs([
       BREADCRUMBS.INDEX_MANAGEMENT,
       BREADCRUMBS.TEMPLATES,
-      isEdit ? BREADCRUMBS.EDIT_TEMPLATE : BREADCRUMBS.CREATE_TEMPLATE,
+      isEdit
+        ? {
+            ...BREADCRUMBS.EDIT_TEMPLATE,
+            href: `#${this.props.location.pathname}`,
+          }
+        : BREADCRUMBS.CREATE_TEMPLATE,
     ]);
   };
 
