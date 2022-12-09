@@ -61,12 +61,19 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
       return;
     }
     setIsSubmitting(true);
-    const result = await submitTemplate(templateDetail);
+    const result = await submitTemplate({
+      value: templateDetail,
+      commonService: services.commonService,
+      isEdit,
+    });
     if (result && result.ok) {
       coreServices.notifications.toasts.addSuccess(`[${templateDetail.name}] has been successfully ${isEdit ? "updated" : "created"}.`);
       onSubmitSuccess && onSubmitSuccess(templateDetail.name);
     } else {
       coreServices.notifications.toasts.addDanger(result.error);
+    }
+    if (destroyRef.current) {
+      return;
     }
     setIsSubmitting(false);
   };
@@ -75,6 +82,8 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
     if (isEdit) {
       getTemplate({
         templateName,
+        coreService: coreServices,
+        commonService: services.commonService,
       }).then((template) => {
         field.resetValues(template);
       });
@@ -83,12 +92,13 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
       destroyRef.current = true;
     };
   }, []);
+  const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
   return (
     <>
       <ContentPanel title="Define template" titleSize="s">
         <div style={{ paddingLeft: "10px" }}>
           <CustomFormRow {...getCommonFormRowProps("name")} label="Template name">
-            <AllBuiltInComponents.Input
+            <Component
               {...field.registerField({
                 name: "name",
                 rules: [
@@ -242,7 +252,8 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
           </CustomFormRow>
           <EuiSpacer />
           <AdvancedSettings
-            value={field.getValues().settings}
+            value={field.getValues().template.settings || {}}
+            onChange={(totalValue) => field.setValue(["template", "settings"], totalValue)}
             accordionProps={{
               initialIsOpen: false,
               id: "accordion_for_create_index_template_settings",

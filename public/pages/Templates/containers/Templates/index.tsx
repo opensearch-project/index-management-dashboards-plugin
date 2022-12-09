@@ -179,13 +179,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               {
                 text: "",
                 children: (
-                  <TemplatesActions
-                    onUpdateAlias={() => {
-                      this.setState({ editFlyoutVisible: true });
-                    }}
-                    selectedItems={this.state.selectedItems}
-                    onDelete={this.getTemplates}
-                  />
+                  <TemplatesActions selectedItems={this.state.selectedItems} onDelete={this.getTemplates} history={this.props.history} />
                 ),
               },
               {

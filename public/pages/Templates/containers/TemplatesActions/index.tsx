@@ -3,20 +3,21 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useMemo, useState } from "react";
+import { RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
-
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteTemplatesModal";
 import { ITemplate } from "../../interface";
+import { ROUTES } from "../../../../utils/constants";
 
 export interface TemplatesActionsProps {
   selectedItems: ITemplate[];
   onDelete: () => void;
-  onUpdateAlias: () => void;
+  history: RouteComponentProps["history"];
 }
 
 export default function TemplatesActions(props: TemplatesActionsProps) {
-  const { selectedItems, onDelete, onUpdateAlias } = props;
+  const { selectedItems, onDelete } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
@@ -49,7 +50,7 @@ export default function TemplatesActions(props: TemplatesActionsProps) {
                   name: "Edit",
                   disabled: selectedItems.length !== 1,
                   "data-test-subj": "Edit Action",
-                  onClick: onUpdateAlias,
+                  onClick: () => props.history.push(`${ROUTES.CREATE_TEMPLATE}/${selectedItems[0].name}`),
                 },
                 {
                   name: "Delete",

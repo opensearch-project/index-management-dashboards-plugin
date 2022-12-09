@@ -9,13 +9,9 @@ import { RouteComponentProps } from "react-router-dom";
 import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CommonService } from "../../../../services/index";
 import CustomFormRow from "../../../../components/CustomFormRow";
 
-interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string }> {
-  isEdit?: boolean;
-  commonService: CommonService;
-}
+interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string }> {}
 
 export default class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   static contextType = CoreServicesContext;

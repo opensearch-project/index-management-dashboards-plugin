@@ -1,19 +1,15 @@
-import { useContext } from "react";
-
-import { transformArrayToObject, transformObjectToArray } from "../../../CreateIndex/components/IndexMapping";
-import { ServicesContext } from "../../../../services";
-import { BrowserServices } from "../../../../models/interfaces";
-import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
-import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import { get, set } from "lodash";
+import { flatten } from "flat";
+import { CoreStart } from "opensearch-dashboards/public";
+import { transformArrayToObject, transformObjectToArray } from "../../../CreateIndex/components/IndexMapping";
+import { CommonService } from "../../../../services";
+import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 
-export const submitTemplate = async (props: { value: TemplateItem; isEdit: boolean }) => {
-  const services = useContext(ServicesContext) as BrowserServices;
+export const submitTemplate = async (props: { value: TemplateItem; isEdit: boolean; commonService: CommonService }) => {
   const { name, ...others } = props.value;
   const bodyPayload = JSON.parse(JSON.stringify(others));
   set(bodyPayload, "template.mappings.properties", transformArrayToObject(props.value.template?.mappings?.properties || []));
-  return await services.commonService.apiCaller({
+  return await props.commonService.apiCaller({
     endpoint: "transport.request",
     data: {
       method: props.isEdit ? "POST" : "PUT",
@@ -23,25 +19,37 @@ export const submitTemplate = async (props: { value: TemplateItem; isEdit: boole
   });
 };
 
-export const getTemplate = async (props: { templateName: string }) => {
-  const services = useContext(ServicesContext) as BrowserServices;
-  const coreContext = useContext(CoreServicesContext) as CoreStart;
-  const response = await services.commonService.apiCaller<Record<string, TemplateItemRemote>>({
-    endpoint: "indices.get",
+export const getTemplate = async (props: { templateName: string; commonService: CommonService; coreService: CoreStart }) => {
+  const response = await props.commonService.apiCaller<{
+    index_templates: { name: string; index_template: TemplateItemRemote }[];
+  }>({
+    endpoint: "transport.request",
     data: {
-      index: props.templateName,
-      flat_settings: true,
+      method: "GET",
+      path: `_index_template/${props.templateName}?flat_settings=true`,
     },
   });
+  let error: string = "";
   if (response.ok) {
-    const templateDetail = response.response[props.templateName];
-    const payload = {
-      ...templateDetail,
-    };
-    set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
-    return JSON.parse(JSON.stringify(payload));
+    const findItem = response.response.index_templates.find((item) => item.name === props.templateName);
+    if (findItem) {
+      const templateDetail = findItem.index_template;
+
+      // Opensearch dashboard core does not flattern the settings
+      // do it manually.
+      const payload = {
+        ...templateDetail,
+        name: props.templateName,
+      };
+      set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
+      set(payload, "template.settings", flatten(get(payload, "template.settings")));
+      return JSON.parse(JSON.stringify(payload));
+    }
+    error = `The template [${props.templateName}] does not exist.`;
+  } else {
+    error = response.error || "";
   }
 
-  coreContext.notifications.toasts.addDanger(response.error || "");
-  throw new Error(response.error);
+  props.coreService.notifications.toasts.addDanger(error);
+  throw new Error(error);
 };
