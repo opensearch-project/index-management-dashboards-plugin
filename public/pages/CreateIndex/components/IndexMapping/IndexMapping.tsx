@@ -24,7 +24,7 @@ import { set, get, pick } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
 import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
-import useField from "../../../../lib/field";
+import useField, { transformNameToString } from "../../../../lib/field";
 import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
@@ -75,6 +75,7 @@ const countNodesInTree = (array: MappingsProperties) => {
 export interface IndexMappingProps {
   value?: MappingsProperties;
   oldValue?: MappingsProperties;
+  originalValue?: MappingsProperties;
   onChange: (value: IndexMappingProps["value"]) => void;
   isEdit?: boolean;
   readonly?: boolean;
@@ -118,7 +119,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
           if (current && current.initValue !== undefined) {
             return {
               ...total,
-              [current.name]: current.initValue,
+              [transformNameToString(current.name)]: current.initValue,
             };
           }
 
@@ -170,7 +171,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
             {type}
           </EuiBadge>
           {moreFields.map((extraField) => (
-            <EuiBadge key={extraField.name} color="hollow" title={field.getValue(extraField.name)}>
+            <EuiBadge key={transformNameToString(extraField.name)} color="hollow" title={field.getValue(extraField.name)}>
               {extraField.label}: {field.getValue(extraField.name)}
             </EuiBadge>
           ))}
@@ -241,7 +242,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
         const { label, type, ...others } = item;
         const RenderComponent = readonly ? AllBuiltInComponents.Text : AllBuiltInComponents[type];
         return (
-          <EuiFlexItem grow={false} key={others.name} style={{ width: 100 }}>
+          <EuiFlexItem grow={false} key={transformNameToString(others.name)} style={{ width: 100 }}>
             <EuiFormRow label={label} display="rowCompressed" isInvalid={!!field.getError(others.name)} error={field.getError(others.name)}>
               <RenderComponent
                 {...field.registerField(others)}
@@ -316,7 +317,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
   );
 });
 
-const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
+const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalValue }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
   const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
   useImperativeHandle(ref, () => ({
     validate: async () => {
@@ -470,7 +471,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
                 data-test-subj="createIndexAddObjectFieldButton"
                 onClick={() =>
                   addField("", {
-                    type: "",
+                    type: "object",
                   })
                 }
               >
@@ -504,7 +505,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
             <JSONEditor value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} readOnly={readonly} />
           ) : (
             <JSONDiffEditor
-              original={JSON.stringify({}, null, 2)}
+              original={JSON.stringify(transformArrayToObject(originalValue || []), null, 2)}
               value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
               onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
             />

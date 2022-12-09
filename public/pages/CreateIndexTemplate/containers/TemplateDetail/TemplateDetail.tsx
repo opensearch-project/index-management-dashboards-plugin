@@ -85,6 +85,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
         coreService: coreServices,
         commonService: services.commonService,
       }).then((template) => {
+        oldValue.current = template;
         field.resetValues(template);
       });
     }
@@ -305,7 +306,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
                 ],
               })}
               isEdit={isEdit}
-              oldValue={oldValue.current?.template?.mappings?.properties}
+              originalValue={oldValue.current?.template?.mappings?.properties}
               ref={mappingsRef}
             />
           </EuiFormRow>
