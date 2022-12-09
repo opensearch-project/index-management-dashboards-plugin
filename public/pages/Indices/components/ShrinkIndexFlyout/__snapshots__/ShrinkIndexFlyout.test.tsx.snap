@@ -22,7 +22,6 @@ HTMLCollection [
       <div
         class="euiFlyout euiFlyout--medium euiFlyout--paddingLarge"
         role="dialog"
-        style="max-width: 600px;"
         tabindex="-1"
       >
         <div

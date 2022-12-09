@@ -117,16 +117,16 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     const sourceIndexNotReadyReasons = [];
     const blockNameList = ["targetIndex"];
 
-    if (sourceIndex.health == "red") {
+    if (sourceIndex.health === "red") {
       sourceIndexCannotShrinkErrors.push(<>The source index's health status is [red]!</>);
     }
 
-    if (sourceIndex.pri == "1") {
+    if (sourceIndex.pri === "1") {
       sourceIndexCannotShrinkErrors.push(<>The source index has only one primary shard!</>);
     }
 
     if (sourceIndexCannotShrinkErrors.length == 0) {
-      if (sourceIndex.status == "close") {
+      if (sourceIndex.status === "close") {
         sourceIndexCannotShrinkErrors.push(
           <>
             The source index must not be in close status!
@@ -145,7 +145,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
       }
 
       const indexWriteBlock = get(sourceIndexSettings, [sourceIndex.index, "settings", INDEX_BLOCKS_WRITE_SETTING]);
-      if (!indexWriteBlock) {
+      if (indexWriteBlock !== "true" && indexWriteBlock !== true) {
         const indexWriteBlockSettings = {
           "index.blocks.write": true,
         };
@@ -167,14 +167,14 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
       }
 
       // It's better to do shrink when the source index is green.
-      if (sourceIndex.health != "green") {
+      if (sourceIndex.health !== "green") {
         sourceIndexNotReadyReasons.push("The source index's health is not green.");
       }
 
       // Check whether `index.blocks.read_only` is set to `true`,
       // because shrink operation will timeout and then the new shrunken index's shards cannot be allocated.
       const indexReadOnlyBlock = get(sourceIndexSettings, [sourceIndex.index, "settings", INDEX_BLOCKS_READONLY_SETTING]);
-      if (!!indexReadOnlyBlock) {
+      if (indexReadOnlyBlock === "true" || indexReadOnlyBlock === true) {
         sourceIndexNotReadyReasons.push(
           "Index setting [index.blocks.read_only] is [true], this will cause the new shrunken index's shards to be unassigned."
         );
@@ -205,7 +205,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     const numberOfShardsSelectOptions = [];
     const sourceIndexSharsNum = Number(sourceIndex.pri);
     for (let i = 1; i <= sourceIndexSharsNum; i++) {
-      if (sourceIndexSharsNum % i == 0) {
+      if (sourceIndexSharsNum % i === 0) {
         numberOfShardsSelectOptions.push({
           value: i.toString(),
           text: i,
@@ -296,7 +296,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     const indices = [this.props.sourceIndex.index];
     const indexDetailChildren = (
       <>
-        <EuiCallOut color="danger" hidden={sourceIndexCannotShrinkErrors.length == 0}>
+        <EuiCallOut color="danger" hidden={sourceIndexCannotShrinkErrors.length === 0}>
           <div style={{ lineHeight: 1.5 }}>
             <p>The source index cannot shrink, due to the following reasons:</p>
             <ul key="error">
@@ -309,7 +309,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
             </EuiLink>
           </div>
         </EuiCallOut>
-        <EuiCallOut color="warning" hidden={sourceIndexCannotShrinkErrors.length != 0 || sourceIndexNotReadyReasons.length == 0}>
+        <EuiCallOut color="warning" hidden={sourceIndexCannotShrinkErrors.length !== 0 || sourceIndexNotReadyReasons.length === 0}>
           <div style={{ lineHeight: 1.5 }}>
             <p>The source index is not ready to shrink, may due to the following reasons:</p>
             <ul key="reason">
@@ -368,7 +368,7 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
     );
 
     return (
-      <EuiFlyout ownFocus={true} onClose={() => {}} maxWidth={600} size="m" hideCloseButton>
+      <EuiFlyout ownFocus={true} onClose={() => {}} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
             <h2 id="flyoutTitle"> Shrink index</h2>

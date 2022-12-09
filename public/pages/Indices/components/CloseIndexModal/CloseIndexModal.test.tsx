@@ -28,4 +28,14 @@ describe("<CloseIndexModal /> spec", () => {
     userEvent.type(getByPlaceholderText("close"), "close");
     expect(document.querySelector(".euiButton")).not.toHaveAttribute("disabled");
   });
+
+  it("Show warning when system indices are selected", async () => {
+    render(<CloseIndexModal selectedItems={[".kibana", ".tasks", "test-index"]} visible onConfirm={() => {}} onClose={() => {}} />);
+    expect(document.querySelector(".euiCallOut")).not.toHaveAttribute("hidden");
+  });
+
+  it("No warning if no system indices are selected", async () => {
+    render(<CloseIndexModal selectedItems={["test-index1", "test-index2"]} visible onConfirm={() => {}} onClose={() => {}} />);
+    expect(document.querySelector(".euiCallOut")).toHaveAttribute("hidden");
+  });
 });

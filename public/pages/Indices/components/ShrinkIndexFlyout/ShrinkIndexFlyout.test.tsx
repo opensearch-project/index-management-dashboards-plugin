@@ -69,9 +69,52 @@ describe("<ShrinkIndexFlyout /> spec", () => {
     });
   });
 
-  it("shows error when source index cannot shrink", async () => {
+  it("shows error when source index's setting index.blocks.write is null", async () => {
     const onClose = jest.fn();
     const setIndexSettings = jest.fn();
+    const { getByTestId, queryByText } = render(
+      <ShrinkIndexFlyout
+        sourceIndex={{
+          health: "green",
+          index: "test_index",
+          pri: "3",
+          rep: "0",
+          status: "open",
+        }}
+        visible
+        onConfirm={() => {}}
+        onClose={onClose}
+        getIndexSettings={async () => {
+          return {};
+        }}
+        setIndexSettings={setIndexSettings}
+        openIndex={() => {}}
+        getAlias={async () => {
+          return {};
+        }}
+      />
+    );
+
+    await waitFor(async () => {
+      expect(queryByText("The source index cannot shrink, due to the following reasons:")).not.toBeNull();
+      expect(queryByText("The source index's write operations must be blocked.")).not.toBeNull();
+      fireEvent.click(getByTestId("onSetIndexWriteBlockButton"));
+      expect(setIndexSettings).toHaveBeenCalled();
+    });
+  });
+
+  it("shows error when source index's setting index.blocks.write is false", async () => {
+    const onClose = jest.fn();
+    const setIndexSettings = jest.fn();
+    const testIndexSettings = {
+      test_index: {
+        settings: {
+          "index.blocks.write": false,
+          "index.routing.allocation.require._name": "node1",
+        },
+      },
+    };
+    const getIndexSettings = jest.fn().mockResolvedValue(testIndexSettings);
     const { getByTestId, queryByText } = render(
       <ShrinkIndexFlyout
         sourceIndex={{

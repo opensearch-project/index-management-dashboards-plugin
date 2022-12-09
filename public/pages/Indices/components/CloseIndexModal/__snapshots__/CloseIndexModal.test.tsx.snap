@@ -49,6 +49,23 @@ HTMLCollection [
               class="euiModalBody__overflow"
             >
               <div
+                class="euiCallOut euiCallOut--warning"
+                hidden=""
+              >
+                <div
+                  class="euiText euiText--small"
+                >
+                  <div
+                    class="euiTextColor euiTextColor--default"
+                  >
+                    You are closing system-like index, please be careful before you do any change to it.
+                  </div>
+                </div>
+              </div>
+              <div
+                class="euiSpacer euiSpacer--l"
+              />
+              <div
                 style="line-height: 1.5;"
               >
                 <p>
