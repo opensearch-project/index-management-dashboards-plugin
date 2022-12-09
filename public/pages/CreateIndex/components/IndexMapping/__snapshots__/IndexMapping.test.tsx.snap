@@ -346,17 +346,21 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                       id="some_html_id"
                       style="display: flex; height: 32px; align-items: center;"
                     >
-                      <span
-                        class="euiToolTipAnchor"
+                      <div
+                        class="euiPopover euiPopover--anchorDownCenter"
                       >
-                        <span
-                          aria-label="Delete current field"
-                          class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
-                          data-test-subj="mapping-visual-editor-0-add-sub-field"
+                        <div
+                          class="euiPopover__anchor"
                         >
-                          EuiIconMock
-                        </span>
-                      </span>
+                          <span
+                            aria-label="Delete current field"
+                            class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
+                            data-test-subj="mapping-visual-editor-0-add-sub-field"
+                          >
+                            EuiIconMock
+                          </span>
+                        </div>
+                      </div>
                       <span
                         class="euiToolTipAnchor"
                       >
@@ -680,7 +684,8 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
   />
   <button
     class="euiButton euiButton--primary"
-    data-test-subj="create index add field button"
+    data-test-subj="createIndexAddFieldButton"
+    style="margin-right: 8px;"
     type="button"
   >
     <span
@@ -689,7 +694,22 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
       <span
         class="euiButton__text"
       >
-        Add a field
+        Add new field
+      </span>
+    </span>
+  </button>
+  <button
+    class="euiButton euiButton--primary"
+    data-test-subj="createIndexAddObjectFieldButton"
+    type="button"
+  >
+    <span
+      class="euiButtonContent euiButton__content"
+    >
+      <span
+        class="euiButton__text"
+      >
+        Add new object
       </span>
     </span>
   </button>

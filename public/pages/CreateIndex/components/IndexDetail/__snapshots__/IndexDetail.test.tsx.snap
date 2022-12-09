@@ -116,7 +116,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
               <div
                 aria-expanded="false"
                 aria-haspopup="listbox"
-                class="euiComboBox euiComboBox-isDisabled"
+                class="euiComboBox"
                 role="combobox"
               >
                 <div
@@ -126,7 +126,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <div
-                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading"
+                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
                       data-test-subj="comboBoxInput"
                       tabindex="-1"
                     >
@@ -142,7 +142,6 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                         <input
                           aria-controls=""
                           data-test-subj="comboBoxSearchInput"
-                          disabled=""
                           role="textbox"
                           style="box-sizing: content-box; width: 2px;"
                           value=""
@@ -162,7 +161,6 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                         aria-label="Open list of options"
                         class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
                         data-test-subj="comboBoxToggleListButton"
-                        disabled=""
                         type="button"
                       >
                         EuiIconMock

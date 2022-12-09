@@ -34,23 +34,21 @@ describe("<IndexDetail /> spec", () => {
   });
 
   it("disallows editing index name when in edit mode", async () => {
-    const { getByDisplayValue } = render(
+    const { getByTestId } = render(
       <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
     );
 
-    await waitFor(() => getByDisplayValue("some_index"));
-
-    expect(getByDisplayValue("some_index")).toHaveAttribute("disabled");
+    await waitFor(() => expect(getByTestId("form-name-index").querySelector('[title="some_index"]')).toBeInTheDocument());
   });
 
   it("disallows editing number_of_replicas when in edit mode", async () => {
-    const { getByPlaceholderText } = render(
+    const { getByTestId } = render(
       <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
     );
 
-    await waitFor(() => getByPlaceholderText("The number of primary shards in the index. Default is 1."));
-
-    expect(getByPlaceholderText("The number of primary shards in the index. Default is 1.")).toHaveAttribute("disabled");
+    await waitFor(() =>
+      expect(getByTestId("form-name-index.number_of_shards").querySelector(".euiCodeBlock__code")).toHaveAttribute("title", "-")
+    );
   });
 
   it("validate should say error when field name is required", async () => {

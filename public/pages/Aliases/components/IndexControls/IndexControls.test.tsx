@@ -29,9 +29,9 @@ describe("<IndexControls /> spec", () => {
       search: "",
       status: "closed",
     });
-    userEvent.type(getByPlaceholderText("Search..."), "test{enter}");
+    userEvent.type(getByPlaceholderText("Search..."), "test");
     await waitFor(() => {
-      expect(onSearchChangeMock).toBeCalledTimes(2);
+      expect(onSearchChangeMock).toBeCalledTimes(5);
       expect(onSearchChangeMock).toBeCalledWith({
         search: "test",
         status: "closed",

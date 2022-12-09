@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { EuiCodeEditor, EuiConfirmModal, EuiCodeEditorProps } from "@elastic/eui";
 
 export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
@@ -11,13 +11,30 @@ export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
   onChange?: (value: JSONEditorProps["value"]) => void;
 }
 
-const JSONEditor: React.SFC<JSONEditorProps> = ({ value, onChange, ...others }) => {
+export interface IJSONEditorRef {
+  validate: () => Promise<string>;
+}
+
+const JSONEditor = forwardRef(({ value, onChange, ...others }: JSONEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   const [tempEditorValue, setTempEditorValue] = useState(value);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
   useEffect(() => {
     setTempEditorValue(value);
   }, [value]);
+
+  useImperativeHandle(ref, () => ({
+    validate: () =>
+      new Promise((resolve, reject) => {
+        try {
+          JSON.parse(tempEditorValue);
+          resolve("");
+        } catch (e) {
+          setConfirmModalVisible(true);
+          reject("Format validate error");
+        }
+      }),
+  }));
 
   return (
     <>
@@ -61,6 +78,6 @@ const JSONEditor: React.SFC<JSONEditorProps> = ({ value, onChange, ...others }) 
       ) : null}
     </>
   );
-};
+});
 
 export default JSONEditor;

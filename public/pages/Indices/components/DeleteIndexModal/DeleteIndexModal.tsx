@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import {
   EuiButton,
   EuiButtonEmpty,
+  EuiCallOut,
   EuiFieldText,
   EuiModal,
   EuiModalBody,
@@ -16,6 +17,8 @@ import {
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
+import { filterByMinimatch } from "../../../../../utils/helper";
+import { SYSTEM_INDEX } from "../../../../../utils/constants";
 
 interface DeleteIndexModalProps {
   selectedItems: string[];
@@ -36,6 +39,8 @@ export default function DeleteIndexModal(props: DeleteIndexModalProps) {
     return null;
   }
 
+  const hasSystemIndex = props.selectedItems.some((index) => filterByMinimatch(index, SYSTEM_INDEX));
+
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
@@ -43,6 +48,12 @@ export default function DeleteIndexModal(props: DeleteIndexModalProps) {
       </EuiModalHeader>
 
       <EuiModalBody>
+        {hasSystemIndex ? (
+          <>
+            <EuiCallOut color="warning">You are trying to delete system-like index, please be careful.</EuiCallOut>
+            <EuiSpacer />
+          </>
+        ) : null}
         <div style={{ lineHeight: 1.5 }}>
           <p>The following index will be deleted permanently. This action cannot be undone.</p>
           <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>

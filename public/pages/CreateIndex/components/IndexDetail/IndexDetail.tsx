@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import React, { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton, EuiCallOut } from "@elastic/eui";
 import { set, merge, omit, pick } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -11,7 +11,6 @@ import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
-import { Ref } from "react";
 import { INDEX_IMPORT_SETTINGS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -29,6 +28,16 @@ const staticSettingsTips = "This field can not be modified in edit mode";
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
 });
+
+export const defaultIndexSettings = {
+  index: "",
+  settings: {
+    "index.number_of_shards": 1,
+    "index.number_of_replicas": 1,
+    "index.refresh_interval": "1s",
+  },
+  mappings: {},
+};
 
 export interface IndexDetailProps {
   value?: Partial<IndexItem>;
@@ -97,21 +106,12 @@ const IndexDetail = (
   const mappingsRef = useRef<IIndexMappingsRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {
-      const aliasesValidateResult = await aliasesRef.current?.validatePromise();
-      if (aliasesValidateResult?.errors) {
-        return false;
-      }
-
-      const mappingsValidateResult = await mappingsRef.current?.validate();
-      if (mappingsValidateResult) {
-        return false;
-      }
-
-      const result = await settingsRef.current?.validatePromise();
-      if (result?.errors) {
-        return false;
-      }
-      return true;
+      const result = await Promise.all([
+        aliasesRef.current?.validatePromise().then((result) => result.errors),
+        mappingsRef.current?.validate(),
+        settingsRef.current?.validatePromise().then((result) => result.errors),
+      ]);
+      return result.every((item) => !item);
     },
   }));
   const onIndexInputBlur = useCallback(async () => {
@@ -214,28 +214,25 @@ const IndexDetail = (
           helpText: "The number of primary shards in the index. Default is 1.",
         },
         name: "index.number_of_shards",
-        type: readonly ? "Text" : "Number",
+        type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) ? "Text" : "Number",
         options: {
           rules: [
             {
-              required: true,
+              min: 1,
+              message: "Number of shards can not smaller than 1",
+            },
+            {
+              validator(rule, value, values) {
+                if (Number(value) !== parseInt(value)) {
+                  return Promise.reject("Number of shards must be an integer");
+                }
+
+                return Promise.resolve();
+              },
             },
           ],
           props: {
             placeholder: "The number of primary shards in the index. Default is 1.",
-            disabled: readonly,
-            disabledReason: readonly
-              ? []
-              : [
-                  {
-                    visible: !finalValue.index,
-                    message: indexNameEmptyTips,
-                  },
-                  {
-                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards"),
-                    message: staticSettingsTips,
-                  },
-                ],
           },
         },
       },
@@ -245,28 +242,25 @@ const IndexDetail = (
           helpText: "The number of replica shards each primary shard should have.",
         },
         name: "index.number_of_replicas",
-        type: readonly ? "Text" : "Number",
+        type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
         options: {
           rules: [
             {
-              required: true,
+              min: 0,
+              message: "Number of replicas can not smaller than 0",
+            },
+            {
+              validator(rule, value, values) {
+                if (Number(value) !== parseInt(value)) {
+                  return Promise.reject("Number of replicas must be an integer");
+                }
+
+                return Promise.resolve();
+              },
             },
           ],
           props: {
-            disabled: readonly,
             placeholder: "The number of replica shards each primary shard should have.",
-            disabledReason: readonly
-              ? []
-              : [
-                  {
-                    visible: !finalValue.index,
-                    message: indexNameEmptyTips,
-                  },
-                  {
-                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas"),
-                    message: staticSettingsTips,
-                  },
-                ],
           },
         },
       },
@@ -280,19 +274,6 @@ const IndexDetail = (
         options: {
           props: {
             placeholder: "Can be set to -1 to disable refreshing.",
-            disabled: readonly,
-            disabledReason: readonly
-              ? []
-              : [
-                  {
-                    visible: !finalValue.index,
-                    message: indexNameEmptyTips,
-                  },
-                  {
-                    visible: isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.refresh_interval"),
-                    message: staticSettingsTips,
-                  },
-                ],
           },
         },
       },
@@ -326,14 +307,12 @@ const IndexDetail = (
                         ? "Some restriction text on domain"
                         : "Please enter the name before moving to other fields",
                     },
-                    type: readonly ? "Text" : "Input",
+                    type: readonly || isEdit ? "Text" : "Input",
                     options: {
                       props: {
                         placeholder: "Please enter the name for your index",
                         onBlur: onIndexInputBlur,
                         isLoading: templateSimulateLoading,
-                        disabled: readonly || isEdit || templateSimulateLoading,
-                        disabledReason: readonly ? "" : "Index name can not be modified",
                       },
                       rules: [
                         {
@@ -359,15 +338,6 @@ const IndexDetail = (
                     options: {
                       props: {
                         refreshOptions: refreshOptions,
-                        isDisabled: readonly,
-                        disabledReason: readonly
-                          ? []
-                          : [
-                              {
-                                visible: !finalValue.index,
-                                message: indexNameEmptyTips,
-                              },
-                            ],
                       },
                     },
                     component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
@@ -441,18 +411,20 @@ const IndexDetail = (
                 }}
                 formFields={formFields}
                 hasAdvancedSettings
+                resetValuesWhenPropsValueChange
                 advancedSettingsProps={{
                   editorProps: {
                     readOnly: readonly,
                   },
                   renderProps: readonly
                     ? undefined
-                    : ({ value, onChange }) => (
+                    : ({ value, onChange, ref }) => (
                         <JSONDiffEditor
                           disabled={readonly}
                           original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
                           value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
                           onChange={(val) => onChange(JSON.parse(val))}
+                          ref={ref}
                         />
                       ),
                   accordionProps: {

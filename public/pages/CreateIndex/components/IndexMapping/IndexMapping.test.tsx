@@ -61,14 +61,14 @@ describe("<IndexMapping /> spec", () => {
     const { getByTestId, getByText, queryByTestId, queryByText } = renderResult;
 
     // old field disable check
-    expect(getByTestId("mapping-visual-editor-0-field-name")).toHaveAttribute("disabled");
-    expect(getByTestId("mapping-visual-editor-0.properties.0-field-name")).toHaveAttribute("disabled");
+    expect(getByTestId("mapping-visual-editor-0-field-name")).toHaveAttribute("title", "object");
+    expect(getByTestId("mapping-visual-editor-0.properties.0-field-name")).toHaveAttribute("title", "text");
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-0-delete-field"]')).toBeNull();
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-0.properties.0-add-sub-field"]')).toBeNull();
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-0.properties.0-delete-field"]')).toBeNull();
 
     // add a new field
-    userEvent.click(getByTestId("create index add field button"));
+    userEvent.click(getByTestId("createIndexAddFieldButton"));
     // new field should be editable
     expect(getByTestId("mapping-visual-editor-1-field-name")).not.toHaveAttribute("disabled");
     expect(document.querySelector('[data-test-subj="mapping-visual-editor-1-delete-field"]')).not.toBeNull();
@@ -114,7 +114,7 @@ describe("<IndexMapping /> spec", () => {
     });
 
     // add a new field
-    userEvent.click(getByTestId("create index add field button"));
+    userEvent.click(getByTestId("createIndexAddFieldButton"));
     // delete the new field
     await waitFor(() => {});
     userEvent.click(getByTestId("mapping-visual-editor-2-delete-field"));

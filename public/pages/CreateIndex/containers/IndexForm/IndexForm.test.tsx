@@ -7,22 +7,19 @@ import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import IndexForm, { IndexFormProps } from "./index";
-import { ServicesConsumer, ServicesContext } from "../../../../services";
+import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
-import { BrowserServices } from "../../../../models/interfaces";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
 apiCallerMock(browserServicesMock);
 
-function renderCreateIndexWithRouter(props: Omit<IndexFormProps, "commonService">) {
+function renderCreateIndexWithRouter(props: IndexFormProps) {
   return {
     ...render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
-          <ServicesConsumer>
-            {(services: BrowserServices | null) => services && <IndexForm {...props} commonService={services.commonService} />}
-          </ServicesConsumer>
+          <IndexForm {...props} />
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     ),
@@ -31,13 +28,12 @@ function renderCreateIndexWithRouter(props: Omit<IndexFormProps, "commonService"
 
 describe("<IndexForm /> spec", () => {
   it("show a toast if getIndices gracefully fails", async () => {
-    const { getByText } = renderCreateIndexWithRouter({
+    const { findByText } = renderCreateIndexWithRouter({
       index: "bad_index",
     });
 
-    await waitFor(() => {
-      getByText("Update");
-    });
+    await findByText("Update");
+
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_error");
   });
@@ -70,26 +66,21 @@ describe("<IndexForm /> spec", () => {
     userEvent.clear(indexNameInput);
     userEvent.type(indexNameInput, `good_index`);
     userEvent.click(document.body);
-    await waitFor(() => {
-      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input")).toHaveAttribute("value", "10");
-    });
+    await waitFor(() => expect(getByTestId("form-name-index.number_of_replicas").querySelector("input")).toHaveAttribute("value", "10"));
     userEvent.click(getByText("Create"));
-    await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("[good_index] has been successfully created.");
-    });
+    await waitFor(() =>
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("[good_index] has been successfully created.")
+    );
   });
 
   it("shows a danger toast when getting graceful error from create index", async () => {
     const { getByText, getByPlaceholderText } = renderCreateIndexWithRouter({});
 
     await waitFor(() => getByText("Define index"));
-
     userEvent.type(getByPlaceholderText("Please enter the name for your index"), `bad_index`);
     userEvent.click(getByText("Create"));
 
-    await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_index");
-    });
+    await waitFor(() => expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_index"));
   });
 
   it("it shows detail and does not call any api when nothing modified", async () => {
@@ -115,7 +106,7 @@ describe("<IndexForm /> spec", () => {
     userEvent.click(getByTitle("update_test_1").querySelector("button") as Element);
     userEvent.type(getByTestId("comboBoxSearchInput"), "test_1{enter}");
     userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
-    userEvent.click(getByTestId("create index add field button"));
+    userEvent.click(getByTestId("createIndexAddFieldButton"));
     await waitFor(() => {});
     await userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
     await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "test_mapping_2");
@@ -225,7 +216,7 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => {});
 
-    userEvent.click(getByTestId("create index add field button"));
+    userEvent.click(getByTestId("createIndexAddFieldButton"));
     await waitFor(() => {});
     await userEvent.clear(getByTestId("mapping-visual-editor-1-field-name"));
     await userEvent.type(getByTestId("mapping-visual-editor-1-field-name"), "test_mapping_2");

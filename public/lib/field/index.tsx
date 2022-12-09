@@ -19,6 +19,13 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     };
     setValuesState(values.current);
   };
+  const resetValues = (obj: Record<string, any>) => {
+    if (destroyRef.current) {
+      return;
+    }
+    values.current = obj;
+    setValuesState(values.current);
+  };
   const setValue: FieldInstance["setValue"] = (name, value) => {
     setValues({
       ...values.current,
@@ -53,7 +60,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
           validateFunction = buildInRules.required;
         } else if (item.format) {
           validateFunction = buildInRules.format;
-        } else if (item.min || item.max) {
+        } else if (typeof item.min === "number" || typeof item.max === "number") {
           validateFunction = buildInRules.size;
         } else if (item.pattern) {
           validateFunction = buildInRules.pattern;
@@ -150,6 +157,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     },
     setError,
     setErrors,
+    resetValues,
   };
 }
 

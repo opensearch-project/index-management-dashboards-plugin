@@ -33,6 +33,10 @@ describe("Create Index", () => {
         aliases: {
           alias_for_specific_1: {},
         },
+        settings: {
+          number_of_shards: 3,
+          number_of_replicas: 2,
+        },
         mappings: {
           properties: {
             text: {
@@ -65,7 +69,7 @@ describe("Create Index", () => {
 
       cy.get('[data-test-subj="comboBoxSearchInput"]').type("some_test_alias{enter}");
       // add a field
-      cy.get('[data-test-subj="create index add field button"]').click().end();
+      cy.get('[data-test-subj="createIndexAddFieldButton"]').click().end();
       cy.get('[data-test-subj="mapping-visual-editor-1-field-name"]').type("text_mappings");
 
       // click create
@@ -78,17 +82,17 @@ describe("Create Index", () => {
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/create-index/${SAMPLE_INDEX}`);
 
       // index name and alias should exist
-      cy.get(`[value="${SAMPLE_INDEX}"]`)
+      cy.get(`[title="${SAMPLE_INDEX}"]`)
         .should("have.exist")
         .end()
         .get('[title="some_test_alias"]')
         .should("have.exist")
         .end()
         .get('[data-test-subj="mapping-visual-editor-0-field-type"]')
-        .should("have.value", "text")
+        .should("have.attr", "title", "text")
         .end()
         .get('[data-test-subj="mapping-visual-editor-1-field-name"]')
-        .should("have.value", "text_mappings")
+        .should("have.attr", "title", "text_mappings")
         .end();
     });
 
@@ -129,7 +133,10 @@ describe("Create Index", () => {
         .end()
         .get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="json-editor-value-display"]')
         .clear({ force: true })
-        .type('{ "index.blocks.write": true, "index.number_of_shards": 2 }', { parseSpecialCharSequences: false, force: true });
+        .type('{ "index.blocks.write": true, "index.number_of_shards": 2, "index.number_of_replicas": 3 }', {
+          parseSpecialCharSequences: false,
+          force: true,
+        });
 
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
 
@@ -159,7 +166,7 @@ describe("Create Index", () => {
         .click()
         .end();
 
-      cy.get('[data-test-subj="create index add field button"]')
+      cy.get('[data-test-subj="createIndexAddFieldButton"]')
         .click()
         .end()
         .get('[data-test-subj="mapping-visual-editor-2-field-name"]')
@@ -168,7 +175,7 @@ describe("Create Index", () => {
         .get('[data-test-subj="createIndexCreateButton"]')
         .click({ force: true });
 
-      cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.value", "text").end();
+      cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.attr", "title", "text").end();
     });
   });
 

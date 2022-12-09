@@ -3,21 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
-import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty } from "@elastic/eui";
-import { get, set, differenceWith, isEqual } from "lodash";
+import React, { Component, forwardRef, useContext } from "react";
+import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiLoadingSpinner } from "@elastic/eui";
+import { get, set, differenceWith, isEqual, merge } from "lodash";
 import { diffArrays } from "diff";
 import flattern from "flat";
-// eui depends on react-ace, so we can import react-ace here
-import { MonacoEditorDiffReact } from "../../../../components/MonacoEditor";
-import IndexDetail, { IndexDetailProps, IIndexDetailRef } from "../../components/IndexDetail";
+import IndexDetail, { IndexDetailProps, IIndexDetailRef, defaultIndexSettings } from "../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
-import { BREADCRUMBS, IndicesUpdateMode } from "../../../../utils/constants";
+import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
-import { CommonService } from "../../../../services/index";
 import { ServerResponse } from "../../../../../server/models/types";
-import { Modal } from "../../../../components/Modal";
+import { BrowserServices } from "../../../../models/interfaces";
+import { ServicesContext } from "../../../../services";
 
 export const getAliasActionsByDiffArray = (
   oldAliases: string[],
@@ -49,7 +47,6 @@ export const getAliasActionsByDiffArray = (
 export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices"> {
   index?: string;
   mode?: IndicesUpdateMode;
-  commonService: CommonService;
   onCancel?: () => void;
   onSubmitSuccess?: (indexName: string) => void;
   hideButtons?: boolean;
@@ -59,28 +56,33 @@ interface CreateIndexState {
   indexDetail: IndexItem;
   oldIndexDetail?: IndexItem;
   isSubmitting: boolean;
+  loading: boolean;
 }
 
-export default class CreateIndex extends Component<IndexFormProps, CreateIndexState> {
+export class IndexForm extends Component<IndexFormProps & { services: BrowserServices }, CreateIndexState> {
   static contextType = CoreServicesContext;
-  state: CreateIndexState = {
-    isSubmitting: false,
-    indexDetail: {
-      index: "",
-      settings: {
-        "index.number_of_shards": 1,
-        "index.number_of_replicas": 1,
-        "index.refresh_interval": "1s",
-      },
-      mappings: {},
-    },
-    oldIndexDetail: undefined,
-  };
+  constructor(props: IndexFormProps & { services: BrowserServices }) {
+    super(props);
+    const isEdit = this.isEdit;
+    this.state = {
+      isSubmitting: false,
+      indexDetail: merge({}, defaultIndexSettings),
+      oldIndexDetail: undefined,
+      loading: isEdit,
+    };
+  }
+
+  componentDidMount(): void {
+    const isEdit = this.isEdit;
+    if (isEdit) {
+      this.refreshIndex();
+    }
+  }
 
   indexDetailRef: IIndexDetailRef | null = null;
 
   get commonService() {
-    return this.props.commonService;
+    return this.props.services.commonService;
   }
 
   get index() {
@@ -108,33 +110,32 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     }
 
     this.context.notifications.toasts.addDanger(response.error);
-    return new Promise(() => {});
+    return Promise.reject();
   };
 
   refreshIndex = async () => {
-    const indexDetail = await this.getIndexDetail(this.index as string);
-    const payload = {
-      ...indexDetail,
-      index: this.index,
-    };
-    set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
-
     this.setState({
-      indexDetail: payload as IndexItem,
-      oldIndexDetail: JSON.parse(JSON.stringify(payload)),
+      loading: true,
     });
-  };
+    try {
+      const indexDetail = await this.getIndexDetail(this.index as string);
+      const payload = {
+        ...indexDetail,
+        index: this.index,
+      };
+      set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
 
-  componentDidMount = async (): Promise<void> => {
-    const isEdit = this.isEdit;
-    if (isEdit) {
-      this.refreshIndex();
+      this.setState({
+        indexDetail: payload as IndexItem,
+        oldIndexDetail: JSON.parse(JSON.stringify(payload)),
+      });
+    } catch (e) {
+      // do nothing
+    } finally {
+      this.setState({
+        loading: false,
+      });
     }
-    this.context.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      isEdit ? BREADCRUMBS.EDIT_INDEX : BREADCRUMBS.CREATE_INDEX,
-    ]);
   };
 
   onCancel = () => {
@@ -272,74 +273,6 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     return entries.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
   };
 
-  showDiff = async (): Promise<ServerResponse<any>> => {
-    return new Promise((resolve, reject) => {
-      if (this.mode === IndicesUpdateMode.alias) {
-        resolve({
-          ok: true,
-          response: {},
-        });
-        return;
-      }
-      Modal.show({
-        title: "Please confirm the change.",
-        "data-test-subj": "change_diff_confirm",
-        type: "confirm",
-        maxWidth: "100%",
-        style: {
-          width: "70vw",
-        },
-        content: (
-          <>
-            <h2>The following changes will be done once you click the confirm button, Please make sure you want to do all the changes.</h2>
-            <EuiSpacer />
-            <MonacoEditorDiffReact
-              options={{
-                readOnly: true,
-              }}
-              language="json"
-              width="100%"
-              height={600}
-              original={JSON.stringify(
-                {
-                  ...this.state.oldIndexDetail,
-                  settings: this.getOrderedJson(this.state.oldIndexDetail?.settings || {}),
-                  mappings: {
-                    properties: transformArrayToObject(this.state.oldIndexDetail?.mappings?.properties || []),
-                  },
-                } as IndexItemRemote,
-                null,
-                2
-              )}
-              modified={JSON.stringify(
-                {
-                  ...this.state.indexDetail,
-                  settings: this.getOrderedJson(this.state.indexDetail.settings || {}),
-                  mappings: {
-                    properties: transformArrayToObject(this.state.indexDetail?.mappings?.properties || []),
-                  },
-                },
-                null,
-                2
-              )}
-            />
-          </>
-        ),
-        onOk: () =>
-          resolve({
-            ok: true,
-            response: {},
-          }),
-        onCancel: () => {
-          resolve({
-            ok: false,
-            error: "",
-          });
-        },
-      });
-    });
-  };
-
   onSubmit = async (): Promise<void> => {
     const mode = this.mode;
     const { indexDetail } = this.state;
@@ -423,7 +356,11 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
   render() {
     const isEdit = this.isEdit;
     const { hideButtons, readonly } = this.props;
-    const { indexDetail, isSubmitting, oldIndexDetail } = this.state;
+    const { indexDetail, isSubmitting, oldIndexDetail, loading } = this.state;
+
+    if (loading) {
+      return <EuiLoadingSpinner size="l" />;
+    }
 
     return (
       <>
@@ -472,3 +409,8 @@ export default class CreateIndex extends Component<IndexFormProps, CreateIndexSt
     );
   }
 }
+
+export default forwardRef(function IndexFormWrapper(props: IndexFormProps, ref: React.Ref<IndexForm>) {
+  const services = useContext(ServicesContext);
+  return <IndexForm {...props} ref={ref} services={services as BrowserServices} />;
+});

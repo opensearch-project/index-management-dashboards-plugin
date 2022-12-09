@@ -3,7 +3,7 @@
   "version": "2.4.0.0",
   "opensearchDashboardsVersion": "2.4.1",
   "configPath": ["opensearch_index_management"],
-  "requiredPlugins": ["navigation"],
+  "requiredPlugins": ["navigation", "opensearchDashboardsReact"],
   "server": true,
   "ui": true
 }

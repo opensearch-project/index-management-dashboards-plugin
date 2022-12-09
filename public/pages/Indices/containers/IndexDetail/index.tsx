@@ -30,7 +30,7 @@ import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
-import IndexForm from "../../../CreateIndex/containers/IndexForm";
+import IndexFormWrapper, { IndexForm } from "../../../CreateIndex/containers/IndexForm";
 
 export interface IndexDetailModalProps extends Omit<IndicesActionsProps, "selectedItems"> {
   index: string;
@@ -164,7 +164,6 @@ export default function IndexDetail(props: IndexDetailModalProps) {
 
   const indexFormCommonProps = {
     index: props.index,
-    commonService: services.commonService,
     onCancel: () => setEditVisible(false),
     onSubmitSuccess: () => {
       ref.current?.refreshIndex();
@@ -256,7 +255,11 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                         </EuiFlexItem>
                       </EuiFlexGroup>
                       <EuiSpacer />
-                      <IndexForm {...indexFormReadonlyCommonProps} mode={IndicesUpdateMode.settings} />
+                      <IndexFormWrapper
+                        {...indexFormReadonlyCommonProps}
+                        key={IndicesUpdateMode.settings}
+                        mode={IndicesUpdateMode.settings}
+                      />
                     </>
                   ),
                 },
@@ -277,7 +280,11 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                         </EuiFlexItem>
                       </EuiFlexGroup>
                       <EuiSpacer />
-                      <IndexForm {...indexFormReadonlyCommonProps} mode={IndicesUpdateMode.mappings} />
+                      <IndexFormWrapper
+                        {...indexFormReadonlyCommonProps}
+                        key={IndicesUpdateMode.mappings}
+                        mode={IndicesUpdateMode.mappings}
+                      />
                     </>
                   ),
                 },
@@ -333,7 +340,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             </EuiTitle>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
-            <IndexForm {...indexFormCommonProps} mode={editMode} />
+            <IndexFormWrapper {...indexFormCommonProps} mode={editMode} />
           </EuiFlyoutBody>
         </EuiFlyout>
       ) : null}

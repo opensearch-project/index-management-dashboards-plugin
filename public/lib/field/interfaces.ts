@@ -130,7 +130,7 @@ export type FieldInstance = {
   /**
    * Set the value of a single input control (will trigger render, please follow the timing of react)
    */
-  setValue<T>(name: string, value: T): void;
+  setValue(name: string, value: any): void;
 
   /**
    * Set the value of a set of input controls (will trigger render, please follow the timing of react)
@@ -138,9 +138,9 @@ export type FieldInstance = {
   setValues(obj: any): void;
 
   /**
-   * Set the value of a set of input controls (will trigger render, please follow the timing of react)
+   * Reset values
    */
-  setValues<T>(obj: T): void;
+  resetValues(obj: any): void;
 
   /**
    * Get the Error of a single input control
