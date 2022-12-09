@@ -175,7 +175,7 @@ Object {
                                     class="euiFormControlLayout__childrenWrapper"
                                   >
                                     <div
-                                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading"
+                                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
                                       data-test-subj="comboBoxInput"
                                       tabindex="-1"
                                     >
