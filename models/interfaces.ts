@@ -49,6 +49,9 @@ export interface IndexItem {
       creation_date?: string;
       [key: string]: any;
     };
+    "index.number_of_shards": number;
+    "index.number_of_replicas": number;
+    "index.refresh_interval": string;
     [key: string]: any;
   };
   aliases?: Record<string, {}>;
@@ -70,8 +73,12 @@ interface ITemplateExtras {
   index_patterns: string[];
 }
 
-export interface TemplateItem extends Pick<IndexItem, "aliases" | "mappings" | "settings">, ITemplateExtras {}
-export interface TemplateItemRemote extends Pick<IndexItemRemote, "aliases" | "mappings" | "settings">, ITemplateExtras {}
+export interface TemplateItem extends ITemplateExtras {
+  template: Pick<IndexItem, "aliases" | "mappings" | "settings">;
+}
+export interface TemplateItemRemote extends ITemplateExtras {
+  template: Pick<IndexItemRemote, "aliases" | "mappings" | "settings">;
+}
 
 /**
  * ManagedIndex item shown in the Managed Indices table

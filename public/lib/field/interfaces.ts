@@ -134,7 +134,7 @@ export type FieldInstance = {
   /**
    * Set the value of a single input control (will trigger render, please follow the timing of react)
    */
-  setValue(name: string, value: any): void;
+  setValue(name: FieldName, value: any): void;
 
   /**
    * Set the value of a set of input controls (will trigger render, please follow the timing of react)

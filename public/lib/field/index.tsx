@@ -36,7 +36,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     values.current = obj;
     setValuesState(values.current);
   };
-  const setValue: FieldInstance["setValue"] = (name, value) => {
+  const setValue: FieldInstance["setValue"] = (name: FieldName, value) => {
     const payload = { ...values.current };
     if (!Array.isArray(name)) {
       name = [name];
@@ -79,7 +79,6 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
         }
 
         let errorInfo = null;
-
         try {
           const result = validateFunction(
             {
@@ -150,11 +149,11 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     getErrors: () => errors.current,
     validatePromise: async () => {
       const result = await Promise.all(
-        Object.keys(fieldsMapRef.current).map((name) => {
+        Object.values(fieldsMapRef.current).map(({ name }) => {
           return validateField(name).then((res) => {
             if (res.length) {
               return {
-                [name]: res,
+                [transformNameToString(name)]: res,
               };
             }
 
@@ -163,11 +162,10 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
         })
       );
       const resultArray = result.filter((item) => item) as Record<string, string[]>[];
-      setErrors(result);
+      const resultPayload = resultArray.reduce((total, current) => ({ ...total, ...current }), {} as Record<string, string[]>);
+      setErrors(resultPayload);
       return {
-        errors: resultArray.length
-          ? resultArray.reduce((total, current) => ({ ...total, ...current }), {} as Record<string, string[]>)
-          : null,
+        errors: resultArray.length ? resultPayload : null,
         values: values.current,
       };
     },

@@ -3,33 +3,29 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
+import React, { Component } from "react";
 import { EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
-import TemplateForm from "../TemplateForm";
-import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
+import TemplateDetail from "../TemplateDetail";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CommonService, ServicesContext } from "../../../../services/index";
+import { CommonService } from "../../../../services/index";
 import CustomFormRow from "../../../../components/CustomFormRow";
 
-interface CreateIndexTemplateProps extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
+interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string }> {
   isEdit?: boolean;
   commonService: CommonService;
 }
 
-export class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
+export default class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   static contextType = CoreServicesContext;
 
-  get commonService() {
-    return this.props.commonService;
-  }
-
-  get index() {
-    return this.props.match.params.index;
+  get template() {
+    return this.props.match.params.template;
   }
 
   get isEdit() {
-    return this.props.match.params.index !== undefined;
+    return this.props.match.params.template !== undefined;
   }
 
   componentDidMount = async (): Promise<void> => {
@@ -68,18 +64,12 @@ export class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
           <></>
         </CustomFormRow>
         <EuiSpacer />
-        <TemplateForm
-          index={this.index}
-          commonService={this.commonService}
+        <TemplateDetail
+          templateName={this.template}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}
         />
       </div>
     );
   }
-}
-
-export default function CreateIndexTemplateWrapper(props: Omit<CreateIndexTemplateProps, "commonService">) {
-  const services = useContext(ServicesContext);
-  return <CreateIndexTemplate {...props} commonService={services?.commonService as CommonService} />;
 }

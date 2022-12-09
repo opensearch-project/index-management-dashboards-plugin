@@ -3,41 +3,47 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef } from "react";
-import { EuiFormRow, EuiFormRowProps, EuiLink, EuiSpacer } from "@elastic/eui";
-import { set } from "lodash";
+import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
+import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiFormRowProps, EuiLink, EuiSpacer } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
-import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
+import AliasSelect from "../../../CreateIndex/components/AliasSelect";
 import IndexMapping, { IIndexMappingsRef } from "../../../CreateIndex/components/IndexMapping";
 import { TemplateItem } from "../../../../../models/interfaces";
-import { Ref } from "react";
-import useField from "../../../../lib/field";
+import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import AdvancedSettings from "../../../../components/AdvancedSettings";
+import { CoreServicesContext } from "../../../../components/core_services";
+import { CoreStart } from "opensearch-dashboards/public";
+import { submitTemplate, getTemplate } from "./hooks";
 
 export interface TemplateDetailProps {
-  value?: Partial<TemplateItem>;
-  oldValue?: Partial<TemplateItem>;
-  onChange: (value: TemplateDetailProps["value"]) => void;
-  isEdit?: boolean;
-  readonly?: boolean;
-  refreshOptions: AliasSelectProps["refreshOptions"];
+  templateName?: string;
+  onCancel?: () => void;
+  onSubmitSuccess?: (templateName: string) => void;
 }
 
-export interface ITemplateDetailRef {
-  validate: () => Promise<boolean>;
-}
-
-const TemplateDetail = (
-  { value, onChange, isEdit, readonly, oldValue, refreshOptions }: TemplateDetailProps,
-  ref: Ref<ITemplateDetailRef>
-) => {
+const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDetailProps, ref: Ref<FieldInstance>) => {
+  const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
-  const field = useField();
+  const coreServices = useContext(CoreServicesContext) as CoreStart;
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const oldValue = useRef<TemplateItem | undefined>(undefined);
+  const field = useField({
+    values: {
+      priority: 0,
+      template: {
+        settings: {
+          "index.number_of_replicas": 1,
+          "index.number_of_shards": 1,
+          "index.refresh_interval": "1s",
+        },
+      },
+    } as Partial<TemplateItem>,
+  });
   const getCommonFormRowProps = useCallback(
     (name: string | string[]): Partial<EuiFormRowProps> => {
       return {
@@ -47,37 +53,36 @@ const TemplateDetail = (
     },
     [field]
   );
-  const onValueChange = useCallback(
-    (name: string | string[], val) => {
-      let finalValue = value || {};
-      set(finalValue, name, val);
-      onChange({ ...finalValue });
-    },
-    [onChange, value]
-  );
   const destroyRef = useRef<boolean>(false);
-  const finalValue = value || {};
   const mappingsRef = useRef<IIndexMappingsRef>(null);
-  useImperativeHandle(ref, () => ({
-    validate: async () => {
-      const { errors } = await field.validatePromise();
-      if (errors) {
-        return false;
-      }
-      const mappingsValidateResult = await mappingsRef.current?.validate();
-      if (mappingsValidateResult) {
-        return false;
-      }
-
-      return true;
-    },
-  }));
+  const onSubmit = async () => {
+    const { errors, values: templateDetail } = (await field.validatePromise()) || {};
+    if (errors) {
+      return;
+    }
+    setIsSubmitting(true);
+    const result = await submitTemplate(templateDetail);
+    if (result && result.ok) {
+      coreServices.notifications.toasts.addSuccess(`[${templateDetail.name}] has been successfully ${isEdit ? "updated" : "created"}.`);
+      onSubmitSuccess && onSubmitSuccess(templateDetail.name);
+    } else {
+      coreServices.notifications.toasts.addDanger(result.error);
+    }
+    setIsSubmitting(false);
+  };
+  useImperativeHandle(ref, () => field);
   useEffect(() => {
+    if (isEdit) {
+      getTemplate({
+        templateName,
+      }).then((template) => {
+        field.resetValues(template);
+      });
+    }
     return () => {
       destroyRef.current = true;
     };
   }, []);
-  console.log(field.getValues());
   return (
     <>
       <ContentPanel title="Define template" titleSize="s">
@@ -149,10 +154,10 @@ const TemplateDetail = (
       <EuiSpacer />
       <ContentPanel title="Index alias" titleSize="s">
         <div style={{ paddingLeft: "10px" }}>
-          <CustomFormRow {...getCommonFormRowProps("aliases")} label="Index alias">
+          <CustomFormRow {...getCommonFormRowProps(["template", "aliases"])} label="Index alias">
             <AliasSelect
               {...field.registerField({
-                name: "aliases",
+                name: ["template", "aliases"],
               })}
               refreshOptions={(aliasName) =>
                 services?.commonService.apiCaller({
@@ -175,11 +180,11 @@ const TemplateDetail = (
           <CustomFormRow
             label="Number of shards"
             helpText="The number of primary shards in the index. Default is 1."
-            {...getCommonFormRowProps(["settings", "index.number_of_shards"])}
+            {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"])}
           >
             <AllBuiltInComponents.Number
               {...field.registerField({
-                name: ["settings", "index.number_of_shards"],
+                name: ["template", "settings", "index.number_of_shards"],
                 rules: [
                   {
                     validator(rule, value) {
@@ -201,11 +206,11 @@ const TemplateDetail = (
           <CustomFormRow
             label="Number of replicas"
             helpText="The number of replica shards each primary shard should have."
-            {...getCommonFormRowProps(["settings", "index.number_of_replicas"])}
+            {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"])}
           >
             <AllBuiltInComponents.Number
               {...field.registerField({
-                name: ["settings", "index.number_of_replicas"],
+                name: ["template", "settings", "index.number_of_replicas"],
                 rules: [
                   {
                     validator(rule, value) {
@@ -227,11 +232,11 @@ const TemplateDetail = (
           <CustomFormRow
             label="Refresh interval of index"
             helpText="How often the index should refresh, which publishes its most recent changes and makes them available for searching."
-            {...getCommonFormRowProps(["settings", "index.refresh_interval"])}
+            {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"])}
           >
             <AllBuiltInComponents.Input
               {...field.registerField({
-                name: ["settings", "index.refresh_interval"],
+                name: ["template", "settings", "index.refresh_interval"],
               })}
             />
           </CustomFormRow>
@@ -269,16 +274,46 @@ const TemplateDetail = (
         <div style={{ paddingLeft: "10px" }}>
           <EuiFormRow fullWidth>
             <IndexMapping
+              {...field.registerField({
+                name: ["template", "mappings", "properties"],
+                rules: [
+                  {
+                    validator() {
+                      if (!mappingsRef.current?.validate) {
+                        return Promise.reject("");
+                      }
+                      return mappingsRef.current?.validate()?.then((result) => {
+                        if (result) {
+                          return Promise.reject(result);
+                        }
+
+                        return Promise.resolve("");
+                      });
+                    },
+                  },
+                ],
+              })}
               isEdit={isEdit}
-              value={finalValue?.mappings?.properties}
-              oldValue={oldValue?.mappings?.properties}
-              onChange={(val) => onValueChange("mappings.properties", val)}
+              oldValue={oldValue.current?.template?.mappings?.properties}
               ref={mappingsRef}
-              readonly={readonly}
             />
           </EuiFormRow>
         </div>
       </ContentPanel>
+      <EuiSpacer />
+      <EuiSpacer />
+      <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+        <EuiFlexItem grow={false}>
+          <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateIndexTemplateCancelButton">
+            Cancel
+          </EuiButtonEmpty>
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateIndexTemplateCreateButton">
+            {isEdit ? "Update" : "Create"}
+          </EuiButton>
+        </EuiFlexItem>
+      </EuiFlexGroup>
     </>
   );
 };
