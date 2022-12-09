@@ -21,7 +21,6 @@ describe("<CreateIndexFlyout /> spec", () => {
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
-    await waitFor(() => {});
     expect(component).toMatchSnapshot();
   });
 });
