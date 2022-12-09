@@ -76,9 +76,12 @@ describe("<SplitIndexFlyout /> spec", () => {
     userEvent.type(getByTestId("numberOfReplicasInput"), "1");
     userEvent.click(getByTestId("flyout-footer-action-button"));
 
-    // wait for next tick
-    await waitFor(() => {});
-    expect(onSplitIndex).toBeCalledTimes(1);
+    await waitFor(
+      () => {
+        expect(onSplitIndex).toBeCalledTimes(1);
+      },
+      { timeout: 2000 }
+    );
   }, 15000);
 
   it("Successful split an index whose shards number is 1", async () => {
@@ -112,9 +115,12 @@ describe("<SplitIndexFlyout /> spec", () => {
     userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "2{enter}");
     userEvent.click(getByTestId("flyout-footer-action-button"));
 
-    // wait for next tick
-    await waitFor(() => {});
-    expect(onSplitIndex).toHaveBeenCalled();
+    await waitFor(
+      () => {
+        expect(onSplitIndex).toBeCalledTimes(1);
+      },
+      { timeout: 2000 }
+    );
   }, 15000); // set timeout to 15s to overwrite the default 10s because this case takes a little long
 
   it("Error message if index name is not specified", async () => {
@@ -243,9 +249,7 @@ describe("<SplitIndexFlyout /> spec", () => {
       expect(queryByText("Source index must not be in close status.")).not.toBeNull();
     });
     userEvent.click(getByTestId("open-index-button"));
-    await waitFor(() => {
-      expect(openIndex).toHaveBeenCalled();
-    });
+    expect(openIndex).toBeCalledTimes(1);
   });
 
   it("blocks.write is not set to true, Index is not ready for split", async () => {
@@ -286,9 +290,7 @@ describe("<SplitIndexFlyout /> spec", () => {
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));
-    await waitFor(() => {
-      expect(setIndexSettings).toHaveBeenCalled();
-    });
+    expect(setIndexSettings).toBeCalledTimes(1);
   });
 
   it("blocks.write is not set, Index is not ready for split", async () => {
@@ -327,9 +329,7 @@ describe("<SplitIndexFlyout /> spec", () => {
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));
-    await waitFor(() => {
-      expect(setIndexSettings).toHaveBeenCalled();
-    });
+    expect(setIndexSettings).toBeCalledTimes(1);
   });
 
   it("Cancel works", async () => {
@@ -347,10 +347,7 @@ describe("<SplitIndexFlyout /> spec", () => {
       />
     );
 
-    await waitFor(() => {
-      userEvent.click(getByTestId("flyout-footer-cancel-button"));
-    });
-
+    userEvent.click(getByTestId("flyout-footer-cancel-button"));
     await waitFor(() => {
       expect(closeFlyout).toHaveBeenCalled();
     });
