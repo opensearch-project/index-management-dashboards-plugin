@@ -81,7 +81,7 @@ describe("<Templates /> spec", () => {
   });
 
   it("with some actions", async () => {
-    const { getByTestId, getByPlaceholderText } = renderWithRouter();
+    const { getByPlaceholderText } = renderWithRouter();
     expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
     userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
     await waitFor(() => {
@@ -91,12 +91,5 @@ describe("<Templates /> spec", () => {
         endpoint: "cat.templates",
       });
     });
-    userEvent.click(document.getElementById(`_selection_column_${testTemplateId}-checkbox`) as Element);
-    await waitFor(() => {});
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
-    userEvent.click(getByTestId("cancelCreateTemplateButton"));
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
   });
 });
