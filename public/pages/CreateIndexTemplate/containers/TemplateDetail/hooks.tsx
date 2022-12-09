@@ -31,7 +31,7 @@ export const getTemplate = async (props: { templateName: string; commonService: 
   });
   let error: string = "";
   if (response.ok) {
-    const findItem = response.response.index_templates.find((item) => item.name === props.templateName);
+    const findItem = response.response?.index_templates?.find((item) => item.name === props.templateName);
     if (findItem) {
       const templateDetail = findItem.index_template;
 

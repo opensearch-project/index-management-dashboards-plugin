@@ -9,7 +9,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect from "../../../CreateIndex/components/AliasSelect";
 import IndexMapping, { IIndexMappingsRef } from "../../../CreateIndex/components/IndexMapping";
 import { TemplateItem } from "../../../../../models/interfaces";
-import useField, { FieldInstance } from "../../../../lib/field";
+import useField, { FieldInstance, transformNameToString } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
@@ -49,6 +49,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
       return {
         isInvalid: !!field.getError(name),
         error: field.getError(name),
+        "data-test-subj": `form-row-${transformNameToString(name)}`,
       };
     },
     [field]
@@ -84,10 +85,14 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
         templateName,
         coreService: coreServices,
         commonService: services.commonService,
-      }).then((template) => {
-        oldValue.current = template;
-        field.resetValues(template);
-      });
+      })
+        .then((template) => {
+          oldValue.current = template;
+          field.resetValues(template);
+        })
+        .catch((e) => {
+          // do nothing
+        });
     }
     return () => {
       destroyRef.current = true;

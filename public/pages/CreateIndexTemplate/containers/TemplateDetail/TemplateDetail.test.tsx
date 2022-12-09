@@ -3,132 +3,29 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useRef, forwardRef, useState } from "react";
-import { render, waitFor } from "@testing-library/react";
-import { renderHook } from "@testing-library/react-hooks";
-import TemplateDetail, { ITemplateDetailRef, TemplateDetailProps } from "./TemplateDetail";
-import userEvent from "@testing-library/user-event";
+import React from "react";
+import { render } from "@testing-library/react";
+import TemplateDetail, { TemplateDetailProps } from "./TemplateDetail";
+import { ServicesContext } from "../../../../services";
+import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
+import { CoreServicesContext } from "../../../../components/core_services";
 
-const TemplateDetailOnChangeWrapper = forwardRef((props: Omit<TemplateDetailProps, "onChange">, ref: any) => {
-  const [value, setValue] = useState(props.value as any);
-  return (
-    <TemplateDetail
-      {...props}
-      ref={ref}
-      value={value}
-      onChange={(val) => {
-        setValue(val);
-      }}
-    />
-  );
-});
-
-const refreshOptions: () => Promise<{ ok: true; response: any[] }> = () => Promise.resolve({ ok: true, response: [{ alias: "test" }] });
+function renderCreateIndexTemplate(props: TemplateDetailProps) {
+  return {
+    ...render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <TemplateDetail {...props} />
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    ),
+  };
+}
 
 describe("<TemplateDetail /> spec", () => {
-  it("renders the component", async () => {
-    const { container } = render(<TemplateDetail refreshOptions={refreshOptions} onChange={() => {}} />);
-    await waitFor(() => {
-      expect(container.firstChild).toMatchSnapshot();
-    });
-  });
-
-  it("disallows editing index name when in edit mode", async () => {
-    const { getByDisplayValue } = render(
-      <TemplateDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
-    );
-
-    await waitFor(() => getByDisplayValue("some_index"));
-
-    expect(getByDisplayValue("some_index")).toHaveAttribute("disabled");
-  });
-
-  it("disallows editing number_of_replicas when in edit mode", async () => {
-    const { getByPlaceholderText } = render(
-      <TemplateDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
-    );
-
-    await waitFor(() => getByPlaceholderText("The number of primary shards in the index. Default is 1."));
-
-    expect(getByPlaceholderText("The number of primary shards in the index. Default is 1.")).toHaveAttribute("disabled");
-  });
-
-  it("validate should say error when field name is required", async () => {
-    const { result } = renderHook(() => {
-      const ref = useRef<ITemplateDetailRef>(null);
-      const container = render(<TemplateDetailOnChangeWrapper refreshOptions={refreshOptions} ref={ref} />);
-      return {
-        ref,
-        container,
-      };
-    });
-    await waitFor(async () => {
-      expect(await result.current.ref.current?.validate()).toBe(false);
-    });
-    const ref = result.current.ref;
-    const { getByTestId, getByPlaceholderText } = result.current.container;
-    userEvent.type(getByPlaceholderText("Please enter the name for your index"), "good_index");
-    await waitFor(async () => {
-      expect(await ref.current?.validate()).toBe(false);
-    });
-    userEvent.type(getByTestId("form-name-index.number_of_shards").querySelector("input") as Element, "2");
-    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "2");
-    await waitFor(async () => {
-      expect(await ref.current?.validate()).toBe(true);
-    });
-  });
-
-  it("inherit templates settings when create", async () => {
-    const { findByDisplayValue, getByDisplayValue, getByText, getByTestId, queryByText } = render(
-      <TemplateDetailOnChangeWrapper
-        refreshOptions={refreshOptions}
-        value={{ index: "some_index" }}
-        onSimulateIndexTemplate={() =>
-          Promise.resolve({
-            ok: true,
-            response: {
-              index: "some_index",
-              aliases: {
-                test: {},
-              },
-              settings: {
-                "index.number_of_replicas": 2,
-              },
-            },
-          })
-        }
-      />
-    );
-    await findByDisplayValue("some_index");
-    userEvent.click(getByDisplayValue("some_index"));
-    userEvent.click(document.body);
-    await waitFor(() => {
-      expect(document.querySelector('[data-test-subj="comboBoxInput"] [title="test"]')).not.toBeNull();
-    });
-    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
-    userEvent.click(getByDisplayValue("some_index"));
-    userEvent.click(document.body);
-    // The Dialog should show
-    await waitFor(() => {
-      expect(getByText("The index name has matched one or more index templates, please choose which way to go on")).toBeInTheDocument();
-    });
-    userEvent.click(getByTestId("simulate-confirm-confirm"));
-    await waitFor(() => {
-      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "2");
-      expect(queryByText("The index name matches one or more index templates")).toBeInTheDocument();
-    });
-
-    userEvent.clear(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element);
-    userEvent.type(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element, "10");
-    userEvent.click(getByDisplayValue("some_index"));
-    userEvent.click(document.body);
-    // The Dialog should show
-    await waitFor(() => {
-      expect(getByText("The index name has matched one or more index templates, please choose which way to go on")).toBeInTheDocument();
-    });
-    userEvent.click(getByTestId("simulate-confirm-cancel"));
-    await waitFor(() => {
-      expect(getByTestId("form-name-index.number_of_replicas").querySelector("input") as Element).toHaveAttribute("value", "10");
-    });
+  // main unit test case is in CreateIndexTemplate.test.tsx
+  it("render component", async () => {
+    const { container } = renderCreateIndexTemplate({});
+    expect(container).toMatchSnapshot();
   });
 });

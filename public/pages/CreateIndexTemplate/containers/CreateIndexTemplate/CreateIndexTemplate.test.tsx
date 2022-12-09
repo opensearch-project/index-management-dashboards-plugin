@@ -7,62 +7,28 @@ import React from "react";
 import { MemoryRouter as Router, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { CoreStart } from "opensearch-dashboards/public";
 import CreateIndexTemplate from "./CreateIndexTemplate";
-import { ServicesConsumer, ServicesContext } from "../../../../services";
+import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
-import { BrowserServices } from "../../../../models/interfaces";
-import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { ROUTES } from "../../../../utils/constants";
-import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
+import { CoreServicesContext } from "../../../../components/core_services";
 
 apiCallerMock(browserServicesMock);
 
-function renderCreateIndexWithRouter(initialEntries = [ROUTES.CREATE_INDEX] as string[]) {
+function renderCreateIndexTemplateWithRouter(initialEntries = [ROUTES.CREATE_TEMPLATE] as string[]) {
   return {
     ...render(
       <Router initialEntries={initialEntries}>
         <CoreServicesContext.Provider value={coreServicesMock}>
           <ServicesContext.Provider value={browserServicesMock}>
-            <ServicesConsumer>
-              {(services: BrowserServices | null) =>
-                services && (
-                  <CoreServicesConsumer>
-                    {(core: CoreStart | null) =>
-                      core && (
-                        <ModalProvider>
-                          <ModalRoot services={services} />
-                          <Switch>
-                            <Route
-                              path={`${ROUTES.CREATE_INDEX}/:index/:mode`}
-                              render={(props: RouteComponentProps) => (
-                                <CreateIndexTemplate {...props} commonService={services.commonService} />
-                              )}
-                            />
-                            <Route
-                              path={`${ROUTES.CREATE_INDEX}/:index`}
-                              render={(props: RouteComponentProps) => (
-                                <CreateIndexTemplate {...props} commonService={services.commonService} />
-                              )}
-                            />
-                            <Route
-                              path={ROUTES.CREATE_INDEX}
-                              render={(props: RouteComponentProps) => (
-                                <CreateIndexTemplate {...props} commonService={services.commonService} />
-                              )}
-                            />
-                            <Route
-                              path={ROUTES.INDICES}
-                              render={(props: RouteComponentProps) => <h1>location is: {ROUTES.INDEX_POLICIES}</h1>}
-                            />
-                          </Switch>
-                        </ModalProvider>
-                      )
-                    }
-                  </CoreServicesConsumer>
-                )
-              }
-            </ServicesConsumer>
+            <Switch>
+              <Route
+                path={`${ROUTES.CREATE_TEMPLATE}/:template`}
+                render={(props: RouteComponentProps) => <CreateIndexTemplate {...props} />}
+              />
+              <Route path={ROUTES.CREATE_TEMPLATE} render={(props: RouteComponentProps) => <CreateIndexTemplate {...props} />} />
+              <Route path={ROUTES.TEMPLATES} render={(props: RouteComponentProps) => <h1>location is: {ROUTES.TEMPLATES}</h1>} />
+            </Switch>
           </ServicesContext.Provider>
         </CoreServicesContext.Provider>
       </Router>
@@ -71,30 +37,57 @@ function renderCreateIndexWithRouter(initialEntries = [ROUTES.CREATE_INDEX] as s
 }
 
 describe("<CreateIndexTemplate /> spec", () => {
-  it("it goes to indices page when click cancel", async () => {
-    const { getByText } = renderCreateIndexTemplateWithRouter([`${ROUTES.CREATE_INDEX}/good_index`]);
+  it("it goes to templates page when click cancel", async () => {
+    const { getByTestId, getByText } = renderCreateIndexTemplateWithRouter([`${ROUTES.CREATE_TEMPLATE}/good_template`]);
     await waitFor(() => {});
-    userEvent.click(getByText("Cancel"));
+    userEvent.click(getByTestId("CreateIndexTemplateCancelButton"));
     await waitFor(() => {
-      expect(getByText(`location is: ${ROUTES.INDEX_POLICIES}`)).toBeInTheDocument();
+      expect(getByText(`location is: ${ROUTES.TEMPLATES}`)).toBeInTheDocument();
     });
   });
 
-  it("it goes to indices page when click create successfully", async () => {
-    const { getByText, getByPlaceholderText } = renderCreateIndexTemplateWithRouter([`${ROUTES.CREATE_INDEX}`]);
+  it("it goes to indices page when click create successfully in happy path", async () => {
+    const { getByText, getByTestId } = renderCreateIndexTemplateWithRouter([`${ROUTES.CREATE_TEMPLATE}`]);
 
-    await waitFor(() => {
-      getByText("Define index");
+    const templateNameInput = getByTestId("form-row-name").querySelector("input") as HTMLInputElement;
+    userEvent.type(templateNameInput, `good_template`);
+
+    const submitButton = getByText("Create");
+    userEvent.click(submitButton);
+    await waitFor(() => expect(getByText("Index patterns must be defined")).not.toBeNull(), {
+      timeout: 3000,
     });
 
-    const indexNameInput = getByPlaceholderText("Please enter the name for your index");
+    const patternInput = getByTestId("form-row-index_patterns").querySelector('[data-test-subj="comboBoxSearchInput"]') as HTMLInputElement;
+    userEvent.type(patternInput, `test_patterns{enter}`);
 
-    userEvent.type(indexNameInput, `good_index`);
-    userEvent.click(document.body);
-    userEvent.click(getByText("Create"));
-
-    await waitFor(() => {
-      expect(getByText(`location is: ${ROUTES.INDEX_POLICIES}`)).toBeInTheDocument();
-    });
+    userEvent.click(submitButton);
+    await waitFor(
+      () => {
+        expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+          endpoint: "transport.request",
+          data: {
+            method: "PUT",
+            path: "_index_template/good_template",
+            body: {
+              priority: 0,
+              template: {
+                settings: {
+                  "index.number_of_replicas": 1,
+                  "index.number_of_shards": 1,
+                  "index.refresh_interval": "1s",
+                },
+                mappings: { properties: {} },
+              },
+              index_patterns: ["test_patterns"],
+            },
+          },
+        });
+        expect(getByText(`location is: ${ROUTES.TEMPLATES}`)).toBeInTheDocument();
+      },
+      {
+        timeout: 3000,
+      }
+    );
   });
 });

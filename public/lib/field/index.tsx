@@ -117,15 +117,12 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
         ...initOptions.props,
         value: get(values.current, initOptions.name),
         onChange: async (val) => {
-          set(values.current, initOptions.name, val);
-          const validateErros = await validateField(initOptions.name);
-          unstable_batchedUpdates(() => {
-            setErrors({
-              [fieldName]: validateErros.length ? validateErros : null,
-            });
-            setValue(initOptions.name, val);
-          });
+          setValue(initOptions.name, val);
           options?.onChange && options?.onChange(initOptions.name, val);
+          const validateErros = await validateField(initOptions.name);
+          setErrors({
+            [fieldName]: validateErros.length ? validateErros : null,
+          });
         },
       };
       if (options?.unmountComponent) {
