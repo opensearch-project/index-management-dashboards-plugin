@@ -42,7 +42,7 @@ export const getTemplate = async (props: { templateName: string; commonService: 
         name: props.templateName,
       };
       set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
-      set(payload, "template.settings", flatten(get(payload, "template.settings")));
+      set(payload, "template.settings", flatten(get(payload, "template.settings") || {}));
       return JSON.parse(JSON.stringify(payload));
     }
     error = `The template [${props.templateName}] does not exist.`;

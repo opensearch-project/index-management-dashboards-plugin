@@ -34,7 +34,7 @@ describe("<AliasSelect /> spec", () => {
 
   it("it should choose options or create one", async () => {
     const { getByTestId } = render(
-      <AliasSelectWithOnchange refreshOptions={() => Promise.resolve({ ok: true, response: [{ alias: "test" }] })} />
+      <AliasSelectWithOnchange refreshOptions={() => Promise.resolve({ ok: true, response: [{ alias: "test", query: "test" }] })} />
     );
     await waitFor(() => {
       expect(getByTestId("comboBoxInput")).toBeInTheDocument();
@@ -47,14 +47,18 @@ describe("<AliasSelect /> spec", () => {
     await waitFor(() => {
       expect(onChangeMock).toBeCalledTimes(1);
       expect(onChangeMock).toBeCalledWith({
-        test: {},
+        test: {
+          query: "test",
+        },
       });
     });
     await userEvent.type(getByTestId("comboBoxInput"), "test2{enter}");
     await waitFor(() => {
       expect(onChangeMock).toBeCalledTimes(2);
       expect(onChangeMock).toBeCalledWith({
-        test: {},
+        test: {
+          query: "test",
+        },
         test2: {},
       });
     });

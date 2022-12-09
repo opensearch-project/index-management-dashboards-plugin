@@ -289,10 +289,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
               rules: [
                 {
                   validator() {
-                    if (!mappingsRef.current?.validate) {
-                      return Promise.reject("");
-                    }
-                    return mappingsRef.current?.validate()?.then((result) => {
+                    return (mappingsRef.current as IIndexMappingsRef).validate()?.then((result) => {
                       if (result) {
                         return Promise.reject(result);
                       }
