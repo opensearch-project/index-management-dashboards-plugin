@@ -6,22 +6,44 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-// @ts-ignore
 import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import TemplatesActions, { TemplatesActionsProps } from "./index";
-import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
+import { ROUTES } from "../../../../utils/constants";
+const historyPushMock = jest.fn();
 
-function renderWithRouter(props: TemplatesActionsProps) {
+function renderWithRouter(props: Omit<TemplatesActionsProps, "history">) {
   return {
     ...render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
-          <ModalProvider>
-            <TemplatesActions {...props} />
-          </ModalProvider>
+          <Router>
+            <Switch>
+              <Route
+                path={ROUTES.TEMPLATES}
+                render={(routeProps) => (
+                  <CoreServicesContext.Provider value={coreServicesMock}>
+                    <ServicesContext.Provider value={browserServicesMock}>
+                      <TemplatesActions
+                        {...props}
+                        history={{
+                          ...routeProps.history,
+                          push: (...args) => {
+                            routeProps.history.push(...args);
+                            historyPushMock(...args);
+                          },
+                        }}
+                      />
+                    </ServicesContext.Provider>
+                  </CoreServicesContext.Provider>
+                )}
+              />
+              <Redirect from="/" to={ROUTES.TEMPLATES} />
+            </Switch>
+          </Router>
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     ),
@@ -32,7 +54,6 @@ describe("<TemplatesActions /> spec", () => {
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
-      onUpdateAlias: () => null,
       onDelete: () => null,
     });
 
@@ -40,9 +61,9 @@ describe("<TemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
-      expect(getByTestId("Delete Action")).toBeDisabled();
+      expect(getByTestId("deleteAction")).toBeDisabled();
     });
   });
 
@@ -77,7 +98,6 @@ describe("<TemplatesActions /> spec", () => {
           order: 0,
         },
       ],
-      onUpdateAlias: () => null,
       onDelete,
     });
 
@@ -85,8 +105,8 @@ describe("<TemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
-    userEvent.click(getByTestId("Delete Action"));
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("deleteAction"));
     userEvent.type(getByPlaceholderText("delete"), "delete");
     userEvent.click(getByTestId("deleteConfirmButton"));
 
@@ -111,6 +131,12 @@ describe("<TemplatesActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_template] successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("editAction"));
+    await waitFor(() => expect(historyPushMock).toBeCalledTimes(1), {
+      timeout: 3000,
     });
   });
 });

@@ -93,10 +93,10 @@ describe("<Templates /> spec", () => {
     });
     userEvent.click(document.getElementById(`_selection_column_${testTemplateId}-checkbox`) as Element);
     await waitFor(() => {});
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
-    userEvent.click(document.querySelector('[data-test-subj="Edit Action"]') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
     userEvent.click(getByTestId("cancelCreateTemplateButton"));
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
-    userEvent.click(document.querySelector('[data-test-subj="Edit Action"]') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
   });
 });

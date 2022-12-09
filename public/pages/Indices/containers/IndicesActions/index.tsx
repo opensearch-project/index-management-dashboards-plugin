@@ -268,7 +268,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
       <ModalConsumer>
         {({ onShow }) => (
           <SimplePopover
-            data-test-subj="More Action"
+            data-test-subj="moreAction"
             panelPaddingSize="none"
             button={
               <EuiButton iconType="arrowDown" iconSide="right">
@@ -333,7 +333,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     {
                       name: "Delete",
                       disabled: !selectedItems.length,
-                      "data-test-subj": "Delete Action",
+                      "data-test-subj": "deleteAction",
                       onClick: () => setDeleteIndexModalVisible(true),
                     },
                   ],

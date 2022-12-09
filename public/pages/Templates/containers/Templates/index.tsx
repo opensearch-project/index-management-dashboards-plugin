@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import _ from "lodash";
+import { debounce } from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -71,7 +71,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       loading: false,
     };
 
-    this.getTemplates = _.debounce(this.getTemplates, 500, { leading: true });
+    this.getTemplates = debounce(this.getTemplates, 500, { leading: true });
   }
 
   componentDidMount() {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DeleteIndexModal /> spec renders the component 1`] = `
+exports[`<DeleteTemplateModal /> spec renders the component 1`] = `
 HTMLCollection [
   <div
     aria-hidden="true"

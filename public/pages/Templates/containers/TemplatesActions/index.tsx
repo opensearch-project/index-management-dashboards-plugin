@@ -29,7 +29,7 @@ export default function TemplatesActions(props: TemplatesActionsProps) {
   return (
     <>
       <SimplePopover
-        data-test-subj="More Action"
+        data-test-subj="moreAction"
         panelPaddingSize="none"
         button={
           <EuiButton iconType="arrowDown" iconSide="right">
@@ -49,13 +49,13 @@ export default function TemplatesActions(props: TemplatesActionsProps) {
                 {
                   name: "Edit",
                   disabled: selectedItems.length !== 1,
-                  "data-test-subj": "Edit Action",
+                  "data-test-subj": "editAction",
                   onClick: () => props.history.push(`${ROUTES.CREATE_TEMPLATE}/${selectedItems[0].name}`),
                 },
                 {
                   name: "Delete",
                   disabled: selectedItems.length !== 1,
-                  "data-test-subj": "Delete Action",
+                  "data-test-subj": "deleteAction",
                   onClick: () => setDeleteIndexModalVisible(true),
                 },
               ],

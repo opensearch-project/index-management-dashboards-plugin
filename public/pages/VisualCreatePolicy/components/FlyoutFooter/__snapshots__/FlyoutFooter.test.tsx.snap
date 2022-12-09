@@ -37,7 +37,7 @@ exports[`<FlyoutFooter /> spec renders the component 1`] = `
         <span
           class="euiButton__text"
         >
-          Edit action
+          editAction
         </span>
       </span>
     </button>
