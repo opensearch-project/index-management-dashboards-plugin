@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef } from "react";
-import { EuiFormRow, EuiFormRowProps, EuiSpacer } from "@elastic/eui";
+import { EuiFormRow, EuiFormRowProps, EuiLink, EuiSpacer } from "@elastic/eui";
 import { set } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
@@ -17,6 +17,7 @@ import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
+import AdvancedSettings from "../../../../components/AdvancedSettings";
 
 export interface TemplateDetailProps {
   value?: Partial<TemplateItem>;
@@ -179,9 +180,88 @@ const TemplateDetail = (
             <AllBuiltInComponents.Number
               {...field.registerField({
                 name: ["settings", "index.number_of_shards"],
+                rules: [
+                  {
+                    validator(rule, value) {
+                      if (value === "") {
+                        return Promise.resolve("");
+                      }
+                      if (Number(value) !== parseInt(value)) {
+                        return Promise.reject("Number of shards must be an integer");
+                      }
+
+                      return Promise.resolve("");
+                    },
+                  },
+                ],
               })}
             />
           </CustomFormRow>
+          <EuiSpacer />
+          <CustomFormRow
+            label="Number of replicas"
+            helpText="The number of replica shards each primary shard should have."
+            {...getCommonFormRowProps(["settings", "index.number_of_replicas"])}
+          >
+            <AllBuiltInComponents.Number
+              {...field.registerField({
+                name: ["settings", "index.number_of_replicas"],
+                rules: [
+                  {
+                    validator(rule, value) {
+                      if (value === "") {
+                        return Promise.resolve("");
+                      }
+                      if (Number(value) !== parseInt(value)) {
+                        return Promise.reject("Number of replicas must be an integer");
+                      }
+
+                      return Promise.resolve("");
+                    },
+                  },
+                ],
+              })}
+            />
+          </CustomFormRow>
+          <EuiSpacer />
+          <CustomFormRow
+            label="Refresh interval of index"
+            helpText="How often the index should refresh, which publishes its most recent changes and makes them available for searching."
+            {...getCommonFormRowProps(["settings", "index.refresh_interval"])}
+          >
+            <AllBuiltInComponents.Input
+              {...field.registerField({
+                name: ["settings", "index.refresh_interval"],
+              })}
+            />
+          </CustomFormRow>
+          <EuiSpacer />
+          <AdvancedSettings
+            value={field.getValues().settings}
+            accordionProps={{
+              initialIsOpen: false,
+              id: "accordion_for_create_index_template_settings",
+              buttonContent: <h4>Advanced settings</h4>,
+            }}
+            rowProps={{
+              label: "Specify advanced index settings",
+              style: {
+                maxWidth: "800px",
+              },
+              helpText: (
+                <>
+                  Specify a comma-delimited list of settings.
+                  <EuiLink
+                    href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                    target="_blank"
+                    external
+                  >
+                    View index settings
+                  </EuiLink>
+                </>
+              ),
+            }}
+          />
         </div>
       </ContentPanel>
       <EuiSpacer />
