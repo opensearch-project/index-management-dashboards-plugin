@@ -183,7 +183,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                 ),
               },
               {
-                text: "Create Templates",
+                text: "Create Template",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
