@@ -22,30 +22,30 @@ export default function IndexSelect(props: IndexSelectProps) {
   const [indexOptions, setIndexOptions] = useState([] as EuiComboBoxOptionOption<IndexSelectItem>[]);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
 
-  useEffect(() => {
+  const searchIndex = (searchValue: string) => {
     props
-      .getIndexOptions("", props.excludeDataStreamIndex)
+      .getIndexOptions(searchValue, props.excludeDataStreamIndex)
       .then((options) => {
         setIndexOptions(options);
       })
       .catch((err) => {
         coreServices.notifications.toasts.addDanger(`fetch indices error ${err}`);
       });
+  };
+
+  useEffect(() => {
+    searchIndex("");
   }, [props.getIndexOptions]);
 
-  const onSearchChange = async (searchValue: string) => {
-    if (searchValue.trim()) {
-      props.getIndexOptions(searchValue, props.excludeDataStreamIndex).then((options) => {
-        setIndexOptions(options);
-      });
-    }
+  const onSearchChange = (searchValue: string) => {
+    searchIndex(searchValue);
   };
 
   return (
     <div>
       <EuiComboBox
         data-test-subj={props["data-test-subj"]}
-        placeholder="Select indexes or data streams"
+        placeholder="Type or select indexes,data streams or aliases"
         options={indexOptions}
         async
         selectedOptions={props.selectedOption}

@@ -214,12 +214,17 @@ describe("<Reindex /> spec", () => {
   it("renders the component", async () => {
     mockApi();
     const { container } = renderWithRouter();
+    // wait for one tick
+    await waitFor(() => {});
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("set breadcrumbs when mounting", async () => {
     mockApi();
     renderWithRouter();
+
+    // wait for one tick
+    await waitFor(() => {});
 
     expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledWith([
@@ -234,19 +239,18 @@ describe("<Reindex /> spec", () => {
     const { getByText } = renderWithRouter();
     await waitFor(() => {});
     userEvent.click(getByText("Cancel"));
-    await waitFor(() => {
-      expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
-    });
+
+    expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
   });
 
   it("auto populate source from search query", async () => {
     mockApi();
     const { getByTestId } = renderWithRouter([`${ROUTES.REINDEX}?source=index-source`]);
 
-    await waitFor(() => {
-      let sourceName = getByTestId("sourceSelector").querySelector(".euiBadge__text") as Element;
-      expect(sourceName.textContent).toBe("index-source");
-    });
+    await waitFor(() => {});
+
+    let sourceName = getByTestId("sourceSelector").querySelector(".euiBadge__text") as Element;
+    expect(sourceName.textContent).toBe("index-source");
   });
 
   it("source is required", async () => {
@@ -297,9 +301,7 @@ describe("<Reindex /> spec", () => {
 
     await waitFor(() => {});
 
-    await waitFor(() => {
-      expect(getByText("Index [index-source-closed] status is closed")).toBeInTheDocument();
-    });
+    expect(getByText("Index [index-source-closed] status is closed")).toBeInTheDocument();
   });
 
   it("source status is red", async () => {
@@ -329,7 +331,7 @@ describe("<Reindex /> spec", () => {
       getByText("Configure source index");
     });
 
-    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source-red");
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source-red");
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
 
@@ -337,9 +339,7 @@ describe("<Reindex /> spec", () => {
 
     await waitFor(() => {}, { timeout: 4000 });
 
-    await waitFor(() => {
-      expect(getByText("Index [index-source-red] health status is red")).toBeInTheDocument();
-    });
+    expect(getByText("Index [index-source-red] health status is red")).toBeInTheDocument();
   });
 
   it("source index _source is not enabled", async () => {
@@ -379,9 +379,7 @@ describe("<Reindex /> spec", () => {
 
     await waitFor(() => {}, { timeout: 4000 });
 
-    await waitFor(() => {
-      expect(getByText("Index [index-source] _sources is not enabled")).toBeInTheDocument();
-    });
+    expect(getByText("Index [index-source] _sources is not enabled")).toBeInTheDocument();
   });
 
   it("destination is required", async () => {
@@ -395,13 +393,10 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     userEvent.click(getByTestId("reindexConfirmButton"));
-
-    await waitFor(() => {
-      expect(getByText("Destination is required")).toBeInTheDocument();
-    });
+    await waitFor(() => {});
+    expect(getByText("Destination is required")).toBeInTheDocument();
   });
 
   it("destination is closed", async () => {
@@ -415,7 +410,6 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({
       ok: true,
@@ -437,17 +431,15 @@ describe("<Reindex /> spec", () => {
       },
     });
 
-    await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
-
     userEvent.click(getByTestId("reindexConfirmButton"));
 
-    await waitFor(() => {
-      expect(getByText("Index [index-dest] status is closed")).toBeInTheDocument();
-    });
+    await waitFor(() => {});
+
+    expect(getByText("Index [index-dest] status is closed")).toBeInTheDocument();
   });
 
   it("destination health status is red", async () => {
@@ -461,7 +453,6 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({
       ok: true,
@@ -487,13 +478,11 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     userEvent.click(getByTestId("reindexConfirmButton"));
 
-    await waitFor(() => {
-      expect(getByText("Index [index-dest] health status is red")).toBeInTheDocument();
-    });
+    await waitFor(() => {});
+    expect(getByText("Index [index-dest] health status is red")).toBeInTheDocument();
   });
 
   it("source and destination must be different", async () => {
@@ -513,32 +502,27 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     userEvent.click(getByTestId("reindexConfirmButton"));
 
-    await waitFor(() => {
-      expect(getByText("Index [index-source] both exists in source and destination")).toBeInTheDocument();
-    });
+    await waitFor(() => {});
+    expect(getByText("Index [index-source] both exists in source and destination")).toBeInTheDocument();
 
     userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "{Backspace}index-source-2");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     // change to alias
     userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "alias-1");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     userEvent.click(getByTestId("reindexConfirmButton"));
 
-    await waitFor(() => {
-      expect(getByText("Index [index-source-2] both exists in source and destination")).toBeInTheDocument();
-    });
+    await waitFor(() => {});
+    expect(getByText("Index [index-source-2] both exists in source and destination")).toBeInTheDocument();
   });
 
   it("destination alias must have writing index behind", async () => {
@@ -552,20 +536,17 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     // change to alias
     userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "alias-2");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     userEvent.click(getByTestId("reindexConfirmButton"));
 
-    await waitFor(() => {
-      expect(getByText("Alias [alias-2] don't have writing index behind it")).toBeInTheDocument();
-    });
+    await waitFor(() => {});
+    expect(getByText("Alias [alias-2] don't have writing index behind it")).toBeInTheDocument();
   });
 
   it("slices format validation", async () => {
@@ -579,13 +560,11 @@ describe("<Reindex /> spec", () => {
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     // open advanced settings
     userEvent.click(getByTestId("advanceOptionToggle"));
@@ -594,46 +573,28 @@ describe("<Reindex /> spec", () => {
 
     userEvent.click(getByTestId("reindexConfirmButton"));
 
-    await waitFor(() => {
-      expect(getByText("Slices must be positive integer or auto")).toBeInTheDocument();
-    });
+    await waitFor(() => {});
+    expect(getByText("Slices must be positive integer or auto")).toBeInTheDocument();
   });
 
   it("it goes to indices page when submit reindex successfully", async () => {
     mockApi();
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
-    await waitFor(() => {
-      getByText("Configure source index");
-    });
-
-    await userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
-    await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
     await waitFor(() => {});
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
-
-    // click advances settings
-    userEvent.click(getByTestId("advanceOptionToggle"));
-
-    // select pipeline
-    await userEvent.type(getAllByTestId("comboBoxSearchInput")[2], "bumpOrderId");
-    await waitFor(() => {});
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[2], { key: "ArrowDown", code: "ArrowDown" });
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[2], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
 
     userEvent.click(getByTestId("reindexConfirmButton"));
 
-    await waitFor(() => {
-      expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
-    });
+    await waitFor(() => {});
+    expect(getByText(`location is: ${ROUTES.INDICES}`)).toBeInTheDocument();
   });
 
   it("call api failed", async () => {
@@ -649,6 +610,8 @@ describe("<Reindex /> spec", () => {
     });
 
     userEvent.click(getByTestId("reindexConfirmButton"));
+
+    await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addDanger).toBeCalled();
   });
@@ -677,8 +640,7 @@ describe("<Reindex /> spec", () => {
 
     // click advances settings
     userEvent.click(getByTestId("advanceOptionToggle"));
-    // setting is open
-    expect(getByText("Pipeline")).toBeInTheDocument();
+    await waitFor(() => {});
 
     expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
       endpoint: "ingest.getPipeline",

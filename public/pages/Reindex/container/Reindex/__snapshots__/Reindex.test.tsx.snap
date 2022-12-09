@@ -114,7 +114,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
                     <p
                       class="euiComboBoxPlaceholder"
                     >
-                      Select indexes or data streams
+                      Type or select indexes,data streams or aliases
                     </p>
                     <div
                       class="euiComboBox__input"
@@ -296,7 +296,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
                         <p
                           class="euiComboBoxPlaceholder"
                         >
-                          Select indexes or data streams
+                          Type or select indexes,data streams or aliases
                         </p>
                         <div
                           class="euiComboBox__input"

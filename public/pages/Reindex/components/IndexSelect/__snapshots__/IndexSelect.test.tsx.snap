@@ -36,7 +36,7 @@ Object {
                     aria-controls=""
                     data-test-subj="comboBoxSearchInput"
                     role="textbox"
-                    style="box-sizing: content-box; width: 1px;"
+                    style="box-sizing: content-box; width: 2px;"
                     value=""
                   />
                   <div
@@ -102,7 +102,7 @@ Object {
                   aria-controls=""
                   data-test-subj="comboBoxSearchInput"
                   role="textbox"
-                  style="box-sizing: content-box; width: 1px;"
+                  style="box-sizing: content-box; width: 2px;"
                   value=""
                 />
                 <div

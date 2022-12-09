@@ -12,19 +12,18 @@ import { act } from "react-dom/test-utils";
 
 describe("<IndexSelect /> spec", () => {
   it("renders the component", async () => {
-    act(() => {
-      const component = render(
-        <CoreServicesContext.Provider value={coreServicesMock}>
-          <IndexSelect
-            getIndexOptions={(str) => Promise.resolve([{ label: "sourceIndex" }])}
-            onSelectedOptions={(options) => {}}
-            selectedOption={[{ label: "sourceIndex" }]}
-            singleSelect={true}
-          />
-        </CoreServicesContext.Provider>
-      );
-      expect(component).toMatchSnapshot();
-    });
+    const component = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <IndexSelect
+          getIndexOptions={(str) => Promise.resolve([{ label: "sourceIndex" }])}
+          onSelectedOptions={(options) => {}}
+          selectedOption={[{ label: "sourceIndex" }]}
+          singleSelect={true}
+        />
+      </CoreServicesContext.Provider>
+    );
+    await waitFor(() => {});
+    expect(component).toMatchSnapshot();
   });
 
   it("renders the component with error", async () => {
@@ -41,9 +40,8 @@ describe("<IndexSelect /> spec", () => {
         </CoreServicesContext.Provider>
       );
     });
-    await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
-    });
+    await waitFor(() => {});
+    expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
   });
 
   it("search async", async () => {
@@ -60,6 +58,7 @@ describe("<IndexSelect /> spec", () => {
         </CoreServicesContext.Provider>
       );
     });
+    await waitFor(() => {});
     expect(getIndexOptionsFn).toHaveBeenCalledTimes(1);
   });
 });

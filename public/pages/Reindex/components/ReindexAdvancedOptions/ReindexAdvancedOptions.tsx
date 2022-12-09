@@ -44,7 +44,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
       .catch((err) => {
         coreServices.notifications.toasts.addDanger(`fetch pipelines error ${err}`);
       });
-  }, [getAllPipelines]);
+  }, [coreServices, getAllPipelines]);
 
   return (
     <div style={{ padding: "10px 10px" }}>

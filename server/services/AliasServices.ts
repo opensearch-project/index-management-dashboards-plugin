@@ -78,7 +78,6 @@ export async function getAliases(
   const aliasesResponse = await callWithRequest("cat.aliases", {
     format: "json",
     name: searchPattern,
-    expand_wildcards: "open",
   }).catch((e) => {
     if (e.statusCode === 403 && e.message.startsWith(SECURITY_EXCEPTION_PREFIX)) {
       accessible = false;

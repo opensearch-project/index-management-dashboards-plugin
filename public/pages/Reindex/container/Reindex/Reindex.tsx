@@ -108,9 +108,9 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       const [indexResponse, dataStreamResponse, aliasResponse] = await Promise.all([
         indexService.getIndices({
           from: 0,
-          size: 10,
+          size: 50, // max page size value
           search: actualSearchValue.join(","),
-          terms: [actualSearchValue.join(",")],
+          indices: [actualSearchValue.join(",")],
           sortDirection: "desc",
           sortField: "index",
           showDataStreams: !excludeDataStreamIndex,
@@ -223,9 +223,11 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         reindexReq.body.dest.pipeline = selectedPipelines[0].label;
       }
       await this.onReindexConfirm(reindexReq);
+      this.setState({ executing: false });
+      // back to indices page
+      this.onCancel();
     } catch (error) {
       this.context.notifications.toasts.addDanger(`Reindex operation error happened ${error}`);
-    } finally {
       this.setState({ executing: false });
     }
   };
@@ -243,8 +245,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     if (res && res.ok) {
       // @ts-ignore
       const toast = `Reindex from [${reindexRequest.body.source.index}] to [${reindexRequest.body.dest.index}] success with taskId ${res.response.task}`;
-      // back to indices page
-      this.onCancel();
       this.context.notifications.toasts.addSuccess(toast);
       jobSchedulerInstance.addJob({
         type: "reindex",
