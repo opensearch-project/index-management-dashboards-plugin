@@ -22,6 +22,7 @@ import SimplePopover from "../../../../components/SimplePopover";
 import { SimpleEuiToast } from "../../../../components/Toast";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_INDEX } from "../../../../../utils/constants";
+import JSONEditor from "../../../../components/JSONEditor";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -430,15 +431,18 @@ const IndexDetail = (
                   },
                   renderProps: readonly
                     ? undefined
-                    : ({ value, onChange, ref }) => (
-                        <JSONDiffEditor
-                          disabled={readonly}
-                          original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
-                          value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
-                          onChange={(val) => onChange(JSON.parse(val))}
-                          ref={ref}
-                        />
-                      ),
+                    : ({ value, onChange, ref }) => {
+                        const Component = isEdit ? JSONDiffEditor : JSONEditor;
+                        return (
+                          <Component
+                            disabled={readonly}
+                            original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
+                            value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
+                            onChange={(val) => onChange(JSON.parse(val))}
+                            ref={ref}
+                          />
+                        );
+                      },
                   accordionProps: {
                     initialIsOpen: false,
                     id: "accordion_for_create_index_settings",

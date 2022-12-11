@@ -3,6 +3,7 @@ import { EuiAccordion, EuiAccordionProps, EuiFormRow, EuiSpacer, EuiFormRowProps
 import JSONEditor, { IJSONEditorRef, JSONEditorProps } from "../JSONEditor";
 import CustomFormRow from "../CustomFormRow";
 import "./index.scss";
+import CustomFormRow from "../CustomFormRow";
 
 export interface IAdvancedSettingsProps {
   rowProps?: Omit<EuiFormRowProps, "children">;

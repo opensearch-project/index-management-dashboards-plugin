@@ -19,6 +19,7 @@ import {
   EuiBadge,
   EuiText,
   EuiContextMenu,
+  EuiLink,
 } from "@elastic/eui";
 import { set, get, pick } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
@@ -30,6 +31,7 @@ import { MappingsProperties, MappingsPropertiesObject } from "../../../../../mod
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
 import "./IndexMapping.scss";
 import SimplePopover from "../../../../components/SimplePopover";
+import CustomFormRow from "../../../../components/CustomFormRow";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
   return Object.entries(obj).map(([fieldName, fieldSettings]) => {
@@ -256,7 +258,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
       })}
       {disabled ? null : (
         <EuiFlexItem grow={false}>
-          <EuiFormRow label="actions" display="rowCompressed">
+          <EuiFormRow label="Actions" display="rowCompressed">
             <div
               style={{ display: "flex", height: 32, alignItems: "center" }}
               onClick={(e) => {
@@ -436,12 +438,20 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
         legend="Editor Type"
         options={[
           {
+<<<<<<< HEAD
             label: "Visual editor",
+=======
+            label: readonly ? "Tree view" : "Visual Editor",
+>>>>>>> 50fb368 (feat: update)
             id: EDITOR_MODE.VISUAL,
             "data-test-subj": "editor-type-visual-editor",
           },
           {
+<<<<<<< HEAD
             label: "JSON editor",
+=======
+            label: readonly ? "JSON" : "JSON Editor",
+>>>>>>> 50fb368 (feat: update)
             id: EDITOR_MODE.JSON,
             "data-test-subj": "editor-type-json-editor",
           },
@@ -504,11 +514,33 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
           {readonly ? (
             <JSONEditor value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} readOnly={readonly} />
           ) : (
-            <JSONDiffEditor
-              original={JSON.stringify(transformArrayToObject(originalValue || []), null, 2)}
-              value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
-              onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
-            />
+            (() => {
+              const Component = isEdit ? JSONDiffEditor : JSONEditor;
+
+              return (
+                <CustomFormRow
+                  label="Specify index mapping"
+                  helpText={
+                    <div>
+                      Specify mapping in JSON format.{" "}
+                      <EuiLink
+                        external
+                        target="_blank"
+                        href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage"
+                      >
+                        [View mapping example]
+                      </EuiLink>
+                    </div>
+                  }
+                >
+                  <Component
+                    original={JSON.stringify({}, null, 2)}
+                    value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
+                    onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
+                  />
+                </CustomFormRow>
+              );
+            })()
           )}
         </>
       )}
