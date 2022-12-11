@@ -97,7 +97,7 @@ describe("Create Index", () => {
     });
 
     it("Update alias successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-alias")
         .click()
@@ -120,7 +120,7 @@ describe("Create Index", () => {
     });
 
     it("Update settings successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-settings")
         .click()
@@ -158,7 +158,7 @@ describe("Create Index", () => {
     });
 
     it("Update mappings successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-mappings")
         .click()

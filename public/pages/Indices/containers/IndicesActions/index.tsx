@@ -296,6 +296,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                         }),
                     },
                     {
+                      isSeparator: true,
+                    },
+                    {
                       name: "Close",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Close Action",
@@ -306,6 +309,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       disabled: !selectedItems.length,
                       "data-test-subj": "Open Action",
                       onClick: () => setOpenIndexModalVisible(true),
+                    },
+                    {
+                      isSeparator: true,
                     },
                     {
                       name: "Reindex",
@@ -329,6 +335,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       "data-test-subj": "Split Action",
                       disabled: !selectedItems.length || selectedItems.length > 1 || selectedItems[0].data_stream !== null,
                       onClick: () => setSplitIndexFlyoutVisible(true),
+                    },
+                    {
+                      isSeparator: true,
                     },
                     {
                       name: "Delete",

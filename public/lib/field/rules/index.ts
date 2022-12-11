@@ -75,7 +75,7 @@ const rules = {
     if (rule.pattern) {
       if (rule.pattern instanceof RegExp) {
         if (!rule.pattern.test(value)) {
-          return messageFormat(messages.pattern, rule.aliasName || rule.field, value, rule.pattern.toString());
+          return messageFormat(rule.message || messages.pattern, rule.aliasName || rule.field, value, rule.pattern.toString());
         }
       } else if (typeof rule.pattern === "string") {
         const _pattern = new RegExp(rule.pattern);

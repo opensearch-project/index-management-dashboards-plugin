@@ -65,7 +65,7 @@ describe("container <IndexDetail /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(getByTestId("view-index-detail-button-test_index"));
+    userEvent.click(getByTestId("viewIndexDetailButton-test_index"));
 
     await waitFor(() => {
       expect(document.querySelector("#index-detail-modal-overview")).not.toBeNull();

@@ -21,6 +21,7 @@ import {
   EuiTitle,
   EuiFlyoutBody,
   EuiIcon,
+  EuiLink,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
@@ -190,9 +191,9 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       <EuiCopy textToCopy={index}>
         {(copy) => <EuiButtonEmpty size="xs" flush="right" iconType="copyClipboard" onClick={copy} color="text"></EuiButtonEmpty>}
       </EuiCopy>
-      <EuiButtonEmpty onClick={() => setVisible(true)} data-test-subj={`view-index-detail-button-${index}`}>
+      <EuiLink onClick={() => setVisible(true)} data-test-subj={`viewIndexDetailButton-${index}`}>
         {index}
-      </EuiButtonEmpty>
+      </EuiLink>
       {visible ? (
         <EuiFlyout onClose={onCloseFlyout} hideCloseButton>
           <EuiFlyoutHeader hasBorder>

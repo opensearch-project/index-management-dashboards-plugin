@@ -10,6 +10,10 @@ import { IndicesActionsProps } from "../containers/IndicesActions";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";
 import { SortDirection } from "../../../utils/constants";
 
+const renderNumber = (value) => {
+  return value || "-";
+};
+
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];
 
 export const DEFAULT_QUERY_PARAMS = {
@@ -53,11 +57,14 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       sortable: true,
       truncateText: true,
       textOnly: true,
-      align: "right",
       render: (health: string, item: ManagedCatIndex) => {
         const color = health ? HEALTH_TO_COLOR[health] : "subdued";
         const text = health || item.status;
-        return <EuiHealth color={color}>{text}</EuiHealth>;
+        return (
+          <EuiHealth color={color} className="indices-health">
+            {text}
+          </EuiHealth>
+        );
       },
     },
     {
@@ -76,8 +83,8 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       sortable: false,
       truncateText: true,
       textOnly: true,
-      align: "right",
       width: "140px",
+      render: renderNumber,
     },
     {
       field: "status",
@@ -85,7 +92,6 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       sortable: true,
       truncateText: true,
       textOnly: true,
-      align: "right",
       render: (status: string, item: ManagedCatIndex) => {
         return item.extraStatus || status;
       },
@@ -97,6 +103,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       truncateText: true,
       textOnly: true,
       dataType: "number",
+      render: renderNumber,
     },
     {
       field: "pri.store.size",
@@ -105,6 +112,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       truncateText: true,
       textOnly: true,
       dataType: "number",
+      render: renderNumber,
     },
     {
       field: "docs.count",
@@ -113,7 +121,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       truncateText: true,
       textOnly: true,
       dataType: "number",
-      render: (count: string) => <span title={count}>{count}</span>,
+      render: (count: string) => <span title={count}>{count || "-"}</span>,
     },
     {
       field: "docs.deleted",
@@ -122,7 +130,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       truncateText: true,
       textOnly: true,
       dataType: "number",
-      render: (deleted: string) => <span title={deleted}>{deleted}</span>,
+      render: (deleted: string) => <span title={deleted}>{deleted || "-"}</span>,
     },
     {
       field: "pri",

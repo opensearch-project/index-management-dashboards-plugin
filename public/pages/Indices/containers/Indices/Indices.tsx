@@ -35,6 +35,7 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
 import IndicesActions from "../IndicesActions";
+import "./index.scss";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;

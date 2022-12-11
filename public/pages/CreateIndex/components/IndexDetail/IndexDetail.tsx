@@ -23,8 +23,6 @@ import { SimpleEuiToast } from "../../../../components/Toast";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_INDEX } from "../../../../../utils/constants";
 
-const indexNameEmptyTips = "Please fill in the index name before editing other fields";
-const staticSettingsTips = "This field can not be modified in edit mode";
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
 });
@@ -303,9 +301,19 @@ const IndexDetail = (
                     name: "index",
                     rowProps: {
                       label: "Index name",
-                      helpText: finalValue.index
-                        ? "Some restriction text on domain"
-                        : "Please enter the name before moving to other fields",
+                      helpText: (
+                        <div>
+                          Must be in lowercase letters. Cannot begin with underscores or hyphens. Cannot contain spaces, commas, or special
+                          characters.
+                          <EuiLink
+                            href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index/#index-naming-restrictions"
+                            external
+                            target="_blank"
+                          >
+                            [See Index naming restrictions]
+                          </EuiLink>
+                        </div>
+                      ),
                     },
                     type: readonly || isEdit ? "Text" : "Input",
                     options: {
@@ -318,6 +326,10 @@ const IndexDetail = (
                         {
                           required: true,
                           message: "Index name can not be null.",
+                        },
+                        {
+                          pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
+                          message: "Invalid index name",
                         },
                       ],
                     },
@@ -358,7 +370,7 @@ const IndexDetail = (
             return (
               <>
                 <ContentPanel title="Define index" titleSize="s">
-                  <div style={{ paddingLeft: "10px" }}>{content}</div>
+                  {content}
                 </ContentPanel>
                 <EuiSpacer />
               </>
@@ -459,7 +471,7 @@ const IndexDetail = (
             return (
               <>
                 <ContentPanel title="Index settings" titleSize="s">
-                  <div style={{ paddingLeft: "10px" }}>{content}</div>
+                  {content}
                 </ContentPanel>
                 <EuiSpacer />
               </>
@@ -487,7 +499,7 @@ const IndexDetail = (
 
             return (
               <ContentPanel title="Index mappings - optional" titleSize="s">
-                <div style={{ paddingLeft: "10px" }}>{content}</div>
+                {content}
               </ContentPanel>
             );
           })()}

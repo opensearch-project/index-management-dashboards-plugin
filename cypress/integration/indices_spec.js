@@ -153,7 +153,7 @@ describe("Indices", () => {
       cy.get(`tbody > tr:contains("${SAMPLE_INDEX}") > td`).filter(`:nth-child(4)`).contains("Yes");
 
       // Confirm the information shows in detail modal
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`).click();
       cy.get(`[data-test-subj="index-detail-overview-item-Managed by policy"] .euiDescriptionList__description a`).contains(POLICY_ID);
     });
   });
@@ -202,7 +202,7 @@ describe("Indices", () => {
     });
 
     it("successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`).click();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`).click();
       cy.get(`[data-test-subj="index-detail-overview-item-Index name"] .euiDescriptionList__description > span`).should(
         "have.text",
         SAMPLE_INDEX
