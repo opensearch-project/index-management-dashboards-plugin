@@ -28,7 +28,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
   return (
     <>
       <SimplePopover
-        data-test-subj="More Action"
+        data-test-subj="moreAction"
         panelPaddingSize="none"
         button={
           <EuiButton iconType="arrowDown" iconSide="right">
@@ -48,13 +48,13 @@ export default function AliasesActions(props: AliasesActionsProps) {
                 {
                   name: "Edit",
                   disabled: selectedItems.length !== 1,
-                  "data-test-subj": "Edit Action",
+                  "data-test-subj": "editAction",
                   onClick: onUpdateAlias,
                 },
                 {
                   name: "Delete",
                   disabled: !selectedItems.length,
-                  "data-test-subj": "Delete Action",
+                  "data-test-subj": "deleteAction",
                   onClick: () => setDeleteIndexModalVisible(true),
                 },
               ],

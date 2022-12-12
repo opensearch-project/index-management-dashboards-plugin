@@ -139,11 +139,11 @@ describe("<Indices /> spec", () => {
     });
     userEvent.click(document.getElementById(`_selection_column_${testAliasId}-checkbox`) as Element);
     await waitFor(() => {});
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
-    userEvent.click(document.querySelector('[data-test-subj="Edit Action"]') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
     userEvent.click(getByTestId("cancelCreateAliasButton"));
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
-    userEvent.click(document.querySelector('[data-test-subj="Edit Action"]') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="editAction"]') as Element);
     await findByPlaceholderText("Specify alias name");
     expect(getByPlaceholderText("Specify alias name")).toBeDisabled();
     expect((getByPlaceholderText("Specify alias name") as HTMLInputElement).value).toEqual(testAliasId);

@@ -455,7 +455,7 @@ Object {
                                   >
                                     <div
                                       class="euiFormHelpText euiFormRow__text"
-                                      id="some_html_id-help-0"
+                                      style="padding-top: 0px; padding-bottom: 4px;"
                                     >
                                       Specify a comma-delimited list of settings.
                                       <a
@@ -541,8 +541,8 @@ Object {
                                 >
                                   <span
                                     class="euiButton__text euiButtonGroupButton__textShift"
-                                    data-text="Visual Editor"
-                                    title="Visual Editor"
+                                    data-text="Visual editor"
+                                    title="Visual editor"
                                   >
                                     <input
                                       checked=""
@@ -553,7 +553,7 @@ Object {
                                       type="radio"
                                       value=""
                                     />
-                                    Visual Editor
+                                    Visual editor
                                   </span>
                                 </span>
                               </label>
@@ -567,8 +567,8 @@ Object {
                                 >
                                   <span
                                     class="euiButton__text euiButtonGroupButton__textShift"
-                                    data-text="JSON Editor"
-                                    title="JSON Editor"
+                                    data-text="JSON editor"
+                                    title="JSON editor"
                                   >
                                     <input
                                       class="euiScreenReaderOnly"
@@ -578,7 +578,7 @@ Object {
                                       type="radio"
                                       value=""
                                     />
-                                    JSON Editor
+                                    JSON editor
                                   </span>
                                 </span>
                               </label>

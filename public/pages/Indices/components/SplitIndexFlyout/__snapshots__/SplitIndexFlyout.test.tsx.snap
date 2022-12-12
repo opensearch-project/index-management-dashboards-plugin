@@ -535,6 +535,26 @@ HTMLCollection [
                               <div
                                 class="euiFormRow__fieldWrapper"
                               >
+                                <div
+                                  class="euiFormHelpText euiFormRow__text"
+                                  style="padding-top: 0px; padding-bottom: 4px;"
+                                >
+                                  Specify a comma-delimited list of settings.
+                                  <a
+                                    class="euiLink euiLink--primary"
+                                    href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                  >
+                                    View index settings
+                                    EuiIconMock
+                                    <span
+                                      class="euiScreenReaderOnly"
+                                    >
+                                      (opens in a new tab or window)
+                                    </span>
+                                  </a>
+                                </div>
                                 <textarea
                                   data-test-subj="json-editor-value-display"
                                   readonly=""
@@ -568,7 +588,6 @@ HTMLCollection [
                                     style="width: 500px; height: 500px;"
                                   >
                                     <textarea
-                                      aria-describedby="some_html_id-help-0"
                                       autocapitalize="off"
                                       autocorrect="off"
                                       class="ace_text-input"
@@ -652,26 +671,6 @@ HTMLCollection [
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div
-                                  class="euiFormHelpText euiFormRow__text"
-                                  id="some_html_id-help-0"
-                                >
-                                  Specify a comma-delimited list of settings.
-                                  <a
-                                    class="euiLink euiLink--primary"
-                                    href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                  >
-                                    View index settings
-                                    EuiIconMock
-                                    <span
-                                      class="euiScreenReaderOnly"
-                                    >
-                                      (opens in a new tab or window)
-                                    </span>
-                                  </a>
                                 </div>
                               </div>
                             </div>

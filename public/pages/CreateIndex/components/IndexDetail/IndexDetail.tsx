@@ -367,7 +367,7 @@ const IndexDetail = (
       {sourceIndices.length ? (
         <>
           <SimplePopover
-            data-test-subj="More Action"
+            data-test-subj="moreAction"
             panelPaddingSize="none"
             button={
               <EuiButton iconType="arrowDown" iconSide="right" data-test-subj="importSettingMappingBtn">

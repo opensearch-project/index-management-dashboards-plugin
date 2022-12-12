@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from "react";
 import { EuiAccordion, EuiAccordionProps, EuiFormRow, EuiSpacer, EuiFormRowProps } from "@elastic/eui";
 import JSONEditor, { IJSONEditorRef, JSONEditorProps } from "../JSONEditor";
+import CustomFormRow from "../CustomFormRow";
 import "./index.scss";
 
 export interface IAdvancedSettingsProps {
@@ -50,7 +51,7 @@ export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProp
     <>
       <EuiSpacer size="m" />
       <EuiAccordion {...props.accordionProps} className="accordion-in-advanced-settings" id={accordionId}>
-        <EuiFormRow {...(props.rowProps as EuiFormRowProps)}>
+        <CustomFormRow {...(props.rowProps as EuiFormRowProps)}>
           {renderProps ? (
             (renderProps({
               value: propsRef.current.value || {},
@@ -64,7 +65,7 @@ export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProp
           ) : (
             <JSONEditor {...editorProps} ref={editorRef} value={JSON.stringify(value, null, 2)} onChange={onChangeInRenderProps} />
           )}
-        </EuiFormRow>
+        </CustomFormRow>
       </EuiAccordion>
     </>
   );

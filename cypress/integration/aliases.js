@@ -69,15 +69,15 @@ describe("Aliases", () => {
     it("successfully", () => {
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_ALIAS_PREFIX}-0{enter}`);
       cy.contains(`${SAMPLE_ALIAS_PREFIX}-0`);
-      cy.get('[data-test-subj="More Action"] button')
+      cy.get('[data-test-subj="moreAction"] button')
         .click()
-        .get('[data-test-subj="Edit Action"]')
+        .get('[data-test-subj="editAction"]')
         .should("be.disabled")
         .get(`#_selection_column_${SAMPLE_ALIAS_PREFIX}-0-checkbox`)
         .click()
-        .get('[data-test-subj="More Action"] button')
+        .get('[data-test-subj="moreAction"] button')
         .click()
-        .get('[data-test-subj="Edit Action"]')
+        .get('[data-test-subj="editAction"]')
         .click()
         .get('[data-test-subj="form-name-indexArray"] [data-test-subj="comboBoxInput"]')
         .click()
@@ -92,7 +92,7 @@ describe("Aliases", () => {
 
       cy.get('[data-test-subj="7 more"]').should("exist");
 
-      cy.get('[data-test-subj="More Action"] button').click().get('[data-test-subj="Delete Action"]').click();
+      cy.get('[data-test-subj="moreAction"] button').click().get('[data-test-subj="deleteAction"]').click();
       // The confirm button should be disabled
       cy.get('[data-test-subj="deleteConfirmButton"]').should("be.disabled");
       // type delete

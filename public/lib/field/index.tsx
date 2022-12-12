@@ -1,6 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Rule, FieldOption, FieldInstance, InitOption, InitResult, ValidateFunction } from "./interfaces";
+import { set, get } from "lodash";
+import { Rule, FieldOption, FieldInstance, InitOption, InitResult, ValidateFunction, FieldName } from "./interfaces";
 import buildInRules from "./rules";
+import { unstable_batchedUpdates } from "react-dom";
+
+export function transformNameToString(name: FieldName) {
+  if (Array.isArray(name)) {
+    return name.join(".");
+  } else {
+    return name;
+  }
+}
 
 export default function useField<T>(options?: FieldOption): FieldInstance {
   const [, setValuesState] = useState((options?.values || {}) as Record<string, any>);
@@ -26,11 +36,13 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     values.current = obj;
     setValuesState(values.current);
   };
-  const setValue: FieldInstance["setValue"] = (name, value) => {
-    setValues({
-      ...values.current,
-      [name]: value,
-    });
+  const setValue: FieldInstance["setValue"] = (name: FieldName, value) => {
+    const payload = { ...values.current };
+    if (!Array.isArray(name)) {
+      name = [name];
+    }
+    set(payload, name, value);
+    setValues(payload);
   };
   const setErrors: FieldInstance["setErrors"] = (errs) => {
     if (destroyRef.current) {
@@ -45,11 +57,11 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
   const setError: FieldInstance["setError"] = (name, error) => {
     setErrors({
       ...errors.current,
-      [name]: error,
+      [transformNameToString(name)]: error,
     });
   };
-  const validateField = async (name: string) => {
-    const fieldOptions = fieldsMapRef.current[name];
+  const validateField = async (name: FieldName) => {
+    const fieldOptions = fieldsMapRef.current[transformNameToString(name)];
     const rules: Rule[] = fieldOptions.rules || [];
     const result = await Promise.all(
       rules.map(async (item) => {
@@ -67,14 +79,13 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
         }
 
         let errorInfo = null;
-
         try {
           const result = validateFunction(
             {
               ...item,
-              field: name,
+              field: transformNameToString(name),
             },
-            values.current[name]
+            get(values.current, name)
           );
           if (result && (result as Promise<string>).then) {
             await result;
@@ -89,10 +100,6 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
       })
     );
     const fieldErrors = result.filter((item) => item) as string[];
-    setErrors({
-      ...errors,
-      [name]: fieldErrors.length ? fieldErrors : null,
-    });
 
     return fieldErrors;
   };
@@ -104,42 +111,46 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
   const refCallbacks = useRef<Record<string, React.Ref<any>>>({});
   return {
     registerField: (initOptions: InitOption): InitResult<any> => {
-      fieldsMapRef.current[initOptions.name] = initOptions;
+      const fieldName = transformNameToString(initOptions.name);
+      fieldsMapRef.current[fieldName] = initOptions;
       const payload: InitResult<any> = {
         ...initOptions.props,
-        value: values.current[initOptions.name],
-        onChange: (val) => {
+        value: get(values.current, initOptions.name),
+        onChange: async (val) => {
           setValue(initOptions.name, val);
-          validateField(initOptions.name);
           options?.onChange && options?.onChange(initOptions.name, val);
+          const validateErros = await validateField(initOptions.name);
+          setErrors({
+            [fieldName]: validateErros.length ? validateErros : null,
+          });
         },
       };
       if (options?.unmountComponent) {
-        if (!refCallbacks.current[initOptions.name]) {
-          refCallbacks.current[initOptions.name] = (ref: any) => {
+        if (!refCallbacks.current[fieldName]) {
+          refCallbacks.current[fieldName] = (ref: any) => {
             if (!ref) {
-              delete fieldsMapRef.current[initOptions.name];
-              delete refCallbacks.current[initOptions.name];
+              delete fieldsMapRef.current[fieldName];
+              delete refCallbacks.current[fieldName];
             }
           };
         }
-        payload.ref = refCallbacks.current[initOptions.name] as React.RefCallback<any>;
+        payload.ref = refCallbacks.current[fieldName] as React.RefCallback<any>;
       }
       return payload;
     },
     setValue,
     setValues,
-    getValue: (name) => values.current[name],
+    getValue: (name) => get(values.current, name),
     getValues: () => values.current,
-    getError: (name) => errors.current[name],
+    getError: (name) => errors.current[transformNameToString(name)],
     getErrors: () => errors.current,
     validatePromise: async () => {
       const result = await Promise.all(
-        Object.keys(fieldsMapRef.current).map((name) => {
+        Object.values(fieldsMapRef.current).map(({ name }) => {
           return validateField(name).then((res) => {
             if (res.length) {
               return {
-                [name]: res,
+                [transformNameToString(name)]: res,
               };
             }
 
@@ -148,10 +159,10 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
         })
       );
       const resultArray = result.filter((item) => item) as Record<string, string[]>[];
+      const resultPayload = resultArray.reduce((total, current) => ({ ...total, ...current }), {} as Record<string, string[]>);
+      setErrors(resultPayload);
       return {
-        errors: resultArray.length
-          ? resultArray.reduce((total, current) => ({ ...total, ...current }), {} as Record<string, string[]>)
-          : null,
+        errors: resultArray.length ? resultPayload : null,
         values: values.current,
       };
     },
