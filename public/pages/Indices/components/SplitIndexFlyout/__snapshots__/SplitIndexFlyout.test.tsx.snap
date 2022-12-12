@@ -69,126 +69,8 @@ HTMLCollection [
                   style="padding: 0px 10px;"
                 >
                   <div
-                    class="euiBasicTable euiBasicTable-loading"
-                  >
-                    <div>
-                      <div
-                        class="euiTableHeaderMobile"
-                      >
-                        <div
-                          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsBaseline euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow"
-                        >
-                          <div
-                            class="euiFlexItem euiFlexItem--flexGrowZero"
-                          />
-                          <div
-                            class="euiFlexItem euiFlexItem--flexGrowZero"
-                          />
-                        </div>
-                      </div>
-                      <table
-                        class="euiTable euiTable--responsive"
-                        id="some_html_id"
-                        tabindex="-1"
-                      >
-                        <caption
-                          class="euiScreenReaderOnly euiTableCaption"
-                        />
-                        <thead>
-                          <tr>
-                            <th
-                              class="euiTableHeaderCell"
-                              data-test-subj="tableHeaderCell_index_0"
-                              role="columnheader"
-                              scope="col"
-                            >
-                              <span
-                                class="euiTableCellContent"
-                              >
-                                <span
-                                  class="euiTableCellContent__text"
-                                  title="Index name"
-                                >
-                                  Index name
-                                </span>
-                              </span>
-                            </th>
-                            <th
-                              class="euiTableHeaderCell"
-                              data-test-subj="tableHeaderCell_pri_1"
-                              role="columnheader"
-                              scope="col"
-                            >
-                              <span
-                                class="euiTableCellContent"
-                              >
-                                <span
-                                  class="euiTableCellContent__text"
-                                  title="Primary shards"
-                                >
-                                  Primary shards
-                                </span>
-                              </span>
-                            </th>
-                            <th
-                              class="euiTableHeaderCell"
-                              data-test-subj="tableHeaderCell_rep_2"
-                              role="columnheader"
-                              scope="col"
-                            >
-                              <span
-                                class="euiTableCellContent"
-                              >
-                                <span
-                                  class="euiTableCellContent__text"
-                                  title="Replica shards"
-                                >
-                                  Replica shards
-                                </span>
-                              </span>
-                            </th>
-                            <th
-                              class="euiTableHeaderCell"
-                              data-test-subj="tableHeaderCell_store.size_3"
-                              role="columnheader"
-                              scope="col"
-                            >
-                              <span
-                                class="euiTableCellContent"
-                              >
-                                <span
-                                  class="euiTableCellContent__text"
-                                  title="Total index size"
-                                >
-                                  Total index size
-                                </span>
-                              </span>
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr
-                            class="euiTableRow"
-                          >
-                            <td
-                              class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                              colspan="4"
-                            >
-                              <div
-                                class="euiTableCellContent euiTableCellContent--alignCenter"
-                              >
-                                <span
-                                  class="euiTableCellContent__text"
-                                >
-                                  No items found
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                    class="euiSpacer euiSpacer--l"
+                  />
                   <div
                     class="euiSpacer euiSpacer--l"
                   />
@@ -282,12 +164,6 @@ HTMLCollection [
                       <div
                         class="euiFormRow__fieldWrapper"
                       >
-                        <div
-                          class="euiFormHelpText euiFormRow__text"
-                          style="padding-top: 0px; padding-bottom: 4px;"
-                        >
-                          The number of primary shards in the target index
-                        </div>
                         <span
                           class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                         >
@@ -362,12 +238,6 @@ HTMLCollection [
                       <div
                         class="euiFormRow__fieldWrapper"
                       >
-                        <div
-                          class="euiFormHelpText euiFormRow__text"
-                          style="padding-top: 0px; padding-bottom: 4px;"
-                        >
-                          The number of replica shards each primary shard should have.
-                        </div>
                         <span
                           class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                         >
@@ -408,12 +278,6 @@ HTMLCollection [
                       <div
                         class="euiFormRow__fieldWrapper"
                       >
-                        <div
-                          class="euiFormHelpText euiFormRow__text"
-                          style="padding-top: 0px; padding-bottom: 4px;"
-                        >
-                          Select existing aliases or specify a new alias
-                        </div>
                         <span
                           class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                         >
@@ -535,26 +399,6 @@ HTMLCollection [
                               <div
                                 class="euiFormRow__fieldWrapper"
                               >
-                                <div
-                                  class="euiFormHelpText euiFormRow__text"
-                                  style="padding-top: 0px; padding-bottom: 4px;"
-                                >
-                                  Specify a comma-delimited list of settings.
-                                  <a
-                                    class="euiLink euiLink--primary"
-                                    href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                  >
-                                    View index settings
-                                    EuiIconMock
-                                    <span
-                                      class="euiScreenReaderOnly"
-                                    >
-                                      (opens in a new tab or window)
-                                    </span>
-                                  </a>
-                                </div>
                                 <textarea
                                   data-test-subj="json-editor-value-display"
                                   readonly=""

@@ -86,12 +86,6 @@ exports[`<Reindex /> spec renders the component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Specify one or more indexes or data streams you want to reindex from.
-          </div>
           <div>
             <div
               aria-expanded="false"

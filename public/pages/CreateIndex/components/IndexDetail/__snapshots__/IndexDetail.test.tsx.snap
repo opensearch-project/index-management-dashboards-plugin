@@ -47,9 +47,27 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiFormControlLayout"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  placeholder="Please enter the name for your index"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </span>
           <div
             class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
+            id="some_html_id-help-0"
           >
             <div>
               Must be in lowercase letters. Cannot begin with underscores or hyphens. Cannot contain spaces, commas, or special characters.
@@ -69,24 +87,6 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
               </a>
             </div>
           </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-          >
-            <div
-              class="euiFormControlLayout"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  class="euiFieldText"
-                  placeholder="Please enter the name for your index"
-                  type="text"
-                  value=""
-                />
-              </div>
-            </div>
-          </span>
         </div>
       </div>
       <div
@@ -117,12 +117,6 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Select existing aliases or specify a new alias
-          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >

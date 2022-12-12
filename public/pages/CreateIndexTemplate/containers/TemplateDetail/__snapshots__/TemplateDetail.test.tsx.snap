@@ -87,12 +87,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Specify the index patterns or index wildcard. Settings in this template will be applied to indexes with names matching index patterns or wildcards.
-          </div>
-          <div
             aria-expanded="false"
             aria-haspopup="listbox"
             class="euiComboBox"
@@ -339,12 +333,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            The number of primary shards in the index. Default is 1.
-          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
@@ -386,12 +374,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            The number of replica shards each primary shard should have.
-          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
@@ -433,12 +415,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            How often the index should refresh, which publishes its most recent changes and makes them available for searching.
-          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
@@ -521,26 +497,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 <div
                   class="euiFormRow__fieldWrapper"
                 >
-                  <div
-                    class="euiFormHelpText euiFormRow__text"
-                    style="padding-top: 0px; padding-bottom: 4px;"
-                  >
-                    Specify a comma-delimited list of settings.
-                    <a
-                      class="euiLink euiLink--primary"
-                      href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      View index settings
-                      EuiIconMock
-                      <span
-                        class="euiScreenReaderOnly"
-                      >
-                        (opens in a new tab or window)
-                      </span>
-                    </a>
-                  </div>
                   <textarea
                     data-test-subj="json-editor-value-display"
                     readonly=""
@@ -725,8 +681,8 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 >
                   <span
                     class="euiButton__text euiButtonGroupButton__textShift"
-                    data-text="Visual editor"
-                    title="Visual editor"
+                    data-text="Visual Editor"
+                    title="Visual Editor"
                   >
                     <input
                       checked=""
@@ -737,7 +693,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                       type="radio"
                       value=""
                     />
-                    Visual editor
+                    Visual Editor
                   </span>
                 </span>
               </label>
@@ -751,8 +707,8 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 >
                   <span
                     class="euiButton__text euiButtonGroupButton__textShift"
-                    data-text="JSON editor"
-                    title="JSON editor"
+                    data-text="JSON Editor"
+                    title="JSON Editor"
                   >
                     <input
                       class="euiScreenReaderOnly"
@@ -762,7 +718,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                       type="radio"
                       value=""
                     />
-                    JSON editor
+                    JSON Editor
                   </span>
                 </span>
               </label>

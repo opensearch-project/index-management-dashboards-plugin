@@ -438,20 +438,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
         legend="Editor Type"
         options={[
           {
-<<<<<<< HEAD
-            label: "Visual editor",
-=======
             label: readonly ? "Tree view" : "Visual Editor",
->>>>>>> 50fb368 (feat: update)
             id: EDITOR_MODE.VISUAL,
             "data-test-subj": "editor-type-visual-editor",
           },
           {
-<<<<<<< HEAD
-            label: "JSON editor",
-=======
             label: readonly ? "JSON" : "JSON Editor",
->>>>>>> 50fb368 (feat: update)
             id: EDITOR_MODE.JSON,
             "data-test-subj": "editor-type-json-editor",
           },
