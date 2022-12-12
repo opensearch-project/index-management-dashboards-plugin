@@ -7,6 +7,7 @@ import React, { useState, useEffect, forwardRef, useImperativeHandle } from "rea
 import { EuiCodeEditor, EuiConfirmModal, EuiCodeEditorProps } from "@elastic/eui";
 
 export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
+  disabled?: boolean;
   value: string;
   onChange?: (value: JSONEditorProps["value"]) => void;
 }
@@ -15,7 +16,7 @@ export interface IJSONEditorRef {
   validate: () => Promise<string>;
 }
 
-const JSONEditor = forwardRef(({ value, onChange, ...others }: JSONEditorProps, ref: React.Ref<IJSONEditorRef>) => {
+const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   const [tempEditorValue, setTempEditorValue] = useState(value);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
@@ -45,6 +46,7 @@ const JSONEditor = forwardRef(({ value, onChange, ...others }: JSONEditorProps, 
         data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
       />
       <EuiCodeEditor
+        readOnly={disabled}
         {...others}
         mode="json"
         value={tempEditorValue}

@@ -17,12 +17,10 @@ import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
-import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 import SimplePopover from "../../../../components/SimplePopover";
 import { SimpleEuiToast } from "../../../../components/Toast";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_INDEX } from "../../../../../utils/constants";
-import JSONEditor from "../../../../components/JSONEditor";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -427,22 +425,26 @@ const IndexDetail = (
                 resetValuesWhenPropsValueChange
                 advancedSettingsProps={{
                   editorProps: {
-                    readOnly: readonly,
+                    mode: isEdit && !readonly ? "diff" : "json",
+                    disabled: readonly,
+                    original: JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2),
+                    value: JSON.stringify(getOrderedJson(value || {}), null, 2),
+                    onChange: (val) => onChange(JSON.parse(val)),
                   },
-                  renderProps: readonly
-                    ? undefined
-                    : ({ value, onChange, ref }) => {
-                        const Component = isEdit ? JSONDiffEditor : JSONEditor;
-                        return (
-                          <Component
-                            disabled={readonly}
-                            original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
-                            value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
-                            onChange={(val) => onChange(JSON.parse(val))}
-                            ref={ref}
-                          />
-                        );
-                      },
+                  // renderProps: readonly
+                  //   ? undefined
+                  //   : ({ value, onChange, ref }) => {
+                  //       const Component = isEdit ? JSONDiffEditor : JSONEditor;
+                  //       return (
+                  //         <Component
+                  //           disabled={readonly}
+                  //           original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
+                  //           value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
+                  //           onChange={(val) => onChange(JSON.parse(val))}
+                  //           ref={ref}
+                  //         />
+                  //       );
+                  //     },
                   accordionProps: {
                     initialIsOpen: false,
                     id: "accordion_for_create_index_settings",

@@ -366,7 +366,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                   type="button"
                 >
                   <span
-                    class="euiTableCellContent euiTableCellContent--alignRight"
+                    class="euiTableCellContent"
                   >
                     <span
                       class="euiTableCellContent__text"
@@ -385,7 +385,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                 style="width: 140px;"
               >
                 <span
-                  class="euiTableCellContent euiTableCellContent--alignRight"
+                  class="euiTableCellContent"
                 >
                   <span
                     class="euiTableCellContent__text"
@@ -409,7 +409,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                   type="button"
                 >
                   <span
-                    class="euiTableCellContent euiTableCellContent--alignRight"
+                    class="euiTableCellContent"
                   >
                     <span
                       class="euiTableCellContent__text"

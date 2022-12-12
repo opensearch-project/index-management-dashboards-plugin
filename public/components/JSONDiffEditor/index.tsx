@@ -5,7 +5,7 @@
 
 import React, { forwardRef } from "react";
 import { EuiDelayRender, EuiLoadingContent } from "@elastic/eui";
-import type { JSONDiffEditorProps } from "./JSONDiffEditor";
+import type { JSONDiffEditorProps } from "./interface";
 import { IJSONEditorRef } from "../JSONEditor";
 
 const LazyBaseEditor = React.lazy(() => (process?.env?.NODE_ENV === "test" ? import("./JSONTextArea") : import("./JSONDiffEditor")));
@@ -16,7 +16,7 @@ const Fallback = () => (
   </EuiDelayRender>
 );
 
-const CodeEditor = forwardRef((props: JSONDiffEditorProps, ref: React.Ref<IJSONEditorRef>) => {
+const JSONDiffEditor = forwardRef((props: JSONDiffEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   return (
     <React.Suspense fallback={<Fallback />}>
       <LazyBaseEditor {...props} ref={ref} />
@@ -24,4 +24,5 @@ const CodeEditor = forwardRef((props: JSONDiffEditorProps, ref: React.Ref<IJSONE
   );
 });
 
-export default CodeEditor;
+export default JSONDiffEditor;
+export * from "./interface";

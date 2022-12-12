@@ -514,33 +514,22 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
           {readonly ? (
             <JSONEditor value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} readOnly={readonly} />
           ) : (
-            (() => {
-              const Component = isEdit ? JSONDiffEditor : JSONEditor;
-
-              return (
-                <CustomFormRow
-                  label="Specify index mapping"
-                  helpText={
-                    <div>
-                      Specify mapping in JSON format.{" "}
-                      <EuiLink
-                        external
-                        target="_blank"
-                        href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage"
-                      >
-                        [View mapping example]
-                      </EuiLink>
-                    </div>
-                  }
-                >
-                  <Component
-                    original={JSON.stringify({}, null, 2)}
-                    value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
-                    onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
-                  />
-                </CustomFormRow>
-              );
-            })()
+            <CustomFormRow
+              label="Specify index mapping"
+              helpText={
+                <div>
+                  Specify mapping in JSON format.{" "}
+                  <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage">
+                    [View mapping example]
+                  </EuiLink>
+                </div>
+              }
+            >
+              <JSONEditor
+                value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
+                onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
+              />
+            </CustomFormRow>
           )}
         </>
       )}
