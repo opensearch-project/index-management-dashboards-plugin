@@ -25,7 +25,7 @@ import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/i
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import ReindexAdvancedOptions from "../../components/ReindexAdvancedOptions";
-import { BREADCRUMBS, DSL_DOCUMENTATION_URL, REINDEX_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CommonService, IndexService } from "../../../../services";
 import { RouteComponentProps } from "react-router-dom";
 import IndexSelect from "../../components/IndexSelect";
@@ -444,7 +444,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
           With the reindex operation, you can copy all or a subset of documents that you select through a query to another index{" "}
-          <EuiLink href={REINDEX_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+          <EuiLink href={this.context.docLinks.links.opensearch.reindexData.base} target="_blank" rel="noopener noreferrer">
             Learn more
           </EuiLink>
         </p>
@@ -510,7 +510,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                   label="Query expression"
                   labelAppend={
                     <EuiText size="xs">
-                      <EuiLink href={DSL_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+                      <EuiLink href={this.context.docLinks.links.opensearch.queryDSL.base} target="_blank" rel="noopener noreferrer">
                         learn more about query-dsl
                       </EuiLink>
                     </EuiText>
