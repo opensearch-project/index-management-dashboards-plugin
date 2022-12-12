@@ -22,6 +22,7 @@ import {
   EuiFlyoutBody,
   EuiIcon,
   EuiLink,
+  EuiHealth,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
@@ -32,6 +33,7 @@ import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import IndexFormWrapper, { IndexForm } from "../../../CreateIndex/containers/IndexForm";
+import { HEALTH_TO_COLOR } from "../../utils/constants";
 
 export interface IndexDetailModalProps extends Omit<IndicesActionsProps, "selectedItems"> {
   index: string;
@@ -55,7 +57,16 @@ const OVERVIEW_DISPLAY_INFO: {
   },
   {
     label: "Status",
-    value: "status",
+    value: ({ detail }) => {
+      const health = detail.health;
+      const color = health ? HEALTH_TO_COLOR[health] : "subdued";
+      const text = health || detail.status;
+      return (
+        <EuiHealth color={color} className="indices-health">
+          {text}
+        </EuiHealth>
+      );
+    },
   },
   {
     label: "Creation date",

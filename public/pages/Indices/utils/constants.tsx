@@ -25,7 +25,7 @@ export const DEFAULT_QUERY_PARAMS = {
   showDataStreams: false,
 };
 
-const HEALTH_TO_COLOR: {
+export const HEALTH_TO_COLOR: {
   [health: string]: string;
   green: string;
   yellow: string;
