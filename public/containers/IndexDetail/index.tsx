@@ -1,4 +1,4 @@
-import { EuiBasicTable, EuiSpacer } from "@elastic/eui";
+import { EuiSpacer, EuiDescriptionList, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import React, { useContext, useEffect, useState } from "react";
 import { CatIndex } from "../../../server/models/interfaces";
 import { ContentPanel } from "../../components/ContentPanel";
@@ -10,6 +10,19 @@ export interface IIndexDetailProps {
   onGetIndicesDetail?: (args: CatIndex[]) => void;
   children?: React.ReactChild;
 }
+
+const DisplayItem = (props: { title: string; content: string }) => {
+  return (
+    <EuiDescriptionList
+      listItems={[
+        {
+          title: props.title,
+          description: props.content,
+        },
+      ]}
+    />
+  );
+};
 
 export default function IndexDetail(props: IIndexDetailProps) {
   const [loading, setLoading] = useState(false);
@@ -39,28 +52,23 @@ export default function IndexDetail(props: IIndexDetailProps) {
   }, [props.indices.join(","), setLoading, setItems, coreServices]);
   return (
     <ContentPanel title="Source index details" titleSize="s">
-      <EuiBasicTable
-        loading={loading}
-        columns={[
-          {
-            name: "Index name",
-            field: "index",
-          },
-          {
-            name: "Primary shards",
-            field: "pri",
-          },
-          {
-            name: "Replica shards",
-            field: "rep",
-          },
-          {
-            name: "Total index size",
-            field: "store.size",
-          },
-        ]}
-        items={items}
-      />
+      <EuiSpacer />
+      {items && items.length ? (
+        <EuiFlexGroup>
+          <EuiFlexItem>
+            <DisplayItem title="Index name" content={items[0].index} />
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <DisplayItem title="Primary shards" content={items[0].pri} />
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <DisplayItem title="Replica shards" content={items[0].rep} />
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <DisplayItem title="Total index size" content={items[0]["store.size"]} />
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      ) : null}
       <EuiSpacer />
       {loading ? null : props.children}
     </ContentPanel>
