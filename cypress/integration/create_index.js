@@ -131,7 +131,8 @@ describe("Create Index", () => {
       cy.get('[data-test-subj="index-form-in-index-detail"] [aria-controls="accordion_for_create_index_settings"]')
         .click()
         .end()
-        .get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="json-editor-value-display"]')
+        .get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+        .focus()
         .clear({ force: true })
         .type('{ "index.blocks.write": true, "index.number_of_shards": 2, "index.number_of_replicas": 3 }', {
           parseSpecialCharSequences: false,
@@ -142,7 +143,8 @@ describe("Create Index", () => {
 
       cy.contains(`Can't update non dynamic settings`).should("exist");
 
-      cy.get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="json-editor-value-display"]')
+      cy.get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+        .focus()
         .clear({ force: true })
         .type('{ "index.blocks.write": true }', { parseSpecialCharSequences: false, force: true })
         .end()
