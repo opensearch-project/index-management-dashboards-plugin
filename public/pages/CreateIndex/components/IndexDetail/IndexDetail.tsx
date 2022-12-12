@@ -313,6 +313,7 @@ const IndexDetail = (
                           </EuiLink>
                         </div>
                       ),
+                      position: "bottom",
                     },
                     type: readonly || isEdit ? "Text" : "Input",
                     options: {

@@ -1,12 +1,16 @@
 import React from "react";
 import { EuiFormRow, EuiFormRowProps } from "@elastic/eui";
 
-export default function CustomFormRow(props: EuiFormRowProps) {
-  const { helpText, children, ...others } = props;
+export type CustomFormRowProps = {
+  position?: "top" | "bottom";
+} & EuiFormRowProps;
+
+export default function CustomFormRow(props: CustomFormRowProps) {
+  const { helpText, children, position, ...others } = props;
   return (
-    <EuiFormRow {...others}>
+    <EuiFormRow {...others} helpText={position === "bottom" ? helpText : undefined}>
       <>
-        {helpText ? (
+        {helpText && position === "top" ? (
           <div style={{ paddingTop: 0, paddingBottom: 4 }} className="euiFormHelpText euiFormRow__text">
             {helpText}
           </div>

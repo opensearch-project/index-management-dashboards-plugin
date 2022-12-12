@@ -1,10 +1,10 @@
 import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } from "react";
-import { EuiForm, EuiFormProps, EuiFormRowProps } from "@elastic/eui";
+import { EuiForm, EuiFormProps } from "@elastic/eui";
 import AllBuiltInComponents, { IFieldComponentProps } from "./built_in_components";
 // import Field, { InitOption, FieldOption, Rule } from "../../lib/field";
 import useField, { InitOption, FieldOption, Rule, FieldInstance } from "../../lib/field";
 import AdvancedSettings, { IAdvancedSettingsProps, IAdvancedSettingsRef } from "../AdvancedSettings";
-import CustomFormRow from "../CustomFormRow";
+import CustomFormRow, { CustomFormRowProps } from "../CustomFormRow";
 
 export * from "./built_in_components";
 
@@ -22,7 +22,7 @@ interface IFormGeneratorAdvancedSettings extends IAdvancedSettingsProps {
 }
 
 export interface IField {
-  rowProps: Pick<EuiFormRowProps, "label" | "helpText" | "fullWidth">;
+  rowProps: Pick<CustomFormRowProps, "label" | "helpText" | "fullWidth" | "position">;
   name: string;
   type?: keyof typeof AllBuiltInComponents;
   component?: React.ComponentType<IFieldComponentProps>;
