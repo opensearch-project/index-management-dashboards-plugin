@@ -17,7 +17,7 @@ const DisplayItem = (props: { title: string; content: string }) => {
       listItems={[
         {
           title: props.title,
-          description: props.content,
+          description: props.content || "-",
         },
       ]}
     />
