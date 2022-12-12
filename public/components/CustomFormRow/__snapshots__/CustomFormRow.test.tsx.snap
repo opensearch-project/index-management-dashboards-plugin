@@ -10,6 +10,12 @@ HTMLCollection [
       <div
         class="euiFormRow__fieldWrapper"
       >
+        <div
+          class="euiFormHelpText euiFormRow__text"
+          style="padding-top: 0px; padding-bottom: 4px;"
+        >
+          test
+        </div>
         <h1>
           test custom form row
         </h1>

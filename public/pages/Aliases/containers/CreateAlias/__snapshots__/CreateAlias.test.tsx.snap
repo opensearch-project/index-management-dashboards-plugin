@@ -102,6 +102,12 @@ HTMLCollection [
                     class="euiFormRow__fieldWrapper"
                   >
                     <div
+                      class="euiFormHelpText euiFormRow__text"
+                      style="padding-top: 0px; padding-bottom: 4px;"
+                    >
+                      Specify one or more indexes to be a part of the alias
+                    </div>
+                    <div
                       aria-expanded="false"
                       aria-haspopup="listbox"
                       class="euiComboBox"
