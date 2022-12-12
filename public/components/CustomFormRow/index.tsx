@@ -6,7 +6,7 @@ export type CustomFormRowProps = {
 } & EuiFormRowProps;
 
 export default function CustomFormRow(props: CustomFormRowProps) {
-  const { helpText, children, position, ...others } = props;
+  const { helpText, children, position = "top", ...others } = props;
   return (
     <EuiFormRow {...others} helpText={position === "bottom" ? helpText : undefined}>
       <>
