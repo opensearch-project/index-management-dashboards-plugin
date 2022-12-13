@@ -141,7 +141,7 @@ const aliases = [
   },
 ];
 
-const mockApi = () => {
+const mockApi = (validateQueryFail?: boolean) => {
   browserServicesMock.indexService.getIndices = jest.fn().mockImplementation((args) => ({
     ok: true,
     response: { indices: args.search.length > 0 ? indices.filter((index) => index.index.startsWith(args.search)) : indices },
@@ -205,14 +205,19 @@ const mockApi = () => {
           },
         },
       });
+    } else if (args.endpoint === "indices.validateQuery") {
+      return Promise.resolve({ ok: true, response: { valid: !validateQueryFail } });
     }
     return Promise.resolve({ ok: true });
   });
 };
 
 describe("<Reindex /> spec", () => {
-  it("renders the component", async () => {
+  beforeEach(() => {
     mockApi();
+  });
+
+  it("renders the component", async () => {
     const { container } = renderWithRouter();
     // wait for one tick
     await waitFor(() => {});
@@ -220,7 +225,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("set breadcrumbs when mounting", async () => {
-    mockApi();
     renderWithRouter();
 
     // wait for one tick
@@ -235,7 +239,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("cancel back to indices page", async () => {
-    mockApi();
     const { getByText } = renderWithRouter();
     await waitFor(() => {});
     userEvent.click(getByText("Cancel"));
@@ -244,7 +247,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("auto populate source from search query", async () => {
-    mockApi();
     const { getByTestId } = renderWithRouter([`${ROUTES.REINDEX}?source=index-source`]);
 
     await waitFor(() => {});
@@ -254,7 +256,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("source is required", async () => {
-    mockApi();
     const { getByText, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
@@ -267,7 +268,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("source status is closed", async () => {
-    mockApi();
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({
       ok: true,
       response: {
@@ -305,7 +305,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("source status is red", async () => {
-    mockApi();
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({
       ok: true,
       response: {
@@ -343,7 +342,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("source index _source is not enabled", async () => {
-    mockApi();
     browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((args) => {
       if (args.endpoint === "indices.getFieldMapping") {
         return Promise.resolve({
@@ -383,7 +381,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("destination is required", async () => {
-    mockApi();
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
@@ -400,7 +397,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("destination is closed", async () => {
-    mockApi();
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
@@ -443,7 +439,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("destination health status is red", async () => {
-    mockApi();
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
@@ -486,7 +481,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("source and destination must be different", async () => {
-    mockApi();
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
@@ -526,7 +520,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("destination alias must have writing index behind", async () => {
-    mockApi();
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
@@ -550,7 +543,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("slices format validation", async () => {
-    mockApi();
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
@@ -578,7 +570,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("it goes to indices page when submit reindex successfully", async () => {
-    mockApi();
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
     userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
@@ -598,7 +589,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("call api failed", async () => {
-    mockApi();
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({
       ok: false,
       error: "service not available",
@@ -617,7 +607,6 @@ describe("<Reindex /> spec", () => {
   });
 
   it("show subset query editor", async () => {
-    mockApi();
     const { getByText, getByTestId } = renderWithRouter();
 
     await waitFor(() => {
@@ -630,8 +619,36 @@ describe("<Reindex /> spec", () => {
     expect(getByTestId("queryJsonEditor")).toBeVisible();
   });
 
+  it("query DSL validation failed", async () => {
+    mockApi(true);
+    const { getByText, getByTestId, getAllByTestId } = renderWithRouter();
+
+    await waitFor(() => {
+      getByText("Configure source index");
+    });
+
+    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
+    await waitFor(() => {});
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
+
+    await userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-dest");
+    await waitFor(() => {});
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
+    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
+
+    // click subset radio
+    userEvent.click(getByText("Reindex a subset of documents (advanced)"));
+    expect(getByTestId("queryJsonEditor")).toBeVisible();
+
+    userEvent.click(getByTestId("reindexConfirmButton"));
+
+    await waitFor(() => {
+      expect(getByText("Invalid query expression")).toBeInTheDocument();
+    });
+  });
+
   it("advance settings toggle", async () => {
-    mockApi();
     const { getByText, getByTestId } = renderWithRouter();
 
     await waitFor(() => {

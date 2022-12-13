@@ -268,7 +268,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
                 class="euiFormLabel euiFormRow__label"
                 for="some_html_id"
               >
-                Specify destination index or data streams
+                Specify a destination index or data streams
               </label>
             </div>
             <div
