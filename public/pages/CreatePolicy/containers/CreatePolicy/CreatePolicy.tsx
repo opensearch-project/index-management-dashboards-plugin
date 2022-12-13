@@ -34,6 +34,7 @@ interface CreatePolicyState {
 
 export default class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState> {
   static contextType = CoreServicesContext;
+  _isMount: boolean;
   constructor(props: CreatePolicyProps) {
     super(props);
 
@@ -47,6 +48,8 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
       isSubmitting: false,
       hasSubmitted: false,
     };
+
+    this._isMount = true;
   }
 
   componentDidMount = async (): Promise<void> => {
@@ -70,6 +73,10 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
       this.setState({ jsonString: DEFAULT_POLICY });
     }
   };
+
+  componentWillUnmount() {
+    this._isMount = false;
+  }
 
   getPolicyToEdit = async (policyId: string): Promise<void> => {
     try {
@@ -169,6 +176,9 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
       console.error(err);
     }
 
+    if (!this._isMount) {
+      return;
+    }
     this.setState({ isSubmitting: false });
   };
 
