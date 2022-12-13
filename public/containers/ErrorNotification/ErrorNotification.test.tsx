@@ -8,12 +8,17 @@ import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
 import ErrorNotificationContainer, { ErrorNotificationProps } from "./ErrorNotification";
 import { ServicesContext } from "../../services";
-import { browserServicesMock } from "../../../test/mocks";
+import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
 import { ErrorNotification as IErrorNotification } from "../../../models/interfaces";
+import { CoreServicesContext } from "../../components/core_services";
 
 const ErrorNotification = (props: Pick<ErrorNotificationProps, "value">) => {
   const [value, onChange] = useState(props.value);
-  return <ErrorNotificationContainer {...props} value={value} onChange={onChange} />;
+  return (
+    <CoreServicesContext.Provider value={coreServicesMock}>
+      <ErrorNotificationContainer {...props} value={value} onChange={onChange} />
+    </CoreServicesContext.Provider>
+  );
 };
 
 function renderErrorNotification(errorNotification: IErrorNotification) {

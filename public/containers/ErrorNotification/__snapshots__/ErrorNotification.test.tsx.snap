@@ -114,7 +114,7 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <select
-                    class="euiSelect euiSelect-isLoading"
+                    class="euiSelect"
                     data-test-subj="create-policy-notification-channel-id"
                     id="channel-id"
                     placeholder="Select channel ID"
@@ -132,9 +132,6 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
                     class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                   >
                     <span
-                      class="euiLoadingSpinner euiLoadingSpinner--medium"
-                    />
-                    <span
                       class="euiFormControlLayoutCustomIcon"
                     >
                       EuiIconMock
@@ -147,9 +144,8 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
               <button
-                class="euiButton euiButton--primary euiButton-isDisabled refresh-button"
+                class="euiButton euiButton--primary refresh-button"
                 data-test-subj="channel-notification-refresh"
-                disabled=""
                 type="button"
               >
                 <span
