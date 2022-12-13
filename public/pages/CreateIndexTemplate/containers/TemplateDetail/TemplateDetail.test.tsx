@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import TemplateDetail, { TemplateDetailProps } from "./TemplateDetail";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -26,6 +26,9 @@ describe("<TemplateDetail /> spec", () => {
   // main unit test case is in CreateIndexTemplate.test.tsx
   it("render component", async () => {
     const { container } = renderCreateIndexTemplate({});
+    await waitFor(() => {}, {
+      timeout: 3000,
+    });
     expect(container).toMatchSnapshot();
   });
 });
