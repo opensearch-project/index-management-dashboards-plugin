@@ -23,8 +23,8 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
         >
           <span
             class="euiButton__text euiButtonGroupButton__textShift"
-            data-text="Visual Editor"
-            title="Visual Editor"
+            data-text="Visual editor"
+            title="Visual editor"
           >
             <input
               checked=""
@@ -35,7 +35,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
               type="radio"
               value=""
             />
-            Visual Editor
+            Visual editor
           </span>
         </span>
       </label>
@@ -49,8 +49,8 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
         >
           <span
             class="euiButton__text euiButtonGroupButton__textShift"
-            data-text="JSON Editor"
-            title="JSON Editor"
+            data-text="JSON editor"
+            title="JSON editor"
           >
             <input
               class="euiScreenReaderOnly"
@@ -60,7 +60,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
               type="radio"
               value=""
             />
-            JSON Editor
+            JSON editor
           </span>
         </span>
       </label>
@@ -738,8 +738,8 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
       >
         <span
           class="euiButton__text euiButtonGroupButton__textShift"
-          data-text="Visual Editor"
-          title="Visual Editor"
+          data-text="Visual editor"
+          title="Visual editor"
         >
           <input
             checked=""
@@ -750,7 +750,7 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
             type="radio"
             value=""
           />
-          Visual Editor
+          Visual editor
         </span>
       </span>
     </label>
@@ -764,8 +764,8 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
       >
         <span
           class="euiButton__text euiButtonGroupButton__textShift"
-          data-text="JSON Editor"
-          title="JSON Editor"
+          data-text="JSON editor"
+          title="JSON editor"
         >
           <input
             class="euiScreenReaderOnly"
@@ -775,7 +775,7 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
             type="radio"
             value=""
           />
-          JSON Editor
+          JSON editor
         </span>
       </span>
     </label>

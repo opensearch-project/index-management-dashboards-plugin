@@ -55,7 +55,7 @@ describe("Reindex", () => {
       cy.get(`[data-test-subj="checkboxSelectRow-${REINDEX_DEST_NO_SOURCE}"]`).check({ force: true });
 
       // Click actions button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Reindex should show as activate
       cy.get('[data-test-subj="Reindex Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
@@ -97,7 +97,7 @@ describe("Reindex", () => {
       cy.contains("opensearch_dashboards_sample_data_ecommerce");
 
       // Click actions button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Reindex should show as activate
       cy.get('[data-test-subj="Reindex Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
@@ -174,7 +174,7 @@ describe("Reindex", () => {
       cy.get("#_selection_column_opensearch_dashboards_sample_data_logs-checkbox").click();
 
       // Click actions button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Reindex should show as activate
       cy.get('[data-test-subj="Reindex Action"]').click();
 

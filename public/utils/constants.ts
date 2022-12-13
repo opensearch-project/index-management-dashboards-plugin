@@ -59,6 +59,8 @@ export const ROUTES = Object.freeze({
   CREATE_INDEX: "/create-index",
   REINDEX: "/reindex",
   ALIASES: "/aliases",
+  TEMPLATES: "/templates",
+  CREATE_TEMPLATE: "/create-template",
   SPLIT_INDEX: "/split-index",
 });
 
@@ -98,6 +100,9 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_INDEX: { text: "Edit Index", href: `#${ROUTES.CREATE_INDEX}` },
   REINDEX: { text: "Reindex", href: `#${ROUTES.REINDEX}` },
   ALIASES: { text: "Aliases", href: `#${ROUTES.ALIASES}` },
+  TEMPLATES: { text: "Templates", href: `#${ROUTES.TEMPLATES}` },
+  CREATE_TEMPLATE: { text: "Create template", href: `#${ROUTES.CREATE_TEMPLATE}` },
+  EDIT_TEMPLATE: { text: "Edit template", href: `#${ROUTES.CREATE_TEMPLATE}` },
   SPLIT_INDEX: { text: "Split Index", href: `#${ROUTES.SPLIT_INDEX}` },
 });
 

@@ -18,7 +18,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   ),
   Number: EuiToolTipWrapper(
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<HTMLInputElement>) => (
-      <EuiFieldNumber inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
+      <EuiFieldNumber inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value === undefined ? "" : value} {...others} />
     )) as React.ComponentType<IFieldComponentProps>
   ),
   Switch: EuiToolTipWrapper(

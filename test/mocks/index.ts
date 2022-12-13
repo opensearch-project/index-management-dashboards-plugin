@@ -19,6 +19,23 @@ const apiCallerMock = (browserServicesMockObject: typeof browserServicesMock) =>
               ok: true,
               response: {},
             };
+          } else if (payload.data?.path?.startsWith("_index_template/bad_template")) {
+            return {
+              ok: false,
+              error: "bad template",
+            };
+          } else if (payload.data?.path?.startsWith("_index_template/good_template")) {
+            return {
+              ok: true,
+              response: {
+                index_templates: [
+                  {
+                    name: "good_template",
+                    index_template: {},
+                  },
+                ],
+              },
+            };
           } else {
             return {
               ok: true,

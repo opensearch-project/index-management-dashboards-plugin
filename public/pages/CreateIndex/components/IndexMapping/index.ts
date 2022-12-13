@@ -5,4 +5,5 @@
 
 import IndexMapping from "./IndexMapping";
 
+export * from "./IndexMapping";
 export default IndexMapping;

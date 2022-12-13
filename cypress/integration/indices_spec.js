@@ -132,7 +132,7 @@ describe("Indices", () => {
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
 
       // Click apply policy button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       cy.get(`[data-test-subj="Apply policyButton"]`).click({ force: true });
 
       cy.get(`input[data-test-subj="comboBoxSearchInput"]`).click().type(POLICY_ID);
@@ -169,19 +169,19 @@ describe("Indices", () => {
       cy.contains(SAMPLE_INDEX);
 
       // Click actions button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
 
       // Delete btn should be disabled if no items selected
-      cy.get('[data-test-subj="Delete Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+      cy.get('[data-test-subj="deleteAction"]').should("have.class", "euiContextMenuItem-isDisabled");
 
       // click any where to hide actions
       cy.get("#_selection_column_sample_index-checkbox").click();
-      cy.get('[data-test-subj="Delete Action"]').should("not.exist");
+      cy.get('[data-test-subj="deleteAction"]').should("not.exist");
 
       // Click actions button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Delete btn should be enabled
-      cy.get('[data-test-subj="Delete Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+      cy.get('[data-test-subj="deleteAction"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
       // The confirm button should be disabled
       cy.get('[data-test-subj="Delete Confirm button"]').should("have.class", "euiButton-isDisabled");
       // type delete
@@ -346,14 +346,14 @@ describe("Indices", () => {
       // Confirm we have our initial index
       cy.contains(SAMPLE_INDEX);
 
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Shrink btn should be disabled if no items selected
       cy.get('[data-test-subj="Shrink Action"]').should("have.class", "euiContextMenuItem-isDisabled");
 
       // Select an index
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
 
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Shrink btn should be enabled
       cy.get('[data-test-subj="Shrink Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
@@ -380,14 +380,14 @@ describe("Indices", () => {
     it("successfully close an index", () => {
       cy.contains(SAMPLE_INDEX);
 
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Close btn should be disabled if no items selected
       cy.get('[data-test-subj="Close Action"]').should("have.class", "euiContextMenuItem-isDisabled");
 
       // Select an index
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
 
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Close btn should be enabled
       cy.get('[data-test-subj="Close Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
@@ -418,14 +418,14 @@ describe("Indices", () => {
       // Confirm we have our initial index
       cy.contains(SAMPLE_INDEX);
 
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Open btn should be disabled if no items selected
       cy.get('[data-test-subj="Open Action"]').should("have.class", "euiContextMenuItem-isDisabled");
 
       // Select an index
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
 
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Open btn should be enabled
       cy.get('[data-test-subj="Open Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 

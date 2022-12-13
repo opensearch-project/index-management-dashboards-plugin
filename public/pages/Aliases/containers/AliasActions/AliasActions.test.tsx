@@ -40,9 +40,9 @@ describe("<AliasesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
-      expect(getByTestId("Delete Action")).toBeDisabled();
+      expect(getByTestId("deleteAction")).toBeDisabled();
     });
   });
 
@@ -88,8 +88,8 @@ describe("<AliasesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
-    userEvent.click(getByTestId("Delete Action"));
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("deleteAction"));
     userEvent.type(getByPlaceholderText("delete"), "delete");
     userEvent.click(getByTestId("deleteConfirmButton"));
 

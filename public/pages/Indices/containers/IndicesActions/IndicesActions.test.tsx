@@ -41,12 +41,12 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("Open Action")).toBeDisabled();
       expect(getByTestId("Close Action")).toBeDisabled();
       expect(getByTestId("Shrink Action")).toBeDisabled();
-      expect(getByTestId("Delete Action")).toBeDisabled();
+      expect(getByTestId("deleteAction")).toBeDisabled();
       expect(getByTestId("Apply policyButton")).toBeDisabled();
       expect(getByTestId("Split Action")).toBeDisabled();
       expect(getByTestId("Reindex Action")).toBeEnabled();
@@ -81,7 +81,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Open Action"));
     userEvent.click(getByTestId("Open Confirm button"));
 
@@ -127,7 +127,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Close Action"));
     userEvent.type(getByPlaceholderText("close"), "close");
     userEvent.click(getByTestId("Close Confirm button"));
@@ -193,8 +193,8 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
-    userEvent.click(getByTestId("Delete Action"));
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("deleteAction"));
     userEvent.type(getByPlaceholderText("delete"), "delete");
     userEvent.click(getByTestId("Delete Confirm button"));
 
@@ -307,7 +307,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Shrink Action"));
     await waitFor(() => {
       userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
@@ -399,7 +399,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("Shrink Action")).toBeDisabled();
     });
@@ -433,7 +433,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("Shrink Action")).toBeDisabled();
     });
@@ -472,7 +472,7 @@ describe("<IndicesActions /> spec", () => {
       ],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Reindex Action"));
 
     expect(history.length).toBe(2);
@@ -497,7 +497,7 @@ describe("<IndicesActions /> spec", () => {
       selectedItems: [],
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Reindex Action"));
 
     expect(history.length).toBe(2);
@@ -592,7 +592,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Split Action"));
 
     await waitFor(() => {
@@ -625,7 +625,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Split Action")).toBeDisabled();
   });
 
@@ -643,7 +643,7 @@ describe("<IndicesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="More Action"] button') as Element);
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Split Action")).toBeDisabled();
   });
 });

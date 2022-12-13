@@ -49,6 +49,9 @@ export interface IndexItem {
       creation_date?: string;
       [key: string]: any;
     };
+    "index.number_of_shards": number;
+    "index.number_of_replicas": number;
+    "index.refresh_interval": string;
     [key: string]: any;
   };
   aliases?: Record<string, {}>;
@@ -61,6 +64,20 @@ export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
   mappings?: {
     properties?: MappingsPropertiesObject;
   };
+}
+
+interface ITemplateExtras {
+  name: string;
+  version: number;
+  priority: number;
+  index_patterns: string[];
+}
+
+export interface TemplateItem extends ITemplateExtras {
+  template: Pick<IndexItem, "aliases" | "mappings" | "settings">;
+}
+export interface TemplateItemRemote extends ITemplateExtras {
+  template: Pick<IndexItemRemote, "aliases" | "mappings" | "settings">;
 }
 
 /**

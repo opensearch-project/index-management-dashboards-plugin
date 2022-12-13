@@ -3,7 +3,7 @@
 exports[`<IndicesActions /> spec Split index by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -30,7 +30,7 @@ exports[`<IndicesActions /> spec Split index by calling commonService 1`] = `
 exports[`<IndicesActions /> spec close index by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -57,7 +57,7 @@ exports[`<IndicesActions /> spec close index by calling commonService 1`] = `
 exports[`<IndicesActions /> spec delete index by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -84,7 +84,7 @@ exports[`<IndicesActions /> spec delete index by calling commonService 1`] = `
 exports[`<IndicesActions /> spec open index by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -111,7 +111,7 @@ exports[`<IndicesActions /> spec open index by calling commonService 1`] = `
 exports[`<IndicesActions /> spec renders the component and all the actions should be disabled when no items selected 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -138,7 +138,7 @@ exports[`<IndicesActions /> spec renders the component and all the actions shoul
 exports[`<IndicesActions /> spec shrink action is disabled if multiple indices are selected 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -165,7 +165,7 @@ exports[`<IndicesActions /> spec shrink action is disabled if multiple indices a
 exports[`<IndicesActions /> spec shrink action is disabled if the selected index is data_stream 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -192,7 +192,7 @@ exports[`<IndicesActions /> spec shrink action is disabled if the selected index
 exports[`<IndicesActions /> spec shrink index by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -219,7 +219,7 @@ exports[`<IndicesActions /> spec shrink index by calling commonService 1`] = `
 exports[`<IndicesActions /> spec split action is disabled if multiple indices are selected 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
@@ -246,7 +246,7 @@ exports[`<IndicesActions /> spec split action is disabled if multiple indices ar
 exports[`<IndicesActions /> spec split action is disabled if the selected index is data_stream 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="More Action"
+  data-test-subj="moreAction"
 >
   <div
     class="euiPopover__anchor"
