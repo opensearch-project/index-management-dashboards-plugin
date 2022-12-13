@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiComboBox, EuiComboBoxOptionOption } from "@elastic/eui";
+import { EuiComboBoxOptionOption } from "@elastic/eui";
 import { _EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { CoreStart } from "opensearch-dashboards/public";
 import React, { useContext, useEffect, useState } from "react";
+import BetterComboBox from "../../../../components/BetterComboBox";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexSelectItem } from "../../models/interfaces";
 
@@ -43,7 +44,7 @@ export default function IndexSelect(props: IndexSelectProps) {
 
   return (
     <div>
-      <EuiComboBox
+      <BetterComboBox
         data-test-subj={props["data-test-subj"]}
         placeholder="Type or select indexes,data streams or aliases"
         options={indexOptions}

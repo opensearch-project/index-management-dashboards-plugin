@@ -30,6 +30,7 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
   const popoverRef = useRef(null);
   const panelRef = useRef<HTMLElement | null>(null);
   const buttonProps: Partial<React.HTMLAttributes<HTMLButtonElement>> = {};
+  const destroyRef = useRef<boolean>(false);
   if (triggerType === "click") {
     buttonProps.onClick = (e) => {
       e.stopPropagation();
@@ -45,6 +46,9 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
 
   const outsideClick = useCallback(() => {
     setTimeout(() => {
+      if (destroyRef.current) {
+        return;
+      }
       setPopVisible(false);
     }, 0);
   }, [popVisible, setPopVisible]);
@@ -78,6 +82,12 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
       window.removeEventListener("mousemove", outsideHover);
     };
   }, [popVisible, outsideHover, triggerType]);
+
+  useEffect(() => {
+    return () => {
+      destroyRef.current = true;
+    };
+  }, []);
 
   return (
     <EuiPopover

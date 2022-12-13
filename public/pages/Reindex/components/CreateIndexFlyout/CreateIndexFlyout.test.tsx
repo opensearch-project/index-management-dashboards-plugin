@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import React from "react";
 import CreateIndexFlyout from "./CreateIndexFlyout";
 import { coreServicesMock, browserServicesMock, apiCallerMock } from "../../../../../test/mocks";
@@ -20,6 +20,12 @@ describe("<CreateIndexFlyout /> spec", () => {
           <CreateIndexFlyout sourceIndices={[]} onCloseFlyout={() => {}} />,
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
+    );
+    await waitFor(
+      () => expect((document.querySelector("#accordion_for_create_index_settings") as HTMLDivElement).style.height).toEqual("0px"),
+      {
+        timeout: 3000,
+      }
     );
     expect(component).toMatchSnapshot();
   });

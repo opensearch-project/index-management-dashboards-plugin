@@ -591,7 +591,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
         {showCreateIndexFlyout ? (
           <CreateIndexFlyout
-            commonService={this.props.commonService}
             onSubmitSuccess={this.onCreateIndexSuccess}
             sourceIndices={allSelectedIndices}
             onCloseFlyout={() => this.setState({ showCreateIndexFlyout: false })}

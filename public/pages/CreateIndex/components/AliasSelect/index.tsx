@@ -28,7 +28,7 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
   const optionsRef = useRef<{ label: string; [key: string]: any }[]>([]);
   const refreshOptions: RemoteSelectProps["refreshOptions"] = ({ searchValue }) => {
     return refreshOptionsFromProps(searchValue || "").then((res) => {
-      if (res.ok) {
+      if (res?.ok) {
         return {
           ...res,
           response: [...new Set(res.response.filter((item) => !filterByMinimatch(item.alias, SYSTEM_ALIAS)))].map(
