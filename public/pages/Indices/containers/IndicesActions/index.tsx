@@ -16,13 +16,10 @@ import { BrowserServices, RecoveryJobMetaData } from "../../../../models/interfa
 import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
-import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexItem } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
 import { ROUTES } from "../../../../utils/constants";
-import { RouteComponentProps } from "react-router-dom";
-import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
   selectedItems: ManagedCatIndex[];
@@ -39,7 +36,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
-  const [shrinkIndexFlyoutVisible, setShrinkIndexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -165,53 +161,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
     }
   }, [services, coreServices, props.onClose, onCloseIndexModalClose]);
 
-  const onShrinkIndexFlyoutClose = () => {
-    setShrinkIndexFlyoutVisible(false);
-  };
-
-  const onShrinkIndexFlyoutConfirm = useCallback(
-    async (sourceIndexName: string, targetIndexName: string, requestPayload: Required<IndexItem>["settings"]) => {
-      try {
-        const { aliases, ...settings } = requestPayload;
-
-        const result = await services.commonService.apiCaller({
-          endpoint: "indices.shrink",
-          data: {
-            index: sourceIndexName,
-            target: targetIndexName,
-            body: {
-              settings: {
-                ...settings,
-              },
-              aliases,
-            },
-          },
-        });
-        if (result && result.ok) {
-          onShrinkIndexFlyoutClose();
-          const toastInstance = coreServices.notifications.toasts.addSuccess(
-            `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`
-          );
-          onShrink();
-          jobSchedulerInstance.addJob({
-            interval: 30000,
-            extras: {
-              toastId: toastInstance.id,
-              sourceIndex: sourceIndexName,
-              destIndex: targetIndexName,
-            },
-            type: "shrink",
-          } as RecoveryJobMetaData);
-        } else {
-          coreServices.notifications.toasts.addDanger(result.error);
-        }
-      } catch (err) {
-        coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem shrinking index."));
-      }
-    },
-    [services, coreServices, props.onShrink, onShrinkIndexFlyoutClose]
-  );
-
   const getIndexSettings = async (indexName: string, flat: boolean): Promise<Record<string, IndexItem>> => {
     const result: ServerResponse<Record<string, IndexItem>> = await services.commonService.apiCaller({
       endpoint: "indices.getSettings",
@@ -332,7 +281,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       name: "Shrink",
                       disabled: !selectedItems.length || selectedItems.length > 1 || !!selectedItems[0].data_stream,
                       "data-test-subj": "Shrink Action",
-                      onClick: () => setShrinkIndexFlyoutVisible(true),
+                      onClick: () => {
+                        let source = "";
+                        if (selectedItems.length > 0) {
+                          source = `?source=${selectedItems[0].index}`;
+                        }
+                        props.history.push(`${ROUTES.SHRINK_INDEX}${source}`);
+                      },
                     },
                     {
                       name: "Split",
@@ -379,18 +334,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
         onClose={onCloseIndexModalClose}
         onConfirm={onCloseIndexModalConfirm}
       />
-
-      {shrinkIndexFlyoutVisible && (
-        <ShrinkIndexFlyout
-          sourceIndex={selectedItems[0]}
-          onClose={onShrinkIndexFlyoutClose}
-          onConfirm={onShrinkIndexFlyoutConfirm}
-          getIndexSettings={getIndexSettings}
-          setIndexSettings={setIndexSettings}
-          openIndex={onOpenIndexModalConfirm}
-          getAlias={getAlias}
-        />
-      )}
     </>
   );
 }

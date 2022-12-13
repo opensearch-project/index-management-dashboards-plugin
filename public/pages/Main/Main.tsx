@@ -40,6 +40,7 @@ import Templates from "../Templates";
 import CreateIndexTemplate from "../CreateIndexTemplate";
 import SplitIndex from "../SplitIndex";
 import IndexDetail from "../IndexDetail";
+import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -85,6 +86,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.CREATE_INDEX,
   ROUTES.CREATE_TEMPLATE,
   ROUTES.SPLIT_INDEX,
+  ROUTES.SHRINK_INDEX,
 ];
 
 const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL];
@@ -485,6 +487,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <IndexDetail {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SHRINK_INDEX}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ShrinkIndex {...props} commonService={services.commonService} />
                               </div>
                             )}
                           />

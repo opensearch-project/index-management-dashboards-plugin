@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Shrink index /> spec renders the component 1`] = `
+<div
+  class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+  style="margin-top: 100px;"
+>
+  <span
+    class="euiLoadingSpinner euiLoadingSpinner--xLarge"
+  />
+</div>
+`;
