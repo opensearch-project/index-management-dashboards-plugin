@@ -607,7 +607,7 @@ describe("<IndicesActions /> spec", () => {
     await waitFor(() => {
       expect(onSplit).toHaveBeenCalled();
     });
-  }, 20000);
+  }, 30000);
 
   it("split action is disabled if multiple indices are selected", async () => {
     const { container, getByTestId } = renderWithRouter({
