@@ -18,7 +18,6 @@ import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
 import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 import { getErrorMessage } from "../../../../utils/helpers";
-import SplitIndexFlyout from "../../components/SplitIndexFlyout";
 import { IndexItem } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
 import { ROUTES } from "../../../../utils/constants";
@@ -41,7 +40,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
   const [shrinkIndexFlyoutVisible, setShrinkIndexFlyoutVisible] = useState(false);
-  const [splitIndexFlyoutVisible, setSplitIndexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -65,45 +63,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(result?.error || "");
     }
   }, [selectedItems, services, coreServices, onDelete, onDeleteIndexModalClose]);
-
-  const onCloseFlyout = () => {
-    setSplitIndexFlyoutVisible(false);
-  };
-
-  const splitIndex = async (targetIndex: String, settingsPayload: Required<IndexItem>["settings"]) => {
-    const { aliases, ...settings } = settingsPayload;
-    const result = await services?.commonService.apiCaller({
-      endpoint: "indices.split",
-      method: "PUT",
-      data: {
-        index: selectedItems.map((item) => item.index).join(","),
-        target: targetIndex,
-        body: {
-          settings: {
-            ...settings,
-          },
-          aliases,
-        },
-      },
-    });
-    if (result && result.ok) {
-      coreServices?.notifications.toasts.addSuccess(`Successfully submit split index request.`);
-      onCloseFlyout();
-      onSplit();
-      jobSchedulerInstance.addJob({
-        interval: 30000,
-        extras: {
-          sourceIndex: selectedItems.map((item) => item.index).join(","),
-          destIndex: targetIndex,
-        },
-        type: "split",
-      } as RecoveryJobMetaData);
-    } else {
-      coreServices.notifications.toasts.addDanger(
-        result?.error || "There was a problem submit split index request, please check with admin"
-      );
-    }
-  };
 
   const onOpenIndexModalClose = () => {
     setOpenIndexModalVisible(false);
@@ -328,7 +287,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       name: "Split",
                       "data-test-subj": "Split Action",
                       disabled: !selectedItems.length || selectedItems.length > 1 || selectedItems[0].data_stream !== null,
-                      onClick: () => setSplitIndexFlyoutVisible(true),
+                      onClick: () => {
+                        let source = "";
+                        if (selectedItems.length > 0) {
+                          source = `?source=${selectedItems[0].index}`;
+                        }
+                        props.history.push(`${ROUTES.SPLIT_INDEX}${source}`);
+                      },
                     },
                     {
                       name: "Delete",
@@ -369,18 +334,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
           sourceIndex={selectedItems[0]}
           onClose={onShrinkIndexFlyoutClose}
           onConfirm={onShrinkIndexFlyoutConfirm}
-          getIndexSettings={getIndexSettings}
-          setIndexSettings={setIndexSettings}
-          openIndex={onOpenIndexModalConfirm}
-          getAlias={getAlias}
-        />
-      )}
-
-      {splitIndexFlyoutVisible && (
-        <SplitIndexFlyout
-          sourceIndex={selectedItems[0]}
-          onCloseFlyout={onCloseFlyout}
-          onSplitIndex={splitIndex}
           getIndexSettings={getIndexSettings}
           setIndexSettings={setIndexSettings}
           openIndex={onOpenIndexModalConfirm}

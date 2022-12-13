@@ -36,6 +36,7 @@ import Snapshots from "../Snapshots";
 import CreateIndex from "../CreateIndex";
 import Reindex from "../Reindex/container/Reindex";
 import Aliases from "../Aliases";
+import SplitIndex from "../SplitIndex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -414,6 +415,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SPLIT_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <SplitIndex {...props} commonService={services.commonService} indexService={services.indexService} />
                               </div>
                             )}
                           />
