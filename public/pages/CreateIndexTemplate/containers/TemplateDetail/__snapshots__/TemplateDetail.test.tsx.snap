@@ -496,6 +496,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           class="euiAccordion__childWrapper"
           id="accordion_for_create_index_template_settings"
           role="region"
+          style="height: 0px"
           tabindex="-1"
         >
           <div>

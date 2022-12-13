@@ -26,9 +26,12 @@ describe("<TemplateDetail /> spec", () => {
   // main unit test case is in CreateIndexTemplate.test.tsx
   it("render component", async () => {
     const { container } = renderCreateIndexTemplate({});
-    await waitFor(() => {}, {
-      timeout: 3000,
-    });
+    await waitFor(
+      () => expect((document.querySelector("#accordion_for_create_index_template_settings") as HTMLDivElement).style.height).toEqual("0px"),
+      {
+        timeout: 3000,
+      }
+    );
     expect(container).toMatchSnapshot();
   });
 });

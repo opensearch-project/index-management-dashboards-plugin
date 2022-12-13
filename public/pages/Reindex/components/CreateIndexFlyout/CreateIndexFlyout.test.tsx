@@ -21,7 +21,12 @@ describe("<CreateIndexFlyout /> spec", () => {
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
     );
-    await waitFor(() => {}, { timeout: 3000 });
+    await waitFor(
+      () => expect((document.querySelector("#accordion_for_create_index_settings") as HTMLDivElement).style.height).toEqual("0px"),
+      {
+        timeout: 3000,
+      }
+    );
     expect(component).toMatchSnapshot();
   });
 });
