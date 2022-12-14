@@ -220,8 +220,8 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           <CustomFormRow
             {...getCommonFormRowProps("index_patterns")}
             label="Index patterns or wildcards"
-            helpText="Specify the index patterns or index wildcards. Settings in this template
-                will be applied to indexes with names matching index patterns or wildcards."
+            helpText="Specify the index patterns or wildcards. Add a comma to separate each value. 
+            Settings in this template will be applied to indexes with names matching index patterns or wildcards."
           >
             <RemoteSelect
               {...field.registerField({
@@ -238,6 +238,8 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                   },
                 ],
               })}
+              noSuggestions
+              async={false}
               refreshOptions={() =>
                 Promise.resolve({
                   ok: true,
