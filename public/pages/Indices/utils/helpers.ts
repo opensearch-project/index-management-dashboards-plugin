@@ -117,7 +117,7 @@ export async function setIndexSettings(props: {
   }
 }
 
-export async function getAlias(props: { aliasName: string; commonService: CommonService }) {
+export async function getAlias(props: { aliasName?: string; commonService: CommonService }) {
   return await props.commonService.apiCaller<{ alias: string }[]>({
     endpoint: "cat.aliases",
     method: "GET",

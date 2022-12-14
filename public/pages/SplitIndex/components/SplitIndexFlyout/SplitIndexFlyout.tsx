@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component } from "react";
-import { EuiCallOut, EuiFlyoutFooter, EuiLink } from "@elastic/eui";
+import { EuiCallOut, EuiSpacer, EuiLink, EuiFlexItem, EuiFlexGroup, EuiButton, EuiButtonEmpty } from "@elastic/eui";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { IndexItem } from "../../../../../models/interfaces";
-import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
@@ -20,10 +19,10 @@ const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
 
 interface SplitIndexComponentProps {
   sourceIndex: string;
-  onCancel: () => void;
   reasons: React.ReactChild[];
   shardsSelectOptions: [];
   onSplitIndex: (targetIndex: string, settingsPayload: IndexItem["settings"]) => void;
+  onCancel: () => void;
 }
 
 export default class SplitIndexFlyout extends Component<SplitIndexComponentProps> {
@@ -42,10 +41,11 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       return;
     }
     this.props.onSplitIndex(targetIndex, others);
+    this.props.onCancel();
   };
 
   render() {
-    const { sourceIndex, onCancel, reasons } = this.props;
+    const { sourceIndex, reasons } = this.props;
     const blockNameList = ["targetIndex"];
 
     const formFields: IField[] = [
@@ -134,76 +134,80 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
 
     const readyForSplit = reasons.length === 0;
     return (
-      <ContentPanel title="Source index" titleSize="s">
-        <IndexDetail indices={[sourceIndex]}>
-          <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
-            <div style={{ lineHeight: 3 }}>
-              <ul>
-                {reasons.map((reason, reasonIndex) => (
-                  <li key={reasonIndex}>{reason}</li>
-                ))}
-              </ul>
-              <EuiLink
-                href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learn more
-              </EuiLink>
-            </div>
-          </EuiCallOut>
-        </IndexDetail>
-      </ContentPanel>
-      /*
-      {readyForSplit && (
-        <ContentPanel title="Configure target index" titleSize="s">
-          <FormGenerator
-            onChange={(totalValue) =>
-              this.setState({
-                settings: totalValue,
-              })
-            }
-            formFields={formFields}
-            ref={(ref) => (this.formRef = ref)}
-            hasAdvancedSettings={true}
-            advancedSettingsProps={{
-              accordionProps: {
-                initialIsOpen: false,
-                id: "accordion_for_create_index_settings",
-                buttonContent: <h4>Advanced settings</h4>,
-              },
-              blockedNameList: blockNameList,
-              rowProps: {
-                label: "Specify advanced index settings",
-                helpText: (
-                  <>
-                    Specify a comma-delimited list of settings.
-                    <EuiLink
-                      href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                      target="_blank"
-                    >
-                      View index settings
-                    </EuiLink>
-                  </>
-                ),
-              },
-            }}
-          />
+      <div>
+        <ContentPanel title="Source index" titleSize="s">
+          <IndexDetail indices={[sourceIndex]}>
+            <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
+              <div style={{ lineHeight: 3 }}>
+                <ul>
+                  {reasons.map((reason, reasonIndex) => (
+                    <li key={reasonIndex}>{reason}</li>
+                  ))}
+                </ul>
+                <EuiLink
+                  href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Learn more
+                </EuiLink>
+              </div>
+            </EuiCallOut>
+          </IndexDetail>
         </ContentPanel>
-      )}
+        <EuiSpacer />
 
-      <EuiFlyoutFooter>
-        <FlyoutFooter
-          action=""
-          text="Split"
-          edit={false}
-          disabledAction={!readyForSplit}
-          onClickAction={this.onSubmit}
-          onClickCancel={onCancel}
-        />
-      </EuiFlyoutFooter>
+        {readyForSplit && (
+          <ContentPanel title="Configure target index" titleSize="s">
+            <FormGenerator
+              onChange={(totalValue) =>
+                this.setState({
+                  settings: totalValue,
+                })
+              }
+              formFields={formFields}
+              ref={(ref) => (this.formRef = ref)}
+              hasAdvancedSettings={true}
+              advancedSettingsProps={{
+                accordionProps: {
+                  initialIsOpen: false,
+                  id: "accordion_for_create_index_settings",
+                  buttonContent: <h4>Advanced settings</h4>,
+                },
+                blockedNameList: blockNameList,
+                rowProps: {
+                  label: "Specify advanced index settings",
+                  helpText: (
+                    <>
+                      Specify a comma-delimited list of settings.
+                      <EuiLink
+                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                        target="_blank"
+                      >
+                        View index settings
+                      </EuiLink>
+                    </>
+                  ),
+                },
+              }}
+            />
+          </ContentPanel>
+        )}
+        <EuiSpacer />
 
- */
+        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+          <EuiFlexItem grow={false}>
+            <EuiButtonEmpty onClick={this.props.onCancel} data-test-subj="splitCancelButton">
+              Cancel
+            </EuiButtonEmpty>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButton fill onClick={this.onSubmit} data-test-subj="splitButton">
+              Split
+            </EuiButton>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      </div>
     );
   }
 }

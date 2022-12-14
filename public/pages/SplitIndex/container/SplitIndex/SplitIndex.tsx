@@ -26,6 +26,7 @@ import { CommonService, IndexService, ServicesContext } from "../../../../servic
 import { CoreStart } from "opensearch-dashboards/public";
 import { useContext } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { ROUTES } from "../../../../utils/constants";
 
 interface SplitIndexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -150,7 +151,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
     });
     if (result && result.ok) {
       this.context.notifications.toasts.addSuccess(`Successfully submit split index request.`);
-      jobSchedulerInstance.addJob({
+      await jobSchedulerInstance.addJob({
         interval: 30000,
         extras: {
           sourceIndex: sourceIndex.index,
@@ -165,6 +166,10 @@ export class SplitIndex extends Component<SplitIndexProps> {
     }
   };
 
+  onCancel = () => {
+    this.props.history.push(ROUTES.INDICES);
+  };
+
   render() {
     const { sourceIndex, splitIndexFlyoutVisible, reasons, shardsSelectOptions } = this.state;
     return (
@@ -177,10 +182,10 @@ export class SplitIndex extends Component<SplitIndexProps> {
         {splitIndexFlyoutVisible && (
           <SplitIndexFlyout
             sourceIndex={sourceIndex.index}
-            onCancel={this.props.onCancel}
             onSplitIndex={this.onSplitIndex}
             shardsSelectOptions={shardsSelectOptions}
             reasons={reasons}
+            onCancel={this.onCancel}
           />
         )}
       </div>
