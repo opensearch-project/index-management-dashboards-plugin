@@ -207,8 +207,13 @@ const IndexDetail = (
     return [
       {
         rowProps: {
-          label: "Number of shards",
-          helpText: "The number of primary shards in the index. Default is 1.",
+          label: "Number of primary shards",
+          helpText: (
+            <>
+              <p>The number of primary shards in the index. Default is 1.</p>
+              <p>Number of primary shards cannot be changed after the index is created.</p>
+            </>
+          ),
         },
         name: "index.number_of_shards",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) ? "Text" : "Number",

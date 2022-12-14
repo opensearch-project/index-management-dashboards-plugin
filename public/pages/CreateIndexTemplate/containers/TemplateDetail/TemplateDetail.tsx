@@ -102,7 +102,11 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
   return (
     <>
       <ContentPanel title="Define template" titleSize="s">
-        <CustomFormRow {...getCommonFormRowProps("name")} label="Template name">
+        <CustomFormRow
+          {...getCommonFormRowProps("name")}
+          label="Template name"
+          helpText="Template name cannot be changed after the index is created."
+        >
           <Component
             {...field.registerField({
               name: "name",
@@ -179,7 +183,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
                 data: {
                   format: "json",
                   name: aliasName,
-                  expand_wildcards: "open",
+                  expand_wildcards: "all",
                 },
               })
             }
