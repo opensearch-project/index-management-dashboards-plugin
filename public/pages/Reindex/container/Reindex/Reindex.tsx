@@ -252,7 +252,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     });
     if (res && res.ok) {
       // @ts-ignore
-      const toast = `Reindex from [${reindexRequest.body.source.index}] to [${reindexRequest.body.dest.index}] success with taskId ${res.response.task}`;
+      const toast = `Successfully started reindexing ${reindexRequest.body.source.index}.The reindex index will be named ${reindexRequest.body.dest.index}.`;
       this.context.notifications.toasts.addSuccess(toast);
       jobSchedulerInstance.addJob({
         type: "reindex",
