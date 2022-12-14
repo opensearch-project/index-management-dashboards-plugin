@@ -25,11 +25,43 @@ const AliasSelectWithOnchange = (props: AliasSelectProps) => {
 };
 
 describe("<AliasSelect /> spec", () => {
-  it("renders the component", async () => {
-    const { container } = render(<AliasSelect refreshOptions={() => Promise.resolve({ ok: true, response: [] })} onChange={() => {}} />);
-    await waitFor(() => {
-      expect(container.firstChild).toMatchSnapshot();
-    });
+  it("renders the component and remove duplicate aliases", async () => {
+    const onOptionsChange = jest.fn();
+    const { container } = render(
+      <AliasSelect
+        refreshOptions={() =>
+          Promise.resolve({
+            ok: true,
+            response: [
+              {
+                alias: "a",
+                index: "a",
+              },
+              {
+                alias: "a",
+                index: "b",
+              },
+            ],
+          })
+        }
+        onChange={() => {}}
+        onOptionsChange={onOptionsChange}
+      />
+    );
+    await waitFor(
+      () => {
+        expect(onOptionsChange).toBeCalledWith([
+          {
+            label: "a",
+            index: "a",
+          },
+        ]);
+        expect(container.firstChild).toMatchSnapshot();
+      },
+      {
+        timeout: 3000,
+      }
+    );
   });
 
   it("it should choose options or create one", async () => {

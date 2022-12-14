@@ -14,6 +14,7 @@ export interface AliasSelectProps extends Omit<EuiComboBoxProps<{ label: string;
   value?: Record<string, {}>;
   onChange?: (value: AliasSelectProps["value"]) => void;
   refreshOptions: (aliasName: string) => Promise<ServerResponse<{ alias: string }[]>>;
+  onOptionsChange?: RemoteSelectProps["onOptionsChange"];
 }
 
 const transformObjToArray = (obj: AliasSelectProps["value"]): { label: string }[] => {
@@ -24,7 +25,7 @@ const transformArrayToObj = (array: { label: string; [key: string]: any }[]): Al
 };
 
 const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInputElement>) => {
-  const { value, onChange, refreshOptions: refreshOptionsFromProps } = props;
+  const { value, onChange, refreshOptions: refreshOptionsFromProps, onOptionsChange } = props;
   const optionsRef = useRef<{ label: string; [key: string]: any }[]>([]);
   const refreshOptions: RemoteSelectProps["refreshOptions"] = ({ searchValue }) => {
     return refreshOptionsFromProps(searchValue || "").then((res) => {
@@ -35,8 +36,9 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
             (alias) => {
               const findItem = res.response.find((item) => item.alias === alias);
               if (findItem) {
+                const { alias, ...others } = findItem;
                 return {
-                  ...findItem,
+                  ...others,
                   label: findItem.alias,
                 };
               }
@@ -55,7 +57,10 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
   return (
     <RemoteSelect
       {...(props as Partial<EuiComboBoxProps<any>>)}
-      onOptionsChange={(options) => (optionsRef.current = options)}
+      onOptionsChange={(options) => {
+        optionsRef.current = options;
+        onOptionsChange?.(options);
+      }}
       placeholder="Select or create aliases"
       customOptionText="Add {searchValue} as a new alias"
       refreshOptions={refreshOptions}

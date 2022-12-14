@@ -1,8 +1,8 @@
 import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } from "react";
 import { EuiForm, EuiFormProps } from "@elastic/eui";
+import { isEqual } from "lodash";
 import AllBuiltInComponents, { IFieldComponentProps } from "./built_in_components";
-// import Field, { InitOption, FieldOption, Rule } from "../../lib/field";
-import useField, { InitOption, FieldOption, Rule, FieldInstance } from "../../lib/field";
+import useField, { InitOption, FieldOption, Rule, FieldInstance, FieldName } from "../../lib/field";
 import AdvancedSettings, { IAdvancedSettingsProps, IAdvancedSettingsRef } from "../AdvancedSettings";
 import CustomFormRow, { CustomFormRowProps } from "../CustomFormRow";
 
@@ -37,7 +37,7 @@ export interface IFormGeneratorProps {
   fieldProps?: FieldOption;
   formProps?: EuiFormProps;
   value?: Record<string, any>;
-  onChange?: (totalValue: IFormGeneratorProps["value"], key?: string, value?: any) => void;
+  onChange?: (totalValue: IFormGeneratorProps["value"], key?: FieldName, value?: any) => void;
 }
 
 export interface IFormGeneratorRef extends FieldInstance {}
@@ -52,16 +52,8 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
   propsRef.current = props;
   const field = useField({
     ...fieldProps,
-    onChange(name: string, value: any) {
-      propsRef.current.onChange &&
-        propsRef.current.onChange(
-          {
-            ...field.getValues(),
-            [name]: value,
-          },
-          name,
-          value
-        );
+    onChange(name: FieldName, value: any) {
+      propsRef.current.onChange && propsRef.current.onChange({ ...field.getValues() }, name, value);
     },
   });
   const errorMessage: Record<string, string[]> = field.getErrors();
@@ -163,7 +155,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
           {...props.advancedSettingsProps}
           ref={advancedRef}
           rowProps={{
-            "data-test-subj": "form-name-advanced-settings",
+            "data-test-subj": "formNameAdvancedSettings",
             ...props.advancedSettingsProps?.rowProps,
           }}
           value={finalValue}
@@ -173,6 +165,9 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
               ...field.getValues(),
               ...val,
             };
+            if (!isEqual(val, finalValue)) {
+              field.validatePromise();
+            }
             propsRef.current.onChange && propsRef.current.onChange(totalValue, undefined, val);
           }}
         />

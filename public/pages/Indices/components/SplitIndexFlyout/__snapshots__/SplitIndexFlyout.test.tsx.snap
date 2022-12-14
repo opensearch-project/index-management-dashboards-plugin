@@ -404,7 +404,7 @@ HTMLCollection [
                             />
                             <div
                               class="euiFormRow"
-                              data-test-subj="form-name-advanced-settings"
+                              data-test-subj="formNameAdvancedSettings"
                               id="some_html_id-row"
                             >
                               <div

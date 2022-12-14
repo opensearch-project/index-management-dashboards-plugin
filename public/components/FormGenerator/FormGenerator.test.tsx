@@ -107,13 +107,13 @@ describe("<FormGenerator /> spec", () => {
       validateResult = await ref.current?.validatePromise();
     });
 
-    fireEvent.focus(getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement);
+    fireEvent.focus(getByTestId("formNameAdvancedSettings").querySelector(".ace_text-input") as HTMLElement);
     const value = (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value;
     const valueLength = value.length;
     expect(JSON.parse(value)).toEqual({});
     for (let i = 0; i < valueLength; i++) {
       await fireEvent(
-        getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement,
+        getByTestId("formNameAdvancedSettings").querySelector(".ace_text-input") as HTMLElement,
         new KeyboardEvent("keydown", {
           keyCode: 40,
         })
@@ -121,20 +121,20 @@ describe("<FormGenerator /> spec", () => {
     }
     for (let i = 0; i < valueLength; i++) {
       await fireEvent(
-        getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement,
+        getByTestId("formNameAdvancedSettings").querySelector(".ace_text-input") as HTMLElement,
         new KeyboardEvent("keydown", {
           keyCode: 8,
         })
       );
     }
-    (getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLTextAreaElement).value = '{ "test": "1" }';
+    (getByTestId("formNameAdvancedSettings").querySelector(".ace_text-input") as HTMLTextAreaElement).value = '{ "test": "1" }';
     fireEvent(
-      getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement,
+      getByTestId("formNameAdvancedSettings").querySelector(".ace_text-input") as HTMLElement,
       new InputEvent("input", {
         data: '{ "test": "1" }',
       })
     );
-    fireEvent.blur(getByTestId("form-name-advanced-settings").querySelector(".ace_text-input") as HTMLElement);
+    fireEvent.blur(getByTestId("formNameAdvancedSettings").querySelector(".ace_text-input") as HTMLElement);
 
     expect(validateResult?.errors).toEqual({
       test: ["values.test_component !== values.test"],

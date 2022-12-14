@@ -421,7 +421,7 @@ const IndexDetail = (
                 value={{ ...finalValue.settings }}
                 onChange={(totalValue, name, val) => {
                   if (name) {
-                    onValueChange(["settings", name], val);
+                    onValueChange(["settings", name as string], val);
                   } else {
                     onValueChange("settings", val);
                   }
