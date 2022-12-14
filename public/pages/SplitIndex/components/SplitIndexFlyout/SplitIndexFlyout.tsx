@@ -9,9 +9,8 @@ import { IndexItem } from "../../../../../models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
-import AliasSelect from "../../../CreateIndex/components/AliasSelect";
+import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import { getAlias } from "../../../Indices/utils/helpers";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -20,9 +19,10 @@ const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
 interface SplitIndexComponentProps {
   sourceIndex: string;
   reasons: React.ReactChild[];
-  shardsSelectOptions: [];
-  onSplitIndex: (targetIndex: string, settingsPayload: IndexItem["settings"]) => void;
+  shardsSelectOptions: { label: string }[];
+  onSplitIndex: (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]) => Promise<void>;
   onCancel: () => void;
+  getAlias: AliasSelectProps["refreshOptions"];
 }
 
 export default class SplitIndexFlyout extends Component<SplitIndexComponentProps> {
@@ -40,12 +40,12 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
     if (errors) {
       return;
     }
-    this.props.onSplitIndex(targetIndex, others);
+    await this.props.onSplitIndex(targetIndex, others);
     this.props.onCancel();
   };
 
   render() {
-    const { sourceIndex, reasons } = this.props;
+    const { sourceIndex, reasons, getAlias } = this.props;
     const blockNameList = ["targetIndex"];
 
     const formFields: IField[] = [
