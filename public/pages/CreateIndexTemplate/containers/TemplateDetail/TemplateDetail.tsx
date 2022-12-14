@@ -32,7 +32,7 @@ import { submitTemplate, getTemplate } from "./hooks";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
-import { Link, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
 
@@ -155,11 +155,9 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             >
               View JSON
             </EuiButton>
-            <Link to={`${ROUTES.CREATE_TEMPLATE}/${values.name}`}>
-              <EuiButton fill style={{ marginRight: 20 }}>
-                Edit
-              </EuiButton>
-            </Link>
+            <EuiButton fill style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_TEMPLATE}/${values.name}`)}>
+              Edit
+            </EuiButton>
             <EuiButton style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
               Delete
             </EuiButton>
