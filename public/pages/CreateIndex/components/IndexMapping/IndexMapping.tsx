@@ -235,7 +235,17 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
                 name: "type",
               })}
               data-test-subj={`${id}-field-type`}
-              options={INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }))}
+              options={(() => {
+                const allOptions = INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }));
+                const typeValue = field.getValue("type");
+                if (!allOptions.find((item) => item.value === typeValue)) {
+                  allOptions.push({
+                    text: typeValue,
+                    value: typeValue,
+                  });
+                }
+                return allOptions;
+              })()}
             />
           )}
         </EuiFormRow>

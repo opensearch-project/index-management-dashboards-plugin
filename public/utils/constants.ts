@@ -214,6 +214,9 @@ export const INDEX_MAPPING_TYPES: {
     label: "geo_shape",
   },
   {
+    label: "half_float",
+  },
+  {
     label: "integer",
   },
   {
