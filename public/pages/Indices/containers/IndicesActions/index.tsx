@@ -87,7 +87,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
       },
     });
     if (result && result.ok) {
-      coreServices?.notifications.toasts.addSuccess(`Successfully submit split index request.`);
+      coreServices?.notifications.toasts.addSuccess(
+        `Successfully started splitting ${selectedItems.map((item) => item.index).join(",")}. The split index will be named ${targetIndex}.`
+      );
       onCloseFlyout();
       onSplit();
       jobSchedulerInstance.addJob({
@@ -188,7 +190,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
         });
         if (result && result.ok) {
           onShrinkIndexFlyoutClose();
-          coreServices.notifications.toasts.addSuccess("Shrink index successfully");
+          coreServices.notifications.toasts.addSuccess(
+            `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`
+          );
           onShrink();
           jobSchedulerInstance.addJob({
             interval: 30000,

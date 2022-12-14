@@ -43,7 +43,7 @@ export function JobHandlerRegister(core: CoreSetup) {
         if (completed && found) {
           if (!failures.length && !error?.reason) {
             core.notifications.toasts.addSuccess(
-              `Reindex from [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`,
+              `Source index ${extras.sourceIndex} has been successfully reindexed as ${extras.destIndex}.`,
               {
                 toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
               }
@@ -111,7 +111,7 @@ export function JobHandlerRegister(core: CoreSetup) {
       if (indexResult.ok) {
         const [firstItem] = indexResult.response.indices || [];
         if (firstItem && firstItem.health !== "red") {
-          core.notifications.toasts.addSuccess(`Split [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`, {
+          core.notifications.toasts.addSuccess(`Source index ${extras.sourceIndex} has been successfully split as ${extras.destIndex}.`, {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           });
           return true;
@@ -147,9 +147,12 @@ export function JobHandlerRegister(core: CoreSetup) {
       if (indexResult.ok) {
         const [firstItem] = indexResult.response.indices || [];
         if (firstItem && firstItem.health !== "red") {
-          core.notifications.toasts.addSuccess(`Shrink [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`, {
-            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
-          });
+          core.notifications.toasts.addSuccess(
+            `Source index ${extras.sourceIndex} has been successfully shrunken as ${extras.destIndex}.`,
+            {
+              toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+            }
+          );
           return true;
         }
       }
