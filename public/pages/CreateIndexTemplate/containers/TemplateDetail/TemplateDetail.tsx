@@ -4,7 +4,17 @@
  */
 
 import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiFormRowProps, EuiLink, EuiSpacer } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiButtonEmpty,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFormRow,
+  EuiFormRowProps,
+  EuiLink,
+  EuiSpacer,
+  EuiTitle,
+} from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect from "../../../CreateIndex/components/AliasSelect";
 import IndexMapping, { IIndexMappingsRef } from "../../../CreateIndex/components/IndexMapping";
@@ -20,6 +30,10 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { submitTemplate, getTemplate } from "./hooks";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
+import { Modal } from "../../../../components/Modal";
+import JSONEditor from "../../../../components/JSONEditor";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../../../utils/constants";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -104,6 +118,50 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly }: T
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
   return (
     <>
+      <EuiFlexGroup alignItems="center">
+        <EuiFlexItem>
+          <EuiTitle size="l">{readonly ? <h1>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}</EuiTitle>
+          {readonly ? null : (
+            <CustomFormRow
+              fullWidth
+              label=""
+              helpText={
+                <div>
+                  Index templates let you initialize new indexes with predefined mappings and settings.{" "}
+                  <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/index-templates">
+                    Learn more
+                  </EuiLink>
+                </div>
+              }
+            >
+              <></>
+            </CustomFormRow>
+          )}
+        </EuiFlexItem>
+        {readonly ? (
+          <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
+            <EuiButton
+              fill
+              style={{ marginRight: 20 }}
+              onClick={() =>
+                Modal.show({
+                  title: values.name,
+                  content: <JSONEditor value={JSON.stringify(values, null, 2)} disabled />,
+                })
+              }
+            >
+              View JSON
+            </EuiButton>
+            <Link to={`${ROUTES.CREATE_TEMPLATE}/${values.name}`}>
+              <EuiButton fill style={{ marginRight: 20 }}>
+                Edit
+              </EuiButton>
+            </Link>
+            <EuiButton style={{ marginRight: 20 }}>Delete</EuiButton>
+          </EuiFlexItem>
+        ) : null}
+      </EuiFlexGroup>
+      <EuiSpacer />
       {readonly ? (
         <ContentPanel title="Template details" titleSize="s">
           <EuiSpacer size="s" />
