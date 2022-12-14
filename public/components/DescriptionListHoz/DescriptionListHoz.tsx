@@ -7,7 +7,17 @@ const DisplayItem = (
   } & Omit<EuiDescriptionListProps, "listItems">
 ) => {
   const { listItem, ...others } = props;
-  return <EuiDescriptionList listItems={[props.listItem]} {...others} />;
+  return (
+    <EuiDescriptionList
+      listItems={[
+        {
+          ...listItem,
+          description: listItem.description === undefined || listItem.description === null ? "-" : listItem.description,
+        },
+      ]}
+      {...others}
+    />
+  );
 };
 
 export default function DescriptionListHoz(props: EuiDescriptionListProps) {

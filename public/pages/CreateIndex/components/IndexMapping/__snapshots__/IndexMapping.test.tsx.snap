@@ -242,6 +242,11 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               geo_shape
                             </option>
                             <option
+                              value="half_float"
+                            >
+                              half_float
+                            </option>
+                            <option
                               value="integer"
                             >
                               integer
@@ -545,6 +550,11 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       value="geo_shape"
                                     >
                                       geo_shape
+                                    </option>
+                                    <option
+                                      value="half_float"
+                                    >
+                                      half_float
                                     </option>
                                     <option
                                       value="integer"
