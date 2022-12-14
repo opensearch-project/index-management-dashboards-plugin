@@ -20,6 +20,7 @@ import {
   getSplitShardOptions,
   splitIndex,
   getSingleIndice,
+  getAlias,
 } from "../../../Indices/utils/helpers";
 
 import { CommonService, IndexService, ServicesContext } from "../../../../services";
@@ -36,8 +37,8 @@ interface SplitIndexProps extends RouteComponentProps {
 
 export class SplitIndex extends Component<SplitIndexProps> {
   state = {
-    reasons: {} as React.ReactChild[],
-    shardsSelectOptions: [],
+    reasons: [] as React.ReactChild[],
+    shardsSelectOptions: [] as { label: string }[],
     sourceIndex: {} as CatIndex,
     splitIndexFlyoutVisible: false,
   };
@@ -140,7 +141,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
     });
   };
 
-  onSplitIndex = async (targetIndex: String, settingsPayload: Required<IndexItem>["settings"]) => {
+  onSplitIndex = async (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]): Promise<void> => {
     const { sourceIndex } = this.state;
     const result = await splitIndex({
       sourceIndex: sourceIndex.index,
@@ -186,6 +187,12 @@ export class SplitIndex extends Component<SplitIndexProps> {
             shardsSelectOptions={shardsSelectOptions}
             reasons={reasons}
             onCancel={this.onCancel}
+            getAlias={(aliasName) =>
+              getAlias({
+                aliasName,
+                commonService: this.props.commonService,
+              })
+            }
           />
         )}
       </div>
