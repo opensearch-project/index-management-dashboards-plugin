@@ -9,15 +9,18 @@ import TemplateDetail, { TemplateDetailProps } from "./TemplateDetail";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { HashRouter, Route } from "react-router-dom";
 
-function renderCreateIndexTemplate(props: TemplateDetailProps) {
+function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history">) {
   return {
     ...render(
-      <CoreServicesContext.Provider value={coreServicesMock}>
-        <ServicesContext.Provider value={browserServicesMock}>
-          <TemplateDetail {...props} />
-        </ServicesContext.Provider>
-      </CoreServicesContext.Provider>
+      <HashRouter>
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <Route path="/" render={(routeProps) => <TemplateDetail {...props} history={routeProps.history} />} />
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      </HashRouter>
     ),
   };
 }
