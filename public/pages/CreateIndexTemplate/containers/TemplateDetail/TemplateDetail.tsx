@@ -32,20 +32,23 @@ import { submitTemplate, getTemplate } from "./hooks";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
-import { Link } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
+import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
 
 export interface TemplateDetailProps {
   templateName?: string;
   onCancel?: () => void;
   onSubmitSuccess?: (templateName: string) => void;
   readonly?: boolean;
+  history: RouteComponentProps["history"];
 }
 
-const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly }: TemplateDetailProps, ref: Ref<FieldInstance>) => {
+const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, history }: TemplateDetailProps, ref: Ref<FieldInstance>) => {
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
+  const [visible, setVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const oldValue = useRef<TemplateItem | undefined>(undefined);
   const field = useField({
@@ -157,7 +160,20 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly }: T
                 Edit
               </EuiButton>
             </Link>
-            <EuiButton style={{ marginRight: 20 }}>Delete</EuiButton>
+            <EuiButton style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
+              Delete
+            </EuiButton>
+            <DeleteTemplateModal
+              visible={visible}
+              selectedItems={[values.name]}
+              onClose={() => {
+                setVisible(false);
+              }}
+              onDelete={() => {
+                setVisible(false);
+                history.replace(ROUTES.TEMPLATES);
+              }}
+            />
           </EuiFlexItem>
         ) : null}
       </EuiFlexGroup>

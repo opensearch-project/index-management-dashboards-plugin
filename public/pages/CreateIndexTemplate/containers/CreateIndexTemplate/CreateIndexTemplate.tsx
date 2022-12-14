@@ -50,6 +50,7 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
     return (
       <div style={{ padding: "0px 50px" }}>
         <TemplateDetail
+          history={this.props.history}
           readonly={this.readonly}
           templateName={this.template}
           onCancel={this.onCancel}
