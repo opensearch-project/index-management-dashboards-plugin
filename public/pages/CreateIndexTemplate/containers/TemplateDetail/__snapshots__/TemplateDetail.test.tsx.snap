@@ -148,7 +148,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Specify the index patterns or index wildcards. Settings in this template will be applied to indexes with names matching index patterns or wildcards.
+            Specify the index patterns or wildcards. Add a comma to separate each value.  Settings in this template will be applied to indexes with names matching index patterns or wildcards.
           </div>
           <div
             aria-expanded="false"
@@ -187,18 +187,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                       style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
                     />
                   </div>
-                </div>
-                <div
-                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                >
-                  <button
-                    aria-label="Open list of options"
-                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                    data-test-subj="comboBoxToggleListButton"
-                    type="button"
-                  >
-                    EuiIconMock
-                  </button>
                 </div>
               </div>
             </div>
