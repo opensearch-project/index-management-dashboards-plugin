@@ -8,6 +8,7 @@ import { RouteComponentProps } from "react-router-dom";
 import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { isEqual } from "lodash";
 
 interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {}
 
@@ -22,7 +23,7 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
     return this.props.match.params.mode === "readonly";
   }
 
-  componentDidMount = async (): Promise<void> => {
+  setBreadCrumb() {
     const isEdit = this.template;
     const readonly = this.readonly;
     let lastBread: typeof BREADCRUMBS.TEMPLATES;
@@ -40,6 +41,16 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
       lastBread = BREADCRUMBS.CREATE_TEMPLATE;
     }
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES, lastBread]);
+  }
+
+  componentDidUpdate(prevProps: Readonly<CreateIndexTemplateProps>): void {
+    if (!isEqual(prevProps, this.props)) {
+      this.setBreadCrumb();
+    }
+  }
+
+  componentDidMount = async (): Promise<void> => {
+    this.setBreadCrumb();
   };
 
   onCancel = (): void => {
