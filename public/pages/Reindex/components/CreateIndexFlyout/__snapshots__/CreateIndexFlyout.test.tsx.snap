@@ -188,7 +188,7 @@ Object {
                                   class="euiFormControlLayout__childrenWrapper"
                                 >
                                   <div
-                                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
                                     data-test-subj="comboBoxInput"
                                     tabindex="-1"
                                   >
@@ -216,9 +216,6 @@ Object {
                                   <div
                                     class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                                   >
-                                    <span
-                                      class="euiLoadingSpinner euiLoadingSpinner--medium"
-                                    />
                                     <button
                                       aria-label="Open list of options"
                                       class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
@@ -280,7 +277,7 @@ Object {
                             class="euiFormLabel euiFormRow__label"
                             for="some_html_id"
                           >
-                            Number of shards
+                            Number of primary shards
                           </label>
                         </div>
                         <div
@@ -290,7 +287,12 @@ Object {
                             class="euiFormHelpText euiFormRow__text"
                             style="padding-top: 0px; padding-bottom: 4px;"
                           >
-                            The number of primary shards in the index. Default is 1.
+                            <p>
+                              The number of primary shards in the index. Default is 1.
+                            </p>
+                            <p>
+                              Number of primary shards cannot be changed after the index is created.
+                            </p>
                           </div>
                           <span
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -437,6 +439,7 @@ Object {
                           class="euiAccordion__childWrapper"
                           id="accordion_for_create_index_settings"
                           role="region"
+                          style="height: 0px"
                           tabindex="-1"
                         >
                           <div>
@@ -601,13 +604,6 @@ Object {
                                           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                                         </div>
                                       </div>
-                                    </div>
-                                    <div>
-                                      <textarea
-                                        data-test-subj="json-editor-value-display"
-                                        style="display: none;"
-                                        title="editor-is-ready-true"
-                                      />
                                     </div>
                                   </div>
                                 </div>

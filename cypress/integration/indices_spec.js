@@ -367,7 +367,7 @@ describe("Indices", () => {
       cy.get("button").contains("Shrink").click({ force: true });
 
       // Check for success toast
-      cy.contains("Shrink index successfully");
+      cy.contains(`Successfully started shrinking ${SAMPLE_INDEX}. The shrunken index will be named ${SAMPLE_INDEX}_shrunken.`);
     });
   });
 

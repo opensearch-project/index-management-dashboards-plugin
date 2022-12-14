@@ -353,7 +353,9 @@ describe("<IndicesActions /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Shrink index successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        `Successfully started shrinking test_index. The shrunken index will be named test_index_shrunken.`
+      );
       expect(onShrink).toHaveBeenCalledTimes(1);
     });
   }, 30000);
