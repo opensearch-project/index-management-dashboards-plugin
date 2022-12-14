@@ -305,7 +305,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
           columns={[
             {
               field: "alias",
-              name: "Alias Name",
+              name: "Alias name",
               sortable: true,
               render: (value: string, record) => {
                 return (
@@ -324,7 +324,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
             },
             {
               field: "indexArray",
-              name: "Index Name",
+              name: "Index name",
               render: (value: string[], record) => {
                 return <IndexNameDisplay indices={value} alias={record.alias} />;
               },
