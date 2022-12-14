@@ -25,7 +25,7 @@ import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 
-export interface IndicesActionsProps extends RouteComponentProps {
+export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
   selectedItems: ManagedCatIndex[];
   onDelete: () => void;
   onOpen: () => void;

@@ -6,7 +6,6 @@
 import React from "react";
 import { EuiHealth, EuiTableFieldDataColumnType } from "@elastic/eui";
 import IndexDetail, { IndexDetailModalProps } from "../containers/IndexDetail";
-import { IndicesActionsProps } from "../containers/IndicesActions";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";
 import { SortDirection } from "../../../utils/constants";
 
@@ -36,7 +35,7 @@ export const HEALTH_TO_COLOR: {
   red: "danger",
 };
 
-interface IColumnOptions extends Omit<IndicesActionsProps, "selectedItems">, Pick<IndexDetailModalProps, "onUpdateIndex"> {}
+interface IColumnOptions extends Omit<IndexDetailModalProps, "index"> {}
 
 const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
   return [
@@ -47,8 +46,8 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       truncateText: false,
       textOnly: true,
       width: "250px",
-      render: (index: string, record) => {
-        return <IndexDetail {...props} record={record} index={index} />;
+      render: (index: string) => {
+        return <IndexDetail {...props} index={index} />;
       },
     },
     {

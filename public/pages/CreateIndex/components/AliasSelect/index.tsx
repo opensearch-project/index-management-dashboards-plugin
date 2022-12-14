@@ -13,7 +13,7 @@ import { SYSTEM_ALIAS } from "../../../../../utils/constants";
 export interface AliasSelectProps extends Omit<EuiComboBoxProps<{ label: string; value: string }>, "value" | "onChange"> {
   value?: Record<string, {}>;
   onChange?: (value: AliasSelectProps["value"]) => void;
-  refreshOptions: (aliasName: string) => Promise<ServerResponse<{ alias: string }[]>>;
+  refreshOptions: (aliasName: string) => Promise<ServerResponse<{ alias: string; index: string; [key: string]: any }[]>>;
   onOptionsChange?: RemoteSelectProps["onOptionsChange"];
 }
 
@@ -36,10 +36,9 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
             (alias) => {
               const findItem = res.response.find((item) => item.alias === alias);
               if (findItem) {
-                const { alias, ...others } = findItem;
+                const { alias } = findItem;
                 return {
-                  ...others,
-                  label: findItem.alias,
+                  label: alias,
                 };
               }
 

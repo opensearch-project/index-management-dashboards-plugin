@@ -267,16 +267,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
         <EuiBasicTable
           columns={indicesColumns(isDataStreamColumnVisible, {
-            onDelete: this.getIndices,
-            onOpen: this.getIndices,
-            onClose: this.getIndices,
-            onShrink: this.getIndices,
-            onSplit: this.getIndices,
-            onUpdateIndex: this.getIndices,
-            getIndices: this.getIndices,
             history,
-            location,
-            match,
           })}
           isSelectable={true}
           itemId="index"
