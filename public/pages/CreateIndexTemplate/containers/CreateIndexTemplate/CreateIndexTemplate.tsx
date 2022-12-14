@@ -11,7 +11,7 @@ import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import CustomFormRow from "../../../../components/CustomFormRow";
 
-interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string }> {}
+interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {}
 
 export default class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   static contextType = CoreServicesContext;
@@ -22,6 +22,10 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
 
   get isEdit() {
     return this.props.match.params.template !== undefined;
+  }
+
+  get readonly() {
+    return this.props.match.params.mode === "readonly";
   }
 
   componentDidMount = async (): Promise<void> => {
@@ -66,6 +70,7 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
         </CustomFormRow>
         <EuiSpacer />
         <TemplateDetail
+          readonly={this.readonly}
           templateName={this.template}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}

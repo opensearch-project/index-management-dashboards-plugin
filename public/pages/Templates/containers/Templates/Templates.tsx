@@ -215,7 +215,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               sortable: true,
               render: (value: string) => {
                 return (
-                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
+                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
                     <EuiLink>{value}</EuiLink>
                   </Link>
                 );

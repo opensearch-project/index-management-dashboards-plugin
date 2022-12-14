@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import IndexDetail from "./TemplateDetail";
+import TemplateDetail from "./TemplateDetail";
 
-export default IndexDetail;
+export default TemplateDetail;
 export * from "./TemplateDetail";

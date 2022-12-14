@@ -446,6 +446,14 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={`${ROUTES.CREATE_TEMPLATE}/:template`}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>

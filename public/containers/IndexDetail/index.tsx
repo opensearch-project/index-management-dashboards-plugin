@@ -1,28 +1,16 @@
-import { EuiSpacer, EuiDescriptionList, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer } from "@elastic/eui";
 import React, { useContext, useEffect, useState } from "react";
 import { CatIndex } from "../../../server/models/interfaces";
 import { ContentPanel } from "../../components/ContentPanel";
 import { CoreServicesContext } from "../../components/core_services";
 import { ServicesContext } from "../../services";
+import DescriptionListHoz from "../../components/DescriptionListHoz";
 
 export interface IIndexDetailProps {
   indices: string[];
   onGetIndicesDetail?: (args: CatIndex[]) => void;
   children?: React.ReactChild;
 }
-
-const DisplayItem = (props: { title: string; content: string }) => {
-  return (
-    <EuiDescriptionList
-      listItems={[
-        {
-          title: props.title,
-          description: props.content || "-",
-        },
-      ]}
-    />
-  );
-};
 
 export default function IndexDetail(props: IIndexDetailProps) {
   const [loading, setLoading] = useState(false);
@@ -54,20 +42,26 @@ export default function IndexDetail(props: IIndexDetailProps) {
     <ContentPanel title="Source index details" titleSize="s">
       <EuiSpacer />
       {items && items.length ? (
-        <EuiFlexGroup>
-          <EuiFlexItem>
-            <DisplayItem title="Index name" content={items[0].index} />
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <DisplayItem title="Primary shards" content={items[0].pri} />
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <DisplayItem title="Replica shards" content={items[0].rep} />
-          </EuiFlexItem>
-          <EuiFlexItem>
-            <DisplayItem title="Total index size" content={items[0]["store.size"]} />
-          </EuiFlexItem>
-        </EuiFlexGroup>
+        <DescriptionListHoz
+          listItems={[
+            {
+              title: "Index name",
+              description: items[0].index,
+            },
+            {
+              title: "Primary shards",
+              description: items[0].pri,
+            },
+            {
+              title: "Replica shards",
+              description: items[0].rep,
+            },
+            {
+              title: "Total index size",
+              description: items[0]["store.size"],
+            },
+          ]}
+        />
       ) : null}
       <EuiSpacer />
       {loading ? null : props.children}

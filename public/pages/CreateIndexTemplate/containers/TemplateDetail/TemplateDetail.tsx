@@ -24,9 +24,10 @@ export interface TemplateDetailProps {
   templateName?: string;
   onCancel?: () => void;
   onSubmitSuccess?: (templateName: string) => void;
+  readonly?: boolean;
 }
 
-const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDetailProps, ref: Ref<FieldInstance>) => {
+const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly }: TemplateDetailProps, ref: Ref<FieldInstance>) => {
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -304,6 +305,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess }: TemplateDet
                 },
               ],
             })}
+            readonly={readonly}
             isEdit={isEdit}
             originalValue={oldValue.current?.template?.mappings?.properties}
             ref={mappingsRef}
