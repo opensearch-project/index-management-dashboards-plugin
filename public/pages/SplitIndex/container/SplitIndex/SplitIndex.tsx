@@ -23,7 +23,7 @@ import {
   getAlias,
 } from "../../../Indices/utils/helpers";
 
-import { CommonService, IndexService, ServicesContext } from "../../../../services";
+import { CommonService, ServicesContext } from "../../../../services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { useContext } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -31,7 +31,6 @@ import { ROUTES } from "../../../../utils/constants";
 
 interface SplitIndexProps extends RouteComponentProps {
   commonService: CommonService;
-  indexService: IndexService;
   coreService: CoreStart;
 }
 
@@ -55,7 +54,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const source = queryString.parse(this.props.location.search) as { source?: string };
     const sourceIndex = await getSingleIndice({
       indexName: source.source as string,
-      indexService: this.props.indexService,
+      commonService: this.props.commonService,
       coreServices: this.props.coreService,
     });
     if (!sourceIndex) {
@@ -151,7 +150,6 @@ export class SplitIndex extends Component<SplitIndexProps> {
       coreServices: this.props.coreService,
     });
     if (result && result.ok) {
-      this.context.notifications.toasts.addSuccess(`Successfully submit split index request.`);
       await jobSchedulerInstance.addJob({
         interval: 30000,
         extras: {
@@ -160,10 +158,6 @@ export class SplitIndex extends Component<SplitIndexProps> {
         },
         type: "split",
       } as RecoveryJobMetaData);
-    } else {
-      this.context.notifications.toasts.addDanger(
-        result?.error || "There was a problem submit split index request, please check with admin"
-      );
     }
   };
 
@@ -200,8 +194,8 @@ export class SplitIndex extends Component<SplitIndexProps> {
   }
 }
 
-export default function SplitIndexWrapper(props: Omit<SplitIndexProps, "commonService" | "indexService" | "coreService">) {
+export default function SplitIndexWrapper(props: Omit<SplitIndexProps, "commonService" | "coreService">) {
   const services = useContext(ServicesContext) as BrowserServices;
   const coreService = useContext(CoreServicesContext) as CoreStart;
-  return <SplitIndex {...props} commonService={services.commonService} indexService={services.indexService} coreService={coreService} />;
+  return <SplitIndex {...props} commonService={services.commonService} coreService={coreService} />;
 }

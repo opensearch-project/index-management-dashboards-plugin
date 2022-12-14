@@ -35,7 +35,7 @@ export interface IndicesActionsProps extends RouteComponentProps {
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, onOpen, onClose, onShrink, onSplit } = props;
+  const { selectedItems, onDelete, onOpen, onClose, onShrink } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
@@ -288,10 +288,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       "data-test-subj": "Split Action",
                       disabled: !selectedItems.length || selectedItems.length > 1 || selectedItems[0].data_stream !== null,
                       onClick: () => {
-                        let source = "";
-                        if (selectedItems.length > 0) {
-                          source = `?source=${selectedItems[0].index}`;
-                        }
+                        const source = `?source=${selectedItems[0].index}`;
                         props.history.push(`${ROUTES.SPLIT_INDEX}${source}`);
                       },
                     },

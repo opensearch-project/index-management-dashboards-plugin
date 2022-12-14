@@ -8,7 +8,7 @@ import { DEFAULT_QUERY_PARAMS } from "./constants";
 import { IndicesQueryParams } from "../models/interfaces";
 import { IndexItem } from "../../../../models/interfaces";
 import { ServerResponse } from "../../../../server/models/types";
-import { CommonService, IndexService } from "../../../services";
+import { CommonService } from "../../../services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CatIndex } from "../../../../server/models/interfaces";
 
@@ -50,6 +50,7 @@ export async function getIndexSettings(props: {
 }): Promise<Record<string, IndexItem>> {
   const result: ServerResponse<Record<string, IndexItem>> = await props.commonService.apiCaller({
     endpoint: "indices.getSettings",
+    method: "GET",
     data: {
       index: props.indexName,
       flat_settings: props.flat,
@@ -66,21 +67,20 @@ export async function getIndexSettings(props: {
 
 export async function getSingleIndice(props: {
   indexName: string;
-  indexService: IndexService;
+  commonService: CommonService;
   coreServices: CoreStart;
 }): Promise<CatIndex> {
-  const result = await props.indexService.getIndices({
-    from: 0,
-    size: 1,
-    search: props.indexName,
-    indices: [props.indexName],
-    sortDirection: "desc",
-    sortField: "index",
-    showDataStreams: true,
+  const result = await props.commonService.apiCaller({
+    endpoint: "cat.indices",
+    method: "GET",
+    data: {
+      format: "json",
+      index: [`${props.indexName || ""}`],
+    },
   });
 
-  if (result && result.ok) {
-    return result.response.indices[0];
+  if (result && result.ok && result.response.length == 1) {
+    return result.response[0];
   } else {
     const errorMessage = `There is a problem getting index for ${props.indexName}, please check with Admin`;
     props.coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
