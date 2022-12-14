@@ -87,7 +87,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
       },
     });
     if (result && result.ok) {
-      coreServices?.notifications.toasts.addSuccess(
+      const toastIntance = coreServices?.notifications.toasts.addSuccess(
         `Successfully started splitting ${selectedItems.map((item) => item.index).join(",")}. The split index will be named ${targetIndex}.`
       );
       onCloseFlyout();
@@ -95,6 +95,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
       jobSchedulerInstance.addJob({
         interval: 30000,
         extras: {
+          toastId: toastIntance.id,
           sourceIndex: selectedItems.map((item) => item.index).join(","),
           destIndex: targetIndex,
         },
@@ -190,13 +191,14 @@ export default function IndicesActions(props: IndicesActionsProps) {
         });
         if (result && result.ok) {
           onShrinkIndexFlyoutClose();
-          coreServices.notifications.toasts.addSuccess(
+          const toastInstance = coreServices.notifications.toasts.addSuccess(
             `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`
           );
           onShrink();
           jobSchedulerInstance.addJob({
             interval: 30000,
             extras: {
+              toastId: toastInstance.id,
               sourceIndex: sourceIndexName,
               destIndex: targetIndexName,
             },

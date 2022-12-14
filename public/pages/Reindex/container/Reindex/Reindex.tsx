@@ -19,6 +19,8 @@ import {
 } from "@elastic/eui";
 import _ from "lodash";
 import React, { ChangeEvent, Component } from "react";
+import queryString from "query-string";
+import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/interfaces";
@@ -33,7 +35,6 @@ import { DEFAULT_QUERY, DEFAULT_SLICE, REINDEX_ERROR_PROMPT } from "../../utils/
 import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
 import CreateIndexFlyout from "../../components/CreateIndexFlyout";
-import queryString from "query-string";
 import { parseIndexNames, checkDuplicate } from "../../utils/helper";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { ReindexJobMetaData } from "../../../../models/interfaces";
@@ -253,10 +254,13 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     if (res && res.ok) {
       // @ts-ignore
       const toast = `Successfully started reindexing ${reindexRequest.body.source.index}.The reindex index will be named ${reindexRequest.body.dest.index}.`;
-      this.context.notifications.toasts.addSuccess(toast);
+      const toastInstance = (this.context as CoreStart).notifications.toasts.addSuccess(toast, {
+        toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+      });
       jobSchedulerInstance.addJob({
         type: "reindex",
         extras: {
+          toastId: toastInstance.id,
           sourceIndex: reindexRequest.body.source.index,
           destIndex: reindexRequest.body.dest.index,
           taskId: res.response.task,
