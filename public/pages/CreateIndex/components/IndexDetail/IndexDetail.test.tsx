@@ -46,9 +46,7 @@ describe("<IndexDetail /> spec", () => {
       <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
     );
 
-    await waitFor(() =>
-      expect(getByTestId("form-name-index.number_of_shards").querySelector(".euiCodeBlock__code")).toHaveAttribute("title", "-")
-    );
+    await waitFor(() => expect(getByTestId("form-name-index.number_of_shards").querySelector(".euiText")).toHaveAttribute("title", "-"));
   });
 
   it("validate should say error when field name is required", async () => {
