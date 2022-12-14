@@ -15,7 +15,6 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButtonEmpty,
   EuiButton,
   EuiFlyout,
   EuiFlyoutHeader,
@@ -66,9 +65,9 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
     <>
       <span>{props.indices.slice(0, 3).join(",")}</span>
       {props.indices.length <= 3 ? null : (
-        <EuiButtonEmpty data-test-subj={`${props.indices.length - 3} more`} onClick={() => setHide(!hide)}>
+        <EuiLink style={{ marginLeft: 8 }} data-test-subj={`${props.indices.length - 3} more`} onClick={() => setHide(!hide)}>
           {props.indices.length - 3} more
-        </EuiButtonEmpty>
+        </EuiLink>
       )}
       {hide ? null : (
         <EuiFlyout onClose={() => setHide(!hide)}>
