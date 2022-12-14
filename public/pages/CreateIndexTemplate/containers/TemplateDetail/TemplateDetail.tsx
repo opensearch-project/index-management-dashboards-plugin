@@ -19,6 +19,7 @@ import AdvancedSettings from "../../../../components/AdvancedSettings";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { submitTemplate, getTemplate } from "./hooks";
+import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -99,164 +100,226 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly }: T
       destroyRef.current = true;
     };
   }, []);
+  const values: TemplateItem = field.getValues();
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
   return (
     <>
-      <ContentPanel title="Define template" titleSize="s">
-        <CustomFormRow
-          {...getCommonFormRowProps("name")}
-          label="Template name"
-          helpText="Template name cannot be changed after the index is created."
-        >
-          <Component
-            {...field.registerField({
-              name: "name",
-              rules: [
-                {
-                  required: true,
-                  message: "Template name is required",
-                },
-              ],
-            })}
+      {readonly ? (
+        <ContentPanel title="Template details" titleSize="s">
+          <EuiSpacer size="s" />
+          <DescriptionListHoz
+            listItems={[
+              {
+                title: "Template name",
+                description: values.name,
+              },
+              {
+                title: "Index patterns or wildcards",
+                description: values.index_patterns?.join(","),
+              },
+              {
+                title: "Priority",
+                description: values.priority,
+              },
+            ]}
           />
-        </CustomFormRow>
-        <EuiSpacer />
-        <CustomFormRow
-          {...getCommonFormRowProps("index_patterns")}
-          label="Index patterns or wildcards"
-          helpText="Specify the index patterns or index wildcard. Settings in this template
-            will be applied to indexes with names matching index patterns or wildcards."
-        >
-          <RemoteSelect
-            {...field.registerField({
-              name: "index_patterns",
-              rules: [
-                {
-                  validator(rule, value) {
-                    if (!value || !value.length) {
-                      return Promise.reject("Index patterns must be defined");
-                    }
-
-                    return Promise.reject("");
+        </ContentPanel>
+      ) : (
+        <ContentPanel title="Define template" titleSize="s">
+          <EuiSpacer size="s" />
+          <CustomFormRow
+            {...getCommonFormRowProps("name")}
+            label="Template name"
+            helpText="Template name cannot be changed after the index is created."
+          >
+            <Component
+              {...field.registerField({
+                name: "name",
+                rules: [
+                  {
+                    required: true,
+                    message: "Template name is required",
                   },
-                },
-              ],
-            })}
-            refreshOptions={() =>
-              Promise.resolve({
-                ok: true,
-                response: [],
-              })
-            }
-            placeholder="Select index patterns or input wildcards"
-          />
-        </CustomFormRow>
-        <EuiSpacer />
-        <CustomFormRow {...getCommonFormRowProps("priority")} label="Priority">
-          <AllBuiltInComponents.Number
-            {...field.registerField({
-              name: "priority",
-              rules: [
-                {
-                  required: true,
-                  message: "Priority is required",
-                },
-                {
-                  min: 0,
-                  message: "Priority should not be smaller than zero",
-                },
-              ],
-            })}
-          />
-        </CustomFormRow>
-      </ContentPanel>
+                ],
+              })}
+            />
+          </CustomFormRow>
+          <EuiSpacer />
+          <CustomFormRow
+            {...getCommonFormRowProps("index_patterns")}
+            label="Index patterns or wildcards"
+            helpText="Specify the index patterns or index wildcards. Settings in this template
+                will be applied to indexes with names matching index patterns or wildcards."
+          >
+            <RemoteSelect
+              {...field.registerField({
+                name: "index_patterns",
+                rules: [
+                  {
+                    validator(rule, value) {
+                      if (!value || !value.length) {
+                        return Promise.reject("Index patterns must be defined");
+                      }
+
+                      return Promise.reject("");
+                    },
+                  },
+                ],
+              })}
+              refreshOptions={() =>
+                Promise.resolve({
+                  ok: true,
+                  response: [],
+                })
+              }
+              placeholder="Select index patterns or input wildcards"
+            />
+          </CustomFormRow>
+          <EuiSpacer />
+          <CustomFormRow {...getCommonFormRowProps("priority")} label="Priority">
+            <AllBuiltInComponents.Number
+              {...field.registerField({
+                name: "priority",
+                rules: [
+                  {
+                    required: true,
+                    message: "Priority is required",
+                  },
+                  {
+                    min: 0,
+                    message: "Priority should not be smaller than zero",
+                  },
+                ],
+              })}
+            />
+          </CustomFormRow>
+        </ContentPanel>
+      )}
       <EuiSpacer />
       <ContentPanel title="Index alias" titleSize="s">
-        <CustomFormRow {...getCommonFormRowProps(["template", "aliases"])} label="Index alias">
-          <AliasSelect
-            {...field.registerField({
-              name: ["template", "aliases"],
-            })}
-            refreshOptions={(aliasName) =>
-              services?.commonService.apiCaller({
-                endpoint: "cat.aliases",
-                method: "GET",
-                data: {
-                  format: "json",
-                  name: aliasName,
-                  expand_wildcards: "all",
+        {readonly ? (
+          <>
+            <EuiSpacer size="s" />
+            <DescriptionListHoz
+              listItems={[
+                {
+                  title: "Alias names",
+                  description: Object.keys(values?.template?.aliases || {}).join(",") || "-",
                 },
-              })
-            }
-          />
-        </CustomFormRow>
+              ]}
+            />
+          </>
+        ) : (
+          <>
+            <EuiSpacer size="s" />
+            <CustomFormRow {...getCommonFormRowProps(["template", "aliases"])} label="Index alias">
+              <AliasSelect
+                {...field.registerField({
+                  name: ["template", "aliases"],
+                })}
+                refreshOptions={(aliasName) =>
+                  services?.commonService.apiCaller({
+                    endpoint: "cat.aliases",
+                    method: "GET",
+                    data: {
+                      format: "json",
+                      name: aliasName,
+                      expand_wildcards: "all",
+                    },
+                  })
+                }
+              />
+            </CustomFormRow>
+          </>
+        )}
       </ContentPanel>
       <EuiSpacer />
       <ContentPanel title="Index settings" titleSize="s">
-        <CustomFormRow
-          label="Number of shards"
-          helpText="The number of primary shards in the index. Default is 1."
-          {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"])}
-        >
-          <AllBuiltInComponents.Number
-            {...field.registerField({
-              name: ["template", "settings", "index.number_of_shards"],
-              rules: [
-                {
-                  validator(rule, value) {
-                    if (value === "") {
-                      return Promise.resolve("");
-                    }
-                    if (Number(value) !== parseInt(value)) {
-                      return Promise.reject("Number of shards must be an integer");
-                    }
+        <EuiSpacer size="s" />
+        {readonly ? (
+          <DescriptionListHoz
+            listItems={[
+              {
+                title: "Number of primary shards",
+                description: values.template?.settings?.["index.number_of_shards"] || "-",
+              },
+              {
+                title: "Number of replicas",
+                description: values.template?.settings?.["index.number_of_replicas"] || "-",
+              },
+              {
+                title: "Refresh interval",
+                description: values.template?.settings?.["index.refresh_interval"] || "-",
+              },
+            ]}
+          />
+        ) : (
+          <>
+            <CustomFormRow
+              label="Number of primary shards"
+              helpText="The number of primary shards in the index. Default is 1."
+              {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"])}
+            >
+              <AllBuiltInComponents.Number
+                {...field.registerField({
+                  name: ["template", "settings", "index.number_of_shards"],
+                  rules: [
+                    {
+                      validator(rule, value) {
+                        if (value === "") {
+                          return Promise.resolve("");
+                        }
+                        if (Number(value) !== parseInt(value)) {
+                          return Promise.reject("Number of primary shards must be an integer");
+                        }
 
-                    return Promise.resolve("");
-                  },
-                },
-              ],
-            })}
-          />
-        </CustomFormRow>
-        <EuiSpacer />
-        <CustomFormRow
-          label="Number of replicas"
-          helpText="The number of replica shards each primary shard should have."
-          {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"])}
-        >
-          <AllBuiltInComponents.Number
-            {...field.registerField({
-              name: ["template", "settings", "index.number_of_replicas"],
-              rules: [
-                {
-                  validator(rule, value) {
-                    if (value === "") {
-                      return Promise.resolve("");
-                    }
-                    if (Number(value) !== parseInt(value)) {
-                      return Promise.reject("Number of replicas must be an integer");
-                    }
+                        return Promise.resolve("");
+                      },
+                    },
+                  ],
+                })}
+              />
+            </CustomFormRow>
+            <EuiSpacer />
+            <CustomFormRow
+              label="Number of replicas"
+              helpText="The number of replica shards each primary shard should have."
+              {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"])}
+            >
+              <AllBuiltInComponents.Number
+                {...field.registerField({
+                  name: ["template", "settings", "index.number_of_replicas"],
+                  rules: [
+                    {
+                      validator(rule, value) {
+                        if (value === "") {
+                          return Promise.resolve("");
+                        }
+                        if (Number(value) !== parseInt(value)) {
+                          return Promise.reject("Number of replicas must be an integer");
+                        }
 
-                    return Promise.resolve("");
-                  },
-                },
-              ],
-            })}
-          />
-        </CustomFormRow>
-        <EuiSpacer />
-        <CustomFormRow
-          label="Refresh interval of index"
-          helpText="How often the index should refresh, which publishes its most recent changes and makes them available for searching."
-          {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"])}
-        >
-          <AllBuiltInComponents.Input
-            {...field.registerField({
-              name: ["template", "settings", "index.refresh_interval"],
-            })}
-          />
-        </CustomFormRow>
-        <EuiSpacer />
+                        return Promise.resolve("");
+                      },
+                    },
+                  ],
+                })}
+              />
+            </CustomFormRow>
+            <EuiSpacer />
+            <CustomFormRow
+              label="Refresh interval of index"
+              helpText="How often the index should refresh, which publishes its most recent changes and makes them available for searching."
+              {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"])}
+            >
+              <AllBuiltInComponents.Input
+                {...field.registerField({
+                  name: ["template", "settings", "index.refresh_interval"],
+                })}
+              />
+            </CustomFormRow>
+          </>
+        )}
         <AdvancedSettings
           value={field.getValues().template.settings || {}}
           onChange={(totalValue) => field.setValue(["template", "settings"], totalValue)}
@@ -264,6 +327,9 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly }: T
             initialIsOpen: false,
             id: "accordion_for_create_index_template_settings",
             buttonContent: <h4>Advanced settings</h4>,
+          }}
+          editorProps={{
+            disabled: readonly,
           }}
           rowProps={{
             label: "Specify advanced index settings",
@@ -312,20 +378,24 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly }: T
           />
         </EuiFormRow>
       </ContentPanel>
-      <EuiSpacer />
-      <EuiSpacer />
-      <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-        <EuiFlexItem grow={false}>
-          <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateIndexTemplateCancelButton">
-            Cancel
-          </EuiButtonEmpty>
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateIndexTemplateCreateButton">
-            {isEdit ? "Update" : "Create"}
-          </EuiButton>
-        </EuiFlexItem>
-      </EuiFlexGroup>
+      {readonly ? null : (
+        <>
+          <EuiSpacer />
+          <EuiSpacer />
+          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+            <EuiFlexItem grow={false}>
+              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateIndexTemplateCancelButton">
+                Cancel
+              </EuiButtonEmpty>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateIndexTemplateCreateButton">
+                {isEdit ? "Update" : "Create"}
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </>
+      )}
     </>
   );
 };

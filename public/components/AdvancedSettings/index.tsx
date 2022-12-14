@@ -51,6 +51,7 @@ export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProp
     <>
       <EuiSpacer size="m" />
       <EuiAccordion {...props.accordionProps} className="accordion-in-advanced-settings" id={accordionId}>
+        <EuiSpacer size="s" />
         <CustomFormRow {...(props.rowProps as EuiFormRowProps)}>
           {renderProps ? (
             (renderProps({

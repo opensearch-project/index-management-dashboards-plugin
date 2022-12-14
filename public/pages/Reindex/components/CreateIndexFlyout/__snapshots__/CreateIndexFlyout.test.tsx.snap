@@ -447,6 +447,9 @@ Object {
                               class=""
                             >
                               <div
+                                class="euiSpacer euiSpacer--s"
+                              />
+                              <div
                                 class="euiFormRow"
                                 data-test-subj="form-name-advanced-settings"
                                 id="some_html_id-row"

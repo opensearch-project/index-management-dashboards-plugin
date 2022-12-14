@@ -188,7 +188,7 @@ describe("<SplitIndexFlyout /> spec", () => {
 
     await waitFor(() => {
       expect(getByText("Target Index Name is required")).not.toBeNull();
-      expect(getByText("Number of shards is required")).not.toBeNull();
+      expect(getByText("Number of primary shards is required")).not.toBeNull();
     });
   });
 

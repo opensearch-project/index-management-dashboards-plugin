@@ -27,6 +27,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       style="padding: 0px 10px;"
     >
       <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
         class="euiFormRow"
         data-test-subj="form-row-name"
         id="some_html_id-row"
@@ -96,7 +99,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Specify the index patterns or index wildcard. Settings in this template will be applied to indexes with names matching index patterns or wildcards.
+            Specify the index patterns or index wildcards. Settings in this template will be applied to indexes with names matching index patterns or wildcards.
           </div>
           <div
             aria-expanded="false"
@@ -224,6 +227,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       style="padding: 0px 10px;"
     >
       <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
         class="euiFormRow"
         data-test-subj="form-row-template.aliases"
         id="some_html_id-row"
@@ -327,6 +333,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       style="padding: 0px 10px;"
     >
       <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
         class="euiFormRow"
         data-test-subj="form-row-template.settings.index.number_of_shards"
         id="some_html_id-row"
@@ -339,7 +348,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Number of shards
+            Number of primary shards
           </label>
         </div>
         <div
@@ -465,9 +474,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
         class="euiSpacer euiSpacer--m"
       />
       <div
@@ -509,6 +515,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             <div
               class=""
             >
+              <div
+                class="euiSpacer euiSpacer--s"
+              />
               <div
                 class="euiFormRow"
                 id="some_html_id-row"

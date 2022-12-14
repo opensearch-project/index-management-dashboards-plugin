@@ -72,7 +72,7 @@ describe("<CreateIndexTemplate /> spec", () => {
 
     userEvent.clear(shardsInput);
     userEvent.type(shardsInput, "1.5");
-    await waitFor(() => expect(getByText("Number of shards must be an integer")).toBeInTheDocument(), { timeout: 3000 });
+    await waitFor(() => expect(getByText("Number of primary shards must be an integer")).toBeInTheDocument(), { timeout: 3000 });
     userEvent.clear(shardsInput);
     userEvent.type(shardsInput, "1");
 

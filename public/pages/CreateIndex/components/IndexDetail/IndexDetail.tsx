@@ -221,12 +221,12 @@ const IndexDetail = (
           rules: [
             {
               min: 1,
-              message: "Number of shards can not smaller than 1",
+              message: "Number of primary shards can not smaller than 1",
             },
             {
               validator(rule, value, values) {
                 if (Number(value) !== parseInt(value)) {
-                  return Promise.reject("Number of shards must be an integer");
+                  return Promise.reject("Number of primary shards must be an integer");
                 }
 
                 return Promise.resolve();
