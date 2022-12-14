@@ -434,7 +434,7 @@ export default class Main extends Component<MainProps, object> {
                             path={ROUTES.SPLIT_INDEX}
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
-                                <SplitIndex {...props} commonService={services.commonService} indexService={services.indexService} />
+                                <SplitIndex {...props} />
                               </div>
                             )}
                           />

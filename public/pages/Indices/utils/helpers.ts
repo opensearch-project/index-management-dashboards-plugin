@@ -26,51 +26,54 @@ export function getURLQueryParams(location: { search: string }): IndicesQueryPar
   };
 }
 
-export async function openIndices(indices: string[], callback: any, commonService: CommonService, coreServices: CoreStart) {
-  const result = await commonService.apiCaller({
+export async function openIndices(props: { indices: string[]; commonService: CommonService; coreServices: CoreStart }) {
+  const result = await props.commonService.apiCaller({
     endpoint: "indices.open",
     data: {
-      index: indices,
+      index: props.indices,
     },
   });
   if (result && result.ok) {
-    coreServices.notifications.toasts.addSuccess(`Open [${indices}] successfully`);
-    callback && callback();
+    props.coreServices.notifications.toasts.addSuccess(`Open [${props.indices}] successfully`);
   } else {
-    const errorMessage = `There is a problem open index ${indices}, please check with Admin`;
-    coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
+    const errorMessage = `There is a problem open index ${props.indices}, please check with Admin`;
+    props.coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
     throw new Error(result?.error || errorMessage);
   }
 }
 
-export async function getIndexSettings(
-  indexName: string,
-  flat: boolean,
-  commonService: CommonService,
-  coreServices: CoreStart
-): Promise<Record<string, IndexItem>> {
-  const result: ServerResponse<Record<string, IndexItem>> = await commonService.apiCaller({
+export async function getIndexSettings(props: {
+  indexName: string;
+  flat: boolean;
+  commonService: CommonService;
+  coreServices: CoreStart;
+}): Promise<Record<string, IndexItem>> {
+  const result: ServerResponse<Record<string, IndexItem>> = await props.commonService.apiCaller({
     endpoint: "indices.getSettings",
     data: {
-      index: indexName,
-      flat_settings: flat,
+      index: props.indexName,
+      flat_settings: props.flat,
     },
   });
   if (result && result.ok) {
     return result.response;
   } else {
-    const errorMessage = `There is a problem getting index setting for ${indexName}, please check with Admin`;
-    coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
+    const errorMessage = `There is a problem getting index setting for ${props.indexName}, please check with Admin`;
+    props.coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
     throw new Error(result?.error || errorMessage);
   }
 }
 
-export async function getSingleIndice(indexName: string, indexService: IndexService, coreServices: CoreStart): Promise<CatIndex> {
-  const result = await indexService.getIndices({
+export async function getSingleIndice(props: {
+  indexName: string;
+  indexService: IndexService;
+  coreServices: CoreStart;
+}): Promise<CatIndex> {
+  const result = await props.indexService.getIndices({
     from: 0,
     size: 1,
-    search: indexName,
-    indices: [indexName],
+    search: props.indexName,
+    indices: [props.indexName],
     sortDirection: "desc",
     sortField: "index",
     showDataStreams: true,
@@ -79,67 +82,67 @@ export async function getSingleIndice(indexName: string, indexService: IndexServ
   if (result && result.ok) {
     return result.response.indices[0];
   } else {
-    const errorMessage = `There is a problem getting index for ${indexName}, please check with Admin`;
-    coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
+    const errorMessage = `There is a problem getting index for ${props.indexName}, please check with Admin`;
+    props.coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
     throw new Error(result?.error || errorMessage);
   }
 }
 
-export async function setIndexSettings(
-  indexName: string,
-  flat: boolean,
-  settings: {},
-  commonService: CommonService,
-  coreServices: CoreStart
-) {
-  const result = await commonService.apiCaller({
+export async function setIndexSettings(props: {
+  indexName: string;
+  flat: boolean;
+  settings: {};
+  commonService: CommonService;
+  coreServices: CoreStart;
+}) {
+  const result = await props.commonService.apiCaller({
     endpoint: "indices.putSettings",
     method: "PUT",
     data: {
-      index: indexName,
-      flat_settings: flat,
+      index: props.indexName,
+      flat_settings: props.flat,
       body: {
         settings: {
-          ...settings,
+          ...props.settings,
         },
       },
     },
   });
   if (result && result.ok) {
-    coreServices.notifications.toasts.addSuccess(`Successfully update index setting for ${indexName}`);
+    props.coreServices.notifications.toasts.addSuccess(`Successfully update index setting for ${props.indexName}`);
   } else {
-    const errorMessage = `There is a problem set index setting for ${indexName}, please check with Admin`;
-    coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
+    const errorMessage = `There is a problem set index setting for ${props.indexName}, please check with Admin`;
+    props.coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
     throw new Error(result?.error || errorMessage);
   }
 }
 
-export async function getAlias(aliasName: string, commonService: CommonService) {
-  return await commonService.apiCaller<{ alias: string }[]>({
+export async function getAlias(props: { aliasName: string; commonService: CommonService }) {
+  return await props.commonService.apiCaller<{ alias: string }[]>({
     endpoint: "cat.aliases",
     method: "GET",
     data: {
       format: "json",
-      name: `${aliasName || ""}*`,
+      name: `${props.aliasName || ""}*`,
       expand_wildcards: "open",
     },
   });
 }
 
-export async function splitIndex(
-  sourceIndex: String,
-  targetIndex: String,
-  settingsPayload: Required<IndexItem>["settings"],
-  commonService: CommonService,
-  coreServices: CoreStart
-) {
-  const { aliases, ...settings } = settingsPayload;
-  const result = await commonService.apiCaller({
+export async function splitIndex(props: {
+  sourceIndex: String;
+  targetIndex: String;
+  settingsPayload: Required<IndexItem>["settings"];
+  commonService: CommonService;
+  coreServices: CoreStart;
+}) {
+  const { aliases, ...settings } = props.settingsPayload;
+  const result = await props.commonService.apiCaller({
     endpoint: "indices.split",
     method: "PUT",
     data: {
-      index: sourceIndex,
-      target: targetIndex,
+      index: props.sourceIndex,
+      target: props.targetIndex,
       body: {
         settings: {
           ...settings,
@@ -150,11 +153,11 @@ export async function splitIndex(
   });
 
   if (result && result.ok) {
-    coreServices.notifications.toasts.addSuccess(`Successfully submit split index request.`);
+    props.coreServices.notifications.toasts.addSuccess(`Successfully submit split index request.`);
     return result;
   } else {
     const errorMessage = `There was a problem submit split index request, please check with admin`;
-    coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
+    props.coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
     throw new Error(result?.error || errorMessage);
   }
 }
