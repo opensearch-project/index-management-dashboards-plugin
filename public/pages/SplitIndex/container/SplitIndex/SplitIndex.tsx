@@ -7,7 +7,7 @@ import { EuiSpacer, EuiTitle, EuiButton } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
-import { RecoveryJobMetaData } from "../../../../models/interfaces";
+import { BrowserServices, RecoveryJobMetaData } from "../../../../models/interfaces";
 import SplitIndexFlyout from "../../components/SplitIndexFlyout";
 import { IndexItem } from "../../../../../models/interfaces";
 import { RouteComponentProps } from "react-router-dom";
@@ -22,14 +22,18 @@ import {
   getSingleIndice,
 } from "../../../Indices/utils/helpers";
 
-import { CommonService, IndexService } from "../../../../services";
+import { CommonService, IndexService, ServicesContext } from "../../../../services";
+import { CoreStart } from "opensearch-dashboards/public";
+import { useContext } from "react";
+import { CoreServicesContext } from "../../../../components/core_services";
 
 interface SplitIndexProps extends RouteComponentProps {
   commonService: CommonService;
   indexService: IndexService;
+  coreService: CoreStart;
 }
 
-export default class SplitIndex extends Component<SplitIndexProps> {
+export class SplitIndex extends Component<SplitIndexProps> {
   state = {
     reasons: {} as React.ReactChild[],
     shardsSelectOptions: [],
@@ -46,8 +50,12 @@ export default class SplitIndex extends Component<SplitIndexProps> {
   }
 
   isSourceIndexReady = async () => {
-    const source = queryString.parse(this.props.location.search);
-    const sourceIndex = await getSingleIndice(source.source as string, this.props.indexService, this.context);
+    const source = queryString.parse(this.props.location.search) as { source?: string };
+    const sourceIndex = await getSingleIndice({
+      indexName: source.source as string,
+      indexService: this.props.indexService,
+      coreServices: this.props.coreService,
+    });
     if (!sourceIndex) {
       return null;
     }
@@ -55,7 +63,12 @@ export default class SplitIndex extends Component<SplitIndexProps> {
       sourceIndex,
     });
 
-    const sourceIndexSettings = await getIndexSettings(sourceIndex.index, true, this.props.commonService, this.context);
+    const sourceIndexSettings = await getIndexSettings({
+      indexName: sourceIndex.index,
+      flat: true,
+      commonService: this.props.commonService,
+      coreServices: this.props.coreService,
+    });
     const reasons = [];
     const sourceSettings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
     const blocksWriteValue = get(sourceSettings, ["index.blocks.write"]);
@@ -71,7 +84,11 @@ export default class SplitIndex extends Component<SplitIndexProps> {
           <EuiButton
             fill
             onClick={async () => {
-              await openIndices();
+              await openIndices({
+                commonService: this.props.commonService,
+                indices: [source.source || ""],
+                coreServices: this.props.coreService,
+              });
               await this.isSourceIndexReady();
             }}
             data-test-subj={"open-index-button"}
@@ -91,7 +108,13 @@ export default class SplitIndex extends Component<SplitIndexProps> {
           <EuiButton
             fill
             onClick={async () => {
-              await setIndexSettings(sourceIndex.index, flat, blocksWriteSetting, this.props.commonService, this.context);
+              await setIndexSettings({
+                indexName: sourceIndex.index,
+                flat,
+                settings: blocksWriteSetting,
+                commonService: this.props.commonService,
+                coreServices: this.props.coreService,
+              });
               await this.isSourceIndexReady();
             }}
             data-test-subj={"set-indexsetting-button"}
@@ -118,7 +141,13 @@ export default class SplitIndex extends Component<SplitIndexProps> {
 
   onSplitIndex = async (targetIndex: String, settingsPayload: Required<IndexItem>["settings"]) => {
     const { sourceIndex } = this.state;
-    const result = await splitIndex(sourceIndex.index, targetIndex, settingsPayload, this.props.commonService, this.context);
+    const result = await splitIndex({
+      sourceIndex: sourceIndex.index,
+      targetIndex,
+      settingsPayload,
+      commonService: this.props.commonService,
+      coreServices: this.props.coreService,
+    });
     if (result && result.ok) {
       this.context.notifications.toasts.addSuccess(`Successfully submit split index request.`);
       jobSchedulerInstance.addJob({
@@ -157,4 +186,10 @@ export default class SplitIndex extends Component<SplitIndexProps> {
       </div>
     );
   }
+}
+
+export default function SplitIndexWrapper(props: Omit<SplitIndexProps, "commonService" | "indexService" | "coreService">) {
+  const services = useContext(ServicesContext) as BrowserServices;
+  const coreService = useContext(CoreServicesContext) as CoreStart;
+  return <SplitIndex {...props} commonService={services.commonService} indexService={services.indexService} coreService={coreService} />;
 }
