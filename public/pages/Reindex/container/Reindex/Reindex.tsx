@@ -466,7 +466,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiTitle size="s">
-            <h3>Advanced Settings</h3>
+            <h3>Advanced settings</h3>
           </EuiTitle>
         </EuiFlexItem>
       </EuiFlexGroup>
@@ -475,9 +475,9 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     const subTitleText = (
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
-          With the reindex operation, you can copy all or a subset of documents that you select through a query to another index{" "}
+          Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.{" "}
           <EuiLink href={this.context.docLinks.links.opensearch.reindexData.base} target="_blank" rel="noopener noreferrer">
-            Learn more
+            Learn more.
           </EuiLink>
         </p>
       </EuiText>
@@ -523,7 +523,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                   },
                   {
                     id: "subset",
-                    label: "Reindex a subset of documents (advanced)",
+                    label: "Reindex a subset of documents (Advanced)",
                   },
                 ]}
                 idSelected={subset ? "subset" : "all"}
@@ -571,7 +571,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           <EuiSpacer />
           <EuiFlexGroup alignItems="flexEnd">
             <EuiFlexItem style={{ maxWidth: "400px" }}>
-              <CustomFormRow label="Specify a destination index or data streams" isInvalid={!!destError} error={destError}>
+              <CustomFormRow label="Specify a destination index or data stream" isInvalid={!!destError} error={destError}>
                 <IndexSelect
                   data-test-subj="destinationSelector"
                   getIndexOptions={this.getIndexOptions}
@@ -584,7 +584,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
-                Create Index
+                Create index
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>

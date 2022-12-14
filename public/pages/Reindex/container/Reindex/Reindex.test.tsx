@@ -614,7 +614,7 @@ describe("<Reindex /> spec", () => {
     });
 
     // click subset radio
-    userEvent.click(getByText("Reindex a subset of documents (advanced)"));
+    userEvent.click(getByText("Reindex a subset of documents (Advanced)"));
 
     expect(getByTestId("queryJsonEditor")).toBeVisible();
   });
@@ -638,7 +638,7 @@ describe("<Reindex /> spec", () => {
     fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
 
     // click subset radio
-    userEvent.click(getByText("Reindex a subset of documents (advanced)"));
+    userEvent.click(getByText("Reindex a subset of documents (Advanced)"));
     expect(getByTestId("queryJsonEditor")).toBeVisible();
 
     userEvent.click(getByTestId("reindexConfirmButton"));

@@ -19,7 +19,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
       <p
         style="font-weight: 200;"
       >
-        With the reindex operation, you can copy all or a subset of documents that you select through a query to another index
+        Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.
          
         <a
           class="euiLink euiLink--primary"
@@ -27,7 +27,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
           rel="noopener noreferrer"
           target="_blank"
         >
-          Learn more
+          Learn more.
           EuiIconMock
           <span
             class="euiScreenReaderOnly"
@@ -208,7 +208,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
                 class="euiRadio__label"
                 for="subset"
               >
-                Reindex a subset of documents (advanced)
+                Reindex a subset of documents (Advanced)
               </label>
             </div>
           </fieldset>
@@ -268,7 +268,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
                 class="euiFormLabel euiFormRow__label"
                 for="some_html_id"
               >
-                Specify a destination index or data streams
+                Specify a destination index or data stream
               </label>
             </div>
             <div
@@ -347,7 +347,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
               <span
                 class="euiButton__text"
               >
-                Create Index
+                Create index
               </span>
             </span>
           </button>
@@ -390,7 +390,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
             <h3
               class="euiTitle euiTitle--small"
             >
-              Advanced Settings
+              Advanced settings
             </h3>
           </div>
         </div>
