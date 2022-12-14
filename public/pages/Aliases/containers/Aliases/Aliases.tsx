@@ -21,6 +21,7 @@ import {
   EuiFlyoutHeader,
   EuiFlyoutBody,
   EuiText,
+  EuiLink,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -46,6 +47,7 @@ interface AliasesState {
   sortField: keyof IAlias;
   sortDirection: Direction;
   selectedItems: IAlias[];
+  editingItem: IAlias | null;
   aliases: IAlias[];
   loading: boolean;
   aliasCreateFlyoutVisible: boolean;
@@ -133,6 +135,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       loading: false,
       aliasCreateFlyoutVisible: false,
       aliasEditFlyoutVisible: false,
+      editingItem: null,
     };
 
     this.getAliases = _.debounce(this.getAliases, 500, { leading: true });
@@ -304,6 +307,20 @@ class Aliases extends Component<AliasesProps, AliasesState> {
               field: "alias",
               name: "Alias Name",
               sortable: true,
+              render: (value: string, record) => {
+                return (
+                  <EuiLink
+                    onClick={() =>
+                      this.setState({
+                        editingItem: record,
+                        aliasEditFlyoutVisible: true,
+                      })
+                    }
+                  >
+                    {value}
+                  </EuiLink>
+                );
+              },
             },
             {
               field: "indexArray",
@@ -356,10 +373,15 @@ class Aliases extends Component<AliasesProps, AliasesState> {
           visible={this.state.aliasEditFlyoutVisible}
           onSuccess={() => {
             this.getAliases();
-            this.setState({ aliasEditFlyoutVisible: false });
+            this.setState({ editingItem: null, aliasEditFlyoutVisible: false });
           }}
-          onClose={() => this.setState({ aliasEditFlyoutVisible: false })}
-          alias={this.state.selectedItems[0]}
+          onClose={() =>
+            this.setState({
+              editingItem: null,
+              aliasEditFlyoutVisible: false,
+            })
+          }
+          alias={this.state.editingItem || this.state.selectedItems[0]}
         />
       </ContentPanel>
     );
