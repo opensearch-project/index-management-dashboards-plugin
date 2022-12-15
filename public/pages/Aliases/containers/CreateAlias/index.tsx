@@ -172,7 +172,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
               }
 
               if (result?.ok) {
-                coreServices?.notifications.toasts.addSuccess(`[${values.alias}] has been successfully ${isEdit ? "updated" : "created"}`);
+                coreServices?.notifications.toasts.addSuccess(`${values.alias} has been successfully ${isEdit ? "updated" : "created"}`);
                 props.onSuccess();
               } else {
                 coreServices?.notifications.toasts.addDanger(result?.error || "");
