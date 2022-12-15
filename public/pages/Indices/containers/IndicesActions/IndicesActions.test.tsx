@@ -596,13 +596,13 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(getByTestId("Split Action"));
 
     await waitFor(() => {
-      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
+      expect(getByTestId("splitButton")).not.toBeDisabled();
       expect(getByText("100KB")).toBeInTheDocument();
     });
 
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
     userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "6{enter}");
-    userEvent.click(getByTestId("flyout-footer-action-button"));
+    userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
       expect(onSplit).toHaveBeenCalled();

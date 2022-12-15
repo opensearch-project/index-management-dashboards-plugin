@@ -74,14 +74,15 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const sourceSettings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
     const blocksWriteValue = get(sourceSettings, ["index.blocks.write"]);
 
+    debugger;
     if (sourceIndex.health === "red") {
-      reasons.push(<>Source index health must not be red.</>);
+      reasons.push(<>It must not have a Red health status.</>);
     }
 
     if (sourceIndex.status === "close") {
       reasons.push(
         <>
-          Source index must not be in close status. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          It must not be in close status. &nbsp;&nbsp;
           <EuiButton
             fill
             onClick={async () => {
@@ -105,7 +106,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
       const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(
         <>
-          Source index must be in block write status. &nbsp;&nbsp;
+          It's block write status must be set to true. &nbsp;&nbsp;
           <EuiButton
             fill
             onClick={async () => {

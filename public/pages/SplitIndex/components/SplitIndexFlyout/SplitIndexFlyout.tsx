@@ -139,6 +139,8 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
           <IndexDetail indices={[sourceIndex]}>
             <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
               <div style={{ lineHeight: 3 }}>
+                Source index cannot currently be split <br />
+                To split the index:
                 <ul>
                   {reasons.map((reason, reasonIndex) => (
                     <li key={reasonIndex}>{reason}</li>
@@ -202,7 +204,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit} data-test-subj="splitButton">
+            <EuiButton fill onClick={this.onSubmit} data-test-subj="splitButton" isDisabled={!readyForSplit}>
               Split
             </EuiButton>
           </EuiFlexItem>

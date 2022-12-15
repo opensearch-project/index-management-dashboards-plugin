@@ -75,7 +75,7 @@ describe("Split Index", () => {
         .get('[data-test-subj="numberOfReplicasInput"]')
         .type(`${replicaNumber}`)
         .end()
-        .get('[data-test-subj="flyout-footer-action-button"]')
+        .get('[data-test-subj="splitButton"]')
         .click()
         .end();
 
@@ -111,7 +111,7 @@ describe("Split Index", () => {
           parseSpecialCharSequences: false,
         })
         .end()
-        .get('[data-test-subj="flyout-footer-action-button"]')
+        .get('[data-test-subj="splitButton"]')
         .click()
         .end();
 
@@ -143,7 +143,7 @@ describe("Split Index", () => {
         .get('[data-test-subj="form-name-aliases"] [data-test-subj="comboBoxSearchInput"]')
         .type(`${sampleAlias}{enter}${newAlias}{enter}`)
         .end()
-        .get('[data-test-subj="flyout-footer-action-button"]')
+        .get('[data-test-subj="splitButton"]')
         .click()
         .end();
 
@@ -167,14 +167,14 @@ describe("Split Index", () => {
         .click()
         .end()
         // Index can't be split if it's blocks write status is not true
-        .get('[data-test-subj="flyout-footer-action-button"]')
+        .get('[data-test-subj="splitButton"]')
         .should("have.class", "euiButton-isDisabled")
         .end()
         // Set index to blocks write
         .get('[data-test-subj="set-indexsetting-button"]')
         .click()
         .end()
-        .get('[data-test-subj="flyout-footer-action-button"]')
+        .get('[data-test-subj="splitButton"]')
         .click()
         .end();
     }); // Blocks write
