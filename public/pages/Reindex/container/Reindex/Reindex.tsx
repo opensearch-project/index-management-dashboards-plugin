@@ -25,7 +25,7 @@ import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/i
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import ReindexAdvancedOptions from "../../components/ReindexAdvancedOptions";
-import { BREADCRUMBS, DSL_DOCUMENTATION_URL, REINDEX_DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CommonService, IndexService } from "../../../../services";
 import { RouteComponentProps } from "react-router-dom";
 import IndexSelect from "../../components/IndexSelect";
@@ -51,6 +51,7 @@ interface ReindexState {
   destError: string | null;
   subset: boolean;
   sourceQuery: string;
+  sourceQueryErr?: string;
   advancedSettingsOpen: boolean;
   slices: string;
   sliceError?: string;
@@ -193,9 +194,13 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   };
 
   onClickAction = async () => {
-    const { sourceQuery, destination, slices, selectedPipelines, conflicts, sources } = this.state;
+    const { sourceQuery, destination, slices, selectedPipelines, conflicts, sources, subset } = this.state;
 
     if (!(await this.validateSource(sources)) || !this.validateDestination(destination) || !this.validateSlices(slices)) {
+      return;
+    }
+    // validate query DSL
+    if (subset && !(await this.validateQueryDSL(sources, sourceQuery))) {
       return;
     }
 
@@ -210,7 +215,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           conflicts: conflicts,
           source: {
             index: sources.map((item) => item.label).join(","),
-            ...JSON.parse(sourceQuery),
           },
           dest: {
             index: destination.map((item) => item.label)[0],
@@ -218,6 +222,10 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           },
         },
       };
+      // set query DSL
+      if (subset) {
+        Object.assign(reindexReq.body.source, JSON.parse(sourceQuery));
+      }
       // set pipeline if available
       if (selectedPipelines && selectedPipelines.length > 0) {
         reindexReq.body.dest.pipeline = selectedPipelines[0].label;
@@ -244,7 +252,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     });
     if (res && res.ok) {
       // @ts-ignore
-      const toast = `Reindex from [${reindexRequest.body.source.index}] to [${reindexRequest.body.dest.index}] success with taskId ${res.response.task}`;
+      const toast = `Successfully started reindexing ${reindexRequest.body.source.index}.The reindex index will be named ${reindexRequest.body.dest.index}.`;
       this.context.notifications.toasts.addSuccess(toast);
       jobSchedulerInstance.addJob({
         type: "reindex",
@@ -366,6 +374,29 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     return true;
   };
 
+  validateQueryDSL = async (sourceIndices: EuiComboBoxOptionOption<IndexSelectItem>[], queryString: string): Promise<boolean> => {
+    if (!queryString) return true;
+    const { commonService } = this.props;
+    const validateRes = await commonService.apiCaller({
+      endpoint: "indices.validateQuery",
+      data: {
+        index: sourceIndices.map((item) => item.label).join(","),
+        body: {
+          ...JSON.parse(queryString),
+        },
+      },
+    });
+    if (validateRes && validateRes.ok) {
+      // @ts-ignore
+      const valid = validateRes.response.valid;
+      if (!valid) {
+        this.setState({ sourceQueryErr: "Invalid query expression" });
+        return false;
+      }
+    }
+    return true;
+  };
+
   onCancel = () => {
     this.props.history.push(ROUTES.INDICES);
   };
@@ -394,8 +425,9 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     this.validateDestination(selectedOptions);
   };
 
-  onSourceQueryChange = (value: string) => {
-    this.setState({ sourceQuery: value });
+  onSourceQueryChange = async (value: string) => {
+    this.setState({ sourceQuery: value, sourceQueryErr: undefined });
+    await this.validateQueryDSL(this.state.sources, value);
   };
 
   onSliceChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -417,7 +449,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
   render() {
     const { sources, destination, sourceQuery, destError, slices, sourceErr, advancedSettingsOpen, showCreateIndexFlyout } = this.state;
-    const { conflicts, subset, executing } = this.state;
+    const { conflicts, subset, executing, sourceQueryErr } = this.state;
 
     const advanceTitle = (
       <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
@@ -434,7 +466,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiTitle size="s">
-            <h3>Advanced Settings</h3>
+            <h3>Advanced settings</h3>
           </EuiTitle>
         </EuiFlexItem>
       </EuiFlexGroup>
@@ -443,9 +475,9 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     const subTitleText = (
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
-          With the reindex operation, you can copy all or a subset of documents that you select through a query to another index{" "}
-          <EuiLink href={REINDEX_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-            Learn more
+          Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.{" "}
+          <EuiLink href={this.context.docLinks.links.opensearch.reindexData.base} target="_blank" rel="noopener noreferrer">
+            Learn more.
           </EuiLink>
         </p>
       </EuiText>
@@ -491,7 +523,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                   },
                   {
                     id: "subset",
-                    label: "Reindex a subset of documents (advanced)",
+                    label: "Reindex a subset of documents (Advanced)",
                   },
                 ]}
                 idSelected={subset ? "subset" : "all"}
@@ -508,9 +540,11 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
               {subset ? (
                 <CustomFormRow
                   label="Query expression"
+                  isInvalid={!!sourceQueryErr}
+                  error={sourceQueryErr}
                   labelAppend={
                     <EuiText size="xs">
-                      <EuiLink href={DSL_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+                      <EuiLink href={this.context.docLinks.links.opensearch.queryDSL.base} target="_blank" rel="noopener noreferrer">
                         learn more about query-dsl
                       </EuiLink>
                     </EuiText>
@@ -537,7 +571,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           <EuiSpacer />
           <EuiFlexGroup alignItems="flexEnd">
             <EuiFlexItem style={{ maxWidth: "400px" }}>
-              <CustomFormRow label="Specify destination index or data streams" isInvalid={!!destError} error={destError}>
+              <CustomFormRow label="Specify a destination index or data stream" isInvalid={!!destError} error={destError}>
                 <IndexSelect
                   data-test-subj="destinationSelector"
                   getIndexOptions={this.getIndexOptions}
@@ -550,7 +584,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
-                Create Index
+                Create index
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>
@@ -591,7 +625,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
         {showCreateIndexFlyout ? (
           <CreateIndexFlyout
-            commonService={this.props.commonService}
             onSubmitSuccess={this.onCreateIndexSuccess}
             sourceIndices={allSelectedIndices}
             onCloseFlyout={() => this.setState({ showCreateIndexFlyout: false })}

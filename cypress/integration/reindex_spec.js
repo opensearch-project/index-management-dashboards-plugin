@@ -130,7 +130,7 @@ describe("Reindex", () => {
       // click to perform reindex
       cy.get('[data-test-subj="reindexConfirmButton"]').click();
       cy.wait(10);
-      cy.contains(/Reindex .* success .* taskId .*/);
+      cy.contains(/Successfully started reindexing/);
 
       cy.wait(10000);
       // Type in REINDEX_DEST in search input
@@ -209,7 +209,7 @@ describe("Reindex", () => {
       // click to perform reindex
       cy.get('[data-test-subj="reindexConfirmButton"]').click();
       cy.wait(10);
-      cy.contains(/Reindex .* success .* taskId .*/);
+      cy.contains(/Successfully started reindexing/);
 
       cy.wait(10000);
       // Type in REINDEX_DEST in search input

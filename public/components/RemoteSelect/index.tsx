@@ -32,7 +32,7 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
           if (destroyRef.current) {
             return;
           }
-          if (res.ok && res.response) {
+          if (res?.ok && res.response) {
             setAllOptions(res.response);
           } else {
             setAllOptions([]);

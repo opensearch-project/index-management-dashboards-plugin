@@ -175,7 +175,7 @@ Object {
                                     class="euiFormControlLayout__childrenWrapper"
                                   >
                                     <div
-                                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
                                       data-test-subj="comboBoxInput"
                                       tabindex="-1"
                                     >
@@ -203,9 +203,6 @@ Object {
                                     <div
                                       class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
                                     >
-                                      <span
-                                        class="euiLoadingSpinner euiLoadingSpinner--medium"
-                                      />
                                       <button
                                         aria-label="Open list of options"
                                         class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
@@ -428,6 +425,7 @@ Object {
                             class="euiAccordion__childWrapper"
                             id="accordion_for_create_index_settings"
                             role="region"
+                            style="height: 0px"
                             tabindex="-1"
                           >
                             <div>
@@ -472,6 +470,13 @@ Object {
                                           (opens in a new tab or window)
                                         </span>
                                       </a>
+                                    </div>
+                                    <div>
+                                      <textarea
+                                        data-test-subj="json-editor-value-display"
+                                        style="display: none;"
+                                        title="editor-is-ready-true"
+                                      />
                                     </div>
                                   </div>
                                 </div>
