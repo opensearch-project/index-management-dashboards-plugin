@@ -13,8 +13,6 @@ import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../.
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-apiCallerMock(browserServicesMock);
-
 function renderCreateIndexTemplateWithRouter(initialEntries = [ROUTES.CREATE_TEMPLATE] as string[]) {
   return {
     ...render(
@@ -22,6 +20,10 @@ function renderCreateIndexTemplateWithRouter(initialEntries = [ROUTES.CREATE_TEM
         <CoreServicesContext.Provider value={coreServicesMock}>
           <ServicesContext.Provider value={browserServicesMock}>
             <Switch>
+              <Route
+                path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
+                render={(props: RouteComponentProps) => <CreateIndexTemplate {...props} />}
+              />
               <Route
                 path={`${ROUTES.CREATE_TEMPLATE}/:template`}
                 render={(props: RouteComponentProps) => <CreateIndexTemplate {...props} />}
@@ -37,8 +39,16 @@ function renderCreateIndexTemplateWithRouter(initialEntries = [ROUTES.CREATE_TEM
 }
 
 describe("<CreateIndexTemplate /> spec", () => {
+  beforeEach(() => {
+    apiCallerMock(browserServicesMock);
+  });
   it("it goes to templates page when click cancel", async () => {
-    const { getByTestId, getByText } = renderCreateIndexTemplateWithRouter([`${ROUTES.CREATE_TEMPLATE}/good_template`]);
+    const { getByTestId, getByText, findByTitle, container } = renderCreateIndexTemplateWithRouter([
+      `${ROUTES.CREATE_TEMPLATE}/good_template/readonly`,
+    ]);
+    await findByTitle("good_template");
+    expect(container).toMatchSnapshot();
+    userEvent.click(getByText("Edit"));
     await waitFor(() => expect(document.querySelector('[data-test-subj="form-row-name"] [title="good_template"]')).toBeInTheDocument(), {
       timeout: 3000,
     });

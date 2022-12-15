@@ -12,8 +12,6 @@ import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../.
 import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-apiCallerMock(browserServicesMock);
-
 function renderCreateIndexWithRouter(props: IndexFormProps) {
   return {
     ...render(
@@ -27,6 +25,9 @@ function renderCreateIndexWithRouter(props: IndexFormProps) {
 }
 
 describe("<IndexForm /> spec", () => {
+  beforeEach(() => {
+    apiCallerMock(browserServicesMock);
+  });
   it("show a toast if getIndices gracefully fails", async () => {
     const { findByText } = renderCreateIndexWithRouter({
       index: "bad_index",

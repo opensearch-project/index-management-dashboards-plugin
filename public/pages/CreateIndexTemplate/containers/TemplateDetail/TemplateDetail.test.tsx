@@ -10,6 +10,8 @@ import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { HashRouter, Route } from "react-router-dom";
+import { ROUTES } from "../../../../utils/constants";
+import userEvent from "@testing-library/user-event";
 
 function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history">) {
   return {
@@ -18,6 +20,7 @@ function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history">) 
         <CoreServicesContext.Provider value={coreServicesMock}>
           <ServicesContext.Provider value={browserServicesMock}>
             <Route path="/" render={(routeProps) => <TemplateDetail {...props} history={routeProps.history} />} />
+            <Route path={ROUTES.TEMPLATES} render={(routeProps) => <>This is {ROUTES.TEMPLATES}</>} />
           </ServicesContext.Provider>
         </CoreServicesContext.Provider>
       </HashRouter>
@@ -36,5 +39,40 @@ describe("<TemplateDetail /> spec", () => {
       }
     );
     expect(container).toMatchSnapshot();
+  });
+
+  it("show the json", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(async () => {
+      return {
+        ok: true,
+        response: {
+          index_templates: [
+            {
+              name: "good_template",
+              template: {},
+            },
+          ],
+        },
+      };
+    });
+    const { getByText, getByTestId, findByTitle } = renderCreateIndexTemplate({
+      readonly: true,
+      templateName: "good_template",
+    });
+    await findByTitle("good_template");
+    userEvent.click(getByText("View JSON"));
+    await waitFor(() =>
+      expect(
+        JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="json-editor-value-display"]')?.innerHTML || "{}")
+      ).toEqual({
+        name: "good_template",
+        template: {
+          mappings: {
+            properties: {},
+          },
+          settings: {},
+        },
+      })
+    );
   });
 });

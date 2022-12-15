@@ -17,8 +17,8 @@ import {
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect from "../../../CreateIndex/components/AliasSelect";
-import IndexMapping, { IIndexMappingsRef } from "../../../CreateIndex/components/IndexMapping";
-import { TemplateItem } from "../../../../../models/interfaces";
+import IndexMapping, { IIndexMappingsRef, transformArrayToObject } from "../../../CreateIndex/components/IndexMapping";
+import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance, transformNameToString } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
@@ -123,7 +123,9 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <EuiTitle size="l">{readonly ? <h1>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}</EuiTitle>
+          <EuiTitle size="l">
+            {readonly ? <h1 title={values.name}>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
+          </EuiTitle>
           {readonly ? null : (
             <CustomFormRow
               fullWidth
@@ -146,12 +148,23 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             <EuiButton
               fill
               style={{ marginRight: 20 }}
-              onClick={() =>
+              onClick={() => {
+                const showValue: TemplateItemRemote = {
+                  ...values,
+                  template: {
+                    ...values.template,
+                    mappings: {
+                      ...values.template.mappings,
+                      properties: transformArrayToObject(values.template.mappings?.properties || []),
+                    },
+                  },
+                };
                 Modal.show({
+                  "data-test-subj": "templateJSONDetailModal",
                   title: values.name,
-                  content: <JSONEditor value={JSON.stringify(values, null, 2)} disabled />,
-                })
-              }
+                  content: <JSONEditor value={JSON.stringify(showValue, null, 2)} disabled />,
+                });
+              }}
             >
               View JSON
             </EuiButton>
@@ -250,7 +263,11 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             />
           </CustomFormRow>
           <EuiSpacer />
-          <CustomFormRow {...getCommonFormRowProps("priority")} label="Priority">
+          <CustomFormRow
+            {...getCommonFormRowProps("priority")}
+            label="Priority"
+            helpText="Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index"
+          >
             <AllBuiltInComponents.Number
               {...field.registerField({
                 name: "priority",

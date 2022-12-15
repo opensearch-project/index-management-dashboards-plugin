@@ -13,8 +13,6 @@ import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-apiCallerMock(browserServicesMock);
-
 function renderWithRouter(props: Omit<IndexDetailModalProps, "history">) {
   return {
     ...render(
@@ -34,6 +32,9 @@ function renderWithRouter(props: Omit<IndexDetailModalProps, "history">) {
 }
 
 describe("container <IndexDetail /> spec", () => {
+  beforeEach(() => {
+    apiCallerMock(browserServicesMock);
+  });
   const onUpdateSuccessMock = jest.fn();
   it("render the component", async () => {
     const { container } = renderWithRouter({
