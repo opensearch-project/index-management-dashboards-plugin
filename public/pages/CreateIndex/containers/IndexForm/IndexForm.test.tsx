@@ -70,7 +70,7 @@ describe("<IndexForm /> spec", () => {
     await waitFor(() => expect(getByTestId("form-name-index.number_of_replicas").querySelector("input")).toHaveAttribute("value", "10"));
     userEvent.click(getByText("Create"));
     await waitFor(() =>
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("[good_index] has been successfully created.")
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("good_index has been successfully created.")
     );
   });
 

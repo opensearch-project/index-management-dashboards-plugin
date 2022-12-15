@@ -87,7 +87,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
       isEdit,
     });
     if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess(`[${templateDetail.name}] has been successfully ${isEdit ? "updated" : "created"}.`);
+      coreServices.notifications.toasts.addSuccess(`${templateDetail.name} has been successfully ${isEdit ? "updated" : "created"}.`);
       onSubmitSuccess && onSubmitSuccess(templateDetail.name);
     } else {
       coreServices.notifications.toasts.addDanger(result.error);
