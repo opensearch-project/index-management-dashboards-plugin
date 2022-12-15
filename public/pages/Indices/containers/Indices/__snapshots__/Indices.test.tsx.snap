@@ -389,9 +389,9 @@ exports[`<Indices /> spec renders the component 1`] = `
                 >
                   <span
                     class="euiTableCellContent__text"
-                    title="Managed by Policy"
+                    title="Managed by policy"
                   >
-                    Managed by Policy
+                    Managed by policy
                   </span>
                 </span>
               </th>
@@ -463,9 +463,9 @@ exports[`<Indices /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Primaries size"
+                      title="Size of primaries"
                     >
-                      Primaries size
+                      Size of primaries
                     </span>
                   </span>
                 </button>

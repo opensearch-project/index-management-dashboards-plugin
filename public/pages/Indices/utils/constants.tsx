@@ -78,7 +78,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
     },
     {
       field: "managed",
-      name: "Managed by Policy",
+      name: "Managed by policy",
       sortable: false,
       truncateText: true,
       textOnly: true,
@@ -106,7 +106,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
     },
     {
       field: "pri.store.size",
-      name: "Primaries size",
+      name: "Size of primaries",
       sortable: true,
       truncateText: true,
       textOnly: true,

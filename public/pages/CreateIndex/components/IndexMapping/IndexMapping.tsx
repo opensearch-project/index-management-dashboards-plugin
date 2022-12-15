@@ -522,7 +522,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
                 <div>
                   Specify mapping in JSON format.{" "}
                   <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage">
-                    [View mapping example]
+                    View mapping example.
                   </EuiLink>
                 </div>
               }

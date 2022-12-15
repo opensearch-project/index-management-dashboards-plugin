@@ -119,21 +119,7 @@ Object {
                             id="some_html_id-help-0"
                           >
                             <div>
-                              Must be in lowercase letters. Cannot begin with underscores or hyphens. Cannot contain spaces, commas, or special characters.
-                              <a
-                                class="euiLink euiLink--primary"
-                                href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index/#index-naming-restrictions"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                              >
-                                [See Index naming restrictions]
-                                EuiIconMock
-                                <span
-                                  class="euiScreenReaderOnly"
-                                >
-                                  (opens in a new tab or window)
-                                </span>
-                              </a>
+                              Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, , |, ?, #, &gt; are not allowed.
                             </div>
                           </div>
                         </div>
@@ -160,7 +146,7 @@ Object {
                             class="euiFormLabel euiFormRow__label"
                             for="some_html_id"
                           >
-                            Index alias  - optional
+                            Index alias - optional
                           </label>
                         </div>
                         <div
@@ -170,7 +156,7 @@ Object {
                             class="euiFormHelpText euiFormRow__text"
                             style="padding-top: 0px; padding-bottom: 4px;"
                           >
-                            Select existing aliases or specify a new alias
+                            Allow this index to be referenced by existing aliases or specify a new alias.
                           </div>
                           <span
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -288,10 +274,10 @@ Object {
                             style="padding-top: 0px; padding-bottom: 4px;"
                           >
                             <p>
-                              The number of primary shards in the index. Default is 1.
+                              Specify the number of primary shards for the index. Default is 1. 
                             </p>
                             <p>
-                              Number of primary shards cannot be changed after the index is created.
+                              The number of primary shards cannot be changed after the index is created.
                             </p>
                           </div>
                           <span
@@ -337,7 +323,7 @@ Object {
                             class="euiFormHelpText euiFormRow__text"
                             style="padding-top: 0px; padding-bottom: 4px;"
                           >
-                            The number of replica shards each primary shard should have.
+                            Specify the number of replicas each primary shard should have. Default is 1.
                           </div>
                           <span
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -372,7 +358,7 @@ Object {
                             class="euiFormLabel euiFormRow__label"
                             for="some_html_id"
                           >
-                            Refresh interval of index
+                            Refresh interval
                           </label>
                         </div>
                         <div
@@ -382,7 +368,7 @@ Object {
                             class="euiFormHelpText euiFormRow__text"
                             style="padding-top: 0px; padding-bottom: 4px;"
                           >
-                            How often the index should refresh, which publishes its most recent changes and makes them available for searching.
+                            Specify how often the index should refresh, which publishes the most recent changes and make them available for search. Default is 1 second.
                           </div>
                           <span
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -479,7 +465,7 @@ Object {
                                       rel="noopener noreferrer"
                                       target="_blank"
                                     >
-                                      View index settings
+                                      View index settings.
                                       EuiIconMock
                                       <span
                                         class="euiScreenReaderOnly"
@@ -632,11 +618,42 @@ Object {
                     <div
                       class="euiFlexItem"
                     >
-                      <h3
+                      <div
                         class="euiTitle euiTitle--small"
                       >
-                        Index mappings - optional
-                      </h3>
+                        Index mapping - optional
+                      </div>
+                      <div
+                        class="euiFormRow euiFormRow--fullWidth"
+                        id="some_html_id-row"
+                      >
+                        <div
+                          class="euiFormRow__fieldWrapper"
+                        >
+                          <div
+                            class="euiFormHelpText euiFormRow__text"
+                            id="some_html_id-help-0"
+                          >
+                            <div>
+                              Define how documents and their fields are stored and indexed.
+                              <a
+                                class="euiLink euiLink--primary"
+                                href="https://opensearch.org/docs/latest/opensearch/mappings/"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                Learn more.
+                                EuiIconMock
+                                <span
+                                  class="euiScreenReaderOnly"
+                                >
+                                  (opens in a new tab or window)
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <hr

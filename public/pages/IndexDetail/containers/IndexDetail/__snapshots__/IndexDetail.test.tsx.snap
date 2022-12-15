@@ -231,13 +231,13 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
               </dd>
             </div>
             <div
-              data-test-subj="index-detail-overview-item-Primaries size"
+              data-test-subj="index-detail-overview-item-Size of primaries"
               style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
             >
               <dt
                 class="euiDescriptionList__title"
               >
-                Primaries size
+                Size of primaries
               </dt>
               <dd
                 class="euiDescriptionList__description"

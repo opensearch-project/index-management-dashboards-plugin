@@ -4,7 +4,17 @@
  */
 
 import React, { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton, EuiCallOut } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiFormRow,
+  EuiLink,
+  EuiOverlayMask,
+  EuiLoadingSpinner,
+  EuiContextMenu,
+  EuiButton,
+  EuiCallOut,
+  EuiTitle,
+} from "@elastic/eui";
 import { set, merge, omit, pick } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -210,8 +220,8 @@ const IndexDetail = (
           label: "Number of primary shards",
           helpText: (
             <>
-              <p>The number of primary shards in the index. Default is 1.</p>
-              <p>Number of primary shards cannot be changed after the index is created.</p>
+              <p>Specify the number of primary shards for the index. Default is 1. </p>
+              <p>The number of primary shards cannot be changed after the index is created.</p>
             </>
           ),
         },
@@ -241,7 +251,7 @@ const IndexDetail = (
       {
         rowProps: {
           label: "Number of replicas",
-          helpText: "The number of replica shards each primary shard should have.",
+          helpText: "Specify the number of replicas each primary shard should have. Default is 1.",
         },
         name: "index.number_of_replicas",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
@@ -268,8 +278,9 @@ const IndexDetail = (
       },
       {
         rowProps: {
-          label: "Refresh interval of index",
-          helpText: "How often the index should refresh, which publishes its most recent changes and makes them available for searching.",
+          label: "Refresh interval",
+          helpText:
+            "Specify how often the index should refresh, which publishes the most recent changes and make them available for search. Default is 1 second.",
         },
         name: "index.refresh_interval",
         type: readonly ? "Text" : "Input",
@@ -307,15 +318,7 @@ const IndexDetail = (
                       label: "Index name",
                       helpText: (
                         <div>
-                          Must be in lowercase letters. Cannot begin with underscores or hyphens. Cannot contain spaces, commas, or special
-                          characters.
-                          <EuiLink
-                            href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index/#index-naming-restrictions"
-                            external
-                            target="_blank"
-                          >
-                            [See Index naming restrictions]
-                          </EuiLink>
+                          {`Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, \, |, ?, #, > are not allowed.`}
                         </div>
                       ),
                       position: "bottom",
@@ -349,8 +352,8 @@ const IndexDetail = (
                   {
                     name: "aliases",
                     rowProps: {
-                      label: "Index alias  - optional",
-                      helpText: "Select existing aliases or specify a new alias",
+                      label: "Index alias - optional",
+                      helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
                     },
                     options: {
                       props: {
@@ -437,20 +440,6 @@ const IndexDetail = (
                     value: JSON.stringify(getOrderedJson(value || {}), null, 2),
                     onChange: (val) => onChange(JSON.parse(val)),
                   },
-                  // renderProps: readonly
-                  //   ? undefined
-                  //   : ({ value, onChange, ref }) => {
-                  //       const Component = isEdit ? JSONDiffEditor : JSONEditor;
-                  //       return (
-                  //         <Component
-                  //           disabled={readonly}
-                  //           original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
-                  //           value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
-                  //           onChange={(val) => onChange(JSON.parse(val))}
-                  //           ref={ref}
-                  //         />
-                  //       );
-                  //     },
                   accordionProps: {
                     initialIsOpen: false,
                     id: "accordion_for_create_index_settings",
@@ -465,10 +454,11 @@ const IndexDetail = (
                       <>
                         Specify a comma-delimited list of settings.
                         <EuiLink
+                          external
                           href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
                           target="_blank"
                         >
-                          View index settings
+                          View index settings.
                         </EuiLink>
                       </>
                     ),
@@ -510,7 +500,29 @@ const IndexDetail = (
             }
 
             return (
-              <ContentPanel title="Index mappings - optional" titleSize="s">
+              <ContentPanel
+                title={
+                  <>
+                    <EuiTitle size="s">
+                      <div>Index mapping - optional</div>
+                    </EuiTitle>
+                    <EuiFormRow
+                      fullWidth
+                      helpText={
+                        <div>
+                          Define how documents and their fields are stored and indexed.
+                          <EuiLink target="_blank" external href="https://opensearch.org/docs/latest/opensearch/mappings/">
+                            Learn more.
+                          </EuiLink>
+                        </div>
+                      }
+                    >
+                      <></>
+                    </EuiFormRow>
+                  </>
+                }
+                titleSize="s"
+              >
                 {content}
               </ContentPanel>
             );

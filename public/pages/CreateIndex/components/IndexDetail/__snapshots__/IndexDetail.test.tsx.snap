@@ -70,21 +70,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
             id="some_html_id-help-0"
           >
             <div>
-              Must be in lowercase letters. Cannot begin with underscores or hyphens. Cannot contain spaces, commas, or special characters.
-              <a
-                class="euiLink euiLink--primary"
-                href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index/#index-naming-restrictions"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                [See Index naming restrictions]
-                EuiIconMock
-                <span
-                  class="euiScreenReaderOnly"
-                >
-                  (opens in a new tab or window)
-                </span>
-              </a>
+              Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, , |, ?, #, &gt; are not allowed.
             </div>
           </div>
         </div>
@@ -111,7 +97,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Index alias  - optional
+            Index alias - optional
           </label>
         </div>
         <div
@@ -121,7 +107,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Select existing aliases or specify a new alias
+            Allow this index to be referenced by existing aliases or specify a new alias.
           </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"

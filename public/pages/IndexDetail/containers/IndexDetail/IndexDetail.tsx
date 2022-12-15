@@ -20,6 +20,8 @@ import {
   EuiFlyoutBody,
   EuiIcon,
   EuiHealth,
+  EuiFormRow,
+  EuiLink,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
@@ -72,7 +74,7 @@ const OVERVIEW_DISPLAY_INFO: {
     value: ({ detail }) => <span>{detail["store.size"]}</span>,
   },
   {
-    label: "Primaries size",
+    label: "Size of primaries",
     value: ({ detail }) => <span>{detail["pri.store.size"]}</span>,
   },
   {
@@ -308,6 +310,23 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                 <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
                   <EuiFlexItem grow={false}>
                     <h2>Index mappings</h2>
+                    <EuiFormRow
+                      fullWidth
+                      helpText={
+                        <div>
+                          Define how documents and their fields are stored and indexed.
+                          <EuiLink
+                            target="_blank"
+                            external
+                            href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
+                          >
+                            Learn more.
+                          </EuiLink>
+                        </div>
+                      }
+                    >
+                      <></>
+                    </EuiFormRow>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
                     <EuiButton size="s" data-test-subj="detail-modal-edit" onClick={() => onEdit(IndicesUpdateMode.mappings)}>
