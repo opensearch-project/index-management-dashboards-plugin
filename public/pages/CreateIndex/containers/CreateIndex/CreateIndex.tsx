@@ -19,10 +19,6 @@ interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: 
 export default class CreateIndex extends Component<CreateIndexProps> {
   static contextType = CoreServicesContext;
 
-  get commonService() {
-    return this.props.commonService;
-  }
-
   get index() {
     return this.props.match.params.index;
   }
@@ -55,7 +51,6 @@ export default class CreateIndex extends Component<CreateIndexProps> {
         <EuiSpacer />
         <IndexForm
           index={this.index}
-          commonService={this.commonService}
           mode={this.props.match.params.mode}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.INDICES)}

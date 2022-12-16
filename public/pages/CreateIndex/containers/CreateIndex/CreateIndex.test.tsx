@@ -16,8 +16,6 @@ import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
 
-apiCallerMock(browserServicesMock);
-
 function renderCreateIndexWithRouter(initialEntries = [ROUTES.CREATE_INDEX] as string[]) {
   return {
     ...render(
@@ -65,6 +63,9 @@ function renderCreateIndexWithRouter(initialEntries = [ROUTES.CREATE_INDEX] as s
 }
 
 describe("<CreateIndex /> spec", () => {
+  beforeEach(() => {
+    apiCallerMock(browserServicesMock);
+  });
   it("it goes to indices page when click cancel", async () => {
     const { getByText } = renderCreateIndexWithRouter([`${ROUTES.CREATE_INDEX}/good_index`]);
     await waitFor(() => {});

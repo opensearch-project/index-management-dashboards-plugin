@@ -15,12 +15,12 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButtonEmpty,
   EuiButton,
   EuiFlyout,
   EuiFlyoutHeader,
   EuiFlyoutBody,
   EuiText,
+  EuiLink,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -46,6 +46,7 @@ interface AliasesState {
   sortField: keyof IAlias;
   sortDirection: Direction;
   selectedItems: IAlias[];
+  editingItem: IAlias | null;
   aliases: IAlias[];
   loading: boolean;
   aliasCreateFlyoutVisible: boolean;
@@ -64,9 +65,9 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
     <>
       <span>{props.indices.slice(0, 3).join(",")}</span>
       {props.indices.length <= 3 ? null : (
-        <EuiButtonEmpty data-test-subj={`${props.indices.length - 3} more`} onClick={() => setHide(!hide)}>
+        <EuiLink style={{ marginLeft: 8 }} data-test-subj={`${props.indices.length - 3} more`} onClick={() => setHide(!hide)}>
           {props.indices.length - 3} more
-        </EuiButtonEmpty>
+        </EuiLink>
       )}
       {hide ? null : (
         <EuiFlyout onClose={() => setHide(!hide)}>
@@ -133,6 +134,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       loading: false,
       aliasCreateFlyoutVisible: false,
       aliasEditFlyoutVisible: false,
+      editingItem: null,
     };
 
     this.getAliases = _.debounce(this.getAliases, 500, { leading: true });
@@ -302,12 +304,26 @@ class Aliases extends Component<AliasesProps, AliasesState> {
           columns={[
             {
               field: "alias",
-              name: "Alias Name",
+              name: "Alias name",
               sortable: true,
+              render: (value: string, record) => {
+                return (
+                  <EuiLink
+                    onClick={() =>
+                      this.setState({
+                        editingItem: record,
+                        aliasEditFlyoutVisible: true,
+                      })
+                    }
+                  >
+                    {value}
+                  </EuiLink>
+                );
+              },
             },
             {
               field: "indexArray",
-              name: "Index Name",
+              name: "Index name",
               render: (value: string[], record) => {
                 return <IndexNameDisplay indices={value} alias={record.alias} />;
               },
@@ -356,10 +372,15 @@ class Aliases extends Component<AliasesProps, AliasesState> {
           visible={this.state.aliasEditFlyoutVisible}
           onSuccess={() => {
             this.getAliases();
-            this.setState({ aliasEditFlyoutVisible: false });
+            this.setState({ editingItem: null, aliasEditFlyoutVisible: false });
           }}
-          onClose={() => this.setState({ aliasEditFlyoutVisible: false })}
-          alias={this.state.selectedItems[0]}
+          onClose={() =>
+            this.setState({
+              editingItem: null,
+              aliasEditFlyoutVisible: false,
+            })
+          }
+          alias={this.state.editingItem || this.state.selectedItems[0]}
         />
       </ContentPanel>
     );

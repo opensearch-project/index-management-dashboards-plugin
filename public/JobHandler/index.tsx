@@ -22,6 +22,27 @@ type TaskResult = {
   };
 };
 
+export const EVENT_MAP = {
+  REINDEX_COMPLETE: "REINDEX_COMPLETE",
+  SPLIT_COMPLETE: "SPLIT_COMPLETE",
+  SHRINK_COMPLETE: "SHRINK_COMPLETE",
+};
+
+const triggerEvent = (eventName: string, data?: unknown) => {
+  const event = new CustomEvent(eventName, {
+    detail: data,
+  });
+  window.dispatchEvent(event);
+};
+
+export const listenEvent = (eventName: string, callback: () => void) => {
+  window.addEventListener(eventName, callback);
+};
+
+export const destroyListener = (eventName: string, callback: () => void) => {
+  window.removeEventListener(eventName, callback);
+};
+
 export function JobHandlerRegister(core: CoreSetup) {
   const indexService = new IndexService(core.http);
   const commonService = new CommonService(core.http);
@@ -42,8 +63,12 @@ export function JobHandlerRegister(core: CoreSetup) {
         const { failures } = response;
         if (completed && found) {
           if (!failures.length && !error?.reason) {
+            if (extras.toastId) {
+              core.notifications.toasts.remove(extras.toastId);
+            }
+            triggerEvent(EVENT_MAP.REINDEX_COMPLETE, job);
             core.notifications.toasts.addSuccess(
-              `Reindex from [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`,
+              `Source index ${extras.sourceIndex} has been successfully reindexed as ${extras.destIndex}.`,
               {
                 toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
               }
@@ -68,6 +93,9 @@ export function JobHandlerRegister(core: CoreSetup) {
               );
             }
 
+            if (extras.toastId) {
+              core.notifications.toasts.remove(extras.toastId);
+            }
             core.notifications.toasts.addDanger(
               {
                 title: `Reindex from [${extras.sourceIndex}] to [${extras.destIndex}] has some errors, please check the errors below:`,
@@ -86,6 +114,9 @@ export function JobHandlerRegister(core: CoreSetup) {
     },
     timeoutCallback(job: ReindexJobMetaData) {
       const extras = job.extras;
+      if (extras.toastId) {
+        core.notifications.toasts.remove(extras.toastId);
+      }
       core.notifications.toasts.addDanger(
         `Reindex from [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the task [${extras.taskId}] manually`,
         {
@@ -111,7 +142,11 @@ export function JobHandlerRegister(core: CoreSetup) {
       if (indexResult.ok) {
         const [firstItem] = indexResult.response.indices || [];
         if (firstItem && firstItem.health !== "red") {
-          core.notifications.toasts.addSuccess(`Split [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`, {
+          if (extras.toastId) {
+            core.notifications.toasts.remove(extras.toastId);
+          }
+          triggerEvent(EVENT_MAP.SPLIT_COMPLETE, job);
+          core.notifications.toasts.addSuccess(`Source index ${extras.sourceIndex} has been successfully split as ${extras.destIndex}.`, {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           });
           return true;
@@ -122,6 +157,9 @@ export function JobHandlerRegister(core: CoreSetup) {
     },
     timeoutCallback(job: RecoveryJobMetaData) {
       const extras = job.extras;
+      if (extras.toastId) {
+        core.notifications.toasts.remove(extras.toastId);
+      }
       core.notifications.toasts.addDanger(
         `Split [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the index manually`,
         {
@@ -147,9 +185,16 @@ export function JobHandlerRegister(core: CoreSetup) {
       if (indexResult.ok) {
         const [firstItem] = indexResult.response.indices || [];
         if (firstItem && firstItem.health !== "red") {
-          core.notifications.toasts.addSuccess(`Shrink [${extras.sourceIndex}] to [${extras.destIndex}] has been finished successfully.`, {
-            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
-          });
+          if (extras.toastId) {
+            core.notifications.toasts.remove(extras.toastId);
+          }
+          triggerEvent(EVENT_MAP.SHRINK_COMPLETE, job);
+          core.notifications.toasts.addSuccess(
+            `Source index ${extras.sourceIndex} has been successfully shrunken as ${extras.destIndex}.`,
+            {
+              toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+            }
+          );
           return true;
         }
       }
@@ -158,6 +203,9 @@ export function JobHandlerRegister(core: CoreSetup) {
     },
     timeoutCallback(job: RecoveryJobMetaData) {
       const extras = job.extras;
+      if (extras.toastId) {
+        core.notifications.toasts.remove(extras.toastId);
+      }
       core.notifications.toasts.addDanger(
         `Shrink [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the index manually`,
         {

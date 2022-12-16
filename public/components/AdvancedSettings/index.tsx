@@ -1,8 +1,8 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from "react";
-import { EuiAccordion, EuiAccordionProps, EuiFormRow, EuiSpacer, EuiFormRowProps } from "@elastic/eui";
-import JSONEditor, { IJSONEditorRef, JSONEditorProps } from "../JSONEditor";
-import CustomFormRow from "../CustomFormRow";
+import { EuiAccordion, EuiAccordionProps, EuiSpacer, EuiFormRowProps } from "@elastic/eui";
+import SwitchableEditor, { SwitchableEditorProps, ISwitchableEditorRef } from "../SwitchableEditor";
 import "./index.scss";
+import CustomFormRow from "../CustomFormRow";
 
 export interface IAdvancedSettingsProps {
   rowProps?: Omit<EuiFormRowProps, "children">;
@@ -10,9 +10,9 @@ export interface IAdvancedSettingsProps {
   value?: Record<string, any>;
   onChange?: (totalValue: IAdvancedSettingsProps["value"]) => void;
   renderProps?: (
-    options: Pick<Required<IAdvancedSettingsProps>, "value" | "onChange"> & { ref: React.Ref<IJSONEditorRef> }
+    options: Pick<Required<IAdvancedSettingsProps>, "value" | "onChange"> & { ref: React.Ref<ISwitchableEditorRef> }
   ) => React.ReactChild;
-  editorProps?: Partial<JSONEditorProps>;
+  editorProps?: Partial<SwitchableEditorProps> & { ref?: React.Ref<IAdvancedSettingsRef> };
 }
 
 export interface IAdvancedSettingsRef {
@@ -22,7 +22,7 @@ export interface IAdvancedSettingsRef {
 export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProps, ref: React.Ref<IAdvancedSettingsRef>) {
   const { value, renderProps, editorProps } = props;
   const propsRef = useRef<IAdvancedSettingsProps>(props);
-  const editorRef = useRef<IJSONEditorRef>(null);
+  const editorRef = useRef<ISwitchableEditorRef>(null);
   propsRef.current = props;
 
   const onChangeInRenderProps = useCallback(
@@ -51,6 +51,7 @@ export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProp
     <>
       <EuiSpacer size="m" />
       <EuiAccordion {...props.accordionProps} className="accordion-in-advanced-settings" id={accordionId}>
+        <EuiSpacer size="s" />
         <CustomFormRow {...(props.rowProps as EuiFormRowProps)}>
           {renderProps ? (
             (renderProps({
@@ -63,7 +64,13 @@ export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProp
               ref: editorRef,
             }) as any)
           ) : (
-            <JSONEditor {...editorProps} ref={editorRef} value={JSON.stringify(value, null, 2)} onChange={onChangeInRenderProps} />
+            <SwitchableEditor
+              mode="json"
+              {...editorProps}
+              ref={editorRef}
+              value={JSON.stringify(value, null, 2)}
+              onChange={onChangeInRenderProps}
+            />
           )}
         </CustomFormRow>
       </EuiAccordion>

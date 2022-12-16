@@ -301,9 +301,9 @@ exports[`<Indices /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Alias Name"
+                      title="Alias name"
                     >
-                      Alias Name
+                      Alias name
                     </span>
                     EuiIconMock
                   </span>
@@ -320,9 +320,9 @@ exports[`<Indices /> spec renders the component 1`] = `
                 >
                   <span
                     class="euiTableCellContent__text"
-                    title="Index Name"
+                    title="Index name"
                   >
-                    Index Name
+                    Index name
                   </span>
                 </span>
               </th>

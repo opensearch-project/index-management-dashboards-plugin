@@ -50,7 +50,10 @@ describe("Aliases", () => {
       cy.get('[placeholder="Search..."]').type("alias-for-test-0{enter}");
       cy.contains("alias-for-test-0");
       cy.get(".euiTableRow").should("have.length", 1);
-      cy.get(".euiTableRowCell button").click().get('[data-test-subj="indices-table"] .euiTableRow').should("have.length", 10);
+      cy.get('.euiTableRowCell [data-test-subj="8 more"]')
+        .click()
+        .get('[data-test-subj="indices-table"] .euiTableRow')
+        .should("have.length", 10);
     });
   });
 

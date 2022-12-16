@@ -125,7 +125,7 @@ exports[`<Templates /> spec renders the component 1`] = `
     />
     <div
       class="euiBasicTable"
-      data-test-subj="aliases-table"
+      data-test-subj="templatesTable"
     >
       <div>
         <div
@@ -269,9 +269,9 @@ exports[`<Templates /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Index patterns or wildcard"
+                      title="Index patterns or wildcards"
                     >
-                      Index patterns or wildcard
+                      Index patterns or wildcards
                     </span>
                   </span>
                 </button>
@@ -290,7 +290,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                   type="button"
                 >
                   <span
-                    class="euiTableCellContent"
+                    class="euiTableCellContent euiTableCellContent--alignRight"
                   >
                     <span
                       class="euiTableCellContent__text"

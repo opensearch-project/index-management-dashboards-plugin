@@ -3,6 +3,55 @@
 exports[`<TemplateDetail /> spec render component 1`] = `
 <div>
   <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h1
+        class="euiTitle euiTitle--large"
+      >
+        Create
+         template
+      </h1>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            <div>
+              Index templates let you initialize new indexes with predefined mappings and settings.
+               
+              <a
+                class="euiLink euiLink--primary"
+                href="https://opensearch.org/docs/latest/opensearch/index-templates"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more
+                EuiIconMock
+                <span
+                  class="euiScreenReaderOnly"
+                >
+                  (opens in a new tab or window)
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >
@@ -27,6 +76,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       style="padding: 0px 10px;"
     >
       <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
         class="euiFormRow"
         data-test-subj="form-row-name"
         id="some_html_id-row"
@@ -45,6 +97,12 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Template name cannot be changed after the index is created.
+          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
@@ -90,7 +148,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Specify the index patterns or index wildcard. Settings in this template will be applied to indexes with names matching index patterns or wildcards.
+            Specify the index patterns or wildcards. Add a comma to separate each value.  Settings in this template will be applied to indexes with names matching index patterns or wildcards.
           </div>
           <div
             aria-expanded="false"
@@ -130,18 +188,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     />
                   </div>
                 </div>
-                <div
-                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                >
-                  <button
-                    aria-label="Open list of options"
-                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                    data-test-subj="comboBoxToggleListButton"
-                    type="button"
-                  >
-                    EuiIconMock
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -169,6 +215,12 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index
+          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
@@ -217,6 +269,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
     <div
       style="padding: 0px 10px;"
     >
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
       <div
         class="euiFormRow"
         data-test-subj="form-row-template.aliases"
@@ -321,6 +376,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       style="padding: 0px 10px;"
     >
       <div
+        class="euiSpacer euiSpacer--s"
+      />
+      <div
         class="euiFormRow"
         data-test-subj="form-row-template.settings.index.number_of_shards"
         id="some_html_id-row"
@@ -333,7 +391,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Number of shards
+            Number of primary shards
           </label>
         </div>
         <div
@@ -459,9 +517,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
         class="euiSpacer euiSpacer--m"
       />
       <div
@@ -503,6 +558,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             <div
               class=""
             >
+              <div
+                class="euiSpacer euiSpacer--s"
+              />
               <div
                 class="euiFormRow"
                 id="some_html_id-row"
@@ -725,8 +783,8 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 >
                   <span
                     class="euiButton__text euiButtonGroupButton__textShift"
-                    data-text="Visual editor"
-                    title="Visual editor"
+                    data-text="Visual Editor"
+                    title="Visual Editor"
                   >
                     <input
                       checked=""
@@ -737,7 +795,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                       type="radio"
                       value=""
                     />
-                    Visual editor
+                    Visual Editor
                   </span>
                 </span>
               </label>
@@ -751,8 +809,8 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 >
                   <span
                     class="euiButton__text euiButtonGroupButton__textShift"
-                    data-text="JSON editor"
-                    title="JSON editor"
+                    data-text="JSON Editor"
+                    title="JSON Editor"
                   >
                     <input
                       class="euiScreenReaderOnly"
@@ -762,7 +820,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                       type="radio"
                       value=""
                     />
-                    JSON editor
+                    JSON Editor
                   </span>
                 </span>
               </label>

@@ -190,7 +190,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
       },
       {
         rowProps: {
-          label: "Number of shards",
+          label: "Number of primary shards",
           helpText: "The number of primary shards in the target index",
         },
         name: "index.number_of_shards",
@@ -203,7 +203,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexProps> {
                 if (!value || value === "") {
                   // do not pass the validation
                   // return a rejected promise with error message
-                  return Promise.reject("Number of shards is required");
+                  return Promise.reject("Number of primary shards is required");
                 }
                 // pass the validation, return a resolved promise
                 return Promise.resolve();

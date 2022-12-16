@@ -54,7 +54,7 @@ describe("Templates", () => {
       cy.get('[data-test-subj="form-row-index_patterns"] [data-test-subj="comboBoxSearchInput"]').type("test{enter}");
       cy.get('[data-test-subj="CreateIndexTemplateCreateButton"]').click();
 
-      cy.contains(`[${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}] has been successfully created.`);
+      cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER} has been successfully created.`);
 
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
       cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);

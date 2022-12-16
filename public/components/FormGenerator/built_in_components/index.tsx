@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiCode, EuiComboBox } from "@elastic/eui";
+import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiCode, EuiComboBox, EuiText } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
 
 export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle";
@@ -30,7 +30,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   ),
   Text: forwardRef(({ value }, ref: React.Ref<any>) => (
     <div ref={ref}>
-      <EuiCode title={value || "-"}>{value || "-"}</EuiCode>
+      <EuiText title={value || "-"}>{value || "-"}</EuiText>
     </div>
   )) as React.ComponentType<IFieldComponentProps>,
   Select: EuiToolTipWrapper(

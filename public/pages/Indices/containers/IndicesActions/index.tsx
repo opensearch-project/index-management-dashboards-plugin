@@ -25,7 +25,7 @@ import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 
-export interface IndicesActionsProps extends RouteComponentProps {
+export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
   selectedItems: ManagedCatIndex[];
   onDelete: () => void;
   onOpen: () => void;
@@ -87,12 +87,15 @@ export default function IndicesActions(props: IndicesActionsProps) {
       },
     });
     if (result && result.ok) {
-      coreServices?.notifications.toasts.addSuccess(`Successfully submit split index request.`);
+      const toastIntance = coreServices?.notifications.toasts.addSuccess(
+        `Successfully started splitting ${selectedItems.map((item) => item.index).join(",")}. The split index will be named ${targetIndex}.`
+      );
       onCloseFlyout();
       onSplit();
       jobSchedulerInstance.addJob({
         interval: 30000,
         extras: {
+          toastId: toastIntance.id,
           sourceIndex: selectedItems.map((item) => item.index).join(","),
           destIndex: targetIndex,
         },
@@ -188,11 +191,14 @@ export default function IndicesActions(props: IndicesActionsProps) {
         });
         if (result && result.ok) {
           onShrinkIndexFlyoutClose();
-          coreServices.notifications.toasts.addSuccess("Shrink index successfully");
+          const toastInstance = coreServices.notifications.toasts.addSuccess(
+            `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`
+          );
           onShrink();
           jobSchedulerInstance.addJob({
             interval: 30000,
             extras: {
+              toastId: toastInstance.id,
               sourceIndex: sourceIndexName,
               destIndex: targetIndexName,
             },
@@ -296,6 +302,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                         }),
                     },
                     {
+                      isSeparator: true,
+                    },
+                    {
                       name: "Close",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Close Action",
@@ -306,6 +315,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       disabled: !selectedItems.length,
                       "data-test-subj": "Open Action",
                       onClick: () => setOpenIndexModalVisible(true),
+                    },
+                    {
+                      isSeparator: true,
                     },
                     {
                       name: "Reindex",
@@ -329,6 +341,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       "data-test-subj": "Split Action",
                       disabled: !selectedItems.length || selectedItems.length > 1 || selectedItems[0].data_stream !== null,
                       onClick: () => setSplitIndexFlyoutVisible(true),
+                    },
+                    {
+                      isSeparator: true,
                     },
                     {
                       name: "Delete",

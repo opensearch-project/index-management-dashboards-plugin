@@ -68,7 +68,7 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
 
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
-          <p>The following alias will be deleted permanently. This action cannot be undone.</p>
+          <p>The following alias will be permanently deleted. This action cannot be undone.</p>
           <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
             {selectedItems.map((item) => (
               <li key={item}>{item}</li>

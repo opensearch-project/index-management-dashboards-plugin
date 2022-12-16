@@ -75,6 +75,7 @@ export enum RESTORE_OPTIONS {
 
 export interface ReindexJobMetaData extends IJobItemMetadata {
   extras: {
+    toastId: string;
     sourceIndex: string;
     destIndex: string;
     taskId: string;
@@ -83,6 +84,7 @@ export interface ReindexJobMetaData extends IJobItemMetadata {
 
 export interface RecoveryJobMetaData extends IJobItemMetadata {
   extras: {
+    toastId: string;
     sourceIndex: string;
     destIndex: string;
   };
