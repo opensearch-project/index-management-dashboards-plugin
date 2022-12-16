@@ -392,9 +392,15 @@ describe("<SplitIndex /> spec", () => {
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-      endpoint: "indices.putSettings",
-    });
+    await waitFor(
+      () =>
+        expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+          endpoint: "indices.putSettings",
+        }),
+      {
+        timeout: 3000,
+      }
+    );
   });
 
   it("Cancel works", async () => {
