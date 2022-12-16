@@ -55,3 +55,15 @@ export const checkDuplicate = (
   }
   return null;
 };
+
+export const filterOverlaps = (
+  list: EuiComboBoxOptionOption<IndexSelectItem>[],
+  excludeList?: EuiComboBoxOptionOption<IndexSelectItem>[]
+) => {
+  if (excludeList) {
+    list.map((it) => {
+      it.options = it.options?.filter((item) => !checkDuplicate(excludeList, [item]));
+    });
+  }
+  return list;
+};

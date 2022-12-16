@@ -257,7 +257,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       const toastInstance = (this.context as CoreStart).notifications.toasts.addSuccess(toast, {
         toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
       });
-      jobSchedulerInstance.addJob({
+      await jobSchedulerInstance.addJob({
         type: "reindex",
         extras: {
           toastId: toastInstance.id,
@@ -513,6 +513,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
               onSelectedOptions={this.onSourceSelection}
               singleSelect={false}
               selectedOption={sources}
+              excludeList={destination}
             />
           </CustomFormRow>
 
@@ -583,6 +584,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                   singleSelect={true}
                   selectedOption={destination}
                   excludeDataStreamIndex={true}
+                  excludeList={sources}
                 />
               </CustomFormRow>
             </EuiFlexItem>

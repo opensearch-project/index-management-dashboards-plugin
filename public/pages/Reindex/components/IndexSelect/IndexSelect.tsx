@@ -10,6 +10,7 @@ import React, { useContext, useEffect, useState } from "react";
 import BetterComboBox from "../../../../components/BetterComboBox";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexSelectItem } from "../../models/interfaces";
+import { filterOverlaps } from "../../utils/helper";
 
 interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "data-test-subj"> {
   getIndexOptions: (searchValue: string, excludeDataStreamIndex?: boolean) => Promise<EuiComboBoxOptionOption<IndexSelectItem>[]>;
@@ -17,17 +18,18 @@ interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "dat
   singleSelect: boolean;
   selectedOption: EuiComboBoxOptionOption<IndexSelectItem>[];
   excludeDataStreamIndex?: boolean;
+  excludeList?: EuiComboBoxOptionOption<IndexSelectItem>[];
 }
 
 export default function IndexSelect(props: IndexSelectProps) {
   const [indexOptions, setIndexOptions] = useState([] as EuiComboBoxOptionOption<IndexSelectItem>[]);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
 
-  const searchIndex = (searchValue: string) => {
+  const searchIndex = (searchValue?: string) => {
     props
-      .getIndexOptions(searchValue, props.excludeDataStreamIndex)
+      .getIndexOptions(searchValue ? searchValue : "", props.excludeDataStreamIndex)
       .then((options) => {
-        setIndexOptions(options);
+        setIndexOptions(filterOverlaps(options, props.excludeList));
       })
       .catch((err) => {
         coreServices.notifications.toasts.addDanger(`fetch indices error ${err}`);
@@ -35,8 +37,8 @@ export default function IndexSelect(props: IndexSelectProps) {
   };
 
   useEffect(() => {
-    searchIndex("");
-  }, [props.getIndexOptions]);
+    searchIndex();
+  }, [props.getIndexOptions, props.excludeList, props.excludeDataStreamIndex]);
 
   const onSearchChange = (searchValue: string) => {
     searchIndex(searchValue);

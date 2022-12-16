@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { checkDuplicate, parseIndexNames } from "./helper";
+import { checkDuplicate, filterOverlaps, parseIndexNames } from "./helper";
 import { IndexSelectItem } from "../models/interfaces";
 import { EuiComboBoxOptionOption } from "@elastic/eui";
 
@@ -18,14 +18,14 @@ test("parse index names", () => {
 });
 
 test("test check duplication for source and destination", () => {
-  let source = [{ label: "s1", value: { isIndex: true } }];
-  let dest = [{ label: "d1", value: { isIndex: true } }];
+  const source = [{ label: "s1", value: { isIndex: true } }];
+  const dest = [{ label: "d1", value: { isIndex: true } }];
   expect(checkDuplicate(source, dest)).toEqual(null);
 });
 
 test("test check duplication has duplication", () => {
-  let source = [{ label: "s1", value: { isIndex: true } }];
-  let dest = [{ label: "s1", value: { isIndex: true } }];
+  const source = [{ label: "s1", value: { isIndex: true } }];
+  const dest = [{ label: "s1", value: { isIndex: true } }];
   expect(checkDuplicate(source, dest)).toEqual(`Index [s1] both exists in source and destination`);
 });
 
@@ -52,9 +52,51 @@ test("test check duplication for alias", () => {
 });
 
 test("test check duplication for data streams", () => {
-  let source = [{ label: ".ds-test-0000001", value: { isIndex: true } }];
-  let dest = [
-    { label: "test", value: { isDataStream: true, indices: [".ds-test-0000002", ".ds-test-0000001"], writingIndex: ".ds-test-0000002" } },
+  const source = [{ label: ".ds-test-0000001", value: { isIndex: true } }];
+  const dest = [
+    {
+      label: "test",
+      value: { isDataStream: true, indices: [".ds-test-0000002", ".ds-test-0000001"], writingIndex: ".ds-test-0000002" },
+    },
   ];
   expect(checkDuplicate(source, dest)).toEqual(null);
+});
+
+test("test filter overlap for indices", () => {
+  let list: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: "indices", options: [{ label: "index-1", value: { isIndex: true } }] }];
+  let excludedList = [{ label: "index-1", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  let result = filterOverlaps(list, excludedList);
+  expect(result[0].options?.length).toEqual(0);
+
+  list = [{ label: "indices", options: [{ label: "index-1", value: { isIndex: true } }] }];
+  excludedList = [{ label: "index-2", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  result = filterOverlaps(list, excludedList);
+  expect(result[0].options?.length).toEqual(1);
+});
+
+test("test filter overlap for aliases", () => {
+  let list: EuiComboBoxOptionOption<IndexSelectItem>[] = [
+    { label: "aliases", options: [{ label: "alias-1", value: { isAlias: true, indices: ["test-1", "test-2"], writingIndex: "test-1" } }] },
+  ];
+  let excludedList = [{ label: "test-1", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  let result = filterOverlaps(list, excludedList);
+  expect(result[0].options?.length).toEqual(0);
+
+  list = [{ label: "aliases", options: [{ label: "alias-1", value: { isAlias: true, indices: ["test-1", "test-2"] } }] }];
+  excludedList = [{ label: "test-1", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  result = filterOverlaps(list, excludedList);
+  expect(result[0].options?.length).toEqual(1);
+});
+
+test("test filter overlap for data streams", () => {
+  const list: EuiComboBoxOptionOption<IndexSelectItem>[] = [
+    { label: "data streams", options: [{ label: "ds-1", value: { isDataStream: true, writingIndex: ".ds-ds-1-000001" } }] },
+  ];
+  let excludedList = [{ label: ".ds-ds-1-000001", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  let result = filterOverlaps(list, excludedList);
+  expect(result[0].options?.length).toEqual(0);
+
+  excludedList = [{ label: "data streams", options: [{ label: "ds-1", value: { isDataStream: true, writingIndex: ".ds-ds-1-000001" } }] }];
+  result = filterOverlaps(list, excludedList);
+  expect(result[0].options?.length).toEqual(0);
 });
