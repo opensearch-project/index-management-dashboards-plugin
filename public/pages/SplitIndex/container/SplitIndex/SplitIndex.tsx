@@ -74,7 +74,6 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const sourceSettings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
     const blocksWriteValue = get(sourceSettings, ["index.blocks.write"]);
 
-    debugger;
     if (sourceIndex.health === "red") {
       reasons.push(<>It must not have a Red health status.</>);
     }
