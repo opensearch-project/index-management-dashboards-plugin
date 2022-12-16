@@ -27,14 +27,13 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           >
             <div>
               Index templates let you initialize new indexes with predefined mappings and settings.
-               
               <a
                 class="euiLink euiLink--primary"
                 href="https://opensearch.org/docs/latest/opensearch/index-templates"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn more
+                Learn more.
                 EuiIconMock
                 <span
                   class="euiScreenReaderOnly"
@@ -138,7 +137,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Index patterns or wildcards
+            Index patterns
           </label>
         </div>
         <div
@@ -256,11 +255,35 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
-          class="euiTitle euiTitle--small"
+        <div
+          class="euiFormRow euiFormRow--fullWidth"
+          id="some_html_id-row"
         >
-          Index alias
-        </h3>
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              <div
+                class="euiTitle euiTitle--small"
+              >
+                Index alias
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Allow the new indexes to be referenced by existing aliases or specify a new alias.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <hr
@@ -273,7 +296,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         data-test-subj="form-row-template.aliases"
         id="some_html_id-row"
       >
@@ -291,6 +314,12 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Select existing aliases or specify a new alias.
+          </div>
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
@@ -311,7 +340,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                   <p
                     class="euiComboBoxPlaceholder"
                   >
-                    Select or create aliases
+                    Select aliases or input new aliases.
                   </p>
                   <div
                     class="euiComboBox__input"
@@ -401,7 +430,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            The number of primary shards in the index. Default is 1.
+            Specify the number of primary shards in the index. Default is 1.
           </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -426,7 +455,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--fullWidth"
         data-test-subj="form-row-template.settings.index.number_of_replicas"
         id="some_html_id-row"
       >
@@ -448,7 +477,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            The number of replica shards each primary shard should have.
+            Specify the number of replicas each primary shard should have. Default is 1.
           </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -485,7 +514,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Refresh interval of index
+            Refresh interval
           </label>
         </div>
         <div
@@ -495,7 +524,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            How often the index should refresh, which publishes its most recent changes and makes them available for searching.
+            Specify how often the index should refresh, which publishes its most recent changes and makes them available for search. Default is 1s.
           </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -742,11 +771,42 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <div
           class="euiTitle euiTitle--small"
         >
           Index mapping
-        </h3>
+        </div>
+        <div
+          class="euiFormRow euiFormRow--fullWidth"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              id="some_html_id-help-0"
+            >
+              <div>
+                Define how documents and their fields are stored and indexed.
+                <a
+                  class="euiLink euiLink--primary"
+                  href="https://opensearch.org/docs/undefined/opensearch/mappings/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more.
+                  EuiIconMock
+                  <span
+                    class="euiScreenReaderOnly"
+                  >
+                    (opens in a new tab or window)
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <hr
@@ -755,6 +815,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
     <div
       style="padding: 0px 10px;"
     >
+      <div
+        class="euiSpacer euiSpacer--s"
+      />
       <div
         class="euiFormRow euiFormRow--fullWidth"
         id="some_html_id-row"
@@ -912,7 +975,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           <span
             class="euiButton__text"
           >
-            Create
+            Create template
           </span>
         </span>
       </button>

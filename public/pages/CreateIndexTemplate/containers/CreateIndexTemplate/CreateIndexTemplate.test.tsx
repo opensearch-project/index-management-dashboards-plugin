@@ -62,7 +62,7 @@ describe("<CreateIndexTemplate /> spec", () => {
     const { getByText, getByTestId } = renderCreateIndexTemplateWithRouter([`${ROUTES.CREATE_TEMPLATE}`]);
 
     const templateNameInput = getByTestId("form-row-name").querySelector("input") as HTMLInputElement;
-    const submitButton = getByText("Create");
+    const submitButton = getByTestId("CreateIndexTemplateCreateButton");
     const shardsInput = getByTestId("form-row-template.settings.index.number_of_shards").querySelector("input") as HTMLInputElement;
     const replicaInput = getByTestId("form-row-template.settings.index.number_of_replicas").querySelector("input") as HTMLInputElement;
     userEvent.type(templateNameInput, `bad_template`);

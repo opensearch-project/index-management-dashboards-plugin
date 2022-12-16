@@ -181,7 +181,7 @@ Object {
                                     <p
                                       class="euiComboBoxPlaceholder"
                                     >
-                                      Select or create aliases
+                                      Select aliases or input new aliases.
                                     </p>
                                     <div
                                       class="euiComboBox__input"

@@ -129,7 +129,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dt
                 class="euiDescriptionList__title"
               >
-                Index patterns or wildcards
+                Index patterns
               </dt>
               <dd
                 class="euiDescriptionList__description"
@@ -173,11 +173,35 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
         <div
           class="euiFlexItem"
         >
-          <h3
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiFormRow euiFormRow--fullWidth"
+            id="some_html_id-row"
           >
-            Index alias
-          </h3>
+            <div
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                class="euiFormLabel euiFormRow__label"
+                for="some_html_id"
+              >
+                <div
+                  class="euiTitle euiTitle--small"
+                >
+                  Index alias
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                style="padding-top: 0px; padding-bottom: 4px;"
+              >
+                Allow the new indexes to be referenced by existing aliases or specify a new alias.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <hr
@@ -523,11 +547,42 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
         <div
           class="euiFlexItem"
         >
-          <h3
+          <div
             class="euiTitle euiTitle--small"
           >
             Index mapping
-          </h3>
+          </div>
+          <div
+            class="euiFormRow euiFormRow--fullWidth"
+            id="some_html_id-row"
+          >
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                id="some_html_id-help-0"
+              >
+                <div>
+                  Define how documents and their fields are stored and indexed.
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="https://opensearch.org/docs/undefined/opensearch/mappings/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more.
+                    EuiIconMock
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      (opens in a new tab or window)
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <hr
@@ -536,6 +591,9 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
       <div
         style="padding: 0px 10px;"
       >
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
         <div
           class="euiFormRow euiFormRow--fullWidth"
           id="some_html_id-row"

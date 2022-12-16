@@ -12,11 +12,44 @@ exports[`<Indices /> spec renders the component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h3
-        class="euiTitle euiTitle--large"
+      <span
+        class="euiTitle euiTitle--medium"
       >
         Aliases
-      </h3>
+      </span>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            id="some_html_id-help-0"
+          >
+            <div
+              style="width: 50%;"
+            >
+              An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes, rather than keeping track of which indexes to query, you can create an alias and query it instead.
+              <a
+                class="euiLink euiLink--primary"
+                href="https://opensearch.org/docs/latest/opensearch/index-alias/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more.
+                EuiIconMock
+                <span
+                  class="euiScreenReaderOnly"
+                >
+                  (opens in a new tab or window)
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"

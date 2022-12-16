@@ -17,6 +17,8 @@ import {
   EuiTableSelectionType,
   EuiButton,
   EuiLink,
+  EuiTitle,
+  EuiFormRow,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -27,6 +29,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import TemplatesActions from "../TemplatesActions";
+import { CoreStart } from "opensearch-dashboards/public";
 
 interface TemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -184,7 +187,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                 ),
               },
               {
-                text: "Create Template",
+                text: "Create template",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
@@ -196,7 +199,26 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
           />
         }
         bodyStyles={{ padding: "initial" }}
-        title="Templates"
+        title={
+          <>
+            <EuiTitle>
+              <span>Templates</span>
+            </EuiTitle>
+            <EuiFormRow
+              fullWidth
+              helpText={
+                <div>
+                  Index templates let you initialize new indexes or data streams with predefined mappings and settings.
+                  <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
+                    Learn more.
+                  </EuiLink>
+                </div>
+              }
+            >
+              <></>
+            </EuiFormRow>
+          </>
+        }
       >
         <IndexControls
           value={{
@@ -223,7 +245,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
             },
             {
               field: "index_patterns",
-              name: "Index patterns or wildcards",
+              name: "Index patterns",
               sortable: true,
             },
             {

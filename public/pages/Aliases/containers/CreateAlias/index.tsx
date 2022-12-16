@@ -109,7 +109,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
               component: IndexSelect,
               rowProps: {
                 label: "Specify indexes",
-                helpText: "Specify one or more indexes to be a part of the alias",
+                helpText: "Specify one or more indexes to be a part of the alias.",
               },
               options: {
                 props: {
