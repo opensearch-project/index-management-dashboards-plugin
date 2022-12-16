@@ -591,9 +591,8 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 class="euiSpacer euiSpacer--s"
               />
               <div
-                class="euiFormRow"
+                class="euiFormRow euiFormRow--fullWidth"
                 id="some_html_id-row"
-                style="max-width: 800px;"
               >
                 <div
                   class="euiFormRow__labelWrapper"
@@ -642,6 +641,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                   <div
                     class="euiCodeEditorWrapper"
                     data-test-subj="codeEditorContainer"
+                    style="width: 100%;"
                   >
                     <button
                       class="euiCodeEditorKeyboardHint"
@@ -662,7 +662,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     <div
                       class=" ace_editor ace-tm"
                       id="some_html_id"
-                      style="width: 500px; height: 500px;"
+                      style="width: 100%; height: 500px;"
                     >
                       <textarea
                         autocapitalize="off"
