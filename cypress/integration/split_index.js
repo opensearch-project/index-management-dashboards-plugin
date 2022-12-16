@@ -39,10 +39,10 @@ describe("Split Index", () => {
       // The index should exist
       cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
 
-      cy.get(`[data-test-subj="view-index-detail-button-${sampleIndex}"]`).click().end();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${sampleIndex}"]`).click().end();
       cy.get("#index-detail-modal-settings").click().end();
 
-      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiCodeBlock__code').then(($shardNumber) => {
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').then(($shardNumber) => {
         splitNumber = $shardNumber.attr("title") * 2;
       });
 
@@ -79,10 +79,10 @@ describe("Split Index", () => {
         .click()
         .end();
 
-      cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
       cy.get("#index-detail-modal-settings").click().end();
-      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiCodeBlock__code').should("have.text", `${splitNumber}`).end();
-      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').should("have.text", `${replicaNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiText').should("have.text", `${replicaNumber}`).end();
     }); // Split
 
     it("Split successfully with advanced setting", () => {
@@ -115,10 +115,10 @@ describe("Split Index", () => {
         .click()
         .end();
 
-      cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
       cy.get("#index-detail-modal-settings").click().end();
-      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiCodeBlock__code').should("have.text", `${splitNumber}`).end();
-      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').should("have.text", `${replicaNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiText').should("have.text", `${replicaNumber}`).end();
     }); // advanced setting
 
     it("Split successfully with alias", () => {
@@ -147,7 +147,7 @@ describe("Split Index", () => {
         .click()
         .end();
 
-      cy.get(`[data-test-subj="view-index-detail-button-${targetIndex}"]`).click().end();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
       // Verify alias associated with the new index
       cy.get("#index-detail-modal-alias").click().end();
       cy.get(`[title="${newAlias}"]`).should("exist").end();

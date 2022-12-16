@@ -5,7 +5,7 @@
 
 import React, { Component, useContext } from "react";
 import { debounce } from "lodash";
-import { RouteComponentProps } from "react-router-dom";
+import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
   EuiHorizontalRule,
@@ -16,6 +16,7 @@ import {
   Pagination,
   EuiTableSelectionType,
   EuiButton,
+  EuiLink,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -206,22 +207,30 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable
-          data-test-subj="aliases-table"
+          data-test-subj="templatesTable"
           columns={[
             {
               field: "name",
               name: "Template name",
               sortable: true,
+              render: (value: string) => {
+                return (
+                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
+                    <EuiLink>{value}</EuiLink>
+                  </Link>
+                );
+              },
             },
             {
               field: "index_patterns",
-              name: "Index patterns or wildcard",
+              name: "Index patterns or wildcards",
               sortable: true,
             },
             {
               field: "order",
               name: "Priority",
               sortable: true,
+              align: "right",
             },
           ]}
           isSelectable={true}

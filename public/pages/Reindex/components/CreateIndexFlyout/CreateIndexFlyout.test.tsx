@@ -10,9 +10,10 @@ import { coreServicesMock, browserServicesMock, apiCallerMock } from "../../../.
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 
-apiCallerMock(browserServicesMock);
-
 describe("<CreateIndexFlyout /> spec", () => {
+  beforeEach(() => {
+    apiCallerMock(browserServicesMock);
+  });
   it("renders the component", async () => {
     const component = render(
       <CoreServicesContext.Provider value={coreServicesMock}>

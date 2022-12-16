@@ -97,7 +97,7 @@ describe("Create Index", () => {
     });
 
     it("Update alias successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-alias")
         .click()
@@ -120,7 +120,7 @@ describe("Create Index", () => {
     });
 
     it("Update settings successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-settings")
         .click()
@@ -131,7 +131,8 @@ describe("Create Index", () => {
       cy.get('[data-test-subj="index-form-in-index-detail"] [aria-controls="accordion_for_create_index_settings"]')
         .click()
         .end()
-        .get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="json-editor-value-display"]')
+        .get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+        .focus()
         .clear({ force: true })
         .type('{ "index.blocks.write": true, "index.number_of_shards": 2, "index.number_of_replicas": 3 }', {
           parseSpecialCharSequences: false,
@@ -142,7 +143,8 @@ describe("Create Index", () => {
 
       cy.contains(`Can't update non dynamic settings`).should("exist");
 
-      cy.get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="json-editor-value-display"]')
+      cy.get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+        .focus()
         .clear({ force: true })
         .type('{ "index.blocks.write": true }', { parseSpecialCharSequences: false, force: true })
         .end()
@@ -154,11 +156,11 @@ describe("Create Index", () => {
 
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
 
-      cy.wait(1000).get('[data-test-subj="form-name-index.number_of_replicas"] .euiCodeBlock__code').should("have.text", "2");
+      cy.wait(1000).get('[data-test-subj="form-name-index.number_of_replicas"] .euiText').should("have.text", "2");
     });
 
     it("Update mappings successfully", () => {
-      cy.get(`[data-test-subj="view-index-detail-button-${SAMPLE_INDEX}"]`)
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
         .get("#index-detail-modal-mappings")
         .click()

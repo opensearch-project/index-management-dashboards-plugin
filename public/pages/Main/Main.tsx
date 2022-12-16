@@ -39,6 +39,7 @@ import Aliases from "../Aliases";
 import Templates from "../Templates";
 import CreateIndexTemplate from "../CreateIndexTemplate";
 import SplitIndex from "../SplitIndex";
+import IndexDetail from "../IndexDetail";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -86,7 +87,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.SPLIT_INDEX,
 ];
 
-const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE];
+const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL];
 
 interface MainProps extends RouteComponentProps {
   landingPage: string;
@@ -456,6 +457,14 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={`${ROUTES.CREATE_TEMPLATE}/:template`}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
@@ -468,6 +477,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.INDEX_DETAIL}/:index`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <IndexDetail {...props} />
                               </div>
                             )}
                           />

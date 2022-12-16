@@ -12,8 +12,6 @@ import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../.
 import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-apiCallerMock(browserServicesMock);
-
 function renderCreateIndexWithRouter(props: IndexFormProps) {
   return {
     ...render(
@@ -27,6 +25,9 @@ function renderCreateIndexWithRouter(props: IndexFormProps) {
 }
 
 describe("<IndexForm /> spec", () => {
+  beforeEach(() => {
+    apiCallerMock(browserServicesMock);
+  });
   it("show a toast if getIndices gracefully fails", async () => {
     const { findByText } = renderCreateIndexWithRouter({
       index: "bad_index",
@@ -69,7 +70,7 @@ describe("<IndexForm /> spec", () => {
     await waitFor(() => expect(getByTestId("form-name-index.number_of_replicas").querySelector("input")).toHaveAttribute("value", "10"));
     userEvent.click(getByText("Create"));
     await waitFor(() =>
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("[good_index] has been successfully created.")
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("good_index has been successfully created.")
     );
   });
 

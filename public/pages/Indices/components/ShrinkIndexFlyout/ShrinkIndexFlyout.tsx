@@ -239,8 +239,8 @@ export default class ShrinkIndexFlyout extends Component<ShrinkIndexProps, Shrin
       },
       {
         rowProps: {
-          label: "Number of shards",
-          helpText: `Specify the number of shards for the new shrunken index.
+          label: "Number of primary shards",
+          helpText: `Specify the number of primary shards for the new shrunken index.
           The number must be a factor of primary shard count in the source index.`,
         },
         name: "index.number_of_shards",

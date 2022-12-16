@@ -5,17 +5,11 @@
 
 import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } from "react";
 import { EuiConfirmModal } from "@elastic/eui";
-import { MonacoDiffEditor, MonacoDiffEditorProps } from "react-monaco-editor";
+import { MonacoDiffEditor } from "react-monaco-editor";
 import type { monaco } from "@osd/monaco";
 import CustomFormRow from "../CustomFormRow";
 import { IJSONEditorRef } from "../JSONEditor";
-
-export interface JSONDiffEditorProps extends Partial<MonacoDiffEditorProps> {
-  value: string;
-  onChange?: (value: JSONDiffEditorProps["value"]) => void;
-  "data-test-subj"?: string;
-  disabled?: boolean;
-}
+import { JSONDiffEditorProps } from "./interface";
 
 const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);

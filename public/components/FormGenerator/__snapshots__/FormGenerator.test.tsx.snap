@@ -126,16 +126,12 @@ HTMLCollection [
           class="euiFormRow__fieldWrapper"
         >
           <div>
-            <span
-              class="euiCodeBlock euiCodeBlock--fontSmall euiCodeBlock--paddingLarge euiCodeBlock--inline prismjs language-none"
+            <div
+              class="euiText euiText--medium"
+              title="-"
             >
-              <code
-                class="euiCodeBlock__code"
-                title="-"
-              >
-                -
-              </code>
-            </span>
+              -
+            </div>
           </div>
         </div>
       </div>

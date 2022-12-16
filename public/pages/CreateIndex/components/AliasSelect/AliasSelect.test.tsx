@@ -25,16 +25,67 @@ const AliasSelectWithOnchange = (props: AliasSelectProps) => {
 };
 
 describe("<AliasSelect /> spec", () => {
-  it("renders the component", async () => {
-    const { container } = render(<AliasSelect refreshOptions={() => Promise.resolve({ ok: true, response: [] })} onChange={() => {}} />);
-    await waitFor(() => {
-      expect(container.firstChild).toMatchSnapshot();
-    });
+  it("renders the component and remove duplicate aliases", async () => {
+    const onOptionsChange = jest.fn();
+    const { container } = render(
+      <AliasSelect
+        refreshOptions={() =>
+          Promise.resolve({
+            ok: true,
+            response: [
+              {
+                alias: "a",
+                index: "a",
+              },
+              {
+                alias: "a",
+                index: "b",
+              },
+            ],
+          })
+        }
+        onChange={() => {}}
+        onOptionsChange={onOptionsChange}
+      />
+    );
+    await waitFor(
+      () => {
+        expect(onOptionsChange).toBeCalledWith([
+          {
+            label: "a",
+          },
+        ]);
+        expect(container.firstChild).toMatchSnapshot();
+      },
+      {
+        timeout: 3000,
+      }
+    );
+  });
+
+  it("renders with error", async () => {
+    const onOptionsChange = jest.fn();
+    const { container } = render(
+      <AliasSelect
+        refreshOptions={() =>
+          Promise.resolve({
+            ok: false,
+            error: "Some error",
+          })
+        }
+        onChange={() => {}}
+        onOptionsChange={onOptionsChange}
+      />
+    );
+    await waitFor(() => {});
+    expect(container).toMatchSnapshot();
   });
 
   it("it should choose options or create one", async () => {
     const { getByTestId } = render(
-      <AliasSelectWithOnchange refreshOptions={() => Promise.resolve({ ok: true, response: [{ alias: "test", query: "test" }] })} />
+      <AliasSelectWithOnchange
+        refreshOptions={() => Promise.resolve({ ok: true, response: [{ alias: "test", index: "123", query: "test" }] })}
+      />
     );
     await waitFor(() => {
       expect(getByTestId("comboBoxInput")).toBeInTheDocument();
@@ -47,18 +98,14 @@ describe("<AliasSelect /> spec", () => {
     await waitFor(() => {
       expect(onChangeMock).toBeCalledTimes(1);
       expect(onChangeMock).toBeCalledWith({
-        test: {
-          query: "test",
-        },
+        test: {},
       });
     });
     await userEvent.type(getByTestId("comboBoxInput"), "test2{enter}");
     await waitFor(() => {
       expect(onChangeMock).toBeCalledTimes(2);
       expect(onChangeMock).toBeCalledWith({
-        test: {
-          query: "test",
-        },
+        test: {},
         test2: {},
       });
     });

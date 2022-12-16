@@ -42,7 +42,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
   return (
     <DeleteModal
       title="Delete Templates"
-      tips="The following template will be deleted permanently. This action cannot be undone."
+      tips="The following template will be permanently deleted. This action cannot be undone."
       onConfirm={onConfirm}
       onClose={onClose}
       visible={visible}

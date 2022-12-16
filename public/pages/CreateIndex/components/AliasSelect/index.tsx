@@ -13,7 +13,8 @@ import { SYSTEM_ALIAS } from "../../../../../utils/constants";
 export interface AliasSelectProps extends Omit<EuiComboBoxProps<{ label: string; value: string }>, "value" | "onChange"> {
   value?: Record<string, {}>;
   onChange?: (value: AliasSelectProps["value"]) => void;
-  refreshOptions: (aliasName: string) => Promise<ServerResponse<{ alias: string }[]>>;
+  refreshOptions: (aliasName: string) => Promise<ServerResponse<{ alias: string; index: string; [key: string]: any }[]>>;
+  onOptionsChange?: RemoteSelectProps["onOptionsChange"];
 }
 
 const transformObjToArray = (obj: AliasSelectProps["value"]): { label: string }[] => {
@@ -24,19 +25,21 @@ const transformArrayToObj = (array: { label: string; [key: string]: any }[]): Al
 };
 
 const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInputElement>) => {
-  const { value, onChange, refreshOptions: refreshOptionsFromProps } = props;
+  const { value, onChange, refreshOptions: refreshOptionsFromProps, onOptionsChange } = props;
   const optionsRef = useRef<{ label: string; [key: string]: any }[]>([]);
   const refreshOptions: RemoteSelectProps["refreshOptions"] = ({ searchValue }) => {
     return refreshOptionsFromProps(searchValue || "").then((res) => {
       if (res?.ok) {
         return {
           ...res,
-          response: [...new Set(res.response.filter((item) => !filterByMinimatch(item.alias, SYSTEM_ALIAS)))].map(
-            ({ alias, ...others }) => ({
-              ...others,
-              label: alias,
-            })
-          ),
+          response: [
+            ...new Set(res.response.filter((item) => item.alias && !filterByMinimatch(item.alias, SYSTEM_ALIAS)).map((item) => item.alias)),
+          ].map((alias) => {
+            const findItem = res.response.find((item) => item.alias === alias) as { alias: string };
+            return {
+              label: findItem.alias,
+            };
+          }),
         };
       } else {
         return res;
@@ -46,9 +49,12 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
   return (
     <RemoteSelect
       {...(props as Partial<EuiComboBoxProps<any>>)}
-      onOptionsChange={(options) => (optionsRef.current = options)}
+      onOptionsChange={(options) => {
+        optionsRef.current = options;
+        onOptionsChange?.(options);
+      }}
       placeholder="Select or create aliases"
-      customOptionText="Add {searchValue} as a new alias"
+      customOptionText="Add {searchValue} as a new alias."
       refreshOptions={refreshOptions}
       value={transformObjToArray(value).map((item) => item.label)}
       onChange={(val) => {

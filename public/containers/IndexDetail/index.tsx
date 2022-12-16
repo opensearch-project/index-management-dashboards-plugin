@@ -1,9 +1,10 @@
-import { EuiBasicTable, EuiSpacer } from "@elastic/eui";
+import { EuiSpacer } from "@elastic/eui";
 import React, { useContext, useEffect, useState } from "react";
 import { CatIndex } from "../../../server/models/interfaces";
 import { ContentPanel } from "../../components/ContentPanel";
 import { CoreServicesContext } from "../../components/core_services";
 import { ServicesContext } from "../../services";
+import DescriptionListHoz from "../../components/DescriptionListHoz";
 
 export interface IIndexDetailProps {
   indices: string[];
@@ -39,28 +40,29 @@ export default function IndexDetail(props: IIndexDetailProps) {
   }, [props.indices.join(","), setLoading, setItems, coreServices]);
   return (
     <ContentPanel title="Source index details" titleSize="s">
-      <EuiBasicTable
-        loading={loading}
-        columns={[
-          {
-            name: "Index name",
-            field: "index",
-          },
-          {
-            name: "Primary shards",
-            field: "pri",
-          },
-          {
-            name: "Replica shards",
-            field: "rep",
-          },
-          {
-            name: "Total index size",
-            field: "store.size",
-          },
-        ]}
-        items={items}
-      />
+      <EuiSpacer />
+      {items && items.length ? (
+        <DescriptionListHoz
+          listItems={[
+            {
+              title: "Index name",
+              description: items[0].index,
+            },
+            {
+              title: "Primary shards",
+              description: items[0].pri,
+            },
+            {
+              title: "Replica shards",
+              description: items[0].rep,
+            },
+            {
+              title: "Total index size",
+              description: items[0]["store.size"],
+            },
+          ]}
+        />
+      ) : null}
       <EuiSpacer />
       {loading ? null : props.children}
     </ContentPanel>

@@ -4,7 +4,17 @@
  */
 
 import React, { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { EuiSpacer, EuiFormRow, EuiLink, EuiOverlayMask, EuiLoadingSpinner, EuiContextMenu, EuiButton, EuiCallOut } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiFormRow,
+  EuiLink,
+  EuiOverlayMask,
+  EuiLoadingSpinner,
+  EuiContextMenu,
+  EuiButton,
+  EuiCallOut,
+  EuiTitle,
+} from "@elastic/eui";
 import { set, merge, omit, pick } from "lodash";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -17,14 +27,11 @@ import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
 import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
-import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 import SimplePopover from "../../../../components/SimplePopover";
 import { SimpleEuiToast } from "../../../../components/Toast";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_INDEX } from "../../../../../utils/constants";
 
-const indexNameEmptyTips = "Please fill in the index name before editing other fields";
-const staticSettingsTips = "This field can not be modified in edit mode";
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
 });
@@ -210,8 +217,13 @@ const IndexDetail = (
     return [
       {
         rowProps: {
-          label: "Number of shards",
-          helpText: "The number of primary shards in the index. Default is 1.",
+          label: "Number of primary shards",
+          helpText: (
+            <>
+              <p>Specify the number of primary shards for the index. Default is 1. </p>
+              <p>The number of primary shards cannot be changed after the index is created.</p>
+            </>
+          ),
         },
         name: "index.number_of_shards",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) ? "Text" : "Number",
@@ -219,12 +231,12 @@ const IndexDetail = (
           rules: [
             {
               min: 1,
-              message: "Number of shards can not smaller than 1",
+              message: "Number of primary shards can not smaller than 1",
             },
             {
               validator(rule, value, values) {
                 if (Number(value) !== parseInt(value)) {
-                  return Promise.reject("Number of shards must be an integer");
+                  return Promise.reject("Number of primary shards must be an integer");
                 }
 
                 return Promise.resolve();
@@ -239,7 +251,7 @@ const IndexDetail = (
       {
         rowProps: {
           label: "Number of replicas",
-          helpText: "The number of replica shards each primary shard should have.",
+          helpText: "Specify the number of replicas each primary shard should have. Default is 1.",
         },
         name: "index.number_of_replicas",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
@@ -266,8 +278,9 @@ const IndexDetail = (
       },
       {
         rowProps: {
-          label: "Refresh interval of index",
-          helpText: "How often the index should refresh, which publishes its most recent changes and makes them available for searching.",
+          label: "Refresh interval",
+          helpText:
+            "Specify how often the index should refresh, which publishes the most recent changes and make them available for search. Default is 1 second.",
         },
         name: "index.refresh_interval",
         type: readonly ? "Text" : "Input",
@@ -303,9 +316,12 @@ const IndexDetail = (
                     name: "index",
                     rowProps: {
                       label: "Index name",
-                      helpText: finalValue.index
-                        ? "Some restriction text on domain"
-                        : "Please enter the name before moving to other fields",
+                      helpText: (
+                        <div>
+                          {`Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, \, |, ?, #, > are not allowed.`}
+                        </div>
+                      ),
+                      position: "bottom",
                     },
                     type: readonly || isEdit ? "Text" : "Input",
                     options: {
@@ -318,6 +334,10 @@ const IndexDetail = (
                         {
                           required: true,
                           message: "Index name can not be null.",
+                        },
+                        {
+                          pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
+                          message: "Invalid index name",
                         },
                       ],
                     },
@@ -332,8 +352,8 @@ const IndexDetail = (
                   {
                     name: "aliases",
                     rowProps: {
-                      label: "Index alias  - optional",
-                      helpText: "Select existing aliases or specify a new alias",
+                      label: "Index alias - optional",
+                      helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
                     },
                     options: {
                       props: {
@@ -358,7 +378,7 @@ const IndexDetail = (
             return (
               <>
                 <ContentPanel title="Define index" titleSize="s">
-                  <div style={{ paddingLeft: "10px" }}>{content}</div>
+                  {content}
                 </ContentPanel>
                 <EuiSpacer />
               </>
@@ -404,7 +424,7 @@ const IndexDetail = (
                 value={{ ...finalValue.settings }}
                 onChange={(totalValue, name, val) => {
                   if (name) {
-                    onValueChange(["settings", name], val);
+                    onValueChange(["settings", name as string], val);
                   } else {
                     onValueChange("settings", val);
                   }
@@ -414,19 +434,12 @@ const IndexDetail = (
                 resetValuesWhenPropsValueChange
                 advancedSettingsProps={{
                   editorProps: {
-                    readOnly: readonly,
+                    mode: isEdit && !readonly ? "diff" : "json",
+                    disabled: readonly,
+                    original: JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2),
+                    value: JSON.stringify(getOrderedJson(value || {}), null, 2),
+                    onChange: (val) => onChange(JSON.parse(val)),
                   },
-                  renderProps: readonly
-                    ? undefined
-                    : ({ value, onChange, ref }) => (
-                        <JSONDiffEditor
-                          disabled={readonly}
-                          original={JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2)}
-                          value={JSON.stringify(getOrderedJson(value || {}), null, 2)}
-                          onChange={(val) => onChange(JSON.parse(val))}
-                          ref={ref}
-                        />
-                      ),
                   accordionProps: {
                     initialIsOpen: false,
                     id: "accordion_for_create_index_settings",
@@ -441,10 +454,11 @@ const IndexDetail = (
                       <>
                         Specify a comma-delimited list of settings.
                         <EuiLink
+                          external
                           href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
                           target="_blank"
                         >
-                          View index settings
+                          View index settings.
                         </EuiLink>
                       </>
                     ),
@@ -459,7 +473,7 @@ const IndexDetail = (
             return (
               <>
                 <ContentPanel title="Index settings" titleSize="s">
-                  <div style={{ paddingLeft: "10px" }}>{content}</div>
+                  {content}
                 </ContentPanel>
                 <EuiSpacer />
               </>
@@ -486,8 +500,30 @@ const IndexDetail = (
             }
 
             return (
-              <ContentPanel title="Index mappings - optional" titleSize="s">
-                <div style={{ paddingLeft: "10px" }}>{content}</div>
+              <ContentPanel
+                title={
+                  <>
+                    <EuiTitle size="s">
+                      <div>Index mapping - optional</div>
+                    </EuiTitle>
+                    <EuiFormRow
+                      fullWidth
+                      helpText={
+                        <div>
+                          Define how documents and their fields are stored and indexed.
+                          <EuiLink target="_blank" external href="https://opensearch.org/docs/latest/opensearch/mappings/">
+                            Learn more.
+                          </EuiLink>
+                        </div>
+                      }
+                    >
+                      <></>
+                    </EuiFormRow>
+                  </>
+                }
+                titleSize="s"
+              >
+                {content}
               </ContentPanel>
             );
           })()}

@@ -23,8 +23,8 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
         >
           <span
             class="euiButton__text euiButtonGroupButton__textShift"
-            data-text="Visual editor"
-            title="Visual editor"
+            data-text="Visual Editor"
+            title="Visual Editor"
           >
             <input
               checked=""
@@ -35,7 +35,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
               type="radio"
               value=""
             />
-            Visual editor
+            Visual Editor
           </span>
         </span>
       </label>
@@ -49,8 +49,8 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
         >
           <span
             class="euiButton__text euiButtonGroupButton__textShift"
-            data-text="JSON editor"
-            title="JSON editor"
+            data-text="JSON Editor"
+            title="JSON Editor"
           >
             <input
               class="euiScreenReaderOnly"
@@ -60,7 +60,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
               type="radio"
               value=""
             />
-            JSON editor
+            JSON Editor
           </span>
         </span>
       </label>
@@ -242,6 +242,11 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               geo_shape
                             </option>
                             <option
+                              value="half_float"
+                            >
+                              half_float
+                            </option>
+                            <option
                               value="integer"
                             >
                               integer
@@ -336,7 +341,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                       class="euiFormLabel euiFormRow__label"
                       for="some_html_id"
                     >
-                      actions
+                      Actions
                     </label>
                   </div>
                   <div
@@ -547,6 +552,11 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                       geo_shape
                                     </option>
                                     <option
+                                      value="half_float"
+                                    >
+                                      half_float
+                                    </option>
+                                    <option
                                       value="integer"
                                     >
                                       integer
@@ -641,7 +651,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                               class="euiFormLabel euiFormRow__label"
                               for="some_html_id"
                             >
-                              actions
+                              Actions
                             </label>
                           </div>
                           <div
@@ -738,8 +748,8 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
       >
         <span
           class="euiButton__text euiButtonGroupButton__textShift"
-          data-text="Visual editor"
-          title="Visual editor"
+          data-text="Visual Editor"
+          title="Visual Editor"
         >
           <input
             checked=""
@@ -750,7 +760,7 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
             type="radio"
             value=""
           />
-          Visual editor
+          Visual Editor
         </span>
       </span>
     </label>
@@ -764,8 +774,8 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
       >
         <span
           class="euiButton__text euiButtonGroupButton__textShift"
-          data-text="JSON editor"
-          title="JSON editor"
+          data-text="JSON Editor"
+          title="JSON Editor"
         >
           <input
             class="euiScreenReaderOnly"
@@ -775,7 +785,7 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
             type="radio"
             value=""
           />
-          JSON editor
+          JSON Editor
         </span>
       </span>
     </label>

@@ -35,6 +35,8 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
 import IndicesActions from "../IndicesActions";
+import { destroyListener, EVENT_MAP, listenEvent } from "../../../../JobHandler";
+import "./index.scss";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
@@ -82,6 +84,15 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
   async componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES]);
     await this.getIndices();
+    listenEvent(EVENT_MAP.REINDEX_COMPLETE, this.getIndices);
+    listenEvent(EVENT_MAP.SHRINK_COMPLETE, this.getIndices);
+    listenEvent(EVENT_MAP.SPLIT_COMPLETE, this.getIndices);
+  }
+
+  componentWillUnmount(): void {
+    destroyListener(EVENT_MAP.REINDEX_COMPLETE, this.getIndices);
+    destroyListener(EVENT_MAP.SHRINK_COMPLETE, this.getIndices);
+    destroyListener(EVENT_MAP.SPLIT_COMPLETE, this.getIndices);
   }
 
   async componentDidUpdate(prevProps: IndicesProps, prevState: IndicesState) {
@@ -266,16 +277,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
         <EuiBasicTable
           columns={indicesColumns(isDataStreamColumnVisible, {
-            onDelete: this.getIndices,
-            onOpen: this.getIndices,
-            onClose: this.getIndices,
-            onShrink: this.getIndices,
-            onSplit: this.getIndices,
-            onUpdateIndex: this.getIndices,
-            getIndices: this.getIndices,
             history,
-            location,
-            match,
           })}
           isSelectable={true}
           itemId="index"

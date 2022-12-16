@@ -36,6 +36,8 @@ module.exports = {
     "!**/vendor/**",
     "!**/index.d.ts",
     "!**/lib/field/**",
+    // There is a compile error in monaco-editor, ignore related components
+    "!**/components/JSONDiffEditor/**",
   ],
   clearMocks: true,
   testPathIgnorePatterns: ["<rootDir>/build/", "<rootDir>/node_modules/"],

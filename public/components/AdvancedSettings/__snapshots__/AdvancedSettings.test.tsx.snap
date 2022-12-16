@@ -41,6 +41,9 @@ HTMLCollection [
             class=""
           >
             <div
+              class="euiSpacer euiSpacer--s"
+            />
+            <div
               class="euiFormRow"
               id="some_html_id-row"
             >

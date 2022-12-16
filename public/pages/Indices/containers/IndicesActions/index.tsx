@@ -24,7 +24,7 @@ import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 
-export interface IndicesActionsProps extends RouteComponentProps {
+export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
   selectedItems: ManagedCatIndex[];
   onDelete: () => void;
   onOpen: () => void;
@@ -63,6 +63,48 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(result?.error || "");
     }
   }, [selectedItems, services, coreServices, onDelete, onDeleteIndexModalClose]);
+
+  const onCloseFlyout = () => {
+    setSplitIndexFlyoutVisible(false);
+  };
+
+  const splitIndex = async (targetIndex: String, settingsPayload: Required<IndexItem>["settings"]) => {
+    const { aliases, ...settings } = settingsPayload;
+    const result = await services?.commonService.apiCaller({
+      endpoint: "indices.split",
+      method: "PUT",
+      data: {
+        index: selectedItems.map((item) => item.index).join(","),
+        target: targetIndex,
+        body: {
+          settings: {
+            ...settings,
+          },
+          aliases,
+        },
+      },
+    });
+    if (result && result.ok) {
+      const toastIntance = coreServices?.notifications.toasts.addSuccess(
+        `Successfully started splitting ${selectedItems.map((item) => item.index).join(",")}. The split index will be named ${targetIndex}.`
+      );
+      onCloseFlyout();
+      onSplit();
+      jobSchedulerInstance.addJob({
+        interval: 30000,
+        extras: {
+          toastId: toastIntance.id,
+          sourceIndex: selectedItems.map((item) => item.index).join(","),
+          destIndex: targetIndex,
+        },
+        type: "split",
+      } as RecoveryJobMetaData);
+    } else {
+      coreServices.notifications.toasts.addDanger(
+        result?.error || "There was a problem submit split index request, please check with admin"
+      );
+    }
+  };
 
   const onOpenIndexModalClose = () => {
     setOpenIndexModalVisible(false);
@@ -147,11 +189,14 @@ export default function IndicesActions(props: IndicesActionsProps) {
         });
         if (result && result.ok) {
           onShrinkIndexFlyoutClose();
-          coreServices.notifications.toasts.addSuccess("Shrink index successfully");
+          const toastInstance = coreServices.notifications.toasts.addSuccess(
+            `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`
+          );
           onShrink();
           jobSchedulerInstance.addJob({
             interval: 30000,
             extras: {
+              toastId: toastInstance.id,
               sourceIndex: sourceIndexName,
               destIndex: targetIndexName,
             },
@@ -255,6 +300,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                         }),
                     },
                     {
+                      isSeparator: true,
+                    },
+                    {
                       name: "Close",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Close Action",
@@ -265,6 +313,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       disabled: !selectedItems.length,
                       "data-test-subj": "Open Action",
                       onClick: () => setOpenIndexModalVisible(true),
+                    },
+                    {
+                      isSeparator: true,
                     },
                     {
                       name: "Reindex",
@@ -291,6 +342,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
                         const source = `?source=${selectedItems[0].index}`;
                         props.history.push(`${ROUTES.SPLIT_INDEX}${source}`);
                       },
+                    },
+                    {
+                      isSeparator: true,
                     },
                     {
                       name: "Delete",
