@@ -54,7 +54,7 @@ describe("<TemplateDetail /> spec", () => {
           ],
         },
       };
-    });
+    }) as any;
     const { getByText, getByTestId, findByTitle } = renderCreateIndexTemplate({
       readonly: true,
       templateName: "good_template",
@@ -74,5 +74,36 @@ describe("<TemplateDetail /> spec", () => {
         },
       })
     );
+  });
+
+  it("shows the delete modal", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(async () => {
+      return {
+        ok: true,
+        response: {
+          index_templates: [
+            {
+              name: "good_template",
+              template: {},
+            },
+          ],
+        },
+      };
+    }) as any;
+    const { queryByText, getByText, getByTestId, findByTitle, findByText } = renderCreateIndexTemplate({
+      readonly: true,
+      templateName: "good_template",
+    });
+    await findByTitle("good_template");
+    userEvent.click(getByText("Delete"));
+    await findByText("Delete Templates");
+    userEvent.click(getByTestId("deletaCancelButton"));
+    await waitFor(() => expect(queryByText("Delete Templates")).toBeNull());
+    userEvent.click(getByText("Delete"));
+    await findByText("Delete Templates");
+    userEvent.type(getByTestId("deleteInput"), "delete");
+    userEvent.click(getByTestId("deleteConfirmButton"));
+    await findByText(`This is ${ROUTES.TEMPLATES}`);
+    expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
   });
 });

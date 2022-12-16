@@ -32,21 +32,14 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
       if (res?.ok) {
         return {
           ...res,
-          response: [...new Set(res.response.filter((item) => !filterByMinimatch(item.alias, SYSTEM_ALIAS)).map((item) => item.alias))].map(
-            (alias) => {
-              const findItem = res.response.find((item) => item.alias === alias);
-              if (findItem) {
-                const { alias } = findItem;
-                return {
-                  label: alias,
-                };
-              }
-
-              return {
-                label: alias,
-              };
-            }
-          ),
+          response: [
+            ...new Set(res.response.filter((item) => item.alias && !filterByMinimatch(item.alias, SYSTEM_ALIAS)).map((item) => item.alias)),
+          ].map((alias) => {
+            const findItem = res.response.find((item) => item.alias === alias) as { alias: string };
+            return {
+              label: findItem.alias,
+            };
+          }),
         };
       } else {
         return res;

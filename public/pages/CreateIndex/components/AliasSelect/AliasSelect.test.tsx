@@ -63,6 +63,24 @@ describe("<AliasSelect /> spec", () => {
     );
   });
 
+  it("renders with error", async () => {
+    const onOptionsChange = jest.fn();
+    const { container } = render(
+      <AliasSelect
+        refreshOptions={() =>
+          Promise.resolve({
+            ok: false,
+            error: "Some error",
+          })
+        }
+        onChange={() => {}}
+        onOptionsChange={onOptionsChange}
+      />
+    );
+    await waitFor(() => {});
+    expect(container).toMatchSnapshot();
+  });
+
   it("it should choose options or create one", async () => {
     const { getByTestId } = render(
       <AliasSelectWithOnchange
