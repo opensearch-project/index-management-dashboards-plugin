@@ -57,86 +57,8 @@ function renderWithRouter(initialEntries = [ROUTES.SPLIT_INDEX] as string[]) {
 
 const sourceIndexName = "source-index";
 
-beforeEach(() => {
-  browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
-    if (payload.endpoint === "cat.aliases") {
-      return {
-        ok: true,
-        response: [
-          {
-            alias: "testAlias",
-            index: "1",
-          },
-          {
-            alias: "multiIndexAlias",
-            index: "1",
-          },
-        ] as IAlias[],
-      };
-    } else if (payload.endpoint === "cat.indices") {
-      return {
-        ok: true,
-        response: [
-          {
-            health: "green",
-            status: "open",
-            index: sourceIndexName,
-            pri: "2",
-            rep: "0",
-            "docs.count": "1",
-            "docs.deleted": "0",
-            "store.size": "5.2kb",
-            "pri.store.size": "5.2kb",
-          },
-        ],
-      };
-    } else if (payload.endpoint === "indices.split") {
-      return {
-        ok: true,
-        response: [{}],
-      };
-    }
-
-    return {
-      ok: true,
-    };
-  }) as any;
-  window.location.hash = "/";
-});
-
 describe("<SplitIndex /> spec", () => {
   it("renders the component", async () => {
-    renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=index-source`]);
-
-    await waitFor(() => {
-      expect(document.body.children).toMatchSnapshot();
-    });
-  });
-
-  it("Successful split an index whose shards number is greater than 1", async () => {
-    const { getByTestId } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
-
-    await waitFor(() => {
-      expect(getByTestId("splitButton")).not.toBeDisabled();
-    });
-
-    userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "3{enter}");
-    userEvent.type(getByTestId("numberOfReplicasInput"), "1");
-    userEvent.click(getByTestId("splitButton"));
-    /*
-    await waitFor(
-      () => {
-        expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-          endpoint: "indices.split",
-        });
-      },
-      { timeout: 2000 }
-    );
- */
-  }, 15000);
-
-  it("Successful split an index whose shards number is 1", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
       if (payload.endpoint === "cat.aliases") {
         return {
@@ -144,10 +66,6 @@ describe("<SplitIndex /> spec", () => {
           response: [
             {
               alias: "testAlias",
-              index: "1",
-            },
-            {
-              alias: "multiIndexAlias",
               index: "1",
             },
           ] as IAlias[],
@@ -162,10 +80,106 @@ describe("<SplitIndex /> spec", () => {
               index: sourceIndexName,
               pri: "1",
               rep: "0",
-              "docs.count": "1",
-              "docs.deleted": "0",
-              "store.size": "5.2kb",
-              "pri.store.size": "5.2kb",
+            },
+          ],
+        };
+      }
+
+      return {
+        ok: true,
+      };
+    });
+
+    renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=index-source`]);
+
+    await waitFor(() => {
+      expect(document.body.children).toMatchSnapshot();
+    });
+  });
+
+  it("Successful split an index whose shards number is greater than 1", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
+      if (payload.endpoint === "cat.aliases") {
+        return {
+          ok: true,
+          response: [
+            {
+              alias: "testAlias",
+              index: "1",
+            },
+          ] as IAlias[],
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "2",
+              rep: "0",
+            },
+          ],
+        };
+      }
+
+      return {
+        ok: true,
+      };
+    });
+
+    const { getByTestId } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
+
+    await waitFor(() => {
+      expect(getByTestId("splitButton")).not.toBeDisabled();
+    });
+
+    userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
+    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "4{enter}");
+    userEvent.type(getByTestId("numberOfReplicasInput"), "1");
+    userEvent.click(getByTestId("splitButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+        endpoint: "indices.split",
+        method: "PUT",
+        data: {
+          index: "source-index",
+          target: "split_test_index-split",
+          body: {
+            settings: {
+              "index.number_of_shards": "4",
+              "index.number_of_replicas": "1",
+            },
+          },
+        },
+      });
+    });
+  });
+
+  it("Successful split an index whose shards number is 1", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
+      if (payload.endpoint === "cat.aliases") {
+        return {
+          ok: true,
+          response: [
+            {
+              alias: "testAlias",
+              index: "1",
+            },
+          ] as IAlias[],
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "1",
+              rep: "0",
             },
           ],
         };
@@ -187,17 +201,23 @@ describe("<SplitIndex /> spec", () => {
     userEvent.type(getByTestId("numberOfReplicasInput"), "1");
     userEvent.click(getByTestId("splitButton"));
 
-    /*
-        await waitFor(
-          () => {
-            expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-              endpoint: "indices.split",
-            });
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+        endpoint: "indices.split",
+        method: "PUT",
+        data: {
+          index: "source-index",
+          target: "split_test_index-split",
+          body: {
+            settings: {
+              "index.number_of_shards": "5",
+              "index.number_of_replicas": "1",
+            },
           },
-          { timeout: 2000 }
-        );
-     */
-  }, 15000); // set timeout to 15s to overwrite the default 10s because this case takes a little long
+        },
+      });
+    });
+  });
 
   it("Error message if index name or number of shards is not specified", async () => {
     const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
@@ -288,13 +308,8 @@ describe("<SplitIndex /> spec", () => {
     userEvent.click(getByTestId("open-index-button"));
     await waitFor(() => {});
     expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-      endpoint: "cat.indices",
-      /*
-      data: {
-        index: sourceIndexName,
-      },
-
-       */
+      endpoint: "indices.open",
+      data: { index: ["$(sourceIndexName)"] },
     });
   });
 
@@ -344,7 +359,21 @@ describe("<SplitIndex /> spec", () => {
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));
-    //expect(setIndexSettings).toBeCalledTimes(1);
+    await waitFor(() =>
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+        endpoint: "indices.putSettings",
+        method: "PUT",
+        data: {
+          index: "source-index",
+          flat_settings: true,
+          body: {
+            settings: {
+              "index.blocks.write": "true",
+            },
+          },
+        },
+      })
+    );
   });
 
   it("blocks.write is not set, Index is not ready for split", async () => {
@@ -367,7 +396,6 @@ describe("<SplitIndex /> spec", () => {
           ],
         };
       } else if (payload.endpoint === "indices.getSettings") {
-        console.log("xluo");
         return {
           ok: true,
           response: {
@@ -392,14 +420,20 @@ describe("<SplitIndex /> spec", () => {
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));
-    await waitFor(
-      () =>
-        expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-          endpoint: "indices.putSettings",
-        }),
-      {
-        timeout: 3000,
-      }
+    await waitFor(() =>
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
+        endpoint: "indices.putSettings",
+        method: "PUT",
+        data: {
+          index: "source-index",
+          flat_settings: true,
+          body: {
+            settings: {
+              "index.blocks.write": "true",
+            },
+          },
+        },
+      })
     );
   });
 
