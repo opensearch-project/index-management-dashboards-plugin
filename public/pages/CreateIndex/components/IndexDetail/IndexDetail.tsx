@@ -441,6 +441,7 @@ const IndexDetail = (
                     original: JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2),
                     value: JSON.stringify(getOrderedJson(value || {}), null, 2),
                     onChange: (val) => onChange(JSON.parse(val)),
+                    width: "100%",
                   },
                   accordionProps: {
                     initialIsOpen: false,
@@ -449,9 +450,7 @@ const IndexDetail = (
                   },
                   rowProps: {
                     label: "Specify advanced index settings",
-                    style: {
-                      maxWidth: "800px",
-                    },
+                    fullWidth: true,
                     helpText: (
                       <>
                         Specify a comma-delimited list of settings.

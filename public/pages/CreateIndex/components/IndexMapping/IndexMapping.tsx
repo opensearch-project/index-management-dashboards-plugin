@@ -526,10 +526,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
                   </EuiLink>
                 </div>
               }
+              fullWidth
             >
               <JSONEditor
                 value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
                 onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
+                width="100%"
               />
             </CustomFormRow>
           )}

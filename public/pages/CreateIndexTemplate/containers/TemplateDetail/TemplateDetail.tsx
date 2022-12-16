@@ -445,12 +445,11 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           }}
           editorProps={{
             disabled: readonly,
+            width: "100%",
           }}
           rowProps={{
+            fullWidth: true,
             label: "Specify advanced index settings",
-            style: {
-              maxWidth: "800px",
-            },
             helpText: (
               <>
                 Specify a comma-delimited list of settings.
