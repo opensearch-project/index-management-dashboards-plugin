@@ -60,6 +60,7 @@ export const ROUTES = Object.freeze({
   ALIASES: "/aliases",
   TEMPLATES: "/templates",
   CREATE_TEMPLATE: "/create-template",
+  SPLIT_INDEX: "/split-index",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -102,6 +103,7 @@ export const BREADCRUMBS = Object.freeze({
   TEMPLATES: { text: "Templates", href: `#${ROUTES.TEMPLATES}` },
   CREATE_TEMPLATE: { text: "Create template", href: `#${ROUTES.CREATE_TEMPLATE}` },
   EDIT_TEMPLATE: { text: "Edit template", href: `#${ROUTES.CREATE_TEMPLATE}` },
+  SPLIT_INDEX: { text: "Split Index", href: `#${ROUTES.SPLIT_INDEX}` },
 });
 
 // TODO: EUI has a SortDirection already

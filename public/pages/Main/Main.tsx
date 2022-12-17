@@ -38,6 +38,7 @@ import Reindex from "../Reindex/container/Reindex";
 import Aliases from "../Aliases";
 import Templates from "../Templates";
 import CreateIndexTemplate from "../CreateIndexTemplate";
+import SplitIndex from "../SplitIndex";
 import IndexDetail from "../IndexDetail";
 
 enum Navigation {
@@ -83,6 +84,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.REINDEX,
   ROUTES.CREATE_INDEX,
   ROUTES.CREATE_TEMPLATE,
+  ROUTES.SPLIT_INDEX,
 ];
 
 const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL];
@@ -427,6 +429,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SPLIT_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <SplitIndex {...props} />
                               </div>
                             )}
                           />

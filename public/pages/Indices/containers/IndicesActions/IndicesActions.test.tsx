@@ -508,86 +508,20 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("Split index by calling commonService", async () => {
-    const onSplit = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cat.indices":
-            return {
-              ok: true,
-              response: [
-                {
-                  health: "green",
-                  status: "open",
-                  index: "test_index",
-                  uuid: "HuHWuUOMSkKD5XBTbqQ5gg",
-                  pri: "3",
-                  rep: "0",
-                  "docs.count": "5",
-                  "docs.deleted": "2",
-                  "store.size": "100KB",
-                  "pri.store.size": "100KB",
-                  data_stream: null,
-                },
-              ],
-            };
-          case "indices.getSettings":
-            return {
-              ok: true,
-              response: {
-                test_index: {
-                  settings: {
-                    "index.blocks.write": true,
-                  },
-                },
-              },
-            };
-          case "cat.aliases":
-            return {
-              ok: true,
-              response: [
-                {
-                  alias: "a1",
-                  index: "acvxcvxc",
-                  filter: "-",
-                  "routing.index": "-",
-                  "routing.search": "-",
-                  is_write_index: "-",
-                },
-              ],
-            };
-          case "indices.split":
-            return {
-              ok: true,
-              response: {},
-            };
-        }
-        return {
-          ok: true,
-          response: {},
-        };
-      }
-    );
-
-    const { container, getByTestId, getByText } = renderWithRouter({
+    const history = createMemoryHistory();
+    const { container, getByTestId } = renderWithRouter({
+      history: history,
       selectedItems: [
         {
-          "docs.count": "5",
-          "docs.deleted": "2",
           health: "green",
           index: "test_index",
           pri: "3",
           "pri.store.size": "100KB",
           rep: "0",
           status: "open",
-          "store.size": "100KB",
-          uuid: "some_uuid",
-          managed: "",
-          managedPolicy: "",
           data_stream: null,
         },
       ],
-      onSplit,
     });
 
     await waitFor(() => {
@@ -595,21 +529,9 @@ describe("<IndicesActions /> spec", () => {
     });
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    expect(getByTestId("Split Action")).not.toBeDisabled();
     userEvent.click(getByTestId("Split Action"));
-
-    await waitFor(() => {
-      expect(getByTestId("flyout-footer-action-button")).not.toBeDisabled();
-      expect(getByText("100KB")).toBeInTheDocument();
-    });
-
-    userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "6{enter}");
-    userEvent.click(getByTestId("flyout-footer-action-button"));
-
-    await waitFor(() => {
-      expect(onSplit).toHaveBeenCalled();
-    });
-  }, 30000);
+  });
 
   it("split action is disabled if multiple indices are selected", async () => {
     const { container, getByTestId } = renderWithRouter({

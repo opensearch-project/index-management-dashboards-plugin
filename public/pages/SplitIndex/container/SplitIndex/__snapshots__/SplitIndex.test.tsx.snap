@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SplitIndex /> spec renders the component 1`] = `
+HTMLCollection [
+  <div>
+    <div
+      style="padding: 0px 50px;"
+    >
+      <h1
+        class="euiTitle euiTitle--large"
+      >
+        Split index
+      </h1>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+    </div>
+  </div>,
+]
+`;

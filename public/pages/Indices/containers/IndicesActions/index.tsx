@@ -18,7 +18,6 @@ import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
 import ShrinkIndexFlyout from "../../components/ShrinkIndexFlyout";
 import { getErrorMessage } from "../../../../utils/helpers";
-import SplitIndexFlyout from "../../components/SplitIndexFlyout";
 import { IndexItem } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
 import { ROUTES } from "../../../../utils/constants";
@@ -36,12 +35,11 @@ export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, onOpen, onClose, onShrink, onSplit } = props;
+  const { selectedItems, onDelete, onOpen, onClose, onShrink } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
   const [shrinkIndexFlyoutVisible, setShrinkIndexFlyoutVisible] = useState(false);
-  const [splitIndexFlyoutVisible, setSplitIndexFlyoutVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -340,7 +338,10 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       name: "Split",
                       "data-test-subj": "Split Action",
                       disabled: !selectedItems.length || selectedItems.length > 1 || selectedItems[0].data_stream !== null,
-                      onClick: () => setSplitIndexFlyoutVisible(true),
+                      onClick: () => {
+                        const source = `?source=${selectedItems[0].index}`;
+                        props.history.push(`${ROUTES.SPLIT_INDEX}${source}`);
+                      },
                     },
                     {
                       isSeparator: true,
@@ -384,18 +385,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
           sourceIndex={selectedItems[0]}
           onClose={onShrinkIndexFlyoutClose}
           onConfirm={onShrinkIndexFlyoutConfirm}
-          getIndexSettings={getIndexSettings}
-          setIndexSettings={setIndexSettings}
-          openIndex={onOpenIndexModalConfirm}
-          getAlias={getAlias}
-        />
-      )}
-
-      {splitIndexFlyoutVisible && (
-        <SplitIndexFlyout
-          sourceIndex={selectedItems[0]}
-          onCloseFlyout={onCloseFlyout}
-          onSplitIndex={splitIndex}
           getIndexSettings={getIndexSettings}
           setIndexSettings={setIndexSettings}
           openIndex={onOpenIndexModalConfirm}
