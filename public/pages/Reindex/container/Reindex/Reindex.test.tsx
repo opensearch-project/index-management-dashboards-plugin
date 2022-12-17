@@ -480,45 +480,6 @@ describe("<Reindex /> spec", () => {
     expect(getByText("Index [index-dest] health status is red")).toBeInTheDocument();
   });
 
-  it("source and destination must be different", async () => {
-    const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
-
-    await waitFor(() => {
-      getByText("Configure source index");
-    });
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "index-source");
-    await waitFor(() => {});
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-    await waitFor(() => {});
-
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "index-source");
-    await waitFor(() => {});
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-
-    userEvent.click(getByTestId("reindexConfirmButton"));
-
-    await waitFor(() => {});
-    expect(getByText("Index [index-source] both exists in source and destination")).toBeInTheDocument();
-
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[0], "{Backspace}index-source-2");
-    await waitFor(() => {});
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "ArrowDown", code: "ArrowDown" });
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[0], { key: "Enter", code: "Enter" });
-
-    // change to alias
-    userEvent.type(getAllByTestId("comboBoxSearchInput")[1], "alias-1");
-    await waitFor(() => {});
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "ArrowDown", code: "ArrowDown" });
-    fireEvent.keyDown(getAllByTestId("comboBoxSearchInput")[1], { key: "Enter", code: "Enter" });
-
-    userEvent.click(getByTestId("reindexConfirmButton"));
-
-    await waitFor(() => {});
-    expect(getByText("Index [index-source-2] both exists in source and destination")).toBeInTheDocument();
-  });
-
   it("destination alias must have writing index behind", async () => {
     const { getByText, getAllByTestId, getByTestId } = renderWithRouter();
 
