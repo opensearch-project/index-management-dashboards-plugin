@@ -514,7 +514,6 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             })}
             readonly={readonly}
             isEdit={isEdit}
-            originalValue={oldValue.current?.template?.mappings?.properties}
             ref={mappingsRef}
           />
         </EuiFormRow>

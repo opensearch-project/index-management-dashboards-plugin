@@ -122,12 +122,12 @@ describe("<IndexMapping /> spec", () => {
 
     await userEvent.click(getByTestId("editor-type-json-editor").querySelector("input") as Element);
     await waitFor(() => {});
-    userEvent.click(getByTestId("previous-mappings-json-button"));
+    userEvent.click(getByTestId("previousMappingsJsonButton"));
     await waitFor(() => {});
-    expect(queryByTestId("previous-mappings-json-modal-ok")).not.toBeNull();
-    userEvent.click(getByTestId("previous-mappings-json-modal-ok"));
+    expect(queryByTestId("previousMappingsJsonModal-ok")).not.toBeNull();
+    userEvent.click(getByTestId("previousMappingsJsonModal-ok"));
     await waitFor(() => {
-      expect(queryByTestId("previous-mappings-json-modal-ok")).toBeNull();
+      expect(queryByTestId("previousMappingsJsonModal-ok")).toBeNull();
     });
   });
 

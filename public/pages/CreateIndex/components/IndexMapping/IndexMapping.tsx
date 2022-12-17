@@ -329,7 +329,7 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
   );
 });
 
-const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalValue }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
+const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
   const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
   useImperativeHandle(ref, () => ({
     validate: async () => {
@@ -498,12 +498,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
             <>
               <EuiButton
                 size="s"
-                data-test-subj="previous-mappings-json-button"
+                data-test-subj="previousMappingsJsonButton"
                 onClick={() => {
                   Modal.show({
                     title: "Previous mappings",
                     content: <JSONEditor readOnly value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} />,
-                    "data-test-subj": "previous-mappings-json-modal",
+                    "data-test-subj": "previousMappingsJsonModal",
                     onOk: () => {},
                   });
                 }}
@@ -514,7 +514,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
             </>
           ) : null}
           {readonly ? (
-            <JSONEditor value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} readOnly={readonly} />
+            <JSONEditor value={JSON.stringify(transformArrayToObject(value || []), null, 2)} readOnly={readonly} />
           ) : (
             <CustomFormRow
               label="Specify index mapping"
