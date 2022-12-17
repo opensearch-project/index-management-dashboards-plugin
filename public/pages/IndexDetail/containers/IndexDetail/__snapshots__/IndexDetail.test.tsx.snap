@@ -209,7 +209,7 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
                 class="euiDescriptionList__description"
               >
                 <span>
-                  1/1/1970, 12:00:00 AM
+                  -
                 </span>
               </dd>
             </div>

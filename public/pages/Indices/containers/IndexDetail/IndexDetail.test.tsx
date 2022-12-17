@@ -35,26 +35,9 @@ describe("container <IndexDetail /> spec", () => {
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });
-  const onUpdateSuccessMock = jest.fn();
   it("render the component", async () => {
     const { container } = renderWithRouter({
       index: "test_index",
-      record: {
-        "docs.count": "5",
-        "docs.deleted": "2",
-        health: "green",
-        index: "test_index",
-        pri: "1",
-        "pri.store.size": "100KB",
-        rep: "0",
-        status: "open",
-        "store.size": "100KB",
-        uuid: "some_uuid",
-        managed: "",
-        managedPolicy: "",
-        data_stream: "",
-      },
-      onUpdateIndex: onUpdateSuccessMock,
     });
 
     await waitFor(() => {

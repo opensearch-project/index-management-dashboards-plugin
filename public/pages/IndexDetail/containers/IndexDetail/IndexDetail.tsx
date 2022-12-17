@@ -67,7 +67,11 @@ const OVERVIEW_DISPLAY_INFO: {
   },
   {
     label: "Creation date",
-    value: ({ detail }) => <span>{new Date(parseInt(detail.settings?.index?.creation_date || "0")).toLocaleString()}</span>,
+    value: ({ detail }) => (
+      <span>
+        {detail.settings?.index?.creation_date ? new Date(parseInt(detail.settings?.index?.creation_date)).toLocaleString() : "-"}
+      </span>
+    ),
   },
   {
     label: "Total size",
