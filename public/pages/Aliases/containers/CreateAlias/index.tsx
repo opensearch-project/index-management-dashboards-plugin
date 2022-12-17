@@ -53,7 +53,7 @@ export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (
               }
             }),
           services.commonService
-            .apiCaller<{ data_streams: DataStream[] }>({
+            .apiCaller<{ data_streams?: DataStream[] }>({
               endpoint: "transport.request",
               data: {
                 path: "/_data_stream",
@@ -62,9 +62,11 @@ export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (
             })
             .then((res): string[] => {
               if (res.ok) {
-                return res.response.data_streams.reduce(
-                  (total, current) => [...total, current.name, ...current.indices.map((item) => item.index_name)],
-                  [] as string[]
+                return (
+                  res.response.data_streams?.reduce(
+                    (total, current) => [...total, current.name, ...current.indices.map((item) => item.index_name)],
+                    [] as string[]
+                  ) || []
                 );
               }
 
