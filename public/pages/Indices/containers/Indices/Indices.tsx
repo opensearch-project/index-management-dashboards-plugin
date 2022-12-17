@@ -227,7 +227,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       onSelectionChange: this.onSelectionChange,
     };
 
-    const { history, location, match } = this.props;
+    const { history } = this.props;
 
     return (
       <ContentPanel
@@ -242,7 +242,6 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                     onOpen={this.getIndices}
                     onClose={this.getIndices}
                     onShrink={this.getIndices}
-                    onSplit={this.getIndices}
                     selectedItems={this.state.selectedItems}
                     getIndices={this.getIndices}
                   />

@@ -52,6 +52,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       {
         rowProps: {
           label: "Target Index Name",
+          helpText: "Specify a name for the new split index.",
         },
         name: "targetIndex",
         type: "Input",
@@ -78,7 +79,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       {
         rowProps: {
           label: "Number of shards",
-          helpText: "The number of primary shards in the target index",
+          helpText: "Specify the number of primary shards for the new split index.",
         },
         name: "index.number_of_shards",
         type: "ComboBoxSingle",
@@ -106,7 +107,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       {
         rowProps: {
           label: "Number of replicas",
-          helpText: "The number of replica shards each primary shard should have.",
+          helpText: "Specify the number of replica shards each primary shard should have.",
         },
         name: "index.number_of_replicas",
         type: "Number",
@@ -205,7 +206,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButton fill onClick={this.onSubmit} data-test-subj="splitButton" isDisabled={!readyForSplit}>
-              Split
+              Split Index
             </EuiButton>
           </EuiFlexItem>
         </EuiFlexGroup>

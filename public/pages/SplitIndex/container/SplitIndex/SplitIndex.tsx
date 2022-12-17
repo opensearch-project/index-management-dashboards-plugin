@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component } from "react";
-import { EuiSpacer, EuiTitle, EuiButton } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiText } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
@@ -51,7 +51,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
   }
 
   isSourceIndexReady = async () => {
-    const source = queryString.parse(this.props.location.search) as { source?: string };
+    const source = queryString.parse(this.props.location.search) as { source: string };
     const sourceIndex = await getSingleIndice({
       indexName: source.source as string,
       commonService: this.props.commonService,
@@ -87,7 +87,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
             onClick={async () => {
               await openIndices({
                 commonService: this.props.commonService,
-                indices: [source.source || ""],
+                indices: [source.source],
                 coreServices: this.props.coreService,
               });
               await this.isSourceIndexReady();
@@ -172,6 +172,16 @@ export class SplitIndex extends Component<SplitIndexProps> {
         <EuiTitle size="l">
           <h1>Split index</h1>
         </EuiTitle>
+
+        <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+          <p style={{ fontWeight: 200 }}>
+            Split an existing read-only index into a new index with more primary shards{" "}
+            <EuiLink href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"} target="_blank" rel="noopener noreferrer">
+              Learn more.
+            </EuiLink>
+          </p>
+        </EuiText>
+
         <EuiSpacer />
 
         {splitIndexFlyoutVisible && (

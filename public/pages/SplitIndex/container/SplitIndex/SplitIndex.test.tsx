@@ -219,6 +219,52 @@ describe("<SplitIndex /> spec", () => {
     });
   });
 
+  it("Error message if number of shards is invalid", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
+      if (payload.endpoint === "cat.aliases") {
+        return {
+          ok: true,
+          response: [
+            {
+              alias: "testAlias",
+              index: "1",
+            },
+          ] as IAlias[],
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "3",
+              rep: "0",
+            },
+          ],
+        };
+      }
+
+      return {
+        ok: true,
+      };
+    });
+
+    const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
+
+    await waitFor(() => {
+      expect(getByTestId("splitButton")).not.toBeDisabled();
+    });
+
+    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "5{enter}");
+    userEvent.click(getByTestId("splitButton"));
+
+    await waitFor(() => {
+      expect(getByText("Number of shards is required")).not.toBeNull();
+    });
+  });
+
   it("Error message if index name or number of shards is not specified", async () => {
     const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
