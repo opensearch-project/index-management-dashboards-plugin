@@ -9,6 +9,7 @@ import { IAlias } from "../../interface";
 import { getAliasActionsByDiffArray } from "../../../CreateIndex/containers/IndexForm";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS, SYSTEM_INDEX } from "../../../../../utils/constants";
+import { DataStream } from "../../../../../server/models/interfaces";
 
 export interface ICreateAliasProps {
   visible: boolean;
@@ -26,30 +27,59 @@ export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (
       value={value}
       onChange={onChange}
       customOptionText="Add {searchValue} as index pattern"
-      refreshOptions={({ searchValue }) => {
+      refreshOptions={async ({ searchValue }) => {
         const payload: { index?: string; format: string } = {
           format: "json",
         };
         if (searchValue) {
           payload.index = `${searchValue}*`;
         }
-        return services.commonService
-          .apiCaller<{ index: string }[]>({
-            endpoint: "cat.indices",
-            data: payload,
-          })
-          .then((res) => {
-            if (res.ok) {
-              return {
-                ...res,
-                response: res.response
-                  .map((item) => ({ label: item.index }))
-                  .filter((item) => !filterByMinimatch(item.label, SYSTEM_INDEX)),
-              };
-            } else {
-              return res;
-            }
-          });
+        const [aliasResult, dataStreamList] = await Promise.all([
+          services.commonService
+            .apiCaller<{ index: string }[]>({
+              endpoint: "cat.indices",
+              data: payload,
+            })
+            .then((res) => {
+              if (res.ok) {
+                return {
+                  ...res,
+                  response: res.response
+                    .map((item) => ({ label: item.index }))
+                    .filter((item) => !filterByMinimatch(item.label, SYSTEM_INDEX)),
+                };
+              } else {
+                return res;
+              }
+            }),
+          services.commonService
+            .apiCaller<{ data_streams: DataStream[] }>({
+              endpoint: "transport.request",
+              data: {
+                path: "/_data_stream",
+                method: "GET",
+              },
+            })
+            .then((res): string[] => {
+              if (res.ok) {
+                return res.response.data_streams.reduce(
+                  (total, current) => [...total, current.name, ...current.indices.map((item) => item.index_name)],
+                  [] as string[]
+                );
+              }
+
+              return [];
+            }),
+        ]);
+
+        if (aliasResult.ok) {
+          return {
+            ...aliasResult,
+            response: aliasResult.response.filter((item) => !dataStreamList.includes(item.label)),
+          };
+        }
+
+        return aliasResult;
       }}
     />
   );
