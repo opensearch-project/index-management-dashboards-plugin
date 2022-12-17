@@ -21,9 +21,8 @@ import {
   EuiContextMenu,
   EuiLink,
 } from "@elastic/eui";
-import { set, get, pick } from "lodash";
+import { set, get, pick, isEmpty } from "lodash";
 import JSONEditor from "../../../../components/JSONEditor";
-import JSONDiffEditor from "../../../../components/JSONDiffEditor";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import useField, { transformNameToString } from "../../../../lib/field";
 import { Modal } from "../../../../components/Modal";
@@ -494,7 +493,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
         </>
       ) : (
         <>
-          {isEdit && !readonly ? (
+          {isEdit && !readonly && !isEmpty(oldValue) ? (
             <>
               <EuiButton
                 size="s"
@@ -514,7 +513,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
             </>
           ) : null}
           {readonly ? (
-            <JSONEditor value={JSON.stringify(transformArrayToObject(value || []), null, 2)} readOnly={readonly} />
+            <JSONEditor value={JSON.stringify(transformArrayToObject(value || []), null, 2)} readOnly={readonly} width="100%" />
           ) : (
             <CustomFormRow
               label="Specify index mapping"
