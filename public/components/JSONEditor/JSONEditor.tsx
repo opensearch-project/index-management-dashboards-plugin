@@ -44,7 +44,7 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
         readOnly
         style={{ display: "none" }}
         value={tempEditorValue}
-        data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
+        data-test-subj={`${others["data-test-subj"] || "jsonEditor"}-valueDisplay`}
       />
       <EuiCodeEditor
         readOnly={disabled}

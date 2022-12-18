@@ -49,7 +49,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           }
         }}
         title={`editor-is-ready-true`}
-        data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
+        data-test-subj={`${others["data-test-subj"] || "jsonEditor"}-valueDisplay`}
       />
       {confirmModalVisible ? (
         <EuiConfirmModal

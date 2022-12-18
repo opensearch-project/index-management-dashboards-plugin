@@ -628,7 +628,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     </a>
                   </div>
                   <textarea
-                    data-test-subj="json-editor-value-display"
+                    data-test-subj="jsonEditor-valueDisplay"
                     readonly=""
                     style="display: none;"
                   >
@@ -864,7 +864,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               </label>
               <label
                 class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
-                data-test-subj="editor-type-json-editor"
+                data-test-subj="editorTypeJsonEditor"
                 for="some_html_id"
               >
                 <span

@@ -83,7 +83,7 @@ describe("<JSONEditor /> spec", () => {
     fireEvent.focus(textareaInput);
     await inputTextArea({
       textareaInput,
-      nowValue: (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value,
+      nowValue: (getByTestId("jsonEditor-valueDisplay") as HTMLTextAreaElement).value,
       newValue: '{ "test": "1", 123 }',
     });
     fireEvent.blur(textareaInput);
@@ -94,7 +94,7 @@ describe("<JSONEditor /> spec", () => {
     fireEvent.focus(textareaInput);
     await inputTextArea({
       textareaInput,
-      nowValue: (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value,
+      nowValue: (getByTestId("jsonEditor-valueDisplay") as HTMLTextAreaElement).value,
       newValue: '{ "test": "1" }',
     });
     fireEvent.blur(textareaInput);

@@ -120,7 +120,7 @@ describe("<IndexMapping /> spec", () => {
     userEvent.click(getByTestId("mapping-visual-editor-2-delete-field"));
     expect(queryByTestId("mapping-visual-editor-2-delete-field")).toBeNull();
 
-    await userEvent.click(getByTestId("editor-type-json-editor").querySelector("input") as Element);
+    await userEvent.click(getByTestId("editorTypeJsonEditor").querySelector("input") as Element);
     await waitFor(() => {});
     userEvent.click(getByTestId("previousMappingsJsonButton"));
     await waitFor(() => {});

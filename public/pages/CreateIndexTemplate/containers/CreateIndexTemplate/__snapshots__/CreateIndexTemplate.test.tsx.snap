@@ -408,7 +408,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                       </a>
                     </div>
                     <textarea
-                      data-test-subj="json-editor-value-display"
+                      data-test-subj="jsonEditor-valueDisplay"
                       readonly=""
                       style="display: none;"
                     >
@@ -640,7 +640,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                 </label>
                 <label
                   class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
-                  data-test-subj="editor-type-json-editor"
+                  data-test-subj="editorTypeJsonEditor"
                   for="some_html_id"
                 >
                   <span

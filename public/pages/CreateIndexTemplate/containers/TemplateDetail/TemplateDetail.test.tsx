@@ -63,7 +63,7 @@ describe("<TemplateDetail /> spec", () => {
     userEvent.click(getByText("View JSON"));
     await waitFor(() =>
       expect(
-        JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="json-editor-value-display"]')?.innerHTML || "{}")
+        JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")
       ).toEqual({
         name: "good_template",
         template: {

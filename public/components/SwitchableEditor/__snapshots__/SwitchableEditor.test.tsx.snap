@@ -42,7 +42,7 @@ HTMLCollection [
       class="euiSpacer euiSpacer--l"
     />
     <textarea
-      data-test-subj="json-editor-value-display"
+      data-test-subj="jsonEditor-valueDisplay"
       readonly=""
       style="display: none;"
     >

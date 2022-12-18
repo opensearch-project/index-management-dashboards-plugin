@@ -456,7 +456,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
           {
             label: readonly ? "JSON" : "JSON Editor",
             id: EDITOR_MODE.JSON,
-            "data-test-subj": "editor-type-json-editor",
+            "data-test-subj": "editorTypeJsonEditor",
           },
         ]}
       />

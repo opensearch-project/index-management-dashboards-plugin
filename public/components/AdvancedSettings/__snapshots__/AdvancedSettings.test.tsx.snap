@@ -51,7 +51,7 @@ HTMLCollection [
                 class="euiFormRow__fieldWrapper"
               >
                 <textarea
-                  data-test-subj="json-editor-value-display"
+                  data-test-subj="jsonEditor-valueDisplay"
                   readonly=""
                   style="display: none;"
                 >

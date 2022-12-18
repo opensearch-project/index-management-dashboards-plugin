@@ -41,7 +41,7 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
       </label>
       <label
         class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
-        data-test-subj="editor-type-json-editor"
+        data-test-subj="editorTypeJsonEditor"
         for="some_html_id"
       >
         <span
@@ -766,7 +766,7 @@ exports[`<IndexMapping /> spec renders the component 1`] = `
     </label>
     <label
       class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
-      data-test-subj="editor-type-json-editor"
+      data-test-subj="editorTypeJsonEditor"
       for="some_html_id"
     >
       <span

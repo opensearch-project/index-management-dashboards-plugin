@@ -88,7 +88,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           }
         }}
         title={`editor-is-ready-${isReady}`}
-        data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
+        data-test-subj={`${others["data-test-subj"] || "jsonEditor"}-valueDisplay`}
       />
       <div style={{ display: "flex", marginBottom: 12 }}>
         <div style={{ flexGrow: 1 }}>
