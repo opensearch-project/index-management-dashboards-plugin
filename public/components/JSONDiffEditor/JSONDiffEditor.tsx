@@ -31,7 +31,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         JSON.parse(value);
         onChange && onChange(value);
       } catch (e) {
-        setConfirmModalVisible(true);
+        // setConfirmModalVisible(true);
       }
     }
     focusedRef.current = false;
@@ -68,7 +68,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           JSON.parse(editorRef.current?.getModifiedEditor().getValue() || "{}");
           resolve("");
         } catch (e) {
-          setConfirmModalVisible(true);
+          // setConfirmModalVisible(true);
           reject("Format validate error");
         }
       }),

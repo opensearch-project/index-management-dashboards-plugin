@@ -22,7 +22,7 @@ import {
   EuiLink,
 } from "@elastic/eui";
 import { set, get, pick, isEmpty } from "lodash";
-import JSONEditor from "../../../../components/JSONEditor";
+import JSONEditor, { IJSONEditorRef } from "../../../../components/JSONEditor";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import useField, { transformNameToString } from "../../../../lib/field";
 import { Modal } from "../../../../components/Modal";
@@ -330,10 +330,12 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
 
 const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
   const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
+  const JSONEditorRef = useRef<IJSONEditorRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {
       const values = await Promise.all(Object.values(allFieldsRef.current).map((item) => item.validate()));
-      return values.some((item) => item) ? "with error" : "";
+      const JSONEditorValidateResult = await JSONEditorRef.current?.validate();
+      return values.some((item) => item) || JSONEditorValidateResult ? "with error" : "";
     },
   }));
   const [editorMode, setEditorMode] = useState<EDITOR_MODE>(EDITOR_MODE.VISUAL);
@@ -513,7 +515,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
             </>
           ) : null}
           {readonly ? (
-            <JSONEditor value={JSON.stringify(transformArrayToObject(value || []), null, 2)} readOnly={readonly} width="100%" />
+            <JSONEditor
+              ref={JSONEditorRef}
+              value={JSON.stringify(transformArrayToObject(value || []), null, 2)}
+              readOnly={readonly}
+              width="100%"
+            />
           ) : (
             <CustomFormRow
               label="Specify index mapping"
@@ -531,6 +538,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
                 value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
                 onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
                 width="100%"
+                ref={JSONEditorRef}
               />
             </CustomFormRow>
           )}

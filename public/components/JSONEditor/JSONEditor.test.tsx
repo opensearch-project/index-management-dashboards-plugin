@@ -7,8 +7,36 @@ import React, { useRef } from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import JSONEditor, { IJSONEditorRef } from "./JSONEditor";
-import userEvent from "@testing-library/user-event";
 import { renderHook } from "@testing-library/react-hooks";
+
+async function inputTextArea(props: { textareaInput: HTMLTextAreaElement; nowValue: string; newValue: string }) {
+  const { textareaInput, nowValue, newValue } = props;
+  const valueLength = nowValue.length;
+  for (let i = 0; i < valueLength; i++) {
+    await fireEvent(
+      textareaInput,
+      new KeyboardEvent("keydown", {
+        keyCode: 40,
+      })
+    );
+  }
+  for (let i = 0; i < valueLength; i++) {
+    await fireEvent(
+      textareaInput,
+      new KeyboardEvent("keydown", {
+        keyCode: 8,
+      })
+    );
+  }
+  // try to input a non-json string
+  textareaInput.value = newValue;
+  fireEvent(
+    textareaInput,
+    new InputEvent("input", {
+      data: newValue,
+    })
+  );
+}
 
 describe("<JSONEditor /> spec", () => {
   it("renders the component", () => {
@@ -50,50 +78,29 @@ describe("<JSONEditor /> spec", () => {
 
   it("it triggers onChange when json is input", async () => {
     const onChangeMock = jest.fn();
-    const { getByTestId, getByText } = render(<JSONEditor value={JSON.stringify({ name: "test" })} onChange={onChangeMock} />);
+    const { getByTestId, getByText, findByText } = render(<JSONEditor value={JSON.stringify({ name: "test" })} onChange={onChangeMock} />);
     const textareaInput = document.querySelector(".ace_text-input") as HTMLTextAreaElement;
     fireEvent.focus(textareaInput);
-    const valueLength = (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value.length;
-    for (let i = 0; i < valueLength; i++) {
-      await fireEvent(
-        textareaInput,
-        new KeyboardEvent("keydown", {
-          keyCode: 40,
-        })
-      );
-    }
-    for (let i = 0; i < valueLength; i++) {
-      await fireEvent(
-        textareaInput,
-        new KeyboardEvent("keydown", {
-          keyCode: 8,
-        })
-      );
-    }
-    // try to input a non-json string
-    textareaInput.value = '{ "test": "1", 123 }';
-    fireEvent(
+    await inputTextArea({
       textareaInput,
-      new InputEvent("input", {
-        data: '{ "test": "1", 123 }',
-      })
-    );
-    fireEvent.blur(textareaInput);
-    await waitFor(() => {
-      userEvent.click(getByText("Close to modify"));
+      nowValue: (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value,
+      newValue: '{ "test": "1", 123 }',
     });
+    fireEvent.blur(textareaInput);
+    await findByText("Your input does not match the validation of json format, please fix the error line with error aside.");
 
     expect(onChangeMock).toBeCalledTimes(0);
 
     fireEvent.focus(textareaInput);
+    await inputTextArea({
+      textareaInput,
+      nowValue: (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value,
+      newValue: '{ "test": "1" }',
+    });
     fireEvent.blur(textareaInput);
-    userEvent.click(getByText("Continue with data reset"));
-    expect(onChangeMock).toBeCalledTimes(1);
-    expect(onChangeMock).toBeCalledWith(JSON.stringify({ name: "test" }));
-
-    fireEvent.focus(textareaInput);
-    fireEvent.blur(textareaInput);
-
-    expect(onChangeMock).toBeCalledTimes(2);
+    await waitFor(() => {
+      expect(onChangeMock).toBeCalledTimes(1);
+      expect(onChangeMock).toBeCalledWith('{ "test": "1" }');
+    });
   });
 });

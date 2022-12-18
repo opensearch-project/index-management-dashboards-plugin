@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import { EuiCodeEditor, EuiConfirmModal, EuiCodeEditorProps } from "@elastic/eui";
+import { EuiCodeEditor, EuiCodeEditorProps, EuiFormRow } from "@elastic/eui";
 
 export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
   disabled?: boolean;
@@ -29,6 +29,7 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
       new Promise((resolve, reject) => {
         try {
           JSON.parse(tempEditorValue);
+          setConfirmModalVisible(false);
           resolve("");
         } catch (e) {
           setConfirmModalVisible(true);
@@ -48,6 +49,9 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
       <EuiCodeEditor
         readOnly={disabled}
         {...others}
+        style={{
+          border: confirmModalVisible ? "1px solid red" : undefined,
+        }}
         mode="json"
         value={tempEditorValue}
         onChange={setTempEditorValue}
@@ -58,26 +62,21 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
           try {
             JSON.parse(tempEditorValue);
             onChange && onChange(tempEditorValue);
+            setConfirmModalVisible(false);
           } catch (e) {
             setConfirmModalVisible(true);
           }
         }}
       />
-      {confirmModalVisible ? (
-        <EuiConfirmModal
-          title="Format validate error"
-          onCancel={() => setConfirmModalVisible(false)}
-          onConfirm={() => {
-            onChange && onChange(value);
-            setTempEditorValue(value);
-            setConfirmModalVisible(false);
-          }}
-          cancelButtonText="Close to modify"
-          confirmButtonText="Continue with data reset"
+      {confirmModalVisible && (
+        <EuiFormRow
+          fullWidth
+          isInvalid={confirmModalVisible}
+          error="Your input does not match the validation of json format, please fix the error line with error aside."
         >
-          Your input does not match the validation of json format, please modify the error line with error aside
-        </EuiConfirmModal>
-      ) : null}
+          <></>
+        </EuiFormRow>
+      )}
     </>
   );
 });
