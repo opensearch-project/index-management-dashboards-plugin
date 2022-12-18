@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
-import { ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { IAlias } from "../../../Aliases/interface";
@@ -95,6 +95,20 @@ describe("<SplitIndex /> spec", () => {
     await waitFor(() => {
       expect(document.body.children).toMatchSnapshot();
     });
+  });
+
+  it("set breadcrumbs when mounting", async () => {
+    renderWithRouter();
+
+    // wait for one tick
+    await waitFor(() => {});
+
+    expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledTimes(1);
+    expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledWith([
+      BREADCRUMBS.INDEX_MANAGEMENT,
+      BREADCRUMBS.INDICES,
+      BREADCRUMBS.SPLIT_INDEX,
+    ]);
   });
 
   it("Successful split an index whose shards number is greater than 1", async () => {

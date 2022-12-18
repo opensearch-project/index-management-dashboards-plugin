@@ -27,7 +27,7 @@ import { CommonService, ServicesContext } from "../../../../services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { useContext } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 
 interface SplitIndexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -35,6 +35,7 @@ interface SplitIndexProps extends RouteComponentProps {
 }
 
 export class SplitIndex extends Component<SplitIndexProps> {
+  static contextType = CoreServicesContext;
   state = {
     reasons: [] as React.ReactChild[],
     shardsSelectOptions: [] as { label: string }[],
@@ -43,6 +44,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
   };
 
   async componentDidMount() {
+    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES, BREADCRUMBS.SPLIT_INDEX]);
     await this.isSourceIndexReady();
     this.calculateShardsOption();
     this.setState({
