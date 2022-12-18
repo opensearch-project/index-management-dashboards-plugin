@@ -3,7 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiModal, EuiModalHeader, EuiModalHeaderTitle, EuiButton, EuiModalBody, EuiModalFooter, EuiModalProps } from "@elastic/eui";
+import {
+  EuiModal,
+  EuiModalHeader,
+  EuiModalHeaderTitle,
+  EuiButton,
+  EuiModalBody,
+  EuiModalFooter,
+  EuiModalProps,
+  EuiModalBodyProps,
+} from "@elastic/eui";
 import React, { Component, createContext, useEffect, useState } from "react";
 import { render } from "react-dom";
 
@@ -56,13 +65,14 @@ interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth" | "class
     confirm: string;
     cancel: string;
   }>;
+  bodyProps?: EuiModalBodyProps;
 }
 
 const blank = () => null;
 
 const SimpleModal = (props: IShowOptions) => {
   const [modalVisible, setModalVisible] = useState(props.visible === undefined ? true : props.visible);
-  const { title, content, locale, onOk = blank, onCancel = blank, onClose = blank, ...others } = props;
+  const { title, content, locale, onOk = blank, onCancel = blank, onClose = blank, visible, ...others } = props;
   const testSubj = props["data-test-subj"] || title || Date.now();
   const defaultLocale: IShowOptions["locale"] = {
     ok: "OK",
@@ -80,10 +90,10 @@ const SimpleModal = (props: IShowOptions) => {
     onClose();
   };
   useEffect(() => {
-    if (props.visible !== undefined) {
-      setModalVisible(props.visible);
+    if (visible !== undefined) {
+      setModalVisible(visible);
     }
-  }, [props.visible]);
+  }, [visible]);
   return modalVisible ? (
     <EuiModal {...others} onClose={close}>
       <EuiModalHeader>
@@ -91,7 +101,7 @@ const SimpleModal = (props: IShowOptions) => {
           <h1>{title}</h1>
         </EuiModalHeaderTitle>
       </EuiModalHeader>
-      <EuiModalBody>{content}</EuiModalBody>
+      <EuiModalBody {...props.bodyProps}>{content}</EuiModalBody>
       <EuiModalFooter>
         {props.type === "confirm" ? (
           <>

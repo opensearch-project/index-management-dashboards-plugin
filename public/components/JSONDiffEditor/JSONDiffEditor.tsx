@@ -4,12 +4,13 @@
  */
 
 import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } from "react";
-import { EuiConfirmModal } from "@elastic/eui";
+import { EuiFormRow } from "@elastic/eui";
 import { MonacoDiffEditor } from "react-monaco-editor";
 import type { monaco } from "@osd/monaco";
 import CustomFormRow from "../CustomFormRow";
 import { IJSONEditorRef } from "../JSONEditor";
 import { JSONDiffEditorProps } from "./interface";
+import "./JSONDiffEditor.scss";
 
 const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
@@ -31,7 +32,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         JSON.parse(value);
         onChange && onChange(value);
       } catch (e) {
-        // setConfirmModalVisible(true);
+        setConfirmModalVisible(true);
       }
     }
     focusedRef.current = false;
@@ -40,6 +41,8 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
     focusedRef.current = true;
     e.stopPropagation();
   });
+  const valueRef = useRef(editorValue);
+  valueRef.current = editorValue;
 
   useEffect(() => {
     setEditorValue(value);
@@ -68,14 +71,15 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           JSON.parse(editorRef.current?.getModifiedEditor().getValue() || "{}");
           resolve("");
         } catch (e) {
-          // setConfirmModalVisible(true);
+          setConfirmModalVisible(true);
           reject("Format validate error");
         }
       }),
+    getValue: () => valueRef.current,
   }));
 
   return (
-    <div>
+    <>
       <textarea
         style={{ display: "none" }}
         ref={inputRef}
@@ -102,43 +106,38 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           </CustomFormRow>
         </div>
       </div>
-      <MonacoDiffEditor
-        {...others}
-        onChange={(val) => setEditorValue(val)}
-        theme="euiColors"
-        language="xjson"
-        value={editorValue}
-        options={{
-          readOnly: others.disabled,
+      <div
+        style={{
+          height: others?.height || undefined,
         }}
-        editorDidMount={(editor) => {
-          editorRef.current = editor;
-          setIsReady(true);
-        }}
-        height="600px"
-      />
-      {confirmModalVisible ? (
-        <EuiConfirmModal
-          title="Format validate error"
-          onCancel={() => {
-            setConfirmModalVisible(false);
-            setTimeout(() => {
-              onClickContainer.current(new MouseEvent("click"));
-              editorRef.current?.getModifiedEditor().focus();
-            }, 0);
+        className={confirmModalVisible ? "json-diff-editor-validate-error" : ""}
+      >
+        <MonacoDiffEditor
+          height="600px"
+          {...others}
+          onChange={(val) => setEditorValue(val)}
+          theme="euiColors"
+          language="xjson"
+          value={editorValue}
+          options={{
+            readOnly: others.disabled,
           }}
-          onConfirm={() => {
-            onChange && onChange(value);
-            setEditorValue(value);
-            setConfirmModalVisible(false);
+          editorDidMount={(editor) => {
+            editorRef.current = editor;
+            setIsReady(true);
           }}
-          cancelButtonText="Close to modify"
-          confirmButtonText="Continue with data reset"
+        />
+      </div>
+      {confirmModalVisible && (
+        <EuiFormRow
+          fullWidth
+          isInvalid={confirmModalVisible}
+          error="Your input does not match the validation of json format, please fix the error line with error aside."
         >
-          Your input does not match the validation of json format, please modify the error line with error aside
-        </EuiConfirmModal>
-      ) : null}
-    </div>
+          <></>
+        </EuiFormRow>
+      )}
+    </>
   );
 });
 

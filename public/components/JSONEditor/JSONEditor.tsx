@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
 import { EuiCodeEditor, EuiCodeEditorProps, EuiFormRow } from "@elastic/eui";
 
 export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
@@ -14,11 +14,14 @@ export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
 
 export interface IJSONEditorRef {
   validate: () => Promise<string>;
+  getValue: () => string;
 }
 
 const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   const [tempEditorValue, setTempEditorValue] = useState(value);
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
+  const valueRef = useRef(tempEditorValue);
+  valueRef.current = tempEditorValue;
 
   useEffect(() => {
     setTempEditorValue(value);
@@ -36,6 +39,7 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
           reject("Format validate error");
         }
       }),
+    getValue: () => valueRef.current,
   }));
 
   return (
@@ -50,6 +54,7 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
         readOnly={disabled}
         {...others}
         style={{
+          ...others.style,
           border: confirmModalVisible ? "1px solid red" : undefined,
         }}
         mode="json"

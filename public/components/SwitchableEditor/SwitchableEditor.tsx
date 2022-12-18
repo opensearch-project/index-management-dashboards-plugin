@@ -4,9 +4,11 @@
  */
 
 import { EuiSpacer, EuiSwitch } from "@elastic/eui";
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useRef, useState } from "react";
 import JSONEditor, { IJSONEditorRef } from "../JSONEditor";
 import JSONDiffEditor, { JSONDiffEditorProps } from "../JSONDiffEditor";
+import { Modal } from "../Modal";
+import "./SwitchableEditor.scss";
 
 export interface SwitchableEditorProps extends JSONDiffEditorProps {
   mode: "json" | "diff";
@@ -16,6 +18,7 @@ export interface ISwitchableEditorRef extends IJSONEditorRef {}
 
 const SwitchableEditor = forwardRef(({ mode, ...others }: SwitchableEditorProps, ref: React.Ref<ISwitchableEditorRef>) => {
   const [checked, setChecked] = useState(false);
+  const diffEditorRef = useRef<IJSONEditorRef>(null);
   return (
     <>
       {mode === "diff" ? (
@@ -25,7 +28,29 @@ const SwitchableEditor = forwardRef(({ mode, ...others }: SwitchableEditorProps,
           <EuiSpacer />
         </>
       ) : null}
-      {checked ? <JSONDiffEditor {...others} ref={ref} /> : <JSONEditor {...others} ref={ref} />}
+      <Modal.SimpleModal
+        visible={checked}
+        onClose={() => setChecked(false)}
+        onOk={async () => {
+          const validateResult = await diffEditorRef.current?.validate();
+          if (validateResult) {
+            return;
+          }
+
+          setChecked(true);
+          others.onChange && others.onChange(diffEditorRef.current?.getValue() || "{}");
+        }}
+        title="Edit in diff mode"
+        maxWidth={false}
+        className="switch-diff-editor-modal"
+        style={{
+          width: "100vw",
+          height: "95vh",
+          top: "5vh",
+        }}
+        content={<JSONDiffEditor height="100%" {...others} ref={diffEditorRef} />}
+      />
+      <JSONEditor {...others} ref={ref} />
     </>
   );
 });
