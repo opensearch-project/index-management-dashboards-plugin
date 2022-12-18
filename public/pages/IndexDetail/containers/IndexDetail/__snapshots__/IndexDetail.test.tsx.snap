@@ -64,7 +64,7 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
           aria-controls="some_html_id"
           aria-selected="true"
           class="euiTab euiTab-isSelected"
-          id="index-detail-modal-overview"
+          id="indexDetailModalOverview"
           role="tab"
           type="button"
         >
@@ -78,7 +78,7 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
           aria-controls="some_html_id"
           aria-selected="false"
           class="euiTab"
-          id="index-detail-modal-settings"
+          id="indexDetailModalSettings"
           role="tab"
           type="button"
         >
@@ -92,7 +92,7 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
           aria-controls="some_html_id"
           aria-selected="false"
           class="euiTab"
-          id="index-detail-modal-mappings"
+          id="indexDetailModalMappings"
           role="tab"
           type="button"
         >
@@ -106,7 +106,7 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
           aria-controls="some_html_id"
           aria-selected="false"
           class="euiTab"
-          id="index-detail-modal-alias"
+          id="indexDetailModalAlias"
           role="tab"
           type="button"
         >
@@ -118,7 +118,7 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
         </button>
       </div>
       <div
-        aria-labelledby="index-detail-modal-overview"
+        aria-labelledby="indexDetailModalOverview"
         id="some_html_id"
         role="tabpanel"
       >

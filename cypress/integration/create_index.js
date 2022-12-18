@@ -99,9 +99,9 @@ describe("Create Index", () => {
     it("Update alias successfully", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
-        .get("#index-detail-modal-alias")
+        .get("#indexDetailModalAlias")
         .click()
-        .get('[data-test-subj="detail-modal-edit"]')
+        .get('[data-test-subj="detailModalEdit"]')
         .click()
         .end();
 
@@ -122,9 +122,9 @@ describe("Create Index", () => {
     it("Update settings successfully", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
-        .get("#index-detail-modal-settings")
+        .get("#indexDetailModalSettings")
         .click()
-        .get('[data-test-subj="detail-modal-edit"]')
+        .get('[data-test-subj="detailModalEdit"]')
         .click()
         .end();
 
@@ -162,9 +162,9 @@ describe("Create Index", () => {
     it("Update mappings successfully", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
-        .get("#index-detail-modal-mappings")
+        .get("#indexDetailModalMappings")
         .click()
-        .get('[data-test-subj="detail-modal-edit"]')
+        .get('[data-test-subj="detailModalEdit"]')
         .click()
         .end();
 

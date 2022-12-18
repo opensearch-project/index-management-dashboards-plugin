@@ -252,7 +252,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       <EuiTabbedContent
         tabs={[
           {
-            id: "index-detail-modal-overview",
+            id: "indexDetailModalOverview",
             name: "Overview",
             content: (
               <EuiDescriptionList>
@@ -284,7 +284,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             ),
           },
           {
-            id: "index-detail-modal-settings",
+            id: "indexDetailModalSettings",
             name: "Settings",
             content: (
               <>
@@ -294,7 +294,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                     <h2>Advanced index settings</h2>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <EuiButton size="s" data-test-subj="detail-modal-edit" onClick={() => onEdit(IndicesUpdateMode.settings)}>
+                    <EuiButton size="s" data-test-subj="detailModalEdit" onClick={() => onEdit(IndicesUpdateMode.settings)}>
                       Edit
                     </EuiButton>
                   </EuiFlexItem>
@@ -305,7 +305,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             ),
           },
           {
-            id: "index-detail-modal-mappings",
+            id: "indexDetailModalMappings",
             name: "Mappings",
             content: (
               <>
@@ -332,8 +332,8 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                     </EuiFormRow>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <EuiButton size="s" data-test-subj="detail-modal-edit" onClick={() => onEdit(IndicesUpdateMode.mappings)}>
-                      Edit
+                    <EuiButton size="s" data-test-subj="detailModalEdit" onClick={() => onEdit(IndicesUpdateMode.mappings)}>
+                      Ad index mappings
                     </EuiButton>
                   </EuiFlexItem>
                 </EuiFlexGroup>
@@ -343,7 +343,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             ),
           },
           {
-            id: `index-detail-modal-${IndicesUpdateMode.alias}`,
+            id: `indexDetailModalAlias`,
             name: "Alias",
             content: (
               <>
@@ -353,7 +353,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                     <h2>Index alias</h2>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <EuiButton size="s" data-test-subj="detail-modal-edit" onClick={() => onEdit(IndicesUpdateMode.alias)}>
+                    <EuiButton size="s" data-test-subj="detailModalEdit" onClick={() => onEdit(IndicesUpdateMode.alias)}>
                       Edit
                     </EuiButton>
                   </EuiFlexItem>
