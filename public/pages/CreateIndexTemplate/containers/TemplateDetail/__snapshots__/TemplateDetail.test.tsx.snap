@@ -555,7 +555,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           class="euiAccordion__triggerWrapper"
         >
           <button
-            aria-controls="accordion_for_create_index_template_settings"
+            aria-controls="accordionForCreateIndexTemplateSettings"
             aria-expanded="false"
             class="euiAccordion__button"
             id="some_html_id"
@@ -578,7 +578,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           aria-labelledby="some_html_id"
           class="euiAccordion__childWrapper"
-          id="accordion_for_create_index_template_settings"
+          id="accordionForCreateIndexTemplateSettings"
           role="region"
           style="height: 0px"
           tabindex="-1"

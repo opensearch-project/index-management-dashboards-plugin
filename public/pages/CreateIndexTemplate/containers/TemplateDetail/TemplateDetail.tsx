@@ -440,7 +440,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           onChange={(totalValue) => field.setValue(["template", "settings"], totalValue)}
           accordionProps={{
             initialIsOpen: false,
-            id: "accordion_for_create_index_template_settings",
+            id: "accordionForCreateIndexTemplateSettings",
             buttonContent: <h4>Advanced settings</h4>,
           }}
           editorProps={{

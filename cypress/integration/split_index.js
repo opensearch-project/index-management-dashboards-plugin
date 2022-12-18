@@ -100,7 +100,7 @@ describe("Split Index", () => {
         .type(`${targetIndex}`)
         .end()
         // Instead of input shard number at shard field, another option is to populate it in advanced setting
-        .get('[aria-controls="accordion_for_create_index_settings"]')
+        .get('[aria-controls="accordionForCreateIndexSettings"]')
         .click()
         .end()
         .get('[data-test-subj="codeEditorContainer"] textarea')

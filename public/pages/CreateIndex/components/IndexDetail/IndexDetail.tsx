@@ -445,7 +445,7 @@ const IndexDetail = (
                   },
                   accordionProps: {
                     initialIsOpen: false,
-                    id: "accordion_for_create_index_settings",
+                    id: "accordionForCreateIndexSettings",
                     buttonContent: <h4>Advanced settings</h4>,
                   },
                   rowProps: {

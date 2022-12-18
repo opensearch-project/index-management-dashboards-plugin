@@ -400,7 +400,7 @@ Object {
                           class="euiAccordion__triggerWrapper"
                         >
                           <button
-                            aria-controls="accordion_for_create_index_settings"
+                            aria-controls="accordionForCreateIndexSettings"
                             aria-expanded="false"
                             class="euiAccordion__button"
                             id="some_html_id"
@@ -423,7 +423,7 @@ Object {
                         <div
                           aria-labelledby="some_html_id"
                           class="euiAccordion__childWrapper"
-                          id="accordion_for_create_index_settings"
+                          id="accordionForCreateIndexSettings"
                           role="region"
                           style="height: 0px"
                           tabindex="-1"

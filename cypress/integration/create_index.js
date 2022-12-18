@@ -128,7 +128,7 @@ describe("Create Index", () => {
         .click()
         .end();
 
-      cy.get('[data-test-subj="index-form-in-index-detail"] [aria-controls="accordion_for_create_index_settings"]')
+      cy.get('[data-test-subj="index-form-in-index-detail"] [aria-controls="accordionForCreateIndexSettings"]')
         .click()
         .end()
         .get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
