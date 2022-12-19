@@ -26,7 +26,7 @@ interface SplitIndexComponentProps {
   getAlias: AliasSelectProps["refreshOptions"];
 }
 
-export default class SplitIndexFlyout extends Component<SplitIndexComponentProps> {
+export default class SplitIndexForm extends Component<SplitIndexComponentProps> {
   state = {
     settings: {} as Required<IndexItem>["settings"],
     sourceIndexSettings: {} as IndexItem,

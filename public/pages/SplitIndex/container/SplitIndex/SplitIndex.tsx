@@ -8,7 +8,7 @@ import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
 import { BrowserServices, RecoveryJobMetaData } from "../../../../models/interfaces";
-import SplitIndexFlyout from "../../components/SplitIndexFlyout";
+import SplitIndexForm from "../../components/SplitIndexForm";
 import { IndexItem } from "../../../../../models/interfaces";
 import { RouteComponentProps } from "react-router-dom";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
@@ -206,7 +206,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
         <EuiSpacer />
 
         {splitIndexFlyoutVisible && (
-          <SplitIndexFlyout
+          <SplitIndexForm
             sourceIndex={sourceIndex.index}
             onSplitIndex={this.onSplitIndex}
             shardsSelectOptions={shardsSelectOptions}
