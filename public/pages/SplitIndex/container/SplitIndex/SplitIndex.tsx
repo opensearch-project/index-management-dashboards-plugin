@@ -77,27 +77,38 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const blocksWriteValue = get(sourceSettings, ["index.blocks.write"]);
 
     if (sourceIndex.health === "red") {
-      reasons.push(<>It must not have a Red health status.</>);
+      reasons.push(
+        <>
+          <b style={{ color: "red", fontSize: 18 }}>The source index must not have a Red health status.</b>
+        </>
+      );
     }
 
     if (sourceIndex.status === "close") {
       reasons.push(
         <>
-          It must not be in close status. &nbsp;&nbsp;
-          <EuiButton
-            fill
-            onClick={async () => {
-              await openIndices({
-                commonService: this.props.commonService,
-                indices: [source.source],
-                coreServices: this.props.coreService,
-              });
-              await this.isSourceIndexReady();
-            }}
-            data-test-subj={"open-index-button"}
-          >
-            Open index
-          </EuiButton>
+          <p>
+            <b style={{ color: "red", fontSize: 18 }}>The source index must be open.</b>
+            <br />
+            You must first open the index before splitting it. Depending on the size of the source index, this may take additional time to
+            complete. The index will be in the Red state while the index is opening.
+          </p>
+          <p>
+            <EuiButton
+              fill
+              onClick={async () => {
+                await openIndices({
+                  commonService: this.props.commonService,
+                  indices: [source.source],
+                  coreServices: this.props.coreService,
+                });
+                await this.isSourceIndexReady();
+              }}
+              data-test-subj={"open-index-button"}
+            >
+              Open index
+            </EuiButton>
+          </p>
         </>
       );
     }
@@ -107,7 +118,11 @@ export class SplitIndex extends Component<SplitIndexProps> {
       const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(
         <>
-          It's block write status must be set to true. &nbsp;&nbsp;
+          <p>
+            <b style={{ color: "red", fontSize: 18 }}>The source index must be read-only before splitting.</b>
+            <br />
+            In order to split an existing index, you must first set it to read-only.
+          </p>
           <EuiButton
             fill
             onClick={async () => {
@@ -122,7 +137,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
             }}
             data-test-subj={"set-indexsetting-button"}
           >
-            Set to block write
+            Set to read-only
           </EuiButton>
         </>
       );

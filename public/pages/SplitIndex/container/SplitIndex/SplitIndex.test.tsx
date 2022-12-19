@@ -324,7 +324,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("It must not have a Red health status.")).not.toBeNull();
+      expect(queryByText("The source index must not have a Red health status.")).not.toBeNull();
     });
   });
 
@@ -363,7 +363,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("It must not be in close status.")).not.toBeNull();
+      expect(queryByText("The source index must be open.")).not.toBeNull();
     });
     userEvent.click(getByTestId("open-index-button"));
     await waitFor(() => {});
@@ -415,7 +415,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("It's block write status must be set to true.")).not.toBeNull();
+      expect(queryByText("The source index must be read-only before splitting.")).not.toBeNull();
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));
@@ -476,7 +476,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("It's block write status must be set to true.")).not.toBeNull();
+      expect(queryByText("The source index must be read-only before splitting.")).not.toBeNull();
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));

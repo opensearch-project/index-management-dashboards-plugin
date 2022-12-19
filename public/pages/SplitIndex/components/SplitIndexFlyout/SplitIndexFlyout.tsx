@@ -52,7 +52,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       {
         rowProps: {
           label: "Target Index Name",
-          helpText: "Specify a name for the new split index.",
+          helpText: `Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, \, |, ?, #, > are not allowed.`,
         },
         name: "targetIndex",
         type: "Input",
@@ -78,7 +78,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       },
       {
         rowProps: {
-          label: "Number of shards",
+          label: "Number of primary shards",
           helpText: "Specify the number of primary shards for the new split index.",
         },
         name: "index.number_of_shards",
@@ -122,7 +122,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
         name: "aliases",
         rowProps: {
           label: "Index alias  - optional",
-          helpText: "Select existing aliases or specify a new alias",
+          helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
         },
         options: {
           props: {
@@ -152,7 +152,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Learn more
+                  Learn more.
                 </EuiLink>
               </div>
             </EuiCallOut>
@@ -206,7 +206,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButton fill onClick={this.onSubmit} data-test-subj="splitButton" isDisabled={!readyForSplit}>
-              Split Index
+              Split
             </EuiButton>
           </EuiFlexItem>
         </EuiFlexGroup>
