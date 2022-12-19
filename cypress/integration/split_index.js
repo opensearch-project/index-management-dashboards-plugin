@@ -170,6 +170,7 @@ describe("Split Index", () => {
         .get('[data-test-subj="splitButton"]')
         .should("have.class", "euiButton-isDisabled")
         .end()
+        .wait(1000)
         // Set index to blocks write
         .get('[data-test-subj="set-indexsetting-button"]')
         .click()
