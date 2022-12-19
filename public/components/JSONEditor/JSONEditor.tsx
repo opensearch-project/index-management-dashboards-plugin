@@ -2,7 +2,6 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
 import { EuiCodeEditor, EuiCodeEditorProps, EuiFormRow } from "@elastic/eui";
 
@@ -15,6 +14,7 @@ export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
 export interface IJSONEditorRef {
   validate: () => Promise<string>;
   getValue: () => string;
+  setValue: (val: string) => void;
 }
 
 const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEditorProps, ref: React.Ref<IJSONEditorRef>) => {
@@ -40,6 +40,7 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
         }
       }),
     getValue: () => valueRef.current,
+    setValue: (val) => setTempEditorValue(val),
   }));
 
   return (

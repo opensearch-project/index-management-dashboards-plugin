@@ -1,8 +1,8 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from "react";
 import { EuiAccordion, EuiAccordionProps, EuiSpacer, EuiFormRowProps } from "@elastic/eui";
 import SwitchableEditor, { SwitchableEditorProps, ISwitchableEditorRef } from "../SwitchableEditor";
-import "./index.scss";
 import CustomFormRow from "../CustomFormRow";
+import "./index.scss";
 
 export interface IAdvancedSettingsProps {
   rowProps?: Omit<EuiFormRowProps, "children">;
@@ -12,7 +12,10 @@ export interface IAdvancedSettingsProps {
   renderProps?: (
     options: Pick<Required<IAdvancedSettingsProps>, "value" | "onChange"> & { ref: React.Ref<ISwitchableEditorRef> }
   ) => React.ReactChild;
-  editorProps?: Partial<SwitchableEditorProps> & { ref?: React.Ref<IAdvancedSettingsRef> };
+  editorProps?: Partial<SwitchableEditorProps> & {
+    ref?: React.Ref<IAdvancedSettingsRef>;
+    formatValue?: (val: Record<string, any>) => Record<string, any>;
+  };
 }
 
 export interface IAdvancedSettingsRef {
@@ -27,7 +30,11 @@ export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProp
 
   const onChangeInRenderProps = useCallback(
     (val: string) => {
-      const parsedValue = JSON.parse(val);
+      let parsedValue = JSON.parse(val);
+      if (editorProps?.formatValue) {
+        parsedValue = editorProps.formatValue(parsedValue);
+      }
+      editorRef.current?.setValue(JSON.stringify(parsedValue, null, 2));
       propsRef.current.onChange && propsRef.current.onChange(parsedValue);
     },
     [props.onChange]

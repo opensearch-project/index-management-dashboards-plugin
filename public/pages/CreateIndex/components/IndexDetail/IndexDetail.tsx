@@ -15,7 +15,8 @@ import {
   EuiCallOut,
   EuiTitle,
 } from "@elastic/eui";
-import { set, merge, omit, pick } from "lodash";
+import { set, merge, omit, pick, flatten } from "lodash";
+import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
@@ -439,9 +440,8 @@ const IndexDetail = (
                     mode: isEdit && !readonly ? "diff" : "json",
                     disabled: readonly,
                     original: JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2),
-                    value: JSON.stringify(getOrderedJson(value || {}), null, 2),
-                    onChange: (val) => onChange(JSON.parse(val)),
                     width: "100%",
+                    formatValue: flat,
                   },
                   accordionProps: {
                     initialIsOpen: false,
@@ -453,14 +453,17 @@ const IndexDetail = (
                     fullWidth: true,
                     helpText: (
                       <>
-                        Specify a comma-delimited list of settings.
-                        <EuiLink
-                          external
-                          href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                          target="_blank"
-                        >
-                          View index settings.
-                        </EuiLink>
+                        <p>
+                          Specify a comma-delimited list of settings.
+                          <EuiLink
+                            external
+                            href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                            target="_blank"
+                          >
+                            View index settings.
+                          </EuiLink>
+                        </p>
+                        <p>All the settings will be handled in flat structure, please be aware of that.</p>
                       </>
                     ),
                   },

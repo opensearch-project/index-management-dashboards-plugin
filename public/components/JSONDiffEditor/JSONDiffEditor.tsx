@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } from "react";
+import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
 import { EuiFormRow } from "@elastic/eui";
 import { MonacoDiffEditor } from "react-monaco-editor";
 import type { monaco } from "@osd/monaco";
@@ -41,18 +41,24 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
     focusedRef.current = true;
     e.stopPropagation();
   });
+  const setAllValue = useCallback(
+    (val: string) => {
+      setEditorValue(val);
+      if (isReady) {
+        inputRef.current?.setAttribute("value", val);
+        if (inputRef.current) {
+          inputRef.current.value = val;
+        }
+      }
+    },
+    [setEditorValue, isReady, inputRef.current]
+  );
   const valueRef = useRef(editorValue);
   valueRef.current = editorValue;
 
   useEffect(() => {
-    setEditorValue(value);
-    if (isReady) {
-      inputRef.current?.setAttribute("value", value);
-      if (inputRef.current) {
-        inputRef.current.value = value;
-      }
-    }
-  }, [value, isReady]);
+    setAllValue(value);
+  }, [value, setAllValue]);
 
   useEffect(() => {
     document.body.addEventListener("click", onClickOutsideHandler.current);
@@ -76,6 +82,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         }
       }),
     getValue: () => valueRef.current,
+    setValue: (val: string) => setAllValue(val),
   }));
 
   return (
