@@ -471,7 +471,7 @@ const IndexMapping = (
           {
             label: readonly ? "Tree view" : "Visual Editor",
             id: EDITOR_MODE.VISUAL,
-            "data-test-subj": "editor-type-visual-editor",
+            "data-test-subj": "editorTypeVisualEditor",
           },
           {
             label: readonly ? "JSON" : "JSON Editor",

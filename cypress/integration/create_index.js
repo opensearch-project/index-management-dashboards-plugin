@@ -178,6 +178,48 @@ describe("Create Index", () => {
         .click({ force: true });
 
       cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.attr", "title", "text").end();
+
+      cy.get('[data-test-subj="detailModalEdit"]')
+        .click()
+        .end()
+        .get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="editorTypeJsonEditor"]')
+        .click()
+        .end()
+        .get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+        .focus()
+        .clear({ force: true })
+        .type('{ "dynamic": true }', { parseSpecialCharSequences: false, force: true })
+        .end()
+        .wait(1000)
+        .get('[data-test-subj="createIndexCreateButton"]')
+        .click({ force: true });
+
+      cy.wait(1000)
+        .get('[data-test-subj="editorTypeJsonEditor"]')
+        .click()
+        .end()
+        .get('[data-test-subj="jsonEditor-valueDisplay"]')
+        .should(
+          "have.text",
+          JSON.stringify(
+            {
+              dynamic: "true",
+              properties: {
+                text: {
+                  type: "text",
+                },
+                text_mappings: {
+                  type: "text",
+                },
+                text_mappings_2: {
+                  type: "text",
+                },
+              },
+            },
+            null,
+            2
+          )
+        );
     });
   });
 

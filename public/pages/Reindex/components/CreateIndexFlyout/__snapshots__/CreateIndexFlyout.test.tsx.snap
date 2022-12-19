@@ -701,7 +701,7 @@ Object {
                           >
                             <label
                               class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small euiButtonGroupButton--fill euiButtonGroupButton-isSelected"
-                              data-test-subj="editor-type-visual-editor"
+                              data-test-subj="editorTypeVisualEditor"
                               for="some_html_id"
                             >
                               <span
