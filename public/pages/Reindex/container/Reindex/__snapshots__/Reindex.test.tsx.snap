@@ -80,7 +80,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Specify source index or data streams
+            Specify source indexes or data streams
           </label>
         </div>
         <div
