@@ -78,6 +78,11 @@ export type IndexMappingsAll = {
   [key: string]: any;
 };
 
+export type IndexMappingsObjectAll = {
+  properties?: MappingsPropertiesObject;
+  [key: string]: any;
+};
+
 export interface IndexMappingProps {
   value?: IndexMappingsAll;
   oldValue?: IndexMappingsAll;
@@ -403,7 +408,7 @@ const IndexMapping = (
               }
             }}
             readonly={readonly}
-            disabled={isEdit && !!get(oldValue, id)}
+            disabled={isEdit && !!get(oldValue?.properties, id)}
             value={item}
             id={`mapping-visual-editor-${id}`}
             onFieldNameCheck={(fieldName) => {
@@ -578,7 +583,7 @@ const IndexMapping = (
                   2
                 )}
                 onChange={(val) => {
-                  const result: IndexMappingsAll = JSON.parse(val);
+                  const result: IndexMappingsObjectAll = JSON.parse(val);
                   propsOnChange({
                     ...result,
                     properties: [...(oldValue?.properties || []), ...transformObjectToArray(result?.properties || {})],

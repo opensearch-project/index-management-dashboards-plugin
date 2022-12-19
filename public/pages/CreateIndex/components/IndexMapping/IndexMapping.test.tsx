@@ -34,7 +34,9 @@ describe("<IndexMapping /> spec", () => {
     const { container } = render(
       <IndexMapping
         onChange={() => {}}
-        value={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
+        value={{
+          properties: [{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }],
+        }}
       />
     );
     expect(container).toMatchSnapshot();
@@ -47,8 +49,12 @@ describe("<IndexMapping /> spec", () => {
         <IndexMappingOnChangeWrapper
           ref={ref}
           isEdit
-          oldValue={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
-          value={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
+          oldValue={{
+            properties: [{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }],
+          }}
+          value={{
+            properties: [{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }],
+          }}
         />
       );
 

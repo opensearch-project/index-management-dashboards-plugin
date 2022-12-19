@@ -611,21 +611,40 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     class="euiFormHelpText euiFormRow__text"
                     style="padding-top: 0px; padding-bottom: 4px;"
                   >
-                    Specify a comma-delimited list of settings.
-                    <a
-                      class="euiLink euiLink--primary"
-                      href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      View index settings
-                      EuiIconMock
-                      <span
-                        class="euiScreenReaderOnly"
+                    <p>
+                      Specify a comma-delimited list of settings.
+                      <a
+                        class="euiLink euiLink--primary"
+                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                        rel="noopener noreferrer"
+                        target="_blank"
                       >
-                        (opens in a new tab or window)
-                      </span>
-                    </a>
+                        View index settings
+                        EuiIconMock
+                        <span
+                          class="euiScreenReaderOnly"
+                        >
+                          (opens in a new tab or window)
+                        </span>
+                      </a>
+                    </p>
+                    <p>
+                      All the settings will be handled in flat structure.
+                      <a
+                        class="euiLink euiLink--primary"
+                        href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        Learn more.
+                        EuiIconMock
+                        <span
+                          class="euiScreenReaderOnly"
+                        >
+                          (opens in a new tab or window)
+                        </span>
+                      </a>
+                    </p>
                   </div>
                   <textarea
                     data-test-subj="jsonEditor-valueDisplay"

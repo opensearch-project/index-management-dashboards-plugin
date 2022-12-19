@@ -399,9 +399,6 @@ exports[`<Reindex /> spec renders the component 1`] = `
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
-    <div
-      style="padding: 0px 10px;"
-    />
   </div>
   <div
     class="euiSpacer euiSpacer--l"
