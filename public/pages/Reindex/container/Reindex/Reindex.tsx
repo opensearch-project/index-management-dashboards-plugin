@@ -87,7 +87,11 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES, BREADCRUMBS.REINDEX]);
+    this.context.chrome.setBreadcrumbs([
+      BREADCRUMBS.INDEX_MANAGEMENT,
+      BREADCRUMBS.INDICES,
+      { ...BREADCRUMBS.REINDEX, href: `#${this.props.location.pathname}${this.props.location.search}` },
+    ]);
 
     const { source } = queryString.parse(this.props.location.search);
 
@@ -501,7 +505,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         <ContentPanel title="Configure source index" titleSize="s">
           <EuiSpacer />
           <CustomFormRow
-            label="Specify source index or data streams"
+            label="Specify source indexes or data streams"
             isInvalid={sourceErr.length > 0}
             error={sourceErr}
             fullWidth
