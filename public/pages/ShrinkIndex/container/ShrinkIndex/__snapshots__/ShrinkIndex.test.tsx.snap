@@ -365,7 +365,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              Select existing aliases or specify a new alias.
+              Allow this index to be referenced by existing aliases or specify a new alias.
             </div>
             <span
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
