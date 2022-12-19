@@ -463,7 +463,16 @@ const IndexDetail = (
                             View index settings.
                           </EuiLink>
                         </p>
-                        <p>All the settings will be handled in flat structure, please be aware of that.</p>
+                        <p>
+                          All the settings will be handled in flat structure.
+                          <EuiLink
+                            href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                            external
+                            target="_blank"
+                          >
+                            Learn more.
+                          </EuiLink>
+                        </p>
                       </>
                     ),
                   },

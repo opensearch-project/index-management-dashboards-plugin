@@ -15,6 +15,7 @@ import {
   EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
+import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect from "../../../CreateIndex/components/AliasSelect";
 import IndexMapping, { IIndexMappingsRef, transformArrayToObject } from "../../../CreateIndex/components/IndexMapping";
@@ -446,20 +447,33 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           editorProps={{
             disabled: readonly,
             width: "100%",
+            formatValue: flat,
           }}
           rowProps={{
             fullWidth: true,
             label: "Specify advanced index settings",
             helpText: (
               <>
-                Specify a comma-delimited list of settings.
-                <EuiLink
-                  href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                  target="_blank"
-                  external
-                >
-                  View index settings
-                </EuiLink>
+                <p>
+                  Specify a comma-delimited list of settings.
+                  <EuiLink
+                    href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                    target="_blank"
+                    external
+                  >
+                    View index settings
+                  </EuiLink>
+                </p>
+                <p>
+                  All the settings will be handled in flat structure.
+                  <EuiLink
+                    href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                    external
+                    target="_blank"
+                  >
+                    Learn more.
+                  </EuiLink>
+                </p>
               </>
             ),
           }}
