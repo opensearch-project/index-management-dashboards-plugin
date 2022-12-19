@@ -15,7 +15,7 @@ import {
   EuiCallOut,
   EuiTitle,
 } from "@elastic/eui";
-import { set, merge, omit, pick, flatten } from "lodash";
+import { set, merge, omit, pick } from "lodash";
 import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
@@ -499,9 +499,9 @@ const IndexDetail = (
               <EuiFormRow fullWidth>
                 <IndexMapping
                   isEdit={isEdit}
-                  value={finalValue?.mappings?.properties}
-                  oldValue={oldValue?.mappings?.properties}
-                  onChange={(val) => onValueChange("mappings.properties", val)}
+                  value={finalValue?.mappings}
+                  oldValue={oldValue?.mappings}
+                  onChange={(val) => onValueChange("mappings", val)}
                   ref={mappingsRef}
                   readonly={readonly}
                 />

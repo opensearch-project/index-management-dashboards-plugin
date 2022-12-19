@@ -511,7 +511,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
         <EuiFormRow fullWidth>
           <IndexMapping
             {...field.registerField({
-              name: ["template", "mappings", "properties"],
+              name: ["template", "mappings"],
               rules: [
                 {
                   validator() {

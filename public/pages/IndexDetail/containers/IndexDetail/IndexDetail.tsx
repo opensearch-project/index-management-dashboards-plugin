@@ -334,7 +334,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
                     <EuiButton size="s" data-test-subj="detailModalEdit" onClick={() => onEdit(IndicesUpdateMode.mappings)}>
-                      Ad index mappings
+                      Add index mappings
                     </EuiButton>
                   </EuiFlexItem>
                 </EuiFlexGroup>

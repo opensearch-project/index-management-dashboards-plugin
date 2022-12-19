@@ -73,10 +73,15 @@ const countNodesInTree = (array: MappingsProperties) => {
   }, 0);
 };
 
+export type IndexMappingsAll = {
+  properties?: MappingsProperties;
+  [key: string]: any;
+};
+
 export interface IndexMappingProps {
-  value?: MappingsProperties;
-  oldValue?: MappingsProperties;
-  originalValue?: MappingsProperties;
+  value?: IndexMappingsAll;
+  oldValue?: IndexMappingsAll;
+  originalValue?: IndexMappingsAll;
   onChange: (value: IndexMappingProps["value"]) => void;
   isEdit?: boolean;
   readonly?: boolean;
@@ -328,7 +333,17 @@ const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<I
   );
 });
 
-const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
+const IndexMapping = (
+  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly }: IndexMappingProps,
+  ref: Ref<IIndexMappingsRef>
+) => {
+  const value = propsValue?.properties || [];
+  const onChange = (val: MappingsProperties) => {
+    propsOnChange({
+      ...propsValue,
+      properties: val,
+    });
+  };
   const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
   const JSONEditorRef = useRef<IJSONEditorRef>(null);
   useImperativeHandle(ref, () => ({
@@ -373,7 +388,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
     },
     [onChange, value]
   );
-  const transformValueToTreeItems = (formValue: IndexMappingProps["value"], pos: string = ""): EuiTreeViewProps["items"] => {
+  const transformValueToTreeItems = (formValue: MappingsProperties, pos: string = ""): EuiTreeViewProps["items"] => {
     return (formValue || []).map((item, index) => {
       const { fieldName, ...fieldSettings } = item;
       const id = [pos, index].filter((item) => item !== "").join(".properties.");
@@ -434,9 +449,9 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
   };
   const transformedTreeItems = useMemo(() => transformValueToTreeItems(value), [value]);
   const newValue = useMemo(() => {
-    const oldValueKeys = (oldValue || []).map((item) => item.fieldName);
+    const oldValueKeys = (oldValue?.properties || []).map((item) => item.fieldName);
     return value?.filter((item) => !oldValueKeys.includes(item.fieldName)) || [];
-  }, [oldValue, value]);
+  }, [oldValue?.properties, value]);
   const renderKey = useMemo(() => {
     return countNodesInTree(value || []);
   }, [value]);
@@ -503,7 +518,19 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
                 onClick={() => {
                   Modal.show({
                     title: "Previous mappings",
-                    content: <JSONEditor readOnly value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} />,
+                    content: (
+                      <JSONEditor
+                        readOnly
+                        value={JSON.stringify(
+                          {
+                            ...oldValue,
+                            properties: transformArrayToObject(oldValue?.properties || []),
+                          },
+                          null,
+                          2
+                        )}
+                      />
+                    ),
                     "data-test-subj": "previousMappingsJsonModal",
                     onOk: () => {},
                   });
@@ -517,7 +544,14 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
           {readonly ? (
             <JSONEditor
               ref={JSONEditorRef}
-              value={JSON.stringify(transformArrayToObject(value || []), null, 2)}
+              value={JSON.stringify(
+                {
+                  ...propsValue,
+                  properties: transformArrayToObject(value || []),
+                },
+                null,
+                2
+              )}
               readOnly={readonly}
               width="100%"
             />
@@ -535,8 +569,21 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly }: IndexMapp
               fullWidth
             >
               <JSONEditor
-                value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
-                onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
+                value={JSON.stringify(
+                  {
+                    ...propsValue,
+                    properties: transformArrayToObject(newValue || []),
+                  },
+                  null,
+                  2
+                )}
+                onChange={(val) => {
+                  const result: IndexMappingsAll = JSON.parse(val);
+                  propsOnChange({
+                    ...result,
+                    properties: [...(oldValue?.properties || []), ...transformObjectToArray(result?.properties || {})],
+                  });
+                }}
                 width="100%"
                 ref={JSONEditorRef}
               />

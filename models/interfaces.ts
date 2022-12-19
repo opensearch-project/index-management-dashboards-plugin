@@ -44,19 +44,20 @@ export interface IndexItem {
   indexUuid?: string;
   settings?: {
     index?: {
-      number_of_shards: number;
-      number_of_replicas: number;
+      number_of_shards?: number;
+      number_of_replicas?: number;
       creation_date?: string;
       [key: string]: any;
     };
-    "index.number_of_shards": number;
-    "index.number_of_replicas": number;
-    "index.refresh_interval": string;
+    "index.number_of_shards"?: number;
+    "index.number_of_replicas"?: number;
+    "index.refresh_interval"?: string;
     [key: string]: any;
   };
   aliases?: Record<string, {}>;
   mappings?: {
     properties?: MappingsProperties;
+    [key: string]: any;
   };
 }
 
