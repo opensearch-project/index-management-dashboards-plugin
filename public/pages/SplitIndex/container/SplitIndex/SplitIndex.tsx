@@ -44,7 +44,11 @@ export class SplitIndex extends Component<SplitIndexProps> {
   };
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES, BREADCRUMBS.SPLIT_INDEX]);
+    this.context.chrome.setBreadcrumbs([
+      BREADCRUMBS.INDEX_MANAGEMENT,
+      BREADCRUMBS.INDICES,
+      { ...BREADCRUMBS.SPLIT_INDEX, href: `#${ROUTES.SPLIT_INDEX}${this.props.location.search}` },
+    ]);
     await this.isSourceIndexReady();
     this.calculateShardsOption();
     this.setState({

@@ -11,6 +11,7 @@ import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
+import { INDEX_NAMING_MESSAGE, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -52,7 +53,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       {
         rowProps: {
           label: "Target Index Name",
-          helpText: `Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, \, |, ?, #, > are not allowed.`,
+          helpText: INDEX_NAMING_MESSAGE,
         },
         name: "targetIndex",
         type: "Input",
@@ -107,7 +108,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       {
         rowProps: {
           label: "Number of replicas",
-          helpText: "Specify the number of replica shards each primary shard should have.",
+          helpText: REPLICA_NUMBER_MESSAGE,
         },
         name: "index.number_of_replicas",
         type: "Number",
