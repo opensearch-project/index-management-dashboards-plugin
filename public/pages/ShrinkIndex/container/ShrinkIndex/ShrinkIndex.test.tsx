@@ -566,9 +566,7 @@ describe("<Shrink index /> spec", () => {
     expect(queryByText("The source index's setting [index.blocks.read_only] is [true]!")).toBeNull();
     expect(queryByText("A copy of every shard in the source index may not reside on the same node.")).toBeNull();
 
-    await act(async () => {
-      userEvent.type(getByTestId("targetIndexNameInput"), "a");
-    });
+    userEvent.type(getByTestId("targetIndexNameInput"), "test3_shrunken");
 
     await act(async () => {
       fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
@@ -579,7 +577,7 @@ describe("<Shrink index /> spec", () => {
         endpoint: "indices.shrink",
         data: {
           index: "test3",
-          target: "a",
+          target: "test3_shrunken",
           body: {
             settings: {
               "index.number_of_shards": "1",
