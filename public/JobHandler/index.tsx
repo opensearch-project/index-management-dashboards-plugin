@@ -1,8 +1,14 @@
 import React, { ReactChild } from "react";
+import { EuiLink } from "@elastic/eui";
 import { CoreSetup } from "../../../../src/core/public";
 import { jobSchedulerInstance } from "../context/JobSchedulerContext";
 import { CommonService, IndexService } from "../services";
 import { ReindexJobMetaData, RecoveryJobMetaData } from "../models/interfaces";
+import { ROUTES } from "../utils/constants";
+
+const DetailLink = (props: { index: string }) => {
+  return <EuiLink href={`#${ROUTES.INDEX_DETAIL}/${props.index}`}>{props.index}</EuiLink>;
+};
 
 type TaskResult = {
   found: boolean;
@@ -68,7 +74,14 @@ export function JobHandlerRegister(core: CoreSetup) {
             }
             triggerEvent(EVENT_MAP.REINDEX_COMPLETE, job);
             core.notifications.toasts.addSuccess(
-              `Source index ${extras.sourceIndex} has been successfully reindexed as ${extras.destIndex}.`,
+              {
+                title: ((
+                  <>
+                    Source index <DetailLink index={extras.sourceIndex} /> has been successfully reindexed as{" "}
+                    <DetailLink index={extras.destIndex} />
+                  </>
+                ) as unknown) as string,
+              },
               {
                 toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
               }
@@ -98,7 +111,12 @@ export function JobHandlerRegister(core: CoreSetup) {
             }
             core.notifications.toasts.addDanger(
               {
-                title: `Reindex from [${extras.sourceIndex}] to [${extras.destIndex}] has some errors, please check the errors below:`,
+                title: ((
+                  <>
+                    Reindex from <DetailLink index={extras.sourceIndex} /> to {extras.destIndex} has some errors, please check the errors
+                    below:
+                  </>
+                ) as unknown) as string,
                 text: (errors as unknown) as string,
               },
               {
@@ -118,7 +136,14 @@ export function JobHandlerRegister(core: CoreSetup) {
         core.notifications.toasts.remove(extras.toastId);
       }
       core.notifications.toasts.addDanger(
-        `Reindex from [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the task [${extras.taskId}] manually`,
+        {
+          title: ((
+            <>
+              Reindex from <DetailLink index={extras.sourceIndex} /> to {extras.destIndex} does not finish in reasonable time, please check
+              the task {extras.taskId} manually
+            </>
+          ) as unknown) as string,
+        },
         {
           toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
         }
@@ -146,9 +171,19 @@ export function JobHandlerRegister(core: CoreSetup) {
             core.notifications.toasts.remove(extras.toastId);
           }
           triggerEvent(EVENT_MAP.SPLIT_COMPLETE, job);
-          core.notifications.toasts.addSuccess(`Source index ${extras.sourceIndex} has been successfully split as ${extras.destIndex}.`, {
-            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
-          });
+          core.notifications.toasts.addSuccess(
+            {
+              title: ((
+                <>
+                  Source index <DetailLink index={extras.sourceIndex} /> has been successfully split as{" "}
+                  <DetailLink index={extras.destIndex} />.
+                </>
+              ) as unknown) as string,
+            },
+            {
+              toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+            }
+          );
           return true;
         }
       }
@@ -161,7 +196,14 @@ export function JobHandlerRegister(core: CoreSetup) {
         core.notifications.toasts.remove(extras.toastId);
       }
       core.notifications.toasts.addDanger(
-        `Split [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the index manually`,
+        {
+          title: ((
+            <>
+              Split <DetailLink index={extras.sourceIndex} /> to ${extras.destIndex} does not finish in reasonable time, please check the
+              index manually
+            </>
+          ) as unknown) as string,
+        },
         {
           toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
         }
@@ -190,7 +232,14 @@ export function JobHandlerRegister(core: CoreSetup) {
           }
           triggerEvent(EVENT_MAP.SHRINK_COMPLETE, job);
           core.notifications.toasts.addSuccess(
-            `Source index ${extras.sourceIndex} has been successfully shrunken as ${extras.destIndex}.`,
+            {
+              title: ((
+                <>
+                  Source index <DetailLink index={extras.sourceIndex} /> has been successfully shrunken as{" "}
+                  <DetailLink index={extras.destIndex} />.
+                </>
+              ) as unknown) as string,
+            },
             {
               toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
             }
@@ -207,7 +256,14 @@ export function JobHandlerRegister(core: CoreSetup) {
         core.notifications.toasts.remove(extras.toastId);
       }
       core.notifications.toasts.addDanger(
-        `Shrink [${extras.sourceIndex}] to [${extras.destIndex}] does not finish in reasonable time, please check the index manually`,
+        {
+          title: ((
+            <>
+              Shrink <DetailLink index={extras.sourceIndex} /> to {extras.destIndex} does not finish in reasonable time, please check the
+              index manually.
+            </>
+          ) as unknown) as string,
+        },
         {
           toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
         }

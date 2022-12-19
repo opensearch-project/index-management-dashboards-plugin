@@ -148,13 +148,17 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         },
       });
       if (result && result.ok) {
-        this.context.notifications.toasts.addSuccess(
-          `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`
+        const toastInstance = this.context.notifications.toasts.addSuccess(
+          `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`,
+          {
+            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+          }
         );
         this.onCancel();
         jobSchedulerInstance.addJob({
           interval: 30000,
           extras: {
+            toastId: toastInstance.id,
             sourceIndex: sourceIndexName,
             destIndex: targetIndexName,
           },
