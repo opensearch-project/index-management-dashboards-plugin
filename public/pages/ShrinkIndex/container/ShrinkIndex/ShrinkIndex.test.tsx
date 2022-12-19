@@ -265,7 +265,7 @@ describe("<Shrink index /> spec", () => {
     const { container } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test3`]);
     // wait for one tick
     await waitFor(() => {});
-    expect(container.firstChild).toMatchSnapshot();
+    expect(container).toMatchSnapshot();
   });
 
   it("set breadcrumbs when mounting", async () => {
