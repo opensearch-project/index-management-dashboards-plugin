@@ -222,67 +222,19 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("shrink index by calling commonService", async () => {
-    const onShrink = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cat.indices":
-            return {
-              ok: true,
-              response: [
-                {
-                  health: "green",
-                  status: "open",
-                  index: "test_index",
-                  uuid: "HuHWuUOMSkKD5XBTbqQ5gg",
-                  pri: "3",
-                  rep: "0",
-                  "docs.count": null,
-                  "docs.deleted": null,
-                  "store.size": null,
-                  "pri.store.size": null,
-                },
-              ],
-            };
-          case "indices.getSettings":
-            return {
-              ok: true,
-              response: {
-                test_index: {
-                  settings: {
-                    "index.blocks.write": true,
-                  },
-                },
-              },
-            };
-          case "cat.aliases":
-            return {
-              ok: true,
-              response: [
-                {
-                  alias: "a1",
-                  index: "acvxcvxc",
-                  filter: "-",
-                  "routing.index": "-",
-                  "routing.search": "-",
-                  is_write_index: "-",
-                },
-              ],
-            };
-          case "indices.shrink":
-            return {
-              ok: true,
-              response: {},
-            };
-        }
-        return {
-          ok: true,
-          response: {},
-        };
-      }
-    );
+    const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
+      getIndices(): Promise<void> {
+        return Promise.resolve(undefined);
+      },
+      history: history,
+      location: history.location,
+      match: { path: "/", url: "/", isExact: true, params: {} },
+      onClose(): void {},
+      onDelete(): void {},
+      onOpen(): void {},
+      onShrink(): void {},
       selectedItems: [
         {
           "docs.count": "5",
@@ -300,7 +252,6 @@ describe("<IndicesActions /> spec", () => {
           data_stream: null,
         },
       ],
-      onShrink,
     });
 
     await waitFor(() => {
@@ -309,61 +260,26 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Shrink Action"));
-    await waitFor(() => {
-      userEvent.type(getByTestId("targetIndexNameInput"), "test_index_shrunken");
-      userEvent.click(getByTestId("shrinkIndexConfirmButton"));
-    });
 
-    await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(4);
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.getSettings",
-        data: {
-          index: "test_index",
-          flat_settings: true,
-        },
-      });
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "cat.indices",
-        data: {
-          index: ["test_index"],
-          format: "json",
-        },
-      });
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "cat.aliases",
-        method: "GET",
-        data: {
-          format: "json",
-          name: "*",
-          expand_wildcards: "open",
-        },
-      });
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.shrink",
-        data: {
-          index: "test_index",
-          target: "test_index_shrunken",
-          body: {
-            settings: {
-              "index.number_of_shards": "1",
-              "index.number_of_replicas": "1",
-            },
-          },
-        },
-      });
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        `Successfully started shrinking test_index. The shrunken index will be named test_index_shrunken.`
-      );
-      expect(onShrink).toHaveBeenCalledTimes(1);
-    });
-  }, 30000);
+    expect(history.length).toBe(2);
+    expect(history.location.pathname).toBe(ROUTES.SHRINK_INDEX);
+    expect(history.location.search).toBe("?source=test_index");
+  });
 
   it("shrink action is disabled if multiple indices are selected", async () => {
-    const onShrink = jest.fn();
+    const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
+      getIndices(): Promise<void> {
+        return Promise.resolve(undefined);
+      },
+      history: history,
+      location: history.location,
+      match: { path: "/", url: "/", isExact: true, params: {} },
+      onClose(): void {},
+      onDelete(): void {},
+      onOpen(): void {},
+      onShrink(): void {},
       selectedItems: [
         {
           "docs.count": "5",
@@ -378,6 +294,7 @@ describe("<IndicesActions /> spec", () => {
           uuid: "some_uuid",
           managed: "",
           managedPolicy: "",
+          data_stream: null,
         },
         {
           "docs.count": "5",
@@ -392,9 +309,9 @@ describe("<IndicesActions /> spec", () => {
           uuid: "some_uuid",
           managed: "",
           managedPolicy: "",
+          data_stream: null,
         },
       ],
-      onShrink,
     });
 
     await waitFor(() => {
@@ -408,9 +325,19 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("shrink action is disabled if the selected index is data_stream", async () => {
-    const onShrink = jest.fn();
+    const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
+      getIndices(): Promise<void> {
+        return Promise.resolve(undefined);
+      },
+      history: history,
+      location: history.location,
+      match: { path: "/", url: "/", isExact: true, params: {} },
+      onClose(): void {},
+      onDelete(): void {},
+      onOpen(): void {},
+      onShrink(): void {},
       selectedItems: [
         {
           "docs.count": "5",
@@ -428,7 +355,6 @@ describe("<IndicesActions /> spec", () => {
           data_stream: "test",
         },
       ],
-      onShrink,
     });
 
     await waitFor(() => {

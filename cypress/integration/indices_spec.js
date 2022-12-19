@@ -357,7 +357,7 @@ describe("Indices", () => {
       // Shrink btn should be enabled
       cy.get('[data-test-subj="Shrink Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
-      // Check for Shrink index flyout
+      // Check for Shrink page
       cy.contains("Shrink index");
 
       // Enter target index name
