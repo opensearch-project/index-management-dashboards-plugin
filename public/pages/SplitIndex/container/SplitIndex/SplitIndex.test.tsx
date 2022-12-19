@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
-import { ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { IAlias } from "../../../Aliases/interface";
@@ -95,6 +95,20 @@ describe("<SplitIndex /> spec", () => {
     await waitFor(() => {
       expect(document.body.children).toMatchSnapshot();
     });
+  });
+
+  it("set breadcrumbs when mounting", async () => {
+    renderWithRouter();
+
+    // wait for one tick
+    await waitFor(() => {});
+
+    expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledTimes(1);
+    expect(coreServicesMock.chrome.setBreadcrumbs).toHaveBeenCalledWith([
+      BREADCRUMBS.INDEX_MANAGEMENT,
+      BREADCRUMBS.INDICES,
+      BREADCRUMBS.SPLIT_INDEX,
+    ]);
   });
 
   it("Successful split an index whose shards number is greater than 1", async () => {
@@ -219,6 +233,52 @@ describe("<SplitIndex /> spec", () => {
     });
   });
 
+  it("Error message if number of shards is invalid", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
+      if (payload.endpoint === "cat.aliases") {
+        return {
+          ok: true,
+          response: [
+            {
+              alias: "testAlias",
+              index: "1",
+            },
+          ] as IAlias[],
+        };
+      } else if (payload.endpoint === "cat.indices") {
+        return {
+          ok: true,
+          response: [
+            {
+              health: "green",
+              status: "open",
+              index: sourceIndexName,
+              pri: "3",
+              rep: "0",
+            },
+          ],
+        };
+      }
+
+      return {
+        ok: true,
+      };
+    });
+
+    const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
+
+    await waitFor(() => {
+      expect(getByTestId("splitButton")).not.toBeDisabled();
+    });
+
+    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "5{enter}");
+    userEvent.click(getByTestId("splitButton"));
+
+    await waitFor(() => {
+      expect(getByText("Number of shards is required")).not.toBeNull();
+    });
+  });
+
   it("Error message if index name or number of shards is not specified", async () => {
     const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
@@ -264,7 +324,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("It must not have a Red health status.")).not.toBeNull();
+      expect(queryByText("The source index must not have a Red health status.")).not.toBeNull();
     });
   });
 
@@ -303,7 +363,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("It must not be in close status.")).not.toBeNull();
+      expect(queryByText("The source index must be open.")).not.toBeNull();
     });
     userEvent.click(getByTestId("open-index-button"));
     await waitFor(() => {});
@@ -355,7 +415,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("It's block write status must be set to true.")).not.toBeNull();
+      expect(queryByText("The source index must be read-only before splitting.")).not.toBeNull();
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));
@@ -416,7 +476,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("It's block write status must be set to true.")).not.toBeNull();
+      expect(queryByText("The source index must be read-only before splitting.")).not.toBeNull();
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));

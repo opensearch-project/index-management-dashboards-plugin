@@ -3,6 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import SplitIndexFlyout from "./SplitIndexFlyout";
+import SplitIndexForm from "./SplitIndexForm";
 
-export default SplitIndexFlyout;
+export default SplitIndexForm;

@@ -153,7 +153,9 @@ export async function splitIndex(props: {
   });
 
   if (result && result.ok) {
-    props.coreServices.notifications.toasts.addSuccess(`Successfully submit split index request.`);
+    props.coreServices.notifications.toasts.addSuccess(
+      `Successfully started splitting ${props.sourceIndex}. The split index will be named ${props.targetIndex}`
+    );
     return result;
   } else {
     const errorMessage = `There was a problem submit split index request, please check with admin`;

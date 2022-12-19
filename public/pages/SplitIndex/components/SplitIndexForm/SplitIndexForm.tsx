@@ -11,6 +11,7 @@ import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
+import { INDEX_NAMING_MESSAGE, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -25,7 +26,7 @@ interface SplitIndexComponentProps {
   getAlias: AliasSelectProps["refreshOptions"];
 }
 
-export default class SplitIndexFlyout extends Component<SplitIndexComponentProps> {
+export default class SplitIndexForm extends Component<SplitIndexComponentProps> {
   state = {
     settings: {} as Required<IndexItem>["settings"],
     sourceIndexSettings: {} as IndexItem,
@@ -52,6 +53,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       {
         rowProps: {
           label: "Target Index Name",
+          helpText: INDEX_NAMING_MESSAGE,
         },
         name: "targetIndex",
         type: "Input",
@@ -77,8 +79,8 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       },
       {
         rowProps: {
-          label: "Number of shards",
-          helpText: "The number of primary shards in the target index",
+          label: "Number of primary shards",
+          helpText: "Specify the number of primary shards for the new split index.",
         },
         name: "index.number_of_shards",
         type: "ComboBoxSingle",
@@ -106,7 +108,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
       {
         rowProps: {
           label: "Number of replicas",
-          helpText: "The number of replica shards each primary shard should have.",
+          helpText: REPLICA_NUMBER_MESSAGE,
         },
         name: "index.number_of_replicas",
         type: "Number",
@@ -121,7 +123,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
         name: "aliases",
         rowProps: {
           label: "Index alias  - optional",
-          helpText: "Select existing aliases or specify a new alias",
+          helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
         },
         options: {
           props: {
@@ -151,7 +153,7 @@ export default class SplitIndexFlyout extends Component<SplitIndexComponentProps
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Learn more
+                  Learn more.
                 </EuiLink>
               </div>
             </EuiCallOut>

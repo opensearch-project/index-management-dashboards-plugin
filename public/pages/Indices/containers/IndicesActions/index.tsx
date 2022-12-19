@@ -30,7 +30,6 @@ export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"
   onOpen: () => void;
   onClose: () => void;
   onShrink: () => void;
-  onSplit: () => void;
   getIndices: () => Promise<void>;
 }
 
@@ -63,48 +62,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(result?.error || "");
     }
   }, [selectedItems, services, coreServices, onDelete, onDeleteIndexModalClose]);
-
-  const onCloseFlyout = () => {
-    setSplitIndexFlyoutVisible(false);
-  };
-
-  const splitIndex = async (targetIndex: String, settingsPayload: Required<IndexItem>["settings"]) => {
-    const { aliases, ...settings } = settingsPayload;
-    const result = await services?.commonService.apiCaller({
-      endpoint: "indices.split",
-      method: "PUT",
-      data: {
-        index: selectedItems.map((item) => item.index).join(","),
-        target: targetIndex,
-        body: {
-          settings: {
-            ...settings,
-          },
-          aliases,
-        },
-      },
-    });
-    if (result && result.ok) {
-      const toastIntance = coreServices?.notifications.toasts.addSuccess(
-        `Successfully started splitting ${selectedItems.map((item) => item.index).join(",")}. The split index will be named ${targetIndex}.`
-      );
-      onCloseFlyout();
-      onSplit();
-      jobSchedulerInstance.addJob({
-        interval: 30000,
-        extras: {
-          toastId: toastIntance.id,
-          sourceIndex: selectedItems.map((item) => item.index).join(","),
-          destIndex: targetIndex,
-        },
-        type: "split",
-      } as RecoveryJobMetaData);
-    } else {
-      coreServices.notifications.toasts.addDanger(
-        result?.error || "There was a problem submit split index request, please check with admin"
-      );
-    }
-  };
 
   const onOpenIndexModalClose = () => {
     setOpenIndexModalVisible(false);

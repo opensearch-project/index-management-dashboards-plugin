@@ -3,12 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component } from "react";
-import { EuiSpacer, EuiTitle, EuiButton } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiText } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
 import { BrowserServices, RecoveryJobMetaData } from "../../../../models/interfaces";
-import SplitIndexFlyout from "../../components/SplitIndexFlyout";
+import SplitIndexForm from "../../components/SplitIndexForm";
 import { IndexItem } from "../../../../../models/interfaces";
 import { RouteComponentProps } from "react-router-dom";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
@@ -27,7 +27,7 @@ import { CommonService, ServicesContext } from "../../../../services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { useContext } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 
 interface SplitIndexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -35,6 +35,7 @@ interface SplitIndexProps extends RouteComponentProps {
 }
 
 export class SplitIndex extends Component<SplitIndexProps> {
+  static contextType = CoreServicesContext;
   state = {
     reasons: [] as React.ReactChild[],
     shardsSelectOptions: [] as { label: string }[],
@@ -43,6 +44,11 @@ export class SplitIndex extends Component<SplitIndexProps> {
   };
 
   async componentDidMount() {
+    this.context.chrome.setBreadcrumbs([
+      BREADCRUMBS.INDEX_MANAGEMENT,
+      BREADCRUMBS.INDICES,
+      { ...BREADCRUMBS.SPLIT_INDEX, href: `#${ROUTES.SPLIT_INDEX}${this.props.location.search}` },
+    ]);
     await this.isSourceIndexReady();
     this.calculateShardsOption();
     this.setState({
@@ -51,7 +57,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
   }
 
   isSourceIndexReady = async () => {
-    const source = queryString.parse(this.props.location.search) as { source?: string };
+    const source = queryString.parse(this.props.location.search) as { source: string };
     const sourceIndex = await getSingleIndice({
       indexName: source.source as string,
       commonService: this.props.commonService,
@@ -75,27 +81,38 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const blocksWriteValue = get(sourceSettings, ["index.blocks.write"]);
 
     if (sourceIndex.health === "red") {
-      reasons.push(<>It must not have a Red health status.</>);
+      reasons.push(
+        <>
+          <b style={{ color: "red", fontSize: 18 }}>The source index must not have a Red health status.</b>
+        </>
+      );
     }
 
     if (sourceIndex.status === "close") {
       reasons.push(
         <>
-          It must not be in close status. &nbsp;&nbsp;
-          <EuiButton
-            fill
-            onClick={async () => {
-              await openIndices({
-                commonService: this.props.commonService,
-                indices: [source.source || ""],
-                coreServices: this.props.coreService,
-              });
-              await this.isSourceIndexReady();
-            }}
-            data-test-subj={"open-index-button"}
-          >
-            Open index
-          </EuiButton>
+          <p>
+            <b style={{ color: "red", fontSize: 18 }}>The source index must be open.</b>
+            <br />
+            You must first open the index before splitting it. Depending on the size of the source index, this may take additional time to
+            complete. The index will be in the Red state while the index is opening.
+          </p>
+          <p>
+            <EuiButton
+              fill
+              onClick={async () => {
+                await openIndices({
+                  commonService: this.props.commonService,
+                  indices: [source.source],
+                  coreServices: this.props.coreService,
+                });
+                await this.isSourceIndexReady();
+              }}
+              data-test-subj={"open-index-button"}
+            >
+              Open index
+            </EuiButton>
+          </p>
         </>
       );
     }
@@ -105,7 +122,11 @@ export class SplitIndex extends Component<SplitIndexProps> {
       const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(
         <>
-          It's block write status must be set to true. &nbsp;&nbsp;
+          <p>
+            <b style={{ color: "red", fontSize: 18 }}>The source index must be read-only before splitting.</b>
+            <br />
+            In order to split an existing index, you must first set it to read-only.
+          </p>
           <EuiButton
             fill
             onClick={async () => {
@@ -120,7 +141,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
             }}
             data-test-subj={"set-indexsetting-button"}
           >
-            Set to block write
+            Set to read-only
           </EuiButton>
         </>
       );
@@ -172,10 +193,20 @@ export class SplitIndex extends Component<SplitIndexProps> {
         <EuiTitle size="l">
           <h1>Split index</h1>
         </EuiTitle>
+
+        <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+          <p style={{ fontWeight: 200 }}>
+            Split an existing read-only index into a new index with more primary shards{" "}
+            <EuiLink href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"} target="_blank" rel="noopener noreferrer">
+              Learn more.
+            </EuiLink>
+          </p>
+        </EuiText>
+
         <EuiSpacer />
 
         {splitIndexFlyoutVisible && (
-          <SplitIndexFlyout
+          <SplitIndexForm
             sourceIndex={sourceIndex.index}
             onSplitIndex={this.onSplitIndex}
             shardsSelectOptions={shardsSelectOptions}

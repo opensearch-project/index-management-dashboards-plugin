@@ -21,12 +21,18 @@ import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
-import { INDEX_IMPORT_SETTINGS, INDEX_DYNAMIC_SETTINGS, IndicesUpdateMode } from "../../../../utils/constants";
+import {
+  INDEX_IMPORT_SETTINGS,
+  INDEX_DYNAMIC_SETTINGS,
+  IndicesUpdateMode,
+  INDEX_NAMING_MESSAGE,
+  REPLICA_NUMBER_MESSAGE,
+} from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping/IndexMapping";
-import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
+import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping";
+import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import SimplePopover from "../../../../components/SimplePopover";
 import { SimpleEuiToast } from "../../../../components/Toast";
 import { filterByMinimatch } from "../../../../../utils/helper";
@@ -251,7 +257,7 @@ const IndexDetail = (
       {
         rowProps: {
           label: "Number of replicas",
-          helpText: "Specify the number of replicas each primary shard should have. Default is 1.",
+          helpText: REPLICA_NUMBER_MESSAGE,
         },
         name: "index.number_of_replicas",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
@@ -316,11 +322,7 @@ const IndexDetail = (
                     name: "index",
                     rowProps: {
                       label: "Index name",
-                      helpText: (
-                        <div>
-                          {`Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, \, |, ?, #, > are not allowed.`}
-                        </div>
-                      ),
+                      helpText: <div>{INDEX_NAMING_MESSAGE}</div>,
                       position: "bottom",
                     },
                     type: readonly || isEdit ? "Text" : "Input",
