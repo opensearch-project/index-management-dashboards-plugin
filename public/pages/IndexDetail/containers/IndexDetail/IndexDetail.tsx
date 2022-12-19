@@ -244,7 +244,6 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             onOpen={refreshDetails}
             onClose={refreshDetails}
             onShrink={() => props.history.replace(ROUTES.INDICES)}
-            onSplit={() => props.history.replace(ROUTES.INDICES)}
             getIndices={async () => {}}
           />
         </div>
