@@ -71,7 +71,11 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES, BREADCRUMBS.SHRINK_INDEX]);
+    this.context.chrome.setBreadcrumbs([
+      BREADCRUMBS.INDEX_MANAGEMENT,
+      BREADCRUMBS.INDICES,
+      { ...BREADCRUMBS.SHRINK_INDEX, href: `#${this.props.location.pathname}${this.props.location.search}` },
+    ]);
     const { source } = queryString.parse(this.props.location.search);
     if (typeof source === "string" && !!source) {
       await this.getIndex(source);
