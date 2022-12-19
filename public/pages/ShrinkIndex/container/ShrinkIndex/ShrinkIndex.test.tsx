@@ -262,7 +262,7 @@ const mockApi = () => {
 describe("<Shrink index /> spec", () => {
   it("renders the component", async () => {
     mockApi();
-    const { container } = renderWithRouter();
+    const { container } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test3`]);
     // wait for one tick
     await waitFor(() => {});
     expect(container.firstChild).toMatchSnapshot();
