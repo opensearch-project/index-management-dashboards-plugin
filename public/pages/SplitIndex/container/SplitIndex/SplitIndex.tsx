@@ -70,12 +70,18 @@ export class SplitIndex extends Component<SplitIndexProps> {
       sourceIndex,
     });
 
-    const sourceIndexSettings = await getIndexSettings({
-      indexName: sourceIndex.index,
-      flat: true,
-      commonService: this.props.commonService,
-      coreServices: this.props.coreService,
-    });
+    let sourceIndexSettings;
+    try {
+      sourceIndexSettings = await getIndexSettings({
+        indexName: sourceIndex.index,
+        flat: true,
+        commonService: this.props.commonService,
+        coreServices: this.props.coreService,
+      });
+    } catch (err) {
+      // no need to log anything since getIndexSettings will log the error
+      return null;
+    }
     const reasons = [];
     const sourceSettings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
     const blocksWriteValue = get(sourceSettings, ["index.blocks.write"]);
@@ -101,12 +107,16 @@ export class SplitIndex extends Component<SplitIndexProps> {
             <EuiButton
               fill
               onClick={async () => {
-                await openIndices({
-                  commonService: this.props.commonService,
-                  indices: [source.source],
-                  coreServices: this.props.coreService,
-                });
-                await this.isSourceIndexReady();
+                try {
+                  await openIndices({
+                    commonService: this.props.commonService,
+                    indices: [source.source],
+                    coreServices: this.props.coreService,
+                  });
+                  await this.isSourceIndexReady();
+                } catch (err) {
+                  // no need to log anything since openIndices will log the error
+                }
               }}
               data-test-subj={"open-index-button"}
             >
@@ -123,25 +133,29 @@ export class SplitIndex extends Component<SplitIndexProps> {
       reasons.push(
         <>
           <p>
-            <b style={{ color: "red", fontSize: 18 }}>The source index must be read-only before splitting.</b>
+            <b style={{ color: "red", fontSize: 18 }}>The source index must block write operations before splitting.</b>
             <br />
-            In order to split an existing index, you must first set it to read-only.
+            In order to split an existing index, you must first set the index to block write operations.
           </p>
           <EuiButton
             fill
             onClick={async () => {
-              await setIndexSettings({
-                indexName: sourceIndex.index,
-                flat,
-                settings: blocksWriteSetting,
-                commonService: this.props.commonService,
-                coreServices: this.props.coreService,
-              });
-              await this.isSourceIndexReady();
+              try {
+                await setIndexSettings({
+                  indexName: sourceIndex.index,
+                  flat,
+                  settings: blocksWriteSetting,
+                  commonService: this.props.commonService,
+                  coreServices: this.props.coreService,
+                });
+                await this.isSourceIndexReady();
+              } catch (err) {
+                // no need to log anything since getIndexSettings will log the error
+              }
             }}
             data-test-subj={"set-indexsetting-button"}
           >
-            Set to read-only
+            Block write operations
           </EuiButton>
         </>
       );
@@ -196,7 +210,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
 
         <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
           <p style={{ fontWeight: 200 }}>
-            Split an existing read-only index into a new index with more primary shards{" "}
+            Split an existing read-only index into a new index with more primary shards . &nbsp;&nbsp;
             <EuiLink href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"} target="_blank" rel="noopener noreferrer">
               Learn more.
             </EuiLink>
