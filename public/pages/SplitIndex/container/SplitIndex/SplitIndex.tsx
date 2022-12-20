@@ -184,16 +184,6 @@ export class SplitIndex extends Component<SplitIndexProps> {
       commonService: this.props.commonService,
       coreServices: this.props.coreService,
     });
-    if (result && result.ok) {
-      await jobSchedulerInstance.addJob({
-        interval: 30000,
-        extras: {
-          sourceIndex: sourceIndex.index,
-          destIndex: targetIndex,
-        },
-        type: "split",
-      } as RecoveryJobMetaData);
-    }
   };
 
   onCancel = () => {

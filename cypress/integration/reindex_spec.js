@@ -194,7 +194,7 @@ describe("Reindex", () => {
       cy.get('[data-test-subj="createIndexButton"]').click();
       cy.contains("Create Index");
 
-      cy.get('[placeholder="Please enter the name for your index"]').type(REINDEX_NEW_CREATED).blur();
+      cy.get('[placeholder="Specify a name for the new index."]').type(REINDEX_NEW_CREATED).blur();
       cy.wait(1000);
 
       // import setting and mapping

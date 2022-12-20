@@ -392,7 +392,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                         <p
                           class="euiComboBoxPlaceholder"
                         >
-                          Select or create aliases
+                          Select aliases or input new aliases.
                         </p>
                         <div
                           class="euiComboBox__input"
@@ -512,7 +512,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                         </a>
                       </div>
                       <textarea
-                        data-test-subj="json-editor-value-display"
+                        data-test-subj="jsonEditor-valueDisplay"
                         readonly=""
                         style="display: none;"
                       >

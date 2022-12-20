@@ -4,34 +4,14 @@
  */
 
 import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
-import {
-  EuiTreeView,
-  EuiIcon,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFormRow,
-  EuiTreeViewProps,
-  EuiButton,
-  EuiSpacer,
-  EuiButtonGroup,
-  EuiToolTip,
-  EuiCode,
-  EuiBadge,
-  EuiText,
-  EuiContextMenu,
-  EuiLink,
-} from "@elastic/eui";
-import { set, get, pick } from "lodash";
-import JSONEditor from "../../../../components/JSONEditor";
-import JSONDiffEditor from "../../../../components/JSONDiffEditor";
-import { AllBuiltInComponents } from "../../../../components/FormGenerator";
-import useField, { transformNameToString } from "../../../../lib/field";
+import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink } from "@elastic/eui";
+import { set, get, isEmpty } from "lodash";
+import JSONEditor, { IJSONEditorRef } from "../../../../components/JSONEditor";
 import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
-import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
-import "./IndexMapping.scss";
-import SimplePopover from "../../../../components/SimplePopover";
 import CustomFormRow from "../../../../components/CustomFormRow";
+import MappingLabel, { IMappingLabelRef } from "../MappingLabel";
+import "./IndexMapping.scss";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
   return Object.entries(obj).map(([fieldName, fieldSettings]) => {
@@ -74,17 +54,23 @@ const countNodesInTree = (array: MappingsProperties) => {
   }, 0);
 };
 
+export type IndexMappingsAll = {
+  properties?: MappingsProperties;
+  [key: string]: any;
+};
+
+export type IndexMappingsObjectAll = {
+  properties?: MappingsPropertiesObject;
+  [key: string]: any;
+};
+
 export interface IndexMappingProps {
-  value?: MappingsProperties;
-  oldValue?: MappingsProperties;
-  originalValue?: MappingsProperties;
+  value?: IndexMappingsAll;
+  oldValue?: IndexMappingsAll;
+  originalValue?: IndexMappingsAll;
   onChange: (value: IndexMappingProps["value"]) => void;
   isEdit?: boolean;
   readonly?: boolean;
-}
-
-export interface IIndexMappingsRef {
-  validate: () => Promise<string>;
 }
 
 export enum EDITOR_MODE {
@@ -92,249 +78,28 @@ export enum EDITOR_MODE {
   VISUAL = "VISUAL",
 }
 
-interface IMappingLabel {
-  value: MappingsProperties[number];
-  onChange: (val: IMappingLabel["value"], key: string, value: string) => void | string;
-  onFieldNameCheck: (val: string) => string;
-  onAddSubField: () => void;
-  onAddSubObject: () => void;
-  onDeleteField: () => void;
-  disabled?: boolean;
-  readonly?: boolean;
-  id: string;
+export interface IIndexMappingsRef {
+  validate: () => Promise<string>;
 }
 
-const OLD_VALUE_DISABLED_REASON = "Old mappings can not be modified";
-
-const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<IIndexMappingsRef>) => {
-  const { onFieldNameCheck, disabled, onAddSubField, onAddSubObject, onDeleteField, id, readonly } = props;
-  const propsRef = useRef(props);
-  propsRef.current = props;
-  const onFieldChange = useCallback(
-    (k, v) => {
-      let newValue = { ...propsRef.current.value };
-      set(newValue, k, v);
-      if (k === "type") {
-        newValue = pick(newValue, ["fieldName", "type"]);
-        const findItem = INDEX_MAPPING_TYPES.find((item) => item.label === v);
-        const initValues = (findItem?.options?.fields || []).reduce((total, current) => {
-          if (current && current.initValue !== undefined) {
-            return {
-              ...total,
-              [transformNameToString(current.name)]: current.initValue,
-            };
-          }
-
-          return total;
-        }, {});
-        newValue = {
-          ...newValue,
-          ...initValues,
-        };
-        field.setValues(newValue);
-      }
-      return propsRef.current.onChange(newValue, k, v);
-    },
-    [propsRef.current.value, propsRef.current.onChange]
-  );
-  const field = useField({
-    values: {
-      ...propsRef.current.value,
-      type: propsRef.current.value.type || "object",
-    },
-    onChange: onFieldChange,
-    unmountComponent: true,
-  });
-  const value = field.getValues();
-  const type = value.type;
-  useImperativeHandle(forwardedRef, () => ({
-    validate: async () => {
-      const { errors } = await field.validatePromise();
-      if (errors) {
-        return "Validate Error";
-      } else {
-        return "";
-      }
-    },
-  }));
-
-  const findItem = INDEX_MAPPING_TYPES.find((item) => item.label === type);
-  const moreFields = findItem?.options?.fields || [];
-
-  if (readonly || disabled) {
-    return (
-      <EuiText>
-        <li className="ism-index-mappings-field-line">
-          <EuiIcon type="dot" size="s" />
-          <span data-test-subj={`${id}-field-name`} title={field.getValue("fieldName")}>
-            {field.getValue("fieldName")}
-          </span>
-          <EuiBadge color="hollow" title={type} data-test-subj={`${id}-field-type`}>
-            {type}
-          </EuiBadge>
-          {moreFields.map((extraField) => (
-            <EuiBadge key={transformNameToString(extraField.name)} color="hollow" title={field.getValue(extraField.name)}>
-              {extraField.label}: {field.getValue(extraField.name)}
-            </EuiBadge>
-          ))}
-        </li>
-      </EuiText>
-    );
-  }
-
-  return (
-    <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
-      <EuiFlexItem grow={false} style={{ width: 300 }}>
-        <EuiFormRow
-          isInvalid={!!field.getError("fieldName")}
-          error={field.getError("fieldName")}
-          label="Field name"
-          display="rowCompressed"
-        >
-          {readonly ? (
-            <EuiCode>{field.getValue("fieldName")}</EuiCode>
-          ) : (
-            <AllBuiltInComponents.Input
-              {...field.registerField({
-                name: "fieldName",
-                rules: [
-                  {
-                    required: true,
-                    message: "Field name is required, please input",
-                  },
-                  {
-                    validator: (rule, value) => {
-                      const checkResult = onFieldNameCheck(value);
-                      if (checkResult) {
-                        return Promise.reject(checkResult);
-                      }
-
-                      return Promise.resolve("");
-                    },
-                  },
-                ],
-              })}
-              disabled={readonly || disabled}
-              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-              compressed
-              data-test-subj={`${id}-field-name`}
-            />
-          )}
-        </EuiFormRow>
-      </EuiFlexItem>
-      <EuiFlexItem grow={false} style={{ width: 100 }}>
-        <EuiFormRow label="Field type" display="rowCompressed">
-          {readonly ? (
-            <EuiCode>{type}</EuiCode>
-          ) : (
-            <AllBuiltInComponents.Select
-              disabled={readonly || disabled}
-              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-              compressed
-              {...field.registerField({
-                name: "type",
-              })}
-              data-test-subj={`${id}-field-type`}
-              options={(() => {
-                const allOptions = INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }));
-                const typeValue = field.getValue("type");
-                if (!allOptions.find((item) => item.value === typeValue)) {
-                  allOptions.push({
-                    text: typeValue,
-                    value: typeValue,
-                  });
-                }
-                return allOptions;
-              })()}
-            />
-          )}
-        </EuiFormRow>
-      </EuiFlexItem>
-      {moreFields.map((item) => {
-        const { label, type, ...others } = item;
-        const RenderComponent = readonly ? AllBuiltInComponents.Text : AllBuiltInComponents[type];
-        return (
-          <EuiFlexItem grow={false} key={transformNameToString(others.name)} style={{ width: 100 }}>
-            <EuiFormRow label={label} display="rowCompressed" isInvalid={!!field.getError(others.name)} error={field.getError(others.name)}>
-              <RenderComponent
-                {...field.registerField(others)}
-                disabled={readonly || disabled}
-                disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-                compressed
-              />
-            </EuiFormRow>
-          </EuiFlexItem>
-        );
-      })}
-      {disabled ? null : (
-        <EuiFlexItem grow={false}>
-          <EuiFormRow label="Actions" display="rowCompressed">
-            <div
-              style={{ display: "flex", height: 32, alignItems: "center" }}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
-                <SimplePopover
-                  triggerType="hover"
-                  panelPaddingSize="none"
-                  button={
-                    <span
-                      className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
-                      data-test-subj={`${id}-add-sub-field`}
-                      aria-label="Delete current field"
-                      onClick={onAddSubField}
-                    >
-                      <EuiIcon type="plusInCircleFilled" />
-                    </span>
-                  }
-                >
-                  <EuiContextMenu
-                    initialPanelId={0}
-                    panels={[
-                      {
-                        id: 0,
-                        title: "",
-                        items: [
-                          {
-                            name: "Add nested field",
-                            onClick: onAddSubField,
-                          },
-                          {
-                            name: "Add nested object",
-                            onClick: onAddSubObject,
-                          },
-                        ],
-                      },
-                    ]}
-                  />
-                </SimplePopover>
-              ) : null}
-              <EuiToolTip content="Delete current field">
-                <span
-                  className="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
-                  data-test-subj={`${id}-delete-field`}
-                  aria-label="Delete current field"
-                  onClick={onDeleteField}
-                >
-                  <EuiIcon type="trash" />
-                </span>
-              </EuiToolTip>
-            </div>
-          </EuiFormRow>
-        </EuiFlexItem>
-      )}
-    </EuiFlexGroup>
-  );
-});
-
-const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalValue }: IndexMappingProps, ref: Ref<IIndexMappingsRef>) => {
-  const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
+const IndexMapping = (
+  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly }: IndexMappingProps,
+  ref: Ref<IIndexMappingsRef>
+) => {
+  const value = propsValue?.properties || [];
+  const onChange = (val: MappingsProperties) => {
+    propsOnChange({
+      ...propsValue,
+      properties: val,
+    });
+  };
+  const allFieldsRef = useRef<Record<string, IMappingLabelRef>>({});
+  const JSONEditorRef = useRef<IJSONEditorRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {
       const values = await Promise.all(Object.values(allFieldsRef.current).map((item) => item.validate()));
-      return values.some((item) => item) ? "with error" : "";
+      const JSONEditorValidateResult = await JSONEditorRef.current?.validate();
+      return values.some((item) => item) || JSONEditorValidateResult ? "with error" : "";
     },
   }));
   const [editorMode, setEditorMode] = useState<EDITOR_MODE>(EDITOR_MODE.VISUAL);
@@ -372,13 +137,21 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
     },
     [onChange, value]
   );
-  const transformValueToTreeItems = (formValue: IndexMappingProps["value"], pos: string = ""): EuiTreeViewProps["items"] => {
+  const transformValueToTreeItems = (formValue: MappingsProperties, pos: string = ""): EuiTreeViewProps["items"] => {
+    let isFirstEditableField = false;
     return (formValue || []).map((item, index) => {
       const { fieldName, ...fieldSettings } = item;
       const id = [pos, index].filter((item) => item !== "").join(".properties.");
+      const readonlyFlag = readonly || (isEdit && !!get(oldValue?.properties, id));
+      let shouldShowLabel = false;
+      if (!readonlyFlag && !isFirstEditableField) {
+        isFirstEditableField = true;
+        shouldShowLabel = true;
+      }
       const payload: EuiTreeViewProps["items"][number] = {
         label: (
           <MappingLabel
+            shouldShowLabel={shouldShowLabel}
             ref={(ref) => {
               if (ref) {
                 allFieldsRef.current[id] = ref;
@@ -386,8 +159,7 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
                 delete allFieldsRef.current[id];
               }
             }}
-            readonly={readonly}
-            disabled={isEdit && !!get(oldValue, id)}
+            readonly={readonlyFlag}
             value={item}
             id={`mapping-visual-editor-${id}`}
             onFieldNameCheck={(fieldName) => {
@@ -433,9 +205,9 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
   };
   const transformedTreeItems = useMemo(() => transformValueToTreeItems(value), [value]);
   const newValue = useMemo(() => {
-    const oldValueKeys = (oldValue || []).map((item) => item.fieldName);
+    const oldValueKeys = (oldValue?.properties || []).map((item) => item.fieldName);
     return value?.filter((item) => !oldValueKeys.includes(item.fieldName)) || [];
-  }, [oldValue, value]);
+  }, [oldValue?.properties, value]);
   const renderKey = useMemo(() => {
     return countNodesInTree(value || []);
   }, [value]);
@@ -450,12 +222,12 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
           {
             label: readonly ? "Tree view" : "Visual Editor",
             id: EDITOR_MODE.VISUAL,
-            "data-test-subj": "editor-type-visual-editor",
+            "data-test-subj": "editorTypeVisualEditor",
           },
           {
             label: readonly ? "JSON" : "JSON Editor",
             id: EDITOR_MODE.JSON,
-            "data-test-subj": "editor-type-json-editor",
+            "data-test-subj": "editorTypeJsonEditor",
           },
         ]}
       />
@@ -494,16 +266,28 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
         </>
       ) : (
         <>
-          {isEdit && !readonly ? (
+          {isEdit && !readonly && !isEmpty(oldValue) ? (
             <>
               <EuiButton
                 size="s"
-                data-test-subj="previous-mappings-json-button"
+                data-test-subj="previousMappingsJsonButton"
                 onClick={() => {
                   Modal.show({
                     title: "Previous mappings",
-                    content: <JSONEditor readOnly value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} />,
-                    "data-test-subj": "previous-mappings-json-modal",
+                    content: (
+                      <JSONEditor
+                        readOnly
+                        value={JSON.stringify(
+                          {
+                            ...oldValue,
+                            properties: transformArrayToObject(oldValue?.properties || []),
+                          },
+                          null,
+                          2
+                        )}
+                      />
+                    ),
+                    "data-test-subj": "previousMappingsJsonModal",
                     onOk: () => {},
                   });
                 }}
@@ -514,22 +298,53 @@ const IndexMapping = ({ value, onChange, isEdit, oldValue, readonly, originalVal
             </>
           ) : null}
           {readonly ? (
-            <JSONEditor value={JSON.stringify(transformArrayToObject(oldValue || []), null, 2)} readOnly={readonly} />
+            <JSONEditor
+              ref={JSONEditorRef}
+              value={JSON.stringify(
+                {
+                  ...propsValue,
+                  properties: transformArrayToObject(value || []),
+                },
+                null,
+                2
+              )}
+              readOnly={readonly}
+              width="100%"
+            />
           ) : (
             <CustomFormRow
               label="Specify index mapping"
               helpText={
                 <div>
-                  Specify mapping in JSON format.{" "}
-                  <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage">
-                    View mapping example.
-                  </EuiLink>
+                  <div>
+                    Specify mapping in JSON format.{" "}
+                    <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage">
+                      View mapping example.
+                    </EuiLink>
+                  </div>
+                  <div>The existing mapping properties cannot be changed after the index is created.</div>
                 </div>
               }
+              fullWidth
             >
               <JSONEditor
-                value={JSON.stringify(transformArrayToObject(newValue || []), null, 2)}
-                onChange={(val) => onChange([...(oldValue || []), ...transformObjectToArray(JSON.parse(val))])}
+                value={JSON.stringify(
+                  {
+                    ...propsValue,
+                    properties: transformArrayToObject(newValue || []),
+                  },
+                  null,
+                  2
+                )}
+                onChange={(val) => {
+                  const result: IndexMappingsObjectAll = JSON.parse(val);
+                  propsOnChange({
+                    ...result,
+                    properties: [...(oldValue?.properties || []), ...transformObjectToArray(result?.properties || {})],
+                  });
+                }}
+                width="100%"
+                ref={JSONEditorRef}
               />
             </CustomFormRow>
           )}

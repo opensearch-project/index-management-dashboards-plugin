@@ -41,7 +41,7 @@ function renderWithRouter() {
 const testAliasId = "test";
 const multiIndexAliasId = "test2";
 
-describe("<Indices /> spec", () => {
+describe("<Aliases /> spec", () => {
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
       if (payload.endpoint === "cat.aliases") {
@@ -92,10 +92,23 @@ describe("<Indices /> spec", () => {
           ok: false,
           error: "alias exist",
         };
+      } else if (payload.endpoint === "transport.request" && payload.data?.path === "/_data_stream") {
+        return {
+          ok: true,
+          response: {
+            data_streams: [
+              {
+                name: "test_data_stream",
+                indices: [],
+              },
+            ],
+          },
+        };
       }
 
       return {
         ok: true,
+        response: {},
       };
     }) as any;
     window.location.hash = "/";
@@ -148,12 +161,12 @@ describe("<Indices /> spec", () => {
     expect(getByPlaceholderText("Specify alias name")).toBeDisabled();
     expect((getByPlaceholderText("Specify alias name") as HTMLInputElement).value).toEqual(testAliasId);
     expect(getByTitle("1")).toBeInTheDocument();
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
+    expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(6);
     userEvent.type(getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "2{enter}");
     userEvent.click(document.querySelector('[title="1"] button') as Element);
     userEvent.click(getByText("Save changes"));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(6);
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(8);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         data: {
           body: {
@@ -198,7 +211,7 @@ describe("<Indices /> spec", () => {
     userEvent.type(getByPlaceholderText("Specify alias name"), testAliasId);
     userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(12);
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(17);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         data: {
           index: ["1"],
@@ -213,5 +226,14 @@ describe("<Indices /> spec", () => {
     userEvent.click(getByText("Rows per page: 10"));
     userEvent.click(getByTestId("tablePagination-25-rows"));
     userEvent.click(getByTestId("euiFlyoutCloseButton"));
-  }, 30000);
+  }, 50000);
+
+  it("shows detail", async () => {
+    const { getByTestId, findByTestId, getByText } = renderWithRouter();
+    await findByTestId(`aliasDetail-${testAliasId}`);
+    userEvent.click(getByTestId(`aliasDetail-${testAliasId}`));
+    await waitFor(() => expect(getByText("Save changes")).toBeInTheDocument(), {
+      timeout: 3000,
+    });
+  });
 });

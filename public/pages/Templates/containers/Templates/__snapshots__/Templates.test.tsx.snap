@@ -12,11 +12,42 @@ exports[`<Templates /> spec renders the component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h3
-        class="euiTitle euiTitle--large"
+      <span
+        class="euiTitle euiTitle--medium"
       >
         Templates
-      </h3>
+      </span>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            id="some_html_id-help-0"
+          >
+            <div>
+              Index templates let you initialize new indexes or data streams with predefined mappings and settings.
+              <a
+                class="euiLink euiLink--primary"
+                href="https://opensearch.org/docs/latest/opensearch/index-templates"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more.
+                EuiIconMock
+                <span
+                  class="euiScreenReaderOnly"
+                >
+                  (opens in a new tab or window)
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -63,7 +94,7 @@ exports[`<Templates /> spec renders the component 1`] = `
             >
               <button
                 class="euiButton euiButton--primary euiButton--fill"
-                data-test-subj="Create TemplateButton"
+                data-test-subj="Create templateButton"
                 type="button"
               >
                 <span
@@ -72,7 +103,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                   <span
                     class="euiButton__text"
                   >
-                    Create Template
+                    Create template
                   </span>
                 </span>
               </button>
@@ -252,10 +283,27 @@ exports[`<Templates /> spec renders the component 1`] = `
                 </button>
               </th>
               <th
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_templateType_1"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Template type"
+                  >
+                    Template type
+                  </span>
+                </span>
+              </th>
+              <th
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_index_patterns_1"
+                data-test-subj="tableHeaderCell_index_patterns_2"
                 role="columnheader"
                 scope="col"
               >
@@ -269,9 +317,9 @@ exports[`<Templates /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Index patterns or wildcards"
+                      title="Index patterns"
                     >
-                      Index patterns or wildcards
+                      Index patterns
                     </span>
                   </span>
                 </button>
@@ -280,7 +328,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_order_2"
+                data-test-subj="tableHeaderCell_order_3"
                 role="columnheader"
                 scope="col"
               >
@@ -309,7 +357,7 @@ exports[`<Templates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="4"
+                colspan="5"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"

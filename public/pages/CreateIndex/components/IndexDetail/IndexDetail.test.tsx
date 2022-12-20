@@ -63,7 +63,7 @@ describe("<IndexDetail /> spec", () => {
     });
     const ref = result.current.ref;
     const { getByTestId, getByPlaceholderText } = result.current.container;
-    userEvent.type(getByPlaceholderText("Please enter the name for your index"), "good_index");
+    userEvent.type(getByPlaceholderText("Specify a name for the new index."), "good_index");
     await waitFor(async () => {
       expect(await ref.current?.validate()).toBe(false);
     });

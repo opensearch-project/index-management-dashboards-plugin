@@ -3,13 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle } from "react";
-import { EuiConfirmModal } from "@elastic/eui";
+import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
+import { EuiFormRow } from "@elastic/eui";
 import { MonacoDiffEditor } from "react-monaco-editor";
 import type { monaco } from "@osd/monaco";
 import CustomFormRow from "../CustomFormRow";
 import { IJSONEditorRef } from "../JSONEditor";
 import { JSONDiffEditorProps } from "./interface";
+import "./JSONDiffEditor.scss";
 
 const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
@@ -40,16 +41,24 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
     focusedRef.current = true;
     e.stopPropagation();
   });
+  const setAllValue = useCallback(
+    (val: string) => {
+      setEditorValue(val);
+      if (isReady) {
+        inputRef.current?.setAttribute("value", val);
+        if (inputRef.current) {
+          inputRef.current.value = val;
+        }
+      }
+    },
+    [setEditorValue, isReady, inputRef.current]
+  );
+  const valueRef = useRef(editorValue);
+  valueRef.current = editorValue;
 
   useEffect(() => {
-    setEditorValue(value);
-    if (isReady) {
-      inputRef.current?.setAttribute("value", value);
-      if (inputRef.current) {
-        inputRef.current.value = value;
-      }
-    }
-  }, [value, isReady]);
+    setAllValue(value);
+  }, [value, setAllValue]);
 
   useEffect(() => {
     document.body.addEventListener("click", onClickOutsideHandler.current);
@@ -72,10 +81,12 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           reject("Format validate error");
         }
       }),
+    getValue: () => valueRef.current,
+    setValue: (val: string) => setAllValue(val),
   }));
 
   return (
-    <div>
+    <>
       <textarea
         style={{ display: "none" }}
         ref={inputRef}
@@ -88,7 +99,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           }
         }}
         title={`editor-is-ready-${isReady}`}
-        data-test-subj={`${others["data-test-subj"] || "json-editor"}-value-display`}
+        data-test-subj={`${others["data-test-subj"] || "jsonEditor"}-valueDisplay`}
       />
       <div style={{ display: "flex", marginBottom: 12 }}>
         <div style={{ flexGrow: 1 }}>
@@ -102,43 +113,38 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           </CustomFormRow>
         </div>
       </div>
-      <MonacoDiffEditor
-        {...others}
-        onChange={(val) => setEditorValue(val)}
-        theme="euiColors"
-        language="xjson"
-        value={editorValue}
-        options={{
-          readOnly: others.disabled,
+      <div
+        style={{
+          height: others?.height || undefined,
         }}
-        editorDidMount={(editor) => {
-          editorRef.current = editor;
-          setIsReady(true);
-        }}
-        height="600px"
-      />
-      {confirmModalVisible ? (
-        <EuiConfirmModal
-          title="Format validate error"
-          onCancel={() => {
-            setConfirmModalVisible(false);
-            setTimeout(() => {
-              onClickContainer.current(new MouseEvent("click"));
-              editorRef.current?.getModifiedEditor().focus();
-            }, 0);
+        className={confirmModalVisible ? "json-diff-editor-validate-error" : ""}
+      >
+        <MonacoDiffEditor
+          height="600px"
+          {...others}
+          onChange={(val) => setEditorValue(val)}
+          theme="euiColors"
+          language="xjson"
+          value={editorValue}
+          options={{
+            readOnly: others.disabled,
           }}
-          onConfirm={() => {
-            onChange && onChange(value);
-            setEditorValue(value);
-            setConfirmModalVisible(false);
+          editorDidMount={(editor) => {
+            editorRef.current = editor;
+            setIsReady(true);
           }}
-          cancelButtonText="Close to modify"
-          confirmButtonText="Continue with data reset"
+        />
+      </div>
+      {confirmModalVisible && (
+        <EuiFormRow
+          fullWidth
+          isInvalid={confirmModalVisible}
+          error="Your input does not match the validation of json format, please fix the error line with error aside."
         >
-          Your input does not match the validation of json format, please modify the error line with error aside
-        </EuiConfirmModal>
-      ) : null}
-    </div>
+          <></>
+        </EuiFormRow>
+      )}
+    </>
   );
 });
 

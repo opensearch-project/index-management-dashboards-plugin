@@ -29,7 +29,7 @@ describe("Split Index", () => {
       cy.contains("Create index");
 
       // type field name
-      cy.get('[placeholder="Please enter the name for your index"]').type(sampleIndex).end();
+      cy.get('[placeholder="Specify a name for the new index."]').type(sampleIndex).end();
 
       cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${sampleAlias}`).end();
 
@@ -40,13 +40,13 @@ describe("Split Index", () => {
       cy.get(`#_selection_column_${sampleIndex}-checkbox`).should("have.exist").end();
 
       cy.get(`[data-test-subj="viewIndexDetailButton-${sampleIndex}"]`).click().end();
-      cy.get("#index-detail-modal-settings").click().end();
+      cy.get("#indexDetailModalSettings").click().end();
 
       cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').then(($shardNumber) => {
         splitNumber = $shardNumber.attr("title") * 2;
       });
 
-      cy.get("#index-detail-modal-alias").click().end();
+      cy.get("#indexDetailModalAlias").click().end();
       cy.get(`[title="${sampleAlias}"]`).should("exist").end();
 
       // Update Index status to blocks write otherwise we can't apply split operation on it
@@ -80,7 +80,7 @@ describe("Split Index", () => {
         .end();
 
       cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
-      cy.get("#index-detail-modal-settings").click().end();
+      cy.get("#indexDetailModalSettings").click().end();
       cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
       cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiText').should("have.text", `${replicaNumber}`).end();
     }); // Split
@@ -100,7 +100,7 @@ describe("Split Index", () => {
         .type(`${targetIndex}`)
         .end()
         // Instead of input shard number at shard field, another option is to populate it in advanced setting
-        .get('[aria-controls="accordion_for_create_index_settings"]')
+        .get('[aria-controls="accordionForCreateIndexSettings"]')
         .click()
         .end()
         .get('[data-test-subj="codeEditorContainer"] textarea')
@@ -116,7 +116,7 @@ describe("Split Index", () => {
         .end();
 
       cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
-      cy.get("#index-detail-modal-settings").click().end();
+      cy.get("#indexDetailModalSettings").click().end();
       cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
       cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiText').should("have.text", `${replicaNumber}`).end();
     }); // advanced setting
@@ -149,7 +149,7 @@ describe("Split Index", () => {
 
       cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
       // Verify alias associated with the new index
-      cy.get("#index-detail-modal-alias").click().end();
+      cy.get("#indexDetailModalAlias").click().end();
       cy.get(`[title="${newAlias}"]`).should("exist").end();
       cy.get(`[title="${sampleAlias}"]`).should("exist").end();
     }); // Create with alias
@@ -170,6 +170,7 @@ describe("Split Index", () => {
         .get('[data-test-subj="splitButton"]')
         .should("have.class", "euiButton-isDisabled")
         .end()
+        .wait(1000)
         // Set index to blocks write
         .get('[data-test-subj="set-indexsetting-button"]')
         .click()

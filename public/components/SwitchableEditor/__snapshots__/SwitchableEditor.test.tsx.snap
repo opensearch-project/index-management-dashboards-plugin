@@ -42,7 +42,7 @@ HTMLCollection [
       class="euiSpacer euiSpacer--l"
     />
     <textarea
-      data-test-subj="json-editor-value-display"
+      data-test-subj="jsonEditor-valueDisplay"
       readonly=""
       style="display: none;"
     >
@@ -158,6 +158,258 @@ HTMLCollection [
         </div>
       </div>
     </div>
+  </div>,
+]
+`;
+
+exports[`<SwitchableEditor /> spec renders the component 2`] = `
+HTMLCollection [
+  <div
+    aria-hidden="true"
+    data-aria-hidden="true"
+  >
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiSwitch"
+    >
+      <button
+        aria-checked="true"
+        aria-labelledby="some_html_id"
+        class="euiSwitch__button"
+        id="some_html_id"
+        role="switch"
+        type="button"
+      >
+        <span
+          class="euiSwitch__body"
+        >
+          <span
+            class="euiSwitch__thumb"
+          />
+          <span
+            class="euiSwitch__track"
+          >
+            EuiIconMock
+            EuiIconMock
+          </span>
+        </span>
+      </button>
+      <span
+        class="euiSwitch__label"
+        id="some_html_id"
+      >
+        Compare previously saved settings
+      </span>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <textarea
+      data-test-subj="jsonEditor-valueDisplay"
+      readonly=""
+      style="display: none;"
+    >
+      {"name":"test"}
+    </textarea>
+    <div
+      class="euiCodeEditorWrapper"
+      data-test-subj="codeEditorContainer"
+    >
+      <button
+        class="euiCodeEditorKeyboardHint"
+        data-test-subj="codeEditorHint"
+        id="some_html_id"
+      >
+        <p
+          class="euiText"
+        >
+          Press Enter to start editing.
+        </p>
+        <p
+          class="euiText"
+        >
+          When you're done, press Escape to stop editing.
+        </p>
+      </button>
+      <div
+        class=" ace_editor ace-tm"
+        id="some_html_id"
+        style="width: 500px; height: 500px;"
+      >
+        <textarea
+          autocapitalize="off"
+          autocorrect="off"
+          class="ace_text-input"
+          spellcheck="false"
+          style="opacity: 0;"
+          tabindex="-1"
+          wrap="off"
+        />
+        <div
+          aria-hidden="true"
+          class="ace_gutter"
+        >
+          <div
+            class="ace_layer ace_gutter-layer ace_folding-enabled"
+          />
+          <div
+            class="ace_gutter-active-line"
+          />
+        </div>
+        <div
+          class="ace_scroller"
+        >
+          <div
+            class="ace_content"
+          >
+            <div
+              class="ace_layer ace_print-margin-layer"
+            >
+              <div
+                class="ace_print-margin"
+                style="left: 4px; visibility: visible;"
+              />
+            </div>
+            <div
+              class="ace_layer ace_marker-layer"
+            />
+            <div
+              class="ace_layer ace_text-layer"
+              style="padding: 0px 4px;"
+            />
+            <div
+              class="ace_layer ace_marker-layer"
+            />
+            <div
+              class="ace_layer ace_cursor-layer ace_hidden-cursors"
+            >
+              <div
+                class="ace_cursor"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="ace_scrollbar ace_scrollbar-v"
+          style="display: none; width: 20px;"
+        >
+          <div
+            class="ace_scrollbar-inner"
+            style="width: 20px;"
+          />
+        </div>
+        <div
+          class="ace_scrollbar ace_scrollbar-h"
+          style="display: none; height: 20px;"
+        >
+          <div
+            class="ace_scrollbar-inner"
+            style="height: 20px;"
+          />
+        </div>
+        <div
+          style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
+        >
+          <div
+            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+          />
+          <div
+            style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
+          >
+            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <div
+    class="euiOverlayMask euiOverlayMask--aboveHeader"
+  >
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+    <div
+      data-focus-lock-disabled="false"
+    >
+      <div
+        class="euiModal switch-diff-editor-modal"
+        style="width: 100vw; height: 95vh; top: 5vh;"
+        tabindex="0"
+      >
+        <button
+          aria-label="Closes this modal window"
+          class="euiButtonIcon euiButtonIcon--text euiButtonIcon--empty euiButtonIcon--xSmall euiModal__closeIcon"
+          type="button"
+        >
+          EuiIconMock
+        </button>
+        <div
+          class="euiModal__flex"
+        >
+          <div
+            class="euiModalHeader"
+          >
+            <div
+              class="euiModalHeader__title"
+              style="width: 100%;"
+            >
+              <h1>
+                Edit in diff mode
+              </h1>
+            </div>
+          </div>
+          <div
+            class="euiModalBody"
+          >
+            <div
+              class="euiModalBody__overflow"
+            >
+              <div>
+                <textarea
+                  data-test-subj="jsonEditor-valueDisplay"
+                  style="display: none;"
+                  title="editor-is-ready-true"
+                >
+                  {"name":"test"}
+                </textarea>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiModalFooter"
+          >
+            <button
+              class="euiButton euiButton--primary euiButton--fill"
+              data-test-subj="Edit in diff mode-ok"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  OK
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
   </div>,
 ]
 `;

@@ -147,6 +147,11 @@ export type FieldInstance = {
   resetValues(obj: any): void;
 
   /**
+   * Delete value
+   */
+  deleteValue(key: FieldName): void;
+
+  /**
    * Get the Error of a single input control
    */
   getError(name: FieldName): null | string[];

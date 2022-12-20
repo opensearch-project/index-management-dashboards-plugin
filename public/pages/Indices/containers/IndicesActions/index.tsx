@@ -12,14 +12,13 @@ import { ModalConsumer } from "../../../../components/Modal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
 import { ServicesContext } from "../../../../services";
-import { BrowserServices, RecoveryJobMetaData } from "../../../../models/interfaces";
+import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { IndexItem } from "../../../../../models/interfaces";
-import { ServerResponse } from "../../../../../server/models/types";
 import { ROUTES } from "../../../../utils/constants";
+import { RouteComponentProps } from "react-router-dom";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
   selectedItems: ManagedCatIndex[];
@@ -31,7 +30,7 @@ export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, onOpen, onClose, onShrink } = props;
+  const { selectedItems, onDelete, onOpen, onClose } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
@@ -117,59 +116,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem closing index."));
     }
   }, [services, coreServices, props.onClose, onCloseIndexModalClose]);
-
-  const getIndexSettings = async (indexName: string, flat: boolean): Promise<Record<string, IndexItem>> => {
-    const result: ServerResponse<Record<string, IndexItem>> = await services.commonService.apiCaller({
-      endpoint: "indices.getSettings",
-      data: {
-        index: indexName,
-        flat_settings: flat,
-      },
-    });
-    if (result && result.ok) {
-      return result.response;
-    } else {
-      console.log("result:" + JSON.stringify(result));
-      const errorMessage = `There is a problem getting index setting for ${indexName}, please check with Admin`;
-      coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
-      throw new Error(result?.error || errorMessage);
-    }
-  };
-
-  const setIndexSettings = async (indexName: string, flat: boolean, settings: {}) => {
-    const result = await services.commonService.apiCaller({
-      endpoint: "indices.putSettings",
-      method: "PUT",
-      data: {
-        index: indexName,
-        flat_settings: flat,
-        body: {
-          settings: {
-            ...settings,
-          },
-        },
-      },
-    });
-    if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess(`Successfully update index setting for ${indexName}`);
-    } else {
-      const errorMessage = `There is a problem set index setting for ${indexName}, please check with Admin`;
-      coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
-      throw new Error(result?.error || errorMessage);
-    }
-  };
-
-  const getAlias = async (aliasName: string) => {
-    return await services.commonService.apiCaller<{ alias: string }[]>({
-      endpoint: "cat.aliases",
-      method: "GET",
-      data: {
-        format: "json",
-        name: `${aliasName || ""}*`,
-        expand_wildcards: "open",
-      },
-    });
-  };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 

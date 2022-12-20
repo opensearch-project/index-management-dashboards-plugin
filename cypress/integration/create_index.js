@@ -61,7 +61,7 @@ describe("Create Index", () => {
       cy.contains("Create index");
 
       // type field name
-      cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX).blur();
+      cy.get('[placeholder="Specify a name for the new index."]').type(SAMPLE_INDEX).blur();
 
       cy.wait(1000);
 
@@ -99,9 +99,9 @@ describe("Create Index", () => {
     it("Update alias successfully", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
-        .get("#index-detail-modal-alias")
+        .get("#indexDetailModalAlias")
         .click()
-        .get('[data-test-subj="detail-modal-edit"]')
+        .get('[data-test-subj="detailModalEdit"]')
         .click()
         .end();
 
@@ -122,13 +122,13 @@ describe("Create Index", () => {
     it("Update settings successfully", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
-        .get("#index-detail-modal-settings")
+        .get("#indexDetailModalSettings")
         .click()
-        .get('[data-test-subj="detail-modal-edit"]')
+        .get('[data-test-subj="detailModalEdit"]')
         .click()
         .end();
 
-      cy.get('[data-test-subj="index-form-in-index-detail"] [aria-controls="accordion_for_create_index_settings"]')
+      cy.get('[data-test-subj="index-form-in-index-detail"] [aria-controls="accordionForCreateIndexSettings"]')
         .click()
         .end()
         .get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
@@ -162,9 +162,9 @@ describe("Create Index", () => {
     it("Update mappings successfully", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
         .click()
-        .get("#index-detail-modal-mappings")
+        .get("#indexDetailModalMappings")
         .click()
-        .get('[data-test-subj="detail-modal-edit"]')
+        .get('[data-test-subj="detailModalEdit"]')
         .click()
         .end();
 
@@ -178,6 +178,48 @@ describe("Create Index", () => {
         .click({ force: true });
 
       cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.attr", "title", "text").end();
+
+      cy.get('[data-test-subj="detailModalEdit"]')
+        .click()
+        .end()
+        .get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="editorTypeJsonEditor"]')
+        .click()
+        .end()
+        .get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+        .focus()
+        .clear({ force: true })
+        .type('{ "dynamic": true }', { parseSpecialCharSequences: false, force: true })
+        .end()
+        .wait(1000)
+        .get('[data-test-subj="createIndexCreateButton"]')
+        .click({ force: true });
+
+      cy.wait(1000)
+        .get('[data-test-subj="editorTypeJsonEditor"]')
+        .click()
+        .end()
+        .get('[data-test-subj="jsonEditor-valueDisplay"]')
+        .should(
+          "have.text",
+          JSON.stringify(
+            {
+              dynamic: "true",
+              properties: {
+                text: {
+                  type: "text",
+                },
+                text_mappings: {
+                  type: "text",
+                },
+                text_mappings_2: {
+                  type: "text",
+                },
+              },
+            },
+            null,
+            2
+          )
+        );
     });
   });
 

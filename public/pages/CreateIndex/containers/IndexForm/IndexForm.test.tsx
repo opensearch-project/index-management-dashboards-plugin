@@ -44,11 +44,11 @@ describe("<IndexForm /> spec", () => {
 
     await waitFor(() => getByText("Define index"));
 
-    expect(queryByText("Index name can not be null.")).toBeNull();
+    expect(queryByText("Invalid index name.")).toBeNull();
 
     userEvent.click(getByText("Create"));
     await waitFor(() => {
-      expect(queryByText("Index name can not be null.")).not.toBeNull();
+      expect(queryByText("Invalid index name.")).not.toBeNull();
     });
   });
 
@@ -59,7 +59,7 @@ describe("<IndexForm /> spec", () => {
       getByText("Define index");
     });
 
-    const indexNameInput = getByPlaceholderText("Please enter the name for your index");
+    const indexNameInput = getByPlaceholderText("Specify a name for the new index.");
 
     userEvent.type(indexNameInput, `bad_index`);
     userEvent.click(document.body);
@@ -78,7 +78,7 @@ describe("<IndexForm /> spec", () => {
     const { getByText, getByPlaceholderText } = renderCreateIndexWithRouter({});
 
     await waitFor(() => getByText("Define index"));
-    userEvent.type(getByPlaceholderText("Please enter the name for your index"), `bad_index`);
+    userEvent.type(getByPlaceholderText("Specify a name for the new index."), `bad_index`);
     userEvent.click(getByText("Create"));
 
     await waitFor(() => expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("bad_index"));

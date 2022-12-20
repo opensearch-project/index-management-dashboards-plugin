@@ -307,3 +307,8 @@ export const ALIAS_STATUS_OPTIONS = ["open", "closed", "hidden", "none", "all"].
 export const INDEX_NAMING_MESSAGE = `Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, \", *, +, /, \, |, ?, #, > are not allowed.`;
 
 export const REPLICA_NUMBER_MESSAGE = "Specify the number of replicas each primary shard should have. Default is 1.";
+
+export const TEMPLATE_TYPE = {
+  INDEX_TEMPLATE: "Indexes",
+  DATA_STREAM: "Data streams",
+};

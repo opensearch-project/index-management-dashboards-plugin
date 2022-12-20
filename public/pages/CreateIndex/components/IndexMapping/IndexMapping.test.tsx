@@ -34,7 +34,9 @@ describe("<IndexMapping /> spec", () => {
     const { container } = render(
       <IndexMapping
         onChange={() => {}}
-        value={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
+        value={{
+          properties: [{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }],
+        }}
       />
     );
     expect(container).toMatchSnapshot();
@@ -47,8 +49,12 @@ describe("<IndexMapping /> spec", () => {
         <IndexMappingOnChangeWrapper
           ref={ref}
           isEdit
-          oldValue={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
-          value={[{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }]}
+          oldValue={{
+            properties: [{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }],
+          }}
+          value={{
+            properties: [{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }],
+          }}
         />
       );
 
@@ -120,14 +126,14 @@ describe("<IndexMapping /> spec", () => {
     userEvent.click(getByTestId("mapping-visual-editor-2-delete-field"));
     expect(queryByTestId("mapping-visual-editor-2-delete-field")).toBeNull();
 
-    await userEvent.click(getByTestId("editor-type-json-editor").querySelector("input") as Element);
+    await userEvent.click(getByTestId("editorTypeJsonEditor").querySelector("input") as Element);
     await waitFor(() => {});
-    userEvent.click(getByTestId("previous-mappings-json-button"));
+    userEvent.click(getByTestId("previousMappingsJsonButton"));
     await waitFor(() => {});
-    expect(queryByTestId("previous-mappings-json-modal-ok")).not.toBeNull();
-    userEvent.click(getByTestId("previous-mappings-json-modal-ok"));
+    expect(queryByTestId("previousMappingsJsonModal-ok")).not.toBeNull();
+    userEvent.click(getByTestId("previousMappingsJsonModal-ok"));
     await waitFor(() => {
-      expect(queryByTestId("previous-mappings-json-modal-ok")).toBeNull();
+      expect(queryByTestId("previousMappingsJsonModal-ok")).toBeNull();
     });
   });
 

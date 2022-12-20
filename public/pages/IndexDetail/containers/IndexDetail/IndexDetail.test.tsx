@@ -66,7 +66,7 @@ describe("container <IndexDetail /> spec", () => {
 
     await waitFor(() => {
       expect(container.firstChild).toMatchSnapshot();
-      expect(document.querySelector("#index-detail-modal-overview")).not.toBeNull();
+      expect(document.querySelector("#indexDetailModalOverview")).not.toBeNull();
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         endpoint: "indices.get",
@@ -76,11 +76,11 @@ describe("container <IndexDetail /> spec", () => {
       });
     });
 
-    userEvent.click(document.getElementById("index-detail-modal-alias") as Element);
+    userEvent.click(document.getElementById("indexDetailModalAlias") as Element);
     await waitFor(() => {
       expect(queryByText("Index alias")).not.toBeNull();
     });
-    userEvent.click(getByTestId("detail-modal-edit"));
+    userEvent.click(getByTestId("detailModalEdit"));
     await waitFor(() => {});
     userEvent.click(getByTestId("createIndexCreateButton"));
     await waitFor(() => {

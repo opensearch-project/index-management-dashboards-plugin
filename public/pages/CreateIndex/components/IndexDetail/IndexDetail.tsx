@@ -16,6 +16,7 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import { set, merge, omit, pick } from "lodash";
+import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
@@ -328,18 +329,14 @@ const IndexDetail = (
                     type: readonly || isEdit ? "Text" : "Input",
                     options: {
                       props: {
-                        placeholder: "Please enter the name for your index",
+                        placeholder: "Specify a name for the new index.",
                         onBlur: onIndexInputBlur,
                         isLoading: templateSimulateLoading,
                       },
                       rules: [
                         {
-                          required: true,
-                          message: "Index name can not be null.",
-                        },
-                        {
                           pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
-                          message: "Invalid index name",
+                          message: "Invalid index name.",
                         },
                       ],
                     },
@@ -440,29 +437,39 @@ const IndexDetail = (
                     mode: isEdit && !readonly ? "diff" : "json",
                     disabled: readonly,
                     original: JSON.stringify(getOrderedJson(oldValue?.settings || {}), null, 2),
-                    value: JSON.stringify(getOrderedJson(value || {}), null, 2),
-                    onChange: (val) => onChange(JSON.parse(val)),
+                    width: "100%",
+                    formatValue: flat,
                   },
                   accordionProps: {
                     initialIsOpen: false,
-                    id: "accordion_for_create_index_settings",
+                    id: "accordionForCreateIndexSettings",
                     buttonContent: <h4>Advanced settings</h4>,
                   },
                   rowProps: {
                     label: "Specify advanced index settings",
-                    style: {
-                      maxWidth: "800px",
-                    },
+                    fullWidth: true,
                     helpText: (
                       <>
-                        Specify a comma-delimited list of settings.
-                        <EuiLink
-                          external
-                          href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                          target="_blank"
-                        >
-                          View index settings.
-                        </EuiLink>
+                        <p>
+                          Specify a comma-delimited list of settings.
+                          <EuiLink
+                            external
+                            href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                            target="_blank"
+                          >
+                            View index settings.
+                          </EuiLink>
+                        </p>
+                        <p>
+                          All the settings will be handled in flat structure.
+                          <EuiLink
+                            href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                            external
+                            target="_blank"
+                          >
+                            Learn more.
+                          </EuiLink>
+                        </p>
                       </>
                     ),
                   },
@@ -489,9 +496,9 @@ const IndexDetail = (
               <EuiFormRow fullWidth>
                 <IndexMapping
                   isEdit={isEdit}
-                  value={finalValue?.mappings?.properties}
-                  oldValue={oldValue?.mappings?.properties}
-                  onChange={(val) => onValueChange("mappings.properties", val)}
+                  value={finalValue?.mappings}
+                  oldValue={oldValue?.mappings}
+                  onChange={(val) => onValueChange("mappings", val)}
                   ref={mappingsRef}
                   readonly={readonly}
                 />
@@ -513,7 +520,7 @@ const IndexDetail = (
                       fullWidth
                       helpText={
                         <div>
-                          Define how documents and their fields are stored and indexed.
+                          Define how documents and their fields are stored and indexed.{" "}
                           <EuiLink target="_blank" external href="https://opensearch.org/docs/latest/opensearch/mappings/">
                             Learn more.
                           </EuiLink>

@@ -1,33 +1,40 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from "react";
 import { EuiAccordion, EuiAccordionProps, EuiSpacer, EuiFormRowProps } from "@elastic/eui";
 import SwitchableEditor, { SwitchableEditorProps, ISwitchableEditorRef } from "../SwitchableEditor";
-import "./index.scss";
 import CustomFormRow from "../CustomFormRow";
+import "./index.scss";
 
-export interface IAdvancedSettingsProps {
+export interface IAdvancedSettingsProps<T> {
   rowProps?: Omit<EuiFormRowProps, "children">;
   accordionProps?: EuiAccordionProps;
-  value?: Record<string, any>;
-  onChange?: (totalValue: IAdvancedSettingsProps["value"]) => void;
+  value?: T;
+  onChange?: (totalValue: T) => void;
   renderProps?: (
-    options: Pick<Required<IAdvancedSettingsProps>, "value" | "onChange"> & { ref: React.Ref<ISwitchableEditorRef> }
+    options: Pick<Required<IAdvancedSettingsProps<T>>, "value" | "onChange"> & { ref: React.Ref<ISwitchableEditorRef> }
   ) => React.ReactChild;
-  editorProps?: Partial<SwitchableEditorProps> & { ref?: React.Ref<IAdvancedSettingsRef> };
+  editorProps?: Partial<SwitchableEditorProps> & {
+    ref?: React.Ref<IAdvancedSettingsRef>;
+    formatValue?: (val: Record<string, any>) => Record<string, any>;
+  };
 }
 
 export interface IAdvancedSettingsRef {
   validate: () => Promise<string>;
 }
 
-export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProps, ref: React.Ref<IAdvancedSettingsRef>) {
+function AdvancedSettings<T>(props: IAdvancedSettingsProps<T>, ref: React.Ref<IAdvancedSettingsRef>) {
   const { value, renderProps, editorProps } = props;
-  const propsRef = useRef<IAdvancedSettingsProps>(props);
+  const propsRef = useRef<IAdvancedSettingsProps<T>>(props);
   const editorRef = useRef<ISwitchableEditorRef>(null);
   propsRef.current = props;
 
   const onChangeInRenderProps = useCallback(
     (val: string) => {
-      const parsedValue = JSON.parse(val);
+      let parsedValue = JSON.parse(val);
+      if (editorProps?.formatValue) {
+        parsedValue = editorProps.formatValue(parsedValue);
+      }
+      editorRef.current?.setValue(JSON.stringify(parsedValue, null, 2));
       propsRef.current.onChange && propsRef.current.onChange(parsedValue);
     },
     [props.onChange]
@@ -48,32 +55,33 @@ export default forwardRef(function AdvancedSettings(props: IAdvancedSettingsProp
   }));
 
   return (
-    <>
-      <EuiSpacer size="m" />
-      <EuiAccordion {...props.accordionProps} className="accordion-in-advanced-settings" id={accordionId}>
-        <EuiSpacer size="s" />
-        <CustomFormRow {...(props.rowProps as EuiFormRowProps)}>
-          {renderProps ? (
-            (renderProps({
-              value: propsRef.current.value || {},
-              onChange: (val) => {
-                if (propsRef.current?.onChange) {
-                  propsRef.current?.onChange(val);
-                }
-              },
-              ref: editorRef,
-            }) as any)
-          ) : (
-            <SwitchableEditor
-              mode="json"
-              {...editorProps}
-              ref={editorRef}
-              value={JSON.stringify(value, null, 2)}
-              onChange={onChangeInRenderProps}
-            />
-          )}
-        </CustomFormRow>
-      </EuiAccordion>
-    </>
+    <EuiAccordion {...props.accordionProps} className="accordion-in-advanced-settings" id={accordionId}>
+      <EuiSpacer size="s" />
+      <CustomFormRow {...(props.rowProps as EuiFormRowProps)}>
+        {renderProps ? (
+          (renderProps({
+            value: propsRef.current.value || ({} as T),
+            onChange: (val) => {
+              if (propsRef.current?.onChange) {
+                propsRef.current?.onChange(val);
+              }
+            },
+            ref: editorRef,
+          }) as any)
+        ) : (
+          <SwitchableEditor
+            mode="json"
+            {...editorProps}
+            ref={editorRef}
+            value={JSON.stringify(value, null, 2)}
+            onChange={onChangeInRenderProps}
+          />
+        )}
+      </CustomFormRow>
+    </EuiAccordion>
   );
-});
+}
+
+export default forwardRef(AdvancedSettings) as <T>(
+  props: IAdvancedSettingsProps<T> & { ref?: React.Ref<IAdvancedSettingsRef> }
+) => ReturnType<typeof AdvancedSettings>;

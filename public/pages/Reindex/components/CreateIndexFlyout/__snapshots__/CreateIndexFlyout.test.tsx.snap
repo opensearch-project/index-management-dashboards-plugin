@@ -107,7 +107,7 @@ Object {
                               >
                                 <input
                                   class="euiFieldText"
-                                  placeholder="Please enter the name for your index"
+                                  placeholder="Specify a name for the new index."
                                   type="text"
                                   value=""
                                 />
@@ -181,7 +181,7 @@ Object {
                                     <p
                                       class="euiComboBoxPlaceholder"
                                     >
-                                      Select or create aliases
+                                      Select aliases or input new aliases.
                                     </p>
                                     <div
                                       class="euiComboBox__input"
@@ -400,7 +400,7 @@ Object {
                           class="euiAccordion__triggerWrapper"
                         >
                           <button
-                            aria-controls="accordion_for_create_index_settings"
+                            aria-controls="accordionForCreateIndexSettings"
                             aria-expanded="false"
                             class="euiAccordion__button"
                             id="some_html_id"
@@ -423,7 +423,7 @@ Object {
                         <div
                           aria-labelledby="some_html_id"
                           class="euiAccordion__childWrapper"
-                          id="accordion_for_create_index_settings"
+                          id="accordionForCreateIndexSettings"
                           role="region"
                           style="height: 0px"
                           tabindex="-1"
@@ -436,10 +436,9 @@ Object {
                                 class="euiSpacer euiSpacer--s"
                               />
                               <div
-                                class="euiFormRow"
+                                class="euiFormRow euiFormRow--fullWidth"
                                 data-test-subj="formNameAdvancedSettings"
                                 id="some_html_id-row"
-                                style="max-width: 800px;"
                               >
                                 <div
                                   class="euiFormRow__labelWrapper"
@@ -458,24 +457,43 @@ Object {
                                     class="euiFormHelpText euiFormRow__text"
                                     style="padding-top: 0px; padding-bottom: 4px;"
                                   >
-                                    Specify a comma-delimited list of settings.
-                                    <a
-                                      class="euiLink euiLink--primary"
-                                      href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                                      rel="noopener noreferrer"
-                                      target="_blank"
-                                    >
-                                      View index settings.
-                                      EuiIconMock
-                                      <span
-                                        class="euiScreenReaderOnly"
+                                    <p>
+                                      Specify a comma-delimited list of settings.
+                                      <a
+                                        class="euiLink euiLink--primary"
+                                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                                        rel="noopener noreferrer"
+                                        target="_blank"
                                       >
-                                        (opens in a new tab or window)
-                                      </span>
-                                    </a>
+                                        View index settings.
+                                        EuiIconMock
+                                        <span
+                                          class="euiScreenReaderOnly"
+                                        >
+                                          (opens in a new tab or window)
+                                        </span>
+                                      </a>
+                                    </p>
+                                    <p>
+                                      All the settings will be handled in flat structure.
+                                      <a
+                                        class="euiLink euiLink--primary"
+                                        href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                      >
+                                        Learn more.
+                                        EuiIconMock
+                                        <span
+                                          class="euiScreenReaderOnly"
+                                        >
+                                          (opens in a new tab or window)
+                                        </span>
+                                      </a>
+                                    </p>
                                   </div>
                                   <textarea
-                                    data-test-subj="json-editor-value-display"
+                                    data-test-subj="jsonEditor-valueDisplay"
                                     readonly=""
                                     style="display: none;"
                                   >
@@ -488,6 +506,7 @@ Object {
                                   <div
                                     class="euiCodeEditorWrapper"
                                     data-test-subj="codeEditorContainer"
+                                    style="width: 100%;"
                                   >
                                     <button
                                       class="euiCodeEditorKeyboardHint"
@@ -508,7 +527,7 @@ Object {
                                     <div
                                       class=" ace_editor ace-tm"
                                       id="some_html_id"
-                                      style="width: 500px; height: 500px;"
+                                      style="width: 100%; height: 500px;"
                                     >
                                       <textarea
                                         autocapitalize="off"
@@ -636,6 +655,7 @@ Object {
                           >
                             <div>
                               Define how documents and their fields are stored and indexed.
+                               
                               <a
                                 class="euiLink euiLink--primary"
                                 href="https://opensearch.org/docs/latest/opensearch/mappings/"
@@ -682,7 +702,7 @@ Object {
                           >
                             <label
                               class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small euiButtonGroupButton--fill euiButtonGroupButton-isSelected"
-                              data-test-subj="editor-type-visual-editor"
+                              data-test-subj="editorTypeVisualEditor"
                               for="some_html_id"
                             >
                               <span
@@ -708,7 +728,7 @@ Object {
                             </label>
                             <label
                               class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
-                              data-test-subj="editor-type-json-editor"
+                              data-test-subj="editorTypeJsonEditor"
                               for="some_html_id"
                             >
                               <span

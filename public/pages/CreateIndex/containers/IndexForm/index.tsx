@@ -232,14 +232,14 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       .filter((item) => item);
 
     const newMappingSettings = transformArrayToObject(newMappingFields);
-
-    if (newMappingFields.length) {
+    if (!isEqual(indexDetail.mappings, oldIndexDetail?.mappings)) {
       return await this.commonService.apiCaller({
         endpoint: "indices.putMapping",
         method: "PUT",
         data: {
           index,
           body: {
+            ...indexDetail.mappings,
             properties: newMappingSettings,
           },
         },

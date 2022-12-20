@@ -21,6 +21,8 @@ import {
   EuiFlyoutBody,
   EuiText,
   EuiLink,
+  EuiTitle,
+  EuiFormRow,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -32,6 +34,7 @@ import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import CreateAlias from "../CreateAlias";
 import AliasesActions from "../AliasActions";
+import { CoreStart } from "opensearch-dashboards/public";
 
 interface AliasesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -288,7 +291,27 @@ class Aliases extends Component<AliasesProps, AliasesState> {
           />
         }
         bodyStyles={{ padding: "initial" }}
-        title="Aliases"
+        title={
+          <>
+            <EuiTitle>
+              <span>Aliases</span>
+            </EuiTitle>
+            <EuiFormRow
+              fullWidth
+              helpText={
+                <div style={{ width: "50%" }}>
+                  An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes,
+                  rather than keeping track of which indexes to query, you can create an alias and query it instead.
+                  <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexAlias.base}>
+                    Learn more.
+                  </EuiLink>
+                </div>
+              }
+            >
+              <></>
+            </EuiFormRow>
+          </>
+        }
       >
         <IndexControls
           value={{
@@ -309,6 +332,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
               render: (value: string, record) => {
                 return (
                   <EuiLink
+                    data-test-subj={`aliasDetail-${value}`}
                     onClick={() =>
                       this.setState({
                         editingItem: record,

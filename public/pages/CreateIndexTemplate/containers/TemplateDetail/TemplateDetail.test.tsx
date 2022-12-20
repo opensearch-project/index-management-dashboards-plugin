@@ -33,7 +33,7 @@ describe("<TemplateDetail /> spec", () => {
   it("render component", async () => {
     const { container } = renderCreateIndexTemplate({});
     await waitFor(
-      () => expect((document.querySelector("#accordion_for_create_index_template_settings") as HTMLDivElement).style.height).toEqual("0px"),
+      () => expect((document.querySelector("#accordionForCreateIndexTemplateSettings") as HTMLDivElement).style.height).toEqual("0px"),
       {
         timeout: 3000,
       }
@@ -63,7 +63,7 @@ describe("<TemplateDetail /> spec", () => {
     userEvent.click(getByText("View JSON"));
     await waitFor(() =>
       expect(
-        JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="json-editor-value-display"]')?.innerHTML || "{}")
+        JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")
       ).toEqual({
         name: "good_template",
         template: {

@@ -129,7 +129,25 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dt
                 class="euiDescriptionList__title"
               >
-                Index patterns or wildcards
+                Template type
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                Indexes
+              </dd>
+            </dl>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <dl
+              class="euiDescriptionList euiDescriptionList--row"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Index patterns
               </dt>
               <dd
                 class="euiDescriptionList__description"
@@ -173,11 +191,35 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
         <div
           class="euiFlexItem"
         >
-          <h3
-            class="euiTitle euiTitle--small"
+          <div
+            class="euiFormRow euiFormRow--fullWidth"
+            id="some_html_id-row"
           >
-            Index alias
-          </h3>
+            <div
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                class="euiFormLabel euiFormRow__label"
+                for="some_html_id"
+              >
+                <div
+                  class="euiTitle euiTitle--small"
+                >
+                  Index alias
+                </div>
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                style="padding-top: 0px; padding-bottom: 4px;"
+              >
+                Allow the new indexes to be referenced by existing aliases or specify a new alias.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <hr
@@ -302,7 +344,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           </div>
         </div>
         <div
-          class="euiSpacer euiSpacer--m"
+          class="euiSpacer euiSpacer--l"
         />
         <div
           class="euiAccordion accordion-in-advanced-settings"
@@ -311,7 +353,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
             class="euiAccordion__triggerWrapper"
           >
             <button
-              aria-controls="accordion_for_create_index_template_settings"
+              aria-controls="accordionForCreateIndexTemplateSettings"
               aria-expanded="false"
               class="euiAccordion__button"
               id="some_html_id"
@@ -334,7 +376,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           <div
             aria-labelledby="some_html_id"
             class="euiAccordion__childWrapper"
-            id="accordion_for_create_index_template_settings"
+            id="accordionForCreateIndexTemplateSettings"
             role="region"
             style="height: 0px"
             tabindex="-1"
@@ -347,9 +389,8 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                   class="euiSpacer euiSpacer--s"
                 />
                 <div
-                  class="euiFormRow"
+                  class="euiFormRow euiFormRow--fullWidth"
                   id="some_html_id-row"
-                  style="max-width: 800px;"
                 >
                   <div
                     class="euiFormRow__labelWrapper"
@@ -368,24 +409,45 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                       class="euiFormHelpText euiFormRow__text"
                       style="padding-top: 0px; padding-bottom: 4px;"
                     >
-                      Specify a comma-delimited list of settings.
-                      <a
-                        class="euiLink euiLink--primary"
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        View index settings
-                        EuiIconMock
-                        <span
-                          class="euiScreenReaderOnly"
+                      <p>
+                        Specify a comma-delimited list of settings.
+                         
+                        <a
+                          class="euiLink euiLink--primary"
+                          href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
-                          (opens in a new tab or window)
-                        </span>
-                      </a>
+                          View index settings
+                          EuiIconMock
+                          <span
+                            class="euiScreenReaderOnly"
+                          >
+                            (opens in a new tab or window)
+                          </span>
+                        </a>
+                      </p>
+                      <p>
+                        All the settings will be handled in flat structure.
+                         
+                        <a
+                          class="euiLink euiLink--primary"
+                          href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Learn more.
+                          EuiIconMock
+                          <span
+                            class="euiScreenReaderOnly"
+                          >
+                            (opens in a new tab or window)
+                          </span>
+                        </a>
+                      </p>
                     </div>
                     <textarea
-                      data-test-subj="json-editor-value-display"
+                      data-test-subj="jsonEditor-valueDisplay"
                       readonly=""
                       style="display: none;"
                     >
@@ -394,6 +456,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                     <div
                       class="euiCodeEditorWrapper"
                       data-test-subj="codeEditorContainer"
+                      style="width: 100%;"
                     >
                       <button
                         class="euiCodeEditorKeyboardHint"
@@ -414,7 +477,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                       <div
                         class=" ace_editor ace-tm"
                         id="some_html_id"
-                        style="width: 500px; height: 500px;"
+                        style="width: 100%; height: 500px;"
                       >
                         <textarea
                           autocapitalize="off"
@@ -523,11 +586,43 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
         <div
           class="euiFlexItem"
         >
-          <h3
+          <div
             class="euiTitle euiTitle--small"
           >
             Index mapping
-          </h3>
+          </div>
+          <div
+            class="euiFormRow euiFormRow--fullWidth"
+            id="some_html_id-row"
+          >
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                id="some_html_id-help-0"
+              >
+                <div>
+                  Define how documents and their fields are stored and indexed.
+                   
+                  <a
+                    class="euiLink euiLink--primary"
+                    href="https://opensearch.org/docs/undefined/opensearch/mappings/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Learn more.
+                    EuiIconMock
+                    <span
+                      class="euiScreenReaderOnly"
+                    >
+                      (opens in a new tab or window)
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <hr
@@ -536,6 +631,9 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
       <div
         style="padding: 0px 10px;"
       >
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
         <div
           class="euiFormRow euiFormRow--fullWidth"
           id="some_html_id-row"
@@ -556,7 +654,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               >
                 <label
                   class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small euiButtonGroupButton--fill euiButtonGroupButton-isSelected"
-                  data-test-subj="editor-type-visual-editor"
+                  data-test-subj="editorTypeVisualEditor"
                   for="some_html_id"
                 >
                   <span
@@ -582,7 +680,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                 </label>
                 <label
                   class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
-                  data-test-subj="editor-type-json-editor"
+                  data-test-subj="editorTypeJsonEditor"
                   for="some_html_id"
                 >
                   <span

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { set, get } from "lodash";
+import { set, get, unset } from "lodash";
 import { Rule, FieldOption, FieldInstance, InitOption, InitResult, ValidateFunction, FieldName } from "./interfaces";
 import buildInRules from "./rules";
-import { unstable_batchedUpdates } from "react-dom";
 
 export function transformNameToString(name: FieldName) {
   if (Array.isArray(name)) {
@@ -48,10 +47,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     if (destroyRef.current) {
       return;
     }
-    errors.current = {
-      ...errors.current,
-      ...errs,
-    };
+    errors.current = errs;
     setErrorsState(errors.current);
   };
   const setError: FieldInstance["setError"] = (name, error) => {
@@ -120,9 +116,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
           setValue(initOptions.name, val);
           options?.onChange && options?.onChange(initOptions.name, val);
           const validateErros = await validateField(initOptions.name);
-          setErrors({
-            [fieldName]: validateErros.length ? validateErros : null,
-          });
+          setError(initOptions.name, validateErros.length ? validateErros : null);
         },
       };
       if (options?.unmountComponent) {
@@ -169,6 +163,11 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     setError,
     setErrors,
     resetValues,
+    deleteValue: (key) => {
+      const newValues = { ...values.current };
+      unset(newValues, key);
+      resetValues(newValues);
+    },
   };
 }
 

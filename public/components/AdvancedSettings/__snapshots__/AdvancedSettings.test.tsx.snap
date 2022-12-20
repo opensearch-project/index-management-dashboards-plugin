@@ -4,9 +4,6 @@ exports[`<FormGenerator /> spec render the component 1`] = `
 HTMLCollection [
   <div>
     <div
-      class="euiSpacer euiSpacer--m"
-    />
-    <div
       class="euiAccordion accordion-in-advanced-settings"
     >
       <div
@@ -51,7 +48,7 @@ HTMLCollection [
                 class="euiFormRow__fieldWrapper"
               >
                 <textarea
-                  data-test-subj="json-editor-value-display"
+                  data-test-subj="jsonEditor-valueDisplay"
                   readonly=""
                   style="display: none;"
                 >

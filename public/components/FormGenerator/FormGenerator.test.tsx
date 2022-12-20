@@ -108,7 +108,7 @@ describe("<FormGenerator /> spec", () => {
     });
 
     fireEvent.focus(getByTestId("formNameAdvancedSettings").querySelector(".ace_text-input") as HTMLElement);
-    const value = (getByTestId("json-editor-value-display") as HTMLTextAreaElement).value;
+    const value = (getByTestId("jsonEditor-valueDisplay") as HTMLTextAreaElement).value;
     const valueLength = value.length;
     expect(JSON.parse(value)).toEqual({});
     for (let i = 0; i < valueLength; i++) {

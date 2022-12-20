@@ -23,7 +23,7 @@ describe("<CreateIndexFlyout /> spec", () => {
       </CoreServicesContext.Provider>
     );
     await waitFor(
-      () => expect((document.querySelector("#accordion_for_create_index_settings") as HTMLDivElement).style.height).toEqual("0px"),
+      () => expect((document.querySelector("#accordionForCreateIndexSettings") as HTMLDivElement).style.height).toEqual("0px"),
       {
         timeout: 3000,
       }

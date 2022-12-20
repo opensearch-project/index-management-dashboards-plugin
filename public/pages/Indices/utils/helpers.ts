@@ -11,6 +11,8 @@ import { ServerResponse } from "../../../../server/models/types";
 import { CommonService } from "../../../services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CatIndex } from "../../../../server/models/interfaces";
+import { jobSchedulerInstance } from "../../../context/JobSchedulerContext";
+import { RecoveryJobMetaData } from "../../../models/interfaces";
 
 export function getURLQueryParams(location: { search: string }): IndicesQueryParams {
   const { from, size, search, sortField, sortDirection, showDataStreams } = queryString.parse(location.search);
@@ -153,9 +155,21 @@ export async function splitIndex(props: {
   });
 
   if (result && result.ok) {
-    props.coreServices.notifications.toasts.addSuccess(
-      `Successfully started splitting ${props.sourceIndex}. The split index will be named ${props.targetIndex}`
+    const toastInstance = props.coreServices.notifications.toasts.addSuccess(
+      `Successfully started splitting ${props.sourceIndex}. The split index will be named ${props.targetIndex}`,
+      {
+        toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+      }
     );
+    await jobSchedulerInstance.addJob({
+      interval: 30000,
+      extras: {
+        toastId: toastInstance.id,
+        sourceIndex: props.sourceIndex,
+        destIndex: props.targetIndex,
+      },
+      type: "split",
+    } as RecoveryJobMetaData);
     return result;
   } else {
     const errorMessage = `There was a problem submit split index request, please check with admin`;

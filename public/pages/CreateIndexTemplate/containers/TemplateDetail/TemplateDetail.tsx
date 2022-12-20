@@ -15,6 +15,7 @@ import {
   EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
+import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect from "../../../CreateIndex/components/AliasSelect";
 import IndexMapping, { IIndexMappingsRef, transformArrayToObject } from "../../../CreateIndex/components/IndexMapping";
@@ -35,6 +36,7 @@ import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
+import TemplateType, { TemplateConvert } from "../../components/TemplateType";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -62,6 +64,11 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
         },
       },
     } as Partial<TemplateItem>,
+    onChange(name, value) {
+      if (name === "data_stream" && value === undefined) {
+        field.deleteValue(name);
+      }
+    },
   });
   const getCommonFormRowProps = useCallback(
     (name: string | string[]): Partial<EuiFormRowProps> => {
@@ -132,9 +139,9 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
               label=""
               helpText={
                 <div>
-                  Index templates let you initialize new indexes with predefined mappings and settings.{" "}
-                  <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/index-templates">
-                    Learn more
+                  Index templates let you initialize new indexes with predefined mappings and settings.
+                  <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
+                    Learn more.
                   </EuiLink>
                 </div>
               }
@@ -199,7 +206,13 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                 description: values.name,
               },
               {
-                title: "Index patterns or wildcards",
+                title: "Template type",
+                description: TemplateConvert({
+                  value: values.data_stream,
+                }),
+              },
+              {
+                title: "Index patterns",
                 description: values.index_patterns?.join(","),
               },
               {
@@ -230,9 +243,17 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             />
           </CustomFormRow>
           <EuiSpacer />
+          <CustomFormRow {...getCommonFormRowProps("data_stream")} label="Template type">
+            <TemplateType
+              {...field.registerField({
+                name: "data_stream",
+              })}
+            />
+          </CustomFormRow>
+          <EuiSpacer />
           <CustomFormRow
             {...getCommonFormRowProps("index_patterns")}
-            label="Index patterns or wildcards"
+            label="Index patterns"
             helpText="Specify the index patterns or wildcards. Add a comma to separate each value. 
             Settings in this template will be applied to indexes with names matching index patterns or wildcards."
           >
@@ -251,6 +272,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                   },
                 ],
               })}
+              delimiter=","
               noSuggestions
               async={false}
               refreshOptions={() =>
@@ -287,7 +309,24 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
         </ContentPanel>
       )}
       <EuiSpacer />
-      <ContentPanel title="Index alias" titleSize="s">
+      <ContentPanel
+        title={
+          <>
+            <CustomFormRow
+              fullWidth
+              label={
+                <EuiTitle size="s">
+                  <div>Index alias</div>
+                </EuiTitle>
+              }
+              helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
+            >
+              <></>
+            </CustomFormRow>
+          </>
+        }
+        titleSize="s"
+      >
         {readonly ? (
           <>
             <EuiSpacer size="s" />
@@ -303,7 +342,12 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
         ) : (
           <>
             <EuiSpacer size="s" />
-            <CustomFormRow {...getCommonFormRowProps(["template", "aliases"])} label="Index alias">
+            <CustomFormRow
+              fullWidth
+              {...getCommonFormRowProps(["template", "aliases"])}
+              label="Index alias"
+              helpText="Select existing aliases or specify a new alias."
+            >
               <AliasSelect
                 {...field.registerField({
                   name: ["template", "aliases"],
@@ -348,7 +392,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           <>
             <CustomFormRow
               label="Number of primary shards"
-              helpText="The number of primary shards in the index. Default is 1."
+              helpText="Specify the number of primary shards in the index. Default is 1."
               {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"])}
             >
               <AllBuiltInComponents.Number
@@ -373,8 +417,9 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             </CustomFormRow>
             <EuiSpacer />
             <CustomFormRow
+              fullWidth
               label="Number of replicas"
-              helpText="The number of replica shards each primary shard should have."
+              helpText="Specify the number of replicas each primary shard should have. Default is 1."
               {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"])}
             >
               <AllBuiltInComponents.Number
@@ -399,8 +444,8 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             </CustomFormRow>
             <EuiSpacer />
             <CustomFormRow
-              label="Refresh interval of index"
-              helpText="How often the index should refresh, which publishes its most recent changes and makes them available for searching."
+              label="Refresh interval"
+              helpText="Specify how often the index should refresh, which publishes its most recent changes and makes them available for search. Default is 1s."
               {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"])}
             >
               <AllBuiltInComponents.Input
@@ -411,43 +456,83 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             </CustomFormRow>
           </>
         )}
+        <EuiSpacer />
         <AdvancedSettings
           value={field.getValues().template.settings || {}}
           onChange={(totalValue) => field.setValue(["template", "settings"], totalValue)}
           accordionProps={{
             initialIsOpen: false,
-            id: "accordion_for_create_index_template_settings",
+            id: "accordionForCreateIndexTemplateSettings",
             buttonContent: <h4>Advanced settings</h4>,
           }}
           editorProps={{
             disabled: readonly,
+            width: "100%",
+            formatValue: flat,
           }}
           rowProps={{
+            fullWidth: true,
             label: "Specify advanced index settings",
-            style: {
-              maxWidth: "800px",
-            },
             helpText: (
               <>
-                Specify a comma-delimited list of settings.
-                <EuiLink
-                  href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                  target="_blank"
-                  external
-                >
-                  View index settings
-                </EuiLink>
+                <p>
+                  Specify a comma-delimited list of settings.{" "}
+                  <EuiLink
+                    href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
+                    target="_blank"
+                    external
+                  >
+                    View index settings
+                  </EuiLink>
+                </p>
+                <p>
+                  All the settings will be handled in flat structure.{" "}
+                  <EuiLink
+                    href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                    external
+                    target="_blank"
+                  >
+                    Learn more.
+                  </EuiLink>
+                </p>
               </>
             ),
           }}
         />
       </ContentPanel>
       <EuiSpacer />
-      <ContentPanel title="Index mapping" titleSize="s">
+      <ContentPanel
+        title={
+          <>
+            <EuiTitle size="s">
+              <div>Index mapping</div>
+            </EuiTitle>
+            <EuiFormRow
+              fullWidth
+              helpText={
+                <div>
+                  Define how documents and their fields are stored and indexed.{" "}
+                  <EuiLink
+                    target="_blank"
+                    external
+                    href={`https://opensearch.org/docs/${coreServices.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
+                  >
+                    Learn more.
+                  </EuiLink>
+                </div>
+              }
+            >
+              <></>
+            </EuiFormRow>
+          </>
+        }
+        titleSize="s"
+      >
+        <EuiSpacer size="s" />
         <EuiFormRow fullWidth>
           <IndexMapping
             {...field.registerField({
-              name: ["template", "mappings", "properties"],
+              name: ["template", "mappings"],
               rules: [
                 {
                   validator() {
@@ -464,7 +549,6 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             })}
             readonly={readonly}
             isEdit={isEdit}
-            originalValue={oldValue.current?.template?.mappings?.properties}
             ref={mappingsRef}
           />
         </EuiFormRow>
@@ -481,7 +565,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateIndexTemplateCreateButton">
-                {isEdit ? "Update" : "Create"}
+                {isEdit ? "Save changes" : "Create template"}
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>
