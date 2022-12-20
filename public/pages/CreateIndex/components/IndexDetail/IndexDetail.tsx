@@ -405,6 +405,7 @@ const IndexDetail = (
               panels={[
                 {
                   id: 0,
+                  width: 400,
                   items: sourceIndices.map((sourceIndex) => ({
                     name: sourceIndex,
                     "data-test-subj": `import-settings-${sourceIndex}`,
