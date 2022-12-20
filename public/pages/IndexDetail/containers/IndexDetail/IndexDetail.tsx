@@ -165,6 +165,8 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       .then((res) => {
         if (res && res.ok) {
           setDetail(res.response);
+        } else {
+          coreService?.notifications.toasts.addDanger(res.error || "");
         }
       });
   };

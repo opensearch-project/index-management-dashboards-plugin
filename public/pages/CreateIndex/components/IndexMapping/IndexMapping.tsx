@@ -28,9 +28,9 @@ import useField, { transformNameToString } from "../../../../lib/field";
 import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
-import "./IndexMapping.scss";
 import SimplePopover from "../../../../components/SimplePopover";
 import CustomFormRow from "../../../../components/CustomFormRow";
+import "./IndexMapping.scss";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
   return Object.entries(obj).map(([fieldName, fieldSettings]) => {
@@ -565,10 +565,13 @@ const IndexMapping = (
               label="Specify index mapping"
               helpText={
                 <div>
-                  Specify mapping in JSON format.{" "}
-                  <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage">
-                    View mapping example.
-                  </EuiLink>
+                  <div>
+                    Specify mapping in JSON format.{" "}
+                    <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage">
+                      View mapping example.
+                    </EuiLink>
+                  </div>
+                  <div>The existing mapping properties cannot be changed after the index is created.</div>
                 </div>
               }
               fullWidth

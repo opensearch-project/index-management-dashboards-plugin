@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } from "react";
-import { EuiForm, EuiFormProps } from "@elastic/eui";
+import { EuiForm, EuiFormProps, EuiSpacer } from "@elastic/eui";
 import { isEqual } from "lodash";
 import AllBuiltInComponents, { IFieldComponentProps } from "./built_in_components";
 import useField, { InitOption, FieldOption, Rule, FieldInstance, FieldName } from "../../lib/field";
@@ -17,7 +17,7 @@ interface IInitOption extends Omit<InitOption, "rules"> {
   rules?: IRule[];
 }
 
-interface IFormGeneratorAdvancedSettings extends IAdvancedSettingsProps {
+interface IFormGeneratorAdvancedSettings<T> extends IAdvancedSettingsProps<T> {
   blockedNameList?: string[];
 }
 
@@ -29,22 +29,22 @@ export interface IField {
   options?: Omit<IInitOption, "name">;
 }
 
-export interface IFormGeneratorProps {
+export interface IFormGeneratorProps<T> {
   formFields: IField[];
   resetValuesWhenPropsValueChange?: boolean;
   hasAdvancedSettings?: boolean;
-  advancedSettingsProps?: IFormGeneratorAdvancedSettings;
+  advancedSettingsProps?: IFormGeneratorAdvancedSettings<T>;
   fieldProps?: FieldOption;
   formProps?: EuiFormProps;
-  value?: Record<string, any>;
-  onChange?: (totalValue: IFormGeneratorProps["value"], key?: FieldName, value?: any) => void;
+  value?: T;
+  onChange?: (totalValue: IFormGeneratorProps<T>["value"], key?: FieldName, value?: any) => void;
 }
 
 export interface IFormGeneratorRef extends FieldInstance {}
 
 export { AllBuiltInComponents };
 
-export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref: React.Ref<IFormGeneratorRef>) {
+function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGeneratorRef>) {
   const { fieldProps, formFields, advancedSettingsProps } = props;
   const { blockedNameList } = advancedSettingsProps || {};
   const propsRef = useRef(props);
@@ -111,7 +111,7 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
     });
   }, [formFields, field]);
 
-  const finalValue: Record<string, any> = useMemo(() => {
+  const finalValue: T = useMemo(() => {
     const value = field.getValues();
     if (!blockedNameList) {
       return field.getValues();
@@ -151,27 +151,34 @@ export default forwardRef(function FormGenerator(props: IFormGeneratorProps, ref
         );
       })}
       {props.hasAdvancedSettings ? (
-        <AdvancedSettings
-          {...props.advancedSettingsProps}
-          ref={advancedRef}
-          rowProps={{
-            "data-test-subj": "formNameAdvancedSettings",
-            ...props.advancedSettingsProps?.rowProps,
-          }}
-          value={finalValue}
-          onChange={(val) => {
-            field.setValues(val);
-            const totalValue = {
-              ...field.getValues(),
-              ...val,
-            };
-            if (!isEqual(val, finalValue)) {
-              field.validatePromise();
-            }
-            propsRef.current.onChange && propsRef.current.onChange(totalValue, undefined, val);
-          }}
-        />
+        <>
+          <EuiSpacer size="m" />
+          <AdvancedSettings
+            {...props.advancedSettingsProps}
+            ref={advancedRef}
+            rowProps={{
+              "data-test-subj": "formNameAdvancedSettings",
+              ...props.advancedSettingsProps?.rowProps,
+            }}
+            value={finalValue}
+            onChange={(val) => {
+              field.setValues(val);
+              const totalValue = {
+                ...field.getValues(),
+                ...val,
+              };
+              if (!isEqual(val, finalValue)) {
+                field.validatePromise();
+              }
+              propsRef.current.onChange && propsRef.current.onChange(totalValue, undefined, val);
+            }}
+          />
+        </>
       ) : null}
     </EuiForm>
   );
-});
+}
+
+export default forwardRef(FormGenerator) as <T>(
+  props: IFormGeneratorProps<T> & { ref?: React.Ref<IFormGeneratorRef> }
+) => ReturnType<typeof FormGenerator>;
