@@ -319,7 +319,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                       fullWidth
                       helpText={
                         <div>
-                          Define how documents and their fields are stored and indexed.
+                          Define how documents and their fields are stored and indexed.{" "}
                           <EuiLink
                             target="_blank"
                             external

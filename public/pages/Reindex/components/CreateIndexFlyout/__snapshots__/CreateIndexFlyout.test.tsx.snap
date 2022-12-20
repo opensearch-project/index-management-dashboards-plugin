@@ -655,6 +655,7 @@ Object {
                           >
                             <div>
                               Define how documents and their fields are stored and indexed.
+                               
                               <a
                                 class="euiLink euiLink--primary"
                                 href="https://opensearch.org/docs/latest/opensearch/mappings/"

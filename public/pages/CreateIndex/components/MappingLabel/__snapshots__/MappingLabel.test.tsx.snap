@@ -1,0 +1,240 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TemplateDetail /> spec render component 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+      style="width: 300px;"
+    >
+      <div
+        class="euiFormRow euiFormRow--compressed"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiFormControlLayout euiFormControlLayout--compressed"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText euiFieldText--compressed"
+                  data-test-subj="-field-name"
+                  disabled=""
+                  id="some_html_id"
+                  type="text"
+                  value="text"
+                />
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+      style="width: 100px;"
+    >
+      <div
+        class="euiFormRow euiFormRow--compressed"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiFormControlLayout euiFormControlLayout--compressed"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <select
+                  class="euiSelect euiSelect--compressed"
+                  data-test-subj="-field-type"
+                  disabled=""
+                  id="some_html_id"
+                >
+                  <option
+                    value="alias"
+                  >
+                    alias
+                  </option>
+                  <option
+                    value="boolean"
+                  >
+                    boolean
+                  </option>
+                  <option
+                    value="binary"
+                  >
+                    binary
+                  </option>
+                  <option
+                    value="completion"
+                  >
+                    completion
+                  </option>
+                  <option
+                    value="date"
+                  >
+                    date
+                  </option>
+                  <option
+                    value="date_range"
+                  >
+                    date_range
+                  </option>
+                  <option
+                    value="double"
+                  >
+                    double
+                  </option>
+                  <option
+                    value="double_range"
+                  >
+                    double_range
+                  </option>
+                  <option
+                    value="float"
+                  >
+                    float
+                  </option>
+                  <option
+                    value="geo_point"
+                  >
+                    geo_point
+                  </option>
+                  <option
+                    value="geo_shape"
+                  >
+                    geo_shape
+                  </option>
+                  <option
+                    value="half_float"
+                  >
+                    half_float
+                  </option>
+                  <option
+                    value="integer"
+                  >
+                    integer
+                  </option>
+                  <option
+                    value="ip"
+                  >
+                    ip
+                  </option>
+                  <option
+                    value="ip_range"
+                  >
+                    ip_range
+                  </option>
+                  <option
+                    value="keyword"
+                  >
+                    keyword
+                  </option>
+                  <option
+                    value="long"
+                  >
+                    long
+                  </option>
+                  <option
+                    value="long_range"
+                  >
+                    long_range
+                  </option>
+                  <option
+                    value="object"
+                  >
+                    object
+                  </option>
+                  <option
+                    value="percolator"
+                  >
+                    percolator
+                  </option>
+                  <option
+                    value="rank_feature"
+                  >
+                    rank_feature
+                  </option>
+                  <option
+                    value="rank_features"
+                  >
+                    rank_features
+                  </option>
+                  <option
+                    value="search_as_you_type"
+                  >
+                    search_as_you_type
+                  </option>
+                  <option
+                    value="text"
+                  >
+                    text
+                  </option>
+                  <option
+                    value="token_count"
+                  >
+                    token_count
+                  </option>
+                </select>
+                <div
+                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                >
+                  <span
+                    class="euiFormControlLayoutCustomIcon"
+                  >
+                    EuiIconMock
+                  </span>
+                </div>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <div
+        class="euiFormRow euiFormRow--compressed"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            id="some_html_id"
+            style="display: flex; height: 32px; align-items: center;"
+          >
+            <span
+              class="euiToolTipAnchor"
+            >
+              <span
+                aria-label="Delete current field"
+                class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
+                data-test-subj="-delete-field"
+              >
+                EuiIconMock
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

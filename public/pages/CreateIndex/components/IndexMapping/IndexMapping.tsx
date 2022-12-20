@@ -4,32 +4,13 @@
  */
 
 import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
-import {
-  EuiTreeView,
-  EuiIcon,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFormRow,
-  EuiTreeViewProps,
-  EuiButton,
-  EuiSpacer,
-  EuiButtonGroup,
-  EuiToolTip,
-  EuiCode,
-  EuiBadge,
-  EuiText,
-  EuiContextMenu,
-  EuiLink,
-} from "@elastic/eui";
-import { set, get, pick, isEmpty } from "lodash";
+import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink } from "@elastic/eui";
+import { set, get, isEmpty } from "lodash";
 import JSONEditor, { IJSONEditorRef } from "../../../../components/JSONEditor";
-import { AllBuiltInComponents } from "../../../../components/FormGenerator";
-import useField, { transformNameToString } from "../../../../lib/field";
 import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
-import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
-import SimplePopover from "../../../../components/SimplePopover";
 import CustomFormRow from "../../../../components/CustomFormRow";
+import MappingLabel, { IIndexMappingsRef } from "../MappingLabel";
 import "./IndexMapping.scss";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
@@ -92,251 +73,10 @@ export interface IndexMappingProps {
   readonly?: boolean;
 }
 
-export interface IIndexMappingsRef {
-  validate: () => Promise<string>;
-}
-
 export enum EDITOR_MODE {
   JSON = "JSON",
   VISUAL = "VISUAL",
 }
-
-interface IMappingLabel {
-  value: MappingsProperties[number];
-  onChange: (val: IMappingLabel["value"], key: string, value: string) => void | string;
-  onFieldNameCheck: (val: string) => string;
-  onAddSubField: () => void;
-  onAddSubObject: () => void;
-  onDeleteField: () => void;
-  disabled?: boolean;
-  readonly?: boolean;
-  id: string;
-}
-
-const OLD_VALUE_DISABLED_REASON = "Old mappings can not be modified";
-
-const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<IIndexMappingsRef>) => {
-  const { onFieldNameCheck, disabled, onAddSubField, onAddSubObject, onDeleteField, id, readonly } = props;
-  const propsRef = useRef(props);
-  propsRef.current = props;
-  const onFieldChange = useCallback(
-    (k, v) => {
-      let newValue = { ...propsRef.current.value };
-      set(newValue, k, v);
-      if (k === "type") {
-        newValue = pick(newValue, ["fieldName", "type"]);
-        const findItem = INDEX_MAPPING_TYPES.find((item) => item.label === v);
-        const initValues = (findItem?.options?.fields || []).reduce((total, current) => {
-          if (current && current.initValue !== undefined) {
-            return {
-              ...total,
-              [transformNameToString(current.name)]: current.initValue,
-            };
-          }
-
-          return total;
-        }, {});
-        newValue = {
-          ...newValue,
-          ...initValues,
-        };
-        field.setValues(newValue);
-      }
-      return propsRef.current.onChange(newValue, k, v);
-    },
-    [propsRef.current.value, propsRef.current.onChange]
-  );
-  const field = useField({
-    values: {
-      ...propsRef.current.value,
-      type: propsRef.current.value.type || "object",
-    },
-    onChange: onFieldChange,
-    unmountComponent: true,
-  });
-  const value = field.getValues();
-  const type = value.type;
-  useImperativeHandle(forwardedRef, () => ({
-    validate: async () => {
-      const { errors } = await field.validatePromise();
-      if (errors) {
-        return "Validate Error";
-      } else {
-        return "";
-      }
-    },
-  }));
-
-  const findItem = INDEX_MAPPING_TYPES.find((item) => item.label === type);
-  const moreFields = findItem?.options?.fields || [];
-
-  if (readonly || disabled) {
-    return (
-      <EuiText>
-        <li className="ism-index-mappings-field-line">
-          <EuiIcon type="dot" size="s" />
-          <span data-test-subj={`${id}-field-name`} title={field.getValue("fieldName")}>
-            {field.getValue("fieldName")}
-          </span>
-          <EuiBadge color="hollow" title={type} data-test-subj={`${id}-field-type`}>
-            {type}
-          </EuiBadge>
-          {moreFields.map((extraField) => (
-            <EuiBadge key={transformNameToString(extraField.name)} color="hollow" title={field.getValue(extraField.name)}>
-              {extraField.label}: {field.getValue(extraField.name)}
-            </EuiBadge>
-          ))}
-        </li>
-      </EuiText>
-    );
-  }
-
-  return (
-    <EuiFlexGroup onClick={(e) => e.stopPropagation()}>
-      <EuiFlexItem grow={false} style={{ width: 300 }}>
-        <EuiFormRow
-          isInvalid={!!field.getError("fieldName")}
-          error={field.getError("fieldName")}
-          label="Field name"
-          display="rowCompressed"
-        >
-          {readonly ? (
-            <EuiCode>{field.getValue("fieldName")}</EuiCode>
-          ) : (
-            <AllBuiltInComponents.Input
-              {...field.registerField({
-                name: "fieldName",
-                rules: [
-                  {
-                    required: true,
-                    message: "Field name is required, please input",
-                  },
-                  {
-                    validator: (rule, value) => {
-                      const checkResult = onFieldNameCheck(value);
-                      if (checkResult) {
-                        return Promise.reject(checkResult);
-                      }
-
-                      return Promise.resolve("");
-                    },
-                  },
-                ],
-              })}
-              disabled={readonly || disabled}
-              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-              compressed
-              data-test-subj={`${id}-field-name`}
-            />
-          )}
-        </EuiFormRow>
-      </EuiFlexItem>
-      <EuiFlexItem grow={false} style={{ width: 100 }}>
-        <EuiFormRow label="Field type" display="rowCompressed">
-          {readonly ? (
-            <EuiCode>{type}</EuiCode>
-          ) : (
-            <AllBuiltInComponents.Select
-              disabled={readonly || disabled}
-              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-              compressed
-              {...field.registerField({
-                name: "type",
-              })}
-              data-test-subj={`${id}-field-type`}
-              options={(() => {
-                const allOptions = INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }));
-                const typeValue = field.getValue("type");
-                if (!allOptions.find((item) => item.value === typeValue)) {
-                  allOptions.push({
-                    text: typeValue,
-                    value: typeValue,
-                  });
-                }
-                return allOptions;
-              })()}
-            />
-          )}
-        </EuiFormRow>
-      </EuiFlexItem>
-      {moreFields.map((item) => {
-        const { label, type, ...others } = item;
-        const RenderComponent = readonly ? AllBuiltInComponents.Text : AllBuiltInComponents[type];
-        return (
-          <EuiFlexItem grow={false} key={transformNameToString(others.name)} style={{ width: 100 }}>
-            <EuiFormRow label={label} display="rowCompressed" isInvalid={!!field.getError(others.name)} error={field.getError(others.name)}>
-              <RenderComponent
-                {...field.registerField(others)}
-                disabled={readonly || disabled}
-                disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-                compressed
-              />
-            </EuiFormRow>
-          </EuiFlexItem>
-        );
-      })}
-      {disabled ? null : (
-        <EuiFlexItem grow={false}>
-          <EuiFormRow label="Actions" display="rowCompressed">
-            <div
-              style={{ display: "flex", height: 32, alignItems: "center" }}
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-            >
-              {INDEX_MAPPING_TYPES_WITH_CHILDREN.includes(type) ? (
-                <SimplePopover
-                  triggerType="hover"
-                  panelPaddingSize="none"
-                  button={
-                    <span
-                      className="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--medium"
-                      data-test-subj={`${id}-add-sub-field`}
-                      aria-label="Delete current field"
-                      onClick={onAddSubField}
-                    >
-                      <EuiIcon type="plusInCircleFilled" />
-                    </span>
-                  }
-                >
-                  <EuiContextMenu
-                    initialPanelId={0}
-                    panels={[
-                      {
-                        id: 0,
-                        title: "",
-                        items: [
-                          {
-                            name: "Add nested field",
-                            onClick: onAddSubField,
-                          },
-                          {
-                            name: "Add nested object",
-                            onClick: onAddSubObject,
-                          },
-                        ],
-                      },
-                    ]}
-                  />
-                </SimplePopover>
-              ) : null}
-              <EuiToolTip content="Delete current field">
-                <span
-                  className="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--medium"
-                  data-test-subj={`${id}-delete-field`}
-                  aria-label="Delete current field"
-                  onClick={onDeleteField}
-                >
-                  <EuiIcon type="trash" />
-                </span>
-              </EuiToolTip>
-            </div>
-          </EuiFormRow>
-        </EuiFlexItem>
-      )}
-    </EuiFlexGroup>
-  );
-});
 
 const IndexMapping = (
   { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly }: IndexMappingProps,
@@ -394,12 +134,20 @@ const IndexMapping = (
     [onChange, value]
   );
   const transformValueToTreeItems = (formValue: MappingsProperties, pos: string = ""): EuiTreeViewProps["items"] => {
+    let isFirstEditableField = false;
     return (formValue || []).map((item, index) => {
       const { fieldName, ...fieldSettings } = item;
       const id = [pos, index].filter((item) => item !== "").join(".properties.");
+      const readonlyFlag = readonly || (isEdit && !!get(oldValue?.properties, id));
+      let shouldShowLabel = false;
+      if (!readonlyFlag && !isFirstEditableField) {
+        isFirstEditableField = true;
+        shouldShowLabel = true;
+      }
       const payload: EuiTreeViewProps["items"][number] = {
         label: (
           <MappingLabel
+            shouldShowLabel={shouldShowLabel}
             ref={(ref) => {
               if (ref) {
                 allFieldsRef.current[id] = ref;
@@ -407,8 +155,7 @@ const IndexMapping = (
                 delete allFieldsRef.current[id];
               }
             }}
-            readonly={readonly}
-            disabled={isEdit && !!get(oldValue?.properties, id)}
+            readonly={readonlyFlag}
             value={item}
             id={`mapping-visual-editor-${id}`}
             onFieldNameCheck={(fieldName) => {

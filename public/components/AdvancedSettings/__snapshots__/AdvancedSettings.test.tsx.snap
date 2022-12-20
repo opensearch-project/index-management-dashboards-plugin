@@ -4,9 +4,6 @@ exports[`<FormGenerator /> spec render the component 1`] = `
 HTMLCollection [
   <div>
     <div
-      class="euiSpacer euiSpacer--m"
-    />
-    <div
       class="euiAccordion accordion-in-advanced-settings"
     >
       <div

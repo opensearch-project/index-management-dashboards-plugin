@@ -546,7 +546,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         </div>
       </div>
       <div
-        class="euiSpacer euiSpacer--m"
+        class="euiSpacer euiSpacer--l"
       />
       <div
         class="euiAccordion accordion-in-advanced-settings"
@@ -613,6 +613,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                   >
                     <p>
                       Specify a comma-delimited list of settings.
+                       
                       <a
                         class="euiLink euiLink--primary"
                         href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
@@ -630,6 +631,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     </p>
                     <p>
                       All the settings will be handled in flat structure.
+                       
                       <a
                         class="euiLink euiLink--primary"
                         href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
@@ -808,6 +810,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             >
               <div>
                 Define how documents and their fields are stored and indexed.
+                 
                 <a
                   class="euiLink euiLink--primary"
                   href="https://opensearch.org/docs/undefined/opensearch/mappings/"

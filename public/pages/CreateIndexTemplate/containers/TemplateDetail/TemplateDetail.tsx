@@ -436,6 +436,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             </CustomFormRow>
           </>
         )}
+        <EuiSpacer />
         <AdvancedSettings
           value={field.getValues().template.settings || {}}
           onChange={(totalValue) => field.setValue(["template", "settings"], totalValue)}
@@ -455,7 +456,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             helpText: (
               <>
                 <p>
-                  Specify a comma-delimited list of settings.
+                  Specify a comma-delimited list of settings.{" "}
                   <EuiLink
                     href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
                     target="_blank"
@@ -465,7 +466,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                   </EuiLink>
                 </p>
                 <p>
-                  All the settings will be handled in flat structure.
+                  All the settings will be handled in flat structure.{" "}
                   <EuiLink
                     href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
                     external
@@ -490,7 +491,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
               fullWidth
               helpText={
                 <div>
-                  Define how documents and their fields are stored and indexed.
+                  Define how documents and their fields are stored and indexed.{" "}
                   <EuiLink
                     target="_blank"
                     external
