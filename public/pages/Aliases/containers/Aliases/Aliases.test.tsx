@@ -92,6 +92,18 @@ describe("<Aliases /> spec", () => {
           ok: false,
           error: "alias exist",
         };
+      } else if (payload.endpoint === "transport.request" && payload.data?.path === "/_data_stream") {
+        return {
+          ok: true,
+          response: {
+            data_streams: [
+              {
+                name: "test_data_stream",
+                indices: [],
+              },
+            ],
+          },
+        };
       }
 
       return {
@@ -215,4 +227,13 @@ describe("<Aliases /> spec", () => {
     userEvent.click(getByTestId("tablePagination-25-rows"));
     userEvent.click(getByTestId("euiFlyoutCloseButton"));
   }, 50000);
+
+  it("shows detail", async () => {
+    const { getByTestId, findByTestId, getByText } = renderWithRouter();
+    await findByTestId(`aliasDetail-${testAliasId}`);
+    userEvent.click(getByTestId(`aliasDetail-${testAliasId}`));
+    await waitFor(() => expect(getByText("Save changes")).toBeInTheDocument(), {
+      timeout: 3000,
+    });
+  });
 });

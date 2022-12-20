@@ -29,7 +29,7 @@ describe("Split Index", () => {
       cy.contains("Create index");
 
       // type field name
-      cy.get('[placeholder="Please enter the name for your index"]').type(sampleIndex).end();
+      cy.get('[placeholder="Specify a name for the new index."]').type(sampleIndex).end();
 
       cy.get('[data-test-subj="comboBoxSearchInput"]').focus().type(`${sampleAlias}`).end();
 

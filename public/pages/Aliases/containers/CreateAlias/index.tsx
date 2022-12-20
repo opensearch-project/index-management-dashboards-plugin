@@ -151,7 +151,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
                   {
                     validator: (rule, value?: string[]) => {
                       if (!value || !value.length) {
-                        return Promise.reject("At least one index should be selected");
+                        return Promise.reject("At least one index should be selected.");
                       }
 
                       return Promise.resolve();

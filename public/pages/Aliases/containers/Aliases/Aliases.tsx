@@ -332,6 +332,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
               render: (value: string, record) => {
                 return (
                   <EuiLink
+                    data-test-subj={`aliasDetail-${value}`}
                     onClick={() =>
                       this.setState({
                         editingItem: record,
