@@ -212,11 +212,11 @@ exports[`<Reindex /> spec renders the component 1`] = `
               </label>
             </div>
           </fieldset>
-          <div
-            class="euiSpacer euiSpacer--l"
-          />
         </div>
       </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
     </div>
   </div>
   <div

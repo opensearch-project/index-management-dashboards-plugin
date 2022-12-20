@@ -78,7 +78,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
       </CustomFormRow>
 
       <EuiSpacer />
-      <CustomFormRow label="Pipeline" helpText="Pipeline pre-process documents before writing into destination">
+      <CustomFormRow label="Pipeline" helpText="Pipeline pre-process documents before writing into destination.">
         <EuiComboBox
           aria-label="Ingest Pipeline"
           placeholder="Select a single pipeline"

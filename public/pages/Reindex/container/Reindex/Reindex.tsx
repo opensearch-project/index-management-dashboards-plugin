@@ -257,7 +257,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     });
     if (res && res.ok) {
       // @ts-ignore
-      const toast = `Successfully started reindexing ${reindexRequest.body.source.index}.The reindex index will be named ${reindexRequest.body.dest.index}.`;
+      const toast = `Successfully started reindexing ${reindexRequest.body.source.index}.The reindexed index will be named ${reindexRequest.body.dest.index}.`;
       const toastInstance = (this.context as CoreStart).notifications.toasts.addSuccess(toast, {
         toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
       });
@@ -523,55 +523,54 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
           <EuiSpacer />
           <CustomFormRow>
-            <>
-              <EuiRadioGroup
-                options={[
-                  {
-                    id: "all",
-                    label: "Reindex all documents",
-                  },
-                  {
-                    id: "subset",
-                    label: "Reindex a subset of documents (Advanced)",
-                  },
-                ]}
-                idSelected={subset ? "subset" : "all"}
-                onChange={(id) => {
-                  this.setState({ subset: id === "subset" });
-                }}
-                name="subsetOption"
-                data-test-subj="subsetOption"
-                legend={{
-                  children: <span>Specify a reindex option</span>,
-                }}
-              />
-              <EuiSpacer />
-              {subset ? (
-                <CustomFormRow
-                  label="Query expression"
-                  isInvalid={!!sourceQueryErr}
-                  error={sourceQueryErr}
-                  labelAppend={
-                    <EuiText size="xs">
-                      <EuiLink href={this.context.docLinks.links.opensearch.queryDSL.base} target="_blank" rel="noopener noreferrer">
-                        learn more about query-dsl
-                      </EuiLink>
-                    </EuiText>
-                  }
-                >
-                  <JSONEditor
-                    mode="json"
-                    width="100%"
-                    value={sourceQuery}
-                    onChange={this.onSourceQueryChange}
-                    aria-label="Query DSL Editor"
-                    height="150px"
-                    data-test-subj="queryJsonEditor"
-                  />
-                </CustomFormRow>
-              ) : null}
-            </>
+            <EuiRadioGroup
+              options={[
+                {
+                  id: "all",
+                  label: "Reindex all documents",
+                },
+                {
+                  id: "subset",
+                  label: "Reindex a subset of documents (Advanced)",
+                },
+              ]}
+              idSelected={subset ? "subset" : "all"}
+              onChange={(id) => {
+                this.setState({ subset: id === "subset" });
+              }}
+              name="subsetOption"
+              data-test-subj="subsetOption"
+              legend={{
+                children: <span>Specify a reindex option</span>,
+              }}
+            />
           </CustomFormRow>
+          <EuiSpacer />
+          {subset ? (
+            <CustomFormRow
+              fullWidth={true}
+              label="Query expression"
+              isInvalid={!!sourceQueryErr}
+              error={sourceQueryErr}
+              labelAppend={
+                <EuiText size="xs">
+                  <EuiLink href={this.context.docLinks.links.opensearch.queryDSL.base} target="_blank" rel="noopener noreferrer">
+                    Learn more about query DSL
+                  </EuiLink>
+                </EuiText>
+              }
+            >
+              <JSONEditor
+                mode="json"
+                width="100%"
+                value={sourceQuery}
+                onChange={this.onSourceQueryChange}
+                aria-label="Query DSL Editor"
+                height="200px"
+                data-test-subj="queryJsonEditor"
+              />
+            </CustomFormRow>
+          ) : null}
         </ContentPanel>
 
         <EuiSpacer />
