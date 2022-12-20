@@ -415,7 +415,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("The source index must be read-only before splitting.")).not.toBeNull();
+      expect(queryByText("The source index must block write operations before splitting.")).not.toBeNull();
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));
@@ -476,7 +476,7 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).toBeDisabled();
-      expect(queryByText("The source index must be read-only before splitting.")).not.toBeNull();
+      expect(queryByText("The source index must block write operations before splitting.")).not.toBeNull();
     });
 
     userEvent.click(getByTestId("set-indexsetting-button"));

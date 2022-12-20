@@ -54,6 +54,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
         rowProps: {
           label: "Target Index Name",
           helpText: INDEX_NAMING_MESSAGE,
+          position: "bottom",
         },
         name: "targetIndex",
         type: "Input",
@@ -74,13 +75,19 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
           ],
           props: {
             "data-test-subj": "targetIndexNameInput",
+            placeholder: "Specify a name for the new split index",
           },
         },
       },
       {
         rowProps: {
           label: "Number of primary shards",
-          helpText: "Specify the number of primary shards for the new split index.",
+          helpText: (
+            <>
+              <p>Specify the number of primary shards for the new split index.</p>
+              <p>The number must be 2x times of the primary shard count of the source index.</p>
+            </>
+          ),
         },
         name: "index.number_of_shards",
         type: "ComboBoxSingle",
@@ -93,6 +100,8 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
                   // do not pass the validation
                   // return a rejected promise with error message
                   return Promise.reject("Number of shards is required");
+                } else if (!this.props.shardsSelectOptions.find((item) => item.label === value)) {
+                  return Promise.reject(`Number of shards ${value} is invalid`);
                 }
                 // pass the validation, return a resolved promise
                 return Promise.resolve();
@@ -102,6 +111,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
           props: {
             "data-test-subj": "numberOfShardsInput",
             options: this.props.shardsSelectOptions,
+            placeholder: "Specify primary shard count",
           },
         },
       },
@@ -115,6 +125,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
         options: {
           props: {
             "data-test-subj": "numberOfReplicasInput",
+            placeholder: "Specify number of replica",
             min: 0,
           },
         },
@@ -137,28 +148,20 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
     const readyForSplit = reasons.length === 0;
     return (
       <div>
-        <ContentPanel title="Source index" titleSize="s">
-          <IndexDetail indices={[sourceIndex]}>
-            <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
-              <div style={{ lineHeight: 3 }}>
-                Source index cannot currently be split <br />
-                To split the index:
-                <ul>
-                  {reasons.map((reason, reasonIndex) => (
-                    <li key={reasonIndex}>{reason}</li>
-                  ))}
-                </ul>
-                <EuiLink
-                  href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn more.
-                </EuiLink>
-              </div>
-            </EuiCallOut>
-          </IndexDetail>
-        </ContentPanel>
+        <IndexDetail indices={[sourceIndex]}>
+          <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
+            <dl>
+              {reasons.map((reason, reasonIndex) => (
+                <div>
+                  <dt key={reasonIndex}>{reason}</dt>
+                </div>
+              ))}
+            </dl>
+            <EuiLink href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"} target="_blank" rel="noopener noreferrer">
+              Learn more.
+            </EuiLink>
+          </EuiCallOut>
+        </IndexDetail>
         <EuiSpacer />
 
         {readyForSplit && (
