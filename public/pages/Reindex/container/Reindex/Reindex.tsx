@@ -555,7 +555,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
               labelAppend={
                 <EuiText size="xs">
                   <EuiLink href={this.context.docLinks.links.opensearch.queryDSL.base} target="_blank" rel="noopener noreferrer">
-                    learn more about query-dsl
+                    Learn more about query DSL
                   </EuiLink>
                 </EuiText>
               }
