@@ -110,8 +110,12 @@ const SimpleModal = (props: IShowOptions) => {
               color="primary"
               data-test-subj={`${testSubj}-confirm`}
               onClick={async () => {
-                await onOk();
-                close();
+                try {
+                  await onOk();
+                  close();
+                } catch (e) {
+                  // do nothing
+                }
               }}
             >
               {finalLocale.confirm}
@@ -133,8 +137,12 @@ const SimpleModal = (props: IShowOptions) => {
               color="primary"
               data-test-subj={`${testSubj}-ok`}
               onClick={async () => {
-                await onOk();
-                close();
+                try {
+                  await onOk();
+                  close();
+                } catch (e) {
+                  // do nothing
+                }
               }}
             >
               {finalLocale.ok}

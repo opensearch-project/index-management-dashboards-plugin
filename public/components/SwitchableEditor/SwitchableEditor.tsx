@@ -32,11 +32,7 @@ const SwitchableEditor = forwardRef(({ mode, ...others }: SwitchableEditorProps,
         visible={checked}
         onClose={() => setChecked(false)}
         onOk={async () => {
-          const validateResult = await diffEditorRef.current?.validate();
-          if (validateResult) {
-            return;
-          }
-
+          (await diffEditorRef.current?.validate()) as string;
           setChecked(true);
           others.onChange && others.onChange(diffEditorRef.current?.getValue() || "{}");
         }}
