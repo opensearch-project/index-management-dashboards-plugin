@@ -329,15 +329,11 @@ const IndexDetail = (
                     type: readonly || isEdit ? "Text" : "Input",
                     options: {
                       props: {
-                        placeholder: "Please enter the name for your index",
+                        placeholder: "Specify a name for the new index.",
                         onBlur: onIndexInputBlur,
                         isLoading: templateSimulateLoading,
                       },
                       rules: [
-                        {
-                          required: true,
-                          message: "Index name can not be null.",
-                        },
                         {
                           pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
                           message: "Invalid index name",
