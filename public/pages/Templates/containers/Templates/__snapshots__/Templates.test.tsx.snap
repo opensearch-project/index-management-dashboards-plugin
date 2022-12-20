@@ -283,10 +283,27 @@ exports[`<Templates /> spec renders the component 1`] = `
                 </button>
               </th>
               <th
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_templateType_1"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Template type"
+                  >
+                    Template type
+                  </span>
+                </span>
+              </th>
+              <th
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_index_patterns_1"
+                data-test-subj="tableHeaderCell_index_patterns_2"
                 role="columnheader"
                 scope="col"
               >
@@ -311,7 +328,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_order_2"
+                data-test-subj="tableHeaderCell_order_3"
                 role="columnheader"
                 scope="col"
               >
@@ -340,7 +357,7 @@ exports[`<Templates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="4"
+                colspan="5"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"

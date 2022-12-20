@@ -58,7 +58,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
               >
                 <input
                   class="euiFieldText"
-                  placeholder="Please enter the name for your index"
+                  placeholder="Specify a name for the new index."
                   type="text"
                   value=""
                 />

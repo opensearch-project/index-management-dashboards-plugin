@@ -61,7 +61,7 @@ describe("Create Index", () => {
       cy.contains("Create index");
 
       // type field name
-      cy.get('[placeholder="Please enter the name for your index"]').type(SAMPLE_INDEX).blur();
+      cy.get('[placeholder="Specify a name for the new index."]').type(SAMPLE_INDEX).blur();
 
       cy.wait(1000);
 

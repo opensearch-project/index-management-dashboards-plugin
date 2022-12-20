@@ -11,7 +11,7 @@ import userEvent from "@testing-library/user-event";
 
 describe("<SwitchableEditor /> spec", () => {
   it("renders the component", async () => {
-    const onChangeMock = jest.fn(console.log);
+    const onChangeMock = jest.fn();
     const { findByText, getByText, queryByText } = render(
       <SwitchableEditor onChange={onChangeMock} mode="diff" value={JSON.stringify({ name: "test" })} />
     );

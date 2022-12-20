@@ -59,6 +59,7 @@ describe("<Templates /> spec", () => {
 
       return {
         ok: true,
+        response: {},
       };
     }) as any;
     window.location.hash = "/";
@@ -72,7 +73,7 @@ describe("<Templates /> spec", () => {
     });
     userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         data: { format: "json", name: `*`, s: "name:asc" },
         endpoint: "cat.templates",
@@ -85,7 +86,7 @@ describe("<Templates /> spec", () => {
     expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
     userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         data: { format: "json", name: `${testTemplateId}*`, s: "name:desc" },
         endpoint: "cat.templates",

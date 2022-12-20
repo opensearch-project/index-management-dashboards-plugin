@@ -30,6 +30,8 @@ import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import TemplatesActions from "../TemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
+import { TemplateItemRemote } from "../../../../../models/interfaces";
+import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
 
 interface TemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -108,20 +110,46 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       s: `${queryObject.sortField}:${queryObject.sortDirection}`,
     };
 
+    const allTemplatesResponse = await commonService.apiCaller<{
+      index_templates?: {
+        name: string;
+        index_template: TemplateItemRemote;
+      }[];
+    }>({
+      endpoint: "transport.request",
+      data: {
+        method: "GET",
+        path: "_index_template/*",
+      },
+    });
+
+    if (!allTemplatesResponse.ok) {
+      return this.context.notifications.toasts.addDanger(allTemplatesResponse.error);
+    }
+
+    const allTemplatesDetail =
+      allTemplatesResponse.response.index_templates?.map((item) => ({
+        ...item.index_template,
+        name: item.name,
+      })) || [];
+
     const getTemplatesResponse = await commonService.apiCaller<ITemplate[]>({
       endpoint: "cat.templates",
       data: payload,
     });
 
     if (getTemplatesResponse.ok) {
-      // group by alias name
-      const responseGroupByAliasName: ITemplate[] = getTemplatesResponse.response;
-      const totalTemplates = responseGroupByAliasName.length;
+      // enhance the catResponse with template detail
+      const response: ITemplate[] = getTemplatesResponse.response.map((item) => ({
+        ...item,
+        templateDetail: allTemplatesDetail.find((detailItem) => detailItem.name === item.name),
+      }));
+      const totalTemplates = response.length;
       const payload = {
-        templates: responseGroupByAliasName.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
+        templates: response.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
         totalTemplates,
         selectedItems: this.state.selectedItems
-          .map((item) => responseGroupByAliasName.find((remoteItem) => remoteItem.name === item.name))
+          .map((item) => response.find((remoteItem) => remoteItem.name === item.name))
           .filter((item) => item),
       } as TemplatesState;
       this.setState(payload);
@@ -241,6 +269,15 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                     <EuiLink>{value}</EuiLink>
                   </Link>
                 );
+              },
+            },
+            {
+              field: "templateType",
+              name: "Template type",
+              render: (value: string, record) => {
+                return TemplateConvert({
+                  value: record.templateDetail?.data_stream,
+                });
               },
             },
             {

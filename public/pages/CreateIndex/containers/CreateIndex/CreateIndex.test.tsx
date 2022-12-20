@@ -82,7 +82,7 @@ describe("<CreateIndex /> spec", () => {
       getByText("Define index");
     });
 
-    const indexNameInput = getByPlaceholderText("Please enter the name for your index");
+    const indexNameInput = getByPlaceholderText("Specify a name for the new index.");
 
     userEvent.type(indexNameInput, `good_index`);
     userEvent.click(document.body);
