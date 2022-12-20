@@ -10,7 +10,7 @@ import JSONEditor, { IJSONEditorRef } from "../../../../components/JSONEditor";
 import { Modal } from "../../../../components/Modal";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
-import MappingLabel, { IIndexMappingsRef } from "../MappingLabel";
+import MappingLabel, { IMappingLabelRef } from "../MappingLabel";
 import "./IndexMapping.scss";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
@@ -78,6 +78,10 @@ export enum EDITOR_MODE {
   VISUAL = "VISUAL",
 }
 
+export interface IIndexMappingsRef {
+  validate: () => Promise<string>;
+}
+
 const IndexMapping = (
   { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly }: IndexMappingProps,
   ref: Ref<IIndexMappingsRef>
@@ -89,7 +93,7 @@ const IndexMapping = (
       properties: val,
     });
   };
-  const allFieldsRef = useRef<Record<string, IIndexMappingsRef>>({});
+  const allFieldsRef = useRef<Record<string, IMappingLabelRef>>({});
   const JSONEditorRef = useRef<IJSONEditorRef>(null);
   useImperativeHandle(ref, () => ({
     validate: async () => {

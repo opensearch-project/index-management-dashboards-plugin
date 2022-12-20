@@ -126,6 +126,69 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       />
       <div
         class="euiFormRow"
+        data-test-subj="form-row-data_stream"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Template type
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiRadio"
+          >
+            <input
+              checked=""
+              class="euiRadio__input"
+              id="Indexes"
+              type="radio"
+              value=""
+            />
+            <div
+              class="euiRadio__circle"
+            />
+            <label
+              class="euiRadio__label"
+              for="Indexes"
+            >
+              Indexes
+            </label>
+          </div>
+          <div
+            class="euiRadio"
+          >
+            <input
+              class="euiRadio__input"
+              id="Data streams"
+              type="radio"
+              value=""
+            />
+            <div
+              class="euiRadio__circle"
+            />
+            <label
+              class="euiRadio__label"
+              for="Data streams"
+            >
+              Data streams
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow"
         data-test-subj="form-row-index_patterns"
         id="some_html_id-row"
       >

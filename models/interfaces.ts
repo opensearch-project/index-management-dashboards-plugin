@@ -69,6 +69,7 @@ export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
 
 interface ITemplateExtras {
   name: string;
+  data_stream?: {};
   version: number;
   priority: number;
   index_patterns: string[];

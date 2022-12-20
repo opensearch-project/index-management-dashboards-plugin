@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { set, get } from "lodash";
+import { set, get, unset } from "lodash";
 import { Rule, FieldOption, FieldInstance, InitOption, InitResult, ValidateFunction, FieldName } from "./interfaces";
 import buildInRules from "./rules";
-import { unstable_batchedUpdates } from "react-dom";
 
 export function transformNameToString(name: FieldName) {
   if (Array.isArray(name)) {
@@ -169,6 +168,11 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     setError,
     setErrors,
     resetValues,
+    deleteValue: (key) => {
+      const newValues = { ...values.current };
+      unset(newValues, key);
+      resetValues(newValues);
+    },
   };
 }
 

@@ -129,6 +129,24 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dt
                 class="euiDescriptionList__title"
               >
+                Template type
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                Indexes
+              </dd>
+            </dl>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <dl
+              class="euiDescriptionList euiDescriptionList--row"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
                 Index patterns
               </dt>
               <dd

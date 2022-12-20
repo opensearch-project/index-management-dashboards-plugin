@@ -20,10 +20,6 @@ import SimplePopover from "../../../../components/SimplePopover";
 
 const OLD_VALUE_DISABLED_REASON = "Old mappings can not be modified";
 
-export interface IIndexMappingsRef {
-  validate: () => Promise<string>;
-}
-
 interface IMappingLabel {
   value: MappingsProperties[number];
   onChange: (val: IMappingLabel["value"], key: string, value: string) => void | string;
@@ -36,12 +32,16 @@ interface IMappingLabel {
   shouldShowLabel?: boolean;
 }
 
+export interface IMappingLabelRef {
+  validate: () => Promise<string>;
+}
+
 const FormRow = (props: EuiFormRowProps & Pick<IMappingLabel, "shouldShowLabel">) => {
   const { shouldShowLabel, label, ...others } = props;
   return <EuiFormRow {...others} label={shouldShowLabel ? label : undefined} />;
 };
 
-export const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<IIndexMappingsRef>) => {
+export const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: React.Ref<IMappingLabelRef>) => {
   const { onFieldNameCheck, onAddSubField, onAddSubObject, onDeleteField, id, readonly, shouldShowLabel } = props;
   const propsRef = useRef(props);
   propsRef.current = props;

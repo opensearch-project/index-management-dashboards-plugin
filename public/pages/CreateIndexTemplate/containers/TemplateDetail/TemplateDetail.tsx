@@ -36,6 +36,7 @@ import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
+import TemplateType, { TemplateConvert } from "../../components/TemplateType";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -63,6 +64,11 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
         },
       },
     } as Partial<TemplateItem>,
+    onChange(name, value) {
+      if (name === "data_stream" && value === undefined) {
+        field.deleteValue(name);
+      }
+    },
   });
   const getCommonFormRowProps = useCallback(
     (name: string | string[]): Partial<EuiFormRowProps> => {
@@ -200,6 +206,12 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                 description: values.name,
               },
               {
+                title: "Template type",
+                description: TemplateConvert({
+                  value: values.data_stream,
+                }),
+              },
+              {
                 title: "Index patterns",
                 description: values.index_patterns?.join(","),
               },
@@ -227,6 +239,14 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                     message: "Template name is required",
                   },
                 ],
+              })}
+            />
+          </CustomFormRow>
+          <EuiSpacer />
+          <CustomFormRow {...getCommonFormRowProps("data_stream")} label="Template type">
+            <TemplateType
+              {...field.registerField({
+                name: "data_stream",
               })}
             />
           </CustomFormRow>
