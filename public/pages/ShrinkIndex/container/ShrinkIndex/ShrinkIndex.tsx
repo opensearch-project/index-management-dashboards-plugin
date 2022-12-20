@@ -27,7 +27,13 @@ import AliasSelect from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { CommonService } from "../../../../services";
 import { RouteComponentProps } from "react-router-dom";
-import { SHRINK_DOCUMENTATION_URL, INDEX_SETTINGS_URL, ROUTES } from "../../../../utils/constants";
+import {
+  SHRINK_DOCUMENTATION_URL,
+  INDEX_SETTINGS_URL,
+  ROUTES,
+  INDEX_NAMING_MESSAGE,
+  REPLICA_NUMBER_MESSAGE,
+} from "../../../../utils/constants";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import queryString from "query-string";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
@@ -80,8 +86,9 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
     if (typeof source === "string" && !!source) {
       await this.getIndex(source);
     } else {
-      this.context.notifications.toasts.addDanger(`Invalid index: ${source}`);
-      this.props.history.push(ROUTES.SHRINK_INDEX);
+      const errorMessage = !source ? "Index is empty." : `Cound not find the index: ${source}.`;
+      this.context.notifications.toasts.addDanger(errorMessage);
+      this.props.history.push(ROUTES.INDICES);
     }
   }
 
@@ -172,7 +179,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
     }
   };
 
-  getIndexSettings = async (indexName: string, flat: boolean): Promise<Record<string, IndexItem>> => {
+  getIndexSettings = async (indexName: string, flat: boolean): Promise<Record<string, IndexItem> | void> => {
     try {
       const { commonService } = this.props;
       const result: ServerResponse<Record<string, IndexItem>> = await commonService.apiCaller({
@@ -209,7 +216,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         },
       });
       if (result && result.ok) {
-        this.context.notifications.toasts.addSuccess(`${indexName} has been set to block write.`);
+        this.context.notifications.toasts.addSuccess(`${indexName} has been set to block write operations.`);
       } else {
         const errorMessage = `There is a problem set index setting for ${indexName}, please check with Admin`;
         this.context.notifications.toasts.addDanger(result?.error || errorMessage);
@@ -258,9 +265,11 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   isSourceIndexReady = async () => {
     const { sourceIndex } = this.state;
     const indexSettings = await this.getIndexSettings(sourceIndex.index, true);
-    this.setState({
-      sourceIndexSettings: indexSettings,
-    });
+    if (!!indexSettings) {
+      this.setState({
+        sourceIndexSettings: indexSettings,
+      });
+    }
   };
 
   onUpdateIndexSettings = async (indexName: string, settings: {}) => {
@@ -268,9 +277,11 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
 
     // refresh index settings
     const indexSettings = await this.getIndexSettings(indexName, true);
-    this.setState({
-      sourceIndexSettings: indexSettings,
-    });
+    if (!!indexSettings) {
+      this.setState({
+        sourceIndexSettings: indexSettings,
+      });
+    }
   };
 
   onOpenIndex = async () => {
@@ -299,11 +310,12 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       disableShrinkButton = true;
       sourceIndexNotReadyToShrinkReasons.push(
         <>
-          <EuiCallOut
-            title="The source index's health status is Red, please check its status before shrinking."
-            color="danger"
-            iconType="alert"
-          ></EuiCallOut>
+          <EuiCallOut title="The source index's health status is Red." color="danger" iconType="alert">
+            <p>
+              The state of the shards in the source index are abnormal, you must check the index's health status before shrinking, and it is
+              recommended to shrink an index when its health status is Green.
+            </p>
+          </EuiCallOut>
           <EuiSpacer />
         </>
       );
@@ -330,8 +342,8 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         disableShrinkButton = true;
         sourceIndexNotReadyToShrinkReasons.push(
           <>
-            <EuiCallOut title="The source index's write operations must be blocked before shrinking." color="danger" iconType="alert">
-              <p>In order to shrink an existing index, you must first set it to block write.</p>
+            <EuiCallOut title="The source index must block write operations before shrinking." color="danger" iconType="alert">
+              <p>In order to shrink an existing index, you must first set the index to block write operations.</p>
               <EuiSpacer />
               <EuiButton
                 onClick={() => {
@@ -343,7 +355,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 fill
                 data-test-subj="onSetIndexWriteBlockButton"
               >
-                Set to block write
+                Block write operations
               </EuiButton>
             </EuiCallOut>
             <EuiSpacer />
@@ -470,7 +482,8 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       {
         rowProps: {
           label: "Target index name",
-          helpText: "Specify a name for the new shrunken index.",
+          helpText: <div>{INDEX_NAMING_MESSAGE}</div>,
+          position: "bottom",
         },
         name: "targetIndex",
         type: "Input",
@@ -487,16 +500,19 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
           ],
           props: {
             "data-test-subj": "targetIndexNameInput",
-            placeholder: "Index name",
+            placeholder: "Specify a name for the new shrunken index.",
           },
         },
       },
       {
         rowProps: {
           label: "Number of primary shards",
-          helpText: `
-          Specify the number of shards for the new shrunken index.\n
-          The number must be a factor of the primary shard count of the source index.`,
+          helpText: (
+            <>
+              <p>Specify the number of shards for the new shrunken index.</p>
+              <p>The number must be a factor of the primary shard count of the source index.</p>
+            </>
+          ),
         },
         name: "index.number_of_shards",
         type: "Select",
@@ -524,7 +540,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       {
         rowProps: {
           label: "Number of replicas",
-          helpText: "Specify the number of replica shards each primary shard should have.",
+          helpText: <div>{REPLICA_NUMBER_MESSAGE}</div>,
         },
         name: "index.number_of_replicas",
         type: "Number",
