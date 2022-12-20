@@ -301,7 +301,7 @@ describe("<Shrink index /> spec", () => {
       getByText("Source index details");
     });
 
-    expect(queryByText("The source index's write operations must be blocked before shrinking.")).not.toBeNull();
+    expect(queryByText("The source index must block write operations before shrinking.")).not.toBeNull();
     fireEvent.click(getByTestId("onSetIndexWriteBlockButton"));
     expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
       endpoint: "indices.putSettings",
@@ -324,7 +324,7 @@ describe("<Shrink index /> spec", () => {
       getByText("Source index details");
     });
 
-    expect(queryByText("The source index's write operations must be blocked before shrinking.")).not.toBeNull();
+    expect(queryByText("The source index must block write operations before shrinking.")).not.toBeNull();
     fireEvent.click(getByTestId("onSetIndexWriteBlockButton"));
     expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
       endpoint: "indices.putSettings",
@@ -395,7 +395,7 @@ describe("<Shrink index /> spec", () => {
     const { queryByText, getByTestId } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test4`]);
 
     await waitFor(() => {
-      expect(queryByText("The source index's health status is Red, please check its status before shrinking.")).not.toBeNull();
+      expect(queryByText("The source index's health status is Red.")).not.toBeNull();
       expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     });
   });
@@ -410,7 +410,7 @@ describe("<Shrink index /> spec", () => {
     });
   });
 
-  it("shows set to block write button when source index has no write block", async () => {
+  it("shows block write operations button when source index has no write block", async () => {
     mockApi();
     const { getByText, queryByText, getByTestId } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test5`]);
 
@@ -418,7 +418,7 @@ describe("<Shrink index /> spec", () => {
       getByText("Source index details");
     });
 
-    expect(queryByText("The source index's write operations must be blocked before shrinking.")).not.toBeNull();
+    expect(queryByText("The source index must block write operations before shrinking.")).not.toBeNull();
     expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     expect(getByTestId("onSetIndexWriteBlockButton")).not.toBeNull();
 
@@ -508,7 +508,7 @@ describe("<Shrink index /> spec", () => {
     });
   });
 
-  it("shows error when source index cannot be set to block write", async () => {
+  it("shows error when source index cannot be set to block write operations", async () => {
     mockApi();
     const { getByText, getByTestId, queryByText } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test7`]);
 
@@ -516,7 +516,7 @@ describe("<Shrink index /> spec", () => {
       getByText("Source index details");
     });
 
-    expect(queryByText("The source index's write operations must be blocked before shrinking.")).not.toBeNull();
+    expect(queryByText("The source index must block write operations before shrinking.")).not.toBeNull();
     expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     expect(getByTestId("onSetIndexWriteBlockButton")).not.toBeNull();
 
@@ -560,9 +560,9 @@ describe("<Shrink index /> spec", () => {
       getByText("Configure target index");
     });
 
-    expect(queryByText("The source index's health status is Red, please check its status before shrinking.")).toBeNull();
+    expect(queryByText("The source index's health status is Red.")).toBeNull();
     expect(queryByText("The source index has only one primary shard, you cannot shrink it anymore.")).toBeNull();
-    expect(queryByText("The source index's write operations must be blocked before shrinking.")).toBeNull();
+    expect(queryByText("The source index must block write operations before shrinking.")).toBeNull();
     expect(queryByText("The source index must be open.")).toBeNull();
     expect(queryByText("The source index's health status is Yellow!")).toBeNull();
     expect(queryByText("The source index's setting [index.blocks.read_only] is [true]!")).toBeNull();

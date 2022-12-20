@@ -203,12 +203,6 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             <div
               class="euiFormRow__fieldWrapper"
             >
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                style="padding-top: 0px; padding-bottom: 4px;"
-              >
-                Specify a name for the new shrunken index.
-              </div>
               <span
                 class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
               >
@@ -221,13 +215,21 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                     <input
                       class="euiFieldText"
                       data-test-subj="targetIndexNameInput"
-                      placeholder="Index name"
+                      placeholder="Specify a name for the new shrunken index."
                       type="text"
                       value=""
                     />
                   </div>
                 </div>
               </span>
+              <div
+                class="euiFormHelpText euiFormRow__text"
+                id="some_html_id-help-0"
+              >
+                <div>
+                  Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, , |, ?, #, &gt; are not allowed.
+                </div>
+              </div>
             </div>
           </div>
           <div
@@ -253,10 +255,12 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiFormHelpText euiFormRow__text"
                 style="padding-top: 0px; padding-bottom: 4px;"
               >
-                
-          Specify the number of shards for the new shrunken index.
-
-          The number must be a factor of the primary shard count of the source index.
+                <p>
+                  Specify the number of shards for the new shrunken index.
+                </p>
+                <p>
+                  The number must be a factor of the primary shard count of the source index.
+                </p>
               </div>
               <span
                 class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -320,7 +324,9 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiFormHelpText euiFormRow__text"
                 style="padding-top: 0px; padding-bottom: 4px;"
               >
-                Specify the number of replica shards each primary shard should have.
+                <div>
+                  Specify the number of replicas each primary shard should have. Default is 1.
+                </div>
               </div>
               <span
                 class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
