@@ -249,7 +249,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                 text: "",
               },
               {
-                text: "Create Index",
+                text: "Create index",
                 buttonProps: {
                   fill: true,
                   onClick: () => {

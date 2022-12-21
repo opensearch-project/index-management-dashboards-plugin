@@ -46,7 +46,7 @@ export default class CreateIndex extends Component<CreateIndexProps> {
     return (
       <div style={{ padding: "0px 50px" }}>
         <EuiTitle size="l">
-          <h1>{isEdit ? "Edit" : "Create"} index</h1>
+          <h1>{isEdit ? "Edit" : "Create an"} index</h1>
         </EuiTitle>
         <EuiSpacer />
         <IndexForm

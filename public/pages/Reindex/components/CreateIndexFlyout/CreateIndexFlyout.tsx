@@ -25,7 +25,7 @@ export default class CreateIndexFlyout extends React.Component<CreateIndexFlyout
       <EuiFlyout onClose={() => {}} hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
-            <h2 id="flyoutTitle"> Create Index </h2>
+            <h2 id="flyoutTitle"> Create an index </h2>
           </EuiTitle>
         </EuiFlyoutHeader>
 

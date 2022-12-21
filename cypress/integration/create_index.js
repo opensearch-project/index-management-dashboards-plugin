@@ -58,7 +58,7 @@ describe("Create Index", () => {
     it("Create a index successfully", () => {
       // enter create page
       cy.get('[data-test-subj="Create IndexButton"]').click();
-      cy.contains("Create index");
+      cy.contains("Create an index");
 
       // type field name
       cy.get('[placeholder="Specify a name for the new index."]').type(SAMPLE_INDEX).blur();
