@@ -7,11 +7,10 @@ import { EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiText } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
-import { BrowserServices, RecoveryJobMetaData } from "../../../../models/interfaces";
+import { BrowserServices } from "../../../../models/interfaces";
 import SplitIndexForm from "../../components/SplitIndexForm";
 import { IndexItem } from "../../../../../models/interfaces";
 import { RouteComponentProps } from "react-router-dom";
-import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import queryString from "query-string";
 import {
   openIndices,
@@ -177,7 +176,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
 
   onSplitIndex = async (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]): Promise<void> => {
     const { sourceIndex } = this.state;
-    const result = await splitIndex({
+    await splitIndex({
       sourceIndex: sourceIndex.index,
       targetIndex,
       settingsPayload,

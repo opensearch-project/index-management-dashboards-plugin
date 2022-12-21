@@ -152,8 +152,8 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
           <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
             <dl>
               {reasons.map((reason, reasonIndex) => (
-                <div>
-                  <dt key={reasonIndex}>{reason}</dt>
+                <div key={reasonIndex}>
+                  <dt>{reason}</dt>
                 </div>
               ))}
             </dl>
