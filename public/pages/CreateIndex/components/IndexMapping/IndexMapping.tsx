@@ -70,6 +70,7 @@ export interface IndexMappingProps {
   originalValue?: IndexMappingsAll;
   onChange: (value: IndexMappingProps["value"]) => void;
   isEdit?: boolean;
+  oldMappingsEditable?: boolean; // in template edit case, existing mappings is editable
   readonly?: boolean;
 }
 
@@ -83,7 +84,7 @@ export interface IIndexMappingsRef {
 }
 
 const IndexMapping = (
-  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly }: IndexMappingProps,
+  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, oldMappingsEditable }: IndexMappingProps,
   ref: Ref<IIndexMappingsRef>
 ) => {
   const value = propsValue?.properties || [];
@@ -322,7 +323,13 @@ const IndexMapping = (
                       View mapping example.
                     </EuiLink>
                   </div>
-                  <div>The existing mapping properties cannot be changed after the index is created.</div>
+                  {oldMappingsEditable ? null : (
+                    <div>
+                      {isEdit
+                        ? "Mappings and field types cannot be changed once they have been added."
+                        : "The existing mapping properties cannot be changed after the index is created."}
+                    </div>
+                  )}
                 </div>
               }
               fullWidth

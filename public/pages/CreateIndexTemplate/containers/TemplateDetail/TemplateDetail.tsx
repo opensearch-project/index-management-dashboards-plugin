@@ -254,8 +254,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           <CustomFormRow
             {...getCommonFormRowProps("index_patterns")}
             label="Index patterns"
-            helpText="Specify the index patterns or wildcards. Add a comma to separate each value. 
-            Settings in this template will be applied to indexes with names matching index patterns or wildcards."
+            helpText="Specify the index patterns or wildcards. Add a comma to separate each value. Settings in this template will be applied to indexes with names matching index patterns or wildcards."
           >
             <RemoteSelect
               {...field.registerField({
@@ -546,6 +545,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             readonly={readonly}
             isEdit={isEdit}
             ref={mappingsRef}
+            oldMappingsEditable
           />
         </EuiFormRow>
       </ContentPanel>
