@@ -23,21 +23,24 @@ import {
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import IndexControls from "../../components/IndexControls";
-import ApplyPolicyModal from "../../components/ApplyPolicyModal";
 import IndexEmptyPrompt from "../../components/IndexEmptyPrompt";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, indicesColumns } from "../../utils/constants";
-import { ModalConsumer } from "../../../../components/Modal";
 import IndexService from "../../../../services/IndexService";
+import CommonService from "../../../../services/CommonService";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { getURLQueryParams } from "../../utils/helpers";
 import { IndicesQueryParams } from "../../models/interfaces";
-import { BREADCRUMBS } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
+import IndicesActions from "../IndicesActions";
+import { destroyListener, EVENT_MAP, listenEvent } from "../../../../JobHandler";
+import "./index.scss";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
+  commonService: CommonService;
 }
 
 interface IndicesState {
@@ -81,6 +84,15 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
   async componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES]);
     await this.getIndices();
+    listenEvent(EVENT_MAP.REINDEX_COMPLETE, this.getIndices);
+    listenEvent(EVENT_MAP.SHRINK_COMPLETE, this.getIndices);
+    listenEvent(EVENT_MAP.SPLIT_COMPLETE, this.getIndices);
+  }
+
+  componentWillUnmount(): void {
+    destroyListener(EVENT_MAP.REINDEX_COMPLETE, this.getIndices);
+    destroyListener(EVENT_MAP.SHRINK_COMPLETE, this.getIndices);
+    destroyListener(EVENT_MAP.SPLIT_COMPLETE, this.getIndices);
   }
 
   async componentDidUpdate(prevProps: IndicesProps, prevState: IndicesState) {
@@ -112,7 +124,14 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
       if (getIndicesResponse.ok) {
         const { indices, totalIndices } = getIndicesResponse.response;
-        this.setState({ indices, totalIndices });
+        const payload = {
+          indices,
+          totalIndices,
+          selectedItems: this.state.selectedItems
+            .map((item) => indices.find((remoteItem) => remoteItem.index === item.index))
+            .filter((item) => item),
+        } as IndicesState;
+        this.setState(payload);
       } else {
         this.context.notifications.toasts.addDanger(getIndicesResponse.error);
       }
@@ -181,7 +200,6 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       search,
       sortField,
       sortDirection,
-      selectedItems,
       indices,
       loadingIndices,
       showDataStreams,
@@ -208,28 +226,39 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     const selection: EuiTableSelectionType<ManagedCatIndex> = {
       onSelectionChange: this.onSelectionChange,
     };
+
+    const { history } = this.props;
+
     return (
       <ContentPanel
         actions={
-          <ModalConsumer>
-            {({ onShow }) => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Apply policy",
-                    buttonProps: {
-                      disabled: !selectedItems.length,
-                      onClick: () =>
-                        onShow(ApplyPolicyModal, {
-                          indices: selectedItems.map((item: ManagedCatIndex) => item.index),
-                          core: this.context,
-                        }),
-                    },
+          <ContentPanelActions
+            actions={[
+              {
+                children: (
+                  <IndicesActions
+                    {...this.props}
+                    onDelete={this.getIndices}
+                    onOpen={this.getIndices}
+                    onClose={this.getIndices}
+                    onShrink={this.getIndices}
+                    selectedItems={this.state.selectedItems}
+                    getIndices={this.getIndices}
+                  />
+                ),
+                text: "",
+              },
+              {
+                text: "Create Index",
+                buttonProps: {
+                  fill: true,
+                  onClick: () => {
+                    this.props.history.push(ROUTES.CREATE_INDEX);
                   },
-                ]}
-              />
-            )}
-          </ModalConsumer>
+                },
+              },
+            ]}
+          />
         }
         bodyStyles={{ padding: "initial" }}
         title="Indices"
@@ -246,7 +275,9 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable
-          columns={indicesColumns(isDataStreamColumnVisible)}
+          columns={indicesColumns(isDataStreamColumnVisible, {
+            history,
+          })}
           isSelectable={true}
           itemId="index"
           items={indices}

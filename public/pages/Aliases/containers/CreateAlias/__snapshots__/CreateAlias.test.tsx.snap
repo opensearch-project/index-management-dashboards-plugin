@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateAlias /> spec renders the component 1`] = `
+HTMLCollection [
+  <div
+    aria-hidden="true"
+    data-aria-hidden="true"
+  />,
+  <div
+    class="euiOverlayMask euiOverlayMask--belowHeader"
+  >
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+    <div
+      data-focus-lock-disabled="false"
+    >
+      <div
+        class="euiFlyout euiFlyout--medium euiFlyout--paddingLarge"
+        role="dialog"
+        tabindex="-1"
+      >
+        <div
+          class="euiFlyoutHeader"
+        >
+          Create
+           alias
+        </div>
+        <div
+          class="euiFlyoutBody"
+        >
+          <div
+            class="euiFlyoutBody__overflow"
+            tabindex="0"
+          >
+            <div
+              class="euiFlyoutBody__overflowContent"
+            >
+              <div
+                class="euiForm"
+              >
+                <div
+                  class="euiFormRow"
+                  data-test-subj="form-name-alias"
+                  id="some_html_id-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      aria-invalid="false"
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
+                    >
+                      Alias name
+                    </label>
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <span
+                      class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                    >
+                      <div
+                        class="euiFormControlLayout"
+                      >
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <input
+                            class="euiFieldText"
+                            placeholder="Specify alias name"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="euiFormRow"
+                  data-test-subj="form-name-indexArray"
+                  id="some_html_id-row"
+                >
+                  <div
+                    class="euiFormRow__labelWrapper"
+                  >
+                    <label
+                      aria-invalid="false"
+                      class="euiFormLabel euiFormRow__label"
+                      for="some_html_id"
+                    >
+                      Specify indexes
+                    </label>
+                  </div>
+                  <div
+                    class="euiFormRow__fieldWrapper"
+                  >
+                    <div
+                      class="euiFormHelpText euiFormRow__text"
+                      style="padding-top: 0px; padding-bottom: 4px;"
+                    >
+                      Specify one or more indexes to be a part of the alias.
+                    </div>
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="listbox"
+                      class="euiComboBox"
+                      role="combobox"
+                    >
+                      <div
+                        class="euiFormControlLayout"
+                      >
+                        <div
+                          class="euiFormControlLayout__childrenWrapper"
+                        >
+                          <div
+                            class="euiComboBox__inputWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                            data-test-subj="comboBoxInput"
+                            tabindex="-1"
+                          >
+                            <p
+                              class="euiComboBoxPlaceholder"
+                            >
+                              Select indices
+                            </p>
+                            <div
+                              class="euiComboBox__input"
+                              style="font-size: 14px; display: inline-block;"
+                            >
+                              <input
+                                aria-controls=""
+                                data-test-subj="comboBoxSearchInput"
+                                role="textbox"
+                                style="box-sizing: content-box; width: 2px;"
+                                value=""
+                              />
+                              <div
+                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                          >
+                            <span
+                              class="euiLoadingSpinner euiLoadingSpinner--medium"
+                            />
+                            <button
+                              aria-label="Open list of options"
+                              class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                              data-test-subj="comboBoxToggleListButton"
+                              type="button"
+                            >
+                              EuiIconMock
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlyoutFooter"
+        >
+          <div
+            style="display: flex; justify-content: flex-end;"
+          >
+            <button
+              class="euiButton euiButton--primary"
+              data-test-subj="cancelCreateAliasButton"
+              style="margin-right: 20px;"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Cancel
+                </span>
+              </span>
+            </button>
+            <button
+              class="euiButton euiButton--primary euiButton--fill"
+              data-test-subj="createAliasButton"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Create alias
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+  </div>,
+]
+`;

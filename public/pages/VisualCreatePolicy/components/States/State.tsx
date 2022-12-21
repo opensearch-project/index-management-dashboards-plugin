@@ -113,8 +113,8 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
           <EuiText>No actions. Edit state to add actions.</EuiText>
         ) : (
           <EuiFlexGroup wrap>
-            {state.actions.map((action) => (
-              <EuiFlexItem grow={false} key={makeId()}>
+            {state.actions.map((action, index) => (
+              <EuiFlexItem grow={false} key={`${makeId()}-${index}`}>
                 <EuiPanel>{actionRepoSingleton.getUIActionFromData(action).content()}</EuiPanel>
               </EuiFlexItem>
             ))}
@@ -131,8 +131,8 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
           <EuiText>No transitions. Edit state to add transitions.</EuiText>
         ) : (
           <EuiFlexGroup wrap>
-            {state.transitions.map((transition) => (
-              <EuiFlexItem grow={false} key={makeId()}>
+            {state.transitions.map((transition, index) => (
+              <EuiFlexItem grow={false} key={`${makeId()}-${index}`}>
                 <EuiPanel>
                   <TransitionContent transition={transition} />
                 </EuiPanel>

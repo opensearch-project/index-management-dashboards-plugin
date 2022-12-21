@@ -6,11 +6,20 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
-import ErrorNotification from "./ErrorNotification";
+import ErrorNotification, { ErrorNotificationProps } from "./ErrorNotification";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
-import { browserServicesMock } from "../../../../../test/mocks";
+import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ErrorNotification as IErrorNotification } from "../../../../../models/interfaces";
+import { CoreServicesContext } from "../../../../components/core_services";
+
+function ErrorNotificationWrapper(props: ErrorNotificationProps) {
+  return (
+    <CoreServicesContext.Provider value={coreServicesMock}>
+      <ErrorNotification {...props} />
+    </CoreServicesContext.Provider>
+  );
+}
 
 function renderErrorNotification(errorNotification: IErrorNotification) {
   return {
@@ -19,7 +28,7 @@ function renderErrorNotification(errorNotification: IErrorNotification) {
         <ServicesConsumer>
           {(services: BrowserServices | null) =>
             services && (
-              <ErrorNotification
+              <ErrorNotificationWrapper
                 errorNotification={errorNotification}
                 errorNotificationJsonString={""}
                 onChangeChannelId={() => {}}
@@ -39,7 +48,7 @@ function renderErrorNotification(errorNotification: IErrorNotification) {
 describe("<ErrorNotification /> spec", () => {
   it("renders the component", () => {
     const { container } = render(
-      <ErrorNotification
+      <ErrorNotificationWrapper
         errorNotification={{ channel: { id: "some_id" }, message_template: { source: "some source message" } }}
         errorNotificationJsonString={""}
         onChangeChannelId={() => {}}

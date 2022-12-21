@@ -10,6 +10,8 @@ import {
   RollupService,
   TransformService,
   NotificationService,
+  CommonService,
+  SnapshotManagementService,
 } from "../../public/services";
 import httpClientMock from "./httpClientMock";
 
@@ -19,6 +21,8 @@ const policyService = new PolicyService(httpClientMock);
 const rollupService = new RollupService(httpClientMock);
 const transformService = new TransformService(httpClientMock);
 const notificationService = new NotificationService(httpClientMock);
+const snapshotManagementService = new SnapshotManagementService(httpClientMock);
+const commonService = new CommonService(httpClientMock);
 
 export default {
   indexService,
@@ -27,4 +31,6 @@ export default {
   rollupService,
   transformService,
   notificationService,
+  snapshotManagementService,
+  commonService,
 };

@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChannelNotification /> spec renders the component 1`] = `
+<div
+  class="euiFormRow"
+  id="some_html_id-row"
+>
+  <div
+    class="euiFormRow__labelWrapper"
+  >
+    <label
+      class="euiFormLabel euiFormRow__label"
+      for="some_html_id"
+    >
+      Channel ID
+    </label>
+  </div>
+  <div
+    class="euiFormRow__fieldWrapper"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="max-width: 600px; width: 600px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFormControlLayout"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <select
+              class="euiSelect"
+              data-test-subj="create-policy-notification-channel-id"
+              id="channel-id"
+              placeholder="Select channel ID"
+            >
+              <option
+                disabled=""
+                hidden=""
+                style="display: none;"
+                value=""
+              >
+                 
+              </option>
+              <option
+                value="some_id"
+              >
+                Some id
+              </option>
+            </select>
+            <div
+              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+            >
+              <span
+                class="euiFormControlLayoutCustomIcon"
+              >
+                EuiIconMock
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <button
+          class="euiButton euiButton--primary refresh-button"
+          data-test-subj="channel-notification-refresh"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            EuiIconMock
+            <span
+              class="euiButton__text"
+            />
+          </span>
+        </button>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+      >
+        <a
+          class="euiButton euiButton--primary"
+          href="notifications-dashboards#/channels"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            EuiIconMock
+            <span
+              class="euiButton__text"
+            >
+              Manage channels
+            </span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;

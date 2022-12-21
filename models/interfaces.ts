@@ -23,12 +23,69 @@ export interface ManagedIndexMetaData {
   info?: object;
 }
 
+export type MappingsPropertiesObject = Record<
+  string,
+  {
+    type: string;
+    properties?: MappingsPropertiesObject;
+  }
+>;
+
+export type MappingsProperties = {
+  fieldName: string;
+  type: string;
+  path?: string;
+  analyzer?: string;
+  properties?: MappingsProperties;
+}[];
+
+export interface IndexItem {
+  index: string;
+  indexUuid?: string;
+  settings?: {
+    index?: {
+      number_of_shards?: number;
+      number_of_replicas?: number;
+      creation_date?: string;
+      [key: string]: any;
+    };
+    "index.number_of_shards"?: number;
+    "index.number_of_replicas"?: number;
+    "index.refresh_interval"?: string;
+    [key: string]: any;
+  };
+  aliases?: Record<string, {}>;
+  mappings?: {
+    properties?: MappingsProperties;
+    [key: string]: any;
+  };
+}
+
+export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
+  mappings?: {
+    properties?: MappingsPropertiesObject;
+  };
+}
+
+interface ITemplateExtras {
+  name: string;
+  data_stream?: {};
+  version: number;
+  priority: number;
+  index_patterns: string[];
+}
+
+export interface TemplateItem extends ITemplateExtras {
+  template: Pick<IndexItem, "aliases" | "mappings" | "settings">;
+}
+export interface TemplateItemRemote extends ITemplateExtras {
+  template: Pick<IndexItemRemote, "aliases" | "mappings" | "settings">;
+}
+
 /**
  * ManagedIndex item shown in the Managed Indices table
  */
-export interface ManagedIndexItem {
-  index: string;
-  indexUuid: string;
+export interface ManagedIndexItem extends IndexItem {
   dataStream: string | null;
   policyId: string;
   policySeqNo: number;
@@ -36,10 +93,6 @@ export interface ManagedIndexItem {
   policy: Policy | null;
   enabled: boolean;
   managedIndexMetaData: ManagedIndexMetaData | null;
-}
-
-export interface IndexItem {
-  index: string;
 }
 
 /**
@@ -168,7 +221,7 @@ export interface SMDeleteCondition {
 export interface ErrorNotification {
   destination?: Destination;
   channel?: Channel;
-  message_template: MessageTemplate;
+  message_template?: MessageTemplate;
 }
 
 export interface Notification {
@@ -564,3 +617,25 @@ export enum TRANSFORM_AGG_TYPE {
   histogram = "histogram",
   date_histogram = "date_histogram",
 }
+export interface IAPICaller {
+  endpoint: string;
+  method?: string;
+  data?: any;
+}
+
+export interface IRecoveryItem {
+  index: string;
+  stage: "done" | "translog";
+}
+
+export interface ITaskItem {
+  action: string;
+  description: string;
+}
+
+export interface IReindexItem extends ITaskItem {
+  fromIndex: string;
+  toIndex: string;
+}
+
+export type IAliasAction = Record<string, { index: string; alias: string }>;

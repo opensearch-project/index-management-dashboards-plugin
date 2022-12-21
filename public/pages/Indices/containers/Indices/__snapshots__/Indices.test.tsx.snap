@@ -33,10 +33,37 @@ exports[`<Indices /> spec renders the component 1`] = `
             <div
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
+              <div
+                class="euiPopover euiPopover--anchorDownCenter"
+                data-test-subj="moreAction"
+              >
+                <div
+                  class="euiPopover__anchor"
+                >
+                  <button
+                    class="euiButton euiButton--primary"
+                    type="button"
+                  >
+                    <span
+                      class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+                    >
+                      EuiIconMock
+                      <span
+                        class="euiButton__text"
+                      >
+                        Actions
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+            >
               <button
-                class="euiButton euiButton--primary euiButton-isDisabled"
-                data-test-subj="Apply policyButton"
-                disabled=""
+                class="euiButton euiButton--primary euiButton--fill"
+                data-test-subj="Create IndexButton"
                 type="button"
               >
                 <span
@@ -45,7 +72,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                   <span
                     class="euiButton__text"
                   >
-                    Apply policy
+                    Create Index
                   </span>
                 </span>
               </button>
@@ -339,7 +366,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                   type="button"
                 >
                   <span
-                    class="euiTableCellContent euiTableCellContent--alignRight"
+                    class="euiTableCellContent"
                   >
                     <span
                       class="euiTableCellContent__text"
@@ -358,13 +385,13 @@ exports[`<Indices /> spec renders the component 1`] = `
                 style="width: 140px;"
               >
                 <span
-                  class="euiTableCellContent euiTableCellContent--alignRight"
+                  class="euiTableCellContent"
                 >
                   <span
                     class="euiTableCellContent__text"
-                    title="Managed by Policy"
+                    title="Managed by policy"
                   >
-                    Managed by Policy
+                    Managed by policy
                   </span>
                 </span>
               </th>
@@ -382,7 +409,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                   type="button"
                 >
                   <span
-                    class="euiTableCellContent euiTableCellContent--alignRight"
+                    class="euiTableCellContent"
                   >
                     <span
                       class="euiTableCellContent__text"
@@ -436,9 +463,9 @@ exports[`<Indices /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Primaries size"
+                      title="Size of primaries"
                     >
-                      Primaries size
+                      Size of primaries
                     </span>
                   </span>
                 </button>

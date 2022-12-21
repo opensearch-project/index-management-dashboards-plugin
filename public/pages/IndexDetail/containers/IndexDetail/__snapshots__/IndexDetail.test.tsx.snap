@@ -1,0 +1,358 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`container <IndexDetail /> spec render the component 1`] = `null`;
+
+exports[`container <IndexDetail /> spec render the component 2`] = `
+<div
+  class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  style="padding-left: 0px; padding-right: 0px;"
+>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+    style="padding: 0px 10px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <div
+        style="display: flex; justify-content: space-between; align-items: center;"
+      >
+        <span
+          class="euiTitle euiTitle--medium"
+        >
+          test_index
+        </span>
+        <div
+          class="euiPopover euiPopover--anchorDownCenter"
+          data-test-subj="moreAction"
+        >
+          <div
+            class="euiPopover__anchor"
+          >
+            <button
+              class="euiButton euiButton--primary"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+              >
+                EuiIconMock
+                <span
+                  class="euiButton__text"
+                >
+                  Actions
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr
+    class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+  />
+  <div
+    style="padding: 0px 10px;"
+  >
+    <div>
+      <div
+        class="euiTabs"
+        role="tablist"
+      >
+        <button
+          aria-controls="some_html_id"
+          aria-selected="true"
+          class="euiTab euiTab-isSelected"
+          id="indexDetailModalOverview"
+          role="tab"
+          type="button"
+        >
+          <span
+            class="euiTab__content"
+          >
+            Overview
+          </span>
+        </button>
+        <button
+          aria-controls="some_html_id"
+          aria-selected="false"
+          class="euiTab"
+          id="indexDetailModalSettings"
+          role="tab"
+          type="button"
+        >
+          <span
+            class="euiTab__content"
+          >
+            Settings
+          </span>
+        </button>
+        <button
+          aria-controls="some_html_id"
+          aria-selected="false"
+          class="euiTab"
+          id="indexDetailModalMappings"
+          role="tab"
+          type="button"
+        >
+          <span
+            class="euiTab__content"
+          >
+            Mappings
+          </span>
+        </button>
+        <button
+          aria-controls="some_html_id"
+          aria-selected="false"
+          class="euiTab"
+          id="indexDetailModalAlias"
+          role="tab"
+          type="button"
+        >
+          <span
+            class="euiTab__content"
+          >
+            Alias
+          </span>
+        </button>
+      </div>
+      <div
+        aria-labelledby="indexDetailModalOverview"
+        id="some_html_id"
+        role="tabpanel"
+      >
+        <dl
+          class="euiDescriptionList euiDescriptionList--row"
+        >
+          <div
+            class="euiSpacer euiSpacer--l"
+          />
+          <div>
+            <div
+              data-test-subj="index-detail-overview-item-Index name"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Index name
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+                style="word-break: break-word;"
+              >
+                <span>
+                  test_index
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Health"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Health
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  green
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Status"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Status
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <div
+                  class="euiHealth euiHealth--textSizeS indices-health"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow"
+                  >
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      EuiIconMock
+                    </div>
+                    <div
+                      class="euiFlexItem euiFlexItem--flexGrowZero"
+                    >
+                      green
+                    </div>
+                  </div>
+                </div>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Creation date"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Creation date
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  -
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Total size"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Total size
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  100KB
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Size of primaries"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Size of primaries
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  100KB
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Total documents"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Total documents
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  5
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Deleted documents"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Deleted documents
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  2
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Primaries"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Primaries
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  1
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Replicas"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Replicas
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  0
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Index blocks"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Index blocks
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  -
+                </span>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Managed by policy"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Managed by policy
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span>
+                  -
+                </span>
+              </dd>
+            </div>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+`;

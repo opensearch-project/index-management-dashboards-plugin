@@ -66,7 +66,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
     });
 
     let bodyTitle = "Add action";
-    if (!!editAction) bodyTitle = "Edit action";
+    if (!!editAction) bodyTitle = "editAction";
 
     return (
       <>
