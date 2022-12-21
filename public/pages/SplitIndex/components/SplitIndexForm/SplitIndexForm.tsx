@@ -11,7 +11,7 @@ import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import { INDEX_NAMING_MESSAGE, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
+import { INDEX_NAMING_MESSAGE, INDEX_SETTINGS_URL, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -152,8 +152,8 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
           <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
             <dl>
               {reasons.map((reason, reasonIndex) => (
-                <div>
-                  <dt key={reasonIndex}>{reason}</dt>
+                <div key={reasonIndex}>
+                  <dt>{reason}</dt>
                 </div>
               ))}
             </dl>
@@ -187,10 +187,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
                   helpText: (
                     <>
                       Specify a comma-delimited list of settings.
-                      <EuiLink
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                        target="_blank"
-                      >
+                      <EuiLink href={INDEX_SETTINGS_URL} target="_blank">
                         View index settings
                       </EuiLink>
                     </>
