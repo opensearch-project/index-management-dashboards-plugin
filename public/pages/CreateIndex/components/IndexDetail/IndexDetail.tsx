@@ -336,7 +336,7 @@ const IndexDetail = (
                       },
                       rules: [
                         {
-                          pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
+                          pattern: /^[^\s:,A-Z-_"*+/\\|?#<>][^\s:,A-Z"*+/\\|?#<>]*$/,
                           message: "Invalid index name.",
                         },
                       ],
