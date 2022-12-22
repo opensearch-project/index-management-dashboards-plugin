@@ -144,7 +144,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   }, [record, detail]);
   const services = useContext(ServicesContext) as BrowserServices;
 
-  const fetchIndicesDetail = () => {
+  const fetchIndicesDetail = () =>
     services.commonService
       .apiCaller<Record<string, IndexItem>>({
         endpoint: "indices.get",
@@ -168,10 +168,11 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         } else {
           coreService?.notifications.toasts.addDanger(res.error || "");
         }
-      });
-  };
 
-  const fetchCatIndexDetail = async () => {
+        return res;
+      });
+
+  const fetchCatIndexDetail = async (props: { showDataStreams: "true" | "false" }) => {
     const result = await services.indexService.getIndices({
       terms: index,
       from: 0,
@@ -179,7 +180,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       search: index,
       sortField: "index",
       sortDirection: "desc",
-      showDataStreams: "false",
+      ...props,
     });
     if (result.ok) {
       const findItem = result.response.indices.find((item) => item.index === index);
@@ -189,9 +190,20 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     }
   };
 
-  const refreshDetails = () => {
-    fetchIndicesDetail();
-    fetchCatIndexDetail();
+  const refreshDetails = async () => {
+    const result = await fetchIndicesDetail();
+    if (result.ok) {
+      const { data_stream } = result.response;
+      const payload: { showDataStreams: "true" | "false"; search?: string; dataStreams?: string } = {
+        showDataStreams: data_stream ? "true" : "false",
+      };
+      if (data_stream) {
+        payload.search = `data_streams: (${result.response.data_stream})`;
+        payload.dataStreams = data_stream;
+      }
+
+      fetchCatIndexDetail(payload);
+    }
   };
 
   useEffect(() => {
