@@ -309,6 +309,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
           body: {
             ...others,
             mappings: {
+              ...mappings,
               properties: transformArrayToObject(mappings?.properties || []),
             },
           },
