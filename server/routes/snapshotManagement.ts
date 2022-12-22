@@ -184,6 +184,26 @@ export default function (services: NodeServices, router: IRouter) {
     snapshotManagementService.catRepositoriesWithSnapshotCount
   );
 
+  router.get(
+    {
+      path: `${NODE_API._INDICES}/{indices}`,
+      validate: {
+        params: schema.object({
+          indices: schema.string(),
+        }),
+      },
+    },
+    snapshotManagementService.catSnapshotIndices
+  );
+
+  router.get(
+    {
+      path: NODE_API._RECOVERY,
+      validate: {},
+    },
+    snapshotManagementService.getIndexRecovery
+  );
+
   router.delete(
     {
       path: `${NODE_API._REPOSITORIES}/{id}`,

@@ -179,8 +179,9 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
   getRolloverAliasError = (rolloverAlias: string): string => {
     const { hasRolloverAction } = this.state;
     const { indices } = this.props;
+    const isDataStream = indices[0].includes(".ds");
     const hasSingleIndexSelected = indices.length === 1;
-    const requiresAlias = hasRolloverAction && hasSingleIndexSelected;
+    const requiresAlias = hasRolloverAction && hasSingleIndexSelected && !isDataStream;
     const hasAliasError = requiresAlias && !rolloverAlias;
     return hasAliasError ? "Required" : "";
   };

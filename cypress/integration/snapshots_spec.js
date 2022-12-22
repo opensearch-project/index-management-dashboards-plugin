@@ -69,8 +69,6 @@ describe("Snapshots", () => {
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
 
-
-
       // Click 'Add' button to create snapshot
       cy.get("button").contains("Add", { timeout: 3000 }).click({ force: true });
 
@@ -86,6 +84,12 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be restored", () => {
     it("Successfully restores indices from snapshot", () => {
+      // Must wait here before refreshing so snapshot status becomes 'success'
+      cy.wait(5000);
+
+      // Wait for snapshot to be created successfully
+      cy.get("button").contains("Refresh").click({ force: true });
+
       // Select test snapshot
       cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
 
@@ -102,7 +106,7 @@ describe("Snapshots", () => {
       cy.get("button").contains("Restore snapshot").click({ force: true });
 
       // Check for success toast
-      cy.contains("Restored snapshot test_snapshot to repository test_repo");
+      cy.contains(`Restore from snapshot "test_snapshot" is in progress.`);
     });
   });
 
@@ -119,7 +123,6 @@ describe("Snapshots", () => {
 
       cy.contains("Deleted snapshot");
       cy.contains("No items found");
-
     });
   })
 });

@@ -28,6 +28,7 @@ import {
   IndicesUpdateMode,
   INDEX_NAMING_MESSAGE,
   REPLICA_NUMBER_MESSAGE,
+  INDEX_SETTINGS_URL,
 } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -452,11 +453,7 @@ const IndexDetail = (
                       <>
                         <p>
                           Specify a comma-delimited list of settings.
-                          <EuiLink
-                            external
-                            href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                            target="_blank"
-                          >
+                          <EuiLink external href={INDEX_SETTINGS_URL} target="_blank">
                             View index settings.
                           </EuiLink>
                         </p>

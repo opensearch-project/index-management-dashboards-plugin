@@ -33,7 +33,7 @@ describe("AddPrefixInput component", () => {
   it("accepts user input", () => {
     userEvent.type(screen.getByTestId("prefixInput"), "test_prefix_");
 
-    expect(screen.getByTestId("prefixInput")).toHaveValue("test_prefix_");
+    expect(screen.getByTestId("prefixInput")).toHaveValue("restored_test_prefix_");
   });
 
   it("sends user input to parent component via getPrefix", () => {

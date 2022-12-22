@@ -340,7 +340,7 @@ export interface CatIndex {
 
 export interface CatSnapshotIndex {
   index?: string;
-  "store.size"?: string;
+  restore_status?: string;
 }
 
 export interface ManagedCatIndex extends CatIndex {
@@ -375,6 +375,22 @@ export interface GetSnapshotsResponse {
   totalSnapshots: number;
 }
 
+export interface GetIndexRecoveryResponse {
+  response: {
+    shards: [
+      {
+        source: {
+          index: string;
+          repository: string;
+          snapshot: string;
+        };
+        stage: string;
+        start_time_in_millis: number;
+        stop_time_in_millis: number;
+      }
+    ];
+  };
+}
 export interface CatSnapshotWithRepoAndPolicy {
   id: string;
   status: string;
@@ -423,6 +439,7 @@ export interface GetSnapshot {
   restore_aliases?: boolean;
   ignore_unavailable?: boolean;
   ignore_index_settings?: boolean;
+  failed_shards?: number;
   rename_pattern?: string;
   rename_replacement?: string;
   partial?: boolean;

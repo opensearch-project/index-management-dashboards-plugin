@@ -6,32 +6,49 @@ exports[`RenameInput component renders without error 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+    class="euiFormRow"
+    id="rename_pattern-row"
   >
     <div
-      class="euiFlexItem euiFlexItem--flexGrowZero"
+      class="euiFormRow__labelWrapper"
     >
-      <div
-        class="euiText euiText--extraSmall"
+      <label
+        class="euiFormLabel euiFormRow__label"
+        for="rename_pattern"
       >
-        <h4>
-          Rename Pattern
-        </h4>
-      </div>
+        <div
+          class="euiText euiText--extraSmall"
+        >
+          <h4>
+            Rename Pattern
+          </h4>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="padding: 0px 0px 5px 0px; font-weight: 200;"
+        >
+          Define the format of renamed indices. Use $0 to include the 
+
+  entire matching index name, $1 to include the content of the first
+
+  capture group, etc.} 
+          <a
+            class="euiLink euiLink--primary"
+            href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+            EuiIconMock
+            <span
+              class="euiScreenReaderOnly"
+            >
+              (opens in a new tab or window)
+            </span>
+          </a>
+        </div>
+      </label>
     </div>
-  </div>
-  <span
-    style="font-weight: 200; font-size: 12px;"
-  >
-    Use regular expressiojn to define how index names will be renamed. By default, input (.+) to reuse the entire index name. [Learn more]
-  </span>
-  <div
-    class="euiSpacer euiSpacer--s"
-  />
-  <div
-    class="euiFormRow"
-    id="some_html_id-row"
-  >
     <div
       class="euiFormRow__fieldWrapper"
     >
@@ -44,9 +61,9 @@ exports[`RenameInput component renders without error 1`] = `
           <input
             class="euiFieldText"
             data-test-subj="renamePatternInput"
-            id="some_html_id"
+            id="rename_pattern"
             type="text"
-            value=""
+            value="(.+)"
           />
         </div>
       </div>
@@ -56,32 +73,49 @@ exports[`RenameInput component renders without error 1`] = `
     class="euiSpacer euiSpacer--m"
   />
   <div
-    class="euiFlexGroup euiFlexGroup--gutterExtraSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+    class="euiFormRow"
+    id="rename_replacement-row"
   >
     <div
-      class="euiFlexItem euiFlexItem--flexGrowZero"
+      class="euiFormRow__labelWrapper"
     >
-      <div
-        class="euiText euiText--extraSmall"
+      <label
+        class="euiFormLabel euiFormRow__label"
+        for="rename_replacement"
       >
-        <h4>
-          Rename Replacement
-        </h4>
-      </div>
+        <div
+          class="euiText euiText--extraSmall"
+        >
+          <h4>
+            Rename Replacement
+          </h4>
+        </div>
+        <div
+          class="euiText euiText--extraSmall"
+          style="padding: 0px 0px 5px 0px; font-weight: 200;"
+        >
+          Define the format of renamed indices. Use $0 to include the
+
+  entire matching index name, $1 to include the content of the first
+
+  capture group, etc. 
+          <a
+            class="euiLink euiLink--primary"
+            href="https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#restore-snapshots"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more
+            EuiIconMock
+            <span
+              class="euiScreenReaderOnly"
+            >
+              (opens in a new tab or window)
+            </span>
+          </a>
+        </div>
+      </label>
     </div>
-  </div>
-  <span
-    style="font-weight: 200; font-size: 12px;"
-  >
-    Define the format of renamed indices. Use $0 to include the entire matching index name, $1 to include the content of the first capture group, etc. [Learn more]
-  </span>
-  <div
-    class="euiSpacer euiSpacer--s"
-  />
-  <div
-    class="euiFormRow"
-    id="some_html_id-row"
-  >
     <div
       class="euiFormRow__fieldWrapper"
     >
@@ -94,9 +128,9 @@ exports[`RenameInput component renders without error 1`] = `
           <input
             class="euiFieldText"
             data-test-subj="renameReplacementInput"
-            id="some_html_id"
+            id="rename_replacement"
             type="text"
-            value=""
+            value="restored_$1"
           />
         </div>
       </div>

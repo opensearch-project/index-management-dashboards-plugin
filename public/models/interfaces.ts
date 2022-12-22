@@ -47,6 +47,29 @@ interface ArgsWithError {
 }
 export type OnSearchChangeArgs = ArgsWithQuery | ArgsWithError;
 
+export interface Toast {
+  id?: string;
+  title?: string;
+  iconType?: string;
+  color: string;
+  text?: JSX.Element;
+}
+
+export interface Column {
+  field: string;
+  name: string;
+  width: string;
+  truncateText?: boolean;
+  sortable: boolean;
+}
+
+export interface RestoreError {
+  reason?: string;
+  type?: string;
+  ok?: boolean;
+  error?: string;
+}
+
 export interface LatestActivities {
   activityType: "Creation" | "Deletion";
   status?: string;
@@ -73,6 +96,20 @@ export enum RESTORE_OPTIONS {
   ignore_index_settings = "ignore_index_settings",
 }
 
+export interface ModifiedStages {
+  START: string;
+  INIT: string;
+  INDEX: string;
+  VERIFY_INDEX: string;
+  TRANSLOG: string;
+  FINALIZE: string;
+  DONE: string;
+}
+
+export interface IndexItem {
+  index: string;
+  restore_status?: string;
+}
 export interface ReindexJobMetaData extends IJobItemMetadata {
   extras: {
     toastId: string;

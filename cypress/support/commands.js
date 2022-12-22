@@ -4,6 +4,7 @@
  */
 
 const { API, INDEX, ADMIN_AUTH } = require("./constants");
+const { NODE_API } = require("../../server/utils/constants");
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -119,6 +120,10 @@ Cypress.Commands.add("createIndex", (index, policyID = null, settings = {}) => {
     const body = { policy_id: policyID };
     cy.request("POST", `${Cypress.env("opensearch")}${API.ADD_POLICY_BASE}/${index}`, body);
   }
+});
+
+Cypress.Commands.add("deleteSnapshot", (repository, snapshot) => {
+  cy.request("DELETE", `${Cypress.env("opensearch")}${NODE_API._SNAPSHOTS}/${repository}/${snapshot}`);
 });
 
 Cypress.Commands.add("createRollup", (rollupId, rollupJSON) => {

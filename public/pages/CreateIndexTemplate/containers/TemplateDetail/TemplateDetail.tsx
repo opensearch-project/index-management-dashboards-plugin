@@ -34,7 +34,7 @@ import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
-import { ROUTES } from "../../../../utils/constants";
+import { INDEX_SETTINGS_URL, ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
 import TemplateType, { TemplateConvert } from "../../components/TemplateType";
 
@@ -254,8 +254,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           <CustomFormRow
             {...getCommonFormRowProps("index_patterns")}
             label="Index patterns"
-            helpText="Specify the index patterns or wildcards. Add a comma to separate each value. 
-            Settings in this template will be applied to indexes with names matching index patterns or wildcards."
+            helpText="Specify the index patterns or wildcards. Add a comma to separate each value. Settings in this template will be applied to indexes with names matching index patterns or wildcards."
           >
             <RemoteSelect
               {...field.registerField({
@@ -477,11 +476,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
               <>
                 <p>
                   Specify a comma-delimited list of settings.{" "}
-                  <EuiLink
-                    href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                    target="_blank"
-                    external
-                  >
+                  <EuiLink href={INDEX_SETTINGS_URL} target="_blank" external>
                     View index settings
                   </EuiLink>
                 </p>
@@ -550,6 +545,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             readonly={readonly}
             isEdit={isEdit}
             ref={mappingsRef}
+            oldMappingsEditable
           />
         </EuiFormRow>
       </ContentPanel>

@@ -16,7 +16,7 @@ export const ACTIONS_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/
 export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#states";
 export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
 export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
-
+export const INDEX_SETTINGS_URL = "https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings";
 export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-management/";
 export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
 export const RESTORE_SNAPSHOT_DOCUMENTATION_URL =
@@ -26,7 +26,6 @@ export const FS_REPOSITORY_DOCUMENTATION_URL =
   "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#shared-file-system";
 export const S3_REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#amazon-s3";
 export const SHRINK_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/api-reference/index-apis/shrink-index";
-export const INDEX_SETTINGS_URL = "https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
@@ -90,6 +89,7 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_SNAPSHOT_POLICY: { text: "Edit snapshot policy" },
 
   SNAPSHOTS: { text: "Snapshots", href: `#${ROUTES.SNAPSHOTS}` },
+  SNAPSHOT_RESTORE: { text: "Restore activities in progress" },
   CREATE_SNAPSHOT: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
   EDIT_SNAPSHOT: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
 
@@ -137,6 +137,31 @@ export enum IntervalType {
   CALENDAR = "calendar",
 }
 
+export const browseIndicesCols = [
+  {
+    field: "index",
+    name: "Index",
+    width: "100%",
+    truncateText: true,
+    sortable: true,
+  },
+];
+
+export const restoreIndicesCols = [
+  {
+    field: "index",
+    name: "Index",
+    width: "75%",
+    truncateText: true,
+    sortable: true,
+  },
+  {
+    field: "restore_status",
+    name: "Restore status",
+    width: "25%",
+    sortable: true,
+  },
+];
 export const INDEX_IMPORT_SETTINGS = ["index.number_of_replicas", "index.number_of_shards", "index.refresh_interval"];
 
 export const INDEX_DYNAMIC_SETTINGS = [
