@@ -117,7 +117,7 @@ export function JobHandlerRegister(core: CoreSetup) {
                     below:
                   </>
                 ) as unknown) as string,
-                text: (errors as unknown) as string,
+                text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{errors}</div>) as unknown) as string,
               },
               {
                 toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
@@ -199,7 +199,7 @@ export function JobHandlerRegister(core: CoreSetup) {
         {
           title: ((
             <>
-              Split <DetailLink index={extras.sourceIndex} /> to ${extras.destIndex} does not finish in reasonable time, please check the
+              Split <DetailLink index={extras.sourceIndex} /> to {extras.destIndex} does not finish in reasonable time, please check the
               index manually
             </>
           ) as unknown) as string,
