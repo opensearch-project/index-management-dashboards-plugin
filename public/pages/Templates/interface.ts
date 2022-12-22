@@ -5,5 +5,6 @@ export interface ITemplate {
   index_patterns: string;
   order: number;
   version?: string;
+  composed_of: string;
   templateDetail?: TemplateItemRemote;
 }

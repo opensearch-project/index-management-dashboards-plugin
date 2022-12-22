@@ -278,6 +278,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           columns={indicesColumns(isDataStreamColumnVisible, {
             history,
           })}
+          loading={this.state.loadingIndices}
           isSelectable={true}
           itemId="index"
           items={indices}

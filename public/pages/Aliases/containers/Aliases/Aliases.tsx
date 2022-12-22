@@ -324,6 +324,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
 
         <EuiBasicTable
           data-test-subj="aliases-table"
+          loading={this.state.loading}
           columns={[
             {
               field: "alias",

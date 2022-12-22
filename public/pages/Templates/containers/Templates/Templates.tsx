@@ -140,10 +140,12 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
 
     if (getTemplatesResponse.ok) {
       // enhance the catResponse with template detail
-      const response: ITemplate[] = getTemplatesResponse.response.map((item) => ({
-        ...item,
-        templateDetail: allTemplatesDetail.find((detailItem) => detailItem.name === item.name),
-      }));
+      const response: ITemplate[] = getTemplatesResponse.response
+        .filter((item) => item.composed_of)
+        .map((item) => ({
+          ...item,
+          templateDetail: allTemplatesDetail.find((detailItem) => detailItem.name === item.name),
+        }));
       const totalTemplates = response.length;
       const payload = {
         templates: response.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
@@ -258,6 +260,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
 
         <EuiBasicTable
           data-test-subj="templatesTable"
+          loading={this.state.loading}
           columns={[
             {
               field: "name",
