@@ -215,7 +215,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      class="euiBasicTable"
+      class="euiBasicTable euiBasicTable-loading"
       data-test-subj="aliases-table"
     >
       <div>

@@ -314,6 +314,7 @@ const IndexMapping = (
             />
           ) : (
             <CustomFormRow
+              data-test-subj="mappingsJsonEditorFormRow"
               label="Specify index mapping"
               helpText={
                 <div>

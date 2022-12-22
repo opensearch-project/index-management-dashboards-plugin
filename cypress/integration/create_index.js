@@ -68,6 +68,39 @@ describe("Create Index", () => {
       cy.get('[data-test-subj="comboBoxSearchInput"]').get('[title="alias_for_specific_1"]').should("exist");
 
       cy.get('[data-test-subj="comboBoxSearchInput"]').type("some_test_alias{enter}");
+
+      cy.get('[data-test-subj="editorTypeJsonEditor"]').click().end();
+
+      cy.get('[data-test-subj="mappingsJsonEditorFormRow"] [data-test-subj="jsonEditor-valueDisplay"]').should(($editor) => {
+        expect(JSON.parse($editor.val())).to.deep.equal({
+          properties: {
+            text: {
+              type: "text",
+            },
+          },
+        });
+      });
+
+      cy.get('[data-test-subj="mappingsJsonEditorFormRow"] .ace_text-input')
+        .focus()
+        .clear({ force: true })
+        .type(
+          JSON.stringify({
+            properties: {
+              text: {
+                type: "text",
+              },
+            },
+            dynamic: true,
+          }),
+          { parseSpecialCharSequences: false, force: true }
+        )
+        .end()
+        .wait(1000)
+        .get('[data-test-subj="editorTypeVisualEditor"]')
+        .click()
+        .end();
+
       // add a field
       cy.get('[data-test-subj="createIndexAddFieldButton"]').click().end();
       cy.get('[data-test-subj="mapping-visual-editor-1-field-name"]').type("text_mappings");
@@ -93,7 +126,17 @@ describe("Create Index", () => {
         .end()
         .get('[data-test-subj="mapping-visual-editor-1-field-name"]')
         .should("have.attr", "title", "text_mappings")
-        .end();
+        .end()
+        .get('[data-test-subj="editorTypeJsonEditor"]')
+        .click()
+        .end()
+        .get('[data-test-subj="mappingsJsonEditorFormRow"] [data-test-subj="jsonEditor-valueDisplay"]')
+        .should(($editor) => {
+          expect(JSON.parse($editor.val())).to.deep.equal({
+            dynamic: "true",
+            properties: {},
+          });
+        });
     });
 
     it("Update alias successfully", () => {

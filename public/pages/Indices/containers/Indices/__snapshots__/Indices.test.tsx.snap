@@ -225,7 +225,7 @@ exports[`<Indices /> spec renders the component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      class="euiBasicTable"
+      class="euiBasicTable euiBasicTable-loading"
     >
       <div>
         <div
