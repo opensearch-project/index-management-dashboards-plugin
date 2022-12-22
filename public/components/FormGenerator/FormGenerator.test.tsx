@@ -10,7 +10,12 @@ import userEvent from "@testing-library/user-event";
 import { EuiButton } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorProps, IFormGeneratorRef } from "./index";
 import { ValidateResults } from "../../lib/field";
-const testFormFields: IFormGeneratorProps["formFields"] = [
+const testFormFields: IFormGeneratorProps<{
+  test: string;
+  test_component: string;
+  test_component_2: string;
+  test_component_3: string;
+}>["formFields"] = [
   {
     rowProps: {
       label: "test",
@@ -136,25 +141,30 @@ describe("<FormGenerator /> spec", () => {
     );
     fireEvent.blur(getByTestId("formNameAdvancedSettings").querySelector(".ace_text-input") as HTMLElement);
 
-    expect(validateResult?.errors).toEqual({
-      test: ["values.test_component !== values.test"],
-    });
+    await waitFor(
+      () => {
+        expect(validateResult?.errors).toEqual({
+          test: ["values.test_component !== values.test"],
+        });
 
-    expect(onChangeMock).toBeCalledWith(
-      {
-        test: "3",
-      },
-      "test",
-      "3"
-    );
+        expect(onChangeMock).toBeCalledWith(
+          {
+            test: "3",
+          },
+          "test",
+          "3"
+        );
 
-    expect(onChangeMock).toBeCalledWith(
-      {
-        test: "1",
+        expect(onChangeMock).toBeCalledWith(
+          {
+            test: "3",
+          },
+          undefined,
+          {}
+        );
       },
-      undefined,
       {
-        test: "1",
+        timeout: 3000,
       }
     );
 
@@ -162,7 +172,7 @@ describe("<FormGenerator /> spec", () => {
     await waitFor(() => {
       expect(onChangeMock).toBeCalledWith(
         {
-          test: "1",
+          test: "3",
           test_component: "1",
         },
         "test_component",

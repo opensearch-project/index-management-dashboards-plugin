@@ -164,7 +164,7 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
               if (!isEqual(val, finalValue)) {
                 field.validatePromise();
               }
-              propsRef.current.onChange && propsRef.current.onChange(field.getValues(), undefined, val);
+              propsRef.current.onChange && propsRef.current.onChange(field.getValues(), undefined, editorValue);
             }}
           />
         </>
