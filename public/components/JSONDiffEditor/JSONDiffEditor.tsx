@@ -2,15 +2,37 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-
 import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
 import { EuiFormRow } from "@elastic/eui";
 import { MonacoDiffEditor } from "react-monaco-editor";
-import type { monaco } from "@osd/monaco";
+import { monaco } from "@osd/monaco";
 import CustomFormRow from "../CustomFormRow";
 import { IJSONEditorRef } from "../JSONEditor";
 import { JSONDiffEditorProps } from "./interface";
 import "./JSONDiffEditor.scss";
+
+monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+  validate: true,
+  schemas: [
+    {
+      uri: "test",
+      fileMatch: ["*"],
+      schema: {
+        title: "Product",
+        description: "A product in the catalog",
+        type: "object",
+        properties: {
+          productId: {
+            description: "The unique identifier for a product",
+            type: "integer",
+          },
+        },
+        additionalProperties: false,
+        required: ["productId"],
+      },
+    },
+  ],
+});
 
 const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEditorProps, ref: React.Ref<IJSONEditorRef>) => {
   const [confirmModalVisible, setConfirmModalVisible] = useState(false);
@@ -124,7 +146,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
           {...others}
           onChange={(val) => setEditorValue(val)}
           theme="euiColors"
-          language="xjson"
+          language="json"
           value={editorValue}
           options={{
             readOnly: others.disabled,
