@@ -239,7 +239,7 @@ const IndexDetail = (
           rules: [
             {
               min: 1,
-              message: "Number of primary shards can not smaller than 1",
+              message: "Number of primary shards cannot be smaller than 1",
             },
             {
               validator(rule, value, values) {
@@ -267,7 +267,7 @@ const IndexDetail = (
           rules: [
             {
               min: 0,
-              message: "Number of replicas can not smaller than 0",
+              message: "Number of replicas cannot be smaller than 0",
             },
             {
               validator(rule, value, values) {

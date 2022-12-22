@@ -106,7 +106,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
 
     const payload: any = {
       format: "json",
-      name: `${queryObject.search}*`,
+      name: `*${queryObject.search}*`,
       s: `${queryObject.sortField}:${queryObject.sortDirection}`,
     };
 

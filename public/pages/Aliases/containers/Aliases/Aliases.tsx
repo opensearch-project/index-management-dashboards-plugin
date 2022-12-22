@@ -184,7 +184,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
 
     const payload: any = {
       format: "json",
-      name: `${queryObject.search}*`,
+      name: `*${queryObject.search}*`,
       s: `${queryObject.sortField}:${queryObject.sortDirection}`,
       expand_wildcards: status,
     };

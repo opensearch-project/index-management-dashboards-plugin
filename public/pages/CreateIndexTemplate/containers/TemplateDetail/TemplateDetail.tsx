@@ -299,7 +299,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                   },
                   {
                     min: 0,
-                    message: "Priority should not be smaller than zero",
+                    message: "Priority cannot be smaller than 0",
                   },
                 ],
               })}
