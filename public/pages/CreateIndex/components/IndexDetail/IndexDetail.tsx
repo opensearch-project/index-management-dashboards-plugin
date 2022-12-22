@@ -239,12 +239,12 @@ const IndexDetail = (
           rules: [
             {
               min: 1,
-              message: "Number of primary shards cannot be smaller than 1",
+              message: "Number of primary shards cannot be smaller than 1.",
             },
             {
               validator(rule, value, values) {
                 if (Number(value) !== parseInt(value)) {
-                  return Promise.reject("Number of primary shards must be an integer");
+                  return Promise.reject("Number of primary shards must be an integer.");
                 }
 
                 return Promise.resolve();
@@ -267,12 +267,12 @@ const IndexDetail = (
           rules: [
             {
               min: 0,
-              message: "Number of replicas cannot be smaller than 0",
+              message: "Number of replicas cannot be smaller than 0.",
             },
             {
               validator(rule, value, values) {
                 if (Number(value) !== parseInt(value)) {
-                  return Promise.reject("Number of replicas must be an integer");
+                  return Promise.reject("Number of replicas must be an integer.");
                 }
 
                 return Promise.resolve();
