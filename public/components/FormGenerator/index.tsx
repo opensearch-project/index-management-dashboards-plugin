@@ -154,13 +154,18 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
             value={finalValue}
             onChange={(val) => {
               const totalValue = field.getValues();
+              const editorValue = omit(val || {}, blockedNameList || []);
               const resetValue = {
-                ...val,
+                ...editorValue,
                 ...pick(totalValue, blockedNameList || []),
               };
-              const editorValue = omit(val || {}, blockedNameList || []);
+              // update form field value to rerender
               field.resetValues(resetValue);
+
+              // reset editors value
               advancedRef.current?.setValue(editorValue);
+
+              // only validate when value changed
               if (!isEqual(val, finalValue)) {
                 field.validatePromise();
               }
