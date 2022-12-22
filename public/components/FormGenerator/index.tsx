@@ -1,6 +1,6 @@
 import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } from "react";
 import { EuiForm, EuiFormProps, EuiSpacer } from "@elastic/eui";
-import { isEqual } from "lodash";
+import { isEqual, omit, pick } from "lodash";
 import AllBuiltInComponents, { IFieldComponentProps } from "./built_in_components";
 import useField, { InitOption, FieldOption, Rule, FieldInstance, FieldName } from "../../lib/field";
 import AdvancedSettings, { IAdvancedSettingsProps, IAdvancedSettingsRef } from "../AdvancedSettings";
@@ -117,16 +117,7 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
       return field.getValues();
     }
 
-    return Object.entries(value || {}).reduce((total, [key, value]) => {
-      if (blockedNameList.includes(key)) {
-        return total;
-      }
-
-      return {
-        ...total,
-        [key]: value,
-      };
-    }, {});
+    return omit(value, blockedNameList);
   }, [field.getValues(), blockedNameList]);
 
   return (
@@ -162,15 +153,18 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
             }}
             value={finalValue}
             onChange={(val) => {
-              field.setValues(val);
-              const totalValue = {
-                ...field.getValues(),
+              const totalValue = field.getValues();
+              const resetValue = {
                 ...val,
+                ...pick(totalValue, blockedNameList || []),
               };
+              const editorValue = omit(val || {}, blockedNameList || []);
+              field.resetValues(resetValue);
+              advancedRef.current?.setValue(editorValue);
               if (!isEqual(val, finalValue)) {
                 field.validatePromise();
               }
-              propsRef.current.onChange && propsRef.current.onChange(totalValue, undefined, val);
+              propsRef.current.onChange && propsRef.current.onChange(field.getValues(), undefined, val);
             }}
           />
         </>

@@ -20,6 +20,7 @@ export interface IAdvancedSettingsProps<T> {
 
 export interface IAdvancedSettingsRef {
   validate: () => Promise<string>;
+  setValue: (val: any) => void;
 }
 
 function AdvancedSettings<T>(props: IAdvancedSettingsProps<T>, ref: React.Ref<IAdvancedSettingsRef>) {
@@ -51,6 +52,9 @@ function AdvancedSettings<T>(props: IAdvancedSettingsProps<T>, ref: React.Ref<IA
       }
 
       return Promise.resolve("");
+    },
+    setValue: (val) => {
+      editorRef.current?.setValue(JSON.stringify(val || {}, null, 2));
     },
   }));
 
