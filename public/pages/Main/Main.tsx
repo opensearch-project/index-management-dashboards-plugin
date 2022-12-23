@@ -33,6 +33,8 @@ import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
+import Templates from "../Templates";
+import CreateIndexTemplate from "../CreateIndexTemplate";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -45,6 +47,8 @@ enum Navigation {
   Snapshots = "Snapshots",
   SnapshotPolicies = "Snapshot Policies",
   Repositories = "Repositories",
+  Aliases = "Aliases",
+  Templates = "Templates",
 }
 
 enum Pathname {
@@ -72,7 +76,14 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.SNAPSHOT_POLICY_DETAILS,
   ROUTES.CREATE_SNAPSHOT_POLICY,
   ROUTES.EDIT_SNAPSHOT_POLICY,
+  ROUTES.REINDEX,
+  ROUTES.CREATE_INDEX,
+  ROUTES.CREATE_TEMPLATE,
+  ROUTES.SPLIT_INDEX,
+  ROUTES.SHRINK_INDEX,
 ];
+
+const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL];
 
 interface MainProps extends RouteComponentProps {
   landingPage: string;
@@ -105,7 +116,19 @@ export default class Main extends Component<MainProps, object> {
             name: Navigation.Indices,
             id: 3,
             href: `#${Pathname.Indices}`,
-            isSelected: pathname === Pathname.Indices,
+            isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
+          },
+          {
+            name: Navigation.Templates,
+            id: 7,
+            href: `#${ROUTES.TEMPLATES}`,
+            isSelected: ROUTES.TEMPLATES === pathname,
+          },
+          {
+            name: Navigation.Aliases,
+            id: 6,
+            href: `#${ROUTES.ALIASES}`,
+            isSelected: ROUTES.ALIASES === pathname,
           },
           {
             name: Navigation.Rollups,
@@ -163,11 +186,11 @@ export default class Main extends Component<MainProps, object> {
                     <ModalRoot services={services} />
                     <EuiPage restrictWidth="100%">
                       {/*Hide side navigation bar when creating or editing rollup job*/}
-                      {!HIDDEN_NAV_ROUTES.includes(pathname) && (
+                      {!HIDDEN_NAV_ROUTES.includes(pathname) && !HIDDEN_NAV_STARTS_WITH_ROUTE.some((item) => pathname.startsWith(item)) ? (
                         <EuiPageSideBar style={{ minWidth: 200 }}>
                           <EuiSideNav style={{ width: 200 }} items={sideNav} />
                         </EuiPageSideBar>
-                      )}
+                      ) : null}
                       <EuiPageBody>
                         <Switch>
                           <Route
@@ -370,6 +393,38 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <TransformDetails {...props} transformService={services.transformService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.TEMPLATES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Templates {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_TEMPLATE}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
                               </div>
                             )}
                           />
