@@ -23,6 +23,7 @@ const coreServicesMock = {
       opensearch: {
         reindexData: {
           base: "https://opensearch.org/docs/latest/opensearch/reindex-data/",
+          transform: "https://opensearch.org/docs/latest/opensearch/reindex-data/#transform-documents-during-reindexing",
         },
         queryDSL: {
           base: "https://opensearch.org/docs/opensearch/query-dsl/index/",
@@ -32,6 +33,18 @@ const coreServicesMock = {
         },
         indexAlias: {
           base: "https://opensearch.org/docs/latest/opensearch/index-alias/",
+        },
+      },
+    },
+  },
+  docLinks: {
+    links: {
+      opensearch: {
+        reindexData: {
+          base: "https://opensearch.org/docs/latest/opensearch/reindex-data/",
+        },
+        queryDSL: {
+          base: "https://opensearch.org/docs/opensearch/query-dsl/index/",
         },
       },
     },
