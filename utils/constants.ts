@@ -9,6 +9,7 @@ export const NODE_API = Object.freeze({
   _SEARCH_SAMPLE_DATA: `${BASE_API_PATH}/_searchSampleData`,
   _INDICES: `${BASE_API_PATH}/_indices`,
   _DATA_STREAMS: `${BASE_API_PATH}/_data_streams`,
+  _ALIASES: `${BASE_API_PATH}/_aliases`,
   _MAPPINGS: `${BASE_API_PATH}/_mappings`,
   APPLY_POLICY: `${BASE_API_PATH}/applyPolicy`,
   EDIT_ROLLOVER_ALIAS: `${BASE_API_PATH}/editRolloverAlias`,
@@ -24,6 +25,8 @@ export const NODE_API = Object.freeze({
   SMPolicies: `${BASE_API_PATH}/smPolicies`,
   _SNAPSHOTS: `${BASE_API_PATH}/_snapshots`,
   _REPOSITORIES: `${BASE_API_PATH}/_repositores`,
+  PUT_INDEX: `${BASE_API_PATH}/putIndex`,
+  API_CALLER: `${BASE_API_PATH}/apiCaller`,
 });
 
 export const REQUEST = Object.freeze({
@@ -33,3 +36,28 @@ export const REQUEST = Object.freeze({
   POST: "POST",
   HEAD: "HEAD",
 });
+
+export const SYSTEM_INDEX = [
+  ".plugins-ml-model",
+  ".plugins-ml-task",
+  ".opendistro-alerting-config",
+  ".opendistro-alerting-alert*",
+  ".opendistro-anomaly-results*",
+  ".opendistro-anomaly-detector*",
+  ".opendistro-anomaly-checkpoints",
+  ".opendistro-anomaly-detection-state",
+  ".opendistro-reports-*",
+  ".opensearch-notifications-*",
+  ".opensearch-notebooks",
+  ".opensearch-observability",
+  ".opendistro-asynchronous-search-response*",
+  ".opendistro_security",
+  ".opendistro-job-scheduler-lock",
+  ".opendistro-ism-config",
+  ".replication-metadata-store",
+  "kibana*",
+  ".kibana*",
+  ".tasks",
+];
+
+export const SYSTEM_ALIAS = [".plugins*", ".opendistro*", ".opensearch*", ".replication-metadata-store", "kibana*", ".kibana*", ".tasks"];

@@ -47,9 +47,10 @@ export default class SnapshotManagementService {
 
   createSnapshot = async (snapshotId: string, repository: string, snapshot: Snapshot): Promise<ServerResponse<CreateSnapshotResponse>> => {
     let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
-    const response = (await this.httpClient.put(url, { query: { repository }, body: JSON.stringify(snapshot) })) as ServerResponse<
-      CreateSnapshotResponse
-    >;
+    const response = (await this.httpClient.put(url, {
+      query: { repository },
+      body: JSON.stringify(snapshot),
+    })) as ServerResponse<CreateSnapshotResponse>;
     return response;
   };
 
@@ -81,9 +82,10 @@ export default class SnapshotManagementService {
     primaryTerm: number
   ): Promise<ServerResponse<DocumentSMPolicy>> => {
     let url = `..${NODE_API.SMPolicies}/${policyId}`;
-    const response = (await this.httpClient.put(url, { query: { seqNo, primaryTerm }, body: JSON.stringify(policy) })) as ServerResponse<
-      DocumentSMPolicy
-    >;
+    const response = (await this.httpClient.put(url, {
+      query: { seqNo, primaryTerm },
+      body: JSON.stringify(policy),
+    })) as ServerResponse<DocumentSMPolicy>;
     return response;
   };
 
