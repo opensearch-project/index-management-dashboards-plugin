@@ -1,9 +1,9 @@
 {
   "id": "indexManagementDashboards",
-  "version": "2.4.1",
-  "opensearchDashboardsVersion": "2.4.1",
+  "version": "2.5.0",
+  "opensearchDashboardsVersion": "2.4.2",
   "configPath": ["opensearch_index_management"],
-  "requiredPlugins": ["navigation"],
+  "requiredPlugins": ["navigation", "opensearchDashboardsReact"],
   "server": true,
   "ui": true
 }
