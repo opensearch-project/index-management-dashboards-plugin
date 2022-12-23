@@ -75,7 +75,7 @@ describe("<Templates /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-        data: { format: "json", name: `*`, s: "name:asc" },
+        data: { format: "json", name: `**`, s: "name:asc" },
         endpoint: "cat.templates",
       });
     });
@@ -88,7 +88,7 @@ describe("<Templates /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-        data: { format: "json", name: `${testTemplateId}*`, s: "name:desc" },
+        data: { format: "json", name: `*${testTemplateId}*`, s: "name:desc" },
         endpoint: "cat.templates",
       });
     });

@@ -125,7 +125,7 @@ describe("<Aliases /> spec", () => {
       expect(queryByText("1 more")).not.toBeNull();
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-        data: { format: "json", name: `*`, s: "alias:asc" },
+        data: { format: "json", name: `**`, s: "alias:asc" },
         endpoint: "cat.aliases",
       });
     });
@@ -146,7 +146,7 @@ describe("<Aliases /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-        data: { format: "json", name: `${testAliasId}*`, s: "alias:desc" },
+        data: { format: "json", name: `*${testAliasId}*`, s: "alias:desc" },
         endpoint: "cat.aliases",
       });
     });
