@@ -23,6 +23,36 @@ export interface ManagedIndexMetaData {
   info?: object;
 }
 
+export type MappingsProperties = {
+  fieldName: string;
+  type: string;
+  path?: string;
+  analyzer?: string;
+  properties?: MappingsProperties;
+}[];
+
+export interface IndexItem {
+  index: string;
+  indexUuid?: string;
+  settings?: {
+    index?: {
+      number_of_shards?: number;
+      number_of_replicas?: number;
+      creation_date?: string;
+      [key: string]: any;
+    };
+    "index.number_of_shards"?: number;
+    "index.number_of_replicas"?: number;
+    "index.refresh_interval"?: string;
+    [key: string]: any;
+  };
+  aliases?: Record<string, {}>;
+  mappings?: {
+    properties?: MappingsProperties;
+    [key: string]: any;
+  };
+}
+
 /**
  * ManagedIndex item shown in the Managed Indices table
  */

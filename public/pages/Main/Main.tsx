@@ -33,6 +33,7 @@ import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
+import SplitIndex from "../SplitIndex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -72,6 +73,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.SNAPSHOT_POLICY_DETAILS,
   ROUTES.CREATE_SNAPSHOT_POLICY,
   ROUTES.EDIT_SNAPSHOT_POLICY,
+  ROUTES.SPLIT_INDEX,
 ];
 
 interface MainProps extends RouteComponentProps {
@@ -370,6 +372,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <TransformDetails {...props} transformService={services.transformService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SPLIT_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <SplitIndex {...props} />
                               </div>
                             )}
                           />

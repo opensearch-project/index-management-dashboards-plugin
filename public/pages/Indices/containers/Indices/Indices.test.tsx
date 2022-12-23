@@ -138,9 +138,13 @@ describe("<Indices /> spec", () => {
 
     await waitFor(() => getByText("index_1"));
 
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+
     expect(getByTestId("Apply policyButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("checkboxSelectRow-index_1"));
+    getByTestId("checkboxSelectRow-index_1").click();
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
 
     expect(getByTestId("Apply policyButton")).toBeEnabled();
 
