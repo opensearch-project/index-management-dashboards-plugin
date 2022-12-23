@@ -14,7 +14,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
       <h3
         class="euiTitle euiTitle--small"
       >
-        editAction
+        Edit action
       </h3>
       <div
         class="euiText euiText--extraSmall"
