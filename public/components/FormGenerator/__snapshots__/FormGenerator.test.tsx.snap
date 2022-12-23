@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormGenerator /> spec render the component 1`] = `
+HTMLCollection [
+  <div>
+    <div
+      class="euiForm"
+    >
+      <div
+        class="euiFormRow"
+        data-test-subj="form-name-test"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            test
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiFormControlLayout"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        data-test-subj="form-name-test_component"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            component test
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <input
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        data-test-subj="form-name-test_component_2"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            component test
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiFormControlLayout"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldText"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        data-test-subj="form-name-test_component_3"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Text component
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div>
+            <div
+              class="euiText euiText--medium"
+              title="-"
+            >
+              -
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;

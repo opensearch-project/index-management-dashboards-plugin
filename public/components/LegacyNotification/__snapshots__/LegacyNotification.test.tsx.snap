@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LegacyNotification /> spec renders the component 1`] = `
+<div
+  class="euiCallOut euiCallOut--primary euiCallOut--small"
+>
+  <div
+    class="euiCallOutHeader"
+  >
+    EuiIconMock
+    <span
+      class="euiCallOutHeader__title"
+    >
+      Update your notifications to use Channel ID
+    </span>
+  </div>
+  <div
+    class="euiText euiText--extraSmall"
+  >
+    <div
+      class="euiTextColor euiTextColor--default"
+    >
+      <p>
+        Using Channel ID will give you more control to manage notifications across OpenSearch dashboards. If you do decide to switch, you will lose your current error notification settings.
+      </p>
+      <button
+        class="euiButton euiButton--primary"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Switch to using Channel ID
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SimpleEuiToast show render the component 1`] = `
+<body>
+  <div
+    data-role="SimpleEuiToast"
+    id="EUI_SIMPLE_TOAST_MOUNT_ID"
+  >
+    <div
+      aria-live="polite"
+      class="euiGlobalToastList euiGlobalToastList--right"
+      role="region"
+    >
+      <div
+        class="euiToast euiToast--success euiGlobalToastListItem"
+        data-test-subj="toast_Success information"
+        id="toast_0"
+      >
+        <p
+          class="euiScreenReaderOnly"
+        >
+          A new notification appears
+        </p>
+        <div
+          aria-label="Notification"
+          class="euiToastHeader"
+          data-test-subj="euiToastHeader"
+        >
+          <span
+            class="euiToastHeader__title"
+          >
+            Success information
+          </span>
+        </div>
+        <button
+          aria-label="Dismiss toast"
+          class="euiToast__closeButton"
+          data-test-subj="toastCloseButton"
+          type="button"
+        >
+          EuiIconMock
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+`;
