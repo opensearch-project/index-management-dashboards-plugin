@@ -4,9 +4,14 @@
  */
 
 import React from "react";
-import { EuiButtonEmpty, EuiCopy, EuiHealth, EuiTableFieldDataColumnType } from "@elastic/eui";
+import { EuiHealth, EuiTableFieldDataColumnType } from "@elastic/eui";
+import IndexDetail, { IndexDetailModalProps } from "../containers/IndexDetail";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";
 import { SortDirection } from "../../../utils/constants";
+
+const renderNumber = (value) => {
+  return value || "-";
+};
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];
 
@@ -19,7 +24,7 @@ export const DEFAULT_QUERY_PARAMS = {
   showDataStreams: false,
 };
 
-const HEALTH_TO_COLOR: {
+export const HEALTH_TO_COLOR: {
   [health: string]: string;
   green: string;
   yellow: string;
@@ -30,121 +35,126 @@ const HEALTH_TO_COLOR: {
   red: "danger",
 };
 
-const INDICES_COLUMNS: EuiTableFieldDataColumnType<ManagedCatIndex>[] = [
-  {
-    field: "index",
-    name: "Index",
-    sortable: true,
-    truncateText: false,
-    textOnly: true,
-    width: "250px",
-    render: (index: string) => {
-      return (
-        <EuiCopy textToCopy={index}>
-          {(copy) => (
-            <div>
-              <EuiButtonEmpty size="xs" flush="right" iconType="copyClipboard" onClick={copy} color="text"></EuiButtonEmpty>
-              <span title={index}>{index}</span>
-            </div>
-          )}
-        </EuiCopy>
-      );
-    },
-  },
-  {
-    field: "health",
-    name: "Health",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    align: "right",
-    render: (health: string, item: ManagedCatIndex) => {
-      const color = health ? HEALTH_TO_COLOR[health] : "subdued";
-      const text = health || item.status;
-      return <EuiHealth color={color}>{text}</EuiHealth>;
-    },
-  },
-  {
-    field: "data_stream",
-    name: "Data stream",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    align: "right",
-    width: "120px",
-    render: (data_stream) => data_stream || "-",
-  },
-  {
-    field: "managed",
-    name: "Managed by Policy",
-    sortable: false,
-    truncateText: true,
-    textOnly: true,
-    align: "right",
-    width: "140px",
-  },
-  {
-    field: "status",
-    name: "Status",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    align: "right",
-  },
-  {
-    field: "store.size",
-    name: "Total size",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    dataType: "number",
-  },
-  {
-    field: "pri.store.size",
-    name: "Primaries size",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    dataType: "number",
-  },
-  {
-    field: "docs.count",
-    name: "Total documents",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    dataType: "number",
-    render: (count: string) => <span title={count}>{count}</span>,
-  },
-  {
-    field: "docs.deleted",
-    name: "Deleted documents",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    dataType: "number",
-    render: (deleted: string) => <span title={deleted}>{deleted}</span>,
-  },
-  {
-    field: "pri",
-    name: "Primaries",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    dataType: "number",
-  },
-  {
-    field: "rep",
-    name: "Replicas",
-    sortable: true,
-    truncateText: true,
-    textOnly: true,
-    dataType: "number",
-  },
-];
+interface IColumnOptions extends Omit<IndexDetailModalProps, "index"> {}
 
-export const indicesColumns = (isDataStreamColumnVisible: boolean): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
-  return isDataStreamColumnVisible ? INDICES_COLUMNS : INDICES_COLUMNS.filter((col) => col["field"] !== "data_stream");
+const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
+  return [
+    {
+      field: "index",
+      name: "Index",
+      sortable: true,
+      truncateText: false,
+      textOnly: true,
+      width: "250px",
+      render: (index: string) => {
+        return <IndexDetail {...props} index={index} />;
+      },
+    },
+    {
+      field: "health",
+      name: "Health",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      render: (health: string, item: ManagedCatIndex) => {
+        const color = health ? HEALTH_TO_COLOR[health] : "subdued";
+        const text = health || item.status;
+        return (
+          <EuiHealth color={color} className="indices-health">
+            {text}
+          </EuiHealth>
+        );
+      },
+    },
+    {
+      field: "data_stream",
+      name: "Data stream",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      align: "right",
+      width: "120px",
+      render: (data_stream) => data_stream || "-",
+    },
+    {
+      field: "managed",
+      name: "Managed by policy",
+      sortable: false,
+      truncateText: true,
+      textOnly: true,
+      width: "140px",
+      render: renderNumber,
+    },
+    {
+      field: "status",
+      name: "Status",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      render: (status: string, item: ManagedCatIndex) => {
+        return item.extraStatus || status;
+      },
+    },
+    {
+      field: "store.size",
+      name: "Total size",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      dataType: "number",
+      render: renderNumber,
+    },
+    {
+      field: "pri.store.size",
+      name: "Size of primaries",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      dataType: "number",
+      render: renderNumber,
+    },
+    {
+      field: "docs.count",
+      name: "Total documents",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      dataType: "number",
+      render: (count: string) => <span title={count}>{count || "-"}</span>,
+    },
+    {
+      field: "docs.deleted",
+      name: "Deleted documents",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      dataType: "number",
+      render: (deleted: string) => <span title={deleted}>{deleted || "-"}</span>,
+    },
+    {
+      field: "pri",
+      name: "Primaries",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      dataType: "number",
+    },
+    {
+      field: "rep",
+      name: "Replicas",
+      sortable: true,
+      truncateText: true,
+      textOnly: true,
+      dataType: "number",
+    },
+  ];
+};
+
+export const indicesColumns = (
+  isDataStreamColumnVisible: boolean,
+  options: IColumnOptions
+): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
+  return isDataStreamColumnVisible ? getColumns(options) : getColumns(options).filter((col) => col["field"] !== "data_stream");
 };
 
 export const DEFAULT_QUERY = JSON.stringify(

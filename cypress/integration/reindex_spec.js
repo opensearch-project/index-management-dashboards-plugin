@@ -55,7 +55,7 @@ describe("Reindex", () => {
       cy.get(`[data-test-subj="checkboxSelectRow-${REINDEX_DEST_NO_SOURCE}"]`).check({ force: true });
 
       // Click actions button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Reindex should show as activate
       cy.get('[data-test-subj="Reindex Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
@@ -97,7 +97,7 @@ describe("Reindex", () => {
       cy.contains("opensearch_dashboards_sample_data_ecommerce");
 
       // Click actions button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Reindex should show as activate
       cy.get('[data-test-subj="Reindex Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
@@ -122,7 +122,7 @@ describe("Reindex", () => {
         .type('{"query":{"match":{"category":"Men\'s Clothing"}}}', { parseSpecialCharSequences: false });
 
       // set slices to auto
-      cy.get('[data-test-subj="slices"]').clear().type("auto");
+      cy.get('[data-test-subj="sliceEnabled"]').click({ force: true });
 
       // input pipeline
       cy.get(`div[data-test-subj="pipelineCombobox"]`).find(`input[data-test-subj="comboBoxSearchInput"]`).type("bumpOrderId{enter}");
@@ -140,8 +140,6 @@ describe("Reindex", () => {
       cy.get("tbody > tr").should(($tr) => {
         expect($tr, "1 row").to.have.length(1);
         expect($tr, "item").to.contain(REINDEX_DEST);
-        // subset data number
-        expect($tr, "item").to.contain(4213);
       });
     });
   });
@@ -174,7 +172,7 @@ describe("Reindex", () => {
       cy.get("#_selection_column_opensearch_dashboards_sample_data_logs-checkbox").click();
 
       // Click actions button
-      cy.get('[data-test-subj="More Action"]').click();
+      cy.get('[data-test-subj="moreAction"]').click();
       // Reindex should show as activate
       cy.get('[data-test-subj="Reindex Action"]').click();
 
@@ -194,7 +192,7 @@ describe("Reindex", () => {
       cy.get('[data-test-subj="createIndexButton"]').click();
       cy.contains("Create Index");
 
-      cy.get('[placeholder="Please enter the name for your index"]').type(REINDEX_NEW_CREATED).blur();
+      cy.get('[placeholder="Specify a name for the new index."]').type(REINDEX_NEW_CREATED).blur();
       cy.wait(1000);
 
       // import setting and mapping

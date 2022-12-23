@@ -19,6 +19,7 @@ import {
 } from "@elastic/eui";
 import _ from "lodash";
 import React, { ChangeEvent, Component } from "react";
+import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/interfaces";
@@ -29,12 +30,14 @@ import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CommonService, IndexService } from "../../../../services";
 import { RouteComponentProps } from "react-router-dom";
 import IndexSelect from "../../components/IndexSelect";
-import { DEFAULT_QUERY, REINDEX_ERROR_PROMPT } from "../../utils/constants";
+import { DEFAULT_QUERY, REINDEX_ERROR_PROMPT, DEFAULT_SLICE } from "../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
 import CreateIndexFlyout from "../../components/CreateIndexFlyout";
 import queryString from "query-string";
 import { parseIndexNames, checkDuplicate } from "../../utils/helper";
+import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
+import { ReindexJobMetaData } from "../../../../models/interfaces";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -211,7 +214,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       this.setState({ executing: true });
       let reindexReq: ReindexRequest = {
         waitForCompletion: false,
-        slices: slices,
+        slices: slices === undefined ? DEFAULT_SLICE : slices,
         body: {
           conflicts: ignoreConflicts ? "proceed" : "abort",
           source: {
@@ -614,7 +617,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         </ContentPanel>
 
         <EuiSpacer />
-        <EuiSpacer />
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
@@ -631,7 +633,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
         {showCreateIndexFlyout ? (
           <CreateIndexFlyout
-            commonService={this.props.commonService}
             onSubmitSuccess={this.onCreateIndexSuccess}
             sourceIndices={allSelectedIndices}
             onCloseFlyout={() => this.setState({ showCreateIndexFlyout: false })}

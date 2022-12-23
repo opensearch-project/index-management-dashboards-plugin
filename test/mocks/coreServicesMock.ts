@@ -37,18 +37,6 @@ const coreServicesMock = {
       },
     },
   },
-  docLinks: {
-    links: {
-      opensearch: {
-        reindexData: {
-          base: "https://opensearch.org/docs/latest/opensearch/reindex-data/",
-        },
-        queryDSL: {
-          base: "https://opensearch.org/docs/opensearch/query-dsl/index/",
-        },
-      },
-    },
-  },
 };
 
 export default (coreServicesMock as unknown) as CoreStart;
