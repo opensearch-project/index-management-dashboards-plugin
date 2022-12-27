@@ -70,7 +70,6 @@ const MonacoJSONEditor = forwardRef(
           editor: editorRef.current,
           path,
         });
-        debugger;
       }
     }, [path, editorRef.current]);
 
