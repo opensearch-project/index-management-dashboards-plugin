@@ -287,12 +287,12 @@ const IndexMapping = (
                     properties: [...(oldValue?.properties || []), ...transformObjectToArray(result?.properties || {})],
                   });
                 }}
-                path="inmemory://inmemory/index-settings.json"
+                path={`index-settings-${Date.now()}.json`}
                 diagnosticsOptions={{
                   validate: true,
                   schemas: [
                     {
-                      fileMatch: ["index-settings.json"],
+                      fileMatch: ["index-settings-*.json"],
                       schema: {
                         title: "Product",
                         description: "A product in the catalog",

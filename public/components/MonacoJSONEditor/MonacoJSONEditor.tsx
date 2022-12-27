@@ -8,7 +8,7 @@ import MonacoEditor from "react-monaco-editor";
 import { monaco } from "@osd/monaco";
 import { IJSONEditorRef } from "../JSONEditor";
 import { MonacoJSONEditorProps } from "./interface";
-import { useDiagnosticsOptions, changeModel } from "./hooks";
+import { useDiagnosticsOptions, useModel } from "./hooks";
 import "./MonacoJSONEditor.scss";
 
 const MonacoJSONEditor = forwardRef(
@@ -18,7 +18,7 @@ const MonacoJSONEditor = forwardRef(
     const [editorValue, setEditorValue] = useState(value);
     const focusedRef = useRef(false);
     const inputRef = useRef<HTMLTextAreaElement>(null);
-    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | undefined>(undefined);
     useDiagnosticsOptions({
       monaco,
       diagnosticsOptions,
@@ -64,14 +64,10 @@ const MonacoJSONEditor = forwardRef(
       setAllValue(value);
     }, [value, setAllValue]);
 
-    useEffect(() => {
-      if (path && editorRef.current) {
-        changeModel({
-          editor: editorRef.current,
-          path,
-        });
-      }
-    }, [path, editorRef.current]);
+    useModel({
+      editor: editorRef.current,
+      path,
+    });
 
     useEffect(() => {
       document.body.addEventListener("click", onClickOutsideHandler.current);
@@ -132,7 +128,6 @@ const MonacoJSONEditor = forwardRef(
             }}
             editorDidMount={(editor) => {
               editorRef.current = editor;
-              console.log(editor.getModel());
               setIsReady(true);
             }}
           />

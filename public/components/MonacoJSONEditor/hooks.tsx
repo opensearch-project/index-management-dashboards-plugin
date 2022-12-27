@@ -18,19 +18,29 @@ export function useDiagnosticsOptions(props: { monaco?: typeof monaco; diagnosti
   }, [props.monaco, props.diagnosticsOptions]);
 }
 
-export function changeModel(props: { editor: monaco.editor.IStandaloneCodeEditor; path: string }) {
-  const originalModel = props.editor.getModel() as monaco.editor.ITextModel;
-  const originalValue = originalModel.getValue();
-  const originalLanguage = originalModel.getModeId();
-  const originalUri = originalModel.uri;
-  originalModel.dispose();
-  const newModel = monaco.editor.createModel(
-    originalValue,
-    originalLanguage,
-    monaco.Uri.from({
-      scheme: originalUri.scheme,
-      path: props.path,
-    })
-  );
-  props.editor.setModel(newModel);
+export function useModel(props: { editor?: monaco.editor.IStandaloneCodeEditor; path?: string }) {
+  useEffect(() => {
+    if (props.path && props.editor) {
+      const originalModel = props.editor.getModel() as monaco.editor.ITextModel;
+      const originalValue = originalModel.getValue();
+      const originalLanguage = originalModel.getModeId();
+      const originalUri = originalModel.uri;
+      originalModel.dispose();
+      const newModel = monaco.editor.createModel(
+        originalValue,
+        originalLanguage,
+        monaco.Uri.from({
+          scheme: originalUri.scheme,
+          path: props.path,
+        })
+      );
+      props.editor.setModel(newModel);
+    }
+  }, [props.path, props.editor]);
+
+  useEffect(() => {
+    return () => {
+      props.editor?.getModel()?.dispose();
+    };
+  }, []);
 }
