@@ -6,13 +6,14 @@
 import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
 import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink } from "@elastic/eui";
 import { set, get, isEmpty } from "lodash";
-import JSONEditor, { IJSONEditorRef } from "../../../../components/JSONEditor";
+import MonacoJSONEditor, { IJSONEditorRef } from "../../../../components/MonacoJSONEditor";
 import { Modal } from "../../../../components/Modal";
 import { MappingsProperties } from "../../../../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import MappingLabel, { IMappingLabelRef } from "../MappingLabel";
 import { transformObjectToArray, transformArrayToObject, countNodesInTree } from "./helper";
 import { IndexMappingsObjectAll, IndexMappingProps, EDITOR_MODE, IIndexMappingsRef } from "./interfaces";
+import { INDEX_MAPPING_TYPES } from "../../../../utils/constants";
 import "./IndexMapping.scss";
 
 export * from "./helper";
@@ -212,7 +213,7 @@ const IndexMapping = (
                   Modal.show({
                     title: "Previous mappings",
                     content: (
-                      <JSONEditor
+                      <MonacoJSONEditor
                         readOnly
                         value={JSON.stringify(
                           {
@@ -235,7 +236,7 @@ const IndexMapping = (
             </>
           ) : null}
           {readonly ? (
-            <JSONEditor
+            <MonacoJSONEditor
               ref={JSONEditorRef}
               value={JSON.stringify(
                 {
@@ -245,6 +246,7 @@ const IndexMapping = (
                 null,
                 2
               )}
+              disabled={readonly}
               readOnly={readonly}
               width="100%"
             />
@@ -266,7 +268,7 @@ const IndexMapping = (
               }
               fullWidth
             >
-              <JSONEditor
+              <MonacoJSONEditor
                 value={JSON.stringify(
                   {
                     ...propsValue,
@@ -281,6 +283,70 @@ const IndexMapping = (
                     ...result,
                     properties: [...(oldValue?.properties || []), ...transformObjectToArray(result?.properties || {})],
                   });
+                }}
+                path="inmemory://inmemory/index-settings.json"
+                diagnosticsOptions={{
+                  validate: true,
+                  schemas: [
+                    {
+                      fileMatch: ["index-settings.json"],
+                      schema: {
+                        title: "Product",
+                        description: "A product in the catalog",
+                        type: "object",
+                        properties: {
+                          properties: {
+                            $ref: "ISMIndexMappingProperties",
+                          },
+                        },
+                        additionalProperties: false,
+                      },
+                      uri: "ISMIndexMappings",
+                    },
+                    {
+                      schema: {
+                        title: "Index mapping properties",
+                        description: "Index mapping properties validation",
+                        type: "object",
+                        format: "123123",
+                        patternProperties: {
+                          ".*": {
+                            type: "object",
+                            allOf: INDEX_MAPPING_TYPES.map((item) => ({
+                              if: {
+                                properties: { type: { const: item.label } },
+                              },
+                              then: {
+                                properties: {
+                                  type: {
+                                    description: "type for this field",
+                                    enum: INDEX_MAPPING_TYPES.map((item) => item.label),
+                                  },
+                                  properties: {
+                                    description: "properties for this field",
+                                    $ref: "ISMIndexMappingProperties",
+                                  },
+                                  ...item.options?.fields?.reduce(
+                                    (total, current) => ({
+                                      ...total,
+                                      [current.name as string]: {
+                                        description: current.label,
+                                        type: current.validateType,
+                                      },
+                                    }),
+                                    {}
+                                  ),
+                                },
+                                additionalProperties: false,
+                                required: ["type", ...(item.options?.fields?.map((item) => item.name) || [])],
+                              },
+                            })),
+                          },
+                        },
+                      },
+                      uri: "ISMIndexMappingProperties",
+                    },
+                  ],
                 }}
                 width="100%"
                 ref={JSONEditorRef}

@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-
+import { JSONSchema4TypeName } from "@types/json-schema";
 import { InitOption } from "../lib/field";
 import { ComponentMapEnum } from "../components/FormGenerator";
 
@@ -190,10 +190,10 @@ export const INDEX_DYNAMIC_SETTINGS = [
 ];
 
 export const INDEX_MAPPING_TYPES: {
-  label?: string;
+  label: string;
   hasChildren?: boolean;
   options?: {
-    fields?: (InitOption & { label: string; type: ComponentMapEnum; initValue?: any })[];
+    fields?: (InitOption & { name: string; label: string; type: ComponentMapEnum; initValue?: any; validateType: JSONSchema4TypeName })[];
   };
 }[] = [
   {
@@ -204,6 +204,7 @@ export const INDEX_MAPPING_TYPES: {
           label: "Path",
           name: "path",
           type: "Input",
+          validateType: "string",
           rules: [
             {
               required: true,
@@ -293,6 +294,7 @@ export const INDEX_MAPPING_TYPES: {
           name: "analyzer",
           initValue: "standard",
           type: "Input",
+          validateType: "string",
           rules: [
             {
               required: true,
