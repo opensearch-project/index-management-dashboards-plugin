@@ -66,7 +66,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
     editorRef.current?.getModifiedEditor().getDomNode()?.setAttribute("data-test-subj", "codeEditorContainer");
     return () => {
       document.body.removeEventListener("click", onClickOutsideHandler.current);
-      editorRef.current?.getDomNode().addEventListener("click", onClickContainer.current);
+      editorRef.current?.getDomNode().removeEventListener("click", onClickContainer.current);
     };
   }, [isReady]);
 
