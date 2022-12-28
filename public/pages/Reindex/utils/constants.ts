@@ -13,5 +13,5 @@ export const REINDEX_ERROR_PROMPT = {
   DEST_REQUIRED: "Destination is required.",
   SOURCE_REQUIRED: "Source is required.",
   HEALTH_RED: "health status is red.",
-  SLICES_FORMAT_ERROR: "Must be an integer greater or equal to 2.",
+  SLICES_FORMAT_ERROR: "Must be an integer greater than or equal to 2.",
 };

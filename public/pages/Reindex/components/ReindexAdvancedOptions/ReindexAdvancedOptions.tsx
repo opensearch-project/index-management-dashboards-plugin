@@ -56,7 +56,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
         label="Version conflicts"
         helpText={
           <>
-            Instead of failing the reindexing operation, ignore any version conflicts during the reindexing.
+            Instead of failing the reindexing operation, ignore any version conflicts during reindexing.
             <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.unique} target="_blank">
               Learn more.
             </EuiLink>
@@ -72,12 +72,15 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
       </CustomFormRow>
       <EuiSpacer />
 
-      <CustomFormRow label="Slice reindex operation" helpText="Divide this reindexing operation into smaller subtasks to run in parallel.">
+      <CustomFormRow
+        label="Slice reindexing operation"
+        helpText="Divide this reindexing operation into smaller subtasks to run in parallel."
+      >
         <>
           <EuiCheckbox
             id="sliceEnabledCheckBox"
             data-test-subj="sliceEnabled"
-            label="Slice this reindex operation"
+            label="Slice this reindexing operation"
             checked={sliceEnabled}
             onChange={(e) => {
               onSlicesChange(e.target.checked ? "auto" : undefined);
@@ -140,7 +143,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
         }
         helpText={
           <>
-            Select an ingest pipeline if you need to transform documents before writing data into the destination index.
+            Select an ingest pipeline if you need to transform documents before writing data to the destination index.
             <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.transform} target="_blank">
               Learn more.
             </EuiLink>

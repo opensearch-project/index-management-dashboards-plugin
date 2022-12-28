@@ -29,7 +29,7 @@ Object {
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              Instead of failing the reindexing operation, ignore any version conflicts during the reindexing.
+              Instead of failing the reindexing operation, ignore any version conflicts during reindexing.
               <button
                 class="euiLink euiLink--primary"
                 type="button"
@@ -72,7 +72,7 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Slice reindex operation
+              Slice reindexing operation
             </label>
           </div>
           <div
@@ -101,7 +101,7 @@ Object {
                 class="euiCheckbox__label"
                 for="sliceEnabledCheckBox"
               >
-                Slice this reindex operation
+                Slice this reindexing operation
               </label>
             </div>
             <div
@@ -223,7 +223,7 @@ Object {
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              Select an ingest pipeline if you need to transform documents before writing data into the destination index.
+              Select an ingest pipeline if you need to transform documents before writing data to the destination index.
               <a
                 class="euiLink euiLink--primary"
                 href="https://opensearch.org/docs/latest/opensearch/reindex-data/#transform-documents-during-reindexing"
@@ -324,7 +324,7 @@ Object {
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Instead of failing the reindexing operation, ignore any version conflicts during the reindexing.
+            Instead of failing the reindexing operation, ignore any version conflicts during reindexing.
             <button
               class="euiLink euiLink--primary"
               type="button"
@@ -367,7 +367,7 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Slice reindex operation
+            Slice reindexing operation
           </label>
         </div>
         <div
@@ -396,7 +396,7 @@ Object {
               class="euiCheckbox__label"
               for="sliceEnabledCheckBox"
             >
-              Slice this reindex operation
+              Slice this reindexing operation
             </label>
           </div>
           <div
@@ -518,7 +518,7 @@ Object {
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Select an ingest pipeline if you need to transform documents before writing data into the destination index.
+            Select an ingest pipeline if you need to transform documents before writing data to the destination index.
             <a
               class="euiLink euiLink--primary"
               href="https://opensearch.org/docs/latest/opensearch/reindex-data/#transform-documents-during-reindexing"
