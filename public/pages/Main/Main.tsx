@@ -33,6 +33,7 @@ import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
+import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -72,6 +73,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.SNAPSHOT_POLICY_DETAILS,
   ROUTES.CREATE_SNAPSHOT_POLICY,
   ROUTES.EDIT_SNAPSHOT_POLICY,
+  ROUTES.SHRINK_INDEX,
 ];
 
 interface MainProps extends RouteComponentProps {
@@ -370,6 +372,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <TransformDetails {...props} transformService={services.transformService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SHRINK_INDEX}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ShrinkIndex {...props} commonService={services.commonService} />
                               </div>
                             )}
                           />
