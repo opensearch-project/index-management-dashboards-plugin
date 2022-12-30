@@ -44,7 +44,14 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
       return (
         <EuiComboBox
           onCreateOption={(searchValue) => {
-            const findItem = options.find((item: { label: string }) => item.label === searchValue);
+            const allOptions = (options as { label: string; options?: { label: string }[] }[]).reduce((total, current) => {
+              if (current.options) {
+                return [...total, ...current.options];
+              } else {
+                return [...total, current];
+              }
+            }, [] as { label: string }[]);
+            const findItem = allOptions.find((item: { label: string }) => item.label === searchValue);
             if (findItem) {
               onChange(searchValue);
             }

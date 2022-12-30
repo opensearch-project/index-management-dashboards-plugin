@@ -41,6 +41,7 @@ import CreateIndexTemplate from "../CreateIndexTemplate";
 import SplitIndex from "../SplitIndex";
 import IndexDetail from "../IndexDetail";
 import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
+import Rollover from "../Rollover";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -89,7 +90,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.SHRINK_INDEX,
 ];
 
-const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL];
+const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL, ROUTES.ROLLOVER];
 
 interface MainProps extends RouteComponentProps {
   landingPage: string;
@@ -495,6 +496,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <ShrinkIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.ROLLOVER}/:source`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Rollover {...props} />
                               </div>
                             )}
                           />

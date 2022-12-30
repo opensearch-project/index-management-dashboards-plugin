@@ -4,19 +4,21 @@
  */
 import React, { useMemo, useState } from "react";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
-
+import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
 import { IAlias } from "../../interface";
+import { ROUTES } from "../../../../utils/constants";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
   onDelete: () => void;
   onUpdateAlias: () => void;
+  history: RouteComponentProps["history"];
 }
 
 export default function AliasesActions(props: AliasesActionsProps) {
-  const { selectedItems, onDelete, onUpdateAlias } = props;
+  const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
@@ -50,6 +52,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   disabled: selectedItems.length !== 1,
                   "data-test-subj": "editAction",
                   onClick: onUpdateAlias,
+                },
+                {
+                  name: "Rollover",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "rolloverAction",
+                  onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItems[0].alias}`),
                 },
                 {
                   name: "Delete",
