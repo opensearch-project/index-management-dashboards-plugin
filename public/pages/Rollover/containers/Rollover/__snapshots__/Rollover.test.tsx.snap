@@ -1,0 +1,405 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`container <Rollover /> spec render the component 1`] = `
+<div
+  style="padding: 0px 50px;"
+>
+  <h1
+    class="euiTitle euiTitle--medium"
+  >
+    Rollover
+  </h1>
+  <div
+    class="euiFormRow"
+    id="some_html_id-row"
+    style="margin-bottom: 20px;"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormHelpText euiFormRow__text"
+        style="padding-top: 0px; padding-bottom: 4px;"
+      >
+        Creates a new index for a data stream or index alias.
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Configure source
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiForm"
+      >
+        <div
+          class="euiFormRow"
+          data-test-subj="form-name-source"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Specify source alias or data stream
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Specify one alias or data stream you want to rollover from.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                class="euiComboBox"
+                role="combobox"
+              >
+                <div
+                  class="euiFormControlLayout"
+                >
+                  <div
+                    class="euiFormControlLayout__childrenWrapper"
+                  >
+                    <div
+                      class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                      data-test-subj="comboBoxInput"
+                      tabindex="-1"
+                    >
+                      <span
+                        class="euiComboBoxPill euiComboBoxPill--plainText"
+                      >
+                        test_alias
+                      </span>
+                      <div
+                        class="euiComboBox__input"
+                        style="font-size: 14px; display: inline-block;"
+                      >
+                        <input
+                          aria-controls=""
+                          data-test-subj="comboBoxSearchInput"
+                          role="textbox"
+                          style="box-sizing: content-box; width: 2px;"
+                          value=""
+                        />
+                        <div
+                          style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                    >
+                      <button
+                        aria-label="Clear input"
+                        class="euiFormControlLayoutClearButton"
+                        data-test-subj="comboBoxClearButton"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                      <button
+                        aria-label="Open list of options"
+                        class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                        data-test-subj="comboBoxToggleListButton"
+                        type="button"
+                      >
+                        EuiIconMock
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Conditions - optional
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiForm"
+      >
+        <div
+          class="euiFormRow"
+          data-test-subj="form-name-conditions,max_age"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Minimum index age
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              The minimum age required to roll over the index. Accepts time units, e.g. "5h" or "1d".
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldText"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          data-test-subj="form-name-conditions,max_docs"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Minimum doc count
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              The minimum number of documents required to roll over the index.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldNumber"
+                    type="number"
+                    value=""
+                  />
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          data-test-subj="form-name-conditions,max_size"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Minimum index size
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              The minimum size of the total primary shard storage required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldText"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiFormRow"
+          data-test-subj="form-name-conditions,max_primary_shard_size"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Minimum primary shard size
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              The minimum size of a single primary shard required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldText"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButtonEmpty euiButtonEmpty--primary"
+        data-test-subj="rolloverCancelButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButtonEmpty__content"
+        >
+          <span
+            class="euiButtonEmpty__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="rolloverSubmitButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Rollover
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
