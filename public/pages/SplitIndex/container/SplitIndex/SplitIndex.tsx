@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component } from "react";
-import { EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiText } from "@elastic/eui";
+import { EuiCallOut, EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiText } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
@@ -88,7 +88,8 @@ export class SplitIndex extends Component<SplitIndexProps> {
     if (sourceIndex.health === "red") {
       reasons.push(
         <>
-          <b style={{ color: "red", fontSize: 18 }}>The source index must not have a Red health status.</b>
+          <EuiCallOut color="danger" iconType="alert" title="The source index must not have a Red health status." />
+          <EuiSpacer />
         </>
       );
     }
@@ -96,32 +97,33 @@ export class SplitIndex extends Component<SplitIndexProps> {
     if (sourceIndex.status === "close") {
       reasons.push(
         <>
-          <p>
-            <b style={{ color: "red", fontSize: 18 }}>The source index must be open.</b>
-            <br />
-            You must first open the index before splitting it. Depending on the size of the source index, this may take additional time to
-            complete. The index will be in the Red state while the index is opening.
-          </p>
-          <p>
-            <EuiButton
-              fill
-              onClick={async () => {
-                try {
-                  await openIndices({
-                    commonService: this.props.commonService,
-                    indices: [source.source],
-                    coreServices: this.props.coreService,
-                  });
-                  await this.isSourceIndexReady();
-                } catch (err) {
-                  // no need to log anything since openIndices will log the error
-                }
-              }}
-              data-test-subj={"open-index-button"}
-            >
-              Open index
-            </EuiButton>
-          </p>
+          <EuiCallOut color="danger" iconType="alert" title="The source index must be open.">
+            <p>
+              You must first open the index before splitting it. Depending on the size of the source index, this may take additional time to
+              complete. The index will be in the Red state while the index is opening.
+            </p>
+            <p>
+              <EuiButton
+                fill
+                onClick={async () => {
+                  try {
+                    await openIndices({
+                      commonService: this.props.commonService,
+                      indices: [source.source],
+                      coreServices: this.props.coreService,
+                    });
+                    await this.isSourceIndexReady();
+                  } catch (err) {
+                    // no need to log anything since openIndices will log the error
+                  }
+                }}
+                data-test-subj={"open-index-button"}
+              >
+                Open index
+              </EuiButton>
+            </p>
+          </EuiCallOut>
+          <EuiSpacer />
         </>
       );
     }
@@ -131,31 +133,30 @@ export class SplitIndex extends Component<SplitIndexProps> {
       const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(
         <>
-          <p>
-            <b style={{ color: "red", fontSize: 18 }}>The source index must block write operations before splitting.</b>
-            <br />
-            In order to split an existing index, you must first set the index to block write operations.
-          </p>
-          <EuiButton
-            fill
-            onClick={async () => {
-              try {
-                await setIndexSettings({
-                  indexName: sourceIndex.index,
-                  flat,
-                  settings: blocksWriteSetting,
-                  commonService: this.props.commonService,
-                  coreServices: this.props.coreService,
-                });
-                await this.isSourceIndexReady();
-              } catch (err) {
-                // no need to log anything since getIndexSettings will log the error
-              }
-            }}
-            data-test-subj={"set-indexsetting-button"}
-          >
-            Block write operations
-          </EuiButton>
+          <EuiCallOut color="danger" iconType="alert" title="The source index must block write operations before splitting.">
+            <p>In order to split an existing index, you must first set the index to block write operations.</p>
+            <EuiButton
+              fill
+              onClick={async () => {
+                try {
+                  await setIndexSettings({
+                    indexName: sourceIndex.index,
+                    flat,
+                    settings: blocksWriteSetting,
+                    commonService: this.props.commonService,
+                    coreServices: this.props.coreService,
+                  });
+                  await this.isSourceIndexReady();
+                } catch (err) {
+                  // no need to log anything since getIndexSettings will log the error
+                }
+              }}
+              data-test-subj={"set-indexsetting-button"}
+            >
+              Block write operations
+            </EuiButton>
+          </EuiCallOut>
+          <EuiSpacer />
         </>
       );
     }

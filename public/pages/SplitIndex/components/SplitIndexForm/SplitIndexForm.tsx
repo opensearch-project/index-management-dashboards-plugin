@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component } from "react";
-import { EuiCallOut, EuiSpacer, EuiLink, EuiFlexItem, EuiFlexGroup, EuiButton, EuiButtonEmpty } from "@elastic/eui";
+import { EuiSpacer, EuiLink, EuiFlexItem, EuiFlexGroup, EuiButton, EuiButtonEmpty } from "@elastic/eui";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
@@ -11,7 +11,7 @@ import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import { INDEX_NAMING_MESSAGE, INDEX_SETTINGS_URL, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
+import { INDEX_NAME_PATTERN, INDEX_NAMING_MESSAGE, INDEX_SETTINGS_URL, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -70,7 +70,9 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
                 if (!value || value === "") {
                   // do not pass the validation
                   // return a rejected promise with error message
-                  return Promise.reject("Target Index Name is required");
+                  return Promise.reject("Target index name is required");
+                } else if (!INDEX_NAME_PATTERN.test(value)) {
+                  return Promise.reject(`Target index name ${value} is invalid`);
                 }
                 // pass the validation, return a resolved promise
                 return Promise.resolve();
@@ -153,18 +155,11 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
     return (
       <div>
         <IndexDetail indices={[sourceIndex]}>
-          <EuiCallOut color="danger" hidden={readyForSplit} data-test-subj="Source Index Warning">
-            <dl>
-              {reasons.map((reason, reasonIndex) => (
-                <div key={reasonIndex}>
-                  <dt>{reason}</dt>
-                </div>
-              ))}
-            </dl>
-            <EuiLink href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"} target="_blank" rel="noopener noreferrer">
-              Learn more.
-            </EuiLink>
-          </EuiCallOut>
+          <ul>
+            {reasons.map((reason, reasonIndex) => (
+              <li key={reasonIndex}>{reason}</li>
+            ))}
+          </ul>
         </IndexDetail>
         <EuiSpacer />
 

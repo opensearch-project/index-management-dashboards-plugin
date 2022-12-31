@@ -289,8 +289,23 @@ describe("<SplitIndex /> spec", () => {
     userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
-      expect(getByText("Target Index Name is required")).not.toBeNull();
+      expect(getByText("Target index name is required")).not.toBeNull();
       expect(getByText("Number of shards is required")).not.toBeNull();
+    });
+  });
+
+  it("Error message if index name is invalid", async () => {
+    const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
+
+    await waitFor(() => {
+      expect(getByTestId("splitButton")).not.toBeDisabled();
+    });
+
+    userEvent.type(getByTestId("targetIndexNameInput"), "s*lit");
+    userEvent.click(getByTestId("splitButton"));
+
+    await waitFor(() => {
+      expect(getByText("Target index name s*lit is invalid")).not.toBeNull();
     });
   });
 
