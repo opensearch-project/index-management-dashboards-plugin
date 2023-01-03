@@ -7,6 +7,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   EuiButton,
   EuiButtonEmpty,
+  EuiCallOut,
   EuiFieldText,
   EuiModal,
   EuiModalBody,
@@ -16,9 +17,11 @@ import {
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
+import { filterByMinimatch } from "../../../../../utils/helper";
+import { SYSTEM_ALIAS } from "../../../../../utils/constants";
 
 interface DeleteAliasModalProps {
   selectedItems: string[];
@@ -60,6 +63,8 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
     return null;
   }
 
+  const hasSystemIndex = props.selectedItems.some((index) => filterByMinimatch(index, SYSTEM_ALIAS));
+
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
@@ -67,6 +72,12 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
       </EuiModalHeader>
 
       <EuiModalBody>
+        {hasSystemIndex ? (
+          <>
+            <EuiCallOut color="warning">You are trying to delete system-like alias, please be careful.</EuiCallOut>
+            <EuiSpacer />
+          </>
+        ) : null}
         <div style={{ lineHeight: 1.5 }}>
           <p>The following alias will be permanently deleted. This action cannot be undone.</p>
           <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
