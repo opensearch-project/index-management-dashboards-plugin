@@ -17,7 +17,7 @@ import ChannelNotification from "../../components/ChannelNotification";
 import LegacyNotification from "../../components/LegacyNotification";
 import { ERROR_NOTIFICATION_DOCUMENTATION_URL } from "../../../../utils/constants";
 
-interface ErrorNotificationProps {
+export interface ErrorNotificationProps {
   errorNotification: IErrorNotification | undefined;
   errorNotificationJsonString: string;
   onChangeChannelId: (value: ChangeEvent<HTMLSelectElement>) => void;

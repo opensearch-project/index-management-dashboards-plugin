@@ -4,9 +4,10 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { EuiSpacer, EuiFormRow, EuiComboBox, EuiCallOut, EuiText, EuiLink } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiCallOut, EuiText, EuiLink } from "@elastic/eui";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import _ from "lodash";
+import EuiComboBox from "../../../../components/BetterComboBox";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexService from "../../../../services/IndexService";
@@ -34,6 +35,7 @@ export const ROLLUP_RESULTS_HELP_TEXT_LINK = "https://opensearch.org/docs/latest
 
 export default class RollupIndices extends Component<RollupIndicesProps, RollupIndicesState> {
   static contextType = CoreServicesContext;
+  _isMount: boolean;
   constructor(props: RollupIndicesProps) {
     super(props);
     this.state = {
@@ -42,6 +44,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
       targetIndexOptions: [],
     };
 
+    this._isMount = true;
     this.onIndexSearchChange = _.debounce(this.onIndexSearchChange, 500, { leading: true });
   }
 
@@ -49,7 +52,14 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
     await this.onIndexSearchChange("");
   }
 
+  componentWillUnmount(): void {
+    this._isMount = false;
+  }
+
   onIndexSearchChange = async (searchValue: string): Promise<void> => {
+    if (!this._isMount) {
+      return;
+    }
     const { indexService } = this.props;
     this.setState({ isLoading: true, indexOptions: [] });
     try {
@@ -59,7 +69,9 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
         const options = searchValue.trim() ? [{ label: wildcardOption(searchValue) }] : [];
         const dataStreams = dataStreamsAndIndicesNamesResponse.response.dataStreams.map((label) => ({ label }));
         const indices = dataStreamsAndIndicesNamesResponse.response.indices.map((label) => ({ label }));
-        this.setState({ indexOptions: options.concat(dataStreams, indices), targetIndexOptions: indices });
+        if (this._isMount) {
+          this.setState({ indexOptions: options.concat(dataStreams, indices), targetIndexOptions: indices });
+        }
       } else {
         if (dataStreamsAndIndicesNamesResponse.error.startsWith("[index_not_found_exception]")) {
           this.context.notifications.toasts.addDanger("No index available");
@@ -71,7 +83,9 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
       this.context.notifications.toasts.addDanger(err.message);
     }
 
-    this.setState({ isLoading: false });
+    if (this._isMount) {
+      this.setState({ isLoading: false });
+    }
   };
 
   onCreateOption = (searchValue: string, flattenedOptions: { label: string; value?: IndexItem }[]): void => {

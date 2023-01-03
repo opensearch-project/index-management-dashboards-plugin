@@ -55,7 +55,7 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
       <div style={{ padding: "0px 10px" }}>
         {!isReadOnly && (
           <>
-            <EuiFormRow compressed style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
+            <EuiFormRow style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
               <EuiSelect
                 compressed
                 prepend="Initial state"

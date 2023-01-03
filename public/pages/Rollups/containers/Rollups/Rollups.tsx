@@ -269,7 +269,7 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
       pageIndex: page,
       pageSize: size,
       pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
-      totalItemCount: totalRollups,
+      totalItemCount: totalRollups || 0,
     };
 
     const sorting: EuiTableSortingType<DocumentRollup> = {
