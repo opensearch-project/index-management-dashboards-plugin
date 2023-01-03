@@ -33,6 +33,8 @@ import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
+import Templates from "../Templates";
+import CreateIndexTemplate from "../CreateIndexTemplate";
 import CreateIndex from "../CreateIndex";
 import IndexDetail from "../IndexDetail";
 
@@ -397,10 +399,26 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={ROUTES.TEMPLATES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Templates {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={`${ROUTES.CREATE_INDEX}/:index/:mode`}
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
                               </div>
                             )}
                           />
@@ -413,10 +431,26 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={ROUTES.CREATE_INDEX}
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_TEMPLATE}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
                               </div>
                             )}
                           />
