@@ -45,4 +45,12 @@ describe("IndexService spec", () => {
 
     expect(httpClientMock.get).toHaveBeenCalledTimes(1);
   });
+
+  it("calls search nodejs route when calling getAlias", async () => {
+    httpClientMock.post = jest.fn().mockResolvedValue({ data: {} });
+    const queryObject = {};
+    await indexService.getAliases(queryObject);
+
+    expect(httpClientMock.get).toHaveBeenCalledTimes(1);
+  });
 });
