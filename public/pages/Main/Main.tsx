@@ -33,8 +33,12 @@ import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
-import Reindex from "../Reindex/container/Reindex";
+import Aliases from "../Aliases";
+import Templates from "../Templates";
+import CreateIndexTemplate from "../CreateIndexTemplate";
+import CreateIndex from "../CreateIndex";
 import IndexDetail from "../IndexDetail";
+import Reindex from "../Reindex/container/Reindex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -117,6 +121,18 @@ export default class Main extends Component<MainProps, object> {
             id: 3,
             href: `#${Pathname.Indices}`,
             isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
+          },
+          {
+            name: Navigation.Templates,
+            id: 7,
+            href: `#${ROUTES.TEMPLATES}`,
+            isSelected: ROUTES.TEMPLATES === pathname,
+          },
+          {
+            name: Navigation.Aliases,
+            id: 6,
+            href: `#${ROUTES.ALIASES}`,
+            isSelected: ROUTES.ALIASES === pathname,
           },
           {
             name: Navigation.Rollups,
@@ -385,10 +401,66 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
-                            path={ROUTES.REINDEX}
+                            path={ROUTES.ALIASES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Aliases {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.TEMPLATES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Templates {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_INDEX}/:index/:mode`}
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
-                                <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_INDEX}/:index`}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_TEMPLATE}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
                               </div>
                             )}
                           />
@@ -397,6 +469,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <IndexDetail {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.REINDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
                               </div>
                             )}
                           />

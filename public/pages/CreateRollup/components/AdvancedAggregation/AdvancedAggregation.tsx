@@ -272,7 +272,7 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
         align: "left",
         render: (aggregationMethod, item) => (
           <EuiForm>
-            <EuiFormRow compressed={true}>
+            <EuiFormRow>
               <EuiSelect
                 compressed={true}
                 value={aggregationMethod}
