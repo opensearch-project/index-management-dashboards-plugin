@@ -277,7 +277,10 @@ describe("<SplitIndex /> spec", () => {
       expect(getByTestId("splitButton")).not.toBeDisabled();
     });
 
-    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "5{enter}");
+    userEvent.type(
+      getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
+      "5{arrowdown}{enter}"
+    );
     userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
