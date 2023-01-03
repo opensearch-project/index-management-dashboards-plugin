@@ -167,6 +167,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
           setDetail(res.response);
         } else {
           coreService?.notifications.toasts.addDanger(res.error || "");
+          props.history.replace(ROUTES.INDICES);
         }
 
         return res;
