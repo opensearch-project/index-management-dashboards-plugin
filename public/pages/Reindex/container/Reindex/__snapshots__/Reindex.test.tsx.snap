@@ -1,0 +1,449 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Reindex /> spec renders the component 1`] = `
+<div
+  style="padding: 0px 50px;"
+>
+  <h1
+    class="euiTitle euiTitle--large"
+  >
+    Reindex
+  </h1>
+  <div
+    class="euiText euiText--small"
+    style="padding: 5px 0px;"
+  >
+    <div
+      class="euiTextColor euiTextColor--subdued"
+    >
+      <p
+        style="font-weight: 200;"
+      >
+        Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.
+         
+        <a
+          class="euiLink euiLink--primary"
+          href="https://opensearch.org/docs/latest/opensearch/reindex-data/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Learn more.
+          EuiIconMock
+          <span
+            class="euiScreenReaderOnly"
+          >
+            (opens in a new tab or window)
+          </span>
+        </a>
+      </p>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Configure source index
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Specify source indexes or data streams
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Specify one or more indexes or data streams you want to reindex from.
+          </div>
+          <div>
+            <div
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              class="euiComboBox"
+              data-test-subj="sourceSelector"
+              role="combobox"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <div
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                    data-test-subj="comboBoxInput"
+                    tabindex="-1"
+                  >
+                    <p
+                      class="euiComboBoxPlaceholder"
+                    >
+                      Type or select indexes,data streams or aliases
+                    </p>
+                    <div
+                      class="euiComboBox__input"
+                      style="font-size: 14px; display: inline-block;"
+                    >
+                      <input
+                        aria-controls=""
+                        data-test-subj="comboBoxSearchInput"
+                        role="textbox"
+                        style="box-sizing: content-box; width: 2px;"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                  >
+                    <button
+                      aria-label="Open list of options"
+                      class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                      data-test-subj="comboBoxToggleListButton"
+                      type="button"
+                    >
+                      EuiIconMock
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <fieldset
+            data-test-subj="subsetOption"
+          >
+            <legend
+              class="euiFormLegend"
+            >
+              <span>
+                Specify a reindex option
+              </span>
+            </legend>
+            <div
+              class="euiRadio euiRadioGroup__item"
+            >
+              <input
+                checked=""
+                class="euiRadio__input"
+                id="all"
+                name="subsetOption"
+                type="radio"
+                value=""
+              />
+              <div
+                class="euiRadio__circle"
+              />
+              <label
+                class="euiRadio__label"
+                for="all"
+              >
+                Reindex all documents
+              </label>
+            </div>
+            <div
+              class="euiRadio euiRadioGroup__item"
+            >
+              <input
+                class="euiRadio__input"
+                id="subset"
+                name="subsetOption"
+                type="radio"
+                value=""
+              />
+              <div
+                class="euiRadio__circle"
+              />
+              <label
+                class="euiRadio__label"
+                for="subset"
+              >
+                Reindex a subset of documents (Advanced)
+              </label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Configure destination index
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+          style="max-width: 400px;"
+        >
+          <div
+            class="euiFormRow"
+            id="some_html_id-row"
+          >
+            <div
+              class="euiFormRow__labelWrapper"
+            >
+              <label
+                aria-invalid="false"
+                class="euiFormLabel euiFormRow__label"
+                for="some_html_id"
+              >
+                Specify a destination index or data stream
+              </label>
+            </div>
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div>
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="euiComboBox"
+                  data-test-subj="destinationSelector"
+                  role="combobox"
+                >
+                  <div
+                    class="euiFormControlLayout"
+                  >
+                    <div
+                      class="euiFormControlLayout__childrenWrapper"
+                    >
+                      <div
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                        data-test-subj="comboBoxInput"
+                        tabindex="-1"
+                      >
+                        <p
+                          class="euiComboBoxPlaceholder"
+                        >
+                          Type or select indexes,data streams or aliases
+                        </p>
+                        <div
+                          class="euiComboBox__input"
+                          style="font-size: 14px; display: inline-block;"
+                        >
+                          <input
+                            aria-controls=""
+                            data-test-subj="comboBoxSearchInput"
+                            role="textbox"
+                            style="box-sizing: content-box; width: 2px;"
+                            value=""
+                          />
+                          <div
+                            style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                      >
+                        <button
+                          aria-label="Open list of options"
+                          class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                          data-test-subj="comboBoxToggleListButton"
+                          type="button"
+                        >
+                          EuiIconMock
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiFlexItem--flexGrowZero"
+        >
+          <button
+            class="euiButton euiButton--primary"
+            data-test-subj="createIndexButton"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                Create index
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              aria-label="drop down icon"
+              class="euiButtonIcon euiButtonIcon--text euiButtonIcon--empty euiButtonIcon--xSmall"
+              data-test-subj="advanceOptionToggle"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <h3
+              class="euiTitle euiTitle--small"
+            >
+              Advanced settings
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButtonEmpty euiButtonEmpty--primary"
+        data-test-subj="reindexCancelButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButtonEmpty__content"
+        >
+          <span
+            class="euiButtonEmpty__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="reindexConfirmButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Reindex
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

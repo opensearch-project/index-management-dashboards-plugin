@@ -23,6 +23,7 @@ const coreServicesMock = {
       opensearch: {
         reindexData: {
           base: "https://opensearch.org/docs/latest/opensearch/reindex-data/",
+          transform: "https://opensearch.org/docs/latest/opensearch/reindex-data/#transform-documents-during-reindexing",
         },
         queryDSL: {
           base: "https://opensearch.org/docs/opensearch/query-dsl/index/",
