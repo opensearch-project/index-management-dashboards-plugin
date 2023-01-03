@@ -77,8 +77,7 @@ export function JobHandlerRegister(core: CoreSetup) {
               {
                 title: ((
                   <>
-                    Source index <DetailLink index={extras.sourceIndex} /> has been successfully reindexed as{" "}
-                    <DetailLink index={extras.destIndex} />
+                    Source {extras.sourceIndex} has been successfully reindexed as <DetailLink index={extras.destIndex} />
                   </>
                 ) as unknown) as string,
               },
