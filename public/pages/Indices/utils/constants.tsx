@@ -92,7 +92,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       truncateText: true,
       textOnly: true,
       render: (status: string, item: ManagedCatIndex) => {
-        return item.extraStatus || status;
+        return <span className="camel-first-letter">{item.extraStatus || status}</span>;
       },
     },
     {
