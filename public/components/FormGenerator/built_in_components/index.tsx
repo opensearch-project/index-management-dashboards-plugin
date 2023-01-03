@@ -60,7 +60,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
               onChange(undefined);
             }
           }}
-          selectedOptions={[value].filter((item) => item !== undefined).map((label) => ({ label }))}
+          selectedOptions={[value].filter((item) => item !== undefined).map((label) => ({ label: `${label}` }))}
         />
       );
     })
