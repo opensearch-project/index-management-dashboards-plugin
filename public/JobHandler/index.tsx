@@ -112,8 +112,7 @@ export function JobHandlerRegister(core: CoreSetup) {
               {
                 title: ((
                   <>
-                    Reindex from <DetailLink index={extras.sourceIndex} /> to {extras.destIndex} has some errors, please check the errors
-                    below:
+                    Reindex from {extras.sourceIndex} to {extras.destIndex} has some errors, please check the errors below:
                   </>
                 ) as unknown) as string,
                 text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{errors}</div>) as unknown) as string,
@@ -138,8 +137,8 @@ export function JobHandlerRegister(core: CoreSetup) {
         {
           title: ((
             <>
-              Reindex from <DetailLink index={extras.sourceIndex} /> to {extras.destIndex} does not finish in reasonable time, please check
-              the task {extras.taskId} manually
+              Reindex from {extras.sourceIndex} to {extras.destIndex} does not finish in reasonable time, please check the task{" "}
+              {extras.taskId} manually
             </>
           ) as unknown) as string,
         },
