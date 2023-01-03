@@ -34,7 +34,9 @@ function renderWithRouter(Component: React.ComponentType<any>) {
                     <CoreServicesConsumer>
                       {(core: CoreStart | null) => (
                         <ServicesConsumer>
-                          {({ indexService }: any) => <Component indexService={indexService} core={core} {...props} />}
+                          {({ indexService, commonService }: any) => (
+                            <Component indexService={indexService} commonService={commonService} core={core} {...props} />
+                          )}
                         </ServicesConsumer>
                       )}
                     </CoreServicesConsumer>
@@ -138,9 +140,13 @@ describe("<Indices /> spec", () => {
 
     await waitFor(() => getByText("index_1"));
 
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+
     expect(getByTestId("Apply policyButton")).toBeDisabled();
 
-    userEvent.click(getByTestId("checkboxSelectRow-index_1"));
+    getByTestId("checkboxSelectRow-index_1").click();
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
 
     expect(getByTestId("Apply policyButton")).toBeEnabled();
 
