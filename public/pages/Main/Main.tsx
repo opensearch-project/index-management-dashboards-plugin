@@ -33,6 +33,7 @@ import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
+import Aliases from "../Aliases";
 import Templates from "../Templates";
 import CreateIndexTemplate from "../CreateIndexTemplate";
 import CreateIndex from "../CreateIndex";
@@ -395,6 +396,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <TransformDetails {...props} transformService={services.transformService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.ALIASES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Aliases {...props} />
                               </div>
                             )}
                           />
