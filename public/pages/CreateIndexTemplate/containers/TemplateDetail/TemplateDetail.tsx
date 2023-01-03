@@ -294,12 +294,17 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                 name: "priority",
                 rules: [
                   {
-                    required: true,
-                    message: "Priority is required",
+                    min: 0,
+                    message: "Priority cannot be smaller than 0.",
                   },
                   {
-                    min: 0,
-                    message: "Priority cannot be smaller than 0",
+                    validator(rule, value) {
+                      if (Number(value) !== parseInt(value)) {
+                        return Promise.reject("Priority must be an integer.");
+                      }
+
+                      return Promise.resolve("");
+                    },
                   },
                 ],
               })}
@@ -399,12 +404,13 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                   name: ["template", "settings", "index.number_of_shards"],
                   rules: [
                     {
+                      min: 1,
+                      message: "Number of shards cannot be smaller than 1.",
+                    },
+                    {
                       validator(rule, value) {
-                        if (value === "") {
-                          return Promise.resolve("");
-                        }
                         if (Number(value) !== parseInt(value)) {
-                          return Promise.reject("Number of primary shards must be an integer");
+                          return Promise.reject("Number of primary shards must be an integer.");
                         }
 
                         return Promise.resolve("");
@@ -426,10 +432,11 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                   name: ["template", "settings", "index.number_of_replicas"],
                   rules: [
                     {
+                      min: 0,
+                      message: "Number of replicas cannot be smaller than 0.",
+                    },
+                    {
                       validator(rule, value) {
-                        if (value === "") {
-                          return Promise.resolve("");
-                        }
                         if (Number(value) !== parseInt(value)) {
                           return Promise.reject("Number of replicas must be an integer");
                         }
@@ -458,7 +465,10 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
         <EuiSpacer />
         <AdvancedSettings
           value={field.getValues().template.settings || {}}
-          onChange={(totalValue) => field.setValue(["template", "settings"], totalValue)}
+          onChange={(totalValue) => {
+            field.setValue(["template", "settings"], totalValue);
+            field.validatePromise();
+          }}
           accordionProps={{
             initialIsOpen: false,
             id: "accordionForCreateIndexTemplateSettings",
