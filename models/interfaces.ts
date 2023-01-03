@@ -86,9 +86,7 @@ export interface TemplateItemRemote extends ITemplateExtras {
 /**
  * ManagedIndex item shown in the Managed Indices table
  */
-export interface ManagedIndexItem {
-  index: string;
-  indexUuid: string;
+export interface ManagedIndexItem extends IndexItem {
   dataStream: string | null;
   policyId: string;
   policySeqNo: number;
@@ -96,10 +94,6 @@ export interface ManagedIndexItem {
   policy: Policy | null;
   enabled: boolean;
   managedIndexMetaData: ManagedIndexMetaData | null;
-}
-
-export interface IndexItem {
-  index: string;
 }
 
 /**
@@ -228,7 +222,7 @@ export interface SMDeleteCondition {
 export interface ErrorNotification {
   destination?: Destination;
   channel?: Channel;
-  message_template: MessageTemplate;
+  message_template?: MessageTemplate;
 }
 
 export interface Notification {
@@ -624,3 +618,25 @@ export enum TRANSFORM_AGG_TYPE {
   histogram = "histogram",
   date_histogram = "date_histogram",
 }
+export interface IAPICaller {
+  endpoint: string;
+  method?: string;
+  data?: any;
+}
+
+export interface IRecoveryItem {
+  index: string;
+  stage: "done" | "translog";
+}
+
+export interface ITaskItem {
+  action: string;
+  description: string;
+}
+
+export interface IReindexItem extends ITaskItem {
+  fromIndex: string;
+  toIndex: string;
+}
+
+export type IAliasAction = Record<string, { index: string; alias: string }>;
