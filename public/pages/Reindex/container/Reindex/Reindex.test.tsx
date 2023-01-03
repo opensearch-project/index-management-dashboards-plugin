@@ -527,7 +527,7 @@ describe("<Reindex /> spec", () => {
     userEvent.type(getByTestId("slices"), "0");
 
     await waitFor(() => {});
-    expect(getByText("Must be an integer greater or equal to 2.")).toBeInTheDocument();
+    expect(getByText("Must be an integer greater than or equal to 2.")).toBeInTheDocument();
   });
 
   it("it goes to indices page when submit reindex successfully", async () => {

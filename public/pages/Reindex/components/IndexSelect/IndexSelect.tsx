@@ -11,6 +11,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexSelectItem } from "../../models/interfaces";
 import { filterOverlaps } from "../../utils/helper";
+import { filterByMinimatch } from "../../../../../utils/helper";
+import { SYSTEM_ALIAS, SYSTEM_INDEX } from "../../../../../utils/constants";
 
 interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "data-test-subj"> {
   getIndexOptions: (searchValue: string, excludeDataStreamIndex?: boolean) => Promise<EuiComboBoxOptionOption<IndexSelectItem>[]>;
@@ -19,6 +21,7 @@ interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "dat
   selectedOption: EuiComboBoxOptionOption<IndexSelectItem>[];
   excludeDataStreamIndex?: boolean;
   excludeList?: EuiComboBoxOptionOption<IndexSelectItem>[];
+  excludeSystemIndex?: boolean;
 }
 
 export default function IndexSelect(props: IndexSelectProps) {
@@ -29,6 +32,7 @@ export default function IndexSelect(props: IndexSelectProps) {
     props
       .getIndexOptions(searchValue ? searchValue : "", props.excludeDataStreamIndex)
       .then((options) => {
+        props.excludeSystemIndex && filterSystemIndices(options);
         setIndexOptions(filterOverlaps(options, props.excludeList));
       })
       .catch((err) => {
@@ -38,10 +42,17 @@ export default function IndexSelect(props: IndexSelectProps) {
 
   useEffect(() => {
     searchIndex();
-  }, [props.getIndexOptions, props.excludeList, props.excludeDataStreamIndex]);
+  }, [props.getIndexOptions, props.excludeList, props.excludeDataStreamIndex, props.excludeSystemIndex]);
 
   const onSearchChange = (searchValue: string) => {
     searchIndex(searchValue);
+  };
+
+  const filterSystemIndices = (list: EuiComboBoxOptionOption<IndexSelectItem>[]) => {
+    list.map((it) => {
+      it.options = it.options?.filter((item) => !filterByMinimatch(item.label, SYSTEM_ALIAS));
+      it.options = it.options?.filter((item) => !filterByMinimatch(item.label, SYSTEM_INDEX));
+    });
   };
 
   return (

@@ -588,6 +588,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                   selectedOption={destination}
                   excludeDataStreamIndex={true}
                   excludeList={sources}
+                  excludeSystemIndex={true}
                 />
               </CustomFormRow>
             </EuiFlexItem>
