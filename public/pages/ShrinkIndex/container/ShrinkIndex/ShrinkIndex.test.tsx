@@ -366,6 +366,28 @@ describe("<Shrink index /> spec", () => {
     });
   });
 
+  it("shows error when target index name is not valid", async () => {
+    mockApi();
+    const { getByText, queryByText, getByTestId } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test3`]);
+    await waitFor(async () => {
+      getByText("Configure target index");
+      expect(queryByText("Invalid target index name.")).toBeNull();
+    });
+
+    await act(async () => {
+      userEvent.type(getByTestId("targetIndexNameInput"), "$44@&**^*^*");
+    });
+    await waitFor(async () => {
+      expect(queryByText("Invalid target index name.")).not.toBeNull();
+    });
+    await act(async () => {
+      fireEvent.click(getByTestId("shrinkIndexConfirmButton"));
+    });
+    await waitFor(() => {
+      expect(queryByText("Invalid target index name.")).not.toBeNull();
+    });
+  });
+
   it("shows error when number of replicas is not valid", async () => {
     mockApi();
     const { getByText, queryByText, getByTestId } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test3`]);

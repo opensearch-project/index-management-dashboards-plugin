@@ -497,6 +497,10 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 return Promise.resolve();
               },
             },
+            {
+              pattern: /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/,
+              message: "Invalid target index name.",
+            },
           ],
           props: {
             "data-test-subj": "targetIndexNameInput",
