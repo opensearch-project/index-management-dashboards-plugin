@@ -150,7 +150,10 @@ describe("<SplitIndex /> spec", () => {
     });
 
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "4{enter}");
+    userEvent.type(
+      getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
+      "4{arrowdown}{enter}"
+    );
     userEvent.type(getByTestId("numberOfReplicasInput"), "1");
     userEvent.click(getByTestId("splitButton"));
 
@@ -211,7 +214,10 @@ describe("<SplitIndex /> spec", () => {
     });
 
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
-    userEvent.type(getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "5{enter}");
+    userEvent.type(
+      getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
+      "5{arrowdown}{enter}"
+    );
     userEvent.type(getByTestId("numberOfReplicasInput"), "1");
     userEvent.click(getByTestId("splitButton"));
 
