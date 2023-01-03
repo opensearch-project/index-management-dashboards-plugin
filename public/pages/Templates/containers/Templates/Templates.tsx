@@ -110,6 +110,8 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       s: `${queryObject.sortField}:${queryObject.sortDirection}`,
     };
 
+    let allTemplatesDetail: TemplateItemRemote[] = [];
+
     const allTemplatesResponse = await commonService.apiCaller<{
       index_templates?: {
         name: string;
@@ -124,14 +126,14 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
     });
 
     if (!allTemplatesResponse.ok) {
-      return this.context.notifications.toasts.addDanger(allTemplatesResponse.error);
+      allTemplatesDetail = [];
+    } else {
+      allTemplatesDetail =
+        allTemplatesResponse.response.index_templates?.map((item) => ({
+          ...item.index_template,
+          name: item.name,
+        })) || [];
     }
-
-    const allTemplatesDetail =
-      allTemplatesResponse.response.index_templates?.map((item) => ({
-        ...item.index_template,
-        name: item.name,
-      })) || [];
 
     const getTemplatesResponse = await commonService.apiCaller<ITemplate[]>({
       endpoint: "cat.templates",
