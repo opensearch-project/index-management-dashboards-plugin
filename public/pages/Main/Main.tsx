@@ -34,6 +34,10 @@ import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
 import Aliases from "../Aliases";
+import Templates from "../Templates";
+import CreateIndexTemplate from "../CreateIndexTemplate";
+import CreateIndex from "../CreateIndex";
+import IndexDetail from "../IndexDetail";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -322,7 +326,7 @@ export default class Main extends Component<MainProps, object> {
                             path={ROUTES.INDICES}
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
-                                <Indices {...props} indexService={services.indexService} />
+                                <Indices {...props} indexService={services.indexService} commonService={services.commonService} />
                               </div>
                             )}
                           />
@@ -400,6 +404,70 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <Aliases {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.TEMPLATES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Templates {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_INDEX}/:index/:mode`}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_INDEX}/:index`}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_TEMPLATE}/:template`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_TEMPLATE}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndexTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.INDEX_DETAIL}/:index`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <IndexDetail {...props} />
                               </div>
                             )}
                           />
