@@ -12,6 +12,7 @@ import {
   TransformService,
   NotificationService,
   SnapshotManagementService,
+  CommonService,
 } from "../services";
 import {
   DocumentPolicy,
@@ -22,6 +23,7 @@ import {
   Rollup,
   Transform,
 } from "../../models/interfaces";
+import AliasServices from "../services/AliasServices";
 
 export interface NodeServices {
   indexService: IndexService;
@@ -32,6 +34,8 @@ export interface NodeServices {
   transformService: TransformService;
   notificationService: NotificationService;
   snapshotManagementService: SnapshotManagementService;
+  commonService: CommonService;
+  aliasService: AliasServices;
 }
 
 export interface SearchResponse<T> {
@@ -170,13 +174,13 @@ export interface IndexUpdateResponse {
   failedIndices: FailedIndex[];
 }
 
-export interface ApplyPolicyResponse extends IndexUpdateResponse { }
+export interface ApplyPolicyResponse extends IndexUpdateResponse {}
 
-export interface RemovePolicyResponse extends IndexUpdateResponse { }
+export interface RemovePolicyResponse extends IndexUpdateResponse {}
 
-export interface ChangePolicyResponse extends IndexUpdateResponse { }
+export interface ChangePolicyResponse extends IndexUpdateResponse {}
 
-export interface RetryManagedIndexResponse extends IndexUpdateResponse { }
+export interface RetryManagedIndexResponse extends IndexUpdateResponse {}
 
 export interface RetryParams {
   index: string;
@@ -322,7 +326,7 @@ export interface QueryStringQuery<T extends string> {
 export interface CatIndex {
   "docs.count": string;
   "docs.deleted": string;
-  health: string;
+  health: "red" | "yellow" | "green";
   index: string;
   pri: string;
   "pri.store.size": string;
@@ -331,15 +335,17 @@ export interface CatIndex {
   "store.size": string;
   uuid: string;
   data_stream: string | null;
+  extraStatus?: "recovery" | "reindex" | "open" | "close";
 }
 
 export interface CatSnapshotIndex {
   index?: string;
-  "restore_status"?: string;
+  restore_status?: string;
 }
 
 export interface ManagedCatIndex extends CatIndex {
   managed: string;
+  managedPolicy: string;
 }
 
 export interface DataStream {
@@ -464,4 +470,18 @@ export interface CreateRepositoryBody {
 export interface GetSMPoliciesResponse {
   policies: DocumentSMPolicy[];
   totalPolicies: number;
+}
+
+export interface Alias {
+  alias: string;
+  index: string;
+  filter: string;
+  is_write_index: string;
+  "routing.index": string;
+  "routing.search": string;
+}
+
+export interface GetAliasesResponse {
+  aliases: Alias[];
+  totalAliases: number;
 }

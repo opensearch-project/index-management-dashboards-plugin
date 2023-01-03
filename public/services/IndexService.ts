@@ -8,6 +8,7 @@ import {
   AcknowledgedResponse,
   ApplyPolicyResponse,
   DataStream,
+  GetAliasesResponse,
   GetDataStreamsAndIndicesNamesResponse,
   GetDataStreamsResponse,
   GetIndicesResponse,
@@ -36,9 +37,22 @@ export default class IndexService {
     return await this.httpClient.get(url, { query: queryObject });
   };
 
+  getAliases = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetAliasesResponse>> => {
+    const url = `..${NODE_API._ALIASES}`;
+    return await this.httpClient.get(url, { query: queryObject });
+  };
+
   getDataStreamsAndIndicesNames = async (searchValue: string): Promise<ServerResponse<GetDataStreamsAndIndicesNamesResponse>> => {
     const [getIndicesResponse, getDataStreamsResponse] = await Promise.all([
-      this.getIndices({ from: 0, size: 100, search: searchValue, sortDirection: "desc", sortField: "index", showDataStreams: true }),
+      this.getIndices({
+        from: 0,
+        size: 10,
+        search: searchValue,
+        terms: [searchValue],
+        sortDirection: "desc",
+        sortField: "index",
+        showDataStreams: true,
+      }),
       this.getDataStreams({ search: searchValue }),
     ]);
 

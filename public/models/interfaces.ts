@@ -5,6 +5,7 @@
 
 import { Direction, Query } from "@elastic/eui";
 import { SMPolicy } from "../../models/interfaces";
+import { IJobItemMetadata } from "../lib/JobScheduler";
 import {
   IndexService,
   ManagedIndexService,
@@ -13,6 +14,7 @@ import {
   TransformService,
   NotificationService,
   SnapshotManagementService,
+  CommonService,
 } from "../services";
 
 export interface BrowserServices {
@@ -23,6 +25,7 @@ export interface BrowserServices {
   transformService: TransformService;
   notificationService: NotificationService;
   snapshotManagementService: SnapshotManagementService;
+  commonService: CommonService;
 }
 
 export interface SMPoliciesQueryParams {
@@ -59,7 +62,6 @@ export interface Column {
   truncateText?: boolean;
   sortable: boolean;
 }
-
 
 export interface RestoreError {
   reason?: string;
@@ -107,4 +109,20 @@ export interface ModifiedStages {
 export interface IndexItem {
   index: string;
   restore_status?: string;
+}
+export interface ReindexJobMetaData extends IJobItemMetadata {
+  extras: {
+    toastId: string;
+    sourceIndex: string;
+    destIndex: string;
+    taskId: string;
+  };
+}
+
+export interface RecoveryJobMetaData extends IJobItemMetadata {
+  extras: {
+    toastId: string;
+    sourceIndex: string;
+    destIndex: string;
+  };
 }

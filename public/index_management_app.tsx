@@ -16,6 +16,7 @@ import {
   NotificationService,
   ServicesContext,
   SnapshotManagementService,
+  CommonService,
 } from "./services";
 import { DarkModeContext } from "./components/DarkMode";
 import Main from "./pages/Main";
@@ -32,6 +33,7 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters, land
   const transformService = new TransformService(http);
   const notificationService = new NotificationService(http);
   const snapshotManagementService = new SnapshotManagementService(http);
+  const commonService = new CommonService(http);
   const services = {
     indexService,
     managedIndexService,
@@ -40,6 +42,7 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters, land
     transformService,
     notificationService,
     snapshotManagementService,
+    commonService,
   };
 
   const isDarkMode = coreStart.uiSettings.get("theme:darkMode") || false;

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormGenerator /> spec render the component 1`] = `
+HTMLCollection [
+  <div>
+    <span
+      class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+    >
+      <input />
+    </span>
+  </div>,
+]
+`;
