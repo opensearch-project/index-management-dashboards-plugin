@@ -100,7 +100,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
                   // do not pass the validation
                   // return a rejected promise with error message
                   return Promise.reject("Number of shards is required");
-                } else if (!this.props.shardsSelectOptions.find((item) => item.label === value)) {
+                } else if (!this.props.shardsSelectOptions.find((item) => "" + item.label === "" + value)) {
                   return Promise.reject(`Number of shards ${value} is invalid`);
                 }
                 // pass the validation, return a resolved promise
