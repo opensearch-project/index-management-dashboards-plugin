@@ -15,9 +15,22 @@ import {
   DataStreamService,
   NotificationService,
   SnapshotManagementService,
+  CommonService,
+  AliasServices,
 } from "./services";
-import { indices, policies, managedIndices, rollups, transforms, notifications, snapshotManagement } from "../server/routes";
+import {
+  indices,
+  policies,
+  managedIndices,
+  rollups,
+  transforms,
+  notifications,
+  snapshotManagement,
+  common,
+  aliases,
+} from "../server/routes";
 import dataStreams from "./routes/dataStreams";
+import { NodeServices } from "./models/interfaces";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   public async setup(core: CoreSetup) {
@@ -35,7 +48,9 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const transformService = new TransformService(osDriver);
     const notificationService = new NotificationService(osDriver);
     const snapshotManagementService = new SnapshotManagementService(osDriver);
-    const services = {
+    const commonService = new CommonService(osDriver);
+    const aliasService = new AliasServices(osDriver);
+    const services: NodeServices = {
       indexService,
       dataStreamService,
       policyService,
@@ -44,6 +59,8 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
       transformService,
       notificationService,
       snapshotManagementService,
+      commonService,
+      aliasService,
     };
 
     // create router
@@ -57,6 +74,8 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     transforms(services, router);
     notifications(services, router);
     snapshotManagement(services, router);
+    common(services, router);
+    aliases(services, router);
 
     return {};
   }

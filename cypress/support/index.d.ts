@@ -104,5 +104,21 @@ declare namespace Cypress {
      * cy.disableJitter()
      */
     disableJitter(): Chainable<any>;
+
+    /**
+     * Delete template
+     * @example
+     * cy.deleteTemplate("some_template")
+     */
+    deleteTemplate(name: string);
+
+    /**
+     * Create a ingest pipeline
+     * @example
+     * cy.createPipeline("pipelineId", {"description": "sample description", "processors": []})
+     */
+    createPipeline(pipelineId: string, pipeline: object);
+    addAlias(alias: string, index: string);
+    removeAlias(alias: string);
   }
 }

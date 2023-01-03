@@ -8,6 +8,7 @@ import { IndexManagementPluginSetup } from ".";
 import { IndexManagementPluginStart } from ".";
 import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 import { ROUTES } from "./utils/constants";
+import { JobHandlerRegister } from "./JobHandler";
 
 export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   constructor(private readonly initializerContext: PluginInitializerContext) {
@@ -15,6 +16,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
   }
 
   public setup(core: CoreSetup): IndexManagementPluginSetup {
+    JobHandlerRegister(core);
     core.application.register({
       id: "opensearch_index_management_dashboards",
       title: "Index Management",
