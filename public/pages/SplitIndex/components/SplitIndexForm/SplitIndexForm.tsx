@@ -118,6 +118,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
             "data-test-subj": "numberOfShardsInput",
             options: this.props.shardsSelectOptions,
             placeholder: "Specify primary shard count",
+            onCreateOption: undefined,
           },
         },
       },
