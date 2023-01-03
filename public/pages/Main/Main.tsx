@@ -38,6 +38,7 @@ import Templates from "../Templates";
 import CreateIndexTemplate from "../CreateIndexTemplate";
 import CreateIndex from "../CreateIndex";
 import IndexDetail from "../IndexDetail";
+import Reindex from "../Reindex/container/Reindex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -468,6 +469,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <IndexDetail {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.REINDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
                               </div>
                             )}
                           />
