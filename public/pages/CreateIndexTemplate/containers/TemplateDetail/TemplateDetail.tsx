@@ -7,6 +7,7 @@ import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHan
 import {
   EuiButton,
   EuiButtonEmpty,
+  EuiCallOut,
   EuiFlexGroup,
   EuiFlexItem,
   EuiFormRow,
@@ -37,6 +38,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { INDEX_SETTINGS_URL, ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
 import TemplateType, { TemplateConvert } from "../../components/TemplateType";
+import { filterByMinimatch } from "../../../../../utils/helper";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -126,6 +128,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
   }, []);
   const values: TemplateItem = field.getValues();
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
+  const matchSystemIndex = filterByMinimatch(".kibana", values.index_patterns || []);
   return (
     <>
       <EuiFlexGroup alignItems="center">
@@ -284,6 +287,17 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             />
           </CustomFormRow>
           <EuiSpacer />
+          {matchSystemIndex ? (
+            <>
+              <CustomFormRow>
+                <EuiCallOut color="warning" title="Index patterns may contain system indexes">
+                  This template may apply to new system indexes and may affect your ability to access OpenSearch. We recommend narrowing
+                  your index patterns.
+                </EuiCallOut>
+              </CustomFormRow>
+              <EuiSpacer />
+            </>
+          ) : null}
           <CustomFormRow
             {...getCommonFormRowProps("priority")}
             label="Priority"
