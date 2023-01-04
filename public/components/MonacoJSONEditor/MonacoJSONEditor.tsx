@@ -120,7 +120,7 @@ const MonacoJSONEditor = forwardRef(
             height="600px"
             {...others}
             onChange={(val) => setEditorValue(val)}
-            theme="euiColors"
+            theme="ismJSONTheme"
             language="json"
             value={editorValue}
             options={{

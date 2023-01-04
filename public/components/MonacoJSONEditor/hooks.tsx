@@ -1,6 +1,16 @@
 import { monaco } from "@osd/monaco";
+import { euiThemeVars } from "@osd/ui-shared-deps/theme";
 import { useEffect, useRef } from "react";
 import { DiagnosticsOptions } from "./interface";
+
+monaco.editor.defineTheme("ismJSONTheme", {
+  base: "vs",
+  inherit: true,
+  rules: [],
+  colors: {
+    "editorWarning.foreground": euiThemeVars.euiColorWarningText,
+  },
+});
 
 export function useDiagnosticsOptions(props: { monaco?: typeof monaco; diagnosticsOptions?: DiagnosticsOptions }) {
   const oldOptionsSettingsRef = useRef<DiagnosticsOptions | undefined>(props.monaco?.languages.json.jsonDefaults.diagnosticsOptions);
