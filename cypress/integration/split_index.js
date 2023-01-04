@@ -70,7 +70,7 @@ describe("Split Index", () => {
         .end()
         // Number of shards after split is required
         .get('[data-test-subj="numberOfShardsInput"]')
-        .type(`${splitNumber}{arrowdown}{enter}`)
+        .type(`${splitNumber}{downArrow}{enter}`)
         .end()
         .get('[data-test-subj="numberOfReplicasInput"]')
         .type(`${replicaNumber}`)
@@ -137,7 +137,7 @@ describe("Split Index", () => {
         .type(`${targetIndex}`)
         .end()
         .get('[data-test-subj="numberOfShardsInput"]')
-        .type(`${splitNumber}{arrowdown}{enter}`)
+        .type(`${splitNumber}{downArrow}{enter}`)
         .end()
         // Assign to an existing alias and a new alias
         .get('[data-test-subj="form-name-aliases"] [data-test-subj="comboBoxSearchInput"]')
