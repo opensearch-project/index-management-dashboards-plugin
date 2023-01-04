@@ -140,7 +140,6 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
             "data-test-subj": "numberOfReplicasInput",
             placeholder: "Specify number of replica",
             min: 0,
-            value: 1,
           },
         },
       },
