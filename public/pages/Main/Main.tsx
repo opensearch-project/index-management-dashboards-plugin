@@ -34,12 +34,12 @@ import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
 import Aliases from "../Aliases";
-import Templates from "../Templates";
-import CreateIndexTemplate from "../CreateIndexTemplate";
 import CreateIndex from "../CreateIndex";
 import IndexDetail from "../IndexDetail";
 import Reindex from "../Reindex/container/Reindex";
 import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
+import Templates from "../Templates";
+import CreateIndexTemplate from "../CreateIndexTemplate";
 
 enum Navigation {
   IndexManagement = "Index Management",
