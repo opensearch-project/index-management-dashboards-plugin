@@ -29,6 +29,7 @@ import {
   INDEX_NAMING_MESSAGE,
   REPLICA_NUMBER_MESSAGE,
   INDEX_SETTINGS_URL,
+  INDEX_NAMING_PATTERN,
 } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -336,7 +337,7 @@ const IndexDetail = (
                       },
                       rules: [
                         {
-                          pattern: /^[^\s:,A-Z-_"*+/\\|?#<>][^\s:,A-Z"*+/\\|?#<>]*$/,
+                          pattern: INDEX_NAMING_PATTERN,
                           message: "Invalid index name.",
                         },
                       ],

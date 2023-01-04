@@ -159,23 +159,6 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
               <dd
                 class="euiDescriptionList__description"
               >
-                <span>
-                  green
-                </span>
-              </dd>
-            </div>
-            <div
-              data-test-subj="index-detail-overview-item-Status"
-              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
-            >
-              <dt
-                class="euiDescriptionList__title"
-              >
-                Status
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
                 <div
                   class="euiHealth euiHealth--textSizeS indices-health"
                 >
@@ -194,6 +177,25 @@ exports[`container <IndexDetail /> spec render the component 2`] = `
                     </div>
                   </div>
                 </div>
+              </dd>
+            </div>
+            <div
+              data-test-subj="index-detail-overview-item-Status"
+              style="display: inline-block; width: 33%; vertical-align: top; margin-bottom: 20px; padding: 0px 1%;"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Status
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                <span
+                  class="camel-first-letter"
+                >
+                  open
+                </span>
               </dd>
             </div>
             <div
