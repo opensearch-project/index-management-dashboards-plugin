@@ -74,10 +74,12 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
     },
   }));
   useEffect(() => {
-    if (propsRef.current.resetValuesWhenPropsValueChange) {
-      field.resetValues(props.value);
-    } else {
-      field.setValues(props.value);
+    if (!isEqual(field.getValues(), props.value)) {
+      if (propsRef.current.resetValuesWhenPropsValueChange) {
+        field.resetValues(props.value);
+      } else {
+        field.setValues(props.value);
+      }
     }
   }, [props.value]);
   const formattedFormFields = useMemo(() => {
