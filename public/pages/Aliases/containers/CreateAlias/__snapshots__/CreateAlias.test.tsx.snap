@@ -7,7 +7,7 @@ HTMLCollection [
     data-aria-hidden="true"
   />,
   <div
-    class="euiOverlayMask euiOverlayMask--belowHeader"
+    class="euiOverlayMask euiOverlayMask--aboveHeader"
   >
     <div
       aria-hidden="true"
@@ -20,25 +20,30 @@ HTMLCollection [
       data-focus-lock-disabled="false"
     >
       <div
-        class="euiFlyout euiFlyout--medium euiFlyout--paddingLarge"
-        role="dialog"
-        tabindex="-1"
+        class="euiModal euiModal--maxWidth-default"
+        tabindex="0"
       >
-        <div
-          class="euiFlyoutHeader"
+        <button
+          aria-label="Closes this modal window"
+          class="euiButtonIcon euiButtonIcon--text euiButtonIcon--empty euiButtonIcon--xSmall euiModal__closeIcon"
+          type="button"
         >
-          Create
-           alias
-        </div>
+          EuiIconMock
+        </button>
         <div
-          class="euiFlyoutBody"
+          class="euiModal__flex"
         >
           <div
-            class="euiFlyoutBody__overflow"
-            tabindex="0"
+            class="euiModalHeader"
+          >
+            Create
+             alias
+          </div>
+          <div
+            class="euiModalBody"
           >
             <div
-              class="euiFlyoutBody__overflowContent"
+              class="euiModalBody__overflow"
             >
               <div
                 class="euiForm"
@@ -166,46 +171,47 @@ HTMLCollection [
                   </div>
                 </div>
               </div>
+              <div
+                class="euiSpacer euiSpacer--l"
+              />
             </div>
           </div>
-        </div>
-        <div
-          class="euiFlyoutFooter"
-        >
           <div
-            style="display: flex; justify-content: flex-end;"
+            class="euiModalFooter"
           >
-            <button
-              class="euiButton euiButton--primary"
-              data-test-subj="cancelCreateAliasButton"
-              style="margin-right: 20px;"
-              type="button"
-            >
-              <span
-                class="euiButtonContent euiButton__content"
+            <div>
+              <button
+                class="euiButton euiButton--primary"
+                data-test-subj="cancelCreateAliasButton"
+                style="margin-right: 20px;"
+                type="button"
               >
                 <span
-                  class="euiButton__text"
+                  class="euiButtonContent euiButton__content"
                 >
-                  Cancel
+                  <span
+                    class="euiButton__text"
+                  >
+                    Cancel
+                  </span>
                 </span>
-              </span>
-            </button>
-            <button
-              class="euiButton euiButton--primary euiButton--fill"
-              data-test-subj="createAliasButton"
-              type="button"
-            >
-              <span
-                class="euiButtonContent euiButton__content"
+              </button>
+              <button
+                class="euiButton euiButton--primary euiButton--fill"
+                data-test-subj="createAliasButton"
+                type="button"
               >
                 <span
-                  class="euiButton__text"
+                  class="euiButtonContent euiButton__content"
                 >
-                  Create alias
+                  <span
+                    class="euiButton__text"
+                  >
+                    Create alias
+                  </span>
                 </span>
-              </span>
-            </button>
+              </button>
+            </div>
           </div>
         </div>
       </div>
