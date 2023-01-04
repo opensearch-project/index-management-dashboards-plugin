@@ -1,17 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import {
-  EuiButton,
-  EuiCallOut,
-  EuiModal,
-  EuiModalHeader,
-  EuiModalBody,
-  EuiModalFooter,
-  EuiFlyout,
-  EuiFlyoutBody,
-  EuiFlyoutFooter,
-  EuiFlyoutHeader,
-  EuiSpacer,
-} from "@elastic/eui";
+import { EuiButton, EuiCallOut, EuiModal, EuiModalHeader, EuiModalBody, EuiModalFooter, EuiSpacer } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorRef } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
