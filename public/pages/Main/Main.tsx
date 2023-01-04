@@ -34,11 +34,12 @@ import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
 import Aliases from "../Aliases";
-import Templates from "../Templates";
-import CreateIndexTemplate from "../CreateIndexTemplate";
 import CreateIndex from "../CreateIndex";
 import IndexDetail from "../IndexDetail";
 import Reindex from "../Reindex/container/Reindex";
+import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
+import Templates from "../Templates";
+import CreateIndexTemplate from "../CreateIndexTemplate";
 import SplitIndex from "../SplitIndex";
 
 enum Navigation {
@@ -474,18 +475,26 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
-                            path={ROUTES.SPLIT_INDEX}
-                            render={(props: RouteComponentProps) => (
-                              <div style={ROUTE_STYLE}>
-                                <SplitIndex {...props} />
-                              </div>
-                            )}
-                          />
-                          <Route
                             path={ROUTES.REINDEX}
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SHRINK_INDEX}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ShrinkIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SPLIT_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <SplitIndex {...props} />
                               </div>
                             )}
                           />

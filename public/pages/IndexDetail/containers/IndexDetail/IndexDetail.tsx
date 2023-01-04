@@ -50,10 +50,6 @@ const OVERVIEW_DISPLAY_INFO: {
   },
   {
     label: "Health",
-    value: "health",
-  },
-  {
-    label: "Status",
     value: ({ detail }) => {
       const health = detail.health;
       const color = health ? HEALTH_TO_COLOR[health] : "subdued";
@@ -63,6 +59,12 @@ const OVERVIEW_DISPLAY_INFO: {
           {text}
         </EuiHealth>
       );
+    },
+  },
+  {
+    label: "Status",
+    value: ({ detail }) => {
+      return <span className="camel-first-letter">{detail.status}</span>;
     },
   },
   {

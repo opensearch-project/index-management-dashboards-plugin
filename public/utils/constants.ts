@@ -337,5 +337,3 @@ export const TEMPLATE_TYPE = {
   INDEX_TEMPLATE: "Indexes",
   DATA_STREAM: "Data streams",
 };
-
-export const INDEX_NAMING_PATTERN = /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/;

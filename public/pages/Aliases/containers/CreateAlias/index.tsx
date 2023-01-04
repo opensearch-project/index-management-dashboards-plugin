@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { EuiButton, EuiCallOut, EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiSpacer } from "@elastic/eui";
+import { EuiButton, EuiCallOut, EuiModal, EuiModalHeader, EuiModalBody, EuiModalFooter, EuiSpacer } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorRef } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
@@ -104,9 +104,9 @@ export default function CreateAlias(props: ICreateAliasProps) {
   }
 
   return (
-    <EuiFlyout hideCloseButton onClose={() => {}}>
-      <EuiFlyoutHeader>{isEdit ? "Update" : "Create"} alias</EuiFlyoutHeader>
-      <EuiFlyoutBody>
+    <EuiModal onClose={() => {}}>
+      <EuiModalHeader>{isEdit ? "Update" : "Create"} alias</EuiModalHeader>
+      <EuiModalBody>
         {isEdit && filterByMinimatch(props.alias?.alias || "", SYSTEM_ALIAS) ? (
           <>
             <EuiCallOut color="warning">You are editing a system-like alias, please be careful before you do any change to it.</EuiCallOut>
@@ -162,9 +162,10 @@ export default function CreateAlias(props: ICreateAliasProps) {
             },
           ]}
         />
-      </EuiFlyoutBody>
-      <EuiFlyoutFooter>
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <EuiSpacer />
+      </EuiModalBody>
+      <EuiModalFooter>
+        <div>
           <EuiButton data-test-subj="cancelCreateAliasButton" style={{ marginRight: 20 }} onClick={props.onClose}>
             Cancel
           </EuiButton>
@@ -214,7 +215,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
             {isEdit ? "Save changes" : "Create alias"}
           </EuiButton>
         </div>
-      </EuiFlyoutFooter>
-    </EuiFlyout>
+      </EuiModalFooter>
+    </EuiModal>
   );
 }
