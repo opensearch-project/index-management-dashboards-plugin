@@ -57,14 +57,19 @@ export class SplitIndex extends Component<SplitIndexProps> {
 
   isSourceIndexReady = async () => {
     const source = queryString.parse(this.props.location.search) as { source: string };
-    const sourceIndex = await getSingleIndice({
-      indexName: source.source as string,
-      commonService: this.props.commonService,
-      coreServices: this.props.coreService,
-    });
-    if (!sourceIndex) {
-      return null;
+    let sourceIndex;
+    try {
+      sourceIndex = await getSingleIndice({
+        indexName: source.source as string,
+        commonService: this.props.commonService,
+        coreServices: this.props.coreService,
+      });
+    } catch (err) {
+      // no need to log anything since getIndexSettings will log the error
+      this.onCancel();
+      return;
     }
+
     this.setState({
       sourceIndex,
     });
@@ -79,7 +84,8 @@ export class SplitIndex extends Component<SplitIndexProps> {
       });
     } catch (err) {
       // no need to log anything since getIndexSettings will log the error
-      return null;
+      this.onCancel();
+      return;
     }
     const reasons = [];
     const sourceSettings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
@@ -216,6 +222,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
             shardsSelectOptions={shardsSelectOptions}
             reasons={reasons}
             onCancel={this.onCancel}
+            sourceShards={sourceIndex.pri}
             getAlias={(aliasName) =>
               getAlias({
                 aliasName,

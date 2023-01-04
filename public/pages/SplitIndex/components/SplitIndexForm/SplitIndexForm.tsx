@@ -11,7 +11,7 @@ import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import { INDEX_NAME_PATTERN, INDEX_NAMING_MESSAGE, INDEX_SETTINGS_URL, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
+import { INDEX_NAMING_PATTERN, INDEX_NAMING_MESSAGE, INDEX_SETTINGS_URL, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -20,6 +20,7 @@ const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
 interface SplitIndexComponentProps {
   sourceIndex: string;
   reasons: React.ReactChild[];
+  sourceShards: string;
   shardsSelectOptions: { label: string }[];
   onSplitIndex: (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]) => Promise<void>;
   onCancel: () => void;
@@ -50,8 +51,13 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
   };
 
   render() {
-    const { sourceIndex, reasons, getAlias } = this.props;
+    const { sourceIndex, sourceShards, reasons, getAlias } = this.props;
     const blockNameList = ["targetIndex"];
+
+    let shardMessage = "The number must be 2x times of the primary shard count of the source index.";
+    if (sourceShards === "1") {
+      shardMessage = "The number must be an integer greater than 1 but fewer or equal to 1024.";
+    }
 
     const formFields: IField[] = [
       {
@@ -71,7 +77,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
                   // do not pass the validation
                   // return a rejected promise with error message
                   return Promise.reject("Target index name is required");
-                } else if (!INDEX_NAME_PATTERN.test(value)) {
+                } else if (!INDEX_NAMING_PATTERN.test(value)) {
                   return Promise.reject(`Target index name ${value} is invalid`);
                 }
                 // pass the validation, return a resolved promise
@@ -91,7 +97,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
           helpText: (
             <>
               <p>Specify the number of primary shards for the new split index.</p>
-              <p>The number must be 2x times of the primary shard count of the source index.</p>
+              <p>{shardMessage}</p>
             </>
           ),
         },
@@ -167,6 +173,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
         {readyForSplit && (
           <ContentPanel title="Configure target index" titleSize="s">
             <FormGenerator
+              value={{ "index.number_of_replicas": "1", ...this.state.settings }}
               onChange={(totalValue) =>
                 this.setState({
                   settings: totalValue,

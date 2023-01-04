@@ -143,18 +143,19 @@ describe("<SplitIndex /> spec", () => {
       };
     });
 
-    const { getByTestId } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
+    const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).not.toBeDisabled();
     });
+
+    expect(getByText("The number must be 2x times of the primary shard count of the source index.")).not.toBeNull();
 
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
     userEvent.type(
       getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
       "4{arrowdown}{enter}"
     );
-    userEvent.type(getByTestId("numberOfReplicasInput"), "1");
     userEvent.click(getByTestId("splitButton"));
 
     await waitFor(() => {
@@ -207,17 +208,19 @@ describe("<SplitIndex /> spec", () => {
       };
     });
 
-    const { getByTestId } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
+    const { getByTestId, getByText } = renderWithRouter([`${ROUTES.SPLIT_INDEX}?source=$(sourceIndexName)`]);
 
     await waitFor(() => {
       expect(getByTestId("splitButton")).not.toBeDisabled();
     });
 
+    expect(getByText("The number must be an integer greater than 1 but fewer or equal to 1024.")).not.toBeNull();
     userEvent.type(getByTestId("targetIndexNameInput"), "split_test_index-split");
     userEvent.type(
       getByTestId("numberOfShardsInput").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
       "5{arrowdown}{enter}"
     );
+    userEvent.clear(getByTestId("numberOfReplicasInput"));
     userEvent.type(getByTestId("numberOfReplicasInput"), "1");
     userEvent.click(getByTestId("splitButton"));
 
