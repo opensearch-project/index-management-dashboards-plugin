@@ -67,11 +67,9 @@ export class SplitIndex extends Component<SplitIndexProps> {
     } catch (err) {
       // no need to log anything since getIndexSettings will log the error
       this.onCancel();
+      return;
     }
 
-    if (!sourceIndex) {
-      this.onCancel();
-    }
     this.setState({
       sourceIndex,
     });
@@ -87,6 +85,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
     } catch (err) {
       // no need to log anything since getIndexSettings will log the error
       this.onCancel();
+      return;
     }
     const reasons = [];
     const sourceSettings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
