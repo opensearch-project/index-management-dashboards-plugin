@@ -235,7 +235,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         data: {
           format: "json",
           name: `${aliasName || ""}*`,
-          expand_wildcards: "open",
+          s: "alias:desc",
         },
       });
     } catch (err) {

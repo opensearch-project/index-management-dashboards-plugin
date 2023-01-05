@@ -376,8 +376,8 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                     method: "GET",
                     data: {
                       format: "json",
-                      name: aliasName,
-                      expand_wildcards: "all",
+                      name: `*${aliasName || ""}*`,
+                      s: "alias:desc",
                     },
                   })
                 }

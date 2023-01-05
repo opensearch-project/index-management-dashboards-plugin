@@ -125,8 +125,8 @@ export async function getAlias(props: { aliasName?: string; commonService: Commo
     method: "GET",
     data: {
       format: "json",
-      name: `${props.aliasName || ""}*`,
-      expand_wildcards: "open",
+      name: `*${props.aliasName || ""}*`,
+      s: "alias:desc",
     },
   });
 }

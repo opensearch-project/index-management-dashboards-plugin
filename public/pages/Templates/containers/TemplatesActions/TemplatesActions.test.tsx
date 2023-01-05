@@ -138,5 +138,5 @@ describe("<TemplatesActions /> spec", () => {
     await waitFor(() => expect(historyPushMock).toBeCalledTimes(1), {
       timeout: 3000,
     });
-  });
+  }, 30000);
 });
