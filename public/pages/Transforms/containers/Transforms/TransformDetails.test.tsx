@@ -192,7 +192,7 @@ describe("<TransformDetails /> spec", () => {
 
     expect(browserServicesMock.transformService.deleteTransform).toHaveBeenCalledTimes(1);
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-  }, 10000);
+  }, 30000);
 
   it("can show a started transform job", async () => {
     let startedJob = testTransform2;

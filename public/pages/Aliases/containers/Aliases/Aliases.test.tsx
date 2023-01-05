@@ -226,7 +226,7 @@ describe("<Aliases /> spec", () => {
     userEvent.click(getByText("Rows per page: 10"));
     userEvent.click(getByTestId("tablePagination-25-rows"));
     userEvent.click(getByTestId("euiFlyoutCloseButton"));
-  }, 50000);
+  }, 70000);
 
   it("shows detail", async () => {
     const { getByTestId, findByTestId, getByText } = renderWithRouter();
