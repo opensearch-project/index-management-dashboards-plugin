@@ -39,6 +39,7 @@ import CreateIndexTemplate from "../CreateIndexTemplate";
 import CreateIndex from "../CreateIndex";
 import IndexDetail from "../IndexDetail";
 import Reindex from "../Reindex/container/Reindex";
+import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -477,6 +478,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props: RouteComponentProps) => (
                               <div style={ROUTE_STYLE}>
                                 <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SHRINK_INDEX}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ShrinkIndex {...props} commonService={services.commonService} />
                               </div>
                             )}
                           />
