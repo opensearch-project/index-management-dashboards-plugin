@@ -42,14 +42,14 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
     forwardRef(({ onChange, value, options, ...others }, ref: React.Ref<any>) => {
       return (
         <EuiComboBox
-          {...others}
-          options={options}
           onCreateOption={(searchValue) => {
             const findItem = options.find((item: { label: string }) => item.label === searchValue);
             if (findItem) {
               onChange(searchValue);
             }
           }}
+          {...others}
+          options={options}
           singleSelection={{ asPlainText: true }}
           ref={ref}
           onChange={(selectedOptions) => {
@@ -59,7 +59,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
               onChange(undefined);
             }
           }}
-          selectedOptions={[value].filter((item) => item !== undefined).map((label) => ({ label }))}
+          selectedOptions={[value].filter((item) => item !== undefined).map((label) => ({ label: `${label}` }))}
         />
       );
     })
