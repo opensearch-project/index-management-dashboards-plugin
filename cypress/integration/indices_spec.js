@@ -330,6 +330,47 @@ describe("Indices", () => {
     });
   });
 
+  describe("can shrink an index", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.createIndex(SAMPLE_INDEX, null, {
+        settings: { "index.blocks.write": true, "index.number_of_shards": 2, "index.number_of_replicas": 0 },
+      });
+    });
+
+    it("successfully shrink an index", () => {
+      // Type in SAMPLE_INDEX in search input
+      cy.get(`input[type="search"]`).focus().type(SAMPLE_INDEX);
+
+      cy.wait(1000).get(".euiTableRow").should("have.length", 1);
+      // Confirm we have our initial index
+      cy.contains(SAMPLE_INDEX);
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Shrink btn should be disabled if no items selected
+      cy.get('[data-test-subj="Shrink Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select an index
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Shrink btn should be enabled
+      cy.get('[data-test-subj="Shrink Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for Shrink page
+      cy.contains("Shrink index");
+
+      // Enter target index name
+      cy.get(`input[data-test-subj="targetIndexNameInput"]`).type(`${SAMPLE_INDEX}_shrunken`);
+
+      // Click shrink index button
+      cy.get("button").contains("Shrink").click({ force: true });
+
+      // Check for success toast
+      cy.contains(`Successfully started shrinking ${SAMPLE_INDEX}. The shrunken index will be named ${SAMPLE_INDEX}_shrunken.`);
+    });
+  });
+
   describe("can close and open an index", () => {
     before(() => {
       cy.deleteAllIndices();

@@ -50,7 +50,7 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
       <EuiModalBody>
         <>
           <EuiCallOut color="warning" hidden={!showWarning}>
-            You are closing system-like index, please be careful before you do any change to it.
+            You are closing system like index, please be careful before you do any change to it.
           </EuiCallOut>
           <EuiSpacer />
         </>
