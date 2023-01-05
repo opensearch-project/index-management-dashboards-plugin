@@ -33,14 +33,14 @@ import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
 import SnapshotPolicyDetails from "../SnapshotPolicyDetails";
 import Snapshots from "../Snapshots";
-import Aliases from "../Aliases";
 import CreateIndex from "../CreateIndex";
-import IndexDetail from "../IndexDetail";
 import Reindex from "../Reindex/container/Reindex";
-import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
+import Aliases from "../Aliases";
 import Templates from "../Templates";
 import CreateIndexTemplate from "../CreateIndexTemplate";
 import SplitIndex from "../SplitIndex";
+import IndexDetail from "../IndexDetail";
+import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -403,6 +403,46 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={`${ROUTES.CREATE_INDEX}/:index/:mode`}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_INDEX}/:index`}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.REINDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.SPLIT_INDEX}
+                            render={(props: RouteComponentProps) => (
+                              <div style={ROUTE_STYLE}>
+                                <SplitIndex {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={ROUTES.ALIASES}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
@@ -419,14 +459,6 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
-                            path={`${ROUTES.CREATE_INDEX}/:index/:mode`}
-                            render={(props: RouteComponentProps) => (
-                              <div style={ROUTE_STYLE}>
-                                <CreateIndex {...props} commonService={services.commonService} />
-                              </div>
-                            )}
-                          />
-                          <Route
                             path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
@@ -435,26 +467,10 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
-                            path={`${ROUTES.CREATE_INDEX}/:index`}
-                            render={(props: RouteComponentProps) => (
-                              <div style={ROUTE_STYLE}>
-                                <CreateIndex {...props} commonService={services.commonService} />
-                              </div>
-                            )}
-                          />
-                          <Route
                             path={`${ROUTES.CREATE_TEMPLATE}/:template`}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <CreateIndexTemplate {...props} />
-                              </div>
-                            )}
-                          />
-                          <Route
-                            path={ROUTES.CREATE_INDEX}
-                            render={(props: RouteComponentProps) => (
-                              <div style={ROUTE_STYLE}>
-                                <CreateIndex {...props} commonService={services.commonService} />
                               </div>
                             )}
                           />
@@ -475,26 +491,10 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
-                            path={ROUTES.REINDEX}
-                            render={(props: RouteComponentProps) => (
-                              <div style={ROUTE_STYLE}>
-                                <Reindex {...props} commonService={services.commonService} indexService={services.indexService} />
-                              </div>
-                            )}
-                          />
-                          <Route
                             path={ROUTES.SHRINK_INDEX}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <ShrinkIndex {...props} commonService={services.commonService} />
-                              </div>
-                            )}
-                          />
-                          <Route
-                            path={ROUTES.SPLIT_INDEX}
-                            render={(props: RouteComponentProps) => (
-                              <div style={ROUTE_STYLE}>
-                                <SplitIndex {...props} />
                               </div>
                             )}
                           />
