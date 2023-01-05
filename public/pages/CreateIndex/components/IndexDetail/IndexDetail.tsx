@@ -229,10 +229,11 @@ const IndexDetail = (
           label: "Number of primary shards",
           helpText: (
             <>
-              <p>Specify the number of primary shards for the index. Default is 1. </p>
-              <p>The number of primary shards cannot be changed after the index is created.</p>
+              <div>Specify the number of primary shards for the index. Default is 1. </div>
+              <div>The number of primary shards cannot be changed after the index is created.</div>
             </>
           ),
+          direction: isEdit ? "hoz" : "ver",
         },
         name: "index.number_of_shards",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) ? "Text" : "Number",
@@ -261,6 +262,7 @@ const IndexDetail = (
         rowProps: {
           label: "Number of replicas",
           helpText: REPLICA_NUMBER_MESSAGE,
+          direction: isEdit ? "hoz" : "ver",
         },
         name: "index.number_of_replicas",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
@@ -290,6 +292,7 @@ const IndexDetail = (
           label: "Refresh interval",
           helpText:
             "Specify how often the index should refresh, which publishes the most recent changes and make them available for search. Default is 1 second.",
+          direction: isEdit ? "hoz" : "ver",
         },
         name: "index.refresh_interval",
         type: readonly ? "Text" : "Input",
@@ -327,6 +330,7 @@ const IndexDetail = (
                       label: "Index name",
                       helpText: <div>{INDEX_NAMING_MESSAGE}</div>,
                       position: "bottom",
+                      style: isEdit ? { display: "none" } : {},
                     },
                     type: readonly || isEdit ? "Text" : "Input",
                     options: {
@@ -355,6 +359,7 @@ const IndexDetail = (
                     rowProps: {
                       label: "Index alias - optional",
                       helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
+                      direction: isEdit ? "hoz" : "ver",
                     },
                     options: {
                       props: {

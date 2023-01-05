@@ -22,7 +22,7 @@ interface IFormGeneratorAdvancedSettings<T> extends IAdvancedSettingsProps<T> {
 }
 
 export interface IField {
-  rowProps: Pick<CustomFormRowProps, "label" | "helpText" | "fullWidth" | "position">;
+  rowProps: Pick<CustomFormRowProps, "label" | "helpText" | "fullWidth" | "position" | "direction" | "style">;
   name: string;
   type?: keyof typeof AllBuiltInComponents;
   component?: React.ComponentType<IFieldComponentProps>;

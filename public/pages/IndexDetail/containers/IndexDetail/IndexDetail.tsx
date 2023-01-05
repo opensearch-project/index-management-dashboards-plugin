@@ -9,16 +9,8 @@ import {
   EuiDescriptionList,
   EuiDescriptionListTitle,
   EuiDescriptionListDescription,
-  EuiFlexItem,
   EuiSpacer,
-  EuiFlexGroup,
-  EuiButton,
-  EuiBasicTable,
-  EuiFlyout,
-  EuiFlyoutHeader,
   EuiTitle,
-  EuiFlyoutBody,
-  EuiIcon,
   EuiHealth,
   EuiFormRow,
   EuiLink,
@@ -129,8 +121,6 @@ const OVERVIEW_DISPLAY_INFO: {
 export default function IndexDetail(props: IndexDetailModalProps) {
   const { index } = props.match.params;
   const [record, setRecord] = useState<ManagedCatIndex | undefined>(undefined);
-  const [editVisible, setEditVisible] = useState(false);
-  const [editMode, setEditMode] = useState(IndicesUpdateMode.settings);
   const [detail, setDetail] = useState({} as IndexItem);
   const ref = useRef<IndexForm>(null);
   const coreService = useContext(CoreServicesContext);
@@ -223,10 +213,8 @@ export default function IndexDetail(props: IndexDetailModalProps) {
 
   const indexFormCommonProps = {
     index,
-    onCancel: () => setEditVisible(false),
     onSubmitSuccess: () => {
       ref.current?.refreshIndex();
-      setEditVisible(false);
       fetchIndicesDetail();
     },
   };
@@ -234,13 +222,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   const indexFormReadonlyCommonProps = {
     ...indexFormCommonProps,
     hideButtons: true,
-    readonly: true,
     ref,
-  };
-
-  const onEdit = (editMode: IndicesUpdateMode) => {
-    setEditMode(editMode);
-    setEditVisible(true);
   };
 
   if (!record || !detail || !finalDetail) {
@@ -248,76 +230,63 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   }
 
   return (
-    <ContentPanel
-      title={
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <EuiTitle size="m">
-            <span>{index}</span>
-          </EuiTitle>
-          <IndicesActions
-            selectedItems={[record]}
-            history={props.history}
-            onDelete={() => props.history.replace(ROUTES.INDICES)}
-            onOpen={refreshDetails}
-            onClose={refreshDetails}
-            onShrink={() => props.history.replace(ROUTES.INDICES)}
-            getIndices={async () => {}}
-          />
-        </div>
-      }
-    >
+    <>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <EuiTitle size="m">
+          <span>{index}</span>
+        </EuiTitle>
+        <IndicesActions
+          selectedItems={[record]}
+          history={props.history}
+          onDelete={() => props.history.replace(ROUTES.INDICES)}
+          onOpen={refreshDetails}
+          onClose={refreshDetails}
+          onShrink={() => props.history.replace(ROUTES.INDICES)}
+          getIndices={async () => {}}
+        />
+      </div>
+      <EuiSpacer />
+      <ContentPanel title="Overview" titleSize="s">
+        <EuiDescriptionList>
+          <EuiSpacer />
+          <div>
+            {OVERVIEW_DISPLAY_INFO.map((item) => {
+              let valueContent = null;
+              if (typeof item.value === "string") {
+                valueContent = <span>{get(finalDetail, item.value)}</span>;
+              } else {
+                const ValueComponent = item.value;
+                valueContent = <ValueComponent detail={finalDetail} />;
+              }
+              return (
+                <div
+                  style={{ display: "inline-block", width: "33%", verticalAlign: "top", marginBottom: "20px", padding: "0 1%" }}
+                  key={item.label}
+                  data-test-subj={`index-detail-overview-item-${item.label}`}
+                >
+                  <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
+                  <EuiDescriptionListDescription style={{ wordBreak: item.label === "Index name" ? "break-word" : undefined }}>
+                    {valueContent}
+                  </EuiDescriptionListDescription>
+                </div>
+              );
+            })}
+          </div>
+        </EuiDescriptionList>
+      </ContentPanel>
+      <EuiSpacer />
       <EuiTabbedContent
         tabs={[
-          {
-            id: "indexDetailModalOverview",
-            name: "Overview",
-            content: (
-              <EuiDescriptionList>
-                <EuiSpacer />
-                <div>
-                  {OVERVIEW_DISPLAY_INFO.map((item) => {
-                    let valueContent = null;
-                    if (typeof item.value === "string") {
-                      valueContent = <span>{get(finalDetail, item.value)}</span>;
-                    } else {
-                      const ValueComponent = item.value;
-                      valueContent = <ValueComponent detail={finalDetail} />;
-                    }
-                    return (
-                      <div
-                        style={{ display: "inline-block", width: "33%", verticalAlign: "top", marginBottom: "20px", padding: "0 1%" }}
-                        key={item.label}
-                        data-test-subj={`index-detail-overview-item-${item.label}`}
-                      >
-                        <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
-                        <EuiDescriptionListDescription style={{ wordBreak: item.label === "Index name" ? "break-word" : undefined }}>
-                          {valueContent}
-                        </EuiDescriptionListDescription>
-                      </div>
-                    );
-                  })}
-                </div>
-              </EuiDescriptionList>
-            ),
-          },
           {
             id: "indexDetailModalSettings",
             name: "Settings",
             content: (
               <>
                 <EuiSpacer />
-                <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                  <EuiFlexItem grow={false}>
-                    <h2>Advanced index settings</h2>
-                  </EuiFlexItem>
-                  <EuiFlexItem grow={false}>
-                    <EuiButton size="s" data-test-subj="detailModalEdit" onClick={() => onEdit(IndicesUpdateMode.settings)}>
-                      Edit
-                    </EuiButton>
-                  </EuiFlexItem>
-                </EuiFlexGroup>
-                <EuiSpacer />
-                <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.settings} mode={IndicesUpdateMode.settings} />
+                <ContentPanel title="Index settings" titleSize="s">
+                  <EuiSpacer size="s" />
+                  <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.settings} mode={IndicesUpdateMode.settings} />
+                </ContentPanel>
               </>
             ),
           },
@@ -327,35 +296,33 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             content: (
               <>
                 <EuiSpacer />
-                <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                  <EuiFlexItem grow={false}>
-                    <h2>Index mappings</h2>
-                    <EuiFormRow
-                      fullWidth
-                      helpText={
-                        <div>
-                          Define how documents and their fields are stored and indexed.{" "}
-                          <EuiLink
-                            target="_blank"
-                            external
-                            href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
-                          >
-                            Learn more.
-                          </EuiLink>
-                        </div>
-                      }
-                    >
-                      <></>
-                    </EuiFormRow>
-                  </EuiFlexItem>
-                  <EuiFlexItem grow={false}>
-                    <EuiButton size="s" data-test-subj="detailModalEdit" onClick={() => onEdit(IndicesUpdateMode.mappings)}>
-                      Add index mappings
-                    </EuiButton>
-                  </EuiFlexItem>
-                </EuiFlexGroup>
-                <EuiSpacer />
-                <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.mappings} mode={IndicesUpdateMode.mappings} />
+                <ContentPanel
+                  title={
+                    <>
+                      <h2>Index mappings</h2>
+                      <EuiFormRow
+                        fullWidth
+                        helpText={
+                          <div>
+                            Define how documents and their fields are stored and indexed.{" "}
+                            <EuiLink
+                              target="_blank"
+                              external
+                              href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
+                            >
+                              Learn more.
+                            </EuiLink>
+                          </div>
+                        }
+                      >
+                        <></>
+                      </EuiFormRow>
+                    </>
+                  }
+                >
+                  <EuiSpacer size="s" />
+                  <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.mappings} mode={IndicesUpdateMode.mappings} />
+                </ContentPanel>
               </>
             ),
           },
@@ -365,53 +332,15 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             content: (
               <>
                 <EuiSpacer />
-                <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-                  <EuiFlexItem grow={false}>
-                    <h2>Index alias</h2>
-                  </EuiFlexItem>
-                  <EuiFlexItem grow={false}>
-                    <EuiButton size="s" data-test-subj="detailModalEdit" onClick={() => onEdit(IndicesUpdateMode.alias)}>
-                      Edit
-                    </EuiButton>
-                  </EuiFlexItem>
-                </EuiFlexGroup>
-                <EuiSpacer />
-                <EuiBasicTable
-                  rowHeader="alias"
-                  noItemsMessage="No alias found"
-                  items={Object.keys(finalDetail.aliases || {}).map((item) => ({ alias: item }))}
-                  columns={[
-                    {
-                      field: "alias",
-                      name: "Alias name",
-                      render: (val: string, record: { alias: string }) => (
-                        <Link to={`${ROUTES.ALIASES}?search=${val}`}>
-                          <span title={val}>{val}</span>
-                        </Link>
-                      ),
-                    },
-                  ]}
-                />
+                <ContentPanel title="Index alias" titleSize="s">
+                  <EuiSpacer size="s" />
+                  <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.alias} mode={IndicesUpdateMode.alias} />
+                </ContentPanel>
               </>
             ),
           },
         ]}
       />
-      {editVisible ? (
-        <EuiFlyout data-test-subj="index-form-in-index-detail" onClose={() => null} hideCloseButton>
-          <EuiFlyoutHeader hasBorder>
-            <EuiTitle size="m">
-              <span onClick={() => setEditVisible(false)} style={{ cursor: "pointer" }}>
-                <EuiIcon type="arrowLeft" size="l" />
-                Edit index {editMode}
-              </span>
-            </EuiTitle>
-          </EuiFlyoutHeader>
-          <EuiFlyoutBody>
-            <IndexFormWrapper {...indexFormCommonProps} mode={editMode} />
-          </EuiFlyoutBody>
-        </EuiFlyout>
-      ) : null}
-    </ContentPanel>
+    </>
   );
 }
