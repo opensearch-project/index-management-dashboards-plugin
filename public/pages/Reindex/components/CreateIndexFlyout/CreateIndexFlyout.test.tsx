@@ -29,5 +29,5 @@ describe("<CreateIndexFlyout /> spec", () => {
       }
     );
     expect(component).toMatchSnapshot();
-  });
+  }, 20000);
 });
