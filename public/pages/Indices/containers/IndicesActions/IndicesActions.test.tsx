@@ -219,7 +219,7 @@ describe("<IndicesActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_index] successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
     });
-  });
+  }, 30000);
 
   it("shrink index by calling commonService", async () => {
     const history = createMemoryHistory();

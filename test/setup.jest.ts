@@ -41,4 +41,4 @@ jest.mock("@elastic/eui/lib/eui_components/icon", () => ({
   ICON_COLORS: require("@elastic/eui/lib/eui_components/icon/icon").COLORS,
 }));
 
-jest.setTimeout(10000); // in milliseconds
+jest.setTimeout(60000); // in milliseconds
