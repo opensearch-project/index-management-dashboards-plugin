@@ -14,6 +14,7 @@ import {
   EuiHealth,
   EuiFormRow,
   EuiLink,
+  EuiTabbedContentTab,
 } from "@elastic/eui";
 import { get } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
@@ -27,6 +28,7 @@ import IndexFormWrapper, { IndexForm } from "../../../CreateIndex/containers/Ind
 import { HEALTH_TO_COLOR } from "../../../Indices/utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ContentPanel } from "../../../../components/ContentPanel";
+import { Modal } from "../../../../components/Modal";
 
 export interface IndexDetailModalProps extends RouteComponentProps<{ index: string }> {}
 
@@ -199,18 +201,6 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     }
   };
 
-  useEffect(() => {
-    refreshDetails();
-    coreService?.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      {
-        ...BREADCRUMBS.INDEX_DETAIL,
-        href: `#${props.location.pathname}`,
-      },
-    ]);
-  }, []);
-
   const indexFormCommonProps = {
     index,
     onSubmitSuccess: () => {
@@ -223,6 +213,91 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     hideButtons: true,
     ref,
   };
+
+  const tabs = useMemo(
+    () => [
+      {
+        id: "indexDetailModalSettings",
+        name: "Settings",
+        mode: IndicesUpdateMode.settings,
+        content: (
+          <>
+            <EuiSpacer />
+            <ContentPanel title="Index settings" titleSize="s">
+              <EuiSpacer size="s" />
+              <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.settings} mode={IndicesUpdateMode.settings} />
+            </ContentPanel>
+          </>
+        ),
+      },
+      {
+        id: "indexDetailModalMappings",
+        name: "Mappings",
+        mode: IndicesUpdateMode.mappings,
+        content: (
+          <>
+            <EuiSpacer />
+            <ContentPanel
+              title={
+                <>
+                  <h2>Index mappings</h2>
+                  <EuiFormRow
+                    fullWidth
+                    helpText={
+                      <div>
+                        Define how documents and their fields are stored and indexed.{" "}
+                        <EuiLink
+                          target="_blank"
+                          external
+                          href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
+                        >
+                          Learn more.
+                        </EuiLink>
+                      </div>
+                    }
+                  >
+                    <></>
+                  </EuiFormRow>
+                </>
+              }
+            >
+              <EuiSpacer size="s" />
+              <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.mappings} mode={IndicesUpdateMode.mappings} />
+            </ContentPanel>
+          </>
+        ),
+      },
+      {
+        id: `indexDetailModalAlias`,
+        name: "Alias",
+        mode: IndicesUpdateMode.alias,
+        content: (
+          <>
+            <EuiSpacer />
+            <ContentPanel title="Index alias" titleSize="s">
+              <EuiSpacer size="s" />
+              <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.alias} mode={IndicesUpdateMode.alias} />
+            </ContentPanel>
+          </>
+        ),
+      },
+    ],
+    []
+  );
+
+  const [selectedTab, setSelectedTab] = useState<EuiTabbedContentTab & { mode: IndicesUpdateMode }>(tabs[0]);
+
+  useEffect(() => {
+    refreshDetails();
+    coreService?.chrome.setBreadcrumbs([
+      BREADCRUMBS.INDEX_MANAGEMENT,
+      BREADCRUMBS.INDICES,
+      {
+        ...BREADCRUMBS.INDEX_DETAIL,
+        href: `#${props.location.pathname}`,
+      },
+    ]);
+  }, []);
 
   if (!record || !detail || !finalDetail) {
     return null;
@@ -275,70 +350,26 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       </ContentPanel>
       <EuiSpacer />
       <EuiTabbedContent
-        tabs={[
-          {
-            id: "indexDetailModalSettings",
-            name: "Settings",
-            content: (
-              <>
-                <EuiSpacer />
-                <ContentPanel title="Index settings" titleSize="s">
-                  <EuiSpacer size="s" />
-                  <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.settings} mode={IndicesUpdateMode.settings} />
-                </ContentPanel>
-              </>
-            ),
-          },
-          {
-            id: "indexDetailModalMappings",
-            name: "Mappings",
-            content: (
-              <>
-                <EuiSpacer />
-                <ContentPanel
-                  title={
-                    <>
-                      <h2>Index mappings</h2>
-                      <EuiFormRow
-                        fullWidth
-                        helpText={
-                          <div>
-                            Define how documents and their fields are stored and indexed.{" "}
-                            <EuiLink
-                              target="_blank"
-                              external
-                              href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
-                            >
-                              Learn more.
-                            </EuiLink>
-                          </div>
-                        }
-                      >
-                        <></>
-                      </EuiFormRow>
-                    </>
-                  }
-                >
-                  <EuiSpacer size="s" />
-                  <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.mappings} mode={IndicesUpdateMode.mappings} />
-                </ContentPanel>
-              </>
-            ),
-          },
-          {
-            id: `indexDetailModalAlias`,
-            name: "Alias",
-            content: (
-              <>
-                <EuiSpacer />
-                <ContentPanel title="Index alias" titleSize="s">
-                  <EuiSpacer size="s" />
-                  <IndexFormWrapper {...indexFormReadonlyCommonProps} key={IndicesUpdateMode.alias} mode={IndicesUpdateMode.alias} />
-                </ContentPanel>
-              </>
-            ),
-          },
-        ]}
+        selectedTab={selectedTab}
+        onTabClick={(tab) => {
+          if (ref.current?.hasUnsavedChanges?.(selectedTab.mode)) {
+            Modal.show({
+              title: "You have unsaved changes.",
+              content: "There are unsaved changes, please select how you want to handle with these changes.",
+              type: "confirm",
+              locale: {
+                confirm: "Stay to save changes",
+                cancel: "Go on without changes",
+              },
+              onCancel: () => {
+                setSelectedTab(tab as any);
+              },
+            });
+          } else {
+            setSelectedTab(tab as any);
+          }
+        }}
+        tabs={tabs}
       />
     </>
   );

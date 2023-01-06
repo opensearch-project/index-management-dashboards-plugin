@@ -81,6 +81,7 @@ export interface IndexDetailProps {
 
 export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
+  hasUnsavedChanges: (mode: IndicesUpdateMode) => number;
 }
 
 const TemplateInfoCallout = (props: { visible: boolean }) => {
@@ -136,6 +137,7 @@ const IndexDetail = (
       ]);
       return result.every((item) => !item);
     },
+    hasUnsavedChanges: (mode: IndicesUpdateMode) => diffJson(oldValue?.[mode], finalValue[mode]),
   }));
   const onIndexInputBlur = useCallback(async () => {
     await new Promise((resolve) => setTimeout(resolve, 200));
@@ -316,9 +318,6 @@ const IndexDetail = (
       destroyRef.current = true;
     };
   }, []);
-  useEffect(() => {
-    settingsRef.current?.setOriginalValues(oldValue?.settings);
-  }, [oldValue?.settings]);
   return (
     <>
       {isEdit && !readonly && filterByMinimatch(value?.index as string, SYSTEM_INDEX) ? (
@@ -556,14 +555,12 @@ const IndexDetail = (
           We are simulating your template with existing templates, please wait for a second.
         </EuiOverlayMask>
       ) : null}
-      {isEdit && mode === IndicesUpdateMode.settings && settingsRef.current?.computeDifference() ? (
+      {isEdit && mode === IndicesUpdateMode.settings && diffJson(oldValue?.settings, finalValue.settings) ? (
         <UnsavedChangesBottomBar
           submitButtonDataTestSubj="createIndexCreateButton"
-          unsavedCount={settingsRef.current?.computeDifference()}
+          unsavedCount={diffJson(oldValue?.settings, finalValue.settings)}
           onClickCancel={async () => {
-            const newSettings = JSON.parse(JSON.stringify({ ...oldValue?.settings }));
-            settingsRef.current?.resetValues(newSettings);
-            onValueChange("settings", newSettings);
+            onValueChange("settings", JSON.parse(JSON.stringify(oldValue?.settings || {})));
           }}
           onClickSubmit={async () => {
             const result = (await onSubmit?.()) || { ok: false };

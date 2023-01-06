@@ -97,6 +97,8 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     return this.props.mode;
   }
 
+  hasUnsavedChanges = (mode: IndicesUpdateMode) => this.indexDetailRef?.hasUnsavedChanges(mode);
+
   getIndexDetail = async (indexName: string): Promise<IndexItemRemote> => {
     const response = await this.commonService.apiCaller<Record<string, IndexItemRemote>>({
       endpoint: "indices.get",
