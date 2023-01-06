@@ -28,7 +28,7 @@ export class JobScheduler {
     }
 
     if (!formattedJob.timeout) {
-      formattedJob.timeout = 1000 * 60 * 60;
+      formattedJob.timeout = 1000 * 60 * 60 * 24;
     }
 
     return formattedJob as JobItemMetadata;
