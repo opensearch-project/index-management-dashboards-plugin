@@ -12,12 +12,16 @@ export default function CustomFormRow(props: CustomFormRowProps) {
   const { unsavedCount, onClickCancel, onClickSubmit, submitButtonDataTestSubj } = props;
   const [loading, setLoading] = useState(false);
   const bottomBarRef = useRef(null);
+  const destroyRef = useRef(false);
   const onClick = async () => {
     setLoading(true);
     try {
       await onClickSubmit();
     } catch (e) {
     } finally {
+      if (destroyRef.current) {
+        return;
+      }
       setLoading(false);
     }
   };
@@ -31,6 +35,7 @@ export default function CustomFormRow(props: CustomFormRowProps) {
     }
 
     return () => {
+      destroyRef.current = true;
       if (bodyDom) {
         bodyDom.style.paddingBottom = originalBodyPaddingBottom;
       }
