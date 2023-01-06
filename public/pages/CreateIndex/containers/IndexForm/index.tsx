@@ -319,7 +319,22 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       this.context.notifications.toasts.addSuccess(`${indexDetail.index} has been successfully ${this.isEdit ? "updated" : "created"}.`);
       this.props.onSubmitSuccess && this.props.onSubmitSuccess(indexDetail.index);
     } else {
-      this.context.notifications.toasts.addDanger(result.error);
+      const mapperParseExceptionReg = /\[mapper_parsing_exception\] unknown parameter \[([^\]]+)\] on mapper \[([^\]]+)\] of type \[([^\]]+)\]/;
+      const execResult = mapperParseExceptionReg.exec(result.error);
+      let finalMessage = result.error;
+      if (execResult) {
+        const jsonRegExp = new RegExp(`"${execResult[2]}":\\s*\\{[\\S\\s]*("${execResult[1]}"\\s*:)[\\S\\s]*\\}`, "d");
+        const mappingsEditorValue = this.indexDetailRef?.getMappingsJSONEditorValue() || "";
+        const propertyExecResult = jsonRegExp.exec(mappingsEditorValue);
+        if (propertyExecResult && propertyExecResult.indices && propertyExecResult.indices[1]) {
+          const [startPosition] = propertyExecResult.indices[1];
+          const cutString = mappingsEditorValue.substring(0, startPosition);
+          finalMessage = `There is a problem with the index mapping syntax. Unknown parameter "${execResult[1]}" on line ${
+            cutString.split("\n").length
+          }.`;
+        }
+      }
+      this.context.notifications.toasts.addDanger(finalMessage);
     }
     return result;
   };

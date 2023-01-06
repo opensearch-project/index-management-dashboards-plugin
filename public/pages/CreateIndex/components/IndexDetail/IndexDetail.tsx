@@ -82,6 +82,7 @@ export interface IndexDetailProps {
 export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
   hasUnsavedChanges: (mode: IndicesUpdateMode) => number;
+  getMappingsJSONEditorValue: () => string;
 }
 
 const TemplateInfoCallout = (props: { visible: boolean }) => {
@@ -138,6 +139,7 @@ const IndexDetail = (
       return result.every((item) => !item);
     },
     hasUnsavedChanges: (mode: IndicesUpdateMode) => diffJson(oldValue?.[mode], finalValue[mode]),
+    getMappingsJSONEditorValue: () => mappingsRef.current?.getJSONEditorValue() || "",
   }));
   const onIndexInputBlur = useCallback(async () => {
     await new Promise((resolve) => setTimeout(resolve, 200));
