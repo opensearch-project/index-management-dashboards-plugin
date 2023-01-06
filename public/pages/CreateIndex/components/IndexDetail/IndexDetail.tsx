@@ -18,6 +18,7 @@ import {
 import { set, merge, omit, pick } from "lodash";
 import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
+import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
@@ -38,12 +39,20 @@ import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } fro
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import SimplePopover from "../../../../components/SimplePopover";
 import { SimpleEuiToast } from "../../../../components/Toast";
-import { filterByMinimatch } from "../../../../../utils/helper";
+import { filterByMinimatch, getOrderedJson } from "../../../../../utils/helper";
 import { SYSTEM_INDEX } from "../../../../../utils/constants";
+import { diffJson } from "../../../../utils/helpers";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
 });
+
+const formatMappings = (mappings: IndexItem["mappings"]): IndexItemRemote["mappings"] => {
+  return {
+    ...mappings,
+    properties: transformArrayToObject(mappings?.properties || []),
+  };
+};
 
 export const defaultIndexSettings = {
   index: "",
@@ -66,17 +75,13 @@ export interface IndexDetailProps {
   onSimulateIndexTemplate?: (indexName: string) => Promise<ServerResponse<IndexItemRemote>>;
   onGetIndexDetail?: (indexName: string) => Promise<IndexItemRemote>;
   sourceIndices?: string[];
+  onSubmit?: () => Promise<{ ok: boolean }>;
+  refreshIndex?: () => void;
 }
 
 export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
 }
-
-const getOrderedJson = (json: Record<string, any>) => {
-  const entries = Object.entries(json);
-  entries.sort((a, b) => (a[0] < b[0] ? -1 : 1));
-  return entries.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
-};
 
 const TemplateInfoCallout = (props: { visible: boolean }) => {
   return props.visible ? (
@@ -98,6 +103,8 @@ const IndexDetail = (
     onSimulateIndexTemplate,
     sourceIndices = [],
     onGetIndexDetail,
+    onSubmit,
+    refreshIndex,
   }: IndexDetailProps,
   ref: Ref<IIndexDetailRef>
 ) => {
@@ -309,6 +316,9 @@ const IndexDetail = (
       destroyRef.current = true;
     };
   }, []);
+  useEffect(() => {
+    settingsRef.current?.setOriginalValues(oldValue?.settings);
+  }, [oldValue?.settings]);
   return (
     <>
       {isEdit && !readonly && filterByMinimatch(value?.index as string, SYSTEM_INDEX) ? (
@@ -545,6 +555,55 @@ const IndexDetail = (
           <EuiLoadingSpinner size="l" />
           We are simulating your template with existing templates, please wait for a second.
         </EuiOverlayMask>
+      ) : null}
+      {isEdit && mode === IndicesUpdateMode.settings && settingsRef.current?.computeDifference() ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="createIndexCreateButton"
+          unsavedCount={settingsRef.current?.computeDifference()}
+          onClickCancel={async () => {
+            const newSettings = JSON.parse(JSON.stringify({ ...oldValue?.settings }));
+            settingsRef.current?.resetValues(newSettings);
+            onValueChange("settings", newSettings);
+          }}
+          onClickSubmit={async () => {
+            const result = (await onSubmit?.()) || { ok: false };
+            if (result.ok) {
+              refreshIndex?.();
+            }
+          }}
+        />
+      ) : null}
+      {isEdit &&
+      mode === IndicesUpdateMode.mappings &&
+      diffJson(formatMappings(oldValue?.mappings), formatMappings(finalValue.mappings)) ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="createIndexCreateButton"
+          unsavedCount={diffJson(formatMappings(oldValue?.mappings), formatMappings(finalValue.mappings))}
+          onClickCancel={async () => {
+            onValueChange("mappings", JSON.parse(JSON.stringify(oldValue?.mappings || {})));
+          }}
+          onClickSubmit={async () => {
+            const result = (await onSubmit?.()) || { ok: false };
+            if (result.ok) {
+              refreshIndex?.();
+            }
+          }}
+        />
+      ) : null}
+      {isEdit && mode === IndicesUpdateMode.alias && diffJson(oldValue?.aliases, finalValue.aliases) ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="createIndexCreateButton"
+          unsavedCount={diffJson(oldValue?.aliases, finalValue.aliases)}
+          onClickCancel={async () => {
+            onValueChange("aliases", JSON.parse(JSON.stringify(oldValue?.aliases || {})));
+          }}
+          onClickSubmit={async () => {
+            const result = (await onSubmit?.()) || { ok: false };
+            if (result.ok) {
+              refreshIndex?.();
+            }
+          }}
+        />
       ) : null}
     </>
   );

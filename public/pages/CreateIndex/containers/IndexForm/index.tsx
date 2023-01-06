@@ -267,18 +267,12 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     };
   };
 
-  getOrderedJson = (json: Record<string, any>) => {
-    const entries = Object.entries(json);
-    entries.sort((a, b) => (a[0] < b[0] ? -1 : 1));
-    return entries.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
-  };
-
-  onSubmit = async (): Promise<void> => {
+  onSubmit = async (): Promise<{ ok: boolean }> => {
     const mode = this.mode;
     const { indexDetail } = this.state;
     const { index, mappings, ...others } = indexDetail;
     if (!(await this.indexDetailRef?.validate())) {
-      return;
+      return { ok: false };
     }
     this.setState({ isSubmitting: true });
     let result: ServerResponse<any>;
@@ -325,6 +319,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     } else {
       this.context.notifications.toasts.addDanger(result.error);
     }
+    return result;
   };
 
   onSimulateIndexTemplate = (indexName: string): Promise<ServerResponse<IndexItemRemote>> => {
@@ -387,6 +382,8 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
               },
             })
           }
+          onSubmit={this.onSubmit}
+          refreshIndex={this.refreshIndex}
         />
         {hideButtons ? null : (
           <>

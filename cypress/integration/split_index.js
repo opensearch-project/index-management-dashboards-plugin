@@ -83,7 +83,7 @@ describe("Split Index", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
       cy.get("#indexDetailModalSettings").click().end();
       cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
-      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiText').should("have.text", `${replicaNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
     }); // Split
 
     it("Split successfully with advanced setting", () => {
@@ -119,7 +119,7 @@ describe("Split Index", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${targetIndex}"]`).click().end();
       cy.get("#indexDetailModalSettings").click().end();
       cy.get('[data-test-subj="form-name-index.number_of_shards"] .euiText').should("have.text", `${splitNumber}`).end();
-      cy.get('[data-test-subj="form-name-index.number_of_replicas"] .euiText').should("have.text", `${replicaNumber}`).end();
+      cy.get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", `${replicaNumber}`).end();
     }); // advanced setting
 
     it("Split successfully with alias", () => {

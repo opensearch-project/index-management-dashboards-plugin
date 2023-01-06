@@ -154,7 +154,7 @@ describe("Indices", () => {
 
       // Confirm the information shows in detail modal
       cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`).click();
-      cy.get(`[data-test-subj="index-detail-overview-item-Managed by policy"] .euiDescriptionList__description a`).contains(POLICY_ID);
+      cy.get(`[data-test-subj="indexDetailOverviewItem-Managed by policy"] .euiDescriptionList__description a`).contains(POLICY_ID);
     });
   });
 
@@ -203,7 +203,7 @@ describe("Indices", () => {
 
     it("successfully", () => {
       cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`).click();
-      cy.get(`[data-test-subj="index-detail-overview-item-Index name"] .euiDescriptionList__description > span`).should(
+      cy.get(`[data-test-subj="indexDetailOverviewItem-Index name"] .euiDescriptionList__description > span`).should(
         "have.text",
         SAMPLE_INDEX
       );

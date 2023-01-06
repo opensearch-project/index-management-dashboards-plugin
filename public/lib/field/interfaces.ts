@@ -15,6 +15,11 @@ export type FieldOption = {
    */
   values?: {};
 
+  /**
+   * OriginalValues
+   */
+  originalValues?: {};
+
   unmountComponent?: boolean;
 };
 
@@ -132,6 +137,12 @@ export type FieldInstance = {
   getValues(): any;
 
   /**
+   * Get the values ​​of a set of input controls, if no parameters are passed in, get the values ​​of all components
+   * @param names
+   */
+  getOriginalValues(): any;
+
+  /**
    * Set the value of a single input control (will trigger render, please follow the timing of react)
    */
   setValue(name: FieldName, value: any): void;
@@ -140,6 +151,11 @@ export type FieldInstance = {
    * Set the value of a set of input controls (will trigger render, please follow the timing of react)
    */
   setValues(obj: any): void;
+
+  /**
+   *
+   */
+  setOriginalValues(obj: any): void;
 
   /**
    * Reset values
@@ -173,6 +189,11 @@ export type FieldInstance = {
    * Sets the Error for a set of input controls
    */
   setErrors(obj: any): void;
+
+  /**
+   * Get difference between originalValues & currentValues
+   */
+  computeDifference(): number;
 };
 
 export type ValidateFunction = (

@@ -140,13 +140,7 @@ describe("Create Index", () => {
     });
 
     it("Update alias successfully", () => {
-      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#indexDetailModalAlias")
-        .click()
-        .get('[data-test-subj="detailModalEdit"]')
-        .click()
-        .end();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`).click().get("#indexDetailModalAlias").click();
 
       // add a alias and remove the exist alias
       cy.get('[data-test-subj="comboBoxSearchInput"]')
@@ -163,53 +157,42 @@ describe("Create Index", () => {
     });
 
     it("Update settings successfully", () => {
-      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#indexDetailModalSettings")
-        .click()
-        .get('[data-test-subj="detailModalEdit"]')
-        .click()
-        .end();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`).click().get("#indexDetailModalSettings").click();
 
-      cy.get('[data-test-subj="index-form-in-index-detail"] [aria-controls="accordionForCreateIndexSettings"]')
+      cy.get('[aria-controls="accordionForCreateIndexSettings"]')
         .click()
         .end()
-        .get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+        .get(".ace_text-input")
         .focus()
         .clear({ force: true })
         .type('{ "index.blocks.write": true, "index.number_of_shards": 2, "index.number_of_replicas": 3 }', {
           parseSpecialCharSequences: false,
           force: true,
-        });
+        })
+        .blur();
 
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
 
       cy.contains(`Can't update non dynamic settings`).should("exist");
 
-      cy.get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+      cy.get(".ace_text-input")
         .focus()
         .clear({ force: true })
-        .type('{ "index.blocks.write": true }', { parseSpecialCharSequences: false, force: true })
+        .type('{ "index.blocks.write": true, "index.number_of_shards": "3" }', { parseSpecialCharSequences: false, force: true })
         .end()
         .wait(1000)
-        .get('[data-test-subj="index-form-in-index-detail"] [placeholder="The number of replica shards each primary shard should have."]')
+        .get('[placeholder="The number of replica shards each primary shard should have."]')
         .clear()
         .type(2)
         .end();
 
       cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
 
-      cy.wait(1000).get('[data-test-subj="form-name-index.number_of_replicas"] .euiText').should("have.text", "2");
+      cy.wait(1000).get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", "2");
     });
 
     it("Update mappings successfully", () => {
-      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`)
-        .click()
-        .get("#indexDetailModalMappings")
-        .click()
-        .get('[data-test-subj="detailModalEdit"]')
-        .click()
-        .end();
+      cy.get(`[data-test-subj="viewIndexDetailButton-${SAMPLE_INDEX}"]`).click().get("#indexDetailModalMappings").click();
 
       cy.get('[data-test-subj="createIndexAddFieldButton"]')
         .click()
@@ -222,16 +205,14 @@ describe("Create Index", () => {
 
       cy.get('[data-test-subj="mapping-visual-editor-2-field-type"]').should("have.attr", "title", "text").end();
 
-      cy.get('[data-test-subj="detailModalEdit"]')
+      cy.get('[data-test-subj="editorTypeJsonEditor"]')
         .click()
         .end()
-        .get('[data-test-subj="index-form-in-index-detail"] [data-test-subj="editorTypeJsonEditor"]')
-        .click()
-        .end()
-        .get('[data-test-subj="index-form-in-index-detail"] .ace_text-input')
+        .get(".ace_text-input")
         .focus()
         .clear({ force: true })
         .type('{ "dynamic": true }', { parseSpecialCharSequences: false, force: true })
+        .blur()
         .end()
         .wait(1000)
         .get('[data-test-subj="createIndexCreateButton"]')
@@ -241,7 +222,10 @@ describe("Create Index", () => {
         .get('[data-test-subj="editorTypeJsonEditor"]')
         .click()
         .end()
-        .get('[data-test-subj="jsonEditor-valueDisplay"]')
+        .get('[data-test-subj="previousMappingsJsonButton"]')
+        .click()
+        .end()
+        .get('[data-test-subj="previousMappingsJsonModal"] [data-test-subj="jsonEditor-valueDisplay"]')
         .should(
           "have.text",
           JSON.stringify(

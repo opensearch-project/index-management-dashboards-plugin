@@ -214,8 +214,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   const indexFormCommonProps = {
     index,
     onSubmitSuccess: () => {
-      ref.current?.refreshIndex();
-      fetchIndicesDetail();
+      refreshDetails();
     },
   };
 
@@ -262,7 +261,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                 <div
                   style={{ display: "inline-block", width: "33%", verticalAlign: "top", marginBottom: "20px", padding: "0 1%" }}
                   key={item.label}
-                  data-test-subj={`index-detail-overview-item-${item.label}`}
+                  data-test-subj={`indexDetailOverviewItem-${item.label}`}
                 >
                   <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
                   <EuiDescriptionListDescription style={{ wordBreak: item.label === "Index name" ? "break-word" : undefined }}>
