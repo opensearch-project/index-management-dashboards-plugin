@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { set, get, unset } from "lodash";
 import { Rule, FieldOption, FieldInstance, InitOption, InitResult, ValidateFunction, FieldName } from "./interfaces";
 import buildInRules from "./rules";
+import { getOrderedJson } from "../../../utils/helper";
+import { diffJson } from "../../utils/helpers";
 
 export function transformNameToString(name: FieldName) {
   if (Array.isArray(name)) {
@@ -17,6 +19,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
   const destroyRef = useRef<boolean>(false);
   const values = useRef<Record<string, any>>(options?.values || {});
   const errors = useRef<Record<string, null | string[]>>({});
+  const originalValuesRef = useRef<Record<string, any>>(options?.originalValues || {});
   const fieldsMapRef = useRef<Record<string, InitOption>>({});
   const setValues = (obj: Record<string, any>) => {
     if (destroyRef.current) {
@@ -167,6 +170,15 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
       const newValues = { ...values.current };
       unset(newValues, key);
       resetValues(newValues);
+    },
+    setOriginalValues: (obj) => {
+      originalValuesRef.current = obj;
+    },
+    getOriginalValues: () => originalValuesRef.current,
+    computeDifference: () => {
+      const originalValues = getOrderedJson(originalValuesRef.current);
+      const currentValues = getOrderedJson(values.current);
+      return diffJson(originalValues, currentValues);
     },
   };
 }

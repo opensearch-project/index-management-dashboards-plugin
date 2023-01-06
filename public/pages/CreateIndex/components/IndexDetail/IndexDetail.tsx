@@ -18,6 +18,7 @@ import {
 import { set, merge, omit, pick } from "lodash";
 import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
+import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
 import IndexMapping from "../IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
@@ -38,12 +39,20 @@ import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } fro
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import SimplePopover from "../../../../components/SimplePopover";
 import { SimpleEuiToast } from "../../../../components/Toast";
-import { filterByMinimatch } from "../../../../../utils/helper";
+import { filterByMinimatch, getOrderedJson } from "../../../../../utils/helper";
 import { SYSTEM_INDEX } from "../../../../../utils/constants";
+import { diffJson } from "../../../../utils/helpers";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
 });
+
+const formatMappings = (mappings: IndexItem["mappings"]): IndexItemRemote["mappings"] => {
+  return {
+    ...mappings,
+    properties: transformArrayToObject(mappings?.properties || []),
+  };
+};
 
 export const defaultIndexSettings = {
   index: "",
@@ -66,17 +75,15 @@ export interface IndexDetailProps {
   onSimulateIndexTemplate?: (indexName: string) => Promise<ServerResponse<IndexItemRemote>>;
   onGetIndexDetail?: (indexName: string) => Promise<IndexItemRemote>;
   sourceIndices?: string[];
+  onSubmit?: () => Promise<{ ok: boolean }>;
+  refreshIndex?: () => void;
 }
 
 export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
+  hasUnsavedChanges: (mode: IndicesUpdateMode) => number;
+  getMappingsJSONEditorValue: () => string;
 }
-
-const getOrderedJson = (json: Record<string, any>) => {
-  const entries = Object.entries(json);
-  entries.sort((a, b) => (a[0] < b[0] ? -1 : 1));
-  return entries.reduce((total, [key, value]) => ({ ...total, [key]: value }), {});
-};
 
 const TemplateInfoCallout = (props: { visible: boolean }) => {
   return props.visible ? (
@@ -98,6 +105,8 @@ const IndexDetail = (
     onSimulateIndexTemplate,
     sourceIndices = [],
     onGetIndexDetail,
+    onSubmit,
+    refreshIndex,
   }: IndexDetailProps,
   ref: Ref<IIndexDetailRef>
 ) => {
@@ -129,6 +138,8 @@ const IndexDetail = (
       ]);
       return result.every((item) => !item);
     },
+    hasUnsavedChanges: (mode: IndicesUpdateMode) => diffJson(oldValue?.[mode], finalValue[mode]),
+    getMappingsJSONEditorValue: () => mappingsRef.current?.getJSONEditorValue() || "",
   }));
   const onIndexInputBlur = useCallback(async () => {
     await new Promise((resolve) => setTimeout(resolve, 200));
@@ -229,10 +240,11 @@ const IndexDetail = (
           label: "Number of primary shards",
           helpText: (
             <>
-              <p>Specify the number of primary shards for the index. Default is 1. </p>
-              <p>The number of primary shards cannot be changed after the index is created.</p>
+              <div>Specify the number of primary shards for the index. Default is 1. </div>
+              <div>The number of primary shards cannot be changed after the index is created.</div>
             </>
           ),
+          direction: isEdit ? "hoz" : "ver",
         },
         name: "index.number_of_shards",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) ? "Text" : "Number",
@@ -261,6 +273,7 @@ const IndexDetail = (
         rowProps: {
           label: "Number of replicas",
           helpText: REPLICA_NUMBER_MESSAGE,
+          direction: isEdit ? "hoz" : "ver",
         },
         name: "index.number_of_replicas",
         type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
@@ -290,6 +303,7 @@ const IndexDetail = (
           label: "Refresh interval",
           helpText:
             "Specify how often the index should refresh, which publishes the most recent changes and make them available for search. Default is 1 second.",
+          direction: isEdit ? "hoz" : "ver",
         },
         name: "index.refresh_interval",
         type: readonly ? "Text" : "Input",
@@ -327,6 +341,7 @@ const IndexDetail = (
                       label: "Index name",
                       helpText: <div>{INDEX_NAMING_MESSAGE}</div>,
                       position: "bottom",
+                      style: isEdit ? { display: "none" } : {},
                     },
                     type: readonly || isEdit ? "Text" : "Input",
                     options: {
@@ -355,6 +370,7 @@ const IndexDetail = (
                     rowProps: {
                       label: "Index alias - optional",
                       helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
+                      direction: isEdit ? "hoz" : "ver",
                     },
                     options: {
                       props: {
@@ -540,6 +556,53 @@ const IndexDetail = (
           <EuiLoadingSpinner size="l" />
           We are simulating your template with existing templates, please wait for a second.
         </EuiOverlayMask>
+      ) : null}
+      {isEdit && mode === IndicesUpdateMode.settings && diffJson(oldValue?.settings, finalValue.settings) ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="createIndexCreateButton"
+          unsavedCount={diffJson(oldValue?.settings, finalValue.settings)}
+          onClickCancel={async () => {
+            onValueChange("settings", JSON.parse(JSON.stringify(oldValue?.settings || {})));
+          }}
+          onClickSubmit={async () => {
+            const result = (await onSubmit?.()) || { ok: false };
+            if (result.ok) {
+              refreshIndex?.();
+            }
+          }}
+        />
+      ) : null}
+      {isEdit &&
+      mode === IndicesUpdateMode.mappings &&
+      diffJson(formatMappings(oldValue?.mappings), formatMappings(finalValue.mappings)) ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="createIndexCreateButton"
+          unsavedCount={diffJson(formatMappings(oldValue?.mappings), formatMappings(finalValue.mappings))}
+          onClickCancel={async () => {
+            onValueChange("mappings", JSON.parse(JSON.stringify(oldValue?.mappings || {})));
+          }}
+          onClickSubmit={async () => {
+            const result = (await onSubmit?.()) || { ok: false };
+            if (result.ok) {
+              refreshIndex?.();
+            }
+          }}
+        />
+      ) : null}
+      {isEdit && mode === IndicesUpdateMode.alias && diffJson(oldValue?.aliases, finalValue.aliases) ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="createIndexCreateButton"
+          unsavedCount={diffJson(oldValue?.aliases, finalValue.aliases)}
+          onClickCancel={async () => {
+            onValueChange("aliases", JSON.parse(JSON.stringify(oldValue?.aliases || {})));
+          }}
+          onClickSubmit={async () => {
+            const result = (await onSubmit?.()) || { ok: false };
+            if (result.ok) {
+              refreshIndex?.();
+            }
+          }}
+        />
       ) : null}
     </>
   );

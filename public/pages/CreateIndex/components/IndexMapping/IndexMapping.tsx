@@ -81,6 +81,7 @@ export enum EDITOR_MODE {
 
 export interface IIndexMappingsRef {
   validate: () => Promise<string>;
+  getJSONEditorValue: () => string;
 }
 
 const IndexMapping = (
@@ -102,6 +103,7 @@ const IndexMapping = (
       const JSONEditorValidateResult = await JSONEditorRef.current?.validate();
       return values.some((item) => item) || JSONEditorValidateResult ? "with error" : "";
     },
+    getJSONEditorValue: () => JSONEditorRef.current?.getValue() || "",
   }));
   const [editorMode, setEditorMode] = useState<EDITOR_MODE>(EDITOR_MODE.VISUAL);
   const addField = useCallback(

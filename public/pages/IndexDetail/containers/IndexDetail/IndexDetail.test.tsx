@@ -62,11 +62,10 @@ describe("container <IndexDetail /> spec", () => {
         },
       } as any;
     }) as typeof browserServicesMock.indexService.getIndices;
-    const { container, getByTestId, queryByText } = renderWithRouter({}, [`/test_index`]);
+    const { container, queryByText } = renderWithRouter({}, [`/test_index`]);
 
     await waitFor(() => {
       expect(container.firstChild).toMatchSnapshot();
-      expect(document.querySelector("#indexDetailModalOverview")).not.toBeNull();
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
         endpoint: "indices.get",
@@ -79,12 +78,6 @@ describe("container <IndexDetail /> spec", () => {
     userEvent.click(document.getElementById("indexDetailModalAlias") as Element);
     await waitFor(() => {
       expect(queryByText("Index alias")).not.toBeNull();
-    });
-    userEvent.click(getByTestId("detailModalEdit"));
-    await waitFor(() => {});
-    userEvent.click(getByTestId("createIndexCreateButton"));
-    await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
     });
   });
 });

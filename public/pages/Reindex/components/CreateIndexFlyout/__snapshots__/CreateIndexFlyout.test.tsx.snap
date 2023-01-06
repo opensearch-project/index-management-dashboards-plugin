@@ -273,12 +273,12 @@ Object {
                             class="euiFormHelpText euiFormRow__text"
                             style="padding-top: 0px; padding-bottom: 4px;"
                           >
-                            <p>
+                            <div>
                               Specify the number of primary shards for the index. Default is 1. 
-                            </p>
-                            <p>
+                            </div>
+                            <div>
                               The number of primary shards cannot be changed after the index is created.
-                            </p>
+                            </div>
                           </div>
                           <span
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"

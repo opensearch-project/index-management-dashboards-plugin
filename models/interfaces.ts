@@ -42,7 +42,7 @@ export type MappingsProperties = {
 export interface IndexItem {
   index: string;
   indexUuid?: string;
-  data_stream: string | null;
+  data_stream?: string | null;
   settings?: {
     index?: {
       number_of_shards?: number;
