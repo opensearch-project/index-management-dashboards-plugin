@@ -382,8 +382,8 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
               method: "GET",
               data: {
                 format: "json",
-                name: aliasName,
-                expand_wildcards: "open",
+                name: `*${aliasName || ""}*`,
+                s: "alias:desc",
               },
             })
           }

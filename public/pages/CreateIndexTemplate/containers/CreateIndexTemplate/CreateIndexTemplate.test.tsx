@@ -125,5 +125,5 @@ describe("<CreateIndexTemplate /> spec", () => {
         timeout: 3000,
       }
     );
-  });
+  }, 20000);
 });

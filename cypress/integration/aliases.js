@@ -45,7 +45,7 @@ describe("Aliases", () => {
     });
   });
 
-  describe("shows more flyout", () => {
+  describe("shows more modal", () => {
     it("successfully", () => {
       cy.get('[placeholder="Search..."]').type("alias-for-test-0{enter}");
       cy.contains("alias-for-test-0");
@@ -64,7 +64,7 @@ describe("Aliases", () => {
       cy.get('[data-test-subj="form-name-indexArray"] [data-test-subj="comboBoxSearchInput"]').type(
         `${EDIT_INDEX}{enter}${SAMPLE_INDEX_PREFIX}-*{enter}`
       );
-      cy.get(".euiFlyoutFooter .euiButton--fill").click().get('[data-test-subj="9 more"]').should("exist");
+      cy.get(".euiModalFooter .euiButton--fill").click().get('[data-test-subj="9 more"]').should("exist");
     });
   });
 
@@ -89,7 +89,7 @@ describe("Aliases", () => {
         .click()
         .get(`[title="${SAMPLE_INDEX_PREFIX}-1"] button`)
         .click()
-        .get(".euiFlyoutFooter .euiButton--fill")
+        .get(".euiModalFooter .euiButton--fill")
         .click()
         .end();
 

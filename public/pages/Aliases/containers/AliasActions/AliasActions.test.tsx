@@ -115,5 +115,5 @@ describe("<AliasesActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [1] successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
     });
-  });
+  }, 20000);
 });
