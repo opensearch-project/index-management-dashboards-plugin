@@ -178,10 +178,10 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             >
               View JSON
             </EuiButton>
-            <EuiButton fill style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_TEMPLATE}/${values.name}`)}>
+            <EuiButton style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_TEMPLATE}/${values.name}`)}>
               Edit
             </EuiButton>
-            <EuiButton style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
+            <EuiButton color="danger" style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
               Delete
             </EuiButton>
             <DeleteTemplateModal
