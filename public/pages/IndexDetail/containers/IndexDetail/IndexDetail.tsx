@@ -240,7 +240,9 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             <ContentPanel
               title={
                 <>
-                  <h2>Index mappings</h2>
+                  <EuiTitle size="s">
+                    <span>Index mappings</span>
+                  </EuiTitle>
                   <EuiFormRow
                     fullWidth
                     helpText={
