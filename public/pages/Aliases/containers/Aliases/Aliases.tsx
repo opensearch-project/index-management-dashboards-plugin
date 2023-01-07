@@ -66,7 +66,7 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
 
   return (
     <>
-      <span>{props.indices.slice(0, 3).join(",")}</span>
+      <span>{props.indices.slice(0, 3).join(", ")}</span>
       {props.indices.length <= 3 ? null : (
         <EuiLink style={{ marginLeft: 8 }} data-test-subj={`${props.indices.length - 3} more`} onClick={() => setHide(!hide)}>
           {props.indices.length - 3} more
@@ -301,7 +301,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
               helpText={
                 <div style={{ width: "50%" }}>
                   An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes,
-                  rather than keeping track of which indexes to query, you can create an alias and query it instead.
+                  rather than keeping track of which indexes to query, you can create an alias and query it instead.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexAlias.base}>
                     Learn more.
                   </EuiLink>

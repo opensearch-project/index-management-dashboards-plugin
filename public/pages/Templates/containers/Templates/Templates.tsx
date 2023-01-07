@@ -240,7 +240,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               fullWidth
               helpText={
                 <div>
-                  Index templates let you initialize new indexes or data streams with predefined mappings and settings.
+                  Index templates let you initialize new indexes or data streams with predefined mappings and settings.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
                     Learn more.
                   </EuiLink>

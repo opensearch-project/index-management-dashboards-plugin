@@ -142,7 +142,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
               label=""
               helpText={
                 <div>
-                  Index templates let you initialize new indexes with predefined mappings and settings.
+                  Index templates let you initialize new indexes with predefined mappings and settings.{" "}
                   <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
                     Learn more.
                   </EuiLink>
