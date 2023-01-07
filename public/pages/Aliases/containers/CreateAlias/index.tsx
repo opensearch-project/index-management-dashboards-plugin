@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { EuiButton, EuiCallOut, EuiModal, EuiModalHeader, EuiModalBody, EuiModalFooter, EuiSpacer } from "@elastic/eui";
+import { EuiButton, EuiCallOut, EuiModal, EuiModalHeader, EuiModalBody, EuiModalFooter, EuiSpacer, EuiTitle } from "@elastic/eui";
 import FormGenerator, { IFormGeneratorRef } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
@@ -22,7 +22,7 @@ export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (
   const services = useContext(ServicesContext) as BrowserServices;
   return (
     <RemoteSelect
-      placeholder="Select indices"
+      placeholder="Select indexes"
       onSearchChange={undefined}
       value={value}
       onChange={onChange}
@@ -105,7 +105,11 @@ export default function CreateAlias(props: ICreateAliasProps) {
 
   return (
     <EuiModal onClose={() => {}}>
-      <EuiModalHeader>{isEdit ? "Update" : "Create"} alias</EuiModalHeader>
+      <EuiModalHeader>
+        <EuiTitle>
+          <h1>{isEdit ? "Update" : "Create"} alias</h1>
+        </EuiTitle>
+      </EuiModalHeader>
       <EuiModalBody>
         {isEdit && filterByMinimatch(props.alias?.alias || "", SYSTEM_ALIAS) ? (
           <>
@@ -140,12 +144,12 @@ export default function CreateAlias(props: ICreateAliasProps) {
               name: "indexArray",
               component: IndexSelect,
               rowProps: {
-                label: "Specify indexes",
+                label: "Indexes or index patterns",
                 helpText: "Specify one or more indexes or index patterns to be part of the alias.",
               },
               options: {
                 props: {
-                  placeholder: "Select one or more indexes",
+                  placeholder: "Select indexes or input index patterns.",
                 },
                 rules: [
                   {
