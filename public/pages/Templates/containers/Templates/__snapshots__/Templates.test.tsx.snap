@@ -30,6 +30,7 @@ exports[`<Templates /> spec renders the component 1`] = `
           >
             <div>
               Index templates let you initialize new indexes or data streams with predefined mappings and settings.
+               
               <a
                 class="euiLink euiLink--primary"
                 href="https://opensearch.org/docs/latest/opensearch/index-templates"

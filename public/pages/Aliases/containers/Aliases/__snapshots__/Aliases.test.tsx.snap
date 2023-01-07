@@ -32,6 +32,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
               style="width: 50%;"
             >
               An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes, rather than keeping track of which indexes to query, you can create an alias and query it instead.
+               
               <a
                 class="euiLink euiLink--primary"
                 href="https://opensearch.org/docs/latest/opensearch/index-alias/"
@@ -376,26 +377,48 @@ exports[`<Aliases /> spec renders the component 1`] = `
                     class="euiTableCellContent__text"
                   >
                     <div
-                      style="text-align: center;"
+                      class="euiEmptyPrompt"
                     >
-                      <h4>
-                        You have no aliases.
-                      </h4>
-                      <button
-                        class="euiButton euiButton--primary euiButton--fill"
-                        style="margin-top: 20px;"
-                        type="button"
+                      <span
+                        class="euiTextColor euiTextColor--subdued"
                       >
-                        <span
-                          class="euiButtonContent euiButton__content"
+                        <div
+                          class="euiText euiText--medium"
                         >
-                          <span
-                            class="euiButton__text"
+                          <div
+                            class="euiText euiText--medium"
                           >
-                            Create alias
-                          </span>
-                        </span>
-                      </button>
+                            <p>
+                              You have no aliases.
+                            </p>
+                          </div>
+                        </div>
+                      </span>
+                      <div
+                        class="euiSpacer euiSpacer--l"
+                      />
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
+                      >
+                        <div
+                          class="euiFlexItem euiFlexItem--flexGrowZero"
+                        >
+                          <button
+                            class="euiButton euiButton--primary euiButton--fill"
+                            type="button"
+                          >
+                            <span
+                              class="euiButtonContent euiButton__content"
+                            >
+                              <span
+                                class="euiButton__text"
+                              >
+                                Create alias
+                              </span>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </span>
                 </div>
