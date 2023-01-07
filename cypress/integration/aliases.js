@@ -41,7 +41,7 @@ describe("Aliases", () => {
       cy.get(".euiTableRow").should("have.length", 1);
       cy.get('[data-test-subj="comboBoxSearchInput"]').type("closed{enter}");
 
-      cy.contains("You have no aliases.");
+      cy.contains("There are no aliases matching your applied filters. Reset your filters to view your aliases.");
     });
   });
 
