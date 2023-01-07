@@ -330,7 +330,7 @@ const IndexMapping = (
                     <div>
                       {isEdit
                         ? "Mappings and field types cannot be changed once they have been added."
-                        : "The existing mapping properties cannot be changed after the index is created."}
+                        : "Mappings and field types cannot be changed after the index is created."}
                     </div>
                   )}
                 </div>
