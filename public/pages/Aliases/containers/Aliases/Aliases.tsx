@@ -411,7 +411,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
                       });
                     }}
                   >
-                    Reset filter
+                    Reset filters
                   </EuiButton>,
                 ]}
               />
