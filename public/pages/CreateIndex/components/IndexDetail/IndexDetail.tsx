@@ -533,12 +533,15 @@ const IndexDetail = (
                     <EuiFormRow
                       fullWidth
                       helpText={
-                        <div>
-                          Define how documents and their fields are stored and indexed.{" "}
-                          <EuiLink target="_blank" external href="https://opensearch.org/docs/latest/opensearch/mappings/">
-                            Learn more.
-                          </EuiLink>
-                        </div>
+                        <>
+                          <div>
+                            Define how documents and their fields are stored and indexed.{" "}
+                            <EuiLink target="_blank" external href="https://opensearch.org/docs/latest/opensearch/mappings/">
+                              Learn more.
+                            </EuiLink>
+                          </div>
+                          <div>Mappings and field types cannot be changed after the index is created.</div>
+                        </>
                       }
                     >
                       <></>

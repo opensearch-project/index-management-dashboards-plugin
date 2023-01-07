@@ -244,16 +244,19 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   <EuiFormRow
                     fullWidth
                     helpText={
-                      <div>
-                        Define how documents and their fields are stored and indexed.{" "}
-                        <EuiLink
-                          target="_blank"
-                          external
-                          href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
-                        >
-                          Learn more.
-                        </EuiLink>
-                      </div>
+                      <>
+                        <div>
+                          Define how documents and their fields are stored and indexed.{" "}
+                          <EuiLink
+                            target="_blank"
+                            external
+                            href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
+                          >
+                            Learn more.
+                          </EuiLink>
+                        </div>
+                        <div>Mappings and field types cannot be changed once they have been added.</div>
+                      </>
                     }
                   >
                     <></>
