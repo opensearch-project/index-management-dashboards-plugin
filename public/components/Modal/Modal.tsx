@@ -51,6 +51,8 @@ class ModalProvider extends Component {
   }
 }
 
+type footerEnum = "confirm" | "cancel";
+
 interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth" | "className"> {
   title?: React.ReactChild;
   content?: React.ReactChild;
@@ -65,6 +67,7 @@ interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth" | "class
     confirm: string;
     cancel: string;
   }>;
+  footer?: footerEnum[];
   bodyProps?: EuiModalBodyProps;
 }
 
@@ -72,7 +75,17 @@ const blank = () => null;
 
 const SimpleModal = (props: IShowOptions) => {
   const [modalVisible, setModalVisible] = useState(props.visible === undefined ? true : props.visible);
-  const { title, content, locale, onOk = blank, onCancel = blank, onClose = blank, visible, ...others } = props;
+  const {
+    title,
+    content,
+    locale,
+    onOk = blank,
+    onCancel = blank,
+    onClose = blank,
+    visible,
+    footer = ["confirm", "cancel"],
+    ...others
+  } = props;
   const testSubj = props["data-test-subj"] || title || Date.now();
   const defaultLocale: IShowOptions["locale"] = {
     ok: "OK",
@@ -105,30 +118,41 @@ const SimpleModal = (props: IShowOptions) => {
       <EuiModalFooter>
         {props.type === "confirm" ? (
           <>
-            <EuiButton
-              fill
-              color="primary"
-              data-test-subj={`${testSubj}-confirm`}
-              onClick={async () => {
-                try {
-                  await onOk();
-                  close();
-                } catch (e) {
-                  // do nothing
-                }
-              }}
-            >
-              {finalLocale.confirm}
-            </EuiButton>
-            <EuiButton
-              data-test-subj={`${testSubj}-cancel`}
-              onClick={async () => {
-                await onCancel();
-                close();
-              }}
-            >
-              {finalLocale.cancel}
-            </EuiButton>
+            {footer.map((item) => {
+              if (item === "confirm") {
+                return (
+                  <EuiButton
+                    key={item}
+                    fill
+                    color="primary"
+                    data-test-subj={`${testSubj}-confirm`}
+                    onClick={async () => {
+                      try {
+                        await onOk();
+                        close();
+                      } catch (e) {
+                        // do nothing
+                      }
+                    }}
+                  >
+                    {finalLocale.confirm}
+                  </EuiButton>
+                );
+              } else if (item === "cancel") {
+                return (
+                  <EuiButton
+                    key={item}
+                    data-test-subj={`${testSubj}-cancel`}
+                    onClick={async () => {
+                      await onCancel();
+                      close();
+                    }}
+                  >
+                    {finalLocale.cancel}
+                  </EuiButton>
+                );
+              }
+            })}
           </>
         ) : (
           <>

@@ -27,6 +27,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           >
             <div>
               Index templates let you initialize new indexes with predefined mappings and settings.
+               
               <a
                 class="euiLink euiLink--primary"
                 href="https://opensearch.org/docs/latest/opensearch/index-templates"

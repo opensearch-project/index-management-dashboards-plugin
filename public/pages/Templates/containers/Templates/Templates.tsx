@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import { debounce } from "lodash";
+import { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -19,6 +19,8 @@ import {
   EuiLink,
   EuiTitle,
   EuiFormRow,
+  EuiEmptyPrompt,
+  EuiText,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -48,6 +50,10 @@ type TemplatesState = {
   loading: boolean;
 } & SearchControlsProps["value"];
 
+const defaultFilter = {
+  search: DEFAULT_QUERY_PARAMS.search,
+};
+
 class Templates extends Component<TemplatesProps, TemplatesState> {
   static contextType = CoreServicesContext;
   constructor(props: TemplatesProps) {
@@ -66,6 +72,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       sortDirection: Direction;
     };
     this.state = {
+      ...defaultFilter,
       totalTemplates: 0,
       from,
       size,
@@ -240,7 +247,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               fullWidth
               helpText={
                 <div>
-                  Index templates let you initialize new indexes or data streams with predefined mappings and settings.
+                  Index templates let you initialize new indexes or data streams with predefined mappings and settings.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
                     Learn more.
                   </EuiLink>
@@ -305,25 +312,69 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
           selection={selection}
           sorting={sorting}
           noItemsMessage={
-            <div
-              style={{
-                textAlign: "center",
-              }}
-            >
-              <h4>You have no templates.</h4>
-              <EuiButton
-                fill
-                color="primary"
-                style={{
-                  marginTop: 20,
-                }}
-                onClick={() => {
-                  this.props.history.push(ROUTES.CREATE_TEMPLATE);
-                }}
-              >
-                Create template
-              </EuiButton>
-            </div>
+            isEqual(
+              {
+                search: this.state.search,
+              },
+              defaultFilter
+            ) ? (
+              <EuiEmptyPrompt
+                body={
+                  <EuiText>
+                    <p>You have no templates.</p>
+                  </EuiText>
+                }
+                actions={[
+                  <EuiButton
+                    fill
+                    onClick={() => {
+                      this.props.history.push(ROUTES.CREATE_TEMPLATE);
+                    }}
+                  >
+                    Create template
+                  </EuiButton>,
+                ]}
+              />
+            ) : (
+              <EuiEmptyPrompt
+                body={
+                  <EuiText>
+                    <p>There are no templates matching your applied filters. Reset your filters to view your templates.</p>
+                  </EuiText>
+                }
+                actions={[
+                  <EuiButton
+                    fill
+                    onClick={() => {
+                      this.setState(defaultFilter, () => {
+                        this.getTemplates();
+                      });
+                    }}
+                  >
+                    Reset filters
+                  </EuiButton>,
+                ]}
+              />
+            )
+            // <div
+            //   style={{
+            //     textAlign: "center",
+            //   }}
+            // >
+            //   <h4>You have no templates.</h4>
+            //   <EuiButton
+            //     fill
+            //     color="primary"
+            //     style={{
+            //       marginTop: 20,
+            //     }}
+            //     onClick={() => {
+            //       this.props.history.push(ROUTES.CREATE_TEMPLATE);
+            //     }}
+            //   >
+            //     Create template
+            //   </EuiButton>
+            // </div>
           }
         />
       </ContentPanel>

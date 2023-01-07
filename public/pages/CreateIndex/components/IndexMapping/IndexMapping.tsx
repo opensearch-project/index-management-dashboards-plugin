@@ -326,13 +326,6 @@ const IndexMapping = (
                       View mapping example.
                     </EuiLink>
                   </div>
-                  {oldMappingsEditable ? null : (
-                    <div>
-                      {isEdit
-                        ? "Mappings and field types cannot be changed once they have been added."
-                        : "The existing mapping properties cannot be changed after the index is created."}
-                    </div>
-                  )}
                 </div>
               }
               fullWidth

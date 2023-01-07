@@ -106,7 +106,11 @@ describe("<IndexDetail /> spec", () => {
     userEvent.click(document.body);
     // The Dialog should show
     await waitFor(() => {
-      expect(getByText("The index name has matched one or more index templates, please choose which way to go on")).toBeInTheDocument();
+      expect(
+        getByText(
+          "The index name matches one or more index templates. Index aliases, settings, and mappings are inherited from matching templates. Do you want to merge your changes with templates?"
+        )
+      ).toBeInTheDocument();
     });
     userEvent.click(getByTestId("simulate-confirm-confirm"));
     await waitFor(() => {
@@ -120,7 +124,11 @@ describe("<IndexDetail /> spec", () => {
     userEvent.click(document.body);
     // The Dialog should show
     await waitFor(() => {
-      expect(getByText("The index name has matched one or more index templates, please choose which way to go on")).toBeInTheDocument();
+      expect(
+        getByText(
+          "The index name matches one or more index templates. Index aliases, settings, and mappings are inherited from matching templates. Do you want to merge your changes with templates?"
+        )
+      ).toBeInTheDocument();
     });
     userEvent.click(getByTestId("simulate-confirm-cancel"));
     await waitFor(() => {

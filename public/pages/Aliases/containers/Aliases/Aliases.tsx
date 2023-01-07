@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext, useState } from "react";
-import _ from "lodash";
+import _, { isEqual } from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -15,7 +15,6 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButton,
   EuiFlyout,
   EuiFlyoutHeader,
   EuiFlyoutBody,
@@ -23,6 +22,8 @@ import {
   EuiLink,
   EuiTitle,
   EuiFormRow,
+  EuiEmptyPrompt,
+  EuiButton,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -66,7 +67,7 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
 
   return (
     <>
-      <span>{props.indices.slice(0, 3).join(",")}</span>
+      <span>{props.indices.slice(0, 3).join(", ")}</span>
       {props.indices.length <= 3 ? null : (
         <EuiLink style={{ marginLeft: 8 }} data-test-subj={`${props.indices.length - 3} more`} onClick={() => setHide(!hide)}>
           {props.indices.length - 3} more
@@ -105,6 +106,11 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
   );
 }
 
+const defaultFilter = {
+  search: DEFAULT_QUERY_PARAMS.search,
+  status: DEFAULT_QUERY_PARAMS.status,
+};
+
 class Aliases extends Component<AliasesProps, AliasesState> {
   static contextType = CoreServicesContext;
   constructor(props: AliasesProps) {
@@ -125,6 +131,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       status: string;
     };
     this.state = {
+      ...defaultFilter,
       totalAliases: 0,
       from,
       size,
@@ -301,7 +308,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
               helpText={
                 <div style={{ width: "50%" }}>
                   An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes,
-                  rather than keeping track of which indexes to query, you can create an alias and query it instead.
+                  rather than keeping track of which indexes to query, you can create an alias and query it instead.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexAlias.base}>
                     Learn more.
                   </EuiLink>
@@ -362,27 +369,53 @@ class Aliases extends Component<AliasesProps, AliasesState> {
           selection={selection}
           sorting={sorting}
           noItemsMessage={
-            <div
-              style={{
-                textAlign: "center",
-              }}
-            >
-              <h4>You have no aliases.</h4>
-              <EuiButton
-                fill
-                color="primary"
-                style={{
-                  marginTop: 20,
-                }}
-                onClick={() => {
-                  this.setState({
-                    aliasCreateFlyoutVisible: true,
-                  });
-                }}
-              >
-                Create alias
-              </EuiButton>
-            </div>
+            isEqual(
+              {
+                search: this.state.search,
+                status: this.state.status,
+              },
+              defaultFilter
+            ) ? (
+              <EuiEmptyPrompt
+                body={
+                  <EuiText>
+                    <p>You have no aliases.</p>
+                  </EuiText>
+                }
+                actions={[
+                  <EuiButton
+                    fill
+                    onClick={() => {
+                      this.setState({
+                        aliasCreateFlyoutVisible: true,
+                      });
+                    }}
+                  >
+                    Create alias
+                  </EuiButton>,
+                ]}
+              />
+            ) : (
+              <EuiEmptyPrompt
+                body={
+                  <EuiText>
+                    <p>There are no aliases matching your applied filters. Reset your filters to view your aliases.</p>
+                  </EuiText>
+                }
+                actions={[
+                  <EuiButton
+                    fill
+                    onClick={() => {
+                      this.setState(defaultFilter, () => {
+                        this.getAliases();
+                      });
+                    }}
+                  >
+                    Reset filters
+                  </EuiButton>,
+                ]}
+              />
+            )
           }
         />
         <CreateAlias

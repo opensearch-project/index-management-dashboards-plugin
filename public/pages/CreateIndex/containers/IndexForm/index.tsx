@@ -59,6 +59,17 @@ interface CreateIndexState {
   loading: boolean;
 }
 
+const findLineNumber = (regexp: RegExp, str: string): number => {
+  const propertyExecResult = regexp.exec(str);
+  if (propertyExecResult && propertyExecResult.indices && propertyExecResult.indices[1]) {
+    const [startPosition] = propertyExecResult.indices[1];
+    const cutString = str.substring(0, startPosition);
+    return cutString.split("\n").length;
+  }
+
+  return 0;
+};
+
 export class IndexForm extends Component<IndexFormProps & { services: BrowserServices }, CreateIndexState> {
   static contextType = CoreServicesContext;
   constructor(props: IndexFormProps & { services: BrowserServices }) {
@@ -320,18 +331,30 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       this.props.onSubmitSuccess && this.props.onSubmitSuccess(indexDetail.index);
     } else {
       const mapperParseExceptionReg = /\[mapper_parsing_exception\] unknown parameter \[([^\]]+)\] on mapper \[([^\]]+)\] of type \[([^\]]+)\]/;
+      const mapperTypeParseExceptionReg = /\[mapper_parsing_exception\] No handler for type \[([^\]]+)\] declared on field \[([^\]]+)\]/;
       const execResult = mapperParseExceptionReg.exec(result.error);
+      const typeParseExceptionResult = mapperTypeParseExceptionReg.exec(result.error);
       let finalMessage = result.error;
+      const mappingsEditorValue = this.indexDetailRef?.getMappingsJSONEditorValue() || "";
       if (execResult) {
         const jsonRegExp = new RegExp(`"${execResult[2]}":\\s*\\{[\\S\\s]*("${execResult[1]}"\\s*:)[\\S\\s]*\\}`, "d");
-        const mappingsEditorValue = this.indexDetailRef?.getMappingsJSONEditorValue() || "";
-        const propertyExecResult = jsonRegExp.exec(mappingsEditorValue);
-        if (propertyExecResult && propertyExecResult.indices && propertyExecResult.indices[1]) {
-          const [startPosition] = propertyExecResult.indices[1];
-          const cutString = mappingsEditorValue.substring(0, startPosition);
-          finalMessage = `There is a problem with the index mapping syntax. Unknown parameter "${execResult[1]}" on line ${
-            cutString.split("\n").length
-          }.`;
+        if (findLineNumber(jsonRegExp, mappingsEditorValue)) {
+          finalMessage = `There is a problem with the index mapping syntax. Unknown parameter "${execResult[1]}" on line ${findLineNumber(
+            jsonRegExp,
+            mappingsEditorValue
+          )}.`;
+        }
+      }
+
+      if (typeParseExceptionResult) {
+        const jsonRegExp = new RegExp(
+          `"${typeParseExceptionResult[2]}":\\s*\\{[\\S\\s]*("type":\\s*"${typeParseExceptionResult[1]}"\\s*)[\\S\\s]*\\}`,
+          "d"
+        );
+        if (findLineNumber(jsonRegExp, mappingsEditorValue)) {
+          finalMessage = `There is a problem with the index mapping syntax. Unsupported type "${
+            typeParseExceptionResult[1]
+          }" on line ${findLineNumber(jsonRegExp, mappingsEditorValue)}.`;
         }
       }
       this.context.notifications.toasts.addDanger(finalMessage);

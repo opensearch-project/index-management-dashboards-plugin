@@ -38,7 +38,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           </span>
         </button>
         <button
-          class="euiButton euiButton--primary euiButton--fill"
+          class="euiButton euiButton--primary"
           style="margin-right: 20px;"
           type="button"
         >
@@ -53,7 +53,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           </span>
         </button>
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--danger"
           style="margin-right: 20px;"
           type="button"
         >

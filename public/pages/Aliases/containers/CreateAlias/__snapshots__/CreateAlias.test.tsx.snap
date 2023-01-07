@@ -36,8 +36,14 @@ HTMLCollection [
           <div
             class="euiModalHeader"
           >
-            Create
-             alias
+            <div
+              class="euiModalHeader__title"
+            >
+              <h1>
+                Create
+                 alias
+              </h1>
+            </div>
           </div>
           <div
             class="euiModalBody"
@@ -100,7 +106,7 @@ HTMLCollection [
                       class="euiFormLabel euiFormRow__label"
                       for="some_html_id"
                     >
-                      Specify indexes
+                      Indexes or index patterns
                     </label>
                   </div>
                   <div
@@ -132,7 +138,7 @@ HTMLCollection [
                             <p
                               class="euiComboBoxPlaceholder"
                             >
-                              Select indices
+                              Select indexes
                             </p>
                             <div
                               class="euiComboBox__input"

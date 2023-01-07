@@ -240,20 +240,25 @@ export default function IndexDetail(props: IndexDetailModalProps) {
             <ContentPanel
               title={
                 <>
-                  <h2>Index mappings</h2>
+                  <EuiTitle size="s">
+                    <span>Index mappings</span>
+                  </EuiTitle>
                   <EuiFormRow
                     fullWidth
                     helpText={
-                      <div>
-                        Define how documents and their fields are stored and indexed.{" "}
-                        <EuiLink
-                          target="_blank"
-                          external
-                          href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
-                        >
-                          Learn more.
-                        </EuiLink>
-                      </div>
+                      <>
+                        <div>
+                          Define how documents and their fields are stored and indexed.{" "}
+                          <EuiLink
+                            target="_blank"
+                            external
+                            href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
+                          >
+                            Learn more.
+                          </EuiLink>
+                        </div>
+                        <div>Mappings and field types cannot be changed once they have been added.</div>
+                      </>
                     }
                   >
                     <></>
@@ -293,7 +298,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       BREADCRUMBS.INDEX_MANAGEMENT,
       BREADCRUMBS.INDICES,
       {
-        ...BREADCRUMBS.INDEX_DETAIL,
+        text: index,
         href: `#${props.location.pathname}`,
       },
     ]);
@@ -355,15 +360,16 @@ export default function IndexDetail(props: IndexDetailModalProps) {
           if (ref.current?.hasUnsavedChanges?.(selectedTab.mode)) {
             Modal.show({
               title: "You have unsaved changes.",
-              content: "There are unsaved changes, please select how you want to handle with these changes.",
+              content: "Are you sure you want to leave this tab?",
               type: "confirm",
               locale: {
-                confirm: "Stay to save changes",
-                cancel: "Go on without changes",
+                confirm: "Stay",
+                cancel: "Leave without changes",
               },
               onCancel: () => {
                 setSelectedTab(tab as any);
               },
+              footer: ["cancel", "confirm"],
             });
           } else {
             setSelectedTab(tab as any);
