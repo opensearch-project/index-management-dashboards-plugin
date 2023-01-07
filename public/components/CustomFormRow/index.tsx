@@ -10,7 +10,12 @@ export default function CustomFormRow(props: CustomFormRowProps) {
   const { helpText, children, position = "top", direction = "ver", label, ...others } = props;
   if (direction === "hoz") {
     return (
-      <EuiDescribedFormGroup fullWidth title={<div>{label}</div>} description={helpText}>
+      <EuiDescribedFormGroup
+        fullWidth
+        descriptionFlexItemProps={{ style: { maxWidth: 700 } }}
+        title={<div>{label}</div>}
+        description={helpText}
+      >
         <EuiFormRow {...others}>{children}</EuiFormRow>
       </EuiDescribedFormGroup>
     );
