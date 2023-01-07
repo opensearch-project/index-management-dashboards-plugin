@@ -36,12 +36,14 @@ HTMLCollection [
           <div
             class="euiModalHeader"
           >
-            <h1
-              class="euiTitle euiTitle--medium"
+            <div
+              class="euiModalHeader__title"
             >
-              Create
-               alias
-            </h1>
+              <h1>
+                Create
+                 alias
+              </h1>
+            </div>
           </div>
           <div
             class="euiModalBody"
