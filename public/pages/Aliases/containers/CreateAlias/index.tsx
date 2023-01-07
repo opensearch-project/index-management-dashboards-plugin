@@ -1,5 +1,14 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { EuiButton, EuiCallOut, EuiModal, EuiModalHeader, EuiModalBody, EuiModalFooter, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiCallOut,
+  EuiModal,
+  EuiModalHeader,
+  EuiModalBody,
+  EuiModalFooter,
+  EuiSpacer,
+  EuiModalHeaderTitle,
+} from "@elastic/eui";
 import FormGenerator, { IFormGeneratorRef } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
@@ -106,9 +115,9 @@ export default function CreateAlias(props: ICreateAliasProps) {
   return (
     <EuiModal onClose={() => {}}>
       <EuiModalHeader>
-        <EuiTitle>
+        <EuiModalHeaderTitle>
           <h1>{isEdit ? "Update" : "Create"} alias</h1>
-        </EuiTitle>
+        </EuiModalHeaderTitle>
       </EuiModalHeader>
       <EuiModalBody>
         {isEdit && filterByMinimatch(props.alias?.alias || "", SYSTEM_ALIAS) ? (
