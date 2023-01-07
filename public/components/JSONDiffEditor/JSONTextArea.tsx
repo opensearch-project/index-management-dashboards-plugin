@@ -7,6 +7,7 @@ import React, { forwardRef, useState, useEffect, useImperativeHandle, useRef } f
 import { EuiFormRow } from "@elastic/eui";
 import type { MonacoDiffEditorProps } from "react-monaco-editor";
 import { IJSONEditorRef } from "../JSONEditor";
+import CustomFormRow from "../CustomFormRow";
 
 export interface JSONDiffEditorProps extends Partial<MonacoDiffEditorProps> {
   value: string;
@@ -60,6 +61,18 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         title={`editor-is-ready-true`}
         data-test-subj={`${others["data-test-subj"] || "jsonEditor"}-valueDisplay`}
       />
+      <div style={{ display: "flex", marginBottom: 12 }}>
+        <div style={{ flexGrow: 1 }}>
+          <CustomFormRow label="Original" helpText="The original value">
+            <></>
+          </CustomFormRow>
+        </div>
+        <div style={{ flexGrow: 1 }}>
+          <CustomFormRow label="Modified" helpText="The value you modified">
+            <></>
+          </CustomFormRow>
+        </div>
+      </div>
       {confirmModalVisible && (
         <EuiFormRow
           fullWidth
