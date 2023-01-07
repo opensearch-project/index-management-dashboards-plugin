@@ -298,7 +298,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       BREADCRUMBS.INDEX_MANAGEMENT,
       BREADCRUMBS.INDICES,
       {
-        ...BREADCRUMBS.INDEX_DETAIL,
+        text: index,
         href: `#${props.location.pathname}`,
       },
     ]);
