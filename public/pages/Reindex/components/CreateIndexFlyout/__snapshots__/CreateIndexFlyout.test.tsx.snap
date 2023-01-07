@@ -671,6 +671,9 @@ Object {
                                 </span>
                               </a>
                             </div>
+                            <div>
+                              Mappings and field types cannot be changed after the index is created.
+                            </div>
                           </div>
                         </div>
                       </div>
