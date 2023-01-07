@@ -360,15 +360,16 @@ export default function IndexDetail(props: IndexDetailModalProps) {
           if (ref.current?.hasUnsavedChanges?.(selectedTab.mode)) {
             Modal.show({
               title: "You have unsaved changes.",
-              content: "There are unsaved changes, please select how you want to handle with these changes.",
+              content: "Are you sure you want to leave this tab?",
               type: "confirm",
               locale: {
-                confirm: "Stay to save changes",
-                cancel: "Go on without changes",
+                confirm: "Stay",
+                cancel: "Leave without changes",
               },
               onCancel: () => {
                 setSelectedTab(tab as any);
               },
+              footer: ["cancel", "confirm"],
             });
           } else {
             setSelectedTab(tab as any);
