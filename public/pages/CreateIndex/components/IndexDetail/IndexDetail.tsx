@@ -158,16 +158,18 @@ const IndexDetail = (
         if (hasEdit.current) {
           onChangePromise = new Promise((resolve) => {
             Modal.show({
-              title: "Confirm",
-              content: "The index name has matched one or more index templates, please choose which way to go on",
+              title: "Merge your changes with templates?",
+              content:
+                "The index name matches one or more index templates. Index aliases, settings, and mappings are inherited from matching templates. Do you want to merge your changes with templates?",
               locale: {
-                confirm: "Overwrite",
-                cancel: "Merge your changes with template",
+                confirm: "Merge with templates",
+                cancel: "Overwrite by templates",
               },
+              footer: ["cancel", "confirm"],
               type: "confirm",
               "data-test-subj": "simulate-confirm",
-              onOk: () => resolve(result.response),
-              onCancel: () => {
+              onCancel: () => resolve(result.response),
+              onOk: () => {
                 const formatValue: IndexItemRemote = {
                   index: "",
                   ...finalValue,
