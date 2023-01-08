@@ -7,36 +7,39 @@ HTMLCollection [
       style="padding: 0px 50px;"
     >
       <h1
-        class="euiTitle euiTitle--large"
+        class="euiTitle euiTitle--medium"
       >
         Split index
       </h1>
       <div
-        class="euiText euiText--small"
-        style="padding: 5px 0px;"
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
       >
         <div
-          class="euiTextColor euiTextColor--subdued"
+          class="euiFormRow__fieldWrapper"
         >
-          <p
-            style="font-weight: 200;"
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            id="some_html_id-help-0"
           >
-            Split an existing read-only index into a new index with more primary shards .   
-            <a
-              class="euiLink euiLink--primary"
-              href="https://opensearch.org/docs/latest/api-reference/index-apis/split/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Learn more.
-              EuiIconMock
-              <span
-                class="euiScreenReaderOnly"
+            <div>
+              Split an existing read-only index into a new index with more primary shards. 
+              <a
+                class="euiLink euiLink--primary"
+                href="https://opensearch.org/docs/latest/api-reference/index-apis/split/"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                (opens in a new tab or window)
-              </span>
-            </a>
-          </p>
+                Learn more.
+                EuiIconMock
+                <span
+                  class="euiScreenReaderOnly"
+                >
+                  (opens in a new tab or window)
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
       <div

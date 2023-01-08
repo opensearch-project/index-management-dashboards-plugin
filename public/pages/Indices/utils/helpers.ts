@@ -132,8 +132,8 @@ export async function getAlias(props: { aliasName?: string; commonService: Commo
 }
 
 export async function splitIndex(props: {
-  sourceIndex: String;
-  targetIndex: String;
+  sourceIndex: string;
+  targetIndex: string;
   settingsPayload: Required<IndexItem>["settings"];
   commonService: CommonService;
   coreServices: CoreStart;
@@ -198,7 +198,7 @@ export function getSplitShardOptions(sourceShards: number) {
   } else {
     const SHARDS_HARD_LIMIT = 1024 / 2;
     let shardsLimit = sourceShards;
-    for (let i = 1; shardsLimit <= SHARDS_HARD_LIMIT; i++) {
+    while (shardsLimit <= SHARDS_HARD_LIMIT) {
       shardsLimit = shardsLimit * 2;
       shardsSelectOptions.push({
         label: shardsLimit.toString(),
