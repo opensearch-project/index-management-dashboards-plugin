@@ -36,7 +36,7 @@ export default function SearchControls(props: SearchControlsProps) {
       <EuiFlexItem grow={false}>
         <EuiComboBox
           style={{
-            width: 150,
+            width: 300,
           }}
           placeholder="Status"
           options={ALIAS_STATUS_OPTIONS}
