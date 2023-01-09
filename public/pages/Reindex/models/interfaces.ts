@@ -3,12 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { Conflicts } from "elasticsearch";
+
 export interface ReindexRequest {
   waitForCompletion: boolean;
   slices?: number | string;
   maxDocs?: number;
   body: {
-    conflicts?: string;
+    conflicts?: Conflicts;
     source: {
       index: string;
       [key: string]: any;
