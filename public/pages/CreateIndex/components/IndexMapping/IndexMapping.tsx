@@ -8,44 +8,15 @@ import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButton
 import { set, get, isEmpty } from "lodash";
 import JSONEditor, { IJSONEditorRef } from "../../../../components/JSONEditor";
 import { Modal } from "../../../../components/Modal";
-import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
+import { MappingsProperties } from "../../../../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import MappingLabel, { IMappingLabelRef } from "../MappingLabel";
-import "./IndexMapping.scss";
 import { transformObjectToArray, transformArrayToObject, countNodesInTree } from "./helper";
+import { IndexMappingsObjectAll, IndexMappingProps, EDITOR_MODE, IIndexMappingsRef } from "./interfaces";
+import "./IndexMapping.scss";
 
-export { transformObjectToArray, transformArrayToObject, countNodesInTree };
-
-export type IndexMappingsAll = {
-  properties?: MappingsProperties;
-  [key: string]: any;
-};
-
-export type IndexMappingsObjectAll = {
-  properties?: MappingsPropertiesObject;
-  [key: string]: any;
-};
-
-export interface IndexMappingProps {
-  value?: IndexMappingsAll;
-  oldValue?: IndexMappingsAll;
-  originalValue?: IndexMappingsAll;
-  onChange: (value: IndexMappingProps["value"]) => void;
-  isEdit?: boolean;
-  oldMappingsEditable?: boolean; // in template edit case, existing mappings is editable
-  readonly?: boolean;
-  docVersion: string;
-}
-
-export enum EDITOR_MODE {
-  JSON = "JSON",
-  VISUAL = "VISUAL",
-}
-
-export interface IIndexMappingsRef {
-  validate: () => Promise<string>;
-  getJSONEditorValue: () => string;
-}
+export * from "./helper";
+export * from "./interfaces";
 
 const IndexMapping = (
   { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, docVersion }: IndexMappingProps,
@@ -324,5 +295,4 @@ const IndexMapping = (
   );
 };
 
-// @ts-ignore
 export default forwardRef(IndexMapping);
