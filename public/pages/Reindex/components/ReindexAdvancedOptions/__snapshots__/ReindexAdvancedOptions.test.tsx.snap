@@ -19,6 +19,60 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
+              Reindex only unique documents
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              You can choose to copy only the documents that do not exist in the destination index. By default, OpenSearch will copy all documents from the source index.
+               
+              <button
+                class="euiLink euiLink--primary"
+                type="button"
+              >
+                Learn more.
+              </button>
+            </div>
+            <div
+              class="euiCheckbox"
+            >
+              <input
+                checked=""
+                class="euiCheckbox__input"
+                id="uniqueCheckbox"
+                type="checkbox"
+              />
+              <div
+                class="euiCheckbox__square"
+              />
+              <label
+                class="euiCheckbox__label"
+                for="uniqueCheckbox"
+              >
+                Reindex only unique documents
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
               Version conflicts
             </label>
           </div>
@@ -30,6 +84,7 @@ Object {
               style="padding-top: 0px; padding-bottom: 4px;"
             >
               Instead of failing the reindexing operation, ignore any version conflicts during reindexing.
+               
               <button
                 class="euiLink euiLink--primary"
                 type="button"
@@ -223,7 +278,8 @@ Object {
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              Select an ingest pipeline if you need to transform documents before writing data to the destination index.
+              Select an ingest pipeline to transform documents before writing data to the destination.
+               
               <a
                 class="euiLink euiLink--primary"
                 href="https://opensearch.org/docs/latest/opensearch/reindex-data/#transform-documents-during-reindexing"
@@ -314,6 +370,60 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
+            Reindex only unique documents
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            You can choose to copy only the documents that do not exist in the destination index. By default, OpenSearch will copy all documents from the source index.
+             
+            <button
+              class="euiLink euiLink--primary"
+              type="button"
+            >
+              Learn more.
+            </button>
+          </div>
+          <div
+            class="euiCheckbox"
+          >
+            <input
+              checked=""
+              class="euiCheckbox__input"
+              id="uniqueCheckbox"
+              type="checkbox"
+            />
+            <div
+              class="euiCheckbox__square"
+            />
+            <label
+              class="euiCheckbox__label"
+              for="uniqueCheckbox"
+            >
+              Reindex only unique documents
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
             Version conflicts
           </label>
         </div>
@@ -325,6 +435,7 @@ Object {
             style="padding-top: 0px; padding-bottom: 4px;"
           >
             Instead of failing the reindexing operation, ignore any version conflicts during reindexing.
+             
             <button
               class="euiLink euiLink--primary"
               type="button"
@@ -518,7 +629,8 @@ Object {
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Select an ingest pipeline if you need to transform documents before writing data to the destination index.
+            Select an ingest pipeline to transform documents before writing data to the destination.
+             
             <a
               class="euiLink euiLink--primary"
               href="https://opensearch.org/docs/latest/opensearch/reindex-data/#transform-documents-during-reindexing"

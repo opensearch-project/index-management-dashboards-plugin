@@ -10,32 +10,35 @@ exports[`<Reindex /> spec renders the component 1`] = `
     Reindex
   </h1>
   <div
-    class="euiText euiText--small"
-    style="padding: 5px 0px;"
+    class="euiFormRow euiFormRow--fullWidth"
+    id="some_html_id-row"
   >
     <div
-      class="euiTextColor euiTextColor--subdued"
+      class="euiFormRow__fieldWrapper"
     >
-      <p
-        style="font-weight: 200;"
+      <div
+        class="euiFormHelpText euiFormRow__text"
+        style="padding-top: 0px; padding-bottom: 4px;"
       >
-        Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.
-         
-        <a
-          class="euiLink euiLink--primary"
-          href="https://opensearch.org/docs/latest/opensearch/reindex-data/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Learn more.
-          EuiIconMock
-          <span
-            class="euiScreenReaderOnly"
+        <div>
+          Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.
+           
+          <a
+            class="euiLink euiLink--primary"
+            href="https://opensearch.org/docs/latest/opensearch/reindex-data/"
+            rel="noopener noreferrer"
+            target="_blank"
           >
-            (opens in a new tab or window)
-          </span>
-        </a>
-      </p>
+            Learn more.
+            EuiIconMock
+            <span
+              class="euiScreenReaderOnly"
+            >
+              (opens in a new tab or window)
+            </span>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
   <div

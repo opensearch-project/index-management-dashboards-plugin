@@ -21,6 +21,8 @@ describe("<ReindexAdvancedOptions /> spec", () => {
           ignoreConflicts={true}
           onIgnoreConflictsChange={() => {}}
           getAllPipelines={async () => [{ label: "pipeline" }]}
+          reindexUniqueDocuments={true}
+          onReindexUniqueDocumentsChange={() => {}}
         />
       </CoreServicesContext.Provider>
     );
@@ -41,6 +43,8 @@ describe("<ReindexAdvancedOptions /> spec", () => {
           ignoreConflicts={false}
           onIgnoreConflictsChange={() => {}}
           getAllPipelines={async () => [{ label: "pipeline" }]}
+          reindexUniqueDocuments={true}
+          onReindexUniqueDocumentsChange={() => {}}
         />
       </CoreServicesContext.Provider>
     );
@@ -61,6 +65,8 @@ describe("<ReindexAdvancedOptions /> spec", () => {
           ignoreConflicts={false}
           onIgnoreConflictsChange={() => {}}
           getAllPipelines={async () => Promise.reject("service not available")}
+          reindexUniqueDocuments={true}
+          onReindexUniqueDocumentsChange={() => {}}
         />
       </CoreServicesContext.Provider>
     );
@@ -82,6 +88,8 @@ describe("<ReindexAdvancedOptions /> spec", () => {
           ignoreConflicts={false}
           onIgnoreConflictsChange={() => {}}
           getAllPipelines={getPipeline}
+          reindexUniqueDocuments={true}
+          onReindexUniqueDocumentsChange={() => {}}
         />
       </CoreServicesContext.Provider>
     );
