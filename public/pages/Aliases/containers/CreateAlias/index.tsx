@@ -19,6 +19,7 @@ import { getAliasActionsByDiffArray } from "../../../CreateIndex/containers/Inde
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS, SYSTEM_INDEX } from "../../../../../utils/constants";
 import { DataStream } from "../../../../../server/models/interfaces";
+import { INDEX_NAMING_MESSAGE, INDEX_NAMING_PATTERN } from "../../../../utils/constants";
 
 export interface ICreateAliasProps {
   visible: boolean;
@@ -135,6 +136,8 @@ export default function CreateAlias(props: ICreateAliasProps) {
               type: "Input",
               rowProps: {
                 label: "Alias name",
+                position: "bottom",
+                helpText: INDEX_NAMING_MESSAGE,
               },
               options: {
                 props: {
@@ -143,8 +146,8 @@ export default function CreateAlias(props: ICreateAliasProps) {
                 },
                 rules: [
                   {
-                    required: true,
-                    message: "Alias name is required",
+                    pattern: INDEX_NAMING_PATTERN,
+                    message: "Invalid alias name.",
                   },
                 ],
               },

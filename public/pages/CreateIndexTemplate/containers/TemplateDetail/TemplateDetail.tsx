@@ -35,7 +35,7 @@ import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
-import { INDEX_NAMING_MESSAGE, INDEX_NAMING_PATTERN, INDEX_SETTINGS_URL, ROUTES } from "../../../../utils/constants";
+import { INDEX_SETTINGS_URL, ROUTES, TEMPLATE_NAMING_MESSAGE, TEMPLATE_NAMING_PATTERN } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
 import TemplateType, { TemplateConvert } from "../../components/TemplateType";
 import { filterByMinimatch } from "../../../../../utils/helper";
@@ -235,7 +235,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             helpText={
               <>
                 <div>Template name cannot be changed after the template is created.</div>
-                <div>{INDEX_NAMING_MESSAGE}</div>
+                <div>{TEMPLATE_NAMING_MESSAGE}</div>
               </>
             }
           >
@@ -244,7 +244,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
                 name: "name",
                 rules: [
                   {
-                    pattern: INDEX_NAMING_PATTERN,
+                    pattern: TEMPLATE_NAMING_PATTERN,
                     message: "Invalid template name.",
                   },
                 ],
