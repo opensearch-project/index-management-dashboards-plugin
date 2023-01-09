@@ -231,7 +231,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           <CustomFormRow
             {...getCommonFormRowProps("name")}
             label="Template name"
-            helpText="Template name cannot be changed after the index is created."
+            helpText="Template name cannot be changed after the template is created."
           >
             <Component
               {...field.registerField({
