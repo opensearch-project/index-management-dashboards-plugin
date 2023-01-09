@@ -18,7 +18,7 @@ import useField, { transformNameToString } from "../../../../lib/field";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
 import SimplePopover from "../../../../components/SimplePopover";
 
-const OLD_VALUE_DISABLED_REASON = "Old mappings can not be modified";
+const OLD_VALUE_DISABLED_REASON = "Old mappings cannot be modified";
 
 interface IMappingLabel {
   value: MappingsProperties[number];

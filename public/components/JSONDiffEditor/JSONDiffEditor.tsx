@@ -27,7 +27,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
       try {
         const value = editorRef.current?.getModifiedEditor().getValue();
         if (!value) {
-          throw new Error("Value can not be empty");
+          throw new Error("Value cannot be empty");
         }
         JSON.parse(value);
         onChange && onChange(value);
