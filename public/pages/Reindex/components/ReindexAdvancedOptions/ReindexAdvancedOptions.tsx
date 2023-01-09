@@ -144,7 +144,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           isInvalid={!!sliceErr}
           error={sliceErr}
           label="Number of subtasks"
-          helpText="Specify how many subtasks you would like this operation divided into."
+          helpText="Specify the number of subtasks to divide this operation into."
         >
           <EuiFieldNumber
             data-test-subj="slices"
