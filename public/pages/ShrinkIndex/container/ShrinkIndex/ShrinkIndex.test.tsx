@@ -417,7 +417,7 @@ describe("<Shrink index /> spec", () => {
     const { queryByText, getByTestId } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test4`]);
 
     await waitFor(() => {
-      expect(queryByText("The source index's health status is Red.")).not.toBeNull();
+      expect(queryByText("The source index must be in Green health status.")).not.toBeNull();
       expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     });
   });
@@ -427,7 +427,7 @@ describe("<Shrink index /> spec", () => {
     const { queryByText, getByTestId } = renderWithRouter([`${ROUTES.SHRINK_INDEX}?source=test4`]);
 
     await waitFor(() => {
-      expect(queryByText("The source index has only one primary shard, you cannot shrink it anymore.")).not.toBeNull();
+      expect(queryByText("Cannot shrink source index with only one primary shard.")).not.toBeNull();
       expect(getByTestId("shrinkIndexConfirmButton")).toHaveAttribute("disabled");
     });
   });
@@ -488,7 +488,7 @@ describe("<Shrink index /> spec", () => {
       getByText("Source index details");
     });
 
-    expect(queryByText("The source index's health status is Yellow!")).not.toBeNull();
+    expect(queryByText("We recommend shrinking index with a Green health status.")).not.toBeNull();
   });
 
   it("shows warning when source index is set to read-only", async () => {
@@ -499,7 +499,7 @@ describe("<Shrink index /> spec", () => {
       getByText("Source index details");
     });
 
-    expect(queryByText("The source index's setting [index.blocks.read_only] is [true]!")).not.toBeNull();
+    expect(queryByText("Index setting [index.blocks.read_only] is [true].")).not.toBeNull();
   });
 
   it("shows error when source index cannot be opened", async () => {
@@ -571,7 +571,7 @@ describe("<Shrink index /> spec", () => {
       getByText("Source index details");
     });
 
-    expect(queryByText("A copy of every shard in the source index may not reside on the same node.")).not.toBeNull();
+    expect(queryByText("A copy of every shard must reside on the same node.")).not.toBeNull();
   });
 
   it("no warning when source index is ready", async () => {
@@ -582,13 +582,13 @@ describe("<Shrink index /> spec", () => {
       getByText("Configure target index");
     });
 
-    expect(queryByText("The source index's health status is Red.")).toBeNull();
-    expect(queryByText("The source index has only one primary shard, you cannot shrink it anymore.")).toBeNull();
+    expect(queryByText("The source index must be in Green health status.")).toBeNull();
+    expect(queryByText("Cannot shrink source index with only one primary shard.")).toBeNull();
     expect(queryByText("The source index must block write operations before shrinking.")).toBeNull();
     expect(queryByText("The source index must be open.")).toBeNull();
-    expect(queryByText("The source index's health status is Yellow!")).toBeNull();
-    expect(queryByText("The source index's setting [index.blocks.read_only] is [true]!")).toBeNull();
-    expect(queryByText("A copy of every shard in the source index may not reside on the same node.")).toBeNull();
+    expect(queryByText("We recommend shrinking index with a Green health status.")).toBeNull();
+    expect(queryByText("Index setting [index.blocks.read_only] is [true].")).toBeNull();
+    expect(queryByText("A copy of every shard must reside on the same node.")).toBeNull();
 
     userEvent.type(getByTestId("targetIndexNameInput"), "test3_shrunken");
 
