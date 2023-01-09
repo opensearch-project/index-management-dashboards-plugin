@@ -18,6 +18,8 @@ interface ReindexOptionsProps {
   getAllPipelines: () => Promise<EuiComboBoxOptionOption[]>;
   ignoreConflicts: boolean;
   onIgnoreConflictsChange: (val: ChangeEvent<HTMLInputElement>) => void;
+  reindexUniqueDocuments: boolean;
+  onReindexUniqueDocumentsChange: (val: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
@@ -34,6 +36,8 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
     getAllPipelines,
     ignoreConflicts,
     onIgnoreConflictsChange,
+    reindexUniqueDocuments,
+    onReindexUniqueDocumentsChange,
   } = props;
 
   const sliceEnabled = slices !== undefined;
@@ -53,10 +57,31 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
   return (
     <div style={{ padding: "10px 10px" }}>
       <CustomFormRow
+        label="Reindex only unique documents"
+        helpText={
+          <>
+            You can choose to copy only the documents that do not exist in the destination index. By default, OpenSearch will copy all
+            documents from the source index.{" "}
+            <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.unique} target="_blank">
+              Learn more.
+            </EuiLink>
+          </>
+        }
+      >
+        <EuiCheckbox
+          id="uniqueCheckbox"
+          label="Reindex only unique documents"
+          checked={reindexUniqueDocuments}
+          onChange={onReindexUniqueDocumentsChange}
+        />
+      </CustomFormRow>
+      <EuiSpacer />
+
+      <CustomFormRow
         label="Version conflicts"
         helpText={
           <>
-            Instead of failing the reindexing operation, ignore any version conflicts during reindexing.
+            Instead of failing the reindexing operation, ignore any version conflicts during reindexing.{" "}
             <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.unique} target="_blank">
               Learn more.
             </EuiLink>
@@ -143,7 +168,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
         }
         helpText={
           <>
-            Select an ingest pipeline if you need to transform documents before writing data to the destination index.
+            Select an ingest pipeline to transform documents before writing data to the destination.{" "}
             <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.transform} target="_blank">
               Learn more.
             </EuiLink>

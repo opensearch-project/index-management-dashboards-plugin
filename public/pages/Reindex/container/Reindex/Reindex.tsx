@@ -59,6 +59,7 @@ interface ReindexState {
   pipelines: EuiComboBoxOptionOption[];
   selectedPipelines?: EuiComboBoxOptionOption[];
   ignoreConflicts: boolean;
+  reindexUniqueDocuments: boolean;
   executing: boolean;
   showCreateIndexFlyout: boolean;
 }
@@ -82,6 +83,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       subset: false,
       executing: false,
       showCreateIndexFlyout: false,
+      reindexUniqueDocuments: false,
     };
   }
 
@@ -198,7 +200,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   };
 
   onClickAction = async () => {
-    const { sourceQuery, destination, slices, selectedPipelines, ignoreConflicts, sources, subset } = this.state;
+    const { sourceQuery, destination, slices, selectedPipelines, ignoreConflicts, sources, subset, reindexUniqueDocuments } = this.state;
 
     if (!(await this.validateSource(sources)) || !this.validateDestination(destination) || !this.validateSlices(slices)) {
       return;
@@ -222,7 +224,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           },
           dest: {
             index: destination.map((item) => item.label)[0],
-            op_type: isDestAsDataStream ? "create" : "index",
+            op_type: isDestAsDataStream || reindexUniqueDocuments ? "create" : "index",
           },
         },
       };
@@ -470,13 +472,17 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     this.setState({ ignoreConflicts: e.target.checked });
   };
 
+  onReindexUniqueDocuments = (e: ChangeEvent<HTMLInputElement>): void => {
+    this.setState({ reindexUniqueDocuments: e.target.checked });
+  };
+
   onSubsetChange = (event: EuiSwitchEvent) => {
     this.setState({ subset: event.target.checked });
   };
 
   render() {
     const { sources, destination, sourceQuery, destError, slices, sourceErr, advancedSettingsOpen, showCreateIndexFlyout } = this.state;
-    const { ignoreConflicts: ignoreConflicts, subset, executing, sourceQueryErr } = this.state;
+    const { ignoreConflicts: ignoreConflicts, reindexUniqueDocuments, subset, executing, sourceQueryErr } = this.state;
 
     const advanceTitle = (
       <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
@@ -500,14 +506,20 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     );
 
     const subTitleText = (
-      <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
-        <p style={{ fontWeight: 200 }}>
-          Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.{" "}
-          <EuiLink href={this.context.docLinks.links.opensearch.reindexData.base} target="_blank" rel="noopener noreferrer">
-            Learn more.
-          </EuiLink>
-        </p>
-      </EuiText>
+      <CustomFormRow
+        fullWidth
+        label=""
+        helpText={
+          <div>
+            Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.{" "}
+            <EuiLink href={this.context.docLinks.links.opensearch.reindexData.base} target="_blank" rel="noopener noreferrer">
+              Learn more.
+            </EuiLink>
+          </div>
+        }
+      >
+        <></>
+      </CustomFormRow>
     );
 
     // expand data streams and aliases
@@ -632,6 +644,8 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
               onSelectedPipelinesChange={this.onPipelineChange}
               ignoreConflicts={ignoreConflicts}
               onIgnoreConflictsChange={this.onIgnoreConflictsChange}
+              reindexUniqueDocuments={reindexUniqueDocuments}
+              onReindexUniqueDocumentsChange={this.onReindexUniqueDocuments}
             />
           )}
         </ContentPanel>
