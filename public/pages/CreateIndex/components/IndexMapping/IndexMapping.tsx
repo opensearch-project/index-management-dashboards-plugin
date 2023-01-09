@@ -12,47 +12,9 @@ import { MappingsProperties, MappingsPropertiesObject } from "../../../../../mod
 import CustomFormRow from "../../../../components/CustomFormRow";
 import MappingLabel, { IMappingLabelRef } from "../MappingLabel";
 import "./IndexMapping.scss";
+import { transformObjectToArray, transformArrayToObject, countNodesInTree } from "./helper";
 
-export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
-  return Object.entries(obj).map(([fieldName, fieldSettings]) => {
-    const { properties, ...others } = fieldSettings;
-    const payload: MappingsProperties[number] = {
-      ...others,
-      fieldName,
-    };
-    if (properties) {
-      payload.properties = transformObjectToArray(properties);
-    }
-    return payload;
-  });
-};
-
-export const transformArrayToObject = (array: MappingsProperties): MappingsPropertiesObject => {
-  return array.reduce((total, current) => {
-    const { fieldName, properties, ...others } = current;
-    const payload: MappingsPropertiesObject[string] = {
-      ...others,
-    };
-    if (properties) {
-      payload.properties = transformArrayToObject(properties);
-    }
-    return {
-      ...total,
-      [current.fieldName]: payload,
-    };
-  }, {} as MappingsPropertiesObject);
-};
-
-const countNodesInTree = (array: MappingsProperties) => {
-  return array.reduce((total, current) => {
-    total = total + 1;
-    const { properties } = current;
-    if (properties) {
-      total = total + countNodesInTree(properties);
-    }
-    return total;
-  }, 0);
-};
+export { transformObjectToArray, transformArrayToObject, countNodesInTree };
 
 export type IndexMappingsAll = {
   properties?: MappingsProperties;
