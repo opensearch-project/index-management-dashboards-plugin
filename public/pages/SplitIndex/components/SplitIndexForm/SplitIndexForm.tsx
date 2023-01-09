@@ -4,11 +4,10 @@
  */
 import React, { Component } from "react";
 import { EuiSpacer, EuiLink, EuiFlexItem, EuiFlexGroup, EuiButton, EuiButtonEmpty } from "@elastic/eui";
-import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
+import FormGenerator, { IField, IFormGeneratorRef, IFieldComponentProps } from "../../../../components/FormGenerator";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
-import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { INDEX_NAMING_PATTERN, INDEX_NAMING_MESSAGE, INDEX_SETTINGS_URL, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
@@ -193,7 +192,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
                   label: "Specify advanced index settings",
                   helpText: (
                     <>
-                      Specify a comma-delimited list of settings.
+                      Specify a comma-delimited list of settings.&nbsp;
                       <EuiLink href={INDEX_SETTINGS_URL} target="_blank">
                         View index settings
                       </EuiLink>

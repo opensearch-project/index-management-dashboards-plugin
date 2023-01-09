@@ -2,8 +2,8 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { Component } from "react";
-import { EuiCallOut, EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiText } from "@elastic/eui";
+import React, { Component, useContext } from "react";
+import { EuiCallOut, EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiFormRow } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
@@ -24,7 +24,6 @@ import {
 
 import { CommonService, ServicesContext } from "../../../../services";
 import { CoreStart } from "opensearch-dashboards/public";
-import { useContext } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 
@@ -57,10 +56,10 @@ export class SplitIndex extends Component<SplitIndexProps> {
 
   isSourceIndexReady = async () => {
     const source = queryString.parse(this.props.location.search) as { source: string };
-    let sourceIndex;
+    let sourceIndex: CatIndex;
     try {
       sourceIndex = await getSingleIndice({
-        indexName: source.source as string,
+        indexName: source.source,
         commonService: this.props.commonService,
         coreServices: this.props.coreService,
       });
@@ -134,7 +133,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
       );
     }
 
-    if (sourceSettings && (!blocksWriteValue || (blocksWriteValue !== "true" && blocksWriteValue !== true))) {
+    if (sourceSettings && blocksWriteValue !== "true" && blocksWriteValue !== true) {
       const flat = true;
       const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(
@@ -200,18 +199,27 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const { sourceIndex, splitIndexFlyoutVisible, reasons, shardsSelectOptions } = this.state;
     return (
       <div style={{ padding: "0px 50px" }}>
-        <EuiTitle size="l">
+        <EuiTitle>
           <h1>Split index</h1>
         </EuiTitle>
 
-        <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
-          <p style={{ fontWeight: 200 }}>
-            Split an existing read-only index into a new index with more primary shards . &nbsp;&nbsp;
-            <EuiLink href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"} target="_blank" rel="noopener noreferrer">
-              Learn more.
-            </EuiLink>
-          </p>
-        </EuiText>
+        <EuiFormRow
+          fullWidth
+          helpText={
+            <div>
+              Split an existing read-only index into a new index with more primary shards.&nbsp;
+              <EuiLink
+                href={"https://opensearch.org/docs/latest/api-reference/index-apis/split/"}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Learn more.
+              </EuiLink>
+            </div>
+          }
+        >
+          <></>
+        </EuiFormRow>
 
         <EuiSpacer />
 
