@@ -133,7 +133,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
       );
     }
 
-    if (sourceSettings && (!blocksWriteValue || (blocksWriteValue !== "true" && blocksWriteValue !== true))) {
+    if (sourceSettings && blocksWriteValue !== "true" && blocksWriteValue !== true) {
       const flat = true;
       const blocksWriteSetting = { "index.blocks.write": "true" };
       reasons.push(

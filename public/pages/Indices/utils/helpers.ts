@@ -188,15 +188,16 @@ export async function splitIndex(props: {
  **     For example, if the source index has 3 primary shards, then all the valid value are 3,6,12,24,…,768.
  */
 export function getSplitShardOptions(sourceShards: number) {
+  const MAX_SHARDS_NUMBER = 1024;
   const shardsSelectOptions = [];
   if (sourceShards == 1) {
-    for (let i = 2; i <= 1024; i++) {
+    for (let i = 2; i <= MAX_SHARDS_NUMBER; i++) {
       shardsSelectOptions.push({
         label: i.toString(),
       });
     }
   } else {
-    const SHARDS_HARD_LIMIT = 1024 / 2;
+    const SHARDS_HARD_LIMIT = MAX_SHARDS_NUMBER / 2;
     let shardsLimit = sourceShards;
     while (shardsLimit <= SHARDS_HARD_LIMIT) {
       shardsLimit = shardsLimit * 2;
