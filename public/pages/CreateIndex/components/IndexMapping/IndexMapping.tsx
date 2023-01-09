@@ -253,7 +253,7 @@ const IndexMapping = (
               data-test-subj="mappingsJsonEditorFormRow"
               label="Specify index mapping"
               helpText={
-                <div>
+                <>
                   Specify mapping in JSON format.{" "}
                   <EuiLink
                     external
@@ -262,7 +262,7 @@ const IndexMapping = (
                   >
                     View mapping example.
                   </EuiLink>
-                </div>
+                </>
               }
               fullWidth
             >
