@@ -14,7 +14,7 @@ import { filterOverlaps } from "../../utils/helper";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS, SYSTEM_INDEX } from "../../../../../utils/constants";
 
-interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "data-test-subj"> {
+interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "data-test-subj" | "placeholder"> {
   getIndexOptions: (searchValue: string, excludeDataStreamIndex?: boolean) => Promise<EuiComboBoxOptionOption<IndexSelectItem>[]>;
   onSelectedOptions: (options: EuiComboBoxOptionOption<IndexSelectItem>[]) => void;
   singleSelect: boolean;
@@ -59,7 +59,7 @@ export default function IndexSelect(props: IndexSelectProps) {
     <div>
       <BetterComboBox
         data-test-subj={props["data-test-subj"]}
-        placeholder="Type or select indexes,data streams or aliases"
+        placeholder={props.placeholder}
         options={indexOptions}
         async
         selectedOptions={props.selectedOption}

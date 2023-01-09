@@ -115,6 +115,7 @@ export interface ReindexJobMetaData extends IJobItemMetadata {
     toastId: string;
     sourceIndex: string;
     destIndex: string;
+    writingIndex: string;
     taskId: string;
     destType: "index" | "other";
   };

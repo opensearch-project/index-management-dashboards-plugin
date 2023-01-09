@@ -6,8 +6,8 @@ import { CommonService, IndexService } from "../services";
 import { ReindexJobMetaData, RecoveryJobMetaData } from "../models/interfaces";
 import { ROUTES } from "../utils/constants";
 
-const DetailLink = (props: { index: string }) => {
-  return <EuiLink href={`#${ROUTES.INDEX_DETAIL}/${props.index}`}>{props.index}</EuiLink>;
+const DetailLink = (props: { index: string; writingIndex?: string }) => {
+  return <EuiLink href={`#${ROUTES.INDEX_DETAIL}/${props.writingIndex ? props.writingIndex : props.index}`}>{props.index}</EuiLink>;
 };
 
 type TaskResult = {
@@ -78,7 +78,7 @@ export function JobHandlerRegister(core: CoreSetup) {
                 title: ((
                   <>
                     Source {extras.sourceIndex} has been successfully reindexed as{" "}
-                    {extras.destType === "index" ? <DetailLink index={extras.destIndex} /> : extras.destIndex}
+                    <DetailLink index={extras.destIndex} writingIndex={extras.writingIndex} />
                   </>
                 ) as unknown) as string,
               },
