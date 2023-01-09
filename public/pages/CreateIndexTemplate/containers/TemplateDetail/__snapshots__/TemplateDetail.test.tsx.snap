@@ -122,7 +122,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               Template name cannot be changed after the template is created.
             </div>
             <div>
-              Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, , |, ?, #, &gt; are not allowed.
+              Must be in lowercase letters. Cannot begin with underscores. Spaces, commas, and characters *, # are not allowed.
             </div>
           </div>
         </div>

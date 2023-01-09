@@ -91,6 +91,12 @@ HTMLCollection [
                         </div>
                       </div>
                     </span>
+                    <div
+                      class="euiFormHelpText euiFormRow__text"
+                      id="some_html_id-help-0"
+                    >
+                      Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, , |, ?, #, &gt; are not allowed.
+                    </div>
                   </div>
                 </div>
                 <div

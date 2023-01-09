@@ -197,7 +197,7 @@ describe("<Aliases /> spec", () => {
     await findByTestId("createAliasButton");
     userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {
-      expect(getByText("Alias name is required")).not.toBeNull();
+      expect(getByText("Invalid alias name.")).not.toBeNull();
     });
     userEvent.type(getByPlaceholderText("Specify alias name"), multiIndexAliasId);
     userEvent.type(getByTestId("form-name-indexArray").querySelector('[data-test-subj="comboBoxSearchInput"]') as Element, "1{enter}");
