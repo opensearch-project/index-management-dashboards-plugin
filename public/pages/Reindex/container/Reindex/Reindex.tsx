@@ -234,7 +234,22 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       if (selectedPipelines && selectedPipelines.length > 0) {
         reindexReq.body.dest.pipeline = selectedPipelines[0].label;
       }
-      await this.onReindexConfirm(reindexReq);
+      const result = await this.onReindexConfirm(reindexReq);
+      const destinationItem = destination[0];
+      if (result.ok) {
+        await jobSchedulerInstance.addJob({
+          type: "reindex",
+          extras: {
+            toastId: result.response?.toastId,
+            sourceIndex: reindexReq.body.source.index,
+            destIndex: reindexReq.body.dest.index,
+            taskId: result.response?.taskId,
+            destType: destinationItem.value?.isIndex ? "index" : "other",
+          },
+          interval: 30000,
+        } as ReindexJobMetaData);
+      }
+
       this.setState({ executing: false });
       // back to indices page
       this.onCancel();
@@ -254,25 +269,29 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         body: reindexRequest.body,
       },
     });
+    let response: {
+      ok: boolean;
+      response?: {
+        toastId: string;
+        taskId: string;
+      };
+    } = {
+      ok: res.ok,
+    };
     if (res && res.ok) {
       // @ts-ignore
       const toast = `Successfully started reindexing ${reindexRequest.body.source.index}.The reindexed index will be named ${reindexRequest.body.dest.index}.`;
       const toastInstance = (this.context as CoreStart).notifications.toasts.addSuccess(toast, {
         toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
       });
-      await jobSchedulerInstance.addJob({
-        type: "reindex",
-        extras: {
-          toastId: toastInstance.id,
-          sourceIndex: reindexRequest.body.source.index,
-          destIndex: reindexRequest.body.dest.index,
-          taskId: res.response.task,
-        },
-        interval: 30000,
-      } as ReindexJobMetaData);
+      response.response = {
+        toastId: toastInstance.id,
+        taskId: res.response.task,
+      };
     } else {
       this.context.notifications.toasts.addDanger(`Reindex operation error ${res?.error}`);
     }
+    return response;
   };
 
   getAllSelectedIndices = (): string[] => {
