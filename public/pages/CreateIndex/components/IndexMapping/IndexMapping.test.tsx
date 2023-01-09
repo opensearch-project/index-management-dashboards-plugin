@@ -15,6 +15,7 @@ const IndexMappingOnChangeWrapper = forwardRef((props: Partial<IndexMappingProps
   return (
     <IndexMapping
       {...props}
+      docVersion="latest"
       ref={ref}
       value={value}
       onChange={(val) => {
@@ -26,13 +27,14 @@ const IndexMappingOnChangeWrapper = forwardRef((props: Partial<IndexMappingProps
 
 describe("<IndexMapping /> spec", () => {
   it("renders the component", () => {
-    const { container } = render(<IndexMapping onChange={() => {}} />);
+    const { container } = render(<IndexMapping docVersion="latest" onChange={() => {}} />);
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it("render mappings with object type", () => {
     const { container } = render(
       <IndexMapping
+        docVersion="latest"
         onChange={() => {}}
         value={{
           properties: [{ fieldName: "object", type: "object", properties: [{ fieldName: "text", type: "text" }] }],

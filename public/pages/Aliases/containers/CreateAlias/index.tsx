@@ -113,7 +113,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
   }
 
   return (
-    <EuiModal onClose={() => {}}>
+    <EuiModal onClose={props.onClose}>
       <EuiModalHeader>
         <EuiModalHeaderTitle>
           <h1>{isEdit ? "Update" : "Create"} alias</h1>

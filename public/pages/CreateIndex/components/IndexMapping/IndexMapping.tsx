@@ -72,6 +72,7 @@ export interface IndexMappingProps {
   isEdit?: boolean;
   oldMappingsEditable?: boolean; // in template edit case, existing mappings is editable
   readonly?: boolean;
+  docVersion: string;
 }
 
 export enum EDITOR_MODE {
@@ -85,7 +86,7 @@ export interface IIndexMappingsRef {
 }
 
 const IndexMapping = (
-  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, oldMappingsEditable }: IndexMappingProps,
+  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, docVersion }: IndexMappingProps,
   ref: Ref<IIndexMappingsRef>
 ) => {
   const value = propsValue?.properties || [];
@@ -322,7 +323,11 @@ const IndexMapping = (
                 <div>
                   <div>
                     Specify mapping in JSON format.{" "}
-                    <EuiLink external target="_blank" href="https://opensearch.org/docs/latest/opensearch/mappings/#mapping-example-usage">
+                    <EuiLink
+                      external
+                      target="_blank"
+                      href={`https://opensearch.org/docs/${docVersion}/opensearch/mappings/#mapping-example-usage`}
+                    >
                       View mapping example.
                     </EuiLink>
                   </div>

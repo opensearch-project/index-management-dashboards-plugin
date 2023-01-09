@@ -77,6 +77,7 @@ export interface IndexDetailProps {
   sourceIndices?: string[];
   onSubmit?: () => Promise<{ ok: boolean }>;
   refreshIndex?: () => void;
+  docVersion: string;
 }
 
 export interface IIndexDetailRef {
@@ -107,6 +108,7 @@ const IndexDetail = (
     onGetIndexDetail,
     onSubmit,
     refreshIndex,
+    docVersion,
   }: IndexDetailProps,
   ref: Ref<IIndexDetailRef>
 ) => {
@@ -479,7 +481,7 @@ const IndexDetail = (
                         <p>
                           All the settings will be handled in flat structure.
                           <EuiLink
-                            href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                            href={`https://opensearch.org/docs/${docVersion}/api-reference/index-apis/get-index/#url-parameters`}
                             external
                             target="_blank"
                           >
@@ -517,6 +519,7 @@ const IndexDetail = (
                   onChange={(val) => onValueChange("mappings", val)}
                   ref={mappingsRef}
                   readonly={readonly}
+                  docVersion={docVersion}
                 />
               </EuiFormRow>
             );
@@ -538,7 +541,7 @@ const IndexDetail = (
                         <>
                           <div>
                             Define how documents and their fields are stored and indexed.{" "}
-                            <EuiLink target="_blank" external href="https://opensearch.org/docs/latest/opensearch/mappings/">
+                            <EuiLink target="_blank" external href={`https://opensearch.org/docs/${docVersion}/opensearch/mappings/`}>
                               Learn more.
                             </EuiLink>
                           </div>

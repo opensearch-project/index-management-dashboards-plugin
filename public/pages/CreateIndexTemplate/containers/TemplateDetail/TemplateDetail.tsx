@@ -570,6 +570,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
             isEdit={isEdit}
             ref={mappingsRef}
             oldMappingsEditable
+            docVersion={coreServices.docLinks.DOC_LINK_VERSION}
           />
         </EuiFormRow>
       </ContentPanel>

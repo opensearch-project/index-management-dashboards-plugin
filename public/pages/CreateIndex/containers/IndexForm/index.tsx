@@ -8,6 +8,7 @@ import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiLoa
 import { get, set, differenceWith, isEqual, merge } from "lodash";
 import { diffArrays } from "diff";
 import flattern from "flat";
+import { CoreStart } from "opensearch-dashboards/public";
 import IndexDetail, { IndexDetailProps, IIndexDetailRef, defaultIndexSettings } from "../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
 import { IndicesUpdateMode } from "../../../../utils/constants";
@@ -424,6 +425,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
           }
           onSubmit={this.onSubmit}
           refreshIndex={this.refreshIndex}
+          docVersion={(this.context as CoreStart).docLinks.DOC_LINK_VERSION}
         />
         {hideButtons ? null : (
           <>

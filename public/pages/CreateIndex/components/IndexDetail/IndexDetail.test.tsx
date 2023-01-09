@@ -27,7 +27,7 @@ const refreshOptions: () => Promise<{ ok: true; response: any[] }> = () => Promi
 
 describe("<IndexDetail /> spec", () => {
   it("renders the component", async () => {
-    const { container } = render(<IndexDetail refreshOptions={refreshOptions} onChange={() => {}} />);
+    const { container } = render(<IndexDetail docVersion="latest" refreshOptions={refreshOptions} onChange={() => {}} />);
     await waitFor(() => {
       expect(container.firstChild).toMatchSnapshot();
     });
@@ -35,7 +35,7 @@ describe("<IndexDetail /> spec", () => {
 
   it("disallows editing index name when in edit mode", async () => {
     const { getByTestId } = render(
-      <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
+      <IndexDetail docVersion="latest" refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
     );
 
     await waitFor(() => expect(getByTestId("form-name-index").querySelector('[title="some_index"]')).toBeInTheDocument());
@@ -43,7 +43,7 @@ describe("<IndexDetail /> spec", () => {
 
   it("disallows editing number_of_replicas when in edit mode", async () => {
     const { getByTestId } = render(
-      <IndexDetail refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
+      <IndexDetail docVersion="latest" refreshOptions={refreshOptions} value={{ index: "some_index" }} isEdit onChange={() => {}} />
     );
 
     await waitFor(() => expect(getByTestId("form-name-index.number_of_shards").querySelector(".euiText")).toHaveAttribute("title", "-"));
@@ -52,7 +52,7 @@ describe("<IndexDetail /> spec", () => {
   it("validate should say error when field name is required", async () => {
     const { result } = renderHook(() => {
       const ref = useRef<IIndexDetailRef>(null);
-      const container = render(<IndexDetailOnChangeWrapper refreshOptions={refreshOptions} ref={ref} />);
+      const container = render(<IndexDetailOnChangeWrapper docVersion="latest" refreshOptions={refreshOptions} ref={ref} />);
       return {
         ref,
         container,
@@ -77,6 +77,7 @@ describe("<IndexDetail /> spec", () => {
   it("inherit templates settings when create", async () => {
     const { findByDisplayValue, getByDisplayValue, getByText, getByTestId, queryByText } = render(
       <IndexDetailOnChangeWrapper
+        docVersion="latest"
         refreshOptions={refreshOptions}
         value={{ index: "some_index" }}
         onSimulateIndexTemplate={() =>
