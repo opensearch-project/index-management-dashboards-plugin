@@ -152,27 +152,24 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       }
 
       if (aliasResponse && aliasResponse.ok) {
-        const aliases = _.uniq(aliasResponse.response.aliases.map((alias) => alias.alias))
-          // TODO system alias
-          .filter((alias) => !alias.startsWith("."))
-          .map((name) => {
-            const indexBelongsToAlias = aliasResponse.response.aliases.filter((alias) => alias.alias === name).map((alias) => alias.index);
-            let writingIndex = aliasResponse.response.aliases
-              .filter((alias) => alias.alias === name && alias.is_write_index === "true")
-              .map((alias) => alias.index);
-            if (writingIndex.length === 0 && indexBelongsToAlias.length === 1) {
-              // set writing index when there is only 1 index for alias
-              writingIndex = indexBelongsToAlias;
-            }
-            return {
-              label: name,
-              value: {
-                isAlias: true,
-                indices: indexBelongsToAlias,
-                writingIndex: writingIndex[0],
-              },
-            };
-          });
+        const aliases = _.uniq(aliasResponse.response.aliases.map((alias) => alias.alias)).map((name) => {
+          const indexBelongsToAlias = aliasResponse.response.aliases.filter((alias) => alias.alias === name).map((alias) => alias.index);
+          let writingIndex = aliasResponse.response.aliases
+            .filter((alias) => alias.alias === name && alias.is_write_index === "true")
+            .map((alias) => alias.index);
+          if (writingIndex.length === 0 && indexBelongsToAlias.length === 1) {
+            // set writing index when there is only 1 index for alias
+            writingIndex = indexBelongsToAlias;
+          }
+          return {
+            label: name,
+            value: {
+              isAlias: true,
+              indices: indexBelongsToAlias,
+              writingIndex: writingIndex[0],
+            },
+          };
+        });
         options.push({ label: "aliases", options: aliases });
       } else {
         this.context.notifications.toasts.addDanger(aliasResponse.error);
