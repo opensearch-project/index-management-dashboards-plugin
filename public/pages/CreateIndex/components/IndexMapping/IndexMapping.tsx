@@ -189,7 +189,7 @@ const IndexMapping = (
             }}
             onAddSubObject={() => {
               addField(`${id}.properties`, {
-                type: "",
+                type: "object",
               });
             }}
           />
