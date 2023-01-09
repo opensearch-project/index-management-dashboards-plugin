@@ -231,7 +231,7 @@ Object {
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              Specify how many subtasks you would like this operation divided into.
+              Specify the number of subtasks to divide this operation into.
             </div>
             <div
               class="euiFormControlLayout"
@@ -582,7 +582,7 @@ Object {
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Specify how many subtasks you would like this operation divided into.
+            Specify the number of subtasks to divide this operation into.
           </div>
           <div
             class="euiFormControlLayout"
