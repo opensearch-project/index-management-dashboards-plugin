@@ -12,7 +12,7 @@ import {
   EuiLink,
   EuiSpacer,
   EuiTitle,
-  EuiText,
+  EuiFormRow,
   EuiLoadingSpinner,
 } from "@elastic/eui";
 import React, { Component } from "react";
@@ -193,7 +193,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       if (result && result.ok) {
         return result.response;
       } else {
-        const errorMessage = `There is a problem getting index setting for ${indexName}, please check with Admin.`;
+        const errorMessage = `There was a problem getting index setting for ${indexName}, please check with Admin.`;
         this.context.notifications.toasts.addDanger(result?.error || errorMessage);
       }
     } catch (err) {
@@ -219,7 +219,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       if (result && result.ok) {
         this.context.notifications.toasts.addSuccess(`${indexName} has been set to block write operations.`);
       } else {
-        const errorMessage = `There is a problem set index setting for ${indexName}, please check with Admin`;
+        const errorMessage = `There was a problem updating index setting for ${indexName}, please check with Admin`;
         this.context.notifications.toasts.addDanger(result?.error || errorMessage);
       }
     } catch (err) {
@@ -311,10 +311,10 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       disableShrinkButton = true;
       sourceIndexNotReadyToShrinkReasons.push(
         <>
-          <EuiCallOut title="The source index's health status is Red." color="danger" iconType="alert">
+          <EuiCallOut title="The source index must be in Green health status." color="danger" iconType="alert">
             <p>
-              The state of the shards in the source index are abnormal, you must check the index's health status before shrinking, and it is
-              recommended to shrink an index when its health status is Green.
+              The index is in Red health status and may be running operations in the background. We recommend to wait until the index
+              becomes Green to continue shrinking.
             </p>
           </EuiCallOut>
           <EuiSpacer />
@@ -326,11 +326,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       disableShrinkButton = true;
       sourceIndexNotReadyToShrinkReasons.push(
         <>
-          <EuiCallOut
-            title="The source index has only one primary shard, you cannot shrink it anymore."
-            color="danger"
-            iconType="alert"
-          ></EuiCallOut>
+          <EuiCallOut title="Cannot shrink source index with only one primary shard." color="danger" iconType="alert"></EuiCallOut>
           <EuiSpacer />
         </>
       );
@@ -397,10 +393,10 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         if (sourceIndex.health === "yellow") {
           sourceIndexNotReadyToShrinkReasons.push(
             <>
-              <EuiCallOut title="The source index's health status is Yellow!" color="warning" iconType="help">
+              <EuiCallOut title="We recommend shrinking index with a Green health status." color="warning" iconType="help">
                 <p>
-                  It's recommended to shrink an index when its health status is Green, because if the index's health status is Yellow, it
-                  may cause problems when initializing the new shrunken index's shards.
+                  The source index is in Yellow health status. To prevent issues with initializing the new shrunken index, we recommend
+                  shrinking an index with a Green health status.
                 </p>
               </EuiCallOut>
               <EuiSpacer />
@@ -414,11 +410,11 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         if (indexReadOnlyBlock === "true" || indexReadOnlyBlock === true) {
           sourceIndexNotReadyToShrinkReasons.push(
             <>
-              <EuiCallOut title="The source index's setting [index.blocks.read_only] is [true]!" color="warning" iconType="help">
+              <EuiCallOut title="Index setting [index.blocks.read_only] is [true]." color="warning" iconType="help">
                 <p>
-                  When the source index's setting [index.blocks.read_only] is [true], it will be copied to the new shrunken index and then
-                  the new shrunken index's metadata write will be blocked, this will cause the new shrunken index's shards to be unassigned,
-                  you can set the setting to [null] or [false] in the advanced settings bellow.
+                  Index setting [index.blocks.read_only] of the source index is [true], it will be copied to the new shrunken index and then
+                  cause the new shrunken index's shards to be unassigned, you can set the setting to [null] or [false] in the advanced
+                  settings bellow.
                 </p>
               </EuiCallOut>
               <EuiSpacer />
@@ -446,20 +442,8 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         if (!shardsAllocatedToOneNode) {
           sourceIndexNotReadyToShrinkReasons.push(
             <>
-              <EuiCallOut
-                title="A copy of every shard in the source index may not reside on the same node."
-                color="warning"
-                iconType="help"
-              >
-                <p>
-                  When shrinking an index, a copy of every shard in the index must reside on the same node, you can use the index setting
-                  `index.routing.allocation.require._*` to relocate the copy of every shard to one node.
-                </p>
-                <p>
-                  Ignore this warning if the copy of every shard in the source index just reside on the same node in some cases, like the
-                  OpenSearch cluster has only one node or the cluster has two nodes and each primary shard in the source index has one
-                  replia.
-                </p>
+              <EuiCallOut title="A copy of every shard must reside on the same node." color="warning" iconType="help">
+                <p>For clusters with more than one node, you must allocate a copy of every shard of the source index to the same node.</p>
               </EuiCallOut>
               <EuiSpacer />
             </>
@@ -635,14 +619,19 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
     );
 
     const subTitleText = (
-      <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
-        <p style={{ fontWeight: 200 }}>
-          Shrink an existing index into a new index with fewer primary shards.{" "}
-          <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-            Learn more.
-          </EuiLink>
-        </p>
-      </EuiText>
+      <EuiFormRow
+        fullWidth
+        helpText={
+          <div>
+            Shrink an existing index into a new index with fewer primary shards.&nbsp;
+            <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+              Learn more.
+            </EuiLink>
+          </div>
+        }
+      >
+        <></>
+      </EuiFormRow>
     );
 
     return (
