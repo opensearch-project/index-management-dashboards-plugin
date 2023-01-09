@@ -17,13 +17,6 @@ export interface AliasSelectProps extends Omit<EuiComboBoxProps<{ label: string;
   onOptionsChange?: RemoteSelectProps["onOptionsChange"];
 }
 
-const transformObjToArray = (obj: AliasSelectProps["value"]): { label: string }[] => {
-  return Object.keys(obj || {}).map((label) => ({ label }));
-};
-const transformArrayToObj = (array: { label: string; [key: string]: any }[]): AliasSelectProps["value"] => {
-  return array.reduce((total, { label, ...others }) => ({ ...total, [label]: others || {} }), {});
-};
-
 const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInputElement>) => {
   const { value, onChange, refreshOptions: refreshOptionsFromProps, onOptionsChange } = props;
   const optionsRef = useRef<{ label: string; [key: string]: any }[]>([]);
@@ -56,9 +49,14 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
       placeholder="Select aliases or input new aliases."
       customOptionText="Add {searchValue} as a new alias."
       refreshOptions={refreshOptions}
-      value={transformObjToArray(value).map((item) => item.label)}
+      value={Object.keys(value || {})}
       onChange={(val) => {
-        onChange && onChange(transformArrayToObj(val.map((label) => optionsRef.current.find((item) => item.label === label) || { label })));
+        onChange &&
+          onChange(
+            val
+              .map((label) => optionsRef.current.find((item) => item.label === label) || { label })
+              .reduce((total, { label, ...others }) => ({ ...total, [label]: others || {} }), {})
+          );
       }}
     />
   );
