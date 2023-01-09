@@ -3,48 +3,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import {
-  EuiButton,
-  EuiButtonEmpty,
-  EuiCallOut,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFormRow,
-  EuiFormRowProps,
-  EuiLink,
-  EuiSpacer,
-  EuiTitle,
-} from "@elastic/eui";
-import flat from "flat";
-import { ContentPanel } from "../../../../components/ContentPanel";
-import AliasSelect from "../../../CreateIndex/components/AliasSelect";
-import IndexMapping, { IIndexMappingsRef, transformArrayToObject } from "../../../CreateIndex/components/IndexMapping";
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
+import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { transformArrayToObject } from "../../../CreateIndex/components/IndexMapping";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
-import useField, { FieldInstance, transformNameToString } from "../../../../lib/field";
+import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
-import { AllBuiltInComponents } from "../../../../components/FormGenerator";
-import RemoteSelect from "../../../../components/RemoteSelect";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
-import AdvancedSettings from "../../../../components/AdvancedSettings";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { submitTemplate, getTemplate } from "./hooks";
-import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
-import {
-  ALIAS_SELECT_RULE,
-  INDEX_SETTINGS_URL,
-  ROUTES,
-  TEMPLATE_NAMING_MESSAGE,
-  TEMPLATE_NAMING_PATTERN,
-} from "../../../../utils/constants";
+import { ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
-import TemplateType, { TemplateConvert } from "../../components/TemplateType";
-import { filterByMinimatch } from "../../../../../utils/helper";
+import DefineTemplate from "../../components/DefineTemplate";
+import IndexSettings from "../../components/IndexSettings";
+import IndexAlias from "../IndexAlias";
+import TemplateMappings from "../TemplateMappings";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -54,7 +32,8 @@ export interface TemplateDetailProps {
   history: RouteComponentProps["history"];
 }
 
-const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, history }: TemplateDetailProps, ref: Ref<FieldInstance>) => {
+const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => {
+  const { templateName, onCancel, onSubmitSuccess, readonly, history } = props;
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -78,18 +57,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
       }
     },
   });
-  const getCommonFormRowProps = useCallback(
-    (name: string | string[]): Partial<EuiFormRowProps> => {
-      return {
-        isInvalid: !!field.getError(name),
-        error: field.getError(name),
-        "data-test-subj": `form-row-${transformNameToString(name)}`,
-      };
-    },
-    [field]
-  );
   const destroyRef = useRef<boolean>(false);
-  const mappingsRef = useRef<IIndexMappingsRef>(null);
   const onSubmit = async () => {
     const { errors, values: templateDetail } = (await field.validatePromise()) || {};
     if (errors) {
@@ -124,7 +92,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           oldValue.current = template;
           field.resetValues(template);
         })
-        .catch((e) => {
+        .catch(() => {
           // do nothing
         });
     }
@@ -133,8 +101,12 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
     };
   }, []);
   const values: TemplateItem = field.getValues();
-  const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
-  const matchSystemIndex = filterByMinimatch(".kibana", values.index_patterns || []);
+  const subCompontentProps = {
+    ...props,
+    isEdit,
+    field,
+  };
+
   return (
     <>
       <EuiFlexGroup alignItems="center">
@@ -205,388 +177,13 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
         ) : null}
       </EuiFlexGroup>
       <EuiSpacer />
-      {readonly ? (
-        <ContentPanel title="Template details" titleSize="s">
-          <EuiSpacer size="s" />
-          <DescriptionListHoz
-            listItems={[
-              {
-                title: "Template name",
-                description: values.name,
-              },
-              {
-                title: "Template type",
-                description: TemplateConvert({
-                  value: values.data_stream,
-                }),
-              },
-              {
-                title: "Index patterns",
-                description: values.index_patterns?.join(","),
-              },
-              {
-                title: "Priority",
-                description: values.priority,
-              },
-            ]}
-          />
-        </ContentPanel>
-      ) : (
-        <ContentPanel title="Define template" titleSize="s">
-          <EuiSpacer size="s" />
-          <CustomFormRow
-            {...getCommonFormRowProps("name")}
-            label="Template name"
-            position="bottom"
-            helpText={
-              <>
-                <div>Template name cannot be changed after the template is created.</div>
-                <div>{TEMPLATE_NAMING_MESSAGE}</div>
-              </>
-            }
-          >
-            <Component
-              {...field.registerField({
-                name: "name",
-                rules: [
-                  {
-                    pattern: TEMPLATE_NAMING_PATTERN,
-                    message: "Invalid template name.",
-                  },
-                ],
-              })}
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          <CustomFormRow {...getCommonFormRowProps("data_stream")} label="Template type">
-            <TemplateType
-              {...field.registerField({
-                name: "data_stream",
-              })}
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          <CustomFormRow
-            {...getCommonFormRowProps("index_patterns")}
-            label="Index patterns"
-            helpText="Specify the index patterns or wildcards. Add a comma to separate each value. Settings in this template will be applied to indexes with names matching index patterns or wildcards."
-          >
-            <RemoteSelect
-              {...field.registerField({
-                name: "index_patterns",
-                rules: [
-                  {
-                    validator(rule, value) {
-                      if (!value || !value.length) {
-                        return Promise.reject("Index patterns must be defined");
-                      }
-
-                      return Promise.reject("");
-                    },
-                  },
-                ],
-              })}
-              delimiter=","
-              noSuggestions
-              async={false}
-              refreshOptions={() =>
-                Promise.resolve({
-                  ok: true,
-                  response: [],
-                })
-              }
-              placeholder="Select index patterns or input wildcards"
-            />
-          </CustomFormRow>
-          <EuiSpacer />
-          {matchSystemIndex ? (
-            <>
-              <CustomFormRow>
-                <EuiCallOut color="warning" title="Index patterns may contain system indexes">
-                  This template may apply to new system indexes and may affect your ability to access OpenSearch. We recommend narrowing
-                  your index patterns.
-                </EuiCallOut>
-              </CustomFormRow>
-              <EuiSpacer />
-            </>
-          ) : null}
-          <CustomFormRow
-            {...getCommonFormRowProps("priority")}
-            label="Priority"
-            helpText="Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index"
-          >
-            <AllBuiltInComponents.Number
-              {...field.registerField({
-                name: "priority",
-                rules: [
-                  {
-                    min: 0,
-                    message: "Priority cannot be smaller than 0.",
-                  },
-                  {
-                    validator(rule, value) {
-                      if (Number(value) !== parseInt(value)) {
-                        return Promise.reject("Priority must be an integer.");
-                      }
-
-                      return Promise.resolve("");
-                    },
-                  },
-                ],
-              })}
-            />
-          </CustomFormRow>
-        </ContentPanel>
-      )}
+      <DefineTemplate {...subCompontentProps} />
       <EuiSpacer />
-      <ContentPanel
-        title={
-          <>
-            <CustomFormRow
-              fullWidth
-              label={
-                <EuiTitle size="s">
-                  <div>Index alias</div>
-                </EuiTitle>
-              }
-              helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
-            >
-              <></>
-            </CustomFormRow>
-          </>
-        }
-        titleSize="s"
-      >
-        {readonly ? (
-          <>
-            <EuiSpacer size="s" />
-            <DescriptionListHoz
-              listItems={[
-                {
-                  title: "Alias names",
-                  description: Object.keys(values?.template?.aliases || {}).join(",") || "-",
-                },
-              ]}
-            />
-          </>
-        ) : (
-          <>
-            <EuiSpacer size="s" />
-            <CustomFormRow
-              fullWidth
-              {...getCommonFormRowProps(["template", "aliases"])}
-              label="Index alias"
-              helpText="Select existing aliases or specify a new alias."
-            >
-              <AliasSelect
-                {...field.registerField({
-                  name: ["template", "aliases"],
-                  rules: [...ALIAS_SELECT_RULE],
-                })}
-                refreshOptions={(aliasName) =>
-                  services?.commonService.apiCaller({
-                    endpoint: "cat.aliases",
-                    method: "GET",
-                    data: {
-                      format: "json",
-                      name: `*${aliasName || ""}*`,
-                      s: "alias:desc",
-                    },
-                  })
-                }
-              />
-            </CustomFormRow>
-          </>
-        )}
-      </ContentPanel>
+      <IndexAlias {...subCompontentProps} />
       <EuiSpacer />
-      <ContentPanel title="Index settings" titleSize="s">
-        <EuiSpacer size="s" />
-        {readonly ? (
-          <DescriptionListHoz
-            listItems={[
-              {
-                title: "Number of primary shards",
-                description: values.template?.settings?.["index.number_of_shards"] || "-",
-              },
-              {
-                title: "Number of replicas",
-                description: values.template?.settings?.["index.number_of_replicas"] || "-",
-              },
-              {
-                title: "Refresh interval",
-                description: values.template?.settings?.["index.refresh_interval"] || "-",
-              },
-            ]}
-          />
-        ) : (
-          <>
-            <CustomFormRow
-              label="Number of primary shards"
-              helpText="Specify the number of primary shards in the index. Default is 1."
-              {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"])}
-            >
-              <AllBuiltInComponents.Number
-                {...field.registerField({
-                  name: ["template", "settings", "index.number_of_shards"],
-                  rules: [
-                    {
-                      min: 1,
-                      message: "Number of shards cannot be smaller than 1.",
-                    },
-                    {
-                      validator(rule, value) {
-                        if (Number(value) !== parseInt(value)) {
-                          return Promise.reject("Number of primary shards must be an integer.");
-                        }
-
-                        return Promise.resolve("");
-                      },
-                    },
-                  ],
-                })}
-              />
-            </CustomFormRow>
-            <EuiSpacer />
-            <CustomFormRow
-              fullWidth
-              label="Number of replicas"
-              helpText="Specify the number of replicas each primary shard should have. Default is 1."
-              {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"])}
-            >
-              <AllBuiltInComponents.Number
-                {...field.registerField({
-                  name: ["template", "settings", "index.number_of_replicas"],
-                  rules: [
-                    {
-                      min: 0,
-                      message: "Number of replicas cannot be smaller than 0.",
-                    },
-                    {
-                      validator(rule, value) {
-                        if (Number(value) !== parseInt(value)) {
-                          return Promise.reject("Number of replicas must be an integer");
-                        }
-
-                        return Promise.resolve("");
-                      },
-                    },
-                  ],
-                })}
-              />
-            </CustomFormRow>
-            <EuiSpacer />
-            <CustomFormRow
-              label="Refresh interval"
-              helpText="Specify how often the index should refresh, which publishes its most recent changes and makes them available for search. Default is 1s."
-              {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"])}
-            >
-              <AllBuiltInComponents.Input
-                {...field.registerField({
-                  name: ["template", "settings", "index.refresh_interval"],
-                })}
-              />
-            </CustomFormRow>
-          </>
-        )}
-        <EuiSpacer />
-        <AdvancedSettings
-          value={field.getValues().template.settings || {}}
-          onChange={(totalValue) => {
-            field.setValue(["template", "settings"], totalValue);
-            field.validatePromise();
-          }}
-          accordionProps={{
-            initialIsOpen: false,
-            id: "accordionForCreateIndexTemplateSettings",
-            buttonContent: <h4>Advanced settings</h4>,
-          }}
-          editorProps={{
-            disabled: readonly,
-            width: "100%",
-            formatValue: flat,
-          }}
-          rowProps={{
-            fullWidth: true,
-            label: "Specify advanced index settings",
-            helpText: (
-              <>
-                <p>
-                  Specify a comma-delimited list of settings.{" "}
-                  <EuiLink href={INDEX_SETTINGS_URL} target="_blank" external>
-                    View index settings
-                  </EuiLink>
-                </p>
-                <p>
-                  All the settings will be handled in flat structure.{" "}
-                  <EuiLink
-                    href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
-                    external
-                    target="_blank"
-                  >
-                    Learn more.
-                  </EuiLink>
-                </p>
-              </>
-            ),
-          }}
-        />
-      </ContentPanel>
+      <IndexSettings {...subCompontentProps} />
       <EuiSpacer />
-      <ContentPanel
-        title={
-          <>
-            <EuiTitle size="s">
-              <div>Index mapping</div>
-            </EuiTitle>
-            <EuiFormRow
-              fullWidth
-              helpText={
-                <div>
-                  Define how documents and their fields are stored and indexed.{" "}
-                  <EuiLink
-                    target="_blank"
-                    external
-                    href={`https://opensearch.org/docs/${coreServices.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
-                  >
-                    Learn more.
-                  </EuiLink>
-                </div>
-              }
-            >
-              <></>
-            </EuiFormRow>
-          </>
-        }
-        titleSize="s"
-      >
-        <EuiSpacer size="s" />
-        <EuiFormRow fullWidth>
-          <IndexMapping
-            {...field.registerField({
-              name: ["template", "mappings"],
-              rules: [
-                {
-                  validator() {
-                    return (mappingsRef.current as IIndexMappingsRef).validate()?.then((result) => {
-                      if (result) {
-                        return Promise.reject(result);
-                      }
-
-                      return Promise.resolve("");
-                    });
-                  },
-                },
-              ],
-            })}
-            readonly={readonly}
-            isEdit={isEdit}
-            ref={mappingsRef}
-            oldMappingsEditable
-            docVersion={coreServices.docLinks.DOC_LINK_VERSION}
-          />
-        </EuiFormRow>
-      </ContentPanel>
+      <TemplateMappings {...subCompontentProps} />
       {readonly ? null : (
         <>
           <EuiSpacer />
