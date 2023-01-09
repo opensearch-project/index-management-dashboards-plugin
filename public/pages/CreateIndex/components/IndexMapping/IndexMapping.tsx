@@ -254,16 +254,14 @@ const IndexMapping = (
               label="Specify index mapping"
               helpText={
                 <div>
-                  <div>
-                    Specify mapping in JSON format.{" "}
-                    <EuiLink
-                      external
-                      target="_blank"
-                      href={`https://opensearch.org/docs/${docVersion}/opensearch/mappings/#mapping-example-usage`}
-                    >
-                      View mapping example.
-                    </EuiLink>
-                  </div>
+                  Specify mapping in JSON format.{" "}
+                  <EuiLink
+                    external
+                    target="_blank"
+                    href={`https://opensearch.org/docs/${docVersion}/opensearch/mappings/#mapping-example-usage`}
+                  >
+                    View mapping example.
+                  </EuiLink>
                 </div>
               }
               fullWidth
