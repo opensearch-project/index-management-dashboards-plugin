@@ -247,6 +247,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
             destIndex: reindexReq.body.dest.index,
             taskId: result.response?.taskId,
             destType: destinationItem.value?.isIndex ? "index" : "other",
+            writingIndex: destinationItem.value?.isIndex ? destinationItem.label : destinationItem.value?.writingIndex,
           },
           interval: 30000,
         } as ReindexJobMetaData);
@@ -322,14 +323,14 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     }
 
     if (dest.value?.status === "close") {
-      this.setState({ destError: `Index [${dest.label}] status is closed` });
+      this.setState({ destError: `Index [${dest.label}] status is closed.` });
       return false;
     }
 
     // if destination is alias, then it must have a writing index behind it
     if (dest.value?.isAlias) {
       if (!dest.value?.writingIndex) {
-        this.setState({ destError: `Alias [${dest.label}] don't have writing index behind it` });
+        this.setState({ destError: `Alias [${dest.label}] don't have writing index behind it.` });
         return false;
       }
     }
@@ -361,7 +362,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     sourceIndices
       .filter((item) => item.value?.status === "close")
       .forEach((item) => {
-        errors.push(`Index [${item.label}] status is closed`);
+        errors.push(`Index [${item.label}] status is closed.`);
       });
 
     // validate _source for non-closed indices only, closed index won't return the mapping
@@ -544,6 +545,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           >
             <IndexSelect
               data-test-subj="sourceSelector"
+              placeholder="Select indexes or data streams"
               getIndexOptions={this.getIndexOptions}
               onSelectedOptions={this.onSourceSelection}
               singleSelect={false}
@@ -613,6 +615,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
               <CustomFormRow label="Specify a destination index or data stream" isInvalid={!!destError} error={destError}>
                 <IndexSelect
                   data-test-subj="destinationSelector"
+                  placeholder="Select an index or data stream"
                   getIndexOptions={this.getIndexOptions}
                   onSelectedOptions={this.onDestinationSelection}
                   singleSelect={true}

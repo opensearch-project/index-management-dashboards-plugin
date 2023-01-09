@@ -301,7 +301,7 @@ describe("<Reindex /> spec", () => {
 
     await waitFor(() => {});
 
-    expect(getByText("Index [index-source-closed] status is closed")).toBeInTheDocument();
+    expect(getByText("Index [index-source-closed] status is closed.")).toBeInTheDocument();
   });
 
   it("source status is red", async () => {
@@ -435,7 +435,7 @@ describe("<Reindex /> spec", () => {
 
     await waitFor(() => {});
 
-    expect(getByText("Index [index-dest] status is closed")).toBeInTheDocument();
+    expect(getByText("Index [index-dest] status is closed.")).toBeInTheDocument();
   });
 
   it("destination health status is red", async () => {
@@ -500,7 +500,7 @@ describe("<Reindex /> spec", () => {
     userEvent.click(getByTestId("reindexConfirmButton"));
 
     await waitFor(() => {});
-    expect(getByText("Alias [alias-2] don't have writing index behind it")).toBeInTheDocument();
+    expect(getByText("Alias [alias-2] don't have writing index behind it.")).toBeInTheDocument();
   });
 
   it("slices format validation", async () => {
