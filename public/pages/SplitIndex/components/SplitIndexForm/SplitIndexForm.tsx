@@ -10,7 +10,13 @@ import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
 import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import { INDEX_NAMING_PATTERN, INDEX_NAMING_MESSAGE, INDEX_SETTINGS_URL, REPLICA_NUMBER_MESSAGE } from "../../../../utils/constants";
+import {
+  INDEX_NAMING_PATTERN,
+  INDEX_NAMING_MESSAGE,
+  INDEX_SETTINGS_URL,
+  REPLICA_NUMBER_MESSAGE,
+  ALIAS_SELECT_RULE,
+} from "../../../../utils/constants";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -152,6 +158,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
           props: {
             refreshOptions: getAlias,
           },
+          rules: ALIAS_SELECT_RULE,
         },
         component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
       },

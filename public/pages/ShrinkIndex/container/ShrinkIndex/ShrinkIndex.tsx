@@ -33,6 +33,7 @@ import {
   ROUTES,
   INDEX_NAMING_MESSAGE,
   REPLICA_NUMBER_MESSAGE,
+  ALIAS_SELECT_RULE,
 } from "../../../../utils/constants";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import queryString from "query-string";
@@ -576,6 +577,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             "data-test-subj": "aliasesInput",
             refreshOptions: this.getAlias,
           },
+          rules: [...ALIAS_SELECT_RULE],
         },
         component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
       },

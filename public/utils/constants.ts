@@ -341,3 +341,21 @@ export const TEMPLATE_TYPE = {
 
 export const INDEX_NAMING_PATTERN = /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/;
 export const TEMPLATE_NAMING_PATTERN = /^[^A-Z_*,\s#][^A-Z*,\s#]*$/;
+
+export const ALIAS_SELECT_RULE = [
+  {
+    validator: (rules: any, valueObject?: Record<string, any>) => {
+      const value = Object.keys(valueObject || {});
+      if (Array.isArray(value) && value.length) {
+        const notMatchedAliases = value.filter((item) => !item.match(INDEX_NAMING_PATTERN));
+        if (notMatchedAliases.length) {
+          return Promise.reject(`
+          Invalid alias name for ${notMatchedAliases.join(", ")}.\n
+          Rule for alias name: ${INDEX_NAMING_MESSAGE}
+        `);
+        }
+      }
+      return Promise.resolve("");
+    },
+  },
+];

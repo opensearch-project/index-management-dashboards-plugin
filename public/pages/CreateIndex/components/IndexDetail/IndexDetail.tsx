@@ -31,6 +31,7 @@ import {
   REPLICA_NUMBER_MESSAGE,
   INDEX_SETTINGS_URL,
   INDEX_NAMING_PATTERN,
+  ALIAS_SELECT_RULE,
 } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -380,6 +381,7 @@ const IndexDetail = (
                       props: {
                         refreshOptions: refreshOptions,
                       },
+                      rules: [...ALIAS_SELECT_RULE],
                     },
                     component: WrappedAliasSelect as React.ComponentType<IFieldComponentProps>,
                   },

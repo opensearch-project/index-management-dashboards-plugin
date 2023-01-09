@@ -74,12 +74,12 @@ const rules = {
   pattern: (rule, value: string) => {
     if (rule.pattern) {
       if (rule.pattern instanceof RegExp) {
-        if (!rule.pattern.test(value)) {
+        if (!rule.pattern.test(value || "")) {
           return messageFormat(rule.message || messages.pattern, rule.aliasName || rule.field, value, rule.pattern.toString());
         }
       } else if (typeof rule.pattern === "string") {
         const _pattern = new RegExp(rule.pattern);
-        if (!_pattern.test(value)) {
+        if (!_pattern.test(value || "")) {
           return messageFormat(rule.message || messages.pattern, rule.aliasName || rule.field, value, rule.pattern);
         }
       }

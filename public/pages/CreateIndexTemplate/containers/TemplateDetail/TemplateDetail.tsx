@@ -35,7 +35,13 @@ import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
-import { INDEX_SETTINGS_URL, ROUTES, TEMPLATE_NAMING_MESSAGE, TEMPLATE_NAMING_PATTERN } from "../../../../utils/constants";
+import {
+  ALIAS_SELECT_RULE,
+  INDEX_SETTINGS_URL,
+  ROUTES,
+  TEMPLATE_NAMING_MESSAGE,
+  TEMPLATE_NAMING_PATTERN,
+} from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
 import TemplateType, { TemplateConvert } from "../../components/TemplateType";
 import { filterByMinimatch } from "../../../../../utils/helper";
@@ -375,6 +381,7 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
               <AliasSelect
                 {...field.registerField({
                   name: ["template", "aliases"],
+                  rules: [...ALIAS_SELECT_RULE],
                 })}
                 refreshOptions={(aliasName) =>
                   services?.commonService.apiCaller({
