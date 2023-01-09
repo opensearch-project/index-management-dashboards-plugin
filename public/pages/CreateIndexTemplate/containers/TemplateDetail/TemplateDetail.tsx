@@ -35,7 +35,7 @@ import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
-import { INDEX_SETTINGS_URL, ROUTES } from "../../../../utils/constants";
+import { INDEX_NAMING_MESSAGE, INDEX_NAMING_PATTERN, INDEX_SETTINGS_URL, ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
 import TemplateType, { TemplateConvert } from "../../components/TemplateType";
 import { filterByMinimatch } from "../../../../../utils/helper";
@@ -231,15 +231,21 @@ const TemplateDetail = ({ templateName, onCancel, onSubmitSuccess, readonly, his
           <CustomFormRow
             {...getCommonFormRowProps("name")}
             label="Template name"
-            helpText="Template name cannot be changed after the template is created."
+            position="bottom"
+            helpText={
+              <>
+                <div>Template name cannot be changed after the template is created.</div>
+                <div>{INDEX_NAMING_MESSAGE}</div>
+              </>
+            }
           >
             <Component
               {...field.registerField({
                 name: "name",
                 rules: [
                   {
-                    required: true,
-                    message: "Template name is required",
+                    pattern: INDEX_NAMING_PATTERN,
+                    message: "Invalid template name.",
                   },
                 ],
               })}
