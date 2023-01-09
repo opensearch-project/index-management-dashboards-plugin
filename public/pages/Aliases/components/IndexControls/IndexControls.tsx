@@ -38,13 +38,10 @@ export default function SearchControls(props: SearchControlsProps) {
           style={{
             width: 150,
           }}
-          singleSelection={{
-            asPlainText: true,
-          }}
           placeholder="Status"
           options={ALIAS_STATUS_OPTIONS}
-          selectedOptions={state.status ? [{ label: state.status }] : []}
-          onChange={(val) => onChange("status", val[0]?.label)}
+          selectedOptions={state.status ? state.status.split(",").map((label) => ({ label })) : []}
+          onChange={(val) => onChange("status", (val || []).map((item) => item.label).join(","))}
         />
       </EuiFlexItem>
     </EuiFlexGroup>
