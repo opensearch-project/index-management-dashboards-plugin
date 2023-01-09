@@ -175,6 +175,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       search: index,
       sortField: "index",
       sortDirection: "desc",
+      expandWildcards: "all",
       ...props,
     });
     if (result.ok) {
