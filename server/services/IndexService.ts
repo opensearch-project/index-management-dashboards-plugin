@@ -40,7 +40,7 @@ export default class IndexService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndicesResponse>>> => {
     try {
       // @ts-ignore
-      const { from, size, sortField, sortDirection, terms, indices, dataStreams, showDataStreams } = request.query as {
+      const { from, size, sortField, sortDirection, terms, indices, dataStreams, showDataStreams, expandWildcards } = request.query as {
         from: string;
         size: string;
         search: string;
@@ -51,11 +51,20 @@ export default class IndexService {
         dataStreams?: string[];
         showDataStreams: boolean;
       };
-      const params = {
+      const params: {
+        index: string;
+        format: string;
+        s: string;
+        expand_wildcards?: string;
+      } = {
         index: getSearchString(terms, indices, dataStreams),
         format: "json",
         s: `${sortField}:${sortDirection}`,
       };
+
+      if (expandWildcards) {
+        params.expand_wildcards = expandWildcards;
+      }
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
 

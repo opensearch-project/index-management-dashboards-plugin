@@ -161,7 +161,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
           aria-haspopup="listbox"
           class="euiComboBox"
           role="combobox"
-          style="width: 150px;"
+          style="width: 300px;"
         >
           <div
             class="euiFormControlLayout"
@@ -170,7 +170,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
               class="euiFormControlLayout__childrenWrapper"
             >
               <div
-                class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
                 data-test-subj="comboBoxInput"
                 tabindex="-1"
               >

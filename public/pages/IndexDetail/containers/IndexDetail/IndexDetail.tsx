@@ -167,7 +167,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         return res;
       });
 
-  const fetchCatIndexDetail = async (props: { showDataStreams: "true" | "false" }) => {
+  const fetchCatIndexDetail = async (params: { showDataStreams: "true" | "false" }) => {
     const result = await services.indexService.getIndices({
       terms: index,
       from: 0,
@@ -175,13 +175,20 @@ export default function IndexDetail(props: IndexDetailModalProps) {
       search: index,
       sortField: "index",
       sortDirection: "desc",
-      ...props,
+      expandWildcards: "all",
+      ...params,
     });
     if (result.ok) {
       const findItem = result.response.indices.find((item) => item.index === index);
-      setRecord(findItem);
+      if (findItem) {
+        setRecord(findItem);
+      } else {
+        coreService?.notifications.toasts.addDanger(`[index_not_found_exception] no such index [${index}]`);
+        props.history.replace(ROUTES.INDICES);
+      }
     } else {
       coreService?.notifications.toasts.addDanger(result.error || "");
+      props.history.replace(ROUTES.INDICES);
     }
   };
 

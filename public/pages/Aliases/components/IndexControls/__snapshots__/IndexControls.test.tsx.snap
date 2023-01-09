@@ -51,7 +51,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
       aria-haspopup="listbox"
       class="euiComboBox"
       role="combobox"
-      style="width: 150px;"
+      style="width: 300px;"
     >
       <div
         class="euiFormControlLayout"
@@ -60,14 +60,31 @@ exports[`<IndexControls /> spec renders the component 1`] = `
           class="euiFormControlLayout__childrenWrapper"
         >
           <div
-            class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+            class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
             data-test-subj="comboBoxInput"
             tabindex="-1"
           >
             <span
-              class="euiComboBoxPill euiComboBoxPill--plainText"
+              class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+              title="1"
             >
-              1
+              <span
+                class="euiBadge__content"
+              >
+                <span
+                  class="euiBadge__text"
+                >
+                  1
+                </span>
+                <button
+                  aria-label="Remove 1 from selection in this group"
+                  class="euiBadge__iconButton"
+                  title="Remove 1 from selection in this group"
+                  type="button"
+                >
+                  EuiIconMock
+                </button>
+              </span>
             </span>
             <div
               class="euiComboBox__input"
