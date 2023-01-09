@@ -64,7 +64,7 @@ describe("Aliases", () => {
       cy.get('[data-test-subj="form-name-indexArray"] [data-test-subj="comboBoxSearchInput"]').type(
         `${EDIT_INDEX}{enter}${SAMPLE_INDEX_PREFIX}-*{enter}`
       );
-      cy.get(".euiModalFooter .euiButton--fill").click().get('[data-test-subj="9 more"]').should("exist");
+      cy.get(".euiModalFooter .euiButton--fill").click({ force: true }).get('[data-test-subj="9 more"]').should("exist");
     });
   });
 
@@ -90,7 +90,7 @@ describe("Aliases", () => {
         .get(`[title="${SAMPLE_INDEX_PREFIX}-1"] button`)
         .click()
         .get(".euiModalFooter .euiButton--fill")
-        .click()
+        .click({ force: true })
         .end();
 
       cy.get('[data-test-subj="7 more"]').should("exist");
