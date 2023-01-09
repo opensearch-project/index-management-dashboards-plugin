@@ -478,7 +478,7 @@ Object {
                                       All the settings will be handled in flat structure.
                                       <a
                                         class="euiLink euiLink--primary"
-                                        href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
+                                        href="https://opensearch.org/docs/undefined/api-reference/index-apis/get-index/#url-parameters"
                                         rel="noopener noreferrer"
                                         target="_blank"
                                       >
@@ -658,7 +658,7 @@ Object {
                                
                               <a
                                 class="euiLink euiLink--primary"
-                                href="https://opensearch.org/docs/latest/opensearch/mappings/"
+                                href="https://opensearch.org/docs/undefined/opensearch/mappings/"
                                 rel="noopener noreferrer"
                                 target="_blank"
                               >

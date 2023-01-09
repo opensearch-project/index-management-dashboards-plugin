@@ -101,7 +101,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Template name cannot be changed after the index is created.
+            Template name cannot be changed after the template is created.
           </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
