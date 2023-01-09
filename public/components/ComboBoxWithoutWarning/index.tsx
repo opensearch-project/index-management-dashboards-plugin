@@ -1,6 +1,11 @@
 import { EuiComboBox, EuiComboBoxProps } from "@elastic/eui";
 
-export default class BetterComboBox<T> extends EuiComboBox<T> {
+/**
+ * The EuiComboBox has an issue when calling closeList.
+ * It does not check if the component is still mounted.
+ * And it will give a warning in browser console and terminal when running unittest.
+ */
+export default class ComboBoxWithoutWarning<T> extends EuiComboBox<T> {
   memoriedCloseList: (event?: Event) => void;
   constructor(props: EuiComboBoxProps<T>) {
     super(props as any);

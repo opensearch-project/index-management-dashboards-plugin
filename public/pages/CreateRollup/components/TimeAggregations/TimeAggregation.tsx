@@ -20,7 +20,7 @@ import {
   EuiText,
 } from "@elastic/eui";
 import moment from "moment-timezone";
-import EuiComboBox from "../../../../components/BetterComboBox";
+import EuiComboBox from "../../../../components/ComboBoxWithoutWarning";
 import { RollupService } from "../../../../services";
 import { FieldItem } from "../../../../../models/interfaces";
 import { CalendarTimeunitOptions, FixedTimeunitOptions } from "../../../../utils/constants";

@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import BetterTooltip from "../BetterToolTip";
+import ToolTipWithoutWarning from "../ToolTipWithoutWarning";
 
 interface IEuiToolTipWrapperOptions {
   disabledKey?: string;
@@ -44,7 +44,7 @@ export default function EuiToolTipWrapper<T>(
       [finalOptions.disabledKey]: disabled,
     };
     return (
-      <BetterTooltip
+      <ToolTipWithoutWarning
         content={
           disabled && formattedReason?.length ? (
             <>
@@ -73,7 +73,7 @@ export default function EuiToolTipWrapper<T>(
         <>
           <Component {...(finalProps as T)} ref={ref} />
         </>
-      </BetterTooltip>
+      </ToolTipWithoutWarning>
     );
   }) as React.ComponentType<T & IEuiToolTipWrapperProps>;
 }

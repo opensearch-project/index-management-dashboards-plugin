@@ -7,7 +7,7 @@ import React, { Component, Fragment } from "react";
 import { EuiSpacer, EuiFormRow, EuiCallOut, EuiText, EuiLink } from "@elastic/eui";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import _ from "lodash";
-import EuiComboBox from "../../../../components/BetterComboBox";
+import EuiComboBox from "../../../../components/ComboBoxWithoutWarning";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexService from "../../../../services/IndexService";

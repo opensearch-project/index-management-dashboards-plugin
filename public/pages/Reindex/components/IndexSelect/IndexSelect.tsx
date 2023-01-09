@@ -6,7 +6,7 @@
 import { EuiComboBoxOptionOption } from "@elastic/eui";
 import { _EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { CoreStart } from "opensearch-dashboards/public";
-import BetterComboBox from "../../../../components/BetterComboBox";
+import ComboBoxWithoutWarning from "../../../../components/ComboBoxWithoutWarning";
 import React, { useContext, useEffect, useState } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexSelectItem } from "../../models/interfaces";
@@ -57,7 +57,7 @@ export default function IndexSelect(props: IndexSelectProps) {
 
   return (
     <div>
-      <BetterComboBox
+      <ComboBoxWithoutWarning
         data-test-subj={props["data-test-subj"]}
         placeholder={props.placeholder}
         options={indexOptions}

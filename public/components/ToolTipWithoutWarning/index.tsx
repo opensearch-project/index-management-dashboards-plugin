@@ -1,6 +1,11 @@
 import { EuiToolTip } from "@elastic/eui";
 
-export default class BetterToolTip extends EuiToolTip {
+/**
+ * The EuiToolTip has an issue when calling showToolTip / clearAnimationTimeout.
+ * It does not check if the component is still mounted.
+ * And it will give a warning in browser console and terminal when running unittest.
+ */
+export default class ToolTipWithoutWarning extends EuiToolTip {
   protected newTimeoutId?: ReturnType<typeof setTimeout>;
   showToolTip = () => {
     if (!this.newTimeoutId) {

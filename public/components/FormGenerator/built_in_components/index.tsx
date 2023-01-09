@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
-import EuiComboBox from "../../BetterComboBox";
+import EuiComboBox from "../../ComboBoxWithoutWarning";
 
 export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle";
 

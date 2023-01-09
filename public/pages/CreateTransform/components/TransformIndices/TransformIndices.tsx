@@ -19,7 +19,7 @@ import {
   EuiLink,
 } from "@elastic/eui";
 import _ from "lodash";
-import EuiComboBox from "../../../../components/BetterComboBox";
+import EuiComboBox from "../../../../components/ComboBoxWithoutWarning";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import IndexFilterPopover from "../IndexFilterPopover";
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
