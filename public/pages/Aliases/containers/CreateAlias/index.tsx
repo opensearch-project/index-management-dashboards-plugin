@@ -204,14 +204,20 @@ export default function CreateAlias(props: ICreateAliasProps) {
                   alias: values.alias,
                   index,
                 }));
-                result = await services?.commonService.apiCaller({
-                  endpoint: "indices.updateAliases",
-                  data: {
-                    body: {
-                      actions,
+                if (actions.length === 0) {
+                  result = {
+                    ok: true,
+                  };
+                } else {
+                  result = await services?.commonService.apiCaller({
+                    endpoint: "indices.updateAliases",
+                    data: {
+                      body: {
+                        actions,
+                      },
                     },
-                  },
-                });
+                  });
+                }
               } else {
                 result = await services?.commonService.apiCaller({
                   endpoint: "indices.putAlias",
