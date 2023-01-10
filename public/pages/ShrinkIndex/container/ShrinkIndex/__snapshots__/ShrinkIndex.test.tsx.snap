@@ -503,7 +503,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                         class="euiFormHelpText euiFormRow__text"
                         style="padding-top: 0px; padding-bottom: 4px;"
                       >
-                        Specify a comma-delimited list of settings.
+                        Specify a comma-delimited list of settings. 
                         <a
                           class="euiLink euiLink--primary"
                           href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"

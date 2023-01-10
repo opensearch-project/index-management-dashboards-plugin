@@ -604,7 +604,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 label: "Specify advanced index settings",
                 helpText: (
                   <>
-                    Specify a comma-delimited list of settings.
+                    Specify a comma-delimited list of settings.&nbsp;
                     <EuiLink href={INDEX_SETTINGS_URL} target="_blank">
                       View index settings.
                     </EuiLink>
