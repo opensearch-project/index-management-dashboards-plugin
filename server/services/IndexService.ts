@@ -24,6 +24,7 @@ import {
 } from "../../../../src/core/server";
 import { getSearchString } from "../utils/helpers";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
+import { IRecoveryItem, IReindexItem, ITaskItem } from "../../models/interfaces";
 
 export default class IndexService {
   osDriver: ILegacyCustomClusterClient;
@@ -39,7 +40,7 @@ export default class IndexService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndicesResponse>>> => {
     try {
       // @ts-ignore
-      const { from, size, sortField, sortDirection, terms, indices, dataStreams, showDataStreams } = request.query as {
+      const { from, size, sortField, sortDirection, terms, indices, dataStreams, showDataStreams, expandWildcards } = request.query as {
         from: string;
         size: string;
         search: string;
@@ -50,23 +51,96 @@ export default class IndexService {
         dataStreams?: string[];
         showDataStreams: boolean;
       };
-      const params = {
+      const params: {
+        index: string;
+        format: string;
+        s: string;
+        expand_wildcards?: string;
+      } = {
         index: getSearchString(terms, indices, dataStreams),
         format: "json",
         s: `${sortField}:${sortDirection}`,
       };
 
+      if (expandWildcards) {
+        params.expand_wildcards = expandWildcards;
+      }
+
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
 
-      const [indicesResponse, indexToDataStreamMapping]: [CatIndex[], IndexToDataStream] = await Promise.all([
+      const [recoverys, tasks, indicesResponse, indexToDataStreamMapping]: [
+        IRecoveryItem[],
+        ITaskItem[],
+        CatIndex[],
+        IndexToDataStream
+      ] = await Promise.all([
+        callWithRequest("cat.recovery", {
+          format: "json",
+          detailed: true,
+        }),
+        callWithRequest("cat.tasks", {
+          format: "json",
+          detailed: true,
+          actions: "indices:data/write/reindex",
+        }),
         callWithRequest("cat.indices", params),
         getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
       ]);
 
+      const formattedTasks: IReindexItem[] = tasks.map(
+        (item): IReindexItem => {
+          const { description } = item;
+          const regexp = /reindex from \[([^\]]+)\] to \[([^\]]+)\]/i;
+          const matchResult = description.match(regexp);
+          if (matchResult) {
+            const [, fromIndex, toIndex] = matchResult;
+            return { ...item, fromIndex, toIndex };
+          } else {
+            return {
+              ...item,
+              fromIndex: "",
+              toIndex: "",
+            };
+          }
+        }
+      );
+
+      const onGoingRecovery = recoverys.filter((item) => item.stage !== "done");
+
       // Augment the indices with their parent data stream name.
       indicesResponse.forEach((index) => {
         index.data_stream = indexToDataStreamMapping[index.index] || null;
+        let extraStatus: CatIndex["extraStatus"] = index.status as "open" | "close";
+        if (index.health === "green") {
+          if (formattedTasks.find((item) => item.toIndex === index.index)) {
+            extraStatus = "reindex";
+          }
+        } else {
+          if (onGoingRecovery.find((item) => item.index === index.index)) {
+            extraStatus = "recovery";
+          }
+        }
+
+        if (extraStatus) {
+          index.extraStatus = extraStatus;
+        }
       });
+
+      if (sortField === "status") {
+        // add new more status to status field so we need to sort
+        indicesResponse.sort((a, b) => {
+          let flag;
+          const aStatus = a.extraStatus as string;
+          const bStatus = b.extraStatus as string;
+          if (sortDirection === "asc") {
+            flag = aStatus < bStatus;
+          } else {
+            flag = aStatus > bStatus;
+          }
+
+          return flag ? -1 : 1;
+        });
+      }
 
       // Filtering out indices that belong to a data stream. This must be done before pagination.
       const filteredIndices = showDataStreams ? indicesResponse : indicesResponse.filter((index) => index.data_stream === null);
@@ -85,7 +159,11 @@ export default class IndexService {
         body: {
           ok: true,
           response: {
-            indices: paginatedIndices.map((catIndex: CatIndex) => ({ ...catIndex, managed: managedStatus[catIndex.index] || "N/A" })),
+            indices: paginatedIndices.map((catIndex: CatIndex) => ({
+              ...catIndex,
+              managed: managedStatus[catIndex.index] ? "Yes" : "No",
+              managedPolicy: managedStatus[catIndex.index],
+            })),
             totalIndices: filteredIndices.length,
           },
         },
@@ -125,7 +203,10 @@ export default class IndexService {
       for (const indexName in explainResponse) {
         if (indexName === "total_managed_indices") continue;
         const explain = explainResponse[indexName] as ExplainAPIManagedIndexMetaData;
-        managed[indexName] = explain["index.plugins.index_state_management.policy_id"] === null ? "No" : "Yes";
+        managed[indexName] =
+          explain["index.plugins.index_state_management.policy_id"] === null
+            ? ""
+            : explain["index.plugins.index_state_management.policy_id"];
       }
 
       return managed;

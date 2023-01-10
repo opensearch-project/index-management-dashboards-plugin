@@ -77,6 +77,7 @@ interface CreateRollupFormState {
 
 export default class CreateRollupForm extends Component<CreateRollupFormProps, CreateRollupFormState> {
   static contextType = CoreServicesContext;
+  _isMount: boolean;
 
   constructor(props: CreateRollupFormProps) {
     super(props);
@@ -131,11 +132,16 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
     };
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
+    this._isMount = true;
   }
 
   componentDidMount = async (): Promise<void> => {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS, BREADCRUMBS.CREATE_ROLLUP]);
   };
+
+  componentWillUnmount() {
+    this._isMount = false;
+  }
 
   getMappings = async (srcIndex: string): Promise<void> => {
     if (!srcIndex.length) return;
@@ -481,7 +487,9 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
       console.error(err);
     }
 
-    this.setState({ isSubmitting: false });
+    if (this._isMount) {
+      this.setState({ isSubmitting: false });
+    }
   };
 
   onCancel = (): void => {
