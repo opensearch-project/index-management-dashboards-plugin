@@ -49,10 +49,10 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
     }
     try {
       await this.props.onSplitIndex(targetIndex, others);
+      this.props.onCancel();
     } catch (err) {
       // no need to log anything since getIndexSettings will log the error
     }
-    this.props.onCancel();
   };
 
   render() {
