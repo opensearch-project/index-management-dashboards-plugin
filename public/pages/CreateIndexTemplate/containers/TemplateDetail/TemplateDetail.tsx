@@ -134,7 +134,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         {readonly ? (
           <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
             <EuiButton
-              fill
               style={{ marginRight: 20 }}
               onClick={() => {
                 const showValue: TemplateItemRemote = {
