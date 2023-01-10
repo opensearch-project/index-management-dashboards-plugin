@@ -261,6 +261,9 @@ const IndexDetail = (
             },
             {
               validator(rule, value, values) {
+                if (!value) {
+                  return Promise.reject("Number of primary shards is required.");
+                }
                 if (Number(value) !== parseInt(value)) {
                   return Promise.reject("Number of primary shards must be an integer.");
                 }
@@ -270,7 +273,7 @@ const IndexDetail = (
             },
           ],
           props: {
-            placeholder: "The number of primary shards in the index. Default is 1.",
+            placeholder: "Specify primary shard count.",
           },
         },
       },
@@ -290,6 +293,9 @@ const IndexDetail = (
             },
             {
               validator(rule, value, values) {
+                if (!value) {
+                  return Promise.reject("Number of replicas is required.");
+                }
                 if (Number(value) !== parseInt(value)) {
                   return Promise.reject("Number of replicas must be an integer.");
                 }
@@ -299,7 +305,7 @@ const IndexDetail = (
             },
           ],
           props: {
-            placeholder: "The number of replica shards each primary shard should have.",
+            placeholder: "Specify number of replicas.",
           },
         },
       },
