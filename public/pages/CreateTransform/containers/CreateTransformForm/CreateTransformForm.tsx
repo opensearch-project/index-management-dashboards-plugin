@@ -80,6 +80,7 @@ interface CreateTransformFormState {
 
 export default class CreateTransformForm extends Component<CreateTransformFormProps, CreateTransformFormState> {
   static contextType = CoreServicesContext;
+  _isMount: boolean;
 
   constructor(props: CreateTransformFormProps) {
     super(props);
@@ -129,11 +130,16 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     };
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
+    this._isMount = true;
   }
 
   componentDidMount = async (): Promise<void> => {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS, BREADCRUMBS.CREATE_TRANSFORM]);
   };
+
+  componentWillUnmount() {
+    this._isMount = false;
+  }
 
   getMappings = async (srcIndex: string): Promise<void> => {
     if (!srcIndex.length) return;
@@ -485,6 +491,9 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       console.error(err);
     }
 
+    if (!this._isMount) {
+      return;
+    }
     this.setState({ isSubmitting: false });
   };
 

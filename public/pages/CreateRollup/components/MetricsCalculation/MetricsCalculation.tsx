@@ -260,8 +260,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         truncateText: true,
         render: (all: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow compressed={true}>
+            <EuiFormRow>
               <EuiCheckbox
+                compressed
                 id={`all-${item.source_field.label}`}
                 checked={all}
                 onChange={(e) => this.setChecked(e, "all", item)}
@@ -277,8 +278,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (min: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow compressed={true}>
+            <EuiFormRow>
               <EuiCheckbox
+                compressed
                 id={`min-${item.source_field.label}`}
                 checked={min}
                 onChange={(e) => this.setChecked(e, "min", item)}
@@ -294,8 +296,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (max: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow compressed={true}>
+            <EuiFormRow>
               <EuiCheckbox
+                compressed
                 id={`max-${item.source_field.label}`}
                 checked={max}
                 onChange={(e) => this.setChecked(e, "max", item)}
@@ -311,8 +314,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (sum: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow compressed={true}>
+            <EuiFormRow>
               <EuiCheckbox
+                compressed
                 id={`sum-${item.source_field.label}`}
                 checked={sum}
                 onChange={(e) => this.setChecked(e, "sum", item)}
@@ -328,8 +332,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (avg: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow compressed={true}>
+            <EuiFormRow>
               <EuiCheckbox
+                compressed
                 id={`avg-${item.source_field.label}`}
                 checked={avg}
                 onChange={(e) => this.setChecked(e, "avg", item)}
@@ -345,8 +350,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (value_count: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow compressed={true}>
+            <EuiFormRow>
               <EuiCheckbox
+                compressed
                 id={`value_count-${item.source_field.label}`}
                 checked={value_count}
                 onChange={(e) => this.setChecked(e, "value_count", item)}
