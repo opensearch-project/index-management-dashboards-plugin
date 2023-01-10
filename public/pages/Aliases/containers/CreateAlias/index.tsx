@@ -123,7 +123,9 @@ export default function CreateAlias(props: ICreateAliasProps) {
       <EuiModalBody>
         {isEdit && filterByMinimatch(props.alias?.alias || "", SYSTEM_ALIAS) ? (
           <>
-            <EuiCallOut color="warning">You are editing a system-like alias, please be careful before you do any change to it.</EuiCallOut>
+            <EuiCallOut color="warning">
+              This alias may contain critical system data. Changing system aliases may break OpenSearch.
+            </EuiCallOut>
             <EuiSpacer />
           </>
         ) : null}

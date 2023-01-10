@@ -329,7 +329,9 @@ const IndexDetail = (
     <>
       {isEdit && !readonly && filterByMinimatch(value?.index as string, SYSTEM_INDEX) ? (
         <>
-          <EuiCallOut color="warning">You are editing a system-like index, please be careful before you do any change to it.</EuiCallOut>
+          <EuiCallOut color="warning">
+            This index may contain critical system data. Changing system indexes may break OpenSearch.
+          </EuiCallOut>
           <EuiSpacer />
         </>
       ) : null}
