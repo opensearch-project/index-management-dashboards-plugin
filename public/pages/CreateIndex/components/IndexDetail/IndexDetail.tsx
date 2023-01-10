@@ -483,13 +483,13 @@ const IndexDetail = (
                     helpText: (
                       <>
                         <p>
-                          Specify a comma-delimited list of settings.
+                          Specify a comma-delimited list of settings.{" "}
                           <EuiLink external href={INDEX_SETTINGS_URL} target="_blank">
                             View index settings.
                           </EuiLink>
                         </p>
                         <p>
-                          All the settings will be handled in flat structure.
+                          All the settings will be handled in flat structure.{" "}
                           <EuiLink
                             href={`https://opensearch.org/docs/${docVersion}/api-reference/index-apis/get-index/#url-parameters`}
                             external
