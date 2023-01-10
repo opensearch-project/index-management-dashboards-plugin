@@ -94,6 +94,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         })
         .catch(() => {
           // do nothing
+          props.history.replace(ROUTES.TEMPLATES);
         });
     }
     return () => {
