@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`container <IndexDetail /> spec render the component 1`] = `
+<span
+  class="euiToolTipAnchor"
+>
+  <button
+    class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--xSmall euiButtonEmpty--flushRight"
+    type="button"
+  >
+    <span
+      class="euiButtonContent euiButtonEmpty__content"
+    >
+      EuiIconMock
+      <span
+        class="euiButtonEmpty__text"
+      />
+    </span>
+  </button>
+</span>
+`;

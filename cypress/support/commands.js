@@ -4,7 +4,7 @@
  */
 
 const { API, INDEX, ADMIN_AUTH } = require("./constants");
-const { NODE_API } = require("../../server/utils/constants")
+const { NODE_API } = require("../../server/utils/constants");
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -123,8 +123,8 @@ Cypress.Commands.add("createIndex", (index, policyID = null, settings = {}) => {
 });
 
 Cypress.Commands.add("deleteSnapshot", (repository, snapshot) => {
-  cy.request("DELETE", `${Cypress.env("opensearch")}${NODE_API._SNAPSHOTS}/${repository}/${snapshot}`)
-})
+  cy.request("DELETE", `${Cypress.env("opensearch")}${NODE_API._SNAPSHOTS}/${repository}/${snapshot}`);
+});
 
 Cypress.Commands.add("createRollup", (rollupId, rollupJSON) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.ROLLUP_JOBS_BASE}/${rollupId}`, rollupJSON);
@@ -132,6 +132,14 @@ Cypress.Commands.add("createRollup", (rollupId, rollupJSON) => {
 
 Cypress.Commands.add("createIndexTemplate", (name, template) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.INDEX_TEMPLATE_BASE}/${name}`, template);
+});
+
+Cypress.Commands.add("deleteTemplate", (name) => {
+  cy.request({
+    url: `${Cypress.env("opensearch")}${API.INDEX_TEMPLATE_BASE}/${name}`,
+    failOnStatusCode: false,
+    method: "DELETE",
+  });
 });
 
 Cypress.Commands.add("createDataStream", (name) => {
@@ -150,6 +158,10 @@ Cypress.Commands.add("createTransform", (transformId, transformJSON) => {
   cy.request("PUT", `${Cypress.env("opensearch")}${API.TRANSFORM_JOBS_BASE}/${transformId}`, transformJSON);
 });
 
+Cypress.Commands.add("createPipeline", (pipelineId, pipelineJSON) => {
+  cy.request("PUT", `${Cypress.env("opensearch")}/_ingest/pipeline/${pipelineId}`, pipelineJSON);
+});
+
 Cypress.Commands.add("disableJitter", () => {
   // Sets the jitter to 0 in the ISM plugin cluster settings
   const jitterJson = {
@@ -162,4 +174,40 @@ Cypress.Commands.add("disableJitter", () => {
     },
   };
   cy.request("PUT", `${Cypress.env("opensearch")}/_cluster/settings`, jitterJson);
+});
+
+Cypress.Commands.add("addAlias", (alias, index) => {
+  cy.request({
+    url: `${Cypress.env("opensearch")}/_aliases`,
+    method: "POST",
+    body: {
+      actions: [
+        {
+          add: {
+            index,
+            alias,
+          },
+        },
+      ],
+    },
+    failOnStatusCode: false,
+  });
+});
+
+Cypress.Commands.add("removeAlias", (alias) => {
+  cy.request({
+    url: `${Cypress.env("opensearch")}/_aliases`,
+    method: "POST",
+    body: {
+      actions: [
+        {
+          remove: {
+            index: "*",
+            alias,
+          },
+        },
+      ],
+    },
+    failOnStatusCode: false,
+  });
 });

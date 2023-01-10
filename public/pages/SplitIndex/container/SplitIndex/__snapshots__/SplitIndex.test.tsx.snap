@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SplitIndex /> spec renders the component 1`] = `
+HTMLCollection [
+  <div>
+    <div
+      style="padding: 0px 50px;"
+    >
+      <h1
+        class="euiTitle euiTitle--medium"
+      >
+        Split index
+      </h1>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            id="some_html_id-help-0"
+          >
+            <div>
+              Split an existing read-only index into a new index with more primary shards. 
+              <a
+                class="euiLink euiLink--primary"
+                href="https://opensearch.org/docs/latest/api-reference/index-apis/split/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more.
+                EuiIconMock
+                <span
+                  class="euiScreenReaderOnly"
+                >
+                  (opens in a new tab or window)
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+    </div>
+  </div>,
+]
+`;

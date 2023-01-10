@@ -7,7 +7,6 @@ import React, { Component, Fragment } from "react";
 import {
   EuiSpacer,
   EuiFormRow,
-  EuiComboBox,
   EuiCallOut,
   EuiPopover,
   EuiFlexGroup,
@@ -20,6 +19,7 @@ import {
   EuiLink,
 } from "@elastic/eui";
 import _ from "lodash";
+import EuiComboBox from "../../../../components/ComboBoxWithoutWarning";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import IndexFilterPopover from "../IndexFilterPopover";
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
@@ -53,6 +53,7 @@ interface TransformIndicesState {
 
 export default class TransformIndices extends Component<TransformIndicesProps, TransformIndicesState> {
   static contextType = CoreServicesContext;
+  _isMount: boolean;
   constructor(props: TransformIndicesProps) {
     super(props);
     this.state = {
@@ -63,6 +64,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
       selectFieldValue: "",
     };
 
+    this._isMount = true;
     this.onIndexSearchChange = _.debounce(this.onIndexSearchChange, 500, { leading: true });
   }
 
@@ -70,12 +72,22 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
     await this.onIndexSearchChange("");
   }
 
+  componentWillUnmount(): void {
+    this._isMount = false;
+  }
+
   // TODO: created shared method with rollup indices to reduce duplicate code.
   onIndexSearchChange = async (searchValue: string): Promise<void> => {
+    if (!this._isMount) {
+      return;
+    }
     const { indexService } = this.props;
     this.setState({ isLoading: true, indexOptions: [] });
     try {
       const dataStreamsAndIndicesNamesResponse = await indexService.getDataStreamsAndIndicesNames(searchValue);
+      if (!this._isMount) {
+        return;
+      }
       if (dataStreamsAndIndicesNamesResponse.ok) {
         // Adding wildcard to search value
         const options = searchValue.trim() ? [{ label: wildcardOption(searchValue) }] : [];

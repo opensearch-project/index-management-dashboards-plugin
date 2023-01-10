@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DescriptionListHoz /> spec renders the component 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <dl
+        class="euiDescriptionList euiDescriptionList--row"
+      >
+        <dt
+          class="euiDescriptionList__title"
+        >
+          test
+        </dt>
+        <dd
+          class="euiDescriptionList__description"
+        >
+          test description
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>
+`;

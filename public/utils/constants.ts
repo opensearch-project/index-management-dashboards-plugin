@@ -3,6 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { InitOption } from "../lib/field";
+import { ComponentMapEnum } from "../components/FormGenerator";
+
 export const PLUGIN_NAME = "opensearch_index_management_dashboards";
 
 export const DEFAULT_EMPTY_DATA = "-";
@@ -13,7 +16,7 @@ export const ACTIONS_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/
 export const STATES_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#states";
 export const ERROR_NOTIFICATION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#error-notifications";
 export const TRANSITION_DOCUMENTATION_URL = "https://opensearch.org/docs/im-plugin/ism/policies/#transitions";
-export const INDEX_SETTINGS_URL = "https://opensearch.org/docs/latest/api-reference/index-apis/create-index/#index-settings";
+export const INDEX_SETTINGS_URL = "https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings";
 export const SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-management/";
 export const CRON_EXPRESSION_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/monitoring-plugins/alerting/cron/";
 export const RESTORE_SNAPSHOT_DOCUMENTATION_URL =
@@ -22,6 +25,7 @@ export const REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/
 export const FS_REPOSITORY_DOCUMENTATION_URL =
   "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#shared-file-system";
 export const S3_REPOSITORY_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/opensearch/snapshots/snapshot-restore/#amazon-s3";
+export const SHRINK_DOCUMENTATION_URL = "https://opensearch.org/docs/latest/api-reference/index-apis/shrink-index";
 
 export const ROUTES = Object.freeze({
   CHANGE_POLICY: "/change-policy",
@@ -49,6 +53,14 @@ export const ROUTES = Object.freeze({
   REPOSITORIES: "/repositories",
   CREATE_REPOSITORY: "/create-repository",
   EDIT_REPOSITORY: "/edit-repository",
+  CREATE_INDEX: "/create-index",
+  INDEX_DETAIL: "/index-detail",
+  REINDEX: "/reindex",
+  ALIASES: "/aliases",
+  TEMPLATES: "/templates",
+  CREATE_TEMPLATE: "/create-template",
+  SPLIT_INDEX: "/split-index",
+  SHRINK_INDEX: "/shrink-index",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -84,6 +96,16 @@ export const BREADCRUMBS = Object.freeze({
   REPOSITORIES: { text: "Repositories", href: `#${ROUTES.REPOSITORIES}` },
   CREATE_REPOSITORY: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
   EDIT_REPOSITORY: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
+  CREATE_INDEX: { text: "Create Index", href: `#${ROUTES.CREATE_INDEX}` },
+  EDIT_INDEX: { text: "Edit Index", href: `#${ROUTES.CREATE_INDEX}` },
+  INDEX_DETAIL: { text: "Index Detail", href: "#" },
+  REINDEX: { text: "Reindex", href: `#${ROUTES.REINDEX}` },
+  ALIASES: { text: "Aliases", href: `#${ROUTES.ALIASES}` },
+  TEMPLATES: { text: "Templates", href: `#${ROUTES.TEMPLATES}` },
+  CREATE_TEMPLATE: { text: "Create template", href: `#${ROUTES.CREATE_TEMPLATE}` },
+  EDIT_TEMPLATE: { text: "Edit template", href: `#${ROUTES.CREATE_TEMPLATE}` },
+  SPLIT_INDEX: { text: "Split Index", href: `#${ROUTES.SPLIT_INDEX}` },
+  SHRINK_INDEX: { text: "Shrink index", href: `#${ROUTES.SHRINK_INDEX}` },
 });
 
 // TODO: EUI has a SortDirection already
@@ -122,7 +144,7 @@ export const browseIndicesCols = [
     width: "100%",
     truncateText: true,
     sortable: true,
-  }
+  },
 ];
 
 export const restoreIndicesCols = [
@@ -137,6 +159,203 @@ export const restoreIndicesCols = [
     field: "restore_status",
     name: "Restore status",
     width: "25%",
-    sortable: true
-  }
+    sortable: true,
+  },
+];
+export const INDEX_IMPORT_SETTINGS = ["index.number_of_replicas", "index.number_of_shards", "index.refresh_interval"];
+
+export const INDEX_DYNAMIC_SETTINGS = [
+  "index.number_of_replicas",
+  "index.auto_expand_replicas",
+  "index.search.idle.after",
+  "index.refresh_interval",
+  "index.max_result_window",
+  "index.max_inner_result_window",
+  "index.max_rescore_window",
+  "index.max_docvalue_fields_search",
+  "index.max_script_fields",
+  "index.max_ngram_diff",
+  "index.max_shingle_diff",
+  "index.max_refresh_listeners",
+  "index.analyze.max_token_count",
+  "index.highlight.max_analyzed_offset",
+  "index.max_terms_count",
+  "index.max_regex_length",
+  "index.query.default_field",
+  "index.routing.allocation.enable",
+  "index.gc_deletes",
+  "index.default_pipeline",
+  "index.final_pipeline",
+  "index.hidden",
+];
+
+export const INDEX_MAPPING_TYPES: {
+  label?: string;
+  hasChildren?: boolean;
+  options?: {
+    fields?: (InitOption & { label: string; type: ComponentMapEnum; initValue?: any })[];
+  };
+}[] = [
+  {
+    label: "alias",
+    options: {
+      fields: [
+        {
+          label: "Path",
+          name: "path",
+          type: "Input",
+          rules: [
+            {
+              required: true,
+              message: "Path is required.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    label: "boolean",
+  },
+  {
+    label: "binary",
+  },
+  {
+    label: "completion",
+  },
+  {
+    label: "date",
+  },
+  {
+    label: "date_range",
+  },
+  {
+    label: "double",
+  },
+  {
+    label: "double_range",
+  },
+  {
+    label: "float",
+  },
+  {
+    label: "geo_point",
+  },
+  {
+    label: "geo_shape",
+  },
+  {
+    label: "half_float",
+  },
+  {
+    label: "integer",
+  },
+  {
+    label: "ip",
+  },
+  {
+    label: "ip_range",
+  },
+  {
+    label: "keyword",
+  },
+  {
+    label: "long",
+  },
+  {
+    label: "long_range",
+  },
+  {
+    label: "object",
+    hasChildren: true,
+  },
+  {
+    label: "percolator",
+  },
+  {
+    label: "rank_feature",
+  },
+  {
+    label: "rank_features",
+  },
+  {
+    label: "search_as_you_type",
+  },
+  {
+    label: "text",
+  },
+  {
+    label: "token_count",
+    options: {
+      fields: [
+        {
+          label: "Analyzer",
+          name: "analyzer",
+          initValue: "standard",
+          type: "Input",
+          rules: [
+            {
+              required: true,
+              message: "Analyzer is required.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+];
+
+export enum IndicesUpdateMode {
+  mappings = "mappings",
+  settings = "settings",
+  alias = "aliases",
+}
+
+export const INDEX_MAPPING_TYPES_WITH_CHILDREN = INDEX_MAPPING_TYPES.filter((item) => item.hasChildren).map((item) => item.label);
+
+export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
+  destination: {
+    slack: {
+      url: "<url>",
+    },
+  },
+  message_template: {
+    source: "The index {{ctx.index}} failed during policy execution.",
+  },
+};
+
+export const ALIAS_STATUS_OPTIONS = ["open", "closed", "hidden", "none", "all"].map((item) => ({
+  label: item,
+  value: item,
+}));
+
+export const INDEX_NAMING_MESSAGE = `Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, \", *, +, /, \, |, ?, #, > are not allowed.`;
+export const TEMPLATE_NAMING_MESSAGE = `Must be in lowercase letters. Cannot begin with underscores. Spaces, commas, and characters *, # are not allowed.`;
+
+export const REPLICA_NUMBER_MESSAGE = "Specify the number of replicas each primary shard should have. Default is 1.";
+
+export const TEMPLATE_TYPE = {
+  INDEX_TEMPLATE: "Indexes",
+  DATA_STREAM: "Data streams",
+};
+
+export const INDEX_NAMING_PATTERN = /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/;
+export const TEMPLATE_NAMING_PATTERN = /^[^A-Z_*,\s#][^A-Z*,\s#]*$/;
+
+export const ALIAS_SELECT_RULE = [
+  {
+    validator: (rules: any, valueObject?: Record<string, any>) => {
+      const value = Object.keys(valueObject || {});
+      if (Array.isArray(value) && value.length) {
+        const notMatchedAliases = value.filter((item) => !item.match(INDEX_NAMING_PATTERN));
+        if (notMatchedAliases.length) {
+          return Promise.reject(`
+          Invalid alias name for ${notMatchedAliases.join(", ")}.\n
+          Rule for alias name: ${INDEX_NAMING_MESSAGE}
+        `);
+        }
+      }
+      return Promise.resolve("");
+    },
+  },
 ];
