@@ -311,7 +311,6 @@ const IndexMapping = (
                         title: "Index mapping properties",
                         description: "Index mapping properties validation",
                         type: "object",
-                        format: "123123",
                         patternProperties: {
                           ".*": {
                             type: "object",
