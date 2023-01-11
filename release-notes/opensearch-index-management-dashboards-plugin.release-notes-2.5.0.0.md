@@ -9,4 +9,4 @@ Compatible with OpenSearch 2.5.0
 * Bump to 2.5.0. ([#540](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/540))
 
 ### Documentation
-* Added release notes for 2.5. ([#]())
+* Added release notes for 2.5. ([#560](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/560))
