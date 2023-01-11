@@ -123,7 +123,9 @@ export default function CreateAlias(props: ICreateAliasProps) {
       <EuiModalBody>
         {isEdit && filterByMinimatch(props.alias?.alias || "", SYSTEM_ALIAS) ? (
           <>
-            <EuiCallOut color="warning">You are editing a system-like alias, please be careful before you do any change to it.</EuiCallOut>
+            <EuiCallOut color="warning">
+              This alias may contain critical system data. Changing system aliases may break OpenSearch.
+            </EuiCallOut>
             <EuiSpacer />
           </>
         ) : null}
@@ -202,14 +204,20 @@ export default function CreateAlias(props: ICreateAliasProps) {
                   alias: values.alias,
                   index,
                 }));
-                result = await services?.commonService.apiCaller({
-                  endpoint: "indices.updateAliases",
-                  data: {
-                    body: {
-                      actions,
+                if (actions.length === 0) {
+                  result = {
+                    ok: true,
+                  };
+                } else {
+                  result = await services?.commonService.apiCaller({
+                    endpoint: "indices.updateAliases",
+                    data: {
+                      body: {
+                        actions,
+                      },
                     },
-                  },
-                });
+                  });
+                }
               } else {
                 result = await services?.commonService.apiCaller({
                   endpoint: "indices.putAlias",

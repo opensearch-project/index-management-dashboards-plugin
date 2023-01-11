@@ -74,7 +74,9 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
       <EuiModalBody>
         {hasSystemIndex ? (
           <>
-            <EuiCallOut color="warning">You are trying to delete system-like alias, please be careful.</EuiCallOut>
+            <EuiCallOut color="warning">
+              These aliases may contain critical system data. Deleting system aliases may break OpenSearch.
+            </EuiCallOut>
             <EuiSpacer />
           </>
         ) : null}

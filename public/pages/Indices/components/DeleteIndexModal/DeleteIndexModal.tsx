@@ -50,7 +50,9 @@ export default function DeleteIndexModal(props: DeleteIndexModalProps) {
       <EuiModalBody>
         {hasSystemIndex ? (
           <>
-            <EuiCallOut color="warning">You are trying to delete system-like index, please be careful.</EuiCallOut>
+            <EuiCallOut color="warning">
+              These indexes may contain critical system data. Deleting system indexes may break OpenSearch.
+            </EuiCallOut>
             <EuiSpacer />
           </>
         ) : null}

@@ -13,7 +13,9 @@ describe("<DeleteIndexModal /> spec", () => {
   it("renders the component", async () => {
     const { getByText } = render(<DeleteIndexModal selectedItems={[".kibana", "test"]} visible onConfirm={() => {}} onClose={() => {}} />);
 
-    await waitFor(() => expect(getByText("You are trying to delete system-like index, please be careful.")).toBeInTheDocument());
+    await waitFor(() =>
+      expect(getByText("These indexes may contain critical system data. Deleting system indexes may break OpenSearch.")).toBeInTheDocument()
+    );
     expect(document.body.children).toMatchSnapshot();
   });
 

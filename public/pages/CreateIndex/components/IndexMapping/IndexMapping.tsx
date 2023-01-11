@@ -229,7 +229,7 @@ const IndexMapping = (
                   });
                 }}
               >
-                See previous settings
+                See previous mappings
               </EuiButton>
               <EuiSpacer />
             </>
