@@ -261,6 +261,9 @@ const IndexDetail = (
             },
             {
               validator(rule, value, values) {
+                if (!value) {
+                  return Promise.reject("Number of primary shards is required.");
+                }
                 if (Number(value) !== parseInt(value)) {
                   return Promise.reject("Number of primary shards must be an integer.");
                 }
@@ -270,7 +273,7 @@ const IndexDetail = (
             },
           ],
           props: {
-            placeholder: "The number of primary shards in the index. Default is 1.",
+            placeholder: "Specify primary shard count.",
           },
         },
       },
@@ -290,6 +293,9 @@ const IndexDetail = (
             },
             {
               validator(rule, value, values) {
+                if (!value) {
+                  return Promise.reject("Number of replicas is required.");
+                }
                 if (Number(value) !== parseInt(value)) {
                   return Promise.reject("Number of replicas must be an integer.");
                 }
@@ -299,7 +305,7 @@ const IndexDetail = (
             },
           ],
           props: {
-            placeholder: "The number of replica shards each primary shard should have.",
+            placeholder: "Specify number of replicas.",
           },
         },
       },
@@ -329,7 +335,9 @@ const IndexDetail = (
     <>
       {isEdit && !readonly && filterByMinimatch(value?.index as string, SYSTEM_INDEX) ? (
         <>
-          <EuiCallOut color="warning">You are editing a system-like index, please be careful before you do any change to it.</EuiCallOut>
+          <EuiCallOut color="warning">
+            This index may contain critical system data. Changing system indexes may break OpenSearch.
+          </EuiCallOut>
           <EuiSpacer />
         </>
       ) : null}
@@ -475,13 +483,13 @@ const IndexDetail = (
                     helpText: (
                       <>
                         <p>
-                          Specify a comma-delimited list of settings.
+                          Specify a comma-delimited list of settings.{" "}
                           <EuiLink external href={INDEX_SETTINGS_URL} target="_blank">
                             View index settings.
                           </EuiLink>
                         </p>
                         <p>
-                          All the settings will be handled in flat structure.
+                          All the settings will be handled in flat structure.{" "}
                           <EuiLink
                             href={`https://opensearch.org/docs/${docVersion}/api-reference/index-apis/get-index/#url-parameters`}
                             external
