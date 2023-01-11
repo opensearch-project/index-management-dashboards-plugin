@@ -9,6 +9,7 @@ monaco.editor.defineTheme("ismJSONTheme", {
   rules: [],
   colors: {
     "editorWarning.foreground": euiThemeVars.euiColorWarningText,
+    "editorOverviewRuler.warningForeground": euiThemeVars.euiColorWarningText,
   },
 });
 
