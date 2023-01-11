@@ -45,6 +45,10 @@ const rules = {
     const isNum = typeof value === "number";
     const isStr = typeof value === "string";
 
+    if (value === "") {
+      return "";
+    }
+
     if (isNum) {
       key = "number";
     } else if (isStr) {

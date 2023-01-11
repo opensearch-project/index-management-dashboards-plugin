@@ -50,6 +50,9 @@ export default function IndexSettings(props: SubDetailProps) {
                   },
                   {
                     validator(rule, value) {
+                      if (!value) {
+                        return Promise.reject("Number of primary shards is required.");
+                      }
                       if (Number(value) !== parseInt(value)) {
                         return Promise.reject("Number of primary shards must be an integer.");
                       }
@@ -78,6 +81,9 @@ export default function IndexSettings(props: SubDetailProps) {
                   },
                   {
                     validator(rule, value) {
+                      if (!value) {
+                        return Promise.reject("Number of replicas is required.");
+                      }
                       if (Number(value) !== parseInt(value)) {
                         return Promise.reject("Number of replicas must be an integer");
                       }
