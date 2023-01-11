@@ -181,7 +181,7 @@ describe("Create Index", () => {
         .type('{ "index.blocks.write": true, "index.number_of_shards": "3" }', { parseSpecialCharSequences: false, force: true })
         .end()
         .wait(1000)
-        .get('[placeholder="The number of replica shards each primary shard should have."]')
+        .get('[placeholder="Specify number of replicas."]')
         .clear()
         .type(2)
         .end();
