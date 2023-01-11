@@ -57,7 +57,7 @@ HTMLCollection [
                   <div
                     class="euiTextColor euiTextColor--default"
                   >
-                    You are trying to delete system-like index, please be careful.
+                    These indexes may contain critical system data. Deleting system indexes may break OpenSearch.
                   </div>
                 </div>
               </div>

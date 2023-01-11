@@ -291,7 +291,7 @@ Object {
                               >
                                 <input
                                   class="euiFieldNumber"
-                                  placeholder="The number of primary shards in the index. Default is 1."
+                                  placeholder="Specify primary shard count."
                                   type="number"
                                   value="1"
                                 />
@@ -336,7 +336,7 @@ Object {
                               >
                                 <input
                                   class="euiFieldNumber"
-                                  placeholder="The number of replica shards each primary shard should have."
+                                  placeholder="Specify number of replicas."
                                   type="number"
                                   value="1"
                                 />
@@ -459,6 +459,7 @@ Object {
                                   >
                                     <p>
                                       Specify a comma-delimited list of settings.
+                                       
                                       <a
                                         class="euiLink euiLink--primary"
                                         href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
@@ -476,6 +477,7 @@ Object {
                                     </p>
                                     <p>
                                       All the settings will be handled in flat structure.
+                                       
                                       <a
                                         class="euiLink euiLink--primary"
                                         href="https://opensearch.org/docs/undefined/api-reference/index-apis/get-index/#url-parameters"
