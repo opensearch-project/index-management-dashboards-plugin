@@ -94,6 +94,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         })
         .catch(() => {
           // do nothing
+          props.history.replace(ROUTES.TEMPLATES);
         });
     }
     return () => {
@@ -134,7 +135,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         {readonly ? (
           <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
             <EuiButton
-              fill
               style={{ marginRight: 20 }}
               onClick={() => {
                 const showValue: TemplateItemRemote = {

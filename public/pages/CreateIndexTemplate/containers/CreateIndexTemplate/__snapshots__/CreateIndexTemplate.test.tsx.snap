@@ -23,7 +23,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
         style="flex-direction: row;"
       >
         <button
-          class="euiButton euiButton--primary euiButton--fill"
+          class="euiButton euiButton--primary"
           style="margin-right: 20px;"
           type="button"
         >
