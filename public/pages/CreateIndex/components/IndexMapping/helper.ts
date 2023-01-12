@@ -1,4 +1,6 @@
+import Ajv from "ajv";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
+import { noAdditionalJSONSchema } from "../../../../utils/JSON_schemas/index_mappings";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
   return Object.entries(obj).map(([fieldName, fieldSettings]) => {
@@ -40,3 +42,6 @@ export const countNodesInTree = (array: MappingsProperties) => {
     return total;
   }, 0);
 };
+
+const ajvInstance = new Ajv();
+export const noAdditionalPropertiesValidator = ajvInstance.compile(noAdditionalJSONSchema);

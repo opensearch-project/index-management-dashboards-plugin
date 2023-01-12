@@ -4,16 +4,16 @@
  */
 
 import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
-import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink } from "@elastic/eui";
+import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink, EuiCallOut } from "@elastic/eui";
 import { set, get, isEmpty } from "lodash";
 import MonacoJSONEditor, { IJSONEditorRef } from "../../../../components/MonacoJSONEditor";
 import { Modal } from "../../../../components/Modal";
 import { MappingsProperties } from "../../../../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import MappingLabel, { IMappingLabelRef } from "../MappingLabel";
-import { transformObjectToArray, transformArrayToObject, countNodesInTree } from "./helper";
+import { transformObjectToArray, transformArrayToObject, countNodesInTree, noAdditionalPropertiesValidator } from "./helper";
 import { IndexMappingsObjectAll, IndexMappingProps, EDITOR_MODE, IIndexMappingsRef } from "./interfaces";
-import { INDEX_MAPPING_TYPES } from "../../../../utils/constants";
+import { IndexMappingsJSONEditorSchema, schemaId } from "../../../../utils/JSON_schemas/index_mappings";
 import "./IndexMapping.scss";
 
 export * from "./helper";
@@ -172,6 +172,14 @@ const IndexMapping = (
       <EuiSpacer />
       {editorMode === EDITOR_MODE.VISUAL ? (
         <>
+          {noAdditionalPropertiesValidator(transformArrayToObject(newValue)) ? null : (
+            <>
+              <EuiCallOut color="warning" title="You have advanced configurations not supported by the visual editor">
+                To view or modify all of your configurations, switch to the JSON editor.
+              </EuiCallOut>
+              <EuiSpacer />
+            </>
+          )}
           {transformedTreeItems.length ? (
             <EuiTreeView
               key={renderKey}
@@ -299,54 +307,15 @@ const IndexMapping = (
                         type: "object",
                         properties: {
                           properties: {
-                            $ref: "ISMIndexMappingProperties",
+                            $ref: schemaId,
                           },
                         },
-                        additionalProperties: false,
                       },
                       uri: "ISMIndexMappings",
                     },
                     {
-                      schema: {
-                        title: "Index mapping properties",
-                        description: "Index mapping properties validation",
-                        type: "object",
-                        patternProperties: {
-                          ".*": {
-                            type: "object",
-                            allOf: INDEX_MAPPING_TYPES.map((item) => ({
-                              if: {
-                                properties: { type: { const: item.label } },
-                              },
-                              then: {
-                                properties: {
-                                  type: {
-                                    description: "type for this field",
-                                    enum: INDEX_MAPPING_TYPES.map((item) => item.label),
-                                  },
-                                  properties: {
-                                    description: "properties for this field",
-                                    $ref: "ISMIndexMappingProperties",
-                                  },
-                                  ...item.options?.fields?.reduce(
-                                    (total, current) => ({
-                                      ...total,
-                                      [current.name as string]: {
-                                        description: current.label,
-                                        type: current.validateType,
-                                      },
-                                    }),
-                                    {}
-                                  ),
-                                },
-                                additionalProperties: false,
-                                required: ["type", ...(item.options?.fields?.map((item) => item.name) || [])],
-                              },
-                            })),
-                          },
-                        },
-                      },
-                      uri: "ISMIndexMappingProperties",
+                      schema: IndexMappingsJSONEditorSchema,
+                      uri: schemaId,
                     },
                   ],
                 }}
