@@ -311,10 +311,10 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       disableShrinkButton = true;
       sourceIndexNotReadyToShrinkReasons.push(
         <>
-          <EuiCallOut title="The source index must be in Green health status." color="danger" iconType="alert">
+          <EuiCallOut title="The source index must be in green health status." color="danger" iconType="alert">
             <p>
-              The index is in Red health status and may be running operations in the background. We recommend to wait until the index
-              becomes Green to continue shrinking.
+              The index is in red health status and may be running operations in the background. We recommend to wait until the index
+              becomes green to continue shrinking.
             </p>
           </EuiCallOut>
           <EuiSpacer />
@@ -367,7 +367,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             <EuiCallOut title="The source index must be open." color="danger" iconType="alert">
               <p>
                 You must first open the index before shrinking it. Depending on the size of the source index, this may take additional time
-                to complete. The index will be in the Red state while the index is opening.
+                to complete. The index will be in red health status while the index is opening.
               </p>
               <EuiSpacer />
               <EuiButton
@@ -393,10 +393,10 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         if (sourceIndex.health === "yellow") {
           sourceIndexNotReadyToShrinkReasons.push(
             <>
-              <EuiCallOut title="We recommend shrinking index with a Green health status." color="warning" iconType="help">
+              <EuiCallOut title="We recommend shrinking index with a green health status." color="warning" iconType="help">
                 <p>
-                  The source index is in Yellow health status. To prevent issues with initializing the new shrunken index, we recommend
-                  shrinking an index with a Green health status.
+                  The source index is in yellow health status. To prevent issues with initializing the new shrunken index, we recommend
+                  shrinking an index with a green health status.
                 </p>
               </EuiCallOut>
               <EuiSpacer />
@@ -416,34 +416,6 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                   cause the new shrunken index's shards to be unassigned, you can set the setting to [null] or [false] in the advanced
                   settings bellow.
                 </p>
-              </EuiCallOut>
-              <EuiSpacer />
-            </>
-          );
-        }
-
-        // This check may not be accurate in the following cases:
-        // 1. the cluster only has one node, so the source index's primary shards are allocated to the same node.
-        // 2. the primary shards of the source index are just allocated to the same node, not manually.
-        // 3. the user set `index.routing.rebalance.enable` to `none` and then manually move each shard's copy to one node.
-        // In the above cases, the source index does not have a `index.routing.allocation.require._*` setting which can
-        // rellocate one copy of every shard to one node, but it can also execute shrinking successfully if other conditions are met.
-        // But in most cases, source index always have many shards distributed on different node,
-        // so index.routing.allocation.require._*` setting is required.
-        // In above, we just show a warning in the page, it does not affect any button or form.
-        const settings = get(sourceIndexSettings, [sourceIndex.index, "settings"]);
-        let shardsAllocatedToOneNode = false;
-        for (let settingKey in settings) {
-          if (settingKey.startsWith(INDEX_ROUTING_ALLOCATION_SETTING)) {
-            shardsAllocatedToOneNode = true;
-            break;
-          }
-        }
-        if (!shardsAllocatedToOneNode) {
-          sourceIndexNotReadyToShrinkReasons.push(
-            <>
-              <EuiCallOut title="A copy of every shard must reside on the same node." color="warning" iconType="help">
-                <p>For clusters with more than one node, you must allocate a copy of every shard of the source index to the same node.</p>
               </EuiCallOut>
               <EuiSpacer />
             </>
