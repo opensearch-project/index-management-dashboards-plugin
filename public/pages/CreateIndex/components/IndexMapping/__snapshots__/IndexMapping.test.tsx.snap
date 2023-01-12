@@ -70,6 +70,31 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
+    class="euiCallOut euiCallOut--warning"
+  >
+    <div
+      class="euiCallOutHeader"
+    >
+      <span
+        class="euiCallOutHeader__title"
+      >
+        You have advanced configurations not supported by the visual editor
+      </span>
+    </div>
+    <div
+      class="euiText euiText--small"
+    >
+      <div
+        class="euiTextColor euiTextColor--default"
+      >
+        To view or modify all of your configurations, switch to the JSON editor.
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
     class="euiText euiText--medium euiTreeView__wrapper"
   >
     <p

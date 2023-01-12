@@ -51,6 +51,7 @@ export const IndexMappingsJSONEditorSchema: JSONSchema4 = {
   title: "Index mapping properties",
   description: "Index mapping properties validation",
   type: "object",
+  $id: schemaId,
   patternProperties: {
     ".*": {
       type: "object",
