@@ -61,6 +61,7 @@ export const ROUTES = Object.freeze({
   CREATE_TEMPLATE: "/create-template",
   SPLIT_INDEX: "/split-index",
   SHRINK_INDEX: "/shrink-index",
+  COMPOSABLE_TEMPLATES: "/composable-templates",
 });
 
 export const BREADCRUMBS = Object.freeze({

@@ -41,6 +41,7 @@ import CreateIndexTemplate from "../CreateIndexTemplate";
 import SplitIndex from "../SplitIndex";
 import IndexDetail from "../IndexDetail";
 import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
+import ComposableTemplates from "../ComposableTemplates";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -55,6 +56,7 @@ enum Navigation {
   Repositories = "Repositories",
   Aliases = "Aliases",
   Templates = "Templates",
+  ComposableTemplates = "Composable templates",
 }
 
 enum Pathname {
@@ -129,6 +131,12 @@ export default class Main extends Component<MainProps, object> {
             id: 7,
             href: `#${ROUTES.TEMPLATES}`,
             isSelected: ROUTES.TEMPLATES === pathname,
+          },
+          {
+            name: Navigation.ComposableTemplates,
+            id: 8,
+            href: `#${ROUTES.COMPOSABLE_TEMPLATES}`,
+            isSelected: ROUTES.COMPOSABLE_TEMPLATES === pathname,
           },
           {
             name: Navigation.Aliases,
@@ -455,6 +463,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <Templates {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.COMPOSABLE_TEMPLATES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ComposableTemplates {...props} />
                               </div>
                             )}
                           />
