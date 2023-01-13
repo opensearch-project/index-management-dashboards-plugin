@@ -32,8 +32,6 @@ import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import ComposableTemplatesActions from "../ComposableTemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
-import { TemplateItemRemote } from "../../../../../models/interfaces";
-import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
 
 interface ComposableTemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -84,8 +82,10 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       loading: false,
     };
 
-    this.getComposableTemplates = debounce(this.getComposableTemplates, 500, { leading: true });
+    this.getComposableTemplates = debounce(this.getComposableTemplatesOriginal, 500);
   }
+
+  getComposableTemplates: () => Promise<void> | undefined;
 
   componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
@@ -101,9 +101,9 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
     }, {} as ComposableTemplatesState);
   };
 
-  getComposableTemplates = async (): Promise<void> => {
+  getComposableTemplatesOriginal = async (): Promise<void> => {
     this.setState({ loading: true });
-    const { from, size, search } = this.state;
+    const { from, size, search, sortDirection, sortField } = this.state;
     const fromNumber = Number(from);
     const sizeNumber = Number(size);
     const { history, commonService } = this.props;
@@ -128,17 +128,36 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       this.context.notifications.toasts.addDanger(allComposableTemplatesResponse.error);
     } else {
       listResponse = allComposableTemplatesResponse.response.component_templates || [];
-      const payload = {
-        composableTemplates: listResponse.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
-        totalComposableTemplates: listResponse.length,
-        selectedItems: this.state.selectedItems
-          .map((item) => listResponse.find((remoteItem) => remoteItem.name === item.name))
-          .filter((item) => item),
-      } as ComposableTemplatesState;
-      this.setState(payload);
-    }
 
-    this.setState({ loading: false });
+      // sort
+      listResponse = listResponse.sort((a, b) => {
+        if (sortDirection === "asc") {
+          if (a[sortField] < b[sortField]) {
+            return -1;
+          }
+
+          return 1;
+        } else {
+          if (a[sortField] > b[sortField]) {
+            return -1;
+          }
+
+          return 1;
+        }
+      });
+    }
+    const payload = {
+      composableTemplates: listResponse.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
+      totalComposableTemplates: listResponse.length,
+      selectedItems: this.state.selectedItems
+        .map((item) => listResponse.find((remoteItem) => remoteItem.name === item.name))
+        .filter((item) => item),
+    } as ComposableTemplatesState;
+
+    this.setState({
+      ...payload,
+      loading: false,
+    });
   };
 
   onTableChange = ({ page: tablePage, sort }: Criteria<IComposableTemplate>): void => {
@@ -199,7 +218,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                 ),
               },
               {
-                text: "Create template",
+                text: "Create composable template",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
