@@ -82,7 +82,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       loading: false,
     };
 
-    this.getComposableTemplates = debounce(this.getComposableTemplatesOriginal, 500);
+    this.getComposableTemplates = debounce(this.getComposableTemplatesOriginal, 500, { leading: true });
   }
 
   getComposableTemplates: () => Promise<void> | undefined;
@@ -183,7 +183,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
   };
 
   render() {
-    const { totalComposableTemplates, from, size, sortField, sortDirection, composableTemplates } = this.state;
+    const { totalComposableTemplates, from, size, sortField, sortDirection, composableTemplates, loading } = this.state;
 
     const pagination: Pagination = {
       pageIndex: Number(from),
@@ -284,12 +284,12 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
           selection={selection}
           sorting={sorting}
           noItemsMessage={
-            isEqual(
-              {
-                search: this.state.search,
-              },
-              defaultFilter
-            ) ? (
+            loading ? undefined : isEqual(
+                {
+                  search: this.state.search,
+                },
+                defaultFilter
+              ) ? (
               <EuiEmptyPrompt
                 body={
                   <EuiText>
