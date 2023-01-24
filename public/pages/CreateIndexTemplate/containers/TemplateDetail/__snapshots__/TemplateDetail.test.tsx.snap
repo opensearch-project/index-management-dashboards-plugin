@@ -66,6 +66,12 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Define template
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>
@@ -464,6 +470,12 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Index settings
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>

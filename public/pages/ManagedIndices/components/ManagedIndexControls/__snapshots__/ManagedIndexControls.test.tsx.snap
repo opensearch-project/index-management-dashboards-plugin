@@ -23,7 +23,7 @@ exports[`<ManagedIndexControls /> spec renders data streams selection field 1`] 
             <input
               aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
               class="euiFieldSearch euiFieldSearch--fullWidth"
-              placeholder="Search"
+              placeholder="Search index name"
               type="search"
               value=""
             />
@@ -116,61 +116,6 @@ exports[`<ManagedIndexControls /> spec renders data streams selection field 1`] 
       </span>
     </div>
   </div>
-  <div
-    class="euiFlexItem euiFlexItem--flexGrowZero"
-    style="max-width: 250px;"
-  >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--isAutoRefreshOnly"
-    >
-      <div
-        class="euiFlexItem"
-      >
-        <div
-          class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
-        >
-          <div
-            class="euiPopover euiPopover--anchorDownLeft"
-          >
-            <div
-              class="euiPopover__anchor euiQuickSelectPopover__anchor"
-            >
-              <button
-                aria-label="Date quick select"
-                class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
-                data-test-subj="superDatePickerToggleQuickMenuButton"
-                type="button"
-              >
-                <span
-                  class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
-                >
-                  EuiIconMock
-                  <span
-                    class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
-                  >
-                    EuiIconMock
-                  </span>
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            class="euiFormControlLayout__childrenWrapper"
-          >
-            <div
-              class="euiDatePickerRange euiDatePickerRange--readOnly euiDatePickerRange--inGroup"
-            >
-              <span
-                class="euiSuperDatePicker__prettyFormat"
-              >
-                Off
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 `;
 
@@ -197,7 +142,7 @@ exports[`<ManagedIndexControls /> spec renders the component 1`] = `
             <input
               aria-label="This is a search bar. As you type, the results lower in the page will automatically filter."
               class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
-              placeholder="Search"
+              placeholder="Search index name"
               type="search"
               value="testing"
             />
@@ -261,61 +206,6 @@ exports[`<ManagedIndexControls /> spec renders the component 1`] = `
       >
         Show data stream indices
       </span>
-    </div>
-  </div>
-  <div
-    class="euiFlexItem euiFlexItem--flexGrowZero"
-    style="max-width: 250px;"
-  >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiSuperDatePicker__flexWrapper euiSuperDatePicker__flexWrapper--isAutoRefreshOnly"
-    >
-      <div
-        class="euiFlexItem"
-      >
-        <div
-          class="euiFormControlLayout euiFormControlLayout--group euiSuperDatePicker"
-        >
-          <div
-            class="euiPopover euiPopover--anchorDownLeft"
-          >
-            <div
-              class="euiPopover__anchor euiQuickSelectPopover__anchor"
-            >
-              <button
-                aria-label="Date quick select"
-                class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--xSmall euiFormControlLayout__prepend"
-                data-test-subj="superDatePickerToggleQuickMenuButton"
-                type="button"
-              >
-                <span
-                  class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
-                >
-                  EuiIconMock
-                  <span
-                    class="euiButtonEmpty__text euiQuickSelectPopover__buttonText"
-                  >
-                    EuiIconMock
-                  </span>
-                </span>
-              </button>
-            </div>
-          </div>
-          <div
-            class="euiFormControlLayout__childrenWrapper"
-          >
-            <div
-              class="euiDatePickerRange euiDatePickerRange--readOnly euiDatePickerRange--inGroup"
-            >
-              <span
-                class="euiSuperDatePicker__prettyFormat"
-              >
-                Off
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
