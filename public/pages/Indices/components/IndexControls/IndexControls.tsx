@@ -5,7 +5,6 @@
 
 import React, { Component } from "react";
 import { ArgsWithError, ArgsWithQuery, EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiSwitch } from "@elastic/eui";
-import EuiRefreshPicker from "../../../../temporary/EuiRefreshPicker";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 interface IndexControlsProps {
@@ -37,8 +36,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
   };
 
   render() {
-    const { search, onSearchChange, onRefresh, showDataStreams, toggleShowDataStreams } = this.props;
-    const { refreshInterval, isPaused } = this.state;
+    const { search, onSearchChange, showDataStreams, toggleShowDataStreams } = this.props;
 
     const schema = {
       strict: true,
@@ -82,14 +80,6 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
             checked={showDataStreams}
             onChange={toggleShowDataStreams}
             data-test-subj="toggleShowDataStreams"
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false} style={{ maxWidth: 250 }}>
-          <EuiRefreshPicker
-            isPaused={isPaused}
-            refreshInterval={refreshInterval}
-            onRefreshChange={this.onRefreshChange}
-            onRefresh={onRefresh}
           />
         </EuiFlexItem>
       </EuiFlexGroup>

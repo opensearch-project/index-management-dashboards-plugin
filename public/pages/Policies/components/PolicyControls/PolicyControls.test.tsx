@@ -89,23 +89,4 @@ describe("<PolicyControls /> spec", () => {
 
     expect(onPageClick).toHaveBeenCalledTimes(1);
   });
-
-  it("calls onRefresh on an interval", async () => {
-    const onRefresh = jest.fn();
-    const { getByTestId } = render(
-      <PolicyControls activePage={0} pageCount={2} search={""} onSearchChange={() => {}} onPageClick={() => {}} onRefresh={onRefresh} />
-    );
-
-    fireEvent.click(getByTestId("superDatePickerToggleQuickMenuButton"));
-
-    expect(getByTestId("superDatePickerToggleRefreshButton")).toBeDisabled();
-
-    userEvent.type(getByTestId("superDatePickerRefreshIntervalInput"), "1");
-
-    expect(getByTestId("superDatePickerToggleRefreshButton")).toBeEnabled();
-
-    fireEvent.click(getByTestId("superDatePickerToggleRefreshButton"));
-
-    await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(2), { timeout: 10000 });
-  });
 });
