@@ -149,7 +149,11 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
         width: "150px",
         render: (info: object) => (
           <ModalConsumer>
-            {({ onShow }) => <EuiLink onClick={() => onShow(InfoModal, { info })}>{_.get(info, "message", DEFAULT_EMPTY_DATA)}</EuiLink>}
+            {({ onShow }) => (
+              <EuiLink style={{ width: "100%", overflow: "hidden", textOverflow: "ellipsis" }} onClick={() => onShow(InfoModal, { info })}>
+                {_.get(info, "message", DEFAULT_EMPTY_DATA)}
+              </EuiLink>
+            )}
           </ModalConsumer>
         ),
       },
@@ -420,10 +424,11 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     return (
       <div style={{ padding: "0px 25px" }}>
         <EuiFlexGroup alignItems="center">
-          <EuiFlexItem>
-            <EuiTitle size="l">
-              <h1>Managed Indices</h1>
-            </EuiTitle>
+          <EuiFlexItem></EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiButton iconType="refresh" onClick={this.getManagedIndices} data-test-subj="refreshButton">
+              Refresh
+            </EuiButton>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButton href={`${PLUGIN_NAME}#/change-policy`} data-test-subj="changePolicyButton">
