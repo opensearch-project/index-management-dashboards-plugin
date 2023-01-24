@@ -440,7 +440,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
         <ContentPanel
           actions={<ContentPanelActions actions={actions} />}
           bodyStyles={{ padding: "initial" }}
-          title="Indices"
+          title="Policy managed indices"
           itemCount={totalManagedIndices}
         >
           <ManagedIndexControls

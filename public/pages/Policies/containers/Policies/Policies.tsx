@@ -276,7 +276,7 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
       <ContentPanel
         actions={<ContentPanelActions actions={actions} />}
         bodyStyles={{ padding: "initial" }}
-        title="Index policies"
+        title="State management policies"
         itemCount={totalPolicies}
       >
         <PolicyControls
