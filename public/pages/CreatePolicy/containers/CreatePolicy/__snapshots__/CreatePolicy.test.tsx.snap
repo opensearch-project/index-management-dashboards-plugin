@@ -28,6 +28,12 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Name policy
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>
@@ -78,7 +84,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
                   aria-describedby="some_html_id-help-0"
                   class="euiFieldText"
                   id="some_html_id"
-                  placeholder="hot_cold_workflow"
+                  placeholder="example_policy"
                   type="text"
                   value=""
                 />
@@ -113,6 +119,12 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Define policy
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
       <div
@@ -194,10 +206,10 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
         {
     "policy": {
         "description": "A simple default policy that changes the replica count between hot and cold states.",
-        "default_state": "hot",
+        "default_state": "example_hot_state",
         "states": [
             {
-                "name": "hot",
+                "name": "example_hot_state",
                 "actions": [
                     {
                         "replica_count": {
@@ -207,7 +219,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
                 ],
                 "transitions": [
                     {
-                        "state_name": "cold",
+                        "state_name": "example_cold_state",
                         "conditions": {
                             "min_index_age": "30d"
                         }
@@ -215,7 +227,7 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
                 ]
             },
             {
-                "name": "cold",
+                "name": "example_cold_state",
                 "actions": [
                     {
                         "replica_count": {
@@ -225,7 +237,12 @@ exports[`<CreatePolicy /> spec renders the create component 1`] = `
                 ],
                 "transitions": []
             }
-        ]
+        ],
+        "ism_template": {
+            "index_patterns": [
+                "example-index-*"
+            ]
+        }
     }
 }
       </textarea>
@@ -355,6 +372,12 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Name policy
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>
@@ -405,7 +428,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
                   aria-describedby="some_html_id-help-0"
                   class="euiFieldText"
                   id="some_html_id"
-                  placeholder="hot_cold_workflow"
+                  placeholder="example_policy"
                   readonly=""
                   type="text"
                   value="some_policy"
@@ -441,6 +464,12 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Define policy
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
       <div
@@ -523,10 +552,10 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
     "policy": {
         "policy": {
             "description": "A simple default policy that changes the replica count between hot and cold states.",
-            "default_state": "hot",
+            "default_state": "example_hot_state",
             "states": [
                 {
-                    "name": "hot",
+                    "name": "example_hot_state",
                     "actions": [
                         {
                             "replica_count": {
@@ -536,7 +565,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
                     ],
                     "transitions": [
                         {
-                            "state_name": "cold",
+                            "state_name": "example_cold_state",
                             "conditions": {
                                 "min_index_age": "30d"
                             }
@@ -544,7 +573,7 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
                     ]
                 },
                 {
-                    "name": "cold",
+                    "name": "example_cold_state",
                     "actions": [
                         {
                             "replica_count": {
@@ -554,7 +583,12 @@ exports[`<CreatePolicy /> spec renders the edit component 1`] = `
                     ],
                     "transitions": []
                 }
-            ]
+            ],
+            "ism_template": {
+                "index_patterns": [
+                    "example-index-*"
+                ]
+            }
         }
     }
 }

@@ -45,38 +45,9 @@ describe("<ManagedIndexControls /> spec", () => {
       />
     );
 
-    userEvent.type(getByPlaceholderText("Search"), "four");
+    userEvent.type(getByPlaceholderText("Search index name"), "four");
 
     expect(onSearchChange).toHaveBeenCalledTimes(4);
-  });
-
-  it("calls onRefresh on an interval", async () => {
-    const onRefresh = jest.fn();
-    const { getByTestId } = render(
-      <ManagedIndexControls
-        activePage={0}
-        pageCount={2}
-        search={""}
-        onSearchChange={() => {}}
-        onPageClick={() => {}}
-        onRefresh={onRefresh}
-        showDataStreams={false}
-        getDataStreams={async () => []}
-        toggleShowDataStreams={() => {}}
-      />
-    );
-
-    fireEvent.click(getByTestId("superDatePickerToggleQuickMenuButton"));
-
-    expect(getByTestId("superDatePickerToggleRefreshButton")).toBeDisabled();
-
-    userEvent.type(getByTestId("superDatePickerRefreshIntervalInput"), "1");
-
-    expect(getByTestId("superDatePickerToggleRefreshButton")).toBeEnabled();
-
-    fireEvent.click(getByTestId("superDatePickerToggleRefreshButton"));
-
-    await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(2), { timeout: 10000 });
   });
 
   it("calls toggleShowDataStreams when clicked", async () => {

@@ -16,6 +16,12 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         class="euiTitle euiTitle--small"
       >
         Policy info
+        <span
+          class="panel-header-count"
+        >
+           
+           
+        </span>
       </h3>
     </div>
   </div>
