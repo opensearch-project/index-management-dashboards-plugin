@@ -437,7 +437,12 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
 
         <EuiSpacer />
 
-        <ContentPanel actions={<ContentPanelActions actions={actions} />} bodyStyles={{ padding: "initial" }} title="Indices">
+        <ContentPanel
+          actions={<ContentPanelActions actions={actions} />}
+          bodyStyles={{ padding: "initial" }}
+          title="Indices"
+          itemCount={totalManagedIndices}
+        >
           <ManagedIndexControls
             search={search}
             onSearchChange={this.onSearchChange}
