@@ -273,7 +273,12 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
     ];
 
     return (
-      <ContentPanel actions={<ContentPanelActions actions={actions} />} bodyStyles={{ padding: "initial" }} title="Index policies">
+      <ContentPanel
+        actions={<ContentPanelActions actions={actions} />}
+        bodyStyles={{ padding: "initial" }}
+        title="State management policies"
+        itemCount={totalPolicies}
+      >
         <PolicyControls
           activePage={page}
           pageCount={Math.ceil(totalPolicies / size) || 1}

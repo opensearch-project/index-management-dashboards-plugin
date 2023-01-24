@@ -16,6 +16,12 @@ exports[`<States /> spec renders the component 1`] = `
         class="euiTitle euiTitle--small"
       >
         States (2)
+        <span
+          class="panel-header-count"
+        >
+           
+           
+        </span>
       </h3>
       <div
         class="euiText euiText--small"

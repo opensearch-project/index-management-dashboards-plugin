@@ -27,6 +27,12 @@ exports[`<EditRollup /> spec renders the component 1`] = `
           class="euiTitle euiTitle--medium"
         >
           Job name and description
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>
@@ -157,6 +163,12 @@ exports[`<EditRollup /> spec renders the component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Schedule
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>
