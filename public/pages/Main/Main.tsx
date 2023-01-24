@@ -44,8 +44,8 @@ import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
 
 enum Navigation {
   IndexManagement = "Index Management",
-  IndexPolicies = "Index Policies",
-  ManagedIndices = "Managed Indices",
+  IndexPolicies = "State management policies",
+  ManagedIndices = "Policy managed indices",
   Indices = "Indices",
   Rollups = "Rollup Jobs",
   Transforms = "Transform Jobs",

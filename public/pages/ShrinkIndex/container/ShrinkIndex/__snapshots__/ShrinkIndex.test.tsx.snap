@@ -59,6 +59,12 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             class="euiTitle euiTitle--small"
           >
             Source index details
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
           </h3>
         </div>
       </div>
@@ -171,6 +177,12 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             class="euiTitle euiTitle--small"
           >
             Configure target index
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
           </h3>
         </div>
       </div>
