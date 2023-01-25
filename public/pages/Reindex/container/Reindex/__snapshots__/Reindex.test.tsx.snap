@@ -59,6 +59,12 @@ exports[`<Reindex /> spec renders the component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Configure source index
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>
@@ -240,6 +246,12 @@ exports[`<Reindex /> spec renders the component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Configure destination index
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>

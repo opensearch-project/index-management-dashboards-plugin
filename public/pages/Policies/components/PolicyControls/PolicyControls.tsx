@@ -5,7 +5,6 @@
 
 import React, { Component } from "react";
 import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiPagination } from "@elastic/eui";
-import EuiRefreshPicker from "../../../../temporary/EuiRefreshPicker";
 
 interface PolicyControlsProps {
   activePage: number;
@@ -32,20 +31,11 @@ export default class PolicyControls extends Component<PolicyControlsProps, Polic
   };
 
   render() {
-    const { activePage, pageCount, search, onSearchChange, onPageClick, onRefresh } = this.props;
-    const { refreshInterval, isPaused } = this.state;
+    const { activePage, pageCount, search, onSearchChange, onPageClick } = this.props;
     return (
       <EuiFlexGroup style={{ padding: "0px 5px" }}>
         <EuiFlexItem>
           <EuiFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={onSearchChange} />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false} style={{ maxWidth: 250 }}>
-          <EuiRefreshPicker
-            isPaused={isPaused}
-            refreshInterval={refreshInterval}
-            onRefreshChange={this.onRefreshChange}
-            onRefresh={onRefresh}
-          />
         </EuiFlexItem>
         {pageCount > 1 && (
           <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>

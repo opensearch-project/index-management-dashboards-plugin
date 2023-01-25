@@ -16,6 +16,12 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
         class="euiTitle euiTitle--small"
       >
         Define index
+        <span
+          class="panel-header-count"
+        >
+           
+           
+        </span>
       </h3>
     </div>
   </div>

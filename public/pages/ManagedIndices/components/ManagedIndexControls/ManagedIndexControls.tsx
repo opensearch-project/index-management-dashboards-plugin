@@ -5,7 +5,6 @@
 
 import React, { Component } from "react";
 import { ArgsWithQuery, ArgsWithError, EuiFlexGroup, EuiFlexItem, EuiPagination, EuiSearchBar, EuiSwitch } from "@elastic/eui";
-import EuiRefreshPicker from "../../../../temporary/EuiRefreshPicker";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 interface ManagedIndexControlsProps {
@@ -32,8 +31,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
   };
 
   render() {
-    const { search, onSearchChange, onRefresh, showDataStreams, toggleShowDataStreams } = this.props;
-    const { refreshInterval, isPaused } = this.state;
+    const { search, onSearchChange, showDataStreams, toggleShowDataStreams } = this.props;
 
     const schema = {
       strict: true,
@@ -66,7 +64,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
         <EuiFlexItem>
           <EuiSearchBar
             query={search}
-            box={{ placeholder: "Search", schema, incremental: true }}
+            box={{ placeholder: "Search index name", schema, incremental: true }}
             onChange={onSearchChange}
             filters={filters}
           />
@@ -77,14 +75,6 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
             checked={showDataStreams}
             onChange={toggleShowDataStreams}
             data-test-subj="toggleShowDataStreams"
-          />
-        </EuiFlexItem>
-        <EuiFlexItem grow={false} style={{ maxWidth: 250 }}>
-          <EuiRefreshPicker
-            isPaused={isPaused}
-            refreshInterval={refreshInterval}
-            onRefreshChange={this.onRefreshChange}
-            onRefresh={onRefresh}
           />
         </EuiFlexItem>
       </EuiFlexGroup>
