@@ -42,6 +42,7 @@ import SplitIndex from "../SplitIndex";
 import IndexDetail from "../IndexDetail";
 import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
 import ComposableTemplates from "../ComposableTemplates";
+import CreateComposableTemplate from "../CreateComposableTemplate";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -471,6 +472,30 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <ComposableTemplates {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/:template/:mode`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateComposableTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/:template`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateComposableTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_COMPOSABLE_TEMPLATE}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateComposableTemplate {...props} />
                               </div>
                             )}
                           />

@@ -125,7 +125,9 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
 
     if (!allComposableTemplatesResponse.ok) {
       listResponse = [];
-      this.context.notifications.toasts.addDanger(allComposableTemplatesResponse.error);
+      if (allComposableTemplatesResponse.error !== "Not Found") {
+        this.context.notifications.toasts.addDanger(allComposableTemplatesResponse.error);
+      }
     } else {
       listResponse = allComposableTemplatesResponse.response.component_templates || [];
 
@@ -222,7 +224,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                 buttonProps: {
                   fill: true,
                   onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_TEMPLATE);
+                    this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                   },
                 },
               },
@@ -300,7 +302,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                   <EuiButton
                     fill
                     onClick={() => {
-                      this.props.history.push(ROUTES.CREATE_TEMPLATE);
+                      this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                     }}
                   >
                     Create composable template

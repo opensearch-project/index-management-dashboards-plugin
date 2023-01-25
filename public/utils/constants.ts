@@ -62,6 +62,7 @@ export const ROUTES = Object.freeze({
   SPLIT_INDEX: "/split-index",
   SHRINK_INDEX: "/shrink-index",
   COMPOSABLE_TEMPLATES: "/composable-templates",
+  CREATE_COMPOSABLE_TEMPLATE: "/create-composable-template",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -107,6 +108,8 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_TEMPLATE: { text: "Edit template", href: `#${ROUTES.CREATE_TEMPLATE}` },
   SPLIT_INDEX: { text: "Split Index", href: `#${ROUTES.SPLIT_INDEX}` },
   SHRINK_INDEX: { text: "Shrink index", href: `#${ROUTES.SHRINK_INDEX}` },
+  COMPOSABLE_TEMPLATES: { text: "Composable templates", href: `#${ROUTES.COMPOSABLE_TEMPLATES}` },
+  CREATE_COMPOSABLE_TEMPLATE: { text: "Create composable template", href: `#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}` },
 });
 
 // TODO: EUI has a SortDirection already
