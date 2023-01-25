@@ -16,6 +16,12 @@ exports[`<ConfigurePolicy /> spec renders the component 1`] = `
         class="euiTitle euiTitle--small"
       >
         Name policy
+        <span
+          class="panel-header-count"
+        >
+           
+           
+        </span>
       </h3>
     </div>
   </div>
@@ -66,7 +72,7 @@ exports[`<ConfigurePolicy /> spec renders the component 1`] = `
                 aria-describedby="some_html_id-help-0"
                 class="euiFieldText"
                 id="some_html_id"
-                placeholder="hot_cold_workflow"
+                placeholder="example_policy"
                 type="text"
                 value="some_id"
               />

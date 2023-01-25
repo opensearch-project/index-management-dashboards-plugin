@@ -27,7 +27,7 @@ const ConfigurePolicy = ({ isEdit, policyId, policyIdError, onChange }: Configur
         isInvalid={!!policyIdError}
         error={policyIdError}
       >
-        <EuiFieldText isInvalid={!!policyIdError} placeholder="hot_cold_workflow" readOnly={isEdit} value={policyId} onChange={onChange} />
+        <EuiFieldText isInvalid={!!policyIdError} placeholder="example_policy" readOnly={isEdit} value={policyId} onChange={onChange} />
       </EuiFormRow>
     </div>
   </ContentPanel>
