@@ -217,7 +217,7 @@ describe("Managed indices", () => {
       cy.contains("Changed policy on 1 indices");
 
       // Click back to Managed Indices page by clicking "Managed indices" breadcrumb
-      cy.contains("Managed indices").click();
+      cy.contains("Policy managed indices").click();
 
       // Speed up execution of managed index
       cy.updateManagedIndexConfigStartTime(SAMPLE_INDEX);

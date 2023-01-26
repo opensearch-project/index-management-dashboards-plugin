@@ -16,6 +16,12 @@ exports[`<ChangeManagedIndices /> spec renders the component 1`] = `
         class="euiTitle euiTitle--small"
       >
         Choose managed indices
+        <span
+          class="panel-header-count"
+        >
+           
+           
+        </span>
       </h3>
     </div>
   </div>
