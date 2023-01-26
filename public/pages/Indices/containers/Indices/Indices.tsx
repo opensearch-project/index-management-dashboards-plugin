@@ -216,6 +216,13 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
               <ContentPanelActions
                 actions={[
                   {
+                    text: "Refresh",
+                    buttonProps: {
+                      iconType: "refresh",
+                      onClick: this.getIndices,
+                    },
+                  },
+                  {
                     text: "Apply policy",
                     buttonProps: {
                       disabled: !selectedItems.length,
@@ -233,6 +240,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
         }
         bodyStyles={{ padding: "initial" }}
         title="Indices"
+        itemCount={totalIndices}
       >
         <IndexControls
           search={search}

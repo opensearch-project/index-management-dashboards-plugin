@@ -39,7 +39,7 @@ describe("Policies", () => {
       cy.contains("Continue").click({ force: true });
 
       // Wait for input to load and then type in the policy ID
-      cy.get(`input[placeholder="hot_cold_workflow"]`).type(POLICY_ID, { force: true });
+      cy.get(`input[placeholder="example_policy"]`).type(POLICY_ID, { force: true });
 
       // Wait for default policy JSON to load
       cy.contains("A simple default policy");
@@ -188,5 +188,5 @@ describe("Policies", () => {
       cy.get(`[data-test-subj="viewButton"]`).click({ force: true });
       cy.contains(`View JSON of ${POLICY_ID}`);
     });
-  })
+  });
 });
