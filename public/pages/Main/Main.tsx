@@ -41,6 +41,7 @@ import CreateIndexTemplate from "../CreateIndexTemplate";
 import SplitIndex from "../SplitIndex";
 import IndexDetail from "../IndexDetail";
 import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
+import DataStreams from "../DataStreams";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -55,6 +56,7 @@ enum Navigation {
   Repositories = "Repositories",
   Aliases = "Aliases",
   Templates = "Templates",
+  DataStreams = "Data streams",
 }
 
 enum Pathname {
@@ -123,6 +125,12 @@ export default class Main extends Component<MainProps, object> {
             id: 3,
             href: `#${Pathname.Indices}`,
             isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
+          },
+          {
+            name: Navigation.DataStreams,
+            id: 8,
+            href: `#${ROUTES.DATA_STREAMS}`,
+            isSelected: ROUTES.DATA_STREAMS === pathname,
           },
           {
             name: Navigation.Templates,
@@ -495,6 +503,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <ShrinkIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.DATA_STREAMS}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <DataStreams {...props} />
                               </div>
                             )}
                           />
