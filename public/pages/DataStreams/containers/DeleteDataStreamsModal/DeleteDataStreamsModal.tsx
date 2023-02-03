@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useContext } from "react";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 import DeleteModal from "../../../../components/DeleteModal";
 
 interface DeleteTemplateModalProps {
@@ -26,7 +26,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
       const result = await services.commonService.apiCaller({
         endpoint: "transport.request",
         data: {
-          path: `/_index_template/${selectedItems.join(",")}`,
+          path: `/_data_stream/${selectedItems.join(",")}`,
           method: "DELETE",
         },
       });
@@ -41,8 +41,8 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
 
   return (
     <DeleteModal
-      title="Delete DataStreams"
-      tips="The following template will be permanently deleted. This action cannot be undone."
+      title="Delete data streams"
+      tips="The following data streams will be permanently deleted. This action cannot be undone."
       onConfirm={onConfirm}
       onClose={onClose}
       visible={visible}

@@ -7,11 +7,11 @@ import { RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
-import { ITemplate } from "../../interface";
+import { DataStreamWithStats } from "../../interface";
 import { ROUTES } from "../../../../utils/constants";
 
 export interface DataStreamsActionsProps {
-  selectedItems: ITemplate[];
+  selectedItems: DataStreamWithStats[];
   onDelete: () => void;
   history: RouteComponentProps["history"];
 }
@@ -54,7 +54,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
                 },
                 {
                   name: "Delete",
-                  disabled: selectedItems.length !== 1,
+                  disabled: selectedItems.length < 1,
                   "data-test-subj": "deleteAction",
                   onClick: () => setDeleteIndexModalVisible(true),
                 },

@@ -21,11 +21,12 @@ import {
   EuiFormRow,
   EuiEmptyPrompt,
   EuiText,
+  EuiHealth,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
-import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
+import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
-import { DataStreamStats } from "../../interface";
+import { DataStreamStats, DataStreamWithStats } from "../../interface";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
@@ -33,13 +34,10 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import DataStreamsActions from "../DataStreamsActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import { DataStream } from "../../../../../server/models/interfaces";
-import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
 
 interface DataStreamsProps extends RouteComponentProps {
   commonService: CommonService;
 }
-
-type DataStreamWithStats = DataStream & DataStreamStats;
 
 type DataStreamsState = {
   totalDataStreams: number;
@@ -47,7 +45,7 @@ type DataStreamsState = {
   size: string;
   sortField: keyof DataStreamWithStats;
   sortDirection: Direction;
-  selectedItems: DataStream[];
+  selectedItems: DataStreamWithStats[];
   dataStreams: DataStreamWithStats[];
   loading: boolean;
 } & SearchControlsProps["value"];
@@ -70,7 +68,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
       from: string;
       size: string;
       search: string;
-      sortField: keyof DataStream;
+      sortField: keyof DataStreamWithStats;
       sortDirection: Direction;
     };
     this.state = {
@@ -105,7 +103,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
 
   getDataStreams = async (): Promise<void> => {
     this.setState({ loading: true });
-    const { from, size } = this.state;
+    const { from, size, sortDirection, sortField } = this.state;
     const fromNumber = Number(from);
     const sizeNumber = Number(size);
     const { history, commonService } = this.props;
@@ -113,65 +111,77 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
     const queryParamsString = queryString.stringify(queryObject);
     history.replace({ ...this.props.location, search: queryParamsString });
 
-    const payload: any = {
-      format: "json",
-      name: `*${queryObject.search}*`,
-      s: `${queryObject.sortField}:${queryObject.sortDirection}`,
-    };
-
     let allDataStreams: DataStreamWithStats[] = [];
     let error = "";
     let totalDataStreams = 0;
+    let dataStreams: DataStreamWithStats[] = [];
 
-    let allDataStreamsResponse = await commonService.apiCaller<{
-      data_streams: DataStream[];
-    }>({
-      endpoint: "transport.request",
-      data: {
-        method: "GET",
-        path: "_data_stream/*",
-      },
-    });
-    let dataStreams: DataStream[] = [];
-
-    if (allDataStreamsResponse.ok) {
-      const dataStreamsResponse = allDataStreamsResponse?.response?.data_streams || [];
-      const dataStreams = dataStreamsResponse.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber);
-      const dataStreamDetailInfoResponse = await commonService.apiCaller<{
+    const [allDataStreamsResponse, dataStreamDetailInfoResponse] = await Promise.all([
+      commonService.apiCaller<{
+        data_streams: DataStream[];
+      }>({
+        endpoint: "transport.request",
+        data: {
+          method: "GET",
+          path: `_data_stream/*${queryObject.search}*`,
+        },
+      }),
+      await commonService.apiCaller<{
         data_streams: DataStreamStats[];
       }>({
         endpoint: "transport.request",
         data: {
           method: "GET",
-          path: `_data_stream/${dataStreams.map((item) => item.name).join(",")}/_stats?human=true`,
+          path: `_data_stream/*${queryObject.search}*/_stats?human=true`,
         },
-      });
-      totalDataStreams = dataStreamsResponse.length;
-      if (dataStreamDetailInfoResponse.ok) {
-        allDataStreams = dataStreamsResponse.map((item) => {
-          const findItem =
-            (dataStreamDetailInfoResponse.response?.data_streams || []).find((detailItem) => detailItem.data_stream === item.name) ||
-            ({} as DataStreamStats);
+      }),
+    ]);
+
+    if (allDataStreamsResponse.ok && dataStreamDetailInfoResponse.ok) {
+      allDataStreams = (allDataStreamsResponse.response?.data_streams || [])
+        .map((item) => {
+          const findItem = (dataStreamDetailInfoResponse.response?.data_streams || []).find(
+            (statsItem) => statsItem.data_stream === item.name
+          );
+          if (!findItem) {
+            return undefined;
+          }
+
           return {
             ...findItem,
             ...item,
           };
-        });
-      } else {
-        error = dataStreamDetailInfoResponse.error;
-      }
+        })
+        .filter((item) => item) as DataStreamWithStats[];
+      totalDataStreams = allDataStreams.length;
+      allDataStreams.sort((a, b) => {
+        if (sortDirection === "asc") {
+          if (a[sortField] < b[sortField]) {
+            return -1;
+          }
+
+          return 1;
+        } else {
+          if (a[sortField] > b[sortField]) {
+            return -1;
+          }
+
+          return 1;
+        }
+      });
+      dataStreams = allDataStreams.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber);
     } else {
-      error = allDataStreamsResponse.error;
+      error = allDataStreamsResponse.error || dataStreamDetailInfoResponse.error || "";
     }
 
     if (!error) {
       const payload = {
-        dataStreams: allDataStreams,
+        dataStreams,
         totalDataStreams,
         selectedItems: this.state.selectedItems
-          .map((item) => dataStreams.find((remoteItem) => remoteItem.name === item.name))
-          .filter((item) => item),
-      } as DataStreamsState;
+          .map((item) => allDataStreams.find((remoteItem) => remoteItem.name === item.name))
+          .filter((item) => item) as DataStreamWithStats[],
+      };
       this.setState(payload);
     } else {
       this.context.notifications.toasts.addDanger(error);
@@ -181,7 +191,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
     this.setState({ loading: false });
   };
 
-  onTableChange = ({ page: tablePage, sort }: Criteria<DataStream>): void => {
+  onTableChange = ({ page: tablePage, sort }: Criteria<DataStreamWithStats>): void => {
     const { index: page, size } = tablePage || {};
     const { field: sortField, direction: sortDirection } = sort || {};
     this.setState(
@@ -195,7 +205,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
     );
   };
 
-  onSelectionChange = (selectedItems: DataStream[]): void => {
+  onSelectionChange = (selectedItems: DataStreamWithStats[]): void => {
     this.setState({ selectedItems });
   };
 
@@ -220,7 +230,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
       },
     };
 
-    const selection: EuiTableSelectionType<DataStream> = {
+    const selection: EuiTableSelectionType<DataStreamWithStats> = {
       onSelectionChange: this.onSelectionChange,
     };
     return (
@@ -239,7 +249,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
                 ),
               },
               {
-                text: "Create template",
+                text: "Create data stream",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
@@ -289,7 +299,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               field: "name",
               name: "Data stream name",
               sortable: true,
-              render: (value: string) => {
+              render: (value: unknown) => {
                 return (
                   <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
                     <EuiLink>{value}</EuiLink>
@@ -298,23 +308,45 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               },
             },
             {
+              field: "status",
+              name: "Status",
+              sortable: true,
+              render: (health: string, item) => {
+                const color = health ? HEALTH_TO_COLOR[health.toLowerCase()] : "subdued";
+                const text = (health || item.status || "").toLowerCase();
+                return (
+                  <EuiHealth color={color} className="indices-health">
+                    {text}
+                  </EuiHealth>
+                );
+              },
+            },
+            {
               field: "backing_indices",
-              name: "backing indices count",
+              name: "Backing indices count",
+              sortable: true,
               align: "right",
             },
             {
               field: "store_size_bytes",
               name: "Total size",
               sortable: true,
-              render: (value, record: DataStreamWithStats) => {
+              align: "right",
+              render: (value, record) => {
                 return <>{record.store_size || ""}</>;
               },
             },
             {
-              field: "order",
-              name: "Priority",
+              field: "template",
+              name: "Template",
               sortable: true,
-              align: "right",
+              render: (value: unknown) => {
+                return (
+                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
+                    <EuiLink>{value}</EuiLink>
+                  </Link>
+                );
+              },
             },
           ]}
           isSelectable={true}

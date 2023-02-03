@@ -14,3 +14,14 @@ export const DEFAULT_QUERY_PARAMS = {
   sortField: "name" as keyof DataStream,
   sortDirection: SortDirection.DESC,
 };
+
+export const HEALTH_TO_COLOR: {
+  [health: string]: string;
+  green: string;
+  yellow: string;
+  red: string;
+} = {
+  green: "success",
+  yellow: "warning",
+  red: "danger",
+};
