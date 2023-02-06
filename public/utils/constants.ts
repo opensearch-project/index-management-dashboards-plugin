@@ -62,6 +62,7 @@ export const ROUTES = Object.freeze({
   SPLIT_INDEX: "/split-index",
   SHRINK_INDEX: "/shrink-index",
   DATA_STREAMS: "/data-streams",
+  CREATE_DATA_STREAM: "/create-data-stream",
 });
 
 export const BREADCRUMBS = Object.freeze({

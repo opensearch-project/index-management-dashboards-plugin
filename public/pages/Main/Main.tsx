@@ -42,6 +42,7 @@ import SplitIndex from "../SplitIndex";
 import IndexDetail from "../IndexDetail";
 import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
 import DataStreams from "../DataStreams";
+import CreateDataStream from "../CreateDataStream";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -57,6 +58,7 @@ enum Navigation {
   Aliases = "Aliases",
   Templates = "Templates",
   DataStreams = "Data streams",
+  CreateDataStream = "Create data stream",
 }
 
 enum Pathname {
@@ -89,6 +91,7 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.CREATE_TEMPLATE,
   ROUTES.SPLIT_INDEX,
   ROUTES.SHRINK_INDEX,
+  ROUTES.CREATE_DATA_STREAM,
 ];
 
 const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL];
@@ -511,6 +514,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <DataStreams {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_DATA_STREAM}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateDataStream {...props} />
                               </div>
                             )}
                           />
