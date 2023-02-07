@@ -54,10 +54,9 @@ export default function TemplateMappings(props: SubDetailProps) {
               },
             ],
           })}
-          readonly={readonly}
+          readonly
           isEdit={isEdit}
           ref={mappingsRef}
-          oldMappingsEditable
           docVersion={coreServices.docLinks.DOC_LINK_VERSION}
         />
       </EuiFormRow>

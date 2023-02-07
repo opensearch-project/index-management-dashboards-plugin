@@ -9,7 +9,6 @@ import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { INDEX_NAMING_MESSAGE, INDEX_NAMING_PATTERN, ROUTES } from "../../../../utils/constants";
-import { TemplateConvert } from "../../components/TemplateType";
 import { getCommonFormRowProps } from "../../hooks";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
@@ -55,9 +54,7 @@ export default function DefineTemplate(
           },
           {
             title: "Template type",
-            description: TemplateConvert({
-              value: values.data_stream,
-            }),
+            description: values.data_stream,
           },
           {
             title: "Index patterns",
@@ -73,16 +70,7 @@ export default function DefineTemplate(
   ) : (
     <ContentPanel title="Define data stream" titleSize="s">
       <EuiSpacer size="s" />
-      <CustomFormRow
-        {...getCommonFormRowProps("name", field)}
-        label="Data stream name"
-        position="bottom"
-        helpText={
-          <>
-            <div>{INDEX_NAMING_MESSAGE}</div>
-          </>
-        }
-      >
+      <CustomFormRow {...getCommonFormRowProps("name", field)} label="Data stream name" position="bottom" helpText={INDEX_NAMING_MESSAGE}>
         <Component
           options={matchedList.map((item) => ({
             label: searchValue,
@@ -95,8 +83,9 @@ export default function DefineTemplate(
               </h1>
             );
           }}
-          async={true}
+          async
           {...suggestionRegister}
+          onCreateOption={undefined}
           onSearchChange={(dataStreamName: string) => {
             setSearchValue(dataStreamName);
           }}
@@ -130,7 +119,7 @@ export default function DefineTemplate(
             {values.matchedTemplate}
           </EuiLink>
         ) : (
-          <></>
+          <>No index template matched</>
         )}
       </CustomFormRow>
     </ContentPanel>

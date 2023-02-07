@@ -50,6 +50,7 @@ export default function IndexAlias(props: SubDetailProps) {
             helpText="Select existing aliases or specify a new alias."
           >
             <AliasSelect
+              isDisabled
               {...field.registerField({
                 name: ["template", "aliases"],
                 rules: [...ALIAS_SELECT_RULE],

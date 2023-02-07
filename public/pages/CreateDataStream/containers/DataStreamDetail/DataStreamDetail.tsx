@@ -13,7 +13,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
-import { submitTemplate, getTemplate, getAllDataStreamTemplate } from "./hooks";
+import { getTemplate, getAllDataStreamTemplate, createDataStream } from "./hooks";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
@@ -47,37 +47,23 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
   >([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const field = useField({
-    values: {
-      priority: 0,
-      template: {
-        settings: {
-          "index.number_of_replicas": 1,
-          "index.number_of_shards": 1,
-          "index.refresh_interval": "1s",
-        },
-      },
-    } as Partial<TemplateItem>,
-    onChange(name, value) {
-      if (name === "data_stream" && value === undefined) {
-        field.deleteValue(name);
-      }
-    },
+    values: {} as Partial<TemplateItem>,
   });
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
-    const { errors, values: templateDetail } = (await field.validatePromise()) || {};
+    const { errors, values: dataStream } = (await field.validatePromise()) || {};
     if (errors) {
       return;
     }
     setIsSubmitting(true);
-    const result = await submitTemplate({
-      value: templateDetail,
+    const result = await createDataStream({
+      value: dataStream.name,
       commonService: services.commonService,
       isEdit,
     });
     if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess(`${templateDetail.name} has been successfully ${isEdit ? "updated" : "created"}.`);
-      onSubmitSuccess && onSubmitSuccess(templateDetail.name);
+      coreServices.notifications.toasts.addSuccess(`${dataStream.name} has been successfully ${isEdit ? "updated" : "created"}.`);
+      onSubmitSuccess && onSubmitSuccess(dataStream.name);
     } else {
       coreServices.notifications.toasts.addDanger(result.error);
     }
@@ -110,7 +96,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
       destroyRef.current = true;
     };
   }, []);
-  const values: TemplateItem = field.getValues();
+  const values: TemplateItem & { matchedTemplate?: string } = field.getValues();
   const subCompontentProps = {
     ...props,
     isEdit,
@@ -188,15 +174,19 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
       </EuiFlexGroup>
       <EuiSpacer />
       <DefineDataStream {...subCompontentProps} allDataStreamTemplates={templates} />
-      <EuiSpacer />
-      <ContentPanel title="Template details" titleSize="s">
-        <EuiSpacer size="s" />
-        <IndexAlias {...subCompontentProps} />
-        <EuiSpacer />
-        <IndexSettings {...subCompontentProps} />
-        <EuiSpacer />
-        <TemplateMappings {...subCompontentProps} />
-      </ContentPanel>
+      {values.matchedTemplate ? (
+        <>
+          <EuiSpacer />
+          <ContentPanel title="Template details" titleSize="s">
+            <EuiSpacer size="s" />
+            <IndexAlias {...subCompontentProps} />
+            <EuiSpacer />
+            <IndexSettings {...subCompontentProps} />
+            <EuiSpacer />
+            <TemplateMappings {...subCompontentProps} />
+          </ContentPanel>
+        </>
+      ) : null}
       {readonly ? null : (
         <>
           <EuiSpacer />

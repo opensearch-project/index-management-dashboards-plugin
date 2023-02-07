@@ -38,9 +38,9 @@ export default class CreateDataStream extends Component<CreateDataStreamProps> {
         href: `#${this.props.location.pathname}`,
       };
     } else {
-      lastBread = BREADCRUMBS.CREATE_TEMPLATE;
+      lastBread = BREADCRUMBS.CREATE_DATA_STREAM;
     }
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES, lastBread]);
+    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.DATA_STREAMS, lastBread]);
   }
 
   componentDidUpdate(prevProps: Readonly<CreateDataStreamProps>): void {
@@ -65,7 +65,7 @@ export default class CreateDataStream extends Component<CreateDataStreamProps> {
           readonly={this.readonly}
           templateName={this.template}
           onCancel={this.onCancel}
-          onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}
+          onSubmitSuccess={() => this.props.history.push(ROUTES.DATA_STREAMS)}
         />
       </div>
     );

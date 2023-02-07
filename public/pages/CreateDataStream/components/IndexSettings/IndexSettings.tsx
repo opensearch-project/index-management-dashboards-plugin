@@ -42,7 +42,7 @@ export default function IndexSettings(props: SubDetailProps) {
             helpText="Specify the number of primary shards in the index. Default is 1."
             {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"], field)}
           >
-            <AllBuiltInComponents.Number
+            <AllBuiltInComponents.Text
               {...field.registerField({
                 name: ["template", "settings", "index.number_of_shards"],
                 rules: [
@@ -73,7 +73,7 @@ export default function IndexSettings(props: SubDetailProps) {
             helpText="Specify the number of replicas each primary shard should have. Default is 1."
             {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"], field)}
           >
-            <AllBuiltInComponents.Number
+            <AllBuiltInComponents.Text
               {...field.registerField({
                 name: ["template", "settings", "index.number_of_replicas"],
                 rules: [
@@ -103,7 +103,7 @@ export default function IndexSettings(props: SubDetailProps) {
             helpText="Specify how often the index should refresh, which publishes its most recent changes and makes them available for search. Default is 1s."
             {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"], field)}
           >
-            <AllBuiltInComponents.Input
+            <AllBuiltInComponents.Text
               {...field.registerField({
                 name: ["template", "settings", "index.refresh_interval"],
               })}
@@ -124,7 +124,7 @@ export default function IndexSettings(props: SubDetailProps) {
           buttonContent: <h4>Advanced settings</h4>,
         }}
         editorProps={{
-          disabled: readonly,
+          disabled: true,
           width: "100%",
           formatValue: flat,
         }}
