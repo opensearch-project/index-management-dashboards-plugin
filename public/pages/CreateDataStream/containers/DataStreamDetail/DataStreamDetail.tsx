@@ -5,7 +5,6 @@
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
-import { transformArrayToObject } from "../../../../components/IndexMapping";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -13,20 +12,21 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
-import { getTemplate, getAllDataStreamTemplate, createDataStream } from "./hooks";
+import { getAllDataStreamTemplate, createDataStream, getDataStream } from "./hooks";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
-import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
+import DeleteDataStreamsModal from "../../../DataStreams/containers/DeleteDataStreamsModal";
 import DefineDataStream from "../DefineDataStream";
 import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
 import { ContentPanel } from "../../../../components/ContentPanel";
+import { DataStreamInEdit } from "../../interface";
 
 export interface DataStreamDetailProps {
-  templateName?: string;
+  dataStream?: string;
   onCancel?: () => void;
   onSubmitSuccess?: (templateName: string) => void;
   readonly?: boolean;
@@ -34,8 +34,8 @@ export interface DataStreamDetailProps {
 }
 
 const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>) => {
-  const { templateName, onCancel, onSubmitSuccess, readonly, history } = props;
-  const isEdit = !!templateName;
+  const { dataStream, onCancel, onSubmitSuccess, history } = props;
+  const isEdit = !!dataStream;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [visible, setVisible] = useState(false);
@@ -75,17 +75,16 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
   useImperativeHandle(ref, () => field);
   useEffect(() => {
     if (isEdit) {
-      getTemplate({
-        templateName,
+      getDataStream({
+        dataStream,
         coreService: coreServices,
         commonService: services.commonService,
       })
-        .then((template) => {
-          field.resetValues(template);
+        .then((dataStreamDetail) => {
+          field.resetValues(dataStreamDetail);
         })
         .catch(() => {
-          // do nothing
-          props.history.replace(ROUTES.TEMPLATES);
+          props.history.replace(ROUTES.DATA_STREAMS);
         });
     } else {
       getAllDataStreamTemplate({
@@ -96,7 +95,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
       destroyRef.current = true;
     };
   }, []);
-  const values: TemplateItem & { matchedTemplate?: string } = field.getValues();
+  const values: DataStreamInEdit & { matchedTemplate?: string } = field.getValues();
   const subCompontentProps = {
     ...props,
     isEdit,
@@ -107,10 +106,8 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <EuiTitle size="l">
-            {readonly ? <h1 title={values.name}>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} data stream</h1>}
-          </EuiTitle>
-          {readonly ? null : (
+          <EuiTitle size="l">{isEdit ? <h1 title={values.name}>{values.name}</h1> : <h1>Create data stream</h1>}</EuiTitle>
+          {isEdit ? null : (
             <CustomFormRow
               fullWidth
               label=""
@@ -128,37 +125,24 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
             </CustomFormRow>
           )}
         </EuiFlexItem>
-        {readonly ? (
+        {isEdit ? (
           <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
             <EuiButton
               style={{ marginRight: 20 }}
               onClick={() => {
-                const showValue: TemplateItemRemote = {
-                  ...values,
-                  template: {
-                    ...values.template,
-                    mappings: {
-                      ...values.template.mappings,
-                      properties: transformArrayToObject(values.template.mappings?.properties || []),
-                    },
-                  },
-                };
                 Modal.show({
                   "data-test-subj": "templateJSONDetailModal",
                   title: values.name,
-                  content: <JSONEditor value={JSON.stringify(showValue, null, 2)} disabled />,
+                  content: <JSONEditor value={JSON.stringify(values, null, 2)} disabled />,
                 });
               }}
             >
               View JSON
             </EuiButton>
-            <EuiButton style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_TEMPLATE}/${values.name}`)}>
-              Edit
-            </EuiButton>
-            <EuiButton color="danger" style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
+            <EuiButton color="danger" onClick={() => setVisible(true)}>
               Delete
             </EuiButton>
-            <DeleteTemplateModal
+            <DeleteDataStreamsModal
               visible={visible}
               selectedItems={[values.name]}
               onClose={() => {
@@ -166,7 +150,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               }}
               onDelete={() => {
                 setVisible(false);
-                history.replace(ROUTES.TEMPLATES);
+                history.replace(ROUTES.DATA_STREAMS);
               }}
             />
           </EuiFlexItem>
@@ -187,7 +171,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
           </ContentPanel>
         </>
       ) : null}
-      {readonly ? null : (
+      {isEdit ? null : (
         <>
           <EuiSpacer />
           <EuiSpacer />

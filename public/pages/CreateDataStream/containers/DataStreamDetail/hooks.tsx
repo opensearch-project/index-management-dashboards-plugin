@@ -1,9 +1,7 @@
-import { get, set } from "lodash";
-import { flatten } from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
-import { transformObjectToArray } from "../../../../components/IndexMapping";
 import { CommonService } from "../../../../services";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
+import { DataStream } from "../../../../../server/models/interfaces";
 
 export const createDataStream = async (props: { value: string; isEdit: boolean; commonService: CommonService }) => {
   return await props.commonService.apiCaller({
@@ -15,33 +13,25 @@ export const createDataStream = async (props: { value: string; isEdit: boolean; 
   });
 };
 
-export const getTemplate = async (props: { templateName: string; commonService: CommonService; coreService: CoreStart }) => {
+export const getDataStream = async (props: { dataStream: string; commonService: CommonService; coreService: CoreStart }) => {
   const response = await props.commonService.apiCaller<{
-    index_templates: { name: string; index_template: TemplateItemRemote }[];
+    data_streams: DataStream[];
   }>({
     endpoint: "transport.request",
     data: {
       method: "GET",
-      path: `_index_template/${props.templateName}?flat_settings=true`,
+      path: `_data_stream/${props.dataStream}`,
     },
   });
   let error: string = "";
   if (response.ok) {
-    const findItem = response.response?.index_templates?.find((item) => item.name === props.templateName);
+    const findItem = response.response?.data_streams?.find((item) => item.name === props.dataStream);
     if (findItem) {
-      const templateDetail = findItem.index_template;
+      const dataStreamDetail = findItem;
 
-      // Opensearch dashboard core does not flattern the settings
-      // do it manually.
-      const payload = {
-        ...templateDetail,
-        name: props.templateName,
-      };
-      set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
-      set(payload, "template.settings", flatten(get(payload, "template.settings") || {}));
-      return JSON.parse(JSON.stringify(payload));
+      return JSON.parse(JSON.stringify(dataStreamDetail));
     }
-    error = `The template [${props.templateName}] does not exist.`;
+    error = `The data stream ${props.dataStream} does not exist.`;
   } else {
     error = response.error || "";
   }

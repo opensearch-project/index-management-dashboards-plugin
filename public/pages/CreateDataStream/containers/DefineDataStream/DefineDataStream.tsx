@@ -3,7 +3,7 @@ import { EuiBadge, EuiLink, EuiSpacer } from "@elastic/eui";
 import { flatten } from "flat";
 import { get, set } from "lodash";
 import { transformObjectToArray } from "../../../../components/IndexMapping";
-import { SubDetailProps } from "../../interface";
+import { DataStreamInEdit, SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
@@ -21,9 +21,9 @@ export default function DefineTemplate(
     }[];
   }
 ) {
-  const { readonly, field, isEdit, allDataStreamTemplates } = props;
+  const { field, isEdit, allDataStreamTemplates } = props;
   const [searchValue, setSearchValue] = useState("");
-  const values = field.getValues();
+  const values: DataStreamInEdit = field.getValues();
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.ComboBoxSingle;
   const matchedList = allDataStreamTemplates.filter((item) => {
     if (!searchValue) {
@@ -43,26 +43,30 @@ export default function DefineTemplate(
     ],
     props: {},
   });
-  return readonly ? (
-    <ContentPanel title="Template details" titleSize="s">
+  return isEdit ? (
+    <ContentPanel title="Data stream details" titleSize="s">
       <EuiSpacer size="s" />
       <DescriptionListHoz
         listItems={[
           {
-            title: "Template name",
+            title: "Name",
             description: values.name,
           },
           {
-            title: "Template type",
-            description: values.data_stream,
+            title: "Status",
+            description: values.status,
           },
           {
-            title: "Index patterns",
-            description: values.index_patterns?.join(","),
+            title: "Template name",
+            description: <EuiLink href={`#${ROUTES.CREATE_TEMPLATE}/${values.template}/readonly`}>{values.template}</EuiLink>,
           },
           {
-            title: "Priority",
-            description: values.priority,
+            title: "Backing indexes",
+            description: (values.indices || []).length,
+          },
+          {
+            title: "Timefield",
+            description: (values.indices || []).length,
           },
         ]}
       />
