@@ -1,7 +1,7 @@
 import { get, set } from "lodash";
 import { flatten } from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
-import { transformArrayToObject, transformObjectToArray } from "../../../CreateIndex/components/IndexMapping";
+import { transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping";
 import { CommonService } from "../../../../services";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 

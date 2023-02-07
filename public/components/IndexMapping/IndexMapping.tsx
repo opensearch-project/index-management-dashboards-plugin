@@ -6,10 +6,10 @@
 import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
 import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink } from "@elastic/eui";
 import { set, get, isEmpty } from "lodash";
-import JSONEditor, { IJSONEditorRef } from "../../../../components/JSONEditor";
-import { Modal } from "../../../../components/Modal";
-import { MappingsProperties } from "../../../../../models/interfaces";
-import CustomFormRow from "../../../../components/CustomFormRow";
+import JSONEditor, { IJSONEditorRef } from "../JSONEditor";
+import { Modal } from "../Modal";
+import { MappingsProperties } from "../../../models/interfaces";
+import CustomFormRow from "../CustomFormRow";
 import MappingLabel, { IMappingLabelRef } from "../MappingLabel";
 import { transformObjectToArray, transformArrayToObject, countNodesInTree } from "./helper";
 import { IndexMappingsObjectAll, IndexMappingProps, EDITOR_MODE, IIndexMappingsRef } from "./interfaces";

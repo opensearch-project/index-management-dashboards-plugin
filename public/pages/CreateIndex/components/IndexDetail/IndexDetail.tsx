@@ -20,7 +20,7 @@ import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
-import IndexMapping from "../IndexMapping";
+import IndexMapping from "../../../../components/IndexMapping";
 import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
 import { ServerResponse } from "../../../../../server/models/types";
 import {
@@ -36,7 +36,7 @@ import {
 import { Modal } from "../../../../components/Modal";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping";
+import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping";
 import { IFieldComponentProps } from "../../../../components/FormGenerator";
 import SimplePopover from "../../../../components/SimplePopover";
 import { SimpleEuiToast } from "../../../../components/Toast";

@@ -1,4 +1,4 @@
-import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
+import { MappingsProperties, MappingsPropertiesObject } from "../../../models/interfaces";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
   return Object.entries(obj).map(([fieldName, fieldSettings]) => {

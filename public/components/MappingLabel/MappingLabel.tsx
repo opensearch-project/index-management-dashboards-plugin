@@ -12,11 +12,11 @@ import {
   EuiFormRowProps,
 } from "@elastic/eui";
 import { set, pick } from "lodash";
-import { MappingsProperties } from "../../../../../models/interfaces";
-import { AllBuiltInComponents } from "../../../../components/FormGenerator";
-import useField, { transformNameToString } from "../../../../lib/field";
-import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../../../utils/constants";
-import SimplePopover from "../../../../components/SimplePopover";
+import { MappingsProperties } from "../../../models/interfaces";
+import { AllBuiltInComponents } from "../FormGenerator";
+import useField, { transformNameToString } from "../../lib/field";
+import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../utils/constants";
+import SimplePopover from "../SimplePopover";
 
 const OLD_VALUE_DISABLED_REASON = "Old mappings cannot be modified";
 

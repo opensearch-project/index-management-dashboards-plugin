@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { EuiBadge, EuiLink, EuiSpacer } from "@elastic/eui";
 import { flatten } from "flat";
 import { get, set } from "lodash";
-import { transformObjectToArray } from "../../../CreateIndex/components/IndexMapping";
+import { transformObjectToArray } from "../../../../components/IndexMapping";
 import { SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
