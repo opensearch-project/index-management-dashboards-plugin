@@ -88,7 +88,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
   }
 
   componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
+    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.DATA_STREAMS]);
     this.getDataStreams();
   }
 

@@ -66,7 +66,7 @@ export default function DefineTemplate(
           },
           {
             title: "Timefield",
-            description: (values.indices || []).length,
+            description: values.timestamp_field?.name || "",
           },
         ]}
       />
