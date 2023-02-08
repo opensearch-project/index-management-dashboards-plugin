@@ -24,6 +24,7 @@ import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { DataStreamInEdit } from "../../interface";
+import BackingIndices from "../BackingIndices";
 
 export interface DataStreamDetailProps {
   dataStream?: string;
@@ -169,6 +170,12 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
             <EuiSpacer />
             <TemplateMappings {...subCompontentProps} />
           </ContentPanel>
+        </>
+      ) : null}
+      {isEdit ? (
+        <>
+          <EuiSpacer />
+          <BackingIndices {...subCompontentProps} />
         </>
       ) : null}
       {isEdit ? null : (
