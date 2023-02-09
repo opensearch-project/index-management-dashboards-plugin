@@ -29,7 +29,7 @@ import { ContentPanel, ContentPanelActions } from "../../../../components/Conten
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
 import { IAlias } from "../../interface";
-import { BREADCRUMBS } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
@@ -165,7 +165,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
   };
 
   groupResponse = (array: IAlias[]) => {
-    const groupedMap: Record<string, IAlias & { order: number }> = {};
+    const groupedMap: Record<string, IAlias & { order: number; writeIndex: string }> = {};
     array.forEach((item, index) => {
       groupedMap[item.alias] = groupedMap[item.alias] || {
         ...item,
@@ -173,10 +173,24 @@ class Aliases extends Component<AliasesProps, AliasesState> {
         indexArray: [],
       };
       groupedMap[item.alias].indexArray.push(item.index);
+      if (item.is_write_index === "true") {
+        groupedMap[item.alias].writeIndex = item.index;
+      } else if (!groupedMap[item.alias].writeIndex) {
+        groupedMap[item.alias].writeIndex = "";
+      }
     });
-    const result = Object.values(groupedMap);
+    const result = Object.values(groupedMap).map((item) => {
+      if (item.indexArray.length === 1) {
+        return {
+          ...item,
+          writeIndex: item.indexArray[0],
+        };
+      }
+
+      return item;
+    });
     result.sort((a, b) => a.order - b.order);
-    return Object.values(groupedMap).sort();
+    return result;
   };
 
   getAliases = async (): Promise<void> => {
@@ -352,6 +366,17 @@ class Aliases extends Component<AliasesProps, AliasesState> {
                     {value}
                   </EuiLink>
                 );
+              },
+            },
+            {
+              field: "writeIndex",
+              name: "Writing index",
+              render: (value: string) => {
+                if (value) {
+                  return <EuiLink href={`#${ROUTES.INDEX_DETAIL}/${value}`}>{value}</EuiLink>;
+                }
+
+                return "-";
               },
             },
             {
