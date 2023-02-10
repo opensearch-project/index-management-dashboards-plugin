@@ -25,6 +25,7 @@ import TemplateMappings from "../TemplateMappings";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { DataStreamInEdit } from "../../interface";
 import BackingIndices from "../BackingIndices";
+import DataStreamsActions from "../../../DataStreams/containers/DataStreamsActions";
 
 export interface DataStreamDetailProps {
   dataStream?: string;
@@ -140,9 +141,11 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
             >
               View JSON
             </EuiButton>
-            <EuiButton color="danger" onClick={() => setVisible(true)}>
-              Delete
-            </EuiButton>
+            <DataStreamsActions
+              selectedItems={[values?.name]}
+              history={props.history}
+              onDelete={() => props.history.replace(ROUTES.DATA_STREAMS)}
+            />
             <DeleteDataStreamsModal
               visible={visible}
               selectedItems={[values.name]}

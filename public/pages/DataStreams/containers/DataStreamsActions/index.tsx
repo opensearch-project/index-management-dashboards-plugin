@@ -7,11 +7,9 @@ import { RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
-import { DataStreamWithStats } from "../../interface";
-import { ROUTES } from "../../../../utils/constants";
 
 export interface DataStreamsActionsProps {
-  selectedItems: DataStreamWithStats[];
+  selectedItems: string[];
   onDelete: () => void;
   history: RouteComponentProps["history"];
 }
@@ -47,12 +45,6 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
               id: 0,
               items: [
                 {
-                  name: "Edit",
-                  disabled: selectedItems.length !== 1,
-                  "data-test-subj": "editAction",
-                  onClick: () => props.history.push(`${ROUTES.CREATE_TEMPLATE}/${selectedItems[0].name}`),
-                },
-                {
                   name: "Delete",
                   disabled: selectedItems.length < 1,
                   "data-test-subj": "deleteAction",
@@ -64,7 +56,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         />
       </SimplePopover>
       <DeleteIndexModal
-        selectedItems={selectedItems.map((item) => item.name)}
+        selectedItems={selectedItems}
         visible={deleteIndexModalVisible}
         onClose={onDeleteIndexModalClose}
         onDelete={() => {
