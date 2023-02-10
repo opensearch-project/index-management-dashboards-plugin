@@ -31,7 +31,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const { indexes = "" } = props.match.params;
   const field = useField({
     values: {
-      indexes: indexes.split(","),
+      indexes: indexes ? indexes.split(",") : [],
     },
   });
 
@@ -119,6 +119,17 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
             }
             {...field.registerField({
               name: "indexes",
+              rules: [
+                {
+                  validator(rule, value) {
+                    if (!value || !value.length) {
+                      return Promise.reject("Indexes is required");
+                    } else {
+                      return Promise.resolve("");
+                    }
+                  },
+                },
+              ],
             })}
             singleSelect={false}
           />
