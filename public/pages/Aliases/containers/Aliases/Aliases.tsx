@@ -66,7 +66,7 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
   };
 
   return (
-    <>
+    <div>
       <span>{props.indices.slice(0, 3).join(", ")}</span>
       {props.indices.length <= 3 ? null : (
         <EuiLink style={{ marginLeft: 8 }} data-test-subj={`${props.indices.length - 3} more`} onClick={() => setHide(!hide)}>
@@ -102,7 +102,7 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
           </EuiFlyoutBody>
         </EuiFlyout>
       )}
-    </>
+    </div>
   );
 }
 
