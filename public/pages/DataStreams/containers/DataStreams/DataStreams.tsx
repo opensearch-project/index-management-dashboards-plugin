@@ -373,7 +373,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
                   <EuiButton
                     fill
                     onClick={() => {
-                      this.props.history.push(ROUTES.CREATE_TEMPLATE);
+                      this.props.history.push(ROUTES.CREATE_DATA_STREAM);
                     }}
                   >
                     Create data stream
