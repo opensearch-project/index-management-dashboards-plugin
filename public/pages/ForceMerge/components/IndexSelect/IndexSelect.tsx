@@ -7,7 +7,7 @@ import { EuiComboBoxOptionOption } from "@elastic/eui";
 import { _EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { CoreStart } from "opensearch-dashboards/public";
 import ComboBoxWithoutWarning from "../../../../components/ComboBoxWithoutWarning";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexSelectItem } from "../../models/interfaces";
 import { filterByMinimatch } from "../../../../../utils/helper";
@@ -15,9 +15,9 @@ import { SYSTEM_ALIAS, SYSTEM_INDEX } from "../../../../../utils/constants";
 
 interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "data-test-subj" | "placeholder"> {
   getIndexOptions: (searchValue: string) => Promise<EuiComboBoxOptionOption<IndexSelectItem>[]>;
-  onChange: (options: EuiComboBoxOptionOption<IndexSelectItem>[]) => void;
+  onChange: (options: string[]) => void;
   singleSelect: boolean;
-  value?: EuiComboBoxOptionOption<IndexSelectItem>[];
+  value?: string[];
   excludeSystemIndex?: boolean;
 }
 
@@ -52,6 +52,16 @@ export default function IndexSelect(props: IndexSelectProps) {
     });
   };
 
+  const flattenedOptions = useMemo(
+    () => indexOptions.reduce((total, current) => [...total, ...(current.options || [])], [] as EuiComboBoxOptionOption<IndexSelectItem>[]),
+    [indexOptions]
+  );
+
+  const finalSelectedOptions: EuiComboBoxOptionOption<IndexSelectItem>[] =
+    props.value
+      ?.map((item) => flattenedOptions.find((option) => option.label === item) as EuiComboBoxOptionOption<IndexSelectItem>)
+      .filter((item) => item) || [];
+
   return (
     <div>
       <ComboBoxWithoutWarning
@@ -59,8 +69,8 @@ export default function IndexSelect(props: IndexSelectProps) {
         placeholder={props.placeholder}
         options={indexOptions}
         async
-        selectedOptions={props.value}
-        onChange={props.onChange}
+        selectedOptions={finalSelectedOptions}
+        onChange={(selectedOptions) => props.onChange(selectedOptions.map((item) => item.label))}
         onSearchChange={onSearchChange}
         isClearable={true}
         singleSelection={props.singleSelect ? { asPlainText: true } : false}

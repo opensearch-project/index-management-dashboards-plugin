@@ -501,6 +501,14 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={`${ROUTES.FORCE_MERGE}/:indexes`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ForceMerge {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={ROUTES.FORCE_MERGE}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>

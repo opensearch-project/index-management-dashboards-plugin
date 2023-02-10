@@ -3,37 +3,50 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import React from "react";
 import CustomFormRow from "../../../../components/CustomFormRow";
-import { EuiCheckbox, EuiComboBox, EuiComboBoxOptionOption, EuiFieldNumber, EuiLink, EuiRadioGroup, EuiSpacer } from "@elastic/eui";
-import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
+import { AllBuiltInComponents } from "../../../../components/FormGenerator";
+import { FieldInstance } from "../../../../lib/field";
+import { EuiSpacer } from "@elastic/eui";
 
-interface ReindexOptionsProps {}
+interface ForceMergeOptionsProps {
+  field: FieldInstance;
+}
 
-const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
-  const coreServices = useContext(CoreServicesContext) as CoreStart;
-
-  const {} = props;
+const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
+  const { field } = props;
 
   return (
-    <div style={{ padding: "10px 10px" }}>
-      <CustomFormRow
-        label="Reindex only unique documents"
-        helpText={
-          <>
-            You can choose to copy only the documents that do not exist in the destination index. By default, OpenSearch will copy all
-            documents from the source index.{" "}
-            <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.unique} target="_blank">
-              Learn more.
-            </EuiLink>
-          </>
-        }
-      >
-        123
+    <div style={{ padding: "10px 0px" }}>
+      <CustomFormRow label="Flush indices" helpText="If true, Opensearch will perform a flush on the indices after the force merge.">
+        <AllBuiltInComponents.Switch
+          {...field.registerField({
+            name: "flush",
+          })}
+        />
       </CustomFormRow>
+      <EuiSpacer />
+      <CustomFormRow
+        label="Only expunge delete"
+        helpText="If true, expunge all segments containing more than index.merge.policy.expunge_deletes_allowed (default to 10) percents of deleted documents."
+      >
+        <AllBuiltInComponents.Switch
+          {...field.registerField({
+            name: "only_expunge_deletes",
+          })}
+        />
+      </CustomFormRow>
+      <EuiSpacer />
+      <CustomFormRow label="Max number of segments" helpText="The number of segments to merge to. To fully merge indices, set it to 1.">
+        <AllBuiltInComponents.Number
+          {...field.registerField({
+            name: "max_num_segments",
+          })}
+        />
+      </CustomFormRow>
+      <EuiSpacer />
     </div>
   );
 };
 
-export default ReindexAdvancedOptions;
+export default ForceMergeAdvancedOptions;
