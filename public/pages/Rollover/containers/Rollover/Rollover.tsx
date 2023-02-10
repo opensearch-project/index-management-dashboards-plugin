@@ -124,7 +124,7 @@ export default function IndexDetail(props: RolloverProps) {
   };
 
   const onSubmit = async () => {
-    const formGeneratersRes = await Promise.all([sourceRef.current?.validatePromise(), conditionsRef.current?.validatePromise()]);
+    const formGeneratersRes = await Promise.all([sourceRef.current?.validatePromise()]);
     const hasError = formGeneratersRes.some((item) => item?.errors);
     if (hasError) {
       return;
@@ -145,10 +145,7 @@ export default function IndexDetail(props: RolloverProps) {
       payload.newIndex = index;
       payload.body = {
         ...others,
-        conditions: finalValues.conditions,
       };
-    } else {
-      payload.body.conditions = finalValues.conditions;
     }
     setIsLoading(true);
 
@@ -306,48 +303,6 @@ export default function IndexDetail(props: RolloverProps) {
           <EuiSpacer />
         </>
       ) : null}
-      <ContentPanel title="Conditions - optional" titleSize="s">
-        <FormGenerator
-          ref={conditionsRef}
-          formFields={[
-            {
-              name: ["conditions", "max_age"],
-              rowProps: {
-                label: "Minimum index age",
-                helpText: 'The minimum age required to roll over the index. Accepts time units, e.g. "5h" or "1d".',
-              },
-              type: "Input",
-            },
-            {
-              name: ["conditions", "max_docs"],
-              rowProps: {
-                label: "Minimum doc count",
-                helpText: "The minimum number of documents required to roll over the index.",
-              },
-              type: "Number",
-            },
-            {
-              name: ["conditions", "max_size"],
-              rowProps: {
-                label: "Minimum index size",
-                helpText:
-                  'The minimum size of the total primary shard storage required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".',
-              },
-              type: "Input",
-            },
-            {
-              name: ["conditions", "max_primary_shard_size"],
-              rowProps: {
-                label: "Minimum primary shard size",
-                helpText:
-                  'The minimum size of a single primary shard required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".',
-              },
-              type: "Input",
-            },
-          ]}
-        />
-      </ContentPanel>
-      <EuiSpacer />
       {flyoutVisible ? (
         <EuiFlyout hideCloseButton onClose={() => null}>
           <EuiFlyoutHeader>
