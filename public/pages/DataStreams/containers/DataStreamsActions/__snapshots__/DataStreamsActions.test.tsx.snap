@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TemplatesActions /> spec delete templates by calling commonService 1`] = `
+exports[`<DataStreamsActions /> spec delete data streams by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"
@@ -27,7 +27,7 @@ exports[`<TemplatesActions /> spec delete templates by calling commonService 1`]
 </div>
 `;
 
-exports[`<TemplatesActions /> spec renders the component and all the actions should be disabled when no items selected 1`] = `
+exports[`<DataStreamsActions /> spec renders the component and all the actions should be disabled when no items selected 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"

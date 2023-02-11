@@ -14,7 +14,8 @@ import { ServicesContext } from "../../../../services";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import userEvent from "@testing-library/user-event";
-import { ITemplate } from "../../interface";
+import { DataStreamStats, DataStreamWithStats } from "../../interface";
+import { DataStream } from "../../../../../server/models/interfaces";
 
 function renderWithRouter() {
   return {
@@ -43,18 +44,31 @@ const testTemplateId = "test";
 describe("<DataStreams /> spec", () => {
   beforeEach(() => {
     browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
-      if (payload.endpoint === "cat.dataStreams") {
-        return {
-          ok: true,
-          response: [
-            {
-              name: testTemplateId,
-              index_patterns: "[1]",
-              version: "",
-              order: 1,
+      const path: string = payload?.data?.path || "";
+      if (path.startsWith("_data_stream/*")) {
+        if (path.includes("/_stats?human=true")) {
+          return {
+            ok: true,
+            response: {
+              data_streams: [
+                {
+                  data_stream: "1",
+                },
+              ] as DataStreamStats[],
             },
-          ] as ITemplate[],
-        };
+          };
+        } else {
+          return {
+            ok: true,
+            response: {
+              data_streams: [
+                {
+                  name: "1",
+                },
+              ] as DataStream[],
+            },
+          };
+        }
       }
 
       return {
@@ -65,31 +79,23 @@ describe("<DataStreams /> spec", () => {
     window.location.hash = "/";
   });
   it("renders the component", async () => {
-    const { container, getByTestId } = renderWithRouter();
+    const { container } = renderWithRouter();
 
     expect(container.firstChild).toMatchSnapshot();
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
-    });
-    userEvent.click(getByTestId("tableHeaderCell_name_0").querySelector("button") as Element);
-    await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
-      expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-        data: { format: "json", name: `**`, s: "name:asc" },
-        endpoint: "cat.dataStreams",
-      });
+      expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
     });
   });
 
   it("with some actions", async () => {
     const { getByPlaceholderText } = renderWithRouter();
-    expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(1);
+    expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(2);
     userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-        data: { format: "json", name: `*${testTemplateId}*`, s: "name:desc" },
-        endpoint: "cat.dataStreams",
+        data: { method: "GET", path: "_data_stream/**" },
+        endpoint: "transport.request",
       });
     });
   });

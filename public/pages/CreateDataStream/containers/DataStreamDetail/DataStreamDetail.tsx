@@ -133,7 +133,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               style={{ marginRight: 20 }}
               onClick={() => {
                 Modal.show({
-                  "data-test-subj": "templateJSONDetailModal",
+                  "data-test-subj": "dataStreamJSONDetailModal",
                   title: values.name,
                   content: <JSONEditor value={JSON.stringify(values, null, 2)} disabled />,
                 });

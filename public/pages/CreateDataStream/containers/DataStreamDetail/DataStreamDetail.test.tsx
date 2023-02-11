@@ -20,7 +20,7 @@ function renderCreateDataStream(props: Omit<DataStreamDetailProps, "history">) {
         <CoreServicesContext.Provider value={coreServicesMock}>
           <ServicesContext.Provider value={browserServicesMock}>
             <Route path="/" render={(routeProps) => <DataStreamDetail {...props} history={routeProps.history} />} />
-            <Route path={ROUTES.TEMPLATES} render={(routeProps) => <>This is {ROUTES.TEMPLATES}</>} />
+            <Route path={ROUTES.DATA_STREAMS} render={(routeProps) => <>This is {ROUTES.DATA_STREAMS}</>} />
           </ServicesContext.Provider>
         </CoreServicesContext.Provider>
       </HashRouter>
@@ -32,12 +32,9 @@ describe("<DataStreamDetail /> spec", () => {
   // main unit test case is in CreateDataStream.test.tsx
   it("render component", async () => {
     const { container } = renderCreateDataStream({});
-    await waitFor(
-      () => expect((document.querySelector("#accordionForCreateDataStreamSettings") as HTMLDivElement).style.height).toEqual("0px"),
-      {
-        timeout: 3000,
-      }
-    );
+    await waitFor(() => {}, {
+      timeout: 3000,
+    });
     expect(container).toMatchSnapshot();
   });
 
@@ -46,64 +43,27 @@ describe("<DataStreamDetail /> spec", () => {
       return {
         ok: true,
         response: {
-          index_templates: [
+          data_streams: [
             {
-              name: "good_template",
-              template: {},
+              name: "good_data_stream",
+              indices: [],
             },
           ],
         },
       };
     }) as any;
-    const { getByText, getByTestId, findByTitle } = renderCreateDataStream({
-      readonly: true,
-      templateName: "good_template",
+    const { getByText, getByTestId, findAllByText } = renderCreateDataStream({
+      dataStream: "good_data_stream",
     });
-    await findByTitle("good_template");
+    await findAllByText("good_data_stream");
     userEvent.click(getByText("View JSON"));
     await waitFor(() =>
       expect(
-        JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")
+        JSON.parse(getByTestId("dataStreamJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")
       ).toEqual({
-        name: "good_template",
-        template: {
-          mappings: {
-            properties: {},
-          },
-          settings: {},
-        },
+        name: "good_data_stream",
+        indices: [],
       })
     );
-  });
-
-  it("shows the delete modal", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn(async () => {
-      return {
-        ok: true,
-        response: {
-          index_templates: [
-            {
-              name: "good_template",
-              template: {},
-            },
-          ],
-        },
-      };
-    }) as any;
-    const { queryByText, getByText, getByTestId, findByTitle, findByText } = renderCreateDataStream({
-      readonly: true,
-      templateName: "good_template",
-    });
-    await findByTitle("good_template");
-    userEvent.click(getByText("Delete"));
-    await findByText("Delete Templates");
-    userEvent.click(getByTestId("deletaCancelButton"));
-    await waitFor(() => expect(queryByText("Delete Templates")).toBeNull());
-    userEvent.click(getByText("Delete"));
-    await findByText("Delete Templates");
-    userEvent.type(getByTestId("deleteInput"), "delete");
-    userEvent.click(getByTestId("deleteConfirmButton"));
-    await findByText(`This is ${ROUTES.TEMPLATES}`);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
   });
 });

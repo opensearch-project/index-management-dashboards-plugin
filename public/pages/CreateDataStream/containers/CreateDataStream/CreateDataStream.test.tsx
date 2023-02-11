@@ -13,7 +13,7 @@ import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../.
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-function renderCreateDataStreamWithRouter(initialEntries = [ROUTES.CREATE_TEMPLATE] as string[]) {
+function renderCreateDataStreamWithRouter(initialEntries = [ROUTES.DATA_STREAMS] as string[]) {
   return {
     ...render(
       <Router initialEntries={initialEntries}>
@@ -21,15 +21,11 @@ function renderCreateDataStreamWithRouter(initialEntries = [ROUTES.CREATE_TEMPLA
           <ServicesContext.Provider value={browserServicesMock}>
             <Switch>
               <Route
-                path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
+                path={`${ROUTES.CREATE_DATA_STREAM}/:template`}
                 render={(props: RouteComponentProps) => <CreateDataStream {...props} />}
               />
-              <Route
-                path={`${ROUTES.CREATE_TEMPLATE}/:template`}
-                render={(props: RouteComponentProps) => <CreateDataStream {...props} />}
-              />
-              <Route path={ROUTES.CREATE_TEMPLATE} render={(props: RouteComponentProps) => <CreateDataStream {...props} />} />
-              <Route path={ROUTES.TEMPLATES} render={(props: RouteComponentProps) => <h1>location is: {ROUTES.TEMPLATES}</h1>} />
+              <Route path={ROUTES.CREATE_DATA_STREAM} render={(props: RouteComponentProps) => <CreateDataStream {...props} />} />
+              <Route path={ROUTES.DATA_STREAMS} render={(props: RouteComponentProps) => <h1>location is: {ROUTES.DATA_STREAMS}</h1>} />
             </Switch>
           </ServicesContext.Provider>
         </CoreServicesContext.Provider>
@@ -42,88 +38,13 @@ describe("<CreateDataStream /> spec", () => {
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });
-  it("it goes to templates page when click cancel", async () => {
-    const { getByTestId, getByText, findByTitle, container } = renderCreateDataStreamWithRouter([
-      `${ROUTES.CREATE_TEMPLATE}/good_template/readonly`,
-    ]);
-    await findByTitle("good_template");
+  it("it goes to data streams page when click cancel", async () => {
+    const { getByTestId, getByText, container, findByText } = renderCreateDataStreamWithRouter([ROUTES.CREATE_DATA_STREAM]);
+    await findByText("Define data stream");
     expect(container).toMatchSnapshot();
-    userEvent.click(getByText("Edit"));
-    await waitFor(() => expect(document.querySelector('[data-test-subj="form-row-name"] [title="good_template"]')).toBeInTheDocument(), {
-      timeout: 3000,
-    });
     userEvent.click(getByTestId("CreateDataStreamCancelButton"));
     await waitFor(() => {
-      expect(getByText(`location is: ${ROUTES.TEMPLATES}`)).toBeInTheDocument();
+      expect(getByText(`location is: ${ROUTES.DATA_STREAMS}`)).toBeInTheDocument();
     });
   });
-
-  it("it goes to indices page when click create successfully in happy path", async () => {
-    const { getByText, getByTestId } = renderCreateDataStreamWithRouter([`${ROUTES.CREATE_TEMPLATE}`]);
-
-    const templateNameInput = getByTestId("form-row-name").querySelector("input") as HTMLInputElement;
-    const submitButton = getByTestId("CreateDataStreamCreateButton");
-    const shardsInput = getByTestId("form-row-template.settings.index.number_of_shards").querySelector("input") as HTMLInputElement;
-    const replicaInput = getByTestId("form-row-template.settings.index.number_of_replicas").querySelector("input") as HTMLInputElement;
-    userEvent.type(templateNameInput, `bad_template`);
-
-    userEvent.click(submitButton);
-    await waitFor(() => expect(getByText("Index patterns must be defined")).not.toBeNull(), {
-      timeout: 3000,
-    });
-
-    const patternInput = getByTestId("form-row-index_patterns").querySelector('[data-test-subj="comboBoxSearchInput"]') as HTMLInputElement;
-    userEvent.type(patternInput, `test_patterns{enter}`);
-
-    userEvent.click(submitButton);
-    await waitFor(() => expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith("bad template"));
-    userEvent.clear(templateNameInput);
-    userEvent.type(templateNameInput, "good_template");
-
-    userEvent.clear(shardsInput);
-    userEvent.type(shardsInput, "1.5");
-    await waitFor(() => expect(getByText("Number of primary shards must be an integer.")).toBeInTheDocument(), { timeout: 3000 });
-    userEvent.clear(shardsInput);
-    userEvent.type(shardsInput, "1");
-
-    userEvent.clear(replicaInput);
-    userEvent.type(replicaInput, "1.5");
-    await waitFor(() => expect(getByText("Number of replicas must be an integer")).toBeInTheDocument(), { timeout: 3000 });
-    userEvent.clear(replicaInput);
-    userEvent.type(replicaInput, "1");
-
-    userEvent.click(getByTestId("createIndexAddFieldButton"));
-    userEvent.click(submitButton);
-    await waitFor(() => expect(getByText("Field name is required, please input")).not.toBeNull());
-    userEvent.click(getByTestId("mapping-visual-editor-0-delete-field"));
-
-    userEvent.click(submitButton);
-    await waitFor(
-      () => {
-        expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-          endpoint: "transport.request",
-          data: {
-            method: "PUT",
-            path: "_index_template/good_template",
-            body: {
-              priority: 0,
-              template: {
-                settings: {
-                  "index.number_of_replicas": "1",
-                  "index.number_of_shards": "1",
-                  "index.refresh_interval": "1s",
-                },
-                mappings: { properties: {} },
-              },
-              index_patterns: ["test_patterns"],
-            },
-          },
-        });
-        expect(getByText(`location is: ${ROUTES.TEMPLATES}`)).toBeInTheDocument();
-      },
-      {
-        timeout: 3000,
-      }
-    );
-  }, 20000);
 });

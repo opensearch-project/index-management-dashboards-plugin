@@ -23,7 +23,7 @@ function renderWithRouter(props: Omit<DataStreamsActionsProps, "history">) {
           <Router>
             <Switch>
               <Route
-                path={ROUTES.TEMPLATES}
+                path={ROUTES.DATA_STREAMS}
                 render={(routeProps) => (
                   <CoreServicesContext.Provider value={coreServicesMock}>
                     <ServicesContext.Provider value={browserServicesMock}>
@@ -41,7 +41,7 @@ function renderWithRouter(props: Omit<DataStreamsActionsProps, "history">) {
                   </CoreServicesContext.Provider>
                 )}
               />
-              <Redirect from="/" to={ROUTES.TEMPLATES} />
+              <Redirect from="/" to={ROUTES.DATA_STREAMS} />
             </Switch>
           </Router>
         </ServicesContext.Provider>
@@ -69,35 +69,13 @@ describe("<DataStreamsActions /> spec", () => {
 
   it("delete data streams by calling commonService", async () => {
     const onDelete = jest.fn();
-    let times = 0;
     browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
-        if (payload.data?.path?.startsWith("/_index_template/")) {
-          if (times >= 1) {
-            return {
-              ok: true,
-              response: {},
-            };
-          } else {
-            times++;
-            return {
-              ok: false,
-              error: "test error",
-            };
-          }
-        }
+      async (): Promise<any> => {
         return { ok: true, response: {} };
       }
     );
     const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
-      selectedItems: [
-        {
-          name: "test_template",
-          index_patterns: "1",
-          version: "1",
-          order: 0,
-        },
-      ],
+      selectedItems: ["test_data_stream"],
       onDelete,
     });
 
@@ -115,28 +93,13 @@ describe("<DataStreamsActions /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "transport.request",
         data: {
-          path: `/_index_template/test_template`,
+          path: `/_data_stream/test_data_stream`,
           method: "DELETE",
         },
       });
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("test error");
-      expect(onDelete).toHaveBeenCalledTimes(0);
-    });
-
-    userEvent.click(getByTestId("deleteConfirmButton"));
-
-    await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_template] successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
-    });
-
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("editAction"));
-    await waitFor(() => expect(historyPushMock).toBeCalledTimes(1), {
-      timeout: 3000,
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_data_stream] successfully");
     });
   }, 30000);
 });

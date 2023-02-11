@@ -44,7 +44,7 @@ export default class CreateDataStream extends Component<CreateDataStreamProps> {
   };
 
   onCancel = (): void => {
-    this.props.history.push(ROUTES.TEMPLATES);
+    this.props.history.push(ROUTES.DATA_STREAMS);
   };
 
   render() {
