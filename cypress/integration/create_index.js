@@ -81,8 +81,8 @@ describe("Create Index", () => {
         });
       });
 
-      cy.get('[data-test-subj="mappingsJsonEditorFormRow"] .ace_text-input')
-        .focus()
+      cy.get('[data-test-subj="mappingsJsonEditorFormRow"] [data-test-subj="jsonEditor-valueDisplay"]')
+        .focus({ force: true })
         .clear({ force: true })
         .type(
           JSON.stringify({
@@ -208,11 +208,11 @@ describe("Create Index", () => {
       cy.get('[data-test-subj="editorTypeJsonEditor"]')
         .click()
         .end()
-        .get(".ace_text-input")
-        .focus()
+        .get('[data-test-subj="mappingsJsonEditorFormRow"] [data-test-subj="jsonEditor-valueDisplay"]')
+        .focus({ force: true })
         .clear({ force: true })
         .type('{ "dynamic": true }', { parseSpecialCharSequences: false, force: true })
-        .blur()
+        .blur({ force: true })
         .end()
         .wait(1000)
         .get('[data-test-subj="createIndexCreateButton"]')
@@ -225,9 +225,10 @@ describe("Create Index", () => {
         .get('[data-test-subj="previousMappingsJsonButton"]')
         .click()
         .end()
+        .wait(1000)
         .get('[data-test-subj="previousMappingsJsonModal"] [data-test-subj="jsonEditor-valueDisplay"]')
         .should(
-          "have.text",
+          "have.value",
           JSON.stringify(
             {
               dynamic: "true",
