@@ -327,7 +327,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               sortable: true,
               render: (value: unknown) => {
                 return (
-                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
+                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
                     <EuiLink>{value}</EuiLink>
                   </Link>
                 );

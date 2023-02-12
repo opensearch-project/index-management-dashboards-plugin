@@ -48,7 +48,7 @@ export default function BackingIndices(props: SubDetailProps) {
   }, [values.name]);
   const writingIndex = (values.indices || [])[(values.indices?.length || 0) - 1]?.index_name;
   return (
-    <ContentPanel title="Template details" titleSize="s">
+    <ContentPanel title="Backing indexes" titleSize="s">
       <EuiSpacer size="s" />
       <EuiBasicTable
         pagination={undefined}
