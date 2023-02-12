@@ -322,6 +322,18 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               },
             },
             {
+              field: "template",
+              name: "Template",
+              sortable: true,
+              render: (value: unknown) => {
+                return (
+                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
+                    <EuiLink>{value}</EuiLink>
+                  </Link>
+                );
+              },
+            },
+            {
               field: "backing_indices",
               name: "Backing indices count",
               sortable: true,
@@ -334,18 +346,6 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               align: "right",
               render: (value, record) => {
                 return <>{record.store_size || ""}</>;
-              },
-            },
-            {
-              field: "template",
-              name: "Template",
-              sortable: true,
-              render: (value: unknown) => {
-                return (
-                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
-                    <EuiLink>{value}</EuiLink>
-                  </Link>
-                );
               },
             },
           ]}
