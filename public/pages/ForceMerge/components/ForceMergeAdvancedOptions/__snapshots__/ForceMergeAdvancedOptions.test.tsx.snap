@@ -1,0 +1,402 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ForceMergeAdvancedOptions /> spec renders the component 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Flush indices
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              If true, Opensearch will perform a flush on the indices after the force merge.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div>
+                <div
+                  class="euiSwitch"
+                >
+                  <button
+                    aria-checked="false"
+                    aria-label=""
+                    class="euiSwitch__button"
+                    id="some_html_id"
+                    role="switch"
+                    type="button"
+                  >
+                    <span
+                      class="euiSwitch__body"
+                    >
+                      <span
+                        class="euiSwitch__thumb"
+                      />
+                      <span
+                        class="euiSwitch__track"
+                      >
+                        EuiIconMock
+                        EuiIconMock
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Only expunge delete
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              If true, expunge all segments containing more than index.merge.policy.expunge_deletes_allowed (default to 10) percents of deleted documents.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div>
+                <div
+                  class="euiSwitch"
+                >
+                  <button
+                    aria-checked="false"
+                    aria-label=""
+                    class="euiSwitch__button"
+                    id="some_html_id"
+                    role="switch"
+                    type="button"
+                  >
+                    <span
+                      class="euiSwitch__body"
+                    >
+                      <span
+                        class="euiSwitch__thumb"
+                      />
+                      <span
+                        class="euiSwitch__track"
+                      >
+                        EuiIconMock
+                        EuiIconMock
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Max number of segments
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              The number of segments to merge to. To fully merge indices, set it to 1.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <input
+                    class="euiFieldNumber"
+                    type="number"
+                    value=""
+                  />
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      style="padding: 10px 0px;"
+    >
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Flush indices
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            If true, Opensearch will perform a flush on the indices after the force merge.
+          </div>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div>
+              <div
+                class="euiSwitch"
+              >
+                <button
+                  aria-checked="false"
+                  aria-label=""
+                  class="euiSwitch__button"
+                  id="some_html_id"
+                  role="switch"
+                  type="button"
+                >
+                  <span
+                    class="euiSwitch__body"
+                  >
+                    <span
+                      class="euiSwitch__thumb"
+                    />
+                    <span
+                      class="euiSwitch__track"
+                    >
+                      EuiIconMock
+                      EuiIconMock
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Only expunge delete
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            If true, expunge all segments containing more than index.merge.policy.expunge_deletes_allowed (default to 10) percents of deleted documents.
+          </div>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div>
+              <div
+                class="euiSwitch"
+              >
+                <button
+                  aria-checked="false"
+                  aria-label=""
+                  class="euiSwitch__button"
+                  id="some_html_id"
+                  role="switch"
+                  type="button"
+                >
+                  <span
+                    class="euiSwitch__body"
+                  >
+                    <span
+                      class="euiSwitch__thumb"
+                    />
+                    <span
+                      class="euiSwitch__track"
+                    >
+                      EuiIconMock
+                      EuiIconMock
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Max number of segments
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            The number of segments to merge to. To fully merge indices, set it to 1.
+          </div>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiFormControlLayout"
+            >
+              <div
+                class="euiFormControlLayout__childrenWrapper"
+              >
+                <input
+                  class="euiFieldNumber"
+                  type="number"
+                  value=""
+                />
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
