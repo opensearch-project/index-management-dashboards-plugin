@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { EuiBasicTable, EuiHealth, EuiLink, EuiSpacer } from "@elastic/eui";
+import { EuiBasicTable, EuiHealth, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { DataStreamInEdit, SubDetailProps } from "../../interface";
 import { ROUTES } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
+import CustomFormRow from "../../../../components/CustomFormRow";
 
 const renderNumber = (value: string) => {
   return value || "-";
@@ -48,7 +49,21 @@ export default function BackingIndices(props: SubDetailProps) {
   }, [values.name]);
   const writingIndex = (values.indices || [])[(values.indices?.length || 0) - 1]?.index_name;
   return (
-    <ContentPanel title="Backing indexes" titleSize="s">
+    <ContentPanel
+      title={
+        <>
+          <EuiTitle size="s">
+            <span>Backing indexes</span>
+          </EuiTitle>
+          <CustomFormRow
+            fullWidth
+            helpText="A data stream is composed of backing indexes. Search requests are routed to all backing indexes, while indexing requests are routed to the write backing index."
+          >
+            <></>
+          </CustomFormRow>
+        </>
+      }
+    >
       <EuiSpacer size="s" />
       <EuiBasicTable
         pagination={undefined}
