@@ -116,6 +116,14 @@ export default function BackingIndices(props: SubDetailProps) {
             },
           },
           {
+            field: "rep",
+            name: "Writing index",
+            textOnly: true,
+            render: (value: string, record: ManagedCatIndex) => {
+              return record.index === writingIndex ? "Yes" : "No";
+            },
+          },
+          {
             field: "store.size",
             name: "Total size",
             sortable: true,
@@ -166,14 +174,6 @@ export default function BackingIndices(props: SubDetailProps) {
             truncateText: true,
             textOnly: true,
             dataType: "number",
-          },
-          {
-            field: "rep",
-            name: "Writing index",
-            textOnly: true,
-            render: (value: string, record: ManagedCatIndex) => {
-              return record.index === writingIndex ? "Yes" : "No";
-            },
           },
         ]}
       />
