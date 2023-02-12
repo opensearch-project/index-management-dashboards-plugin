@@ -102,7 +102,6 @@ export default function BackingIndices(props: SubDetailProps) {
             sortable: false,
             truncateText: true,
             textOnly: true,
-            width: "140px",
             render: renderNumber,
           },
           {
