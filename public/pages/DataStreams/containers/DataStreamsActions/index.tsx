@@ -7,6 +7,7 @@ import { RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
+import { ROUTES } from "../../../../utils/constants";
 
 export interface DataStreamsActionsProps {
   selectedItems: string[];
@@ -15,7 +16,7 @@ export interface DataStreamsActionsProps {
 }
 
 export default function DataStreamsActions(props: DataStreamsActionsProps) {
-  const { selectedItems, onDelete } = props;
+  const { selectedItems, onDelete, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
@@ -44,6 +45,12 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
             {
               id: 0,
               items: [
+                {
+                  name: "Rollover",
+                  disabled: selectedItems.length > 1,
+                  "data-test-subj": "rolloverAction",
+                  onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItems.join(",")}`),
+                },
                 {
                   name: "Delete",
                   disabled: selectedItems.length < 1,
