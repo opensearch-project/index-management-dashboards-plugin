@@ -9,26 +9,17 @@ import { isEmpty, merge } from "lodash";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
-import IndexFormWrapper, { IndexForm } from "../../../CreateIndex/containers/IndexForm";
 import { CoreServicesContext } from "../../../../components/core_services";
-import {
-  EuiButton,
-  EuiButtonEmpty,
-  EuiCallOut,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFlyout,
-  EuiFlyoutBody,
-  EuiFlyoutFooter,
-  EuiFlyoutHeader,
-  EuiSpacer,
-  EuiTitle,
-} from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { Alias } from "../../../../../server/models/interfaces";
 import { IndexItemRemote } from "../../../../../models/interfaces";
+import IndexMappings from "../IndexMappings";
+import IndexAlias from "../IndexAlias";
+import IndexSettings from "../IndexSettings";
+import useField from "../../../../lib/field";
 
 export interface RolloverProps extends RouteComponentProps<{ source: string }> {}
 
@@ -54,11 +45,14 @@ export default function IndexDetail(props: RolloverProps) {
   const coreService = useContext(CoreServicesContext);
   const services = useContext(ServicesContext) as BrowserServices;
   const sourceRef = useRef<IFormGeneratorRef>(null);
-  const indexFormRef = useRef<IndexForm>(null);
   const [tempValue, setValue] = useState<IRolloverRequestBody>({});
-  const [flyoutVisible, setFlyoutVisible] = useState(false);
   const [loading, setIsLoading] = useState(false);
   const [writeIndexValue, setWriteIndexValue] = useState(undefined);
+  const field = useField({
+    values: {
+      targetIndex: {},
+    },
+  });
 
   const onChange = (val?: Record<string, any>) => {
     const finalResult = merge({}, tempValue, val);
@@ -123,7 +117,9 @@ export default function IndexDetail(props: RolloverProps) {
   };
 
   const onSubmit = async () => {
-    const formGeneratersRes = await Promise.all([sourceRef.current?.validatePromise()]);
+    const formGeneratersRes = await Promise.all(
+      [sourceRef.current?.validatePromise(), sourceType === "alias" ? field.validatePromise() : undefined].filter((item) => item)
+    );
     const hasError = formGeneratersRes.some((item) => item?.errors);
     if (hasError) {
       return;
@@ -141,7 +137,9 @@ export default function IndexDetail(props: RolloverProps) {
     };
     if (sourceType === "alias" && !isEmpty(finalValues.targetIndex || {})) {
       const { index, ...others } = finalValues.targetIndex || {};
-      payload.newIndex = index;
+      if (index) {
+        payload.newIndex = index;
+      }
       payload.body = {
         ...others,
       };
@@ -157,7 +155,7 @@ export default function IndexDetail(props: RolloverProps) {
 
     if (result.ok) {
       coreService?.notifications.toasts.addSuccess(`${payload.alias} has been rollovered successfully.`);
-      props.history.replace(sourceType === "alias" ? ROUTES.ALIASES : ROUTES.INDICES);
+      props.history.replace(sourceType === "alias" ? ROUTES.ALIASES : ROUTES.DATA_STREAMS);
     } else {
       coreService?.notifications.toasts.addDanger(result.error);
     }
@@ -206,44 +204,63 @@ export default function IndexDetail(props: RolloverProps) {
     return;
   }, [sourceRef.current?.getValue("source")]);
 
+  const writingIndex = (() => {
+    const findItem = options.alias.find((item) => item.label === sourceRef.current?.getValue("source"));
+    let writeIndex = "";
+    if (findItem) {
+      if (findItem.aliases.length > 1) {
+        // has to check if it has write_index
+        if (findItem.aliases.some((item) => item.is_write_index === "true")) {
+          const indexItem = findItem.aliases.find((item) => item.is_write_index === "true");
+          writeIndex = indexItem?.index || "";
+        }
+      } else {
+        writeIndex = findItem.aliases[0].index;
+      }
+    }
+
+    return writeIndex;
+  })();
+
   const reasons = useMemo(() => {
     let result: React.ReactChild[] = [];
     if (sourceType === "alias") {
       const findItem = options.alias.find((item) => item.label === sourceRef.current?.getValue("source"));
-      if (findItem) {
-        if (findItem.aliases.length > 1) {
-          // has to check if it has write_index
-          if (findItem.aliases.every((item) => item.is_write_index !== "true")) {
-            result.push(
-              <>
-                <EuiFlexGroup alignItems="flexEnd">
-                  <EuiFlexItem grow={false}>
-                    Assign a write index from this alias before performing rollover.
-                    <EuiSpacer size="s" />
-                    <CustomFormRow label="Select an index from this alias">
-                      <AllBuiltInComponents.ComboBoxSingle
-                        placeholder="Select an index"
-                        value={writeIndexValue}
-                        onChange={(val) => setWriteIndexValue(val)}
-                        options={findItem.aliases.map((item) => ({ label: item.index }))}
-                      />
-                    </CustomFormRow>
-                  </EuiFlexItem>
-                  <EuiFlexItem grow={false}>
-                    <EuiButton disabled={!writeIndexValue} fill color="primary" onClick={submitWriteIndex}>
-                      Assign as write index
-                    </EuiButton>
-                  </EuiFlexItem>
-                </EuiFlexGroup>
-              </>
-            );
-          }
-        }
+      if (!writingIndex) {
+        result.push(
+          <>
+            <EuiFlexGroup alignItems="flexEnd">
+              <EuiFlexItem grow={false}>
+                Assign a write index from this alias before performing rollover.
+                <EuiSpacer size="s" />
+                <CustomFormRow label="Select an index from this alias">
+                  <AllBuiltInComponents.ComboBoxSingle
+                    placeholder="Select an index"
+                    value={writeIndexValue}
+                    onChange={(val) => setWriteIndexValue(val)}
+                    options={findItem?.aliases?.map((item) => ({ label: item.index }))}
+                  />
+                </CustomFormRow>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiButton disabled={!writeIndexValue} fill color="primary" onClick={submitWriteIndex}>
+                  Assign as write index
+                </EuiButton>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </>
+        );
       }
     }
 
     return result;
   }, [sourceType, options, writeIndexValue]);
+
+  const subCompontentProps = {
+    ...props,
+    field,
+    writingIndex,
+  };
 
   return (
     <div style={{ padding: "0 50px" }}>
@@ -298,30 +315,15 @@ export default function IndexDetail(props: RolloverProps) {
           </>
         ) : null}
         {(() => {
-          if (sourceType === "alias") {
-            const findItem = options.alias.find((item) => item.label === sourceRef.current?.getValue("source"));
-            let writeIndex = "";
-            if (findItem) {
-              if (findItem.aliases.length > 1) {
-                // has to check if it has write_index
-                if (findItem.aliases.some((item) => item.is_write_index === "true")) {
-                  const indexItem = findItem.aliases.find((item) => item.is_write_index === "true");
-                  writeIndex = indexItem?.index || "";
-                }
-              } else {
-                writeIndex = findItem.aliases[0].index;
-              }
-            }
-            if (writeIndex) {
-              return (
-                <>
-                  <EuiSpacer />
-                  <CustomFormRow label="Assigned write index">
-                    <span>{writeIndex}</span>
-                  </CustomFormRow>
-                </>
-              );
-            }
+          if (sourceType === "alias" && writingIndex) {
+            return (
+              <>
+                <EuiSpacer />
+                <CustomFormRow label="Assigned write index">
+                  <span>{writingIndex}</span>
+                </CustomFormRow>
+              </>
+            );
           }
 
           return null;
@@ -331,45 +333,15 @@ export default function IndexDetail(props: RolloverProps) {
       {sourceType === "alias" ? (
         <>
           <ContentPanel title="Configure new rollover index" titleSize="s">
-            <EuiButton onClick={() => setFlyoutVisible(true)}>Define target index</EuiButton>
+            <EuiSpacer size="s" />
+            <IndexAlias {...subCompontentProps} />
+            <EuiSpacer />
+            <IndexSettings {...subCompontentProps} />
+            <EuiSpacer />
+            <IndexMappings {...subCompontentProps} />
           </ContentPanel>
           <EuiSpacer />
         </>
-      ) : null}
-      {flyoutVisible ? (
-        <EuiFlyout hideCloseButton onClose={() => null}>
-          <EuiFlyoutHeader>
-            <EuiTitle>
-              <h3>Define target index</h3>
-            </EuiTitle>
-          </EuiFlyoutHeader>
-          <EuiFlyoutBody>
-            <IndexFormWrapper ref={indexFormRef} value={tempValue.targetIndex} hideButtons />
-          </EuiFlyoutBody>
-          <EuiFlyoutFooter>
-            <EuiButton
-              style={{ float: "right", marginRight: 20 }}
-              onClick={() => {
-                setFlyoutVisible(false);
-              }}
-            >
-              Cancel
-            </EuiButton>
-            <EuiButton
-              style={{ float: "right", marginRight: 20 }}
-              fill
-              color="primary"
-              onClick={() => {
-                onChange({
-                  targetIndex: indexFormRef.current?.getValue(),
-                });
-                setFlyoutVisible(false);
-              }}
-            >
-              Save
-            </EuiButton>
-          </EuiFlyoutFooter>
-        </EuiFlyout>
       ) : null}
       <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
         <EuiFlexItem grow={false}>
@@ -378,7 +350,7 @@ export default function IndexDetail(props: RolloverProps) {
               if (sourceType === "alias") {
                 props.history.push(ROUTES.ALIASES);
               } else {
-                props.history.push(ROUTES.INDICES);
+                props.history.push(ROUTES.DATA_STREAMS);
               }
             }}
             data-test-subj="rolloverCancelButton"
