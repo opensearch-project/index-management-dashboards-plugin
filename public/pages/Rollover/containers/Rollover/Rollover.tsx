@@ -54,7 +54,6 @@ export default function IndexDetail(props: RolloverProps) {
   const coreService = useContext(CoreServicesContext);
   const services = useContext(ServicesContext) as BrowserServices;
   const sourceRef = useRef<IFormGeneratorRef>(null);
-  const conditionsRef = useRef<IFormGeneratorRef>(null);
   const indexFormRef = useRef<IndexForm>(null);
   const [tempValue, setValue] = useState<IRolloverRequestBody>({});
   const [flyoutVisible, setFlyoutVisible] = useState(false);
@@ -211,29 +210,34 @@ export default function IndexDetail(props: RolloverProps) {
     let result: React.ReactChild[] = [];
     if (sourceType === "alias") {
       const findItem = options.alias.find((item) => item.label === sourceRef.current?.getValue("source"));
-      if (findItem && findItem.aliases.length > 1) {
-        // has to check if it has write_index
-        if (findItem.aliases.every((item) => item.is_write_index !== "true")) {
-          result.push(
-            <>
-              <EuiFlexGroup alignItems="flexEnd">
-                <EuiFlexItem grow={false}>
-                  Please select an index to be the write index of this alias.
-                  <EuiSpacer size="s" />
-                  <AllBuiltInComponents.ComboBoxSingle
-                    value={writeIndexValue}
-                    onChange={(val) => setWriteIndexValue(val)}
-                    options={findItem.aliases.map((item) => ({ label: item.index }))}
-                  />
-                </EuiFlexItem>
-                <EuiFlexItem grow={false}>
-                  <EuiButton disabled={!writeIndexValue} fill color="primary" onClick={submitWriteIndex}>
-                    Set index as write index
-                  </EuiButton>
-                </EuiFlexItem>
-              </EuiFlexGroup>
-            </>
-          );
+      if (findItem) {
+        if (findItem.aliases.length > 1) {
+          // has to check if it has write_index
+          if (findItem.aliases.every((item) => item.is_write_index !== "true")) {
+            result.push(
+              <>
+                <EuiFlexGroup alignItems="flexEnd">
+                  <EuiFlexItem grow={false}>
+                    Assign a write index from this alias before performing rollover.
+                    <EuiSpacer size="s" />
+                    <CustomFormRow label="Select an index from this alias">
+                      <AllBuiltInComponents.ComboBoxSingle
+                        placeholder="Select an index"
+                        value={writeIndexValue}
+                        onChange={(val) => setWriteIndexValue(val)}
+                        options={findItem.aliases.map((item) => ({ label: item.index }))}
+                      />
+                    </CustomFormRow>
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}>
+                    <EuiButton disabled={!writeIndexValue} fill color="primary" onClick={submitWriteIndex}>
+                      Assign as write index
+                    </EuiButton>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+              </>
+            );
+          }
         }
       }
     }
@@ -284,7 +288,7 @@ export default function IndexDetail(props: RolloverProps) {
         {reasons.length ? (
           <>
             <EuiSpacer />
-            <EuiCallOut color="warning" title="Please fix the issues below before rollover.">
+            <EuiCallOut color="danger" title="This alias does not contain a write index.">
               <ul>
                 {reasons.map((item, index) => (
                   <li key={index}>{item}</li>
@@ -293,11 +297,40 @@ export default function IndexDetail(props: RolloverProps) {
             </EuiCallOut>
           </>
         ) : null}
+        {(() => {
+          if (sourceType === "alias") {
+            const findItem = options.alias.find((item) => item.label === sourceRef.current?.getValue("source"));
+            let writeIndex = "";
+            if (findItem) {
+              if (findItem.aliases.length > 1) {
+                // has to check if it has write_index
+                if (findItem.aliases.some((item) => item.is_write_index === "true")) {
+                  const indexItem = findItem.aliases.find((item) => item.is_write_index === "true");
+                  writeIndex = indexItem?.index || "";
+                }
+              } else {
+                writeIndex = findItem.aliases[0].index;
+              }
+            }
+            if (writeIndex) {
+              return (
+                <>
+                  <EuiSpacer />
+                  <CustomFormRow label="Assigned write index">
+                    <span>{writeIndex}</span>
+                  </CustomFormRow>
+                </>
+              );
+            }
+          }
+
+          return null;
+        })()}
       </ContentPanel>
       <EuiSpacer />
       {sourceType === "alias" ? (
         <>
-          <ContentPanel title="Target index - optional" titleSize="s">
+          <ContentPanel title="Configure new rollover index" titleSize="s">
             <EuiButton onClick={() => setFlyoutVisible(true)}>Define target index</EuiButton>
           </ContentPanel>
           <EuiSpacer />
