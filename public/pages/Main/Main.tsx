@@ -519,6 +519,14 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={ROUTES.ROLLOVER}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Rollover {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={ROUTES.DATA_STREAMS}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>

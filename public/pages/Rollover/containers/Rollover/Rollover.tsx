@@ -21,7 +21,7 @@ import IndexAlias from "../IndexAlias";
 import IndexSettings from "../IndexSettings";
 import useField from "../../../../lib/field";
 
-export interface RolloverProps extends RouteComponentProps<{ source: string }> {}
+export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
 
 export interface IRolloverRequestBody {
   source?: string;

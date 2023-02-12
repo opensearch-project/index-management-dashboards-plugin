@@ -55,9 +55,9 @@ export default function AliasesActions(props: AliasesActionsProps) {
                 },
                 {
                   name: "Rollover",
-                  disabled: !selectedItems.length,
+                  disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
-                  onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItems[0].alias}`),
+                  onClick: () => history.push(selectedItems.length ? `${ROUTES.ROLLOVER}/${selectedItems[0].alias}` : ROUTES.ROLLOVER),
                 },
                 {
                   name: "Delete",
