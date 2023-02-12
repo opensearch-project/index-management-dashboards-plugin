@@ -62,6 +62,8 @@ export const ROUTES = Object.freeze({
   SPLIT_INDEX: "/split-index",
   SHRINK_INDEX: "/shrink-index",
   ROLLOVER: "/rollover",
+  DATA_STREAMS: "/data-streams",
+  CREATE_DATA_STREAM: "/create-data-stream",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -108,6 +110,8 @@ export const BREADCRUMBS = Object.freeze({
   SPLIT_INDEX: { text: "Split Index", href: `#${ROUTES.SPLIT_INDEX}` },
   SHRINK_INDEX: { text: "Shrink index", href: `#${ROUTES.SHRINK_INDEX}` },
   ROLLOVER: { text: "Rollover", href: `#${ROUTES.ROLLOVER}` },
+  DATA_STREAMS: { text: "Data streams", href: `#${ROUTES.DATA_STREAMS}` },
+  CREATE_DATA_STREAM: { text: "Create data stream", href: `#${ROUTES.CREATE_DATA_STREAM}` },
 });
 
 // TODO: EUI has a SortDirection already

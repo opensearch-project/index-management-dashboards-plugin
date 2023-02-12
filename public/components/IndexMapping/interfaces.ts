@@ -1,4 +1,4 @@
-import { MappingsProperties, MappingsPropertiesObject } from "../../../../../models/interfaces";
+import { MappingsProperties, MappingsPropertiesObject } from "../../../models/interfaces";
 
 export type IndexMappingsAll = {
   properties?: MappingsProperties;

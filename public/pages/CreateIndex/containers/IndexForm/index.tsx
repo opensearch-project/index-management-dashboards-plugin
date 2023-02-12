@@ -13,7 +13,7 @@ import IndexDetail, { IndexDetailProps, IIndexDetailRef, defaultIndexSettings } 
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
+import { transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping/IndexMapping";
 import { ServerResponse } from "../../../../../server/models/types";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
