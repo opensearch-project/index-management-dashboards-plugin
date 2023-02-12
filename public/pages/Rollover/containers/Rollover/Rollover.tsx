@@ -86,7 +86,7 @@ export default function IndexDetail(props: RolloverProps) {
         });
         setOptions({
           alias: allAlias,
-          dataStreams: dataStreams.response.dataStreams.map((item) => ({ label: item.name })),
+          dataStreams: dataStreams.response?.dataStreams.map((item) => ({ label: item.name })) || [],
         });
       }
     });
