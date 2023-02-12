@@ -7,7 +7,7 @@ import { EuiComboBoxOptionOption } from "@elastic/eui";
 import { _EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { CoreStart } from "opensearch-dashboards/public";
 import ComboBoxWithoutWarning from "../../../../components/ComboBoxWithoutWarning";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexSelectItem } from "../../models/interfaces";
 import { filterByMinimatch } from "../../../../../utils/helper";
@@ -24,13 +24,16 @@ interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "dat
 export default function IndexSelect(props: IndexSelectProps) {
   const [indexOptions, setIndexOptions] = useState([] as EuiComboBoxOptionOption<IndexSelectItem>[]);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
+  const destroyRef = useRef(false);
 
   const searchIndex = (searchValue?: string) => {
     props
       .getIndexOptions(searchValue ? searchValue : "")
       .then((options) => {
         props.excludeSystemIndex && filterSystemIndices(options);
-        setIndexOptions(options);
+        if (!destroyRef.current) {
+          setIndexOptions(options);
+        }
       })
       .catch((err) => {
         coreServices.notifications.toasts.addDanger(`fetch indices error ${err}`);
@@ -40,6 +43,12 @@ export default function IndexSelect(props: IndexSelectProps) {
   useEffect(() => {
     searchIndex();
   }, [props.getIndexOptions, props.excludeSystemIndex]);
+
+  useEffect(() => {
+    return () => {
+      destroyRef.current = true;
+    };
+  }, []);
 
   const onSearchChange = (searchValue: string) => {
     searchIndex(searchValue);

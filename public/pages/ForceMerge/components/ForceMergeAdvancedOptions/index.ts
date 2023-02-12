@@ -6,3 +6,4 @@
 import ForceMergeAdvancedOptions from "./ForceMergeAdvancedOptions";
 
 export default ForceMergeAdvancedOptions;
+export * from "./ForceMergeAdvancedOptions";

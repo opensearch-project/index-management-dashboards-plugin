@@ -9,7 +9,7 @@ import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import { FieldInstance } from "../../../../lib/field";
 import { EuiSpacer } from "@elastic/eui";
 
-interface ForceMergeOptionsProps {
+export interface ForceMergeOptionsProps {
   field: FieldInstance;
 }
 

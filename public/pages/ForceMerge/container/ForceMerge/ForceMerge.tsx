@@ -5,7 +5,7 @@
 
 import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import _ from "lodash";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -17,7 +17,7 @@ import { getIndexOptions } from "../../utils/helper";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
 import useField from "../../../../lib/field";
-import { ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -29,6 +29,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const [advancedSettingsOpen, setAdvancedSettingsOpen] = useState(false);
   const [executing, setExecuting] = useState(false);
   const { indexes = "" } = props.match.params;
+  const destroyedRef = useRef(false);
   const field = useField({
     values: {
       indexes: indexes ? indexes.split(",") : [],
@@ -67,8 +68,17 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
     } else {
       context.notifications.toasts.addDanger(result.error);
     }
+    if (destroyedRef.current) {
+      return;
+    }
     setExecuting(false);
   };
+
+  useEffect(() => {
+    return () => {
+      destroyedRef.current = true;
+    };
+  }, []);
 
   const advanceTitle = (
     <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
@@ -90,6 +100,14 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       </EuiFlexItem>
     </EuiFlexGroup>
   );
+
+  useEffect(() => {
+    context.chrome.setBreadcrumbs([
+      BREADCRUMBS.INDEX_MANAGEMENT,
+      BREADCRUMBS.INDICES,
+      { ...BREADCRUMBS.FORCE_MERGE, href: `#${props.location.pathname}` },
+    ]);
+  }, []);
 
   return (
     <div style={{ padding: "0px 50px" }}>
@@ -123,7 +141,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
                 {
                   validator(rule, value) {
                     if (!value || !value.length) {
-                      return Promise.reject("Indexes is required");
+                      return Promise.reject("Indexes is required.");
                     } else {
                       return Promise.resolve("");
                     }
@@ -151,7 +169,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
           </EuiButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton fill onClick={onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
+          <EuiButton fill onClick={onClickAction} isLoading={executing} data-test-subj="forceMergeConfirmButton">
             Force merge
           </EuiButton>
         </EuiFlexItem>
