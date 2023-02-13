@@ -304,7 +304,32 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_backing_indices_2"
+                data-test-subj="tableHeaderCell_template_2"
+                role="columnheader"
+                scope="col"
+              >
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
+                >
+                  <span
+                    class="euiTableCellContent"
+                  >
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Template"
+                    >
+                      Template
+                    </span>
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-live="polite"
+                aria-sort="none"
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_backing_indices_3"
                 role="columnheader"
                 scope="col"
               >
@@ -329,7 +354,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_store_size_bytes_3"
+                data-test-subj="tableHeaderCell_store_size_bytes_4"
                 role="columnheader"
                 scope="col"
               >
@@ -346,31 +371,6 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                       title="Total size"
                     >
                       Total size
-                    </span>
-                  </span>
-                </button>
-              </th>
-              <th
-                aria-live="polite"
-                aria-sort="none"
-                class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_template_4"
-                role="columnheader"
-                scope="col"
-              >
-                <button
-                  class="euiTableHeaderButton"
-                  data-test-subj="tableHeaderSortButton"
-                  type="button"
-                >
-                  <span
-                    class="euiTableCellContent"
-                  >
-                    <span
-                      class="euiTableCellContent__text"
-                      title="Template"
-                    >
-                      Template
                     </span>
                   </span>
                 </button>
