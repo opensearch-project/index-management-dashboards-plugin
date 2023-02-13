@@ -61,7 +61,7 @@ describe("Rollover", () => {
     it("rollover valid alias successfully", () => {
       // Visit ISM OSD
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/rollover/${rolloverValidAlias}`);
-      cy.contains("Configure source", { timeout: 60000 });
+      cy.contains("Configure new rollover index", { timeout: 60000 });
 
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
@@ -72,14 +72,14 @@ describe("Rollover", () => {
     it("rollover invalid alias successfully", () => {
       // Visit ISM OSD
       cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/rollover/${rolloverAliasNeedTargetIndex}`);
-      cy.contains("Configure source", { timeout: 60000 });
+      cy.contains("Configure new rollover index", { timeout: 60000 });
 
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
 
       cy.contains("Index name is required.");
 
-      cy.get('[data-test-subj="form-row-targetIndex.index"]').type("index-test-rollover-target");
+      cy.get('[data-test-subj="form-row-targetIndex.index"] input').type("index-test-rollover-target");
 
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
