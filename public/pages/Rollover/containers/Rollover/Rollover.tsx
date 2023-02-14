@@ -15,17 +15,18 @@ import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { Alias } from "../../../../../server/models/interfaces";
-import { IndexItemRemote } from "../../../../../models/interfaces";
+import { IndexItemRemote, IndexItem } from "../../../../../models/interfaces";
 import IndexMappings from "../IndexMappings";
 import IndexAlias from "../IndexAlias";
 import IndexSettings from "../IndexSettings";
 import useField from "../../../../lib/field";
+import { transformArrayToObject } from "../../../../components/IndexMapping";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
 
 export interface IRolloverRequestBody {
   source?: string;
-  targetIndex?: IndexItemRemote;
+  targetIndex?: IndexItem;
   conditions?: {
     max_age?: string;
     max_docs?: number;
@@ -122,6 +123,7 @@ export default function IndexDetail(props: RolloverProps) {
     );
     const hasError = formGeneratersRes.some((item) => item?.errors);
     if (hasError) {
+      coreService?.notifications.toasts.addDanger("Some fields does not pass validation, please check fields with red underline.");
       return;
     }
     const finalValues: IRolloverRequestBody = merge({}, tempValue);
@@ -136,13 +138,22 @@ export default function IndexDetail(props: RolloverProps) {
       body: {},
     };
     if (sourceType === "alias" && !isEmpty(finalValues.targetIndex || {})) {
-      const { index, ...others } = finalValues.targetIndex || {};
+      const { index, mappings, ...others } = (finalValues.targetIndex || {}) as IndexItem;
       if (index) {
         payload.newIndex = index;
       }
-      payload.body = {
-        ...others,
-      };
+      if (mappings) {
+        const { properties, ...mappingsOthers } = mappings;
+        payload.body = {
+          ...others,
+          mappings: {
+            ...mappingsOthers,
+          },
+        };
+        if (properties && payload.body.mappings) {
+          payload.body.mappings.properties = transformArrayToObject(properties || []);
+        }
+      }
     }
     setIsLoading(true);
 
