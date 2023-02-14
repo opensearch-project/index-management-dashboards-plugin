@@ -29,7 +29,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
             id="some_html_id-help-0"
           >
             <div>
-              A data stream is internally composed of multiple backing indices. Search requests are routed to all the backing indices, while indexing requests are routed to the latest write index.
+              A data stream is internally composed of multiple backing indexes. Search requests are routed to all the backing indexes, while indexing requests are routed to the latest write index.
                
               <button
                 class="euiLink euiLink--primary"
@@ -343,9 +343,9 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Backing indices count"
+                      title="Backing indexes count"
                     >
-                      Backing indices count
+                      Backing indexes count
                     </span>
                   </span>
                 </button>

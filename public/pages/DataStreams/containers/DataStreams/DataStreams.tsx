@@ -270,7 +270,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               fullWidth
               helpText={
                 <div>
-                  A data stream is internally composed of multiple backing indices. Search requests are routed to all the backing indices,
+                  A data stream is internally composed of multiple backing indexes. Search requests are routed to all the backing indexes,
                   while indexing requests are routed to the latest write index.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.dataStreams}>
                     Learn more.
@@ -335,7 +335,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
             },
             {
               field: "backing_indices",
-              name: "Backing indices count",
+              name: "Backing indexes count",
               sortable: true,
               align: "right",
             },

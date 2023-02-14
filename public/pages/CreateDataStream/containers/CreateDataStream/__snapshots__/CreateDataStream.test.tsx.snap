@@ -28,7 +28,7 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
               style="padding-top: 0px; padding-bottom: 4px;"
             >
               <div>
-                A data stream is internally composed of multiple backing indices. Search requests are routed to all the backing indices, while indexing requests are routed to the latest write index.
+                A data stream is internally composed of multiple backing indexes. Search requests are routed to all the backing indexes, while indexing requests are routed to the latest write index.
                  
                 <button
                   class="euiLink euiLink--primary"
