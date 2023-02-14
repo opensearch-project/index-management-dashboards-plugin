@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ReactEventHandler } from "react";
 import { EuiBadge, EuiLink, EuiSpacer } from "@elastic/eui";
 import { flatten } from "flat";
 import { get, set } from "lodash";
@@ -39,6 +39,19 @@ export default function DefineDataStream(
       {
         pattern: INDEX_NAMING_PATTERN,
         message: "Invalid data stream name.",
+      },
+      {
+        validator: (rule, value) => {
+          return new Promise((resolve, reject) => {
+            setTimeout(() => {
+              if (field.getValue("matchedTemplate")) {
+                resolve("");
+              } else {
+                reject(`No matching index template found for data stream [${value || ""}]`);
+              }
+            }, 0);
+          });
+        },
       },
     ],
     props: {},
@@ -93,7 +106,15 @@ export default function DefineDataStream(
           onSearchChange={(dataStreamName: string) => {
             setSearchValue(dataStreamName);
           }}
-          onChange={(value) => {
+          onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+            const value = e.target.value;
+            setTimeout(() => {
+              if (!field.getValue("matchedTemplate")) {
+                suggestionRegister.onChange(value);
+              }
+            }, 0);
+          }}
+          onChange={(value: ReactEventHandler) => {
             if (!value) {
               field.resetValues({
                 name: "",
