@@ -27,7 +27,7 @@ export default function IndexAlias(props: SubDetailProps) {
               {
                 validator(rule, value: string) {
                   if (!value) {
-                    if (writingIndex?.match(/-\d{6}$/)) {
+                    if (writingIndex?.match(/^.*-\d+$/)) {
                       return Promise.resolve("");
                     } else {
                       return Promise.reject("Index name is required.");
