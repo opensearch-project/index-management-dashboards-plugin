@@ -40,6 +40,10 @@ export const noAdditionalJSONSchema: JSONSchema4 = {
             },
           };
 
+          if (item.hasChildren) {
+            payload.then.properties.properties = propertiesSchema;
+          }
+
           return payload;
         }),
       ],
