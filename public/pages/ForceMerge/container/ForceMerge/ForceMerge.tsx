@@ -32,6 +32,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const destroyedRef = useRef(false);
   const field = useField({
     values: {
+      flush: true,
       indexes: indexes ? indexes.split(",") : [],
     },
   });
