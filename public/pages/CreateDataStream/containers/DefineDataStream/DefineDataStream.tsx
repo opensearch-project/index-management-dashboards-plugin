@@ -13,7 +13,7 @@ import { getCommonFormRowProps } from "../../hooks";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 
-export default function DefineTemplate(
+export default function DefineDataStream(
   props: SubDetailProps & {
     allDataStreamTemplates: {
       name: string;
