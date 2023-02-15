@@ -7,6 +7,7 @@ import { IRolloverRequestBody } from "./interface";
 import { IndexItemRemote } from "../../../models/interfaces";
 import { BrowserServices } from "../../models/interfaces";
 import { Alias } from "../../../server/models/interfaces";
+import { ServerResponse } from "../../../server/models/types";
 
 export type TypeSourceType = "dataStreams" | "alias" | undefined;
 
@@ -150,4 +151,34 @@ export const getOptions = async (props: { services: BrowserServices }) => {
       error: aliases.error || dataStreams.error,
     };
   });
+};
+
+export const getRolloveredIndex = async (props: { alias: string; services: BrowserServices }): Promise<ServerResponse<string>> => {
+  const { alias, services } = props;
+  const result = await services.commonService.apiCaller<{
+    new_index: string;
+  }>({
+    endpoint: "indices.rollover",
+    data: {
+      alias,
+      dry_run: true,
+    },
+    hideLog: true,
+  });
+  if (result.ok) {
+    return {
+      ok: true,
+      response: result.response.new_index,
+    };
+  } else if (result && result.body && result.body.error && result.body.error.index) {
+    return {
+      ok: true,
+      response: result.body.error.index,
+    };
+  }
+
+  return {
+    ok: false,
+    error: result.error,
+  };
 };

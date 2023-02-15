@@ -17,7 +17,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { Alias } from "../../../../../server/models/interfaces";
 import useField from "../../../../lib/field";
-import { getOptions, onSubmit, submitWriteIndex } from "../../hooks";
+import { getOptions, getRolloveredIndex, onSubmit, submitWriteIndex } from "../../hooks";
 import { IRolloverRequestBody } from "../../interface";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
@@ -133,7 +133,22 @@ export default function Rollover(props: RolloverProps) {
     return writeIndex;
   })();
 
-  useEffect(() => {}, [writingIndex]);
+  useEffect(() => {
+    if (writingIndex && tempValue.source) {
+      // do a dry run to get the rollovered writing index
+      getRolloveredIndex({
+        alias: tempValue.source,
+        services,
+      }).then((result) => {
+        if (result && result.ok) {
+          field.setValue(["targetIndex", "index"], result.response);
+        } else {
+          field.setValue(["targetIndex", "index"], "");
+        }
+      });
+      indexFormRef.current?.simulateFromTemplate();
+    }
+  }, [writingIndex]);
 
   const reasons = useMemo(() => {
     let result: React.ReactChild[] = [];

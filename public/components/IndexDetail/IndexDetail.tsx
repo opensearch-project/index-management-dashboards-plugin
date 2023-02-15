@@ -86,6 +86,7 @@ export interface IIndexDetailRef {
   validate: () => Promise<boolean>;
   hasUnsavedChanges: (mode: IndicesUpdateMode) => number;
   getMappingsJSONEditorValue: () => string;
+  simulateFromTemplate: () => Promise<void>;
 }
 
 const TemplateInfoCallout = (props: { visible: boolean }) => {
@@ -134,18 +135,6 @@ const IndexDetail = (
   const aliasesRef = useRef<IFormGeneratorRef>(null);
   const settingsRef = useRef<IFormGeneratorRef>(null);
   const mappingsRef = useRef<IIndexMappingsRef>(null);
-  useImperativeHandle(ref, () => ({
-    validate: async () => {
-      const result = await Promise.all([
-        aliasesRef.current?.validatePromise().then((result) => result.errors),
-        mappingsRef.current?.validate(),
-        settingsRef.current?.validatePromise().then((result) => result.errors),
-      ]);
-      return result.every((item) => !item);
-    },
-    hasUnsavedChanges: (mode: IndicesUpdateMode) => diffJson(oldValue?.[mode], finalValue[mode]),
-    getMappingsJSONEditorValue: () => mappingsRef.current?.getJSONEditorValue() || "",
-  }));
   const onIndexInputBlur = useCallback(async () => {
     await new Promise((resolve) => setTimeout(resolve, 200));
     if (destroyRef.current) {
@@ -208,6 +197,19 @@ const IndexDetail = (
       }
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
+  useImperativeHandle(ref, () => ({
+    validate: async () => {
+      const result = await Promise.all([
+        aliasesRef.current?.validatePromise().then((result) => result.errors),
+        mappingsRef.current?.validate(),
+        settingsRef.current?.validatePromise().then((result) => result.errors),
+      ]);
+      return result.every((item) => !item);
+    },
+    hasUnsavedChanges: (mode: IndicesUpdateMode) => diffJson(oldValue?.[mode], finalValue[mode]),
+    getMappingsJSONEditorValue: () => mappingsRef.current?.getJSONEditorValue() || "",
+    simulateFromTemplate: onIndexInputBlur,
+  }));
   const onImportSettings = async ({ index }: { index: string }) => {
     if (onGetIndexDetail) {
       const indexDetail: IndexItemRemote = await new Promise((resolve) => {
