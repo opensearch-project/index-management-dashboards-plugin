@@ -182,3 +182,29 @@ export const getRolloveredIndex = async (props: { alias: string; services: Brows
     error: result.error,
   };
 };
+
+export const getIndexDetail = async ({
+  services,
+  indexName,
+  newIndexName,
+}: {
+  services: BrowserServices;
+  indexName: string;
+  newIndexName: string;
+}) => {
+  const response = await services.commonService.apiCaller<Record<string, IndexItemRemote>>({
+    endpoint: "indices.get",
+    data: {
+      index: indexName,
+      flat_settings: true,
+    },
+  });
+  if (response.ok) {
+    return {
+      ...response.response[indexName],
+      index: newIndexName,
+    };
+  }
+
+  throw new Error(response.error);
+};

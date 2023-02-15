@@ -87,6 +87,7 @@ export interface IIndexDetailRef {
   hasUnsavedChanges: (mode: IndicesUpdateMode) => number;
   getMappingsJSONEditorValue: () => string;
   simulateFromTemplate: () => Promise<void>;
+  importSettings: (args: { index: string }) => Promise<void>;
 }
 
 const TemplateInfoCallout = (props: { visible: boolean }) => {
@@ -197,19 +198,6 @@ const IndexDetail = (
       }
     }
   }, [finalValue.index, onSimulateIndexTemplate]);
-  useImperativeHandle(ref, () => ({
-    validate: async () => {
-      const result = await Promise.all([
-        aliasesRef.current?.validatePromise().then((result) => result.errors),
-        mappingsRef.current?.validate(),
-        settingsRef.current?.validatePromise().then((result) => result.errors),
-      ]);
-      return result.every((item) => !item);
-    },
-    hasUnsavedChanges: (mode: IndicesUpdateMode) => diffJson(oldValue?.[mode], finalValue[mode]),
-    getMappingsJSONEditorValue: () => mappingsRef.current?.getJSONEditorValue() || "",
-    simulateFromTemplate: onIndexInputBlur,
-  }));
   const onImportSettings = async ({ index }: { index: string }) => {
     if (onGetIndexDetail) {
       const indexDetail: IndexItemRemote = await new Promise((resolve) => {
@@ -233,6 +221,7 @@ const IndexDetail = (
         // omit alias
         ...omit(indexDetail, ["aliases", "data_stream"]),
         mappings: {
+          ...indexDetail?.mappings,
           properties: transformObjectToArray(indexDetail?.mappings?.properties || {}),
         },
         // pick some metadata in index
@@ -242,6 +231,20 @@ const IndexDetail = (
       hasEdit.current = false;
     }
   };
+  useImperativeHandle(ref, () => ({
+    validate: async () => {
+      const result = await Promise.all([
+        aliasesRef.current?.validatePromise().then((result) => result.errors),
+        mappingsRef.current?.validate(),
+        settingsRef.current?.validatePromise().then((result) => result.errors),
+      ]);
+      return result.every((item) => !item);
+    },
+    hasUnsavedChanges: (mode: IndicesUpdateMode) => diffJson(oldValue?.[mode], finalValue[mode]),
+    getMappingsJSONEditorValue: () => mappingsRef.current?.getJSONEditorValue() || "",
+    simulateFromTemplate: onIndexInputBlur,
+    importSettings: onImportSettings,
+  }));
   const formFields: IField[] = useMemo(() => {
     return [
       {

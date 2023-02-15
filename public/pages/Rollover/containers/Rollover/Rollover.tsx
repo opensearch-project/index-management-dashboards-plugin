@@ -17,7 +17,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { Alias } from "../../../../../server/models/interfaces";
 import useField from "../../../../lib/field";
-import { getOptions, getRolloveredIndex, onSubmit, submitWriteIndex } from "../../hooks";
+import { getIndexDetail, getOptions, getRolloveredIndex, onSubmit, submitWriteIndex } from "../../hooks";
 import { IRolloverRequestBody } from "../../interface";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
@@ -271,11 +271,37 @@ export default function Rollover(props: RolloverProps) {
       <EuiSpacer />
       {sourceType === "alias" && writingIndex ? (
         <>
-          <ContentPanel title="Configure new rollover index" titleSize="s">
+          <ContentPanel
+            title="Configure new rollover index"
+            titleSize="s"
+            actions={
+              <EuiButton
+                onClick={() => {
+                  indexFormRef.current?.importSettings({
+                    index: writingIndex,
+                  });
+                }}
+              >
+                Import from old write index
+              </EuiButton>
+            }
+          >
             <IndexFormWrapper
               {...field.registerField({
                 name: "targetIndex",
               })}
+              onGetIndexDetail={async (indexName) => {
+                try {
+                  return await getIndexDetail({
+                    services,
+                    indexName,
+                    newIndexName: indexFormRef.current?.getValue()?.index || "",
+                  });
+                } catch (e) {
+                  coreService?.notifications.toasts.addDanger(e as string);
+                  throw e;
+                }
+              }}
               ref={indexFormRef}
               withoutPanel
             />
