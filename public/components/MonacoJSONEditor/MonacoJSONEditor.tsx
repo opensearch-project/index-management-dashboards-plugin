@@ -4,8 +4,7 @@
  */
 import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
 import { EuiFormRow } from "@elastic/eui";
-import MonacoEditor from "react-monaco-editor";
-import { monaco } from "@osd/monaco";
+import { monaco } from "@osd/monaco-next";
 import { IJSONEditorRef } from "../JSONEditor";
 import { MonacoJSONEditorProps } from "./interface";
 import { useDiagnosticsOptions, useModel } from "./hooks";
@@ -16,7 +15,7 @@ const MonacoJSONEditor = forwardRef(
     const [confirmModalVisible, setConfirmModalVisible] = useState(false);
     const [isReady, setIsReady] = useState(false);
     const [editorValue, setEditorValue] = useState(value);
-    const focusedRef = useRef(false);
+    const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | undefined>(undefined);
     useDiagnosticsOptions({
@@ -24,27 +23,21 @@ const MonacoJSONEditor = forwardRef(
       diagnosticsOptions,
     });
     const onClickOutsideHandler = useRef(() => {
-      if (focusedRef.current) {
-        if (others.disabled) {
-          return;
-        }
-        try {
-          const value = editorRef.current?.getValue();
-          if (!value) {
-            throw new Error("Value can not be empty");
-          }
-          JSON.parse(value);
-          onChange && onChange(value);
-        } catch (e) {
-          setConfirmModalVisible(true);
-        }
+      if (others.disabled) {
+        return;
       }
-      focusedRef.current = false;
+      try {
+        const value = editorRef.current?.getValue();
+        if (!value) {
+          throw new Error("Value can not be empty");
+        }
+        JSON.parse(value);
+        onChange && onChange(value);
+      } catch (e) {
+        setConfirmModalVisible(true);
+      }
     });
-    const onClickContainer = useRef((e: MouseEvent) => {
-      focusedRef.current = true;
-      e.stopPropagation();
-    });
+
     const setAllValue = useCallback(
       (val: string) => {
         setEditorValue(val);
@@ -69,16 +62,6 @@ const MonacoJSONEditor = forwardRef(
       path,
     });
 
-    useEffect(() => {
-      document.body.addEventListener("click", onClickOutsideHandler.current);
-      editorRef.current?.getDomNode()?.addEventListener("click", onClickContainer.current);
-      editorRef.current?.getDomNode()?.setAttribute("data-test-subj", "codeEditorContainer");
-      return () => {
-        document.body.removeEventListener("click", onClickOutsideHandler.current);
-        editorRef.current?.getDomNode()?.removeEventListener("click", onClickContainer.current);
-      };
-    }, [isReady]);
-
     useImperativeHandle(ref, () => ({
       validate: () =>
         new Promise((resolve, reject) => {
@@ -93,6 +76,27 @@ const MonacoJSONEditor = forwardRef(
       getValue: () => valueRef.current,
       setValue: (val: string) => setAllValue(val),
     }));
+
+    useEffect(() => {
+      const editor = monaco.editor.create(containerRef.current as HTMLDivElement, {
+        value: editorValue,
+        language: "json",
+        readOnly: others.readOnly,
+        theme: "ismJSONTheme",
+      });
+      editorRef.current = editor;
+      setIsReady(true);
+      editor.onDidChangeModelContent(() => {
+        const val = editor.getValue();
+        setEditorValue(val);
+      });
+      editor.onDidBlurEditorWidget(onClickOutsideHandler.current);
+      editor.getDomNode()?.setAttribute("data-test-subj", "codeEditorContainer");
+      editor.layout();
+      return () => {
+        editor.dispose();
+      };
+    }, []);
 
     return (
       <>
@@ -111,27 +115,12 @@ const MonacoJSONEditor = forwardRef(
           data-test-subj={`${others["data-test-subj"] || "jsonEditor"}-valueDisplay`}
         />
         <div
+          ref={containerRef}
           style={{
-            height: others?.height || undefined,
+            height: others?.height || "600px",
           }}
           className={confirmModalVisible ? "monaco-json-editor-validate-error" : ""}
-        >
-          <MonacoEditor
-            height="600px"
-            {...others}
-            onChange={(val) => setEditorValue(val)}
-            theme="ismJSONTheme"
-            language="json"
-            value={editorValue}
-            options={{
-              readOnly: others.disabled,
-            }}
-            editorDidMount={(editor) => {
-              editorRef.current = editor;
-              setIsReady(true);
-            }}
-          />
-        </div>
+        />
         {confirmModalVisible && (
           <EuiFormRow
             fullWidth

@@ -1,4 +1,4 @@
-import { monaco } from "@osd/monaco";
+import { monaco } from "@osd/monaco-next";
 import { JSONSchema4 } from "@types/json-schema";
 import { JSONEditorProps } from "../JSONEditor";
 
