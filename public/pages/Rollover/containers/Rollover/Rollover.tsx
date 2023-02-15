@@ -19,6 +19,8 @@ import { Alias } from "../../../../../server/models/interfaces";
 import useField from "../../../../lib/field";
 import { getIndexDetail, getOptions, getRolloveredIndex, onSubmit, submitWriteIndex } from "../../hooks";
 import { IRolloverRequestBody } from "../../interface";
+import { filterByMinimatch } from "../../../../../utils/helper";
+import { SYSTEM_ALIAS } from "../../../../../utils/constants";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
 
@@ -215,6 +217,14 @@ export default function Rollover(props: RolloverProps) {
         <></>
       </CustomFormRow>
       <ContentPanel title="Configure source" titleSize="s">
+        {sourceType === "alias" && filterByMinimatch(tempValue.source || "", SYSTEM_ALIAS) ? (
+          <>
+            <EuiCallOut color="warning">
+              This alias may contain critical system data. Rollovering system aliases may break OpenSearch.
+            </EuiCallOut>
+            <EuiSpacer />
+          </>
+        ) : null}
         <FormGenerator
           value={initialValue}
           onChange={onChange}
