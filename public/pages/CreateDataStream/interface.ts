@@ -1,6 +1,7 @@
 import { RouteComponentProps } from "react-router-dom";
 import { FieldInstance } from "../../lib/field";
 import { DataStream } from "../../../server/models/interfaces";
+import { TemplateItemRemote } from "../../../models/interfaces";
 
 export interface DataStreamDetailProps {
   templateName?: string;
@@ -18,3 +19,8 @@ export interface SubDetailProps extends DataStreamDetailProps {
 export interface DataStreamInEdit extends DataStream {
   matchedTemplate?: string;
 }
+
+export type TemplateItem = {
+  name: string;
+  index_template: TemplateItemRemote;
+};

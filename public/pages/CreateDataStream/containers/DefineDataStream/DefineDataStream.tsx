@@ -1,24 +1,17 @@
-import React, { useState, ReactEventHandler } from "react";
-import { EuiBadge, EuiLink, EuiSpacer } from "@elastic/eui";
-import { flatten } from "flat";
-import { get, set } from "lodash";
-import { transformObjectToArray } from "../../../../components/IndexMapping";
-import { DataStreamInEdit, SubDetailProps } from "../../interface";
+import React, { useState } from "react";
+import { EuiLink, EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiBadge } from "@elastic/eui";
+import { DataStreamInEdit, SubDetailProps, TemplateItem } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
-import { INDEX_NAMING_MESSAGE, INDEX_NAMING_PATTERN, ROUTES } from "../../../../utils/constants";
-import { getCommonFormRowProps } from "../../hooks";
+import { INDEX_NAMING_PATTERN, ROUTES } from "../../../../utils/constants";
+import { getCommonFormRowProps, getStringBeforeStar, setMatchedTemplate } from "../../hooks";
 import { filterByMinimatch } from "../../../../../utils/helper";
-import { TemplateItemRemote } from "../../../../../models/interfaces";
 
 export default function DefineDataStream(
   props: SubDetailProps & {
-    allDataStreamTemplates: {
-      name: string;
-      index_template: TemplateItemRemote;
-    }[];
+    allDataStreamTemplates: TemplateItem[];
   }
 ) {
   const { field, isEdit, allDataStreamTemplates } = props;
@@ -27,7 +20,9 @@ export default function DefineDataStream(
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.ComboBoxSingle;
   const matchedList = allDataStreamTemplates.filter((item) => {
     if (!searchValue) {
-      return false;
+      return true;
+    } else if (item.index_template.index_patterns.some((item) => item.match(new RegExp(searchValue, "i")))) {
+      return true;
     }
 
     return filterByMinimatch(searchValue || "", item.index_template.index_patterns);
@@ -87,17 +82,25 @@ export default function DefineDataStream(
   ) : (
     <ContentPanel title="Define data stream" titleSize="s">
       <EuiSpacer size="s" />
-      <CustomFormRow {...getCommonFormRowProps("name", field)} label="Data stream name" position="bottom" helpText={INDEX_NAMING_MESSAGE}>
+      <CustomFormRow
+        {...getCommonFormRowProps("name", field)}
+        label="Data stream name"
+        helpText="Specify a data stream name. It must match an index pattern from an index template."
+      >
         <Component
+          placeholder="Specify data stream name"
           options={matchedList.map((item) => ({
-            label: searchValue,
-            value: item.name,
+            label: item.name,
+            value: item,
           }))}
-          renderOption={(option: { value: string }) => {
+          renderOption={(option: { value: TemplateItem; label: string }) => {
             return (
-              <h1>
-                Matched template: <EuiBadge color="hollow">{option.value}</EuiBadge>
-              </h1>
+              <EuiFlexGroup style={{ overflowX: "auto" }} justifyContent="spaceBetween">
+                <EuiFlexItem grow={false}>{option.value.index_template.index_patterns.join(",")}</EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <EuiBadge color="hollow">{option.label}</EuiBadge>
+                </EuiFlexItem>
+              </EuiFlexGroup>
             );
           }}
           async
@@ -106,33 +109,53 @@ export default function DefineDataStream(
           onSearchChange={(dataStreamName: string) => {
             setSearchValue(dataStreamName);
           }}
-          onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            setTimeout(() => {
-              if (!field.getValue("matchedTemplate")) {
-                suggestionRegister.onChange(value);
-              }
-            }, 0);
-          }}
-          onChange={(value: ReactEventHandler) => {
+          // onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+          //   if (!field.getValue("matchedTemplate")) {
+          //     suggestionRegister.onChange(searchValue);
+          //     const findMatchesPatternItem = matchedList.find((item) => filterByMinimatch(searchValue, item.index_template.index_patterns));
+          //     if (findMatchesPatternItem) {
+          //       setMatchedTemplate({
+          //         field,
+          //         matchedTemplate: findMatchesPatternItem
+          //       });
+          //     }
+          //   }
+          // }}
+          onChange={(value: string, selectedOption: { value: TemplateItem }) => {
             if (!value) {
               field.resetValues({
                 name: "",
               });
             } else {
-              suggestionRegister.onChange(value);
-              const template = matchedList[0]?.index_template?.template;
-              const payload = {
-                matchedTemplate: matchedList[0]?.name,
-                template: {
-                  ...template,
-                  settings: flatten(template.settings || {}),
-                },
-              };
+              const findItem = selectedOption.value;
+              const { index_patterns } = findItem.index_template;
+              // matched by wildcard
+              const findMatchesPattern = index_patterns.find((item) => filterByMinimatch(searchValue, [item]));
+              // matched by letters
+              const findWordLikePattern = index_patterns.find((item) => item.match(new RegExp(searchValue, "i")));
+              let setTemplatePayloadFlag = false;
+              if (findMatchesPattern) {
+                suggestionRegister.onChange(searchValue);
+                setTemplatePayloadFlag = true;
+              } else if (findWordLikePattern) {
+                const finalReplaceValue = getStringBeforeStar(findWordLikePattern);
+                suggestionRegister.onChange(finalReplaceValue);
+                if (filterByMinimatch(finalReplaceValue, findItem.index_template.index_patterns)) {
+                  setTemplatePayloadFlag = true;
+                }
+              }
 
-              set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
-
-              field.setValues(payload);
+              if (setTemplatePayloadFlag) {
+                setMatchedTemplate({
+                  matchedTemplate: findItem,
+                  field,
+                });
+              } else {
+                field.setValues({
+                  matchedTemplate: "",
+                  template: {},
+                });
+              }
             }
           }}
         />

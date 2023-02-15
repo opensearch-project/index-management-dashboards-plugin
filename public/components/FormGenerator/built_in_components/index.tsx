@@ -6,7 +6,7 @@ import EuiComboBox from "../../ComboBoxWithoutWarning";
 export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle";
 
 export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
-  onChange: (val: IFieldComponentProps["value"]) => void;
+  onChange: (val: IFieldComponentProps["value"], ...args: any) => void;
   value?: any;
   [key: string]: any;
 }
@@ -55,7 +55,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
           ref={ref}
           onChange={(selectedOptions) => {
             if (selectedOptions && selectedOptions[0]) {
-              onChange(selectedOptions[0].label);
+              onChange(selectedOptions[0].label, selectedOptions[0]);
             } else {
               onChange(undefined);
             }
