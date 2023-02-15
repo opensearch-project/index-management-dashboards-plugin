@@ -2,12 +2,12 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-
+import { EuiSpacer } from "@elastic/eui";
 import React from "react";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import { FieldInstance } from "../../../../lib/field";
-import { EuiSpacer } from "@elastic/eui";
+import SwitchNumber from "../SwitchNumber";
 
 export interface ForceMergeOptionsProps {
   field: FieldInstance;
@@ -38,7 +38,7 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
       </CustomFormRow>
       <EuiSpacer />
       <CustomFormRow label="Max number of segments" helpText="The number of segments to merge to. To fully merge indices, set it to 1.">
-        <AllBuiltInComponents.Number
+        <SwitchNumber
           {...field.registerField({
             name: "max_num_segments",
           })}
