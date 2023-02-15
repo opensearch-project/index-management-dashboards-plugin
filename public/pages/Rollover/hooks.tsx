@@ -3,7 +3,7 @@ import { merge, isEmpty } from "lodash";
 import { FieldInstance, transformNameToString } from "../../lib/field";
 import { IFormGeneratorRef } from "../../components/FormGenerator";
 import { IndexForm } from "../../containers/IndexForm";
-import { IRolloverRequestBody } from "./containers/Rollover/Rollover";
+import { IRolloverRequestBody } from "./interface";
 import { IndexItemRemote } from "../../../models/interfaces";
 import { BrowserServices } from "../../models/interfaces";
 import { Alias } from "../../../server/models/interfaces";

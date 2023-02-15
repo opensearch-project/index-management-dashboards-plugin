@@ -16,22 +16,11 @@ import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { Alias } from "../../../../../server/models/interfaces";
-import { IndexItem } from "../../../../../models/interfaces";
 import useField from "../../../../lib/field";
 import { getOptions, onSubmit, submitWriteIndex } from "../../hooks";
+import { IRolloverRequestBody } from "../../interface";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
-
-export interface IRolloverRequestBody {
-  source?: string;
-  targetIndex?: IndexItem;
-  conditions?: {
-    max_age?: string;
-    max_docs?: number;
-    max_size?: string;
-    max_primary_shard_size?: string;
-  };
-}
 
 export default function Rollover(props: RolloverProps) {
   const [options, setOptions] = useState<{
