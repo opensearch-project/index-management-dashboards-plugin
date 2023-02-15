@@ -105,22 +105,17 @@ export default function DefineDataStream(
           }}
           async
           {...suggestionRegister}
-          onCreateOption={undefined}
+          onCreateOption={() => {
+            window.open(`#${ROUTES.CREATE_TEMPLATE}?values=${JSON.stringify({ data_stream: {}, index_patterns: [`${searchValue}*`] })}`);
+          }}
+          customOptionText={
+            searchValue
+              ? `{searchValue} doesn’t match index patterns from any templates. Specify another name or press Enter to create a data stream template.`
+              : `There are no data stream templates. Press Enter to create a data stream template.`
+          }
           onSearchChange={(dataStreamName: string) => {
             setSearchValue(dataStreamName);
           }}
-          // onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
-          //   if (!field.getValue("matchedTemplate")) {
-          //     suggestionRegister.onChange(searchValue);
-          //     const findMatchesPatternItem = matchedList.find((item) => filterByMinimatch(searchValue, item.index_template.index_patterns));
-          //     if (findMatchesPatternItem) {
-          //       setMatchedTemplate({
-          //         field,
-          //         matchedTemplate: findMatchesPatternItem
-          //       });
-          //     }
-          //   }
-          // }}
           onChange={(value: string, selectedOption: { value: TemplateItem }) => {
             if (!value) {
               field.resetValues({
