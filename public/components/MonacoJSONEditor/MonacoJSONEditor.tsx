@@ -4,7 +4,7 @@
  */
 import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
 import { EuiFormRow } from "@elastic/eui";
-import { monaco } from "@osd/monaco-next";
+import { monaco } from "@osd/monaco";
 import { IJSONEditorRef } from "../JSONEditor";
 import { MonacoJSONEditorProps } from "./interface";
 import { useDiagnosticsOptions, useModel } from "./hooks";

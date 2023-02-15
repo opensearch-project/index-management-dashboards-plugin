@@ -5,7 +5,7 @@
 import React, { forwardRef, useState, useEffect, useRef, useImperativeHandle, useCallback } from "react";
 import { EuiFormRow } from "@elastic/eui";
 import { MonacoDiffEditor } from "react-monaco-editor";
-import { monaco } from "@osd/monaco-next";
+import { monaco } from "@osd/monaco";
 import CustomFormRow from "../CustomFormRow";
 import { IJSONEditorRef } from "../JSONEditor";
 import { JSONDiffEditorProps } from "./interface";
