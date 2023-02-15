@@ -5,7 +5,6 @@ import {
   EuiFlexItem,
   EuiFormRow,
   EuiToolTip,
-  EuiCode,
   EuiBadge,
   EuiText,
   EuiContextMenu,
@@ -17,8 +16,6 @@ import { AllBuiltInComponents } from "../FormGenerator";
 import useField, { transformNameToString } from "../../lib/field";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../utils/constants";
 import SimplePopover from "../SimplePopover";
-
-const OLD_VALUE_DISABLED_REASON = "Old mappings cannot be modified";
 
 interface IMappingLabel {
   value: MappingsProperties[number];
@@ -127,77 +124,60 @@ export const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: Reac
           label="Field name"
           display="rowCompressed"
         >
-          {readonly ? (
-            <EuiCode>{field.getValue("fieldName")}</EuiCode>
-          ) : (
-            <AllBuiltInComponents.Input
-              {...field.registerField({
-                name: "fieldName",
-                rules: [
-                  {
-                    required: true,
-                    message: "Field name is required, please input",
-                  },
-                  {
-                    validator: (rule, value) => {
-                      const checkResult = onFieldNameCheck(value);
-                      if (checkResult) {
-                        return Promise.reject(checkResult);
-                      }
+          <AllBuiltInComponents.Input
+            {...field.registerField({
+              name: "fieldName",
+              rules: [
+                {
+                  required: true,
+                  message: "Field name is required, please input",
+                },
+                {
+                  validator: (rule, value) => {
+                    const checkResult = onFieldNameCheck(value);
+                    if (checkResult) {
+                      return Promise.reject(checkResult);
+                    }
 
-                      return Promise.resolve("");
-                    },
+                    return Promise.resolve("");
                   },
-                ],
-              })}
-              disabled={readonly}
-              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-              compressed
-              data-test-subj={`${id}-field-name`}
-            />
-          )}
+                },
+              ],
+            })}
+            compressed
+            data-test-subj={`${id}-field-name`}
+          />
         </FormRow>
       </EuiFlexItem>
       <EuiFlexItem grow={false} style={{ width: 100 }}>
         <FormRow shouldShowLabel={shouldShowLabel} label="Field type" display="rowCompressed">
-          {readonly ? (
-            <EuiCode>{type}</EuiCode>
-          ) : (
-            <AllBuiltInComponents.Select
-              disabled={readonly}
-              disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-              compressed
-              {...field.registerField({
-                name: "type",
-              })}
-              data-test-subj={`${id}-field-type`}
-              options={(() => {
-                const allOptions = INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }));
-                const typeValue = field.getValue("type");
-                if (!allOptions.find((item) => item.value === typeValue)) {
-                  allOptions.push({
-                    text: typeValue,
-                    value: typeValue,
-                  });
-                }
-                return allOptions;
-              })()}
-            />
-          )}
+          <AllBuiltInComponents.Select
+            compressed
+            {...field.registerField({
+              name: "type",
+            })}
+            data-test-subj={`${id}-field-type`}
+            options={(() => {
+              const allOptions = INDEX_MAPPING_TYPES.map((item) => ({ text: item.label, value: item.label }));
+              const typeValue = field.getValue("type");
+              if (!allOptions.find((item) => item.value === typeValue)) {
+                allOptions.push({
+                  text: typeValue,
+                  value: typeValue,
+                });
+              }
+              return allOptions;
+            })()}
+          />
         </FormRow>
       </EuiFlexItem>
       {moreFields.map((item) => {
         const { label, type, ...others } = item;
-        const RenderComponent = readonly ? AllBuiltInComponents.Text : AllBuiltInComponents[type];
+        const RenderComponent = AllBuiltInComponents[type];
         return (
           <EuiFlexItem grow={false} key={transformNameToString(others.name)} style={{ width: 100 }}>
             <EuiFormRow label={label} display="rowCompressed" isInvalid={!!field.getError(others.name)} error={field.getError(others.name)}>
-              <RenderComponent
-                {...field.registerField(others)}
-                disabled={readonly}
-                disabledReason={readonly ? "" : OLD_VALUE_DISABLED_REASON}
-                compressed
-              />
+              <RenderComponent {...field.registerField(others)} compressed />
             </EuiFormRow>
           </EuiFlexItem>
         );

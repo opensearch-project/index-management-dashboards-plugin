@@ -83,7 +83,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
   }
 
   hasUnsavedChanges = (mode: IndicesUpdateMode) => this.indexDetailRef?.hasUnsavedChanges(mode);
-  getValue = () => IndexForm.transformIndexDetailToRemote(this.props.value);
+  getValue = () => IndexForm.transformIndexDetailToRemote(JSON.parse(JSON.stringify(this.props.value)));
   simulateFromTemplate = () => this.indexDetailRef?.simulateFromTemplate();
 
   getIndexDetail = async (indexName: string): Promise<IndexItemRemote> => {
