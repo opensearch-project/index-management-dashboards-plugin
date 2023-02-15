@@ -9,7 +9,7 @@ import { get, set, differenceWith, isEqual, merge } from "lodash";
 import { diffArrays } from "diff";
 import flattern from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
-import IndexDetail, { IndexDetailProps, IIndexDetailRef, defaultIndexSettings } from "../../components/IndexDetail";
+import IndexDetail, { IndexDetailProps, IIndexDetailRef, defaultIndexSettings } from "../../../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -85,7 +85,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
   }
   static transformIndexDetailToRemote(payload?: Partial<IndexItem>): Partial<IndexItemRemote> {
     const newPayload = { ...payload };
-    set(newPayload, "mappings.properties", transformArrayToObject(get(newPayload, "mappings.properties", {})));
+    set(newPayload, "mappings.properties", transformArrayToObject(get(newPayload, "mappings.properties", [])));
     return newPayload as IndexItemRemote;
   }
   constructor(props: IndexFormProps & { services: BrowserServices }) {

@@ -17,12 +17,12 @@ import {
 } from "@elastic/eui";
 import { set, merge, omit, pick } from "lodash";
 import flat from "flat";
-import { ContentPanel } from "../../../../components/ContentPanel";
-import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
+import { ContentPanel } from "../ContentPanel";
+import UnsavedChangesBottomBar from "../UnsavedChangesBottomBar";
 import AliasSelect, { AliasSelectProps } from "../AliasSelect";
-import IndexMapping from "../../../../components/IndexMapping";
-import { IndexItem, IndexItemRemote } from "../../../../../models/interfaces";
-import { ServerResponse } from "../../../../../server/models/types";
+import IndexMapping from "../IndexMapping";
+import { IndexItem, IndexItemRemote } from "../../../models/interfaces";
+import { ServerResponse } from "../../../server/models/types";
 import {
   INDEX_IMPORT_SETTINGS,
   INDEX_DYNAMIC_SETTINGS,
@@ -32,17 +32,17 @@ import {
   INDEX_SETTINGS_URL,
   INDEX_NAMING_PATTERN,
   ALIAS_SELECT_RULE,
-} from "../../../../utils/constants";
-import { Modal } from "../../../../components/Modal";
-import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
-import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
-import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping";
-import { IFieldComponentProps } from "../../../../components/FormGenerator";
-import SimplePopover from "../../../../components/SimplePopover";
-import { SimpleEuiToast } from "../../../../components/Toast";
-import { filterByMinimatch, getOrderedJson } from "../../../../../utils/helper";
-import { SYSTEM_INDEX } from "../../../../../utils/constants";
-import { diffJson } from "../../../../utils/helpers";
+} from "../../utils/constants";
+import { Modal } from "../Modal";
+import FormGenerator, { IField, IFormGeneratorRef } from "../FormGenerator";
+import EuiToolTipWrapper from "../EuiToolTipWrapper";
+import { IIndexMappingsRef, transformArrayToObject, transformObjectToArray } from "../IndexMapping";
+import { IFieldComponentProps } from "../FormGenerator";
+import SimplePopover from "../SimplePopover";
+import { SimpleEuiToast } from "../Toast";
+import { filterByMinimatch, getOrderedJson } from "../../../utils/helper";
+import { SYSTEM_INDEX } from "../../../utils/constants";
+import { diffJson } from "../../utils/helpers";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -66,19 +66,20 @@ export const defaultIndexSettings = {
 };
 
 export interface IndexDetailProps {
+  onChange: (value: IndexDetailProps["value"]) => void;
+  docVersion: string;
+  refreshOptions: AliasSelectProps["refreshOptions"];
   value?: Partial<IndexItem>;
   oldValue?: Partial<IndexItem>;
-  onChange: (value: IndexDetailProps["value"]) => void;
   isEdit?: boolean;
   readonly?: boolean;
-  refreshOptions: AliasSelectProps["refreshOptions"];
   mode?: IndicesUpdateMode;
   onSimulateIndexTemplate?: (indexName: string) => Promise<ServerResponse<IndexItemRemote>>;
   onGetIndexDetail?: (indexName: string) => Promise<IndexItemRemote>;
   sourceIndices?: string[];
   onSubmit?: () => Promise<{ ok: boolean }>;
   refreshIndex?: () => void;
-  docVersion: string;
+  withoutPanel?: boolean;
 }
 
 export interface IIndexDetailRef {
@@ -110,6 +111,7 @@ const IndexDetail = (
     onSubmit,
     refreshIndex,
     docVersion,
+    withoutPanel,
   }: IndexDetailProps,
   ref: Ref<IIndexDetailRef>
 ) => {
@@ -406,9 +408,25 @@ const IndexDetail = (
             if (mode && mode === IndicesUpdateMode.alias) {
               return content;
             }
+
+            const title = "Define index";
+
+            if (withoutPanel) {
+              return (
+                <>
+                  <EuiTitle size="s">
+                    <span>{title}</span>
+                  </EuiTitle>
+                  <EuiSpacer size="s" />
+                  {content}
+                  <EuiSpacer />
+                </>
+              );
+            }
+
             return (
               <>
-                <ContentPanel title="Define index" titleSize="s">
+                <ContentPanel title={title} titleSize="s">
                   {content}
                 </ContentPanel>
                 <EuiSpacer />
@@ -508,6 +526,21 @@ const IndexDetail = (
               return content;
             }
 
+            const title = "Index settings";
+
+            if (withoutPanel) {
+              return (
+                <>
+                  <EuiTitle size="s">
+                    <h2>{title}</h2>
+                  </EuiTitle>
+                  <EuiSpacer size="s" />
+                  {content}
+                  <EuiSpacer />
+                </>
+              );
+            }
+
             return (
               <>
                 <ContentPanel title="Index settings" titleSize="s">
@@ -536,6 +569,19 @@ const IndexDetail = (
 
             if (mode && mode === IndicesUpdateMode.mappings) {
               return content;
+            }
+
+            if (withoutPanel) {
+              return (
+                <>
+                  <EuiTitle size="s">
+                    <div>Index mapping</div>
+                  </EuiTitle>
+                  <EuiSpacer size="s" />
+                  {content}
+                  <EuiSpacer />
+                </>
+              );
             }
 
             return (

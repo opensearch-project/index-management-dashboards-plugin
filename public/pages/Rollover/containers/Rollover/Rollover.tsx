@@ -5,22 +5,20 @@
 
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { isEmpty, merge } from "lodash";
+import { merge } from "lodash";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
+import IndexFormWrapper, { IndexForm } from "../../../../containers/IndexForm";
 import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { Alias } from "../../../../../server/models/interfaces";
-import { IndexItemRemote, IndexItem } from "../../../../../models/interfaces";
-import IndexMappings from "../IndexMappings";
-import IndexAlias from "../IndexAlias";
-import IndexSettings from "../IndexSettings";
+import { IndexItem } from "../../../../../models/interfaces";
 import useField from "../../../../lib/field";
-import { transformArrayToObject } from "../../../../components/IndexMapping";
+import { getOptions, onSubmit, submitWriteIndex } from "../../hooks";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
 
@@ -35,7 +33,7 @@ export interface IRolloverRequestBody {
   };
 }
 
-export default function IndexDetail(props: RolloverProps) {
+export default function Rollover(props: RolloverProps) {
   const [options, setOptions] = useState<{
     alias: { label: string; aliases: Alias[] }[];
     dataStreams: { label: string }[];
@@ -46,12 +44,21 @@ export default function IndexDetail(props: RolloverProps) {
   const coreService = useContext(CoreServicesContext);
   const services = useContext(ServicesContext) as BrowserServices;
   const sourceRef = useRef<IFormGeneratorRef>(null);
-  const [tempValue, setValue] = useState<IRolloverRequestBody>({});
+  const indexFormRef = useRef<IndexForm>(null);
+  const [tempValue, setValue] = useState<IRolloverRequestBody>({
+    source: props.match.params.source,
+  });
   const [loading, setIsLoading] = useState(false);
-  const [writeIndexValue, setWriteIndexValue] = useState(undefined);
+  const [writeIndexValue, setWriteIndexValue] = useState<string>("");
   const field = useField({
     values: {
-      targetIndex: {},
+      targetIndex: {
+        settings: {
+          "index.number_of_shards": 1,
+          "index.number_of_replicas": 1,
+          "index.refresh_interval": "1s",
+        },
+      },
     },
   });
 
@@ -60,115 +67,19 @@ export default function IndexDetail(props: RolloverProps) {
     setValue(finalResult);
   };
 
-  const refreshOptions = () =>
-    Promise.all([
-      services.commonService.apiCaller<Alias[]>({
-        endpoint: "cat.aliases",
-        data: {
-          format: "json",
-        },
-      }),
-      services.indexService.getDataStreams({}),
-    ]).then(([aliases, dataStreams]) => {
-      if (aliases.ok && dataStreams.ok) {
-        const allAlias: { label: string; aliases: Alias[] }[] = [];
-        aliases.response.forEach((item) => {
-          let findIndex;
-          if (allAlias.find((alias) => alias.label === item.alias)) {
-            findIndex = allAlias.findIndex((alias) => alias.label === item.alias);
-          } else {
-            findIndex = allAlias.length;
-            allAlias.push({
-              label: item.alias,
-              aliases: [],
-            });
-          }
-          allAlias[findIndex].aliases.push(item);
-        });
-        setOptions({
-          alias: allAlias,
-          dataStreams: dataStreams.response?.dataStreams.map((item) => ({ label: item.name })) || [],
-        });
-      }
-    });
-
-  const submitWriteIndex = async () => {
-    const result = await services.commonService.apiCaller({
-      endpoint: "indices.updateAliases",
-      data: {
-        body: {
-          actions: [
-            {
-              add: {
-                index: writeIndexValue,
-                alias: sourceRef.current?.getValue("source"),
-                is_write_index: true,
-              },
-            },
-          ],
-        },
-      },
+  const refreshOptions = async () => {
+    const result = await getOptions({
+      services,
     });
     if (result.ok) {
-      coreService?.notifications.toasts.addSuccess(`Set ${writeIndexValue} as write index successfully.`);
-      refreshOptions();
-    } else {
-      coreService?.notifications.toasts.addDanger(result.error);
-    }
-  };
-
-  const onSubmit = async () => {
-    const formGeneratersRes = await Promise.all(
-      [sourceRef.current?.validatePromise(), sourceType === "alias" ? field.validatePromise() : undefined].filter((item) => item)
-    );
-    const hasError = formGeneratersRes.some((item) => item?.errors);
-    if (hasError) {
-      coreService?.notifications.toasts.addDanger("Some fields does not pass validation, please check fields with red underline.");
-      return;
-    }
-    const finalValues: IRolloverRequestBody = merge({}, tempValue);
-    formGeneratersRes.forEach((item) => merge(finalValues, item?.values));
-
-    const payload: {
-      alias: string;
-      newIndex?: string;
-      body: Omit<IndexItemRemote, "index"> & { conditions?: IRolloverRequestBody["conditions"] };
-    } = {
-      alias: finalValues.source || "",
-      body: {},
-    };
-    if (sourceType === "alias" && !isEmpty(finalValues.targetIndex || {})) {
-      const { index, mappings, ...others } = (finalValues.targetIndex || {}) as IndexItem;
-      if (index) {
-        payload.newIndex = index;
-      }
-      if (mappings) {
-        const { properties, ...mappingsOthers } = mappings;
-        payload.body = {
-          ...others,
-          mappings: {
-            ...mappingsOthers,
-          },
-        };
-        if (properties && payload.body.mappings) {
-          payload.body.mappings.properties = transformArrayToObject(properties || []);
+      setOptions(
+        result.response || {
+          alias: [],
+          dataStreams: [],
         }
-      }
-    }
-    setIsLoading(true);
-
-    const result = await services.commonService.apiCaller({
-      endpoint: "indices.rollover",
-      data: payload,
-    });
-
-    setIsLoading(false);
-
-    if (result.ok) {
-      coreService?.notifications.toasts.addSuccess(`${payload.alias} has been rollovered successfully.`);
-      props.history.replace(sourceType === "alias" ? ROUTES.ALIASES : ROUTES.DATA_STREAMS);
+      );
     } else {
-      coreService?.notifications.toasts.addDanger(result.error);
+      coreService?.notifications.toasts.addDanger(result.error || "");
     }
   };
 
@@ -233,6 +144,8 @@ export default function IndexDetail(props: RolloverProps) {
     return writeIndex;
   })();
 
+  useEffect(() => {}, [writingIndex]);
+
   const reasons = useMemo(() => {
     let result: React.ReactChild[] = [];
     if (sourceType === "alias") {
@@ -254,7 +167,24 @@ export default function IndexDetail(props: RolloverProps) {
                 </CustomFormRow>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton disabled={!writeIndexValue} fill color="primary" onClick={submitWriteIndex}>
+                <EuiButton
+                  disabled={!writeIndexValue}
+                  fill
+                  color="primary"
+                  onClick={async () => {
+                    const result = await submitWriteIndex({
+                      services,
+                      writeIndexValue: writeIndexValue,
+                      sourceRef,
+                    });
+                    if (result.ok) {
+                      coreService?.notifications.toasts.addSuccess(`Set ${writeIndexValue} as write index successfully.`);
+                      refreshOptions();
+                    } else {
+                      coreService?.notifications.toasts.addDanger(result.error);
+                    }
+                  }}
+                >
                   Assign as write index
                 </EuiButton>
               </EuiFlexItem>
@@ -267,19 +197,13 @@ export default function IndexDetail(props: RolloverProps) {
     return result;
   }, [sourceType, options, writeIndexValue]);
 
-  const subCompontentProps = {
-    ...props,
-    field,
-    writingIndex,
-  };
-
   return (
     <div style={{ padding: "0 50px" }}>
       <EuiTitle>
         <h1>Rollover</h1>
       </EuiTitle>
       <CustomFormRow
-        helpText={<>Creates a new index for a data stream or index alias.</>}
+        helpText="Rollover a new writing index for a data stream or index alias."
         style={{
           marginBottom: 20,
         }}
@@ -341,15 +265,16 @@ export default function IndexDetail(props: RolloverProps) {
         })()}
       </ContentPanel>
       <EuiSpacer />
-      {sourceType === "alias" ? (
+      {sourceType === "alias" && writingIndex ? (
         <>
           <ContentPanel title="Configure new rollover index" titleSize="s">
-            <EuiSpacer size="s" />
-            <IndexAlias {...subCompontentProps} />
-            <EuiSpacer />
-            <IndexSettings {...subCompontentProps} />
-            <EuiSpacer />
-            <IndexMappings {...subCompontentProps} />
+            <IndexFormWrapper
+              {...field.registerField({
+                name: "targetIndex",
+              })}
+              ref={indexFormRef}
+              withoutPanel
+            />
           </ContentPanel>
           <EuiSpacer />
         </>
@@ -370,7 +295,30 @@ export default function IndexDetail(props: RolloverProps) {
           </EuiButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton fill onClick={onSubmit} isLoading={loading} data-test-subj="rolloverSubmitButton">
+          <EuiButton
+            disabled={loading || (sourceType === "alias" && !writingIndex)}
+            fill
+            onClick={async () => {
+              setIsLoading(true);
+              const result = await onSubmit({
+                services,
+                sourceRef,
+                sourceType,
+                writingIndex,
+                indexFormRef,
+                tempValue,
+              });
+              setIsLoading(false);
+              if (result.ok) {
+                coreService?.notifications.toasts.addSuccess(`${tempValue.source} has been rollovered successfully.`);
+                props.history.replace(sourceType === "alias" ? ROUTES.ALIASES : ROUTES.DATA_STREAMS);
+              } else {
+                coreService?.notifications.toasts.addDanger(result.error);
+              }
+            }}
+            isLoading={loading}
+            data-test-subj="rolloverSubmitButton"
+          >
             Rollover
           </EuiButton>
         </EuiFlexItem>

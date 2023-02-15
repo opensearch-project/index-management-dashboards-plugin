@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { EuiSpacer, EuiTitle } from "@elastic/eui";
-import AliasSelect from "../../../CreateIndex/components/AliasSelect";
+import AliasSelect from "../../../../components/AliasSelect";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
