@@ -22,6 +22,7 @@ import {
   EuiEmptyPrompt,
   EuiText,
   EuiHealth,
+  EuiToolTip,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR } from "../../utils/constants";
@@ -52,6 +53,12 @@ type DataStreamsState = {
 
 const defaultFilter = {
   search: DEFAULT_QUERY_PARAMS.search,
+};
+
+const healthExplanation = {
+  green: "All shards are assigned.",
+  yellow: "All primary shards are assigned, but one or more replica shards are unassigned.",
+  red: "One or more primary shards are unassigned, so some data is unavailable.",
 };
 
 class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
@@ -312,12 +319,15 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               name: "Status",
               sortable: true,
               render: (health: string, item) => {
-                const color = health ? HEALTH_TO_COLOR[health.toLowerCase()] : "subdued";
+                const healthLowerCase = health.toLowerCase() as "green" | "yellow" | "red";
+                const color = health ? HEALTH_TO_COLOR[healthLowerCase] : "subdued";
                 const text = (health || item.status || "").toLowerCase();
                 return (
-                  <EuiHealth color={color} className="indices-health">
-                    {text}
-                  </EuiHealth>
+                  <EuiToolTip content={healthExplanation[healthLowerCase] || ""}>
+                    <EuiHealth color={color} className="indices-health">
+                      {text}
+                    </EuiHealth>
+                  </EuiToolTip>
                 );
               },
             },
