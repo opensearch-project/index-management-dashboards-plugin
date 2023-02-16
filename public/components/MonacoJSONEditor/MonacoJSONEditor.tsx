@@ -70,6 +70,12 @@ const MonacoJSONEditor = forwardRef(
       }
     }, [isReady]);
 
+    useEffect(() => {
+      return () => {
+        onClickOutsideHandler.current();
+      };
+    }, []);
+
     useImperativeHandle(ref, () => ({
       validate: () =>
         new Promise((resolve, reject) => {
