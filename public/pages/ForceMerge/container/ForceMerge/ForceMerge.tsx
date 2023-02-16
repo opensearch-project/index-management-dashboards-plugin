@@ -5,7 +5,7 @@
 
 import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import _ from "lodash";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -36,6 +36,15 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       indexes: indexes ? indexes.split(",") : [],
     },
   });
+  const getIndexOptionsCached = useCallback(
+    (searchValue) =>
+      getIndexOptions({
+        services,
+        searchValue,
+        context,
+      }),
+    []
+  );
 
   const onCancel = () => {
     props.history.push(ROUTES.INDICES);
@@ -132,13 +141,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
           <IndexSelect
             data-test-subj="sourceSelector"
             placeholder="Select indexes or data streams"
-            getIndexOptions={(searchValue) =>
-              getIndexOptions({
-                services,
-                searchValue,
-                context,
-              })
-            }
+            getIndexOptions={getIndexOptionsCached}
             {...field.registerField({
               name: "indexes",
               rules: [
