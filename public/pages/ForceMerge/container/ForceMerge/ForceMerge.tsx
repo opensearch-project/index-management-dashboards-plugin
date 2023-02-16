@@ -51,6 +51,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       _shards?: {
         successful: number;
         total: number;
+        failed: number;
       };
     }>({
       endpoint: "indices.forcemerge",
@@ -61,9 +62,11 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
     });
     if (result && result.ok) {
       const { _shards } = result.response || {};
-      const { successful, total } = _shards || {};
+      const { successful, total, failed } = _shards || {};
       context.notifications.toasts.addSuccess(
-        total ? `${successful}/${total} shards are successfully force merged.` : `The indexes are successfully merged.`
+        failed
+          ? `${successful}/${total} shards are successfully force merged and ${failed}/${total} shards failed to merge.`
+          : `The indexes are successfully force merged.`
       );
       props.history.push(ROUTES.INDICES);
     } else {
