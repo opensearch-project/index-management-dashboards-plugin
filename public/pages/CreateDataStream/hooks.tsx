@@ -16,10 +16,12 @@ export const getCommonFormRowProps = (name: string | string[], field: FieldInsta
 export const setMatchedTemplate = ({ matchedTemplate, field }: { matchedTemplate: TemplateItem; field: FieldInstance }) => {
   const payload = {
     matchedTemplate: matchedTemplate.name,
-    template: {
-      ...matchedTemplate.index_template.template,
-      settings: flatten(matchedTemplate.index_template.template.settings || {}),
-    },
+    template: JSON.parse(
+      JSON.stringify({
+        ...matchedTemplate.index_template.template,
+        settings: flatten(matchedTemplate.index_template.template.settings || {}),
+      })
+    ),
   };
 
   set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
