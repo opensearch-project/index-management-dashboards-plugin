@@ -6,8 +6,6 @@
 import { render, waitFor } from "@testing-library/react";
 import React from "react";
 import ForceMergeAdvancedOptions, { ForceMergeOptionsProps } from "./ForceMergeAdvancedOptions";
-import { coreServicesMock } from "../../../../../test/mocks";
-import { CoreServicesContext } from "../../../../components/core_services";
 import useField from "../../../../lib/field";
 
 const WrappedComponent = (props: Partial<ForceMergeOptionsProps>) => {
