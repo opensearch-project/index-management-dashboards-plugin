@@ -18,30 +18,38 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
 
   return (
     <div style={{ padding: "10px 0px" }}>
-      <CustomFormRow label="Flush indices" helpText="If true, Opensearch will perform a flush on the indices after the force merge.">
-        <AllBuiltInComponents.Switch
-          {...field.registerField({
-            name: "flush",
-          })}
-        />
-      </CustomFormRow>
-      <EuiSpacer />
-      <CustomFormRow
-        label="Only expunge delete"
-        helpText="If true, expunge all segments containing more than index.merge.policy.expunge_deletes_allowed (default to 10) percents of deleted documents."
-      >
-        <AllBuiltInComponents.Switch
-          {...field.registerField({
-            name: "only_expunge_deletes",
-          })}
-        />
-      </CustomFormRow>
-      <EuiSpacer />
-      <CustomFormRow label="Max number of segments" helpText="The number of segments to merge to. To fully merge indices, set it to 1.">
+      <CustomFormRow label="Segment indexes" helpText="Define how many segments to merge to.">
         <SwitchNumber
           {...field.registerField({
             name: "max_num_segments",
           })}
+        />
+      </CustomFormRow>
+      <EuiSpacer />
+      <CustomFormRow label="Flush indexes" helpText="Opensearch will perform a flush on the indexes after the force merge.">
+        <AllBuiltInComponents.CheckBox
+          {...field.registerField({
+            name: "flush",
+          })}
+          label="Flush indexes"
+        />
+      </CustomFormRow>
+      <EuiSpacer />
+      <CustomFormRow
+        label="Expunge delete"
+        fullWidth
+        helpText={
+          <>
+            <div>Expunge all segments containing more than the defined amount of deleted documents.</div>
+            <div>By default, it will expunge 10% of deleted documents set by index.merge.policy.expunge_deletes_allowed setting.</div>
+          </>
+        }
+      >
+        <AllBuiltInComponents.CheckBox
+          {...field.registerField({
+            name: "only_expunge_deletes",
+          })}
+          label="Only expunge delete"
         />
       </CustomFormRow>
       <EuiSpacer />

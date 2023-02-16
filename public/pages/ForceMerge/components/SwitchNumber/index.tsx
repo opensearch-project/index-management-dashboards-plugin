@@ -16,11 +16,11 @@ export default function SwitchNumber(props: SwitchNumberProps) {
         options={[
           {
             id: "0",
-            label: "Automatically",
+            label: "Automatic",
           },
           {
             id: "1",
-            label: "Manually set",
+            label: "Manually set number of segments",
           },
         ]}
         idSelected={id}
@@ -36,8 +36,11 @@ export default function SwitchNumber(props: SwitchNumberProps) {
       {id === "1" ? (
         <>
           <EuiSpacer size="s" />
-          <CustomFormRow helpText="Specify the number of segments to merge to">
-            <AllBuiltInComponents.Number {...props} />
+          <CustomFormRow
+            label="Number of segments"
+            helpText="Specify the number of segments to merge to. To fully merge indexes, set number to 1."
+          >
+            <AllBuiltInComponents.Number {...props} placeholder="Specify a number" />
           </CustomFormRow>
         </>
       ) : null}
