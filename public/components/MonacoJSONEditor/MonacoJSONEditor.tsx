@@ -16,34 +16,27 @@ const MonacoJSONEditor = forwardRef(
     const [confirmModalVisible, setConfirmModalVisible] = useState(false);
     const [isReady, setIsReady] = useState(false);
     const [editorValue, setEditorValue] = useState(value);
-    const focusedRef = useRef(false);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | undefined>(undefined);
+    const hasBindEventRef = useRef<boolean>(false);
     useDiagnosticsOptions({
       monaco,
       diagnosticsOptions,
     });
     const onClickOutsideHandler = useRef(() => {
-      if (focusedRef.current) {
-        if (others.disabled) {
-          return;
-        }
-        try {
-          const value = editorRef.current?.getValue();
-          if (!value) {
-            throw new Error("Value can not be empty");
-          }
-          JSON.parse(value);
-          onChange && onChange(value);
-        } catch (e) {
-          setConfirmModalVisible(true);
-        }
+      if (others.disabled) {
+        return;
       }
-      focusedRef.current = false;
-    });
-    const onClickContainer = useRef((e: MouseEvent) => {
-      focusedRef.current = true;
-      e.stopPropagation();
+      try {
+        const value = editorRef.current?.getValue();
+        if (!value) {
+          throw new Error("Value can not be empty");
+        }
+        JSON.parse(value);
+        onChange && onChange(value);
+      } catch (e) {
+        setConfirmModalVisible(true);
+      }
     });
     const setAllValue = useCallback(
       (val: string) => {
@@ -70,13 +63,11 @@ const MonacoJSONEditor = forwardRef(
     });
 
     useEffect(() => {
-      document.body.addEventListener("click", onClickOutsideHandler.current);
-      editorRef.current?.getDomNode()?.addEventListener("click", onClickContainer.current);
       editorRef.current?.getDomNode()?.setAttribute("data-test-subj", "codeEditorContainer");
-      return () => {
-        document.body.removeEventListener("click", onClickOutsideHandler.current);
-        editorRef.current?.getDomNode()?.removeEventListener("click", onClickContainer.current);
-      };
+      if (editorRef.current && isReady && !hasBindEventRef.current) {
+        editorRef.current.onDidBlurEditorWidget(onClickOutsideHandler.current);
+        hasBindEventRef.current = true;
+      }
     }, [isReady]);
 
     useImperativeHandle(ref, () => ({
