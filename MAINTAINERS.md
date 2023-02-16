@@ -4,9 +4,9 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 
 ## Current Maintainers
 
-| Maintainer   | GitHub ID                                         | Affiliation |
-| ------------ | ------------------------------------------------- | ----------- |
-| Annie Lee    | [leeyun-amzn](https://github.com/leeyun-amzn)     | Amazon      |
-| Bowen Lan    | [bowenlan-amzn](https://github.com/bowenlan-amzn) | Amazon      |
-| Drew Baugher | [dbbaughe](https://github.com/dbbaughe)           | Amazon      |
-| Ravi         | [thalurur](https://github.com/thalurur)           | Amazon      |
+| Maintainer | GitHub ID                                         | Affiliation |
+|----------|---------------------------------------------------| ----------- |
+| Bowen Lan | [bowenlan-amzn](https://github.com/bowenlan-amzn) | Amazon      |
+| Angie Zhang | [Angie-Zhang](https://github.com/Angie-Zhang)     | Amazon      |
+| Saurabh Singh | [getsaurabh02](https://github.com/getsaurabh02)           | Amazon      |
+| Praveen Sameneni | [praveensameneni](https://github.com/praveensameneni)           | Amazon      |
