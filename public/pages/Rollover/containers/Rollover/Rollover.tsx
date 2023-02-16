@@ -166,7 +166,7 @@ export default function Rollover(props: RolloverProps) {
                 <CustomFormRow label="Select an index from this alias">
                   <AllBuiltInComponents.ComboBoxSingle
                     placeholder="Select an index"
-                    value={writeIndexValue}
+                    value={writeIndexValue ? writeIndexValue : undefined}
                     onChange={(val) => setWriteIndexValue(val)}
                     options={findItem?.aliases?.map((item) => ({ label: item.index }))}
                   />
