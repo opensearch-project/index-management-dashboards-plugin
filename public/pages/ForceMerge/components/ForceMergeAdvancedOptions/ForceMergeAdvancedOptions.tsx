@@ -36,14 +36,9 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
       </CustomFormRow>
       <EuiSpacer />
       <CustomFormRow
-        label="Expunge delete"
+        label="Expunge deleted documents"
         fullWidth
-        helpText={
-          <>
-            <div>Expunge all segments containing more than the defined amount of deleted documents.</div>
-            <div>By default, it will expunge 10% of deleted documents set by index.merge.policy.expunge_deletes_allowed setting.</div>
-          </>
-        }
+        helpText="Expunge all segments containing more than 10% of deleted documents. The percentage is configurable with the setting index.merge.policy.expunge_deletes_allowed."
       >
         <AllBuiltInComponents.CheckBox
           {...field.registerField({
