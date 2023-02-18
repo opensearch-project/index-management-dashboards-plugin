@@ -11,7 +11,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import IndexFormWrapper, { IndexForm } from "../../../../containers/IndexForm";
-import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -348,7 +348,19 @@ export default function Rollover(props: RolloverProps) {
               });
               setIsLoading(false);
               if (result.ok) {
-                coreService?.notifications.toasts.addSuccess(`${tempValue.source} has been rollovered successfully.`);
+                coreService?.notifications.toasts.addSuccess({
+                  title: ((
+                    <>
+                      <div>{tempValue.source} has been successfully rollover.</div>
+                      {result.response?.new_index ? (
+                        <div>
+                          <EuiLink href={`#${ROUTES.INDEX_DETAIL}/${result.response.new_index}`}>{result.response?.new_index}</EuiLink> is
+                          now the latest write index.
+                        </div>
+                      ) : null}
+                    </>
+                  ) as unknown) as string,
+                });
                 props.history.replace(sourceType === "alias" ? ROUTES.ALIASES : ROUTES.DATA_STREAMS);
               } else {
                 coreService?.notifications.toasts.addDanger(result.error);

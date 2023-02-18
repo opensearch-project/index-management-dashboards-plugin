@@ -26,7 +26,11 @@ export const onSubmit = async (props: {
   indexFormRef: React.RefObject<IndexForm>;
   tempValue: IRolloverRequestBody;
   services: BrowserServices;
-}) => {
+}): Promise<
+  ServerResponse<{
+    new_index: string;
+  }>
+> => {
   const { sourceRef, sourceType, writingIndex, indexFormRef, tempValue, services } = props;
   const formGeneratersRes = await Promise.all([
     sourceRef.current?.validatePromise(),
@@ -79,7 +83,9 @@ export const onSubmit = async (props: {
     payload.body = others;
   }
 
-  const result = await services.commonService.apiCaller({
+  const result = await services.commonService.apiCaller<{
+    new_index: string;
+  }>({
     endpoint: "indices.rollover",
     data: payload,
   });
