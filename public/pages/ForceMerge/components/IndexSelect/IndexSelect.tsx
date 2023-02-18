@@ -6,6 +6,7 @@
 import { EuiComboBoxOptionOption } from "@elastic/eui";
 import { _EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { CoreStart } from "opensearch-dashboards/public";
+import { debounce } from "lodash";
 import ComboBoxWithoutWarning from "../../../../components/ComboBoxWithoutWarning";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -50,9 +51,17 @@ export default function IndexSelect(props: IndexSelectProps) {
     };
   }, []);
 
-  const onSearchChange = (searchValue: string) => {
-    searchIndex(searchValue);
-  };
+  const onSearchChangeRef = useRef(
+    debounce(
+      (searchValue: string) => {
+        searchIndex(searchValue);
+      },
+      200,
+      {
+        leading: true,
+      }
+    )
+  );
 
   const filterSystemIndices = (list: EuiComboBoxOptionOption<IndexSelectItem>[]) => {
     list.map((it) => {
@@ -80,7 +89,7 @@ export default function IndexSelect(props: IndexSelectProps) {
         async
         selectedOptions={finalSelectedOptions}
         onChange={(selectedOptions) => props.onChange(selectedOptions.map((item) => item.label))}
-        onSearchChange={onSearchChange}
+        onSearchChange={onSearchChangeRef.current}
         isClearable={true}
         singleSelection={props.singleSelect ? { asPlainText: true } : false}
       />
