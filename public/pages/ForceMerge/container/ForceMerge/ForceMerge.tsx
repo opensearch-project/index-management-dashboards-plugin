@@ -150,7 +150,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
                 {
                   validator(rule, value) {
                     if (!value || !value.length) {
-                      return Promise.reject("Indexes is required.");
+                      return Promise.reject("Index or data stream is required.");
                     } else {
                       return Promise.resolve("");
                     }
