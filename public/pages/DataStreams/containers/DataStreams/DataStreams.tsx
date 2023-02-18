@@ -55,7 +55,7 @@ const defaultFilter = {
   search: DEFAULT_QUERY_PARAMS.search,
 };
 
-const healthExplanation = {
+export const healthExplanation = {
   green: "All shards are assigned.",
   yellow: "All primary shards are assigned, but one or more replica shards are unassigned.",
   red: "One or more primary shards are unassigned, so some data is unavailable.",

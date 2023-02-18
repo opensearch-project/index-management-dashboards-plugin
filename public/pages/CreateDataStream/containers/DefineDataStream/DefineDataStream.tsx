@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { EuiLink, EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiBadge } from "@elastic/eui";
+import { EuiLink, EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiBadge, EuiToolTip, EuiHealth } from "@elastic/eui";
 import { DataStreamInEdit, SubDetailProps, TemplateItem } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -8,6 +8,8 @@ import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { INDEX_NAMING_PATTERN, ROUTES } from "../../../../utils/constants";
 import { getCommonFormRowProps, getStringBeforeStar, setMatchedTemplate } from "../../hooks";
 import { filterByMinimatch } from "../../../../../utils/helper";
+import { HEALTH_TO_COLOR } from "../../../DataStreams/utils/constants";
+import { healthExplanation } from "../../../DataStreams/containers/DataStreams/DataStreams";
 
 export default function DefineDataStream(
   props: SubDetailProps & {
@@ -62,7 +64,18 @@ export default function DefineDataStream(
           },
           {
             title: "Status",
-            description: values.status,
+            description: ((health: string) => {
+              const healthLowerCase = health?.toLowerCase() as "green" | "yellow" | "red";
+              const color = health ? HEALTH_TO_COLOR[healthLowerCase] : "subdued";
+              const text = (health || "").toLowerCase();
+              return (
+                <EuiToolTip content={healthExplanation[healthLowerCase] || ""}>
+                  <EuiHealth color={color} className="indices-health">
+                    {text}
+                  </EuiHealth>
+                </EuiToolTip>
+              );
+            })(values.status),
           },
           {
             title: "Template name",
