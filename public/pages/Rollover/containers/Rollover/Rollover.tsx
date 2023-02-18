@@ -255,11 +255,9 @@ export default function Rollover(props: RolloverProps) {
           <>
             <EuiSpacer />
             <EuiCallOut color="danger" title="This alias does not contain a write index.">
-              <ul>
-                {reasons.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-              </ul>
+              {reasons.map((item, index) => (
+                <div key={index}>{item}</div>
+              ))}
             </EuiCallOut>
           </>
         ) : null}
