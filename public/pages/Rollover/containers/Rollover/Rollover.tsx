@@ -209,7 +209,7 @@ export default function Rollover(props: RolloverProps) {
         <h1>Rollover</h1>
       </EuiTitle>
       <CustomFormRow
-        helpText="Rollover a new writing index for a data stream or index alias."
+        helpText="Rollover creates a new writing index for a data stream or index alias."
         style={{
           marginBottom: 20,
         }}
