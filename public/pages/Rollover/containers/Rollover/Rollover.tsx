@@ -244,6 +244,7 @@ export default function Rollover(props: RolloverProps) {
                 ],
                 props: {
                   options: sourceOptions,
+                  placeholder: "Select a alias or data stream.",
                 },
               },
               type: "ComboBoxSingle",
