@@ -52,6 +52,10 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const onClickAction = async () => {
     const { errors, values } = await field.validatePromise();
     if (errors) {
+      const errorsKey = Object.keys(errors);
+      if (errorsKey.includes("max_num_segments")) {
+        setAdvancedSettingsOpen(true);
+      }
       return;
     }
     setExecuting(true);

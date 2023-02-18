@@ -18,10 +18,29 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
 
   return (
     <div style={{ padding: "10px 0px" }}>
-      <CustomFormRow label="Segment indexes" helpText="Define how many segments to merge to.">
+      <CustomFormRow
+        isInvalid={!!field.getError("max_num_segments")}
+        error={field.getError("max_num_segments")}
+        label="Segment indexes"
+        helpText="Define how many segments to merge to."
+      >
         <SwitchNumber
           {...field.registerField({
             name: "max_num_segments",
+            rules: [
+              {
+                validator(rule, value) {
+                  const formatValue = new Number(value);
+                  if (Number.isNaN(formatValue.valueOf())) {
+                    return Promise.resolve("");
+                  } else if (formatValue.valueOf() % 1 !== 0 || formatValue.valueOf() < 1) {
+                    return Promise.reject("Must be an integer great than or equal to 1.");
+                  }
+
+                  return Promise.resolve("");
+                },
+              },
+            ],
           })}
         />
       </CustomFormRow>
