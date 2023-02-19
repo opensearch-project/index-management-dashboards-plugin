@@ -98,7 +98,15 @@ export default function DefineDataStream(
       <CustomFormRow
         {...getCommonFormRowProps("name", field)}
         label="Data stream name"
-        helpText="Specify a data stream name. It must match an index pattern from an index template."
+        fullWidth
+        helpText={
+          <>
+            Enter a data stream name. It must match an index pattern from a data stream template.{" "}
+            <EuiLink href={`#${ROUTES.TEMPLATES}`} external target="_blank">
+              Manage templates
+            </EuiLink>
+          </>
+        }
       >
         <Component
           placeholder="Specify data stream name"
