@@ -126,14 +126,11 @@ export default function DefineDataStream(
           }}
           async
           {...suggestionRegister}
-          // onCreateOption={() => {
-          //   window.open(`#${ROUTES.CREATE_TEMPLATE}?values=${JSON.stringify({ data_stream: {}, index_patterns: [`${searchValue}*`] })}`);
-          // }}
-          onCreateOption={undefined}
+          onCreateOption={() => {}}
           customOptionText={
             searchValue
-              ? `{searchValue} doesn’t match index patterns from any templates. Specify another name or press Enter to create a data stream template.`
-              : `There are no data stream templates. Press Enter to create a data stream template.`
+              ? `{searchValue} doesn’t match index patterns from any templates. Specify another name or create a data stream template.`
+              : `There are no data stream templates. Please create a data stream template.`
           }
           onSearchChange={(dataStreamName: string) => {
             setSearchValue(dataStreamName);
