@@ -139,7 +139,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                           <input
                             class="euiFieldText euiFieldText--compressed"
                             data-test-subj="mapping-visual-editor-0-field-name"
-                            disabled=""
                             id="some_html_id"
                             type="text"
                             value="object"
@@ -183,7 +182,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                           <select
                             class="euiSelect euiSelect--compressed"
                             data-test-subj="mapping-visual-editor-0-field-type"
-                            disabled=""
                             id="some_html_id"
                           >
                             <option
@@ -449,7 +447,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                   <input
                                     class="euiFieldText euiFieldText--compressed"
                                     data-test-subj="mapping-visual-editor-0.properties.0-field-name"
-                                    disabled=""
                                     id="some_html_id"
                                     type="text"
                                     value="text"
@@ -493,7 +490,6 @@ exports[`<IndexMapping /> spec render mappings with object type 1`] = `
                                   <select
                                     class="euiSelect euiSelect--compressed"
                                     data-test-subj="mapping-visual-editor-0.properties.0-field-type"
-                                    disabled=""
                                     id="some_html_id"
                                   >
                                     <option

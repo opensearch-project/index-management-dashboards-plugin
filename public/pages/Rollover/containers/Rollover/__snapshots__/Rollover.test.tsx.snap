@@ -21,7 +21,7 @@ exports[`container <Rollover /> spec render the component 1`] = `
         class="euiFormHelpText euiFormRow__text"
         style="padding-top: 0px; padding-bottom: 4px;"
       >
-        Creates a new index for a data stream or index alias.
+        Rollover creates a new writing index for a data stream or index alias.
       </div>
     </div>
   </div>
