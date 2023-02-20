@@ -389,6 +389,7 @@ exports[`<IndexForm /> spec render page 1`] = `
             class="euiAccordion__childWrapper"
             id="accordionForCreateIndexSettings"
             role="region"
+            style="height: 0px"
             tabindex="-1"
           >
             <div>

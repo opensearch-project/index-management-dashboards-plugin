@@ -38,6 +38,13 @@ describe("<IndexForm /> spec", () => {
 
     await findByText("Number of primary shards");
 
+    await waitFor(
+      () => expect((document.querySelector("#accordionForCreateIndexSettings") as HTMLDivElement).style.height).toEqual("0px"),
+      {
+        timeout: 3000,
+      }
+    );
+
     expect(container).toMatchSnapshot();
   });
 });
