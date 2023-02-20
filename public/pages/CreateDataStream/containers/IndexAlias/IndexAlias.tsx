@@ -10,7 +10,7 @@ import { getCommonFormRowProps } from "../../hooks";
 import { SubDetailProps } from "../../interface";
 
 export default function IndexAlias(props: SubDetailProps) {
-  const { readonly, field } = props;
+  const { isEdit, field } = props;
   const values = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
   return (
@@ -28,7 +28,7 @@ export default function IndexAlias(props: SubDetailProps) {
           <></>
         </CustomFormRow>
       </EuiTitle>
-      {readonly ? (
+      {!isEdit ? (
         <>
           <EuiSpacer size="s" />
           <DescriptionListHoz
