@@ -16,10 +16,11 @@ Object {
             class="euiFormRow__labelWrapper"
           >
             <label
+              aria-invalid="false"
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Flush indices
+              Segment indexes
             </label>
           </div>
           <div
@@ -29,40 +30,49 @@ Object {
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              If true, Opensearch will perform a flush on the indices after the force merge.
+              Define how many segments to merge to.
             </div>
-            <span
-              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-            >
-              <div>
+            <div>
+              <div
+                class="euiRadio euiRadioGroup__item"
+              >
+                <input
+                  checked=""
+                  class="euiRadio__input"
+                  id="0"
+                  type="radio"
+                  value=""
+                />
                 <div
-                  class="euiSwitch"
+                  class="euiRadio__circle"
+                />
+                <label
+                  class="euiRadio__label"
+                  for="0"
                 >
-                  <button
-                    aria-checked="false"
-                    aria-label=""
-                    class="euiSwitch__button"
-                    id="some_html_id"
-                    role="switch"
-                    type="button"
-                  >
-                    <span
-                      class="euiSwitch__body"
-                    >
-                      <span
-                        class="euiSwitch__thumb"
-                      />
-                      <span
-                        class="euiSwitch__track"
-                      >
-                        EuiIconMock
-                        EuiIconMock
-                      </span>
-                    </span>
-                  </button>
-                </div>
+                  Automatic
+                </label>
               </div>
-            </span>
+              <div
+                class="euiRadio euiRadioGroup__item"
+              >
+                <input
+                  class="euiRadio__input"
+                  id="1"
+                  type="radio"
+                  value=""
+                />
+                <div
+                  class="euiRadio__circle"
+                />
+                <label
+                  class="euiRadio__label"
+                  for="1"
+                >
+                  Manually set number of segments
+                </label>
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -79,7 +89,7 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Only expunge delete
+              Flush indexes
             </label>
           </div>
           <div
@@ -89,83 +99,78 @@ Object {
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              If true, expunge all segments containing more than index.merge.policy.expunge_deletes_allowed (default to 10) percents of deleted documents.
-            </div>
-            <span
-              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-            >
-              <div>
-                <div
-                  class="euiSwitch"
-                >
-                  <button
-                    aria-checked="false"
-                    aria-label=""
-                    class="euiSwitch__button"
-                    id="some_html_id"
-                    role="switch"
-                    type="button"
-                  >
-                    <span
-                      class="euiSwitch__body"
-                    >
-                      <span
-                        class="euiSwitch__thumb"
-                      />
-                      <span
-                        class="euiSwitch__track"
-                      >
-                        EuiIconMock
-                        EuiIconMock
-                      </span>
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </span>
-          </div>
-        </div>
-        <div
-          class="euiSpacer euiSpacer--l"
-        />
-        <div
-          class="euiFormRow"
-          id="some_html_id-row"
-        >
-          <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              class="euiFormLabel euiFormRow__label"
-              for="some_html_id"
-            >
-              Max number of segments
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              style="padding-top: 0px; padding-bottom: 4px;"
-            >
-              The number of segments to merge to. To fully merge indices, set it to 1.
+              Opensearch will perform a flush on the indexes after the force merge.
             </div>
             <span
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiCheckbox"
               >
+                <input
+                  class="euiCheckbox__input"
+                  id="1676881458897"
+                  type="checkbox"
+                />
                 <div
-                  class="euiFormControlLayout__childrenWrapper"
+                  class="euiCheckbox__square"
+                />
+                <label
+                  class="euiCheckbox__label"
+                  for="1676881458897"
                 >
-                  <input
-                    class="euiFieldNumber"
-                    type="number"
-                    value=""
-                  />
-                </div>
+                  Flush indexes
+                </label>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFormRow euiFormRow--fullWidth"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Expunge deleted documents
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Expunge all segments containing more than 10% of deleted documents. The percentage is configurable with the setting index.merge.policy.expunge_deletes_allowed.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiCheckbox"
+              >
+                <input
+                  class="euiCheckbox__input"
+                  id="1676881458898"
+                  type="checkbox"
+                />
+                <div
+                  class="euiCheckbox__square"
+                />
+                <label
+                  class="euiCheckbox__label"
+                  for="1676881458898"
+                >
+                  Only expunge delete
+                </label>
               </div>
             </span>
           </div>
@@ -188,10 +193,11 @@ Object {
           class="euiFormRow__labelWrapper"
         >
           <label
+            aria-invalid="false"
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Flush indices
+            Segment indexes
           </label>
         </div>
         <div
@@ -201,40 +207,49 @@ Object {
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            If true, Opensearch will perform a flush on the indices after the force merge.
+            Define how many segments to merge to.
           </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-          >
-            <div>
+          <div>
+            <div
+              class="euiRadio euiRadioGroup__item"
+            >
+              <input
+                checked=""
+                class="euiRadio__input"
+                id="0"
+                type="radio"
+                value=""
+              />
               <div
-                class="euiSwitch"
+                class="euiRadio__circle"
+              />
+              <label
+                class="euiRadio__label"
+                for="0"
               >
-                <button
-                  aria-checked="false"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
+                Automatic
+              </label>
             </div>
-          </span>
+            <div
+              class="euiRadio euiRadioGroup__item"
+            >
+              <input
+                class="euiRadio__input"
+                id="1"
+                type="radio"
+                value=""
+              />
+              <div
+                class="euiRadio__circle"
+              />
+              <label
+                class="euiRadio__label"
+                for="1"
+              >
+                Manually set number of segments
+              </label>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -251,7 +266,7 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Only expunge delete
+            Flush indexes
           </label>
         </div>
         <div
@@ -261,83 +276,78 @@ Object {
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            If true, expunge all segments containing more than index.merge.policy.expunge_deletes_allowed (default to 10) percents of deleted documents.
-          </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-          >
-            <div>
-              <div
-                class="euiSwitch"
-              >
-                <button
-                  aria-checked="false"
-                  aria-label=""
-                  class="euiSwitch__button"
-                  id="some_html_id"
-                  role="switch"
-                  type="button"
-                >
-                  <span
-                    class="euiSwitch__body"
-                  >
-                    <span
-                      class="euiSwitch__thumb"
-                    />
-                    <span
-                      class="euiSwitch__track"
-                    >
-                      EuiIconMock
-                      EuiIconMock
-                    </span>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </span>
-        </div>
-      </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Max number of segments
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            The number of segments to merge to. To fully merge indices, set it to 1.
+            Opensearch will perform a flush on the indexes after the force merge.
           </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiCheckbox"
             >
+              <input
+                class="euiCheckbox__input"
+                id="1676881458897"
+                type="checkbox"
+              />
               <div
-                class="euiFormControlLayout__childrenWrapper"
+                class="euiCheckbox__square"
+              />
+              <label
+                class="euiCheckbox__label"
+                for="1676881458897"
               >
-                <input
-                  class="euiFieldNumber"
-                  type="number"
-                  value=""
-                />
-              </div>
+                Flush indexes
+              </label>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Expunge deleted documents
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Expunge all segments containing more than 10% of deleted documents. The percentage is configurable with the setting index.merge.policy.expunge_deletes_allowed.
+          </div>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiCheckbox"
+            >
+              <input
+                class="euiCheckbox__input"
+                id="1676881458898"
+                type="checkbox"
+              />
+              <div
+                class="euiCheckbox__square"
+              />
+              <label
+                class="euiCheckbox__label"
+                for="1676881458898"
+              >
+                Only expunge delete
+              </label>
             </div>
           </span>
         </div>

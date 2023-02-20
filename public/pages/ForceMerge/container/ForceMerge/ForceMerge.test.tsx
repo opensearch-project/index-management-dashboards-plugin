@@ -202,7 +202,7 @@ describe("<ForceMerge /> spec", () => {
     });
 
     userEvent.click(getByTestId("forceMergeConfirmButton"));
-    await findByText("Indexes is required.");
+    await findByText("Index or data stream is required.");
   });
 
   it("it goes to indices page when submit force merge successfully", async () => {
