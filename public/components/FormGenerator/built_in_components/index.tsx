@@ -11,6 +11,8 @@ export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
   [key: string]: any;
 }
 
+let globalId = 0;
+
 const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponentProps>> = {
   Input: EuiToolTipWrapper(
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<HTMLInputElement>) => (
@@ -41,11 +43,11 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   ),
   CheckBox: EuiToolTipWrapper(
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => {
-      const idRef = useRef(Date.now());
+      const idRef = useRef(globalId++);
       return (
         <EuiCheckbox
           ref={ref}
-          id={"" + idRef.current}
+          id={`builtInCheckBoxId-${idRef.current}`}
           checked={value === undefined ? false : value}
           onChange={(e) => onChange(e.target.checked)}
           {...others}

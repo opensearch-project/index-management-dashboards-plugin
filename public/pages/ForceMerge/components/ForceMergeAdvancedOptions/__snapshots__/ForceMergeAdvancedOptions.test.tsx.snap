@@ -109,7 +109,7 @@ Object {
               >
                 <input
                   class="euiCheckbox__input"
-                  id="1676881458897"
+                  id="builtInCheckBoxId-0"
                   type="checkbox"
                 />
                 <div
@@ -117,7 +117,7 @@ Object {
                 />
                 <label
                   class="euiCheckbox__label"
-                  for="1676881458897"
+                  for="builtInCheckBoxId-0"
                 >
                   Flush indexes
                 </label>
@@ -159,7 +159,7 @@ Object {
               >
                 <input
                   class="euiCheckbox__input"
-                  id="1676881458898"
+                  id="builtInCheckBoxId-1"
                   type="checkbox"
                 />
                 <div
@@ -167,7 +167,7 @@ Object {
                 />
                 <label
                   class="euiCheckbox__label"
-                  for="1676881458898"
+                  for="builtInCheckBoxId-1"
                 >
                   Only expunge delete
                 </label>
@@ -286,7 +286,7 @@ Object {
             >
               <input
                 class="euiCheckbox__input"
-                id="1676881458897"
+                id="builtInCheckBoxId-0"
                 type="checkbox"
               />
               <div
@@ -294,7 +294,7 @@ Object {
               />
               <label
                 class="euiCheckbox__label"
-                for="1676881458897"
+                for="builtInCheckBoxId-0"
               >
                 Flush indexes
               </label>
@@ -336,7 +336,7 @@ Object {
             >
               <input
                 class="euiCheckbox__input"
-                id="1676881458898"
+                id="builtInCheckBoxId-1"
                 type="checkbox"
               />
               <div
@@ -344,7 +344,7 @@ Object {
               />
               <label
                 class="euiCheckbox__label"
-                for="1676881458898"
+                for="builtInCheckBoxId-1"
               >
                 Only expunge delete
               </label>
