@@ -55,14 +55,14 @@ describe("force_merge", () => {
       // click create
       cy.get('[data-test-subj="forceMergeConfirmButton"]').click({ force: true });
 
-      cy.contains("Indexes is required.");
+      cy.contains("Index or data stream is required.");
       cy.get('[data-test-subj="sourceSelector"] [data-test-subj="comboBoxSearchInput"]').type(
         `${rolloverValidAlias}{downArrow}{enter}${rolloverAliasNeedTargetIndex}{downArrow}{enter}${rolloverDataStream}{downArrow}{enter}${validIndex}{downArrow}{enter}${invalidIndex}{downArrow}{enter}`
       );
 
       cy.get('[data-test-subj="forceMergeConfirmButton"]').click({ force: true });
 
-      cy.contains(/shards are successfully force merged./);
+      cy.contains(/are successfully force merged./);
     });
   });
 
