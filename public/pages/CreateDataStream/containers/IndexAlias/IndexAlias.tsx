@@ -5,7 +5,6 @@ import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
-import { ALIAS_SELECT_RULE } from "../../../../utils/constants";
 import { getCommonFormRowProps } from "../../hooks";
 import { SubDetailProps } from "../../interface";
 
@@ -53,7 +52,6 @@ export default function IndexAlias(props: SubDetailProps) {
               isDisabled
               {...field.registerField({
                 name: ["template", "aliases"],
-                rules: [...ALIAS_SELECT_RULE],
               })}
               refreshOptions={(aliasName) =>
                 services?.commonService.apiCaller({

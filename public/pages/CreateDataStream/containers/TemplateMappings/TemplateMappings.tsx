@@ -40,19 +40,6 @@ export default function TemplateMappings(props: SubDetailProps) {
         <IndexMapping
           {...field.registerField({
             name: ["template", "mappings"],
-            rules: [
-              {
-                validator() {
-                  return (mappingsRef.current as IIndexMappingsRef).validate()?.then((result) => {
-                    if (result) {
-                      return Promise.reject(result);
-                    }
-
-                    return Promise.resolve("");
-                  });
-                },
-              },
-            ],
           })}
           readonly
           isEdit={isEdit}

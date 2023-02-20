@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useMemo } from "react";
 import { EuiLink, EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiBadge, EuiToolTip, EuiHealth } from "@elastic/eui";
 import { DataStreamInEdit, SubDetailProps, TemplateItem } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -6,10 +6,11 @@ import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { INDEX_NAMING_PATTERN, ROUTES } from "../../../../utils/constants";
-import { getCommonFormRowProps, getStringBeforeStar, setMatchedTemplate } from "../../hooks";
+import { findPatternMatchesString, getCommonFormRowProps, getStringBeforeStar, setMatchedTemplate } from "../../hooks";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { HEALTH_TO_COLOR } from "../../../DataStreams/utils/constants";
 import { healthExplanation } from "../../../DataStreams/containers/DataStreams/DataStreams";
+import ComboBoxWithoutWarning from "../../../../components/ComboBoxWithoutWarning";
 
 export default function DefineDataStream(
   props: SubDetailProps & {
@@ -17,9 +18,15 @@ export default function DefineDataStream(
   }
 ) {
   const { field, isEdit, allDataStreamTemplates } = props;
-  const [searchValue, setSearchValue] = useState("");
+  const comboBoxRef = useRef<ComboBoxWithoutWarning<any>>(null);
   const values: DataStreamInEdit = field.getValues();
+  const searchValue = values.name || "";
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.ComboBoxSingle;
+  const allDataStreamOrderedByPriority = useMemo(() => {
+    const newDataStream = [...allDataStreamTemplates];
+    newDataStream.sort((a, b) => (a.index_template.priority > b.index_template.priority ? -1 : 1));
+    return newDataStream;
+  }, [allDataStreamTemplates]);
   const matchedList = allDataStreamTemplates.filter((item) => {
     if (!searchValue) {
       return true;
@@ -53,6 +60,26 @@ export default function DefineDataStream(
     ],
     props: {},
   });
+  const onBlurCallback = () => {
+    const nameValue = field.getValue("name") || "";
+    // find the matched template
+    const findMatchedTemplate = allDataStreamOrderedByPriority.find((item) => {
+      const { findMatchesPattern, findStringPattern } = findPatternMatchesString(nameValue, item);
+      return findMatchesPattern || findStringPattern;
+    });
+    suggestionRegister.onChange(nameValue);
+    if (findMatchedTemplate) {
+      setMatchedTemplate({
+        matchedTemplate: findMatchedTemplate,
+        field,
+      });
+    } else {
+      field.setValues({
+        matchedTemplate: "",
+        template: {},
+      });
+    }
+  };
   return isEdit ? (
     <ContentPanel title="Data stream details" titleSize="s">
       <EuiSpacer size="s" />
@@ -126,6 +153,7 @@ export default function DefineDataStream(
           }}
           async
           {...suggestionRegister}
+          ref={comboBoxRef}
           onCreateOption={() => {}}
           customOptionText={
             searchValue
@@ -133,7 +161,21 @@ export default function DefineDataStream(
               : `There are no data stream templates. Please create a data stream template.`
           }
           onSearchChange={(dataStreamName: string) => {
-            setSearchValue(dataStreamName);
+            if (!dataStreamName) {
+              return;
+            }
+            field.setValue("name", dataStreamName);
+          }}
+          onFocus={() => {
+            comboBoxRef.current?.setState({
+              searchValue: field.getValue("name") || "",
+            });
+          }}
+          onBlur={() => {
+            onBlurCallback();
+            comboBoxRef.current?.setState({
+              searchValue: "",
+            });
           }}
           onChange={(value: string, selectedOption: { value: TemplateItem }) => {
             if (!value) {
@@ -142,34 +184,27 @@ export default function DefineDataStream(
               });
             } else {
               const findItem = selectedOption.value;
-              const { index_patterns } = findItem.index_template;
-              // matched by wildcard
-              const findMatchesPattern = index_patterns.find((item) => filterByMinimatch(searchValue, [item]));
-              // matched by letters
-              const findWordLikePattern = index_patterns.find((item) => item.match(new RegExp(searchValue, "i")));
-              let setTemplatePayloadFlag = false;
+              const { findMatchesPattern, findWordLikePattern } = findPatternMatchesString(searchValue, findItem);
+              let finalSearchValue = searchValue;
               if (findMatchesPattern) {
-                suggestionRegister.onChange(searchValue);
-                setTemplatePayloadFlag = true;
+                // do nothing
               } else if (findWordLikePattern) {
                 const finalReplaceValue = getStringBeforeStar(findWordLikePattern);
-                suggestionRegister.onChange(finalReplaceValue);
-                if (filterByMinimatch(finalReplaceValue, findItem.index_template.index_patterns)) {
-                  setTemplatePayloadFlag = true;
-                }
+                finalSearchValue = finalReplaceValue;
+                field.setValue("name", finalReplaceValue);
               }
-
-              if (setTemplatePayloadFlag) {
-                setMatchedTemplate({
-                  matchedTemplate: findItem,
-                  field,
-                });
-              } else {
-                field.setValues({
-                  matchedTemplate: "",
-                  template: {},
-                });
-              }
+              setTimeout(() => {
+                comboBoxRef.current?.setState(
+                  {
+                    searchValue: finalSearchValue,
+                    hasFocus: true,
+                    isListOpen: true,
+                  },
+                  () => {
+                    onBlurCallback();
+                  }
+                );
+              }, 100);
             }
           }}
         />
