@@ -79,7 +79,7 @@ describe("Rollover", () => {
 
       cy.contains("Invalid index name.");
 
-      cy.get('[data-test-subj="form-row-targetIndex.index"] input').type("index-test-rollover-target");
+      cy.get('[data-test-subj="form-name-index"] input').type("index-test-rollover-target");
 
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
