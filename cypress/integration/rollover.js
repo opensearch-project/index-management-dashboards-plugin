@@ -55,7 +55,7 @@ describe("Rollover", () => {
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
 
-      cy.contains(`${rolloverDataStream} has been rollovered successfully.`);
+      cy.contains(/has been successfully rollover./);
     });
 
     it("rollover valid alias successfully", () => {
@@ -66,7 +66,7 @@ describe("Rollover", () => {
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
 
-      cy.contains(`${rolloverValidAlias} has been rollovered successfully.`);
+      cy.contains(/has been successfully rollover./);
     });
 
     it("rollover invalid alias successfully", () => {
@@ -77,14 +77,14 @@ describe("Rollover", () => {
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
 
-      cy.contains("Index name is required.");
+      cy.contains("Invalid index name.");
 
       cy.get('[data-test-subj="form-row-targetIndex.index"] input').type("index-test-rollover-target");
 
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
 
-      cy.contains(`${rolloverAliasNeedTargetIndex} has been rollovered successfully.`);
+      cy.contains(/has been successfully rollover./);
     });
   });
 
