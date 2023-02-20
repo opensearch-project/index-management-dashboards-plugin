@@ -319,7 +319,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               name: "Status",
               sortable: true,
               render: (health: string, item) => {
-                const healthLowerCase = health.toLowerCase() as "green" | "yellow" | "red";
+                const healthLowerCase = health?.toLowerCase() as "green" | "yellow" | "red";
                 const color = health ? HEALTH_TO_COLOR[healthLowerCase] : "subdued";
                 const text = (health || item.status || "").toLowerCase();
                 return (
