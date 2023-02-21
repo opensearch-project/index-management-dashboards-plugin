@@ -34,31 +34,6 @@ export const parseIndexNames = (indices: string): string[] => {
   return indexArray;
 };
 
-export const checkDuplicate = (
-  sources: EuiComboBoxOptionOption<IndexSelectItem>[],
-  destination: EuiComboBoxOptionOption<IndexSelectItem>[]
-) => {
-  let expandedSource: string[] = [],
-    expandedDestination: string[] = [];
-  sources.forEach((item) => {
-    expandedSource.push(item.label);
-    item.value?.isAlias && item.value.indices && expandedSource.push(...item.value.indices);
-    item.value?.isDataStream && item.value.indices && expandedSource.push(...item.value.indices);
-  });
-
-  destination.forEach((item) => {
-    expandedDestination.push(item.label);
-    item.value?.isAlias && item.value.writingIndex && expandedDestination.push(item.value.writingIndex);
-    item.value?.isDataStream && item.value.writingIndex && expandedDestination.push(item.value.writingIndex);
-  });
-
-  const duplicate = _.intersection(expandedSource, expandedDestination);
-  if (duplicate.length > 0) {
-    return `Index [${duplicate.join(",")}] both exists in source and destination`;
-  }
-  return null;
-};
-
 export const getIndexOptions = async (props: { services: BrowserServices; searchValue: string; context: CoreStart }) => {
   const { services, searchValue, context } = props;
   let options: EuiComboBoxOptionOption<IndexSelectItem>[] = [];
