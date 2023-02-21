@@ -62,7 +62,7 @@ describe("force_merge", () => {
 
       cy.get('[data-test-subj="forceMergeConfirmButton"]').click({ force: true });
 
-      cy.contains(/are successfully force merged./);
+      cy.contains(/Some shards could not be force merged/);
     });
   });
 
