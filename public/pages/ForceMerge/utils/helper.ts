@@ -10,6 +10,7 @@ import _ from "lodash";
 import { BrowserServices } from "../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 import { getErrorMessage } from "../../../utils/helpers";
+import { IndexItem } from "../../../../models/interfaces";
 
 /**
  * parse index names to extract data stream name if the index is a backing index of data stream,
@@ -106,4 +107,49 @@ export const getIndexOptions = async (props: { services: BrowserServices; search
     context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem fetching index options."));
   }
   return options;
+};
+
+export const checkNotReadOnlyIndexes = async (props: {
+  services: BrowserServices;
+  indexes: string[];
+}): Promise<
+  [
+    string,
+    {
+      settings: IndexItem["settings"];
+    }
+  ][]
+> => {
+  const { services, indexes } = props;
+  const result = await services.commonService.apiCaller<
+    Record<
+      string,
+      {
+        settings: IndexItem["settings"];
+      }
+    >
+  >({
+    endpoint: "indices.getSettings",
+    data: {
+      flat_settings: true,
+      index: indexes,
+    },
+  });
+  if (result.ok) {
+    const valueArray = Object.entries(result.response);
+    if (valueArray.length) {
+      return valueArray.filter(([indexName, indexDetail]) => {
+        let included = indexes.includes(indexName);
+        if (!included) {
+          return false;
+        }
+
+        return ["index.blocks.read_only", "index.blocks.read_only_allow_delete", "index.blocks.write"].every(
+          (blockName) => indexDetail?.settings?.[blockName] !== "true"
+        );
+      });
+    }
+  }
+
+  return [];
 };

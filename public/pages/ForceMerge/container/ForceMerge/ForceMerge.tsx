@@ -3,7 +3,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiButtonEmpty,
+  EuiButtonIcon,
+  EuiCallOut,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSpacer,
+  EuiText,
+  EuiTitle,
+} from "@elastic/eui";
 import _ from "lodash";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -13,12 +23,13 @@ import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import ForceMergeAdvancedOptions from "../../components/ForceMergeAdvancedOptions";
 import IndexSelect from "../../components/IndexSelect";
-import { getIndexOptions } from "../../utils/helper";
+import { checkNotReadOnlyIndexes, getIndexOptions } from "../../utils/helper";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
 import useField from "../../../../lib/field";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
+import { IndexItem } from "../../../../../models/interfaces";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -29,6 +40,14 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const context = useContext(CoreServicesContext) as CoreStart;
   const [advancedSettingsOpen, setAdvancedSettingsOpen] = useState(false);
   const [executing, setExecuting] = useState(false);
+  const [notReadOnlyIndexes, setNotReadOnlyIndexes] = useState<
+    [
+      string,
+      {
+        settings: IndexItem["settings"];
+      }
+    ][]
+  >([]);
   const { indexes = "" } = props.match.params;
   const destroyedRef = useRef(false);
   const field = useField({
@@ -144,12 +163,6 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
     setExecuting(false);
   };
 
-  useEffect(() => {
-    return () => {
-      destroyedRef.current = true;
-    };
-  }, []);
-
   const advanceTitle = (
     <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
       <EuiFlexItem grow={false}>
@@ -177,7 +190,19 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       BREADCRUMBS.INDICES,
       { ...BREADCRUMBS.FORCE_MERGE, href: `#${props.location.pathname}` },
     ]);
+    return () => {
+      destroyedRef.current = true;
+    };
   }, []);
+
+  useEffect(() => {
+    checkNotReadOnlyIndexes({
+      services,
+      indexes: field.getValue("indexes"),
+    }).then((result) => {
+      setNotReadOnlyIndexes(result);
+    });
+  }, [field.getValue("indexes")]);
 
   return (
     <div style={{ padding: "0px 50px" }}>
@@ -218,6 +243,12 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
         </CustomFormRow>
 
         <EuiSpacer />
+        {notReadOnlyIndexes.length ? (
+          <EuiCallOut color="warning" title="We recommend force merge with read-only indexes">
+            {notReadOnlyIndexes.map((item) => item[0]).join(", ")} is not a read-only index. We recommend only performing force merge with
+            read-only indexes to pervent large segments being produced.
+          </EuiCallOut>
+        ) : null}
       </ContentPanel>
 
       <EuiSpacer />
