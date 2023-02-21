@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import _ from "lodash";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -18,6 +18,7 @@ import { BrowserServices } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
 import useField from "../../../../lib/field";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { Modal } from "../../../../components/Modal";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -63,6 +64,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
         successful: number;
         total: number;
         failed: number;
+        failures?: string[];
       };
     }>({
       endpoint: "indices.forcemerge",
@@ -73,12 +75,62 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
     });
     if (result && result.ok) {
       const { _shards } = result.response || {};
-      const { successful, total, failed } = _shards || {};
-      context.notifications.toasts.addSuccess(
-        failed
-          ? `${successful}/${total} shards are successfully force merged and ${failed}/${total} shards failed to merge.`
-          : `The indexes are successfully force merged.`
-      );
+      const { successful = 0, total = 0, failures = [] } = _shards || {};
+      if (successful === total) {
+        context.notifications.toasts.addSuccess("The indexes are successfully force merged.");
+      } else {
+        context.notifications.toasts.addWarning({
+          title: "Some shards could not be force merged",
+          text: ((
+            <>
+              <div>
+                {total - successful} out of {total} could not be force merged.
+              </div>
+              <EuiSpacer />
+              <EuiButton
+                onClick={() => {
+                  Modal.show({
+                    title: "Some shards could not be force merged",
+                    content: (
+                      <EuiText>
+                        <div>
+                          {total - successful} out of {total} could not be force merged. The following reasons may prevent shards from
+                          performing a force merge:
+                        </div>
+                        <ul>
+                          {failures.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                          <li>Some shards are unassigned.</li>
+                          <li>
+                            Insufficient disk space: Force merging requires disk space to create a new, larger segment. If the disk does not
+                            have enough space, the merge process may fail.
+                          </li>
+                          <li>
+                            Index read-only: If the index is marked as read-only, a force merge operation cannot modify the index, and the
+                            merge process will fail.
+                          </li>
+                          <li>
+                            Too many open files: The operating system may limit the number of files that a process can have open
+                            simultaneously, and a force merge operation may exceed this limit, causing the merge process to fail.
+                          </li>
+                          <li>
+                            Index corruption: If the index is corrupted or has some inconsistencies, the force merge operation may fail.
+                          </li>
+                        </ul>
+                      </EuiText>
+                    ),
+                  });
+                }}
+                style={{ float: "right" }}
+              >
+                View details
+              </EuiButton>
+            </>
+          ) as unknown) as string,
+          iconType: "",
+        });
+      }
       props.history.push(ROUTES.INDICES);
     } else {
       context.notifications.toasts.addDanger(result.error);
