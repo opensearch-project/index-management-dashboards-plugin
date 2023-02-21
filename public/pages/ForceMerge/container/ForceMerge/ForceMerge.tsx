@@ -90,6 +90,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
               <EuiButton
                 onClick={() => {
                   Modal.show({
+                    locale: {
+                      ok: "Close",
+                    },
                     title: "Some shards could not be force merged",
                     content: (
                       <EuiText>
