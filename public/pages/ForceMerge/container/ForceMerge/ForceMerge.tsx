@@ -83,7 +83,11 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
         successful: number;
         total: number;
         failed: number;
-        failures?: string[];
+        failures?: {
+          index: string;
+          status: string;
+          shard: number;
+        }[];
       };
     }>({
       endpoint: "indices.forcemerge",
@@ -121,7 +125,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
                         </div>
                         <ul>
                           {failures.map((item) => (
-                            <li key={item}>{item}</li>
+                            <li key={`${item.index}-${item.index}-${item.status}`}>
+                              The shard {item.shard} of index {item.index} failed to merge because of {item.status}.
+                            </li>
                           ))}
                           <li>Some shards are unassigned.</li>
                           <li>
