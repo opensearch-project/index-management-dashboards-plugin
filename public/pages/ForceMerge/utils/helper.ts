@@ -136,7 +136,7 @@ export const checkNotReadOnlyIndexes = async (props: {
     },
   });
   if (result.ok) {
-    const valueArray = Object.entries(result.response);
+    const valueArray = Object.entries(result?.response || {});
     if (valueArray.length) {
       return valueArray.filter(([indexName, indexDetail]) => {
         let included = indexes.includes(indexName);
