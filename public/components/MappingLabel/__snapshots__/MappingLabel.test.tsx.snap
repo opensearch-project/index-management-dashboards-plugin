@@ -28,7 +28,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 <input
                   class="euiFieldText euiFieldText--compressed"
                   data-test-subj="-field-name"
-                  disabled=""
                   id="some_html_id"
                   type="text"
                   value="text"
@@ -62,7 +61,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 <select
                   class="euiSelect euiSelect--compressed"
                   data-test-subj="-field-type"
-                  disabled=""
                   id="some_html_id"
                 >
                   <option

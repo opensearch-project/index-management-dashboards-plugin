@@ -5,10 +5,10 @@
 
 import React, { forwardRef, useRef } from "react";
 import { EuiComboBoxProps } from "@elastic/eui";
-import RemoteSelect, { RemoteSelectProps } from "../../../../components/RemoteSelect";
-import { ServerResponse } from "../../../../../server/models/types";
-import { filterByMinimatch } from "../../../../../utils/helper";
-import { SYSTEM_ALIAS } from "../../../../../utils/constants";
+import RemoteSelect, { RemoteSelectProps } from "../RemoteSelect";
+import { ServerResponse } from "../../../server/models/types";
+import { filterByMinimatch } from "../../../utils/helper";
+import { SYSTEM_ALIAS } from "../../../utils/constants";
 
 export interface AliasSelectProps extends Omit<EuiComboBoxProps<{ label: string; value: string }>, "value" | "onChange"> {
   value?: Record<string, {}>;
