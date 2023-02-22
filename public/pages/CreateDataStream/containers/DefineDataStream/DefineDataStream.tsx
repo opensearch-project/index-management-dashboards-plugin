@@ -157,6 +157,7 @@ export default function DefineDataStream(
           }}
           async
           {...suggestionRegister}
+          value={comboBoxRef.current?.state.hasFocus ? undefined : suggestionRegister.value}
           ref={comboBoxRef}
           onCreateOption={() => {}}
           customOptionText={
