@@ -299,7 +299,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
                 ),
               },
               {
-                text: "Create Alias",
+                text: "Create alias",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
@@ -323,7 +323,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
               helpText={
                 <div style={{ width: "50%" }}>
                   An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes,
-                  rather than keeping track of which indexes to query, you can create an alias and query it instead.{" "}
+                  you can create and query an alias instead of keeping track of which indexes to query.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexAlias.base}>
                     Learn more.
                   </EuiLink>
@@ -370,7 +370,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
             },
             {
               field: "writeIndex",
-              name: "Writing index",
+              name: "Write index",
               render: (value: string) => {
                 if (value) {
                   return <EuiLink href={`#${ROUTES.INDEX_DETAIL}/${value}`}>{value}</EuiLink>;
