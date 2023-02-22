@@ -43,6 +43,7 @@ import IndexDetail from "../IndexDetail";
 import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
 import DataStreams from "../DataStreams";
 import CreateDataStream from "../CreateDataStream";
+import ForceMerge from "../ForceMerge";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -91,10 +92,11 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.CREATE_TEMPLATE,
   ROUTES.SPLIT_INDEX,
   ROUTES.SHRINK_INDEX,
+  ROUTES.FORCE_MERGE,
   ROUTES.CREATE_DATA_STREAM,
 ];
 
-const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL, ROUTES.CREATE_DATA_STREAM];
+const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL, ROUTES.FORCE_MERGE, ROUTES.CREATE_DATA_STREAM];
 
 interface MainProps extends RouteComponentProps {
   landingPage: string;
@@ -518,6 +520,14 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={`${ROUTES.FORCE_MERGE}/:indexes`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ForceMerge {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={`${ROUTES.CREATE_DATA_STREAM}/:dataStream`}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
@@ -530,6 +540,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <CreateDataStream {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.FORCE_MERGE}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ForceMerge {...props} />
                               </div>
                             )}
                           />

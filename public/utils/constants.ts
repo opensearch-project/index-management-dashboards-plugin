@@ -63,6 +63,7 @@ export const ROUTES = Object.freeze({
   SHRINK_INDEX: "/shrink-index",
   DATA_STREAMS: "/data-streams",
   CREATE_DATA_STREAM: "/create-data-stream",
+  FORCE_MERGE: "/force-merge",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -110,6 +111,7 @@ export const BREADCRUMBS = Object.freeze({
   SHRINK_INDEX: { text: "Shrink index", href: `#${ROUTES.SHRINK_INDEX}` },
   DATA_STREAMS: { text: "Data streams", href: `#${ROUTES.DATA_STREAMS}` },
   CREATE_DATA_STREAM: { text: "Create data stream", href: `#${ROUTES.CREATE_DATA_STREAM}` },
+  FORCE_MERGE: { text: "Force merge", href: `#${ROUTES.FORCE_MERGE}` },
 });
 
 // TODO: EUI has a SortDirection already
