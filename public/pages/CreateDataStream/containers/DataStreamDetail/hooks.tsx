@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { CoreStart } from "opensearch-dashboards/public";
 import { CommonService } from "../../../../services";
 import { TemplateItemRemote } from "../../../../../models/interfaces";

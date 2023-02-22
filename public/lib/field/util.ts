@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 const formatRegExp = /%[sdj%]/g;
 
 export function format(...args: string[]) {

@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { EuiDescriptionList, EuiDescriptionListProps, EuiFlexGrid, EuiFlexGridProps, EuiFlexItem } from "@elastic/eui";
 import React from "react";
 

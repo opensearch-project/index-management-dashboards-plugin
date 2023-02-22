@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React, { forwardRef, useCallback, useRef, useImperativeHandle } from "react";
 import {
   EuiIcon,
