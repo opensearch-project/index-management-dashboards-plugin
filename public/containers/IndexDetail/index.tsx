@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { EuiSpacer } from "@elastic/eui";
 import React, { useContext, useEffect, useState } from "react";
 import { CatIndex } from "../../../server/models/interfaces";

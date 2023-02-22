@@ -52,7 +52,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following data streams will be permanently deleted. The backing indexes belong to the data streams will also be deleted.
+                  The following data streams will be permanently deleted. The backing indexes belonging to the data streams will also be deleted.
                 </p>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"

@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";
 import { EuiGlobalToastList, EuiGlobalToastListProps } from "@elastic/eui";

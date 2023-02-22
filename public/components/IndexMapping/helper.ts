@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import Ajv from "ajv";
 import { MappingsProperties, MappingsPropertiesObject } from "../../../models/interfaces";
 import { noAdditionalJSONSchema } from "../../utils/JSON_schemas/index_mappings";

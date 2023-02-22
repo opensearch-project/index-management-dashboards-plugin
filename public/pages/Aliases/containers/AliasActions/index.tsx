@@ -54,7 +54,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   onClick: onUpdateAlias,
                 },
                 {
-                  name: "Rollover",
+                  name: "Roll over",
                   disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
                   onClick: () => history.push(selectedItems.length ? `${ROUTES.ROLLOVER}/${selectedItems[0].alias}` : ROUTES.ROLLOVER),

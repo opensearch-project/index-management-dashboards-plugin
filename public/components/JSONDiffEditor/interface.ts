@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import type { MonacoDiffEditorProps } from "react-monaco-editor";
 import { JSONEditorProps } from "../JSONEditor";
 import { DiagnosticsOptions } from "../MonacoJSONEditor";
