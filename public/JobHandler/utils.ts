@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 export const EVENT_MAP = {
   REINDEX_COMPLETE: "REINDEX_COMPLETE",
   SPLIT_COMPLETE: "SPLIT_COMPLETE",

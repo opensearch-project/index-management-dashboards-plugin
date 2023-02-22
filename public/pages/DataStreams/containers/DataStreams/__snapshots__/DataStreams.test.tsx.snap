@@ -29,7 +29,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
             id="some_html_id-help-0"
           >
             <div>
-              Data streams simplify the management of time-series data. Data streams are composed of multiple backing indices. Search requests are routed to all backing indexes, while indexing requests are routed to the latest write index.
+              Data streams simplify the management of time-series data. Data streams are composed of multiple backing indexes. Search requests are routed to all backing indexes, while indexing requests are routed to the latest write index.
                
               <button
                 class="euiLink euiLink--primary"

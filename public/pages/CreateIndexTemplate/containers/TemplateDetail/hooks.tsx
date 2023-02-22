@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { get, set } from "lodash";
 import { flatten } from "flat";
 import { CoreStart } from "opensearch-dashboards/public";

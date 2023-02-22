@@ -10,6 +10,21 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
     Force merge
   </h1>
   <div
+    class="euiFormRow euiFormRow--fullWidth"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormHelpText euiFormRow__text"
+        style="padding-top: 0px; padding-bottom: 4px;"
+      >
+        Manually merge data stream index shards or backing indexes. You can also use force merge to remove deleted documents within indexes.
+      </div>
+    </div>
+  </div>
+  <div
     class="euiSpacer euiSpacer--l"
   />
   <div
@@ -57,7 +72,7 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Specify source indexes or data streams
+            Select source indexes or data streams
           </label>
         </div>
         <div
@@ -67,7 +82,7 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Specify one or more indexes or data streams you want to force merge.
+            Select one or more indexes or data streams you want to force merge.
           </div>
           <div>
             <div

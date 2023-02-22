@@ -161,7 +161,7 @@ export default function Rollover(props: RolloverProps) {
           <>
             <EuiFlexGroup alignItems="flexEnd">
               <EuiFlexItem grow={false}>
-                Assign a write index from this alias before performing rollover.
+                Select a write index from this alias before performing rollover.
                 <EuiSpacer size="s" />
                 <CustomFormRow label="Select an index from this alias">
                   <AllBuiltInComponents.ComboBoxSingle
@@ -206,7 +206,7 @@ export default function Rollover(props: RolloverProps) {
   return (
     <div style={{ padding: "0 50px" }}>
       <EuiTitle>
-        <h1>Rollover</h1>
+        <h1>Roll over</h1>
       </EuiTitle>
       <CustomFormRow
         helpText="Rollover creates a new writing index for a data stream or index alias."
@@ -232,8 +232,8 @@ export default function Rollover(props: RolloverProps) {
             {
               name: "source",
               rowProps: {
-                label: "Specify source alias or data stream",
-                helpText: "Specify one alias or data stream you want to rollover from.",
+                label: "Select an alias or data stream",
+                helpText: "Select an alias or data stream to roll over.",
               },
               options: {
                 rules: [
@@ -352,7 +352,7 @@ export default function Rollover(props: RolloverProps) {
                 coreService?.notifications.toasts.addSuccess({
                   title: ((
                     <>
-                      <div>{tempValue.source} has been successfully rollover.</div>
+                      <div>{tempValue.source} has been successfully rolled over.</div>
                       {result.response?.new_index ? (
                         <div>
                           <EuiLink href={`#${ROUTES.INDEX_DETAIL}/${result.response.new_index}`}>{result.response?.new_index}</EuiLink> is
@@ -370,7 +370,7 @@ export default function Rollover(props: RolloverProps) {
             isLoading={loading}
             data-test-subj="rolloverSubmitButton"
           >
-            Rollover
+            Roll over
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>

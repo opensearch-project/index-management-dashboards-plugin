@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -47,7 +47,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
       index_template: TemplateItemRemote;
     }[]
   >([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const field = useField({
     values: {} as Partial<DataStreamInEdit>,
   });
@@ -57,7 +57,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     if (errors) {
       return;
     }
-    setIsSubmitting(true);
+    setIsLoading(true);
     const result = await createDataStream({
       value: dataStream.name,
       commonService: services.commonService,
@@ -72,7 +72,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     if (destroyRef.current) {
       return;
     }
-    setIsSubmitting(false);
+    setIsLoading(false);
   };
   useImperativeHandle(ref, () => field);
   useEffect(() => {
@@ -89,9 +89,14 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
           props.history.replace(ROUTES.DATA_STREAMS);
         });
     } else {
+      setIsLoading(true);
       getAllDataStreamTemplate({
         commonService: services.commonService,
-      }).then((result) => setTemplates(result));
+      })
+        .then((result) => setTemplates(result))
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
     return () => {
       destroyRef.current = true;
@@ -115,8 +120,8 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               label=""
               helpText={
                 <div>
-                  Data streams simplify the management of time-series data. Data streams are composed of multiple backing indices. Search
-                  requests are routed to all backing indexes, while indexing requests are routed to the latest write index.{" "}
+                  A data stream is composed of multiple backing indexes. Search requests are routed to all the backing indexes, while
+                  indexing requests are routed to the latest write index.{" "}
                   <EuiLink target="_blank" external href={coreServices.docLinks.links.opensearch.dataStreams}>
                     Learn more.
                   </EuiLink>
@@ -161,11 +166,25 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
         ) : null}
       </EuiFlexGroup>
       <EuiSpacer />
+      {!isLoading && !templates.length && !isEdit ? (
+        <>
+          <EuiCallOut title="No data stream templates created" color="warning">
+            To create a data stream, you must first define its mappings and settings by creating a data stream template.
+            <EuiSpacer size="s" />
+            <div>
+              <EuiButton onClick={() => props.history.push(`${ROUTES.CREATE_TEMPLATE}?values=${JSON.stringify({ data_stream: {} })}`)}>
+                Create template
+              </EuiButton>
+            </div>
+          </EuiCallOut>
+          <EuiSpacer />
+        </>
+      ) : null}
       <DefineDataStream {...subCompontentProps} allDataStreamTemplates={templates} />
       {values.matchedTemplate ? (
         <>
           <EuiSpacer />
-          <ContentPanel title="Template details" titleSize="s">
+          <ContentPanel title="Inherited settings from template" titleSize="s">
             <EuiSpacer size="s" />
             <IndexAlias {...subCompontentProps} />
             <EuiSpacer />
@@ -192,7 +211,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateDataStreamCreateButton">
+              <EuiButton fill onClick={onSubmit} isLoading={isLoading} data-test-subj="CreateDataStreamCreateButton">
                 {isEdit ? "Save changes" : "Create data stream"}
               </EuiButton>
             </EuiFlexItem>

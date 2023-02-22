@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React, { useState } from "react";
 import { EuiRadioGroup, EuiSpacer } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -38,7 +42,7 @@ export default function SwitchNumber(props: SwitchNumberProps) {
           <EuiSpacer size="s" />
           <CustomFormRow
             label="Number of segments"
-            helpText="Specify the number of segments to merge to. To fully merge indexes, set number to 1."
+            helpText="Specify the number of segments to merge to. To fully merge indexes, set the number of segments to 1."
           >
             <AllBuiltInComponents.Number {...props} placeholder="Specify a number" />
           </CustomFormRow>
