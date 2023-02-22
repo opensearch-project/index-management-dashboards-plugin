@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { MappingsProperties, MappingsPropertiesObject } from "../../../models/interfaces";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {

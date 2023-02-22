@@ -42,7 +42,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
   return (
     <DeleteModal
       title="Delete data streams"
-      tips="The following data streams will be permanently deleted. The backing indexes belong to the data streams will also be deleted."
+      tips="The following data streams will be permanently deleted. The backing indexes belonging to the data streams will also be deleted."
       onConfirm={onConfirm}
       onClose={onClose}
       visible={visible}

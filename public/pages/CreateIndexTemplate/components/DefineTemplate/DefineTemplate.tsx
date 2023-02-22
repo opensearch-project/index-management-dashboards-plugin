@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React from "react";
 import { EuiCallOut, EuiSpacer } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
