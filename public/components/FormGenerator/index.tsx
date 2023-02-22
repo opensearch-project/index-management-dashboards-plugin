@@ -2,7 +2,7 @@ import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } fr
 import { EuiForm, EuiFormProps, EuiSpacer } from "@elastic/eui";
 import { isEqual, omit, pick } from "lodash";
 import AllBuiltInComponents, { IFieldComponentProps } from "./built_in_components";
-import useField, { InitOption, FieldOption, Rule, FieldInstance, FieldName } from "../../lib/field";
+import useField, { InitOption, FieldOption, Rule, FieldInstance, FieldName, transformNameToString } from "../../lib/field";
 import AdvancedSettings, { IAdvancedSettingsProps, IAdvancedSettingsRef } from "../AdvancedSettings";
 import CustomFormRow, { CustomFormRowProps } from "../CustomFormRow";
 
@@ -23,7 +23,7 @@ interface IFormGeneratorAdvancedSettings<T> extends IAdvancedSettingsProps<T> {
 
 export interface IField {
   rowProps: Pick<CustomFormRowProps, "label" | "helpText" | "fullWidth" | "position" | "direction" | "style">;
-  name: string;
+  name: FieldName;
   type?: keyof typeof AllBuiltInComponents;
   component?: React.ComponentType<IFieldComponentProps>;
   options?: Omit<IInitOption, "name">;
@@ -129,10 +129,10 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
         return (
           <CustomFormRow
             data-test-subj={`form-name-${item.name}`}
-            key={item.name}
+            key={transformNameToString(item.name)}
             {...item.rowProps}
-            error={errorMessage[item.name]}
-            isInvalid={!!errorMessage[item.name]}
+            error={errorMessage[transformNameToString(item.name)]}
+            isInvalid={!!errorMessage[transformNameToString(item.name)]}
           >
             <RenderComponent
               {...field.registerField({

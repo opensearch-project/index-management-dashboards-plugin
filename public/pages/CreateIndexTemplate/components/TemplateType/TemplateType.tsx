@@ -1,9 +1,15 @@
-import { EuiRadio } from "@elastic/eui";
+import { EuiRadio, EuiSpacer } from "@elastic/eui";
 import { TEMPLATE_TYPE } from "../../../../utils/constants";
 import React from "react";
+import { AllBuiltInComponents } from "../../../../components/FormGenerator";
+import CustomFormRow from "../../../../components/CustomFormRow";
 
 export interface ITemplateTypeProps {
-  value?: {};
+  value?: {
+    timestamp_field?: {
+      name: string;
+    };
+  };
   onChange: (val: ITemplateTypeProps["value"]) => void;
 }
 
@@ -19,10 +25,36 @@ export default function TemplateType(props: ITemplateTypeProps) {
       />
       <EuiRadio
         id={TEMPLATE_TYPE.DATA_STREAM}
-        onChange={(e) => e.target.checked && onChange({})}
+        onChange={(e) =>
+          e.target.checked &&
+          onChange({
+            timestamp_field: {
+              name: "@timestamp",
+            },
+          })
+        }
         label={TEMPLATE_TYPE.DATA_STREAM}
         checked={value !== undefined}
       />
+      <EuiSpacer />
+      {value !== undefined ? (
+        <CustomFormRow label="Time field">
+          <AllBuiltInComponents.Input
+            value={value?.timestamp_field?.name}
+            onChange={(val) => {
+              if (!val) {
+                onChange({});
+              } else {
+                onChange({
+                  timestamp_field: {
+                    name: val,
+                  },
+                });
+              }
+            }}
+          />
+        </CustomFormRow>
+      ) : null}
     </>
   );
 }
