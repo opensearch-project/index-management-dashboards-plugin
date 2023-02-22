@@ -345,7 +345,24 @@ exports[`<Aliases /> spec renders the component 1`] = `
               </th>
               <th
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_indexArray_1"
+                data-test-subj="tableHeaderCell_writeIndex_1"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Writing index"
+                  >
+                    Writing index
+                  </span>
+                </span>
+              </th>
+              <th
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_indexArray_2"
                 role="columnheader"
                 scope="col"
               >
@@ -368,7 +385,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="3"
+                colspan="4"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"

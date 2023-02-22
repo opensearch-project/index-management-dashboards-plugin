@@ -41,6 +41,9 @@ import CreateIndexTemplate from "../CreateIndexTemplate";
 import SplitIndex from "../SplitIndex";
 import IndexDetail from "../IndexDetail";
 import ShrinkIndex from "../ShrinkIndex/container/ShrinkIndex";
+import Rollover from "../Rollover";
+import DataStreams from "../DataStreams";
+import CreateDataStream from "../CreateDataStream";
 import ForceMerge from "../ForceMerge";
 
 enum Navigation {
@@ -56,6 +59,8 @@ enum Navigation {
   Repositories = "Repositories",
   Aliases = "Aliases",
   Templates = "Templates",
+  DataStreams = "Data streams",
+  CreateDataStream = "Create data stream",
 }
 
 enum Pathname {
@@ -89,9 +94,16 @@ const HIDDEN_NAV_ROUTES = [
   ROUTES.SPLIT_INDEX,
   ROUTES.SHRINK_INDEX,
   ROUTES.FORCE_MERGE,
+  ROUTES.CREATE_DATA_STREAM,
 ];
 
-const HIDDEN_NAV_STARTS_WITH_ROUTE = [ROUTES.CREATE_TEMPLATE, ROUTES.INDEX_DETAIL, ROUTES.FORCE_MERGE];
+const HIDDEN_NAV_STARTS_WITH_ROUTE = [
+  ROUTES.CREATE_TEMPLATE,
+  ROUTES.INDEX_DETAIL,
+  ROUTES.ROLLOVER,
+  ROUTES.CREATE_DATA_STREAM,
+  ROUTES.FORCE_MERGE,
+];
 
 interface MainProps extends RouteComponentProps {
   landingPage: string;
@@ -125,6 +137,12 @@ export default class Main extends Component<MainProps, object> {
             id: 3,
             href: `#${Pathname.Indices}`,
             isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
+          },
+          {
+            name: Navigation.DataStreams,
+            id: 8,
+            href: `#${ROUTES.DATA_STREAMS}`,
+            isSelected: ROUTES.DATA_STREAMS === pathname,
           },
           {
             name: Navigation.Templates,
@@ -497,6 +515,47 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <ShrinkIndex {...props} commonService={services.commonService} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.ROLLOVER}/:source`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Rollover {...props} />
+                              </div>
+                            )}
+                          />
+
+                          <Route
+                            path={ROUTES.ROLLOVER}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Rollover {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.DATA_STREAMS}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <DataStreams {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_DATA_STREAM}/:dataStream`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateDataStream {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_DATA_STREAM}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateDataStream {...props} />
                               </div>
                             )}
                           />

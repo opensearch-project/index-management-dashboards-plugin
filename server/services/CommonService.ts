@@ -30,11 +30,12 @@ export default class IndexService {
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
+    const useQuery = !request.body;
+    const usedParam = (useQuery ? request.query : request.body) as IAPICaller;
+    const { endpoint, data, hideLog } = usedParam || {};
     try {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const useQuery = !request.body;
-      const usedParam = (useQuery ? request.query : request.body) as IAPICaller;
-      const { endpoint, data } = usedParam || {};
+
       const payload = useQuery ? JSON.parse(data || "{}") : data;
       const commonCallerResponse = await callWithRequest(endpoint, payload || {});
       return response.custom({
@@ -45,12 +46,15 @@ export default class IndexService {
         },
       });
     } catch (err) {
-      console.error("Index Management - CommonService - apiCaller", err);
+      if (!hideLog) {
+        console.error("Index Management - CommonService - apiCaller", err);
+      }
       return response.custom({
         statusCode: 200,
         body: {
           ok: false,
-          error: err.message,
+          error: err?.message,
+          body: err?.body || "",
         },
       });
     }

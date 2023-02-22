@@ -9,11 +9,11 @@ import { get, set, differenceWith, isEqual, merge } from "lodash";
 import { diffArrays } from "diff";
 import flattern from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
-import IndexDetail, { IndexDetailProps, IIndexDetailRef, defaultIndexSettings } from "../../components/IndexDetail";
+import IndexDetail, { IndexDetailProps, IIndexDetailRef, defaultIndexSettings } from "../../../../components/IndexDetail";
 import { IAliasAction, IndexItem, IndexItemRemote, MappingsProperties } from "../../../../../models/interfaces";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
+import { transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping/IndexMapping";
 import { ServerResponse } from "../../../../../server/models/types";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
@@ -47,6 +47,7 @@ export const getAliasActionsByDiffArray = (
 
 export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices"> {
   index?: string;
+  value?: Partial<IndexItemRemote>;
   mode?: IndicesUpdateMode;
   onCancel?: () => void;
   onSubmitSuccess?: (indexName: string) => void;
@@ -73,12 +74,26 @@ const findLineNumber = (regexp: RegExp, str: string): number => {
 
 export class IndexForm extends Component<IndexFormProps & { services: BrowserServices }, CreateIndexState> {
   static contextType = CoreServicesContext;
+  /**
+   * convert the mappings.properies to array
+   * @param payload index detail with the mappings.properties is a map
+   */
+  static transformIndexDetailToLocal(payload?: Partial<IndexItemRemote>): Partial<IndexItem> {
+    const newPayload = { ...payload };
+    set(newPayload, "mappings.properties", transformObjectToArray(get(newPayload, "mappings.properties", {})));
+    return newPayload as IndexItem;
+  }
+  static transformIndexDetailToRemote(payload?: Partial<IndexItem>): Partial<IndexItemRemote> {
+    const newPayload = { ...payload };
+    set(newPayload, "mappings.properties", transformArrayToObject(get(newPayload, "mappings.properties", [])));
+    return newPayload as IndexItemRemote;
+  }
   constructor(props: IndexFormProps & { services: BrowserServices }) {
     super(props);
     const isEdit = this.isEdit;
     this.state = {
       isSubmitting: false,
-      indexDetail: merge({}, defaultIndexSettings),
+      indexDetail: merge({}, defaultIndexSettings, IndexForm.transformIndexDetailToLocal(props.value)),
       oldIndexDetail: undefined,
       loading: isEdit,
     };
@@ -110,6 +125,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
   }
 
   hasUnsavedChanges = (mode: IndicesUpdateMode) => this.indexDetailRef?.hasUnsavedChanges(mode);
+  getValue = () => IndexForm.transformIndexDetailToRemote(JSON.parse(JSON.stringify(this.state.indexDetail)));
 
   getIndexDetail = async (indexName: string): Promise<IndexItemRemote> => {
     const response = await this.commonService.apiCaller<Record<string, IndexItemRemote>>({
@@ -133,11 +149,10 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     });
     try {
       const indexDetail = await this.getIndexDetail(this.index as string);
-      const payload = {
+      const payload = IndexForm.transformIndexDetailToLocal({
         ...indexDetail,
         index: this.index,
-      };
-      set(payload, "mappings.properties", transformObjectToArray(get(payload, "mappings.properties", {})));
+      });
 
       this.setState({
         indexDetail: payload as IndexItem,

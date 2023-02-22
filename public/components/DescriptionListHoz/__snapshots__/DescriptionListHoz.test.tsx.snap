@@ -3,7 +3,7 @@
 exports[`<DescriptionListHoz /> spec renders the component 1`] = `
 <div>
   <div
-    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+    class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
   >
     <div
       class="euiFlexItem"
