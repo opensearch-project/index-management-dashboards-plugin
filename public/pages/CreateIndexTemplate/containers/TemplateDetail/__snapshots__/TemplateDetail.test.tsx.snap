@@ -194,6 +194,9 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               Data streams
             </label>
           </div>
+          <div
+            class="euiSpacer euiSpacer--l"
+          />
         </div>
       </div>
       <div

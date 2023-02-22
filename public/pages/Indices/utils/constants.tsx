@@ -72,7 +72,6 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       sortable: true,
       truncateText: true,
       textOnly: true,
-      align: "right",
       width: "120px",
       render: (data_stream) => (data_stream ? <EuiLink href={`#${ROUTES.CREATE_DATA_STREAM}/${data_stream}`}>{data_stream}</EuiLink> : "-"),
     },
@@ -82,7 +81,6 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       sortable: false,
       truncateText: true,
       textOnly: true,
-      width: "140px",
       render: renderNumber,
     },
     {

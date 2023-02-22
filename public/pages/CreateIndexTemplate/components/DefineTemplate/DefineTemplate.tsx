@@ -33,7 +33,7 @@ export default function DefineTemplate(props: SubDetailProps) {
           },
           {
             title: "Index patterns",
-            description: values.index_patterns?.join(","),
+            description: values.index_patterns?.join(", "),
           },
           {
             title: "Priority",

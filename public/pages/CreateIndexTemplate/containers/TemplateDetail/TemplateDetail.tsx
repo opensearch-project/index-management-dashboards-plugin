@@ -5,6 +5,7 @@
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import queryString from "query-string";
 import { transformArrayToObject } from "../../../../components/IndexMapping";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
@@ -23,6 +24,7 @@ import DefineTemplate from "../../components/DefineTemplate";
 import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
+import { merge } from "lodash";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -30,6 +32,7 @@ export interface TemplateDetailProps {
   onSubmitSuccess?: (templateName: string) => void;
   readonly?: boolean;
   history: RouteComponentProps["history"];
+  location: RouteComponentProps["location"];
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => {
@@ -40,8 +43,17 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   const [visible, setVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const oldValue = useRef<TemplateItem | undefined>(undefined);
-  const field = useField({
-    values: {
+  const searchObject = queryString.parseUrl(props.location.search);
+  if (searchObject.query.values) {
+    try {
+      searchObject.query.values = JSON.parse((searchObject.query.values || "") as string);
+    } catch (e) {
+      // do nothing
+    }
+  }
+  const defaultValues = merge(
+    {},
+    {
       priority: 0,
       template: {
         settings: {
@@ -51,6 +63,10 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         },
       },
     } as Partial<TemplateItem>,
+    searchObject.query.values
+  );
+  const field = useField({
+    values: defaultValues,
     onChange(name, value) {
       if (name === "data_stream" && value === undefined) {
         field.deleteValue(name);

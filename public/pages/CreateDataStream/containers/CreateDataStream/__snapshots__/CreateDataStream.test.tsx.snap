@@ -28,7 +28,7 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
               style="padding-top: 0px; padding-bottom: 4px;"
             >
               <div>
-                A data stream is internally composed of multiple backing indices. Search requests are routed to all the backing indices, while indexing requests are routed to the latest write index.
+                Data streams simplify the management of time-series data. Data streams are composed of multiple backing indices. Search requests are routed to all backing indexes, while indexing requests are routed to the latest write index.
                  
                 <button
                   class="euiLink euiLink--primary"
@@ -79,7 +79,7 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
           class="euiSpacer euiSpacer--s"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--fullWidth"
           data-test-subj="form-row-name"
           id="some_html_id-row"
         >
@@ -97,6 +97,27 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
           <div
             class="euiFormRow__fieldWrapper"
           >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Enter a data stream name. It must match an index pattern from a data stream template.
+               
+              <a
+                class="euiLink euiLink--primary"
+                href="#/templates"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Manage templates
+                EuiIconMock
+                <span
+                  class="euiScreenReaderOnly"
+                >
+                  (opens in a new tab or window)
+                </span>
+              </a>
+            </div>
             <span
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
             >
@@ -117,6 +138,11 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
                       data-test-subj="comboBoxInput"
                       tabindex="-1"
                     >
+                      <p
+                        class="euiComboBoxPlaceholder"
+                      >
+                        Specify data stream name
+                      </p>
                       <div
                         class="euiComboBox__input"
                         style="font-size: 14px; display: inline-block;"
@@ -149,12 +175,6 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
                 </div>
               </div>
             </span>
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              Must be in lowercase letters. Cannot begin with underscores or hyphens. Spaces, commas, and characters :, ", *, +, /, , |, ?, #, &gt; are not allowed.
-            </div>
           </div>
         </div>
         <div
