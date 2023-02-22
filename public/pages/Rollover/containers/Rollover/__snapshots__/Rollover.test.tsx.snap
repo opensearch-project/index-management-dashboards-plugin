@@ -7,7 +7,7 @@ exports[`container <Rollover /> spec render the component 1`] = `
   <h1
     class="euiTitle euiTitle--medium"
   >
-    Rollover
+    Roll over
   </h1>
   <div
     class="euiFormRow"
@@ -71,7 +71,7 @@ exports[`container <Rollover /> spec render the component 1`] = `
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Specify source alias or data stream
+              Select an alias or data stream
             </label>
           </div>
           <div
@@ -81,7 +81,7 @@ exports[`container <Rollover /> spec render the component 1`] = `
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              Specify one alias or data stream you want to rollover from.
+              Select an alias or data stream to roll over.
             </div>
             <span
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -192,7 +192,7 @@ exports[`container <Rollover /> spec render the component 1`] = `
           <span
             class="euiButton__text"
           >
-            Rollover
+            Roll over
           </span>
         </span>
       </button>

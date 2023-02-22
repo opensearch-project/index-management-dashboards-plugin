@@ -46,7 +46,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
               id: 0,
               items: [
                 {
-                  name: "Rollover",
+                  name: "Roll over",
                   disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
                   onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItems.join(",")}`),
