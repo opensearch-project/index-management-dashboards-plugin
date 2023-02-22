@@ -20,7 +20,7 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Segment indexes
+              Index segments
             </label>
           </div>
           <div
@@ -139,7 +139,7 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Expunge deleted documents
+              Remove deleted documents
             </label>
           </div>
           <div
@@ -149,7 +149,7 @@ Object {
               class="euiFormHelpText euiFormRow__text"
               style="padding-top: 0px; padding-bottom: 4px;"
             >
-              Expunge all segments containing more than 10% of deleted documents. The percentage is configurable with the setting index.merge.policy.expunge_deletes_allowed.
+              Expunge all segments containing more than 10% of deleted documents. The percentage is configurable in the index.merge.policy.expunge_deletes_allowed setting.
             </div>
             <span
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -169,7 +169,7 @@ Object {
                   class="euiCheckbox__label"
                   for="builtInCheckBoxId-1"
                 >
-                  Only expunge delete
+                  Completely remove deleted documents
                 </label>
               </div>
             </span>
@@ -197,7 +197,7 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Segment indexes
+            Index segments
           </label>
         </div>
         <div
@@ -316,7 +316,7 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Expunge deleted documents
+            Remove deleted documents
           </label>
         </div>
         <div
@@ -326,7 +326,7 @@ Object {
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Expunge all segments containing more than 10% of deleted documents. The percentage is configurable with the setting index.merge.policy.expunge_deletes_allowed.
+            Expunge all segments containing more than 10% of deleted documents. The percentage is configurable in the index.merge.policy.expunge_deletes_allowed setting.
           </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -346,7 +346,7 @@ Object {
                 class="euiCheckbox__label"
                 for="builtInCheckBoxId-1"
               >
-                Only expunge delete
+                Completely remove deleted documents
               </label>
             </div>
           </span>

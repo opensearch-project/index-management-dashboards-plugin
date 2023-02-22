@@ -55,7 +55,7 @@ describe("Rollover", () => {
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
 
-      cy.contains(/has been successfully rollover./);
+      cy.contains(/has been successfully rolled over./);
     });
 
     it("rollover valid alias successfully", () => {
@@ -66,7 +66,7 @@ describe("Rollover", () => {
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
 
-      cy.contains(/has been successfully rollover./);
+      cy.contains(/has been successfully rolled over./);
     });
 
     it("rollover invalid alias successfully", () => {
@@ -84,7 +84,7 @@ describe("Rollover", () => {
       // click create
       cy.get('[data-test-subj="rolloverSubmitButton"]').click({ force: true });
 
-      cy.contains(/has been successfully rollover./);
+      cy.contains(/has been successfully rolled over./);
     });
   });
 

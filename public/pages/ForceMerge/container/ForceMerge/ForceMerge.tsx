@@ -215,16 +215,22 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       <EuiTitle size="l">
         <h1>Force merge</h1>
       </EuiTitle>
+      <CustomFormRow
+        fullWidth
+        helpText="Manually merge data stream index shards or backing indexes. You can also use force merge to remove deleted documents within indexes."
+      >
+        <></>
+      </CustomFormRow>
       <EuiSpacer />
 
       <ContentPanel title="Configure source index" titleSize="s">
         <EuiSpacer />
         <CustomFormRow
-          label="Specify source indexes or data streams"
+          label="Select source indexes or data streams"
           isInvalid={!!field.getError("indexes")}
           error={field.getError("indexes")}
           fullWidth
-          helpText="Specify one or more indexes or data streams you want to force merge."
+          helpText="Select one or more indexes or data streams you want to force merge."
         >
           <IndexSelect
             data-test-subj="sourceSelector"

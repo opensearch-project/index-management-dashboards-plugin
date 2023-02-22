@@ -21,7 +21,7 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
       <CustomFormRow
         isInvalid={!!field.getError("max_num_segments")}
         error={field.getError("max_num_segments")}
-        label="Segment indexes"
+        label="Index segments"
         helpText="Define how many segments to merge to."
       >
         <SwitchNumber
@@ -55,15 +55,15 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
       </CustomFormRow>
       <EuiSpacer />
       <CustomFormRow
-        label="Expunge deleted documents"
+        label="Remove deleted documents"
         fullWidth
-        helpText="Expunge all segments containing more than 10% of deleted documents. The percentage is configurable with the setting index.merge.policy.expunge_deletes_allowed."
+        helpText="Expunge all segments containing more than 10% of deleted documents. The percentage is configurable in the index.merge.policy.expunge_deletes_allowed setting."
       >
         <AllBuiltInComponents.CheckBox
           {...field.registerField({
             name: "only_expunge_deletes",
           })}
-          label="Only expunge delete"
+          label="Completely remove deleted documents"
         />
       </CustomFormRow>
       <EuiSpacer />
