@@ -1,0 +1,412 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ForceMergeAdvancedOptions /> spec renders the component 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        style="padding: 10px 0px;"
+      >
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              aria-invalid="false"
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Segment indexes
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Define how many segments to merge to.
+            </div>
+            <div>
+              <div
+                class="euiRadio euiRadioGroup__item"
+              >
+                <input
+                  checked=""
+                  class="euiRadio__input"
+                  id="0"
+                  type="radio"
+                  value=""
+                />
+                <div
+                  class="euiRadio__circle"
+                />
+                <label
+                  class="euiRadio__label"
+                  for="0"
+                >
+                  Automatic
+                </label>
+              </div>
+              <div
+                class="euiRadio euiRadioGroup__item"
+              >
+                <input
+                  class="euiRadio__input"
+                  id="1"
+                  type="radio"
+                  value=""
+                />
+                <div
+                  class="euiRadio__circle"
+                />
+                <label
+                  class="euiRadio__label"
+                  for="1"
+                >
+                  Manually set number of segments
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFormRow"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Flush indexes
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Opensearch will perform a flush on the indexes after the force merge.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiCheckbox"
+              >
+                <input
+                  class="euiCheckbox__input"
+                  id="builtInCheckBoxId-0"
+                  type="checkbox"
+                />
+                <div
+                  class="euiCheckbox__square"
+                />
+                <label
+                  class="euiCheckbox__label"
+                  for="builtInCheckBoxId-0"
+                >
+                  Flush indexes
+                </label>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiFormRow euiFormRow--fullWidth"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              Expunge deleted documents
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Expunge all segments containing more than 10% of deleted documents. The percentage is configurable with the setting index.merge.policy.expunge_deletes_allowed.
+            </div>
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div
+                class="euiCheckbox"
+              >
+                <input
+                  class="euiCheckbox__input"
+                  id="builtInCheckBoxId-1"
+                  type="checkbox"
+                />
+                <div
+                  class="euiCheckbox__square"
+                />
+                <label
+                  class="euiCheckbox__label"
+                  for="builtInCheckBoxId-1"
+                >
+                  Only expunge delete
+                </label>
+              </div>
+            </span>
+          </div>
+        </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      style="padding: 10px 0px;"
+    >
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Segment indexes
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Define how many segments to merge to.
+          </div>
+          <div>
+            <div
+              class="euiRadio euiRadioGroup__item"
+            >
+              <input
+                checked=""
+                class="euiRadio__input"
+                id="0"
+                type="radio"
+                value=""
+              />
+              <div
+                class="euiRadio__circle"
+              />
+              <label
+                class="euiRadio__label"
+                for="0"
+              >
+                Automatic
+              </label>
+            </div>
+            <div
+              class="euiRadio euiRadioGroup__item"
+            >
+              <input
+                class="euiRadio__input"
+                id="1"
+                type="radio"
+                value=""
+              />
+              <div
+                class="euiRadio__circle"
+              />
+              <label
+                class="euiRadio__label"
+                for="1"
+              >
+                Manually set number of segments
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Flush indexes
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Opensearch will perform a flush on the indexes after the force merge.
+          </div>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiCheckbox"
+            >
+              <input
+                class="euiCheckbox__input"
+                id="builtInCheckBoxId-0"
+                type="checkbox"
+              />
+              <div
+                class="euiCheckbox__square"
+              />
+              <label
+                class="euiCheckbox__label"
+                for="builtInCheckBoxId-0"
+              >
+                Flush indexes
+              </label>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Expunge deleted documents
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Expunge all segments containing more than 10% of deleted documents. The percentage is configurable with the setting index.merge.policy.expunge_deletes_allowed.
+          </div>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+          >
+            <div
+              class="euiCheckbox"
+            >
+              <input
+                class="euiCheckbox__input"
+                id="builtInCheckBoxId-1"
+                type="checkbox"
+              />
+              <div
+                class="euiCheckbox__square"
+              />
+              <label
+                class="euiCheckbox__label"
+                for="builtInCheckBoxId-1"
+              >
+                Only expunge delete
+              </label>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
