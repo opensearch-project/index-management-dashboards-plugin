@@ -5,7 +5,7 @@
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
-import { transformArrayToObject } from "../../../CreateIndex/components/IndexMapping";
+import { transformArrayToObject } from "../../../../components/IndexMapping";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
