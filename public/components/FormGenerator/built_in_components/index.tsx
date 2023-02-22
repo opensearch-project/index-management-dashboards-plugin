@@ -1,15 +1,17 @@
-import React, { forwardRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText } from "@elastic/eui";
+import React, { forwardRef, useRef } from "react";
+import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
 import EuiComboBox from "../../ComboBoxWithoutWarning";
 
-export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle";
+export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle" | "CheckBox";
 
 export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
   onChange: (val: IFieldComponentProps["value"]) => void;
   value?: any;
   [key: string]: any;
 }
+
+let globalId = 0;
 
 const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponentProps>> = {
   Input: EuiToolTipWrapper(
@@ -38,6 +40,20 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
       <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
     )) as React.ComponentType<IFieldComponentProps>
+  ),
+  CheckBox: EuiToolTipWrapper(
+    forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => {
+      const idRef = useRef(globalId++);
+      return (
+        <EuiCheckbox
+          ref={ref}
+          id={`builtInCheckBoxId-${idRef.current}`}
+          checked={value === undefined ? false : value}
+          onChange={(e) => onChange(e.target.checked)}
+          {...others}
+        />
+      );
+    }) as React.ComponentType<IFieldComponentProps>
   ),
   ComboBoxSingle: EuiToolTipWrapper(
     forwardRef(({ onChange, value, options, ...others }, ref: React.Ref<any>) => {

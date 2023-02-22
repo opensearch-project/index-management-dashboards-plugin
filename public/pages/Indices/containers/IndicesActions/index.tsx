@@ -202,6 +202,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       },
                     },
                     {
+                      name: "Force merge",
+                      "data-test-subj": "ForceMergeAction",
+                      onClick: () => {
+                        props.history.push(`${ROUTES.FORCE_MERGE}/${selectedItems.map((item) => item.index).join(",")}`);
+                      },
+                    },
+                    {
                       isSeparator: true,
                     },
                     {
