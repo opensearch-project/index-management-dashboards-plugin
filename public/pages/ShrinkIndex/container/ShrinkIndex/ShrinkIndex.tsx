@@ -23,7 +23,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import IndexDetail from "../../../../containers/IndexDetail";
 import { IndexItem } from "../../../../../models/interfaces";
 import { IFieldComponentProps } from "../../../../components/FormGenerator/built_in_components";
-import AliasSelect from "../../../CreateIndex/components/AliasSelect";
+import AliasSelect from "../../../../components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { CommonService } from "../../../../services";
 import { RouteComponentProps } from "react-router-dom";

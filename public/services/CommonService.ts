@@ -22,6 +22,7 @@ export default class CommonService {
     payload.body = JSON.stringify({
       data: params.data,
       endpoint: params.endpoint,
+      hideLog: params.hideLog,
     });
     return (await this.httpClient.fetch(url, payload)) as ServerResponse<T>;
   };

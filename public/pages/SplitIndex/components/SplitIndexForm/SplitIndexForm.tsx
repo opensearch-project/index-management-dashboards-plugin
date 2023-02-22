@@ -8,7 +8,7 @@ import FormGenerator, { IField, IFormGeneratorRef, IFieldComponentProps } from "
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
 import ContentPanel from "../../../../components/ContentPanel/ContentPanel";
-import AliasSelect, { AliasSelectProps } from "../../../CreateIndex/components/AliasSelect";
+import AliasSelect, { AliasSelectProps } from "../../../../components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import {
   INDEX_NAMING_PATTERN,
