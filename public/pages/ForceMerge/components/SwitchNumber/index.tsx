@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React, { useState } from "react";
 import { EuiRadioGroup, EuiSpacer } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";

@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { jobSchedulerInstance } from "../context/JobSchedulerContext";
 import { CoreSetup } from "../../../../src/core/public";
 import { callbackForReindex, callbackForReindexTimeout } from "./callbacks/reindex";

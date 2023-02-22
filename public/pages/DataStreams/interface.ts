@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { DataStream } from "../../../server/models/interfaces";
 
 export type DataStreamWithStats = Required<DataStream> & Required<DataStreamStats>;
