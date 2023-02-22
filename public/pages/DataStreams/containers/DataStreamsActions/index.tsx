@@ -46,7 +46,14 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
               id: 0,
               items: [
                 {
-                  name: "Rollover",
+                  name: "Force merge",
+                  "data-test-subj": "ForceMergeAction",
+                  onClick: () => {
+                    props.history.push(`${ROUTES.FORCE_MERGE}/${selectedItems.join(",")}`);
+                  },
+                },
+                {
+                  name: "Roll over",
                   disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
                   onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItems.join(",")}`),
