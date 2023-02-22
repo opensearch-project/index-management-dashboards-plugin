@@ -5,10 +5,10 @@
 
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
+import { isEqual } from "lodash";
 import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { isEqual } from "lodash";
 
 interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {}
 
@@ -62,6 +62,7 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
       <div style={{ padding: "0px 50px" }}>
         <TemplateDetail
           history={this.props.history}
+          location={this.props.location}
           readonly={this.readonly}
           templateName={this.template}
           onCancel={this.onCancel}

@@ -19,7 +19,10 @@ function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history">) 
       <HashRouter>
         <CoreServicesContext.Provider value={coreServicesMock}>
           <ServicesContext.Provider value={browserServicesMock}>
-            <Route path="/" render={(routeProps) => <TemplateDetail {...props} history={routeProps.history} />} />
+            <Route
+              path="/"
+              render={(routeProps) => <TemplateDetail {...props} history={routeProps.history} location={routeProps.location} />}
+            />
             <Route path={ROUTES.TEMPLATES} render={(routeProps) => <>This is {ROUTES.TEMPLATES}</>} />
           </ServicesContext.Provider>
         </CoreServicesContext.Provider>
