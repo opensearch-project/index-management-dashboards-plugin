@@ -41,7 +41,8 @@ describe("Data stream", () => {
   describe("can create a data stream", () => {
     it("successfully", () => {
       cy.get('[data-test-subj="Create data streamButton"]').click();
-      cy.get('[data-test-subj="form-row-name"]').type(`ds-{enter}`);
+      cy.get('[data-test-subj="form-row-name"] [data-test-subj="comboBoxSearchInput"]').type(`ds-{enter}`);
+      cy.get("body").click();
       cy.get('[data-test-subj="CreateDataStreamCreateButton"]').click();
       cy.contains("ds- has been successfully created.");
     });
