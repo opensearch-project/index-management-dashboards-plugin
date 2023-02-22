@@ -20,4 +20,4 @@ Compatible with OpenSearch 2.6.0
 * Bumped version to 2.6. ([#630](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/630))
 
 ### Documentation
-* Added 2.6 release notes. ([#]())
+* 2.6 release note ([#561](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/561))
