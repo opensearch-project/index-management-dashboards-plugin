@@ -25,7 +25,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
             style="padding-top: 0px; padding-bottom: 4px;"
           >
             <div>
-              Data streams simplify the management of time-series data. Data streams are composed of multiple backing indices. Search requests are routed to all backing indexes, while indexing requests are routed to the latest write index.
+              A data stream is composed of multiple backing indexes. Search requests are routed to all the backing indexes, while indexing requests are routed to the latest write index.
                
               <button
                 class="euiLink euiLink--primary"
@@ -35,6 +35,50 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
               </button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiCallOut euiCallOut--warning"
+  >
+    <div
+      class="euiCallOutHeader"
+    >
+      <span
+        class="euiCallOutHeader__title"
+      >
+        No data stream templates created
+      </span>
+    </div>
+    <div
+      class="euiText euiText--small"
+    >
+      <div
+        class="euiTextColor euiTextColor--default"
+      >
+        To create a data stream, you must first define its mappings and settings by creating a data stream template.
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+        <div>
+          <button
+            class="euiButton euiButton--primary"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButton__content"
+            >
+              <span
+                class="euiButton__text"
+              >
+                Create template
+              </span>
+            </span>
+          </button>
         </div>
       </div>
     </div>
@@ -106,7 +150,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
               rel="noopener noreferrer"
               target="_blank"
             >
-              Manage templates
+              Manage templates.
               EuiIconMock
               <span
                 class="euiScreenReaderOnly"
@@ -138,7 +182,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
                     <p
                       class="euiComboBoxPlaceholder"
                     >
-                      Specify data stream name
+                      Enter data stream name
                     </p>
                     <div
                       class="euiComboBox__input"
@@ -188,7 +232,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Matching index template
+            Matching template
           </label>
         </div>
         <div

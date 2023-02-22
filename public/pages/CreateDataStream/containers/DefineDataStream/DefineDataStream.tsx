@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React, { useRef, useMemo } from "react";
 import { EuiLink, EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiBadge, EuiToolTip, EuiHealth } from "@elastic/eui";
 import { DataStreamInEdit, SubDetailProps, TemplateItem } from "../../interface";
@@ -130,13 +134,13 @@ export default function DefineDataStream(
           <>
             Enter a data stream name. It must match an index pattern from a data stream template.{" "}
             <EuiLink href={`#${ROUTES.TEMPLATES}`} external target="_blank">
-              Manage templates
+              Manage templates.
             </EuiLink>
           </>
         }
       >
         <Component
-          placeholder="Specify data stream name"
+          placeholder="Enter data stream name"
           options={matchedList.map((item) => ({
             label: item.name,
             value: item,
@@ -153,11 +157,12 @@ export default function DefineDataStream(
           }}
           async
           {...suggestionRegister}
+          value={comboBoxRef.current?.state.hasFocus ? undefined : suggestionRegister.value}
           ref={comboBoxRef}
           onCreateOption={() => {}}
           customOptionText={
             searchValue
-              ? `{searchValue} doesn’t match index patterns from any templates. Specify another name or create a data stream template.`
+              ? `{searchValue} does not match index patterns from any templates. Enter another name or create a data stream template.`
               : `There are no data stream templates. Please create a data stream template.`
           }
           onSearchChange={(dataStreamName: string) => {
@@ -210,7 +215,7 @@ export default function DefineDataStream(
         />
       </CustomFormRow>
       <EuiSpacer />
-      <CustomFormRow label="Matching index template">
+      <CustomFormRow label="Matching template">
         {values.matchedTemplate ? (
           <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_TEMPLATE}/${values.matchedTemplate}/readonly`}>
             {values.matchedTemplate}

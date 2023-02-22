@@ -1,10 +1,14 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { ValidateFunction } from "../interfaces";
 import messages from "../messages";
 import { format as messageFormat } from "../util";
 
 const pattern = {
-  email: /[\w\u4E00-\u9FA5]+([-+.][\w\u4E00-\u9FA5]+)*@[\w\u4E00-\u9FA5]+([-.][\w\u4E00-\u9FA5]+)*\.[\w\u4E00-\u9FA5]+([-.][\w\u4E00-\u9FA5]+)*/,
-  url: /^(?:(?:http|https|ftp):\/\/|\/\/)(?:(?:(?:[-\w\u00a1-\uffff]+)(?:\.[-\w\u00a1-\uffff]+)+|localhost)(?::\d{2,5})?(?:(?:\/|#)[^\s]*)?)$/,
+  email: /[\w一-龥]+([-+.][\w一-龥]+)*@[\w一-龥]+([-.][\w一-龥]+)*\.[\w一-龥]+([-.][\w一-龥]+)*/,
+  url: /^(?:(?:http|https|ftp):\/\/|\/\/)(?:(?:(?:[-\w¡-￿]+)(?:\.[-\w¡-￿]+)+|localhost)(?::\d{2,5})?(?:(?:\/|#)[^\s]*)?)$/,
   number: /\d*/,
   tel: /^(1\d{10})$|(((400)-(\d{3})-(\d{4}))|^((\d{7,8})|(\d{3,4})-(\d{7,8})|(\d{7,8})-(\d{1,4}))$)$|^([ ]?)$/,
 };

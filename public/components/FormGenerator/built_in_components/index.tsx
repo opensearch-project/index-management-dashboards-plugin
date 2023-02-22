@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React, { forwardRef, useRef } from "react";
 import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";

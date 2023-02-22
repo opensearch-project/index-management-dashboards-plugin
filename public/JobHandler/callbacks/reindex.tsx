@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React, { ReactChild } from "react";
 import { CallbackType } from "../interface";
 import { ReindexJobMetaData } from "../../models/interfaces";

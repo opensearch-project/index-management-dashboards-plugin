@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { IStorage, JobItemMetadata } from "./interface";
 
 const JOB_STORAGE_KEY = "ISM_JOBS";

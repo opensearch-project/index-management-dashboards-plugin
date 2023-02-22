@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { EuiFormRowProps } from "@elastic/eui";
 import { FieldInstance, transformNameToString } from "../../lib/field";
 
