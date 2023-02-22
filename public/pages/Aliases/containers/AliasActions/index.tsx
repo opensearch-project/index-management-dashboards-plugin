@@ -54,6 +54,13 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   onClick: onUpdateAlias,
                 },
                 {
+                  name: "Force merge",
+                  "data-test-subj": "ForceMergeAction",
+                  onClick: () => {
+                    props.history.push(`${ROUTES.FORCE_MERGE}/${selectedItems.map((item) => item.alias).join(",")}`);
+                  },
+                },
+                {
                   name: "Roll over",
                   disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
