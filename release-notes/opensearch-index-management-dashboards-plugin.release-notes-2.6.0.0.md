@@ -8,4 +8,4 @@ Compatible with OpenSearch 2.6.0
 * Add index operation of rollover  ([#607](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/607))
 
 ### Documentation
-* 2.6 release note ([#561](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/561))
+* 2.6 release note ([#632](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/632))
