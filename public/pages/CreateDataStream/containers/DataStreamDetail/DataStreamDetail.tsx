@@ -5,7 +5,7 @@
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
-import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
+import { TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
@@ -49,7 +49,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
   >([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const field = useField({
-    values: {} as Partial<TemplateItem>,
+    values: {} as Partial<DataStreamInEdit>,
   });
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
@@ -97,7 +97,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
       destroyRef.current = true;
     };
   }, []);
-  const values: DataStreamInEdit & { matchedTemplate?: string } = field.getValues();
+  const values: DataStreamInEdit = field.getValues();
   const subCompontentProps = {
     ...props,
     isEdit,
@@ -115,8 +115,8 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               label=""
               helpText={
                 <div>
-                  A data stream is internally composed of multiple backing indices. Search requests are routed to all the backing indices,
-                  while indexing requests are routed to the latest write index.{" "}
+                  Data streams simplify the management of time-series data. Data streams are composed of multiple backing indices. Search
+                  requests are routed to all backing indexes, while indexing requests are routed to the latest write index.{" "}
                   <EuiLink target="_blank" external href={coreServices.docLinks.links.opensearch.dataStreams}>
                     Learn more.
                   </EuiLink>

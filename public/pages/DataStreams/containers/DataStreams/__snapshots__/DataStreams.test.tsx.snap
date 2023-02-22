@@ -29,7 +29,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
             id="some_html_id-help-0"
           >
             <div>
-              A data stream is internally composed of multiple backing indices. Search requests are routed to all the backing indices, while indexing requests are routed to the latest write index.
+              Data streams simplify the management of time-series data. Data streams are composed of multiple backing indices. Search requests are routed to all backing indexes, while indexing requests are routed to the latest write index.
                
               <button
                 class="euiLink euiLink--primary"
@@ -304,57 +304,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_backing_indices_2"
-                role="columnheader"
-                scope="col"
-              >
-                <button
-                  class="euiTableHeaderButton"
-                  data-test-subj="tableHeaderSortButton"
-                  type="button"
-                >
-                  <span
-                    class="euiTableCellContent euiTableCellContent--alignRight"
-                  >
-                    <span
-                      class="euiTableCellContent__text"
-                      title="Backing indices count"
-                    >
-                      Backing indices count
-                    </span>
-                  </span>
-                </button>
-              </th>
-              <th
-                aria-live="polite"
-                aria-sort="none"
-                class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_store_size_bytes_3"
-                role="columnheader"
-                scope="col"
-              >
-                <button
-                  class="euiTableHeaderButton"
-                  data-test-subj="tableHeaderSortButton"
-                  type="button"
-                >
-                  <span
-                    class="euiTableCellContent euiTableCellContent--alignRight"
-                  >
-                    <span
-                      class="euiTableCellContent__text"
-                      title="Total size"
-                    >
-                      Total size
-                    </span>
-                  </span>
-                </button>
-              </th>
-              <th
-                aria-live="polite"
-                aria-sort="none"
-                class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_template_4"
+                data-test-subj="tableHeaderCell_template_2"
                 role="columnheader"
                 scope="col"
               >
@@ -371,6 +321,56 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                       title="Template"
                     >
                       Template
+                    </span>
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-live="polite"
+                aria-sort="none"
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_backing_indices_3"
+                role="columnheader"
+                scope="col"
+              >
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
+                >
+                  <span
+                    class="euiTableCellContent euiTableCellContent--alignRight"
+                  >
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Backing indexes count"
+                    >
+                      Backing indexes count
+                    </span>
+                  </span>
+                </button>
+              </th>
+              <th
+                aria-live="polite"
+                aria-sort="none"
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_store_size_bytes_4"
+                role="columnheader"
+                scope="col"
+              >
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
+                >
+                  <span
+                    class="euiTableCellContent euiTableCellContent--alignRight"
+                  >
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Total size"
+                    >
+                      Total size
                     </span>
                   </span>
                 </button>
