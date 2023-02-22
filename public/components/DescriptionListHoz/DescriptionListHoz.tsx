@@ -1,4 +1,4 @@
-import { EuiDescriptionList, EuiDescriptionListProps, EuiFlexGrid, EuiFlexGridProps, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiDescriptionList, EuiDescriptionListProps, EuiFlexGrid, EuiFlexGridProps, EuiFlexItem } from "@elastic/eui";
 import React from "react";
 
 const DisplayItem = (

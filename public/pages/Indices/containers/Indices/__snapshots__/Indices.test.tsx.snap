@@ -353,7 +353,6 @@ exports[`<Indices /> spec renders the component 1`] = `
                 data-test-subj="tableHeaderCell_managed_2"
                 role="columnheader"
                 scope="col"
-                style="width: 140px;"
               >
                 <span
                   class="euiTableCellContent"

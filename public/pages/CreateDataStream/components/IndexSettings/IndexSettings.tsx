@@ -45,24 +45,6 @@ export default function IndexSettings(props: SubDetailProps) {
             <AllBuiltInComponents.Text
               {...field.registerField({
                 name: ["template", "settings", "index.number_of_shards"],
-                rules: [
-                  {
-                    min: 1,
-                    message: "Number of shards cannot be smaller than 1.",
-                  },
-                  {
-                    validator(rule, value) {
-                      if (!value) {
-                        return Promise.reject("Number of primary shards is required.");
-                      }
-                      if (Number(value) !== parseInt(value)) {
-                        return Promise.reject("Number of primary shards must be an integer.");
-                      }
-
-                      return Promise.resolve("");
-                    },
-                  },
-                ],
               })}
             />
           </CustomFormRow>
@@ -76,24 +58,6 @@ export default function IndexSettings(props: SubDetailProps) {
             <AllBuiltInComponents.Text
               {...field.registerField({
                 name: ["template", "settings", "index.number_of_replicas"],
-                rules: [
-                  {
-                    min: 0,
-                    message: "Number of replicas cannot be smaller than 0.",
-                  },
-                  {
-                    validator(rule, value) {
-                      if (!value) {
-                        return Promise.reject("Number of replicas is required.");
-                      }
-                      if (Number(value) !== parseInt(value)) {
-                        return Promise.reject("Number of replicas must be an integer");
-                      }
-
-                      return Promise.resolve("");
-                    },
-                  },
-                ],
               })}
             />
           </CustomFormRow>

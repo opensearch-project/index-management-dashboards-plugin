@@ -5,12 +5,11 @@ import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
-import { ALIAS_SELECT_RULE } from "../../../../utils/constants";
 import { getCommonFormRowProps } from "../../hooks";
 import { SubDetailProps } from "../../interface";
 
 export default function IndexAlias(props: SubDetailProps) {
-  const { readonly, field } = props;
+  const { isEdit, field } = props;
   const values = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
   return (
@@ -28,7 +27,7 @@ export default function IndexAlias(props: SubDetailProps) {
           <></>
         </CustomFormRow>
       </EuiTitle>
-      {readonly ? (
+      {!isEdit ? (
         <>
           <EuiSpacer size="s" />
           <DescriptionListHoz
@@ -53,7 +52,6 @@ export default function IndexAlias(props: SubDetailProps) {
               isDisabled
               {...field.registerField({
                 name: ["template", "aliases"],
-                rules: [...ALIAS_SELECT_RULE],
               })}
               refreshOptions={(aliasName) =>
                 services?.commonService.apiCaller({
