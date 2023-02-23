@@ -1,15 +1,21 @@
-import React, { forwardRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText } from "@elastic/eui";
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+import React, { forwardRef, useRef } from "react";
+import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
 import EuiComboBox from "../../ComboBoxWithoutWarning";
 
-export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle";
+export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle" | "CheckBox";
 
 export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
-  onChange: (val: IFieldComponentProps["value"]) => void;
+  onChange: (val: IFieldComponentProps["value"], ...args: any) => void;
   value?: any;
   [key: string]: any;
 }
+
+let globalId = 0;
 
 const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponentProps>> = {
   Input: EuiToolTipWrapper(
@@ -39,12 +45,33 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
       <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
     )) as React.ComponentType<IFieldComponentProps>
   ),
+  CheckBox: EuiToolTipWrapper(
+    forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => {
+      const idRef = useRef(globalId++);
+      return (
+        <EuiCheckbox
+          ref={ref}
+          id={`builtInCheckBoxId-${idRef.current}`}
+          checked={value === undefined ? false : value}
+          onChange={(e) => onChange(e.target.checked)}
+          {...others}
+        />
+      );
+    }) as React.ComponentType<IFieldComponentProps>
+  ),
   ComboBoxSingle: EuiToolTipWrapper(
     forwardRef(({ onChange, value, options, ...others }, ref: React.Ref<any>) => {
       return (
         <EuiComboBox
           onCreateOption={(searchValue) => {
-            const findItem = options.find((item: { label: string }) => item.label === searchValue);
+            const allOptions = (options as { label: string; options?: { label: string }[] }[]).reduce((total, current) => {
+              if (current.options) {
+                return [...total, ...current.options];
+              } else {
+                return [...total, current];
+              }
+            }, [] as { label: string }[]);
+            const findItem = allOptions.find((item: { label: string }) => item.label === searchValue);
             if (findItem) {
               onChange(searchValue);
             }
@@ -55,7 +82,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
           ref={ref}
           onChange={(selectedOptions) => {
             if (selectedOptions && selectedOptions[0]) {
-              onChange(selectedOptions[0].label);
+              onChange(selectedOptions[0].label, selectedOptions[0]);
             } else {
               onChange(undefined);
             }

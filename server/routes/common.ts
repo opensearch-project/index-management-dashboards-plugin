@@ -17,6 +17,7 @@ export default function (services: NodeServices, router: IRouter) {
         schema.object({
           endpoint: schema.string(),
           data: schema.nullable(schema.any()),
+          hideLog: schema.nullable(schema.boolean()),
         })
       ),
       query: schema.any(),

@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React from "react";
 import { EuiLink, EuiSpacer } from "@elastic/eui";
 import flat from "flat";

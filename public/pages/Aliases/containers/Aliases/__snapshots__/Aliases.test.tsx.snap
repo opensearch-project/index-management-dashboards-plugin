@@ -31,7 +31,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
             <div
               style="width: 50%;"
             >
-              An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes, rather than keeping track of which indexes to query, you can create an alias and query it instead.
+              An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes, you can create and query an alias instead of keeping track of which indexes to query.
                
               <a
                 class="euiLink euiLink--primary"
@@ -97,7 +97,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
             >
               <button
                 class="euiButton euiButton--primary euiButton--fill"
-                data-test-subj="Create AliasButton"
+                data-test-subj="Create aliasButton"
                 type="button"
               >
                 <span
@@ -106,7 +106,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
                   <span
                     class="euiButton__text"
                   >
-                    Create Alias
+                    Create alias
                   </span>
                 </span>
               </button>
@@ -345,7 +345,24 @@ exports[`<Aliases /> spec renders the component 1`] = `
               </th>
               <th
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_indexArray_1"
+                data-test-subj="tableHeaderCell_writeIndex_1"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Write index"
+                  >
+                    Write index
+                  </span>
+                </span>
+              </th>
+              <th
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_indexArray_2"
                 role="columnheader"
                 scope="col"
               >
@@ -368,7 +385,7 @@ exports[`<Aliases /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="3"
+                colspan="4"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"

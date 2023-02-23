@@ -622,6 +622,7 @@ export interface IAPICaller {
   endpoint: string;
   method?: string;
   data?: any;
+  hideLog?: boolean;
 }
 
 export interface IRecoveryItem {

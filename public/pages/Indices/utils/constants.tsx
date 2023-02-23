@@ -4,10 +4,10 @@
  */
 
 import React from "react";
-import { EuiHealth, EuiTableFieldDataColumnType } from "@elastic/eui";
+import { EuiHealth, EuiLink, EuiTableFieldDataColumnType } from "@elastic/eui";
 import IndexDetail, { IndexDetailModalProps } from "../containers/IndexDetail";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";
-import { SortDirection } from "../../../utils/constants";
+import { ROUTES, SortDirection } from "../../../utils/constants";
 
 const renderNumber = (value) => {
   return value || "-";
@@ -72,9 +72,8 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       sortable: true,
       truncateText: true,
       textOnly: true,
-      align: "right",
       width: "120px",
-      render: (data_stream) => data_stream || "-",
+      render: (data_stream) => (data_stream ? <EuiLink href={`#${ROUTES.CREATE_DATA_STREAM}/${data_stream}`}>{data_stream}</EuiLink> : "-"),
     },
     {
       field: "managed",
@@ -82,7 +81,6 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       sortable: false,
       truncateText: true,
       textOnly: true,
-      width: "140px",
       render: renderNumber,
     },
     {

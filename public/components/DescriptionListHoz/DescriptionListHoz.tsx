@@ -1,4 +1,8 @@
-import { EuiDescriptionList, EuiDescriptionListProps, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+import { EuiDescriptionList, EuiDescriptionListProps, EuiFlexGrid, EuiFlexGridProps, EuiFlexItem } from "@elastic/eui";
 import React from "react";
 
 const DisplayItem = (
@@ -20,15 +24,15 @@ const DisplayItem = (
   );
 };
 
-export default function DescriptionListHoz(props: EuiDescriptionListProps) {
-  const { listItems, ...others } = props;
+export default function DescriptionListHoz(props: EuiDescriptionListProps & Pick<EuiFlexGridProps, "columns">) {
+  const { listItems, columns = 4, ...others } = props;
   return (
-    <EuiFlexGroup>
+    <EuiFlexGrid columns={columns}>
       {listItems?.map((item) => (
         <EuiFlexItem key={item.title as string}>
           <DisplayItem listItem={item} {...others} />
         </EuiFlexItem>
       ))}
-    </EuiFlexGroup>
+    </EuiFlexGrid>
   );
 }

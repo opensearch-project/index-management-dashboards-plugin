@@ -4,19 +4,21 @@
  */
 import React, { useMemo, useState } from "react";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
-
+import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
 import { IAlias } from "../../interface";
+import { ROUTES } from "../../../../utils/constants";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
   onDelete: () => void;
   onUpdateAlias: () => void;
+  history: RouteComponentProps["history"];
 }
 
 export default function AliasesActions(props: AliasesActionsProps) {
-  const { selectedItems, onDelete, onUpdateAlias } = props;
+  const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
@@ -50,6 +52,19 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   disabled: selectedItems.length !== 1,
                   "data-test-subj": "editAction",
                   onClick: onUpdateAlias,
+                },
+                {
+                  name: "Force merge",
+                  "data-test-subj": "ForceMergeAction",
+                  onClick: () => {
+                    props.history.push(`${ROUTES.FORCE_MERGE}/${selectedItems.map((item) => item.alias).join(",")}`);
+                  },
+                },
+                {
+                  name: "Roll over",
+                  disabled: selectedItems.length > 1,
+                  "data-test-subj": "rolloverAction",
+                  onClick: () => history.push(selectedItems.length ? `${ROUTES.ROLLOVER}/${selectedItems[0].alias}` : ROUTES.ROLLOVER),
                 },
                 {
                   name: "Delete",

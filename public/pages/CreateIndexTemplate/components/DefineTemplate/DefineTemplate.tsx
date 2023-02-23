@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React from "react";
 import { EuiCallOut, EuiSpacer } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
@@ -33,7 +37,7 @@ export default function DefineTemplate(props: SubDetailProps) {
           },
           {
             title: "Index patterns",
-            description: values.index_patterns?.join(","),
+            description: values.index_patterns?.join(", "),
           },
           {
             title: "Priority",

@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ForceMerge /> spec renders the component 1`] = `
+<div
+  style="padding: 0px 50px;"
+>
+  <h1
+    class="euiTitle euiTitle--large"
+  >
+    Force merge
+  </h1>
+  <div
+    class="euiFormRow euiFormRow--fullWidth"
+    id="some_html_id-row"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiFormHelpText euiFormRow__text"
+        style="padding-top: 0px; padding-bottom: 4px;"
+      >
+        Manually merge data stream index shards or backing indexes. You can also use force merge to remove deleted documents within indexes.
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Configure source index
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Select source indexes or data streams
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Select one or more indexes or data streams you want to force merge.
+          </div>
+          <div>
+            <div
+              aria-expanded="false"
+              aria-haspopup="listbox"
+              class="euiComboBox"
+              data-test-subj="sourceSelector"
+              role="combobox"
+            >
+              <div
+                class="euiFormControlLayout"
+              >
+                <div
+                  class="euiFormControlLayout__childrenWrapper"
+                >
+                  <div
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                    data-test-subj="comboBoxInput"
+                    tabindex="-1"
+                  >
+                    <p
+                      class="euiComboBoxPlaceholder"
+                    >
+                      Select indexes or data streams
+                    </p>
+                    <div
+                      class="euiComboBox__input"
+                      style="font-size: 14px; display: inline-block;"
+                    >
+                      <input
+                        aria-controls=""
+                        data-test-subj="comboBoxSearchInput"
+                        role="textbox"
+                        style="box-sizing: content-box; width: 2px;"
+                        value=""
+                      />
+                      <div
+                        style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+                  >
+                    <button
+                      aria-label="Open list of options"
+                      class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                      data-test-subj="comboBoxToggleListButton"
+                      type="button"
+                    >
+                      EuiIconMock
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <div
+          class="euiFlexGroup euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+        >
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <button
+              aria-label="drop down icon"
+              class="euiButtonIcon euiButtonIcon--text euiButtonIcon--empty euiButtonIcon--xSmall"
+              data-test-subj="advanceOptionToggle"
+              type="button"
+            >
+              EuiIconMock
+            </button>
+          </div>
+          <div
+            class="euiFlexItem euiFlexItem--flexGrowZero"
+          >
+            <h3
+              class="euiTitle euiTitle--small"
+            >
+              Advanced settings
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButtonEmpty euiButtonEmpty--primary"
+        data-test-subj="reindexCancelButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButtonEmpty__content"
+        >
+          <span
+            class="euiButtonEmpty__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary euiButton--fill"
+        data-test-subj="forceMergeConfirmButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Force merge
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

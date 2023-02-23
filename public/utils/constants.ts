@@ -61,6 +61,10 @@ export const ROUTES = Object.freeze({
   CREATE_TEMPLATE: "/create-template",
   SPLIT_INDEX: "/split-index",
   SHRINK_INDEX: "/shrink-index",
+  ROLLOVER: "/rollover",
+  DATA_STREAMS: "/data-streams",
+  CREATE_DATA_STREAM: "/create-data-stream",
+  FORCE_MERGE: "/force-merge",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -106,6 +110,10 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_TEMPLATE: { text: "Edit template", href: `#${ROUTES.CREATE_TEMPLATE}` },
   SPLIT_INDEX: { text: "Split Index", href: `#${ROUTES.SPLIT_INDEX}` },
   SHRINK_INDEX: { text: "Shrink index", href: `#${ROUTES.SHRINK_INDEX}` },
+  ROLLOVER: { text: "Rollover", href: `#${ROUTES.ROLLOVER}` },
+  DATA_STREAMS: { text: "Data streams", href: `#${ROUTES.DATA_STREAMS}` },
+  CREATE_DATA_STREAM: { text: "Create data stream", href: `#${ROUTES.CREATE_DATA_STREAM}` },
+  FORCE_MERGE: { text: "Force merge", href: `#${ROUTES.FORCE_MERGE}` },
 });
 
 // TODO: EUI has a SortDirection already
