@@ -33,19 +33,24 @@ const diagnosticDefault = {
   schemas: [],
   enableSchemaRequest: false,
 };
-const jsonDefaults = new LanguageServiceDefaultsImpl("json", diagnosticDefault);
-function createAPI() {
-  return {
-    jsonDefaults,
-  };
+/**
+ * In case there are other plugins register the language implementation.
+ */
+if (!monaco.languages.json) {
+  const jsonDefaults = new LanguageServiceDefaultsImpl("json", diagnosticDefault);
+  function createAPI() {
+    return {
+      jsonDefaults,
+    };
+  }
+  monaco.languages.json = createAPI();
+  monaco.languages.register({
+    id: "json",
+    extensions: [".json", ".bowerrc", ".jshintrc", ".jscsrc", ".eslintrc", ".babelrc"],
+    aliases: ["JSON", "json"],
+    mimetypes: ["application/json"],
+  });
+  monaco.languages.onLanguage("json", function () {
+    mode.setupMode(jsonDefaults);
+  });
 }
-monaco.languages.json = createAPI();
-monaco.languages.register({
-  id: "json",
-  extensions: [".json", ".bowerrc", ".jshintrc", ".jscsrc", ".eslintrc", ".babelrc"],
-  aliases: ["JSON", "json"],
-  mimetypes: ["application/json"],
-});
-monaco.languages.onLanguage("json", function () {
-  mode.setupMode(jsonDefaults);
-});
