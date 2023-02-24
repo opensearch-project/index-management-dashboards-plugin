@@ -1,3 +1,7 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import { IJobSchedulerOptions, IJobItemMetadata, IStorage, JobItemMetadata, TimeoutId } from "./interface";
 import { StoreLocalStorage } from "./store-localstorage";
 

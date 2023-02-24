@@ -15,6 +15,7 @@ interface ContentPanelProps {
   horizontalRuleClassName?: string;
   actions?: React.ReactNode | React.ReactNode[];
   children: React.ReactNode | React.ReactNode[];
+  itemCount?: number;
 }
 
 const renderSubTitleText = (subTitleText: string | JSX.Element): JSX.Element | null => {
@@ -38,13 +39,17 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
   horizontalRuleClassName = "",
   actions,
   children,
+  itemCount = 0,
 }) => (
   <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}>
     <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="flexStart">
       <EuiFlexItem>
         {typeof title === "string" ? (
           <EuiTitle size={titleSize}>
-            <h3>{title}</h3>
+            <h3>
+              {title}
+              <span className="panel-header-count"> {itemCount > 0 ? `(${itemCount})` : null} </span>
+            </h3>
           </EuiTitle>
         ) : (
           title

@@ -115,7 +115,7 @@ describe("<CreatePolicy /> spec", () => {
 
     await waitFor(() => getByDisplayValue("some_id"));
 
-    expect(getByPlaceholderText("hot_cold_workflow")).toHaveAttribute("readonly");
+    expect(getByPlaceholderText("example_policy")).toHaveAttribute("readonly");
   });
 
   it("shows error for policyId input when clicking create", async () => {
@@ -127,9 +127,9 @@ describe("<CreatePolicy /> spec", () => {
 
     expect(queryByText("Required")).not.toBeNull();
 
-    fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
-    userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
-    fireEvent.blur(getByPlaceholderText("hot_cold_workflow"));
+    fireEvent.focus(getByPlaceholderText("example_policy"));
+    userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
+    fireEvent.blur(getByPlaceholderText("example_policy"));
 
     expect(queryByText("Required")).toBeNull();
   });
@@ -138,9 +138,9 @@ describe("<CreatePolicy /> spec", () => {
     browserServicesMock.policyService.putPolicy = jest.fn().mockResolvedValue({ ok: true, response: { _id: "some_policy_id" } });
     const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
 
-    fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
-    userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
-    fireEvent.blur(getByPlaceholderText("hot_cold_workflow"));
+    fireEvent.focus(getByPlaceholderText("example_policy"));
+    userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
+    fireEvent.blur(getByPlaceholderText("example_policy"));
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 
@@ -152,9 +152,9 @@ describe("<CreatePolicy /> spec", () => {
     browserServicesMock.policyService.putPolicy = jest.fn().mockResolvedValue({ ok: false, error: "bad policy" });
     const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
 
-    fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
-    userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
-    fireEvent.blur(getByPlaceholderText("hot_cold_workflow"));
+    fireEvent.focus(getByPlaceholderText("example_policy"));
+    userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
+    fireEvent.blur(getByPlaceholderText("example_policy"));
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 
@@ -165,9 +165,9 @@ describe("<CreatePolicy /> spec", () => {
     browserServicesMock.policyService.putPolicy = jest.fn().mockRejectedValue(new Error("this is an error"));
     const { getByText, getByTestId, getByPlaceholderText } = renderCreatePolicyWithRouter();
 
-    fireEvent.focus(getByPlaceholderText("hot_cold_workflow"));
-    userEvent.type(getByPlaceholderText("hot_cold_workflow"), `some_policy_id`);
-    fireEvent.blur(getByPlaceholderText("hot_cold_workflow"));
+    fireEvent.focus(getByPlaceholderText("example_policy"));
+    userEvent.type(getByPlaceholderText("example_policy"), `some_policy_id`);
+    fireEvent.blur(getByPlaceholderText("example_policy"));
 
     userEvent.click(getByTestId("createPolicyCreateButton"));
 

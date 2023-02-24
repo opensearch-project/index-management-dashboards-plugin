@@ -61,6 +61,10 @@ export const ROUTES = Object.freeze({
   CREATE_TEMPLATE: "/create-template",
   SPLIT_INDEX: "/split-index",
   SHRINK_INDEX: "/shrink-index",
+  ROLLOVER: "/rollover",
+  DATA_STREAMS: "/data-streams",
+  CREATE_DATA_STREAM: "/create-data-stream",
+  FORCE_MERGE: "/force-merge",
   COMPOSABLE_TEMPLATES: "/composable-templates",
   CREATE_COMPOSABLE_TEMPLATE: "/create-composable-template",
 });
@@ -68,8 +72,8 @@ export const ROUTES = Object.freeze({
 export const BREADCRUMBS = Object.freeze({
   INDEX_MANAGEMENT: { text: "Index Management", href: "#/" },
   INDICES: { text: "Indices", href: `#${ROUTES.INDICES}` },
-  INDEX_POLICIES: { text: "Index policies", href: `#${ROUTES.INDEX_POLICIES}` },
-  MANAGED_INDICES: { text: "Managed indices", href: `#${ROUTES.MANAGED_INDICES}` },
+  INDEX_POLICIES: { text: "State management policies", href: `#${ROUTES.INDEX_POLICIES}` },
+  MANAGED_INDICES: { text: "Policy managed indices", href: `#${ROUTES.MANAGED_INDICES}` },
   EDIT_POLICY: { text: "Edit policy" },
   CREATE_POLICY: { text: "Create policy" },
   CHANGE_POLICY: { text: "Change policy" },
@@ -108,6 +112,10 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_TEMPLATE: { text: "Edit template", href: `#${ROUTES.CREATE_TEMPLATE}` },
   SPLIT_INDEX: { text: "Split Index", href: `#${ROUTES.SPLIT_INDEX}` },
   SHRINK_INDEX: { text: "Shrink index", href: `#${ROUTES.SHRINK_INDEX}` },
+  ROLLOVER: { text: "Rollover", href: `#${ROUTES.ROLLOVER}` },
+  DATA_STREAMS: { text: "Data streams", href: `#${ROUTES.DATA_STREAMS}` },
+  CREATE_DATA_STREAM: { text: "Create data stream", href: `#${ROUTES.CREATE_DATA_STREAM}` },
+  FORCE_MERGE: { text: "Force merge", href: `#${ROUTES.FORCE_MERGE}` },
   COMPOSABLE_TEMPLATES: { text: "Composable templates", href: `#${ROUTES.COMPOSABLE_TEMPLATES}` },
   CREATE_COMPOSABLE_TEMPLATE: { text: "Create composable template", href: `#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}` },
 });

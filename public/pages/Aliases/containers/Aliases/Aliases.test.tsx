@@ -190,10 +190,10 @@ describe("<Aliases /> spec", () => {
       });
     });
 
-    userEvent.click(getByTestId("Create AliasButton"));
+    userEvent.click(getByTestId("Create aliasButton"));
     await findByTestId("createAliasButton");
     userEvent.click(getByTestId("cancelCreateAliasButton"));
-    userEvent.click(getByTestId("Create AliasButton"));
+    userEvent.click(getByTestId("Create aliasButton"));
     await findByTestId("createAliasButton");
     userEvent.click(getByTestId("createAliasButton"));
     await waitFor(() => {

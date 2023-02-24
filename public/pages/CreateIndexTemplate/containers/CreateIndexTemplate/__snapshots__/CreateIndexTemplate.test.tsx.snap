@@ -87,6 +87,12 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
             class="euiTitle euiTitle--small"
           >
             Template details
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
           </h3>
         </div>
       </div>
@@ -100,7 +106,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           class="euiSpacer euiSpacer--s"
         />
         <div
-          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
         >
           <div
             class="euiFlexItem"
@@ -232,7 +238,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           class="euiSpacer euiSpacer--s"
         />
         <div
-          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
         >
           <div
             class="euiFlexItem"
@@ -273,6 +279,12 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
             class="euiTitle euiTitle--small"
           >
             Index settings
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
           </h3>
         </div>
       </div>
@@ -286,7 +298,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           class="euiSpacer euiSpacer--s"
         />
         <div
-          class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+          class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
         >
           <div
             class="euiFlexItem"

@@ -65,6 +65,12 @@ Object {
                         class="euiTitle euiTitle--small"
                       >
                         Define index
+                        <span
+                          class="panel-header-count"
+                        >
+                           
+                           
+                        </span>
                       </h3>
                     </div>
                   </div>
@@ -238,6 +244,12 @@ Object {
                         class="euiTitle euiTitle--small"
                       >
                         Index settings
+                        <span
+                          class="panel-header-count"
+                        >
+                           
+                           
+                        </span>
                       </h3>
                     </div>
                   </div>

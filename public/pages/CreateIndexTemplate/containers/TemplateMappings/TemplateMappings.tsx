@@ -1,10 +1,14 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
 import React, { useContext, useRef } from "react";
 import { EuiFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { SubDetailProps } from "../../interface";
-import IndexMapping, { IIndexMappingsRef } from "../../../CreateIndex/components/IndexMapping";
+import IndexMapping, { IIndexMappingsRef } from "../../../../components/IndexMapping";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 
 export default function TemplateMappings(props: SubDetailProps) {
   const { readonly, field, isEdit } = props;
