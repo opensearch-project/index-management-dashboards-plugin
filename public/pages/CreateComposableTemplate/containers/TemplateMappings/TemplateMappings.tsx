@@ -2,7 +2,7 @@ import React, { useContext, useRef } from "react";
 import { EuiFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { SubDetailProps } from "../../interface";
-import IndexMapping, { IIndexMappingsRef } from "../../../CreateIndex/components/IndexMapping";
+import IndexMapping, { IIndexMappingsRef } from "../../../../components/IndexMapping";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
 

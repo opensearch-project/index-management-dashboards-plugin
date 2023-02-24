@@ -7,6 +7,7 @@
 
 import { long } from "@opensearch-project/opensearch/api/types";
 import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
+import { IndicesUpdateMode } from "../public/utils/constants";
 
 export interface ManagedIndexMetaData {
   index: string;
@@ -78,6 +79,11 @@ interface ITemplateExtras {
 
 export interface TemplateItem extends ITemplateExtras {
   template: Pick<IndexItem, "aliases" | "mappings" | "settings">;
+  includes?: {
+    [IndicesUpdateMode.alias]?: boolean;
+    [IndicesUpdateMode.mappings]?: boolean;
+    [IndicesUpdateMode.settings]?: boolean;
+  };
 }
 export interface TemplateItemRemote extends ITemplateExtras {
   template: Pick<IndexItemRemote, "aliases" | "mappings" | "settings">;

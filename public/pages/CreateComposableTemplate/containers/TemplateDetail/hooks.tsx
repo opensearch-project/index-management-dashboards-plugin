@@ -1,11 +1,11 @@
 import { get, set } from "lodash";
 import { flatten } from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
-import { transformArrayToObject, transformObjectToArray } from "../../../CreateIndex/components/IndexMapping";
+import { transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping";
 import { CommonService } from "../../../../services";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 
-export const submitTemplate = async (props: { value: TemplateItem; isEdit: boolean; commonService: CommonService }) => {
+export const submitTemplate = async (props: { value: Partial<TemplateItem>; isEdit: boolean; commonService: CommonService }) => {
   const { name, ...others } = props.value;
   const bodyPayload = JSON.parse(JSON.stringify(others));
   set(bodyPayload, "template.mappings.properties", transformArrayToObject(props.value.template?.mappings?.properties || []));

@@ -5,7 +5,7 @@
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
-import { transformArrayToObject } from "../../../CreateIndex/components/IndexMapping";
+import { transformArrayToObject } from "../../../../components/IndexMapping";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -63,9 +63,24 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     if (errors) {
       return;
     }
+    const { includes, template, ...others } = templateDetail as TemplateItem;
+    const payload: Partial<TemplateItem> = {
+      ...others,
+    };
+    const templatePayload: TemplateItem["template"] = {};
+    if (includes?.aliases) {
+      templatePayload.aliases = template.aliases;
+    }
+    if (includes?.mappings) {
+      templatePayload.mappings = template.mappings;
+    }
+    if (includes?.settings) {
+      templatePayload.settings = template.settings;
+    }
+    payload.template = templatePayload;
     setIsSubmitting(true);
     const result = await submitTemplate({
-      value: templateDetail,
+      value: payload,
       commonService: services.commonService,
       isEdit,
     });
@@ -179,14 +194,26 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiSpacer />
       <DefineTemplate {...subCompontentProps} />
       <EuiSpacer />
-      <IndexAlias {...subCompontentProps} />
-      <EuiSpacer />
-      <IndexSettings {...subCompontentProps} />
-      <EuiSpacer />
-      <TemplateMappings {...subCompontentProps} />
+      {values.includes?.aliases ? (
+        <>
+          <IndexAlias {...subCompontentProps} />
+          <EuiSpacer />
+        </>
+      ) : null}
+      {values.includes?.settings ? (
+        <>
+          <IndexSettings {...subCompontentProps} />
+          <EuiSpacer />
+        </>
+      ) : null}
+      {values.includes?.mappings ? (
+        <>
+          <TemplateMappings {...subCompontentProps} />
+          <EuiSpacer />
+        </>
+      ) : null}
       {readonly ? null : (
         <>
-          <EuiSpacer />
           <EuiSpacer />
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
@@ -196,7 +223,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
-                {isEdit ? "Save changes" : "Create composable template"}
+                {isEdit ? "Save changes" : "Create template"}
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>

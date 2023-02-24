@@ -119,6 +119,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         method: "GET",
         path: `_component_template/*${search}*`,
       },
+      hideLog: true,
     });
 
     let listResponse: IComposableTemplate[] = [];
@@ -220,7 +221,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                 ),
               },
               {
-                text: "Create composable template",
+                text: "Create template",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
@@ -235,7 +236,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         title={
           <>
             <EuiTitle>
-              <span>Composable templates</span>
+              <span>Template components</span>
             </EuiTitle>
             <EuiFormRow
               fullWidth
@@ -295,7 +296,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               <EuiEmptyPrompt
                 body={
                   <EuiText>
-                    <p>You have no composable templates.</p>
+                    <p>You have no templates.</p>
                   </EuiText>
                 }
                 actions={[
@@ -305,7 +306,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                       this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                     }}
                   >
-                    Create composable template
+                    Create template
                   </EuiButton>,
                 ]}
               />
@@ -313,7 +314,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               <EuiEmptyPrompt
                 body={
                   <EuiText>
-                    <p>There are no composable templates matching your applied filters. Reset your filters to view your templates.</p>
+                    <p>There are no templates matching your applied filters. Reset your filters to view your templates.</p>
                   </EuiText>
                 }
                 actions={[
