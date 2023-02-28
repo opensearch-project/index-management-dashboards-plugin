@@ -15,33 +15,27 @@ export default function TemplateMappings(props: SubDetailProps) {
   const mappingsRef = useRef<IIndexMappingsRef>(null);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   return (
-    <ContentPanel
-      title={
-        <>
-          <EuiTitle size="s">
-            <div>Index mapping</div>
-          </EuiTitle>
-          <EuiFormRow
-            fullWidth
-            helpText={
-              <div>
-                Define how documents and their fields are stored and indexed.{" "}
-                <EuiLink
-                  target="_blank"
-                  external
-                  href={`https://opensearch.org/docs/${coreServices.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
-                >
-                  Learn more.
-                </EuiLink>
-              </div>
-            }
-          >
-            <></>
-          </EuiFormRow>
-        </>
-      }
-      titleSize="s"
-    >
+    <>
+      <EuiTitle size="s">
+        <div>Index mapping</div>
+      </EuiTitle>
+      <EuiFormRow
+        fullWidth
+        helpText={
+          <div>
+            Define how documents and their fields are stored and indexed.{" "}
+            <EuiLink
+              target="_blank"
+              external
+              href={`https://opensearch.org/docs/${coreServices.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
+            >
+              Learn more.
+            </EuiLink>
+          </div>
+        }
+      >
+        <></>
+      </EuiFormRow>
       <EuiSpacer size="s" />
       <EuiFormRow fullWidth>
         <IndexMapping
@@ -68,6 +62,6 @@ export default function TemplateMappings(props: SubDetailProps) {
           docVersion={coreServices.docLinks.DOC_LINK_VERSION}
         />
       </EuiFormRow>
-    </ContentPanel>
+    </>
   );
 }

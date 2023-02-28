@@ -4,7 +4,6 @@
  */
 import React, { useContext } from "react";
 import { EuiSpacer, EuiTitle } from "@elastic/eui";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import AliasSelect from "../../../../components/AliasSelect";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
@@ -19,24 +18,18 @@ export default function IndexAlias(props: SubDetailProps) {
   const values = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
   return (
-    <ContentPanel
-      title={
-        <>
-          <CustomFormRow
-            fullWidth
-            label={
-              <EuiTitle size="s">
-                <div>Index alias</div>
-              </EuiTitle>
-            }
-            helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
-          >
-            <></>
-          </CustomFormRow>
-        </>
-      }
-      titleSize="s"
-    >
+    <>
+      <CustomFormRow
+        label={
+          <EuiTitle size="s">
+            <div>Index alias</div>
+          </EuiTitle>
+        }
+        fullWidth
+        helpText="Allow the new indexes to be referenced by existing aliases or specify a new alias."
+      >
+        <></>
+      </CustomFormRow>
       {readonly ? (
         <>
           <EuiSpacer size="s" />
@@ -78,6 +71,6 @@ export default function IndexAlias(props: SubDetailProps) {
           </CustomFormRow>
         </>
       )}
-    </ContentPanel>
+    </>
   );
 }

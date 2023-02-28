@@ -7,7 +7,6 @@ import {
   EuiBadge,
   EuiButton,
   EuiButtonIcon,
-  EuiCard,
   EuiComboBox,
   EuiDragDropContext,
   EuiDraggable,
@@ -73,6 +72,11 @@ export default function ComposableTemplate(props: SubDetailProps) {
       }),
     [selectedTypes, allComposableTemplates]
   );
+
+  if (readonly) {
+    return null;
+  }
+
   return (
     <ContentPanel
       title={
@@ -100,7 +104,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             }
           }}
         >
-          <EuiDroppable droppableId="composableTemplatesDropArea" spacing="m">
+          <EuiDroppable droppableId="composableTemplatesDropArea" spacing="none">
             {values.composed_of.map((item, index) => {
               const findItem = allComposableTemplates.find((template) => template.name === item);
               if (!findItem) {
@@ -108,7 +112,15 @@ export default function ComposableTemplate(props: SubDetailProps) {
               }
 
               return (
-                <EuiDraggable isDragDisabled={readonly} index={index} customDragHandle draggableId={item} key={item} spacing="m">
+                <EuiDraggable
+                  isDragDisabled={readonly}
+                  index={index}
+                  customDragHandle
+                  draggableId={item}
+                  key={item}
+                  style={{ paddingLeft: 0, paddingRight: 0 }}
+                  spacing="m"
+                >
                   {(provided) => (
                     <EuiPanel paddingSize="m">
                       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -198,7 +210,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
               disabled: (values.composed_of || []).includes(item.name),
             }))}
             onChange={(val) => {
-              setSelectedComposableTemplates(val.filter((item) => item.checked === "on").map((item) => item.label));
+              setSelectedComposableTemplates(val.filter((item) => item.checked === "on" && !item.disabled).map((item) => item.label));
             }}
             searchProps={{
               placeholder: "Search components",

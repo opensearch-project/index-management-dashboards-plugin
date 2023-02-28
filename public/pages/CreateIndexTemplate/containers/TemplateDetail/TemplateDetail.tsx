@@ -39,6 +39,7 @@ import TemplateMappings from "../TemplateMappings";
 import { merge } from "lodash";
 import ComposableTemplate from "../ComposableTemplate";
 import PreviewTemplate from "../PreviewTemplate";
+import { ContentPanel } from "../../../../components/ContentPanel";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -71,13 +72,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     {},
     {
       priority: 0,
-      template: {
-        settings: {
-          "index.number_of_replicas": 1,
-          "index.number_of_shards": 1,
-          "index.refresh_interval": "1s",
-        },
-      },
+      template: {},
     } as Partial<TemplateItem>,
     searchObject.query.values
   );
@@ -213,15 +208,22 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiSpacer />
       <ComposableTemplate {...subCompontentProps} />
       <EuiSpacer />
-      <IndexAlias {...subCompontentProps} />
-      <EuiSpacer />
-      <IndexSettings {...subCompontentProps} />
-      <EuiSpacer />
-      <TemplateMappings {...subCompontentProps} />
+      <ContentPanel
+        title={values.composed_of && values.composed_of.length ? "Additional template definition" : "Template definition"}
+        titleSize="s"
+      >
+        <IndexAlias {...subCompontentProps} />
+        <EuiSpacer />
+        <IndexSettings {...subCompontentProps} />
+        <EuiSpacer />
+        <TemplateMappings {...subCompontentProps} />
+      </ContentPanel>
       {previewFlyoutVisible && simulateResult ? (
         <EuiFlyout onClose={() => setPreviewFlyoutVisible(false)}>
           <EuiFlyoutHeader hasBorder>
-            <h1>Preview template</h1>
+            <EuiTitle size="xs">
+              <h4>Preview template</h4>
+            </EuiTitle>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
             <PreviewTemplate value={simulateResult} history={props.history} />
@@ -245,6 +247,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   const result = await simulateTemplate({
                     template: {
                       ...others,
+                      index_patterns: ["test-*"],
                       priority: 500,
                     },
                     commonService: services.commonService,

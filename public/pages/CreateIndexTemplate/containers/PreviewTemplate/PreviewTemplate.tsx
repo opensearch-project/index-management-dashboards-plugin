@@ -35,13 +35,15 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     isEdit: false,
     readonly: true,
     history,
+    withoutPanel: true,
+    columns: 3 as any,
   };
 
   return (
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <EuiTitle size="l">{<h1>Template configuration</h1>}</EuiTitle>
+          <EuiTitle size="m">{<h2>Template configuration</h2>}</EuiTitle>
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer />

@@ -3,9 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiLink, EuiSpacer } from "@elastic/eui";
+import { EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import flat from "flat";
-import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import AdvancedSettings from "../../../../components/AdvancedSettings";
@@ -15,13 +14,17 @@ import { SubDetailProps } from "../../interface";
 import { getCommonFormRowProps } from "../../hooks";
 
 export default function IndexSettings(props: SubDetailProps) {
-  const { readonly, field } = props;
+  const { readonly, field, columns } = props;
   const values = field.getValues();
   return (
-    <ContentPanel title="Index settings" titleSize="s">
+    <>
+      <EuiTitle size="s">
+        <span>Index settings</span>
+      </EuiTitle>
       <EuiSpacer size="s" />
       {readonly ? (
         <DescriptionListHoz
+          columns={columns}
           listItems={[
             {
               title: "Number of primary shards",
@@ -55,7 +58,7 @@ export default function IndexSettings(props: SubDetailProps) {
                   {
                     validator(rule, value) {
                       if (!value) {
-                        return Promise.reject("Number of primary shards is required.");
+                        return Promise.resolve("");
                       }
                       if (Number(value) !== parseInt(value)) {
                         return Promise.reject("Number of primary shards must be an integer.");
@@ -86,7 +89,7 @@ export default function IndexSettings(props: SubDetailProps) {
                   {
                     validator(rule, value) {
                       if (!value) {
-                        return Promise.reject("Number of replicas is required.");
+                        return Promise.resolve("");
                       }
                       if (Number(value) !== parseInt(value)) {
                         return Promise.reject("Number of replicas must be an integer");
@@ -155,6 +158,6 @@ export default function IndexSettings(props: SubDetailProps) {
           ),
         }}
       />
-    </ContentPanel>
+    </>
   );
 }

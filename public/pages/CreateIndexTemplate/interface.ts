@@ -18,4 +18,6 @@ export interface SubDetailProps {
   field: FieldInstance;
   isEdit: boolean;
   readonly?: boolean;
+  withoutPanel?: boolean;
+  columns?: 3 | 4;
 }

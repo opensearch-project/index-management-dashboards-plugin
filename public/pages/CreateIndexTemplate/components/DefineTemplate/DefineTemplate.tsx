@@ -14,16 +14,18 @@ import { TEMPLATE_NAMING_MESSAGE, TEMPLATE_NAMING_PATTERN } from "../../../../ut
 import TemplateType, { TemplateConvert } from "../TemplateType";
 import { getCommonFormRowProps } from "../../hooks";
 import { filterByMinimatch } from "../../../../../utils/helper";
+import { TemplateItem } from "../../../../../models/interfaces";
 
 export default function DefineTemplate(props: SubDetailProps) {
-  const { readonly, field, isEdit } = props;
-  const values = field.getValues();
+  const { readonly, field, isEdit, withoutPanel, columns } = props;
+  const values: TemplateItem = field.getValues();
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
   const matchSystemIndex = filterByMinimatch(".kibana", values.index_patterns || []);
-  return readonly ? (
-    <ContentPanel title="Template details" titleSize="s">
+  const content = (
+    <>
       <EuiSpacer size="s" />
       <DescriptionListHoz
+        columns={columns}
         listItems={[
           {
             title: "Template name",
@@ -43,9 +45,22 @@ export default function DefineTemplate(props: SubDetailProps) {
             title: "Priority",
             description: values.priority,
           },
+          {
+            title: "Component templates added",
+            description: (values.composed_of || []).join(", "),
+          },
         ]}
       />
-    </ContentPanel>
+    </>
+  );
+  return readonly ? (
+    withoutPanel ? (
+      content
+    ) : (
+      <ContentPanel title="Template details" titleSize="s">
+        {content}
+      </ContentPanel>
+    )
   ) : (
     <ContentPanel title="Define template" titleSize="s">
       <EuiSpacer size="s" />

@@ -8,6 +8,7 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping";
 import { CommonService } from "../../../../services";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
+import { IndexForm } from "../../../../containers/IndexForm";
 
 export const submitTemplate = async (props: { value: TemplateItem; isEdit: boolean; commonService: CommonService }) => {
   const { name, ...others } = props.value;
@@ -59,14 +60,34 @@ export const getTemplate = async (props: { templateName: string; commonService: 
 };
 
 export const simulateTemplate = (props: { template: TemplateItem; commonService: CommonService }) => {
-  return props.commonService.apiCaller<{
-    template: TemplateItem["template"];
-  }>({
-    endpoint: "transport.request",
-    data: {
-      method: "POST",
-      path: `_index_template/_simulate`,
-      body: props.template,
-    },
-  });
+  return props.commonService
+    .apiCaller<{
+      template: TemplateItem["template"];
+    }>({
+      endpoint: "transport.request",
+      data: {
+        method: "POST",
+        path: `_index_template/_simulate`,
+        body: {
+          ...props.template,
+          template: IndexForm.transformIndexDetailToRemote(props.template.template),
+        } as TemplateItemRemote,
+      },
+    })
+    .then((result) => {
+      if (result.ok) {
+        const payload = JSON.parse(JSON.stringify(result.response));
+        set(payload, "template.settings", flatten(get(payload, "template.settings") || {}));
+
+        return {
+          ...result,
+          response: {
+            ...payload,
+            template: IndexForm.transformIndexDetailToLocal(payload.template || {}),
+          },
+        };
+      } else {
+        return result;
+      }
+    });
 };
