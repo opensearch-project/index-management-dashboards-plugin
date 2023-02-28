@@ -106,6 +106,7 @@ const HIDDEN_NAV_STARTS_WITH_ROUTE = [
   ROUTES.ROLLOVER,
   ROUTES.CREATE_DATA_STREAM,
   ROUTES.FORCE_MERGE,
+  ROUTES.CREATE_COMPOSABLE_TEMPLATE,
 ];
 
 interface MainProps extends RouteComponentProps {
@@ -152,12 +153,14 @@ export default class Main extends Component<MainProps, object> {
             id: 7,
             href: `#${ROUTES.TEMPLATES}`,
             isSelected: ROUTES.TEMPLATES === pathname,
-          },
-          {
-            name: Navigation.ComposableTemplates,
-            id: 8,
-            href: `#${ROUTES.COMPOSABLE_TEMPLATES}`,
-            isSelected: ROUTES.COMPOSABLE_TEMPLATES === pathname,
+            items: [
+              {
+                name: Navigation.ComposableTemplates,
+                id: 9,
+                href: `#${ROUTES.COMPOSABLE_TEMPLATES}`,
+                isSelected: ROUTES.COMPOSABLE_TEMPLATES === pathname,
+              },
+            ],
           },
           {
             name: Navigation.Aliases,

@@ -1,6 +1,6 @@
-import { TemplateItemRemote } from "../../../models/interfaces";
+import { IComposableTemplateRemote } from "../../../models/interfaces";
 
-export interface IComposableTemplate {
+export interface ICatComposableTemplate {
   name: string;
-  component_template: TemplateItemRemote;
+  component_template: IComposableTemplateRemote;
 }

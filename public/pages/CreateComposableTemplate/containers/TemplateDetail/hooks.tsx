@@ -3,17 +3,20 @@ import { flatten } from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
 import { transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping";
 import { CommonService } from "../../../../services";
-import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
+import { IComposableTemplateRemote, TemplateItem } from "../../../../../models/interfaces";
+import { IndicesUpdateMode } from "../../../../utils/constants";
 
 export const submitTemplate = async (props: { value: Partial<TemplateItem>; isEdit: boolean; commonService: CommonService }) => {
   const { name, ...others } = props.value;
   const bodyPayload = JSON.parse(JSON.stringify(others));
-  set(bodyPayload, "template.mappings.properties", transformArrayToObject(props.value.template?.mappings?.properties || []));
+  if (others.template?.mappings) {
+    set(bodyPayload, "template.mappings.properties", transformArrayToObject(props.value.template?.mappings?.properties || []));
+  }
   return await props.commonService.apiCaller({
     endpoint: "transport.request",
     data: {
       method: props.isEdit ? "POST" : "PUT",
-      path: `_index_template/${name}`,
+      path: `_component_template/${name}`,
       body: bodyPayload,
     },
   });
@@ -21,29 +24,41 @@ export const submitTemplate = async (props: { value: Partial<TemplateItem>; isEd
 
 export const getTemplate = async (props: { templateName: string; commonService: CommonService; coreService: CoreStart }) => {
   const response = await props.commonService.apiCaller<{
-    index_templates: { name: string; index_template: TemplateItemRemote }[];
+    component_templates: { name: string; component_template: IComposableTemplateRemote }[];
   }>({
     endpoint: "transport.request",
     data: {
       method: "GET",
-      path: `_index_template/${props.templateName}?flat_settings=true`,
+      path: `_component_template/${props.templateName}?flat_settings=true`,
     },
   });
   let error: string = "";
   if (response.ok) {
-    const findItem = response.response?.index_templates?.find((item) => item.name === props.templateName);
+    const findItem = response.response?.component_templates?.find((item) => item.name === props.templateName);
     if (findItem) {
-      const templateDetail = findItem.index_template;
+      const templateDetail = findItem.component_template;
 
       // Opensearch dashboard core does not flattern the settings
       // do it manually.
-      const payload = {
-        ...templateDetail,
-        name: props.templateName,
-      };
+      const payload = JSON.parse(
+        JSON.stringify({
+          ...templateDetail,
+          name: props.templateName,
+        })
+      );
       set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
       set(payload, "template.settings", flatten(get(payload, "template.settings") || {}));
-      return JSON.parse(JSON.stringify(payload));
+      const includes: IComposableTemplateRemote["includes"] = {
+        [IndicesUpdateMode.alias]: !!templateDetail.template[IndicesUpdateMode.alias],
+        [IndicesUpdateMode.settings]: !!templateDetail.template[IndicesUpdateMode.settings],
+        [IndicesUpdateMode.mappings]: !!templateDetail.template[IndicesUpdateMode.mappings],
+      };
+      return JSON.parse(
+        JSON.stringify({
+          ...payload,
+          includes,
+        })
+      );
     }
     error = `The template [${props.templateName}] does not exist.`;
   } else {

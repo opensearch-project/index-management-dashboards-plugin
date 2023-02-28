@@ -25,7 +25,7 @@ import {
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
-import { IComposableTemplate } from "../../interface";
+import { ICatComposableTemplate } from "../../interface";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
@@ -41,10 +41,10 @@ type ComposableTemplatesState = {
   totalComposableTemplates: number;
   from: string;
   size: string;
-  sortField: keyof IComposableTemplate;
+  sortField: keyof ICatComposableTemplate;
   sortDirection: Direction;
-  selectedItems: IComposableTemplate[];
-  composableTemplates: IComposableTemplate[];
+  selectedItems: ICatComposableTemplate[];
+  composableTemplates: ICatComposableTemplate[];
   loading: boolean;
 } & SearchControlsProps["value"];
 
@@ -66,7 +66,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       from: string;
       size: string;
       search: string;
-      sortField: keyof IComposableTemplate;
+      sortField: keyof ICatComposableTemplate;
       sortDirection: Direction;
     };
     this.state = {
@@ -112,7 +112,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
     history.replace({ ...this.props.location, search: queryParamsString });
 
     const allComposableTemplatesResponse = await commonService.apiCaller<{
-      component_templates?: IComposableTemplate[];
+      component_templates?: ICatComposableTemplate[];
     }>({
       endpoint: "transport.request",
       data: {
@@ -122,7 +122,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       hideLog: true,
     });
 
-    let listResponse: IComposableTemplate[] = [];
+    let listResponse: ICatComposableTemplate[] = [];
 
     if (!allComposableTemplatesResponse.ok) {
       listResponse = [];
@@ -163,7 +163,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
     });
   };
 
-  onTableChange = ({ page: tablePage, sort }: Criteria<IComposableTemplate>): void => {
+  onTableChange = ({ page: tablePage, sort }: Criteria<ICatComposableTemplate>): void => {
     const { index: page, size } = tablePage || {};
     const { field: sortField, direction: sortDirection } = sort || {};
     this.setState(
@@ -177,7 +177,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
     );
   };
 
-  onSelectionChange = (selectedItems: IComposableTemplate[]): void => {
+  onSelectionChange = (selectedItems: ICatComposableTemplate[]): void => {
     this.setState({ selectedItems });
   };
 
@@ -195,14 +195,14 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       totalItemCount: Number(totalComposableTemplates),
     };
 
-    const sorting: EuiTableSortingType<IComposableTemplate> = {
+    const sorting: EuiTableSortingType<ICatComposableTemplate> = {
       sort: {
         direction: sortDirection,
         field: sortField,
       },
     };
 
-    const selection: EuiTableSelectionType<IComposableTemplate> = {
+    const selection: EuiTableSelectionType<ICatComposableTemplate> = {
       onSelectionChange: this.onSelectionChange,
     };
     return (
@@ -268,14 +268,22 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
           columns={[
             {
               field: "name",
-              name: "composable template name",
+              name: "Template name",
               sortable: true,
               render: (value: string) => {
                 return (
-                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
+                  <Link to={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${value}/readonly`}>
                     <EuiLink>{value}</EuiLink>
                   </Link>
                 );
+              },
+            },
+            {
+              field: "description",
+              name: "Descriptions",
+              sortable: true,
+              render: (value: string, record: ICatComposableTemplate) => {
+                return record.component_template._meta?.description || "-";
               },
             },
           ]}

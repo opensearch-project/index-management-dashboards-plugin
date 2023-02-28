@@ -6,7 +6,7 @@
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { transformArrayToObject } from "../../../../components/IndexMapping";
-import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
+import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
@@ -39,23 +39,11 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [visible, setVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const oldValue = useRef<TemplateItem | undefined>(undefined);
+  const oldValue = useRef<IComposableTemplateRemote | undefined>(undefined);
   const field = useField({
     values: {
-      priority: 0,
-      template: {
-        settings: {
-          "index.number_of_replicas": 1,
-          "index.number_of_shards": 1,
-          "index.refresh_interval": "1s",
-        },
-      },
-    } as Partial<TemplateItem>,
-    onChange(name, value) {
-      if (name === "data_stream" && value === undefined) {
-        field.deleteValue(name);
-      }
-    },
+      template: {},
+    } as Partial<IComposableTemplate>,
   });
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
@@ -63,11 +51,11 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     if (errors) {
       return;
     }
-    const { includes, template, ...others } = templateDetail as TemplateItem;
-    const payload: Partial<TemplateItem> = {
+    const { includes, template, ...others } = templateDetail as IComposableTemplate;
+    const payload: Partial<IComposableTemplate> = {
       ...others,
     };
-    const templatePayload: TemplateItem["template"] = {};
+    const templatePayload: IComposableTemplate["template"] = {};
     if (includes?.aliases) {
       templatePayload.aliases = template.aliases;
     }
@@ -109,14 +97,14 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         })
         .catch(() => {
           // do nothing
-          props.history.replace(ROUTES.TEMPLATES);
+          props.history.replace(ROUTES.COMPOSABLE_TEMPLATES);
         });
     }
     return () => {
       destroyRef.current = true;
     };
   }, []);
-  const values: TemplateItem = field.getValues();
+  const values: IComposableTemplate & { name: string } = field.getValues();
   const subCompontentProps = {
     ...props,
     isEdit,
@@ -152,7 +140,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             <EuiButton
               style={{ marginRight: 20 }}
               onClick={() => {
-                const showValue: TemplateItemRemote = {
+                const showValue: IComposableTemplateRemote = {
                   ...values,
                   template: {
                     ...values.template,
@@ -171,7 +159,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             >
               View JSON
             </EuiButton>
-            <EuiButton style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_TEMPLATE}/${values.name}`)}>
+            <EuiButton style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${values.name}`)}>
               Edit
             </EuiButton>
             <EuiButton color="danger" style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
