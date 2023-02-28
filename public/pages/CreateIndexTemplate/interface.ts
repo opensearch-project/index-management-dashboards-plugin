@@ -13,7 +13,9 @@ export interface TemplateDetailProps {
   history: RouteComponentProps["history"];
 }
 
-export interface SubDetailProps extends TemplateDetailProps {
+export interface SubDetailProps {
+  history: RouteComponentProps["history"];
   field: FieldInstance;
   isEdit: boolean;
+  readonly?: boolean;
 }

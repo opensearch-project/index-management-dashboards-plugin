@@ -57,3 +57,16 @@ export const getTemplate = async (props: { templateName: string; commonService: 
   props.coreService.notifications.toasts.addDanger(error);
   throw new Error(error);
 };
+
+export const simulateTemplate = (props: { template: TemplateItem; commonService: CommonService }) => {
+  return props.commonService.apiCaller<{
+    template: TemplateItem["template"];
+  }>({
+    endpoint: "transport.request",
+    data: {
+      method: "POST",
+      path: `_index_template/_simulate`,
+      body: props.template,
+    },
+  });
+};

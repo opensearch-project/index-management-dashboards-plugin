@@ -4,7 +4,19 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiButtonEmpty,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFlyout,
+  EuiFlyoutBody,
+  EuiFlyoutFooter,
+  EuiFlyoutHeader,
+  EuiLink,
+  EuiSpacer,
+  EuiTitle,
+} from "@elastic/eui";
 import queryString from "query-string";
 import { transformArrayToObject } from "../../../../components/IndexMapping";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
@@ -14,7 +26,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
-import { submitTemplate, getTemplate } from "./hooks";
+import { submitTemplate, getTemplate, simulateTemplate } from "./hooks";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
@@ -25,6 +37,8 @@ import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
 import { merge } from "lodash";
+import ComposableTemplate from "../ComposableTemplate";
+import PreviewTemplate from "../PreviewTemplate";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -41,6 +55,8 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [visible, setVisible] = useState(false);
+  const [simulateResult, setSimulateResult] = useState<TemplateItem | null>(null);
+  const [previewFlyoutVisible, setPreviewFlyoutVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const oldValue = useRef<TemplateItem | undefined>(undefined);
   const searchObject = queryString.parseUrl(props.location.search);
@@ -195,11 +211,23 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiSpacer />
       <DefineTemplate {...subCompontentProps} />
       <EuiSpacer />
+      <ComposableTemplate {...subCompontentProps} />
+      <EuiSpacer />
       <IndexAlias {...subCompontentProps} />
       <EuiSpacer />
       <IndexSettings {...subCompontentProps} />
       <EuiSpacer />
       <TemplateMappings {...subCompontentProps} />
+      {previewFlyoutVisible && simulateResult ? (
+        <EuiFlyout onClose={() => setPreviewFlyoutVisible(false)}>
+          <EuiFlyoutHeader hasBorder>
+            <h1>Preview template</h1>
+          </EuiFlyoutHeader>
+          <EuiFlyoutBody>
+            <PreviewTemplate value={simulateResult} history={props.history} />
+          </EuiFlyoutBody>
+        </EuiFlyout>
+      ) : null}
       {readonly ? null : (
         <>
           <EuiSpacer />
@@ -209,6 +237,33 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
               <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateIndexTemplateCancelButton">
                 Cancel
               </EuiButtonEmpty>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButton
+                onClick={async () => {
+                  const { name, ...others } = field.getValues();
+                  const result = await simulateTemplate({
+                    template: {
+                      ...others,
+                      priority: 500,
+                    },
+                    commonService: services.commonService,
+                  });
+                  if (result.ok) {
+                    setSimulateResult({
+                      name,
+                      ...others,
+                      template: result.response.template,
+                    });
+                    setPreviewFlyoutVisible(true);
+                  } else {
+                    coreServices.notifications.toasts.addDanger(result.error);
+                  }
+                }}
+                data-test-subj="CreateIndexTemplatePreviewButton"
+              >
+                Preview template
+              </EuiButton>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateIndexTemplateCreateButton">
