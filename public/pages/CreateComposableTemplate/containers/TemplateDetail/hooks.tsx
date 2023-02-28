@@ -1,23 +1,22 @@
 import { get, set } from "lodash";
 import { flatten } from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
-import { transformArrayToObject, transformObjectToArray } from "../../../../components/IndexMapping";
 import { CommonService } from "../../../../services";
-import { IComposableTemplateRemote, TemplateItem } from "../../../../../models/interfaces";
+import { IComposableTemplate, IComposableTemplateRemote, TemplateItem } from "../../../../../models/interfaces";
 import { IndicesUpdateMode } from "../../../../utils/constants";
+import { IndexForm } from "../../../../containers/IndexForm";
 
 export const submitTemplate = async (props: { value: Partial<TemplateItem>; isEdit: boolean; commonService: CommonService }) => {
-  const { name, ...others } = props.value;
-  const bodyPayload = JSON.parse(JSON.stringify(others));
-  if (others.template?.mappings) {
-    set(bodyPayload, "template.mappings.properties", transformArrayToObject(props.value.template?.mappings?.properties || []));
-  }
+  const { name, template, ...others } = props.value;
   return await props.commonService.apiCaller({
     endpoint: "transport.request",
     data: {
       method: props.isEdit ? "POST" : "PUT",
       path: `_component_template/${name}`,
-      body: bodyPayload,
+      body: {
+        ...others,
+        template: IndexForm.transformIndexDetailToRemote(template),
+      },
     },
   });
 };
@@ -44,10 +43,12 @@ export const getTemplate = async (props: { templateName: string; commonService: 
         JSON.stringify({
           ...templateDetail,
           name: props.templateName,
-        })
+          template: IndexForm.transformIndexDetailToLocal(templateDetail.template),
+        } as IComposableTemplate)
       );
-      set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
-      set(payload, "template.settings", flatten(get(payload, "template.settings") || {}));
+      if (templateDetail.template.settings) {
+        set(payload, "template.settings", flatten(get(payload, "template.settings") || {}));
+      }
       const includes: IComposableTemplateRemote["includes"] = {
         [IndicesUpdateMode.alias]: !!templateDetail.template[IndicesUpdateMode.alias],
         [IndicesUpdateMode.settings]: !!templateDetail.template[IndicesUpdateMode.settings],

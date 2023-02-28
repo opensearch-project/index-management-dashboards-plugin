@@ -1,21 +1,18 @@
 import React from "react";
-import { EuiCallOut, EuiSpacer } from "@elastic/eui";
+import { EuiSpacer } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
-import RemoteSelect from "../../../../components/RemoteSelect";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { IndicesUpdateMode, TEMPLATE_NAMING_MESSAGE, TEMPLATE_NAMING_PATTERN } from "../../../../utils/constants";
-import TemplateType, { TemplateConvert } from "../TemplateType";
 import { getCommonFormRowProps } from "../../hooks";
-import { filterByMinimatch } from "../../../../../utils/helper";
+import { IComposableTemplate } from "../../../../../models/interfaces";
 
 export default function DefineTemplate(props: SubDetailProps) {
   const { readonly, field, isEdit } = props;
-  const values = field.getValues();
+  const values: IComposableTemplate & { name: string } = field.getValues();
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
-  const matchSystemIndex = filterByMinimatch(".kibana", values.index_patterns || []);
   return readonly ? (
     <ContentPanel title="Template details" titleSize="s">
       <EuiSpacer size="s" />
@@ -26,18 +23,8 @@ export default function DefineTemplate(props: SubDetailProps) {
             description: values.name,
           },
           {
-            title: "Template type",
-            description: TemplateConvert({
-              value: values.data_stream,
-            }),
-          },
-          {
-            title: "Index patterns",
-            description: values.index_patterns?.join(","),
-          },
-          {
-            title: "Priority",
-            description: values.priority,
+            title: "Descriptions",
+            description: values._meta?.description || "-",
           },
         ]}
       />
@@ -70,7 +57,7 @@ export default function DefineTemplate(props: SubDetailProps) {
       </CustomFormRow>
       <EuiSpacer />
       <CustomFormRow {...getCommonFormRowProps(["_meta", "description"], field)} label="Descriptions" position="bottom">
-        <Component
+        <AllBuiltInComponents.Input
           {...field.registerField({
             name: ["_meta", "description"],
           })}

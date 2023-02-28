@@ -3,12 +3,28 @@ import { EuiLink, EuiSpacer } from "@elastic/eui";
 import flat from "flat";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
-import { AllBuiltInComponents } from "../../../../components/FormGenerator";
+import { AllBuiltInComponents, IFieldComponentProps } from "../../../../components/FormGenerator";
 import AdvancedSettings from "../../../../components/AdvancedSettings";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
 import { INDEX_SETTINGS_URL } from "../../../../utils/constants";
 import { SubDetailProps } from "../../interface";
 import { getCommonFormRowProps } from "../../hooks";
+
+const WrappedNumber = ({ onChange, ...others }: IFieldComponentProps) => {
+  return (
+    <AllBuiltInComponents.Number
+      {...others}
+      onChange={(val) => {
+        if (val === "") {
+          onChange(undefined);
+          return;
+        }
+
+        onChange(val);
+      }}
+    />
+  );
+};
 
 export default function IndexSettings(props: SubDetailProps) {
   const { readonly, field } = props;
@@ -40,7 +56,7 @@ export default function IndexSettings(props: SubDetailProps) {
             helpText="Specify the number of primary shards in the index. Default is 1."
             {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"], field)}
           >
-            <AllBuiltInComponents.Number
+            <WrappedNumber
               {...field.registerField({
                 name: ["template", "settings", "index.number_of_shards"],
                 rules: [
@@ -51,7 +67,7 @@ export default function IndexSettings(props: SubDetailProps) {
                   {
                     validator(rule, value) {
                       if (!value) {
-                        return Promise.reject("Number of primary shards is required.");
+                        return Promise.resolve("");
                       }
                       if (Number(value) !== parseInt(value)) {
                         return Promise.reject("Number of primary shards must be an integer.");
@@ -71,7 +87,7 @@ export default function IndexSettings(props: SubDetailProps) {
             helpText="Specify the number of replicas each primary shard should have. Default is 1."
             {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"], field)}
           >
-            <AllBuiltInComponents.Number
+            <WrappedNumber
               {...field.registerField({
                 name: ["template", "settings", "index.number_of_replicas"],
                 rules: [
@@ -82,7 +98,7 @@ export default function IndexSettings(props: SubDetailProps) {
                   {
                     validator(rule, value) {
                       if (!value) {
-                        return Promise.reject("Number of replicas is required.");
+                        return Promise.resolve("");
                       }
                       if (Number(value) !== parseInt(value)) {
                         return Promise.reject("Number of replicas must be an integer");

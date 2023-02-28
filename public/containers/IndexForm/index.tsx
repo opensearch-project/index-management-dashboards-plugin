@@ -57,13 +57,17 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
    * @param payload index detail with the mappings.properties is a map
    */
   static transformIndexDetailToLocal(payload?: Partial<IndexItemRemote>): Partial<IndexItem> {
-    const newPayload = { ...payload };
-    set(newPayload, "mappings.properties", transformObjectToArray(get(newPayload, "mappings.properties", {})));
+    const newPayload = JSON.parse(JSON.stringify({ ...payload }));
+    if (newPayload.mappings && newPayload.mappings.properties) {
+      set(newPayload, "mappings.properties", transformObjectToArray(get(newPayload, "mappings.properties", {})));
+    }
     return newPayload as IndexItem;
   }
   static transformIndexDetailToRemote(payload?: Partial<IndexItem>): Partial<IndexItemRemote> {
-    const newPayload = { ...payload };
-    set(newPayload, "mappings.properties", transformArrayToObject(get(newPayload, "mappings.properties", [])));
+    const newPayload = JSON.parse(JSON.stringify({ ...payload }));
+    if (newPayload.mappings && newPayload.mappings.properties) {
+      set(newPayload, "mappings.properties", transformArrayToObject(get(newPayload, "mappings.properties", [])));
+    }
     return newPayload as IndexItemRemote;
   }
 

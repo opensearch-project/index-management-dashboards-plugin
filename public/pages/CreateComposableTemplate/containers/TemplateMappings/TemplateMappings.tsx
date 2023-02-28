@@ -46,6 +46,9 @@ export default function TemplateMappings(props: SubDetailProps) {
             rules: [
               {
                 validator() {
+                  if (!mappingsRef.current) {
+                    return Promise.resolve("");
+                  }
                   return (mappingsRef.current as IIndexMappingsRef).validate()?.then((result) => {
                     if (result) {
                       return Promise.reject(result);

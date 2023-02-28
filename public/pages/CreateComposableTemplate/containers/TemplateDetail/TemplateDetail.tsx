@@ -5,7 +5,6 @@
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
-import { transformArrayToObject } from "../../../../components/IndexMapping";
 import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -23,6 +22,7 @@ import DefineTemplate from "../../components/DefineTemplate";
 import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
+import { IndexForm } from "../../../../containers/IndexForm";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -140,20 +140,17 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             <EuiButton
               style={{ marginRight: 20 }}
               onClick={() => {
-                const showValue: IComposableTemplateRemote = {
-                  ...values,
-                  template: {
-                    ...values.template,
-                    mappings: {
-                      ...values.template.mappings,
-                      properties: transformArrayToObject(values.template.mappings?.properties || []),
-                    },
-                  },
-                };
+                const showValue: IComposableTemplateRemote = JSON.parse(
+                  JSON.stringify({
+                    ...values,
+                    template: IndexForm.transformIndexDetailToRemote(values.template),
+                  } as IComposableTemplateRemote)
+                );
+                const { includes, ...others } = showValue;
                 Modal.show({
                   "data-test-subj": "templateJSONDetailModal",
                   title: values.name,
-                  content: <JSONEditor value={JSON.stringify(showValue, null, 2)} disabled />,
+                  content: <JSONEditor value={JSON.stringify(others, null, 2)} disabled />,
                 });
               }}
             >
