@@ -373,9 +373,8 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
               </EuiFlexItem>
               <EuiFlexItem>
                 <EuiFormHelpText>
-                  The sequence of fields may influence rollup performance.
-                  <EuiLink external={true} href="https://docs-beta.opensearch.org/docs/im/index-rollups/">
-                    {" "}
+                  The sequence of fields may influence rollup performance.{" "}
+                  <EuiLink external={true} href="https://opensearch.org/docs/latest/im-plugin/index-rollups/index/" target="_blank">
                     Learn more
                   </EuiLink>
                 </EuiFormHelpText>
