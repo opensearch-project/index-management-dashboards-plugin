@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { PLUGIN_NAME } from "../../support/constants";
+import { PLUGIN_NAME } from "../../../support/constants";
 
 const SAMPLE_INDEX_PREFIX = "index-for-alias-test";
 const SAMPLE_ALIAS_PREFIX = "alias-for-test";
