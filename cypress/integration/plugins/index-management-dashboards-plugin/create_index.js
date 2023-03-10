@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { PLUGIN_NAME } from "../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 
 const SAMPLE_INDEX = "index-specific-index";
 
@@ -51,7 +51,7 @@ describe("Create Index", () => {
   describe("can be created and updated", () => {
     beforeEach(() => {
       // Visit ISM OSD
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/indices`);
       cy.contains("Rows per page", { timeout: 60000 });
     });
 
@@ -106,13 +106,15 @@ describe("Create Index", () => {
       cy.get('[data-test-subj="mapping-visual-editor-1-field-name"]').type("text_mappings");
 
       // click create
-      cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
+      cy.get('[data-test-subj="createIndexCreateButton"]').click({
+        force: true,
+      });
 
       // The index should exist
       cy.get(`#_selection_column_${SAMPLE_INDEX}-checkbox`).should("have.exist");
 
       // check the index detail
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/create-index/${SAMPLE_INDEX}`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/create-index/${SAMPLE_INDEX}`);
 
       // index name and alias should exist
       cy.get(`[title="${SAMPLE_INDEX}"]`)
@@ -171,14 +173,19 @@ describe("Create Index", () => {
         })
         .blur();
 
-      cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
+      cy.get('[data-test-subj="createIndexCreateButton"]').click({
+        force: true,
+      });
 
       cy.contains(`Can't update non dynamic settings`).should("exist");
 
       cy.get(".ace_text-input")
         .focus()
         .clear({ force: true })
-        .type('{ "index.blocks.write": true, "index.number_of_shards": "3" }', { parseSpecialCharSequences: false, force: true })
+        .type('{ "index.blocks.write": true, "index.number_of_shards": "3" }', {
+          parseSpecialCharSequences: false,
+          force: true,
+        })
         .end()
         .wait(1000)
         .get('[placeholder="Specify number of replicas."]')
@@ -186,7 +193,9 @@ describe("Create Index", () => {
         .type(2)
         .end();
 
-      cy.get('[data-test-subj="createIndexCreateButton"]').click({ force: true });
+      cy.get('[data-test-subj="createIndexCreateButton"]').click({
+        force: true,
+      });
 
       cy.wait(1000).get('[data-test-subj="form-name-index.number_of_replicas"] input').should("have.value", "2");
     });
@@ -211,7 +220,10 @@ describe("Create Index", () => {
         .get(".ace_text-input")
         .focus()
         .clear({ force: true })
-        .type('{ "dynamic": true }', { parseSpecialCharSequences: false, force: true })
+        .type('{ "dynamic": true }', {
+          parseSpecialCharSequences: false,
+          force: true,
+        })
         .blur()
         .end()
         .wait(1000)

@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { PLUGIN_NAME } from "../support/constants";
-import samplePolicy from "../fixtures/sample_policy";
+import { BASE_PATH, IM_PLUGIN_NAME } from "../../../utils/constants";
+import samplePolicy from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_policy";
 
 const POLICY_ID = "test_policy_id";
 
@@ -14,7 +14,7 @@ describe("Policies", () => {
     localStorage.setItem("home:welcome:show", "false");
 
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Create policy", { timeout: 60000 });
@@ -23,6 +23,7 @@ describe("Policies", () => {
   describe("can be created", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
     });
 
     it("successfully", () => {
@@ -39,18 +40,20 @@ describe("Policies", () => {
       cy.contains("Continue").click({ force: true });
 
       // Wait for input to load and then type in the policy ID
-      cy.get(`input[placeholder="example_policy"]`).type(POLICY_ID, { force: true });
+      cy.get(`input[placeholder="hot_cold_workflow"]`).type(POLICY_ID, {
+        force: true,
+      });
 
       // Wait for default policy JSON to load
       cy.contains("A simple default policy");
 
       // Focus JSON input area, clear old policy and type in new policy
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.get(".ace_text-input")
-        .first()
-        .focus()
-        .clear()
-        .type(JSON.stringify(samplePolicy), { parseSpecialCharSequences: false, delay: 5, timeout: 20000 });
+      cy.get(".ace_text-input").first().focus().clear().type(JSON.stringify(samplePolicy), {
+        parseSpecialCharSequences: false,
+        delay: 5,
+        timeout: 20000,
+      });
 
       // Click the create button
       cy.get("button").contains("Create").click({ force: true });
@@ -66,12 +69,15 @@ describe("Policies", () => {
   describe("can be edited", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createPolicy(POLICY_ID, samplePolicy);
     });
 
     it("successfully", () => {
       // Make changes to policy JSON for editing confirmation
-      const newPolicy = { policy: { ...samplePolicy.policy, description: "A new description" } };
+      const newPolicy = {
+        policy: { ...samplePolicy.policy, description: "A new description" },
+      };
 
       // Confirm we have our initial policy
       cy.contains("A simple description");
@@ -93,14 +99,16 @@ describe("Policies", () => {
 
       // Focus JSON input area, clear old policy and type in new policy
       // eslint-disable-next-line cypress/no-unnecessary-waiting
-      cy.get(".ace_text-input")
-        .first()
-        .focus()
-        .clear()
-        .type(JSON.stringify(newPolicy), { parseSpecialCharSequences: false, delay: 5, timeout: 20000 });
+      cy.get(".ace_text-input").first().focus().clear().type(JSON.stringify(newPolicy), {
+        parseSpecialCharSequences: false,
+        delay: 5,
+        timeout: 20000,
+      });
 
       // Click Update button
-      cy.get(`[data-test-subj="createPolicyCreateButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="createPolicyCreateButton"]`).click({
+        force: true,
+      });
 
       // Confirm we get toaster saying updated
       cy.contains(`Updated policy: ${POLICY_ID}`);
@@ -113,6 +121,7 @@ describe("Policies", () => {
   describe("can be deleted", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createPolicy(POLICY_ID, samplePolicy);
     });
 
@@ -140,6 +149,7 @@ describe("Policies", () => {
   describe("can be searched", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       // Create 20+ policies that can be easily sorted alphabetically using letters a-z
       for (let i = 97; i < 123; i++) {
         const char = String.fromCharCode(i);
@@ -171,17 +181,20 @@ describe("Policies", () => {
   describe("can be viewed", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createPolicy(POLICY_ID, samplePolicy);
     });
 
     it("successfully", () => {
       cy.contains(POLICY_ID);
 
-      cy.get(`[data-test-subj="policyLink_${POLICY_ID}"]`).click({ force: true });
+      cy.get(`[data-test-subj="policyLink_${POLICY_ID}"]`).click({
+        force: true,
+      });
 
       cy.contains(POLICY_ID);
       cy.contains(samplePolicy.policy.description);
-      samplePolicy.policy.states.forEach((state, i) => {
+      samplePolicy.policy.states.forEach((state) => {
         cy.contains(state.name);
       });
 

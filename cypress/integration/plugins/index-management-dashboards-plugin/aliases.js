@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { PLUGIN_NAME } from "../../../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../../utils/constants";
 
 const SAMPLE_INDEX_PREFIX = "index-for-alias-test";
 const SAMPLE_ALIAS_PREFIX = "alias-for-test";
@@ -19,15 +19,15 @@ describe("Aliases", () => {
     }
     cy.createIndex(EDIT_INDEX, null);
     for (let i = 0; i < 30; i++) {
-      cy.addAlias(`${SAMPLE_ALIAS_PREFIX}-${i}`, `${SAMPLE_INDEX_PREFIX}-${i % 11}`);
+      cy.addIndexAlias(`${SAMPLE_ALIAS_PREFIX}-${i}`, `${SAMPLE_INDEX_PREFIX}-${i % 11}`);
     }
-    cy.removeAlias(`${SAMPLE_ALIAS_PREFIX}-0`);
-    cy.addAlias(`${SAMPLE_ALIAS_PREFIX}-0`, `${SAMPLE_INDEX_PREFIX}-*`);
+    cy.removeIndexAlias(`${SAMPLE_ALIAS_PREFIX}-0`);
+    cy.addIndexAlias(`${SAMPLE_ALIAS_PREFIX}-0`, `${SAMPLE_INDEX_PREFIX}-*`);
   });
 
   beforeEach(() => {
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/aliases`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/aliases`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Rows per page", { timeout: 60000 });
@@ -59,7 +59,7 @@ describe("Aliases", () => {
 
   describe("can create a alias with wildcard and specific name", () => {
     it("successfully", () => {
-      cy.get('[data-test-subj="Create aliasButton"]').click();
+      cy.get('[data-test-subj="Create AliasButton"]').click();
       cy.get('[data-test-subj="form-name-alias"]').type(CREATE_ALIAS);
       cy.get('[data-test-subj="form-name-indexArray"] [data-test-subj="comboBoxSearchInput"]').type(
         `${EDIT_INDEX}{enter}${SAMPLE_INDEX_PREFIX}-*{enter}`
@@ -112,8 +112,8 @@ describe("Aliases", () => {
   after(() => {
     cy.deleteAllIndices();
     for (let i = 0; i < 30; i++) {
-      cy.removeAlias(`${SAMPLE_ALIAS_PREFIX}-${i}`);
+      cy.removeIndexAlias(`${SAMPLE_ALIAS_PREFIX}-${i}`);
     }
-    cy.removeAlias(CREATE_ALIAS);
+    cy.removeIndexAlias(CREATE_ALIAS);
   });
 });
