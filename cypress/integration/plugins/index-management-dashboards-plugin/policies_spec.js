@@ -40,7 +40,7 @@ describe("Policies", () => {
       cy.contains("Continue").click({ force: true });
 
       // Wait for input to load and then type in the policy ID
-      cy.get(`input[placeholder="hot_cold_workflow"]`).type(POLICY_ID, {
+      cy.get(`input[placeholder="example_policy"]`).type(POLICY_ID, {
         force: true,
       });
 

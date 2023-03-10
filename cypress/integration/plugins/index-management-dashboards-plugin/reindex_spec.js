@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../../utils/constants";
 const REINDEX_DEST = "test-ecomm-rdx";
 const REINDEX_DEST_NO_SOURCE = "test-reindex-nosource";
 const REINDEX_NEW_CREATED = "test-logs-new";
