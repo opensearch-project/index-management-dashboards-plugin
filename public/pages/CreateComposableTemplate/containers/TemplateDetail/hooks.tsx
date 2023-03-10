@@ -37,7 +37,7 @@ export const getTemplate = async (props: { templateName: string; commonService: 
     if (findItem) {
       const templateDetail = findItem.component_template;
 
-      // Opensearch dashboard core does not flattern the settings
+      // Opensearch core does not flattern the settings
       // do it manually.
       const payload = JSON.parse(
         JSON.stringify({

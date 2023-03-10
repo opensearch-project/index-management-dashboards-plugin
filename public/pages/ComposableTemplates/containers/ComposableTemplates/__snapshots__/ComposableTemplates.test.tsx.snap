@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Templates /> spec renders the component 1`] = `
+exports[`<ComposableTemplates /> spec renders the component 1`] = `
 <div
   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   style="padding-left: 0px; padding-right: 0px;"
@@ -15,7 +15,7 @@ exports[`<Templates /> spec renders the component 1`] = `
       <span
         class="euiTitle euiTitle--medium"
       >
-        Templates
+        Template components
       </span>
       <div
         class="euiFormRow euiFormRow--fullWidth"
@@ -29,22 +29,14 @@ exports[`<Templates /> spec renders the component 1`] = `
             id="some_html_id-help-0"
           >
             <div>
-              Index templates let you initialize new indexes or data streams with predefined mappings and settings.
+              Template components let you initialize new templates with predefined mappings and settings.
                
-              <a
+              <button
                 class="euiLink euiLink--primary"
-                href="https://opensearch.org/docs/latest/opensearch/index-templates"
-                rel="noopener noreferrer"
-                target="_blank"
+                type="button"
               >
                 Learn more.
-                EuiIconMock
-                <span
-                  class="euiScreenReaderOnly"
-                >
-                  (opens in a new tab or window)
-                </span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -284,27 +276,10 @@ exports[`<Templates /> spec renders the component 1`] = `
                 </button>
               </th>
               <th
-                class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_templateType_1"
-                role="columnheader"
-                scope="col"
-              >
-                <span
-                  class="euiTableCellContent"
-                >
-                  <span
-                    class="euiTableCellContent__text"
-                    title="Template type"
-                  >
-                    Template type
-                  </span>
-                </span>
-              </th>
-              <th
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_index_patterns_2"
+                data-test-subj="tableHeaderCell_description_1"
                 role="columnheader"
                 scope="col"
               >
@@ -318,9 +293,9 @@ exports[`<Templates /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Index patterns"
+                      title="Descriptions"
                     >
-                      Index patterns
+                      Descriptions
                     </span>
                   </span>
                 </button>
@@ -329,7 +304,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_order_3"
+                data-test-subj="tableHeaderCell_templateTypes_2"
                 role="columnheader"
                 scope="col"
               >
@@ -339,13 +314,13 @@ exports[`<Templates /> spec renders the component 1`] = `
                   type="button"
                 >
                   <span
-                    class="euiTableCellContent euiTableCellContent--alignRight"
+                    class="euiTableCellContent"
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Priority"
+                      title="Template types"
                     >
-                      Priority
+                      Template types
                     </span>
                   </span>
                 </button>
@@ -358,7 +333,7 @@ exports[`<Templates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="5"
+                colspan="4"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"
@@ -366,50 +341,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                   <span
                     class="euiTableCellContent__text"
                   >
-                    <div
-                      class="euiEmptyPrompt"
-                    >
-                      <span
-                        class="euiTextColor euiTextColor--subdued"
-                      >
-                        <div
-                          class="euiText euiText--medium"
-                        >
-                          <div
-                            class="euiText euiText--medium"
-                          >
-                            <p>
-                              You have no templates.
-                            </p>
-                          </div>
-                        </div>
-                      </span>
-                      <div
-                        class="euiSpacer euiSpacer--l"
-                      />
-                      <div
-                        class="euiFlexGroup euiFlexGroup--gutterMedium euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentCenter euiFlexGroup--directionColumn euiFlexGroup--responsive"
-                      >
-                        <div
-                          class="euiFlexItem euiFlexItem--flexGrowZero"
-                        >
-                          <button
-                            class="euiButton euiButton--primary euiButton--fill"
-                            type="button"
-                          >
-                            <span
-                              class="euiButtonContent euiButton__content"
-                            >
-                              <span
-                                class="euiButton__text"
-                              >
-                                Create template
-                              </span>
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+                    No items found
                   </span>
                 </div>
               </td>

@@ -17,7 +17,6 @@ import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
-import DeleteDataStreamsModal from "../../../DataStreams/containers/DeleteDataStreamsModal";
 import DefineDataStream from "../DefineDataStream";
 import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
@@ -36,11 +35,10 @@ export interface DataStreamDetailProps {
 }
 
 const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>) => {
-  const { dataStream, onCancel, onSubmitSuccess, history } = props;
+  const { dataStream, onCancel, onSubmitSuccess } = props;
   const isEdit = !!dataStream;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
-  const [visible, setVisible] = useState(false);
   const [templates, setTemplates] = useState<
     {
       name: string;
@@ -150,17 +148,6 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               selectedItems={[values?.name]}
               history={props.history}
               onDelete={() => props.history.replace(ROUTES.DATA_STREAMS)}
-            />
-            <DeleteDataStreamsModal
-              visible={visible}
-              selectedItems={[values.name]}
-              onClose={() => {
-                setVisible(false);
-              }}
-              onDelete={() => {
-                setVisible(false);
-                history.replace(ROUTES.DATA_STREAMS);
-              }}
             />
           </EuiFlexItem>
         ) : null}

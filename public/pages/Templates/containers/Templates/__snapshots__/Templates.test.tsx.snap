@@ -350,6 +350,23 @@ exports[`<Templates /> spec renders the component 1`] = `
                   </span>
                 </button>
               </th>
+              <th
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_composed_of_4"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Associated components"
+                  >
+                    Associated components
+                  </span>
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -358,7 +375,7 @@ exports[`<Templates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="5"
+                colspan="6"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"

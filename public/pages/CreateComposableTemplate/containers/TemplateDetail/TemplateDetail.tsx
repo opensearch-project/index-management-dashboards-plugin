@@ -17,12 +17,12 @@ import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
-import DeleteComposableTemplatesModal from "../../../ComposableTemplates/containers/DeleteComposableTemplatesModal";
 import DefineTemplate from "../../components/DefineTemplate";
 import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
 import { IndexForm } from "../../../../containers/IndexForm";
+import ComposableTemplatesActions from "../../../ComposableTemplates/containers/ComposableTemplatesActions";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -33,11 +33,10 @@ export interface TemplateDetailProps {
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => {
-  const { templateName, onCancel, onSubmitSuccess, readonly, history } = props;
+  const { templateName, onCancel, onSubmitSuccess, readonly } = props;
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
-  const [visible, setVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const oldValue = useRef<IComposableTemplateRemote | undefined>(undefined);
   const field = useField({
@@ -156,22 +155,10 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             >
               View JSON
             </EuiButton>
-            <EuiButton style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${values.name}`)}>
-              Edit
-            </EuiButton>
-            <EuiButton color="danger" style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
-              Delete
-            </EuiButton>
-            <DeleteComposableTemplatesModal
-              visible={visible}
-              selectedItems={[values.name]}
-              onClose={() => {
-                setVisible(false);
-              }}
-              onDelete={() => {
-                setVisible(false);
-                history.replace(ROUTES.TEMPLATES);
-              }}
+            <ComposableTemplatesActions
+              selectedItems={[templateName || ""]}
+              history={props.history}
+              onDelete={() => props.history.replace(ROUTES.COMPOSABLE_TEMPLATES)}
             />
           </EuiFlexItem>
         ) : null}

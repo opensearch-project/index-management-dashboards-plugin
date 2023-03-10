@@ -194,9 +194,6 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               Data streams
             </label>
           </div>
-          <div
-            class="euiSpacer euiSpacer--l"
-          />
         </div>
       </div>
       <div
@@ -347,20 +344,13 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               <div
                 class="euiTitle euiTitle--small"
               >
-                Index alias
+                Component templates - optional
               </div>
             </label>
           </div>
           <div
             class="euiFormRow__fieldWrapper"
-          >
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              style="padding-top: 0px; padding-bottom: 4px;"
-            >
-              Allow the new indexes to be referenced by existing aliases or specify a new alias.
-            </div>
-          </div>
+          />
         </div>
       </div>
     </div>
@@ -370,6 +360,109 @@ exports[`<TemplateDetail /> spec render component 1`] = `
     <div
       style="padding: 0px 10px;"
     >
+      <div
+        class="euiText euiText--medium"
+      >
+        No components associate
+      </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
+      <div>
+        <button
+          class="euiButton euiButton--primary"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            <span
+              class="euiButton__text"
+            >
+              Associate components
+            </span>
+          </span>
+        </button>
+        <button
+          class="euiButton euiButton--primary"
+          style="margin-left: 20px;"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            <span
+              class="euiButton__text"
+            >
+              Create new components
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+    style="padding-left: 0px; padding-right: 0px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h3
+          class="euiTitle euiTitle--small"
+        >
+          Template definition
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
+        </h3>
+      </div>
+    </div>
+    <hr
+      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+    />
+    <div
+      style="padding: 0px 10px;"
+    >
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            <div
+              class="euiTitle euiTitle--small"
+            >
+              Index alias
+            </div>
+          </label>
+        </div>
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Allow the new indexes to be referenced by existing aliases or specify a new alias.
+          </div>
+        </div>
+      </div>
       <div
         class="euiSpacer euiSpacer--s"
       />
@@ -453,41 +546,14 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div
-    class="euiSpacer euiSpacer--l"
-  />
-  <div
-    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
-  >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
-    >
       <div
-        class="euiFlexItem"
+        class="euiSpacer euiSpacer--l"
+      />
+      <span
+        class="euiTitle euiTitle--small"
       >
-        <h3
-          class="euiTitle euiTitle--small"
-        >
-          Index settings
-          <span
-            class="panel-header-count"
-          >
-             
-             
-          </span>
-        </h3>
-      </div>
-    </div>
-    <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-    />
-    <div
-      style="padding: 0px 10px;"
-    >
+        Index settings
+      </span>
       <div
         class="euiSpacer euiSpacer--s"
       />
@@ -528,7 +594,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 <input
                   class="euiFieldNumber"
                   type="number"
-                  value="1"
+                  value=""
                 />
               </div>
             </div>
@@ -575,7 +641,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 <input
                   class="euiFieldNumber"
                   type="number"
-                  value="1"
+                  value=""
                 />
               </div>
             </div>
@@ -622,7 +688,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 <input
                   class="euiFieldText"
                   type="text"
-                  value="1s"
+                  value=""
                 />
               </div>
             </div>
@@ -737,11 +803,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     readonly=""
                     style="display: none;"
                   >
-                    {
-  "index.number_of_replicas": 1,
-  "index.number_of_shards": 1,
-  "index.refresh_interval": "1s"
-}
+                    {}
                   </textarea>
                   <div
                     class="euiCodeEditorWrapper"
@@ -860,67 +922,46 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div
-    class="euiSpacer euiSpacer--l"
-  />
-  <div
-    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
-  >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
-    >
       <div
-        class="euiFlexItem"
+        class="euiSpacer euiSpacer--l"
+      />
+      <div
+        class="euiTitle euiTitle--small"
+      >
+        Index mapping
+      </div>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
       >
         <div
-          class="euiTitle euiTitle--small"
-        >
-          Index mapping
-        </div>
-        <div
-          class="euiFormRow euiFormRow--fullWidth"
-          id="some_html_id-row"
+          class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormRow__fieldWrapper"
+            class="euiFormHelpText euiFormRow__text"
+            id="some_html_id-help-0"
           >
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              <div>
-                Define how documents and their fields are stored and indexed.
-                 
-                <a
-                  class="euiLink euiLink--primary"
-                  href="https://opensearch.org/docs/undefined/opensearch/mappings/"
-                  rel="noopener noreferrer"
-                  target="_blank"
+            <div>
+              Define how documents and their fields are stored and indexed.
+               
+              <a
+                class="euiLink euiLink--primary"
+                href="https://opensearch.org/docs/undefined/opensearch/mappings/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more.
+                EuiIconMock
+                <span
+                  class="euiScreenReaderOnly"
                 >
-                  Learn more.
-                  EuiIconMock
-                  <span
-                    class="euiScreenReaderOnly"
-                  >
-                    (opens in a new tab or window)
-                  </span>
-                </a>
-              </div>
+                  (opens in a new tab or window)
+                </span>
+              </a>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-    />
-    <div
-      style="padding: 0px 10px;"
-    >
       <div
         class="euiSpacer euiSpacer--s"
       />
@@ -1063,6 +1104,25 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiButtonEmpty__text"
           >
             Cancel
+          </span>
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button
+        class="euiButton euiButton--primary"
+        data-test-subj="CreateIndexTemplatePreviewButton"
+        type="button"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          <span
+            class="euiButton__text"
+          >
+            Preview template
           </span>
         </span>
       </button>

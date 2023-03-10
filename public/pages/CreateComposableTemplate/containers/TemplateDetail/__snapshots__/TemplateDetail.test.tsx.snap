@@ -12,7 +12,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         class="euiTitle euiTitle--large"
       >
         Create
-         template
+         composable template
       </h1>
       <div
         class="euiFormRow euiFormRow--fullWidth"
@@ -26,22 +26,14 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             style="padding-top: 0px; padding-bottom: 4px;"
           >
             <div>
-              Index templates let you initialize new indexes with predefined mappings and settings.
+              Template components let you initialize new templates with predefined mappings and settings.
                
-              <a
+              <button
                 class="euiLink euiLink--primary"
-                href="https://opensearch.org/docs/latest/opensearch/index-templates"
-                rel="noopener noreferrer"
-                target="_blank"
+                type="button"
               >
                 Learn more.
-                EuiIconMock
-                <span
-                  class="euiScreenReaderOnly"
-                >
-                  (opens in a new tab or window)
-                </span>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -66,6 +58,12 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           class="euiTitle euiTitle--small"
         >
           Define template
+          <span
+            class="panel-header-count"
+          >
+             
+             
+          </span>
         </h3>
       </div>
     </div>
@@ -132,7 +130,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       />
       <div
         class="euiFormRow"
-        data-test-subj="form-row-data_stream"
+        data-test-subj="form-row-_meta.description"
         id="some_html_id-row"
       >
         <div
@@ -143,458 +141,12 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Template type
+            Descriptions
           </label>
         </div>
         <div
           class="euiFormRow__fieldWrapper"
         >
-          <div
-            class="euiRadio"
-          >
-            <input
-              checked=""
-              class="euiRadio__input"
-              id="Indexes"
-              type="radio"
-              value=""
-            />
-            <div
-              class="euiRadio__circle"
-            />
-            <label
-              class="euiRadio__label"
-              for="Indexes"
-            >
-              Indexes
-            </label>
-          </div>
-          <div
-            class="euiRadio"
-          >
-            <input
-              class="euiRadio__input"
-              id="Data streams"
-              type="radio"
-              value=""
-            />
-            <div
-              class="euiRadio__circle"
-            />
-            <label
-              class="euiRadio__label"
-              for="Data streams"
-            >
-              Data streams
-            </label>
-          </div>
-        </div>
-      </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow"
-        data-test-subj="form-row-index_patterns"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Index patterns
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Specify the index patterns or wildcards. Add a comma to separate each value. Settings in this template will be applied to indexes with names matching index patterns or wildcards.
-          </div>
-          <div
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            class="euiComboBox"
-            role="combobox"
-          >
-            <div
-              class="euiFormControlLayout"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
-                  data-test-subj="comboBoxInput"
-                  tabindex="-1"
-                >
-                  <p
-                    class="euiComboBoxPlaceholder"
-                  >
-                    Select index patterns or input wildcards
-                  </p>
-                  <div
-                    class="euiComboBox__input"
-                    style="font-size: 14px; display: inline-block;"
-                  >
-                    <input
-                      aria-controls=""
-                      data-test-subj="comboBoxSearchInput"
-                      role="textbox"
-                      style="box-sizing: content-box; width: 2px;"
-                      value=""
-                    />
-                    <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow"
-        data-test-subj="form-row-priority"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Priority
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index
-          </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-          >
-            <div
-              class="euiFormControlLayout"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  class="euiFieldNumber"
-                  type="number"
-                  value="0"
-                />
-              </div>
-            </div>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    class="euiSpacer euiSpacer--l"
-  />
-  <div
-    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
-  >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
-    >
-      <div
-        class="euiFlexItem"
-      >
-        <div
-          class="euiFormRow euiFormRow--fullWidth"
-          id="some_html_id-row"
-        >
-          <div
-            class="euiFormRow__labelWrapper"
-          >
-            <label
-              class="euiFormLabel euiFormRow__label"
-              for="some_html_id"
-            >
-              <div
-                class="euiTitle euiTitle--small"
-              >
-                Index alias
-              </div>
-            </label>
-          </div>
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              style="padding-top: 0px; padding-bottom: 4px;"
-            >
-              Allow the new indexes to be referenced by existing aliases or specify a new alias.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-    />
-    <div
-      style="padding: 0px 10px;"
-    >
-      <div
-        class="euiSpacer euiSpacer--s"
-      />
-      <div
-        class="euiFormRow euiFormRow--fullWidth"
-        data-test-subj="form-row-template.aliases"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Index alias
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Select existing aliases or specify a new alias.
-          </div>
-          <div
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            class="euiComboBox"
-            role="combobox"
-          >
-            <div
-              class="euiFormControlLayout"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
-                  data-test-subj="comboBoxInput"
-                  tabindex="-1"
-                >
-                  <p
-                    class="euiComboBoxPlaceholder"
-                  >
-                    Select aliases or input new aliases.
-                  </p>
-                  <div
-                    class="euiComboBox__input"
-                    style="font-size: 14px; display: inline-block;"
-                  >
-                    <input
-                      aria-controls=""
-                      data-test-subj="comboBoxSearchInput"
-                      role="textbox"
-                      style="box-sizing: content-box; width: 2px;"
-                      value=""
-                    />
-                    <div
-                      style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
-                >
-                  <button
-                    aria-label="Open list of options"
-                    class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
-                    data-test-subj="comboBoxToggleListButton"
-                    type="button"
-                  >
-                    EuiIconMock
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    class="euiSpacer euiSpacer--l"
-  />
-  <div
-    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
-  >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
-    >
-      <div
-        class="euiFlexItem"
-      >
-        <h3
-          class="euiTitle euiTitle--small"
-        >
-          Index settings
-        </h3>
-      </div>
-    </div>
-    <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-    />
-    <div
-      style="padding: 0px 10px;"
-    >
-      <div
-        class="euiSpacer euiSpacer--s"
-      />
-      <div
-        class="euiFormRow"
-        data-test-subj="form-row-template.settings.index.number_of_shards"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Number of primary shards
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Specify the number of primary shards in the index. Default is 1.
-          </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-          >
-            <div
-              class="euiFormControlLayout"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  class="euiFieldNumber"
-                  type="number"
-                  value="1"
-                />
-              </div>
-            </div>
-          </span>
-        </div>
-      </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow euiFormRow--fullWidth"
-        data-test-subj="form-row-template.settings.index.number_of_replicas"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Number of replicas
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Specify the number of replicas each primary shard should have. Default is 1.
-          </div>
-          <span
-            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-          >
-            <div
-              class="euiFormControlLayout"
-            >
-              <div
-                class="euiFormControlLayout__childrenWrapper"
-              >
-                <input
-                  class="euiFieldNumber"
-                  type="number"
-                  value="1"
-                />
-              </div>
-            </div>
-          </span>
-        </div>
-      </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
-      <div
-        class="euiFormRow"
-        data-test-subj="form-row-template.settings.index.refresh_interval"
-        id="some_html_id-row"
-      >
-        <div
-          class="euiFormRow__labelWrapper"
-        >
-          <label
-            aria-invalid="false"
-            class="euiFormLabel euiFormRow__label"
-            for="some_html_id"
-          >
-            Refresh interval
-          </label>
-        </div>
-        <div
-          class="euiFormRow__fieldWrapper"
-        >
-          <div
-            class="euiFormHelpText euiFormRow__text"
-            style="padding-top: 0px; padding-bottom: 4px;"
-          >
-            Specify how often the index should refresh, which publishes its most recent changes and makes them available for search. Default is 1s.
-          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
@@ -607,7 +159,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 <input
                   class="euiFieldText"
                   type="text"
-                  value="1s"
+                  value=""
                 />
               </div>
             </div>
@@ -618,408 +170,90 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiAccordion accordion-in-advanced-settings"
-      >
-        <div
-          class="euiAccordion__triggerWrapper"
-        >
-          <button
-            aria-controls="accordionForCreateIndexTemplateSettings"
-            aria-expanded="false"
-            class="euiAccordion__button"
-            id="some_html_id"
-            type="button"
-          >
-            <span
-              class="euiAccordion__iconWrapper"
-            >
-              EuiIconMock
-            </span>
-            <span
-              class="euiIEFlexWrapFix"
-            >
-              <h4>
-                Advanced settings
-              </h4>
-            </span>
-          </button>
-        </div>
-        <div
-          aria-labelledby="some_html_id"
-          class="euiAccordion__childWrapper"
-          id="accordionForCreateIndexTemplateSettings"
-          role="region"
-          style="height: 0px"
-          tabindex="-1"
-        >
-          <div>
-            <div
-              class=""
-            >
-              <div
-                class="euiSpacer euiSpacer--s"
-              />
-              <div
-                class="euiFormRow euiFormRow--fullWidth"
-                id="some_html_id-row"
-              >
-                <div
-                  class="euiFormRow__labelWrapper"
-                >
-                  <label
-                    class="euiFormLabel euiFormRow__label"
-                    for="some_html_id"
-                  >
-                    Specify advanced index settings
-                  </label>
-                </div>
-                <div
-                  class="euiFormRow__fieldWrapper"
-                >
-                  <div
-                    class="euiFormHelpText euiFormRow__text"
-                    style="padding-top: 0px; padding-bottom: 4px;"
-                  >
-                    <p>
-                      Specify a comma-delimited list of settings.
-                       
-                      <a
-                        class="euiLink euiLink--primary"
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/create-index#index-settings"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        View index settings
-                        EuiIconMock
-                        <span
-                          class="euiScreenReaderOnly"
-                        >
-                          (opens in a new tab or window)
-                        </span>
-                      </a>
-                    </p>
-                    <p>
-                      All the settings will be handled in flat structure.
-                       
-                      <a
-                        class="euiLink euiLink--primary"
-                        href="https://opensearch.org/docs/latest/api-reference/index-apis/get-index/#url-parameters"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
-                        Learn more.
-                        EuiIconMock
-                        <span
-                          class="euiScreenReaderOnly"
-                        >
-                          (opens in a new tab or window)
-                        </span>
-                      </a>
-                    </p>
-                  </div>
-                  <textarea
-                    data-test-subj="jsonEditor-valueDisplay"
-                    readonly=""
-                    style="display: none;"
-                  >
-                    {
-  "index.number_of_replicas": 1,
-  "index.number_of_shards": 1,
-  "index.refresh_interval": "1s"
-}
-                  </textarea>
-                  <div
-                    class="euiCodeEditorWrapper"
-                    data-test-subj="codeEditorContainer"
-                    style="width: 100%;"
-                  >
-                    <button
-                      class="euiCodeEditorKeyboardHint"
-                      data-test-subj="codeEditorHint"
-                      id="some_html_id"
-                    >
-                      <p
-                        class="euiText"
-                      >
-                        Press Enter to start editing.
-                      </p>
-                      <p
-                        class="euiText"
-                      >
-                        When you're done, press Escape to stop editing.
-                      </p>
-                    </button>
-                    <div
-                      class=" ace_editor ace-tm"
-                      id="some_html_id"
-                      style="width: 100%; height: 500px;"
-                    >
-                      <textarea
-                        autocapitalize="off"
-                        autocorrect="off"
-                        class="ace_text-input"
-                        spellcheck="false"
-                        style="opacity: 0;"
-                        tabindex="-1"
-                        wrap="off"
-                      />
-                      <div
-                        aria-hidden="true"
-                        class="ace_gutter"
-                      >
-                        <div
-                          class="ace_layer ace_gutter-layer ace_folding-enabled"
-                        />
-                        <div
-                          class="ace_gutter-active-line"
-                        />
-                      </div>
-                      <div
-                        class="ace_scroller"
-                      >
-                        <div
-                          class="ace_content"
-                        >
-                          <div
-                            class="ace_layer ace_print-margin-layer"
-                          >
-                            <div
-                              class="ace_print-margin"
-                              style="left: 4px; visibility: visible;"
-                            />
-                          </div>
-                          <div
-                            class="ace_layer ace_marker-layer"
-                          />
-                          <div
-                            class="ace_layer ace_text-layer"
-                            style="padding: 0px 4px;"
-                          />
-                          <div
-                            class="ace_layer ace_marker-layer"
-                          />
-                          <div
-                            class="ace_layer ace_cursor-layer ace_hidden-cursors"
-                          >
-                            <div
-                              class="ace_cursor"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="ace_scrollbar ace_scrollbar-v"
-                        style="display: none; width: 20px;"
-                      >
-                        <div
-                          class="ace_scrollbar-inner"
-                          style="width: 20px;"
-                        />
-                      </div>
-                      <div
-                        class="ace_scrollbar ace_scrollbar-h"
-                        style="display: none; height: 20px;"
-                      >
-                        <div
-                          class="ace_scrollbar-inner"
-                          style="height: 20px;"
-                        />
-                      </div>
-                      <div
-                        style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: hidden;"
-                      >
-                        <div
-                          style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                        />
-                        <div
-                          style="height: auto; width: auto; top: 0px; left: 0px; visibility: hidden; position: absolute; white-space: pre; overflow: visible;"
-                        >
-                          XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    class="euiSpacer euiSpacer--l"
-  />
-  <div
-    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
-  >
-    <div
-      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
-    >
-      <div
-        class="euiFlexItem"
-      >
-        <div
-          class="euiTitle euiTitle--small"
-        >
-          Index mapping
-        </div>
-        <div
-          class="euiFormRow euiFormRow--fullWidth"
-          id="some_html_id-row"
-        >
-          <div
-            class="euiFormRow__fieldWrapper"
-          >
-            <div
-              class="euiFormHelpText euiFormRow__text"
-              id="some_html_id-help-0"
-            >
-              <div>
-                Define how documents and their fields are stored and indexed.
-                 
-                <a
-                  class="euiLink euiLink--primary"
-                  href="https://opensearch.org/docs/undefined/opensearch/mappings/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Learn more.
-                  EuiIconMock
-                  <span
-                    class="euiScreenReaderOnly"
-                  >
-                    (opens in a new tab or window)
-                  </span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-    />
-    <div
-      style="padding: 0px 10px;"
-    >
-      <div
-        class="euiSpacer euiSpacer--s"
-      />
-      <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow"
+        data-test-subj="form-row-includes.aliases"
         id="some_html_id-row"
       >
         <div
+          class="euiFormRow__labelWrapper"
+        >
+          <label
+            aria-invalid="false"
+            class="euiFormLabel euiFormRow__label"
+            for="some_html_id"
+          >
+            Includes
+          </label>
+        </div>
+        <div
           class="euiFormRow__fieldWrapper"
         >
-          <fieldset
-            class="euiButtonGroup euiButtonGroup--small euiButtonGroup--text"
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
-            <legend
-              class="euiScreenReaderOnly"
-            >
-              Editor Type
-            </legend>
             <div
-              class="euiButtonGroup__buttons"
+              class="euiCheckbox"
             >
+              <input
+                class="euiCheckbox__input"
+                id="builtInCheckBoxId-0"
+                type="checkbox"
+              />
+              <div
+                class="euiCheckbox__square"
+              />
               <label
-                class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small euiButtonGroupButton--fill euiButtonGroupButton-isSelected"
-                data-test-subj="editorTypeVisualEditor"
-                for="some_html_id"
+                class="euiCheckbox__label"
+                for="builtInCheckBoxId-0"
               >
-                <span
-                  class="euiButtonContent euiButton__content"
-                >
-                  <span
-                    class="euiButton__text euiButtonGroupButton__textShift"
-                    data-text="Visual Editor"
-                    title="Visual Editor"
-                  >
-                    <input
-                      checked=""
-                      class="euiScreenReaderOnly"
-                      data-test-subj="VISUAL"
-                      id="some_html_id"
-                      name="some_html_id"
-                      type="radio"
-                      value=""
-                    />
-                    Visual Editor
-                  </span>
-                </span>
-              </label>
-              <label
-                class="euiButtonGroupButton euiButtonGroupButton--text euiButtonGroupButton--small"
-                data-test-subj="editorTypeJsonEditor"
-                for="some_html_id"
-              >
-                <span
-                  class="euiButtonContent euiButton__content"
-                >
-                  <span
-                    class="euiButton__text euiButtonGroupButton__textShift"
-                    data-text="JSON Editor"
-                    title="JSON Editor"
-                  >
-                    <input
-                      class="euiScreenReaderOnly"
-                      data-test-subj="JSON"
-                      id="some_html_id"
-                      name="some_html_id"
-                      type="radio"
-                      value=""
-                    />
-                    JSON Editor
-                  </span>
-                </span>
+                Index alias
               </label>
             </div>
-          </fieldset>
-          <div
-            class="euiSpacer euiSpacer--l"
-          />
-          <p>
-            You have no field mappings.
-          </p>
-          <div
-            class="euiSpacer euiSpacer--l"
-          />
-          <button
-            class="euiButton euiButton--primary"
-            data-test-subj="createIndexAddFieldButton"
-            style="margin-right: 8px;"
-            type="button"
+          </span>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
-            <span
-              class="euiButtonContent euiButton__content"
+            <div
+              class="euiCheckbox"
             >
-              <span
-                class="euiButton__text"
+              <input
+                class="euiCheckbox__input"
+                id="builtInCheckBoxId-1"
+                type="checkbox"
+              />
+              <div
+                class="euiCheckbox__square"
+              />
+              <label
+                class="euiCheckbox__label"
+                for="builtInCheckBoxId-1"
               >
-                Add new field
-              </span>
-            </span>
-          </button>
-          <button
-            class="euiButton euiButton--primary"
-            data-test-subj="createIndexAddObjectFieldButton"
-            type="button"
+                Index settings
+              </label>
+            </div>
+          </span>
+          <span
+            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
-            <span
-              class="euiButtonContent euiButton__content"
+            <div
+              class="euiCheckbox"
             >
-              <span
-                class="euiButton__text"
+              <input
+                class="euiCheckbox__input"
+                id="builtInCheckBoxId-2"
+                type="checkbox"
+              />
+              <div
+                class="euiCheckbox__square"
+              />
+              <label
+                class="euiCheckbox__label"
+                for="builtInCheckBoxId-2"
               >
-                Add new object
-              </span>
-            </span>
-          </button>
+                Index mappings
+              </label>
+            </div>
+          </span>
         </div>
       </div>
     </div>
@@ -1038,7 +272,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
     >
       <button
         class="euiButtonEmpty euiButtonEmpty--primary"
-        data-test-subj="CreateIndexTemplateCancelButton"
+        data-test-subj="CreateComposableTemplateCancelButton"
         type="button"
       >
         <span
@@ -1057,7 +291,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
     >
       <button
         class="euiButton euiButton--primary euiButton--fill"
-        data-test-subj="CreateIndexTemplateCreateButton"
+        data-test-subj="CreateComposableTemplateCreateButton"
         type="button"
       >
         <span

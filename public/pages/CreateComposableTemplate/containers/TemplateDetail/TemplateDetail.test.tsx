@@ -20,7 +20,7 @@ function renderCreateComposableTemplate(props: Omit<TemplateDetailProps, "histor
         <CoreServicesContext.Provider value={coreServicesMock}>
           <ServicesContext.Provider value={browserServicesMock}>
             <Route path="/" render={(routeProps) => <TemplateDetail {...props} history={routeProps.history} />} />
-            <Route path={ROUTES.TEMPLATES} render={(routeProps) => <>This is {ROUTES.TEMPLATES}</>} />
+            <Route path={ROUTES.COMPOSABLE_TEMPLATES} render={(routeProps) => <>This is {ROUTES.COMPOSABLE_TEMPLATES}</>} />
           </ServicesContext.Provider>
         </CoreServicesContext.Provider>
       </HashRouter>
@@ -32,12 +32,6 @@ describe("<TemplateDetail /> spec", () => {
   // main unit test case is in CreateComposableTemplate.test.tsx
   it("render component", async () => {
     const { container } = renderCreateComposableTemplate({});
-    await waitFor(
-      () => expect((document.querySelector("#accordionForCreateComposableTemplateSettings") as HTMLDivElement).style.height).toEqual("0px"),
-      {
-        timeout: 3000,
-      }
-    );
     expect(container).toMatchSnapshot();
   });
 
@@ -46,10 +40,12 @@ describe("<TemplateDetail /> spec", () => {
       return {
         ok: true,
         response: {
-          index_templates: [
+          component_templates: [
             {
               name: "good_template",
-              template: {},
+              component_template: {
+                template: {},
+              },
             },
           ],
         },
@@ -66,12 +62,7 @@ describe("<TemplateDetail /> spec", () => {
         JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")
       ).toEqual({
         name: "good_template",
-        template: {
-          mappings: {
-            properties: {},
-          },
-          settings: {},
-        },
+        template: {},
       })
     );
   });
@@ -81,10 +72,12 @@ describe("<TemplateDetail /> spec", () => {
       return {
         ok: true,
         response: {
-          index_templates: [
+          component_templates: [
             {
               name: "good_template",
-              template: {},
+              component_template: {
+                template: {},
+              },
             },
           ],
         },
@@ -95,15 +88,17 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await findByTitle("good_template");
+    userEvent.click(getByTestId("moreAction").querySelector("button") as Element);
     userEvent.click(getByText("Delete"));
-    await findByText("Delete Templates");
+    await findByText("Delete template components");
     userEvent.click(getByTestId("deletaCancelButton"));
-    await waitFor(() => expect(queryByText("Delete Templates")).toBeNull());
+    await waitFor(() => expect(queryByText("Delete template components")).toBeNull());
+    userEvent.click(getByTestId("moreAction").querySelector("button") as Element);
     userEvent.click(getByText("Delete"));
-    await findByText("Delete Templates");
+    await findByText("Delete template components");
     userEvent.type(getByTestId("deleteInput"), "delete");
     userEvent.click(getByTestId("deleteConfirmButton"));
-    await findByText(`This is ${ROUTES.TEMPLATES}`);
+    await findByText(`This is ${ROUTES.COMPOSABLE_TEMPLATES}`);
     expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
   });
 });

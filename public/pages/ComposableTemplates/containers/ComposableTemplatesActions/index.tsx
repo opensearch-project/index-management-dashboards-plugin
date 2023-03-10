@@ -7,7 +7,6 @@ import { Link, RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteComposableTemplatesModal";
-import { ICatComposableTemplate } from "../../interface";
 import { ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
@@ -15,7 +14,7 @@ import { BrowserServices } from "../../../../../public/models/interfaces";
 import { Modal } from "../../../../components/Modal";
 
 export interface ComposableTemplatesActionsProps {
-  selectedItems: ICatComposableTemplate[];
+  selectedItems: string[];
   onDelete: () => void;
   history: RouteComponentProps["history"];
 }
@@ -92,14 +91,14 @@ export default function ComposableTemplatesActions(props: ComposableTemplatesAct
                   name: "Edit",
                   disabled: selectedItems.length !== 1,
                   "data-test-subj": "editAction",
-                  onClick: () => props.history.push(`${ROUTES.CREATE_TEMPLATE}/${selectedItems[0].name}`),
+                  onClick: () => props.history.push(`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${selectedItems[0]}`),
                 },
                 {
                   name: "Delete",
                   disabled: selectedItems.length !== 1,
                   "data-test-subj": "deleteAction",
                   onClick: () => {
-                    if (selectedItems.some((item) => allUsedComponent.includes(item.name))) {
+                    if (selectedItems.some((item) => allUsedComponent.includes(item))) {
                       setAlertModalVisible(true);
                     } else {
                       setDeleteIndexModalVisible(true);
@@ -112,7 +111,7 @@ export default function ComposableTemplatesActions(props: ComposableTemplatesAct
         />
       </SimplePopover>
       <DeleteIndexModal
-        selectedItems={selectedItems.map((item) => item.name)}
+        selectedItems={selectedItems}
         visible={deleteIndexModalVisible}
         onClose={onDeleteIndexModalClose}
         onDelete={() => {
@@ -128,7 +127,7 @@ export default function ComposableTemplatesActions(props: ComposableTemplatesAct
           <div>
             The component is being used by{" "}
             {allIndexTemplates
-              .filter((item) => selectedItems.some((selectItem) => item.index_template.composed_of?.includes(selectItem.name)))
+              .filter((item) => selectedItems.some((selectItem) => item.index_template.composed_of?.includes(selectItem)))
               .reduce(
                 (total, current, index) => [
                   ...total,

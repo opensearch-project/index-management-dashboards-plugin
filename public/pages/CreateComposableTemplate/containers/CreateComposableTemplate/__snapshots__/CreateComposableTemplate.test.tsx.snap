@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateComposableTemplate /> spec it goes to templates page when click cancel 1`] = `
+<div>
+  <div
+    style="padding: 0px 50px;"
+  >
+    <div
+      class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
+    >
+      <div
+        class="euiFlexItem"
+      >
+        <h1
+          class="euiTitle euiTitle--large"
+          title="good_template"
+        >
+          good_template
+        </h1>
+      </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+        style="flex-direction: row;"
+      >
+        <button
+          class="euiButton euiButton--primary"
+          style="margin-right: 20px;"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButton__content"
+          >
+            <span
+              class="euiButton__text"
+            >
+              View JSON
+            </span>
+          </span>
+        </button>
+        <div
+          class="euiPopover euiPopover--anchorDownCenter"
+          data-test-subj="moreAction"
+        >
+          <div
+            class="euiPopover__anchor"
+          >
+            <button
+              class="euiButton euiButton--primary"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+              >
+                EuiIconMock
+                <span
+                  class="euiButton__text"
+                >
+                  Actions
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+      style="padding-left: 0px; padding-right: 0px;"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiFlexItem"
+        >
+          <h3
+            class="euiTitle euiTitle--small"
+          >
+            Template details
+            <span
+              class="panel-header-count"
+            >
+               
+               
+            </span>
+          </h3>
+        </div>
+      </div>
+      <hr
+        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      />
+      <div
+        style="padding: 0px 10px;"
+      >
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+        <div
+          class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
+        >
+          <div
+            class="euiFlexItem"
+          >
+            <dl
+              class="euiDescriptionList euiDescriptionList--row"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Template name
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                good_template
+              </dd>
+            </dl>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <dl
+              class="euiDescriptionList euiDescriptionList--row"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Descriptions
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
+                -
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+  </div>
+</div>
+`;

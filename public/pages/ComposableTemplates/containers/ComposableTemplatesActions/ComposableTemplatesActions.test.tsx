@@ -23,7 +23,7 @@ function renderWithRouter(props: Omit<ComposableTemplatesActionsProps, "history"
           <Router>
             <Switch>
               <Route
-                path={ROUTES.TEMPLATES}
+                path={ROUTES.COMPOSABLE_TEMPLATES}
                 render={(routeProps) => (
                   <CoreServicesContext.Provider value={coreServicesMock}>
                     <ServicesContext.Provider value={browserServicesMock}>
@@ -41,7 +41,7 @@ function renderWithRouter(props: Omit<ComposableTemplatesActionsProps, "history"
                   </CoreServicesContext.Provider>
                 )}
               />
-              <Redirect from="/" to={ROUTES.TEMPLATES} />
+              <Redirect from="/" to={ROUTES.COMPOSABLE_TEMPLATES} />
             </Switch>
           </Router>
         </ServicesContext.Provider>
@@ -51,6 +51,18 @@ function renderWithRouter(props: Omit<ComposableTemplatesActionsProps, "history"
 }
 
 describe("<ComposableTemplatesActions /> spec", () => {
+  beforeEach(() => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (): Promise<any> => {
+        return {
+          ok: true,
+          response: {
+            index_templates: [],
+          },
+        };
+      }
+    );
+  });
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
@@ -72,7 +84,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
     let times = 0;
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        if (payload.data?.path?.startsWith("/_index_template/")) {
+        if (payload.data?.path?.startsWith("/_component_template/")) {
           if (times >= 1) {
             return {
               ok: true,
@@ -90,14 +102,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
       }
     );
     const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
-      selectedItems: [
-        {
-          name: "test_template",
-          index_patterns: "1",
-          version: "1",
-          order: 0,
-        },
-      ],
+      selectedItems: ["test_template"],
       onDelete,
     });
 
@@ -111,11 +116,11 @@ describe("<ComposableTemplatesActions /> spec", () => {
     userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "transport.request",
         data: {
-          path: `/_index_template/test_template`,
+          path: `/_component_template/test_template`,
           method: "DELETE",
         },
       });
@@ -127,7 +132,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
     userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_template] successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);

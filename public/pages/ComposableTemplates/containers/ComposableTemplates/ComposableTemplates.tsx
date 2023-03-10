@@ -215,7 +215,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                 text: "",
                 children: (
                   <ComposableTemplatesActions
-                    selectedItems={this.state.selectedItems}
+                    selectedItems={this.state.selectedItems.map((item) => item.name)}
                     onDelete={this.getComposableTemplates}
                     history={this.props.history}
                   />
