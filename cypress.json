@@ -3,10 +3,6 @@
   "requestTimeout": 60000,
   "responseTimeout": 60000,
   "baseUrl": "http://localhost:5601",
-  "reporter": "cypress-multi-reporters",
-  "reporterOptions": {
-    "configFile": "reporter-config.json"
-  },
   "viewportWidth": 2000,
   "viewportHeight": 1320,
   "env": {

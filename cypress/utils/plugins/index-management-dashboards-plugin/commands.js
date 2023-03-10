@@ -6,23 +6,23 @@
 import { BACKEND_BASE_PATH, IM_API, IM_CONFIG_INDEX } from "../../constants";
 
 Cypress.Commands.add("deleteIMJobs", () => {
-  // TODO don't directly delete system index, use other way
-  cy.request("DELETE", `${Cypress.env("openSearchUrl")}/.opendistro-ism*?expand_wildcards=all`);
-  // Clean all ISM policies
-  cy.request("GET", `${BACKEND_BASE_PATH}${IM_API.POLICY_BASE}`).then((resp) => {
-    const policyIds = resp.body.policies.map((item) => item._id).join(", ");
-    if (policyIds.length) {
-      cy.request("DELETE", `${BACKEND_BASE_PATH}${IM_API.POLICY_BASE}/${policyIds}`);
-    }
-  });
-  // Clean all ISM jobs
-  cy.request("GET", `${BACKEND_BASE_PATH}${IM_API.EXPLAIN_BASE}`).then((resp) => {
-    let ismJobIds = Object.keys(resp.body);
-    ismJobIds = ismJobIds.filter((e) => e !== "total_managed_indices").join(", ");
-    if (ismJobIds.length) {
-      cy.request("POST", `${BACKEND_BASE_PATH}${IM_API.REMOVE_POLICY_BASE}/${ismJobIds}`);
-    }
-  });
+  // // TODO don't directly delete system index, use other way
+  // cy.request("DELETE", `${Cypress.env("openSearchUrl")}/.opendistro-ism*?expand_wildcards=all`);
+  // // Clean all ISM policies
+  // cy.request("GET", `${BACKEND_BASE_PATH}${IM_API.POLICY_BASE}`).then((resp) => {
+  //   const policyIds = resp.body.policies.map((item) => item._id).join(", ");
+  //   if (policyIds.length) {
+  //     cy.request("DELETE", `${BACKEND_BASE_PATH}${IM_API.POLICY_BASE}/${policyIds}`);
+  //   }
+  // });
+  // // Clean all ISM jobs
+  // cy.request("GET", `${BACKEND_BASE_PATH}${IM_API.EXPLAIN_BASE}`).then((resp) => {
+  //   let ismJobIds = Object.keys(resp.body);
+  //   ismJobIds = ismJobIds.filter((e) => e !== "total_managed_indices").join(", ");
+  //   if (ismJobIds.length) {
+  //     cy.request("POST", `${BACKEND_BASE_PATH}${IM_API.REMOVE_POLICY_BASE}/${ismJobIds}`);
+  //   }
+  // });
 });
 
 Cypress.Commands.add("createPolicy", (policyId, policyJSON) => {
