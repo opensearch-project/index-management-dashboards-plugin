@@ -303,6 +303,17 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               sortable: true,
               align: "right",
             },
+            {
+              field: "composed_of",
+              name: "Associated components",
+              render: (value: string, record) => {
+                return record.templateDetail?.composed_of?.map((component) => (
+                  <Link style={{ padding: "0 4px" }} key={component} to={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${component}/readonly`}>
+                    {component}
+                  </Link>
+                ));
+              },
+            },
           ]}
           isSelectable={true}
           itemId="name"
@@ -356,25 +367,6 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                 ]}
               />
             )
-            // <div
-            //   style={{
-            //     textAlign: "center",
-            //   }}
-            // >
-            //   <h4>You have no templates.</h4>
-            //   <EuiButton
-            //     fill
-            //     color="primary"
-            //     style={{
-            //       marginTop: 20,
-            //     }}
-            //     onClick={() => {
-            //       this.props.history.push(ROUTES.CREATE_TEMPLATE);
-            //     }}
-            //   >
-            //     Create template
-            //   </EuiButton>
-            // </div>
           }
         />
       </ContentPanel>

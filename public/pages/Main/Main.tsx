@@ -63,7 +63,7 @@ enum Navigation {
   Templates = "Templates",
   DataStreams = "Data streams",
   CreateDataStream = "Create data stream",
-  ComposableTemplates = "Composable templates",
+  ComposableTemplates = "Template components",
 }
 
 enum Pathname {

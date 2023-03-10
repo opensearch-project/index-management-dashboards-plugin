@@ -32,6 +32,7 @@ import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import ComposableTemplatesActions from "../ComposableTemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
+import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 
 interface ComposableTemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -242,7 +243,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               fullWidth
               helpText={
                 <div>
-                  Composable templates let you initialize new templates with predefined mappings and settings.{" "}
+                  Template components let you initialize new templates with predefined mappings and settings.{" "}
                   <EuiLink external target="_blank" href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.composable}>
                     Learn more.
                   </EuiLink>
@@ -284,6 +285,14 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               sortable: true,
               render: (value: string, record: ICatComposableTemplate) => {
                 return record.component_template._meta?.description || "-";
+              },
+            },
+            {
+              field: "templateTypes",
+              name: "Template types",
+              sortable: true,
+              render: (value: string, record: ICatComposableTemplate) => {
+                return <ComponentTemplateBadge template={record.component_template.template} />;
               },
             },
           ]}

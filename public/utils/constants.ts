@@ -116,7 +116,7 @@ export const BREADCRUMBS = Object.freeze({
   DATA_STREAMS: { text: "Data streams", href: `#${ROUTES.DATA_STREAMS}` },
   CREATE_DATA_STREAM: { text: "Create data stream", href: `#${ROUTES.CREATE_DATA_STREAM}` },
   FORCE_MERGE: { text: "Force merge", href: `#${ROUTES.FORCE_MERGE}` },
-  COMPOSABLE_TEMPLATES: { text: "Composable templates", href: `#${ROUTES.COMPOSABLE_TEMPLATES}` },
+  COMPOSABLE_TEMPLATES: { text: "Template components", href: `#${ROUTES.COMPOSABLE_TEMPLATES}` },
   CREATE_COMPOSABLE_TEMPLATE: { text: "Create composable template", href: `#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}` },
 });
 

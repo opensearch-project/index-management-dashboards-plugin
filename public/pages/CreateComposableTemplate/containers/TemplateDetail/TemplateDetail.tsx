@@ -124,7 +124,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
               label=""
               helpText={
                 <div>
-                  Composable templates let you initialize new templates with predefined mappings and settings.{" "}
+                  Template components let you initialize new templates with predefined mappings and settings.{" "}
                   <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
                     Learn more.
                   </EuiLink>

@@ -4,7 +4,6 @@
  */
 import React, { useContext } from "react";
 import {
-  EuiBadge,
   EuiButton,
   EuiButtonIcon,
   EuiComboBox,
@@ -34,6 +33,7 @@ import { useEffect } from "react";
 import { ICatComposableTemplate } from "../../../ComposableTemplates/interface";
 import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { useMemo } from "react";
+import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 
 export default function ComposableTemplate(props: SubDetailProps) {
   const { field, readonly } = props;
@@ -112,73 +112,70 @@ export default function ComposableTemplate(props: SubDetailProps) {
               }
 
               return (
-                <EuiDraggable
-                  isDragDisabled={readonly}
-                  index={index}
-                  customDragHandle
-                  draggableId={item}
-                  key={item}
-                  style={{ paddingLeft: 0, paddingRight: 0 }}
-                  spacing="m"
-                >
-                  {(provided) => (
-                    <EuiPanel paddingSize="m">
-                      <div style={{ display: "flex", justifyContent: "space-between" }}>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <div {...provided.dragHandleProps} aria-label="Drag Handle">
-                            <EuiIcon type="grab" />
+                <EuiFlexGroup alignItems="center">
+                  <EuiFlexItem grow={false}>
+                    <EuiText style={{ width: 20, marginLeft: 8 }}>{index + 1}</EuiText>
+                  </EuiFlexItem>
+                  <EuiFlexItem>
+                    <EuiDraggable
+                      isDragDisabled={readonly}
+                      index={index}
+                      customDragHandle
+                      draggableId={item}
+                      key={item}
+                      style={{ paddingLeft: 0, paddingRight: 0 }}
+                      spacing="m"
+                    >
+                      {(provided) => (
+                        <EuiPanel paddingSize="m">
+                          <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                              <div {...provided.dragHandleProps} aria-label="Drag Handle">
+                                <EuiIcon type="grab" />
+                              </div>
+                              <span style={{ marginLeft: 12 }}>{findItem.name}</span>
+                              <div style={{ marginLeft: 12 }}>
+                                <ComponentTemplateBadge template={findItem.component_template.template} />
+                              </div>
+                            </div>
+                            <div>
+                              {readonly ? null : (
+                                <EuiButtonIcon
+                                  onClick={() => {
+                                    const newValue = [...(values.composed_of || [])];
+                                    newValue.splice(index, 1);
+                                    field.setValue("composed_of", newValue);
+                                  }}
+                                  iconType="trash"
+                                  color="danger"
+                                  aria-label="delete"
+                                />
+                              )}
+                              <EuiButtonIcon
+                                onClick={() => window.open(`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}/readonly`)}
+                                style={{ marginLeft: 12 }}
+                                iconType="inspect"
+                                color="primary"
+                                aria-label="see detail"
+                              />
+                            </div>
                           </div>
-                          <span style={{ marginLeft: 12 }}>{findItem.name}</span>
-                          <div style={{ marginLeft: 12 }}>
-                            {[IndicesUpdateMode.alias, IndicesUpdateMode.settings, IndicesUpdateMode.mappings].map((item) => {
-                              if (findItem.component_template.template[item]) {
-                                return (
-                                  <EuiBadge style={{ textTransform: "capitalize" }} key={item} color="hollow">
-                                    {item}
-                                  </EuiBadge>
-                                );
-                              }
-
-                              return null;
-                            })}
-                          </div>
-                        </div>
-                        <div>
-                          {readonly ? null : (
-                            <EuiButtonIcon
-                              onClick={() => {
-                                const newValue = [...(values.composed_of || [])];
-                                newValue.splice(index, 1);
-                                field.setValue("composed_of", newValue);
-                              }}
-                              iconType="trash"
-                              color="danger"
-                              aria-label="delete"
-                            />
-                          )}
-                          <EuiButtonIcon
-                            onClick={() => window.open(`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}/readonly`)}
-                            style={{ marginLeft: 12 }}
-                            iconType="inspect"
-                            color="primary"
-                            aria-label="see detail"
-                          />
-                        </div>
-                      </div>
-                    </EuiPanel>
-                  )}
-                </EuiDraggable>
+                        </EuiPanel>
+                      )}
+                    </EuiDraggable>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
               );
             })}
           </EuiDroppable>
         </EuiDragDropContext>
       ) : (
-        <EuiText>No components added</EuiText>
+        <EuiText>No components associate</EuiText>
       )}
       <EuiSpacer />
       {readonly ? null : (
         <div>
-          <EuiButton onClick={() => setDialogVisible(true)}>Add components</EuiButton>
+          <EuiButton onClick={() => setDialogVisible(true)}>Associate components</EuiButton>
           <EuiButton style={{ marginLeft: 20 }} onClick={() => window.open(`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}`)}>
             Create new components
           </EuiButton>
@@ -188,7 +185,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
         type="confirm"
         visible={dialogVisible}
         locale={{
-          confirm: `Add components(${selectedComposableTemplates.length})`,
+          confirm: `Associate(${selectedComposableTemplates.length})`,
         }}
         footer={["cancel", "confirm"]}
         style={{
@@ -224,17 +221,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
                   <EuiHighlight search={searchValue}>{option.label}</EuiHighlight>
                 </EuiFlexItem>
                 <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-                  {[IndicesUpdateMode.alias, IndicesUpdateMode.settings, IndicesUpdateMode.mappings].map((item) => {
-                    if (option.value.component_template.template[item]) {
-                      return (
-                        <EuiBadge style={{ textTransform: "capitalize" }} key={item} color="hollow">
-                          {item}
-                        </EuiBadge>
-                      );
-                    }
-
-                    return null;
-                  })}
+                  <ComponentTemplateBadge template={option.value.component_template.template} />
                 </EuiFlexItem>
               </EuiFlexGroup>
             )}

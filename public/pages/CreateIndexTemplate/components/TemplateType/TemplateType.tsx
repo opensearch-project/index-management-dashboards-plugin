@@ -40,24 +40,26 @@ export default function TemplateType(props: ITemplateTypeProps) {
         label={TEMPLATE_TYPE.DATA_STREAM}
         checked={value !== undefined}
       />
-      <EuiSpacer />
       {value !== undefined ? (
-        <CustomFormRow label="Time field">
-          <AllBuiltInComponents.Input
-            value={value?.timestamp_field?.name}
-            onChange={(val) => {
-              if (!val) {
-                onChange({});
-              } else {
-                onChange({
-                  timestamp_field: {
-                    name: val,
-                  },
-                });
-              }
-            }}
-          />
-        </CustomFormRow>
+        <>
+          <EuiSpacer />
+          <CustomFormRow label="Time field">
+            <AllBuiltInComponents.Input
+              value={value?.timestamp_field?.name}
+              onChange={(val) => {
+                if (!val) {
+                  onChange({});
+                } else {
+                  onChange({
+                    timestamp_field: {
+                      name: val,
+                    },
+                  });
+                }
+              }}
+            />
+          </CustomFormRow>
+        </>
       ) : null}
     </>
   );

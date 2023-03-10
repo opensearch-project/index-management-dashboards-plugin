@@ -41,7 +41,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
 
   return (
     <DeleteModal
-      title="Delete composable templates"
+      title="Delete template components"
       tips="The following composable template will be permanently deleted. This action cannot be undone."
       onConfirm={onConfirm}
       onClose={onClose}
