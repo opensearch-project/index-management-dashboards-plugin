@@ -101,6 +101,11 @@ Cypress.Commands.add("deleteAllIndices", () => {
   cy.request("DELETE", `${Cypress.env("openSearchUrl")}/index*,sample*,opensearch_dashboards*`);
 });
 
+Cypress.Commands.add("deleteADSystemIndices", () => {
+  cy.log("Deleting AD system indices");
+  cy.request("DELETE", `${Cypress.env("openSearchUrl")}/.opendistro-anomaly*`);
+});
+
 Cypress.Commands.add("getIndexSettings", (index) => {
   cy.request("GET", `${Cypress.env("openSearchUrl")}/${index}/_settings`);
 });
