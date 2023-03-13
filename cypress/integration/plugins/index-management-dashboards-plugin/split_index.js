@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { PLUGIN_NAME } from "../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 
 const sampleIndex = "index-split";
 const sampleAlias = "alias-split";
@@ -17,7 +17,7 @@ describe("Split Index", () => {
   describe("can be created and updated", () => {
     beforeEach(() => {
       // Visit ISM OSD
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/indices`);
       cy.contains("Rows per page", { timeout: 60000 });
     });
 
@@ -50,7 +50,9 @@ describe("Split Index", () => {
       cy.get(`[title="${sampleAlias}"]`).should("exist").end();
 
       // Update Index status to blocks write otherwise we can't apply split operation on it
-      cy.updateIndexSettings(sampleIndex, { "index.blocks.write": "true" }).end();
+      cy.updateIndexSettings(sampleIndex, {
+        "index.blocks.write": "true",
+      }).end();
     }); // create index
 
     it("Split successfully", () => {
@@ -157,7 +159,9 @@ describe("Split Index", () => {
 
     it("Update blocks write to true", () => {
       // Set index to not blocks write
-      cy.updateIndexSettings(sampleIndex, { "index.blocks.write": "false" }).end();
+      cy.updateIndexSettings(sampleIndex, {
+        "index.blocks.write": "false",
+      }).end();
       cy.get(`[data-test-subj="checkboxSelectRow-${sampleIndex}"]`)
         .click()
         .end()
