@@ -160,11 +160,10 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-        endpoint: "indices.split",
-        method: "PUT",
+        endpoint: "transport.request",
         data: {
-          index: "source-index",
-          target: "split_test_index-split",
+          path: `/source-index/_split/split_test_index-split?wait_for_completion=false`,
+          method: "PUT",
           body: {
             settings: {
               "index.number_of_shards": "4",
@@ -226,11 +225,10 @@ describe("<SplitIndex /> spec", () => {
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledWith({
-        endpoint: "indices.split",
-        method: "PUT",
+        endpoint: "transport.request",
         data: {
-          index: "source-index",
-          target: "split_test_index-split",
+          path: `/source-index/_split/split_test_index-split?wait_for_completion=false`,
+          method: "PUT",
           body: {
             settings: {
               "index.number_of_shards": "5",
