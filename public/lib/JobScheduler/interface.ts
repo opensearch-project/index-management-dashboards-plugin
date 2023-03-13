@@ -2,10 +2,17 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
+export enum ListenType {
+  REINDEX = "reindex",
+  SPLIT = "split",
+  SHRINK = "shrink",
+  FORCE_MERGE = "forceMerge",
+}
+
 export interface IJobItemMetadata {
   interval: number;
   extras: any; // extra fields to store job-related info
-  type: "reindex" | "split" | "shrink"; // enum for job type
+  type: ListenType; // enum for job type
   id?: string; // a number to indicate the job
   createTime?: number; // the time when this job is created
   latestRunTime?: number; // the time when the job latest run, will be used to check if the job is staled

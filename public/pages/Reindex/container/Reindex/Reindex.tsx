@@ -38,6 +38,7 @@ import queryString from "query-string";
 import { parseIndexNames, checkDuplicate } from "../../utils/helper";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { ReindexJobMetaData } from "../../../../models/interfaces";
+import { ListenType } from "../../../../lib/JobScheduler";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -237,7 +238,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       const destinationItem = destination[0];
       if (result.ok) {
         await jobSchedulerInstance.addJob({
-          type: "reindex",
+          type: ListenType.REINDEX,
           extras: {
             toastId: result.response?.toastId,
             sourceIndex: reindexReq.body.source.index,

@@ -13,6 +13,7 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { CatIndex } from "../../../../server/models/interfaces";
 import { jobSchedulerInstance } from "../../../context/JobSchedulerContext";
 import { RecoveryJobMetaData } from "../../../models/interfaces";
+import { ListenType } from "../../../lib/JobScheduler";
 
 export function getURLQueryParams(location: { search: string }): IndicesQueryParams {
   const { from, size, search, sortField, sortDirection, showDataStreams } = queryString.parse(location.search);
@@ -170,7 +171,7 @@ export async function splitIndex(props: {
         destIndex: props.targetIndex,
         taskId: result.response.task,
       },
-      type: "split",
+      type: ListenType.SPLIT,
     } as RecoveryJobMetaData);
     return result;
   } else {
