@@ -4,15 +4,19 @@
  */
 import { IStorage, JobItemMetadata } from "./interface";
 
-const JOB_STORAGE_KEY = "ISM_JOBS";
-
 export class StoreLocalStorage implements IStorage {
+  private JOB_STORAGE_KEY = "ISM_JOBS";
+  constructor(key?: string) {
+    if (key) {
+      this.JOB_STORAGE_KEY = key;
+    }
+  }
   async setup(): Promise<boolean> {
     // do nothing
     return true;
   }
   async getAll(): Promise<JobItemMetadata[]> {
-    return JSON.parse(localStorage.getItem(JOB_STORAGE_KEY) || "[]");
+    return JSON.parse(localStorage.getItem(this.JOB_STORAGE_KEY) || "[]");
   }
   async set(key: string, value: JobItemMetadata): Promise<boolean> {
     try {
@@ -39,7 +43,7 @@ export class StoreLocalStorage implements IStorage {
   }
   private saveToDisk(payload: JobItemMetadata[]) {
     try {
-      localStorage.setItem(JOB_STORAGE_KEY, JSON.stringify(payload));
+      localStorage.setItem(this.JOB_STORAGE_KEY, JSON.stringify(payload));
       return true;
     } catch (e) {
       return false;
