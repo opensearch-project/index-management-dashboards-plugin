@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { PLUGIN_NAME } from "../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 
 describe("Snapshots", () => {
   before(() => {
@@ -11,7 +11,7 @@ describe("Snapshots", () => {
     localStorage.setItem("home:welcome:show", "false");
 
     // Visit ISM Snapshots Dashboard
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/snapshots`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/snapshots`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Restore", { timeout: 60000 });
@@ -20,7 +20,7 @@ describe("Snapshots", () => {
   describe("Repository can be created", () => {
     it("successfully creates a new repository", () => {
       // Create repository to store snapshots
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/repositories`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/repositories`);
 
       // Route to create repository page
       cy.contains("Create repository").click({ force: true });
@@ -41,7 +41,7 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be created", () => {
     it("successfully creates a new snapshot", () => {
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/snapshots`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/snapshots`);
 
       // delete any existing indices
       cy.deleteAllIndices();
@@ -51,7 +51,7 @@ describe("Snapshots", () => {
       cy.createIndex("test_index_2");
       cy.createIndex("test_index_3");
 
-      // wait needed here to enable cypress to find "Take snapshot" button.  Timeout 
+      // wait needed here to enable cypress to find "Take snapshot" button.  Timeout
       // cannot be used with cy.createIndex
       cy.wait(5000);
 
@@ -124,5 +124,5 @@ describe("Snapshots", () => {
       cy.contains("Deleted snapshot");
       cy.contains("No items found");
     });
-  })
+  });
 });

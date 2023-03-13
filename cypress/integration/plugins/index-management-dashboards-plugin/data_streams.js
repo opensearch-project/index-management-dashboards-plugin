@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { PLUGIN_NAME } from "../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH, BACKEND_BASE_PATH } from "../../../utils/constants";
 
 describe("Data stream", () => {
   before(() => {
@@ -24,7 +24,7 @@ describe("Data stream", () => {
       },
     });
     cy.request({
-      url: `${Cypress.env("opensearch")}/_data_stream/*`,
+      url: `${BACKEND_BASE_PATH}/_data_stream/*`,
       method: "DELETE",
       failOnStatusCode: false,
     });
@@ -32,7 +32,7 @@ describe("Data stream", () => {
 
   beforeEach(() => {
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/data-streams`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/data-streams`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Data streams", { timeout: 60000 });
@@ -82,7 +82,7 @@ describe("Data stream", () => {
 
   after(() => {
     cy.request({
-      url: `${Cypress.env("opensearch")}/_data_stream`,
+      url: `${BACKEND_BASE_PATH}/_data_stream`,
       method: "DELETE",
       failOnStatusCode: false,
     });
