@@ -42,12 +42,7 @@ import { RecoveryJobMetaData } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ServerResponse } from "../../../../../server/models/types";
 import { CoreServicesContext } from "../../../../components/core_services";
-import {
-  DEFAULT_INDEX_SETTINGS,
-  INDEX_BLOCKS_WRITE_SETTING,
-  INDEX_BLOCKS_READONLY_SETTING,
-  INDEX_ROUTING_ALLOCATION_SETTING,
-} from "../../utils/constants";
+import { DEFAULT_INDEX_SETTINGS, INDEX_BLOCKS_WRITE_SETTING, INDEX_BLOCKS_READONLY_SETTING } from "../../utils/constants";
 import { get } from "lodash";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
@@ -142,15 +137,15 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       const { commonService } = this.props;
       const { aliases, ...settings } = requestPayload;
 
-      const result = await commonService.apiCaller({
-        endpoint: "indices.shrink",
+      const result = await commonService.apiCaller<{
+        task: string;
+      }>({
+        endpoint: "transport.request",
         data: {
-          index: sourceIndexName,
-          target: targetIndexName,
+          path: `/${sourceIndexName}/_shrink/${targetIndexName}?wait_for_completion=false`,
+          method: "PUT",
           body: {
-            settings: {
-              ...settings,
-            },
+            settings,
             aliases,
           },
         },
@@ -169,6 +164,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             toastId: toastInstance.id,
             sourceIndex: sourceIndexName,
             destIndex: targetIndexName,
+            taskId: result.response.task,
           },
           type: "shrink",
         } as RecoveryJobMetaData);

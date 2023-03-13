@@ -73,6 +73,8 @@ export const callbackForSplit: CallbackType = async (job: RecoveryJobMetaData, {
         }
         return true;
       }
+    } else {
+      return true;
     }
 
     return false;
