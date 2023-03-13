@@ -139,12 +139,13 @@ export async function splitIndex(props: {
   coreServices: CoreStart;
 }) {
   const { aliases, ...settings } = props.settingsPayload;
-  const result = await props.commonService.apiCaller({
-    endpoint: "indices.split",
-    method: "PUT",
+  const result = await props.commonService.apiCaller<{
+    task: string;
+  }>({
+    endpoint: "transport.request",
     data: {
-      index: props.sourceIndex,
-      target: props.targetIndex,
+      path: `/${props.sourceIndex}/_split/${props.targetIndex}?wait_for_completion=false`,
+      method: "PUT",
       body: {
         settings: {
           ...settings,
@@ -167,6 +168,7 @@ export async function splitIndex(props: {
         toastId: toastInstance.id,
         sourceIndex: props.sourceIndex,
         destIndex: props.targetIndex,
+        taskId: result.response.task,
       },
       type: "split",
     } as RecoveryJobMetaData);

@@ -3,29 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { ReactChild } from "react";
-import { CallbackType } from "../interface";
+import { CallbackType, TaskResult } from "../interface";
 import { ReindexJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
 import { DetailLink } from "../components/DetailLink";
 
-type TaskResult = {
-  found: boolean;
-  _source: {
-    completed: boolean;
-    response: {
-      failures: {
-        cause?: {
-          reason: string;
-        };
-      }[];
-    };
-    error?: {
-      type: string;
+type ReindexTaskResult = TaskResult<{
+  failures: {
+    cause?: {
       reason: string;
     };
-  };
-};
+  }[];
+}>;
 
 export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, { core }) => {
   const extras = job.extras;
@@ -39,10 +29,10 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
   });
   if (tasksResult.ok) {
     const { _source, found } = tasksResult.response;
-    const { completed, response, error } = (_source || {}) as TaskResult["_source"];
+    const { completed, response, error } = (_source || {}) as ReindexTaskResult["_source"];
     const { failures } = response;
     if (completed && found) {
-      if (!failures.length && !error?.reason) {
+      if (!failures?.length && !error?.reason) {
         if (extras.toastId) {
           core.notifications.toasts.remove(extras.toastId);
         }

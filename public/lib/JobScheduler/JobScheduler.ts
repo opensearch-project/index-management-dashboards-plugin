@@ -14,6 +14,10 @@ export class JobScheduler {
     this.options = options;
     this.storage = options.storage || new StoreLocalStorage();
   }
+  public setStorage(storage: IStorage): JobScheduler {
+    this.storage = storage;
+    return this;
+  }
   async init(): Promise<boolean> {
     this.loopJob();
     return true;
