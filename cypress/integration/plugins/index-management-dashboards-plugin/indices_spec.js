@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { PLUGIN_NAME } from "../support/constants";
-import samplePolicy from "../fixtures/sample_policy";
+import { BASE_PATH, IM_PLUGIN_NAME, BACKEND_BASE_PATH } from "../../../utils/constants";
+import samplePolicy from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_policy";
 
 const POLICY_ID = "test_policy_id";
 const SAMPLE_INDEX = "sample_index";
@@ -15,7 +15,7 @@ describe("Indices", () => {
     localStorage.setItem("home:welcome:show", "false");
 
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/indices`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Rows per page", { timeout: 60000 });
@@ -24,6 +24,8 @@ describe("Indices", () => {
   describe("can be searched", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
+      cy.deleteIMJobs();
       // Create 20+ indices that can be sorted alphabetically by using letters a-z
       for (let i = 97; i < 123; i++) {
         const char = String.fromCharCode(i);
@@ -53,6 +55,7 @@ describe("Indices", () => {
   describe("can show data stream indices", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.deleteDataStreams("*");
 
       cy.createIndexTemplate("logs-template", {
@@ -72,6 +75,9 @@ describe("Indices", () => {
     });
 
     it("successfully", () => {
+      cy.get('[data-test-subj="tablePaginationPopoverButton"]').click();
+      cy.get(".euiContextMenuItem__text").contains("50 rows").click();
+
       // Confirm that the regular indices are shown.
       cy.contains("index-1");
       cy.contains("index-2");
@@ -117,6 +123,7 @@ describe("Indices", () => {
   describe("can have policies applied", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createPolicy(POLICY_ID, samplePolicy);
       cy.createIndex(SAMPLE_INDEX);
     });
@@ -129,7 +136,9 @@ describe("Indices", () => {
       cy.get(`tbody > tr:contains("${SAMPLE_INDEX}") > td`).filter(`:nth-child(4)`).contains("No");
 
       // Select checkbox for our index
-      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({
+        force: true,
+      });
 
       // Click apply policy button
       cy.get('[data-test-subj="moreAction"]').click();
@@ -142,7 +151,9 @@ describe("Indices", () => {
 
       cy.contains("A simple description");
 
-      cy.get(`[data-test-subj="applyPolicyModalEditButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="applyPolicyModalEditButton"]`).click({
+        force: true,
+      });
 
       // Wait some time for apply policy to execute before reload
       cy.wait(3000).reload();
@@ -161,6 +172,7 @@ describe("Indices", () => {
   describe("can make indices deleted", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createIndex(SAMPLE_INDEX);
     });
 
@@ -184,6 +196,7 @@ describe("Indices", () => {
       cy.get('[data-test-subj="deleteAction"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
       // The confirm button should be disabled
       cy.get('[data-test-subj="Delete Confirm button"]').should("have.class", "euiButton-isDisabled");
+      cy.wait(1000);
       // type delete
       cy.get('[placeholder="delete"]').type("delete");
       cy.get('[data-test-subj="Delete Confirm button"]').should("not.have.class", "euiContextMenuItem-isDisabled");
@@ -198,6 +211,7 @@ describe("Indices", () => {
   describe("shows detail of a index when click the item", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createIndex(SAMPLE_INDEX);
     });
 
@@ -215,15 +229,16 @@ describe("Indices", () => {
     const splittedIndex = "split_opensearch_dashboards_sample_data_logs";
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       // Visit ISM OSD
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/indices`);
 
       // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
       cy.contains("Rows per page", { timeout: 60000 });
 
       cy.request({
         method: "POST",
-        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/ecommerce`,
+        url: `${BASE_PATH}/api/sample_data/ecommerce`,
         headers: {
           "osd-xsrf": true,
         },
@@ -233,7 +248,7 @@ describe("Indices", () => {
 
       cy.request({
         method: "POST",
-        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/logs`,
+        url: `${BASE_PATH}/api/sample_data/logs`,
         headers: {
           "osd-xsrf": true,
         },
@@ -243,7 +258,7 @@ describe("Indices", () => {
 
       cy.request({
         method: "PUT",
-        url: `${Cypress.env("opensearch")}/${splittedIndex}/_settings`,
+        url: `${BACKEND_BASE_PATH}/${splittedIndex}/_settings`,
         body: {
           "index.blocks.read_only": false,
         },
@@ -251,12 +266,12 @@ describe("Indices", () => {
       });
       cy.request({
         method: "DELETE",
-        url: `${Cypress.env("opensearch")}/${reindexedIndex}`,
+        url: `${BACKEND_BASE_PATH}/${reindexedIndex}`,
         failOnStatusCode: false,
       });
       cy.request({
         method: "DELETE",
-        url: `${Cypress.env("opensearch")}/${splittedIndex}`,
+        url: `${BACKEND_BASE_PATH}/${splittedIndex}`,
         failOnStatusCode: false,
       });
     });
@@ -264,7 +279,7 @@ describe("Indices", () => {
     it("Successfully", () => {
       cy.request({
         method: "PUT",
-        url: `${Cypress.env("opensearch")}/${reindexedIndex}`,
+        url: `${BACKEND_BASE_PATH}/${reindexedIndex}`,
         body: {
           settings: {
             index: {
@@ -275,7 +290,7 @@ describe("Indices", () => {
         },
       });
       // do a simple reindex
-      cy.request("POST", `${Cypress.env("opensearch")}/_reindex?wait_for_completion=false`, {
+      cy.request("POST", `${BACKEND_BASE_PATH}/_reindex?wait_for_completion=false`, {
         source: {
           index: "opensearch_dashboards_sample_data_ecommerce",
         },
@@ -287,13 +302,13 @@ describe("Indices", () => {
       cy.get('[placeholder="Search"]').type("o");
 
       // do a simple split
-      cy.request("PUT", `${Cypress.env("opensearch")}/opensearch_dashboards_sample_data_logs/_settings`, {
+      cy.request("PUT", `${BACKEND_BASE_PATH}/opensearch_dashboards_sample_data_logs/_settings`, {
         "index.blocks.write": true,
       });
 
       cy.request({
         method: "POST",
-        url: `${Cypress.env("opensearch_dashboards")}/api/ism/apiCaller`,
+        url: `${BASE_PATH}/api/ism/apiCaller`,
         headers: {
           "osd-xsrf": true,
         },
@@ -319,12 +334,12 @@ describe("Indices", () => {
     after(() => {
       cy.request({
         method: "DELETE",
-        url: `${Cypress.env("opensearch")}/${reindexedIndex}`,
+        url: `${BACKEND_BASE_PATH}/${reindexedIndex}`,
         failOnStatusCode: false,
       });
       cy.request({
         method: "DELETE",
-        url: `${Cypress.env("opensearch")}/${splittedIndex}`,
+        url: `${BACKEND_BASE_PATH}/${splittedIndex}`,
         failOnStatusCode: false,
       });
     });
@@ -333,8 +348,13 @@ describe("Indices", () => {
   describe("can shrink an index", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createIndex(SAMPLE_INDEX, null, {
-        settings: { "index.blocks.write": true, "index.number_of_shards": 2, "index.number_of_replicas": 0 },
+        settings: {
+          "index.blocks.write": true,
+          "index.number_of_shards": 2,
+          "index.number_of_replicas": 0,
+        },
       });
     });
 
@@ -351,7 +371,9 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Shrink Action"]').should("have.class", "euiContextMenuItem-isDisabled");
 
       // Select an index
-      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({
+        force: true,
+      });
 
       cy.get('[data-test-subj="moreAction"]').click();
       // Shrink btn should be enabled
@@ -374,6 +396,7 @@ describe("Indices", () => {
   describe("can close and open an index", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createIndex(SAMPLE_INDEX);
     });
 
@@ -385,7 +408,9 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Close Action"]').should("have.class", "euiContextMenuItem-isDisabled");
 
       // Select an index
-      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({
+        force: true,
+      });
 
       cy.get('[data-test-subj="moreAction"]').click();
       // Close btn should be enabled
@@ -423,7 +448,9 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Open Action"]').should("have.class", "euiContextMenuItem-isDisabled");
 
       // Select an index
-      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({
+        force: true,
+      });
 
       cy.get('[data-test-subj="moreAction"]').click();
       // Open btn should be enabled

@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { PLUGIN_NAME } from "../support/constants";
-import samplePolicy from "../fixtures/sample_policy";
-import sampleRolloverPolicy from "../fixtures/sample_rollover_policy";
-import sampleDataStreamPolicy from "../fixtures/sample_data_stream_policy.json";
+import { BASE_PATH, IM_PLUGIN_NAME } from "../../../utils/constants";
+import samplePolicy from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_policy";
+import sampleRolloverPolicy from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_rollover_policy";
+import sampleDataStreamPolicy from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_data_stream_policy.json";
 
 const POLICY_ID = "test_policy_id";
 const POLICY_ID_2 = "test_policy_id_2";
@@ -24,7 +24,7 @@ describe("Managed indices", () => {
     cy.wait(3000);
 
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/managed-indices`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/managed-indices`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Edit rollover alias", { timeout: 60000 });
@@ -35,6 +35,7 @@ describe("Managed indices", () => {
   describe("can have policies removed", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createPolicy(POLICY_ID, samplePolicy);
       cy.createIndex(SAMPLE_INDEX, POLICY_ID);
     });
@@ -44,13 +45,17 @@ describe("Managed indices", () => {
       cy.contains(POLICY_ID);
 
       // Select checkbox for our managed index
-      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({
+        force: true,
+      });
 
       // Click Remove policy button
       cy.get(`[data-test-subj="Remove policyButton"]`).click({ force: true });
 
       // Click confirmation modal button
-      cy.get(`[data-test-subj="confirmationModalActionButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="confirmationModalActionButton"]`).click({
+        force: true,
+      });
 
       // Confirm we got a remove policy toaster
       cy.contains("Removed policy from 1 managed indices");
@@ -66,10 +71,13 @@ describe("Managed indices", () => {
   describe("can have policies retried", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       // Create a policy that rolls over
       cy.createPolicy(POLICY_ID_ROLLOVER, sampleRolloverPolicy);
       // Create index with alias to rollover
-      cy.createIndex(SAMPLE_INDEX_ROLLOVER, POLICY_ID_ROLLOVER, { aliases: { "retry-rollover-alias": {} } });
+      cy.createIndex(SAMPLE_INDEX_ROLLOVER, POLICY_ID_ROLLOVER, {
+        aliases: { "retry-rollover-alias": {} },
+      });
     });
 
     it("successfully", () => {
@@ -99,7 +107,9 @@ describe("Managed indices", () => {
       cy.contains("Missing rollover_alias");
 
       // Add rollover alias
-      cy.updateIndexSettings(SAMPLE_INDEX_ROLLOVER, { "plugins.index_state_management.rollover_alias": "retry-rollover-alias" });
+      cy.updateIndexSettings(SAMPLE_INDEX_ROLLOVER, {
+        "plugins.index_state_management.rollover_alias": "retry-rollover-alias",
+      });
 
       // Select checkbox for our managed index
       cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX_ROLLOVER}"]`).check({ force: true });
@@ -139,10 +149,13 @@ describe("Managed indices", () => {
 
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createPolicy(POLICY_ID, samplePolicy);
       // Create index with rollover_alias
       cy.createIndex(SAMPLE_INDEX, POLICY_ID, {
-        settings: { plugins: { index_state_management: { rollover_alias: FIRST_ALIAS } } },
+        settings: {
+          plugins: { index_state_management: { rollover_alias: FIRST_ALIAS } },
+        },
       });
     });
 
@@ -157,16 +170,22 @@ describe("Managed indices", () => {
       });
 
       // Select checkbox for our managed index
-      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({ force: true });
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({
+        force: true,
+      });
 
       // Click edit rollover alias button
-      cy.get(`[data-test-subj="Edit rollover aliasButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="Edit rollover aliasButton"]`).click({
+        force: true,
+      });
 
       // Type in second rollover alias in input
       cy.get(`input[placeholder="Rollover alias"]`).focus().type(SECOND_ALIAS);
 
       // Click rollover alias modal confirmation button
-      cy.get(`[data-test-subj="editRolloverAliasModalAddButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="editRolloverAliasModalAddButton"]`).click({
+        force: true,
+      });
 
       // Confirm we got rollover alias toaster
       cy.contains("Edited rollover alias on sample_index");
@@ -182,6 +201,7 @@ describe("Managed indices", () => {
   describe("can change policies", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createPolicy(POLICY_ID, samplePolicy);
       cy.createPolicy(POLICY_ID_2, samplePolicy);
       cy.createIndex(SAMPLE_INDEX, POLICY_ID);
@@ -202,7 +222,9 @@ describe("Managed indices", () => {
         .type(SAMPLE_INDEX, { parseSpecialCharSequences: false, delay: 1 });
 
       // Click the index option
-      cy.get(`button[title="${SAMPLE_INDEX}"]`).trigger("click", { force: true });
+      cy.get(`button[title="${SAMPLE_INDEX}"]`).trigger("click", {
+        force: true,
+      });
 
       // Get the third combo search input box which should be the policy input
       cy.get(`input[data-test-subj="comboBoxSearchInput"]`).eq(2).focus().type(POLICY_ID_2, { parseSpecialCharSequences: false, delay: 1 });
@@ -211,7 +233,9 @@ describe("Managed indices", () => {
       cy.get(`button[title="${POLICY_ID_2}"]`).click({ force: true });
 
       // Click the Change Policy button
-      cy.get(`[data-test-subj="changePolicyChangeButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="changePolicyChangeButton"]`).click({
+        force: true,
+      });
 
       // Confirm we got the change policy toaster
       cy.contains("Changed policy on 1 indices");
@@ -236,6 +260,7 @@ describe("Managed indices", () => {
   describe("can manage data stream indices", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.deleteDataStreams("*");
 
       cy.createPolicy("sample-index-policy", samplePolicy);
