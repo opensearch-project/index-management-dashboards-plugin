@@ -44,6 +44,7 @@ import { ServerResponse } from "../../../../../server/models/types";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DEFAULT_INDEX_SETTINGS, INDEX_BLOCKS_WRITE_SETTING, INDEX_BLOCKS_READONLY_SETTING } from "../../utils/constants";
 import { get } from "lodash";
+import { ListenType } from "../../../../lib/JobScheduler";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -166,7 +167,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             destIndex: targetIndexName,
             taskId: result.response.task,
           },
-          type: "shrink",
+          type: ListenType.SHRINK,
         } as RecoveryJobMetaData);
       } else {
         this.context.notifications.toasts.addDanger(result.error);
