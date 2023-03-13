@@ -586,10 +586,10 @@ describe("<Shrink index /> spec", () => {
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.shrink",
+        endpoint: "transport.request",
         data: {
-          index: "test3",
-          target: "test3_shrunken",
+          path: `/test3/_shrink/test3_shrunken?wait_for_completion=false`,
+          method: "PUT",
           body: {
             settings: {
               "index.number_of_shards": "1",
