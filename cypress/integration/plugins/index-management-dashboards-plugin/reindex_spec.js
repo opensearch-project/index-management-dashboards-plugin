@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { PLUGIN_NAME } from "../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 const REINDEX_DEST = "test-ecomm-rdx";
 const REINDEX_DEST_NO_SOURCE = "test-reindex-nosource";
 const REINDEX_NEW_CREATED = "test-logs-new";
@@ -14,7 +14,7 @@ describe("Reindex", () => {
     localStorage.setItem("home:welcome:show", "false");
 
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/indices`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/indices`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Rows per page", { timeout: 60000 });
@@ -26,7 +26,7 @@ describe("Reindex", () => {
       // Load ecommerce data
       cy.request({
         method: "POST",
-        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/ecommerce`,
+        url: `${BASE_PATH}/api/sample_data/ecommerce`,
         headers: {
           "osd-xsrf": true,
         },
@@ -69,7 +69,7 @@ describe("Reindex", () => {
       // Load ecommerce data
       cy.request({
         method: "POST",
-        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/ecommerce`,
+        url: `${BASE_PATH}/api/sample_data/ecommerce`,
         headers: {
           "osd-xsrf": true,
         },
@@ -77,7 +77,9 @@ describe("Reindex", () => {
         expect(response.status).equal(200);
       });
 
-      cy.createIndex(REINDEX_DEST, null, { settings: { "index.number_of_replicas": 0 } });
+      cy.createIndex(REINDEX_DEST, null, {
+        settings: { "index.number_of_replicas": 0 },
+      });
 
       cy.createPipeline("bumpOrderId", {
         description: "sample description",
@@ -116,10 +118,9 @@ describe("Reindex", () => {
       cy.get('[data-test-subj="subsetOption"] #subset').click({ force: true });
 
       // input query to reindex subset
-      cy.get('[data-test-subj="queryJsonEditor"] textarea')
-        .focus()
-        .clear()
-        .type('{"query":{"match":{"category":"Men\'s Clothing"}}}', { parseSpecialCharSequences: false });
+      cy.get('[data-test-subj="queryJsonEditor"] textarea').focus().clear().type('{"query":{"match":{"category":"Men\'s Clothing"}}}', {
+        parseSpecialCharSequences: false,
+      });
 
       // set slices to auto
       cy.get('[data-test-subj="sliceEnabled"]').click({ force: true });
@@ -150,7 +151,7 @@ describe("Reindex", () => {
       // Load logs data
       cy.request({
         method: "POST",
-        url: `${Cypress.env("opensearch_dashboards")}/api/sample_data/logs`,
+        url: `${BASE_PATH}/api/sample_data/logs`,
         headers: {
           "osd-xsrf": true,
         },
@@ -183,10 +184,9 @@ describe("Reindex", () => {
       cy.get('[data-test-subj="subsetOption"] #subset').click({ force: true });
 
       // input query to reindex subset
-      cy.get('[data-test-subj="queryJsonEditor"] textarea')
-        .focus()
-        .clear()
-        .type('{"query":{"match":{"ip":"135.201.60.64"}}}', { parseSpecialCharSequences: false });
+      cy.get('[data-test-subj="queryJsonEditor"] textarea').focus().clear().type('{"query":{"match":{"ip":"135.201.60.64"}}}', {
+        parseSpecialCharSequences: false,
+      });
 
       // create destination
       cy.get('[data-test-subj="createIndexButton"]').click();
@@ -202,7 +202,9 @@ describe("Reindex", () => {
       cy.wait(10);
       cy.contains(/have been import successfully/);
 
-      cy.get('[data-test-subj="flyout-footer-action-button"]').click({ force: true });
+      cy.get('[data-test-subj="flyout-footer-action-button"]').click({
+        force: true,
+      });
 
       // click to perform reindex
       cy.get('[data-test-subj="reindexConfirmButton"]').click();

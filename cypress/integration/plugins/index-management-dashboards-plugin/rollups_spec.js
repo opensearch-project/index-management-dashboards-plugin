@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { PLUGIN_NAME } from "../support/constants";
-import sampleRollup from "../fixtures/sample_rollup";
+import { BASE_PATH, IM_PLUGIN_NAME } from "../../../utils/constants";
+import sampleRollup from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_rollup";
 
 const ROLLUP_ID = "test_rollup_id";
 
@@ -14,27 +14,20 @@ describe("Rollups", () => {
     localStorage.setItem("home:welcome:show", "true");
 
     // Go to sample data page
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/home#/tutorial_directory`);
+    cy.visit(`${BASE_PATH}/app/home#/tutorial_directory/sampleData`);
 
-    cy.wait(10000)
-
-    // TODO determine why line 25 and/or line 28 are needed occasionally for rollups_spec to pass.  
-    // When the source of the issue is determined they will be removed/uncommented.
-
-    //Click on "Sample data" tab
+    // Click on "Sample data" tab
     cy.contains("Sample data").click({ force: true });
-
-    // Click on "Add data" tab
-    // cy.contains("Add data").click({ force: true });
-
     // Load sample eCommerce data
-    cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({ force: true });
+    cy.get(`button[data-test-subj="addSampleDataSetecommerce"]`).click({
+      force: true,
+    });
 
     // Verify that sample data is add by checking toast notification
     cy.contains("Sample eCommerce orders installed", { timeout: 60000 });
 
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/rollups`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/rollups`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Create rollup", { timeout: 60000 });
@@ -43,6 +36,7 @@ describe("Rollups", () => {
   describe("can be created", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
     });
 
     it("successfully", () => {
@@ -55,7 +49,9 @@ describe("Rollups", () => {
       cy.contains("Create rollup").click({ force: true });
 
       // Type in the rollup ID
-      cy.get(`input[placeholder="my-rollupjob1"]`).type(ROLLUP_ID, { force: true });
+      cy.get(`input[placeholder="my-rollupjob1"]`).type(ROLLUP_ID, {
+        force: true,
+      });
 
       // Get description input box
       cy.get(`textarea[data-test-subj="description"]`).focus().type("some description");
@@ -82,15 +78,21 @@ describe("Rollups", () => {
       cy.get(`input[data-test-subj="comboBoxSearchInput"]`).focus().type("order_date{enter}");
 
       // Add aggregation
-      cy.get(`button[data-test-subj="addFieldsAggregationEmpty"]`).click({ force: true });
+      cy.get(`button[data-test-subj="addFieldsAggregationEmpty"]`).click({
+        force: true,
+      });
 
       // Select a few fields
       cy.get(`input[data-test-subj="checkboxSelectRow-customer_gender"]`).click({ force: true });
-      cy.get(`input[data-test-subj="checkboxSelectRow-day_of_week_i"]`).click({ force: true });
+      cy.get(`input[data-test-subj="checkboxSelectRow-day_of_week_i"]`).click({
+        force: true,
+      });
       cy.get(`input[data-test-subj="checkboxSelectRow-geoip.city_name"]`).click({ force: true });
 
       // Click the Add button from add fields modal
-      cy.get(`button[data-test-subj="addFieldsAggregationAdd"]`).click({ force: true });
+      cy.get(`button[data-test-subj="addFieldsAggregationAdd"]`).click({
+        force: true,
+      });
 
       // Confirm fields are added
       cy.contains("customer_gender");
@@ -98,23 +100,37 @@ describe("Rollups", () => {
       cy.contains("geoip.city_name");
 
       // Add metrics
-      cy.get(`button[data-test-subj="addFieldsMetricEmpty"]`).click({ force: true });
+      cy.get(`button[data-test-subj="addFieldsMetricEmpty"]`).click({
+        force: true,
+      });
 
       // Select a few fields
       cy.get(`input[data-test-subj="checkboxSelectRow-products.taxless_price"]`).click({ force: true });
-      cy.get(`input[data-test-subj="checkboxSelectRow-total_quantity"]`).click({ force: true });
+      cy.get(`input[data-test-subj="checkboxSelectRow-total_quantity"]`).click({
+        force: true,
+      });
 
       // Click the Add button from add fields modal
-      cy.get(`button[data-test-subj="addFieldsMetricAdd"]`).click({ force: true });
+      cy.get(`button[data-test-subj="addFieldsMetricAdd"]`).click({
+        force: true,
+      });
 
       // Confirm fields are added
       cy.contains("products.taxless_price");
       cy.contains("total_quantity");
 
-      cy.get(`input[data-test-subj="min-total_quantity"]`).click({ force: true });
-      cy.get(`input[data-test-subj="max-total_quantity"]`).click({ force: true });
-      cy.get(`input[data-test-subj="sum-total_quantity"]`).click({ force: true });
-      cy.get(`input[data-test-subj="all-products.taxless_price"]`).click({ force: true });
+      cy.get(`input[data-test-subj="min-total_quantity"]`).click({
+        force: true,
+      });
+      cy.get(`input[data-test-subj="max-total_quantity"]`).click({
+        force: true,
+      });
+      cy.get(`input[data-test-subj="sum-total_quantity"]`).click({
+        force: true,
+      });
+      cy.get(`input[data-test-subj="all-products.taxless_price"]`).click({
+        force: true,
+      });
 
       // Click the next button
       cy.get("button").contains("Next").click({ force: true });
@@ -139,6 +155,7 @@ describe("Rollups", () => {
   describe("can be edited", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createRollup(ROLLUP_ID, sampleRollup);
     });
 
@@ -161,13 +178,17 @@ describe("Rollups", () => {
       cy.get(`textArea[data-test-subj="description"]`).focus().clear().type("A new description");
 
       // Click Save changes button
-      cy.get(`[data-test-subj="editRollupSaveChangesButton"]`).click({ force: true });
+      cy.get(`[data-test-subj="editRollupSaveChangesButton"]`).click({
+        force: true,
+      });
 
       // Confirm we get toaster saying changes saved
       cy.contains(`Changes to "${ROLLUP_ID}" saved!`);
 
       // Click into rollup job details page
-      cy.get(`[data-test-subj="rollupLink_${ROLLUP_ID}"]`).click({ force: true });
+      cy.get(`[data-test-subj="rollupLink_${ROLLUP_ID}"]`).click({
+        force: true,
+      });
 
       // Confirm new description shows in details page
       cy.contains("A new description");
@@ -177,6 +198,7 @@ describe("Rollups", () => {
   describe("can be deleted", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createRollup(ROLLUP_ID, sampleRollup);
     });
 
@@ -212,6 +234,7 @@ describe("Rollups", () => {
   describe("can be enabled and disabled", () => {
     before(() => {
       cy.deleteAllIndices();
+      cy.deleteIMJobs();
       cy.createRollup(ROLLUP_ID, sampleRollup);
     });
 
@@ -220,7 +243,9 @@ describe("Rollups", () => {
       cy.contains(ROLLUP_ID);
 
       // Click into rollup job details page
-      cy.get(`[data-test-subj="rollupLink_${ROLLUP_ID}"]`).click({ force: true });
+      cy.get(`[data-test-subj="rollupLink_${ROLLUP_ID}"]`).click({
+        force: true,
+      });
 
       cy.contains(`${ROLLUP_ID}`);
 
@@ -228,13 +253,17 @@ describe("Rollups", () => {
       cy.get(`[data-test-subj="disableButton"]`).should("not.be.disabled");
 
       // Click Disable button
-      cy.get(`[data-test-subj="disableButton"]`).trigger("click", { force: true });
+      cy.get(`[data-test-subj="disableButton"]`).trigger("click", {
+        force: true,
+      });
 
       // Confirm we get toaster saying rollup job is disabled
       cy.contains(`${ROLLUP_ID} is disabled`);
 
       // Click Enable button
-      cy.get(`[data-test-subj="enableButton"]`).trigger("click", { force: true });
+      cy.get(`[data-test-subj="enableButton"]`).trigger("click", {
+        force: true,
+      });
 
       // Confirm we get toaster saying rollup job is enabled
       cy.contains(`${ROLLUP_ID} is enabled`);

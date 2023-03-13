@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { PLUGIN_NAME } from "../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 
 const SAMPLE_TEMPLATE_PREFIX = "index-for-alias-test";
 const MAX_TEMPLATE_NUMBER = 30;
@@ -30,7 +30,7 @@ describe("Templates", () => {
 
   beforeEach(() => {
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/templates`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/templates`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Rows per page", { timeout: 60000 });

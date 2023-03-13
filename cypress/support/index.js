@@ -19,7 +19,8 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import "./commands";
+import "../utils/commands";
+import "../utils/plugins/index-management-dashboards-plugin/commands";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
