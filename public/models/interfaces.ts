@@ -126,5 +126,6 @@ export interface RecoveryJobMetaData extends IJobItemMetadata {
     toastId: string;
     sourceIndex: string;
     destIndex: string;
+    taskId: string;
   };
 }
