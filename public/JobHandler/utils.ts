@@ -6,6 +6,7 @@ export const EVENT_MAP = {
   REINDEX_COMPLETE: "REINDEX_COMPLETE",
   SPLIT_COMPLETE: "SPLIT_COMPLETE",
   SHRINK_COMPLETE: "SHRINK_COMPLETE",
+  FORCE_MERGE_COMPLETE: "FORCE_MERGE_COMPLETE",
 };
 
 export const triggerEvent = (eventName: string, data?: unknown) => {
