@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { PLUGIN_NAME } from "../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH, BACKEND_BASE_PATH } from "../../../utils/constants";
 
 const rolloverValidAlias = "rollover-valid-alias";
 const rolloverAliasNeedTargetIndex = "rollover-alias-need-target-index";
@@ -17,14 +17,14 @@ describe("Rollover", () => {
     cy.deleteTemplate("index-common-template");
     cy.deleteAllIndices();
     cy.request({
-      url: `${Cypress.env("opensearch")}/_data_stream/*`,
+      url: `${BACKEND_BASE_PATH}/_data_stream/*`,
       method: "DELETE",
       failOnStatusCode: false,
     });
     cy.createIndex(validIndex);
     cy.createIndex(invalidIndex);
-    cy.addAlias(rolloverValidAlias, validIndex);
-    cy.addAlias(rolloverAliasNeedTargetIndex, invalidIndex);
+    cy.addIndexAlias(rolloverValidAlias, validIndex);
+    cy.addIndexAlias(rolloverAliasNeedTargetIndex, invalidIndex);
     cy.createIndexTemplate("index-common-template", {
       index_patterns: ["data-stream-*"],
       data_stream: {},
@@ -40,7 +40,7 @@ describe("Rollover", () => {
       },
     });
     cy.request({
-      url: `${Cypress.env("opensearch")}/_data_stream/${rolloverDataStream}`,
+      url: `${BACKEND_BASE_PATH}/_data_stream/${rolloverDataStream}`,
       method: "PUT",
       failOnStatusCode: false,
     });
@@ -49,7 +49,7 @@ describe("Rollover", () => {
   describe("rollover", () => {
     it("rollover data stream successfully", () => {
       // Visit ISM OSD
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/rollover/${rolloverDataStream}`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/rollover/${rolloverDataStream}`);
       cy.contains("Configure source", { timeout: 60000 });
 
       // click create
@@ -60,7 +60,7 @@ describe("Rollover", () => {
 
     it("rollover valid alias successfully", () => {
       // Visit ISM OSD
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/rollover/${rolloverValidAlias}`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/rollover/${rolloverValidAlias}`);
       cy.contains("Configure new rollover index", { timeout: 60000 });
 
       // click create
@@ -71,7 +71,7 @@ describe("Rollover", () => {
 
     it("rollover invalid alias successfully", () => {
       // Visit ISM OSD
-      cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/rollover/${rolloverAliasNeedTargetIndex}`);
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/rollover/${rolloverAliasNeedTargetIndex}`);
       cy.contains("Configure new rollover index", { timeout: 60000 });
 
       // click create
@@ -92,7 +92,7 @@ describe("Rollover", () => {
     cy.deleteTemplate("index-common-template");
     cy.deleteAllIndices();
     cy.request({
-      url: `${Cypress.env("opensearch")}/_data_stream/*`,
+      url: `${BACKEND_BASE_PATH}/_data_stream/*`,
       method: "DELETE",
       failOnStatusCode: false,
     });
