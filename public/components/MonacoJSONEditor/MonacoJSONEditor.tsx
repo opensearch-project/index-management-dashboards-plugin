@@ -32,6 +32,7 @@ const MonacoJSONEditor = forwardRef(
           throw new Error("Value can not be empty");
         }
         JSON.parse(value);
+        setConfirmModalVisible(false);
         onChange && onChange(value);
       } catch (e) {
         setConfirmModalVisible(true);
