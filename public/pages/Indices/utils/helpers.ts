@@ -169,7 +169,7 @@ export async function splitIndex(props: {
         toastId: toastInstance.id,
         sourceIndex: props.sourceIndex,
         destIndex: props.targetIndex,
-        taskId: result.response.task,
+        taskId: result.response?.task,
       },
       type: ListenType.SPLIT,
     } as RecoveryJobMetaData);
