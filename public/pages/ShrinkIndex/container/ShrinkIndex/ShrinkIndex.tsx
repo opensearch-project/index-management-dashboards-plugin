@@ -165,7 +165,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             toastId: toastInstance.id,
             sourceIndex: sourceIndexName,
             destIndex: targetIndexName,
-            taskId: result.response.task,
+            taskId: result.response?.task,
           },
           type: ListenType.SHRINK,
         } as RecoveryJobMetaData);

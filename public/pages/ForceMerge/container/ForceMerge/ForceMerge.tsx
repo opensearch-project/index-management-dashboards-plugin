@@ -89,7 +89,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
         extras: {
           toastId: toastInstance.id,
           sourceIndex: indexes,
-          taskId: result.response.task,
+          taskId: result.response?.task,
         },
         interval: 30000,
       } as ForceMergeJobMetaData);
