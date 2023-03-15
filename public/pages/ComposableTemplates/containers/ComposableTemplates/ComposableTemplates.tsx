@@ -280,19 +280,19 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               },
             },
             {
+              field: "templateTypes",
+              name: "Type",
+              sortable: true,
+              render: (value: string, record: ICatComposableTemplate) => {
+                return <ComponentTemplateBadge template={record.component_template.template} />;
+              },
+            },
+            {
               field: "description",
               name: "Descriptions",
               sortable: true,
               render: (value: string, record: ICatComposableTemplate) => {
                 return record.component_template._meta?.description || "-";
-              },
-            },
-            {
-              field: "templateTypes",
-              name: "Template types",
-              sortable: true,
-              render: (value: string, record: ICatComposableTemplate) => {
-                return <ComponentTemplateBadge template={record.component_template.template} />;
               },
             },
           ]}
