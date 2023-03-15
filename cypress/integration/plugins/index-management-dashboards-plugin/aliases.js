@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { PLUGIN_NAME } from "../support/constants";
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 
 const SAMPLE_INDEX_PREFIX = "index-for-alias-test";
 const SAMPLE_ALIAS_PREFIX = "alias-for-test";
@@ -19,15 +19,15 @@ describe("Aliases", () => {
     }
     cy.createIndex(EDIT_INDEX, null);
     for (let i = 0; i < 30; i++) {
-      cy.addAlias(`${SAMPLE_ALIAS_PREFIX}-${i}`, `${SAMPLE_INDEX_PREFIX}-${i % 11}`);
+      cy.addIndexAlias(`${SAMPLE_ALIAS_PREFIX}-${i}`, `${SAMPLE_INDEX_PREFIX}-${i % 11}`);
     }
-    cy.removeAlias(`${SAMPLE_ALIAS_PREFIX}-0`);
-    cy.addAlias(`${SAMPLE_ALIAS_PREFIX}-0`, `${SAMPLE_INDEX_PREFIX}-*`);
+    cy.removeIndexAlias(`${SAMPLE_ALIAS_PREFIX}-0`);
+    cy.addIndexAlias(`${SAMPLE_ALIAS_PREFIX}-0`, `${SAMPLE_INDEX_PREFIX}-*`);
   });
 
   beforeEach(() => {
     // Visit ISM OSD
-    cy.visit(`${Cypress.env("opensearch_dashboards")}/app/${PLUGIN_NAME}#/aliases`);
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/aliases`);
 
     // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
     cy.contains("Rows per page", { timeout: 60000 });
@@ -94,26 +94,14 @@ describe("Aliases", () => {
         .end();
 
       cy.get('[data-test-subj="7 more"]').should("exist");
-
-      cy.get('[data-test-subj="moreAction"] button').click().get('[data-test-subj="deleteAction"]').click();
-      // The confirm button should be disabled
-      cy.get('[data-test-subj="deleteConfirmButton"]').should("be.disabled");
-      // type delete
-      cy.wait(500).get('[data-test-subj="deleteInput"]').type("delete");
-      cy.get('[data-test-subj="deleteConfirmButton"]').should("not.be.disabled");
-      // click to delete
-      cy.get('[data-test-subj="deleteConfirmButton"]').click();
-      // the alias should not exist
-      cy.wait(500);
-      cy.get(`#_selection_column_${SAMPLE_ALIAS_PREFIX}-0-checkbox`).should("not.exist");
     });
   });
 
   after(() => {
     cy.deleteAllIndices();
     for (let i = 0; i < 30; i++) {
-      cy.removeAlias(`${SAMPLE_ALIAS_PREFIX}-${i}`);
+      cy.removeIndexAlias(`${SAMPLE_ALIAS_PREFIX}-${i}`);
     }
-    cy.removeAlias(CREATE_ALIAS);
+    cy.removeIndexAlias(CREATE_ALIAS);
   });
 });

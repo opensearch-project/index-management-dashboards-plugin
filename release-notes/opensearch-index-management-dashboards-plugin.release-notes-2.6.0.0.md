@@ -3,7 +3,9 @@
 Compatible with OpenSearch 2.6.0
 
 ### Features
-* Feature: force merge. ([#608](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/608))
+* Feature: Add index operation of force merge  ([#608](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/608))
+* Feature: Add data stream management page  ([#605](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/605))
+* Feature: Add index operation of rollover  ([#607](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/607))
 
 ### Bug Fixes
 * Remove inaccurate pre-check in shrink index page. ([#570](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/570))
@@ -18,4 +20,4 @@ Compatible with OpenSearch 2.6.0
 * Bumped version to 2.6. ([#630](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/630))
 
 ### Documentation
-* Added 2.6 release notes. ([#]())
+* 2.6 release note ([#632](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/632))
