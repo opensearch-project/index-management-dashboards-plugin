@@ -2,6 +2,7 @@ import { monaco } from "@osd/monaco";
 import { euiThemeVars } from "@osd/ui-shared-deps/theme";
 import { useEffect, useRef } from "react";
 import { DiagnosticsOptions } from "./interface";
+import "../../lib/monaco";
 
 monaco.editor.defineTheme("ismJSONTheme", {
   base: "vs",
