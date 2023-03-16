@@ -33,11 +33,13 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import ComposableTemplatesActions from "../ComposableTemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
-import { getAllUsedComponents } from "../../utils/services";
 import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
+import { useComponentMapTemplate } from "../../utils/hooks";
 
 interface ComposableTemplatesProps extends RouteComponentProps {
   commonService: CommonService;
+  componentMapTemplate: Record<string, string[]>;
+  loading: boolean;
 }
 
 type ComposableTemplatesState = {
@@ -106,9 +108,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
 
   getComposableTemplatesOriginal = async (): Promise<void> => {
     this.setState({ loading: true });
-    const { from, size, search, sortDirection, sortField } = this.state;
-    const fromNumber = Number(from);
-    const sizeNumber = Number(size);
+    const { search } = this.state;
     const { history, commonService } = this.props;
     const queryObject = this.getQueryState(this.state);
     const queryParamsString = queryString.stringify(queryObject);
@@ -125,19 +125,6 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       hideLog: true,
     });
 
-    const allIndicesTemplates = await getAllUsedComponents({
-      commonService,
-    });
-
-    const componentMapTemplate: Record<string, string[]> = {};
-
-    allIndicesTemplates.forEach((item) => {
-      item.index_template.composed_of?.forEach((composedItem) => {
-        componentMapTemplate[composedItem] = componentMapTemplate[composedItem] || [];
-        componentMapTemplate[composedItem].push(item.name);
-      });
-    });
-
     let listResponse: ICatComposableTemplate[] = [];
 
     if (!allComposableTemplatesResponse.ok) {
@@ -146,31 +133,10 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         this.context.notifications.toasts.addDanger(allComposableTemplatesResponse.error);
       }
     } else {
-      listResponse = (allComposableTemplatesResponse.response.component_templates || []).map((item) => ({
-        ...item,
-        usedBy: componentMapTemplate[item.name] || [],
-        associatedCount: (componentMapTemplate[item.name] || []).length,
-      }));
-
-      // sort
-      listResponse = listResponse.sort((a, b) => {
-        if (sortDirection === "asc") {
-          if (get(a, sortField, 0) < get(b, sortField, 0)) {
-            return -1;
-          }
-
-          return 1;
-        } else {
-          if (get(a, sortField, 0) > get(b, sortField, 0)) {
-            return -1;
-          }
-
-          return 1;
-        }
-      });
+      listResponse = allComposableTemplatesResponse.response.component_templates || [];
     }
     const payload = {
-      composableTemplates: listResponse.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
+      composableTemplates: listResponse,
       totalComposableTemplates: listResponse.length,
       selectedItems: this.state.selectedItems
         .map((item) => listResponse.find((remoteItem) => remoteItem.name === item.name))
@@ -203,6 +169,39 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
 
   onSearchChange = (params: Parameters<SearchControlsProps["onSearchChange"]>[0]): void => {
     this.setState({ from: "0", ...params }, () => this.getComposableTemplates());
+  };
+
+  getFinalItems = (allTemplates: ICatComposableTemplate[]) => {
+    const { from, size, sortDirection, sortField } = this.state;
+    const fromNumber = Number(from);
+    const sizeNumber = Number(size);
+    const componentMapTemplate = this.props.componentMapTemplate;
+    // enhance with component map
+    let listResponse = (allTemplates || []).map((item) => ({
+      ...item,
+      usedBy: componentMapTemplate[item.name] || [],
+      associatedCount: (componentMapTemplate[item.name] || []).length,
+    }));
+
+    // sort
+    listResponse = listResponse.sort((a, b) => {
+      if (sortDirection === "asc") {
+        if (get(a, sortField, 0) < get(b, sortField, 0)) {
+          return -1;
+        }
+
+        return 1;
+      } else {
+        if (get(a, sortField, 0) > get(b, sortField, 0)) {
+          return -1;
+        }
+
+        return 1;
+      }
+    });
+
+    //pagination
+    return listResponse.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber);
   };
 
   render() {
@@ -284,7 +283,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
 
         <EuiBasicTable
           data-test-subj="templatesTable"
-          loading={this.state.loading}
+          loading={this.state.loading || this.props.loading}
           columns={[
             {
               field: "name",
@@ -318,14 +317,9 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               name: "Associated templates",
               sortable: true,
               render: (value: number, record: ICatComposableTemplate) => {
-                if (value === 0) {
-                  return value;
-                }
-
                 return (
                   <AssociatedTemplatesModal
                     componentTemplate={record.name}
-                    associatedTemplates={record.usedBy}
                     onUnlink={() => this.getComposableTemplates()}
                     renderProps={({ setVisible }) => <EuiLink onClick={() => setVisible(true)}>{value}</EuiLink>}
                   />
@@ -335,7 +329,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
           ]}
           isSelectable={true}
           itemId="name"
-          items={composableTemplates}
+          items={this.getFinalItems(composableTemplates)}
           onChange={this.onTableChange}
           pagination={pagination}
           selection={selection}
@@ -392,7 +386,17 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
   }
 }
 
-export default function ComposableTemplatesContainer(props: Omit<ComposableTemplatesProps, "commonService">) {
+export default function ComposableTemplatesContainer(
+  props: Omit<ComposableTemplatesProps, "commonService" | "loading" | "componentMapTemplate">
+) {
   const context = useContext(ServicesContext);
-  return <ComposableTemplates {...props} commonService={context?.commonService as CommonService} />;
+  const { componentMapTemplate, loading } = useComponentMapTemplate();
+  return (
+    <ComposableTemplates
+      {...props}
+      loading={loading}
+      componentMapTemplate={componentMapTemplate}
+      commonService={context?.commonService as CommonService}
+    />
+  );
 }

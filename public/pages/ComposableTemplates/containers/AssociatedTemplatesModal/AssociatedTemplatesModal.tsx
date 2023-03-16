@@ -11,20 +11,20 @@ import { EuiButtonIcon, EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader, EuiInMemoryTa
 import { ROUTES } from "../../../../utils/constants";
 import { ReactChild } from "react";
 import { Modal } from "../../../../components/Modal";
-import { getTemplate } from "../../utils/hooks";
+import { getTemplate, useComponentMapTemplate } from "../../utils/hooks";
 import { BrowserServices } from "../../../../models/interfaces";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 
 interface AssociatedTemplatesModalProps {
   componentTemplate: string;
-  associatedTemplates: string[];
-  onUnlink: (unlinkTemplate: string) => void;
+  onUnlink?: (unlinkTemplate: string) => void;
   renderProps: (params: { setVisible: Dispatch<SetStateAction<boolean>> }) => ReactChild;
 }
 
 export default function AssociatedTemplatesModalProps(props: AssociatedTemplatesModalProps) {
-  const { onUnlink, associatedTemplates, renderProps, componentTemplate } = props;
+  const { onUnlink, renderProps, componentTemplate } = props;
   const [visible, setVisible] = useState(false);
+  const { loading, componentMapTemplate, reload } = useComponentMapTemplate();
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
 
@@ -40,7 +40,8 @@ export default function AssociatedTemplatesModalProps(props: AssociatedTemplates
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
             <EuiInMemoryTable
-              items={associatedTemplates.map((item) => ({
+              loading={loading}
+              items={(componentMapTemplate[componentTemplate] || []).map((item) => ({
                 name: item,
               }))}
               columns={[
@@ -89,7 +90,8 @@ export default function AssociatedTemplatesModalProps(props: AssociatedTemplates
                                 },
                               });
                               if (updateResult.ok) {
-                                onUnlink(record.name);
+                                onUnlink?.(record.name);
+                                reload(true);
                                 coreServices.notifications.toasts.addSuccess(
                                   `${componentTemplate} has been successfully unlinked from ${record.name}.`
                                 );

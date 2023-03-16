@@ -3,8 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import { CoreStart } from "opensearch-dashboards/public";
-import { CommonService } from "../../../services";
+import { CommonService, ServicesContext } from "../../../services";
 import { TemplateItem, TemplateItemRemote } from "../../../../models/interfaces";
+import { getAllUsedComponents } from "./services";
+import { useState, useCallback } from "react";
+import { useContext } from "react";
+import { BrowserServices } from "../../../models/interfaces";
+import { useEffect } from "react";
 
 export const getTemplate = async (props: {
   templateName: string;
@@ -34,4 +39,93 @@ export const getTemplate = async (props: {
 
   props.coreService.notifications.toasts.addDanger(error);
   throw new Error(error);
+};
+
+export const getComponentMapTemplate = async ({ commonService }: { commonService: CommonService }) => {
+  const allIndicesTemplates = await getAllUsedComponents({
+    commonService,
+  });
+
+  const componentMapTemplate: Record<string, string[]> = {};
+
+  allIndicesTemplates.forEach((item) => {
+    item.index_template.composed_of?.forEach((composedItem) => {
+      componentMapTemplate[composedItem] = componentMapTemplate[composedItem] || [];
+      componentMapTemplate[composedItem].push(item.name);
+    });
+  });
+
+  return componentMapTemplate;
+};
+
+const cache: {
+  usedRequest: Promise<Record<string, string[]>> | undefined;
+} = {
+  usedRequest: undefined,
+};
+
+let listenerNumber = 0;
+
+const CACHE_REFRESH_EVENT = "CACHE_REFRESH_EVENT";
+
+export const getComponentMapTemplateWithCache = (
+  props: Parameters<typeof getComponentMapTemplate>[0] & {
+    force?: boolean;
+  }
+) => {
+  if (props.force || !cache.usedRequest) {
+    cache.usedRequest = getComponentMapTemplate({
+      commonService: props.commonService,
+    });
+  }
+  return cache.usedRequest;
+};
+
+export const useComponentMapTemplate = () => {
+  const [componentMapTemplate, setComponentMapTemplate] = useState<Record<string, string[]>>({});
+  const [loading, setLoading] = useState(false);
+  const services = useContext(ServicesContext) as BrowserServices;
+
+  const reload = useCallback((force?: boolean) => {
+    setLoading(true);
+    getComponentMapTemplateWithCache({
+      force,
+      commonService: services.commonService,
+    }).then((res) => {
+      if (force) {
+        window.dispatchEvent(new CustomEvent(CACHE_REFRESH_EVENT));
+      }
+      setComponentMapTemplate(res);
+      setLoading(false);
+    });
+  }, []);
+
+  const eventHandler = useCallback(() => {
+    reload();
+  }, [reload]);
+
+  useEffect(() => {
+    reload();
+    window.addEventListener(CACHE_REFRESH_EVENT, eventHandler);
+    listenerNumber++;
+    return () => {
+      window.removeEventListener(CACHE_REFRESH_EVENT, eventHandler);
+      listenerNumber--;
+      if (listenerNumber === 0) {
+        /**
+         * when all the listeners are gone
+         * we should clear the usedRequest
+         * so that the componentTemplates page
+         * will re-fetch the index templates data
+         */
+        cache.usedRequest = undefined;
+      }
+    };
+  }, [eventHandler]);
+
+  return {
+    reload,
+    loading,
+    componentMapTemplate,
+  };
 };
