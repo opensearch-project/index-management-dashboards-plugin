@@ -112,7 +112,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
               }
 
               return (
-                <EuiFlexGroup alignItems="center">
+                <EuiFlexGroup key={item} alignItems="center">
                   <EuiFlexItem grow={false}>
                     <EuiText style={{ width: 20, marginLeft: 8 }}>{index + 1}</EuiText>
                   </EuiFlexItem>

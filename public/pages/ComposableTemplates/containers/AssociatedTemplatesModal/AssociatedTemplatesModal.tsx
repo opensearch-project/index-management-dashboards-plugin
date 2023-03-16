@@ -60,6 +60,7 @@ export default function AssociatedTemplatesModalProps(props: AssociatedTemplates
                   render: (value: string, record) => {
                     return (
                       <EuiButtonIcon
+                        aria-label={`Unlink from ${record.name}?`}
                         iconType="unlink"
                         onClick={() => {
                           Modal.show({
