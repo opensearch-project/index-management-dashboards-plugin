@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import { debounce, isEqual } from "lodash";
+import { debounce, isEqual, get } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -33,6 +33,8 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import ComposableTemplatesActions from "../ComposableTemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
+import { getAllUsedComponents } from "../../utils/services";
+import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
 
 interface ComposableTemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -123,6 +125,19 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       hideLog: true,
     });
 
+    const allIndicesTemplates = await getAllUsedComponents({
+      commonService,
+    });
+
+    const componentMapTemplate: Record<string, string[]> = {};
+
+    allIndicesTemplates.forEach((item) => {
+      item.index_template.composed_of?.forEach((composedItem) => {
+        componentMapTemplate[composedItem] = componentMapTemplate[composedItem] || [];
+        componentMapTemplate[composedItem].push(item.name);
+      });
+    });
+
     let listResponse: ICatComposableTemplate[] = [];
 
     if (!allComposableTemplatesResponse.ok) {
@@ -131,18 +146,22 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         this.context.notifications.toasts.addDanger(allComposableTemplatesResponse.error);
       }
     } else {
-      listResponse = allComposableTemplatesResponse.response.component_templates || [];
+      listResponse = (allComposableTemplatesResponse.response.component_templates || []).map((item) => ({
+        ...item,
+        usedBy: componentMapTemplate[item.name] || [],
+        associatedCount: (componentMapTemplate[item.name] || []).length,
+      }));
 
       // sort
       listResponse = listResponse.sort((a, b) => {
         if (sortDirection === "asc") {
-          if (a[sortField] < b[sortField]) {
+          if (get(a, sortField, 0) < get(b, sortField, 0)) {
             return -1;
           }
 
           return 1;
         } else {
-          if (a[sortField] > b[sortField]) {
+          if (get(a, sortField, 0) > get(b, sortField, 0)) {
             return -1;
           }
 
@@ -282,17 +301,35 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
             {
               field: "templateTypes",
               name: "Type",
-              sortable: true,
               render: (value: string, record: ICatComposableTemplate) => {
                 return <ComponentTemplateBadge template={record.component_template.template} />;
               },
             },
             {
-              field: "description",
+              field: "component_template._meta.description",
               name: "Descriptions",
               sortable: true,
               render: (value: string, record: ICatComposableTemplate) => {
                 return record.component_template._meta?.description || "-";
+              },
+            },
+            {
+              field: "associatedCount",
+              name: "Associated templates",
+              sortable: true,
+              render: (value: number, record: ICatComposableTemplate) => {
+                if (value === 0) {
+                  return value;
+                }
+
+                return (
+                  <AssociatedTemplatesModal
+                    componentTemplate={record.name}
+                    associatedTemplates={record.usedBy}
+                    onUnlink={() => this.getComposableTemplates()}
+                    renderProps={({ setVisible }) => <EuiLink onClick={() => setVisible(true)}>{value}</EuiLink>}
+                  />
+                );
               },
             },
           ]}

@@ -4,14 +4,14 @@
  */
 import React, { useMemo, useState, useContext, useEffect } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiContextMenu } from "@elastic/eui";
-import SimplePopover from "../../../../components/SimplePopover";
+import { EuiButton } from "@elastic/eui";
 import DeleteIndexModal from "../DeleteComposableTemplatesModal";
 import { ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import { BrowserServices } from "../../../../../public/models/interfaces";
 import { Modal } from "../../../../components/Modal";
+import { getAllUsedComponents } from "../../utils/services";
 
 export interface ComposableTemplatesActionsProps {
   selectedItems: string[];
@@ -35,81 +35,31 @@ export default function ComposableTemplatesActions(props: ComposableTemplatesAct
     setDeleteIndexModalVisible(false);
   };
 
-  const getAllUsedComponents = async () => {
-    const allTemplatesResponse = await services.commonService.apiCaller<{
-      index_templates?: {
-        name: string;
-        index_template: TemplateItemRemote;
-      }[];
-    }>({
-      endpoint: "transport.request",
-      data: {
-        method: "GET",
-        path: "_index_template/*",
-      },
-    });
-
-    if (allTemplatesResponse.ok) {
-      return allTemplatesResponse.response.index_templates || [];
-    }
-
-    return [];
-  };
-
   const allUsedComponent = useMemo(
     () => allIndexTemplates.reduce((total, current) => [...total, ...(current.index_template.composed_of || [])], [] as string[]),
     [allIndexTemplates]
   );
 
-  const renderKey = useMemo(() => Date.now(), [selectedItems]);
-
   useEffect(() => {
-    getAllUsedComponents().then((res) => setAllIndexTemplates(res));
+    getAllUsedComponents({
+      commonService: services.commonService,
+    }).then((res) => setAllIndexTemplates(res));
   }, []);
 
   return (
     <>
-      <SimplePopover
-        data-test-subj="moreAction"
-        panelPaddingSize="none"
-        button={
-          <EuiButton iconType="arrowDown" iconSide="right">
-            Actions
-          </EuiButton>
-        }
+      <EuiButton
+        disabled={selectedItems.length !== 1}
+        onClick={() => {
+          if (selectedItems.some((item) => allUsedComponent.includes(item))) {
+            setAlertModalVisible(true);
+          } else {
+            setDeleteIndexModalVisible(true);
+          }
+        }}
       >
-        <EuiContextMenu
-          initialPanelId={0}
-          // The EuiContextMenu has bug when testing in jest
-          // the props change won't make it rerender
-          key={renderKey}
-          panels={[
-            {
-              id: 0,
-              items: [
-                {
-                  name: "Edit",
-                  disabled: selectedItems.length !== 1,
-                  "data-test-subj": "editAction",
-                  onClick: () => props.history.push(`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${selectedItems[0]}`),
-                },
-                {
-                  name: "Delete",
-                  disabled: selectedItems.length !== 1,
-                  "data-test-subj": "deleteAction",
-                  onClick: () => {
-                    if (selectedItems.some((item) => allUsedComponent.includes(item))) {
-                      setAlertModalVisible(true);
-                    } else {
-                      setDeleteIndexModalVisible(true);
-                    }
-                  },
-                },
-              ],
-            },
-          ]}
-        />
-      </SimplePopover>
+        Delete
+      </EuiButton>
       <DeleteIndexModal
         selectedItems={selectedItems}
         visible={deleteIndexModalVisible}

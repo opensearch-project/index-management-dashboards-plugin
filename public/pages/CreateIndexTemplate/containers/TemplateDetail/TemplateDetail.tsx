@@ -100,7 +100,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       coreServices.notifications.toasts.addSuccess(`${templateDetail.name} has been successfully ${isEdit ? "updated" : "created"}.`);
       onSubmitSuccess && onSubmitSuccess(templateDetail.name);
     } else {
-      coreServices.notifications.toasts.addDanger(result.error);
+      coreServices.notifications.toasts.addDanger(result.body?.error?.caused_by?.reason || result.error);
     }
     if (destroyRef.current) {
       return;
