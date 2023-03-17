@@ -5,13 +5,13 @@ import AliasSelect from "../../../../components/AliasSelect";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
-import DescriptionListHoz from "../../../../components/DescriptionListHoz";
-import { ALIAS_SELECT_RULE } from "../../../../utils/constants";
+import { ALIAS_SELECT_RULE, IndicesUpdateMode } from "../../../../utils/constants";
 import { getCommonFormRowProps } from "../../hooks";
 import { SubDetailProps } from "../../interface";
+import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 
 export default function IndexAlias(props: SubDetailProps) {
-  const { readonly, field } = props;
+  const { field, isEdit } = props;
   const values = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
   return (
@@ -31,26 +31,26 @@ export default function IndexAlias(props: SubDetailProps) {
           </CustomFormRow>
         </>
       }
+      actions={
+        <div>
+          <AllBuiltInComponents.Switch
+            {...field.registerField({
+              name: ["includes", IndicesUpdateMode.alias],
+            })}
+            label="Use configuration"
+            showLabel
+          />
+        </div>
+      }
       titleSize="s"
     >
-      {readonly ? (
-        <>
-          <EuiSpacer size="s" />
-          <DescriptionListHoz
-            listItems={[
-              {
-                title: "Alias names",
-                description: Object.keys(values?.template?.aliases || {}).join(",") || "-",
-              },
-            ]}
-          />
-        </>
-      ) : (
+      {values.includes?.[IndicesUpdateMode.alias] ? (
         <>
           <EuiSpacer size="s" />
           <CustomFormRow
             fullWidth
             {...getCommonFormRowProps(["template", "aliases"], field)}
+            direction={isEdit ? "hoz" : "ver"}
             label="Index alias"
             helpText="Select existing aliases or specify a new alias."
           >
@@ -73,7 +73,7 @@ export default function IndexAlias(props: SubDetailProps) {
             />
           </CustomFormRow>
         </>
-      )}
+      ) : null}
     </ContentPanel>
   );
 }

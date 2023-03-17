@@ -166,24 +166,12 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiSpacer />
       <DefineTemplate {...subCompontentProps} />
       <EuiSpacer />
-      {values.includes?.aliases ? (
-        <>
-          <IndexAlias {...subCompontentProps} />
-          <EuiSpacer />
-        </>
-      ) : null}
-      {values.includes?.settings ? (
-        <>
-          <IndexSettings {...subCompontentProps} />
-          <EuiSpacer />
-        </>
-      ) : null}
-      {values.includes?.mappings ? (
-        <>
-          <TemplateMappings {...subCompontentProps} />
-          <EuiSpacer />
-        </>
-      ) : null}
+      <IndexAlias {...subCompontentProps} />
+      <EuiSpacer />
+      <IndexSettings {...subCompontentProps} />
+      <EuiSpacer />
+      <TemplateMappings {...subCompontentProps} />
+      <EuiSpacer />
       {readonly ? null : (
         <>
           <EuiSpacer />
