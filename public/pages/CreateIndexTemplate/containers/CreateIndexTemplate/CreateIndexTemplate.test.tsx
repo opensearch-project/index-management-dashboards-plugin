@@ -44,7 +44,7 @@ describe("<CreateIndexTemplate /> spec", () => {
   });
   it("it goes to templates page when click cancel", async () => {
     const { getByTestId, getByText, findByTitle, container } = renderCreateIndexTemplateWithRouter([
-      `${ROUTES.CREATE_TEMPLATE}/good_template/readonly`,
+      `${ROUTES.CREATE_TEMPLATE}/good_template`,
     ]);
     await findByTitle("good_template");
     expect(container).toMatchSnapshot();

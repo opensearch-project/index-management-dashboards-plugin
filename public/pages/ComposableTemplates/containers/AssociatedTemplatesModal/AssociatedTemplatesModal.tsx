@@ -50,7 +50,7 @@ export default function AssociatedTemplatesModalProps(props: AssociatedTemplates
                   field: "name",
                   sortable: true,
                   render: (value: string, record) => (
-                    <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
+                    <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_TEMPLATE}/${value}`}>
                       {value}
                     </EuiLink>
                   ),

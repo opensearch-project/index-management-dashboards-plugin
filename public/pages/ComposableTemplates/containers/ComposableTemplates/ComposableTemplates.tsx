@@ -291,7 +291,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               sortable: true,
               render: (value: string) => {
                 return (
-                  <Link to={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${value}/readonly`}>
+                  <Link to={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${value}`}>
                     <EuiLink>{value}</EuiLink>
                   </Link>
                 );

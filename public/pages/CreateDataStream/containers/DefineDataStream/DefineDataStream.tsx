@@ -110,7 +110,7 @@ export default function DefineDataStream(
           },
           {
             title: "Template name",
-            description: <EuiLink href={`#${ROUTES.CREATE_TEMPLATE}/${values.template}/readonly`}>{values.template}</EuiLink>,
+            description: <EuiLink href={`#${ROUTES.CREATE_TEMPLATE}/${values.template}`}>{values.template}</EuiLink>,
           },
           {
             title: "Backing indexes",
@@ -217,7 +217,7 @@ export default function DefineDataStream(
       <EuiSpacer />
       <CustomFormRow label="Matching template">
         {values.matchedTemplate ? (
-          <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_TEMPLATE}/${values.matchedTemplate}/readonly`}>
+          <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_TEMPLATE}/${values.matchedTemplate}`}>
             {values.matchedTemplate}
           </EuiLink>
         ) : (

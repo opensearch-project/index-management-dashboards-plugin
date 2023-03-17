@@ -152,7 +152,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
                                 />
                               )}
                               <EuiButtonIcon
-                                onClick={() => window.open(`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}/readonly`)}
+                                onClick={() => window.open(`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}`)}
                                 style={{ marginLeft: 12 }}
                                 iconType="inspect"
                                 color="primary"

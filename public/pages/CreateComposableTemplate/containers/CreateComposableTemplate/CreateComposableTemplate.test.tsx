@@ -50,7 +50,7 @@ describe("<CreateComposableTemplate /> spec", () => {
   });
   it("it goes to templates page when click cancel", async () => {
     const { getByTestId, getByText, findByTitle, container } = renderCreateComposableTemplateWithRouter([
-      `${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/good_template/readonly`,
+      `${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/good_template`,
     ]);
     await findByTitle("good_template");
     expect(container).toMatchSnapshot();
