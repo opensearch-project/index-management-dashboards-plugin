@@ -5,6 +5,7 @@
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { RouteComponentProps } from "react-router-dom";
 import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -12,10 +13,9 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
-import { submitTemplate, getTemplate } from "./hooks";
+import { submitTemplate, getTemplate, formatRemoteTemplateToEditTemplate } from "../../hooks";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
-import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import DefineTemplate from "../../components/DefineTemplate";
 import IndexSettings from "../../components/IndexSettings";
@@ -23,6 +23,10 @@ import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
 import { IndexForm } from "../../../../containers/IndexForm";
 import ComposableTemplatesActions from "../../../ComposableTemplates/containers/ComposableTemplatesActions";
+import { diffJson } from "../../../../utils/helpers";
+import { ComponentTemplateEdit } from "../../interface";
+import { formatTemplate } from "../../hooks";
+import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -38,7 +42,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const oldValue = useRef<IComposableTemplateRemote | undefined>(undefined);
+  const oldValue = useRef<IComposableTemplate | undefined>(undefined);
   const field = useField({
     values: {
       template: {},
@@ -50,7 +54,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     if (errors) {
       return;
     }
-    const { includes, template, ...others } = templateDetail as IComposableTemplate;
+    const { includes, template, ...others } = templateDetail as ComponentTemplateEdit;
     const payload: Partial<IComposableTemplate> = {
       ...others,
     };
@@ -71,39 +75,44 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       commonService: services.commonService,
       isEdit,
     });
-    if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess(`${templateDetail.name} has been successfully ${isEdit ? "updated" : "created"}.`);
-      onSubmitSuccess && onSubmitSuccess(templateDetail.name);
-    } else {
-      coreServices.notifications.toasts.addDanger(result.error);
-    }
     if (destroyRef.current) {
-      return;
+      return result;
     }
     setIsSubmitting(false);
+    if (result.ok) {
+      return result;
+    } else {
+      return {
+        ...result,
+        error: result?.body?.error?.caused_by?.reason || result.error,
+      };
+    }
   };
   useImperativeHandle(ref, () => field);
+  const refreshTemplate = () => {
+    getTemplate({
+      templateName: templateName || "",
+      coreService: coreServices,
+      commonService: services.commonService,
+    })
+      .then((template) => {
+        oldValue.current = JSON.parse(JSON.stringify(template));
+        field.resetValues(template);
+      })
+      .catch(() => {
+        // do nothing
+        props.history.replace(ROUTES.COMPOSABLE_TEMPLATES);
+      });
+  };
   useEffect(() => {
     if (isEdit) {
-      getTemplate({
-        templateName,
-        coreService: coreServices,
-        commonService: services.commonService,
-      })
-        .then((template) => {
-          oldValue.current = template;
-          field.resetValues(template);
-        })
-        .catch(() => {
-          // do nothing
-          props.history.replace(ROUTES.COMPOSABLE_TEMPLATES);
-        });
+      refreshTemplate();
     }
     return () => {
       destroyRef.current = true;
     };
   }, []);
-  const values: IComposableTemplate & { name: string } = field.getValues();
+  const values: ComponentTemplateEdit = field.getValues();
   const subCompontentProps = {
     ...props,
     isEdit,
@@ -139,7 +148,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             <EuiButton
               style={{ marginRight: 20 }}
               onClick={() => {
-                const showValue: IComposableTemplateRemote = JSON.parse(
+                const showValue: ComponentTemplateEdit = JSON.parse(
                   JSON.stringify({
                     ...values,
                     template: IndexForm.transformIndexDetailToRemote(values.template),
@@ -172,7 +181,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiSpacer />
       <TemplateMappings {...subCompontentProps} />
       <EuiSpacer />
-      {readonly ? null : (
+      {isEdit ? null : (
         <>
           <EuiSpacer />
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
@@ -182,13 +191,69 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
-                {isEdit ? "Save changes" : "Create template"}
+              <EuiButton
+                fill
+                onClick={async () => {
+                  const result = await onSubmit();
+                  if (result) {
+                    if (result.ok) {
+                      coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully created.`);
+                      onSubmitSuccess && onSubmitSuccess(values.name);
+                    } else {
+                      coreServices.notifications.toasts.addDanger(result.error);
+                    }
+                  }
+                }}
+                isLoading={isSubmitting}
+                data-test-subj="CreateComposableTemplateCreateButton"
+              >
+                Create template
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </>
       )}
+      {isEdit &&
+      diffJson(
+        formatTemplate({
+          name: values.name,
+          ...oldValue.current,
+        }),
+        formatTemplate(values)
+      ) ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="updateTemplateButton"
+          unsavedCount={diffJson(
+            formatTemplate({
+              name: values.name,
+              ...oldValue.current,
+            }),
+            formatTemplate(values)
+          )}
+          onClickCancel={async () => {
+            field.resetValues(
+              formatRemoteTemplateToEditTemplate({
+                templateDetail: {
+                  ...oldValue.current,
+                  template: IndexForm.transformIndexDetailToRemote(oldValue.current?.template),
+                },
+                templateName: values.name,
+              })
+            );
+          }}
+          onClickSubmit={async () => {
+            const result = await onSubmit();
+            if (result) {
+              if (result.ok) {
+                coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully updated.`);
+                refreshTemplate();
+              } else {
+                coreServices.notifications.toasts.addDanger(result.error);
+              }
+            }
+          }}
+        />
+      ) : null}
     </>
   );
 };

@@ -45,7 +45,6 @@ export default function DefineTemplate(props: SubDetailProps) {
         {...getCommonFormRowProps(["_meta", "description"], field)}
         label="Descriptions - optional"
         helpText="Describe the purpose or contents to help you identify this component."
-        position="bottom"
         direction={isEdit ? "hoz" : "ver"}
       >
         <AllBuiltInComponents.Input

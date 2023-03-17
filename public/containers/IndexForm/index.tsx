@@ -9,7 +9,7 @@ import { diffArrays } from "diff";
 import flattern from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
 import IndexDetail, { IndexDetailProps, IIndexDetailRef } from "../../components/IndexDetail";
-import { IAliasAction, IndexItem, IndexItemRemote } from "../../../models/interfaces";
+import { DiffableIndexItemRemote, IAliasAction, IndexItem, IndexItemRemote } from "../../../models/interfaces";
 import { IndicesUpdateMode } from "../../utils/constants";
 import { CoreServicesContext } from "../../components/core_services";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping/IndexMapping";
@@ -69,6 +69,13 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       set(newPayload, "mappings.properties", transformArrayToObject(get(newPayload, "mappings.properties", [])));
     }
     return newPayload as IndexItemRemote;
+  }
+  static transformIndexDetailToDiffableJSON(payload?: Partial<IndexItem>): Partial<DiffableIndexItemRemote> {
+    const newPayload = JSON.parse(JSON.stringify({ ...payload }));
+    if (newPayload.mappings && newPayload.mappings.properties) {
+      set(newPayload, "mappings.properties", this.transformIndexDetailToDiffableJSON(get(newPayload, "mappings.properties", [])));
+    }
+    return newPayload as DiffableIndexItemRemote;
   }
 
   async validate() {

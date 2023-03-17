@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { MappingsProperties, MappingsPropertiesObject } from "../../../models/interfaces";
+import { DiffableMappingsPropertiesObject, MappingsProperties, MappingsPropertiesObject } from "../../../models/interfaces";
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
   return Object.entries(obj).map(([fieldName, fieldSettings]) => {
@@ -32,6 +32,22 @@ export const transformArrayToObject = (array: MappingsProperties): MappingsPrope
       [current.fieldName]: payload,
     };
   }, {} as MappingsPropertiesObject);
+};
+
+export const transformArrayToDiffableObject = (array: MappingsProperties): DiffableMappingsPropertiesObject => {
+  return array.reduce((total, current, index) => {
+    const { properties, ...others } = current;
+    const payload: MappingsPropertiesObject[string] = {
+      ...others,
+    };
+    if (properties) {
+      payload.properties = transformArrayToObject(properties);
+    }
+    return {
+      ...total,
+      [index]: payload,
+    };
+  }, {} as DiffableMappingsPropertiesObject);
 };
 
 export const countNodesInTree = (array: MappingsProperties) => {

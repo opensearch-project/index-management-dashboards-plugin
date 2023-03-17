@@ -32,6 +32,15 @@ export type MappingsPropertiesObject = Record<
   }
 >;
 
+export type DiffableMappingsPropertiesObject = Record<
+  string,
+  {
+    fieldName: string;
+    type: string;
+    properties?: MappingsPropertiesObject;
+  }
+>;
+
 export type MappingsProperties = {
   fieldName: string;
   type: string;
@@ -69,6 +78,12 @@ export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
   };
 }
 
+export interface DiffableIndexItemRemote extends Omit<IndexItem, "mappings"> {
+  mappings?: {
+    proerties?: DiffableMappingsPropertiesObject;
+  };
+}
+
 interface ITemplateExtras {
   name: string;
   data_stream?: {};
@@ -81,11 +96,6 @@ interface ITemplateExtras {
 interface IComposableTemplateExtras {
   _meta?: {
     description?: string;
-  };
-  includes?: {
-    [IndicesUpdateMode.alias]?: boolean;
-    [IndicesUpdateMode.mappings]?: boolean;
-    [IndicesUpdateMode.settings]?: boolean;
   };
 }
 
