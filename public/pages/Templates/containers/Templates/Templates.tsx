@@ -34,6 +34,7 @@ import TemplatesActions from "../TemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
+import AssociatedComponentsModal from "../AssociatedComponentsModal";
 
 interface TemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -307,11 +308,15 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               field: "composed_of",
               name: "Associated components",
               render: (value: string, record) => {
-                return record.templateDetail?.composed_of?.map((component) => (
-                  <Link style={{ padding: "0 4px" }} key={component} to={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${component}/readonly`}>
-                    {component}
-                  </Link>
-                ));
+                return (
+                  <AssociatedComponentsModal
+                    template={record}
+                    onUnlink={() => this.getTemplates()}
+                    renderProps={({ setVisible }) => (
+                      <EuiLink onClick={() => setVisible(true)}>{record.templateDetail?.composed_of?.length || 0}</EuiLink>
+                    )}
+                  />
+                );
               },
             },
           ]}
