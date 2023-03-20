@@ -16,6 +16,7 @@ interface ContentPanelProps {
   actions?: React.ReactNode | React.ReactNode[];
   children: React.ReactNode | React.ReactNode[];
   itemCount?: number;
+  color?: "ghost";
 }
 
 const renderSubTitleText = (subTitleText: string | JSX.Element): JSX.Element | null => {
@@ -40,41 +41,49 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
   actions,
   children,
   itemCount = 0,
-}) => (
-  <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}>
-    <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="flexStart">
-      <EuiFlexItem>
-        {typeof title === "string" ? (
-          <EuiTitle size={titleSize}>
-            <h3>
-              {title}
-              <span className="panel-header-count"> {itemCount > 0 ? `(${itemCount})` : null} </span>
-            </h3>
-          </EuiTitle>
-        ) : (
-          title
-        )}
-        {renderSubTitleText(subTitleText)}
-      </EuiFlexItem>
-      {actions ? (
-        <EuiFlexItem grow={false}>
-          <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
-            {Array.isArray(actions) ? (
-              (actions as React.ReactNode[]).map(
-                (action: React.ReactNode, idx: number): React.ReactNode => <EuiFlexItem key={idx}>{action}</EuiFlexItem>
-              )
-            ) : (
-              <EuiFlexItem>{actions}</EuiFlexItem>
-            )}
-          </EuiFlexGroup>
+  color,
+}) => {
+  const isGhost = color === "ghost";
+  const content = (
+    <>
+      <EuiFlexGroup style={{ padding: isGhost ? undefined : "0px 10px" }} justifyContent="spaceBetween" alignItems="flexStart">
+        <EuiFlexItem>
+          {typeof title === "string" ? (
+            <EuiTitle size={titleSize}>
+              <h3>
+                {title}
+                <span className="panel-header-count"> {itemCount > 0 ? `(${itemCount})` : null} </span>
+              </h3>
+            </EuiTitle>
+          ) : (
+            title
+          )}
+          {renderSubTitleText(subTitleText)}
         </EuiFlexItem>
-      ) : null}
-    </EuiFlexGroup>
+        {actions ? (
+          <EuiFlexItem grow={false}>
+            <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
+              {Array.isArray(actions) ? (
+                (actions as React.ReactNode[]).map(
+                  (action: React.ReactNode, idx: number): React.ReactNode => <EuiFlexItem key={idx}>{action}</EuiFlexItem>
+                )
+              ) : (
+                <EuiFlexItem>{actions}</EuiFlexItem>
+              )}
+            </EuiFlexGroup>
+          </EuiFlexItem>
+        ) : null}
+      </EuiFlexGroup>
+      {isGhost ? null : <EuiHorizontalRule margin="xs" className={horizontalRuleClassName} />}
+      {children && <div style={{ padding: isGhost ? undefined : "0px 10px", ...bodyStyles }}>{children}</div>}
+    </>
+  );
 
-    <EuiHorizontalRule margin="xs" className={horizontalRuleClassName} />
+  if (isGhost) {
+    return content;
+  }
 
-    {children && <div style={{ padding: "0px 10px", ...bodyStyles }}>{children}</div>}
-  </EuiPanel>
-);
+  return <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}>{content}</EuiPanel>;
+};
 
 export default ContentPanel;

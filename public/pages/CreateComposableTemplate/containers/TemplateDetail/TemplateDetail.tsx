@@ -39,6 +39,7 @@ export interface TemplateDetailProps {
   // when embed in create model in index template create flow
   hideTitle?: boolean;
   hideButton?: boolean;
+  noPanel?: boolean;
 }
 
 export interface IComponentTemplateDetailInstance {
@@ -46,7 +47,7 @@ export interface IComponentTemplateDetailInstance {
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateDetailInstance>) => {
-  const { templateName, onCancel, onSubmitSuccess, readonly, hideTitle, hideButton } = props;
+  const { templateName, onCancel, onSubmitSuccess, readonly, hideTitle, hideButton, noPanel } = props;
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -138,6 +139,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
     ...props,
     isEdit,
     field,
+    noPanel,
   };
 
   return (

@@ -11,11 +11,12 @@ import { SubDetailProps } from "../../interface";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 
 export default function IndexAlias(props: SubDetailProps) {
-  const { field, isEdit } = props;
+  const { field, isEdit, noPanel } = props;
   const values = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
   return (
     <ContentPanel
+      color={noPanel ? "ghost" : undefined}
       title={
         <>
           <CustomFormRow

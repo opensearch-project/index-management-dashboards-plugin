@@ -18,8 +18,6 @@ function debouncePromise<T extends (...args: any) => any>(func: T, wait: number)
       setTimeout(() => {
         if (funcTimestamp === timestamp) {
           func.apply(null, rest).then(resolve, reject);
-        } else {
-          reject("The return result is debounced." as ReturnType<T>);
         }
       }, wait);
     }) as ReturnType<T>;
@@ -27,7 +25,7 @@ function debouncePromise<T extends (...args: any) => any>(func: T, wait: number)
 }
 
 export default function DefineTemplate(props: SubDetailProps) {
-  const { field, isEdit } = props;
+  const { field, isEdit, noPanel } = props;
   const services = useContext(ServicesContext) as BrowserServices;
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
   const validateRemoteComponentName = useCallback(
@@ -51,9 +49,8 @@ export default function DefineTemplate(props: SubDetailProps) {
     }, 500),
     []
   );
-  return (
-    <ContentPanel title="Define template component" titleSize="s">
-      <EuiSpacer size="s" />
+  const content = (
+    <>
       {isEdit ? null : (
         <>
           <CustomFormRow
@@ -97,6 +94,16 @@ export default function DefineTemplate(props: SubDetailProps) {
           })}
         />
       </CustomFormRow>
+    </>
+  );
+  if (noPanel) {
+    return content;
+  }
+
+  return (
+    <ContentPanel title="Define template component" titleSize="s">
+      <EuiSpacer size="s" />
+      {content}
     </ContentPanel>
   );
 }

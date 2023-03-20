@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState, useEffect, useMemo } from "react";
 import {
   EuiButton,
   EuiButtonIcon,
@@ -28,26 +28,22 @@ import { BrowserServices } from "../../../../models/interfaces";
 import { SubDetailProps } from "../../interface";
 import { TemplateItem } from "../../../../../models/interfaces";
 import { Modal } from "../../../../components/Modal";
-import { useState } from "react";
-import { useEffect } from "react";
 import { ICatComposableTemplate } from "../../../ComposableTemplates/interface";
 import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
-import { useMemo } from "react";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
+import ComponentTemplateDetail, { IComponentTemplateDetailInstance } from "../../../CreateComposableTemplate/containers/TemplateDetail";
 
-export default function ComposableTemplate(
-  props: SubDetailProps & {
-    onCreateComponent: () => void;
-  }
-) {
-  const { field, readonly, onCreateComponent } = props;
+export default function ComposableTemplate(props: SubDetailProps) {
+  const { field, readonly, history } = props;
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedComposableTemplates, setSelectedComposableTemplates] = useState<string[]>([]);
   const [allComposableTemplates, setAllComposableTemplates] = useState<ICatComposableTemplate[]>([]);
+  const [createComponentVisible, setCreateComponentVisible] = useState(false);
   const values: TemplateItem = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
-  useEffect(() => {
+  const componentCreateRef = useRef<IComponentTemplateDetailInstance>(null);
+  const reloadAllComposableTemplates = () =>
     services.commonService
       .apiCaller<{
         component_templates?: ICatComposableTemplate[];
@@ -64,6 +60,8 @@ export default function ComposableTemplate(
           setAllComposableTemplates(res.response.component_templates || []);
         }
       });
+  useEffect(() => {
+    reloadAllComposableTemplates();
   }, []);
   const finalOptions = useMemo(
     () =>
@@ -177,7 +175,7 @@ export default function ComposableTemplate(
       {readonly ? null : (
         <div>
           <EuiButton onClick={() => setDialogVisible(true)}>Associate components</EuiButton>
-          <EuiButton style={{ marginLeft: 20 }} onClick={onCreateComponent}>
+          <EuiButton style={{ marginLeft: 20 }} onClick={() => setCreateComponentVisible(true)}>
             Create new components
           </EuiButton>
         </div>
@@ -257,6 +255,41 @@ export default function ComposableTemplate(
           </EuiSelectable>
         }
       />
+      {createComponentVisible ? (
+        <Modal.SimpleModal
+          maxWidth={false}
+          style={{
+            width: "70vw",
+          }}
+          type="confirm"
+          title="Create component"
+          visible={createComponentVisible}
+          onCancel={() => setCreateComponentVisible(false)}
+          locale={{
+            confirm: "Create component",
+          }}
+          footer={["cancel", "confirm"]}
+          onOk={() => {
+            componentCreateRef.current?.submit();
+            // return a reject promise to keep it from closing
+            return Promise.reject("no error");
+          }}
+          content={
+            <ComponentTemplateDetail
+              hideTitle
+              hideButton
+              noPanel
+              onSubmitSuccess={(name) => {
+                reloadAllComposableTemplates();
+                field.setValue("composed_of", [...field.getValue("composed_of"), name]);
+                setCreateComponentVisible(false);
+              }}
+              ref={componentCreateRef}
+              history={history}
+            />
+          }
+        />
+      ) : null}
     </ContentPanel>
   );
 }

@@ -9,12 +9,13 @@ import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 
 export default function TemplateMappings(props: SubDetailProps) {
-  const { field } = props;
+  const { field, noPanel } = props;
   const values = field.getValues();
   const mappingsRef = useRef<IIndexMappingsRef>(null);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   return (
     <ContentPanel
+      color={noPanel ? "ghost" : undefined}
       title={
         <>
           <EuiTitle size="s">

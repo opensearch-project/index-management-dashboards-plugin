@@ -26,10 +26,11 @@ const WrappedNumber = ({ onChange, ...others }: IFieldComponentProps) => {
 };
 
 export default function IndexSettings(props: SubDetailProps) {
-  const { field, isEdit } = props;
+  const { field, isEdit, noPanel } = props;
   const values = field.getValues();
   return (
     <ContentPanel
+      color={noPanel ? "ghost" : undefined}
       title="Index settings"
       actions={
         <div>
