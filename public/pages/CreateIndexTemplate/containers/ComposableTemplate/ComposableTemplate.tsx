@@ -35,8 +35,12 @@ import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { useMemo } from "react";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 
-export default function ComposableTemplate(props: SubDetailProps) {
-  const { field, readonly } = props;
+export default function ComposableTemplate(
+  props: SubDetailProps & {
+    onCreateComponent: () => void;
+  }
+) {
+  const { field, readonly, onCreateComponent } = props;
   const [dialogVisible, setDialogVisible] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedComposableTemplates, setSelectedComposableTemplates] = useState<string[]>([]);
@@ -173,7 +177,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
       {readonly ? null : (
         <div>
           <EuiButton onClick={() => setDialogVisible(true)}>Associate components</EuiButton>
-          <EuiButton style={{ marginLeft: 20 }} onClick={() => window.open(`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}`)}>
+          <EuiButton style={{ marginLeft: 20 }} onClick={onCreateComponent}>
             Create new components
           </EuiButton>
         </div>

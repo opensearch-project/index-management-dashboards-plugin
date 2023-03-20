@@ -82,11 +82,7 @@ export const submitTemplate = async (props: { value: Partial<TemplateItem>; isEd
   });
 };
 
-export const getTemplate = async (props: {
-  templateName: string;
-  commonService: CommonService;
-  coreService: CoreStart;
-}): Promise<ComponentTemplateEdit> => {
+export const getTemplate = async (props: { templateName: string; commonService: CommonService }): Promise<ComponentTemplateEdit> => {
   const response = await props.commonService.apiCaller<{
     component_templates: { name: string; component_template: IComposableTemplateRemote }[];
   }>({
@@ -112,6 +108,5 @@ export const getTemplate = async (props: {
     error = response.error || "";
   }
 
-  props.coreService.notifications.toasts.addDanger(error);
   throw new Error(error);
 };

@@ -45,6 +45,7 @@ import { FLOW_ENUM, TemplateItemEdit } from "../../interface";
 import BottomBar from "../../../../components/BottomBar";
 import { diffJson } from "../../../../utils/helpers";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
+import ComponentTemplateDetail, { IComponentTemplateDetailInstance } from "../../../CreateComposableTemplate/containers/TemplateDetail";
 import { IndexForm } from "../../../../containers/IndexForm";
 import { TABS_ENUM, tabs } from "../../constant";
 
@@ -52,21 +53,22 @@ export interface TemplateDetailProps {
   templateName?: string;
   onCancel?: () => void;
   onSubmitSuccess?: (templateName: string) => void;
-  readonly?: boolean;
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => {
-  const { templateName, onCancel, onSubmitSuccess, readonly, history } = props;
+  const { templateName, onCancel, onSubmitSuccess, history } = props;
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [selectedTabId, setSelectedTabId] = useState(TABS_ENUM.SUMMARY);
   const [visible, setVisible] = useState(false);
+  const [createComponentVisible, setCreateComponentVisible] = useState(false);
   const [previewFlyoutVisible, setPreviewFlyoutVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const oldValue = useRef<TemplateItem | undefined>(undefined);
+  const componentCreateRef = useRef<IComponentTemplateDetailInstance>(null);
   const searchObject = queryString.parseUrl(props.location.search);
   if (searchObject.query.values) {
     try {
@@ -160,7 +162,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     ...props,
     isEdit,
     field,
-    readonly: selectedTabId === TABS_ENUM.SUMMARY,
+    readonly: selectedTabId === TABS_ENUM.SUMMARY && isEdit,
   };
 
   const PreviewTemplateButton = () => (
@@ -275,7 +277,12 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiSpacer />
       {values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
         <>
-          <ComposableTemplate {...subCompontentProps} />
+          <ComposableTemplate
+            {...subCompontentProps}
+            onCreateComponent={() => {
+              setCreateComponentVisible(true);
+            }}
+          />
           <EuiSpacer />
         </>
       ) : null}
@@ -300,6 +307,39 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             <PreviewTemplate value={simulateField.getValues()} history={props.history} />
           </EuiFlyoutBody>
         </EuiFlyout>
+      ) : null}
+      {createComponentVisible ? (
+        <Modal.SimpleModal
+          maxWidth={false}
+          style={{
+            width: "70vw",
+          }}
+          type="confirm"
+          title="Create component"
+          visible={createComponentVisible}
+          onCancel={() => setCreateComponentVisible(false)}
+          locale={{
+            confirm: "Create component",
+          }}
+          footer={["cancel", "confirm"]}
+          onOk={() => {
+            componentCreateRef.current?.submit();
+            // return a reject promise to keep it from closing
+            return Promise.reject("no error");
+          }}
+          content={
+            <ComponentTemplateDetail
+              hideTitle
+              hideButton
+              onSubmitSuccess={(name) => {
+                field.setValue("composed_of", [...field.getValue("composed_of"), name]);
+                setCreateComponentVisible(false);
+              }}
+              ref={componentCreateRef}
+              history={history}
+            />
+          }
+        />
       ) : null}
       {isEdit ? null : (
         <>

@@ -19,7 +19,7 @@ export type CustomFormRowProps = {
   }) => React.ReactChild;
 };
 
-export default function CustomFormRow(props: CustomFormRowProps) {
+export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
   const { unsavedCount, onClickCancel, onClickSubmit, submitButtonDataTestSubj } = props;
   const [loading, setLoading] = useState(false);
   const destroyRef = useRef(false);

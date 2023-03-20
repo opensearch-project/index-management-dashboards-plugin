@@ -9,7 +9,7 @@ export type CustomFormRowProps = {
   children?: React.ReactChild;
 };
 
-export default function CustomFormRow(props: CustomFormRowProps) {
+export default function BottomBar(props: CustomFormRowProps) {
   const bottomBarRef = useRef(null);
   const destroyRef = useRef(false);
 

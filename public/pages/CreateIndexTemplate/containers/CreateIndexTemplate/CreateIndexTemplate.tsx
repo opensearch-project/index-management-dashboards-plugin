@@ -63,7 +63,6 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
         <TemplateDetail
           history={this.props.history}
           location={this.props.location}
-          readonly={this.readonly}
           templateName={this.template}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}
