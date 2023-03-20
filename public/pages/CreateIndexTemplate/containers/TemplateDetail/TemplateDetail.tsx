@@ -64,7 +64,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [selectedTabId, setSelectedTabId] = useState(TABS_ENUM.SUMMARY);
   const [visible, setVisible] = useState(false);
-  const [simulateResult, setSimulateResult] = useState<TemplateItem | null>(null);
   const [previewFlyoutVisible, setPreviewFlyoutVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const oldValue = useRef<TemplateItem | undefined>(undefined);
@@ -95,6 +94,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       }
     },
   });
+  const simulateField = useField();
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
     const { errors, values: templateDetail } = (await field.validatePromise()) || {};
@@ -130,6 +130,17 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       .then((template) => {
         oldValue.current = JSON.parse(JSON.stringify(template));
         field.resetValues(template);
+
+        simulateTemplate({
+          commonService: services.commonService,
+          template: field.getValues(),
+        }).then((simulateResult) => {
+          if (simulateResult.ok) {
+            simulateField.resetValues(simulateResult.response);
+          } else {
+            coreServices.notifications.toasts.addDanger(simulateResult.error);
+          }
+        });
       })
       .catch(() => {
         // do nothing
@@ -225,7 +236,13 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         <>
           <EuiTabs>
             {tabs.map((item) => (
-              <EuiTab onClick={() => setSelectedTabId(item.id)} isSelected={selectedTabId === item.id} key={item.id}>
+              <EuiTab
+                onClick={() => {
+                  setSelectedTabId(item.id);
+                }}
+                isSelected={selectedTabId === item.id}
+                key={item.id}
+              >
                 {item.name}
               </EuiTab>
             ))}
@@ -245,13 +262,13 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         title={values.composed_of && values.composed_of.length ? "Override template definition" : "Template definition"}
         titleSize="s"
       >
-        <IndexAlias {...subCompontentProps} />
+        <IndexAlias {...subCompontentProps} field={selectedTabId === TABS_ENUM.SUMMARY ? simulateField : field} />
         <EuiSpacer />
         <IndexSettings {...subCompontentProps} />
         <EuiSpacer />
         <TemplateMappings {...subCompontentProps} />
       </ContentPanel>
-      {previewFlyoutVisible && simulateResult ? (
+      {previewFlyoutVisible && simulateField.getValues() ? (
         <EuiFlyout onClose={() => setPreviewFlyoutVisible(false)}>
           <EuiFlyoutHeader hasBorder>
             <EuiTitle size="xs">
@@ -259,7 +276,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             </EuiTitle>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
-            <PreviewTemplate value={simulateResult} history={props.history} />
+            <PreviewTemplate value={simulateField.getValues()} history={props.history} />
           </EuiFlyoutBody>
         </EuiFlyout>
       ) : null}
@@ -277,19 +294,11 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   onClick={async () => {
                     const { name, ...others } = field.getValues();
                     const result = await simulateTemplate({
-                      template: {
-                        ...others,
-                        index_patterns: ["test-*"],
-                        priority: 500,
-                      },
+                      template: others,
                       commonService: services.commonService,
                     });
                     if (result.ok) {
-                      setSimulateResult({
-                        name,
-                        ...others,
-                        template: result.response.template,
-                      });
+                      simulateField.resetValues(result.response);
                       setPreviewFlyoutVisible(true);
                     } else {
                       coreServices.notifications.toasts.addDanger(result.error);
@@ -326,7 +335,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           </BottomBar>
         </>
       )}
-      {isEdit && diffJson(formatTemplate(oldValue.current), formatTemplate(values)) ? (
+      {isEdit && selectedTabId === TABS_ENUM.CONFIG && diffJson(formatTemplate(oldValue.current), formatTemplate(values)) ? (
         <UnsavedChangesBottomBar
           submitButtonDataTestSubj="updateTemplateButton"
           unsavedCount={diffJson(

@@ -107,31 +107,35 @@ export const getTemplate = async (props: {
 };
 
 export const simulateTemplate = (props: { template: TemplateItem; commonService: CommonService }) => {
+  const payload = {
+    ...props.template,
+    index_patterns: ["test-*"],
+    priority: 500,
+    template: IndexForm.transformIndexDetailToRemote(props.template.template),
+  } as TemplateItemRemote;
+  const { name, ...others } = payload;
   return props.commonService
     .apiCaller<{
-      template: TemplateItem["template"];
+      template: TemplateItemRemote["template"];
     }>({
       endpoint: "transport.request",
       data: {
         method: "POST",
         path: `_index_template/_simulate`,
-        body: {
-          ...props.template,
-          template: IndexForm.transformIndexDetailToRemote(props.template.template),
-        } as TemplateItemRemote,
+        body: others,
       },
     })
     .then((result) => {
       if (result.ok) {
-        const payload = JSON.parse(JSON.stringify(result.response));
-        set(payload, "template.settings", flatten(get(payload, "template.settings") || {}));
-
         return {
           ...result,
-          response: {
-            ...payload,
-            template: IndexForm.transformIndexDetailToLocal(payload.template || {}),
-          },
+          response: formatRemoteTemplateToEditTemplate({
+            templateDetail: {
+              ...props.template,
+              name,
+              template: result.response.template,
+            },
+          }),
         };
       } else {
         return result;
