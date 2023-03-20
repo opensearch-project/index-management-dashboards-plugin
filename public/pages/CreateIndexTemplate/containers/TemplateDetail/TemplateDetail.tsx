@@ -163,6 +163,30 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     readonly: selectedTabId === TABS_ENUM.SUMMARY,
   };
 
+  const PreviewTemplateButton = () => (
+    <EuiFlexItem grow={false}>
+      <EuiButton
+        onClick={async () => {
+          const result = await simulateTemplate({
+            template: field.getValues(),
+            commonService: services.commonService,
+          });
+          if (result.ok) {
+            simulateField.resetValues(result.response);
+            setPreviewFlyoutVisible(true);
+          } else {
+            coreServices.notifications.toasts.addDanger(result.error);
+          }
+        }}
+        data-test-subj="CreateIndexTemplatePreviewButton"
+        color="ghost"
+        fill
+      >
+        Preview template
+      </EuiButton>
+    </EuiFlexItem>
+  );
+
   return (
     <>
       <EuiFlexGroup alignItems="center">
@@ -187,7 +211,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             </CustomFormRow>
           )}
         </EuiFlexItem>
-        {readonly ? (
+        {isEdit ? (
           <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
             <EuiButton
               style={{ marginRight: 20 }}
@@ -210,9 +234,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
               }}
             >
               View JSON
-            </EuiButton>
-            <EuiButton style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_TEMPLATE}/${values.name}`)}>
-              Edit
             </EuiButton>
             <EuiButton color="danger" style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
               Delete
@@ -289,28 +310,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   Cancel
                 </EuiButtonEmpty>
               </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiButton
-                  onClick={async () => {
-                    const { name, ...others } = field.getValues();
-                    const result = await simulateTemplate({
-                      template: others,
-                      commonService: services.commonService,
-                    });
-                    if (result.ok) {
-                      simulateField.resetValues(result.response);
-                      setPreviewFlyoutVisible(true);
-                    } else {
-                      coreServices.notifications.toasts.addDanger(result.error);
-                    }
-                  }}
-                  data-test-subj="CreateIndexTemplatePreviewButton"
-                  color="ghost"
-                  fill
-                >
-                  Preview template
-                </EuiButton>
-              </EuiFlexItem>
+              <PreviewTemplateButton />
               <EuiFlexItem grow={false}>
                 <EuiButton
                   fill
@@ -338,12 +338,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       {isEdit && selectedTabId === TABS_ENUM.CONFIG && diffJson(formatTemplate(oldValue.current), formatTemplate(values)) ? (
         <UnsavedChangesBottomBar
           submitButtonDataTestSubj="updateTemplateButton"
-          unsavedCount={diffJson(
-            formatTemplate({
-              ...oldValue.current,
-            }),
-            formatTemplate(values)
-          )}
+          unsavedCount={diffJson(formatTemplate(oldValue.current), formatTemplate(values))}
           onClickCancel={async () => {
             field.resetValues(
               formatRemoteTemplateToEditTemplate({
@@ -364,6 +359,16 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                 coreServices.notifications.toasts.addDanger(result.error);
               }
             }
+          }}
+          renderProps={({ renderCancel, renderConfirm, renderUnsavedText }) => {
+            return (
+              <>
+                {renderUnsavedText()}
+                {renderCancel()}
+                <PreviewTemplateButton />
+                {renderConfirm()}
+              </>
+            );
           }}
         />
       ) : null}
