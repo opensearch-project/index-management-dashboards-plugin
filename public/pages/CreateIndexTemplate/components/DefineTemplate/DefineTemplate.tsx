@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiCallOut, EuiSpacer } from "@elastic/eui";
-import { SubDetailProps } from "../../interface";
+import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiSpacer } from "@elastic/eui";
+import { FLOW_ENUM, SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
@@ -45,14 +45,13 @@ export default function DefineTemplate(props: SubDetailProps) {
             title: "Priority",
             description: values.priority,
           },
-          {
-            title: "Component templates added",
-            description: (values.composed_of || []).join(", "),
-          },
         ]}
       />
     </>
   );
+  const registeredFlowField = field.registerField({
+    name: ["_meta", "flow"],
+  });
   return readonly ? (
     withoutPanel ? (
       content
@@ -165,6 +164,27 @@ export default function DefineTemplate(props: SubDetailProps) {
             ],
           })}
         />
+      </CustomFormRow>
+      <EuiSpacer />
+      <CustomFormRow {...getCommonFormRowProps(["_meta", "flow"], field)} fullWidth label="Choose a method to define your template">
+        <EuiFlexGroup>
+          <EuiFlexItem>
+            <EuiCheckableCard
+              label="Simple template"
+              id="checkboxForIndexTemplateFlowSimple"
+              onChange={() => registeredFlowField.onChange(FLOW_ENUM.SIMPLE)}
+              checked={registeredFlowField.value === FLOW_ENUM.SIMPLE}
+            />
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiCheckableCard
+              label="Reusable components"
+              id="checkboxForIndexTemplateFlowComponents"
+              onChange={() => registeredFlowField.onChange(FLOW_ENUM.COMPONENTS)}
+              checked={registeredFlowField.value === FLOW_ENUM.COMPONENTS}
+            />
+          </EuiFlexItem>
+        </EuiFlexGroup>
       </CustomFormRow>
     </ContentPanel>
   );

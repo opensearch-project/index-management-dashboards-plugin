@@ -85,7 +85,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             fullWidth
             label={
               <EuiTitle size="s">
-                <div>Component templates - optional</div>
+                <div>Reusable components</div>
               </EuiTitle>
             }
           >
@@ -113,9 +113,6 @@ export default function ComposableTemplate(props: SubDetailProps) {
 
               return (
                 <EuiFlexGroup key={item} alignItems="center">
-                  <EuiFlexItem grow={false}>
-                    <EuiText style={{ width: 20, marginLeft: 8 }}>{index + 1}</EuiText>
-                  </EuiFlexItem>
                   <EuiFlexItem>
                     <EuiDraggable
                       isDragDisabled={readonly}

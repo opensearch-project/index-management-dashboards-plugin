@@ -11,7 +11,6 @@ import {
   EuiFlexItem,
   EuiFlyout,
   EuiFlyoutBody,
-  EuiFlyoutFooter,
   EuiFlyoutHeader,
   EuiLink,
   EuiSpacer,
@@ -40,6 +39,7 @@ import { merge } from "lodash";
 import ComposableTemplate from "../ComposableTemplate";
 import PreviewTemplate from "../PreviewTemplate";
 import { ContentPanel } from "../../../../components/ContentPanel";
+import { FLOW_ENUM, TemplateItemEdit } from "../../interface";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -73,6 +73,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     {
       priority: 0,
       template: {},
+      _meta: {
+        flow: FLOW_ENUM.SIMPLE,
+      },
     } as Partial<TemplateItem>,
     searchObject.query.values
   );
@@ -116,7 +119,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         commonService: services.commonService,
       })
         .then((template) => {
-          oldValue.current = template;
+          oldValue.current = JSON.parse(JSON.stringify(template));
           field.resetValues(template);
         })
         .catch(() => {
@@ -128,7 +131,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       destroyRef.current = true;
     };
   }, []);
-  const values: TemplateItem = field.getValues();
+  const values: TemplateItemEdit = field.getValues();
   const subCompontentProps = {
     ...props,
     isEdit,
@@ -206,10 +209,14 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiSpacer />
       <DefineTemplate {...subCompontentProps} />
       <EuiSpacer />
-      <ComposableTemplate {...subCompontentProps} />
-      <EuiSpacer />
+      {values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
+        <>
+          <ComposableTemplate {...subCompontentProps} />
+          <EuiSpacer />
+        </>
+      ) : null}
       <ContentPanel
-        title={values.composed_of && values.composed_of.length ? "Additional template definition" : "Template definition"}
+        title={values.composed_of && values.composed_of.length ? "Override template definition" : "Template definition"}
         titleSize="s"
       >
         <IndexAlias {...subCompontentProps} />

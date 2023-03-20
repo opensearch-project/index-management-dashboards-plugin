@@ -9,6 +9,7 @@ import { transformArrayToObject, transformObjectToArray } from "../../../../comp
 import { CommonService } from "../../../../services";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import { IndexForm } from "../../../../containers/IndexForm";
+import { FLOW_ENUM, TemplateItemEdit } from "../../interface";
 
 export const submitTemplate = async (props: { value: TemplateItem; isEdit: boolean; commonService: CommonService }) => {
   const { name, ...others } = props.value;
@@ -24,7 +25,11 @@ export const submitTemplate = async (props: { value: TemplateItem; isEdit: boole
   });
 };
 
-export const getTemplate = async (props: { templateName: string; commonService: CommonService; coreService: CoreStart }) => {
+export const getTemplate = async (props: {
+  templateName: string;
+  commonService: CommonService;
+  coreService: CoreStart;
+}): Promise<TemplateItemEdit> => {
   const response = await props.commonService.apiCaller<{
     index_templates: { name: string; index_template: TemplateItemRemote }[];
   }>({
@@ -45,6 +50,9 @@ export const getTemplate = async (props: { templateName: string; commonService: 
       const payload = {
         ...templateDetail,
         name: props.templateName,
+        _meta: {
+          flow: templateDetail.composed_of?.length ? FLOW_ENUM.COMPONENTS : FLOW_ENUM.SIMPLE,
+        },
       };
       set(payload, "template.mappings.properties", transformObjectToArray(get(payload, "template.mappings.properties", {})));
       set(payload, "template.settings", flatten(get(payload, "template.settings") || {}));
