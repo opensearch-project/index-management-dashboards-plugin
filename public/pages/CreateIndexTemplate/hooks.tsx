@@ -43,7 +43,11 @@ export const formatRemoteTemplateToEditTemplate = (props: { templateDetail: Part
     template: IndexForm.transformIndexDetailToLocal(templateDetail.template),
     _meta: {
       ...templateDetail._meta,
-      flow: templateDetail.composed_of?.length ? FLOW_ENUM.COMPONENTS : FLOW_ENUM.SIMPLE,
+      flow: templateDetail.composed_of?.length
+        ? FLOW_ENUM.COMPONENTS
+        : templateDetail._meta?.flow
+        ? templateDetail._meta?.flow
+        : FLOW_ENUM.SIMPLE,
     },
   };
   if (templateDetail.template?.settings) {
