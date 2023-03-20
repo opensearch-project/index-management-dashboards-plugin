@@ -73,7 +73,6 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     await waitFor(() => {
       expect(getByTestId("deleteAction")).toBeDisabled();
     });
@@ -101,7 +100,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
         return { ok: true, response: {} };
       }
     );
-    const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
+    const { container, getByTestId, getByPlaceholderText, findByPlaceholderText } = renderWithRouter({
       selectedItems: ["test_template"],
       onDelete,
     });
@@ -110,8 +109,8 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(container.firstChild).toMatchSnapshot();
     });
 
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("deleteAction"));
+    await findByPlaceholderText("delete");
     userEvent.type(getByPlaceholderText("delete"), "delete");
     userEvent.click(getByTestId("deleteConfirmButton"));
 
@@ -136,12 +135,6 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_template] successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
-    });
-
-    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
-    userEvent.click(getByTestId("editAction"));
-    await waitFor(() => expect(historyPushMock).toBeCalledTimes(1), {
-      timeout: 3000,
     });
   }, 30000);
 });

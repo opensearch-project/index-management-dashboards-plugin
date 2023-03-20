@@ -38,21 +38,6 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           </span>
         </button>
         <button
-          class="euiButton euiButton--primary"
-          style="margin-right: 20px;"
-          type="button"
-        >
-          <span
-            class="euiButtonContent euiButton__content"
-          >
-            <span
-              class="euiButton__text"
-            >
-              Edit
-            </span>
-          </span>
-        </button>
-        <button
           class="euiButton euiButton--danger"
           style="margin-right: 20px;"
           type="button"
@@ -73,6 +58,38 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
       class="euiSpacer euiSpacer--l"
     />
     <div
+      class="euiTabs"
+      role="tablist"
+    >
+      <button
+        aria-selected="true"
+        class="euiTab euiTab-isSelected"
+        role="tab"
+        type="button"
+      >
+        <span
+          class="euiTab__content"
+        >
+          Summary
+        </span>
+      </button>
+      <button
+        aria-selected="false"
+        class="euiTab"
+        role="tab"
+        type="button"
+      >
+        <span
+          class="euiTab__content"
+        >
+          Configuration
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
       style="padding-left: 0px; padding-right: 0px;"
     >
@@ -86,7 +103,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           <h3
             class="euiTitle euiTitle--small"
           >
-            Template details
+            Overview
             <span
               class="panel-header-count"
             >
@@ -176,7 +193,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dd
                 class="euiDescriptionList__description"
               >
-                -
+                undefined
               </dd>
             </dl>
           </div>
@@ -189,7 +206,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dt
                 class="euiDescriptionList__title"
               >
-                Component templates added
+                Associated components
               </dt>
               <dd
                 class="euiDescriptionList__description"
@@ -199,9 +216,6 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
         </div>
       </div>
     </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
     <div
       class="euiSpacer euiSpacer--l"
     />

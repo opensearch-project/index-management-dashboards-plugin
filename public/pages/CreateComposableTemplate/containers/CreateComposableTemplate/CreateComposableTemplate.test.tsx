@@ -49,19 +49,8 @@ describe("<CreateComposableTemplate /> spec", () => {
     apiCallerMock(browserServicesMock);
   });
   it("it goes to templates page when click cancel", async () => {
-    const { getByTestId, getByText, findByTitle, container } = renderCreateComposableTemplateWithRouter([
-      `${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/good_template`,
-    ]);
+    const { findByTitle, container } = renderCreateComposableTemplateWithRouter([`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/good_template`]);
     await findByTitle("good_template");
     expect(container).toMatchSnapshot();
-    userEvent.click(getByTestId("moreAction").querySelector("button") as Element);
-    userEvent.click(getByText("Edit"));
-    await waitFor(() => expect(document.querySelector('[data-test-subj="form-row-name"] [title="good_template"]')).toBeInTheDocument(), {
-      timeout: 3000,
-    });
-    userEvent.click(getByTestId("CreateComposableTemplateCancelButton"));
-    await waitFor(() => {
-      expect(getByText(`location is: ${ROUTES.COMPOSABLE_TEMPLATES}`)).toBeInTheDocument();
-    });
   });
 });

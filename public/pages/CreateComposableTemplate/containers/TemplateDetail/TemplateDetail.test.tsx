@@ -88,12 +88,10 @@ describe("<TemplateDetail /> spec", () => {
       templateName: "good_template",
     });
     await findByTitle("good_template");
-    userEvent.click(getByTestId("moreAction").querySelector("button") as Element);
     userEvent.click(getByText("Delete"));
     await findByText("Delete template components");
     userEvent.click(getByTestId("deletaCancelButton"));
     await waitFor(() => expect(queryByText("Delete template components")).toBeNull());
-    userEvent.click(getByTestId("moreAction").querySelector("button") as Element);
     userEvent.click(getByText("Delete"));
     await findByText("Delete template components");
     userEvent.type(getByTestId("deleteInput"), "delete");

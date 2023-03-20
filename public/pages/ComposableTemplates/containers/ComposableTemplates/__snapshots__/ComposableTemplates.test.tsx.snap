@@ -57,30 +57,22 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
             <div
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
-              <div
-                class="euiPopover euiPopover--anchorDownCenter"
-                data-test-subj="moreAction"
+              <button
+                class="euiButton euiButton--primary euiButton-isDisabled"
+                data-test-subj="deleteAction"
+                disabled=""
+                type="button"
               >
-                <div
-                  class="euiPopover__anchor"
+                <span
+                  class="euiButtonContent euiButton__content"
                 >
-                  <button
-                    class="euiButton euiButton--primary"
-                    type="button"
+                  <span
+                    class="euiButton__text"
                   >
-                    <span
-                      class="euiButtonContent euiButtonContent--iconRight euiButton__content"
-                    >
-                      EuiIconMock
-                      <span
-                        class="euiButton__text"
-                      >
-                        Actions
-                      </span>
-                    </span>
-                  </button>
-                </div>
-              </div>
+                    Delete
+                  </span>
+                </span>
+              </button>
             </div>
             <div
               class="euiFlexItem euiFlexItem--flexGrowZero"
@@ -276,10 +268,27 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
                 </button>
               </th>
               <th
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_templateTypes_1"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Type"
+                  >
+                    Type
+                  </span>
+                </span>
+              </th>
+              <th
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_description_1"
+                data-test-subj="tableHeaderCell_component_template._meta.description_2"
                 role="columnheader"
                 scope="col"
               >
@@ -304,7 +313,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
                 aria-live="polite"
                 aria-sort="none"
                 class="euiTableHeaderCell"
-                data-test-subj="tableHeaderCell_templateTypes_2"
+                data-test-subj="tableHeaderCell_associatedCount_3"
                 role="columnheader"
                 scope="col"
               >
@@ -318,9 +327,9 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Template types"
+                      title="Associated templates"
                     >
-                      Template types
+                      Associated templates
                     </span>
                   </span>
                 </button>
@@ -333,7 +342,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="4"
+                colspan="5"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"

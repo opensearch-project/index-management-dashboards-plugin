@@ -148,10 +148,8 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
         <>
           <EuiFlexGroup alignItems="center">
             <EuiFlexItem>
-              <EuiTitle size="l">
-                {readonly ? <h1 title={values.name}>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} composable template</h1>}
-              </EuiTitle>
-              {readonly ? null : (
+              <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create composable template</h1>}</EuiTitle>
+              {isEdit ? null : (
                 <CustomFormRow
                   fullWidth
                   label=""
@@ -168,7 +166,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
                 </CustomFormRow>
               )}
             </EuiFlexItem>
-            {readonly ? (
+            {isEdit ? (
               <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
                 <EuiButton
                   style={{ marginRight: 20 }}

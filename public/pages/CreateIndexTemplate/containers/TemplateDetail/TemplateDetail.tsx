@@ -19,7 +19,6 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import queryString from "query-string";
-import { transformArrayToObject } from "../../../../components/IndexMapping";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -191,7 +190,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
           <EuiTitle size="l">
-            {isEdit ? <h1 title={values.name}>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
+            {isEdit ? <h1 title={values.name}>{templateName}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
           </EuiTitle>
           {isEdit ? null : (
             <CustomFormRow
@@ -217,13 +216,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
               onClick={() => {
                 const showValue: TemplateItemRemote = {
                   ...values,
-                  template: {
-                    ...values.template,
-                    mappings: {
-                      ...values.template.mappings,
-                      properties: transformArrayToObject(values.template.mappings?.properties || []),
-                    },
-                  },
+                  template: IndexForm.transformIndexDetailToRemote(values.template),
                 };
                 Modal.show({
                   "data-test-subj": "templateJSONDetailModal",
@@ -239,7 +232,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             </EuiButton>
             <DeleteTemplateModal
               visible={visible}
-              selectedItems={[values.name]}
+              selectedItems={[templateName]}
               onClose={() => {
                 setVisible(false);
               }}
