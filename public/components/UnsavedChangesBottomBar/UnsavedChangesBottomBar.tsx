@@ -3,7 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useEffect, useRef, useState } from "react";
-import { EuiButton, EuiBottomBar, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from "@elastic/eui";
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from "@elastic/eui";
+import BottomBar from "../BottomBar";
 
 export type CustomFormRowProps = {
   unsavedCount: number;
@@ -15,7 +16,6 @@ export type CustomFormRowProps = {
 export default function CustomFormRow(props: CustomFormRowProps) {
   const { unsavedCount, onClickCancel, onClickSubmit, submitButtonDataTestSubj } = props;
   const [loading, setLoading] = useState(false);
-  const bottomBarRef = useRef(null);
   const destroyRef = useRef(false);
   const onClick = async () => {
     setLoading(true);
@@ -31,23 +31,13 @@ export default function CustomFormRow(props: CustomFormRowProps) {
   };
 
   useEffect(() => {
-    const bodyDom = document.querySelector<HTMLDivElement>("#opensearch-dashboards-body");
-    let originalBodyPaddingBottom = "";
-    if (bodyDom) {
-      originalBodyPaddingBottom = bodyDom.style.paddingBottom;
-      bodyDom.style.paddingBottom = "64px";
-    }
-
     return () => {
       destroyRef.current = true;
-      if (bodyDom) {
-        bodyDom.style.paddingBottom = originalBodyPaddingBottom;
-      }
     };
   }, []);
 
   return (
-    <EuiBottomBar ref={bottomBarRef}>
+    <BottomBar>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>{unsavedCount} unsaved changes.</EuiFlexItem>
         <EuiFlexItem grow={false}>
@@ -70,6 +60,6 @@ export default function CustomFormRow(props: CustomFormRowProps) {
           </EuiButton>
         </EuiFlexItem>
       </EuiFlexGroup>
-    </EuiBottomBar>
+    </BottomBar>
   );
 }
