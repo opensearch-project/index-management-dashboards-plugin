@@ -3,14 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiSpacer } from "@elastic/eui";
+import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer } from "@elastic/eui";
 import { FLOW_ENUM, SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
 import DescriptionListHoz from "../../../../components/DescriptionListHoz";
-import { TEMPLATE_NAMING_MESSAGE, TEMPLATE_NAMING_PATTERN } from "../../../../utils/constants";
+import { ROUTES, TEMPLATE_NAMING_MESSAGE, TEMPLATE_NAMING_PATTERN } from "../../../../utils/constants";
 import TemplateType, { TemplateConvert } from "../TemplateType";
 import { getCommonFormRowProps } from "../../hooks";
 import { filterByMinimatch } from "../../../../../utils/helper";
@@ -45,6 +45,16 @@ export default function DefineTemplate(props: SubDetailProps) {
             title: "Priority",
             description: values.priority,
           },
+          {
+            title: "Associated components",
+            description: (values.composed_of || []).map((item) => (
+              <div key={item}>
+                <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}`}>
+                  {item}
+                </EuiLink>
+              </div>
+            )),
+          },
         ]}
       />
     </>
@@ -56,38 +66,43 @@ export default function DefineTemplate(props: SubDetailProps) {
     withoutPanel ? (
       content
     ) : (
-      <ContentPanel title="Template details" titleSize="s">
+      <ContentPanel title="Overview" titleSize="s">
         {content}
       </ContentPanel>
     )
   ) : (
     <ContentPanel title="Define template" titleSize="s">
       <EuiSpacer size="s" />
-      <CustomFormRow
-        {...getCommonFormRowProps("name", field)}
-        label="Template name"
-        position="bottom"
-        helpText={
-          <>
-            <div>Template name cannot be changed after the template is created.</div>
-            <div>{TEMPLATE_NAMING_MESSAGE}</div>
-          </>
-        }
-      >
-        <Component
-          {...field.registerField({
-            name: "name",
-            rules: [
-              {
-                pattern: TEMPLATE_NAMING_PATTERN,
-                message: "Invalid template name.",
-              },
-            ],
-          })}
-        />
-      </CustomFormRow>
-      <EuiSpacer />
-      <CustomFormRow {...getCommonFormRowProps("data_stream", field)} label="Template type">
+      {isEdit ? null : (
+        <>
+          <CustomFormRow
+            {...getCommonFormRowProps("name", field)}
+            label="Template name"
+            position="bottom"
+            direction={isEdit ? "hoz" : "ver"}
+            helpText={
+              <>
+                <div>Template name cannot be changed after the template is created.</div>
+                <div>{TEMPLATE_NAMING_MESSAGE}</div>
+              </>
+            }
+          >
+            <Component
+              {...field.registerField({
+                name: "name",
+                rules: [
+                  {
+                    pattern: TEMPLATE_NAMING_PATTERN,
+                    message: "Invalid template name.",
+                  },
+                ],
+              })}
+            />
+          </CustomFormRow>
+          <EuiSpacer />
+        </>
+      )}
+      <CustomFormRow direction={isEdit ? "hoz" : "ver"} {...getCommonFormRowProps("data_stream", field)} label="Template type">
         <TemplateType
           {...field.registerField({
             name: "data_stream",
@@ -98,6 +113,7 @@ export default function DefineTemplate(props: SubDetailProps) {
       <CustomFormRow
         {...getCommonFormRowProps("index_patterns", field)}
         label="Index patterns"
+        direction={isEdit ? "hoz" : "ver"}
         helpText="Specify the index patterns or wildcards. Add a comma to separate each value. Settings in this template will be applied to indexes with names matching index patterns or wildcards."
       >
         <RemoteSelect
@@ -140,6 +156,7 @@ export default function DefineTemplate(props: SubDetailProps) {
         </>
       ) : null}
       <CustomFormRow
+        direction={isEdit ? "hoz" : "ver"}
         {...getCommonFormRowProps("priority", field)}
         label="Priority"
         helpText="Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index"

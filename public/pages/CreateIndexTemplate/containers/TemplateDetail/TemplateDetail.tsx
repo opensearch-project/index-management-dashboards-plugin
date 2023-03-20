@@ -14,6 +14,8 @@ import {
   EuiFlyoutHeader,
   EuiLink,
   EuiSpacer,
+  EuiTab,
+  EuiTabs,
   EuiTitle,
 } from "@elastic/eui";
 import queryString from "query-string";
@@ -25,7 +27,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
-import { submitTemplate, getTemplate, simulateTemplate } from "./hooks";
+import { submitTemplate, getTemplate, simulateTemplate, formatTemplate, formatRemoteTemplateToEditTemplate } from "../../hooks";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
@@ -40,6 +42,11 @@ import ComposableTemplate from "../ComposableTemplate";
 import PreviewTemplate from "../PreviewTemplate";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { FLOW_ENUM, TemplateItemEdit } from "../../interface";
+import BottomBar from "../../../../components/BottomBar";
+import { diffJson } from "../../../../utils/helpers";
+import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
+import { IndexForm } from "../../../../containers/IndexForm";
+import { TABS_ENUM, tabs } from "../../constant";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -55,6 +62,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
+  const [selectedTabId, setSelectedTabId] = useState(TABS_ENUM.SUMMARY);
   const [visible, setVisible] = useState(false);
   const [simulateResult, setSimulateResult] = useState<TemplateItem | null>(null);
   const [previewFlyoutVisible, setPreviewFlyoutVisible] = useState(false);
@@ -99,33 +107,38 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       commonService: services.commonService,
       isEdit,
     });
-    if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess(`${templateDetail.name} has been successfully ${isEdit ? "updated" : "created"}.`);
-      onSubmitSuccess && onSubmitSuccess(templateDetail.name);
-    } else {
-      coreServices.notifications.toasts.addDanger(result.body?.error?.caused_by?.reason || result.error);
-    }
     if (destroyRef.current) {
       return;
     }
     setIsSubmitting(false);
+    if (result.ok) {
+      return result;
+    } else {
+      return {
+        ...result,
+        error: result?.body?.error?.caused_by?.reason || result.error,
+      };
+    }
   };
   useImperativeHandle(ref, () => field);
+  const refreshTemplate = () => {
+    getTemplate({
+      templateName: templateName || "",
+      coreService: coreServices,
+      commonService: services.commonService,
+    })
+      .then((template) => {
+        oldValue.current = JSON.parse(JSON.stringify(template));
+        field.resetValues(template);
+      })
+      .catch(() => {
+        // do nothing
+        props.history.replace(ROUTES.TEMPLATES);
+      });
+  };
   useEffect(() => {
     if (isEdit) {
-      getTemplate({
-        templateName,
-        coreService: coreServices,
-        commonService: services.commonService,
-      })
-        .then((template) => {
-          oldValue.current = JSON.parse(JSON.stringify(template));
-          field.resetValues(template);
-        })
-        .catch(() => {
-          // do nothing
-          props.history.replace(ROUTES.TEMPLATES);
-        });
+      refreshTemplate();
     }
     return () => {
       destroyRef.current = true;
@@ -136,6 +149,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     ...props,
     isEdit,
     field,
+    readonly: selectedTabId === TABS_ENUM.SUMMARY,
   };
 
   return (
@@ -143,9 +157,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
           <EuiTitle size="l">
-            {readonly ? <h1 title={values.name}>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
+            {isEdit ? <h1 title={values.name}>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
           </EuiTitle>
-          {readonly ? null : (
+          {isEdit ? null : (
             <CustomFormRow
               fullWidth
               label=""
@@ -207,6 +221,18 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         ) : null}
       </EuiFlexGroup>
       <EuiSpacer />
+      {isEdit ? (
+        <>
+          <EuiTabs>
+            {tabs.map((item) => (
+              <EuiTab onClick={() => setSelectedTabId(item.id)} isSelected={selectedTabId === item.id} key={item.id}>
+                {item.name}
+              </EuiTab>
+            ))}
+          </EuiTabs>
+          <EuiSpacer />
+        </>
+      ) : null}
       <DefineTemplate {...subCompontentProps} />
       <EuiSpacer />
       {values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
@@ -237,52 +263,101 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           </EuiFlyoutBody>
         </EuiFlyout>
       ) : null}
-      {readonly ? null : (
+      {isEdit ? null : (
         <>
-          <EuiSpacer />
-          <EuiSpacer />
-          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-            <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateIndexTemplateCancelButton">
-                Cancel
-              </EuiButtonEmpty>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiButton
-                onClick={async () => {
-                  const { name, ...others } = field.getValues();
-                  const result = await simulateTemplate({
-                    template: {
-                      ...others,
-                      index_patterns: ["test-*"],
-                      priority: 500,
-                    },
-                    commonService: services.commonService,
-                  });
-                  if (result.ok) {
-                    setSimulateResult({
-                      name,
-                      ...others,
-                      template: result.response.template,
+          <BottomBar>
+            <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+              <EuiFlexItem grow={false}>
+                <EuiButtonEmpty onClick={onCancel} color="ghost" iconType="cross" size="s" data-test-subj="CreateIndexTemplateCancelButton">
+                  Cancel
+                </EuiButtonEmpty>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiButton
+                  onClick={async () => {
+                    const { name, ...others } = field.getValues();
+                    const result = await simulateTemplate({
+                      template: {
+                        ...others,
+                        index_patterns: ["test-*"],
+                        priority: 500,
+                      },
+                      commonService: services.commonService,
                     });
-                    setPreviewFlyoutVisible(true);
-                  } else {
-                    coreServices.notifications.toasts.addDanger(result.error);
-                  }
-                }}
-                data-test-subj="CreateIndexTemplatePreviewButton"
-              >
-                Preview template
-              </EuiButton>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateIndexTemplateCreateButton">
-                {isEdit ? "Save changes" : "Create template"}
-              </EuiButton>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+                    if (result.ok) {
+                      setSimulateResult({
+                        name,
+                        ...others,
+                        template: result.response.template,
+                      });
+                      setPreviewFlyoutVisible(true);
+                    } else {
+                      coreServices.notifications.toasts.addDanger(result.error);
+                    }
+                  }}
+                  data-test-subj="CreateIndexTemplatePreviewButton"
+                  color="ghost"
+                  fill
+                >
+                  Preview template
+                </EuiButton>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiButton
+                  fill
+                  onClick={async () => {
+                    const result = await onSubmit();
+                    if (result) {
+                      if (result.ok) {
+                        coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully created.`);
+                        onSubmitSuccess && onSubmitSuccess(values.name);
+                      } else {
+                        coreServices.notifications.toasts.addDanger(result.error);
+                      }
+                    }
+                  }}
+                  isLoading={isSubmitting}
+                  data-test-subj="CreateIndexTemplateCreateButton"
+                >
+                  Create template
+                </EuiButton>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </BottomBar>
         </>
       )}
+      {isEdit && diffJson(formatTemplate(oldValue.current), formatTemplate(values)) ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="updateTemplateButton"
+          unsavedCount={diffJson(
+            formatTemplate({
+              ...oldValue.current,
+            }),
+            formatTemplate(values)
+          )}
+          onClickCancel={async () => {
+            field.resetValues(
+              formatRemoteTemplateToEditTemplate({
+                templateDetail: {
+                  ...oldValue.current,
+                  template: IndexForm.transformIndexDetailToRemote(oldValue.current?.template),
+                },
+              })
+            );
+          }}
+          onClickSubmit={async () => {
+            const result = await onSubmit();
+            if (result) {
+              if (result.ok) {
+                coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully updated.`);
+                refreshTemplate();
+              } else {
+                coreServices.notifications.toasts.addDanger(result.error);
+              }
+            }
+          }}
+        />
+      ) : null}
     </>
   );
 };

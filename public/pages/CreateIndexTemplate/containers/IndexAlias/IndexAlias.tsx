@@ -14,7 +14,7 @@ import { getCommonFormRowProps } from "../../hooks";
 import { SubDetailProps } from "../../interface";
 
 export default function IndexAlias(props: SubDetailProps) {
-  const { readonly, field } = props;
+  const { readonly, field, isEdit } = props;
   const values = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
   return (
@@ -47,6 +47,7 @@ export default function IndexAlias(props: SubDetailProps) {
           <EuiSpacer size="s" />
           <CustomFormRow
             fullWidth
+            direction={isEdit ? "hoz" : "ver"}
             {...getCommonFormRowProps(["template", "aliases"], field)}
             label="Index alias"
             helpText="Select existing aliases or specify a new alias."

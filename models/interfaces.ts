@@ -91,6 +91,9 @@ interface ITemplateExtras {
   version: number;
   priority: number;
   index_patterns: string[];
+  _meta?: {
+    [prop: string]: any;
+  };
 }
 
 interface IComposableTemplateExtras {
