@@ -1,7 +1,6 @@
 import { EuiFormRowProps } from "@elastic/eui";
 import { get, set } from "lodash";
 import { flatten } from "flat";
-import { CoreStart } from "opensearch-dashboards/public";
 import { CommonService } from "../../services";
 import { IComposableTemplate, IComposableTemplateRemote, TemplateItem } from "../../../models/interfaces";
 import { IndicesUpdateMode } from "../../utils/constants";
@@ -22,11 +21,32 @@ export const formatTemplate = (item?: Partial<ComponentTemplateEdit>): IComposab
     return {};
   }
 
-  const { includes, name, ...others } = item;
+  const { name, includes, ...others } = item;
   return {
     ...others,
     template: IndexForm.transformIndexDetailToDiffableJSON(others.template),
   };
+};
+
+export const filterTemplateByIncludes = (value: ComponentTemplateEdit): ComponentTemplateEdit => {
+  const { includes, template, ...others } = value;
+  const payload: ComponentTemplateEdit = {
+    ...others,
+    template: {},
+  };
+  const templatePayload: IComposableTemplate["template"] = {};
+  if (includes?.aliases) {
+    templatePayload.aliases = template.aliases;
+  }
+  if (includes?.mappings) {
+    templatePayload.mappings = template.mappings;
+  }
+  if (includes?.settings) {
+    templatePayload.settings = template.settings;
+  }
+  payload.template = templatePayload;
+
+  return payload;
 };
 
 export const formatRemoteTemplateToEditTemplate = (props: {

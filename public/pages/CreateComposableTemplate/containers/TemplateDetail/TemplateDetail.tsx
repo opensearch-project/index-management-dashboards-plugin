@@ -13,7 +13,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
-import { submitTemplate, getTemplate, formatRemoteTemplateToEditTemplate } from "../../hooks";
+import { submitTemplate, getTemplate, formatRemoteTemplateToEditTemplate, filterTemplateByIncludes } from "../../hooks";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { ROUTES } from "../../../../utils/constants";
@@ -47,7 +47,7 @@ export interface IComponentTemplateDetailInstance {
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateDetailInstance>) => {
-  const { templateName, onCancel, onSubmitSuccess, readonly, hideTitle, hideButton, noPanel } = props;
+  const { templateName, onCancel, onSubmitSuccess, hideTitle, hideButton, noPanel } = props;
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -64,21 +64,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
     if (errors) {
       return;
     }
-    const { includes, template, ...others } = templateDetail as ComponentTemplateEdit;
-    const payload: Partial<IComposableTemplate> = {
-      ...others,
-    };
-    const templatePayload: IComposableTemplate["template"] = {};
-    if (includes?.aliases) {
-      templatePayload.aliases = template.aliases;
-    }
-    if (includes?.mappings) {
-      templatePayload.mappings = template.mappings;
-    }
-    if (includes?.settings) {
-      templatePayload.settings = template.settings;
-    }
-    payload.template = templatePayload;
+    const payload = filterTemplateByIncludes(templateDetail);
     setIsSubmitting(true);
     const result = await submitTemplate({
       value: payload,
@@ -141,6 +127,19 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
     field,
     noPanel,
   };
+
+  const diffedNumber = isEdit
+    ? diffJson(
+        formatTemplate(
+          filterTemplateByIncludes({
+            name: values.name,
+            template: {},
+            ...oldValue.current,
+          })
+        ),
+        formatTemplate(filterTemplateByIncludes(values))
+      )
+    : 0;
 
   return (
     <>
@@ -223,23 +222,10 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
           </EuiFlexGroup>
         </>
       )}
-      {isEdit &&
-      diffJson(
-        formatTemplate({
-          name: values.name,
-          ...oldValue.current,
-        }),
-        formatTemplate(values)
-      ) ? (
+      {diffedNumber ? (
         <UnsavedChangesBottomBar
           submitButtonDataTestSubj="updateTemplateButton"
-          unsavedCount={diffJson(
-            formatTemplate({
-              name: values.name,
-              ...oldValue.current,
-            }),
-            formatTemplate(values)
-          )}
+          unsavedCount={diffedNumber}
           onClickCancel={async () => {
             field.resetValues(
               formatRemoteTemplateToEditTemplate({
