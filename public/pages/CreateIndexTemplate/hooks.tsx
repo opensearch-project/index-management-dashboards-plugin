@@ -62,20 +62,25 @@ export const formatRemoteTemplateToEditTemplate = (props: { templateDetail: Part
   return JSON.parse(JSON.stringify(payload));
 };
 
-export const submitTemplate = async (props: { value: TemplateItem; isEdit: boolean; commonService: CommonService }) => {
-  const { name, _meta, ...others } = props.value;
+const formatTemplateToSubmitPayload = (value: TemplateItem): Omit<TemplateItemRemote, "name"> => {
+  const { name, _meta, ...others } = value;
   const bodyPayload: Omit<TemplateItemRemote, "name"> = {
     ...others,
     composed_of: _meta?.flow === FLOW_ENUM.COMPONENTS ? others.composed_of || [] : [],
     _meta,
     template: IndexForm.transformIndexDetailToRemote(others.template),
   };
+  return bodyPayload;
+};
+
+export const submitTemplate = async (props: { value: TemplateItem; isEdit: boolean; commonService: CommonService }) => {
+  const { name } = props.value;
   return await props.commonService.apiCaller({
     endpoint: "transport.request",
     data: {
       method: props.isEdit ? "POST" : "PUT",
       path: `_index_template/${name}`,
-      body: bodyPayload,
+      body: formatTemplateToSubmitPayload(props.value),
     },
   });
 };
@@ -115,13 +120,17 @@ export const getTemplate = async (props: {
 };
 
 export const simulateTemplate = (props: { template: TemplateItem; commonService: CommonService }) => {
-  const payload = {
+  const { name, index_patterns, priority } = props.template;
+  const payload = formatTemplateToSubmitPayload({
     ...props.template,
-    index_patterns: ["test-*"],
+    /**
+     * The simulate API requires a pattern
+     * so we fake one that won't be matched
+     */
+    index_patterns: [`a_pattern_that_will_never_be_matched_for_simulate_template_${Date.now()}`],
     priority: 500,
-    template: IndexForm.transformIndexDetailToRemote(props.template.template),
-  } as TemplateItemRemote;
-  const { name, ...others } = payload;
+  });
+  const { template, ...others } = payload;
   return props.commonService
     .apiCaller<{
       template: TemplateItemRemote["template"];
@@ -130,7 +139,7 @@ export const simulateTemplate = (props: { template: TemplateItem; commonService:
       data: {
         method: "POST",
         path: `_index_template/_simulate`,
-        body: others,
+        body: payload,
       },
     })
     .then((result) => {
@@ -139,7 +148,9 @@ export const simulateTemplate = (props: { template: TemplateItem; commonService:
           ...result,
           response: formatRemoteTemplateToEditTemplate({
             templateDetail: {
-              ...props.template,
+              ...others,
+              index_patterns,
+              priority,
               name,
               template: result.response.template,
             },
