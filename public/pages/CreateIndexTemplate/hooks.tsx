@@ -63,9 +63,13 @@ export const formatRemoteTemplateToEditTemplate = (props: { templateDetail: Part
 };
 
 export const submitTemplate = async (props: { value: TemplateItem; isEdit: boolean; commonService: CommonService }) => {
-  const { name, ...others } = props.value;
-  const bodyPayload = JSON.parse(JSON.stringify(others));
-  set(bodyPayload, "template.mappings.properties", transformArrayToObject(props.value.template?.mappings?.properties || []));
+  const { name, _meta, ...others } = props.value;
+  const bodyPayload: Omit<TemplateItemRemote, "name"> = {
+    ...others,
+    composed_of: _meta?.flow === FLOW_ENUM.COMPONENTS ? others.composed_of || [] : [],
+    _meta,
+    template: IndexForm.transformIndexDetailToRemote(others.template),
+  };
   return await props.commonService.apiCaller({
     endpoint: "transport.request",
     data: {
