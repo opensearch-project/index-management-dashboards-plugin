@@ -77,12 +77,12 @@ export default class IndexService {
         callWithRequest("cat.recovery", {
           format: "json",
           detailed: true,
-        }),
+        }).catch(() => []),
         callWithRequest("cat.tasks", {
           format: "json",
           detailed: true,
           actions: "indices:data/write/reindex",
-        }),
+        }).catch(() => []),
         callWithRequest("cat.indices", params),
         getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
       ]);
