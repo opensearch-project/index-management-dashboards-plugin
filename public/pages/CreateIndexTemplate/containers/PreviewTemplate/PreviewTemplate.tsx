@@ -22,7 +22,7 @@ export interface TemplateDetailProps {
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => {
   const { value, history } = props;
   const field = useField({
-    values: value,
+    values: JSON.parse(JSON.stringify(value)),
     onChange(name, value) {
       if (name === "data_stream" && value === undefined) {
         field.deleteValue(name);

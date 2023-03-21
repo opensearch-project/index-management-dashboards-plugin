@@ -275,7 +275,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         title={values.composed_of && values.composed_of.length ? "Override template definition" : "Template definition"}
         titleSize="s"
       >
-        <IndexAlias {...subCompontentProps} field={selectedTabId === TABS_ENUM.SUMMARY ? simulateField : field} />
+        <IndexAlias {...subCompontentProps} field={selectedTabId === TABS_ENUM.SUMMARY && isEdit ? simulateField : field} />
         <EuiSpacer />
         <IndexSettings {...subCompontentProps} />
         <EuiSpacer />

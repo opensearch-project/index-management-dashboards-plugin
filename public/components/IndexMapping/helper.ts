@@ -6,9 +6,10 @@ import { DiffableMappingsPropertiesObject, MappingsProperties, MappingsPropertie
 
 export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsProperties => {
   return Object.entries(obj).map(([fieldName, fieldSettings]) => {
-    const { properties, ...others } = fieldSettings;
+    const { properties, type, ...others } = fieldSettings;
     const payload: MappingsProperties[number] = {
       ...others,
+      type: type || "object",
       fieldName,
     };
     if (properties) {
@@ -20,9 +21,10 @@ export const transformObjectToArray = (obj: MappingsPropertiesObject): MappingsP
 
 export const transformArrayToObject = (array: MappingsProperties): MappingsPropertiesObject => {
   return array.reduce((total, current) => {
-    const { fieldName, properties, ...others } = current;
+    const { fieldName, properties, type, ...others } = current;
     const payload: MappingsPropertiesObject[string] = {
       ...others,
+      type: type || "object",
     };
     if (properties) {
       payload.properties = transformArrayToObject(properties);
