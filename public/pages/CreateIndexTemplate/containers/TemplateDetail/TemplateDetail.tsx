@@ -92,7 +92,15 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       }
     },
   });
-  const simulateField = useField();
+  const simulateField = useField({
+    values: {
+      priority: 0,
+      template: {},
+      _meta: {
+        flow: FLOW_ENUM.SIMPLE,
+      },
+    } as Partial<TemplateItem>,
+  });
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
     const { errors, values: templateDetail } = (await field.validatePromise()) || {};
@@ -272,14 +280,14 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         </>
       ) : null}
       <ContentPanel
-        title={values.composed_of && values.composed_of.length ? "Override template definition" : "Template definition"}
+        title={values._meta?.flow === FLOW_ENUM.COMPONENTS ? "Override template definition" : "Template definition"}
         titleSize="s"
       >
-        <IndexAlias {...subCompontentProps} field={selectedTabId === TABS_ENUM.SUMMARY && isEdit ? simulateField : field} />
+        <IndexAlias {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
         <EuiSpacer />
-        <IndexSettings {...subCompontentProps} />
+        <IndexSettings {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
         <EuiSpacer />
-        <TemplateMappings {...subCompontentProps} />
+        <TemplateMappings {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
       </ContentPanel>
       {previewFlyoutVisible && simulateField.getValues() ? (
         <EuiFlyout onClose={() => setPreviewFlyoutVisible(false)}>
