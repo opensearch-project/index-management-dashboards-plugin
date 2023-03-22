@@ -7,6 +7,7 @@ export enum ListenType {
   SPLIT = "split",
   SHRINK = "shrink",
   FORCE_MERGE = "forceMerge",
+  OPEN = "open",
 }
 
 export interface IJobItemMetadata {
@@ -19,6 +20,7 @@ export interface IJobItemMetadata {
   // the timeout for job to do, once the time goes beyond the timeout
   // a timeout error toast will show.
   timeout?: number;
+  firstRunTimeout?: number; // if specified, will run the callback after ${firstRunTimeout}ms
 }
 
 export type JobItemMetadata = IJobItemMetadata & Required<Pick<IJobItemMetadata, "id" | "createTime" | "timeout">>;

@@ -137,3 +137,11 @@ export interface ForceMergeJobMetaData extends IJobItemMetadata {
     taskId: string;
   };
 }
+
+export interface OpenJobMetaData extends IJobItemMetadata {
+  extras: {
+    toastId: string;
+    indexes: string[];
+    taskId: string;
+  };
+}
