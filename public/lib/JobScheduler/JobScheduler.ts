@@ -134,6 +134,11 @@ export class JobScheduler {
     }
 
     await this.storage.set(formattedJob.id, formattedJob);
+    if (job.firstRunTimeout) {
+      setTimeout(() => {
+        this.runJob(formattedJob.id);
+      }, job.firstRunTimeout);
+    }
     this.loopJob();
     return formattedJob;
   }

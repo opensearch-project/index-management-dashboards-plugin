@@ -19,18 +19,18 @@ import OpenIndexModal from "../../components/OpenIndexModal";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
+import { openIndices } from "../../utils/helpers";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
   selectedItems: ManagedCatIndex[];
   onDelete: () => void;
-  onOpen: () => void;
   onClose: () => void;
   onShrink: () => void;
   getIndices: () => Promise<void>;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {
-  const { selectedItems, onDelete, onOpen, onClose } = props;
+  const { selectedItems, onDelete, onClose } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
@@ -62,32 +62,22 @@ export default function IndicesActions(props: IndicesActionsProps) {
     setOpenIndexModalVisible(false);
   };
 
-  const openIndices = async (indices: string[], callback: any) => {
-    try {
-      const indexPayload = selectedItems.map((item) => item.index).join(",");
-      const result = await services.commonService.apiCaller({
-        endpoint: "indices.open",
-        data: {
-          index: indexPayload,
-        },
-      });
-      if (result && result.ok) {
-        coreServices.notifications.toasts.addSuccess(`Open [${indexPayload}] successfully`);
-        callback && callback();
-      } else {
-        coreServices.notifications.toasts.addDanger(result.error);
-      }
-    } catch (err) {
-      coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem opening index."));
+  const openIndicesHandler = async (indices: string[], callback: any) => {
+    const result = await openIndices({
+      commonService: services.commonService,
+      coreServices,
+      indices,
+    });
+    if (result.ok) {
+      callback && callback();
     }
   };
 
   const onOpenIndexModalConfirm = useCallback(async () => {
-    await openIndices(
+    await openIndicesHandler(
       selectedItems.map((item) => item.index),
       () => {
         onOpenIndexModalClose();
-        onOpen();
       }
     );
   }, [services, coreServices, props.onClose, onOpenIndexModalClose]);
