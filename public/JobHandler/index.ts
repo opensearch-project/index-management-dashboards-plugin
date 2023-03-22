@@ -11,6 +11,7 @@ import { StoreLocalStorage } from "../lib/JobScheduler/store-localstorage";
 import OSDPkg from "../../../../package.json";
 import { ListenType } from "../lib/JobScheduler";
 import { callbackForForceMerge, callbackForForceMergeTimeout } from "./callbacks/force_merge";
+import { callbackForOpen, callbackForOpenTimeout } from "./callbacks/open";
 export { listenEvent, destroyListener, EVENT_MAP } from "./utils";
 
 export function JobHandlerRegister(core: CoreSetup) {
@@ -38,5 +39,11 @@ export function JobHandlerRegister(core: CoreSetup) {
     callback: (job) => callbackForForceMerge(job, { core }),
     timeoutCallback: (job) => callbackForForceMergeTimeout(job, { core }),
     listenType: ListenType.FORCE_MERGE,
+  });
+  jobSchedulerInstance.addCallback({
+    callbackName: "callbackForOpen",
+    callback: (job) => callbackForOpen(job, { core }),
+    timeoutCallback: (job) => callbackForOpenTimeout(job, { core }),
+    listenType: ListenType.OPEN,
   });
 }
