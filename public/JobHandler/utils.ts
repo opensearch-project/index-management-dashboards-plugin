@@ -7,6 +7,7 @@ export const EVENT_MAP = {
   SPLIT_COMPLETE: "SPLIT_COMPLETE",
   SHRINK_COMPLETE: "SHRINK_COMPLETE",
   FORCE_MERGE_COMPLETE: "FORCE_MERGE_COMPLETE",
+  OPEN_COMPLETE: "OPEN_COMPLETE",
 };
 
 export const triggerEvent = (eventName: string, data?: unknown) => {
