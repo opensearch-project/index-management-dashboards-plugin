@@ -11,6 +11,7 @@ export const IM_CONFIG_INDEX = {
 };
 export const IM_API = {
   INDEX_TEMPLATE_BASE: "/_index_template",
+  INDEX_TEMPLATE_COMPONENT_BASE: "/_component_template",
   DATA_STREAM_BASE: "/_data_stream",
   POLICY_BASE: `${IM_API_ROUTE_PREFIX}/policies`,
   EXPLAIN_BASE: `${IM_API_ROUTE_PREFIX}/explain`,

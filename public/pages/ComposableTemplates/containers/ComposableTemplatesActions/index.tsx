@@ -46,6 +46,7 @@ export default function ComposableTemplatesActions(props: ComposableTemplatesAct
                       <EuiSpacer />
                       <EuiButton
                         color="danger"
+                        data-test-subj="viewAssociatedTemplatesInToast"
                         onClick={() => {
                           coreServices.notifications.toasts.remove(toast.id);
                           setVisible(true);

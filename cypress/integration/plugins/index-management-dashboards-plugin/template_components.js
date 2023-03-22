@@ -1,0 +1,124 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
+
+const SAMPLE_TEMPLATE_PREFIX = "template-components-test";
+const associatedTemplate = "template-for-test-associate";
+const MAX_TEMPLATE_NUMBER = 30;
+
+describe("Template components", () => {
+  before(() => {
+    // Set welcome screen tracking to false
+    localStorage.setItem("home:welcome:show", "false");
+    cy.deleteTemplate(associatedTemplate);
+    cy.deleteTemplateComponents(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
+    for (let i = 0; i < MAX_TEMPLATE_NUMBER; i++) {
+      cy.deleteTemplateComponents(`${SAMPLE_TEMPLATE_PREFIX}-${i}`);
+      cy.createTemplateComponent(`${SAMPLE_TEMPLATE_PREFIX}-${i}`, {
+        template: {
+          aliases: {},
+          settings: {
+            number_of_shards: 2,
+            number_of_replicas: 1,
+          },
+        },
+      });
+    }
+    cy.createIndexTemplate(associatedTemplate, {
+      index_patterns: ["template-test-*"],
+      priority: 100,
+      composed_of: [`${SAMPLE_TEMPLATE_PREFIX}-0`, `${SAMPLE_TEMPLATE_PREFIX}-1`],
+    });
+  });
+
+  beforeEach(() => {
+    // Visit ISM OSD
+    cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/composable-templates`);
+
+    // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
+    cy.contains("Rows per page", { timeout: 60000 });
+  });
+
+  describe("can be searched / sorted / paginated", () => {
+    it("successfully", () => {
+      cy.get('[data-test-subj="pagination-button-1"]').should("exist");
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-0`);
+      cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-0`);
+      cy.get(".euiTableRow").should("have.length", 1);
+    });
+  });
+
+  describe("can create a template component", () => {
+    it("successfully", () => {
+      cy.get('[data-test-subj="Create templateButton"]').click();
+      cy.contains("Define template component");
+
+      cy.get('[data-test-subj="form-row-name"] input').type(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
+      cy.get('[data-test-subj="CreateComposableTemplateCreateButton"]').click();
+
+      cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER} has been successfully created.`);
+
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
+      cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
+      cy.get(".euiTableRow").should("have.length", 1);
+    });
+  });
+
+  describe("can update a template component", () => {
+    it("successfully", () => {
+      // data-test-subj={`templateDetail-${value}`}
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-0`);
+      cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-0`);
+      cy.get(`[data-test-subj="templateDetail-${SAMPLE_TEMPLATE_PREFIX}-0"]`).click();
+      cy.contains("Define template component");
+      cy.get('[data-test-subj="form-row-_meta.description"] input').type("Some description");
+      cy.contains("1 unsaved changes");
+      cy.get('[data-test-subj="updateTemplateButton"]').click();
+
+      cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-0 has been successfully updated.`);
+
+      cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/composable-templates`);
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-0`);
+      cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-0`);
+      cy.contains("Some description");
+      cy.get(".euiTableRow").should("have.length", 1);
+    });
+  });
+
+  describe("can delete a template component", () => {
+    it("successfully", () => {
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-0`);
+      cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-0`);
+      cy.get(`#_selection_column_${SAMPLE_TEMPLATE_PREFIX}-0-checkbox`).click();
+
+      cy.get('[data-test-subj="deleteAction"]').click();
+      cy.contains(/Unable to delete/);
+      cy.get('[data-test-subj="viewAssociatedTemplatesInToast"]').click();
+      cy.contains("Associated templates");
+      cy.get(`[aria-label="Unlink from ${associatedTemplate}?"]`).click();
+      cy.get(`[data-test-subj="Unlink from ${associatedTemplate}?-confirm"]`).click();
+      cy.contains(/has been successfully unlinked from/);
+      cy.get('[data-test-subj="euiFlyoutCloseButton"]').click();
+      cy.get('[data-test-subj="deleteAction"]').click();
+      // The confirm button should be disabled
+      cy.get('[data-test-subj="deleteConfirmButton"]').should("be.disabled");
+      // type delete
+      cy.wait(500).get('[data-test-subj="deleteInput"]').type("delete");
+      cy.get('[data-test-subj="deleteConfirmButton"]').should("not.be.disabled");
+      // click to delete
+      cy.get('[data-test-subj="deleteConfirmButton"]').click();
+      cy.wait(500);
+      cy.get(`#_selection_column_${SAMPLE_TEMPLATE_PREFIX}-0-checkbox`).should("not.exist");
+    });
+  });
+
+  after(() => {
+    cy.deleteTemplate(associatedTemplate);
+    cy.deleteTemplateComponents(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
+    for (let i = 0; i < MAX_TEMPLATE_NUMBER; i++) {
+      cy.deleteTemplateComponents(`${SAMPLE_TEMPLATE_PREFIX}-${i}`);
+    }
+  });
+});

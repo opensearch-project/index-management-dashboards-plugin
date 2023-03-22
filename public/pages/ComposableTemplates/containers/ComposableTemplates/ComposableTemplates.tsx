@@ -292,7 +292,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               render: (value: string) => {
                 return (
                   <Link to={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${value}`}>
-                    <EuiLink>{value}</EuiLink>
+                    <EuiLink data-test-subj={`templateDetail-${value}`}>{value}</EuiLink>
                   </Link>
                 );
               },
