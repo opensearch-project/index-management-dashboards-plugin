@@ -331,7 +331,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dd
                 class="euiDescriptionList__description"
               >
-                -
+                1
               </dd>
             </dl>
           </div>
@@ -349,7 +349,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dd
                 class="euiDescriptionList__description"
               >
-                -
+                10
               </dd>
             </dl>
           </div>
@@ -480,7 +480,10 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                       readonly=""
                       style="display: none;"
                     >
-                      {}
+                      {
+  "index.number_of_replicas": "10",
+  "index.number_of_shards": "1"
+}
                     </textarea>
                     <div
                       class="euiCodeEditorWrapper"

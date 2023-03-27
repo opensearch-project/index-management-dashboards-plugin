@@ -42,7 +42,7 @@ describe("<CreateIndexTemplate /> spec", () => {
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });
-  it("it goes to templates page when click cancel", async () => {
+  it("render template pages", async () => {
     const { findByTitle, container } = renderCreateIndexTemplateWithRouter([`${ROUTES.CREATE_TEMPLATE}/good_template`]);
     await findByTitle("good_template");
     expect(container).toMatchSnapshot();
@@ -99,6 +99,7 @@ describe("<CreateIndexTemplate /> spec", () => {
               _meta: {
                 flow: "simple",
               },
+              composed_of: [],
               priority: 0,
               template: {
                 settings: {
