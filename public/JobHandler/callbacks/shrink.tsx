@@ -73,8 +73,6 @@ export const callbackForShrink: CallbackType = async (job: RecoveryJobMetaData, 
         }
         return true;
       }
-    } else {
-      return true;
     }
   }
 
