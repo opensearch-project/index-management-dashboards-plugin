@@ -29,40 +29,38 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
     const { _source } = tasksResult.response;
     const { completed, error } = (_source || {}) as OpenTaskResult["_source"];
     if (completed) {
-      if (!error?.reason) {
-        const { acknowledged, shards_acknowledged } = _source.response || {};
-        if (acknowledged && shards_acknowledged) {
-          if (extras.toastId) {
-            core.notifications.toasts.remove(extras.toastId);
-          }
-          triggerEvent(EVENT_MAP.OPEN_COMPLETE, job);
-          core.notifications.toasts.addSuccess(
-            {
-              title: ((
-                <>
-                  The indexes{" "}
-                  {extras.indexes.map((item) => (
-                    <DetailLink index={item} />
-                  ))}{" "}
-                  are successfully opened.
-                </>
-              ) as unknown) as string,
-            },
-            {
-              toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
-            }
-          );
+      const { acknowledged, shards_acknowledged } = _source.response || {};
+      if (acknowledged && shards_acknowledged) {
+        if (extras.toastId) {
+          core.notifications.toasts.remove(extras.toastId);
         }
-      } else {
+        triggerEvent(EVENT_MAP.OPEN_COMPLETE, job);
+        core.notifications.toasts.addSuccess(
+          {
+            title: ((
+              <>
+                The indexes{" "}
+                {extras.indexes.map((item) => (
+                  <DetailLink index={item} />
+                ))}{" "}
+                are successfully opened.
+              </>
+            ) as unknown) as string,
+          },
+          {
+            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+          }
+        );
+
+        return true;
+      } else if (error?.reason) {
         let errors: ReactChild[] = [];
 
-        if (error?.reason) {
-          errors.push(
-            <ul key="error.reason">
-              <li>{error.reason}</li>
-            </ul>
-          );
-        }
+        errors.push(
+          <ul key="error.reason">
+            <li>{error.reason}</li>
+          </ul>
+        );
 
         if (extras.toastId) {
           core.notifications.toasts.remove(extras.toastId);
@@ -84,8 +82,9 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           }
         );
+
+        return true;
       }
-      return true;
     }
   }
 
