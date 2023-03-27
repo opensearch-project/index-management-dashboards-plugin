@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CreateIndexTemplate /> spec it goes to templates page when click cancel 1`] = `
+exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
 <div>
   <div
     style="padding: 0px 50px;"
