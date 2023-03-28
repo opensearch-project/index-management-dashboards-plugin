@@ -66,6 +66,8 @@ interface ShrinkIndexState {
 export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
   static contextType = CoreServicesContext;
 
+  destroyed: boolean = false;
+
   constructor(props: ShrinkIndexProps) {
     super(props);
 
@@ -96,6 +98,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
 
   componentWillUnmount(): void {
     destroyListener(EVENT_MAP.OPEN_COMPLETE, this.openCompleteHandler);
+    this.destroyed = true;
   }
 
   openCompleteHandler = () => {
@@ -194,6 +197,9 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       }
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem shrinking index."));
+    }
+    if (this.destroyed) {
+      return;
     }
     this.setState({
       loading: false,
