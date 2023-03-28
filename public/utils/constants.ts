@@ -117,7 +117,7 @@ export const BREADCRUMBS = Object.freeze({
   CREATE_DATA_STREAM: { text: "Create data stream", href: `#${ROUTES.CREATE_DATA_STREAM}` },
   FORCE_MERGE: { text: "Force merge", href: `#${ROUTES.FORCE_MERGE}` },
   COMPOSABLE_TEMPLATES: { text: "Template components", href: `#${ROUTES.COMPOSABLE_TEMPLATES}` },
-  CREATE_COMPOSABLE_TEMPLATE: { text: "Create composable template", href: `#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}` },
+  CREATE_COMPOSABLE_TEMPLATE: { text: "Create component", href: `#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}` },
 });
 
 // TODO: EUI has a SortDirection already

@@ -79,7 +79,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
             >
               <button
                 class="euiButton euiButton--primary euiButton--fill"
-                data-test-subj="Create templateButton"
+                data-test-subj="Create componentButton"
                 type="button"
               >
                 <span
@@ -88,7 +88,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
                   <span
                     class="euiButton__text"
                   >
-                    Create template
+                    Create component
                   </span>
                 </span>
               </button>
@@ -323,7 +323,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
                   type="button"
                 >
                   <span
-                    class="euiTableCellContent"
+                    class="euiTableCellContent euiTableCellContent--alignRight"
                   >
                     <span
                       class="euiTableCellContent__text"

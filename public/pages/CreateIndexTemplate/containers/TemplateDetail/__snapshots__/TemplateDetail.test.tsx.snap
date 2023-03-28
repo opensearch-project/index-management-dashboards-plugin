@@ -340,7 +340,8 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
           >
             <div
-              class="euiFlexItem"
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+              style="width: 275px;"
             >
               <div
                 class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard euiCheckableCard-isChecked"
@@ -376,7 +377,8 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               </div>
             </div>
             <div
-              class="euiFlexItem"
+              class="euiFlexItem euiFlexItem--flexGrowZero"
+              style="width: 275px;"
             >
               <div
                 class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard"

@@ -15,7 +15,7 @@ export const getAllUsedComponents = async ({ commonService }: { commonService: C
     },
   });
 
-  if (allTemplatesResponse.ok) {
+  if (allTemplatesResponse && allTemplatesResponse.ok) {
     return allTemplatesResponse.response.index_templates || [];
   }
 

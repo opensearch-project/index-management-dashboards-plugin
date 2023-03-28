@@ -52,7 +52,7 @@ describe("Template components", () => {
 
   describe("can create a template component", () => {
     it("successfully", () => {
-      cy.get('[data-test-subj="Create templateButton"]').click();
+      cy.get('[data-test-subj="Create componentButton"]').click();
       cy.contains("Define template component");
 
       cy.get('[data-test-subj="form-row-name"] input').type(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);

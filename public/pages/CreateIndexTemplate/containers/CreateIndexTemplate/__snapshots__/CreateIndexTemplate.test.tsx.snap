@@ -233,7 +233,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
           <h3
             class="euiTitle euiTitle--small"
           >
-            Template definition
+            Preview template
             <span
               class="panel-header-count"
             >

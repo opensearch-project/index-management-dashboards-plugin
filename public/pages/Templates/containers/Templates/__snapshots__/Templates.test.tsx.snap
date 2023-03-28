@@ -357,7 +357,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                 scope="col"
               >
                 <span
-                  class="euiTableCellContent"
+                  class="euiTableCellContent euiTableCellContent--alignRight"
                 >
                   <span
                     class="euiTableCellContent__text"

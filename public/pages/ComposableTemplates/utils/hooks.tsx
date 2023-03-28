@@ -6,10 +6,8 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { CommonService, ServicesContext } from "../../../services";
 import { TemplateItem, TemplateItemRemote } from "../../../../models/interfaces";
 import { getAllUsedComponents } from "./services";
-import { useState, useCallback } from "react";
-import { useContext } from "react";
+import { useState, useCallback, useContext, useEffect, useRef } from "react";
 import { BrowserServices } from "../../../models/interfaces";
-import { useEffect } from "react";
 
 export const getTemplate = async (props: {
   templateName: string;
@@ -85,6 +83,7 @@ export const useComponentMapTemplate = () => {
   const [componentMapTemplate, setComponentMapTemplate] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(false);
   const services = useContext(ServicesContext) as BrowserServices;
+  const destroyRef = useRef<boolean>(false);
 
   const reload = useCallback((force?: boolean) => {
     setLoading(true);
@@ -94,6 +93,9 @@ export const useComponentMapTemplate = () => {
     }).then((res) => {
       if (force) {
         window.dispatchEvent(new CustomEvent(CACHE_REFRESH_EVENT));
+      }
+      if (destroyRef.current) {
+        return;
       }
       setComponentMapTemplate(res);
       setLoading(false);
@@ -122,6 +124,12 @@ export const useComponentMapTemplate = () => {
       }
     };
   }, [eventHandler]);
+
+  useEffect(() => {
+    return () => {
+      destroyRef.current = true;
+    };
+  }, []);
 
   return {
     reload,

@@ -147,7 +147,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
         <>
           <EuiFlexGroup alignItems="center">
             <EuiFlexItem>
-              <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create composable template</h1>}</EuiTitle>
+              <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create component</h1>}</EuiTitle>
               {isEdit ? null : (
                 <CustomFormRow
                   fullWidth
@@ -216,7 +216,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButton fill onClick={onClickSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
-                Create template
+                Create component
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>

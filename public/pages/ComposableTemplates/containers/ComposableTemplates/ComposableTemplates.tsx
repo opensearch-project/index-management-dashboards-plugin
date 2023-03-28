@@ -240,7 +240,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                 ),
               },
               {
-                text: "Create template",
+                text: "Create component",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
@@ -316,6 +316,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               field: "associatedCount",
               name: "Associated templates",
               sortable: true,
+              align: "right",
               render: (value: number, record: ICatComposableTemplate) => {
                 return (
                   <AssociatedTemplatesModal
@@ -354,7 +355,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                       this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                     }}
                   >
-                    Create template
+                    Create component
                   </EuiButton>,
                 ]}
               />

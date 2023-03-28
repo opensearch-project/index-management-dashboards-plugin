@@ -185,7 +185,7 @@ export default function DefineTemplate(props: SubDetailProps) {
       <EuiSpacer />
       <CustomFormRow {...getCommonFormRowProps(["_meta", "flow"], field)} fullWidth label="Choose a method to define your template">
         <EuiFlexGroup>
-          <EuiFlexItem>
+          <EuiFlexItem style={{ width: 275 }} grow={false}>
             <EuiCheckableCard
               label="Simple template"
               id="checkboxForIndexTemplateFlowSimple"
@@ -193,7 +193,7 @@ export default function DefineTemplate(props: SubDetailProps) {
               checked={registeredFlowField.value === FLOW_ENUM.SIMPLE}
             />
           </EuiFlexItem>
-          <EuiFlexItem>
+          <EuiFlexItem style={{ width: 275 }} grow={false}>
             <EuiCheckableCard
               label="Reusable components"
               id="checkboxForIndexTemplateFlowComponents"

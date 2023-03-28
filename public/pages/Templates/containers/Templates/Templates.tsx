@@ -307,6 +307,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
             {
               field: "composed_of",
               name: "Associated components",
+              align: "right",
               render: (value: string, record) => {
                 return (
                   <AssociatedComponentsModal

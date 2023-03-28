@@ -280,7 +280,13 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         </>
       ) : null}
       <ContentPanel
-        title={values._meta?.flow === FLOW_ENUM.COMPONENTS ? "Override template definition" : "Template definition"}
+        title={
+          isEdit && selectedTabId === TABS_ENUM.SUMMARY
+            ? "Preview template"
+            : values._meta?.flow === FLOW_ENUM.COMPONENTS
+            ? "Override template definition"
+            : "Template definition"
+        }
         titleSize="s"
       >
         <IndexAlias {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />

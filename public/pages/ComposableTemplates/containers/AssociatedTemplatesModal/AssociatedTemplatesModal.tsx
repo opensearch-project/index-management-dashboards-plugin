@@ -21,7 +21,7 @@ interface AssociatedTemplatesModalProps {
   renderProps: (params: { setVisible: Dispatch<SetStateAction<boolean>> }) => ReactChild;
 }
 
-export default function AssociatedTemplatesModalProps(props: AssociatedTemplatesModalProps) {
+export default function AssociatedTemplatesModal(props: AssociatedTemplatesModalProps) {
   const { onUnlink, renderProps, componentTemplate } = props;
   const [visible, setVisible] = useState(false);
   const { loading, componentMapTemplate, reload } = useComponentMapTemplate();

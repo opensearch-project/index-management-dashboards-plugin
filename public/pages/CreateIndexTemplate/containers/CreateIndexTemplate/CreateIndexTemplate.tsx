@@ -24,7 +24,6 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
   }
 
   setBreadCrumb() {
-    const isEdit = this.template;
     const readonly = this.readonly;
     let lastBread: typeof BREADCRUMBS.TEMPLATES;
     if (readonly && this.template) {
@@ -32,9 +31,9 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
         text: this.template,
         href: `#${this.props.location.pathname}`,
       };
-    } else if (isEdit) {
+    } else if (this.template) {
       lastBread = {
-        ...BREADCRUMBS.EDIT_TEMPLATE,
+        text: this.template,
         href: `#${this.props.location.pathname}`,
       };
     } else {
