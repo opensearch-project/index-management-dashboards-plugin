@@ -122,7 +122,7 @@ const MonacoJSONEditor = forwardRef(
             language="json"
             value={editorValue}
             options={{
-              readOnly: others.disabled,
+              readOnly: others.disabled || others.readOnly,
             }}
             editorDidMount={(editor) => {
               editorRef.current = editor;
