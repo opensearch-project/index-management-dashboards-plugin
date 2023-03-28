@@ -65,6 +65,7 @@ export const ROUTES = Object.freeze({
   DATA_STREAMS: "/data-streams",
   CREATE_DATA_STREAM: "/create-data-stream",
   FORCE_MERGE: "/force-merge",
+  NOTIFICATIONS: "/notifications",
 });
 
 export const BREADCRUMBS = Object.freeze({
