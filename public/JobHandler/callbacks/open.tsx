@@ -41,7 +41,7 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
               <>
                 The indexes{" "}
                 {extras.indexes.map((item) => (
-                  <DetailLink index={item} />
+                  <DetailLink key={item} index={item} />
                 ))}{" "}
                 are successfully opened.
               </>
@@ -71,7 +71,7 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
               <>
                 Open{" "}
                 {extras.indexes.map((item) => (
-                  <DetailLink index={item} />
+                  <DetailLink key={item} index={item} />
                 ))}{" "}
                 has some errors, please check the errors below:
               </>
@@ -102,7 +102,7 @@ export const callbackForOpenTimeout: CallbackType = (job: OpenJobMetaData, { cor
         <>
           Open{" "}
           {extras.indexes.map((item) => (
-            <DetailLink index={item} />
+            <DetailLink key={item} index={item} />
           ))}
           does not finish in reasonable time, please check the index manually
         </>
