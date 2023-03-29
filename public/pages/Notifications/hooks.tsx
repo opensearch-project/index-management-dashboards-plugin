@@ -3,16 +3,26 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import { CommonService } from "../../services";
-import { ActionTypeMapName, ActionTypeMapTitle, getKeyByValue } from "./constant";
+import { ActionTypeMapName, ActionTypeMapTitle } from "./constant";
 import { ILronConfig, ILronPlainConfig } from "./interface";
 
 export const transformConfigListToPlainList = (config: ILronConfig[]): ILronPlainConfig[] => {
-  return config.map((c) => {
-    const { lron_condition, ...rest } = c;
-    const actionType = getKeyByValue(ActionTypeMapName, c.action_name);
+  return Object.entries(ActionTypeMapName).map(([actionType, action_name], index) => {
+    const findItem =
+      config.find((c) => c.action_name === action_name) ||
+      ({
+        lron_condition: {
+          failure: false,
+          success: false,
+        },
+        action_name: action_name,
+        channels: [],
+      } as ILronConfig);
+    const { lron_condition, ...rest } = findItem;
     return {
       ...lron_condition,
       ...rest,
+      index,
       title: actionType ? ActionTypeMapTitle[actionType] : "",
     };
   });
@@ -26,8 +36,6 @@ export const getComputedResultFromPlainList = (
   return {
     useDifferentSettings: !Object.values(ActionTypeMapName).every((c) => {
       const findItem = plainConfigs.find((p) => p.action_name === c) || ({} as ILronPlainConfig);
-      console.log(findItem);
-      console.log(plainConfigs[0]);
       return findItem.success === plainConfigs[0].failure && findItem.success === plainConfigs[0].success;
     }),
   };

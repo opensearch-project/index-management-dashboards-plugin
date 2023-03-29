@@ -6,10 +6,10 @@ export const ActionType = {
 };
 
 export const ActionTypeMapTitle = {
-  [ActionType.REINDEX]: "Reindex",
-  [ActionType.RESIZE]: "Resize",
-  [ActionType.FORCEMERGE]: "Force merge",
-  [ActionType.OPEN]: "Open",
+  [ActionType.REINDEX]: "reindex",
+  [ActionType.RESIZE]: "shrink, split, clone",
+  [ActionType.FORCEMERGE]: "force merge",
+  [ActionType.OPEN]: "open",
 };
 
 export const ActionTypeMapName = {

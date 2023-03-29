@@ -20,6 +20,7 @@ export interface ILronConfig {
 export type ILronPlainConfig = ILronConfig["lron_condition"] &
   Omit<ILronConfig, "lron_condition"> & {
     title: string;
+    index: number;
   };
 
 export type FieldState = {
