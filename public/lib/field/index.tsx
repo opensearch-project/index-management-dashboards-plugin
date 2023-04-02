@@ -17,15 +17,16 @@ export function transformNameToString(name: FieldName) {
   }
 }
 
-export default function useField<T>(options?: FieldOption): FieldInstance {
-  const [, setValuesState] = useState((options?.values || {}) as Record<string, any>);
+export default function useField<T extends object>(options?: FieldOption<T>): FieldInstance<T> {
+  const [, setValuesState] = useState(options?.values || {});
+  const [, setOriginalValuesState] = useState(options?.values || {});
   const [, setErrorsState] = useState({} as Record<string, null | string[]>);
   const destroyRef = useRef<boolean>(false);
-  const values = useRef<Record<string, any>>(options?.values || {});
+  const values = useRef<T>((options?.values || {}) as T);
   const errors = useRef<Record<string, null | string[]>>({});
-  const originalValuesRef = useRef<Record<string, any>>(options?.originalValues || {});
+  const originalValuesRef = useRef<T>((options?.originalValues || {}) as T);
   const fieldsMapRef = useRef<Record<string, InitOption>>({});
-  const setValues = (obj: Record<string, any>) => {
+  const setValues = (obj: T) => {
     if (destroyRef.current) {
       return;
     }
@@ -35,7 +36,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     };
     setValuesState(values.current);
   };
-  const resetValues = (obj: Record<string, any>) => {
+  const resetValues = (obj: T) => {
     if (destroyRef.current) {
       return;
     }
@@ -177,6 +178,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     },
     setOriginalValues: (obj) => {
       originalValuesRef.current = obj;
+      setOriginalValuesState(originalValuesRef.current);
     },
     getOriginalValues: () => originalValuesRef.current,
     computeDifference: () => {
