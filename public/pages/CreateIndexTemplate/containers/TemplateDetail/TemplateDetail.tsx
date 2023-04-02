@@ -63,7 +63,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         },
       },
     } as Partial<TemplateItem>,
-    searchObject.query.values
+    searchObject.query.values as any
   );
   const field = useField({
     values: defaultValues,

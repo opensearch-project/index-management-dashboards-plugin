@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { forwardRef, useRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox } from "@elastic/eui";
+import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox, EuiComboBoxOptionOption } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
 import EuiComboBox from "../../ComboBoxWithoutWarning";
 
@@ -98,36 +98,46 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
         {
           onChange,
           value,
-          options,
           ...others
-        }: { value?: string[]; options: { label: string; value: string }[]; onChange: (val: string[], ...args: any) => void },
+        }: {
+          value?: string[];
+          options: EuiComboBoxOptionOption<string>[];
+          onChange: (val: string[], values: EuiComboBoxOptionOption<string>[], ...args: any) => void;
+        },
         ref: React.Ref<any>
       ) => {
         return (
           <EuiComboBox
             onCreateOption={(searchValue) => {
-              const allOptions = (options as { label: string; options?: { label: string }[] }[]).reduce((total, current) => {
+              const allOptions = others.options.reduce((total, current) => {
                 if (current.options) {
                   return [...total, ...current.options];
                 } else {
                   return [...total, current];
                 }
-              }, [] as { label: string }[]);
+              }, [] as EuiComboBoxOptionOption<string>[]);
               const findItem = allOptions.find((item: { label: string }) => item.label === searchValue);
               if (findItem) {
-                onChange([...(value || []), searchValue]);
+                onChange(
+                  [...(value || []), searchValue],
+                  [
+                    ...allOptions.filter((item) => value?.includes(item.label)),
+                    {
+                      label: searchValue,
+                    },
+                  ]
+                );
               }
             }}
             {...others}
-            options={options}
             ref={ref}
             onChange={(selectedOptions) => {
               onChange(selectedOptions.map((item) => item.value) as string[], selectedOptions);
             }}
             selectedOptions={
               (value || [])
-                .map((item: string) => options.find((option) => option.value === item))
-                .filter((item: { label: string; value: string } | undefined) => item !== undefined) as { label: string; value: string }[]
+                .map((item: string) => others.options.find((option) => option.value === item) || { label: item, value: item })
+                .filter((item) => item !== undefined) as EuiComboBoxOptionOption<string>[]
             }
           />
         );

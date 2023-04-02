@@ -77,7 +77,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       return;
     }
     setExecuting(true);
-    const { indexes, ...others } = values as { indexes: { label: string }[] };
+    const { indexes, ...others } = values;
     const result = await services.commonService.apiCaller<{
       _shards?: {
         successful: number;

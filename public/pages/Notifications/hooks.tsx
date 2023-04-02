@@ -28,6 +28,29 @@ export const transformConfigListToPlainList = (config: ILronConfig[]): ILronPlai
   });
 };
 
+export const transformPlainListToConfigList = (config: ILronPlainConfig[]): ILronConfig[] => {
+  return Object.entries(ActionTypeMapName).map(([actionType, action_name], currentIndex) => {
+    const findItem =
+      config.find((c) => c.action_name === action_name) ||
+      ({
+        failure: false,
+        success: false,
+        action_name: action_name,
+        title: ActionTypeMapTitle[actionType],
+        channels: [],
+        index: currentIndex,
+      } as ILronPlainConfig);
+    const { failure, success, index, title, ...rest } = findItem;
+    return {
+      ...rest,
+      lron_condition: {
+        failure,
+        success,
+      },
+    } as ILronConfig;
+  });
+};
+
 export const getComputedResultFromPlainList = (
   plainConfigs: ILronPlainConfig[]
 ): {
@@ -39,6 +62,42 @@ export const getComputedResultFromPlainList = (
       return findItem.success === plainConfigs[0].failure && findItem.success === plainConfigs[0].success;
     }),
   };
+};
+
+export const getDiffableMapFromPlainList = (plainConfigs: ILronPlainConfig[]): Record<string, ILronPlainConfig> => {
+  return plainConfigs.reduce(
+    (total, current) => ({
+      ...total,
+      [current.action_name]: current,
+    }),
+    {}
+  );
+};
+
+export const submitNotifications = async (props: { commonService: CommonService; plainConfigsPayload: ILronPlainConfig[] }) => {
+  return Promise.all(
+    transformPlainListToConfigList(props.plainConfigsPayload).map((item) => {
+      const { action_name } = item;
+      return props.commonService.consoleProxyCaller<unknown>({
+        endpoint: "transport.request",
+        data: {
+          method: "PUT",
+          path: `/_plugins/_im/lron/${encodeURIComponent(`LRON:${action_name}`)}`,
+          body: {
+            lron_config: item,
+          },
+        },
+      });
+    })
+  ).then((allResults) => {
+    return {
+      ok: allResults.every((item) => item.ok),
+      error: allResults
+        .filter((item) => !item.ok)
+        .map((item) => item.error)
+        .join(", "),
+    };
+  });
 };
 
 export const getNotifications = async (props: { commonService: CommonService }) => {

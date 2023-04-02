@@ -7,7 +7,7 @@ import { EuiButton, EuiBottomBar, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } fr
 
 export type CustomFormRowProps = {
   unsavedCount: number;
-  onClickCancel: () => Promise<void>;
+  onClickCancel?: () => void;
   onClickSubmit: () => Promise<void>;
   submitButtonDataTestSubj?: string;
 };
