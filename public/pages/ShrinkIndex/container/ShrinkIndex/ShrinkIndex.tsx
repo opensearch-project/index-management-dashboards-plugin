@@ -49,6 +49,9 @@ import {
   INDEX_ROUTING_ALLOCATION_SETTING,
 } from "../../utils/constants";
 import { get } from "lodash";
+import NotificationConfig from "../../../../containers/NotificationConfig";
+import { ActionType } from "../../../Notifications/constant";
+import { NotificationConfigRef } from "../../../../containers/NotificationConfig/NotificationConfig";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -121,6 +124,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   };
 
   formRef: IFormGeneratorRef | null = null;
+  notificationRef: NotificationConfigRef | null = null;
 
   onClickAction = async () => {
     const { sourceIndex } = this.state;
@@ -128,6 +132,10 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
 
     const result = await this.formRef?.validatePromise();
     if (result?.errors) {
+      return;
+    }
+    const notificationsResult = await this.notificationRef?.validatePromise();
+    if (notificationsResult?.errors) {
       return;
     }
     this.shrinkIndex(sourceIndex.index, targetIndex, others);
@@ -615,6 +623,10 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         <EuiSpacer />
         <IndexDetail indices={indices} children={indexDetailChildren} />
         {!!disableShrinkButton ? null : configurationChildren}
+        <EuiSpacer />
+        <ContentPanel title="Advanced settings">
+          <NotificationConfig ref={(ref) => (this.notificationRef = ref)} actionType={ActionType.RESIZE} />
+        </ContentPanel>
         <EuiSpacer />
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">

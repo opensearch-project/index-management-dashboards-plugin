@@ -102,7 +102,7 @@ const Notifications = (props: NotificationsProps) => {
         <EuiTitle>
           <h5 className="ISM-notifications-first-letter-uppercase">
             {Object.keys(ActionType)
-              .map((item) => ActionTypeMapTitle[item])
+              .map((item) => ActionTypeMapTitle[item as ActionType])
               .join(", ")}
           </h5>
         </EuiTitle>
@@ -174,17 +174,7 @@ const Notifications = (props: NotificationsProps) => {
                         isInvalid={!!field.getError(["dataSource", `${record.index}`, "channels"])}
                         error={field.getError(["dataSource", `${record.index}`, "channels"])}
                       >
-                        <ChannelSelect
-                          {...others}
-                          value={value?.map((item) => item.id)}
-                          onChange={(val, options) => {
-                            onChange(
-                              options.map((item) => ({
-                                id: item.value || "",
-                              }))
-                            );
-                          }}
-                        />
+                        <ChannelSelect {...others} value={value} onChange={onChange} />
                       </CustomFormRow>
                     );
                   },

@@ -1,9 +1,9 @@
-export const ActionType = {
-  REINDEX: "REINDEX",
-  RESIZE: "RESIZE",
-  FORCEMERGE: "FORCEMERGE",
-  OPEN: "OPEN",
-};
+export enum ActionType {
+  REINDEX = "REINDEX",
+  RESIZE = "RESIZE",
+  FORCEMERGE = "FORCEMERGE",
+  OPEN = "OPEN",
+}
 
 export const ActionTypeMapTitle = {
   [ActionType.REINDEX]: "reindex",

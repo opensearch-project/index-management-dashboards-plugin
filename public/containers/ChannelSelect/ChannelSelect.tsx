@@ -9,8 +9,8 @@ import { useChannels } from "./hooks";
 import { AllBuiltInComponents } from "../../components/FormGenerator";
 
 interface ChannelNotificationProps {
-  value?: string[];
-  onChange: (value: string[], items: EuiComboBoxOptionOption<string>[]) => void;
+  value?: { id: string }[];
+  onChange: (val: { id: string }[]) => void;
 }
 
 const ChannelSelect = ({ value, onChange }: ChannelNotificationProps) => {
@@ -22,8 +22,14 @@ const ChannelSelect = ({ value, onChange }: ChannelNotificationProps) => {
           placeholder="Select channel"
           isLoading={loading}
           options={channels.map((channel) => ({ value: channel.config_id, label: channel.name }))}
-          onChange={onChange}
-          value={loading ? [] : value}
+          onChange={(val, options: EuiComboBoxOptionOption<string>[]) => {
+            onChange(
+              options.map((item) => ({
+                id: item.value || "",
+              }))
+            );
+          }}
+          value={loading ? [] : value?.map((item) => item.id)}
         />
       </EuiFlexItem>
     </EuiFlexGroup>
