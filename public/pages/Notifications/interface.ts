@@ -9,6 +9,7 @@ export interface ILronConfig {
     success?: boolean;
     failure?: boolean;
   };
+  task_id?: string;
   action_name: ActionType;
   channels: {
     id: string;

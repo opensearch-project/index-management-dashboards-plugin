@@ -183,6 +183,9 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         },
       });
       if (result && result.ok) {
+        await this.notificationRef?.associateWithTask({
+          taskId: result.response?.task,
+        });
         const toastInstance = this.context.notifications.toasts.addSuccess(
           `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`,
           {

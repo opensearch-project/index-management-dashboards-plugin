@@ -12,7 +12,7 @@ import { useState } from "react";
 import { ActionTypeMapTitle } from "../../pages/Notifications/constant";
 import { ROUTES } from "../../utils/constants";
 import { useEffect } from "react";
-import { GetLronConfig } from "./hooks";
+import { GetLronConfig, associateWithTask } from "./hooks";
 import { useContext } from "react";
 import { ServicesContext } from "../../services";
 import { BrowserServices } from "../../models/interfaces";
@@ -23,6 +23,8 @@ import { FeatureChannelList } from "../../../server/models/interfaces";
 import CustomFormRow from "../../components/CustomFormRow";
 import { useImperativeHandle } from "react";
 import { forwardRef } from "react";
+import { CoreServicesContext } from "../../components/core_services";
+import { CoreStart } from "opensearch-dashboards/public";
 
 interface NotificationConfigProps {
   actionType: ActionType;
@@ -41,6 +43,7 @@ const NotificationConfig = ({ actionType }: NotificationConfigProps, ref: React.
   >();
   const [LronConfig, setLronConfig] = useState<ILronConfig>();
   const context = useContext(ServicesContext) as BrowserServices;
+  const coreServices = useContext(CoreServicesContext) as CoreStart;
   useEffect(() => {
     GetLronConfig({
       actionType,
@@ -59,7 +62,19 @@ const NotificationConfig = ({ actionType }: NotificationConfigProps, ref: React.
   const values = field.getValues();
   useImperativeHandle(ref, () => ({
     ...field,
-    associateWithTask: () => Promise.resolve(true),
+    associateWithTask: ({ taskId }) => {
+      const { customize, ...others } = field.getValues();
+      if (!customize) {
+        return Promise.resolve(true);
+      }
+
+      return associateWithTask({
+        services: context,
+        coreServices,
+        taskId,
+        lronConfig: others,
+      });
+    },
   }));
   return (
     <div>
