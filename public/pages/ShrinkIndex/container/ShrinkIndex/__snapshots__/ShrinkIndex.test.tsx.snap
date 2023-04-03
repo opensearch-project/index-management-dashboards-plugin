@@ -537,8 +537,8 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                         style="display: none;"
                       >
                         {
-  "index.number_of_shards": "1",
-  "index.number_of_replicas": "1"
+  "index.number_of_shards": 1,
+  "index.number_of_replicas": 1
 }
                       </textarea>
                       <div

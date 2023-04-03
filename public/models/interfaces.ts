@@ -126,5 +126,22 @@ export interface RecoveryJobMetaData extends IJobItemMetadata {
     toastId: string;
     sourceIndex: string;
     destIndex: string;
+    taskId: string;
+  };
+}
+
+export interface ForceMergeJobMetaData extends IJobItemMetadata {
+  extras: {
+    toastId: string;
+    sourceIndex: string[];
+    taskId: string;
+  };
+}
+
+export interface OpenJobMetaData extends IJobItemMetadata {
+  extras: {
+    toastId: string;
+    indexes: string[];
+    taskId: string;
   };
 }

@@ -4,23 +4,21 @@
  */
 import React, { ReactChild } from "react";
 import { CallbackType, TaskResult } from "../interface";
-import { ReindexJobMetaData } from "../../models/interfaces";
+import { OpenJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
 import { DetailLink } from "../components/DetailLink";
 
-type ReindexTaskResult = TaskResult<{
-  failures: {
-    cause?: {
-      reason: string;
-    };
-  }[];
+type OpenTaskResult = TaskResult<{
+  acknowledged: boolean;
+  shards_acknowledged: boolean;
 }>;
 
-export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, { core }) => {
+export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core }) => {
   const extras = job.extras;
   const commonService = new CommonService(core.http);
-  const tasksResult = await commonService.apiCaller<TaskResult>({
+
+  const tasksResult = await commonService.apiCaller<OpenTaskResult>({
     endpoint: "transport.request",
     data: {
       path: `.tasks/_doc/${extras.taskId}`,
@@ -28,21 +26,24 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
     },
   });
   if (tasksResult.ok) {
-    const { _source, found } = tasksResult.response;
-    const { completed, response, error } = (_source || {}) as ReindexTaskResult["_source"];
-    const { failures } = response;
-    if (completed && found) {
-      if (!failures?.length && !error?.reason) {
+    const { _source } = tasksResult.response;
+    const { completed, error } = (_source || {}) as OpenTaskResult["_source"];
+    if (completed) {
+      const { acknowledged, shards_acknowledged } = _source.response || {};
+      if (acknowledged && shards_acknowledged) {
         if (extras.toastId) {
           core.notifications.toasts.remove(extras.toastId);
         }
-        triggerEvent(EVENT_MAP.REINDEX_COMPLETE, job);
+        triggerEvent(EVENT_MAP.OPEN_COMPLETE, job);
         core.notifications.toasts.addSuccess(
           {
             title: ((
               <>
-                Source {extras.sourceIndex} has been successfully reindexed as{" "}
-                <DetailLink index={extras.destIndex} writingIndex={extras.writingIndex} />
+                The indexes{" "}
+                {extras.indexes.map((item) => (
+                  <DetailLink key={item} index={item} />
+                ))}{" "}
+                are successfully opened.
               </>
             ) as unknown) as string,
           },
@@ -50,25 +51,16 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           }
         );
-      } else {
-        let errors: ReactChild[] = [];
-        if (failures.length) {
-          errors.push(
-            <ul key="response.failures">
-              {Array.from(new Set(failures.map((item) => item.cause?.reason).filter((item) => item))).map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          );
-        }
 
-        if (error?.reason) {
-          errors.push(
-            <ul key="error.reason">
-              <li>{error.reason}</li>
-            </ul>
-          );
-        }
+        return true;
+      } else if (error?.reason) {
+        let errors: ReactChild[] = [];
+
+        errors.push(
+          <ul key="error.reason">
+            <li>{error.reason}</li>
+          </ul>
+        );
 
         if (extras.toastId) {
           core.notifications.toasts.remove(extras.toastId);
@@ -77,7 +69,11 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
           {
             title: ((
               <>
-                Reindex from {extras.sourceIndex} to {extras.destIndex} has some errors, please check the errors below:
+                Open{" "}
+                {extras.indexes.map((item) => (
+                  <DetailLink key={item} index={item} />
+                ))}{" "}
+                has some errors, please check the errors below:
               </>
             ) as unknown) as string,
             text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{errors}</div>) as unknown) as string,
@@ -86,15 +82,16 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           }
         );
+
+        return true;
       }
-      return true;
     }
   }
 
   return false;
 };
 
-export const callbackForReindexTimeout: CallbackType = (job: ReindexJobMetaData, { core }) => {
+export const callbackForOpenTimeout: CallbackType = (job: OpenJobMetaData, { core }) => {
   const extras = job.extras;
   if (extras.toastId) {
     core.notifications.toasts.remove(extras.toastId);
@@ -103,8 +100,11 @@ export const callbackForReindexTimeout: CallbackType = (job: ReindexJobMetaData,
     {
       title: ((
         <>
-          Reindex from {extras.sourceIndex} to {extras.destIndex} does not finish in reasonable time, please check the task {extras.taskId}{" "}
-          manually
+          Open{" "}
+          {extras.indexes.map((item) => (
+            <DetailLink key={item} index={item} />
+          ))}
+          does not finish in reasonable time, please check the index manually
         </>
       ) as unknown) as string,
     },

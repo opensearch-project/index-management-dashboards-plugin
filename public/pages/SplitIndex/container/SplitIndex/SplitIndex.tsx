@@ -26,6 +26,7 @@ import { CommonService, ServicesContext } from "../../../../services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
 
 interface SplitIndexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -39,6 +40,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
     shardsSelectOptions: [] as { label: string }[],
     sourceIndex: {} as CatIndex,
     splitIndexFlyoutVisible: false,
+    loading: false,
   };
 
   async componentDidMount() {
@@ -52,7 +54,19 @@ export class SplitIndex extends Component<SplitIndexProps> {
     this.setState({
       splitIndexFlyoutVisible: true,
     });
+    listenEvent(EVENT_MAP.OPEN_COMPLETE, this.openCompleteHandler);
   }
+
+  componentWillUnmount(): void {
+    destroyListener(EVENT_MAP.OPEN_COMPLETE, this.openCompleteHandler);
+  }
+
+  openCompleteHandler = () => {
+    this.setState({
+      loading: false,
+    });
+    this.isSourceIndexReady();
+  };
 
   isSourceIndexReady = async () => {
     const source = queryString.parse(this.props.location.search) as { source: string };
@@ -110,17 +124,20 @@ export class SplitIndex extends Component<SplitIndexProps> {
             <p>
               <EuiButton
                 fill
-                onClick={async () => {
-                  try {
-                    await openIndices({
-                      commonService: this.props.commonService,
-                      indices: [source.source],
-                      coreServices: this.props.coreService,
-                    });
-                    await this.isSourceIndexReady();
-                  } catch (err) {
-                    // no need to log anything since openIndices will log the error
-                  }
+                isLoading={this.state.loading}
+                isDisabled={this.state.loading}
+                onClick={() => {
+                  this.setState({
+                    loading: true,
+                  });
+                  openIndices({
+                    commonService: this.props.commonService,
+                    indices: [source.source],
+                    coreServices: this.props.coreService,
+                    jobConfig: {
+                      firstRunTimeout: 5000,
+                    },
+                  });
                 }}
                 data-test-subj={"open-index-button"}
               >
@@ -231,6 +248,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
             reasons={reasons}
             onCancel={this.onCancel}
             sourceShards={sourceIndex.pri}
+            loading={this.state.loading}
             getAlias={(aliasName) =>
               getAlias({
                 aliasName,
