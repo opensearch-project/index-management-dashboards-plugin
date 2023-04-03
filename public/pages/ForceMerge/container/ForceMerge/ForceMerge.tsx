@@ -21,6 +21,8 @@ import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { IndexItem } from "../../../../../models/interfaces";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { ListenType } from "../../../../lib/JobScheduler";
+import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
+import { ActionType } from "../../../Notifications/constant";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -41,6 +43,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   >([]);
   const { indexes = "" } = props.match.params;
   const destroyedRef = useRef(false);
+  const notificationRef = useRef<NotificationConfigRef | null>(null);
   const field = useField({
     values: {
       flush: true,
@@ -60,6 +63,12 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   };
   const onClickAction = async () => {
     const { errors, values } = await field.validatePromise();
+    if (advancedSettingsOpen) {
+      const notificationResult = await notificationRef.current?.validatePromise();
+      if (notificationResult?.errors) {
+        return;
+      }
+    }
     if (errors) {
       const errorsKey = Object.keys(errors);
       if (errorsKey.includes("max_num_segments")) {
@@ -84,6 +93,11 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       const toastInstance = context.notifications.toasts.addSuccess(toast, {
         toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
       });
+      if (advancedSettingsOpen) {
+        notificationRef.current?.associateWithTask({
+          taskId: result.response?.task,
+        });
+      }
       await jobSchedulerInstance.addJob({
         type: ListenType.FORCE_MERGE,
         extras: {
@@ -199,7 +213,14 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
 
       <EuiSpacer />
 
-      <ContentPanel title={advanceTitle}>{advancedSettingsOpen && <ForceMergeAdvancedOptions field={field} />}</ContentPanel>
+      <ContentPanel title={advanceTitle}>
+        {advancedSettingsOpen && (
+          <>
+            <ForceMergeAdvancedOptions field={field} />
+            <NotificationConfig ref={notificationRef} actionType={ActionType.FORCEMERGE} />
+          </>
+        )}
+      </ContentPanel>
 
       <EuiSpacer />
 
