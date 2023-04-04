@@ -113,65 +113,65 @@ const NotificationConfig = ({ actionType }: NotificationConfigProps, ref: React.
             ))}
           </div>
           <EuiSpacer />
-          <AllBuiltInComponents.CheckBox
-            {...field.registerField({
-              name: "customize",
-            })}
-            label="Send additional notifications"
-          />
-          <EuiSpacer />
-          {values.customize ? (
+        </>
+      ) : null}
+      <AllBuiltInComponents.CheckBox
+        {...field.registerField({
+          name: "customize",
+        })}
+        label="Send additional notifications"
+      />
+      <EuiSpacer />
+      {values.customize ? (
+        <>
+          <CustomFormRow label="Send notification when the operation">
             <>
-              <CustomFormRow label="Send notification when the operation">
-                <>
-                  <AllBuiltInComponents.CheckBox
-                    {...field.registerField({
-                      name: ["lron_condition", "failure"],
-                    })}
-                    label="Has failed / timed out"
-                  />
-                  <EuiSpacer size="s" />
-                  <AllBuiltInComponents.CheckBox
-                    {...field.registerField({
-                      name: ["lron_condition", "success"],
-                    })}
-                    label="Has completed"
-                  />
-                </>
-              </CustomFormRow>
-              <EuiSpacer />
-              <CustomFormRow label="Send notification channels" isInvalid={!!field.getError("channels")} error={field.getError("channels")}>
-                <EuiFlexGroup>
-                  <EuiFlexItem>
-                    <ChannelSelect
-                      {...field.registerField({
-                        name: "channels",
-                        rules: [
-                          {
-                            validator(rule, value) {
-                              const values = field.getValues();
-                              const item = values.lron_condition;
-                              if (values.customize && (item?.failure || item?.success)) {
-                                if (!value || !value.length) {
-                                  return Promise.reject("Enabled LRONConfig must contain at least one channel.");
-                                }
-                              }
-
-                              return Promise.resolve("");
-                            },
-                          },
-                        ],
-                      })}
-                    />
-                  </EuiFlexItem>
-                  <EuiFlexItem>
-                    <EuiButton onClick={() => window.open("/app/notifications-dashboards#/channels")}>Manage channels</EuiButton>
-                  </EuiFlexItem>
-                </EuiFlexGroup>
-              </CustomFormRow>
-              <EuiSpacer />
+              <AllBuiltInComponents.CheckBox
+                {...field.registerField({
+                  name: ["lron_condition", "failure"],
+                })}
+                label="Has failed / timed out"
+              />
+              <EuiSpacer size="s" />
+              <AllBuiltInComponents.CheckBox
+                {...field.registerField({
+                  name: ["lron_condition", "success"],
+                })}
+                label="Has completed"
+              />
             </>
-          ) : null}
+          </CustomFormRow>
+          <EuiSpacer />
+          <CustomFormRow label="Send notification channels" isInvalid={!!field.getError("channels")} error={field.getError("channels")}>
+            <EuiFlexGroup>
+              <EuiFlexItem>
+                <ChannelSelect
+                  {...field.registerField({
+                    name: "channels",
+                    rules: [
+                      {
+                        validator(rule, value) {
+                          const values = field.getValues();
+                          const item = values.lron_condition;
+                          if (values.customize && (item?.failure || item?.success)) {
+                            if (!value || !value.length) {
+                              return Promise.reject("Enabled LRONConfig must contain at least one channel.");
+                            }
+                          }
+
+                          return Promise.resolve("");
+                        },
+                      },
+                    ],
+                  })}
+                />
+              </EuiFlexItem>
+              <EuiFlexItem>
+                <EuiButton onClick={() => window.open("/app/notifications-dashboards#/channels")}>Manage channels</EuiButton>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </CustomFormRow>
+          <EuiSpacer />
         </>
       ) : null}
     </div>
