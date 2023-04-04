@@ -6,7 +6,7 @@
 import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
 import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink, EuiCallOut } from "@elastic/eui";
 import { set, get, isEmpty } from "lodash";
-import MonacoJSONEditor, { IJSONEditorRef } from "../../components/MonacoJSONEditor";
+import MonacoJSONEditor, { IJSONEditorRef } from "../MonacoJSONEditor";
 import { Modal } from "../Modal";
 import { MappingsProperties } from "../../../models/interfaces";
 import CustomFormRow from "../CustomFormRow";

@@ -6,11 +6,11 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
-import JSONDiffEditor from "./index";
+import MonacoJSONEditor from "./index";
 
-describe("<JSONDiffEditor /> spec", () => {
+describe("<MonacoJSONEditor /> spec", () => {
   it("renders the component", () => {
-    render(<JSONDiffEditor value={JSON.stringify({ name: "test" })} />);
+    render(<MonacoJSONEditor value={JSON.stringify({ name: "test" })} />);
     expect(document.body.children).toMatchSnapshot();
   });
 });

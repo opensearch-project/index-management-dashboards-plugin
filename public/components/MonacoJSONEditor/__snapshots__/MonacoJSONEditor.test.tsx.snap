@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<JSONDiffEditor /> spec renders the component 1`] = `
+exports[`<MonacoJSONEditor /> spec renders the component 1`] = `
 HTMLCollection [
   <div />,
 ]
