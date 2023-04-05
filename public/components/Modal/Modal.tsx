@@ -12,6 +12,8 @@ import {
   EuiModalFooter,
   EuiModalProps,
   EuiModalBodyProps,
+  EuiButtonProps,
+  EuiButtonEmpty,
 } from "@elastic/eui";
 import React, { Component, createContext, useEffect, useState } from "react";
 import { render } from "react-dom";
@@ -69,6 +71,8 @@ interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth" | "class
   }>;
   footer?: footerEnum[];
   bodyProps?: EuiModalBodyProps;
+  confirmButtonProps?: EuiButtonProps;
+  CancelButtonComponent?: typeof EuiButton | typeof EuiButtonEmpty;
 }
 
 const blank = () => null;
@@ -84,6 +88,8 @@ const SimpleModal = (props: IShowOptions) => {
     onClose = blank,
     visible,
     footer = ["confirm", "cancel"],
+    confirmButtonProps,
+    CancelButtonComponent = EuiButton,
     ...others
   } = props;
   const testSubj = props["data-test-subj"] || title || Date.now();
@@ -134,13 +140,14 @@ const SimpleModal = (props: IShowOptions) => {
                         // do nothing
                       }
                     }}
+                    {...confirmButtonProps}
                   >
                     {finalLocale.confirm}
                   </EuiButton>
                 );
               } else if (item === "cancel") {
                 return (
-                  <EuiButton
+                  <CancelButtonComponent
                     key={item}
                     data-test-subj={`${testSubj}-cancel`}
                     onClick={async () => {
@@ -149,7 +156,7 @@ const SimpleModal = (props: IShowOptions) => {
                     }}
                   >
                     {finalLocale.cancel}
-                  </EuiButton>
+                  </CancelButtonComponent>
                 );
               }
             })}

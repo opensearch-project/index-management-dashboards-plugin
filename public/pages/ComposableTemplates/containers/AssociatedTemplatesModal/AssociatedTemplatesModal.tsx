@@ -7,7 +7,16 @@ import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { EuiButtonIcon, EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader, EuiInMemoryTable, EuiLink, EuiTitle } from "@elastic/eui";
+import {
+  EuiButtonEmpty,
+  EuiButtonIcon,
+  EuiFlyout,
+  EuiFlyoutBody,
+  EuiFlyoutHeader,
+  EuiInMemoryTable,
+  EuiLink,
+  EuiTitle,
+} from "@elastic/eui";
 import { ROUTES } from "../../../../utils/constants";
 import { ReactChild } from "react";
 import { Modal } from "../../../../components/Modal";
@@ -67,11 +76,20 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
                           Modal.show({
                             type: "confirm",
                             title: `Unlink from ${record.name}?`,
-                            content: `The component ${componentTemplate} will be removed from the template ${record.name}. This will affect any new indexes that will be created with the template.`,
+                            content: (
+                              <p style={{ lineHeight: 1.5 }}>
+                                The component {componentTemplate} will be removed from the template {record.name}. This will affect any new
+                                indexes that will be created with the template.
+                              </p>
+                            ),
                             footer: ["cancel", "confirm"],
                             locale: {
-                              ok: "Unlink",
+                              confirm: "Unlink",
                             },
+                            confirmButtonProps: {
+                              color: "danger",
+                            },
+                            CancelButtonComponent: EuiButtonEmpty,
                             async onOk() {
                               const currentTemplate = await getTemplate({
                                 templateName: record.name,
