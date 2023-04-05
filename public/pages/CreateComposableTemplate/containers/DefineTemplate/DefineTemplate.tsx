@@ -55,13 +55,11 @@ export default function DefineTemplate(props: SubDetailProps) {
         <>
           <CustomFormRow
             {...getCommonFormRowProps("name", field)}
-            label="Template name"
-            position="bottom"
+            label="Name"
             helpText={
-              <>
-                <div>Template name cannot be changed after the template is created.</div>
-                <div>{TEMPLATE_NAMING_MESSAGE}</div>
-              </>
+              <div>
+                <b>Name</b> cannot be changed after the <b>component</b> is created.
+              </div>
             }
           >
             <Component
@@ -79,12 +77,19 @@ export default function DefineTemplate(props: SubDetailProps) {
               })}
             />
           </CustomFormRow>
+          <CustomFormRow helpText={<div>{TEMPLATE_NAMING_MESSAGE}</div>}>
+            <></>
+          </CustomFormRow>
           <EuiSpacer />
         </>
       )}
       <CustomFormRow
         {...getCommonFormRowProps(["_meta", "description"], field)}
-        label="Descriptions - optional"
+        label={
+          <div>
+            Description - <i>optional</i>
+          </div>
+        }
         helpText="Describe the purpose or contents to help you identify this component."
         direction={isEdit ? "hoz" : "ver"}
       >

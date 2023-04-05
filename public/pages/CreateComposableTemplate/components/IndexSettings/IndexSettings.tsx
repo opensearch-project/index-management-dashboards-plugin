@@ -32,6 +32,7 @@ export default function IndexSettings(props: SubDetailProps) {
     <ContentPanel
       color={noPanel ? "ghost" : undefined}
       title="Index settings"
+      noExtraPadding
       actions={
         <div>
           <AllBuiltInComponents.Switch
@@ -47,7 +48,7 @@ export default function IndexSettings(props: SubDetailProps) {
     >
       {values.includes?.[IndicesUpdateMode.settings] ? (
         <>
-          <EuiSpacer size="s" />
+          <EuiSpacer />
           <CustomFormRow
             label="Number of primary shards"
             helpText="Specify the number of primary shards in the index. Default is 1."
@@ -164,6 +165,7 @@ export default function IndexSettings(props: SubDetailProps) {
               ),
             }}
           />
+          <EuiSpacer />
         </>
       ) : null}
     </ContentPanel>

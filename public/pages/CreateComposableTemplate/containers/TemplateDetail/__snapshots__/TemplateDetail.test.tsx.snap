@@ -88,12 +88,27 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Template name
+            Name
           </label>
         </div>
         <div
           class="euiFormRow__fieldWrapper"
         >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            <div>
+              <b>
+                Name
+              </b>
+               cannot be changed after the 
+              <b>
+                component
+              </b>
+               is created.
+            </div>
+          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
@@ -111,13 +126,19 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               </div>
             </div>
           </span>
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
           <div
             class="euiFormHelpText euiFormRow__text"
-            id="some_html_id-help-0"
+            style="padding-top: 0px; padding-bottom: 4px;"
           >
-            <div>
-              Template name cannot be changed after the template is created.
-            </div>
             <div>
               Must be in lowercase letters. Cannot begin with underscores. Spaces, commas, and characters *, # are not allowed.
             </div>
@@ -140,7 +161,12 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Descriptions - optional
+            <div>
+              Description - 
+              <i>
+                optional
+              </i>
+            </div>
           </label>
         </div>
         <div
@@ -178,11 +204,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
+    style="padding: 0px 0px 0px 0px;"
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="margin-top: 0px; margin-bottom: 0px; padding: 0px 10px;"
     >
       <div
         class="euiFlexItem"
@@ -271,7 +297,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       </div>
     </div>
     <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      class="euiHorizontalRule euiHorizontalRule--full"
     />
   </div>
   <div
@@ -279,11 +305,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
+    style="padding: 0px 0px 0px 0px;"
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="margin-top: 0px; margin-bottom: 0px; padding: 0px 10px;"
     >
       <div
         class="euiFlexItem"
@@ -354,7 +380,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       </div>
     </div>
     <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      class="euiHorizontalRule euiHorizontalRule--full"
     />
   </div>
   <div
@@ -362,11 +388,11 @@ exports[`<TemplateDetail /> spec render component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
+    style="padding: 0px 0px 0px 0px;"
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="margin-top: 0px; margin-bottom: 0px; padding: 0px 10px;"
     >
       <div
         class="euiFlexItem"
@@ -418,52 +444,50 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           <div
             class="euiFlexItem"
           >
-            <div>
-              <span
-                class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
-              >
-                <div>
-                  <div
-                    class="euiSwitch"
+            <span
+              class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+            >
+              <div>
+                <div
+                  class="euiSwitch"
+                >
+                  <button
+                    aria-checked="false"
+                    aria-labelledby="some_html_id"
+                    class="euiSwitch__button"
+                    id="some_html_id"
+                    role="switch"
+                    type="button"
                   >
-                    <button
-                      aria-checked="false"
-                      aria-labelledby="some_html_id"
-                      class="euiSwitch__button"
-                      id="some_html_id"
-                      role="switch"
-                      type="button"
+                    <span
+                      class="euiSwitch__body"
                     >
                       <span
-                        class="euiSwitch__body"
+                        class="euiSwitch__thumb"
+                      />
+                      <span
+                        class="euiSwitch__track"
                       >
-                        <span
-                          class="euiSwitch__thumb"
-                        />
-                        <span
-                          class="euiSwitch__track"
-                        >
-                          EuiIconMock
-                          EuiIconMock
-                        </span>
+                        EuiIconMock
+                        EuiIconMock
                       </span>
-                    </button>
-                    <span
-                      class="euiSwitch__label"
-                      id="some_html_id"
-                    >
-                      Use configuration
                     </span>
-                  </div>
+                  </button>
+                  <span
+                    class="euiSwitch__label"
+                    id="some_html_id"
+                  >
+                    Use configuration
+                  </span>
                 </div>
-              </span>
-            </div>
+              </div>
+            </span>
           </div>
         </div>
       </div>
     </div>
     <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      class="euiHorizontalRule euiHorizontalRule--full"
     />
   </div>
   <div

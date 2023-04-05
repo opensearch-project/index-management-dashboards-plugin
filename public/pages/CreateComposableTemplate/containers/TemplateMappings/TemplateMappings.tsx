@@ -15,6 +15,7 @@ export default function TemplateMappings(props: SubDetailProps) {
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   return (
     <ContentPanel
+      noExtraPadding
       color={noPanel ? "ghost" : undefined}
       title={
         <>
@@ -41,21 +42,19 @@ export default function TemplateMappings(props: SubDetailProps) {
         </>
       }
       actions={
-        <div>
-          <AllBuiltInComponents.Switch
-            {...field.registerField({
-              name: ["includes", IndicesUpdateMode.mappings],
-            })}
-            label="Use configuration"
-            showLabel
-          />
-        </div>
+        <AllBuiltInComponents.Switch
+          {...field.registerField({
+            name: ["includes", IndicesUpdateMode.mappings],
+          })}
+          label="Use configuration"
+          showLabel
+        />
       }
       titleSize="s"
     >
       {values.includes?.[IndicesUpdateMode.mappings] ? (
         <>
-          <EuiSpacer size="s" />
+          <EuiSpacer />
           <EuiFormRow fullWidth>
             <IndexMapping
               {...field.registerField({
@@ -83,6 +82,7 @@ export default function TemplateMappings(props: SubDetailProps) {
               docVersion={coreServices.docLinks.DOC_LINK_VERSION}
             />
           </EuiFormRow>
+          <EuiSpacer />
         </>
       ) : null}
     </ContentPanel>

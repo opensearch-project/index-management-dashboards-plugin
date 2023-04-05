@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiTitle, EuiText } from "@elastic/eui";
+import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiTitle, EuiText, EuiSpacer } from "@elastic/eui";
 
 interface ContentPanelProps {
   title?: string | JSX.Element;
@@ -17,6 +17,7 @@ interface ContentPanelProps {
   children: React.ReactNode | React.ReactNode[];
   itemCount?: number;
   color?: "ghost";
+  noExtraPadding?: boolean;
 }
 
 const renderSubTitleText = (subTitleText: string | JSX.Element): JSX.Element | null => {
@@ -42,11 +43,16 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
   children,
   itemCount = 0,
   color,
+  noExtraPadding,
 }) => {
   const isGhost = color === "ghost";
   const content = (
     <>
-      <EuiFlexGroup style={{ padding: isGhost ? undefined : "0px 10px" }} justifyContent="spaceBetween" alignItems="flexStart">
+      <EuiFlexGroup
+        style={{ ...(noExtraPadding ? { marginTop: 0, marginBottom: 0 } : {}), padding: isGhost ? undefined : "0px 10px" }}
+        justifyContent="spaceBetween"
+        alignItems="flexStart"
+      >
         <EuiFlexItem>
           {typeof title === "string" ? (
             <EuiTitle size={titleSize}>
@@ -74,7 +80,7 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
           </EuiFlexItem>
         ) : null}
       </EuiFlexGroup>
-      {isGhost ? null : <EuiHorizontalRule margin="xs" className={horizontalRuleClassName} />}
+      {isGhost ? null : <EuiHorizontalRule margin={noExtraPadding ? "none" : "xs"} className={horizontalRuleClassName} />}
       {children && <div style={{ padding: isGhost ? undefined : "0px 10px", ...bodyStyles }}>{children}</div>}
     </>
   );
@@ -83,7 +89,13 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
     return content;
   }
 
-  return <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}>{content}</EuiPanel>;
+  return (
+    <EuiPanel
+      style={{ ...(noExtraPadding ? { paddingTop: 0, paddingBottom: 0 } : {}), paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}
+    >
+      {content}
+    </EuiPanel>
+  );
 };
 
 export default ContentPanel;

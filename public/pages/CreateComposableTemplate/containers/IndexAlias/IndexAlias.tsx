@@ -17,6 +17,7 @@ export default function IndexAlias(props: SubDetailProps) {
   return (
     <ContentPanel
       color={noPanel ? "ghost" : undefined}
+      noExtraPadding
       title={
         <>
           <CustomFormRow
@@ -47,7 +48,7 @@ export default function IndexAlias(props: SubDetailProps) {
     >
       {values.includes?.[IndicesUpdateMode.alias] ? (
         <>
-          <EuiSpacer size="s" />
+          <EuiSpacer />
           <CustomFormRow
             fullWidth
             {...getCommonFormRowProps(["template", "aliases"], field)}
@@ -73,6 +74,7 @@ export default function IndexAlias(props: SubDetailProps) {
               }
             />
           </CustomFormRow>
+          <EuiSpacer />
         </>
       ) : null}
     </ContentPanel>
