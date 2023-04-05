@@ -39,7 +39,7 @@ export default function DefineTemplate(props: SubDetailProps) {
           templateName: value,
         });
         if (templateResult) {
-          return Promise.reject(`The template components ${value} already exists, please change the name.`);
+          return Promise.reject(`The index template component ${value} already exists, please change the name.`);
         }
       } catch (e) {
         return Promise.resolve("");

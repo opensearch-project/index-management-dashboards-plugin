@@ -8,7 +8,7 @@ const SAMPLE_TEMPLATE_PREFIX = "template-components-test";
 const associatedTemplate = "template-for-test-associate";
 const MAX_TEMPLATE_NUMBER = 30;
 
-describe("Template components", () => {
+describe("Index template components", () => {
   before(() => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");

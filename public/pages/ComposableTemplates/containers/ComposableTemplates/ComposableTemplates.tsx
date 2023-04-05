@@ -255,13 +255,13 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         title={
           <>
             <EuiTitle>
-              <span>Template components</span>
+              <span>Index template components</span>
             </EuiTitle>
             <EuiFormRow
               fullWidth
               helpText={
                 <div>
-                  Template components let you initialize new templates with predefined mappings and settings.{" "}
+                  Index template components let you initialize new templates with predefined mappings and settings.{" "}
                   <EuiLink external target="_blank" href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.composable}>
                     Learn more.
                   </EuiLink>
@@ -287,7 +287,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
           columns={[
             {
               field: "name",
-              name: "Template name",
+              name: "Name",
               sortable: true,
               render: (value: string) => {
                 return (
@@ -306,7 +306,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
             },
             {
               field: "component_template._meta.description",
-              name: "Descriptions",
+              name: "Description",
               sortable: true,
               render: (value: string, record: ICatComposableTemplate) => {
                 return record.component_template._meta?.description || "-";

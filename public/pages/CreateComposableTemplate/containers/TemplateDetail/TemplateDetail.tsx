@@ -154,7 +154,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
                   label=""
                   helpText={
                     <div>
-                      Template components let you initialize new templates with predefined mappings and settings.{" "}
+                      Index template components let you initialize new templates with predefined mappings and settings.{" "}
                       <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
                         Learn more.
                       </EuiLink>
