@@ -103,6 +103,14 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <div
           class="euiFormRow__fieldWrapper"
         >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            <div>
+              Template name cannot be changed after the template is created.
+            </div>
+          </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
@@ -120,13 +128,19 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               </div>
             </div>
           </span>
+        </div>
+      </div>
+      <div
+        class="euiFormRow"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
           <div
             class="euiFormHelpText euiFormRow__text"
-            id="some_html_id-help-0"
+            style="padding-top: 0px; padding-bottom: 4px;"
           >
-            <div>
-              Template name cannot be changed after the template is created.
-            </div>
             <div>
               Must be in lowercase letters. Cannot begin with underscores. Spaces, commas, and characters *, # are not allowed.
             </div>
@@ -407,7 +421,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     class="euiCheckableCard__label"
                     for="checkboxForIndexTemplateFlowComponents"
                   >
-                    Reusable components
+                    Composable template
                   </label>
                 </div>
               </div>

@@ -78,14 +78,8 @@ export default function DefineTemplate(props: SubDetailProps) {
           <CustomFormRow
             {...getCommonFormRowProps("name", field)}
             label="Template name"
-            position="bottom"
             direction={isEdit ? "hoz" : "ver"}
-            helpText={
-              <>
-                <div>Template name cannot be changed after the template is created.</div>
-                <div>{TEMPLATE_NAMING_MESSAGE}</div>
-              </>
-            }
+            helpText={<div>Template name cannot be changed after the template is created.</div>}
           >
             <Component
               {...field.registerField({
@@ -98,6 +92,9 @@ export default function DefineTemplate(props: SubDetailProps) {
                 ],
               })}
             />
+          </CustomFormRow>
+          <CustomFormRow helpText={<div>{TEMPLATE_NAMING_MESSAGE}</div>}>
+            <></>
           </CustomFormRow>
           <EuiSpacer />
         </>
@@ -195,7 +192,7 @@ export default function DefineTemplate(props: SubDetailProps) {
           </EuiFlexItem>
           <EuiFlexItem style={{ width: 275 }} grow={false}>
             <EuiCheckableCard
-              label="Reusable components"
+              label="Composable template"
               id="checkboxForIndexTemplateFlowComponents"
               onChange={() => registeredFlowField.onChange(FLOW_ENUM.COMPONENTS)}
               checked={registeredFlowField.value === FLOW_ENUM.COMPONENTS}

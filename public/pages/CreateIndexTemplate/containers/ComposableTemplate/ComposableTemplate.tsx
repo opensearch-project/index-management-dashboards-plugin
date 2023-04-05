@@ -87,7 +87,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             fullWidth
             label={
               <EuiTitle size="s">
-                <div>Reusable components</div>
+                <div>Composable template</div>
               </EuiTitle>
             }
           >
