@@ -57,39 +57,6 @@ HTMLCollection [
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
                 />
-                <div
-                  class="euiSpacer euiSpacer--l"
-                />
-                <div
-                  class="euiText euiText--medium"
-                >
-                  <div
-                    class="euiTextColor euiTextColor--subdued"
-                  >
-                    To confirm your action, type 
-                    <b
-                      style="color: rgb(0, 0, 0);"
-                    >
-                      delete
-                    </b>
-                    .
-                  </div>
-                </div>
-                <div
-                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
-                >
-                  <div
-                    class="euiFormControlLayout__childrenWrapper"
-                  >
-                    <input
-                      class="euiFieldText euiFieldText--fullWidth"
-                      data-test-subj="deleteInput"
-                      placeholder="delete"
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -112,9 +79,8 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--danger euiButton--fill euiButton-isDisabled"
+              class="euiButton euiButton--danger euiButton--fill"
               data-test-subj="deleteConfirmButton"
-              disabled=""
               type="button"
             >
               <span

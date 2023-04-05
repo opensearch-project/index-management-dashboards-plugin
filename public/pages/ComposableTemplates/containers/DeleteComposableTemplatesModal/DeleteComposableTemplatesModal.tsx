@@ -7,7 +7,7 @@ import React, { useCallback, useContext } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import DeleteModal from "../../../../components/DeleteModal";
+import { EuiButton, EuiButtonEmpty, EuiModal, EuiModalBody, EuiModalFooter, EuiModalHeader, EuiModalHeaderTitle } from "@elastic/eui";
 
 interface DeleteTemplateModalProps {
   selectedItems: string[];
@@ -39,14 +39,35 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
     }
   }, [selectedItems, services, coreServices, onDelete]);
 
+  if (!visible) {
+    return null;
+  }
+
   return (
-    <DeleteModal
-      title="Delete index template components"
-      tips="The following composable template will be permanently deleted. This action cannot be undone."
-      onConfirm={onConfirm}
-      onClose={onClose}
-      visible={visible}
-      selectedItems={selectedItems}
-    />
+    <EuiModal onClose={onClose}>
+      <EuiModalHeader>
+        <EuiModalHeaderTitle>Delete index template components</EuiModalHeaderTitle>
+      </EuiModalHeader>
+
+      <EuiModalBody>
+        <div style={{ lineHeight: 1.5 }}>
+          <p>The following composable template will be permanently deleted. This action cannot be undone.</p>
+          <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+            {selectedItems.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </EuiModalBody>
+
+      <EuiModalFooter>
+        <EuiButtonEmpty data-test-subj="deletaCancelButton" onClick={onClose}>
+          Cancel
+        </EuiButtonEmpty>
+        <EuiButton data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger">
+          Delete
+        </EuiButton>
+      </EuiModalFooter>
+    </EuiModal>
   );
 }

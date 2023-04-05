@@ -100,7 +100,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
         return { ok: true, response: {} };
       }
     );
-    const { container, getByTestId, getByPlaceholderText, findByPlaceholderText } = renderWithRouter({
+    const { container, getByTestId, findByText } = renderWithRouter({
       selectedItems: ["test_template"],
       onDelete,
     });
@@ -110,8 +110,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
     });
 
     userEvent.click(getByTestId("deleteAction"));
-    await findByPlaceholderText("delete");
-    userEvent.type(getByPlaceholderText("delete"), "delete");
+    await findByText("Delete");
     userEvent.click(getByTestId("deleteConfirmButton"));
 
     await waitFor(() => {

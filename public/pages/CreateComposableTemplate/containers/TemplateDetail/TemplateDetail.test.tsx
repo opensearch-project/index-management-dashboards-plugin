@@ -94,7 +94,6 @@ describe("<TemplateDetail /> spec", () => {
     await waitFor(() => expect(queryByText("Delete index template components")).toBeNull());
     userEvent.click(getByText("Delete"));
     await findByText("Delete index template components");
-    userEvent.type(getByTestId("deleteInput"), "delete");
     userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.COMPOSABLE_TEMPLATES}`);
     expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();
