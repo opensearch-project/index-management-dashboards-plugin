@@ -124,6 +124,7 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
                   },
                 },
               ]}
+              pagination
             />
           </EuiFlyoutBody>
         </EuiFlyout>
