@@ -34,6 +34,7 @@ export default function ComposableTemplatesActions(props: ComposableTemplatesAct
         renderProps={({ setVisible }) => (
           <EuiButton
             data-test-subj="deleteAction"
+            color="danger"
             disabled={selectedItems.length !== 1}
             onClick={() => {
               if (componentMapTemplate[selectedItems[0]]?.length) {

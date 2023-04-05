@@ -106,7 +106,7 @@ export default function DefineTemplate(props: SubDetailProps) {
   }
 
   return (
-    <ContentPanel title="Define template component" titleSize="s">
+    <ContentPanel title="Template settings" titleSize="s">
       <EuiSpacer size="s" />
       {content}
     </ContentPanel>

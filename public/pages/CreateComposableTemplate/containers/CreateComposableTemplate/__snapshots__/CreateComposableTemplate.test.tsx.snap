@@ -38,7 +38,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
           </span>
         </button>
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--danger"
           data-test-subj="deleteAction"
           type="button"
         >
@@ -71,7 +71,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
           <h3
             class="euiTitle euiTitle--small"
           >
-            Define template component
+            Template settings
             <span
               class="panel-header-count"
             >

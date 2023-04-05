@@ -56,7 +56,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <h3
           class="euiTitle euiTitle--small"
         >
-          Define template component
+          Template settings
           <span
             class="panel-header-count"
           >

@@ -71,7 +71,7 @@ export default function DefineTemplate(props: SubDetailProps) {
       </ContentPanel>
     )
   ) : (
-    <ContentPanel title="Define template" titleSize="s">
+    <ContentPanel title="Template settings" titleSize="s">
       <EuiSpacer size="s" />
       {isEdit ? null : (
         <>

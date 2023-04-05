@@ -58,7 +58,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
               <button
-                class="euiButton euiButton--primary euiButton-isDisabled"
+                class="euiButton euiButton--danger euiButton-isDisabled"
                 data-test-subj="deleteAction"
                 disabled=""
                 type="button"

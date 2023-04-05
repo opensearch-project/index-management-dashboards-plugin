@@ -53,7 +53,7 @@ describe("Index template components", () => {
   describe("can create a template component", () => {
     it("successfully", () => {
       cy.get('[data-test-subj="Create componentButton"]').click();
-      cy.contains("Define template component");
+      cy.contains("Template settings");
 
       cy.get('[data-test-subj="form-row-name"] input').type(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
       cy.get('[data-test-subj="CreateComposableTemplateCreateButton"]').click();
@@ -72,7 +72,7 @@ describe("Index template components", () => {
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-0`);
       cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-0`);
       cy.get(`[data-test-subj="templateDetail-${SAMPLE_TEMPLATE_PREFIX}-0"]`).click();
-      cy.contains("Define template component");
+      cy.contains("Template settings");
       cy.get('[data-test-subj="form-row-_meta.description"] input').type("Some description");
       cy.contains("1 unsaved changes");
       cy.get('[data-test-subj="updateTemplateButton"]').click();
