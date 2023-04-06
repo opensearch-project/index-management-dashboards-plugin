@@ -15,7 +15,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
       <span
         class="euiTitle euiTitle--medium"
       >
-        Index template components
+        Component templates
       </span>
       <div
         class="euiFormRow euiFormRow--fullWidth"
@@ -29,7 +29,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
             id="some_html_id-help-0"
           >
             <div>
-              Index template components let you initialize new templates with predefined mappings and settings.
+              Component templates let you initialize new templates with predefined mappings and settings.
                
               <button
                 class="euiLink euiLink--primary"
@@ -79,7 +79,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
             >
               <button
                 class="euiButton euiButton--primary euiButton--fill"
-                data-test-subj="Create componentButton"
+                data-test-subj="Create template componentButton"
                 type="button"
               >
                 <span
@@ -88,7 +88,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
                   <span
                     class="euiButton__text"
                   >
-                    Create component
+                    Create template component
                   </span>
                 </span>
               </button>

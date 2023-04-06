@@ -147,14 +147,14 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
         <>
           <EuiFlexGroup alignItems="center">
             <EuiFlexItem>
-              <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create component</h1>}</EuiTitle>
+              <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create template component</h1>}</EuiTitle>
               {isEdit ? null : (
                 <CustomFormRow
                   fullWidth
                   label=""
                   helpText={
                     <div>
-                      Index template components let you initialize new templates with predefined mappings and settings.{" "}
+                      Component templates let you initialize new templates with predefined mappings and settings.{" "}
                       <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
                         Learn more.
                       </EuiLink>
@@ -216,7 +216,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiButton fill onClick={onClickSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
-                Create component
+                Create template component
               </EuiButton>
             </EuiFlexItem>
           </EuiFlexGroup>

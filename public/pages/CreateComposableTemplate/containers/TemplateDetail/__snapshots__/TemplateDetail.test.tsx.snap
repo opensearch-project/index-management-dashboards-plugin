@@ -11,7 +11,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <h1
         class="euiTitle euiTitle--large"
       >
-        Create component
+        Create template component
       </h1>
       <div
         class="euiFormRow euiFormRow--fullWidth"
@@ -25,7 +25,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             style="padding-top: 0px; padding-bottom: 4px;"
           >
             <div>
-              Index template components let you initialize new templates with predefined mappings and settings.
+              Component templates let you initialize new templates with predefined mappings and settings.
                
               <button
                 class="euiLink euiLink--primary"
@@ -532,7 +532,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           <span
             class="euiButton__text"
           >
-            Create component
+            Create template component
           </span>
         </span>
       </button>

@@ -89,11 +89,11 @@ describe("<TemplateDetail /> spec", () => {
     });
     await findByTitle("good_template");
     userEvent.click(getByText("Delete"));
-    await findByText("Delete index template components");
+    await findByText("Delete component templates");
     userEvent.click(getByTestId("deletaCancelButton"));
-    await waitFor(() => expect(queryByText("Delete index template components")).toBeNull());
+    await waitFor(() => expect(queryByText("Delete component templates")).toBeNull());
     userEvent.click(getByText("Delete"));
-    await findByText("Delete index template components");
+    await findByText("Delete component templates");
     userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.COMPOSABLE_TEMPLATES}`);
     expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();

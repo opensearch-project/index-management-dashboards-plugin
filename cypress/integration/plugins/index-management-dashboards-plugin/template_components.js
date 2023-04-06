@@ -8,7 +8,7 @@ const SAMPLE_TEMPLATE_PREFIX = "template-components-test";
 const associatedTemplate = "template-for-test-associate";
 const MAX_TEMPLATE_NUMBER = 30;
 
-describe("Index template components", () => {
+describe("Component templates", () => {
   before(() => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
@@ -52,7 +52,7 @@ describe("Index template components", () => {
 
   describe("can create a template component", () => {
     it("successfully", () => {
-      cy.get('[data-test-subj="Create componentButton"]').click();
+      cy.get('[data-test-subj="Create template componentButton"]').click();
       cy.contains("Template settings");
 
       cy.get('[data-test-subj="form-row-name"] input').type(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);

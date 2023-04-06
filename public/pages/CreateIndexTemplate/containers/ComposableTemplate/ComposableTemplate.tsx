@@ -96,7 +96,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             }
             helpText={
               <>
-                Reduce the amount of index templates by associating index template components that cover common configurations. Associated
+                Reduce the amount of index templates by associating component templates that cover common configurations. Associated
                 components will appear below. You can arrange the priority of the components by dragging them. The component placed on top
                 has the highest priority.{" "}
                 <EuiLink target="_blank" external href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
@@ -276,11 +276,11 @@ export default function ComposableTemplate(props: SubDetailProps) {
             width: "70vw",
           }}
           type="confirm"
-          title="Create component"
+          title="Create template component"
           visible={createComponentVisible}
           onCancel={() => setCreateComponentVisible(false)}
           locale={{
-            confirm: "Create component",
+            confirm: "Create template component",
           }}
           footer={["cancel", "confirm"]}
           onOk={() => {

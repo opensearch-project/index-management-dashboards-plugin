@@ -46,7 +46,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Delete index template components</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>Delete component templates</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>

@@ -240,7 +240,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                 ),
               },
               {
-                text: "Create component",
+                text: "Create template component",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
@@ -255,13 +255,13 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         title={
           <>
             <EuiTitle>
-              <span>Index template components</span>
+              <span>Component templates</span>
             </EuiTitle>
             <EuiFormRow
               fullWidth
               helpText={
                 <div>
-                  Index template components let you initialize new templates with predefined mappings and settings.{" "}
+                  Component templates let you initialize new templates with predefined mappings and settings.{" "}
                   <EuiLink external target="_blank" href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.composable}>
                     Learn more.
                   </EuiLink>
@@ -355,7 +355,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                       this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                     }}
                   >
-                    Create component
+                    Create template component
                   </EuiButton>,
                 ]}
               />
