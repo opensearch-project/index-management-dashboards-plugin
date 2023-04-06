@@ -29,7 +29,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
             id="some_html_id-help-0"
           >
             <div>
-              Component templates let you initialize new templates with predefined mappings and settings.
+              Component templates are reusable building blocks for composing index or data stream templates. You can define component templates with common index configurations and associate them to an index template.
                
               <button
                 class="euiLink euiLink--primary"

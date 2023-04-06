@@ -25,7 +25,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             style="padding-top: 0px; padding-bottom: 4px;"
           >
             <div>
-              Component templates let you initialize new templates with predefined mappings and settings.
+              Component templates are reusable building blocks for composing index or data stream templates. You can define component templates with common index configurations and associate them to an index template.
                
               <button
                 class="euiLink euiLink--primary"
@@ -56,7 +56,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         <h3
           class="euiTitle euiTitle--small"
         >
-          Template settings
+          Define component template
           <span
             class="panel-header-count"
           >
@@ -99,14 +99,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             style="padding-top: 0px; padding-bottom: 4px;"
           >
             <div>
-              <b>
-                Name
-              </b>
-               cannot be changed after the 
-              <b>
-                component
-              </b>
-               is created.
+              Name cannot be changed after the component template is created.
             </div>
           </div>
           <span

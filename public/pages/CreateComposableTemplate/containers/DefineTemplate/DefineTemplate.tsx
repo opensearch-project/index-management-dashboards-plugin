@@ -56,11 +56,7 @@ export default function DefineTemplate(props: SubDetailProps) {
           <CustomFormRow
             {...getCommonFormRowProps("name", field)}
             label="Name"
-            helpText={
-              <div>
-                <b>Name</b> cannot be changed after the <b>component</b> is created.
-              </div>
-            }
+            helpText={<div>Name cannot be changed after the component template is created.</div>}
           >
             <Component
               {...field.registerField({
@@ -106,7 +102,7 @@ export default function DefineTemplate(props: SubDetailProps) {
   }
 
   return (
-    <ContentPanel title="Template settings" titleSize="s">
+    <ContentPanel title="Define component template" titleSize="s">
       <EuiSpacer size="s" />
       {content}
     </ContentPanel>

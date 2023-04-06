@@ -71,7 +71,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
           <h3
             class="euiTitle euiTitle--small"
           >
-            Template settings
+            Define component template
             <span
               class="panel-header-count"
             >
