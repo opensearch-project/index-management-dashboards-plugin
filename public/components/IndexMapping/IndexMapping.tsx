@@ -302,8 +302,8 @@ const IndexMapping = (
                     {
                       fileMatch: ["index-settings-*.json"],
                       schema: {
-                        title: "Product",
-                        description: "A product in the catalog",
+                        title: "Index settings",
+                        description: "Index settings",
                         type: "object",
                         properties: {
                           properties: {
