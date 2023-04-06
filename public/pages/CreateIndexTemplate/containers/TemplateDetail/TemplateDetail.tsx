@@ -186,7 +186,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         }}
         data-test-subj="CreateIndexTemplatePreviewButton"
         color="ghost"
-        fill
       >
         Preview template
       </EuiButton>
@@ -384,6 +383,12 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                 {renderConfirm()}
               </>
             );
+          }}
+          confirmButtonProps={{
+            children: "Save",
+          }}
+          cancelButtonprops={{
+            children: "Cancel",
           }}
         />
       ) : null}

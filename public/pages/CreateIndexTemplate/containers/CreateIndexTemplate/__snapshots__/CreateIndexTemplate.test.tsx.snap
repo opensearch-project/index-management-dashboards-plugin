@@ -206,11 +206,13 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
               <dt
                 class="euiDescriptionList__title"
               >
-                Associated components
+                Associated component templates
               </dt>
               <dd
                 class="euiDescriptionList__description"
-              />
+              >
+                -
+              </dd>
             </dl>
           </div>
         </div>

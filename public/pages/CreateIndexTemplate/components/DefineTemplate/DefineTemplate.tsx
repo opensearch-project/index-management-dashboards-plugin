@@ -46,14 +46,16 @@ export default function DefineTemplate(props: SubDetailProps) {
             description: values.priority,
           },
           {
-            title: "Associated components",
-            description: (values.composed_of || []).map((item) => (
-              <div key={item}>
-                <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}`}>
-                  {item}
-                </EuiLink>
-              </div>
-            )),
+            title: "Associated component templates",
+            description: (values.composed_of || []).length
+              ? (values.composed_of || []).map((item) => (
+                  <div key={item}>
+                    <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}`}>
+                      {item}
+                    </EuiLink>
+                  </div>
+                ))
+              : "-",
           },
         ]}
       />
@@ -191,7 +193,7 @@ export default function DefineTemplate(props: SubDetailProps) {
                     Simple template
                   </div>
                   <EuiText size="xs" className="euiCheckableCard__children">
-                    <EuiTextColor color="subdued">Define a template with index alias, settings, mappings.</EuiTextColor>
+                    <EuiTextColor color="subdued">Define an index template with index alias, settings, mappings.</EuiTextColor>
                   </EuiText>
                 </>
               }
@@ -210,7 +212,7 @@ export default function DefineTemplate(props: SubDetailProps) {
                   </div>
                   <EuiText size="xs" className="euiCheckableCard__children">
                     <EuiTextColor color="subdued">
-                      Define a template by associating reusable components containing your common configurations.
+                      Define an index template by associating component templates containing index configurations.
                     </EuiTextColor>
                   </EuiText>
                 </>

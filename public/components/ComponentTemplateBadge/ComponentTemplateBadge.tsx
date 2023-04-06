@@ -14,20 +14,21 @@ interface CustomLabelProps {
 
 const ComponentTemplateBadge = ({ template }: CustomLabelProps) => (
   <>
-    {[IndicesUpdateMode.alias, IndicesUpdateMode.settings, IndicesUpdateMode.mappings].map((item) => {
-      return (
-        <EuiBadge
-          style={{
-            textTransform: "capitalize",
-            visibility: template[item] ? undefined : "hidden",
-          }}
-          key={item}
-          color="hollow"
-        >
-          {item}
-        </EuiBadge>
-      );
-    })}
+    {[IndicesUpdateMode.alias, IndicesUpdateMode.settings, IndicesUpdateMode.mappings]
+      .filter((item) => template[item])
+      .map((item) => {
+        return (
+          <EuiBadge
+            style={{
+              textTransform: "capitalize",
+            }}
+            key={item}
+            color="hollow"
+          >
+            {item}
+          </EuiBadge>
+        );
+      })}
   </>
 );
 

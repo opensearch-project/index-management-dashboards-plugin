@@ -96,9 +96,9 @@ export default function ComposableTemplate(props: SubDetailProps) {
             }
             helpText={
               <>
-                Reduce the amount of index templates by associating component templates that cover common configurations. Associated
-                components will appear below. You can arrange the priority of the components by dragging them. The component placed on top
-                has the highest priority.{" "}
+                Define an index template by combining component templates containing index configurations. Associate existing component
+                templatesor create one. You can arrange the priority of the component templates by dragging them. The component template
+                placed on top has the highest priority.{" "}
                 <EuiLink target="_blank" external href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
                   Learn more
                 </EuiLink>
@@ -183,14 +183,14 @@ export default function ComposableTemplate(props: SubDetailProps) {
           </EuiDroppable>
         </EuiDragDropContext>
       ) : (
-        <EuiText>No components associate</EuiText>
+        <EuiText>No component templates associated</EuiText>
       )}
       <EuiSpacer />
       {readonly ? null : (
         <div>
-          <EuiButton onClick={() => setDialogVisible(true)}>Associate components</EuiButton>
+          <EuiButton onClick={() => setDialogVisible(true)}>Associate component templates</EuiButton>
           <EuiButton style={{ marginLeft: 20 }} onClick={() => setCreateComponentVisible(true)}>
-            Create new components
+            Create component template
           </EuiButton>
         </div>
       )}
@@ -204,7 +204,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
         style={{
           width: 860,
         }}
-        title="Add components"
+        title="Associate component templates"
         onOk={() => {
           field.setValue("composed_of", [...(field.getValue("composed_of") || []), ...selectedComposableTemplates]);
           setSelectedComposableTemplates([]);
@@ -227,6 +227,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             }}
             listProps={{
               rowHeight: 40,
+              bordered: true,
             }}
             renderOption={(option, searchValue) => (
               <EuiFlexGroup>
@@ -238,7 +239,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
                 </EuiFlexItem>
               </EuiFlexGroup>
             )}
-            height={240}
+            height={480}
           >
             {(list, search) => (
               <>
@@ -280,7 +281,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
           visible={createComponentVisible}
           onCancel={() => setCreateComponentVisible(false)}
           locale={{
-            confirm: "Create template component",
+            confirm: "Create",
           }}
           footer={["cancel", "confirm"]}
           onOk={() => {
@@ -288,6 +289,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             // return a reject promise to keep it from closing
             return Promise.reject("no error");
           }}
+          onClose={() => setCreateComponentVisible(false)}
           content={
             <ComponentTemplateDetail
               hideTitle

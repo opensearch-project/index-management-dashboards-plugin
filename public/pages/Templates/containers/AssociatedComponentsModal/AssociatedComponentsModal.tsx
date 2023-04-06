@@ -35,7 +35,7 @@ export default function AssociatedComponentsModalProps(props: AssociatedComponen
         <EuiFlyout onClose={() => setVisible(false)}>
           <EuiFlyoutHeader>
             <EuiTitle>
-              <h2>Associated components</h2>
+              <h2>Associated component templates</h2>
             </EuiTitle>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>

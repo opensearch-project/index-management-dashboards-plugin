@@ -361,9 +361,9 @@ exports[`<Templates /> spec renders the component 1`] = `
                 >
                   <span
                     class="euiTableCellContent__text"
-                    title="Associated components"
+                    title="Associated component templates"
                   >
-                    Associated components
+                    Associated component templates
                   </span>
                 </span>
               </th>
