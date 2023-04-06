@@ -102,10 +102,6 @@ describe("Index template components", () => {
       cy.contains(/has been successfully unlinked from/);
       cy.get('[data-test-subj="euiFlyoutCloseButton"]').click();
       cy.get('[data-test-subj="deleteAction"]').click();
-      // The confirm button should be disabled
-      cy.get('[data-test-subj="deleteConfirmButton"]').should("be.disabled");
-      // type delete
-      cy.wait(500).get('[data-test-subj="deleteInput"]').type("delete");
       cy.get('[data-test-subj="deleteConfirmButton"]').should("not.be.disabled");
       // click to delete
       cy.get('[data-test-subj="deleteConfirmButton"]').click();

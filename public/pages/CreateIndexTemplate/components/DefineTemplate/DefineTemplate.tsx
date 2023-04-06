@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer } from "@elastic/eui";
+import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiText, EuiTextColor } from "@elastic/eui";
 import { FLOW_ENUM, SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -182,17 +182,39 @@ export default function DefineTemplate(props: SubDetailProps) {
       <EuiSpacer />
       <CustomFormRow {...getCommonFormRowProps(["_meta", "flow"], field)} fullWidth label="Choose a method to define your template">
         <EuiFlexGroup>
-          <EuiFlexItem style={{ width: 275 }} grow={false}>
+          <EuiFlexItem style={{ width: 350 }} grow={false}>
             <EuiCheckableCard
-              label="Simple template"
+              className="eui-fullHeight"
+              label={
+                <>
+                  <div className="euiCheckableCard__label" style={{ paddingRight: 0 }}>
+                    Simple template
+                  </div>
+                  <EuiText size="xs" className="euiCheckableCard__children">
+                    <EuiTextColor color="subdued">Define a template with index alias, settings, mappings.</EuiTextColor>
+                  </EuiText>
+                </>
+              }
               id="checkboxForIndexTemplateFlowSimple"
               onChange={() => registeredFlowField.onChange(FLOW_ENUM.SIMPLE)}
               checked={registeredFlowField.value === FLOW_ENUM.SIMPLE}
             />
           </EuiFlexItem>
-          <EuiFlexItem style={{ width: 275 }} grow={false}>
+          <EuiFlexItem style={{ width: 350 }} grow={false}>
             <EuiCheckableCard
-              label="Composable template"
+              className="eui-fullHeight"
+              label={
+                <>
+                  <div className="euiCheckableCard__label" style={{ paddingRight: 0 }}>
+                    Composable template
+                  </div>
+                  <EuiText size="xs" className="euiCheckableCard__children">
+                    <EuiTextColor color="subdued">
+                      Define a template by associating reusable components containing your common configurations.
+                    </EuiTextColor>
+                  </EuiText>
+                </>
+              }
               id="checkboxForIndexTemplateFlowComponents"
               onChange={() => registeredFlowField.onChange(FLOW_ENUM.COMPONENTS)}
               checked={registeredFlowField.value === FLOW_ENUM.COMPONENTS}

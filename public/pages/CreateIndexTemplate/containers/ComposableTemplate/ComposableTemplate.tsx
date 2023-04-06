@@ -14,6 +14,7 @@ import {
   EuiFlexItem,
   EuiHighlight,
   EuiIcon,
+  EuiLink,
   EuiPanel,
   EuiSelectable,
   EuiSpacer,
@@ -32,6 +33,8 @@ import { ICatComposableTemplate } from "../../../ComposableTemplates/interface";
 import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 import ComponentTemplateDetail, { IComponentTemplateDetailInstance } from "../../../CreateComposableTemplate/containers/TemplateDetail";
+import { CoreServicesContext } from "../../../../components/core_services";
+import { CoreStart } from "opensearch-dashboards/public";
 
 export default function ComposableTemplate(props: SubDetailProps) {
   const { field, readonly, history } = props;
@@ -42,6 +45,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
   const [createComponentVisible, setCreateComponentVisible] = useState(false);
   const values: TemplateItem = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
+  const coreServices = useContext(CoreServicesContext) as CoreStart;
   const componentCreateRef = useRef<IComponentTemplateDetailInstance>(null);
   const reloadAllComposableTemplates = () =>
     services.commonService
@@ -89,6 +93,16 @@ export default function ComposableTemplate(props: SubDetailProps) {
               <EuiTitle size="s">
                 <div>Composable template</div>
               </EuiTitle>
+            }
+            helpText={
+              <>
+                Reduce the amount of index templates by associating index template components that cover common configurations. Associated
+                components will appear below. You can arrange the priority of the components by dragging them. The component placed on top
+                has the highest priority.{" "}
+                <EuiLink target="_blank" external href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
+                  Learn more
+                </EuiLink>
+              </>
             }
           >
             <></>

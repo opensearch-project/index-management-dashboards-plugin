@@ -355,10 +355,10 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           >
             <div
               class="euiFlexItem euiFlexItem--flexGrowZero"
-              style="width: 275px;"
+              style="width: 350px;"
             >
               <div
-                class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard euiCheckableCard-isChecked"
+                class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard euiCheckableCard-isChecked eui-fullHeight"
               >
                 <div
                   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--primary euiPanel--noShadow euiPanel--noBorder euiPanel--flexGrowZero euiPanel--isClickable euiSplitPanel__inner"
@@ -385,17 +385,31 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     class="euiCheckableCard__label"
                     for="checkboxForIndexTemplateFlowSimple"
                   >
-                    Simple template
+                    <div
+                      class="euiCheckableCard__label"
+                      style="padding-right: 0px;"
+                    >
+                      Simple template
+                    </div>
+                    <div
+                      class="euiText euiText--extraSmall euiCheckableCard__children"
+                    >
+                      <span
+                        class="euiTextColor euiTextColor--subdued"
+                      >
+                        Define a template with index alias, settings, mappings.
+                      </span>
+                    </div>
                   </label>
                 </div>
               </div>
             </div>
             <div
               class="euiFlexItem euiFlexItem--flexGrowZero"
-              style="width: 275px;"
+              style="width: 350px;"
             >
               <div
-                class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard"
+                class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow euiPanel--hasBorder euiPanel--flexGrowZero euiSplitPanel euiSplitPanel--row euiCheckableCard eui-fullHeight"
               >
                 <div
                   class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusNone euiPanel--subdued euiPanel--noShadow euiPanel--noBorder euiPanel--flexGrowZero euiPanel--isClickable euiSplitPanel__inner"
@@ -421,7 +435,21 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                     class="euiCheckableCard__label"
                     for="checkboxForIndexTemplateFlowComponents"
                   >
-                    Composable template
+                    <div
+                      class="euiCheckableCard__label"
+                      style="padding-right: 0px;"
+                    >
+                      Composable template
+                    </div>
+                    <div
+                      class="euiText euiText--extraSmall euiCheckableCard__children"
+                    >
+                      <span
+                        class="euiTextColor euiTextColor--subdued"
+                      >
+                        Define a template by associating reusable components containing your common configurations.
+                      </span>
+                    </div>
                   </label>
                 </div>
               </div>
