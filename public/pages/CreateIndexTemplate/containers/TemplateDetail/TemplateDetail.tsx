@@ -287,13 +287,22 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             ? "Override template definition"
             : "Template definition"
         }
+        subTitleText={
+          (!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS
+            ? "Provide additional configurations such as index alias, settings, and mappings. A configurations defined in this section will take precedent if the configuration overlaps with the associated component templates."
+            : undefined
+        }
+        accordion={(!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS}
+        noExtraPadding
         titleSize="s"
       >
+        <EuiSpacer size="s" />
         <IndexAlias {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
         <EuiSpacer />
         <IndexSettings {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
         <EuiSpacer />
         <TemplateMappings {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
+        <EuiSpacer />
       </ContentPanel>
       {previewFlyoutVisible && simulateField.getValues() ? (
         <EuiFlyout onClose={() => setPreviewFlyoutVisible(false)}>
