@@ -28,10 +28,6 @@ export default function DefineTemplate(props: SubDetailProps) {
         columns={columns}
         listItems={[
           {
-            title: "Template name",
-            description: values.name,
-          },
-          {
             title: "Template type",
             description: TemplateConvert({
               value: values.data_stream,

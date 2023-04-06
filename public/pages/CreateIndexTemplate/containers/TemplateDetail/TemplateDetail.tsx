@@ -4,20 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import {
-  EuiButton,
-  EuiButtonEmpty,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiFlyout,
-  EuiFlyoutBody,
-  EuiFlyoutHeader,
-  EuiLink,
-  EuiSpacer,
-  EuiTab,
-  EuiTabs,
-  EuiTitle,
-} from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTab, EuiTabs, EuiTitle } from "@elastic/eui";
 import queryString from "query-string";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
@@ -304,16 +291,11 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         <EuiSpacer />
       </ContentPanel>
       {previewFlyoutVisible && simulateField.getValues() ? (
-        <EuiFlyout onClose={() => setPreviewFlyoutVisible(false)}>
-          <EuiFlyoutHeader hasBorder>
-            <EuiTitle size="xs">
-              <h4>Preview template</h4>
-            </EuiTitle>
-          </EuiFlyoutHeader>
-          <EuiFlyoutBody>
-            <PreviewTemplate value={simulateField.getValues()} history={props.history} />
-          </EuiFlyoutBody>
-        </EuiFlyout>
+        <Modal.SimpleModal
+          onClose={() => setPreviewFlyoutVisible(false)}
+          title="Preview template"
+          content={<PreviewTemplate value={simulateField.getValues()} history={props.history} />}
+        />
       ) : null}
       {isEdit ? null : (
         <>
