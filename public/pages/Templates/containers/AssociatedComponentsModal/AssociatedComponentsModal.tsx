@@ -40,12 +40,13 @@ export default function AssociatedComponentsModalProps(props: AssociatedComponen
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
             <EuiInMemoryTable
+              pagination
               items={(template.templateDetail?.composed_of || []).map((item) => ({
                 name: item,
               }))}
               columns={[
                 {
-                  name: "Components",
+                  name: "component template",
                   field: "name",
                   sortable: true,
                   render: (value: string, record) => (
