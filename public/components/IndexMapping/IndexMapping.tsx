@@ -295,15 +295,15 @@ const IndexMapping = (
                     properties: [...(oldValue?.properties || []), ...transformObjectToArray(result?.properties || {})],
                   });
                 }}
-                path={`index-settings-${Date.now()}.json`}
+                path={`index-mappings-${Date.now()}.json`}
                 diagnosticsOptions={{
                   validate: true,
                   schemas: [
                     {
-                      fileMatch: ["index-settings-*.json"],
+                      fileMatch: ["index-mappings-*.json"],
                       schema: {
-                        title: "Index settings",
-                        description: "Index settings",
+                        title: "Index mappings",
+                        description: "Index mappings",
                         type: "object",
                         properties: {
                           properties: {
