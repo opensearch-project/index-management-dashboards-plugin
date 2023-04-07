@@ -89,7 +89,7 @@ const SimpleModal = (props: IShowOptions) => {
     visible,
     footer = ["confirm", "cancel"],
     confirmButtonProps,
-    CancelButtonComponent = EuiButton,
+    CancelButtonComponent = EuiButtonEmpty,
     ...others
   } = props;
   const testSubj = props["data-test-subj"] || title || Date.now();

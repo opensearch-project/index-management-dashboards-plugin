@@ -224,7 +224,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             >
               View JSON
             </EuiButton>
-            <EuiButton color="danger" style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
+            <EuiButton color="danger" onClick={() => setVisible(true)}>
               Delete
             </EuiButton>
             <DeleteTemplateModal
@@ -295,6 +295,13 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       </ContentPanel>
       {previewFlyoutVisible && simulateField.getValues() ? (
         <Modal.SimpleModal
+          style={{
+            width: 800,
+          }}
+          locale={{
+            ok: "Close",
+          }}
+          maxWidth={false}
           onClose={() => setPreviewFlyoutVisible(false)}
           title="Preview template"
           content={<PreviewTemplate value={simulateField.getValues()} history={props.history} />}

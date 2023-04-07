@@ -198,7 +198,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
         type="confirm"
         visible={dialogVisible}
         locale={{
-          confirm: `Associate(${selectedComposableTemplates.length})`,
+          confirm: `Associate (${selectedComposableTemplates.length})`,
         }}
         footer={["cancel", "confirm"]}
         style={{
@@ -223,7 +223,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
               setSelectedComposableTemplates(val.filter((item) => item.checked === "on" && !item.disabled).map((item) => item.label));
             }}
             searchProps={{
-              placeholder: "Search components",
+              placeholder: "Search",
             }}
             listProps={{
               rowHeight: 40,

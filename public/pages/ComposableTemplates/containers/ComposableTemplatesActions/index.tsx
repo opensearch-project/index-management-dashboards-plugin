@@ -53,7 +53,7 @@ export default function ComposableTemplatesActions(props: ComposableTemplatesAct
                           setVisible(true);
                         }}
                       >
-                        View associated templates
+                        View associated index templates
                       </EuiButton>
                     </>
                   ) as unknown) as string,

@@ -43,7 +43,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
-          <EuiTitle size="m">{<h2>Template settings</h2>}</EuiTitle>
+          <EuiTitle size="s">{<div>Template settings</div>}</EuiTitle>
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer />

@@ -315,7 +315,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
             },
             {
               field: "associatedCount",
-              name: "Associated templates",
+              name: "Associated index templates",
               sortable: true,
               align: "right",
               render: (value: number, record: ICatComposableTemplate) => {

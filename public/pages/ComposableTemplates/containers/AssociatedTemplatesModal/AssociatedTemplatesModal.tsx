@@ -44,7 +44,7 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
         <EuiFlyout onClose={() => setVisible(false)}>
           <EuiFlyoutHeader>
             <EuiTitle>
-              <h2>Associated templates</h2>
+              <h2>Associated index templates</h2>
             </EuiTitle>
           </EuiFlyoutHeader>
           <EuiFlyoutBody>
