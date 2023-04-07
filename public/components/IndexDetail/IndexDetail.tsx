@@ -117,10 +117,12 @@ const IndexDetail = (
   }: IndexDetailProps,
   ref: Ref<IIndexDetailRef>
 ) => {
+  const valueRef = useRef(value);
+  valueRef.current = value;
   const hasEdit = useRef(false);
   const onValueChange = useCallback(
     (name: string | string[], val) => {
-      let finalValue = value || {};
+      let finalValue = valueRef.current || {};
       set(finalValue, name, val);
       onChange({ ...finalValue });
       if (name !== "index") {
