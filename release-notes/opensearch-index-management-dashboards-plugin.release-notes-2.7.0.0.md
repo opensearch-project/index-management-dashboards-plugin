@@ -17,4 +17,4 @@ Compatible with OpenSearch 2.7.0
 * Bumped version to 2.7. ([#630](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/630))
 
 ### Documentation
-* 2.7 release note ([#632](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/632))
+* 2.7 release note ([#694](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/694))
