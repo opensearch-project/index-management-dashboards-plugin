@@ -11,7 +11,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <h1
         class="euiTitle euiTitle--large"
       >
-        Create template component
+        Create component template
       </h1>
       <div
         class="euiFormRow euiFormRow--fullWidth"
@@ -525,7 +525,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           <span
             class="euiButton__text"
           >
-            Create template component
+            Create component template
           </span>
         </span>
       </button>

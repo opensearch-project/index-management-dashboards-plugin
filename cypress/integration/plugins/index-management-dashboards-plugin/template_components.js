@@ -50,9 +50,9 @@ describe("Component templates", () => {
     });
   });
 
-  describe("can create a template component", () => {
+  describe("can create a component template", () => {
     it("successfully", () => {
-      cy.get('[data-test-subj="Create template componentButton"]').click();
+      cy.get('[data-test-subj="Create component templateButton"]').click();
       cy.contains("Define component template");
 
       cy.get('[data-test-subj="form-row-name"] input').type(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
@@ -66,7 +66,7 @@ describe("Component templates", () => {
     });
   });
 
-  describe("can update a template component", () => {
+  describe("can update a component template", () => {
     it("successfully", () => {
       // data-test-subj={`templateDetail-${value}`}
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-0`);
@@ -87,7 +87,7 @@ describe("Component templates", () => {
     });
   });
 
-  describe("can delete a template component", () => {
+  describe("can delete a component template", () => {
     it("successfully", () => {
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-0`);
       cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-0`);

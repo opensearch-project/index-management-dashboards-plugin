@@ -240,7 +240,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                 ),
               },
               {
-                text: "Create template component",
+                text: "Create component template",
                 buttonProps: {
                   fill: true,
                   onClick: () => {
@@ -356,7 +356,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                       this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                     }}
                   >
-                    Create template component
+                    Create component template
                   </EuiButton>,
                 ]}
               />

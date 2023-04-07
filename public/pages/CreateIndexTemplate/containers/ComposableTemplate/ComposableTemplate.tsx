@@ -277,7 +277,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             width: "70vw",
           }}
           type="confirm"
-          title="Create template component"
+          title="Create component template"
           visible={createComponentVisible}
           onCancel={() => setCreateComponentVisible(false)}
           locale={{
