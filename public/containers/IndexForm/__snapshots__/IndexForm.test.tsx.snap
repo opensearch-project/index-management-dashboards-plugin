@@ -448,7 +448,7 @@ exports[`<IndexForm /> spec render page 1`] = `
                           rel="noopener noreferrer"
                           target="_blank"
                         >
-                          Learn more.
+                          Learn more
                           EuiIconMock
                           <span
                             class="euiScreenReaderOnly"
@@ -456,6 +456,7 @@ exports[`<IndexForm /> spec render page 1`] = `
                             (opens in a new tab or window)
                           </span>
                         </a>
+                        .
                       </p>
                     </div>
                     <textarea
@@ -624,7 +625,7 @@ exports[`<IndexForm /> spec render page 1`] = `
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Learn more.
+                  Learn more
                   EuiIconMock
                   <span
                     class="euiScreenReaderOnly"

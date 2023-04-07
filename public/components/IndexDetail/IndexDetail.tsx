@@ -520,8 +520,9 @@ const IndexDetail = (
                             external
                             target="_blank"
                           >
-                            Learn more.
+                            Learn more
                           </EuiLink>
+                          .
                         </p>
                       </>
                     ),
@@ -605,7 +606,7 @@ const IndexDetail = (
                           <div>
                             Define how documents and their fields are stored and indexed.{" "}
                             <EuiLink target="_blank" external href={`https://opensearch.org/docs/${docVersion}/opensearch/mappings/`}>
-                              Learn more.
+                              Learn more
                             </EuiLink>
                           </div>
                           <div>Mappings and field types cannot be changed after the index is created.</div>

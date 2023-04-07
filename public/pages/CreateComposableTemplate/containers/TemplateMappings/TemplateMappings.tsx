@@ -32,7 +32,7 @@ export default function TemplateMappings(props: SubDetailProps) {
                   external
                   href={`https://opensearch.org/docs/${coreServices.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
                 >
-                  Learn more.
+                  Learn more
                 </EuiLink>
               </div>
             }

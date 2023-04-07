@@ -35,7 +35,7 @@ Object {
                 class="euiLink euiLink--primary"
                 type="button"
               >
-                Learn more.
+                Learn more
               </button>
             </div>
             <div
@@ -89,7 +89,7 @@ Object {
                 class="euiLink euiLink--primary"
                 type="button"
               >
-                Learn more.
+                Learn more
               </button>
             </div>
             <div
@@ -286,7 +286,7 @@ Object {
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn more.
+                Learn more
                 EuiIconMock
                 <span
                   class="euiScreenReaderOnly"
@@ -386,7 +386,7 @@ Object {
               class="euiLink euiLink--primary"
               type="button"
             >
-              Learn more.
+              Learn more
             </button>
           </div>
           <div
@@ -440,7 +440,7 @@ Object {
               class="euiLink euiLink--primary"
               type="button"
             >
-              Learn more.
+              Learn more
             </button>
           </div>
           <div
@@ -637,7 +637,7 @@ Object {
               rel="noopener noreferrer"
               target="_blank"
             >
-              Learn more.
+              Learn more
               EuiIconMock
               <span
                 class="euiScreenReaderOnly"

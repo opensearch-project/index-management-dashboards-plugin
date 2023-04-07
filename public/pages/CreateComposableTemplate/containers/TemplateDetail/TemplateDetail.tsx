@@ -157,7 +157,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
                       Component templates are reusable building blocks for composing index or data stream templates. You can define
                       component templates with common index configurations and associate them to an index template.{" "}
                       <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
-                        Learn more.
+                        Learn more
                       </EuiLink>
                     </div>
                   }

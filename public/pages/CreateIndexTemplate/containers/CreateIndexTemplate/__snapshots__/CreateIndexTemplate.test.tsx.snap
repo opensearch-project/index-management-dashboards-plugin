@@ -452,7 +452,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
                           rel="noopener noreferrer"
                           target="_blank"
                         >
-                          Learn more.
+                          Learn more
                           EuiIconMock
                           <span
                             class="euiScreenReaderOnly"
@@ -617,7 +617,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Learn more.
+                  Learn more
                   EuiIconMock
                   <span
                     class="euiScreenReaderOnly"

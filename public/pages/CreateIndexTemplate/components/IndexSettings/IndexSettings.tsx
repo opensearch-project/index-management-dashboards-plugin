@@ -154,7 +154,7 @@ export default function IndexSettings(props: SubDetailProps) {
                   external
                   target="_blank"
                 >
-                  Learn more.
+                  Learn more
                 </EuiLink>
               </p>
             </>

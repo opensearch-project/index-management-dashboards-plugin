@@ -597,7 +597,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
           <div>
             Shrink an existing index into a new index with fewer primary shards.&nbsp;
             <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more.
+              Learn more
             </EuiLink>
           </div>
         }

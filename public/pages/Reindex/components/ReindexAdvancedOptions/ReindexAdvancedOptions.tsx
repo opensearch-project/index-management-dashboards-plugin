@@ -63,7 +63,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
             You can choose to copy only the documents that do not exist in the destination index. By default, OpenSearch will copy all
             documents from the source index.{" "}
             <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.unique} target="_blank">
-              Learn more.
+              Learn more
             </EuiLink>
           </>
         }
@@ -83,7 +83,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           <>
             Instead of failing the reindexing operation, ignore any version conflicts during reindexing.{" "}
             <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.unique} target="_blank">
-              Learn more.
+              Learn more
             </EuiLink>
           </>
         }
@@ -170,7 +170,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           <>
             Select an ingest pipeline to transform documents before writing data to the destination.{" "}
             <EuiLink href={coreServices.docLinks.links.opensearch.reindexData.transform} target="_blank">
-              Learn more.
+              Learn more
             </EuiLink>
           </>
         }

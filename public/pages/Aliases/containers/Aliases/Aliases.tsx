@@ -325,7 +325,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
                   An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes,
                   you can create and query an alias instead of keeping track of which indexes to query.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexAlias.base}>
-                    Learn more.
+                    Learn more
                   </EuiLink>
                 </div>
               }

@@ -37,7 +37,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn more.
+                Learn more
                 EuiIconMock
                 <span
                   class="euiScreenReaderOnly"

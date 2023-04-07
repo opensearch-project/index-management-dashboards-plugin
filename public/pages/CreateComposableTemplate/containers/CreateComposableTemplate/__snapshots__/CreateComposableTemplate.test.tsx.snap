@@ -380,7 +380,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    Learn more.
+                    Learn more
                     EuiIconMock
                     <span
                       class="euiScreenReaderOnly"

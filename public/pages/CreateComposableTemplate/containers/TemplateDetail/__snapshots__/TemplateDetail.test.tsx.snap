@@ -31,7 +31,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                 class="euiLink euiLink--primary"
                 type="button"
               >
-                Learn more.
+                Learn more
               </button>
             </div>
           </div>
@@ -415,7 +415,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  Learn more.
+                  Learn more
                   EuiIconMock
                   <span
                     class="euiScreenReaderOnly"

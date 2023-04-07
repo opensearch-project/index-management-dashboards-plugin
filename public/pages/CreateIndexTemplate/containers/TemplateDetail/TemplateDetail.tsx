@@ -194,7 +194,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                 <div>
                   Index templates let you initialize new indexes with predefined mappings and settings.{" "}
                   <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
-                    Learn more.
+                    Learn more
                   </EuiLink>
                 </div>
               }
