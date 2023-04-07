@@ -252,12 +252,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
               }
             }
           }}
-          cancelButtonprops={{
-            children: "Cancel",
-          }}
-          confirmButtonProps={{
-            children: "Save",
-          }}
         />
       ) : null}
     </>

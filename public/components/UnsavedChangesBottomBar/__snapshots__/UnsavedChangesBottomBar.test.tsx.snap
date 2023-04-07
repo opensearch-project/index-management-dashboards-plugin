@@ -37,7 +37,7 @@ HTMLCollection [
               <span
                 class="euiButtonEmpty__text"
               >
-                Cancel changes
+                Cancel
               </span>
             </span>
           </button>
@@ -56,7 +56,7 @@ HTMLCollection [
               <span
                 class="euiButton__text"
               >
-                Save changes
+                Save
               </span>
             </span>
           </button>

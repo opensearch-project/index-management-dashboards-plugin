@@ -47,7 +47,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
   const renderCancel = useCallback(
     () => (
       <EuiFlexItem grow={false}>
-        <EuiButtonEmpty onClick={onClickCancel} color="ghost" iconType="cross" children="Cancel changes" {...props.cancelButtonprops} />
+        <EuiButtonEmpty onClick={onClickCancel} color="ghost" iconType="cross" children="Cancel" {...props.cancelButtonprops} />
       </EuiFlexItem>
     ),
     [onClickCancel]
@@ -65,7 +65,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
           color="primary"
           fill
           size="m"
-          children="Save changes"
+          children="Save"
           {...props.confirmButtonProps}
         />
       </EuiFlexItem>

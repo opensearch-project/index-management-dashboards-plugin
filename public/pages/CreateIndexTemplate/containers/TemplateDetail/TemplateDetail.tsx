@@ -376,12 +376,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
               </>
             );
           }}
-          confirmButtonProps={{
-            children: "Save",
-          }}
-          cancelButtonprops={{
-            children: "Cancel",
-          }}
         />
       ) : null}
     </>

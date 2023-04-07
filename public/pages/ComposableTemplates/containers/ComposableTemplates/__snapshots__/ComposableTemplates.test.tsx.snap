@@ -327,9 +327,9 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
                   >
                     <span
                       class="euiTableCellContent__text"
-                      title="Associated templates"
+                      title="Associated index templates"
                     >
-                      Associated templates
+                      Associated index templates
                     </span>
                   </span>
                 </button>

@@ -39,7 +39,6 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
         </button>
         <button
           class="euiButton euiButton--danger"
-          style="margin-right: 20px;"
           type="button"
         >
           <span
