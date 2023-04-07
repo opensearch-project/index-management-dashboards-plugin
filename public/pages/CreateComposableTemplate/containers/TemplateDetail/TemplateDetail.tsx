@@ -179,6 +179,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
                     );
                     const { includes, ...others } = showValue;
                     Modal.show({
+                      locale: {
+                        ok: "Close",
+                      },
                       "data-test-subj": "templateJSONDetailModal",
                       title: values.name,
                       content: <JSONEditor value={JSON.stringify(others, null, 2)} disabled />,

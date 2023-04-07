@@ -204,7 +204,7 @@ export default function DefineTemplate(props: SubDetailProps) {
               label={
                 <>
                   <div className="euiCheckableCard__label" style={{ paddingRight: 0 }}>
-                    Composable template
+                    Component template
                   </div>
                   <EuiText size="xs" className="euiCheckableCard__children">
                     <EuiTextColor color="subdued">

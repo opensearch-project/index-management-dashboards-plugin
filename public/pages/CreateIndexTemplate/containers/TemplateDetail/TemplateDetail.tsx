@@ -213,6 +213,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   template: IndexForm.transformIndexDetailToRemote(values.template),
                 };
                 Modal.show({
+                  locale: {
+                    ok: "Close",
+                  },
                   "data-test-subj": "templateJSONDetailModal",
                   title: values.name,
                   content: <JSONEditor value={JSON.stringify(showValue, null, 2)} disabled />,

@@ -51,7 +51,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
 
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
-          <p>The following composable template will be permanently deleted. This action cannot be undone.</p>
+          <p>The following component template will be permanently deleted. This action cannot be undone.</p>
           <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
             {selectedItems.map((item) => (
               <li key={item}>{item}</li>
