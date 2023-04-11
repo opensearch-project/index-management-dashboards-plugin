@@ -69,7 +69,7 @@ export default function AssociatedComponentsModalProps(props: AssociatedComponen
                             title: `Unlink from ${template.name}?`,
                             content: (
                               <p style={{ lineHeight: 1.5 }}>
-                                The component ${record.name} will be removed from the template {template.name}. This will affect any new
+                                The component {record.name} will be removed from the template {template.name}. This will affect any new
                                 indexes that will be created with this template.
                               </p>
                             ),
