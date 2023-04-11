@@ -66,11 +66,19 @@ export default function AssociatedComponentsModalProps(props: AssociatedComponen
                         onClick={() => {
                           Modal.show({
                             type: "confirm",
-                            title: `Unlink ${record.name}?`,
-                            content: `The component ${record.name} will be removed from template ${template.name}. This will affect any new indexes that will be created with this template.`,
+                            title: `Unlink from ${template.name}?`,
+                            content: (
+                              <p style={{ lineHeight: 1.5 }}>
+                                The component ${record.name} will be removed from the template {template.name}. This will affect any new
+                                indexes that will be created with this template.
+                              </p>
+                            ),
                             footer: ["cancel", "confirm"],
                             locale: {
-                              ok: "Unlink",
+                              confirm: "Unlink",
+                            },
+                            confirmButtonProps: {
+                              color: "danger",
                             },
                             async onOk() {
                               const currentTemplate = await getTemplate({
