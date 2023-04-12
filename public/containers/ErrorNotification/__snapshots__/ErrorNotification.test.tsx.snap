@@ -36,7 +36,7 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
               class="euiTextColor euiTextColor--subdued"
             >
               <i>
-                 - optional
+                 – optional
               </i>
             </div>
           </div>

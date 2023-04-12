@@ -152,7 +152,10 @@ Object {
                             class="euiFormLabel euiFormRow__label"
                             for="some_html_id"
                           >
-                            Index alias - optional
+                            Index alias
+                            <i>
+                               – optional
+                            </i>
                           </label>
                         </div>
                         <div
@@ -655,7 +658,10 @@ Object {
                       <div
                         class="euiTitle euiTitle--small"
                       >
-                        Index mapping - optional
+                        Index mapping
+                        <i>
+                           – optional
+                        </i>
                       </div>
                       <div
                         class="euiFormRow euiFormRow--fullWidth"

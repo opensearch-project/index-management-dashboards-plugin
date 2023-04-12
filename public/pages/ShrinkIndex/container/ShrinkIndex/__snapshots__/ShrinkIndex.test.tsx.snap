@@ -376,7 +376,10 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiFormLabel euiFormRow__label"
                 for="some_html_id"
               >
-                Index alias - optional
+                Index alias
+                <i>
+                   – optional
+                </i>
               </label>
             </div>
             <div

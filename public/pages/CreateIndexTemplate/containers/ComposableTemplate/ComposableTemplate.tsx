@@ -99,7 +99,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             helpText={
               <>
                 Define an index template by combining component templates containing index configurations. Associate existing component
-                templatesor create one. You can arrange the priority of the component templates by dragging them. The component template
+                templates or create one. You can arrange the priority of the component templates by dragging them. The component template
                 placed on top has the highest priority.{" "}
                 <EuiLink target="_blank" external href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
                   Learn more

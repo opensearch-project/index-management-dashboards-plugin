@@ -307,7 +307,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index
+            Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index.
           </div>
           <span
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
@@ -397,7 +397,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                       <span
                         class="euiTextColor euiTextColor--subdued"
                       >
-                        Define an index template with index alias, settings, mappings.
+                        Define an index template with index aliases, settings and mappings.
                       </span>
                     </div>
                   </label>

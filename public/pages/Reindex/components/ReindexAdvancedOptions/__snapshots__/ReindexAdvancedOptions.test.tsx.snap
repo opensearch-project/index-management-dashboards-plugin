@@ -265,9 +265,9 @@ Object {
               class="euiFormLabel euiFormRow__label"
               for="some_html_id"
             >
-              Transform with ingest pipeline – 
+              Transform with ingest pipeline
               <i>
-                optional
+                 – optional
               </i>
             </label>
           </div>
@@ -616,9 +616,9 @@ Object {
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Transform with ingest pipeline – 
+            Transform with ingest pipeline
             <i>
-              optional
+               – optional
             </i>
           </label>
         </div>

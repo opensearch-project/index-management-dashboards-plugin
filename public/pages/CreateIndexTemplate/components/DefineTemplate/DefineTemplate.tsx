@@ -154,7 +154,7 @@ export default function DefineTemplate(props: SubDetailProps) {
         direction={isEdit ? "hoz" : "ver"}
         {...getCommonFormRowProps("priority", field)}
         label="Priority"
-        helpText="Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index"
+        helpText="Specify the priority of this template. If the index name matches more than one template, the template with the highest priority will be applied to the index."
       >
         <AllBuiltInComponents.Number
           {...field.registerField({
@@ -189,7 +189,7 @@ export default function DefineTemplate(props: SubDetailProps) {
                     Simple template
                   </div>
                   <EuiText size="xs" className="euiCheckableCard__children">
-                    <EuiTextColor color="subdued">Define an index template with index alias, settings, mappings.</EuiTextColor>
+                    <EuiTextColor color="subdued">Define an index template with index aliases, settings and mappings.</EuiTextColor>
                   </EuiText>
                 </>
               }

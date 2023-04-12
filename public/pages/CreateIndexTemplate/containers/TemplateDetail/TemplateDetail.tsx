@@ -278,7 +278,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         }
         subTitleText={
           (!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS
-            ? "Provide additional configurations such as index alias, settings, and mappings. A configurations defined in this section will take precedent if the configuration overlaps with the associated component templates."
+            ? "Provide additional configurations such as index aliases, settings, and mappings. Configurations defined in this section will take precedent if they overlap with the associated component templates."
             : undefined
         }
         accordion={(!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS}
