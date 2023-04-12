@@ -32,7 +32,7 @@ const ConfigureRollup = ({ isEdit, rollupId, rollupIdError, onChangeName, onChan
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiText size="xs" color="subdued">
-            <i> - optional</i>
+            <i> – optional</i>
           </EuiText>
         </EuiFlexItem>
       </EuiFlexGroup>

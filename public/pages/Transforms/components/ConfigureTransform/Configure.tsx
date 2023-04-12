@@ -32,7 +32,7 @@ const ConfigureTransform = ({ inEdit, transformId, error, onChangeName, onChange
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiText size="xs" color="subdued">
-            <i> - optional</i>
+            <i> – optional</i>
           </EuiText>
         </EuiFlexItem>
       </EuiFlexGroup>

@@ -24,7 +24,7 @@ const CustomLabel = ({ title, isOptional = false, helpText }: CustomLabelProps) 
       {isOptional ? (
         <EuiFlexItem>
           <EuiText size="xs" color="subdued">
-            <i> - optional</i>
+            <i> – optional</i>
           </EuiText>
         </EuiFlexItem>
       ) : null}

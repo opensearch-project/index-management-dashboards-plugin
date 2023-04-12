@@ -79,7 +79,7 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
                             content: (
                               <p style={{ lineHeight: 1.5 }}>
                                 The component {componentTemplate} will be removed from the template {record.name}. This will affect any new
-                                indexes that will be created with the template.
+                                indexes created with the template.
                               </p>
                             ),
                             footer: ["cancel", "confirm"],

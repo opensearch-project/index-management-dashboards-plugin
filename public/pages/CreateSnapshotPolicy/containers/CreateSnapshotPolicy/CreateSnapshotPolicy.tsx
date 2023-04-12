@@ -737,7 +737,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             <EuiFlexItem grow={false}>
               <EuiTitle size="m">
                 <h3>
-                  Advanced settings <i>- optional</i>
+                  Advanced settings <i>– optional</i>
                 </h3>
               </EuiTitle>
             </EuiFlexItem>
