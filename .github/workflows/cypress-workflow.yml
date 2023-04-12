@@ -7,8 +7,7 @@ on:
     branches:
       - "*"
 env:
-  OPENSEARCH_DASHBOARDS_VERSION: '2.6'
-  OPENSEARCH_VERSION: '2.6.0-SNAPSHOT'
+  OPENSEARCH_DASHBOARDS_VERSION: '2.x'
 jobs:
   tests:
     name: Run Cypress E2E tests
@@ -29,11 +28,11 @@ jobs:
         with:
           path: index-management
           repository: opensearch-project/index-management
-          ref: '2.6'
+          ref: '2.x'
       - name: Run opensearch with plugin
         run: |
           cd index-management
-          ./gradlew run -Dopensearch.version=${{ env.OPENSEARCH_VERSION }} &
+          ./gradlew run &
           sleep 300
         # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
       - name: Checkout Index Management Dashboards plugin
