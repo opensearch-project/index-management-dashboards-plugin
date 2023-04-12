@@ -7,8 +7,8 @@ on:
     branches:
       - "*"
 env:
-  OPENSEARCH_DASHBOARDS_VERSION: '2.6'
-  OPENSEARCH_VERSION: '2.6.0-SNAPSHOT'
+  OPENSEARCH_DASHBOARDS_VERSION: '2.7'
+  OPENSEARCH_VERSION: '2.7.0-SNAPSHOT'
 jobs:
   tests:
     name: Run Cypress E2E tests
@@ -29,7 +29,7 @@ jobs:
         with:
           path: index-management
           repository: opensearch-project/index-management
-          ref: '2.6'
+          ref: '2.x'
       - name: Run opensearch with plugin
         run: |
           cd index-management
