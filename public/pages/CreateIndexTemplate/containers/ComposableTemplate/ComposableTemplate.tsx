@@ -6,7 +6,6 @@ import React, { useContext, useRef, useState, useEffect, useMemo } from "react";
 import {
   EuiButton,
   EuiButtonIcon,
-  EuiComboBox,
   EuiDragDropContext,
   EuiDraggable,
   EuiDroppable,
@@ -16,7 +15,6 @@ import {
   EuiIcon,
   EuiLink,
   EuiPanel,
-  EuiSearchBar,
   EuiSelectable,
   EuiSpacer,
   EuiText,
@@ -126,7 +124,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
             {values.composed_of.map((item, index) => {
               const findItem = allComposableTemplates.find((template) => template.name === item);
               if (!findItem) {
-                return <></>;
+                return <div key={item} />;
               }
 
               return (
@@ -301,7 +299,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
               noPanel
               onSubmitSuccess={(name) => {
                 reloadAllComposableTemplates();
-                field.setValue("composed_of", [...field.getValue("composed_of"), name]);
+                field.setValue("composed_of", [...(field.getValue("composed_of") || []), name]);
                 setCreateComponentVisible(false);
               }}
               ref={componentCreateRef}
