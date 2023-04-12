@@ -43,6 +43,7 @@ import { SimpleEuiToast } from "../Toast";
 import { filterByMinimatch, getOrderedJson } from "../../../utils/helper";
 import { SYSTEM_INDEX } from "../../../utils/constants";
 import { diffJson } from "../../utils/helpers";
+import { OptionalLabel } from "../CustomFormRow";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -390,9 +391,10 @@ const IndexDetail = (
                   {
                     name: "aliases",
                     rowProps: {
-                      label: "Index alias - optional",
+                      label: "Index alias",
                       helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
                       direction: isEdit ? "hoz" : "ver",
+                      isOptional: true,
                     },
                     options: {
                       props: {
@@ -597,7 +599,10 @@ const IndexDetail = (
                 title={
                   <>
                     <EuiTitle size="s">
-                      <div>Index mapping - optional</div>
+                      <div>
+                        Index mapping
+                        <OptionalLabel />
+                      </div>
                     </EuiTitle>
                     <EuiFormRow
                       fullWidth

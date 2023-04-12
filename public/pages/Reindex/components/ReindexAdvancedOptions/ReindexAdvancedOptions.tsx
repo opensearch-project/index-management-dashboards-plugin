@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
-import CustomFormRow from "../../../../components/CustomFormRow";
+import CustomFormRow, { OptionalLabel } from "../../../../components/CustomFormRow";
 import { EuiCheckbox, EuiComboBox, EuiComboBoxOptionOption, EuiFieldNumber, EuiLink, EuiRadioGroup, EuiSpacer } from "@elastic/eui";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -163,7 +163,8 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
       <CustomFormRow
         label={
           <>
-            Transform with ingest pipeline – <i>optional</i>
+            Transform with ingest pipeline
+            <OptionalLabel />
           </>
         }
         helpText={

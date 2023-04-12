@@ -525,7 +525,8 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       {
         name: "aliases",
         rowProps: {
-          label: `Index alias - optional`,
+          label: "Index alias",
+          isOptional: true,
           helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
         },
         options: {
