@@ -43,6 +43,7 @@ import { SimpleEuiToast } from "../Toast";
 import { filterByMinimatch, getOrderedJson } from "../../../utils/helper";
 import { SYSTEM_INDEX } from "../../../utils/constants";
 import { diffJson } from "../../utils/helpers";
+import { OptionalLabel } from "../CustomFormRow";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -390,9 +391,10 @@ const IndexDetail = (
                   {
                     name: "aliases",
                     rowProps: {
-                      label: "Index alias - optional",
+                      label: "Index alias",
                       helpText: "Allow this index to be referenced by existing aliases or specify a new alias.",
                       direction: isEdit ? "hoz" : "ver",
+                      isOptional: true,
                     },
                     options: {
                       props: {
@@ -520,8 +522,9 @@ const IndexDetail = (
                             external
                             target="_blank"
                           >
-                            Learn more.
+                            Learn more
                           </EuiLink>
+                          .
                         </p>
                       </>
                     ),
@@ -596,7 +599,10 @@ const IndexDetail = (
                 title={
                   <>
                     <EuiTitle size="s">
-                      <div>Index mapping - optional</div>
+                      <div>
+                        Index mapping
+                        <OptionalLabel />
+                      </div>
                     </EuiTitle>
                     <EuiFormRow
                       fullWidth
@@ -605,7 +611,7 @@ const IndexDetail = (
                           <div>
                             Define how documents and their fields are stored and indexed.{" "}
                             <EuiLink target="_blank" external href={`https://opensearch.org/docs/${docVersion}/opensearch/mappings/`}>
-                              Learn more.
+                              Learn more
                             </EuiLink>
                           </div>
                           <div>Mappings and field types cannot be changed after the index is created.</div>

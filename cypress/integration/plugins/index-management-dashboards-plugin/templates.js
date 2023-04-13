@@ -48,7 +48,7 @@ describe("Templates", () => {
   describe("can create a template", () => {
     it("successfully", () => {
       cy.get('[data-test-subj="Create templateButton"]').click();
-      cy.contains("Define template");
+      cy.contains("Template settings");
 
       cy.get('[data-test-subj="form-row-name"] input').type(`${SAMPLE_TEMPLATE_PREFIX}-${MAX_TEMPLATE_NUMBER}`);
       cy.get('[data-test-subj="form-row-index_patterns"] [data-test-subj="comboBoxSearchInput"]').type("test{enter}");

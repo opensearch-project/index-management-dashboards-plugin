@@ -199,7 +199,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
               </EuiFlexItem>
               <EuiFlexItem>
                 <EuiText size="xs" color="subdued">
-                  <i> - optional</i>
+                  <i> – optional</i>
                 </EuiText>
               </EuiFlexItem>
             </EuiFlexGroup>

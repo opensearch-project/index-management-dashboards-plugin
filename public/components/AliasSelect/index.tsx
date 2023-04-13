@@ -46,7 +46,7 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
         optionsRef.current = options;
         onOptionsChange?.(options);
       }}
-      placeholder="Select aliases or input new aliases."
+      placeholder="Select aliases or specify new aliases."
       customOptionText="Add {searchValue} as a new alias."
       refreshOptions={refreshOptions}
       value={Object.keys(value || {})}

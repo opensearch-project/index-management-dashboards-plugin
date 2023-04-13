@@ -3,8 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiHorizontalRule, EuiPanel, EuiTitle, EuiText } from "@elastic/eui";
+import React, { useState } from "react";
+import {
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiHorizontalRule,
+  EuiPanel,
+  EuiTitle,
+  EuiText,
+  EuiAccordion,
+  htmlIdGenerator,
+  EuiTextColor,
+} from "@elastic/eui";
 
 interface ContentPanelProps {
   title?: string | JSX.Element;
@@ -16,14 +26,17 @@ interface ContentPanelProps {
   actions?: React.ReactNode | React.ReactNode[];
   children: React.ReactNode | React.ReactNode[];
   itemCount?: number;
+  color?: "ghost";
+  noExtraPadding?: boolean;
+  accordion?: boolean;
 }
 
 const renderSubTitleText = (subTitleText: string | JSX.Element): JSX.Element | null => {
   if (typeof subTitleText === "string") {
     if (!subTitleText) return null;
     return (
-      <EuiText size="s">
-        <span style={{ color: "grey", fontWeight: 200, fontSize: "15px" }}>{subTitleText}</span>
+      <EuiText size="xs">
+        <EuiTextColor color="subdued">{subTitleText}</EuiTextColor>
       </EuiText>
     );
   }
@@ -40,9 +53,21 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
   actions,
   children,
   itemCount = 0,
-}) => (
-  <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}>
-    <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="flexStart">
+  color,
+  noExtraPadding,
+  accordion,
+}) => {
+  const [isAccordionOpen, setIsAccordionOpen] = useState<"open" | "closed">("closed");
+  const toggleAccordion = (isOpen: boolean) => {
+    setIsAccordionOpen(isOpen ? "open" : "closed");
+  };
+  const isGhost = color === "ghost";
+  const titleContent = (
+    <EuiFlexGroup
+      style={{ ...(noExtraPadding ? { marginTop: 0, marginBottom: 0 } : {}), padding: isGhost || accordion ? undefined : "0px 10px" }}
+      justifyContent="spaceBetween"
+      alignItems="flexStart"
+    >
       <EuiFlexItem>
         {typeof title === "string" ? (
           <EuiTitle size={titleSize}>
@@ -70,11 +95,42 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
         </EuiFlexItem>
       ) : null}
     </EuiFlexGroup>
+  );
+  const content = (
+    <>
+      {accordion ? (
+        <EuiAccordion id={htmlIdGenerator()()} forceState={isAccordionOpen} onToggle={toggleAccordion} buttonContent={titleContent}>
+          <></>
+        </EuiAccordion>
+      ) : (
+        titleContent
+      )}
+      {isGhost ? null : <EuiHorizontalRule margin={noExtraPadding ? "none" : "xs"} className={horizontalRuleClassName} />}
+      {children ? (
+        <div
+          style={{
+            padding: isGhost ? undefined : "0px 10px",
+            ...bodyStyles,
+            display: accordion && isAccordionOpen === "closed" ? "none" : undefined,
+          }}
+        >
+          {children}
+        </div>
+      ) : null}
+    </>
+  );
 
-    <EuiHorizontalRule margin="xs" className={horizontalRuleClassName} />
+  if (isGhost) {
+    return content;
+  }
 
-    {children && <div style={{ padding: "0px 10px", ...bodyStyles }}>{children}</div>}
-  </EuiPanel>
-);
+  return (
+    <EuiPanel
+      style={{ ...(noExtraPadding ? { paddingTop: 0, paddingBottom: 0 } : {}), paddingLeft: "0px", paddingRight: "0px", ...panelStyles }}
+    >
+      {content}
+    </EuiPanel>
+  );
+};
 
 export default ContentPanel;

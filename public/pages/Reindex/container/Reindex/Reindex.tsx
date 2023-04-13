@@ -511,7 +511,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
           <div>
             Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.{" "}
             <EuiLink href={this.context.docLinks.links.opensearch.reindexData.base} target="_blank" rel="noopener noreferrer">
-              Learn more.
+              Learn more
             </EuiLink>
           </div>
         }
