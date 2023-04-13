@@ -189,7 +189,7 @@ export default function DefineTemplate(props: SubDetailProps) {
                     Simple template
                   </div>
                   <EuiText size="xs" className="euiCheckableCard__children">
-                    <EuiTextColor color="subdued">Define an index template with index aliases, settings and mappings.</EuiTextColor>
+                    <EuiTextColor color="subdued">Define an index template with index aliases, settings, and mappings.</EuiTextColor>
                   </EuiText>
                 </>
               }
