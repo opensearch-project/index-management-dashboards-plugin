@@ -45,6 +45,8 @@ import Rollover from "../Rollover";
 import DataStreams from "../DataStreams";
 import CreateDataStream from "../CreateDataStream";
 import ForceMerge from "../ForceMerge";
+import ComposableTemplates from "../ComposableTemplates";
+import CreateComposableTemplate from "../CreateComposableTemplate";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -61,6 +63,7 @@ enum Navigation {
   Templates = "Templates",
   DataStreams = "Data streams",
   CreateDataStream = "Create data stream",
+  ComposableTemplates = "Component templates",
 }
 
 enum Pathname {
@@ -103,6 +106,7 @@ const HIDDEN_NAV_STARTS_WITH_ROUTE = [
   ROUTES.ROLLOVER,
   ROUTES.CREATE_DATA_STREAM,
   ROUTES.FORCE_MERGE,
+  ROUTES.CREATE_COMPOSABLE_TEMPLATE,
 ];
 
 interface MainProps extends RouteComponentProps {
@@ -149,6 +153,14 @@ export default class Main extends Component<MainProps, object> {
             id: 7,
             href: `#${ROUTES.TEMPLATES}`,
             isSelected: ROUTES.TEMPLATES === pathname,
+            items: [
+              {
+                name: Navigation.ComposableTemplates,
+                id: 9,
+                href: `#${ROUTES.COMPOSABLE_TEMPLATES}`,
+                isSelected: ROUTES.COMPOSABLE_TEMPLATES === pathname,
+              },
+            ],
           },
           {
             name: Navigation.Aliases,
@@ -479,6 +491,38 @@ export default class Main extends Component<MainProps, object> {
                             )}
                           />
                           <Route
+                            path={ROUTES.COMPOSABLE_TEMPLATES}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <ComposableTemplates {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/:template/:mode`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateComposableTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/:template`}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateComposableTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.CREATE_COMPOSABLE_TEMPLATE}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <CreateComposableTemplate {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
                             path={`${ROUTES.CREATE_TEMPLATE}/:template/:mode`}
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
@@ -526,7 +570,6 @@ export default class Main extends Component<MainProps, object> {
                               </div>
                             )}
                           />
-
                           <Route
                             path={ROUTES.ROLLOVER}
                             render={(props) => (

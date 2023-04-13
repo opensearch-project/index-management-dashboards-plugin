@@ -44,7 +44,7 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
           </EuiFlexItem>
           <EuiFlexItem>
             <EuiText color="subdued">
-              <i> - optional</i>
+              <i> – optional</i>
             </EuiText>
           </EuiFlexItem>
         </EuiFlexGroup>

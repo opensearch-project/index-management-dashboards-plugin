@@ -14,12 +14,13 @@ import {
   EuiContextMenu,
   EuiFormRowProps,
 } from "@elastic/eui";
-import { set, pick } from "lodash";
+import { set, pick, isEqual } from "lodash";
 import { MappingsProperties } from "../../../models/interfaces";
 import { AllBuiltInComponents } from "../FormGenerator";
 import useField, { transformNameToString } from "../../lib/field";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../utils/constants";
 import SimplePopover from "../SimplePopover";
+import { useEffect } from "react";
 
 interface IMappingLabel {
   value: MappingsProperties[number];
@@ -81,6 +82,11 @@ export const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: Reac
     onChange: onFieldChange,
     unmountComponent: true,
   });
+  useEffect(() => {
+    if (!isEqual(propsRef.current.value, field.getValues())) {
+      field.resetValues(propsRef.current.value);
+    }
+  }, [propsRef.current.value]);
   const value = field.getValues();
   const type = value.type;
   useImperativeHandle(forwardedRef, () => ({

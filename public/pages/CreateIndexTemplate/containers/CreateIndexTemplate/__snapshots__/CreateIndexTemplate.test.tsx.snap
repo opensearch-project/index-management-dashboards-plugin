@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CreateIndexTemplate /> spec it goes to templates page when click cancel 1`] = `
+exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
 <div>
   <div
     style="padding: 0px 50px;"
@@ -38,23 +38,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           </span>
         </button>
         <button
-          class="euiButton euiButton--primary"
-          style="margin-right: 20px;"
-          type="button"
-        >
-          <span
-            class="euiButtonContent euiButton__content"
-          >
-            <span
-              class="euiButton__text"
-            >
-              Edit
-            </span>
-          </span>
-        </button>
-        <button
           class="euiButton euiButton--danger"
-          style="margin-right: 20px;"
           type="button"
         >
           <span
@@ -73,6 +57,38 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
       class="euiSpacer euiSpacer--l"
     />
     <div
+      class="euiTabs"
+      role="tablist"
+    >
+      <button
+        aria-selected="true"
+        class="euiTab euiTab-isSelected"
+        role="tab"
+        type="button"
+      >
+        <span
+          class="euiTab__content"
+        >
+          Summary
+        </span>
+      </button>
+      <button
+        aria-selected="false"
+        class="euiTab"
+        role="tab"
+        type="button"
+      >
+        <span
+          class="euiTab__content"
+        >
+          Configuration
+        </span>
+      </button>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
       style="padding-left: 0px; padding-right: 0px;"
     >
@@ -86,7 +102,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
           <h3
             class="euiTitle euiTitle--small"
           >
-            Template details
+            Overview
             <span
               class="panel-header-count"
             >
@@ -108,24 +124,6 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
         <div
           class="euiFlexGrid euiFlexGrid--gutterLarge euiFlexGrid--fourths euiFlexGrid--responsive"
         >
-          <div
-            class="euiFlexItem"
-          >
-            <dl
-              class="euiDescriptionList euiDescriptionList--row"
-            >
-              <dt
-                class="euiDescriptionList__title"
-              >
-                Template name
-              </dt>
-              <dd
-                class="euiDescriptionList__description"
-              >
-                good_template
-              </dd>
-            </dl>
-          </div>
           <div
             class="euiFlexItem"
           >
@@ -176,6 +174,24 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dd
                 class="euiDescriptionList__description"
               >
+                undefined
+              </dd>
+            </dl>
+          </div>
+          <div
+            class="euiFlexItem"
+          >
+            <dl
+              class="euiDescriptionList euiDescriptionList--row"
+            >
+              <dt
+                class="euiDescriptionList__title"
+              >
+                Associated component templates
+              </dt>
+              <dd
+                class="euiDescriptionList__description"
+              >
                 -
               </dd>
             </dl>
@@ -188,52 +204,66 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
     />
     <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding-left: 0px; padding-right: 0px;"
+      style="padding: 0px 0px 0px 0px;"
     >
       <div
         class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="padding: 0px 10px;"
+        style="margin-top: 0px; margin-bottom: 0px; padding: 0px 10px;"
       >
         <div
           class="euiFlexItem"
         >
-          <div
-            class="euiFormRow euiFormRow--fullWidth"
-            id="some_html_id-row"
+          <h3
+            class="euiTitle euiTitle--small"
           >
-            <div
-              class="euiFormRow__labelWrapper"
+            Preview template
+            <span
+              class="panel-header-count"
             >
-              <label
-                class="euiFormLabel euiFormRow__label"
-                for="some_html_id"
-              >
-                <div
-                  class="euiTitle euiTitle--small"
-                >
-                  Index alias
-                </div>
-              </label>
-            </div>
-            <div
-              class="euiFormRow__fieldWrapper"
-            >
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                style="padding-top: 0px; padding-bottom: 4px;"
-              >
-                Allow the new indexes to be referenced by existing aliases or specify a new alias.
-              </div>
-            </div>
-          </div>
+               
+               
+            </span>
+          </h3>
         </div>
       </div>
       <hr
-        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+        class="euiHorizontalRule euiHorizontalRule--full"
       />
       <div
         style="padding: 0px 10px;"
       >
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
+        <div
+          class="euiFormRow euiFormRow--fullWidth"
+          id="some_html_id-row"
+        >
+          <div
+            class="euiFormRow__labelWrapper"
+          >
+            <label
+              class="euiFormLabel euiFormRow__label"
+              for="some_html_id"
+            >
+              <div
+                class="euiTitle euiTitle--small"
+              >
+                Index alias
+              </div>
+            </label>
+          </div>
+          <div
+            class="euiFormRow__fieldWrapper"
+          >
+            <div
+              class="euiFormHelpText euiFormRow__text"
+              style="padding-top: 0px; padding-bottom: 4px;"
+            >
+              Allow the new indexes to be referenced by existing aliases or specify a new alias.
+            </div>
+          </div>
+        </div>
         <div
           class="euiSpacer euiSpacer--s"
         />
@@ -259,41 +289,14 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
             </dl>
           </div>
         </div>
-      </div>
-    </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
-      class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding-left: 0px; padding-right: 0px;"
-    >
-      <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="padding: 0px 10px;"
-      >
         <div
-          class="euiFlexItem"
+          class="euiSpacer euiSpacer--l"
+        />
+        <span
+          class="euiTitle euiTitle--small"
         >
-          <h3
-            class="euiTitle euiTitle--small"
-          >
-            Index settings
-            <span
-              class="panel-header-count"
-            >
-               
-               
-            </span>
-          </h3>
-        </div>
-      </div>
-      <hr
-        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-      />
-      <div
-        style="padding: 0px 10px;"
-      >
+          Index settings
+        </span>
         <div
           class="euiSpacer euiSpacer--s"
         />
@@ -314,7 +317,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dd
                 class="euiDescriptionList__description"
               >
-                -
+                1
               </dd>
             </dl>
           </div>
@@ -332,7 +335,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
               <dd
                 class="euiDescriptionList__description"
               >
-                -
+                10
               </dd>
             </dl>
           </div>
@@ -448,7 +451,7 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                           rel="noopener noreferrer"
                           target="_blank"
                         >
-                          Learn more.
+                          Learn more
                           EuiIconMock
                           <span
                             class="euiScreenReaderOnly"
@@ -463,7 +466,10 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
                       readonly=""
                       style="display: none;"
                     >
-                      {}
+                      {
+  "index.number_of_replicas": "10",
+  "index.number_of_shards": "1"
+}
                     </textarea>
                     <div
                       class="euiCodeEditorWrapper"
@@ -582,67 +588,46 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
-      class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding-left: 0px; padding-right: 0px;"
-    >
-      <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="padding: 0px 10px;"
-      >
         <div
-          class="euiFlexItem"
+          class="euiSpacer euiSpacer--l"
+        />
+        <div
+          class="euiTitle euiTitle--small"
+        >
+          Index mapping
+        </div>
+        <div
+          class="euiFormRow euiFormRow--fullWidth"
+          id="some_html_id-row"
         >
           <div
-            class="euiTitle euiTitle--small"
-          >
-            Index mapping
-          </div>
-          <div
-            class="euiFormRow euiFormRow--fullWidth"
-            id="some_html_id-row"
+            class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormRow__fieldWrapper"
+              class="euiFormHelpText euiFormRow__text"
+              id="some_html_id-help-0"
             >
-              <div
-                class="euiFormHelpText euiFormRow__text"
-                id="some_html_id-help-0"
-              >
-                <div>
-                  Define how documents and their fields are stored and indexed.
-                   
-                  <a
-                    class="euiLink euiLink--primary"
-                    href="https://opensearch.org/docs/undefined/opensearch/mappings/"
-                    rel="noopener noreferrer"
-                    target="_blank"
+              <div>
+                Define how documents and their fields are stored and indexed.
+                 
+                <a
+                  class="euiLink euiLink--primary"
+                  href="https://opensearch.org/docs/undefined/opensearch/mappings/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Learn more
+                  EuiIconMock
+                  <span
+                    class="euiScreenReaderOnly"
                   >
-                    Learn more.
-                    EuiIconMock
-                    <span
-                      class="euiScreenReaderOnly"
-                    >
-                      (opens in a new tab or window)
-                    </span>
-                  </a>
-                </div>
+                    (opens in a new tab or window)
+                  </span>
+                </a>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <hr
-        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
-      />
-      <div
-        style="padding: 0px 10px;"
-      >
         <div
           class="euiSpacer euiSpacer--s"
         />
@@ -725,6 +710,9 @@ exports[`<CreateIndexTemplate /> spec it goes to templates page when click cance
             </p>
           </div>
         </div>
+        <div
+          class="euiSpacer euiSpacer--l"
+        />
       </div>
     </div>
   </div>

@@ -27,7 +27,7 @@ HTMLCollection [
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--ghost euiButtonEmpty--small"
+            class="euiButtonEmpty euiButtonEmpty--ghost"
             type="button"
           >
             <span
@@ -37,7 +37,7 @@ HTMLCollection [
               <span
                 class="euiButtonEmpty__text"
               >
-                Cancel changes
+                Cancel
               </span>
             </span>
           </button>
@@ -46,7 +46,7 @@ HTMLCollection [
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
           <button
-            class="euiButton euiButton--secondary euiButton--small euiButton--fill"
+            class="euiButton euiButton--primary euiButton--fill"
             type="button"
           >
             <span
@@ -56,7 +56,7 @@ HTMLCollection [
               <span
                 class="euiButton__text"
               >
-                Save changes
+                Save
               </span>
             </span>
           </button>

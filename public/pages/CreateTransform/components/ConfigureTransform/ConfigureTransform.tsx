@@ -44,7 +44,7 @@ const ConfigureTransform = ({
         </EuiFlexItem>
         <EuiFlexItem>
           <EuiText size="xs" color="subdued">
-            <i> - optional</i>
+            <i> – optional</i>
           </EuiText>
         </EuiFlexItem>
       </EuiFlexGroup>

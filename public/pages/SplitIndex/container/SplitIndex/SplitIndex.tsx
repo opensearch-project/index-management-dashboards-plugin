@@ -213,7 +213,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Learn more.
+                Learn more
               </EuiLink>
             </div>
           }

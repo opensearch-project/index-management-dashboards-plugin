@@ -7,6 +7,7 @@
 
 import { long } from "@opensearch-project/opensearch/api/types";
 import { ActionType } from "../public/pages/VisualCreatePolicy/utils/constants";
+import { IndicesUpdateMode } from "../public/utils/constants";
 
 export interface ManagedIndexMetaData {
   index: string;
@@ -26,6 +27,15 @@ export interface ManagedIndexMetaData {
 export type MappingsPropertiesObject = Record<
   string,
   {
+    type: string;
+    properties?: MappingsPropertiesObject;
+  }
+>;
+
+export type DiffableMappingsPropertiesObject = Record<
+  string,
+  {
+    fieldName: string;
     type: string;
     properties?: MappingsPropertiesObject;
   }
@@ -68,18 +78,42 @@ export interface IndexItemRemote extends Omit<IndexItem, "mappings"> {
   };
 }
 
+export interface DiffableIndexItemRemote extends Omit<IndexItem, "mappings"> {
+  mappings?: {
+    proerties?: DiffableMappingsPropertiesObject;
+  };
+}
+
 interface ITemplateExtras {
   name: string;
   data_stream?: {};
+  composed_of?: string[];
   version: number;
   priority: number;
   index_patterns: string[];
+  _meta?: {
+    [prop: string]: any;
+  };
+}
+
+interface IComposableTemplateExtras {
+  _meta?: {
+    description?: string;
+  };
 }
 
 export interface TemplateItem extends ITemplateExtras {
   template: Pick<IndexItem, "aliases" | "mappings" | "settings">;
 }
 export interface TemplateItemRemote extends ITemplateExtras {
+  template: Pick<IndexItemRemote, "aliases" | "mappings" | "settings">;
+}
+
+export interface IComposableTemplate extends IComposableTemplateExtras {
+  template: Pick<IndexItem, "aliases" | "mappings" | "settings">;
+}
+
+export interface IComposableTemplateRemote extends IComposableTemplateExtras {
   template: Pick<IndexItemRemote, "aliases" | "mappings" | "settings">;
 }
 

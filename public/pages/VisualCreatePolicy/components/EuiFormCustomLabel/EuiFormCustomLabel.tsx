@@ -32,7 +32,7 @@ const EuiFormCustomLabel = ({
       {isOptional ? (
         <React.Fragment>
           <span className="euiTextColor euiTextColor--subdued">
-            <em>- optional</em>
+            <em>– optional</em>
           </span>
         </React.Fragment>
       ) : null}

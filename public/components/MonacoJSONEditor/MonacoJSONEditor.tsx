@@ -112,7 +112,7 @@ const MonacoJSONEditor = forwardRef(
           style={{
             height: others?.height || undefined,
           }}
-          className={confirmModalVisible ? "monaco-json-editor-validate-error" : ""}
+          className={confirmModalVisible ? "monaco-json-editor-validate-error ism-monaco-editor" : "ism-monaco-editor"}
         >
           <MonacoEditor
             height="600px"

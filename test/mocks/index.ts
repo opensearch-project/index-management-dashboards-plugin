@@ -36,6 +36,20 @@ const apiCallerMock = (browserServicesMockObject: typeof browserServicesMock) =>
                 ],
               },
             };
+          } else if (payload.data?.path?.startsWith("_component_template/good_template")) {
+            return {
+              ok: true,
+              response: {
+                component_templates: [
+                  {
+                    name: "good_template",
+                    component_template: {
+                      template: {},
+                    },
+                  },
+                ],
+              },
+            };
           } else {
             return {
               ok: true,
