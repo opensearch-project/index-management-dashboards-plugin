@@ -254,10 +254,11 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       (oldIndexDetail?.mappings?.properties || []).map((item) => item.fieldName),
       newMappingProperties.map((item) => item.fieldName)
     );
+    const newValue = newMappingProperties.filter((item, index) => index >= (oldIndexDetail?.mappings?.properties || []).length);
     const newMappingFields: MappingsProperties = diffedMappingArrayes
       .filter((item) => item.added)
       .reduce((total, current) => [...total, ...current.value], [] as string[])
-      .map((current) => newMappingProperties.find((item) => item.fieldName === current) as MappingsProperties[number])
+      .map((current) => newValue.find((item) => item.fieldName === current) as MappingsProperties[number])
       .filter((item) => item);
 
     const newMappingSettings = transformArrayToObject(newMappingFields);
