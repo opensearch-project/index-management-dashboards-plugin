@@ -83,7 +83,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     const result = await services.indexService.getIndices({
       terms: index,
       from: 0,
-      size: 10,
+      size: 999,
       search: index,
       sortField: "index",
       sortDirection: "desc",
