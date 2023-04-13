@@ -56,6 +56,7 @@ export default function IndexSettings(props: SubDetailProps) {
             {...getCommonFormRowProps(["template", "settings", "index.number_of_shards"], field)}
           >
             <WrappedNumber
+              removeWhenEmpty
               {...field.registerField({
                 name: ["template", "settings", "index.number_of_shards"],
                 rules: [
@@ -88,6 +89,7 @@ export default function IndexSettings(props: SubDetailProps) {
             {...getCommonFormRowProps(["template", "settings", "index.number_of_replicas"], field)}
           >
             <WrappedNumber
+              removeWhenEmpty
               {...field.registerField({
                 name: ["template", "settings", "index.number_of_replicas"],
                 rules: [
@@ -119,6 +121,7 @@ export default function IndexSettings(props: SubDetailProps) {
             {...getCommonFormRowProps(["template", "settings", "index.refresh_interval"], field)}
           >
             <AllBuiltInComponents.Input
+              removeWhenEmpty
               {...field.registerField({
                 name: ["template", "settings", "index.refresh_interval"],
               })}
