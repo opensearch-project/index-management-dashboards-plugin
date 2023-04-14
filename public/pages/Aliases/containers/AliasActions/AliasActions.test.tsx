@@ -51,7 +51,7 @@ describe("<AliasesActions /> spec", () => {
     let times = 0;
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        if (payload.endpoint === "indices.updateAliases") {
+        if (payload.endpoint === "indices.deleteAlias") {
           if (times >= 1) {
             return {
               ok: true,
