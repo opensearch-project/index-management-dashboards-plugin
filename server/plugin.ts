@@ -31,12 +31,21 @@ import {
 } from "../server/routes";
 import dataStreams from "./routes/dataStreams";
 import { NodeServices } from "./models/interfaces";
+import { getClientSupportMDS } from "./client";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   public async setup(core: CoreSetup) {
     // create OpenSearch client that aware of ISM API endpoints
     const osDriver: ILegacyCustomClusterClient = core.opensearch.legacy.createClient("index_management", {
       plugins: [ismPlugin],
+    });
+
+    const osDriverSupportMDS = getClientSupportMDS({
+      core,
+      client: core.opensearch.legacy.createClient("index_management", {
+        plugins: [ismPlugin],
+      }),
+      pluginId: "opensearch_index_management_dashboards",
     });
 
     // Initialize services
@@ -48,7 +57,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const transformService = new TransformService(osDriver);
     const notificationService = new NotificationService(osDriver);
     const snapshotManagementService = new SnapshotManagementService(osDriver);
-    const commonService = new CommonService(osDriver);
+    const commonService = new CommonService(osDriverSupportMDS);
     const aliasService = new AliasServices(osDriver);
     const services: NodeServices = {
       indexService,
