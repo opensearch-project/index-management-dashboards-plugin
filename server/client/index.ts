@@ -60,7 +60,7 @@ export const getClientSupportMDS = (props: IGetClientProps) => {
      */
     const context = contextMap[request.id];
     delete contextMap[request.id];
-    const dataSourceId = "e22a0790-cf97-11ed-acf6-ed047b89ac83";
+    const dataSourceId = "{dataSourceId}";
     if (!dataSourceId) {
       return originalAsScoped.call(props.client, request);
     }
