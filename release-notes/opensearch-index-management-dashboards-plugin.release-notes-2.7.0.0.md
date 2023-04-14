@@ -8,6 +8,7 @@ Compatible with OpenSearch 2.7.0
 
 ### Bug Fixes
 * Fix link destination and make the link open in a new window. ([#652](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/652))
+* Fix the alias deletion issue in security mode.([#704](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/704))
 * Add downgrade logic when fetching indexes ([#684](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/684))
 
 ### Refactoring
