@@ -83,7 +83,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     const result = await services.indexService.getIndices({
       terms: index,
       from: 0,
-      size: 999,
+      size: 10,
       search: index,
       sortField: "index",
       sortDirection: "desc",
@@ -108,8 +108,9 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     const result = await fetchIndicesDetail();
     if (result.ok) {
       const { data_stream } = result.response;
-      const payload: { showDataStreams: "true" | "false"; search?: string; dataStreams?: string } = {
+      const payload: { showDataStreams: "true" | "false"; search?: string; dataStreams?: string; exactSearch?: string } = {
         showDataStreams: data_stream ? "true" : "false",
+        exactSearch: index,
       };
       if (data_stream) {
         payload.search = `data_streams: (${result.response.data_stream})`;
