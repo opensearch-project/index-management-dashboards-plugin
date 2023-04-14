@@ -45,21 +45,10 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
   const onConfirm = useCallback(async () => {
     if (services) {
       const result = await services.commonService.apiCaller({
-        endpoint: "indices.updateAliases",
+        endpoint: "indices.deleteAlias",
         data: {
-          body: {
-            actions: selectedItems.reduce((total, current) => {
-              return [
-                ...total,
-                ...current.indexArray?.map((item) => ({
-                  remove: {
-                    index: item,
-                    alias: current.alias,
-                  },
-                })),
-              ];
-            }, [] as { remove: { index: string; alias: string } }[]),
-          },
+          index: selectedItems.reduce((total, current) => [...total, ...(current.indexArray || [])], [] as string[]),
+          name: selectedItems.map((item) => item.alias),
         },
       });
       if (result && result.ok) {

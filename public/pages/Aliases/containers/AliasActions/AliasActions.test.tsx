@@ -96,18 +96,10 @@ describe("<AliasesActions /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.updateAliases",
+        endpoint: "indices.deleteAlias",
         data: {
-          body: {
-            actions: [
-              {
-                remove: {
-                  index: "test_index",
-                  alias: "1",
-                },
-              },
-            ],
-          },
+          index: ["test_index"],
+          name: ["1"],
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
