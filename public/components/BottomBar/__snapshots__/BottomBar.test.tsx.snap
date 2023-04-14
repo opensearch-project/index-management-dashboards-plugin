@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FormGenerator /> spec render the component 1`] = `
+HTMLCollection [
+  <div />,
+  <div>
+    <section
+      aria-label="Page level controls"
+      class="euiBottomBar euiBottomBar--fixed euiBottomBar--paddingMedium"
+      style="left: 0px; right: 0px; bottom: 0px;"
+    >
+      <h2
+        class="euiScreenReaderOnly"
+      >
+        Page level controls
+      </h2>
+    </section>
+    <p
+      aria-live="assertive"
+      class="euiScreenReaderOnly"
+    >
+      There is a new region landmark with page level controls at the end of the document.
+    </p>
+  </div>,
+]
+`;

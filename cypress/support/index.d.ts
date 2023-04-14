@@ -68,6 +68,13 @@ declare namespace Cypress {
     createIndexTemplate(name: string, template: object): Chainable<any>;
 
     /**
+     * Creates an index template.
+     * @example
+     * cy.createTemplateComponent("some_template_component", { "properties": { ... } })
+     */
+    createTemplateComponent(name: string, template: object): Chainable<any>;
+
+    /**
      * Creates a data stream.
      * @example
      * cy.createDataStream("some_data_stream")
@@ -111,6 +118,13 @@ declare namespace Cypress {
      * cy.deleteTemplate("some_template")
      */
     deleteTemplate(name: string);
+
+    /**
+     * Delete template
+     * @example
+     * cy.deleteTemplate("some_template")
+     */
+    deleteTemplateComponents(name: string);
 
     /**
      * Create a ingest pipeline

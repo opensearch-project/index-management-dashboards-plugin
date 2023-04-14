@@ -7,6 +7,7 @@ import React, { forwardRef } from "react";
 import { EuiDelayRender, EuiLoadingContent } from "@elastic/eui";
 import type { MonacoJSONEditorProps } from "./interface";
 import { IJSONEditorRef } from "../JSONEditor";
+import "./index.scss";
 
 const LazyBaseEditor = React.lazy(() =>
   process?.env?.NODE_ENV === "test" ? import("../JSONDiffEditor/JSONTextArea") : import("./MonacoJSONEditor")

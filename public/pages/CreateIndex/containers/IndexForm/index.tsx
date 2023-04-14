@@ -393,7 +393,9 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
             ...res,
             response: {
               ...res.response.template,
-              settings: flattern(res.response.template?.settings || {}),
+              settings: flattern(res.response.template?.settings || {}, {
+                safe: true,
+              }),
             },
           };
         }

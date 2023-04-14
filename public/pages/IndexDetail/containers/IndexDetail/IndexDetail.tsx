@@ -173,7 +173,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                             external
                             href={`https://opensearch.org/docs/${coreService?.docLinks.DOC_LINK_VERSION}/opensearch/mappings/`}
                           >
-                            Learn more.
+                            Learn more
                           </EuiLink>
                         </div>
                         <div>Mappings and field types cannot be changed once they have been added.</div>

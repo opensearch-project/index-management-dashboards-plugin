@@ -132,7 +132,7 @@ class ErrorNotification extends Component<ErrorNotificationProps, ErrorNotificat
             </EuiFlexItem>
             <EuiFlexItem>
               <EuiText color="subdued">
-                <i> - optional</i>
+                <i> – optional</i>
               </EuiText>
             </EuiFlexItem>
           </EuiFlexGroup>
