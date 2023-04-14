@@ -14,13 +14,13 @@ import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-function renderWithRouter(props: AliasesActionsProps) {
+function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
   return {
     ...render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
           <ModalProvider>
-            <AliasesActions {...props} />
+            <AliasesActions {...props} history={{} as any} />
           </ModalProvider>
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
@@ -51,7 +51,7 @@ describe("<AliasesActions /> spec", () => {
     let times = 0;
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        if (payload.endpoint === "indices.deleteAlias") {
+        if (payload.endpoint === "indices.updateAliases") {
           if (times >= 1) {
             return {
               ok: true,
@@ -96,10 +96,18 @@ describe("<AliasesActions /> spec", () => {
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.deleteAlias",
+        endpoint: "indices.updateAliases",
         data: {
-          index: "_all",
-          name: ["1"],
+          body: {
+            actions: [
+              {
+                remove: {
+                  index: "test_index",
+                  alias: "1",
+                },
+              },
+            ],
+          },
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
