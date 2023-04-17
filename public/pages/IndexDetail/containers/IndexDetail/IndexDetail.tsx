@@ -108,8 +108,9 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     const result = await fetchIndicesDetail();
     if (result.ok) {
       const { data_stream } = result.response;
-      const payload: { showDataStreams: "true" | "false"; search?: string; dataStreams?: string } = {
+      const payload: { showDataStreams: "true" | "false"; search?: string; dataStreams?: string; exactSearch?: string } = {
         showDataStreams: data_stream ? "true" : "false",
+        exactSearch: index,
       };
       if (data_stream) {
         payload.search = `data_streams: (${result.response.data_stream})`;

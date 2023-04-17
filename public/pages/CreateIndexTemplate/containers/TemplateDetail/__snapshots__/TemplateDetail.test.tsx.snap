@@ -397,7 +397,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                       <span
                         class="euiTextColor euiTextColor--subdued"
                       >
-                        Define an index template with index aliases, settings and mappings.
+                        Define an index template with index aliases, settings, and mappings.
                       </span>
                     </div>
                   </label>

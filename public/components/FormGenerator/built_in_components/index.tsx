@@ -19,13 +19,23 @@ let globalId = 0;
 
 const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponentProps>> = {
   Input: EuiToolTipWrapper(
-    forwardRef(({ onChange, value, ...others }, ref: React.Ref<HTMLInputElement>) => (
-      <EuiFieldText inputRef={ref} value={value || ""} onChange={(e) => onChange(e.target.value)} {...others} />
+    forwardRef(({ onChange, value, removeWhenEmpty, ...others }, ref: React.Ref<HTMLInputElement>) => (
+      <EuiFieldText
+        inputRef={ref}
+        value={value || ""}
+        onChange={(e) => onChange(e.target.value ? e.target.value : removeWhenEmpty ? undefined : e.target.value)}
+        {...others}
+      />
     )) as React.ComponentType<IFieldComponentProps>
   ),
   Number: EuiToolTipWrapper(
-    forwardRef(({ onChange, value, ...others }, ref: React.Ref<HTMLInputElement>) => (
-      <EuiFieldNumber inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value === undefined ? "" : value} {...others} />
+    forwardRef(({ onChange, value, removeWhenEmpty, ...others }, ref: React.Ref<HTMLInputElement>) => (
+      <EuiFieldNumber
+        inputRef={ref}
+        onChange={(e) => onChange(e.target.value ? e.target.value : removeWhenEmpty ? undefined : e.target.value)}
+        value={value === undefined ? "" : value}
+        {...others}
+      />
     )) as React.ComponentType<IFieldComponentProps>
   ),
   Switch: EuiToolTipWrapper(

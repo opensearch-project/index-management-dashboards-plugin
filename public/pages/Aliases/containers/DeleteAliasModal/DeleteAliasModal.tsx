@@ -22,9 +22,10 @@ import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS } from "../../../../../utils/constants";
+import { IAlias } from "../../interface";
 
 interface DeleteAliasModalProps {
-  selectedItems: string[];
+  selectedItems: IAlias[];
   visible: boolean;
   onClose: () => void;
   onDelete: () => void;
@@ -46,12 +47,12 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
       const result = await services.commonService.apiCaller({
         endpoint: "indices.deleteAlias",
         data: {
-          index: "_all",
-          name: selectedItems,
+          index: selectedItems.reduce((total, current) => [...total, ...(current.indexArray || [])], [] as string[]),
+          name: selectedItems.map((item) => item.alias),
         },
       });
       if (result && result.ok) {
-        coreServices.notifications.toasts.addSuccess(`Delete [${selectedItems.join(",")}] successfully`);
+        coreServices.notifications.toasts.addSuccess(`Delete [${selectedItems.map((item) => item.alias).join(", ")}] successfully`);
         onDelete();
       } else {
         coreServices.notifications.toasts.addDanger(result?.error || "");
@@ -63,7 +64,7 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
     return null;
   }
 
-  const hasSystemIndex = props.selectedItems.some((index) => filterByMinimatch(index, SYSTEM_ALIAS));
+  const hasSystemIndex = props.selectedItems.some((index) => filterByMinimatch(index.alias, SYSTEM_ALIAS));
 
   return (
     <EuiModal onClose={onClose}>
@@ -84,7 +85,7 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
           <p>The following alias will be permanently deleted. This action cannot be undone.</p>
           <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
             {selectedItems.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item.alias}>{item.alias}</li>
             ))}
           </ul>
           <EuiSpacer />
