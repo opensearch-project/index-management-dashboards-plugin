@@ -101,16 +101,33 @@ export const submitNotifications = async (props: { commonService: CommonService;
 };
 
 export const getNotifications = async (props: { commonService: CommonService }) => {
-  return props.commonService.apiCaller<{
-    lron_configs: {
-      lron_config: ILronConfig;
-    }[];
-    total_number: number;
-  }>({
-    endpoint: "transport.request",
-    data: {
-      method: "GET",
-      path: "/_plugins/_im/lron",
-    },
-  });
+  return props.commonService
+    .apiCaller<{
+      lron_configs: {
+        lron_config: ILronConfig;
+      }[];
+      total_number: number;
+    }>({
+      endpoint: "transport.request",
+      data: {
+        method: "GET",
+        path: "/_plugins/_im/lron",
+      },
+    })
+    .then((res) => {
+      if (res.ok) {
+        return res;
+      } else if (res.body?.error?.type === "index_not_found_exception") {
+        return {
+          ok: true,
+          response: {
+            lron_configs: [],
+            total_number: 0,
+          },
+          error: "",
+        };
+      } else {
+        return res;
+      }
+    });
 };

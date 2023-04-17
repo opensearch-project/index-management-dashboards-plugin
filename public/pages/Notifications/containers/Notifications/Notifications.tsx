@@ -4,7 +4,7 @@
  */
 
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { EuiBasicTable, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiBasicTable, EuiCard, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import useField from "../../../../lib/field";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -75,6 +75,8 @@ const Notifications = (props: NotificationsProps) => {
             field.resetValues(values);
             field.setOriginalValues(JSON.parse(JSON.stringify(values)));
           });
+        } else {
+          coreServices.notifications.toasts.addDanger(res.error);
         }
       })
       .finally(() => {
@@ -82,6 +84,9 @@ const Notifications = (props: NotificationsProps) => {
           setIsLoading(false);
         }
       });
+  };
+  const onCancel = () => {
+    field.resetValues(field.getOriginalValues());
   };
   useEffect(() => {
     reloadNotifications();
@@ -94,96 +99,139 @@ const Notifications = (props: NotificationsProps) => {
   return (
     <>
       <EuiTitle size="l">
-        <h1>Manage notifications for index operations</h1>
+        <h1>Notifications</h1>
       </EuiTitle>
       <EuiSpacer />
-      <ContentPanel title="Index operations" titleSize="s">
+      <EuiCard title="Defaults for index operations" textAlign="left">
         <EuiSpacer />
-        <EuiTitle>
-          <h5 className="ISM-notifications-first-letter-uppercase">
-            {Object.keys(ActionType)
-              .map((item) => ActionTypeMapTitle[item as ActionType])
-              .join(", ")}
-          </h5>
-        </EuiTitle>
-        <EuiSpacer />
-        <CustomFormRow
-          label="Send notification when"
-          fullWidth
-          style={{
-            maxWidth: 1200,
-          }}
-        >
-          <>
-            <EuiSpacer size="s" />
-            <EuiBasicTable
-              items={values.dataSource || []}
-              loading={isLoading}
-              columns={[
-                {
-                  field: "title",
-                  name: "Operation",
-                  render: (val: string, record) => <div className="ISM-notifications-first-letter-uppercase">{val}</div>,
+        {/* <EuiBasicTable
+          items={values.dataSource || []}
+          loading={isLoading}
+          columns={[
+            {
+              field: "title",
+              name: "Operation",
+              render: (val: string, record) => <div className="ISM-notifications-first-letter-uppercase">{val}</div>,
+            },
+            {
+              field: "hasFailed",
+              name: "Has failed",
+              render: (val: string, record: ILronPlainConfig) => (
+                <AllBuiltInComponents.CheckBox
+                  {...field.registerField({
+                    name: ["dataSource", `${record.index}`, "failure"],
+                  })}
+                />
+              ),
+            },
+            {
+              field: "hasComplete",
+              name: "Has completed",
+              render: (val: string, record: ILronPlainConfig) => (
+                <AllBuiltInComponents.CheckBox
+                  {...field.registerField({
+                    name: ["dataSource", `${record.index}`, "success"],
+                  })}
+                />
+              ),
+            },
+            {
+              field: "channels",
+              name: "Notify channels",
+              render: (val: ILronPlainConfig["channels"], record) => {
+                const { value, onChange, ...others } = field.registerField<ILronPlainConfig["channels"]>({
+                  name: ["dataSource", `${record.index}`, "channels"],
+                  rules: [
+                    {
+                      validator(rule, value) {
+                        const values = field.getValues();
+                        const item = values.dataSource?.[record.index];
+                        if (item?.failure || item?.success) {
+                          if (!value || !value.length) {
+                            return Promise.reject("Enabled LRONConfig must contain at least one channel.");
+                          }
+                        }
+
+                        return Promise.resolve("");
+                      },
+                    },
+                  ],
+                });
+                return (
+                  <CustomFormRow
+                    isInvalid={!!field.getError(["dataSource", `${record.index}`, "channels"])}
+                    error={field.getError(["dataSource", `${record.index}`, "channels"])}
+                  >
+                    <ChannelSelect {...others} value={value} onChange={onChange} />
+                  </CustomFormRow>
+                );
+              },
+            },
+          ]}
+        /> */}
+        {(values.dataSource || []).map((record) => {
+          const { value, onChange, ...others } = field.registerField<ILronPlainConfig["channels"]>({
+            name: ["dataSource", `${record.index}`, "channels"],
+            rules: [
+              {
+                validator(rule, value) {
+                  const values = field.getValues();
+                  const item = values.dataSource?.[record.index];
+                  if (item?.failure || item?.success) {
+                    if (!value || !value.length) {
+                      return Promise.reject("Enabled LRONConfig must contain at least one channel.");
+                    }
+                  }
+
+                  return Promise.resolve("");
                 },
-                {
-                  field: "hasFailed",
-                  name: "Has failed",
-                  render: (val: string, record: ILronPlainConfig) => (
+              },
+            ],
+          });
+          return (
+            <CustomFormRow
+              label={<div className="ISM-notifications-first-letter-uppercase">{record.title}</div>}
+              helpText="Description"
+              direction="hoz"
+            >
+              <>
+                <div>Notify when operation</div>
+                <EuiSpacer size="s" />
+                <EuiFlexGroup alignItems="flexStart">
+                  <EuiFlexItem>
                     <AllBuiltInComponents.CheckBox
                       {...field.registerField({
                         name: ["dataSource", `${record.index}`, "failure"],
                       })}
+                      label="Has failed"
                     />
-                  ),
-                },
-                {
-                  field: "hasComplete",
-                  name: "Has completed",
-                  render: (val: string, record: ILronPlainConfig) => (
+                  </EuiFlexItem>
+                  <EuiFlexItem>
                     <AllBuiltInComponents.CheckBox
                       {...field.registerField({
                         name: ["dataSource", `${record.index}`, "success"],
                       })}
+                      label="Has completed"
                     />
-                  ),
-                },
-                {
-                  field: "channels",
-                  name: "Notify channels",
-                  render: (val: ILronPlainConfig["channels"], record) => {
-                    const { value, onChange, ...others } = field.registerField<ILronPlainConfig["channels"]>({
-                      name: ["dataSource", `${record.index}`, "channels"],
-                      rules: [
-                        {
-                          validator(rule, value) {
-                            const values = field.getValues();
-                            const item = values.dataSource?.[record.index];
-                            if (item?.failure || item?.success) {
-                              if (!value || !value.length) {
-                                return Promise.reject("Enabled LRONConfig must contain at least one channel.");
-                              }
-                            }
-
-                            return Promise.resolve("");
-                          },
-                        },
-                      ],
-                    });
-                    return (
-                      <CustomFormRow
-                        isInvalid={!!field.getError(["dataSource", `${record.index}`, "channels"])}
-                        error={field.getError(["dataSource", `${record.index}`, "channels"])}
-                      >
-                        <ChannelSelect {...others} value={value} onChange={onChange} />
-                      </CustomFormRow>
-                    );
-                  },
-                },
-              ]}
-            />
-          </>
-        </CustomFormRow>
-      </ContentPanel>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
+                {field.getValue(["dataSource", `${record.index}`, "failure"]) ||
+                field.getValue(["dataSource", `${record.index}`, "success"]) ? (
+                  <>
+                    <EuiSpacer size="s" />
+                    <CustomFormRow
+                      isInvalid={!!field.getError(["dataSource", `${record.index}`, "channels"])}
+                      error={field.getError(["dataSource", `${record.index}`, "channels"])}
+                    >
+                      <ChannelSelect {...others} value={value} onChange={onChange} />
+                    </CustomFormRow>
+                  </>
+                ) : null}
+              </>
+            </CustomFormRow>
+          );
+        })}
+      </EuiCard>
       {diffJson(
         getDiffableMapFromPlainList(values.dataSource || []),
         getDiffableMapFromPlainList(field.getOriginalValues().dataSource || [])
@@ -194,7 +242,7 @@ const Notifications = (props: NotificationsProps) => {
             getDiffableMapFromPlainList(field.getOriginalValues().dataSource || [])
           )}
           onClickSubmit={onSubmit}
-          // onClickCancel={onCancel}
+          onClickCancel={onCancel}
         />
       ) : null}
     </>
