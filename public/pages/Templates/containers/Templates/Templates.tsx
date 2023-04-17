@@ -34,6 +34,7 @@ import TemplatesActions from "../TemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
+import AssociatedComponentsModal from "../AssociatedComponentsModal";
 
 interface TemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -249,7 +250,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                 <div>
                   Index templates let you initialize new indexes or data streams with predefined mappings and settings.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
-                    Learn more.
+                    Learn more
                   </EuiLink>
                 </div>
               }
@@ -277,7 +278,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               sortable: true,
               render: (value: string) => {
                 return (
-                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
+                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
                     <EuiLink>{value}</EuiLink>
                   </Link>
                 );
@@ -302,6 +303,22 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               name: "Priority",
               sortable: true,
               align: "right",
+            },
+            {
+              field: "composed_of",
+              name: "Associated component templates",
+              align: "right",
+              render: (value: string, record) => {
+                return (
+                  <AssociatedComponentsModal
+                    template={record}
+                    onUnlink={() => this.getTemplates()}
+                    renderProps={({ setVisible }) => (
+                      <EuiLink onClick={() => setVisible(true)}>{record.templateDetail?.composed_of?.length || 0}</EuiLink>
+                    )}
+                  />
+                );
+              },
             },
           ]}
           isSelectable={true}
@@ -356,25 +373,6 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                 ]}
               />
             )
-            // <div
-            //   style={{
-            //     textAlign: "center",
-            //   }}
-            // >
-            //   <h4>You have no templates.</h4>
-            //   <EuiButton
-            //     fill
-            //     color="primary"
-            //     style={{
-            //       marginTop: 20,
-            //     }}
-            //     onClick={() => {
-            //       this.props.history.push(ROUTES.CREATE_TEMPLATE);
-            //     }}
-            //   >
-            //     Create template
-            //   </EuiButton>
-            // </div>
           }
         />
       </ContentPanel>

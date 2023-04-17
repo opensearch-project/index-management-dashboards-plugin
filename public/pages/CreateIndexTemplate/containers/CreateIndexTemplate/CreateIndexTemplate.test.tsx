@@ -42,20 +42,10 @@ describe("<CreateIndexTemplate /> spec", () => {
   beforeEach(() => {
     apiCallerMock(browserServicesMock);
   });
-  it("it goes to templates page when click cancel", async () => {
-    const { getByTestId, getByText, findByTitle, container } = renderCreateIndexTemplateWithRouter([
-      `${ROUTES.CREATE_TEMPLATE}/good_template/readonly`,
-    ]);
+  it("render template pages", async () => {
+    const { findByTitle, container } = renderCreateIndexTemplateWithRouter([`${ROUTES.CREATE_TEMPLATE}/good_template`]);
     await findByTitle("good_template");
     expect(container).toMatchSnapshot();
-    userEvent.click(getByText("Edit"));
-    await waitFor(() => expect(document.querySelector('[data-test-subj="form-row-name"] [title="good_template"]')).toBeInTheDocument(), {
-      timeout: 3000,
-    });
-    userEvent.click(getByTestId("CreateIndexTemplateCancelButton"));
-    await waitFor(() => {
-      expect(getByText(`location is: ${ROUTES.TEMPLATES}`)).toBeInTheDocument();
-    });
   });
 
   it("it goes to indices page when click create successfully in happy path", async () => {
@@ -106,14 +96,19 @@ describe("<CreateIndexTemplate /> spec", () => {
             method: "PUT",
             path: "_index_template/good_template",
             body: {
+              _meta: {
+                flow: "simple",
+              },
+              composed_of: [],
               priority: 0,
               template: {
                 settings: {
                   "index.number_of_replicas": "1",
                   "index.number_of_shards": "1",
-                  "index.refresh_interval": "1s",
                 },
-                mappings: { properties: {} },
+                mappings: {
+                  properties: {},
+                },
               },
               index_patterns: ["test_patterns"],
             },

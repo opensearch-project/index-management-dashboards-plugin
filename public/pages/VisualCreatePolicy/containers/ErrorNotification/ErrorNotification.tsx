@@ -110,7 +110,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
             </EuiFlexItem>
             <EuiFlexItem>
               <EuiText color="subdued">
-                <i> - optional</i>
+                <i> – optional</i>
               </EuiText>
             </EuiFlexItem>
           </EuiFlexGroup>

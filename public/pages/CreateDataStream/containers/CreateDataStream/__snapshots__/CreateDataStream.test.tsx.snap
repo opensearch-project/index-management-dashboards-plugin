@@ -34,7 +34,7 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
                   class="euiLink euiLink--primary"
                   type="button"
                 >
-                  Learn more.
+                  Learn more
                 </button>
               </div>
             </div>

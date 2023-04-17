@@ -103,7 +103,10 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
             class="euiFormLabel euiFormRow__label"
             for="some_html_id"
           >
-            Index alias - optional
+            Index alias
+            <i>
+               – optional
+            </i>
           </label>
         </div>
         <div
@@ -138,7 +141,7 @@ exports[`<IndexDetail /> spec renders the component 1`] = `
                     <p
                       class="euiComboBoxPlaceholder"
                     >
-                      Select aliases or input new aliases.
+                      Select aliases or specify new aliases.
                     </p>
                     <div
                       class="euiComboBox__input"

@@ -35,7 +35,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                 class="euiLink euiLink--primary"
                 type="button"
               >
-                Learn more.
+                Learn more
               </button>
             </div>
           </div>

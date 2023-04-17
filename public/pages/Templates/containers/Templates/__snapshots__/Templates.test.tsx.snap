@@ -37,7 +37,7 @@ exports[`<Templates /> spec renders the component 1`] = `
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Learn more.
+                Learn more
                 EuiIconMock
                 <span
                   class="euiScreenReaderOnly"
@@ -350,6 +350,23 @@ exports[`<Templates /> spec renders the component 1`] = `
                   </span>
                 </button>
               </th>
+              <th
+                class="euiTableHeaderCell"
+                data-test-subj="tableHeaderCell_composed_of_4"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent euiTableCellContent--alignRight"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Associated component templates"
+                  >
+                    Associated component templates
+                  </span>
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -358,7 +375,7 @@ exports[`<Templates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="5"
+                colspan="6"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"

@@ -4,15 +4,16 @@
  */
 
 import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
-import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink } from "@elastic/eui";
+import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiButton, EuiSpacer, EuiButtonGroup, EuiLink, EuiCallOut } from "@elastic/eui";
 import { set, get, isEmpty } from "lodash";
-import JSONEditor, { IJSONEditorRef } from "../JSONEditor";
+import MonacoJSONEditor, { IJSONEditorRef } from "../MonacoJSONEditor";
 import { Modal } from "../Modal";
 import { MappingsProperties } from "../../../models/interfaces";
 import CustomFormRow from "../CustomFormRow";
 import MappingLabel, { IMappingLabelRef } from "../MappingLabel";
-import { transformObjectToArray, transformArrayToObject, countNodesInTree } from "./helper";
+import { transformObjectToArray, transformArrayToObject, countNodesInTree, noAdditionalPropertiesValidator } from "./helper";
 import { IndexMappingsObjectAll, IndexMappingProps, EDITOR_MODE, IIndexMappingsRef } from "./interfaces";
+import { IndexMappingsJSONEditorSchema, schemaId } from "../../utils/JSON_schemas/index_mappings";
 import "./IndexMapping.scss";
 
 export * from "./helper";
@@ -171,6 +172,14 @@ const IndexMapping = (
       <EuiSpacer />
       {editorMode === EDITOR_MODE.VISUAL ? (
         <>
+          {noAdditionalPropertiesValidator(transformArrayToObject(newValue)) ? null : (
+            <>
+              <EuiCallOut color="warning" title="You have advanced configurations not supported by the visual editor">
+                To view or modify all of your configurations, switch to the JSON editor.
+              </EuiCallOut>
+              <EuiSpacer />
+            </>
+          )}
           {transformedTreeItems.length ? (
             <EuiTreeView
               key={renderKey}
@@ -210,9 +219,12 @@ const IndexMapping = (
                 data-test-subj="previousMappingsJsonButton"
                 onClick={() => {
                   Modal.show({
+                    style: {
+                      width: "70vw",
+                    },
                     title: "Previous mappings",
                     content: (
-                      <JSONEditor
+                      <MonacoJSONEditor
                         readOnly
                         value={JSON.stringify(
                           {
@@ -235,7 +247,7 @@ const IndexMapping = (
             </>
           ) : null}
           {readonly ? (
-            <JSONEditor
+            <MonacoJSONEditor
               ref={JSONEditorRef}
               value={JSON.stringify(
                 {
@@ -245,6 +257,7 @@ const IndexMapping = (
                 null,
                 2
               )}
+              disabled={readonly}
               readOnly={readonly}
               width="100%"
             />
@@ -266,7 +279,7 @@ const IndexMapping = (
               }
               fullWidth
             >
-              <JSONEditor
+              <MonacoJSONEditor
                 value={JSON.stringify(
                   {
                     ...propsValue,
@@ -281,6 +294,30 @@ const IndexMapping = (
                     ...result,
                     properties: [...(oldValue?.properties || []), ...transformObjectToArray(result?.properties || {})],
                   });
+                }}
+                path={`index-mappings-${Date.now()}.json`}
+                diagnosticsOptions={{
+                  validate: true,
+                  schemas: [
+                    {
+                      fileMatch: ["index-mappings-*.json"],
+                      schema: {
+                        title: "Index mappings",
+                        description: "Index mappings",
+                        type: "object",
+                        properties: {
+                          properties: {
+                            $ref: schemaId,
+                          },
+                        },
+                      },
+                      uri: "ISMIndexMappings",
+                    },
+                    {
+                      schema: IndexMappingsJSONEditorSchema,
+                      uri: schemaId,
+                    },
+                  ],
                 }}
                 width="100%"
                 ref={JSONEditorRef}

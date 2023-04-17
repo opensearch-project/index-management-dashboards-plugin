@@ -4,9 +4,8 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTab, EuiTabs, EuiTitle } from "@elastic/eui";
 import queryString from "query-string";
-import { transformArrayToObject } from "../../../../components/IndexMapping";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -14,7 +13,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
-import { submitTemplate, getTemplate } from "./hooks";
+import { submitTemplate, getTemplate, simulateTemplate, formatTemplate, formatRemoteTemplateToEditTemplate } from "../../hooks";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
@@ -25,22 +24,32 @@ import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
 import { merge } from "lodash";
+import ComposableTemplate from "../ComposableTemplate";
+import PreviewTemplate from "../PreviewTemplate";
+import { ContentPanel } from "../../../../components/ContentPanel";
+import { FLOW_ENUM, TemplateItemEdit } from "../../interface";
+import BottomBar from "../../../../components/BottomBar";
+import { diffJson } from "../../../../utils/helpers";
+import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
+import { IndexForm } from "../../../../containers/IndexForm";
+import { TABS_ENUM, tabs } from "../../constant";
 
 export interface TemplateDetailProps {
   templateName?: string;
   onCancel?: () => void;
   onSubmitSuccess?: (templateName: string) => void;
-  readonly?: boolean;
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => {
-  const { templateName, onCancel, onSubmitSuccess, readonly, history } = props;
+  const { templateName, onCancel, onSubmitSuccess, history } = props;
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
+  const [selectedTabId, setSelectedTabId] = useState(TABS_ENUM.SUMMARY);
   const [visible, setVisible] = useState(false);
+  const [previewFlyoutVisible, setPreviewFlyoutVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const oldValue = useRef<TemplateItem | undefined>(undefined);
   const searchObject = queryString.parseUrl(props.location.search);
@@ -55,12 +64,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     {},
     {
       priority: 0,
-      template: {
-        settings: {
-          "index.number_of_replicas": 1,
-          "index.number_of_shards": 1,
-          "index.refresh_interval": "1s",
-        },
+      template: {},
+      _meta: {
+        flow: FLOW_ENUM.SIMPLE,
       },
     } as Partial<TemplateItem>,
     searchObject.query.values as any
@@ -72,6 +78,15 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         field.deleteValue(name);
       }
     },
+  });
+  const simulateField = useField({
+    values: {
+      priority: 0,
+      template: {},
+      _meta: {
+        flow: FLOW_ENUM.SIMPLE,
+      },
+    } as Partial<TemplateItem>,
   });
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
@@ -85,53 +100,93 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       commonService: services.commonService,
       isEdit,
     });
-    if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess(`${templateDetail.name} has been successfully ${isEdit ? "updated" : "created"}.`);
-      onSubmitSuccess && onSubmitSuccess(templateDetail.name);
-    } else {
-      coreServices.notifications.toasts.addDanger(result.error);
-    }
     if (destroyRef.current) {
       return;
     }
     setIsSubmitting(false);
+    if (result.ok) {
+      return result;
+    } else {
+      return {
+        ...result,
+        error: result?.body?.error?.caused_by?.reason || result.error,
+      };
+    }
   };
   useImperativeHandle(ref, () => field);
+  const refreshTemplate = () => {
+    getTemplate({
+      templateName: templateName || "",
+      coreService: coreServices,
+      commonService: services.commonService,
+    })
+      .then((template) => {
+        oldValue.current = JSON.parse(JSON.stringify(template));
+        field.resetValues(template);
+
+        simulateTemplate({
+          commonService: services.commonService,
+          template: field.getValues(),
+        }).then((simulateResult) => {
+          if (simulateResult.ok) {
+            simulateField.resetValues(simulateResult.response);
+          } else {
+            coreServices.notifications.toasts.addDanger(simulateResult.error);
+          }
+        });
+      })
+      .catch(() => {
+        // do nothing
+        props.history.replace(ROUTES.TEMPLATES);
+      });
+  };
   useEffect(() => {
     if (isEdit) {
-      getTemplate({
-        templateName,
-        coreService: coreServices,
-        commonService: services.commonService,
-      })
-        .then((template) => {
-          oldValue.current = template;
-          field.resetValues(template);
-        })
-        .catch(() => {
-          // do nothing
-          props.history.replace(ROUTES.TEMPLATES);
-        });
+      refreshTemplate();
     }
     return () => {
       destroyRef.current = true;
     };
   }, []);
-  const values: TemplateItem = field.getValues();
+  const values: TemplateItemEdit = field.getValues();
   const subCompontentProps = {
     ...props,
     isEdit,
     field,
+    readonly: selectedTabId === TABS_ENUM.SUMMARY && isEdit,
   };
+
+  const PreviewTemplateButton = () => (
+    <EuiFlexItem grow={false}>
+      <EuiButton
+        onClick={async () => {
+          const result = await simulateTemplate({
+            template: field.getValues(),
+            commonService: services.commonService,
+          });
+          if (result.ok) {
+            simulateField.resetValues(result.response);
+            setPreviewFlyoutVisible(true);
+          } else {
+            coreServices.notifications.toasts.addDanger(result.error);
+          }
+        }}
+        data-test-subj="CreateIndexTemplatePreviewButton"
+        color="ghost"
+      >
+        Preview template
+      </EuiButton>
+    </EuiFlexItem>
+  );
 
   return (
     <>
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
           <EuiTitle size="l">
-            {readonly ? <h1 title={values.name}>{values.name}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
+            {isEdit ? <h1 title={values.name}>{templateName}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
           </EuiTitle>
-          {readonly ? null : (
+          {isEdit ? null : (
             <CustomFormRow
               fullWidth
               label=""
@@ -139,7 +194,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                 <div>
                   Index templates let you initialize new indexes with predefined mappings and settings.{" "}
                   <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
-                    Learn more.
+                    Learn more
                   </EuiLink>
                 </div>
               }
@@ -148,22 +203,19 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             </CustomFormRow>
           )}
         </EuiFlexItem>
-        {readonly ? (
+        {isEdit ? (
           <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
             <EuiButton
               style={{ marginRight: 20 }}
               onClick={() => {
                 const showValue: TemplateItemRemote = {
                   ...values,
-                  template: {
-                    ...values.template,
-                    mappings: {
-                      ...values.template.mappings,
-                      properties: transformArrayToObject(values.template.mappings?.properties || []),
-                    },
-                  },
+                  template: IndexForm.transformIndexDetailToRemote(values.template),
                 };
                 Modal.show({
+                  locale: {
+                    ok: "Close",
+                  },
                   "data-test-subj": "templateJSONDetailModal",
                   title: values.name,
                   content: <JSONEditor value={JSON.stringify(showValue, null, 2)} disabled />,
@@ -172,15 +224,12 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
             >
               View JSON
             </EuiButton>
-            <EuiButton style={{ marginRight: 20 }} onClick={() => history.push(`${ROUTES.CREATE_TEMPLATE}/${values.name}`)}>
-              Edit
-            </EuiButton>
-            <EuiButton color="danger" style={{ marginRight: 20 }} onClick={() => setVisible(true)}>
+            <EuiButton color="danger" onClick={() => setVisible(true)}>
               Delete
             </EuiButton>
             <DeleteTemplateModal
               visible={visible}
-              selectedItems={[values.name]}
+              selectedItems={[templateName]}
               onClose={() => {
                 setVisible(false);
               }}
@@ -193,31 +242,142 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         ) : null}
       </EuiFlexGroup>
       <EuiSpacer />
+      {isEdit ? (
+        <>
+          <EuiTabs>
+            {tabs.map((item) => (
+              <EuiTab
+                onClick={() => {
+                  setSelectedTabId(item.id);
+                }}
+                isSelected={selectedTabId === item.id}
+                key={item.id}
+              >
+                {item.name}
+              </EuiTab>
+            ))}
+          </EuiTabs>
+          <EuiSpacer />
+        </>
+      ) : null}
       <DefineTemplate {...subCompontentProps} />
       <EuiSpacer />
-      <IndexAlias {...subCompontentProps} />
-      <EuiSpacer />
-      <IndexSettings {...subCompontentProps} />
-      <EuiSpacer />
-      <TemplateMappings {...subCompontentProps} />
-      {readonly ? null : (
+      {values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
         <>
+          <ComposableTemplate {...subCompontentProps} />
           <EuiSpacer />
-          <EuiSpacer />
-          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-            <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateIndexTemplateCancelButton">
-                Cancel
-              </EuiButtonEmpty>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={onSubmit} isLoading={isSubmitting} data-test-subj="CreateIndexTemplateCreateButton">
-                {isEdit ? "Save changes" : "Create template"}
-              </EuiButton>
-            </EuiFlexItem>
-          </EuiFlexGroup>
+        </>
+      ) : null}
+      <ContentPanel
+        title={
+          isEdit && selectedTabId === TABS_ENUM.SUMMARY
+            ? "Preview template"
+            : values._meta?.flow === FLOW_ENUM.COMPONENTS
+            ? "Override template definition"
+            : "Template definition"
+        }
+        subTitleText={
+          (!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS
+            ? "Provide additional configurations such as index aliases, settings, and mappings. Configurations defined in this section will take precedent if they overlap with the associated component templates."
+            : undefined
+        }
+        accordion={(!isEdit || selectedTabId !== TABS_ENUM.SUMMARY) && values._meta?.flow === FLOW_ENUM.COMPONENTS}
+        noExtraPadding
+        titleSize="s"
+      >
+        <EuiSpacer size="s" />
+        <IndexAlias {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
+        <EuiSpacer />
+        <IndexSettings {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
+        <EuiSpacer />
+        <TemplateMappings {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
+        <EuiSpacer />
+      </ContentPanel>
+      {previewFlyoutVisible && simulateField.getValues() ? (
+        <Modal.SimpleModal
+          style={{
+            width: 800,
+          }}
+          locale={{
+            ok: "Close",
+          }}
+          maxWidth={false}
+          onClose={() => setPreviewFlyoutVisible(false)}
+          title="Preview template"
+          content={<PreviewTemplate value={simulateField.getValues()} history={props.history} />}
+        />
+      ) : null}
+      {isEdit ? null : (
+        <>
+          <BottomBar>
+            <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+              <EuiFlexItem grow={false}>
+                <EuiButtonEmpty onClick={onCancel} color="ghost" iconType="cross" size="s" data-test-subj="CreateIndexTemplateCancelButton">
+                  Cancel
+                </EuiButtonEmpty>
+              </EuiFlexItem>
+              <PreviewTemplateButton />
+              <EuiFlexItem grow={false}>
+                <EuiButton
+                  fill
+                  onClick={async () => {
+                    const result = await onSubmit();
+                    if (result) {
+                      if (result.ok) {
+                        coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully created.`);
+                        onSubmitSuccess && onSubmitSuccess(values.name);
+                      } else {
+                        coreServices.notifications.toasts.addDanger(result.error);
+                      }
+                    }
+                  }}
+                  isLoading={isSubmitting}
+                  data-test-subj="CreateIndexTemplateCreateButton"
+                >
+                  Create template
+                </EuiButton>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </BottomBar>
         </>
       )}
+      {isEdit && selectedTabId === TABS_ENUM.CONFIG && diffJson(formatTemplate(oldValue.current), formatTemplate(values)) ? (
+        <UnsavedChangesBottomBar
+          submitButtonDataTestSubj="updateTemplateButton"
+          unsavedCount={diffJson(formatTemplate(oldValue.current), formatTemplate(values))}
+          onClickCancel={async () => {
+            field.resetValues(
+              formatRemoteTemplateToEditTemplate({
+                templateDetail: {
+                  ...oldValue.current,
+                  template: IndexForm.transformIndexDetailToRemote(oldValue.current?.template),
+                },
+              })
+            );
+          }}
+          onClickSubmit={async () => {
+            const result = await onSubmit();
+            if (result) {
+              if (result.ok) {
+                coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully updated.`);
+                refreshTemplate();
+              } else {
+                coreServices.notifications.toasts.addDanger(result.error);
+              }
+            }
+          }}
+          renderProps={({ renderCancel, renderConfirm, renderUnsavedText }) => {
+            return (
+              <>
+                {renderUnsavedText()}
+                {renderCancel()}
+                <PreviewTemplateButton />
+                {renderConfirm()}
+              </>
+            );
+          }}
+        />
+      ) : null}
     </>
   );
 };

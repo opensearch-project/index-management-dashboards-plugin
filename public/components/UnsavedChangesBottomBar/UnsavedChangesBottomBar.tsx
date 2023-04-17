@@ -2,20 +2,28 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { useEffect, useRef, useState } from "react";
-import { EuiButton, EuiBottomBar, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from "@elastic/eui";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty, EuiButtonProps, EuiButtonEmptyProps } from "@elastic/eui";
+import BottomBar from "../BottomBar";
 
 export type CustomFormRowProps = {
   unsavedCount: number;
   onClickCancel?: () => void;
   onClickSubmit: () => Promise<void>;
   submitButtonDataTestSubj?: string;
+  renderProps?: (props: {
+    renderCancel: () => React.ReactChild;
+    renderConfirm: () => React.ReactChild;
+    renderUnsavedText: () => React.ReactChild;
+    loading?: boolean;
+  }) => React.ReactChild;
+  confirmButtonProps?: EuiButtonProps;
+  cancelButtonprops?: EuiButtonEmptyProps;
 };
 
-export default function CustomFormRow(props: CustomFormRowProps) {
+export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
   const { unsavedCount, onClickCancel, onClickSubmit, submitButtonDataTestSubj } = props;
   const [loading, setLoading] = useState(false);
-  const bottomBarRef = useRef(null);
   const destroyRef = useRef(false);
   const onClick = async () => {
     setLoading(true);
@@ -31,45 +39,62 @@ export default function CustomFormRow(props: CustomFormRowProps) {
   };
 
   useEffect(() => {
-    const bodyDom = document.querySelector<HTMLDivElement>("#opensearch-dashboards-body");
-    let originalBodyPaddingBottom = "";
-    if (bodyDom) {
-      originalBodyPaddingBottom = bodyDom.style.paddingBottom;
-      bodyDom.style.paddingBottom = "64px";
-    }
-
     return () => {
       destroyRef.current = true;
-      if (bodyDom) {
-        bodyDom.style.paddingBottom = originalBodyPaddingBottom;
-      }
     };
   }, []);
 
+  const renderCancel = useCallback(
+    () => (
+      <EuiFlexItem grow={false}>
+        <EuiButtonEmpty onClick={onClickCancel} color="ghost" iconType="cross" children="Cancel" {...props.cancelButtonprops} />
+      </EuiFlexItem>
+    ),
+    [onClickCancel]
+  );
+
+  const renderConfirm = useCallback(
+    () => (
+      <EuiFlexItem grow={false}>
+        <EuiButton
+          data-test-subj={submitButtonDataTestSubj}
+          onClick={onClick}
+          isLoading={loading}
+          disabled={loading}
+          iconType="check"
+          color="primary"
+          fill
+          size="m"
+          children="Save"
+          {...props.confirmButtonProps}
+        />
+      </EuiFlexItem>
+    ),
+    [onClick, submitButtonDataTestSubj, loading]
+  );
+
+  const renderUnsavedText = useCallback(() => <EuiFlexItem>{unsavedCount} unsaved changes.</EuiFlexItem>, [unsavedCount]);
+
+  const renderProps =
+    props.renderProps ||
+    (() => (
+      <>
+        {renderUnsavedText()}
+        {renderCancel()}
+        {renderConfirm()}
+      </>
+    ));
+
   return (
-    <EuiBottomBar ref={bottomBarRef}>
+    <BottomBar>
       <EuiFlexGroup alignItems="center">
-        <EuiFlexItem>{unsavedCount} unsaved changes.</EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButtonEmpty onClick={onClickCancel} color="ghost" iconType="cross" size="s">
-            Cancel changes
-          </EuiButtonEmpty>
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButton
-            data-test-subj={submitButtonDataTestSubj}
-            onClick={onClick}
-            isLoading={loading}
-            disabled={loading}
-            iconType="check"
-            color="secondary"
-            fill
-            size="s"
-          >
-            Save changes
-          </EuiButton>
-        </EuiFlexItem>
+        {renderProps({
+          renderCancel,
+          renderConfirm,
+          renderUnsavedText,
+          loading,
+        })}
       </EuiFlexGroup>
-    </EuiBottomBar>
+    </BottomBar>
   );
 }

@@ -189,7 +189,7 @@ export default class Schedule extends Component<ScheduleProps> {
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <EuiText size="xs" color="subdued">
-                    <i> - optional</i>
+                    <i> – optional</i>
                   </EuiText>
                 </EuiFlexItem>
               </EuiFlexGroup>

@@ -280,7 +280,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
                   Data streams simplify the management of time-series data. Data streams are composed of multiple backing indexes. Search
                   requests are routed to all backing indexes, while indexing requests are routed to the latest write index.{" "}
                   <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.dataStreams}>
-                    Learn more.
+                    Learn more
                   </EuiLink>
                 </div>
               }
@@ -337,7 +337,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
               sortable: true,
               render: (value: unknown) => {
                 return (
-                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}/readonly`}>
+                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
                     <EuiLink>{value}</EuiLink>
                   </Link>
                 );

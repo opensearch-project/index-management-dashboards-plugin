@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ComposableTemplatesActions /> spec delete templates by calling commonService 1`] = `
+<button
+  class="euiButton euiButton--danger"
+  data-test-subj="deleteAction"
+  type="button"
+>
+  <span
+    class="euiButtonContent euiButton__content"
+  >
+    <span
+      class="euiButton__text"
+    >
+      Delete
+    </span>
+  </span>
+</button>
+`;
+
+exports[`<ComposableTemplatesActions /> spec renders the component and all the actions should be disabled when no items selected 1`] = `
+<button
+  class="euiButton euiButton--danger euiButton-isDisabled"
+  data-test-subj="deleteAction"
+  disabled=""
+  type="button"
+>
+  <span
+    class="euiButtonContent euiButton__content"
+  >
+    <span
+      class="euiButton__text"
+    >
+      Delete
+    </span>
+  </span>
+</button>
+`;

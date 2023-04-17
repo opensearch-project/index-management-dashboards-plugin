@@ -523,7 +523,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
                 <EuiTitle size="m">
-                  <i> - optional </i>
+                  <i> – optional </i>
                 </EuiTitle>
               </EuiFlexItem>
             </EuiFlexGroup>
