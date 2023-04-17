@@ -144,7 +144,7 @@ const IndexMapping = (
   const transformedTreeItems = useMemo(() => transformValueToTreeItems(value), [value]);
   const newValue = useMemo(() => {
     const oldValueKeys = (oldValue?.properties || []).map((item) => item.fieldName);
-    return value?.filter((item) => !oldValueKeys.includes(item.fieldName)) || [];
+    return value?.filter((item, index) => index >= oldValueKeys.length) || [];
   }, [oldValue?.properties, value]);
   const renderKey = useMemo(() => {
     return countNodesInTree(value || []);
