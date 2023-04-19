@@ -4,7 +4,7 @@
  */
 
 import { IndexManagementPluginSetup, IndexManagementPluginStart } from ".";
-import { Plugin, CoreSetup, CoreStart, ILegacyCustomClusterClient } from "../../../src/core/server";
+import { Plugin, CoreSetup, CoreStart, Logger, PluginInitializerContext } from "../../../src/core/server";
 import ismPlugin from "./clusters/ism/ismPlugin";
 import {
   PolicyService,
@@ -32,33 +32,48 @@ import {
 import dataStreams from "./routes/dataStreams";
 import { NodeServices } from "./models/interfaces";
 import { getClientSupportMDS } from "./client";
+import { OpenSearchDashboardsClient } from "@opensearch-project/opensearch/api/opensearch_dashboards";
+import { Client } from "elasticsearch";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
+  private readonly logger: Logger;
+  constructor(private initializerContext: PluginInitializerContext<{}>) {
+    this.logger = this.initializerContext.logger.get();
+  }
   public async setup(core: CoreSetup) {
     // create OpenSearch client that aware of ISM API endpoints
-    const osDriver: ILegacyCustomClusterClient = core.opensearch.legacy.createClient("index_management", {
+    const legacyClient = core.opensearch.legacy.createClient("index_management", {
       plugins: [ismPlugin],
     });
 
     const osDriverSupportMDS = getClientSupportMDS({
       core,
-      client: core.opensearch.legacy.createClient("index_management", {
-        plugins: [ismPlugin],
-      }),
+      client: legacyClient,
+      onExtendClient(client) {
+        const finalClinet = (client as unknown) as OpenSearchDashboardsClient & { ism?: any };
+        if (finalClinet.ism) {
+          return {};
+        }
+
+        return {
+          ism: ((legacyClient as unknown) as { client: Client & { ism: any } }).client.ism,
+        };
+      },
       pluginId: "opensearch_index_management_dashboards",
+      logger: this.logger,
     });
 
     // Initialize services
-    const indexService = new IndexService(osDriver);
-    const dataStreamService = new DataStreamService(osDriver);
-    const policyService = new PolicyService(osDriver);
-    const managedIndexService = new ManagedIndexService(osDriver);
-    const rollupService = new RollupService(osDriver);
-    const transformService = new TransformService(osDriver);
-    const notificationService = new NotificationService(osDriver);
-    const snapshotManagementService = new SnapshotManagementService(osDriver);
+    const indexService = new IndexService(osDriverSupportMDS);
+    const dataStreamService = new DataStreamService(osDriverSupportMDS);
+    const policyService = new PolicyService(osDriverSupportMDS);
+    const managedIndexService = new ManagedIndexService(osDriverSupportMDS);
+    const rollupService = new RollupService(osDriverSupportMDS);
+    const transformService = new TransformService(osDriverSupportMDS);
+    const notificationService = new NotificationService(osDriverSupportMDS);
+    const snapshotManagementService = new SnapshotManagementService(osDriverSupportMDS);
     const commonService = new CommonService(osDriverSupportMDS);
-    const aliasService = new AliasServices(osDriver);
+    const aliasService = new AliasServices(osDriverSupportMDS);
     const services: NodeServices = {
       indexService,
       dataStreamService,
