@@ -36,7 +36,7 @@ interface IGetClientProps {
   core: CoreSetup;
   /**
    * We will rewrite the asScoped method of your client
-   * It would be better that create a new client before you pass
+   * It would be better that create a new client before you pass in one
    */
   client: ILegacyCustomClusterClient;
   onExtendClient?: (client: OpenSearchDashboardsClient) => Record<string, any> | undefined;
