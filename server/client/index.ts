@@ -6,9 +6,7 @@ import {
   RequestHandler,
   RequestHandlerContext,
 } from "opensearch-dashboards/server";
-import { IRequestHandlerContentWithDataSource, IGetClientProps } from "./interface";
-
-const contextMap: Record<string, IRequestHandlerContentWithDataSource> = {};
+import { IRequestHandlerContentWithDataSource, IGetClientProps, DashboardRequestEnhancedWithContext } from "./interface";
 
 export const getClientSupportMDS = (props: IGetClientProps) => {
   const originalAsScoped = props.client.asScoped;
@@ -16,36 +14,22 @@ export const getClientSupportMDS = (props: IGetClientProps) => {
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest
   ) => {
-    contextMap[request.id] = context as IRequestHandlerContentWithDataSource;
+    (request as DashboardRequestEnhancedWithContext)[`${props.pluginId}_context`] = context as IRequestHandlerContentWithDataSource;
     return {} as any;
   };
 
   /**
    * asScoped can not get the request context,
-   * so use a map in memory to hold the context temporarily.
+   * add _context to request
    */
   props.core.http.registerRouteHandlerContext(`${props.pluginId}_MDS_CTX_SUPPORT` as "core", handler);
-  props.core.http.registerOnPreResponse((request, preResponse, toolkit) => {
-    delete contextMap[request.id];
-    return toolkit.next();
-  });
 
   /**
    * it is not a good practice to rewrite the method like this
    * but JS does not provide a method to copy a class instance
    */
-  props.client.asScoped = function (request: OpenSearchDashboardsRequest): ILegacyScopedClusterClient {
-    const context = contextMap[request.id];
-    const dataSourceId = props.getDataSourceId?.(context, request);
-
-    /**
-     * If no dataSourceId provided
-     * use the original client
-     */
-    if (!dataSourceId) {
-      props.logger.debug("No dataSourceId, using original client");
-      return originalAsScoped.call(props.client, request);
-    }
+  props.client.asScoped = function (request: DashboardRequestEnhancedWithContext): ILegacyScopedClusterClient {
+    const context = request[`${props.pluginId}_context`];
 
     /**
      * If the context can not be found
@@ -58,6 +42,16 @@ export const getClientSupportMDS = (props: IGetClientProps) => {
         callAsCurrentUser: () => Promise.reject(errorMessage),
         callAsInternalUser: () => Promise.reject(errorMessage),
       };
+    }
+
+    const dataSourceId = props.getDataSourceId?.(context, request);
+    /**
+     * If no dataSourceId provided
+     * use the original client
+     */
+    if (!dataSourceId) {
+      props.logger.debug("No dataSourceId, using original client");
+      return originalAsScoped.call(props.client, request);
     }
 
     const callApi: ILegacyScopedClusterClient["callAsCurrentUser"] = async (...args) => {
