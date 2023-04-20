@@ -40,6 +40,7 @@ interface IGetClientProps {
    */
   client: ILegacyCustomClusterClient;
   onExtendClient?: (client: OpenSearchDashboardsClient) => Record<string, any> | undefined;
+  getDataSourceId?: (context: RequestHandlerContext, request: OpenSearchDashboardsRequest) => string | undefined;
   pluginId: string;
   logger: Logger;
 }
@@ -70,7 +71,7 @@ export const getClientSupportMDS = (props: IGetClientProps) => {
    */
   props.client.asScoped = function (request: OpenSearchDashboardsRequest): ILegacyScopedClusterClient {
     const context = contextMap[request.id];
-    const dataSourceId = "3e2ff6a0-de64-11ed-b697-57f5dd34beb6";
+    const dataSourceId = props.getDataSourceId?.(context, request);
 
     /**
      * If no dataSourceId provided
@@ -100,11 +101,24 @@ export const getClientSupportMDS = (props: IGetClientProps) => {
         props.logger.debug(`Call api using the data source: ${dataSourceId}`);
         try {
           const dataSourceClient = await context.dataSource.opensearch.getClient(dataSourceId);
+
+          /**
+           * extend client if needed
+           **/
           Object.assign(dataSourceClient, { ...props.onExtendClient?.(dataSourceClient) });
+
+          /**
+           * Call the endpoint by providing client
+           * The logic is much the same as what callAPI does in Dashboards
+           */
           const clientPath = endpoint.split(".");
           const api: any = get(dataSourceClient, clientPath);
           let apiContext = clientPath.length === 1 ? dataSourceClient : get(dataSourceClient, clientPath.slice(0, -1));
           const request = api.call(apiContext, clientParams);
+
+          /**
+           * In case the request is aborted
+           */
           if (options?.signal) {
             options.signal.addEventListener("abort", () => {
               request.abort();

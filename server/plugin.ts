@@ -33,7 +33,9 @@ import dataStreams from "./routes/dataStreams";
 import { NodeServices } from "./models/interfaces";
 import { getClientSupportMDS } from "./client";
 import { OpenSearchDashboardsClient } from "@opensearch-project/opensearch/api/opensearch_dashboards";
-import { Client } from "elasticsearch";
+import { extendClient } from "./clusters/extend_client";
+// @ts-ignore
+import { factory } from "elasticsearch/src/lib/client_action";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   private readonly logger: Logger;
@@ -50,13 +52,24 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
       core,
       client: legacyClient,
       onExtendClient(client) {
-        const finalClinet = (client as unknown) as OpenSearchDashboardsClient & { ism?: any };
-        if (finalClinet.ism) {
+        const finalClient = (client as unknown) as OpenSearchDashboardsClient & { ism?: any };
+        if (finalClient.ism) {
           return {};
         }
 
+        const ism = {};
+
+        extendClient({
+          ism,
+          /**
+           * Pass through all the args to factory and bind the
+           * return function with true client
+           */
+          ca: (...args: any[]) => factory(...args).bind(finalClient),
+        });
+
         return {
-          ism: ((legacyClient as unknown) as { client: Client & { ism: any } }).client.ism,
+          ism,
         };
       },
       pluginId: "opensearch_index_management_dashboards",
