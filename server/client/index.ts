@@ -1,49 +1,15 @@
-import { OpenSearchDashboardsClient } from "@opensearch-project/opensearch/api/opensearch_dashboards";
 import { ApiResponse, TransportRequestPromise } from "@opensearch-project/opensearch/lib/Transport";
 import { get } from "lodash";
 import {
-  CoreSetup,
   IContextProvider,
-  ILegacyCustomClusterClient,
   ILegacyScopedClusterClient,
-  LegacyCallAPIOptions,
-  Logger,
   OpenSearchDashboardsRequest,
   RequestHandler,
   RequestHandlerContext,
 } from "opensearch-dashboards/server";
-
-type getClient = (dataSourceId: string) => OpenSearchDashboardsClient;
-
-interface IRequestHandlerContentWithDataSource extends RequestHandlerContext {
-  dataSource: {
-    opensearch: {
-      getClient: getClient;
-      legacy: {
-        getClient: (
-          dataSourceId: string
-        ) => {
-          callAPI: (endpoint: string, clientParams?: Record<string, any>, options?: LegacyCallAPIOptions) => Promise<unknown>;
-        };
-      };
-    };
-  };
-}
+import { IRequestHandlerContentWithDataSource, IGetClientProps } from "./interface";
 
 const contextMap: Record<string, IRequestHandlerContentWithDataSource> = {};
-
-interface IGetClientProps {
-  core: CoreSetup;
-  /**
-   * We will rewrite the asScoped method of your client
-   * It would be better that create a new client before you pass in one
-   */
-  client: ILegacyCustomClusterClient;
-  onExtendClient?: (client: OpenSearchDashboardsClient) => Record<string, any> | undefined;
-  getDataSourceId?: (context: RequestHandlerContext, request: OpenSearchDashboardsRequest) => string | undefined;
-  pluginId: string;
-  logger: Logger;
-}
 
 export const getClientSupportMDS = (props: IGetClientProps) => {
   const originalAsScoped = props.client.asScoped;
