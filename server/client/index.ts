@@ -1,4 +1,3 @@
-import { ApiResponse, TransportRequestPromise } from "@opensearch-project/opensearch/lib/Transport";
 import { get } from "lodash";
 import {
   IContextProvider,
@@ -93,7 +92,7 @@ export const getClientSupportMDS = (props: IGetClientProps) => {
           }
           const result = await request;
           resolve(result.body || result);
-        } catch (e: TransportRequestPromise<ApiResponse> | any) {
+        } catch (e: any) {
           /**
            * TODO
            * ask dashboard team to add original error to DataSourceError
