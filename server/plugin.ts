@@ -50,6 +50,9 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const osDriverSupportMDS = getClientSupportMDS({
       core,
       client: legacyClient,
+      getDataSourceId() {
+        return "3e2ff6a0-de64-11ed-b697-57f5dd34beb6";
+      },
       onExtendClient(client) {
         const finalClient = (client as unknown) as OpenSearchDashboardsClient & { ism?: any };
         if (finalClient.ism) {
