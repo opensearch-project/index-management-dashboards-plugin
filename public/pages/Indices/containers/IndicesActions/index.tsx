@@ -16,6 +16,7 @@ import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
+import FlushIndexModal from "../../components/FlushIndexModal";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
@@ -34,6 +35,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
+  const [flushIndexModalVisible, setFlushIndexModalVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -116,6 +118,31 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem closing index."));
     }
   }, [services, coreServices, props.onClose, onCloseIndexModalClose]);
+
+  const onFlushIndexModalClose = () => {
+    setFlushIndexModalVisible(false);
+  };
+
+  const onFlushIndexModalConfirm = useCallback(async () => {
+    try {
+      const indexPayload = selectedItems.map((item) => item.index).join(",");
+      const result = await services.commonService.apiCaller({
+        endpoint: "indices.flush",
+        data: {
+          index: indexPayload,
+        },
+      });
+      if (result && result.ok) {
+        onFlushIndexModalClose();
+        coreServices.notifications.toasts.addSuccess(`Flush [${indexPayload}] successfully`);
+        onClose();
+      } else {
+        coreServices.notifications.toasts.addDanger(result.error);
+      }
+    } catch (err) {
+      coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem Flushing index."));
+    }
+  }, [services, coreServices, onFlushIndexModalClose]);
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
@@ -209,6 +236,12 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       },
                     },
                     {
+                      name: "Flush",
+                      disabled: !selectedItems.length,
+                      "data-test-subj": "Flush Action",
+                      onClick: () => setFlushIndexModalVisible(true),
+                    },
+                    {
                       isSeparator: true,
                     },
                     {
@@ -243,6 +276,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
         visible={closeIndexModalVisible}
         onClose={onCloseIndexModalClose}
         onConfirm={onCloseIndexModalConfirm}
+      />
+
+      <FlushIndexModal
+        selectedItems={selectedItems.map((item) => item.index)}
+        visible={flushIndexModalVisible}
+        onClose={onFlushIndexModalClose}
+        onConfirm={onFlushIndexModalConfirm}
       />
     </>
   );
