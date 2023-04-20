@@ -125,6 +125,7 @@ export const getNotifications = async (props: { commonService: CommonService }) 
             total_number: 0,
           },
           error: "",
+          body: {},
         };
       } else {
         return res;
