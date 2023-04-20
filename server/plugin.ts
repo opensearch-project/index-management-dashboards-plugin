@@ -63,7 +63,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
           ism,
           /**
            * Pass through all the args to factory and bind the
-           * return function with true client
+           * return function with the specific client
            */
           ca: (...args: any[]) => factory(...args).bind(finalClient),
         });
