@@ -35,3 +35,7 @@ export interface IGetClientProps {
   pluginId: string;
   logger: Logger;
 }
+
+export type DashboardRequestEnhancedWithContext = OpenSearchDashboardsRequest & {
+  [contextKey: string]: IRequestHandlerContentWithDataSource;
+};
