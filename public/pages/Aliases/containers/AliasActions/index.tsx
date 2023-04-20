@@ -7,6 +7,7 @@ import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
+import FlushModal from "../../../../containers/FlushModal";
 import { IAlias } from "../../interface";
 import { ROUTES } from "../../../../utils/constants";
 
@@ -20,9 +21,14 @@ export interface AliasesActionsProps {
 export default function AliasesActions(props: AliasesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [flushAliasModalVisible, setFlushAliasModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
+  };
+
+  const onFlushAliasModalClose = () => {
+    setFlushAliasModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -67,6 +73,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   onClick: () => history.push(selectedItems.length ? `${ROUTES.ROLLOVER}/${selectedItems[0].alias}` : ROUTES.ROLLOVER),
                 },
                 {
+                  name: "Flush",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "Flush Action",
+                  onClick: () => setFlushAliasModalVisible(true),
+                },
+                {
                   name: "Delete",
                   disabled: !selectedItems.length,
                   "data-test-subj": "deleteAction",
@@ -85,6 +97,13 @@ export default function AliasesActions(props: AliasesActionsProps) {
           onDeleteIndexModalClose();
           onDelete();
         }}
+      />
+
+      <FlushModal
+        selectedItems={selectedItems.map((item) => item.alias)}
+        visible={flushAliasModalVisible}
+        onClose={onFlushAliasModalClose}
+        flushTarget="alias"
       />
     </>
   );

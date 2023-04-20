@@ -16,7 +16,7 @@ import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
-import FlushIndexModal from "../../components/FlushIndexModal";
+import FlushModal from "../../../../containers/FlushModal";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
@@ -122,27 +122,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const onFlushIndexModalClose = () => {
     setFlushIndexModalVisible(false);
   };
-
-  const onFlushIndexModalConfirm = useCallback(async () => {
-    try {
-      const indexPayload = selectedItems.map((item) => item.index).join(",");
-      const result = await services.commonService.apiCaller({
-        endpoint: "indices.flush",
-        data: {
-          index: indexPayload,
-        },
-      });
-      if (result && result.ok) {
-        onFlushIndexModalClose();
-        coreServices.notifications.toasts.addSuccess(`Flush [${indexPayload}] successfully`);
-        onClose();
-      } else {
-        coreServices.notifications.toasts.addDanger(result.error);
-      }
-    } catch (err) {
-      coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem Flushing index."));
-    }
-  }, [services, coreServices, onFlushIndexModalClose]);
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
@@ -278,11 +257,11 @@ export default function IndicesActions(props: IndicesActionsProps) {
         onConfirm={onCloseIndexModalConfirm}
       />
 
-      <FlushIndexModal
+      <FlushModal
         selectedItems={selectedItems.map((item) => item.index)}
         visible={flushIndexModalVisible}
         onClose={onFlushIndexModalClose}
-        onConfirm={onFlushIndexModalConfirm}
+        flushTarget="indices"
       />
     </>
   );
