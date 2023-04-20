@@ -2,7 +2,9 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-
+import { OpenSearchDashboardsClient } from "@opensearch-project/opensearch/api/opensearch_dashboards";
+// @ts-ignore
+import { factory } from "elasticsearch/src/lib/client_action";
 import { IndexManagementPluginSetup, IndexManagementPluginStart } from ".";
 import { Plugin, CoreSetup, CoreStart, Logger, PluginInitializerContext } from "../../../src/core/server";
 import ismPlugin from "./clusters/ism/ismPlugin";
@@ -32,10 +34,7 @@ import {
 import dataStreams from "./routes/dataStreams";
 import { NodeServices } from "./models/interfaces";
 import { getClientSupportMDS } from "./client";
-import { OpenSearchDashboardsClient } from "@opensearch-project/opensearch/api/opensearch_dashboards";
 import { extendClient } from "./clusters/extend_client";
-// @ts-ignore
-import { factory } from "elasticsearch/src/lib/client_action";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   private readonly logger: Logger;

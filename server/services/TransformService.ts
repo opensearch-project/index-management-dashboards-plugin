@@ -4,7 +4,7 @@
  */
 
 import {
-  IClusterClient,
+  ILegacyCustomClusterClient,
   IOpenSearchDashboardsResponse,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
@@ -22,9 +22,9 @@ import { DocumentTransform, Transform } from "../../models/interfaces";
 import _ from "lodash";
 
 export default class TransformService {
-  esDriver: IClusterClient;
+  esDriver: ILegacyCustomClusterClient;
 
-  constructor(esDriver: IClusterClient) {
+  constructor(esDriver: ILegacyCustomClusterClient) {
     this.esDriver = esDriver;
   }
 
