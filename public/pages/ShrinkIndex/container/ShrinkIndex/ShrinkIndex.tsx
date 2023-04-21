@@ -45,7 +45,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { DEFAULT_INDEX_SETTINGS, INDEX_BLOCKS_WRITE_SETTING, INDEX_BLOCKS_READONLY_SETTING } from "../../utils/constants";
 import { get } from "lodash";
 import NotificationConfig from "../../../../containers/NotificationConfig";
-import { ActionType } from "../../../Notifications/constant";
+import { ActionType, OperationType } from "../../../Notifications/constant";
 import { NotificationConfigRef } from "../../../../containers/NotificationConfig/NotificationConfig";
 import { ListenType } from "../../../../lib/JobScheduler";
 import { openIndices } from "../../../Indices/utils/helpers";
@@ -649,7 +649,11 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         {!!disableShrinkButton ? null : configurationChildren}
         <EuiSpacer />
         <ContentPanel title="Advanced settings">
-          <NotificationConfig ref={(ref) => (this.notificationRef = ref)} actionType={ActionType.RESIZE} />
+          <NotificationConfig
+            ref={(ref) => (this.notificationRef = ref)}
+            actionType={ActionType.RESIZE}
+            operationType={OperationType.SHRINK}
+          />
         </ContentPanel>
         <EuiSpacer />
         <EuiSpacer />

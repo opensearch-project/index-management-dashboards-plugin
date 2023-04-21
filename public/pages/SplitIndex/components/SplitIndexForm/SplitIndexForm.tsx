@@ -19,7 +19,7 @@ import {
 } from "../../../../utils/constants";
 import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
 import { ServerResponse } from "../../../../../server/models/types";
-import { ActionType } from "../../../Notifications/constant";
+import { ActionType, OperationType } from "../../../Notifications/constant";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -227,7 +227,11 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
         )}
         <EuiSpacer />
         <ContentPanel title="Advanced settings">
-          <NotificationConfig ref={(ref) => (this.notificationRef = ref)} actionType={ActionType.RESIZE} />
+          <NotificationConfig
+            ref={(ref) => (this.notificationRef = ref)}
+            actionType={ActionType.RESIZE}
+            operationType={OperationType.SHRINK}
+          />
         </ContentPanel>
         <EuiSpacer />
 
