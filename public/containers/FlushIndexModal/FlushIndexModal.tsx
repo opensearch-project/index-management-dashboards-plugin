@@ -27,14 +27,14 @@ const messageMap: Record<FlushTarget, string> = {
   alias: "Indices of the following alias will be flushed.",
 };
 
-interface FlushModalProps {
+export interface FlushIndexModalProps {
   selectedItems: string[];
   visible: boolean;
   flushTarget: FlushTarget;
   onClose: () => void;
 }
 
-export default function FlushModal(props: FlushModalProps) {
+export default function FlushIndexModal(props: FlushIndexModalProps) {
   const { onClose, flushTarget, visible, selectedItems } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -70,7 +70,7 @@ export default function FlushModal(props: FlushModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Flush {flushTarget}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle data-test-subj="Flush Modal Title">Flush {flushTarget}</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>

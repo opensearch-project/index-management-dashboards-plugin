@@ -3,6 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import FlushModal from "./FlushModal";
+import FlushIndexModal from "./FlushIndexModal";
 
-export default FlushModal;
+export default FlushIndexModal;

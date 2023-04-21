@@ -102,4 +102,33 @@ describe("<DataStreamsActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_data_stream] successfully");
     });
   }, 30000);
+
+  it("flush data stream by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
+    const { container, getByTestId } = renderWithRouter({
+      selectedItems: ["test_data_stream"],
+      onDelete: () => null,
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Flush Action"));
+    expect(getByTestId("Flush Modal Title")).toHaveTextContent("Flush data stream");
+    userEvent.click(getByTestId("Flush Confirm button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "test_data_stream",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test_data_stream] successfully");
+    });
+  });
 });

@@ -6,7 +6,7 @@ import React, { useMemo, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
-import FlushModal from "../../../../containers/FlushModal";
+import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
 import { ROUTES } from "../../../../utils/constants";
 
@@ -91,7 +91,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         }}
       />
 
-      <FlushModal
+      <FlushIndexModal
         selectedItems={selectedItems}
         visible={flushDataStreamModalVisible}
         onClose={onFlushDataStreamModalClose}

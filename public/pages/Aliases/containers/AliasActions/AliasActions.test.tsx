@@ -116,4 +116,42 @@ describe("<AliasesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(1);
     });
   });
+
+  it("flush alias by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
+    const { container, getByTestId } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "test_index",
+          alias: "1",
+          filter: "1",
+          "routing.index": "1",
+          "routing.search": "1",
+          is_write_index: "1",
+          indexArray: ["test_index"],
+        },
+      ],
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Flush Action"));
+    expect(getByTestId("Flush Modal Title")).toHaveTextContent("Flush alias");
+    userEvent.click(getByTestId("Flush Confirm button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "1",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [1] successfully");
+    });
+  });
 });

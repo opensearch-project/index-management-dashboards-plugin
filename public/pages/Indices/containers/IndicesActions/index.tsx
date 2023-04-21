@@ -16,7 +16,7 @@ import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
-import FlushModal from "../../../../containers/FlushModal";
+import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
@@ -257,7 +257,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         onConfirm={onCloseIndexModalConfirm}
       />
 
-      <FlushModal
+      <FlushIndexModal
         selectedItems={selectedItems.map((item) => item.index)}
         visible={flushIndexModalVisible}
         onClose={onFlushIndexModalClose}

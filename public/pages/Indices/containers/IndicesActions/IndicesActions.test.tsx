@@ -50,6 +50,7 @@ describe("<IndicesActions /> spec", () => {
       expect(getByTestId("Apply policyButton")).toBeDisabled();
       expect(getByTestId("Split Action")).toBeDisabled();
       expect(getByTestId("Reindex Action")).toBeEnabled();
+      expect(getByTestId("Flush Action")).toBeDisabled();
     });
   });
 
@@ -495,5 +496,49 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Split Action")).toBeDisabled();
+  });
+
+  it("flush index by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
+    const { container, getByTestId } = renderWithRouter({
+      selectedItems: [
+        {
+          "docs.count": "5",
+          "docs.deleted": "2",
+          health: "green",
+          index: "test_index",
+          pri: "1",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          "store.size": "100KB",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+          data_stream: "",
+        },
+      ],
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Flush Action"));
+    expect(getByTestId("Flush Modal Title")).toHaveTextContent("Flush indices");
+    userEvent.click(getByTestId("Flush Confirm button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "test_index",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test_index] successfully");
+    });
   });
 });

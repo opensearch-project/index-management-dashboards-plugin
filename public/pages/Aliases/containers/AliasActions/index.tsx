@@ -7,7 +7,7 @@ import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
-import FlushModal from "../../../../containers/FlushModal";
+import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { IAlias } from "../../interface";
 import { ROUTES } from "../../../../utils/constants";
 
@@ -99,7 +99,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
         }}
       />
 
-      <FlushModal
+      <FlushIndexModal
         selectedItems={selectedItems.map((item) => item.alias)}
         visible={flushAliasModalVisible}
         onClose={onFlushAliasModalClose}
