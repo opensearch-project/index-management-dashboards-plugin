@@ -25,3 +25,13 @@ export const getKeyByValue = <T extends {}, Key extends keyof T>(obj: T, value: 
   }
   return Object.keys(obj).find((key) => obj[key as Key] === value);
 };
+
+export enum FieldEnum {
+  channels = "channels",
+  failure = "failure",
+  success = "success",
+}
+
+export const FieldMapLabel = {
+  [FieldEnum.channels]: "Select channels to notify",
+};
