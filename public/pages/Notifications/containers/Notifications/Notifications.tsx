@@ -52,7 +52,15 @@ const Notifications = (props: NotificationsProps) => {
       coreServices.notifications.toasts.addSuccess("Notifications settings for index operations have been successfully updated.");
       reloadNotifications();
     } else {
-      coreServices.notifications.toasts.addDanger(result.error);
+      const isNoPermission = result.body.some((item) => item?.error?.type === "security_exception");
+      if (isNoPermission) {
+        coreServices.notifications.toasts.addDanger({
+          title: "You do not have permissions to update notification settings",
+          text: "Contact your administrator to request permissions.",
+        });
+      } else {
+        coreServices.notifications.toasts.addDanger(result.error);
+      }
     }
     if (destroyRef.current) {
       return;
@@ -134,7 +142,7 @@ const Notifications = (props: NotificationsProps) => {
                       const item = values.dataSource?.[record.index];
                       if (item?.failure || item?.success) {
                         if (!value || !value.length) {
-                          return Promise.reject("Enabled LRONConfig must contain at least one channel.");
+                          return Promise.reject("One or more channels is required.");
                         }
                       }
 
@@ -148,6 +156,7 @@ const Notifications = (props: NotificationsProps) => {
                   label={<div className="ISM-notifications-first-letter-uppercase">{record.title}</div>}
                   helpText="Description"
                   direction="hoz"
+                  key={record.action_name}
                 >
                   <>
                     <div>Notify when operation</div>

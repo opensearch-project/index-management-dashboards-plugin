@@ -78,7 +78,7 @@ export const submitNotifications = async (props: { commonService: CommonService;
   return Promise.all(
     transformPlainListToConfigList(props.plainConfigsPayload).map((item) => {
       const { action_name } = item;
-      return props.commonService.consoleProxyCaller<unknown>({
+      return props.commonService.apiCaller<unknown>({
         endpoint: "transport.request",
         data: {
           method: "PUT",
@@ -92,6 +92,7 @@ export const submitNotifications = async (props: { commonService: CommonService;
   ).then((allResults) => {
     return {
       ok: allResults.every((item) => item.ok),
+      body: allResults.filter((item) => item.body).map((item) => item.body),
       error: allResults
         .filter((item) => !item.ok)
         .map((item) => item.error)
