@@ -35,7 +35,7 @@ export const associateWithTask = async (props: {
   taskId: string;
   lronConfig: ILronConfig;
 }) => {
-  const result = await props.services.commonService.consoleProxyCaller({
+  const result = await props.services.commonService.apiCaller({
     endpoint: "transport.request",
     data: {
       method: "PUT",
@@ -53,4 +53,8 @@ export const associateWithTask = async (props: {
   }
 
   return result.ok;
+};
+
+export const ifSetDefaultNotification = (lronConfig?: ILronConfig) => {
+  return lronConfig?.lron_condition?.failure || lronConfig?.lron_condition?.success;
 };
