@@ -5,11 +5,27 @@ export enum ActionType {
   OPEN = "OPEN",
 }
 
+export enum OperationType {
+  REINDEX = "REINDEX",
+  FORCEMERGE = "FORCEMERGE",
+  OPEN = "OPEN",
+  SHRINK = "SHRINK",
+  CLONE = "CLONE",
+  SPLIT = "SPLIT",
+}
+
 export const ActionTypeMapTitle = {
   [ActionType.REINDEX]: "reindex",
   [ActionType.RESIZE]: "shrink, split, clone",
   [ActionType.FORCEMERGE]: "force merge",
   [ActionType.OPEN]: "open",
+};
+
+export const OperationTypeMapTitle = {
+  ...ActionTypeMapTitle,
+  [OperationType.SHRINK]: "shrink",
+  [OperationType.SPLIT]: "split",
+  [OperationType.CLONE]: "clone",
 };
 
 export const ActionTypeMapName = {
@@ -35,3 +51,6 @@ export enum FieldEnum {
 export const FieldMapLabel = {
   [FieldEnum.channels]: "Select channels to notify",
 };
+
+export const LABEL_FOR_CONDITION = "Notify when operation";
+export const VALIDATE_ERROR_FOR_CHANNELS = "One or more channels is required.";

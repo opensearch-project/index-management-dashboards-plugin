@@ -25,7 +25,7 @@ import ChannelSelect from "../../../../containers/ChannelSelect";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import { diffJson } from "../../../../utils/helpers";
 import { BREADCRUMBS } from "../../../../utils/constants";
-import { FieldEnum, FieldMapLabel } from "../../constant";
+import { FieldEnum, FieldMapLabel, LABEL_FOR_CONDITION, VALIDATE_ERROR_FOR_CHANNELS } from "../../constant";
 import "./index.scss";
 
 export interface NotificationsProps {}
@@ -176,7 +176,7 @@ const Notifications = (props: NotificationsProps) => {
                       const item = values.dataSource?.[record.index];
                       if (item?.[FieldEnum.failure] || item?.[FieldEnum.success]) {
                         if (!value || !value.length) {
-                          return Promise.reject("One or more channels is required.");
+                          return Promise.reject(VALIDATE_ERROR_FOR_CHANNELS);
                         }
                       }
 
@@ -193,7 +193,7 @@ const Notifications = (props: NotificationsProps) => {
                   key={record.action_name}
                 >
                   <>
-                    <div>Notify when operation</div>
+                    <div>{LABEL_FOR_CONDITION}</div>
                     <EuiSpacer size="s" />
                     <EuiFlexGroup alignItems="flexStart">
                       <EuiFlexItem>
