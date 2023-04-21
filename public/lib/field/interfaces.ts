@@ -180,7 +180,7 @@ export type FieldInstance<T extends object = any> = {
    * Get the Error for a set of input controls
    * @param names field name
    */
-  getErrors(): any;
+  getErrors(): Record<string, string[] | null>;
 
   /**
    * Sets the Error for a single input control

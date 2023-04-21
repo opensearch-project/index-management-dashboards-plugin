@@ -145,7 +145,17 @@ export default function useField<T extends object>(options?: FieldOption<T>): Fi
     getValue: (name) => get(values.current, name),
     getValues: () => values.current,
     getError: (name) => errors.current[transformNameToString(name)],
-    getErrors: () => errors.current,
+    getErrors: () =>
+      Object.entries(errors.current || {}).reduce((total, [key, value]) => {
+        if (value) {
+          return {
+            ...total,
+            [key]: value,
+          };
+        }
+
+        return total;
+      }, {} as Record<string, string[]>),
     validatePromise: async () => {
       const result = await Promise.all(
         Object.values(fieldsMapRef.current).map(({ name }) => {
