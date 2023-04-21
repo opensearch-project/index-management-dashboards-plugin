@@ -7,12 +7,19 @@ import React from "react";
 import { EuiBadge, EuiButton, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import ChannelSelect, { useChannels } from "../ChannelSelect";
 import { AllBuiltInComponents } from "../../components/FormGenerator";
-import { ActionType } from "../../pages/Notifications/constant";
+import {
+  ActionType,
+  FieldEnum,
+  FieldMapLabel,
+  LABEL_FOR_CONDITION,
+  OperationType,
+  OperationTypeMapTitle,
+  VALIDATE_ERROR_FOR_CHANNELS,
+} from "../../pages/Notifications/constant";
 import { useState } from "react";
-import { ActionTypeMapTitle } from "../../pages/Notifications/constant";
 import { ROUTES } from "../../utils/constants";
 import { useEffect } from "react";
-import { GetLronConfig, associateWithTask } from "./hooks";
+import { GetLronConfig, associateWithTask, ifSetDefaultNotification } from "./hooks";
 import { useContext } from "react";
 import { ServicesContext } from "../../services";
 import { BrowserServices } from "../../models/interfaces";
@@ -28,20 +35,27 @@ import { CoreStart } from "opensearch-dashboards/public";
 
 interface NotificationConfigProps {
   actionType: ActionType;
+  operationType?: OperationType;
 }
 
 export interface NotificationConfigRef extends FieldInstance {
   associateWithTask: (props: { taskId: string }) => Promise<boolean>;
 }
 
-const NotificationConfig = ({ actionType }: NotificationConfigProps, ref: React.Ref<NotificationConfigRef>) => {
+const NotificationConfig = ({ actionType, operationType }: NotificationConfigProps, ref: React.Ref<NotificationConfigRef>) => {
   const { channels } = useChannels();
   const field = useField<
     ILronConfig & {
       customize: boolean;
     }
-  >();
-  const [LronConfig, setLronConfig] = useState<ILronConfig>();
+  >({
+    onChange(name, value) {
+      if ((name[1] === FieldEnum.success || name[1] === FieldEnum.failure) && !value) {
+        field.validatePromise();
+      }
+    },
+  });
+  const [LronConfig, setLronConfig] = useState<ILronConfig | undefined>();
   const context = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   useEffect(() => {
@@ -50,7 +64,11 @@ const NotificationConfig = ({ actionType }: NotificationConfigProps, ref: React.
       services: context,
     }).then((res) => {
       if (res && res.ok) {
-        setLronConfig(res.response.lron_configs[0]?.lron_config);
+        const lronConfig = res.response.lron_configs[0]?.lron_config;
+        setLronConfig(lronConfig);
+        if (!ifSetDefaultNotification(lronConfig)) {
+          field.setValue("customize", true);
+        }
       }
     });
   }, []);
@@ -76,73 +94,89 @@ const NotificationConfig = ({ actionType }: NotificationConfigProps, ref: React.
       });
     },
   }));
+  const hasDefaultNotification = ifSetDefaultNotification(LronConfig);
   return (
     <div>
       <EuiTitle size="s">
-        <h5>Notify on {ActionTypeMapTitle[actionType]} status</h5>
+        <h5>Notify on {OperationTypeMapTitle[operationType || actionType]} status</h5>
       </EuiTitle>
-      <EuiSpacer size="s" />
-      <EuiCallOut color="primary" iconType="iInCircle">
-        Notification settings for shrink operation is being managed by{" "}
-        <EuiLink href={`#${ROUTES.NOTIFICATIONS}`} target="_blank" external={false}>
-          Task management
-        </EuiLink>
-        .
-      </EuiCallOut>
-      <EuiSpacer />
-      {LronConfig ? (
+      {hasDefaultNotification ? (
         <>
-          <CustomFormRow label={`Send a notification when ${ActionTypeMapTitle[actionType]}`}>
-            <></>
-          </CustomFormRow>
           <EuiSpacer size="s" />
-          <ul style={{ listStyle: "inside disc" }}>
-            {LronConfig?.lron_condition.failure ? <li>Has failed</li> : null}
-            {LronConfig?.lron_condition.success ? <li>Has completed</li> : null}
-          </ul>
+          <EuiCallOut
+            color="primary"
+            iconType="iInCircle"
+            title={
+              <>
+                Default notification settings are set for shrink operations. Configure default settings at{" "}
+                <EuiLink style={{ textDecoration: "underline" }} href={`#${ROUTES.NOTIFICATIONS}`} target="_blank" external={false}>
+                  Notifications
+                </EuiLink>
+                .
+              </>
+            }
+          />
           <EuiSpacer />
-          <CustomFormRow label="Channels will be notified">
-            <></>
-          </CustomFormRow>
-          <EuiSpacer size="s" />
-          <div>
-            {selectedChannels?.map((item) => (
-              <EuiBadge color="hollow" key={item.name}>
-                {item.name} ({item.config_type})
-              </EuiBadge>
-            ))}
-          </div>
-          <EuiSpacer />
+          <EuiFlexGroup>
+            <EuiFlexItem>
+              <CustomFormRow label="Notify when operation">
+                <ul style={{ listStyle: "inside disc", textIndent: "1.5em" }}>
+                  {LronConfig?.lron_condition.failure ? <li>Has failed</li> : null}
+                  {LronConfig?.lron_condition.success ? <li>Has completed</li> : null}
+                </ul>
+              </CustomFormRow>
+            </EuiFlexItem>
+            <EuiFlexItem>
+              <CustomFormRow label="Channels to notify">
+                <div>
+                  {selectedChannels?.map((item) => (
+                    <EuiBadge color="hollow" key={item.name}>
+                      {item.name} ({item.config_type})
+                    </EuiBadge>
+                  ))}
+                </div>
+              </CustomFormRow>
+            </EuiFlexItem>
+          </EuiFlexGroup>
         </>
       ) : null}
-      <AllBuiltInComponents.CheckBox
-        {...field.registerField({
-          name: "customize",
-        })}
-        label="Send additional notifications"
-      />
-      <EuiSpacer />
+      {hasDefaultNotification ? (
+        <>
+          <EuiSpacer />
+          <AllBuiltInComponents.CheckBox
+            {...field.registerField({
+              name: "customize",
+            })}
+            label="Send additional notifications"
+          />
+        </>
+      ) : null}
       {values.customize ? (
         <>
-          <CustomFormRow label="Send notification when the operation">
+          <EuiSpacer />
+          <CustomFormRow label={LABEL_FOR_CONDITION}>
             <>
               <AllBuiltInComponents.CheckBox
                 {...field.registerField({
-                  name: ["lron_condition", "failure"],
+                  name: ["lron_condition", FieldEnum.failure],
                 })}
                 label="Has failed / timed out"
               />
               <EuiSpacer size="s" />
               <AllBuiltInComponents.CheckBox
                 {...field.registerField({
-                  name: ["lron_condition", "success"],
+                  name: ["lron_condition", FieldEnum.success],
                 })}
                 label="Has completed"
               />
             </>
           </CustomFormRow>
           <EuiSpacer />
-          <CustomFormRow label="Send notification channels" isInvalid={!!field.getError("channels")} error={field.getError("channels")}>
+          <CustomFormRow
+            label={FieldMapLabel[FieldEnum.channels]}
+            isInvalid={!!field.getError(FieldEnum.channels)}
+            error={field.getError(FieldEnum.channels)}
+          >
             <EuiFlexGroup>
               <EuiFlexItem>
                 <ChannelSelect
@@ -155,7 +189,7 @@ const NotificationConfig = ({ actionType }: NotificationConfigProps, ref: React.
                           const item = values.lron_condition;
                           if (values.customize && (item?.failure || item?.success)) {
                             if (!value || !value.length) {
-                              return Promise.reject("Enabled LRONConfig must contain at least one channel.");
+                              return Promise.reject(VALIDATE_ERROR_FOR_CHANNELS);
                             }
                           }
 
@@ -171,7 +205,6 @@ const NotificationConfig = ({ actionType }: NotificationConfigProps, ref: React.
               </EuiFlexItem>
             </EuiFlexGroup>
           </CustomFormRow>
-          <EuiSpacer />
         </>
       ) : null}
     </div>
