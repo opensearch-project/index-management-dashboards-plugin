@@ -65,7 +65,7 @@ enum Navigation {
   DataStreams = "Data streams",
   CreateDataStream = "Create data stream",
   TaskManagement = "Task Management",
-  Notifications = "Notifications",
+  Notifications = "Notification settings",
   ComposableTemplates = "Component templates",
 }
 
@@ -183,6 +183,12 @@ export default class Main extends Component<MainProps, object> {
             href: `#${Pathname.Transforms}`,
             isSelected: pathname === Pathname.Transforms,
           },
+          {
+            name: Navigation.Notifications,
+            id: 10,
+            href: `#${ROUTES.NOTIFICATIONS}`,
+            isSelected: pathname === ROUTES.NOTIFICATIONS,
+          },
         ],
       },
       {
@@ -207,19 +213,6 @@ export default class Main extends Component<MainProps, object> {
             id: 3,
             href: `#${Pathname.Repositories}`,
             isSelected: pathname === Pathname.Repositories,
-          },
-        ],
-      },
-      {
-        name: Navigation.TaskManagement,
-        id: 2,
-        href: `#${ROUTES.NOTIFICATIONS}`,
-        items: [
-          {
-            name: Navigation.Notifications,
-            id: 1,
-            href: `#${ROUTES.NOTIFICATIONS}`,
-            isSelected: pathname === ROUTES.NOTIFICATIONS,
           },
         ],
       },
