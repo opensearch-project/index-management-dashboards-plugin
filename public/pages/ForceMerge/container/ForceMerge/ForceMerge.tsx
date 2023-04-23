@@ -14,7 +14,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import ForceMergeAdvancedOptions from "../../components/ForceMergeAdvancedOptions";
 import IndexSelect from "../../components/IndexSelect";
 import { checkNotReadOnlyIndexes, getIndexOptions } from "../../utils/helper";
-import { BrowserServices, ForceMergeJobMetaData, ReindexJobMetaData } from "../../../../models/interfaces";
+import { BrowserServices, ForceMergeJobMetaData } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
 import useField from "../../../../lib/field";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";

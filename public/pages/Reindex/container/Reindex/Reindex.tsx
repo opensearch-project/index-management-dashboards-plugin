@@ -673,7 +673,6 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                 reindexUniqueDocuments={reindexUniqueDocuments}
                 onReindexUniqueDocumentsChange={this.onReindexUniqueDocuments}
               />
-              <EuiSpacer />
               <NotificationConfig ref={(ref) => (this.notificationRef = ref)} actionType={ActionType.REINDEX} />
             </>
           )}

@@ -189,52 +189,55 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
             ))}
           </ul>
         </IndexDetail>
-        <EuiSpacer />
-
         {readyForSplit && (
-          <ContentPanel title="Configure target index" titleSize="s">
-            <FormGenerator
-              value={{ "index.number_of_replicas": "1", ...this.state.settings }}
-              onChange={(totalValue) =>
-                this.setState({
-                  settings: totalValue,
-                })
-              }
-              formFields={formFields}
-              ref={(ref) => (this.formRef = ref)}
-              hasAdvancedSettings={true}
-              advancedSettingsProps={{
-                accordionProps: {
-                  initialIsOpen: false,
-                  id: "accordionForCreateIndexSettings",
-                  buttonContent: <h4>Advanced settings</h4>,
-                },
-                blockedNameList: blockNameList,
-                rowProps: {
-                  label: "Specify advanced index settings",
-                  helpText: (
-                    <>
-                      Specify a comma-delimited list of settings.&nbsp;
-                      <EuiLink href={INDEX_SETTINGS_URL} target="_blank">
-                        View index settings
-                      </EuiLink>
-                    </>
-                  ),
-                },
-              }}
-            />
-          </ContentPanel>
+          <>
+            <EuiSpacer />
+            <ContentPanel title="Configure target index" titleSize="s">
+              <FormGenerator
+                value={{ "index.number_of_replicas": "1", ...this.state.settings }}
+                onChange={(totalValue) =>
+                  this.setState({
+                    settings: totalValue,
+                  })
+                }
+                formFields={formFields}
+                ref={(ref) => (this.formRef = ref)}
+                hasAdvancedSettings={true}
+                advancedSettingsProps={{
+                  accordionProps: {
+                    initialIsOpen: false,
+                    id: "accordionForCreateIndexSettings",
+                    buttonContent: <h4>Advanced settings</h4>,
+                  },
+                  blockedNameList: blockNameList,
+                  rowProps: {
+                    label: "Specify advanced index settings",
+                    helpText: (
+                      <>
+                        Specify a comma-delimited list of settings.&nbsp;
+                        <EuiLink href={INDEX_SETTINGS_URL} target="_blank">
+                          View index settings
+                        </EuiLink>
+                      </>
+                    ),
+                  },
+                }}
+              />
+            </ContentPanel>
+          </>
         )}
-        <EuiSpacer />
-        <ContentPanel title="Advanced settings" titleSize="s">
-          <NotificationConfig
-            ref={(ref) => (this.notificationRef = ref)}
-            actionType={ActionType.RESIZE}
-            operationType={OperationType.SHRINK}
-          />
-        </ContentPanel>
-        <EuiSpacer />
+        <NotificationConfig
+          withPanel
+          panelProps={{
+            title: "Advanced settings",
+            titleSize: "s",
+          }}
+          ref={(ref) => (this.notificationRef = ref)}
+          actionType={ActionType.RESIZE}
+          operationType={OperationType.SHRINK}
+        />
 
+        <EuiSpacer />
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
             <EuiButtonEmpty onClick={this.props.onCancel} data-test-subj="splitCancelButton">

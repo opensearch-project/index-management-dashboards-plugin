@@ -647,14 +647,16 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         <EuiSpacer />
         <IndexDetail indices={indices} children={indexDetailChildren} />
         {!!disableShrinkButton ? null : configurationChildren}
-        <EuiSpacer />
-        <ContentPanel title="Advanced settings" titleSize="s">
-          <NotificationConfig
-            ref={(ref) => (this.notificationRef = ref)}
-            actionType={ActionType.RESIZE}
-            operationType={OperationType.SHRINK}
-          />
-        </ContentPanel>
+        <NotificationConfig
+          withPanel
+          panelProps={{
+            title: "Advanced settings",
+            titleSize: "s",
+          }}
+          ref={(ref) => (this.notificationRef = ref)}
+          actionType={ActionType.RESIZE}
+          operationType={OperationType.SHRINK}
+        />
         <EuiSpacer />
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">

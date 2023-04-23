@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import ContentPanel from "./ContentPanel";
+import ContentPanel, { ContentPanelProps } from "./ContentPanel";
 import ContentPanelActions from "./ContentPanelActions";
 
-export { ContentPanel, ContentPanelActions };
+export { ContentPanel, ContentPanelActions, ContentPanelProps };

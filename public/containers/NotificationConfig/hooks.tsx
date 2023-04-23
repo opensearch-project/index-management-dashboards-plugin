@@ -79,5 +79,5 @@ export const associateWithTask = async (props: {
 };
 
 export const ifSetDefaultNotification = (lronConfig?: ILronConfig) => {
-  return lronConfig?.lron_condition?.failure || lronConfig?.lron_condition?.success;
+  return !!(lronConfig?.lron_condition?.failure || lronConfig?.lron_condition?.success);
 };
