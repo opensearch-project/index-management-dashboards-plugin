@@ -62,7 +62,7 @@ const Notifications = (props: NotificationsProps) => {
         title: "You do not have permissions to update notification settings",
         text: "Contact your administrator to request permissions.",
       });
-      return;
+      return new Promise((resolve) => setTimeout(resolve, 0));
     }
     const { errors, values: notifications } = (await field.validatePromise()) || {};
     setSubmitClicked(!!errors);
@@ -235,6 +235,7 @@ const Notifications = (props: NotificationsProps) => {
                         {...field.registerField({
                           name: ["dataSource", `${record.index}`, FieldEnum.failure],
                         })}
+                        data-test-subj={["dataSource", `${record.index}`, FieldEnum.failure].join(".")}
                         label="Has failed"
                       />
                     </EuiFlexItem>
@@ -243,6 +244,7 @@ const Notifications = (props: NotificationsProps) => {
                         {...field.registerField({
                           name: ["dataSource", `${record.index}`, FieldEnum.success],
                         })}
+                        data-test-subj={["dataSource", `${record.index}`, FieldEnum.success].join(".")}
                         label="Has completed"
                       />
                     </EuiFlexItem>
@@ -255,6 +257,7 @@ const Notifications = (props: NotificationsProps) => {
                         label={FieldMapLabel[FieldEnum.channels]}
                         isInvalid={!!field.getError(["dataSource", `${record.index}`, FieldEnum.channels])}
                         error={field.getError(["dataSource", `${record.index}`, FieldEnum.channels])}
+                        data-test-subj={["dataSource", `${record.index}`, FieldEnum.channels].join(".")}
                       >
                         <ChannelSelect {...others} value={value} onChange={onChange} />
                       </CustomFormRow>

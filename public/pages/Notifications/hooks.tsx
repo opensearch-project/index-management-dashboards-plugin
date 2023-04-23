@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import { CommonService } from "../../services";
-import { ActionTypeMapName, ActionTypeMapTitle } from "./constant";
+import { ActionType, ActionTypeMapName, ActionTypeMapTitle } from "./constant";
 import { ILronConfig, ILronPlainConfig } from "./interface";
 
 export const transformConfigListToPlainList = (config: ILronConfig[]): ILronPlainConfig[] => {
@@ -23,7 +23,7 @@ export const transformConfigListToPlainList = (config: ILronConfig[]): ILronPlai
       ...lron_condition,
       ...rest,
       index,
-      title: actionType ? ActionTypeMapTitle[actionType] : "",
+      title: actionType ? ActionTypeMapTitle[actionType as ActionType] : "",
     };
   });
 };
@@ -36,7 +36,7 @@ export const transformPlainListToConfigList = (config: ILronPlainConfig[]): ILro
         failure: false,
         success: false,
         action_name: action_name,
-        title: ActionTypeMapTitle[actionType],
+        title: ActionTypeMapTitle[actionType as ActionType],
         channels: [],
         index: currentIndex,
       } as ILronPlainConfig);

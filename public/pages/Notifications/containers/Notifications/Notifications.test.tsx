@@ -9,23 +9,18 @@ import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Notifications from "./Notifications";
 import { ServicesContext } from "../../../../services";
-import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
+import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-function renderNotificationsWithRouter(initialEntries = [ROUTES.DATA_STREAMS] as string[]) {
+function renderNotificationsWithRouter(initialEntries = [ROUTES.NOTIFICATIONS] as string[]) {
   return {
     ...render(
       <Router initialEntries={initialEntries}>
         <CoreServicesContext.Provider value={coreServicesMock}>
           <ServicesContext.Provider value={browserServicesMock}>
             <Switch>
-              <Route
-                path={`${ROUTES.CREATE_DATA_STREAM}/:template`}
-                render={(props: RouteComponentProps) => <Notifications {...props} />}
-              />
-              <Route path={ROUTES.CREATE_DATA_STREAM} render={(props: RouteComponentProps) => <Notifications {...props} />} />
-              <Route path={ROUTES.DATA_STREAMS} render={(props: RouteComponentProps) => <h1>location is: {ROUTES.DATA_STREAMS}</h1>} />
+              <Route path={ROUTES.NOTIFICATIONS} render={(props: RouteComponentProps) => <Notifications {...props} />} />
             </Switch>
           </ServicesContext.Provider>
         </CoreServicesContext.Provider>
@@ -34,17 +29,179 @@ function renderNotificationsWithRouter(initialEntries = [ROUTES.DATA_STREAMS] as
   };
 }
 
-describe("<CreateDataStream /> spec", () => {
+describe("<Notifications /> spec", () => {
   beforeEach(() => {
-    apiCallerMock(browserServicesMock);
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "transport.request": {
+            if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
+              return {
+                ok: true,
+                response: {
+                  lron_configs: [],
+                  total_number: 0,
+                },
+              };
+            } else {
+              return {
+                ok: true,
+                response: {},
+              };
+            }
+          }
+        }
+        return {
+          ok: true,
+          response: {},
+        };
+      }
+    );
+    browserServicesMock.notificationService.getChannels = jest.fn(
+      async (): Promise<any> => {
+        return {
+          ok: true,
+          response: {
+            start_index: 0,
+            total_hits: 1,
+            total_hit_relation: "eq",
+            channel_list: [
+              {
+                config_id: "1",
+                name: "1",
+                description: "2",
+                config_type: "chime",
+                is_enabled: true,
+              },
+            ],
+          },
+        };
+      }
+    );
   });
-  it("it goes to data streams page when click cancel", async () => {
-    const { getByTestId, getByText, container, findByText } = renderNotificationsWithRouter([ROUTES.CREATE_DATA_STREAM]);
-    await findByText("Define data stream");
+
+  it("renders", async () => {
+    const { container, findByText } = renderNotificationsWithRouter([ROUTES.NOTIFICATIONS]);
+    await findByText("Notification settings");
     expect(container).toMatchSnapshot();
-    userEvent.click(getByTestId("CreateDataStreamCancelButton"));
+    await findByText("reindex");
+  });
+
+  it("Update notification settings", async () => {
+    const { findByText, getByTestId, getByText, queryByTestId } = renderNotificationsWithRouter([ROUTES.NOTIFICATIONS]);
+    await findByText("reindex");
+    await userEvent.click(getByTestId("dataSource.0.failure"));
+    await findByText("Save");
+    await userEvent.click(getByText("Save"));
+    await findByText("Address the following error(s) in the form");
+    await userEvent.type(
+      getByTestId("dataSource.0.channels")?.querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
+      "1{enter}"
+    );
+    await userEvent.click(getByTestId("dataSource.0.failure"));
+    await waitFor(
+      () => {
+        expect(queryByTestId("dataSource.0.channels")).toBeNull();
+      },
+      {
+        timeout: 3000,
+      }
+    );
+    await userEvent.click(getByTestId("dataSource.0.failure"));
     await waitFor(() => {
-      expect(getByText(`location is: ${ROUTES.DATA_STREAMS}`)).toBeInTheDocument();
+      expect(queryByTestId("dataSource.0.channels")).not.toBeNull();
+    });
+
+    await userEvent.click(getByText("Save"));
+    await waitFor(() => {
+      expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledWith(
+        "Notifications settings for index operations have been successfully updated."
+      );
+    });
+  });
+
+  it("View without permission", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "transport.request": {
+            if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
+              return {
+                ok: false,
+                body: {
+                  status: 403,
+                },
+              };
+            } else {
+              return {
+                ok: true,
+                response: {},
+              };
+            }
+          }
+        }
+        return {
+          ok: true,
+          response: {},
+        };
+      }
+    );
+    const { findByText, container } = renderNotificationsWithRouter([ROUTES.NOTIFICATIONS]);
+    await findByText("Error loading Notification settings");
+    await waitFor(() => {
+      expect(container).toMatchSnapshot();
+      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith({
+        title: "You do not have permissions to view notification settings",
+        text: "Contact your administrator to request permissions.",
+      });
+    });
+  });
+
+  it("Update without permission", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "transport.request": {
+            if (payload.data?.path?.includes("?dry_run=true")) {
+              return {
+                ok: false,
+              };
+            } else if (payload.data?.path?.startsWith("/_plugins/_im/lron")) {
+              return {
+                ok: true,
+                response: {
+                  lron_configs: [],
+                  total_number: 0,
+                },
+              };
+            } else {
+              return {
+                ok: true,
+                response: {},
+              };
+            }
+          }
+        }
+        return {
+          ok: true,
+          response: {},
+        };
+      }
+    );
+    const { findByText, getByTestId, getByText, queryByText } = renderNotificationsWithRouter([ROUTES.NOTIFICATIONS]);
+    await findByText("reindex");
+    await userEvent.click(getByTestId("dataSource.0.failure"));
+    await findByText("Save");
+    await userEvent.click(getByText("Save"));
+    await waitFor(() =>
+      expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledWith({
+        title: "You do not have permissions to update notification settings",
+        text: "Contact your administrator to request permissions.",
+      })
+    );
+    await userEvent.click(getByText("Cancel"));
+    await waitFor(() => {
+      expect(queryByText("Cancel")).toBeNull();
     });
   });
 });

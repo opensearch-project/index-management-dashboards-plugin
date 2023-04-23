@@ -1,9 +1,8 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef, useCallback } from "react";
 import { ServicesContext } from "../../services";
 import { BrowserServices } from "../../models/interfaces";
 import { FeatureChannelList, GetChannelsResponse } from "../../../server/models/interfaces";
 import { ServerResponse } from "../../../server/models/types";
-import { useCallback } from "react";
 
 let listenCount = 0;
 let promise: Promise<ServerResponse<GetChannelsResponse>> | undefined = undefined;
@@ -27,6 +26,7 @@ export const useChannels = () => {
   const services = useContext(ServicesContext) as BrowserServices;
   const [channels, setChannels] = useState<FeatureChannelList[]>([]);
   const [loading, setLoading] = useState(true);
+  const destroyRef = useRef<boolean>(false);
   const refresh = useCallback((force?: boolean) => {
     setLoading(true);
     getChannels({
@@ -34,11 +34,17 @@ export const useChannels = () => {
       force,
     })
       .then((res) => {
+        if (destroyRef.current) {
+          return;
+        }
         if (res && res.ok) {
           setChannels(res.response.channel_list);
         }
       })
       .finally(() => {
+        if (destroyRef.current) {
+          return;
+        }
         setLoading(false);
       });
   }, []);
@@ -47,6 +53,9 @@ export const useChannels = () => {
   }, [refresh]);
   useEffect(() => {
     refresh();
+    return () => {
+      destroyRef.current = true;
+    };
   }, []);
 
   useEffect(() => {
