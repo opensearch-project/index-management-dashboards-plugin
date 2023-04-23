@@ -77,6 +77,7 @@ const NotificationConfig = (
           field.setValue("customize", true);
         }
       } else {
+        field.setValue("customize", true);
         if (res.body?.status === 403) {
           setPermissionForViewLRON(false);
           return;

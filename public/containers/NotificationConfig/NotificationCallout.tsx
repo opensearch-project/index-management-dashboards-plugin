@@ -39,7 +39,10 @@ export default function NotificationCallout(props: {
                 )}
               </>
             ) : permissionForCreateLRON ? (
-              <>You can send additional notifications for this operation.</>
+              <>
+                Your administrator may have set default notification settings for {OperationTypeMapTitle[operationType || actionType]}{" "}
+                operations. You can send additional notifications for this operation.
+              </>
             ) : permissionForViewLRON ? (
               <>
                 Your administrator has not set default notification settings for {OperationTypeMapTitle[operationType || actionType]}{" "}
