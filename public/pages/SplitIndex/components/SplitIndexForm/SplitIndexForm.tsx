@@ -226,7 +226,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
           </ContentPanel>
         )}
         <EuiSpacer />
-        <ContentPanel title="Advanced settings">
+        <ContentPanel title="Advanced settings" titleSize="s">
           <NotificationConfig
             ref={(ref) => (this.notificationRef = ref)}
             actionType={ActionType.RESIZE}
