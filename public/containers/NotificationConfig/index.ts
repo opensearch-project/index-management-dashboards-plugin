@@ -8,3 +8,4 @@ import NotificationConfig from "./NotificationConfig";
 export default NotificationConfig;
 
 export * from "./NotificationConfig";
+export * from "./hooks";

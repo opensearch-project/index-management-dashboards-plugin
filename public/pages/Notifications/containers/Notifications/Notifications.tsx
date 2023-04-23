@@ -35,6 +35,7 @@ import {
   VALIDATE_ERROR_FOR_CHANNELS,
   getKeyByValue,
 } from "../../constant";
+import { checkPermissionForSubmitLRONConfig } from "../../../../containers/NotificationConfig";
 import "./index.scss";
 
 export interface NotificationsProps {}
@@ -45,6 +46,7 @@ const Notifications = (props: NotificationsProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [noPermission, setNoPermission] = useState(false);
+  const [permissionForUpdate, setPermissionForUpdate] = useState(false);
   const field = useField({
     values: {} as Partial<FieldState>,
     onChange(name, value) {
@@ -55,6 +57,13 @@ const Notifications = (props: NotificationsProps) => {
   });
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
+    if (!permissionForUpdate) {
+      coreServices.notifications.toasts.addDanger({
+        title: "You do not have permissions to update notification settings",
+        text: "Contact your administrator to request permissions.",
+      });
+      return;
+    }
     const { errors, values: notifications } = (await field.validatePromise()) || {};
     setSubmitClicked(!!errors);
     if (errors) {
@@ -69,15 +78,7 @@ const Notifications = (props: NotificationsProps) => {
       coreServices.notifications.toasts.addSuccess("Notifications settings for index operations have been successfully updated.");
       reloadNotifications();
     } else {
-      const isNoPermission = result.body.some((item) => item?.error?.type === "security_exception");
-      if (isNoPermission) {
-        coreServices.notifications.toasts.addDanger({
-          title: "You do not have permissions to update notification settings",
-          text: "Contact your administrator to request permissions.",
-        });
-      } else {
-        coreServices.notifications.toasts.addDanger(result.error);
-      }
+      coreServices.notifications.toasts.addDanger(result.error);
     }
     if (destroyRef.current) {
       return;
@@ -124,6 +125,9 @@ const Notifications = (props: NotificationsProps) => {
   useEffect(() => {
     coreServices.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.NOTIFICATION_SETTINGS]);
     reloadNotifications();
+    checkPermissionForSubmitLRONConfig({
+      services,
+    }).then((result) => setPermissionForUpdate(result));
     return () => {
       destroyRef.current = true;
     };
