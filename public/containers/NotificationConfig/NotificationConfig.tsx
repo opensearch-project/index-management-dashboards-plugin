@@ -19,7 +19,7 @@ import {
 import { useState } from "react";
 import { ROUTES } from "../../utils/constants";
 import { useEffect } from "react";
-import { GetLronConfig, associateWithTask, ifSetDefaultNotification } from "./hooks";
+import { GetLronConfig, associateWithTask, checkPermissionForSubmitLRONConfig, ifSetDefaultNotification } from "./hooks";
 import { useContext } from "react";
 import { ServicesContext } from "../../services";
 import { BrowserServices } from "../../models/interfaces";
@@ -56,6 +56,7 @@ const NotificationConfig = ({ actionType, operationType }: NotificationConfigPro
     },
   });
   const [LronConfig, setLronConfig] = useState<ILronConfig | undefined>();
+  const [permissionForCreateLRON, setPermissionForCreateLRON] = useState(false);
   const context = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   useEffect(() => {
@@ -71,6 +72,9 @@ const NotificationConfig = ({ actionType, operationType }: NotificationConfigPro
         }
       }
     });
+    checkPermissionForSubmitLRONConfig({
+      services: context,
+    }).then((result) => setPermissionForCreateLRON(result));
   }, []);
   const selectedChannels: FeatureChannelList[] = useMemo(() => {
     return LronConfig?.channels

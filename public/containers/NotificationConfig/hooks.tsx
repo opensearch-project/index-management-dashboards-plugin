@@ -29,6 +29,29 @@ export const GetLronConfig = async (props: {
   });
 };
 
+export const checkPermissionForSubmitLRONConfig = async (props: { services: BrowserServices }) => {
+  const result = await props.services.commonService.apiCaller({
+    endpoint: "transport.request",
+    data: {
+      method: "PUT",
+      path: `/_plugins/_im/lron/${encodeURIComponent(`LRON:${ActionTypeMapName.REINDEX}`)}?dry_run=true`,
+      body: {
+        lron_config: {
+          lron_condition: {},
+          action_name: ActionTypeMapName[ActionType.REINDEX],
+          channels: [
+            {
+              id: "test",
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  return result.ok;
+};
+
 export const associateWithTask = async (props: {
   services: BrowserServices;
   coreServices: CoreStart;
