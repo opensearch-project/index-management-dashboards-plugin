@@ -25,7 +25,16 @@ import ChannelSelect from "../../../../containers/ChannelSelect";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import { diffJson } from "../../../../utils/helpers";
 import { BREADCRUMBS } from "../../../../utils/constants";
-import { FieldEnum, FieldMapLabel, LABEL_FOR_CONDITION, VALIDATE_ERROR_FOR_CHANNELS } from "../../constant";
+import {
+  ActionType,
+  ActionTypeMapDescription,
+  ActionTypeMapTitle,
+  FieldEnum,
+  FieldMapLabel,
+  LABEL_FOR_CONDITION,
+  VALIDATE_ERROR_FOR_CHANNELS,
+  getKeyByValue,
+} from "../../constant";
 import "./index.scss";
 
 export interface NotificationsProps {}
@@ -34,6 +43,7 @@ const Notifications = (props: NotificationsProps) => {
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [isLoading, setIsLoading] = useState(false);
+  const [submitClicked, setSubmitClicked] = useState(false);
   const [noPermission, setNoPermission] = useState(false);
   const field = useField({
     values: {} as Partial<FieldState>,
@@ -46,6 +56,7 @@ const Notifications = (props: NotificationsProps) => {
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
     const { errors, values: notifications } = (await field.validatePromise()) || {};
+    setSubmitClicked(!!errors);
     if (errors) {
       return;
     }
@@ -123,6 +134,17 @@ const Notifications = (props: NotificationsProps) => {
           <EuiTitle size="l">
             <h1>Notification settings</h1>
           </EuiTitle>
+          <CustomFormRow
+            fullWidth
+            helpText={
+              <>
+                Configure the default notification settings on index operation statuses such as failed or completed. You can configure
+                additional notification settings while performing an index operation.
+              </>
+            }
+          >
+            <></>
+          </CustomFormRow>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
@@ -132,7 +154,7 @@ const Notifications = (props: NotificationsProps) => {
       </EuiFlexGroup>
       <EuiSpacer />
       <EuiCard title="Defaults for index operations" textAlign="left">
-        {allErrors.length ? (
+        {submitClicked && allErrors.length ? (
           <EuiCallOut iconType="iInCircle" color="danger" title="Address the following error(s) in the form">
             <ul>
               {allErrors.reduce((total, [key, errors]) => {
@@ -188,7 +210,7 @@ const Notifications = (props: NotificationsProps) => {
               return (
                 <CustomFormRow
                   label={<div className="ISM-notifications-first-letter-uppercase">{record.title}</div>}
-                  helpText="Description"
+                  helpText={ActionTypeMapDescription[getKeyByValue(ActionTypeMapTitle, record.title) as ActionType]}
                   direction="hoz"
                   key={record.action_name}
                 >

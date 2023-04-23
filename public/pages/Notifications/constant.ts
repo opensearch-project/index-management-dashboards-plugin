@@ -21,6 +21,13 @@ export const ActionTypeMapTitle = {
   [ActionType.OPEN]: "open",
 };
 
+export const ActionTypeMapDescription = {
+  [ActionType.REINDEX]: "Notify when any reindex operations has failed or completed.",
+  [ActionType.RESIZE]: "Notify when any shrink, split, or clone operations has failed or completed.",
+  [ActionType.FORCEMERGE]: "Notify when any force merge operations has failed or completed.",
+  [ActionType.OPEN]: "Notify when any open operations has failed or completed.",
+};
+
 export const OperationTypeMapTitle = {
   ...ActionTypeMapTitle,
   [OperationType.SHRINK]: "shrink",
