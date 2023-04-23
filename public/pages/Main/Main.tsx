@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
+import React, { Component } from "react";
 import { Switch, Route, Redirect, RouteComponentProps } from "react-router-dom";
 // @ts-ignore
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from "@elastic/eui";
@@ -17,7 +17,7 @@ import ChangePolicy from "../ChangePolicy";
 import PolicyDetails from "../PolicyDetails/containers/PolicyDetails";
 import Rollups from "../Rollups";
 import { ModalProvider, ModalRoot } from "../../components/Modal";
-import { ServicesConsumer, ServicesContext } from "../../services";
+import { ServicesConsumer } from "../../services";
 import { BrowserServices } from "../../models/interfaces";
 import { ROUTES } from "../../utils/constants";
 import { CoreServicesConsumer } from "../../components/core_services";
@@ -114,37 +114,9 @@ const HIDDEN_NAV_STARTS_WITH_ROUTE = [
 
 interface MainProps extends RouteComponentProps {
   landingPage: string;
-  services: BrowserServices;
 }
 
-export class Main extends Component<
-  MainProps,
-  {
-    notificationInstalled: boolean;
-  }
-> {
-  state = {
-    notificationInstalled: false,
-  };
-  componentDidMount(): void {
-    this.props.services.commonService
-      .apiCaller<{ component: string }[]>({
-        endpoint: "cat.plugins",
-        data: {
-          format: "json",
-        },
-      })
-      .then((result) => {
-        if (result && result.ok) {
-          const findNotification = result.response.find((item) => item.component === "opensearch-notifications");
-          if (findNotification) {
-            this.setState({
-              notificationInstalled: true,
-            });
-          }
-        }
-      });
-  }
+export default class Main extends Component<MainProps, object> {
   render() {
     const {
       location: { pathname },
@@ -155,75 +127,68 @@ export class Main extends Component<
         id: 0,
         href: `#${Pathname.IndexPolicies}`,
         items: [
-          ...(() => {
-            const originalItems = [
+          {
+            name: Navigation.IndexPolicies,
+            id: 1,
+            href: `#${Pathname.IndexPolicies}`,
+            isSelected: pathname === Pathname.IndexPolicies,
+          },
+          {
+            name: Navigation.ManagedIndices,
+            id: 2,
+            href: `#${Pathname.ManagedIndices}`,
+            isSelected: pathname === Pathname.ManagedIndices,
+          },
+          {
+            name: Navigation.Indices,
+            id: 3,
+            href: `#${Pathname.Indices}`,
+            isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
+          },
+          {
+            name: Navigation.DataStreams,
+            id: 8,
+            href: `#${ROUTES.DATA_STREAMS}`,
+            isSelected: ROUTES.DATA_STREAMS === pathname,
+          },
+          {
+            name: Navigation.Templates,
+            id: 7,
+            href: `#${ROUTES.TEMPLATES}`,
+            isSelected: ROUTES.TEMPLATES === pathname,
+            items: [
               {
-                name: Navigation.IndexPolicies,
-                id: 1,
-                href: `#${Pathname.IndexPolicies}`,
-                isSelected: pathname === Pathname.IndexPolicies,
+                name: Navigation.ComposableTemplates,
+                id: 9,
+                href: `#${ROUTES.COMPOSABLE_TEMPLATES}`,
+                isSelected: ROUTES.COMPOSABLE_TEMPLATES === pathname,
               },
-              {
-                name: Navigation.ManagedIndices,
-                id: 2,
-                href: `#${Pathname.ManagedIndices}`,
-                isSelected: pathname === Pathname.ManagedIndices,
-              },
-              {
-                name: Navigation.Indices,
-                id: 3,
-                href: `#${Pathname.Indices}`,
-                isSelected: [Pathname.Indices, ROUTES.CREATE_INDEX].includes(pathname as Pathname),
-              },
-              {
-                name: Navigation.DataStreams,
-                id: 8,
-                href: `#${ROUTES.DATA_STREAMS}`,
-                isSelected: ROUTES.DATA_STREAMS === pathname,
-              },
-              {
-                name: Navigation.Templates,
-                id: 7,
-                href: `#${ROUTES.TEMPLATES}`,
-                isSelected: ROUTES.TEMPLATES === pathname,
-                items: [
-                  {
-                    name: Navigation.ComposableTemplates,
-                    id: 9,
-                    href: `#${ROUTES.COMPOSABLE_TEMPLATES}`,
-                    isSelected: ROUTES.COMPOSABLE_TEMPLATES === pathname,
-                  },
-                ],
-              },
-              {
-                name: Navigation.Aliases,
-                id: 6,
-                href: `#${ROUTES.ALIASES}`,
-                isSelected: ROUTES.ALIASES === pathname,
-              },
-              {
-                name: Navigation.Rollups,
-                id: 4,
-                href: `#${Pathname.Rollups}`,
-                isSelected: pathname === Pathname.Rollups,
-              },
-              {
-                name: Navigation.Transforms,
-                id: 5,
-                href: `#${Pathname.Transforms}`,
-                isSelected: pathname === Pathname.Transforms,
-              },
-            ];
-            if (this.state.notificationInstalled) {
-              originalItems.push({
-                name: Navigation.Notifications,
-                id: 10,
-                href: `#${ROUTES.NOTIFICATIONS}`,
-                isSelected: pathname === ROUTES.NOTIFICATIONS,
-              });
-            }
-            return originalItems;
-          })(),
+            ],
+          },
+          {
+            name: Navigation.Aliases,
+            id: 6,
+            href: `#${ROUTES.ALIASES}`,
+            isSelected: ROUTES.ALIASES === pathname,
+          },
+          {
+            name: Navigation.Rollups,
+            id: 4,
+            href: `#${Pathname.Rollups}`,
+            isSelected: pathname === Pathname.Rollups,
+          },
+          {
+            name: Navigation.Transforms,
+            id: 5,
+            href: `#${Pathname.Transforms}`,
+            isSelected: pathname === Pathname.Transforms,
+          },
+          {
+            name: Navigation.Notifications,
+            id: 10,
+            href: `#${ROUTES.NOTIFICATIONS}`,
+            isSelected: pathname === ROUTES.NOTIFICATIONS,
+          },
         ],
       },
       {
@@ -683,9 +648,4 @@ export class Main extends Component<
       </CoreServicesConsumer>
     );
   }
-}
-
-export default function MainWrapper(props: Omit<MainProps, "services">) {
-  const services = useContext(ServicesContext) as BrowserServices;
-  return <Main {...props} services={services} />;
 }
