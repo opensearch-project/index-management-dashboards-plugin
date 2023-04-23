@@ -5,7 +5,7 @@
 
 import React, { ReactChild, useContext, useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import { EuiButton, EuiCallOut, EuiCard, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiButton, EuiCallOut, EuiCard, EuiEmptyPrompt, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
 import useField from "../../../../lib/field";
 import { ServicesContext } from "../../../../services";
@@ -103,6 +103,10 @@ const Notifications = (props: NotificationsProps) => {
         } else {
           if (res.body?.status === 403) {
             setNoPermission(true);
+            coreServices.notifications.toasts.addDanger({
+              title: "You do not have permissions to view notification settings",
+              text: "Contact your administrator to request permissions.",
+            });
             return;
           }
           coreServices.notifications.toasts.addDanger(res.error);
@@ -153,108 +157,111 @@ const Notifications = (props: NotificationsProps) => {
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer />
-      <EuiCard title="Defaults for index operations" textAlign="left">
-        {submitClicked && allErrors.length ? (
-          <EuiCallOut iconType="iInCircle" color="danger" title="Address the following error(s) in the form">
-            <ul>
-              {allErrors.reduce((total, [key, errors]) => {
-                const pattern = /^dataSource\.(\d+)\.(\w+)$/;
-                const matchResult = key.match(pattern);
-                if (matchResult) {
-                  const index = matchResult[1];
-                  const itemField = matchResult[2];
-                  const notificationItem = (field.getValues().dataSource || [])[parseInt(index, 10)];
-                  const errorMessagePrefix = `${notificationItem.title} - ${FieldMapLabel[itemField as keyof typeof FieldMapLabel]}: `;
-                  return [
-                    ...total,
-                    ...(errors || []).map((item) => (
-                      <li key={`${errorMessagePrefix}${item}`} className="ISM-notifications-first-letter-uppercase">
-                        {errorMessagePrefix}
-                        {item}
-                      </li>
-                    )),
-                  ];
-                }
+      {noPermission ? (
+        <EuiCard title="">
+          <EuiEmptyPrompt
+            iconType="alert"
+            iconColor="danger"
+            title={<h2>Error loading Notification settings</h2>}
+            body={<p>You do not have permissions to view Notification settings. Contact your administrator to request permissions.</p>}
+          />
+        </EuiCard>
+      ) : (
+        <EuiCard title="Defaults for index operations" textAlign="left">
+          {submitClicked && allErrors.length ? (
+            <EuiCallOut iconType="iInCircle" color="danger" title="Address the following error(s) in the form">
+              <ul>
+                {allErrors.reduce((total, [key, errors]) => {
+                  const pattern = /^dataSource\.(\d+)\.(\w+)$/;
+                  const matchResult = key.match(pattern);
+                  if (matchResult) {
+                    const index = matchResult[1];
+                    const itemField = matchResult[2];
+                    const notificationItem = (field.getValues().dataSource || [])[parseInt(index, 10)];
+                    const errorMessagePrefix = `${notificationItem.title} - ${FieldMapLabel[itemField as keyof typeof FieldMapLabel]}: `;
+                    return [
+                      ...total,
+                      ...(errors || []).map((item) => (
+                        <li key={`${errorMessagePrefix}${item}`} className="ISM-notifications-first-letter-uppercase">
+                          {errorMessagePrefix}
+                          {item}
+                        </li>
+                      )),
+                    ];
+                  }
 
-                return total;
-              }, [] as ReactChild[])}
-            </ul>
-          </EuiCallOut>
-        ) : null}
-        {noPermission ? (
-          <EuiCallOut iconType="iInCircle" color="danger" title="You do not have permissions to view notification settings">
-            Contact your administrator to request permissions.
-          </EuiCallOut>
-        ) : (
-          <>
-            <EuiSpacer />
-            {(values.dataSource || []).map((record) => {
-              const { value, onChange, ...others } = field.registerField<ILronPlainConfig["channels"]>({
-                name: ["dataSource", `${record.index}`, FieldEnum.channels],
-                rules: [
-                  {
-                    validator(rule, value) {
-                      const values = field.getValues();
-                      const item = values.dataSource?.[record.index];
-                      if (item?.[FieldEnum.failure] || item?.[FieldEnum.success]) {
-                        if (!value || !value.length) {
-                          return Promise.reject(VALIDATE_ERROR_FOR_CHANNELS);
-                        }
+                  return total;
+                }, [] as ReactChild[])}
+              </ul>
+            </EuiCallOut>
+          ) : null}
+          <EuiSpacer />
+          {(values.dataSource || []).map((record) => {
+            const { value, onChange, ...others } = field.registerField<ILronPlainConfig["channels"]>({
+              name: ["dataSource", `${record.index}`, FieldEnum.channels],
+              rules: [
+                {
+                  validator(rule, value) {
+                    const values = field.getValues();
+                    const item = values.dataSource?.[record.index];
+                    if (item?.[FieldEnum.failure] || item?.[FieldEnum.success]) {
+                      if (!value || !value.length) {
+                        return Promise.reject(VALIDATE_ERROR_FOR_CHANNELS);
                       }
+                    }
 
-                      return Promise.resolve("");
-                    },
+                    return Promise.resolve("");
                   },
-                ],
-              });
-              return (
-                <CustomFormRow
-                  label={<div className="ISM-notifications-first-letter-uppercase">{record.title}</div>}
-                  helpText={ActionTypeMapDescription[getKeyByValue(ActionTypeMapTitle, record.title) as ActionType]}
-                  direction="hoz"
-                  key={record.action_name}
-                >
-                  <>
-                    <div>{LABEL_FOR_CONDITION}</div>
-                    <EuiSpacer size="s" />
-                    <EuiFlexGroup alignItems="flexStart">
-                      <EuiFlexItem>
-                        <AllBuiltInComponents.CheckBox
-                          {...field.registerField({
-                            name: ["dataSource", `${record.index}`, FieldEnum.failure],
-                          })}
-                          label="Has failed"
-                        />
-                      </EuiFlexItem>
-                      <EuiFlexItem>
-                        <AllBuiltInComponents.CheckBox
-                          {...field.registerField({
-                            name: ["dataSource", `${record.index}`, FieldEnum.success],
-                          })}
-                          label="Has completed"
-                        />
-                      </EuiFlexItem>
-                    </EuiFlexGroup>
-                    {field.getValue(["dataSource", `${record.index}`, FieldEnum.failure]) ||
-                    field.getValue(["dataSource", `${record.index}`, FieldEnum.success]) ? (
-                      <>
-                        <EuiSpacer size="s" />
-                        <CustomFormRow
-                          label={FieldMapLabel[FieldEnum.channels]}
-                          isInvalid={!!field.getError(["dataSource", `${record.index}`, FieldEnum.channels])}
-                          error={field.getError(["dataSource", `${record.index}`, FieldEnum.channels])}
-                        >
-                          <ChannelSelect {...others} value={value} onChange={onChange} />
-                        </CustomFormRow>
-                      </>
-                    ) : null}
-                  </>
-                </CustomFormRow>
-              );
-            })}
-          </>
-        )}
-      </EuiCard>
+                },
+              ],
+            });
+            return (
+              <CustomFormRow
+                label={<div className="ISM-notifications-first-letter-uppercase">{record.title}</div>}
+                helpText={ActionTypeMapDescription[getKeyByValue(ActionTypeMapTitle, record.title) as ActionType]}
+                direction="hoz"
+                key={record.action_name}
+              >
+                <>
+                  <div>{LABEL_FOR_CONDITION}</div>
+                  <EuiSpacer size="s" />
+                  <EuiFlexGroup alignItems="flexStart">
+                    <EuiFlexItem>
+                      <AllBuiltInComponents.CheckBox
+                        {...field.registerField({
+                          name: ["dataSource", `${record.index}`, FieldEnum.failure],
+                        })}
+                        label="Has failed"
+                      />
+                    </EuiFlexItem>
+                    <EuiFlexItem>
+                      <AllBuiltInComponents.CheckBox
+                        {...field.registerField({
+                          name: ["dataSource", `${record.index}`, FieldEnum.success],
+                        })}
+                        label="Has completed"
+                      />
+                    </EuiFlexItem>
+                  </EuiFlexGroup>
+                  {field.getValue(["dataSource", `${record.index}`, FieldEnum.failure]) ||
+                  field.getValue(["dataSource", `${record.index}`, FieldEnum.success]) ? (
+                    <>
+                      <EuiSpacer size="s" />
+                      <CustomFormRow
+                        label={FieldMapLabel[FieldEnum.channels]}
+                        isInvalid={!!field.getError(["dataSource", `${record.index}`, FieldEnum.channels])}
+                        error={field.getError(["dataSource", `${record.index}`, FieldEnum.channels])}
+                      >
+                        <ChannelSelect {...others} value={value} onChange={onChange} />
+                      </CustomFormRow>
+                    </>
+                  ) : null}
+                </>
+              </CustomFormRow>
+            );
+          })}
+        </EuiCard>
+      )}
       {diffJson(
         getDiffableMapFromPlainList(values.dataSource || []),
         getDiffableMapFromPlainList(field.getOriginalValues().dataSource || [])
