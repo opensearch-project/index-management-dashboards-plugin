@@ -472,4 +472,67 @@ describe("Indices", () => {
       });
     });
   });
+
+  describe("can flush an index", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.deleteIMJobs();
+      cy.createIndex(SAMPLE_INDEX);
+    });
+
+    it("successfully flush an index", () => {
+      // Confirm we have our initial index
+      cy.contains(SAMPLE_INDEX);
+      // index a test doc
+      cy.request({
+        method: "POST",
+        url: `${Cypress.env("openSearchUrl")}/${SAMPLE_INDEX}/_doc`,
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+        },
+        body: { test: "test" },
+      });
+
+      // confirm uncommitted_operations is 1 after indexing doc
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/${SAMPLE_INDEX}/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(1);
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be disabled if no items selected
+      cy.get('[data-test-subj="Flush Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select an index
+      cy.get(`[data-test-subj="checkboxSelectRow-${SAMPLE_INDEX}"]`).check({
+        force: true,
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be enabled
+      cy.get('[data-test-subj="Flush Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for flush index modal
+      cy.contains("Flush indices");
+
+      cy.get('[data-test-subj="Flush Confirm button"]').click();
+
+      // Check for success toast
+      cy.contains(`Flush [${SAMPLE_INDEX}] successfully`);
+
+      // confirm uncommitted_operations is 0 after flush
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/${SAMPLE_INDEX}/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(0);
+      });
+    });
+  });
 });

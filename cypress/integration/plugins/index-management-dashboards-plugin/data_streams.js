@@ -55,6 +55,63 @@ describe("Data stream", () => {
     });
   });
 
+  describe("can flush a data stream", () => {
+    it("successfully flush a data stream", () => {
+      // Confirm we have our initial ds
+      cy.contains("ds-");
+      // index a test doc
+      cy.request({
+        method: "POST",
+        url: `${Cypress.env("openSearchUrl")}/ds-/_doc`,
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+        },
+        body: { "@timestamp": 123123123 },
+      });
+
+      // confirm uncommitted_operations is 1 after indexing doc
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/ds-/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(1);
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be disabled if no items selected
+      cy.get('[data-test-subj="Flush Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select a ds
+      cy.get(`[data-test-subj="checkboxSelectRow-ds-"]`).check({
+        force: true,
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be enabled
+      cy.get('[data-test-subj="Flush Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for flush modal
+      cy.contains("Flush data stream");
+
+      cy.get('[data-test-subj="Flush Confirm button"]').click();
+
+      // Check for success toast
+      cy.contains("Flush [ds-] successfully");
+
+      // confirm uncommitted_operations is 0 after flush
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/ds-/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(0);
+      });
+    });
+  });
+
   describe("can delete a data stream", () => {
     it("successfully", () => {
       cy.get('[data-test-subj="moreAction"] button')
