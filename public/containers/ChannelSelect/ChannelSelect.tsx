@@ -8,15 +8,17 @@ import { EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui
 import { useChannels } from "./hooks";
 import { AllBuiltInComponents } from "../../components/FormGenerator";
 
-interface ChannelNotificationProps {
+export interface ChannelSelectProps {
   value?: { id: string }[];
   onChange: (val: { id: string }[]) => void;
+  "data-test-subj"?: string;
 }
 
-const ChannelSelect = ({ value, onChange }: ChannelNotificationProps) => {
+const ChannelSelect = (props: ChannelSelectProps) => {
+  const { value, onChange } = props;
   const { channels, loading } = useChannels();
   return (
-    <EuiFlexGroup gutterSize="s" style={{ maxWidth: "unset", minWidth: 300 }}>
+    <EuiFlexGroup data-test-subj={props["data-test-subj"]} gutterSize="s" style={{ maxWidth: "unset", minWidth: 300 }}>
       <EuiFlexItem>
         <AllBuiltInComponents.ComboBoxMultiple
           placeholder="Select channel"
