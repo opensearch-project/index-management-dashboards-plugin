@@ -102,7 +102,7 @@ const Notifications = (props: NotificationsProps) => {
             field.setOriginalValues(JSON.parse(JSON.stringify(values)));
           });
         } else {
-          if (res.body?.status === 403) {
+          if (res?.body?.status === 403) {
             setNoPermission(true);
             coreServices.notifications.toasts.addDanger({
               title: "You do not have permissions to view notification settings",

@@ -6,7 +6,7 @@ Object {
   "baseElement": <body>
     <div>
       <div
-        style="padding: 10px 10px;"
+        style="padding: 10px 0px;"
       >
         <div
           class="euiFormRow"
@@ -357,7 +357,7 @@ Object {
   </body>,
   "container": <div>
     <div
-      style="padding: 10px 10px;"
+      style="padding: 10px 0px;"
     >
       <div
         class="euiFormRow"

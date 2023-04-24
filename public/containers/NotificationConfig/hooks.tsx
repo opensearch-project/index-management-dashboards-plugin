@@ -49,7 +49,7 @@ export const checkPermissionForSubmitLRONConfig = async (props: { services: Brow
     },
   });
 
-  return result.ok;
+  return result?.ok;
 };
 
 export const associateWithTask = async (props: {
@@ -75,9 +75,14 @@ export const associateWithTask = async (props: {
     props.coreServices.notifications.toasts.addDanger(result.error);
   }
 
-  return result.ok;
+  return result?.ok;
 };
 
 export const ifSetDefaultNotification = (lronConfig?: ILronConfig) => {
   return !!(lronConfig?.lron_condition?.failure || lronConfig?.lron_condition?.success);
+};
+
+export const getPermissionValue = (permissionForViewLRON: boolean, permissionForCreateLRON: boolean, hasDefaultNotification: boolean) => {
+  const getValue = (val: boolean) => (val ? "1" : "0");
+  return `${getValue(permissionForViewLRON)}${getValue(permissionForCreateLRON)}${getValue(hasDefaultNotification)}`;
 };

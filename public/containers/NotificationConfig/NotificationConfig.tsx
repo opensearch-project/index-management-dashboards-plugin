@@ -33,7 +33,7 @@ import { CoreStart } from "opensearch-dashboards/public";
 import NotificationCallout from "./NotificationCallout";
 import { ContentPanel, ContentPanelProps } from "../../components/ContentPanel";
 
-interface NotificationConfigProps {
+export interface NotificationConfigProps {
   actionType: ActionType;
   operationType?: OperationType;
   withPanel?: boolean;
@@ -62,7 +62,7 @@ const NotificationConfig = (
   });
   const [LronConfig, setLronConfig] = useState<ILronConfig | undefined>();
   const [permissionForCreateLRON, setPermissionForCreateLRON] = useState(false);
-  const [permissionForViewLRON, setPermissionForViewLRON] = useState(true);
+  const [permissionForViewLRON, setPermissionForViewLRON] = useState(false);
   const context = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   useEffect(() => {
@@ -71,17 +71,14 @@ const NotificationConfig = (
       services: context,
     }).then((res) => {
       if (res && res.ok) {
-        const lronConfig = res.response.lron_configs[0]?.lron_config;
+        setPermissionForViewLRON(true);
+        const lronConfig = res.response?.lron_configs?.[0]?.lron_config;
         setLronConfig(lronConfig);
         if (!ifSetDefaultNotification(lronConfig)) {
           field.setValue("customize", true);
         }
       } else {
         field.setValue("customize", true);
-        if (res.body?.status === 403) {
-          setPermissionForViewLRON(false);
-          return;
-        }
       }
     });
     checkPermissionForSubmitLRONConfig({
@@ -89,7 +86,7 @@ const NotificationConfig = (
     }).then((result) => setPermissionForCreateLRON(result));
   }, []);
   const selectedChannels: FeatureChannelList[] = useMemo(() => {
-    return LronConfig?.channels
+    return (LronConfig?.channels || [])
       .map((item) => channels.find((channel) => channel.config_id === item.id))
       .filter((item) => item) as FeatureChannelList[];
   }, [LronConfig, channels]);
@@ -111,7 +108,7 @@ const NotificationConfig = (
     },
   }));
   const hasDefaultNotification = ifSetDefaultNotification(LronConfig);
-  if (!hasDefaultNotification && permissionForViewLRON && !permissionForCreateLRON) {
+  if (!hasDefaultNotification && !permissionForCreateLRON) {
     return null;
   }
 
@@ -160,6 +157,7 @@ const NotificationConfig = (
             {...field.registerField({
               name: "customize",
             })}
+            data-test-subj="sendAddtionalNotificationsCheckBox"
             label="Send additional notifications"
           />
         </>
@@ -173,6 +171,7 @@ const NotificationConfig = (
                 {...field.registerField({
                   name: ["lron_condition", FieldEnum.failure],
                 })}
+                data-test-subj="notificationCustomConditionHasFailed"
                 label="Has failed / timed out"
               />
               <EuiSpacer size="s" />
@@ -195,6 +194,7 @@ const NotificationConfig = (
                 <EuiFlexGroup>
                   <EuiFlexItem>
                     <ChannelSelect
+                      data-test-subj="notificationCustomChannelsSelect"
                       {...field.registerField({
                         name: "channels",
                         rules: [
