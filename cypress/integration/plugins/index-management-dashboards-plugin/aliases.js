@@ -2,7 +2,6 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { contains } from "cheerio";
 import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 
 const SAMPLE_INDEX_PREFIX = "index-for-alias-test";
