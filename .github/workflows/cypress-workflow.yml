@@ -32,7 +32,7 @@ jobs:
       - name: Run opensearch with plugin
         run: |
           cd index-management
-          ./gradlew run &
+          ./gradlew run -PcustomDistributionUrl="https://ci.opensearch.org/ci/dbc/distribution-build-opensearch/2.7.0/7747/linux/x64/tar/dist/opensearch/opensearch-2.7.0-linux-x64.tar.gz" &
           sleep 300
         # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
       - name: Checkout Index Management Dashboards plugin
