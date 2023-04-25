@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AssociatedTemplatesModal /> spec renders the component 1`] = `
+HTMLCollection [
+  <div>
+    <div>
+      123
+    </div>
+  </div>,
+]
+`;

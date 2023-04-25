@@ -13,7 +13,7 @@ import { HashRouter, Route } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import userEvent from "@testing-library/user-event";
 
-function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history">) {
+function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history" | "location">) {
   return {
     ...render(
       <HashRouter>
@@ -52,14 +52,15 @@ describe("<TemplateDetail /> spec", () => {
           index_templates: [
             {
               name: "good_template",
-              template: {},
+              index_template: {
+                priority: 0,
+              },
             },
           ],
         },
       };
     }) as any;
     const { getByText, getByTestId, findByTitle } = renderCreateIndexTemplate({
-      readonly: true,
       templateName: "good_template",
     });
     await findByTitle("good_template");
@@ -69,12 +70,11 @@ describe("<TemplateDetail /> spec", () => {
         JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")
       ).toEqual({
         name: "good_template",
-        template: {
-          mappings: {
-            properties: {},
-          },
-          settings: {},
+        _meta: {
+          flow: "simple",
         },
+        priority: "0",
+        template: {},
       })
     );
   });
@@ -87,14 +87,15 @@ describe("<TemplateDetail /> spec", () => {
           index_templates: [
             {
               name: "good_template",
-              template: {},
+              index_template: {
+                priority: 0,
+              },
             },
           ],
         },
       };
     }) as any;
     const { queryByText, getByText, getByTestId, findByTitle, findByText } = renderCreateIndexTemplate({
-      readonly: true,
       templateName: "good_template",
     });
     await findByTitle("good_template");

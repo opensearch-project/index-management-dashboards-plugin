@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-
+import { JSONSchema4TypeName } from "@types/json-schema";
 import { InitOption } from "../lib/field";
 import { ComponentMapEnum } from "../components/FormGenerator";
 
@@ -65,6 +65,8 @@ export const ROUTES = Object.freeze({
   DATA_STREAMS: "/data-streams",
   CREATE_DATA_STREAM: "/create-data-stream",
   FORCE_MERGE: "/force-merge",
+  COMPOSABLE_TEMPLATES: "/composable-templates",
+  CREATE_COMPOSABLE_TEMPLATE: "/create-composable-template",
 });
 
 export const BREADCRUMBS = Object.freeze({
@@ -114,6 +116,8 @@ export const BREADCRUMBS = Object.freeze({
   DATA_STREAMS: { text: "Data streams", href: `#${ROUTES.DATA_STREAMS}` },
   CREATE_DATA_STREAM: { text: "Create data stream", href: `#${ROUTES.CREATE_DATA_STREAM}` },
   FORCE_MERGE: { text: "Force merge", href: `#${ROUTES.FORCE_MERGE}` },
+  COMPOSABLE_TEMPLATES: { text: "Component templates", href: `#${ROUTES.COMPOSABLE_TEMPLATES}` },
+  CREATE_COMPOSABLE_TEMPLATE: { text: "Create component template", href: `#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}` },
 });
 
 // TODO: EUI has a SortDirection already
@@ -198,10 +202,10 @@ export const INDEX_DYNAMIC_SETTINGS = [
 ];
 
 export const INDEX_MAPPING_TYPES: {
-  label?: string;
+  label: string;
   hasChildren?: boolean;
   options?: {
-    fields?: (InitOption & { label: string; type: ComponentMapEnum; initValue?: any })[];
+    fields?: (InitOption & { name: string; label: string; type: ComponentMapEnum; initValue?: any; validateType: JSONSchema4TypeName })[];
   };
 }[] = [
   {
@@ -212,6 +216,7 @@ export const INDEX_MAPPING_TYPES: {
           label: "Path",
           name: "path",
           type: "Input",
+          validateType: "string",
           rules: [
             {
               required: true,
@@ -301,6 +306,7 @@ export const INDEX_MAPPING_TYPES: {
           name: "analyzer",
           initValue: "standard",
           type: "Input",
+          validateType: "string",
           rules: [
             {
               required: true,

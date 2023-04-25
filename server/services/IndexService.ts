@@ -40,7 +40,18 @@ export default class IndexService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndicesResponse>>> => {
     try {
       // @ts-ignore
-      const { from, size, sortField, sortDirection, terms, indices, dataStreams, showDataStreams, expandWildcards } = request.query as {
+      const {
+        from,
+        size,
+        sortField,
+        sortDirection,
+        terms,
+        indices,
+        dataStreams,
+        showDataStreams,
+        expandWildcards,
+        exactSearch,
+      } = request.query as {
         from: string;
         size: string;
         search: string;
@@ -50,6 +61,7 @@ export default class IndexService {
         indices?: string[];
         dataStreams?: string[];
         showDataStreams: boolean;
+        exactSearch?: string;
       };
       const params: {
         index: string;
@@ -66,6 +78,10 @@ export default class IndexService {
         params.expand_wildcards = expandWildcards;
       }
 
+      if (exactSearch) {
+        params.index = exactSearch;
+      }
+
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
 
       const [recoverys, tasks, indicesResponse, indexToDataStreamMapping]: [
@@ -77,12 +93,12 @@ export default class IndexService {
         callWithRequest("cat.recovery", {
           format: "json",
           detailed: true,
-        }),
+        }).catch(() => []),
         callWithRequest("cat.tasks", {
           format: "json",
           detailed: true,
           actions: "indices:data/write/reindex",
-        }),
+        }).catch(() => []),
         callWithRequest("cat.indices", params),
         getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
       ]);

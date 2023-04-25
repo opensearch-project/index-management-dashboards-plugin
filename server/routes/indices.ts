@@ -36,6 +36,7 @@ export default function (services: NodeServices, router: IRouter) {
           dataStreams: schema.maybe(schema.any()),
           showDataStreams: schema.boolean(),
           expandWildcards: schema.maybe(schema.string()),
+          exactSearch: schema.maybe(schema.string()),
         }),
       },
     },

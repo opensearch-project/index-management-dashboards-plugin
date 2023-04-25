@@ -5,11 +5,11 @@
 import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from "react";
 import { EuiAccordion, EuiAccordionProps, EuiSpacer, EuiFormRowProps } from "@elastic/eui";
 import SwitchableEditor, { SwitchableEditorProps, ISwitchableEditorRef } from "../SwitchableEditor";
-import CustomFormRow from "../CustomFormRow";
+import CustomFormRow, { CustomFormRowProps } from "../CustomFormRow";
 import "./index.scss";
 
 export interface IAdvancedSettingsProps<T> {
-  rowProps?: Omit<EuiFormRowProps, "children">;
+  rowProps?: Omit<CustomFormRowProps, "children">;
   accordionProps?: EuiAccordionProps;
   value?: T;
   onChange?: (totalValue: T) => void;

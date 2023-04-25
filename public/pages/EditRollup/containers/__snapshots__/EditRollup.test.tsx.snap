@@ -118,7 +118,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
                 class="euiTextColor euiTextColor--subdued"
               >
                 <i>
-                   - optional
+                   – optional
                 </i>
               </div>
             </div>
@@ -412,7 +412,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
                     class="euiTextColor euiTextColor--subdued"
                   >
                     <i>
-                       - optional
+                       – optional
                     </i>
                   </div>
                 </div>
