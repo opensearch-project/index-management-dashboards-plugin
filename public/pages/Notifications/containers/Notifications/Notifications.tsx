@@ -56,13 +56,13 @@ const Notifications = (props: NotificationsProps) => {
     },
   });
   const destroyRef = useRef<boolean>(false);
-  const onSubmit = async () => {
+  const onSubmit = async (): Promise<void> => {
     if (!permissionForUpdate) {
       coreServices.notifications.toasts.addDanger({
         title: "You do not have permissions to update notification settings",
         text: "Contact your administrator to request permissions.",
       });
-      return new Promise((resolve) => setTimeout(resolve, 0));
+      return await new Promise((resolve) => setTimeout(() => resolve(undefined), 0));
     }
     const { errors, values: notifications } = (await field.validatePromise()) || {};
     setSubmitClicked(!!errors);
@@ -280,6 +280,7 @@ const Notifications = (props: NotificationsProps) => {
           )}
           onClickSubmit={onSubmit}
           onClickCancel={onCancel}
+          submitButtonDataTestSubj="submitNotifcationSettings"
         />
       ) : null}
     </>

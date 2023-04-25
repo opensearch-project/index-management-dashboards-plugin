@@ -31,6 +31,7 @@ const ChannelSelect = (props: ChannelSelectProps) => {
               }))
             );
           }}
+          onCreateOption={undefined}
           value={loading ? [] : value?.map((item) => item.id)}
         />
       </EuiFlexItem>
