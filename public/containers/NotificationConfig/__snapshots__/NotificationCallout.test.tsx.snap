@@ -41,7 +41,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
       <span
         class="euiCallOutHeader__title"
       >
-        Your administrator has set default notification settings for 
+        Default notification settings are set for 
         shrink
          operations. Configure default settings at
          
@@ -109,23 +109,7 @@ exports[`<ChannelNotification /> spec renders with view permission and default n
       >
         Your administrator has set default notification settings for 
         shrink
-         operations. Configure default settings at
-         
-        <a
-          class="euiLink euiLink--primary"
-          href="#/notifications"
-          rel="noopener noreferrer"
-          style="text-decoration: underline;"
-          target="_blank"
-        >
-          Notifications
-          <span
-            class="euiScreenReaderOnly"
-          >
-            (opens in a new tab or window)
-          </span>
-        </a>
-        .
+         operations. Contact your administrator to request access to notification settings.
       </span>
     </div>
   </div>
