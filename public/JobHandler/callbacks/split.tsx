@@ -25,10 +25,10 @@ export const callbackForSplit: CallbackType = async (job: RecoveryJobMetaData, {
       const { _source, found } = tasksResult.response;
       const { completed, error } = (_source || {}) as TaskResult["_source"];
       if (completed && found) {
+        if (extras.toastId) {
+          core.notifications.toasts.remove(extras.toastId);
+        }
         if (!error?.reason) {
-          if (extras.toastId) {
-            core.notifications.toasts.remove(extras.toastId);
-          }
           triggerEvent(EVENT_MAP.SPLIT_COMPLETE, job);
           core.notifications.toasts.addSuccess(
             {
@@ -54,9 +54,6 @@ export const callbackForSplit: CallbackType = async (job: RecoveryJobMetaData, {
             );
           }
 
-          if (extras.toastId) {
-            core.notifications.toasts.remove(extras.toastId);
-          }
           core.notifications.toasts.addDanger(
             {
               title: ((
