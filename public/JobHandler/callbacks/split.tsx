@@ -46,13 +46,11 @@ export const callbackForSplit: CallbackType = async (job: RecoveryJobMetaData, {
         } else {
           let errors: ReactChild[] = [];
 
-          if (error?.reason) {
-            errors.push(
-              <ul key="error.reason">
-                <li>{error.reason}</li>
-              </ul>
-            );
-          }
+          errors.push(
+            <ul key="error.reason">
+              <li>{error.reason}</li>
+            </ul>
+          );
 
           core.notifications.toasts.addDanger(
             {
