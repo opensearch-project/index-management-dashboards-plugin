@@ -28,7 +28,7 @@ jobs:
         with:
           path: index-management
           repository: opensearch-project/index-management
-          ref: '2.x'
+          ref: '2.7'
       - name: Run opensearch with plugin
         run: |
           cd index-management
