@@ -23,17 +23,23 @@ jobs:
         with:
           # TODO: Parse this from index management plugin
           java-version: 11
-      - name: Checkout index management
-        uses: actions/checkout@v2
-        with:
-          path: index-management
-          repository: opensearch-project/index-management
-          ref: '2.x'
+      # - name: Checkout index management
+      #   uses: actions/checkout@v2
+      #   with:
+      #     path: index-management
+      #     repository: opensearch-project/index-management
+      #     ref: '2.7'
       - name: Run opensearch with plugin
         run: |
-          cd index-management
-          ./gradlew run &
+          wget "https://ci.opensearch.org/ci/dbc/distribution-build-opensearch/2.7.0/7747/linux/x64/tar/dist/opensearch/opensearch-2.7.0-linux-x64.tar.gz"
+          tar -xvf opensearch-2.7.0-linux-x64.tar.gz
+          cd opensearch-2.7.0
+          ./bin/opensearch-plugin remove opensearch-security
+          ./bin/opensearch &
           sleep 300
+        # cd index-management
+        # ./gradlew run -PcustomDistributionUrl="https://ci.opensearch.org/ci/dbc/distribution-build-opensearch/2.7.0/7747/linux/x64/tar/dist/opensearch/opensearch-2.7.0-linux-x64.tar.gz" &
+        # sleep 300
         # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
       - name: Checkout Index Management Dashboards plugin
         uses: actions/checkout@v2
