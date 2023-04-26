@@ -30,7 +30,7 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
   if (tasksResult.ok) {
     const { _source, found } = tasksResult.response;
     const { completed, response, error } = (_source || {}) as ReindexTaskResult["_source"];
-    const { failures } = response;
+    const { failures } = response || {};
     if (completed && found) {
       if (!failures?.length && !error?.reason) {
         if (extras.toastId) {
@@ -52,7 +52,7 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
         );
       } else {
         let errors: ReactChild[] = [];
-        if (failures.length) {
+        if (failures?.length) {
           errors.push(
             <ul key="response.failures">
               {Array.from(new Set(failures.map((item) => item.cause?.reason).filter((item) => item))).map((item) => (
