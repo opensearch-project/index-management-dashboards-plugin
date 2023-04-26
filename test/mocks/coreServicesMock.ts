@@ -16,6 +16,8 @@ const coreServicesMock = {
     toasts: {
       addDanger: jest.fn(() => ({})).mockName("addDanger"),
       addSuccess: jest.fn(() => ({})).mockName("addSuccess"),
+      addWarning: jest.fn(() => ({})).mockName("addWarning"),
+      remove: jest.fn(() => ({})).mockName("remove"),
     },
   },
   docLinks: {
