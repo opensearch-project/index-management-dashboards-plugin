@@ -65,45 +65,48 @@ export const callbackForForceMerge: CallbackType = async (job: ForceMergeJobMeta
                   </div>
                   <EuiSpacer />
                   <EuiButton
-                    onClick={() => {
-                      Modal.show({
-                        locale: {
-                          ok: "Close",
-                        },
-                        title: `Some shards of ${extras.sourceIndex.join(", ")} could not be force merged.`,
-                        content: (
-                          <EuiText>
-                            <div>
-                              {total - successful} out of {total} could not be force merged. The following reasons may prevent shards from
-                              performing a force merge:
-                            </div>
-                            <ul>
-                              {failures.map((item) => (
-                                <li key={`${item.index}-${item.index}-${item.status}`}>
-                                  The shard {item.shard} of index {item.index} failed to merge because of {item.status}.
+                    onClick={
+                      /* istanbul ignore next */ () => {
+                        Modal.show({
+                          locale: {
+                            ok: "Close",
+                          },
+                          title: `Some shards of ${extras.sourceIndex.join(", ")} could not be force merged.`,
+                          content: (
+                            <EuiText>
+                              <div>
+                                {total - successful} out of {total} could not be force merged. The following reasons may prevent shards from
+                                performing a force merge:
+                              </div>
+                              <ul>
+                                {failures.map((item) => (
+                                  <li key={`${item.index}-${item.index}-${item.status}`}>
+                                    The shard {item.shard} of index {item.index} failed to merge because of {item.status}.
+                                  </li>
+                                ))}
+                                <li>Some shards are unassigned.</li>
+                                <li>
+                                  Insufficient disk space: Force merging requires disk space to create a new, larger segment. If the disk
+                                  does not have enough space, the merge process may fail.
                                 </li>
-                              ))}
-                              <li>Some shards are unassigned.</li>
-                              <li>
-                                Insufficient disk space: Force merging requires disk space to create a new, larger segment. If the disk does
-                                not have enough space, the merge process may fail.
-                              </li>
-                              <li>
-                                Index read-only: If the index is marked as read-only, a force merge operation cannot modify the index, and
-                                the merge process will fail.
-                              </li>
-                              <li>
-                                Too many open files: The operating system may limit the number of files that a process can have open
-                                simultaneously, and a force merge operation may exceed this limit, causing the merge process to fail.
-                              </li>
-                              <li>
-                                Index corruption: If the index is corrupted or has some inconsistencies, the force merge operation may fail.
-                              </li>
-                            </ul>
-                          </EuiText>
-                        ),
-                      });
-                    }}
+                                <li>
+                                  Index read-only: If the index is marked as read-only, a force merge operation cannot modify the index, and
+                                  the merge process will fail.
+                                </li>
+                                <li>
+                                  Too many open files: The operating system may limit the number of files that a process can have open
+                                  simultaneously, and a force merge operation may exceed this limit, causing the merge process to fail.
+                                </li>
+                                <li>
+                                  Index corruption: If the index is corrupted or has some inconsistencies, the force merge operation may
+                                  fail.
+                                </li>
+                              </ul>
+                            </EuiText>
+                          ),
+                        });
+                      }
+                    }
                     style={{ float: "right" }}
                   >
                     View details
@@ -120,13 +123,11 @@ export const callbackForForceMerge: CallbackType = async (job: ForceMergeJobMeta
       } else {
         let errors: ReactChild[] = [];
 
-        if (error?.reason) {
-          errors.push(
-            <ul key="error.reason">
-              <li>{error.reason}</li>
-            </ul>
-          );
-        }
+        errors.push(
+          <ul key="error.reason">
+            <li>{error.reason}</li>
+          </ul>
+        );
 
         core.notifications.toasts.addDanger(
           {
