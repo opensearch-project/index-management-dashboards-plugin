@@ -2,8 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-
-import { callbackForForceMerge, callbackForForceMergeTimeout } from "./force_merge";
+import { callbackForOpen, callbackForOpenTimeout } from "./open";
 import { coreServicesMock, httpClientMock } from "../../../test/mocks";
 import { ListenType } from "../../lib/JobScheduler";
 import { CoreSetup } from "opensearch-dashboards/public";
@@ -15,14 +14,14 @@ const getMockFn = (response = {}, ok = true) => {
   });
 };
 
-const forceMergeMetaData = {
+const openMetaData = {
   interval: 0,
   extras: {
     toastId: "toastId",
-    sourceIndex: ["sourceIndex"],
+    indexes: ["sourceIndex"],
     taskId: "taskId",
   },
-  type: ListenType.FORCE_MERGE,
+  type: ListenType.OPEN,
 };
 
 const core = ({
@@ -30,10 +29,10 @@ const core = ({
   http: httpClientMock,
 } as unknown) as CoreSetup;
 
-describe("callbackForForceMerge spec", () => {
+describe("callbackForOpen spec", () => {
   it("callback when error", async () => {
     httpClientMock.fetch = getMockFn({}, false);
-    let result = await callbackForForceMerge(forceMergeMetaData, {
+    let result = await callbackForOpen(openMetaData, {
       core,
     });
     expect(result).toBe(false);
@@ -46,46 +45,29 @@ describe("callbackForForceMerge spec", () => {
         completed: false,
       },
     });
-    const result = await callbackForForceMerge(forceMergeMetaData, {
+    const result = await callbackForOpen(openMetaData, {
       core,
     });
     expect(result).toBe(false);
   });
 
-  it("callback when complete", async () => {
-    httpClientMock.fetch = getMockFn({
-      found: true,
-      _source: {
-        completed: true,
-      },
-    });
-    const result = await callbackForForceMerge(forceMergeMetaData, {
-      core,
-    });
-    expect(result).toBe(true);
-    expect(core.notifications.toasts.remove).toBeCalledWith("toastId");
-    expect(core.notifications.toasts.addSuccess).toBeCalledTimes(1);
-  });
-
-  it("callback when some complete", async () => {
+  it("callback when successfully complete", async () => {
     httpClientMock.fetch = getMockFn({
       found: true,
       _source: {
         completed: true,
         response: {
-          _shards: {
-            successful: 9,
-            total: 10,
-          },
+          acknowledged: true,
+          shards_acknowledged: true,
         },
       },
     });
-    const result = await callbackForForceMerge(forceMergeMetaData, {
+    const result = await callbackForOpen(openMetaData, {
       core,
     });
     expect(result).toBe(true);
     expect(core.notifications.toasts.remove).toBeCalledWith("toastId");
-    expect(core.notifications.toasts.addWarning).toBeCalledTimes(1);
+    expect(core.notifications.toasts.addSuccess).toBeCalledTimes(1);
   });
 
   it("callback when failed", async () => {
@@ -98,7 +80,7 @@ describe("callbackForForceMerge spec", () => {
         },
       },
     });
-    const result = await callbackForForceMerge(forceMergeMetaData, {
+    const result = await callbackForOpen(openMetaData, {
       core,
     });
     expect(result).toBe(true);
@@ -107,7 +89,7 @@ describe("callbackForForceMerge spec", () => {
   });
 
   it("callback when timeout", async () => {
-    const result = await callbackForForceMergeTimeout(forceMergeMetaData, {
+    const result = await callbackForOpenTimeout(openMetaData, {
       core,
     });
     expect(result).toBe(true);
