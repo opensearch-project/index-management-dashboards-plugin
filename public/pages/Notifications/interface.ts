@@ -23,7 +23,6 @@ export type ILronPlainConfig = ILronConfig["lron_condition"] &
   };
 
 export type FieldState = {
-  useDifferentSettings: boolean;
   dataSource: ILronPlainConfig[];
   allConfig: ILronPlainConfig;
 };

@@ -68,7 +68,7 @@ describe("<Notifications /> spec", () => {
             channel_list: [
               {
                 config_id: "1",
-                name: "1",
+                name: "channel1",
                 description: "2",
                 config_type: "chime",
                 is_enabled: true,
@@ -96,7 +96,7 @@ describe("<Notifications /> spec", () => {
     await findByText("Address the following error(s) in the form");
     await userEvent.type(
       getByTestId("dataSource.0.channels")?.querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
-      "1{enter}"
+      "channel1{enter}"
     );
     await userEvent.click(getByTestId("dataSource.0.failure"));
     await waitFor(
@@ -203,5 +203,21 @@ describe("<Notifications /> spec", () => {
     await waitFor(() => {
       expect(queryByText("Cancel")).toBeNull();
     });
+  });
+
+  it("Update with auto populate channels", async () => {
+    const { container, findByText, getByTestId, findByTestId } = renderNotificationsWithRouter([ROUTES.NOTIFICATIONS]);
+    await findByText("reindex");
+    await userEvent.click(getByTestId("dataSource.0.failure"));
+    await waitFor(() => {
+      expect(getByTestId("dataSource.0.channels").querySelector(".euiLoadingSpinner")).toBeNull();
+    });
+    await userEvent.type(
+      getByTestId("dataSource.0.channels")?.querySelector('[data-test-subj="comboBoxSearchInput"]') as Element,
+      "channel1{enter}"
+    );
+    await userEvent.click(getByTestId("dataSource.1.failure"));
+    await findByTestId("dataSource.1.channels");
+    await waitFor(() => expect(container.querySelector(`[data-test-subj="dataSource.1.channels"] [title="channel1"]`)).toBeInTheDocument());
   });
 });

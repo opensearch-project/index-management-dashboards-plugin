@@ -10,6 +10,10 @@ export type FieldName = string | string[];
 
 export type FieldOption<T extends object> = {
   /**
+   * All component changes will arrive here [set value will not trigger this function], before the onChange
+   */
+  onBeforeChange?: (name: FieldName, value?: any) => void;
+  /**
    * All component changes will arrive here [set value will not trigger this function]
    */
   onChange?: (name: FieldName, value?: any) => void;

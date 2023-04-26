@@ -121,8 +121,9 @@ export default function useField<T extends object>(options?: FieldOption<T>): Fi
         ...initOptions.props,
         value: get(values.current, initOptions.name),
         onChange: async (val) => {
+          options?.onBeforeChange?.(initOptions.name, val);
           setValue(initOptions.name, val);
-          options?.onChange && options?.onChange(initOptions.name, val);
+          options?.onChange?.(initOptions.name, val);
           const validateErros = await validateField(initOptions.name);
           setError(initOptions.name, validateErros.length ? validateErros : null);
         },

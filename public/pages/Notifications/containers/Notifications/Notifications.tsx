@@ -6,18 +6,13 @@
 import React, { ReactChild, useContext, useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 import { EuiButton, EuiCallOut, EuiCard, EuiEmptyPrompt, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { get } from "lodash";
 import { CoreStart } from "opensearch-dashboards/public";
 import useField from "../../../../lib/field";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
-import {
-  getComputedResultFromPlainList,
-  getDiffableMapFromPlainList,
-  getNotifications,
-  submitNotifications,
-  transformConfigListToPlainList,
-} from "../../hooks";
+import { getDiffableMapFromPlainList, getNotifications, submitNotifications, transformConfigListToPlainList } from "../../hooks";
 import { FieldState, ILronPlainConfig } from "../../interface";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -43,12 +38,27 @@ export interface NotificationsProps {}
 const Notifications = (props: NotificationsProps) => {
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [submitClicked, setSubmitClicked] = useState(false);
   const [noPermission, setNoPermission] = useState(false);
   const [permissionForUpdate, setPermissionForUpdate] = useState(false);
   const field = useField({
     values: {} as Partial<FieldState>,
+    onBeforeChange(name) {
+      const previousValue = field.getValues();
+      if (Array.isArray(name) && name.length === 3 && parseInt(name[1]) > 0) {
+        const [dataSourceStr, index] = name;
+        const newProperty = [dataSourceStr, index, FieldEnum.channels];
+        if (
+          (name[2] === FieldEnum.success || name[2] === FieldEnum.failure) &&
+          !get(previousValue, [dataSourceStr, index, FieldEnum.success]) &&
+          !get(previousValue, [dataSourceStr, index, FieldEnum.failure]) &&
+          (!get(previousValue, newProperty) || !get(previousValue, newProperty).length)
+        ) {
+          field.setValue(newProperty, field.getValue([dataSourceStr, `${(parseInt(index) as number) - 1}`, FieldEnum.channels]));
+        }
+      }
+    },
     onChange(name, value) {
       if ((name[2] === FieldEnum.success || name[2] === FieldEnum.failure) && !value) {
         field.validatePromise();
@@ -72,7 +82,16 @@ const Notifications = (props: NotificationsProps) => {
     setIsLoading(true);
     const result = await submitNotifications({
       commonService: services.commonService,
-      plainConfigsPayload: notifications.dataSource || [],
+      plainConfigsPayload: (notifications.dataSource || []).map((item) => {
+        if (!item.success && !item.failure) {
+          return {
+            ...item,
+            channels: [],
+          };
+        }
+
+        return item;
+      }),
     });
     if (result && result.ok) {
       coreServices.notifications.toasts.addSuccess("Notifications settings for index operations have been successfully updated.");
@@ -94,7 +113,6 @@ const Notifications = (props: NotificationsProps) => {
         if (res.ok) {
           const plainList = transformConfigListToPlainList(res.response.lron_configs.map((item) => item.lron_config));
           const values = {
-            ...getComputedResultFromPlainList(plainList),
             dataSource: plainList,
           } as FieldState;
           unstable_batchedUpdates(() => {
