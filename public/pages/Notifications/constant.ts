@@ -56,7 +56,7 @@ export enum FieldEnum {
 }
 
 export const FieldMapLabel = {
-  [FieldEnum.channels]: "Select channels to notify",
+  [FieldEnum.channels]: "Notification channels",
 };
 
 export const LABEL_FOR_CONDITION = "Notify when operation";
