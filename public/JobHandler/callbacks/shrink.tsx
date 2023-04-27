@@ -2,12 +2,13 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { ReactChild } from "react";
+import React from "react";
 import { CallbackType, TaskResult } from "../interface";
 import { RecoveryJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
 import { DetailLink } from "../components/DetailLink";
+import { FormatResourceWithClusterInfo } from "../components/FormatResourceWithClusterInfo";
 
 export const callbackForShrink: CallbackType = async (job: RecoveryJobMetaData, { core }) => {
   const extras = job.extras;
@@ -34,8 +35,8 @@ export const callbackForShrink: CallbackType = async (job: RecoveryJobMetaData, 
             {
               title: ((
                 <>
-                  Source index <DetailLink index={extras.sourceIndex} /> has been successfully shrunken as{" "}
-                  <DetailLink index={extras.destIndex} />.
+                  Source index <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has been successfully shrunken as{" "}
+                  <DetailLink index={extras.destIndex} clusterInfo={extras.clusterInfo} />.
                 </>
               ) as unknown) as string,
             },
@@ -44,22 +45,15 @@ export const callbackForShrink: CallbackType = async (job: RecoveryJobMetaData, 
             }
           );
         } else {
-          let errors: ReactChild[] = [];
-
-          errors.push(
-            <ul key="error.reason">
-              <li>{error.reason}</li>
-            </ul>
-          );
-
           core.notifications.toasts.addDanger(
             {
               title: ((
                 <>
-                  Shrink from {extras.sourceIndex} to {extras.destIndex} has some errors, please check the errors below:
+                  Shrink from <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> to{" "}
+                  <FormatResourceWithClusterInfo resource={extras.destIndex} clusterInfo={extras.clusterInfo} /> has failed.
                 </>
               ) as unknown) as string,
-              text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{errors}</div>) as unknown) as string,
+              text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{error.reason}</div>) as unknown) as string,
             },
             {
               toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
@@ -83,8 +77,8 @@ export const callbackForShrinkTimeout: CallbackType = (job: RecoveryJobMetaData,
     {
       title: ((
         <>
-          Shrink <DetailLink index={extras.sourceIndex} /> to {extras.destIndex} does not finish in reasonable time, please check the index
-          manually.
+          Shrink <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> to {extras.destIndex} does not finish in
+          reasonable time, please check the index manually.
         </>
       ) as unknown) as string,
     },
