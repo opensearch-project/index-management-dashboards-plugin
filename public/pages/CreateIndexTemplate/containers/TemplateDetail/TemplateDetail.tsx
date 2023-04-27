@@ -19,7 +19,7 @@ import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
-import DefineTemplate from "../../components/DefineTemplate";
+import DefineTemplate, { OverviewTemplate } from "../../components/DefineTemplate";
 import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
@@ -244,6 +244,12 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       <EuiSpacer />
       {isEdit ? (
         <>
+          <OverviewTemplate {...subCompontentProps} />
+          <EuiSpacer />
+        </>
+      ) : null}
+      {isEdit ? (
+        <>
           <EuiTabs>
             {tabs.map((item) => (
               <EuiTab
@@ -260,9 +266,13 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           <EuiSpacer />
         </>
       ) : null}
-      <DefineTemplate {...subCompontentProps} />
-      <EuiSpacer />
-      {values._meta?.flow === FLOW_ENUM.COMPONENTS ? (
+      {subCompontentProps.readonly ? null : (
+        <>
+          <DefineTemplate {...subCompontentProps} />
+          <EuiSpacer />
+        </>
+      )}
+      {values._meta?.flow === FLOW_ENUM.COMPONENTS && !subCompontentProps.readonly ? (
         <>
           <ComposableTemplate {...subCompontentProps} />
           <EuiSpacer />

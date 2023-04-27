@@ -3,72 +3,27 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiText, EuiTextColor } from "@elastic/eui";
+import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText, EuiTextColor } from "@elastic/eui";
 import { FLOW_ENUM, SubDetailProps } from "../../interface";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import RemoteSelect from "../../../../components/RemoteSelect";
-import DescriptionListHoz from "../../../../components/DescriptionListHoz";
-import { ROUTES, TEMPLATE_NAMING_MESSAGE, TEMPLATE_NAMING_PATTERN } from "../../../../utils/constants";
-import TemplateType, { TemplateConvert } from "../TemplateType";
+import { TEMPLATE_NAMING_MESSAGE, TEMPLATE_NAMING_PATTERN } from "../../../../utils/constants";
+import TemplateType from "../TemplateType";
 import { getCommonFormRowProps } from "../../hooks";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { TemplateItem } from "../../../../../models/interfaces";
 
 export default function DefineTemplate(props: SubDetailProps) {
-  const { readonly, field, isEdit, withoutPanel, columns } = props;
+  const { readonly, field, isEdit } = props;
   const values: TemplateItem = field.getValues();
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
   const matchSystemIndex = filterByMinimatch(".kibana", values.index_patterns || []);
-  const content = (
-    <>
-      <EuiSpacer size="s" />
-      <DescriptionListHoz
-        columns={columns}
-        listItems={[
-          {
-            title: "Template type",
-            description: TemplateConvert({
-              value: values.data_stream,
-            }),
-          },
-          {
-            title: "Index patterns",
-            description: values.index_patterns?.join(", "),
-          },
-          {
-            title: "Priority",
-            description: values.priority,
-          },
-          {
-            title: "Associated component templates",
-            description: (values.composed_of || []).length
-              ? (values.composed_of || []).map((item) => (
-                  <div key={item}>
-                    <EuiLink external={false} target="_blank" href={`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}`}>
-                      {item}
-                    </EuiLink>
-                  </div>
-                ))
-              : "-",
-          },
-        ]}
-      />
-    </>
-  );
   const registeredFlowField = field.registerField({
     name: ["_meta", "flow"],
   });
-  return readonly ? (
-    withoutPanel ? (
-      content
-    ) : (
-      <ContentPanel title="Overview" titleSize="s">
-        {content}
-      </ContentPanel>
-    )
-  ) : (
+  return readonly ? null : (
     <ContentPanel title="Template settings" titleSize="s">
       <EuiSpacer size="s" />
       {isEdit ? null : (

@@ -7,7 +7,7 @@ import React, { forwardRef, Ref } from "react";
 import { EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import useField, { FieldInstance } from "../../../../lib/field";
-import DefineTemplate from "../../components/DefineTemplate";
+import { OverviewTemplate } from "../../components/DefineTemplate";
 import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
@@ -47,7 +47,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer />
-      <DefineTemplate {...subCompontentProps} />
+      <OverviewTemplate {...subCompontentProps} />
       <EuiSpacer />
       <ComposableTemplate {...subCompontentProps} />
       <EuiSpacer />
