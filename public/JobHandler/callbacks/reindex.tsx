@@ -2,12 +2,14 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { ReactChild } from "react";
+import React from "react";
 import { CallbackType, TaskResult } from "../interface";
 import { ReindexJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
 import { DetailLink } from "../components/DetailLink";
+import { FormatResourceWithClusterInfo } from "../components/FormatResourceWithClusterInfo";
+import { ErrorToastContentForJob } from "../components/ErrorToastContentForJob";
 
 type ReindexTaskResult = TaskResult<{
   failures: {
@@ -41,8 +43,8 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
           {
             title: ((
               <>
-                Source {extras.sourceIndex} has been successfully reindexed as{" "}
-                <DetailLink index={extras.destIndex} writingIndex={extras.writingIndex} />
+                Source <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has been
+                successfully reindexed as <DetailLink index={extras.destIndex} writingIndex={extras.writingIndex} />
               </>
             ) as unknown) as string,
           },
@@ -51,36 +53,39 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
           }
         );
       } else {
-        let errors: ReactChild[] = [];
-        if (failures?.length) {
-          errors.push(
-            <ul key="response.failures">
-              {Array.from(new Set(failures.map((item) => item.cause?.reason).filter((item) => item))).map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          );
-        }
-
-        if (error?.reason) {
-          errors.push(
-            <ul key="error.reason">
-              <li>{error.reason}</li>
-            </ul>
-          );
-        }
-
         if (extras.toastId) {
           core.notifications.toasts.remove(extras.toastId);
         }
         core.notifications.toasts.addDanger(
           {
+            iconType: "alert",
             title: ((
               <>
-                Reindex from {extras.sourceIndex} to {extras.destIndex} has some errors, please check the errors below:
+                Reindex from <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> to{" "}
+                {extras.destIndex} has failed
               </>
             ) as unknown) as string,
-            text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{errors}</div>) as unknown) as string,
+            text: ((
+              <ErrorToastContentForJob
+                shortError={
+                  error?.reason || (
+                    <>
+                      There is some error(s) when reindexing{" "}
+                      <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} />
+                    </>
+                  )
+                }
+                fullError={
+                  failures?.length ? (
+                    <ul key="response.failures">
+                      {Array.from(new Set(failures.map((item) => item.cause?.reason).filter((item) => item))).map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  ) : undefined
+                }
+              />
+            ) as unknown) as string,
           },
           {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
@@ -103,8 +108,9 @@ export const callbackForReindexTimeout: CallbackType = (job: ReindexJobMetaData,
     {
       title: ((
         <>
-          Reindex from {extras.sourceIndex} to {extras.destIndex} does not finish in reasonable time, please check the task {extras.taskId}{" "}
-          manually
+          Reindex from <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> to{" "}
+          <FormatResourceWithClusterInfo resource={extras.destIndex} clusterInfo={extras.clusterInfo} /> does not finish in reasonable time,
+          please check the task {extras.taskId} manually
         </>
       ) as unknown) as string,
     },
