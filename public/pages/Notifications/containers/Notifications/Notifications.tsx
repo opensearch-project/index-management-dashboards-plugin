@@ -296,6 +296,7 @@ const Notifications = (props: NotificationsProps) => {
             getDiffableMapFromPlainList(values.dataSource || []),
             getDiffableMapFromPlainList(field.getOriginalValues().dataSource || [])
           )}
+          formErrorsCount={allErrors.length}
           onClickSubmit={onSubmit}
           onClickCancel={onCancel}
           submitButtonDataTestSubj="submitNotifcationSettings"
