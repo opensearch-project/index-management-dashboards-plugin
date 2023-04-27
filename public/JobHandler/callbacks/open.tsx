@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { ReactChild } from "react";
+import React from "react";
 import { CallbackType, TaskResult } from "../interface";
 import { OpenJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
@@ -40,8 +40,11 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
             title: ((
               <>
                 The indexes{" "}
-                {extras.indexes.map((item) => (
-                  <DetailLink key={item} index={item} />
+                {extras.indexes.map((item, index) => (
+                  <span key={item}>
+                    {index > 0 && ", "}
+                    <DetailLink key={item} index={item} clusterInfo={extras.clusterInfo} />
+                  </span>
                 ))}{" "}
                 are successfully opened.
               </>
@@ -54,14 +57,6 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
 
         return true;
       } else if (error?.reason) {
-        let errors: ReactChild[] = [];
-
-        errors.push(
-          <ul key="error.reason">
-            <li>{error.reason}</li>
-          </ul>
-        );
-
         if (extras.toastId) {
           core.notifications.toasts.remove(extras.toastId);
         }
@@ -70,13 +65,16 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
             title: ((
               <>
                 Open{" "}
-                {extras.indexes.map((item) => (
-                  <DetailLink key={item} index={item} />
+                {extras.indexes.map((item, index) => (
+                  <span key={item}>
+                    {index > 0 && ", "}
+                    <DetailLink key={item} index={item} clusterInfo={extras.clusterInfo} />
+                  </span>
                 ))}{" "}
-                has some errors, please check the errors below:
+                has failed
               </>
             ) as unknown) as string,
-            text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{errors}</div>) as unknown) as string,
+            text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{error.reason}</div>) as unknown) as string,
           },
           {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
@@ -101,9 +99,12 @@ export const callbackForOpenTimeout: CallbackType = (job: OpenJobMetaData, { cor
       title: ((
         <>
           Open{" "}
-          {extras.indexes.map((item) => (
-            <DetailLink key={item} index={item} />
-          ))}
+          {extras.indexes.map((item, index) => (
+            <span key={item}>
+              {index > 0 && ", "}
+              <DetailLink key={item} index={item} clusterInfo={extras.clusterInfo} />
+            </span>
+          ))}{" "}
           does not finish in reasonable time, please check the index manually
         </>
       ) as unknown) as string,

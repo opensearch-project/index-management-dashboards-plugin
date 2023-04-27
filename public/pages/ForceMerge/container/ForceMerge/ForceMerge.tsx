@@ -23,6 +23,7 @@ import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { ListenType } from "../../../../lib/JobScheduler";
 import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
 import { ActionType } from "../../../Notifications/constant";
+import { getClusterInfo } from "../../../../utils/helpers";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -98,9 +99,13 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
           taskId: result.response?.task,
         });
       }
+      const clusterInfo = await getClusterInfo({
+        commonService: services.commonService,
+      });
       await jobSchedulerInstance.addJob({
         type: ListenType.FORCE_MERGE,
         extras: {
+          clusterInfo,
           toastId: toastInstance.id,
           sourceIndex: indexes,
           taskId: result.response?.task,

@@ -21,7 +21,7 @@ import _ from "lodash";
 import React, { ChangeEvent, Component } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { getErrorMessage } from "../../../../utils/helpers";
+import { getClusterInfo, getErrorMessage } from "../../../../utils/helpers";
 import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -261,9 +261,13 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
             taskId: result.response?.taskId || "",
           });
         }
+        const clusterInfo = await getClusterInfo({
+          commonService: this.props.commonService,
+        });
         await jobSchedulerInstance.addJob({
           type: ListenType.REINDEX,
           extras: {
+            clusterInfo,
             toastId: result.response?.toastId,
             sourceIndex: reindexReq.body.source.index,
             destIndex: reindexReq.body.dest.index,
@@ -305,7 +309,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     };
     if (res && res.ok) {
       // @ts-ignore
-      const toast = `Successfully started reindexing ${reindexRequest.body.source.index}.The reindexed index will be named ${reindexRequest.body.dest.index}.`;
+      const toast = `Successfully started reindexing ${reindexRequest.body.source.index}. The reindexed index will be named ${reindexRequest.body.dest.index}.`;
       const toastInstance = (this.context as CoreStart).notifications.toasts.addSuccess(toast, {
         toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
       });
