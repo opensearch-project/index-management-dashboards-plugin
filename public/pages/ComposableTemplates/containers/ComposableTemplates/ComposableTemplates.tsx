@@ -26,7 +26,7 @@ import { ContentPanel, ContentPanelActions } from "../../../../components/Conten
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
 import { ICatComposableTemplate } from "../../interface";
-import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
@@ -85,6 +85,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       selectedItems: [],
       composableTemplates: [],
       loading: false,
+      selectedTypes: [],
     };
 
     this.getComposableTemplates = debounce(this.getComposableTemplatesOriginal, 500, { leading: true });
@@ -172,7 +173,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
   };
 
   getFinalItems = (allTemplates: ICatComposableTemplate[]) => {
-    const { from, size, sortDirection, sortField } = this.state;
+    const { from, size, sortDirection, sortField, selectedTypes } = this.state;
     const fromNumber = Number(from);
     const sizeNumber = Number(size);
     const componentMapTemplate = this.props.componentMapTemplate;
@@ -198,6 +199,15 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
 
         return 1;
       }
+    });
+
+    // filter by types
+    listResponse = listResponse.filter((item) => {
+      if (!selectedTypes.length) {
+        return true;
+      }
+
+      return selectedTypes.every((type) => !!item.component_template.template[type as IndicesUpdateMode]);
     });
 
     //pagination
@@ -277,6 +287,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         <IndexControls
           value={{
             search: this.state.search,
+            selectedTypes: this.state.selectedTypes,
           }}
           onSearchChange={this.onSearchChange}
         />

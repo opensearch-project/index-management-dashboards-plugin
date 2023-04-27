@@ -5,10 +5,13 @@
 
 import React, { useEffect, useState } from "react";
 import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import FilterGroup from "../../../CreateIndexTemplate/components/FilterGroup";
+import { IndicesUpdateMode } from "../../../../utils/constants";
 
 export interface SearchControlsProps {
   value: {
     search: string;
+    selectedTypes: string[];
   };
   onSearchChange: (args: SearchControlsProps["value"]) => void;
 }
@@ -30,6 +33,26 @@ export default function SearchControls(props: SearchControlsProps) {
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
         <EuiFieldSearch fullWidth placeholder="Search..." value={state.search} onChange={(e) => onChange("search", e.target.value)} />
+      </EuiFlexItem>
+      <EuiFlexItem style={{ flexBasis: "100px" }} grow={false}>
+        <FilterGroup
+          filterButtonProps={{
+            children: "Types",
+          }}
+          onChange={(val) => onChange("selectedTypes", val || [])}
+          value={state.selectedTypes}
+          options={[
+            {
+              label: IndicesUpdateMode.alias,
+            },
+            {
+              label: IndicesUpdateMode.mappings,
+            },
+            {
+              label: IndicesUpdateMode.settings,
+            },
+          ]}
+        />
       </EuiFlexItem>
     </EuiFlexGroup>
   );
