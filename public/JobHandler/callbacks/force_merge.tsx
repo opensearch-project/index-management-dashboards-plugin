@@ -2,13 +2,13 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { ReactChild } from "react";
+import React from "react";
 import { CallbackType, TaskResult } from "../interface";
 import { ForceMergeJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
-import { EuiButton, EuiSpacer, EuiText } from "@elastic/eui";
-import { Modal } from "../../components/Modal";
+import { ErrorToastContentForJob } from "../components/ErrorToastContentForJob";
+import { FormatResourcesWithClusterInfo } from "../components/FormatResourceWithClusterInfo";
 
 type ForceMergeTaskResult = TaskResult<{
   _shards?: {
@@ -48,7 +48,12 @@ export const callbackForForceMerge: CallbackType = async (job: ForceMergeJobMeta
         if (successful === total) {
           core.notifications.toasts.addSuccess(
             {
-              title: `The indexes ${extras.sourceIndex.join(", ")} are successfully force merged.`,
+              title: ((
+                <>
+                  The indexes <FormatResourcesWithClusterInfo resources={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> are
+                  successfully force merged.
+                </>
+              ) as unknown) as string,
             },
             {
               toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
@@ -57,63 +62,50 @@ export const callbackForForceMerge: CallbackType = async (job: ForceMergeJobMeta
         } else {
           core.notifications.toasts.addWarning(
             {
-              title: `Some shards of ${extras.sourceIndex.join(", ")} could not be force merged.`,
-              text: ((
+              iconType: "alert",
+              title: ((
                 <>
-                  <div>
-                    {total - successful} out of {total} could not be force merged.
-                  </div>
-                  <EuiSpacer />
-                  <EuiButton
-                    onClick={
-                      /* istanbul ignore next */ () => {
-                        Modal.show({
-                          locale: {
-                            ok: "Close",
-                          },
-                          title: `Some shards of ${extras.sourceIndex.join(", ")} could not be force merged.`,
-                          content: (
-                            <EuiText>
-                              <div>
-                                {total - successful} out of {total} could not be force merged. The following reasons may prevent shards from
-                                performing a force merge:
-                              </div>
-                              <ul>
-                                {failures.map((item) => (
-                                  <li key={`${item.index}-${item.index}-${item.status}`}>
-                                    The shard {item.shard} of index {item.index} failed to merge because of {item.status}.
-                                  </li>
-                                ))}
-                                <li>Some shards are unassigned.</li>
-                                <li>
-                                  Insufficient disk space: Force merging requires disk space to create a new, larger segment. If the disk
-                                  does not have enough space, the merge process may fail.
-                                </li>
-                                <li>
-                                  Index read-only: If the index is marked as read-only, a force merge operation cannot modify the index, and
-                                  the merge process will fail.
-                                </li>
-                                <li>
-                                  Too many open files: The operating system may limit the number of files that a process can have open
-                                  simultaneously, and a force merge operation may exceed this limit, causing the merge process to fail.
-                                </li>
-                                <li>
-                                  Index corruption: If the index is corrupted or has some inconsistencies, the force merge operation may
-                                  fail.
-                                </li>
-                              </ul>
-                            </EuiText>
-                          ),
-                        });
-                      }
-                    }
-                    style={{ float: "right" }}
-                  >
-                    View details
-                  </EuiButton>
+                  Some shards of <FormatResourcesWithClusterInfo resources={extras.sourceIndex} clusterInfo={extras.clusterInfo} />
+                  could not be force merged.
                 </>
               ) as unknown) as string,
-              iconType: "",
+              text: ((
+                <ErrorToastContentForJob
+                  shortError={
+                    <>
+                      {total - successful} out of {total} could not be force merged.
+                    </>
+                  }
+                  fullError={
+                    <>
+                      <div>The following reasons may prevent shards from performing a force merge:</div>
+                      <ul>
+                        {failures.map((item) => (
+                          <li key={`${item.index}-${item.index}-${item.status}`}>
+                            The shard {item.shard} of index {item.index} failed to merge because of {item.status}.
+                          </li>
+                        ))}
+                        <li>Some shards are unassigned.</li>
+                        <li>
+                          Insufficient disk space: Force merging requires disk space to create a new, larger segment. If the disk does not
+                          have enough space, the merge process may fail.
+                        </li>
+                        <li>
+                          Index read-only: If the index is marked as read-only, a force merge operation cannot modify the index, and the
+                          merge process will fail.
+                        </li>
+                        <li>
+                          Too many open files: The operating system may limit the number of files that a process can have open
+                          simultaneously, and a force merge operation may exceed this limit, causing the merge process to fail.
+                        </li>
+                        <li>
+                          Index corruption: If the index is corrupted or has some inconsistencies, the force merge operation may fail.
+                        </li>
+                      </ul>
+                    </>
+                  }
+                />
+              ) as unknown) as string,
             },
             {
               toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
@@ -121,20 +113,22 @@ export const callbackForForceMerge: CallbackType = async (job: ForceMergeJobMeta
           );
         }
       } else {
-        let errors: ReactChild[] = [];
-
-        errors.push(
-          <ul key="error.reason">
-            <li>{error.reason}</li>
-          </ul>
-        );
-
         core.notifications.toasts.addDanger(
           {
+            iconType: "alert",
             title: ((
-              <>Force merge from {extras.sourceIndex.join(", ")} has some errors, please check the errors below:</>
+              <>
+                Force merge from <FormatResourcesWithClusterInfo resources={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has some
+                errors, please check the errors below:
+              </>
             ) as unknown) as string,
-            text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{errors}</div>) as unknown) as string,
+            text: ((
+              <div style={{ maxHeight: "30vh", overflowY: "auto" }}>
+                <ul key="error.reason">
+                  <li>{error.reason}</li>
+                </ul>
+              </div>
+            ) as unknown) as string,
           },
           {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
@@ -157,7 +151,7 @@ export const callbackForForceMergeTimeout: CallbackType = (job: ForceMergeJobMet
     {
       title: ((
         <>
-          Force merge {extras.sourceIndex.join(", ")}
+          Force merge <FormatResourcesWithClusterInfo resources={extras.sourceIndex} clusterInfo={extras.clusterInfo} />
           does not finish in reasonable time, please check the index manually
         </>
       ) as unknown) as string,
