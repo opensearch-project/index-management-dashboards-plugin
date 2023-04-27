@@ -285,7 +285,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     };
     if (res && res.ok) {
       // @ts-ignore
-      const toast = `Successfully started reindexing ${reindexRequest.body.source.index}.The reindexed index will be named ${reindexRequest.body.dest.index}.`;
+      const toast = `Successfully started reindexing ${reindexRequest.body.source.index}. The reindexed index will be named ${reindexRequest.body.dest.index}.`;
       const toastInstance = (this.context as CoreStart).notifications.toasts.addSuccess(toast, {
         toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
       });
