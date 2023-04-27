@@ -6,6 +6,8 @@
 // @ts-ignore
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
 import { isEqual } from "lodash";
+import { ClusterInfo } from "../models/interfaces";
+import { CommonService } from "../services";
 
 export function getErrorMessage(err: any, defaultMessage: string) {
   if (err && err.message) return err.message;
@@ -45,3 +47,21 @@ export function diffJson(oldJson?: Record<string, any>, newJson?: Record<string,
   }
   return initial + addOrChanged + oldKeys.length;
 }
+
+export const getClusterInfo = (props: { commonService: CommonService }): Promise<ClusterInfo> => {
+  return props.commonService
+    .apiCaller<{
+      cluster_name: string;
+    }>({
+      endpoint: "cluster.health",
+    })
+    .then((res) => {
+      if (res && res.ok) {
+        return {
+          cluster_name: res.response.cluster_name,
+        };
+      }
+
+      return {};
+    });
+};

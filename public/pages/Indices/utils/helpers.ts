@@ -14,6 +14,7 @@ import { CatIndex } from "../../../../server/models/interfaces";
 import { jobSchedulerInstance } from "../../../context/JobSchedulerContext";
 import { OpenJobMetaData, RecoveryJobMetaData } from "../../../models/interfaces";
 import { ListenType } from "../../../lib/JobScheduler";
+import { getClusterInfo } from "../../../utils/helpers";
 
 export function getURLQueryParams(location: { search: string }): IndicesQueryParams {
   const { from, size, search, sortField, sortDirection, showDataStreams } = queryString.parse(location.search);
@@ -51,9 +52,13 @@ export async function openIndices(props: {
     const toastInstance = props.coreServices.notifications.toasts.addSuccess(toast, {
       toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
     });
+    const clusterInfo = await getClusterInfo({
+      commonService: props.commonService,
+    });
     await jobSchedulerInstance.addJob({
       type: ListenType.OPEN,
       extras: {
+        clusterInfo,
         toastId: toastInstance.id,
         taskId: result.response?.task,
         indexes: props.indices,
@@ -186,9 +191,13 @@ export async function splitIndex(props: {
         toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
       }
     );
+    const clusterInfo = await getClusterInfo({
+      commonService: props.commonService,
+    });
     await jobSchedulerInstance.addJob({
       interval: 30000,
       extras: {
+        clusterInfo,
         toastId: toastInstance.id,
         sourceIndex: props.sourceIndex,
         destIndex: props.targetIndex,

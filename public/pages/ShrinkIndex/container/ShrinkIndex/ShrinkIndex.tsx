@@ -39,7 +39,7 @@ import { BREADCRUMBS } from "../../../../utils/constants";
 import queryString from "query-string";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { RecoveryJobMetaData } from "../../../../models/interfaces";
-import { getErrorMessage } from "../../../../utils/helpers";
+import { getClusterInfo, getErrorMessage } from "../../../../utils/helpers";
 import { ServerResponse } from "../../../../../server/models/types";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DEFAULT_INDEX_SETTINGS, INDEX_BLOCKS_WRITE_SETTING, INDEX_BLOCKS_READONLY_SETTING } from "../../utils/constants";
@@ -182,9 +182,13 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
           }
         );
         this.onCancel();
+        const clusterInfo = await getClusterInfo({
+          commonService,
+        });
         jobSchedulerInstance.addJob({
           interval: 30000,
           extras: {
+            clusterInfo,
             toastId: toastInstance.id,
             sourceIndex: sourceIndexName,
             destIndex: targetIndexName,

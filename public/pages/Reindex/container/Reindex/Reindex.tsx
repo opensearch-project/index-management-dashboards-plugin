@@ -21,7 +21,7 @@ import _ from "lodash";
 import React, { ChangeEvent, Component } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { getErrorMessage } from "../../../../utils/helpers";
+import { getClusterInfo, getErrorMessage } from "../../../../utils/helpers";
 import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/interfaces";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -237,9 +237,13 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       const result = await this.onReindexConfirm(reindexReq);
       const destinationItem = destination[0];
       if (result.ok) {
+        const clusterInfo = await getClusterInfo({
+          commonService: this.props.commonService,
+        });
         await jobSchedulerInstance.addJob({
           type: ListenType.REINDEX,
           extras: {
+            clusterInfo,
             toastId: result.response?.toastId,
             sourceIndex: reindexReq.body.source.index,
             destIndex: reindexReq.body.dest.index,
