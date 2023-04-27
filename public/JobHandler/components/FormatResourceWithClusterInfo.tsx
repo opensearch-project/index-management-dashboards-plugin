@@ -5,7 +5,7 @@
 import React from "react";
 import { ClusterInfo } from "../../models/interfaces";
 
-interface FormatResourceWithClusterInfoProps {
+export interface FormatResourceWithClusterInfoProps {
   clusterInfo?: ClusterInfo;
 }
 
