@@ -21,6 +21,8 @@ import {
   EuiEmptyPrompt,
   EuiText,
   EuiTableSortingType,
+  EuiButtonIcon,
+  EuiToolTip,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -30,11 +32,12 @@ import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/consta
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
-import ComposableTemplatesActions from "../ComposableTemplatesActions";
+import ComposableTemplatesActions, { ComposableTemplatesDeleteAction } from "../ComposableTemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
 import { useComponentMapTemplate } from "../../utils/hooks";
+import "./index.scss";
 
 interface ComposableTemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -294,6 +297,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable
+          className="ISM-component-templates-table"
           data-test-subj="templatesTable"
           loading={this.state.loading || this.props.loading}
           columns={[
@@ -329,15 +333,46 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               name: "Associated index templates",
               sortable: true,
               align: "right",
-              render: (value: number, record: ICatComposableTemplate) => {
-                return (
-                  <AssociatedTemplatesModal
-                    componentTemplate={record.name}
-                    onUnlink={() => this.getComposableTemplates()}
-                    renderProps={({ setVisible }) => <EuiLink onClick={() => setVisible(true)}>{value}</EuiLink>}
-                  />
-                );
-              },
+            },
+            {
+              field: "actions",
+              name: "Actions",
+              align: "right",
+              actions: [
+                {
+                  render: (record: ICatComposableTemplate) => {
+                    return (
+                      <AssociatedTemplatesModal
+                        componentTemplate={record.name}
+                        onUnlink={() => this.getComposableTemplates()}
+                        renderProps={({ setVisible }) => (
+                          <EuiToolTip content="View associated index templates">
+                            <EuiButtonIcon iconType="kqlSelector" onClick={() => setVisible(true)} className="icon-hover-info" />
+                          </EuiToolTip>
+                        )}
+                      />
+                    );
+                  },
+                },
+                {
+                  render: (record: ICatComposableTemplate) => {
+                    return (
+                      <ComposableTemplatesDeleteAction
+                        selectedItems={[record.name]}
+                        onDelete={() => {
+                          this.getComposableTemplates();
+                        }}
+                        renderDeleteButton={({ triggerDelete }) => (
+                          <EuiToolTip content="Delete component template">
+                            <EuiButtonIcon color="danger" iconType="trash" onClick={triggerDelete} className="icon-hover-danger" />
+                          </EuiToolTip>
+                        )}
+                        history={this.props.history}
+                      />
+                    );
+                  },
+                },
+              ],
             },
           ]}
           isSelectable={true}
