@@ -4,7 +4,18 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTab, EuiTabs, EuiTitle } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiButtonEmpty,
+  EuiCodeBlock,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiLink,
+  EuiSpacer,
+  EuiTab,
+  EuiTabs,
+  EuiTitle,
+} from "@elastic/eui";
 import queryString from "query-string";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
@@ -15,7 +26,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { submitTemplate, getTemplate, simulateTemplate, formatTemplate, formatRemoteTemplateToEditTemplate } from "../../hooks";
 import { Modal } from "../../../../components/Modal";
-import JSONEditor from "../../../../components/JSONEditor";
 import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
@@ -216,9 +226,16 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   locale: {
                     ok: "Close",
                   },
+                  style: {
+                    width: 800,
+                  },
                   "data-test-subj": "templateJSONDetailModal",
                   title: values.name,
-                  content: <JSONEditor value={JSON.stringify(showValue, null, 2)} disabled />,
+                  content: (
+                    <EuiCodeBlock language="json" isCopyable>
+                      {JSON.stringify(showValue, null, 2)}
+                    </EuiCodeBlock>
+                  ),
                 });
               }}
             >
