@@ -347,7 +347,12 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                         onUnlink={() => this.getComposableTemplates()}
                         renderProps={({ setVisible }) => (
                           <EuiToolTip content="View associated index templates">
-                            <EuiButtonIcon iconType="kqlSelector" onClick={() => setVisible(true)} className="icon-hover-info" />
+                            <EuiButtonIcon
+                              aria-label="View associated index templates"
+                              iconType="kqlSelector"
+                              onClick={() => setVisible(true)}
+                              className="icon-hover-info"
+                            />
                           </EuiToolTip>
                         )}
                       />
@@ -364,7 +369,13 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                         }}
                         renderDeleteButton={({ triggerDelete }) => (
                           <EuiToolTip content="Delete component template">
-                            <EuiButtonIcon color="danger" iconType="trash" onClick={triggerDelete} className="icon-hover-danger" />
+                            <EuiButtonIcon
+                              aria-label="Delete component template"
+                              color="danger"
+                              iconType="trash"
+                              onClick={triggerDelete}
+                              className="icon-hover-danger"
+                            />
                           </EuiToolTip>
                         )}
                         history={this.props.history}

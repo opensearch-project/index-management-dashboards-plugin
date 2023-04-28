@@ -23,7 +23,13 @@ export default function DeleteTemplate(props: DeleteTemplateProps) {
   return (
     <>
       <EuiToolTip content="Delete template">
-        <EuiButtonIcon color="danger" iconType="trash" onClick={() => setDeleteIndexModalVisible(true)} className="icon-hover-danger" />
+        <EuiButtonIcon
+          aria-label="Delete template"
+          color="danger"
+          iconType="trash"
+          onClick={() => setDeleteIndexModalVisible(true)}
+          className="icon-hover-danger"
+        />
       </EuiToolTip>
       <DeleteIndexModal
         selectedItems={selectedItems.map((item) => item.name)}

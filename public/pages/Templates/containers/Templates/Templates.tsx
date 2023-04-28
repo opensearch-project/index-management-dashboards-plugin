@@ -326,7 +326,12 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
                       onUnlink={() => this.getTemplates()}
                       renderProps={({ setVisible }) => (
                         <EuiToolTip content="View associated index templates">
-                          <EuiButtonIcon iconType="kqlSelector" onClick={() => setVisible(true)} className="icon-hover-info" />
+                          <EuiButtonIcon
+                            aria-label="View associated index templates"
+                            iconType="kqlSelector"
+                            onClick={() => setVisible(true)}
+                            className="icon-hover-info"
+                          />
                         </EuiToolTip>
                       )}
                     />
