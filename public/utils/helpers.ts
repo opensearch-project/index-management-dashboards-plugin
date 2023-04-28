@@ -51,6 +51,11 @@ export function diffJson(oldJson?: Record<string, any>, newJson?: Record<string,
 }
 
 // code related to filter blocked index/alias/datastream
+// an example to use:
+// import { aliasBlockedPredicate, filterBlockedItems } from "./helpers";
+// import { IndexOpBlocksType } from "./constants";
+// const result = filterBlockedItems<IAlias>(services, selectedItems, IndexOpBlocksType.Closed, aliasBlockedPredicate)
+
 interface BlockedIndices {
   [indexName: string]: String[];
 }
