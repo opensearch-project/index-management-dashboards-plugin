@@ -21,6 +21,8 @@ import {
   EuiFormRow,
   EuiEmptyPrompt,
   EuiText,
+  EuiToolTip,
+  EuiButtonIcon,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -35,6 +37,7 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
 import AssociatedComponentsModal from "../AssociatedComponentsModal";
+import DeleteTemplate from "../../components/DeleteTemplate";
 
 interface TemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -269,6 +272,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable
+          className="ISM-templates-table"
           data-test-subj="templatesTable"
           loading={this.state.loading}
           columns={[
@@ -308,17 +312,30 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               field: "composed_of",
               name: "Associated component templates",
               align: "right",
-              render: (value: string, record) => {
-                return (
-                  <AssociatedComponentsModal
-                    template={record}
-                    onUnlink={() => this.getTemplates()}
-                    renderProps={({ setVisible }) => (
-                      <EuiLink onClick={() => setVisible(true)}>{record.templateDetail?.composed_of?.length || 0}</EuiLink>
-                    )}
-                  />
-                );
-              },
+              render: (value: string, record) => record.templateDetail?.composed_of?.length || 0,
+            },
+            {
+              field: "actions",
+              name: "Actions",
+              align: "right",
+              actions: [
+                {
+                  render: (record: ITemplate) => (
+                    <AssociatedComponentsModal
+                      template={record}
+                      onUnlink={() => this.getTemplates()}
+                      renderProps={({ setVisible }) => (
+                        <EuiToolTip content="View associated index templates">
+                          <EuiButtonIcon iconType="kqlSelector" onClick={() => setVisible(true)} className="icon-hover-info" />
+                        </EuiToolTip>
+                      )}
+                    />
+                  ),
+                },
+                {
+                  render: (record: ITemplate) => <DeleteTemplate selectedItems={[record]} onDelete={this.getTemplates} />,
+                },
+              ],
             },
           ]}
           isSelectable={true}
