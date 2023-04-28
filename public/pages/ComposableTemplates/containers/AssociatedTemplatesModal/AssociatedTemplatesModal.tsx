@@ -20,9 +20,8 @@ import {
 import { ROUTES } from "../../../../utils/constants";
 import { ReactChild } from "react";
 import { Modal } from "../../../../components/Modal";
-import { getTemplate, useComponentMapTemplate } from "../../utils/hooks";
+import { submitTemplateChange, useComponentMapTemplate } from "../../utils/hooks";
 import { BrowserServices } from "../../../../models/interfaces";
-import { TemplateItemRemote } from "../../../../../models/interfaces";
 
 interface AssociatedTemplatesModalProps {
   componentTemplate: string;
@@ -91,20 +90,15 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
                             },
                             CancelButtonComponent: EuiButtonEmpty,
                             async onOk() {
-                              const currentTemplate = await getTemplate({
+                              const updateResult = await submitTemplateChange({
                                 templateName: record.name,
                                 commonService: services.commonService,
                                 coreService: coreServices,
-                              });
-                              const updateResult = await services.commonService.apiCaller({
-                                endpoint: "transport.request",
-                                data: {
-                                  method: "POST",
-                                  path: `_index_template/${record.name}`,
-                                  body: {
+                                transformTemplate(currentTemplate) {
+                                  return {
                                     ...currentTemplate,
                                     composed_of: currentTemplate.composed_of?.filter((item) => item !== componentTemplate) || [],
-                                  } as TemplateItemRemote,
+                                  };
                                 },
                               });
                               if (updateResult.ok) {
