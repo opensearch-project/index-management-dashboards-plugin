@@ -8,9 +8,10 @@ import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
 import { ROUTES } from "../../../../utils/constants";
+import { DataStream } from "../../../../../server/models/interfaces";
 
 export interface DataStreamsActionsProps {
-  selectedItems: string[];
+  selectedItems: DataStream[];
   onDelete: () => void;
   history: RouteComponentProps["history"];
 }
@@ -24,6 +25,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
+  const selectedItemsInString = selectedItems.map((item) => item.name);
 
   return (
     <>
@@ -49,14 +51,14 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
                   name: "Force merge",
                   "data-test-subj": "ForceMergeAction",
                   onClick: () => {
-                    props.history.push(`${ROUTES.FORCE_MERGE}/${selectedItems.join(",")}`);
+                    props.history.push(`${ROUTES.FORCE_MERGE}/${selectedItemsInString.join(",")}`);
                   },
                 },
                 {
                   name: "Roll over",
                   disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
-                  onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItems.join(",")}`),
+                  onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItemsInString.join(",")}`),
                 },
                 {
                   name: "Delete",
@@ -70,7 +72,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         />
       </SimplePopover>
       <DeleteIndexModal
-        selectedItems={selectedItems}
+        selectedItems={selectedItemsInString}
         visible={deleteIndexModalVisible}
         onClose={onDeleteIndexModalClose}
         onDelete={() => {
