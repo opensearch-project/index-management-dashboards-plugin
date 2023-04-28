@@ -104,15 +104,15 @@ export interface FilteredBlockedItems<T> {
   blockedItems: T[];
 }
 
-export function indexBlockedPredicate(item: CatIndex, blockedItemsSet: Set<string>): boolean {
+export function indexBlockedPredicate(item: Pick<CatIndex, "index">, blockedItemsSet: Set<string>): boolean {
   return blockedItemsSet.has(item.index);
 }
 
-export function aliasBlockedPredicate(item: IAlias, blockedItemsSet: Set<String>): boolean {
+export function aliasBlockedPredicate(item: Pick<IAlias, "indexArray">, blockedItemsSet: Set<String>): boolean {
   return !!item.indexArray.find((indexName) => blockedItemsSet.has(indexName));
 }
 
-export function dataStreamBlockedPredicate(item: DataStream, blockedItemsSet: Set<String>): boolean {
+export function dataStreamBlockedPredicate(item: Pick<DataStream, "indices">, blockedItemsSet: Set<String>): boolean {
   return !!item.indices.find((dataStreamIndex) => blockedItemsSet.has(dataStreamIndex.index_name));
 }
 
