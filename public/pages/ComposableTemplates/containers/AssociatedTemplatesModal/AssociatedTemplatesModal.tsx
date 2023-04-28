@@ -16,6 +16,7 @@ import {
   EuiInMemoryTable,
   EuiLink,
   EuiTitle,
+  EuiToolTip,
 } from "@elastic/eui";
 import { ROUTES } from "../../../../utils/constants";
 import { ReactChild } from "react";
@@ -66,54 +67,57 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
                 {
                   name: "Actions",
                   field: "actions",
+                  align: "right",
                   render: (value: string, record) => {
                     return (
-                      <EuiButtonIcon
-                        aria-label={`Unlink from ${record.name}?`}
-                        iconType="unlink"
-                        onClick={() => {
-                          Modal.show({
-                            type: "confirm",
-                            title: `Unlink from ${record.name}?`,
-                            content: (
-                              <p style={{ lineHeight: 1.5 }}>
-                                The component {componentTemplate} will be removed from the template {record.name}. This will affect any new
-                                indexes created with the template.
-                              </p>
-                            ),
-                            footer: ["cancel", "confirm"],
-                            locale: {
-                              confirm: "Unlink",
-                            },
-                            confirmButtonProps: {
-                              color: "danger",
-                            },
-                            CancelButtonComponent: EuiButtonEmpty,
-                            async onOk() {
-                              const updateResult = await submitTemplateChange({
-                                templateName: record.name,
-                                commonService: services.commonService,
-                                coreService: coreServices,
-                                transformTemplate(currentTemplate) {
-                                  return {
-                                    ...currentTemplate,
-                                    composed_of: currentTemplate.composed_of?.filter((item) => item !== componentTemplate) || [],
-                                  };
-                                },
-                              });
-                              if (updateResult.ok) {
-                                onUnlink?.(record.name);
-                                reload(true);
-                                coreServices.notifications.toasts.addSuccess(
-                                  `${componentTemplate} has been successfully unlinked from ${record.name}.`
-                                );
-                              } else {
-                                coreServices.notifications.toasts.addDanger(updateResult.error);
-                              }
-                            },
-                          });
-                        }}
-                      />
+                      <EuiToolTip content="Unlink">
+                        <EuiButtonIcon
+                          aria-label={`Unlink from ${record.name}?`}
+                          iconType="unlink"
+                          onClick={() => {
+                            Modal.show({
+                              type: "confirm",
+                              title: `Unlink from ${record.name}?`,
+                              content: (
+                                <p style={{ lineHeight: 1.5 }}>
+                                  The component {componentTemplate} will be removed from the template {record.name}. This will affect any
+                                  new indexes created with the template.
+                                </p>
+                              ),
+                              footer: ["cancel", "confirm"],
+                              locale: {
+                                confirm: "Unlink",
+                              },
+                              confirmButtonProps: {
+                                color: "danger",
+                              },
+                              CancelButtonComponent: EuiButtonEmpty,
+                              async onOk() {
+                                const updateResult = await submitTemplateChange({
+                                  templateName: record.name,
+                                  commonService: services.commonService,
+                                  coreService: coreServices,
+                                  transformTemplate(currentTemplate) {
+                                    return {
+                                      ...currentTemplate,
+                                      composed_of: currentTemplate.composed_of?.filter((item) => item !== componentTemplate) || [],
+                                    };
+                                  },
+                                });
+                                if (updateResult.ok) {
+                                  onUnlink?.(record.name);
+                                  reload(true);
+                                  coreServices.notifications.toasts.addSuccess(
+                                    `${componentTemplate} has been successfully unlinked from ${record.name}.`
+                                  );
+                                } else {
+                                  coreServices.notifications.toasts.addDanger(updateResult.error);
+                                }
+                              },
+                            });
+                          }}
+                        />
+                      </EuiToolTip>
                     );
                   },
                 },
