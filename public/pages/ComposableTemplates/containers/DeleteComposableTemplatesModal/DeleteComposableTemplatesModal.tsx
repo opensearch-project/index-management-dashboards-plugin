@@ -130,10 +130,10 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
           ) : null}
           {step === StepEnum.confirmToUnlink ? (
             <>
-              {selectedItems.map((item, index) => (
+              {componentMapTemplate[selectedItems[0]]?.map((item, index) => (
                 <span key={item}>
                   {index > 0 && ", "}
-                  <Link target="_blank" to={`${ROUTES.CREATE_TEMPLATE}/${item}/readonly`}>
+                  <Link target="_blank" to={`${ROUTES.CREATE_TEMPLATE}/${item}`}>
                     {item}
                   </Link>
                 </span>
