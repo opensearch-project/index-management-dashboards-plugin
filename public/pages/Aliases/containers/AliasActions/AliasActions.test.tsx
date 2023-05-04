@@ -14,13 +14,13 @@ import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-function renderWithRouter(props: AliasesActionsProps) {
+function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
   return {
     ...render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
           <ModalProvider>
-            <AliasesActions {...props} />
+            <AliasesActions {...props} history={{} as any} />
           </ModalProvider>
         </ServicesContext.Provider>
       </CoreServicesContext.Provider>
@@ -98,7 +98,7 @@ describe("<AliasesActions /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.deleteAlias",
         data: {
-          index: "_all",
+          index: ["test_index"],
           name: ["1"],
         },
       });

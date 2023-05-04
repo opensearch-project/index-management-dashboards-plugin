@@ -90,7 +90,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
         />
       </SimplePopover>
       <DeleteIndexModal
-        selectedItems={selectedItems.map((item) => item.alias)}
+        selectedItems={selectedItems}
         visible={deleteIndexModalVisible}
         onClose={onDeleteIndexModalClose}
         onDelete={() => {
