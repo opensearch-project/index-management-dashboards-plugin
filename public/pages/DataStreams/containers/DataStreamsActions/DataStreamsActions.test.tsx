@@ -75,7 +75,7 @@ describe("<DataStreamsActions /> spec", () => {
       }
     );
     const { container, getByTestId, getByPlaceholderText } = renderWithRouter({
-      selectedItems: [{ name: "test_data_stream" }],
+      selectedItems: ["test_data_stream"],
       onDelete,
     });
 
