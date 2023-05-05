@@ -84,7 +84,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
                   name: "Flush",
                   disabled: !selectedItems.length,
                   "data-test-subj": "Flush Action",
-                  onClick: () => onFlushModalClick,
+                  onClick: onFlushModalClick,
                 },
                 {
                   name: "Delete",
