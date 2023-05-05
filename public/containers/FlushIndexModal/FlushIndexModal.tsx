@@ -21,14 +21,16 @@ import { ServicesContext } from "../../services";
 
 type FlushTarget = "indices" | "data stream" | "alias";
 
+const flushAllMessage = "All open indices will be flushed.";
+
 const messageMap: Record<FlushTarget, string> = {
   indices: "The following indices will be flushed.",
   "data stream": "The following data streams will be flushed.",
-  alias: "Indices of the following aliases will be flushed.",
+  alias: "The following aliases will be flushed.",
 };
 
 const blockedMessageMap: Record<FlushTarget, string> = {
-  indices: "The following indices will not be flushed because they are closed",
+  indices: "The following indices will not be flushed because they are closed.",
   "data stream": "The following data streams will not be flushed because\
    at least one of their backing indices are closed.",
   alias: "The following aliases will not be flushed because at lease one of their indices are closed.",
@@ -46,7 +48,7 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
   const { onClose, flushTarget, visible, flushableItems, blockedItems } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
-
+  const flushAll = flushTarget === "indices" && !flushableItems.length && !blockedItems.length;
   const onFlushConfirm = useCallback(async () => {
     try {
       if (!services) {
@@ -60,20 +62,24 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
         },
       });
       if (result && result.ok) {
-        coreServices.notifications.toasts.addSuccess(`Flush [${indexPayload}] successfully`);
+        const flushedItems = flushAll ? "all open indices" : `[${indexPayload}]`;
+        coreServices.notifications.toasts.addSuccess(`Flush ${flushedItems} successfully`);
       } else {
         coreServices.notifications.toasts.addDanger(result.error);
       }
     } catch (err) {
-      coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem Flushing index."));
+      coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem flushing index."));
     } finally {
       onClose();
     }
-  }, [flushableItems, services, coreServices, onClose]);
+  }, [flushableItems, services, coreServices, onClose, flushAll]);
 
   if (!visible) {
     return null;
   }
+
+  console.log(flushAll ? flushAllMessage : messageMap[flushTarget]);
+  console.log(flushAll);
 
   return (
     <EuiModal onClose={onClose}>
@@ -83,9 +89,10 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
 
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
-          {!!flushableItems.length && (
+          {/* we will not display this part if not flushAll and there is no flushable items */}
+          {(flushAll || !!flushableItems.length) && (
             <>
-              <p>{messageMap[flushTarget]}</p>
+              <p>{flushAll ? flushAllMessage : messageMap[flushTarget]}</p>
               <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
                 {flushableItems.map((item) => (
                   <li key={item}>{item}</li>
@@ -111,7 +118,7 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
         <EuiButtonEmpty data-test-subj="Flush Cancel button" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
-        <EuiButton data-test-subj="Flush Confirm button" onClick={onFlushConfirm} isDisabled={!flushableItems.length} fill>
+        <EuiButton data-test-subj="Flush Confirm button" onClick={onFlushConfirm} isDisabled={!flushAll && !flushableItems.length} fill>
           Flush
         </EuiButton>
       </EuiModalFooter>

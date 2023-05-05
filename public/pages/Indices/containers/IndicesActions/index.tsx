@@ -227,7 +227,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     },
                     {
                       name: "Flush",
-                      disabled: !selectedItems.length,
                       "data-test-subj": "Flush Action",
                       onClick: onFlushModalClick,
                     },
