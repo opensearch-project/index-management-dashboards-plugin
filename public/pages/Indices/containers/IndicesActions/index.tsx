@@ -5,7 +5,7 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 
-import { ManagedCatIndex } from "../../../../../server/models/interfaces";
+import { CatIndex, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import ApplyPolicyModal from "../../components/ApplyPolicyModal";
 import SimplePopover from "../../../../components/SimplePopover";
 import { ModalConsumer } from "../../../../components/Modal";
@@ -19,6 +19,8 @@ import OpenIndexModal from "../../components/OpenIndexModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ROUTES } from "../../../../utils/constants";
+import { indexBlockedPredicate, filterBlockedItems } from "../../../../utils/helpers";
+import { IndexOpBlocksType } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
@@ -36,6 +38,8 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
   const [flushIndexModalVisible, setFlushIndexModalVisible] = useState(false);
+  const [blockedIndices, setBlockedIndices] = useState<string[]>([]);
+  const [flushableIndices, setFlushableIndices] = useState<string[]>([]);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -122,6 +126,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const onFlushIndexModalClose = () => {
     setFlushIndexModalVisible(false);
   };
+
+  const onFlushModalClick = useCallback(async () => {
+    const result = await filterBlockedItems<CatIndex>(services, selectedItems, IndexOpBlocksType.Closed, indexBlockedPredicate);
+    setFlushableIndices(result.unBlockedItems.map((item) => item.index));
+    setBlockedIndices(result.blockedItems.map((item) => item.index));
+    setFlushIndexModalVisible(true);
+  }, [selectedItems, services]);
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
@@ -218,7 +229,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       name: "Flush",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Flush Action",
-                      onClick: () => setFlushIndexModalVisible(true),
+                      onClick: onFlushModalClick,
                     },
                     {
                       isSeparator: true,
@@ -258,10 +269,11 @@ export default function IndicesActions(props: IndicesActionsProps) {
       />
 
       <FlushIndexModal
-        selectedItems={selectedItems.map((item) => item.index)}
         visible={flushIndexModalVisible}
         onClose={onFlushIndexModalClose}
         flushTarget="indices"
+        flushableItems={flushableIndices}
+        blockedItems={blockedIndices}
       />
     </>
   );
