@@ -249,7 +249,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
                 text: "",
                 children: (
                   <DataStreamsActions
-                    selectedItems={this.state.selectedItems.map((item) => item.name)}
+                    selectedItems={this.state.selectedItems}
                     onDelete={this.getDataStreams}
                     history={this.props.history}
                   />
