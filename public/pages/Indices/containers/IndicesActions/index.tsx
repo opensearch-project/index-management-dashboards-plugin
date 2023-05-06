@@ -128,9 +128,13 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const onFlushModalClick = useCallback(async () => {
-    const result = await filterBlockedItems<CatIndex>(services, selectedItems, IndexOpBlocksType.Closed, indexBlockedPredicate);
-    setFlushableIndices(result.unBlockedItems.map((item) => item.index));
-    setBlockedIndices(result.blockedItems.map((item) => item.index));
+    try {
+      const result = await filterBlockedItems<CatIndex>(services, selectedItems, IndexOpBlocksType.Closed, indexBlockedPredicate);
+      setFlushableIndices(result.unBlockedItems.map((item) => item.index));
+      setBlockedIndices(result.blockedItems.map((item) => item.index));
+    } catch (err) {
+      setFlushableIndices(selectedItems.map((item) => item.index));
+    }
     setFlushIndexModalVisible(true);
   }, [selectedItems, services]);
 

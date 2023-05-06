@@ -563,4 +563,49 @@ describe("<IndicesActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test_index2,test_index3] successfully");
     });
   });
+
+  it("flush index get blocked items throw error", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
+      if (params.endpoint === "indices.flush") {
+        return { ok: true, response: {} };
+      } else {
+        return {
+          ok: false,
+          error: "mock error",
+        };
+      }
+    });
+
+    const { container, getByTestId } = renderWithRouter({
+      selectedItems: [{ index: "test_index1" }, { index: "test_index2" }, { index: "test_index3" }],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Flush Action"));
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(getByTestId("Flush Modal Title")).toHaveTextContent("Flush indices");
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+    });
+    userEvent.click(getByTestId("Flush Confirm button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "test_index1,test_index2,test_index3",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Flush [test_index1,test_index2,test_index3] successfully"
+      );
+    });
+  });
 });

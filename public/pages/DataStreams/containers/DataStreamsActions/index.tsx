@@ -38,9 +38,13 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
   };
 
   const onFlushModalClick = useCallback(async () => {
-    const result = await filterBlockedItems<DataStream>(services, selectedItems, IndexOpBlocksType.Closed, dataStreamBlockedPredicate);
-    setFlushableDataStreams(result.unBlockedItems.map((item) => item.name));
-    setBlockedDataStreams(result.blockedItems.map((item) => item.name));
+    try {
+      const result = await filterBlockedItems<DataStream>(services, selectedItems, IndexOpBlocksType.Closed, dataStreamBlockedPredicate);
+      setFlushableDataStreams(result.unBlockedItems.map((item) => item.name));
+      setBlockedDataStreams(result.blockedItems.map((item) => item.name));
+    } catch (err) {
+      setFlushableDataStreams(selectedItems.map((item) => item.name));
+    }
     setFlushDataStreamModalVisible(true);
   }, [selectedItems, services]);
 

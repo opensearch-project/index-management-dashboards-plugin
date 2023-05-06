@@ -39,9 +39,13 @@ export default function AliasesActions(props: AliasesActionsProps) {
   };
 
   const onFlushModalClick = useCallback(async () => {
-    const result = await filterBlockedItems<IAlias>(services, selectedItems, IndexOpBlocksType.Closed, aliasBlockedPredicate);
-    setFlushableAliases(result.unBlockedItems.map((item) => item.alias));
-    setBlockedAliases(result.blockedItems.map((item) => item.alias));
+    try {
+      const result = await filterBlockedItems<IAlias>(services, selectedItems, IndexOpBlocksType.Closed, aliasBlockedPredicate);
+      setFlushableAliases(result.unBlockedItems.map((item) => item.alias));
+      setBlockedAliases(result.blockedItems.map((item) => item.alias));
+    } catch (err) {
+      setFlushableAliases(selectedItems.map((item) => item.alias));
+    }
     setFlushAliasModalVisible(true);
   }, [selectedItems, services]);
 

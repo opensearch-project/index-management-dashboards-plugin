@@ -178,4 +178,58 @@ describe("<DataStreamsActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [ds2] successfully");
     });
   });
+
+  it("flush data stream get blocked items throw error", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
+      if (params.endpoint === "indices.flush") {
+        return { ok: true, response: {} };
+      } else {
+        return {
+          ok: false,
+          error: "mock error",
+        };
+      }
+    });
+
+    const { container, getByTestId } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "ds1",
+          indices: [{ index_name: "test_index1" }, { index_name: "test_index3" }],
+        },
+        {
+          name: "ds2",
+          indices: [{ index_name: "test_index3" }],
+        },
+      ],
+      onDelete: () => null,
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Flush Action"));
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(getByTestId("Flush Modal Title")).toHaveTextContent("Flush data stream");
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+    });
+
+    userEvent.click(getByTestId("Flush Confirm button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "ds1,ds2",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [ds1,ds2] successfully");
+    });
+  });
 });
