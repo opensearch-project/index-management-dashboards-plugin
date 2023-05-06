@@ -78,9 +78,6 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
     return null;
   }
 
-  console.log(flushAll ? flushAllMessage : messageMap[flushTarget]);
-  console.log(flushAll);
-
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>

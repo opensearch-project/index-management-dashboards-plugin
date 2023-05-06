@@ -34,7 +34,32 @@ function renderWithRouter(
 
 describe("<FlushIndexModal /> spec", () => {
   it("renders the component", async () => {
-    render(<FlushIndexModal selectedItems={["test"]} visible flushTarget="indices" onClose={() => {}} />);
+    render(<FlushIndexModal flushableItems={["test1"]} visible blockedItems={["test2"]} flushTarget="indices" onClose={() => {}} />);
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("renders the component with alias", async () => {
+    render(<FlushIndexModal flushableItems={["test1"]} visible blockedItems={["test2"]} flushTarget="alias" onClose={() => {}} />);
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("renders the component with data stream", async () => {
+    render(<FlushIndexModal flushableItems={["test1"]} visible blockedItems={["test2"]} flushTarget="data stream" onClose={() => {}} />);
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("renders with flush all indices", async () => {
+    render(<FlushIndexModal flushableItems={[]} visible blockedItems={[]} flushTarget="indices" onClose={() => {}} />);
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("renders with no flushable items", async () => {
+    render(<FlushIndexModal flushableItems={[]} visible blockedItems={["test2"]} flushTarget="indices" onClose={() => {}} />);
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("renders with no blocked items", async () => {
+    render(<FlushIndexModal flushableItems={["test1"]} visible blockedItems={[]} flushTarget="indices" onClose={() => {}} />);
     expect(document.body.children).toMatchSnapshot();
   });
 
@@ -42,7 +67,8 @@ describe("<FlushIndexModal /> spec", () => {
     const onClose = jest.fn();
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      selectedItems: ["test_index1", "test_index2"],
+      flushableItems: ["test1", "test2"],
+      blockedItems: ["test3"],
       visible: true,
       flushTarget: "indices",
       onClose: onClose,
@@ -55,11 +81,11 @@ describe("<FlushIndexModal /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test_index1,test_index2",
+          index: "test1,test2",
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test_index1,test_index2] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test1,test2] successfully");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -68,7 +94,8 @@ describe("<FlushIndexModal /> spec", () => {
     const onClose = jest.fn();
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
     const { getByTestId } = renderWithRouter(coreServicesMock, null, {
-      selectedItems: ["test_index1", "test_index2"],
+      flushableItems: ["test1", "test2"],
+      blockedItems: ["test3"],
       visible: true,
       flushTarget: "indices",
       onClose: onClose,
@@ -88,7 +115,8 @@ describe("<FlushIndexModal /> spec", () => {
     const onClose = jest.fn();
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: false, response: {} });
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      selectedItems: ["test_index1", "test_index2"],
+      flushableItems: ["test1", "test2"],
+      blockedItems: ["test3"],
       visible: true,
       flushTarget: "indices",
       onClose: onClose,
@@ -101,11 +129,37 @@ describe("<FlushIndexModal /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test_index1,test_index2",
+          index: "test1,test2",
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
       expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("flush all indices", async () => {
+    const onClose = jest.fn();
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      flushableItems: [],
+      blockedItems: [],
+      visible: true,
+      flushTarget: "indices",
+      onClose: onClose,
+    });
+
+    fireEvent.click(getByTestId("Flush Confirm button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush all open indices successfully");
     });
   });
 });

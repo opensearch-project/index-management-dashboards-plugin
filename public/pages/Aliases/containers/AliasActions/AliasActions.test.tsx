@@ -13,6 +13,30 @@ import AliasesActions, { AliasesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { IAPICaller } from "../../../../../models/interfaces";
+
+const exampleBlocksStateResponse = {
+  cluster_name: "opensearch-cluster",
+  cluster_uuid: "123",
+  blocks: {
+    indices: {
+      test_index1: {
+        "4": {
+          description: "index closed",
+          retryable: false,
+          levels: ["read", "write"],
+        },
+      },
+      test_index2: {
+        "5": {
+          description: "index read-only (api)",
+          retryable: false,
+          levels: ["write", "metadata_write"],
+        },
+      },
+    },
+  },
+};
 
 function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
   return {
@@ -118,40 +142,54 @@ describe("<AliasesActions /> spec", () => {
   });
 
   it("flush alias by calling commonService", async () => {
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
+      if (params.endpoint === "indices.flush") {
+        return { ok: true, response: {} };
+      } else {
+        return {
+          ok: true,
+          response: exampleBlocksStateResponse,
+        };
+      }
+    });
+
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [
         {
-          index: "test_index",
-          alias: "1",
-          filter: "1",
-          "routing.index": "1",
-          "routing.search": "1",
-          is_write_index: "1",
-          indexArray: ["test_index"],
+          alias: "alias1",
+          indexArray: ["test_index1", "test_index3"],
+        },
+        {
+          alias: "alias2",
+          indexArray: ["test_index3"],
         },
       ],
     });
 
-    await waitFor(() => {
-      expect(container.firstChild).toMatchSnapshot();
-    });
-
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Flush Action"));
-    expect(getByTestId("Flush Modal Title")).toHaveTextContent("Flush alias");
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(getByTestId("Flush Modal Title")).toHaveTextContent("Flush alias");
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+    });
     userEvent.click(getByTestId("Flush Confirm button"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "1",
+          index: "alias2",
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [1] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [alias2] successfully");
     });
   });
 });
