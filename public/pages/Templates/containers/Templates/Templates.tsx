@@ -38,6 +38,7 @@ import { TemplateItemRemote } from "../../../../../models/interfaces";
 import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
 import AssociatedComponentsModal from "../AssociatedComponentsModal";
 import DeleteTemplate from "../../components/DeleteTemplate";
+import IndexPatternDisplay from "./IndexPatternDisplay";
 
 interface TemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -301,6 +302,9 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
               field: "index_patterns",
               name: "Index patterns",
               sortable: true,
+              render: (value: string[], record) => {
+                return <IndexPatternDisplay indexPatterns={record.templateDetail?.index_patterns || []} templateName={record.name} />;
+              },
             },
             {
               field: "order",
