@@ -57,38 +57,6 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiTabs"
-      role="tablist"
-    >
-      <button
-        aria-selected="true"
-        class="euiTab euiTab-isSelected"
-        role="tab"
-        type="button"
-      >
-        <span
-          class="euiTab__content"
-        >
-          Summary
-        </span>
-      </button>
-      <button
-        aria-selected="false"
-        class="euiTab"
-        role="tab"
-        type="button"
-      >
-        <span
-          class="euiTab__content"
-        >
-          Configuration
-        </span>
-      </button>
-    </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
-    <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
       style="padding-left: 0px; padding-right: 0px;"
     >
@@ -198,6 +166,38 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
           </div>
         </div>
       </div>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiTabs"
+      role="tablist"
+    >
+      <button
+        aria-selected="true"
+        class="euiTab euiTab-isSelected"
+        role="tab"
+        type="button"
+      >
+        <span
+          class="euiTab__content"
+        >
+          Summary
+        </span>
+      </button>
+      <button
+        aria-selected="false"
+        class="euiTab"
+        role="tab"
+        type="button"
+      >
+        <span
+          class="euiTab__content"
+        >
+          Configuration
+        </span>
+      </button>
     </div>
     <div
       class="euiSpacer euiSpacer--l"
