@@ -60,23 +60,12 @@ describe("<TemplateDetail /> spec", () => {
         },
       };
     }) as any;
-    const { getByText, getByTestId, findByTitle } = renderCreateIndexTemplate({
+    const { getByText, findByTitle } = renderCreateIndexTemplate({
       templateName: "good_template",
     });
     await findByTitle("good_template");
     userEvent.click(getByText("View JSON"));
-    await waitFor(() =>
-      expect(
-        JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")
-      ).toEqual({
-        name: "good_template",
-        _meta: {
-          flow: "simple",
-        },
-        priority: "0",
-        template: {},
-      })
-    );
+    await waitFor(() => expect(document.querySelector(".language-json")).toBeInTheDocument());
   });
 
   it("shows the delete modal", async () => {

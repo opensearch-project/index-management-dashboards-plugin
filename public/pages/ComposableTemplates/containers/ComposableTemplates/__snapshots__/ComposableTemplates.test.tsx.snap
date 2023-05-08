@@ -135,12 +135,56 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="euiFlexItem euiFlexItem--flexGrowZero"
+        style="flex-basis: 100px;"
+      >
+        <div
+          class="euiFilterGroup"
+        >
+          <div
+            class="euiPopover euiPopover--anchorDownCenter"
+          >
+            <div
+              class="euiPopover__anchor"
+            >
+              <button
+                class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton-hasNotification euiFilterButton--hasIcon"
+                type="button"
+              >
+                <span
+                  class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+                >
+                  EuiIconMock
+                  <span
+                    class="euiButtonEmpty__text euiFilterButton__text-hasNotification"
+                  >
+                    <span
+                      class="euiFilterButton__textShift"
+                      data-text="Types"
+                      title="Types"
+                    >
+                      Types
+                    </span>
+                    <span
+                      aria-label="3 available filters"
+                      class="euiNotificationBadge euiNotificationBadge--medium euiNotificationBadge--subdued euiFilterButton__notification"
+                    >
+                      3
+                    </span>
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <hr
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      class="euiBasicTable euiBasicTable-loading"
+      class="euiBasicTable euiBasicTable-loading ISM-component-templates-table"
       data-test-subj="templatesTable"
     >
       <div>
@@ -334,6 +378,22 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
                   </span>
                 </button>
               </th>
+              <th
+                class="euiTableHeaderCell"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent euiTableCellContent--alignRight"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Actions"
+                  >
+                    Actions
+                  </span>
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -342,7 +402,7 @@ exports[`<ComposableTemplates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="5"
+                colspan="6"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"

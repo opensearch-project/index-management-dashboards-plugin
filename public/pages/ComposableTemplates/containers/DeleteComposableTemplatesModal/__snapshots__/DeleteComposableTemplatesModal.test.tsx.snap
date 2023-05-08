@@ -39,7 +39,7 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Delete component templates
+              Delete 
             </div>
           </div>
           <div
@@ -52,7 +52,9 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following component template will be permanently deleted. This action cannot be undone.
+                  The following component template will be permanently deleted.
+                   
+                  This action cannot be undone.
                 </p>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"

@@ -23,7 +23,7 @@ import { ROUTES } from "../../../../utils/constants";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import { ServerResponse } from "../../../../../server/models/types";
 
-interface DeleteTemplateModalProps {
+export interface DeleteTemplateModalProps {
   selectedItems: string[];
   visible: boolean;
   onClose: () => void;
