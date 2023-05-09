@@ -7,6 +7,7 @@ import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
+import ClearCacheModal from "../../../../components/ClearCacheModal";
 import { IAlias } from "../../interface";
 import { ROUTES } from "../../../../utils/constants";
 
@@ -20,9 +21,14 @@ export interface AliasesActionsProps {
 export default function AliasesActions(props: AliasesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
+  };
+
+  const onClearCacheModalClose = () => {
+    setClearCacheModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -52,6 +58,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   disabled: selectedItems.length !== 1,
                   "data-test-subj": "editAction",
                   onClick: onUpdateAlias,
+                },
+                {
+                  name: "Clear cache",
+                  disabled: selectedItems.length < 1,
+                  "data-test-subj": "ClearCacheAction",
+                  onClick: () => setClearCacheModalVisible(true),
                 },
                 {
                   name: "Force merge",
@@ -86,6 +98,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
           onDelete();
         }}
       />
+      <ClearCacheModal selectedItems={selectedItems} visible={clearCacheModalVisible} onClose={onClearCacheModalClose} type="aliases" />
     </>
   );
 }

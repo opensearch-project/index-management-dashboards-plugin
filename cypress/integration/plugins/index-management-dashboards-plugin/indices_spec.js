@@ -472,4 +472,54 @@ describe("Indices", () => {
       });
     });
   });
+
+  describe("can clear caches for indexes", () => {
+    before(() => {
+      cy.deleteAllIndices();
+      cy.deleteIMJobs();
+      for (let i = 100; i < 105; i++) {
+        const char = String.fromCharCode(i);
+        cy.createIndex(`index_${char}`);
+      }
+    });
+
+    it("successfully clear caches for multiple indexes", () => {
+      // Select multiple indexes
+      cy.get(`[data-test-subj="checkboxSelectRow-index_d"]`).check({
+        force: true,
+      });
+      cy.get(`[data-test-subj="checkboxSelectRow-index_e"]`).check({
+        force: true,
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Clear cache btn should be enabled
+      cy.get('[data-test-subj="Clear cache Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for clear cache index modal
+      cy.contains("Clear cache");
+
+      // Click clear cache confirm button
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
+
+      // Check for success toast
+      cy.contains("Clear caches for [index_d,index_e] successfully");
+    });
+
+    it("successfully clear caches for all indexes", () => {
+      cy.get('[data-test-subj="moreAction"]').click();
+
+      // Clear cache btn should be enabled
+      cy.get('[data-test-subj="Clear cache Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for clear cache index modal
+      cy.contains("Clear cache");
+
+      // Click clear cache confirm button
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
+
+      // Check for success toast
+      cy.contains("Clear caches for all indexes successfully");
+    });
+  });
 });

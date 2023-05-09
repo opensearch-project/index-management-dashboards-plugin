@@ -16,6 +16,7 @@ import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
+import ClearCacheModal from "../../../../components/ClearCacheModal";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
@@ -33,6 +34,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const { selectedItems, onDelete, onOpen, onClose } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
+  const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
@@ -57,6 +59,10 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(result?.error || "");
     }
   }, [selectedItems, services, coreServices, onDelete, onDeleteIndexModalClose]);
+
+  const onClearCacheModalClose = () => {
+    setClearCacheModalVisible(false);
+  };
 
   const onOpenIndexModalClose = () => {
     setOpenIndexModalVisible(false);
@@ -155,6 +161,11 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       isSeparator: true,
                     },
                     {
+                      name: "Clear cache",
+                      "data-test-subj": "Clear cache Action",
+                      onClick: () => setClearCacheModalVisible(true),
+                    },
+                    {
                       name: "Close",
                       disabled: !selectedItems.length,
                       "data-test-subj": "Close Action",
@@ -244,6 +255,8 @@ export default function IndicesActions(props: IndicesActionsProps) {
         onClose={onCloseIndexModalClose}
         onConfirm={onCloseIndexModalConfirm}
       />
+
+      <ClearCacheModal selectedItems={selectedItems} visible={clearCacheModalVisible} onClose={onClearCacheModalClose} type="indexes" />
     </>
   );
 }

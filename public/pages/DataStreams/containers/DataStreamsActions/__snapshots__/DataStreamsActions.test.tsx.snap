@@ -1,5 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<DataStreamsActions /> spec cannot clear cache for data streams if they are closed or have blocks 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<DataStreamsActions /> spec clear cache for data streams by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<DataStreamsActions /> spec delete data streams by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"

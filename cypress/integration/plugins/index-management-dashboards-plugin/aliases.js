@@ -68,6 +68,31 @@ describe("Aliases", () => {
     });
   });
 
+  describe("can clear caches for an alias", () => {
+    it("successfully", () => {
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_ALIAS_PREFIX}-0{enter}`);
+      cy.contains(`${SAMPLE_ALIAS_PREFIX}-0`);
+      cy.get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="ClearCacheAction"]')
+        .should("be.disabled")
+        .get(`#_selection_column_${SAMPLE_ALIAS_PREFIX}-0-checkbox`)
+        .click()
+        .get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="ClearCacheAction"]')
+        .click();
+
+      // Check for clear cache index modal
+      cy.contains("Clear cache");
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').should("not.be.disabled");
+      // click to clear caches
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
+      // Check for success toast
+      cy.contains(`Clear caches for [${SAMPLE_ALIAS_PREFIX}-0] successfully`);
+    });
+  });
+
   describe("can edit / delete a alias", () => {
     it("successfully", () => {
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_ALIAS_PREFIX}-0{enter}`);
