@@ -21,10 +21,18 @@ import {
 import { DarkModeContext } from "./components/DarkMode";
 import Main from "./pages/Main";
 import { CoreServicesContext } from "./components/core_services";
+import { PLUGIN_NAME } from "./utils/constants";
+import { MDSIntercept } from "./utils/MDSIntercept";
 import "./app.scss";
 
 export function renderApp(coreStart: CoreStart, params: AppMountParameters, landingPage: string) {
   const http = coreStart.http;
+  const mdsInterceptInstance = new MDSIntercept({
+    pluginId: PLUGIN_NAME,
+    http,
+    getDataSourceId: () => "3e2ff6a0-de64-11ed-b697-57f5dd34beb6",
+  });
+  mdsInterceptInstance.start();
 
   const indexService = new IndexService(http);
   const managedIndexService = new ManagedIndexService(http);
@@ -63,5 +71,8 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters, land
     </Router>,
     params.element
   );
-  return () => ReactDOM.unmountComponentAtNode(params.element);
+  return () => {
+    mdsInterceptInstance.destroy();
+    ReactDOM.unmountComponentAtNode(params.element);
+  };
 }

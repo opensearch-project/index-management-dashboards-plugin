@@ -35,6 +35,7 @@ import dataStreams from "./routes/dataStreams";
 import { NodeServices } from "./models/interfaces";
 import { getClientSupportMDS } from "./client";
 import { extendClient } from "./clusters/extend_client";
+import { PLUGIN_NAME } from "../public/utils/constants";
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   private readonly logger: Logger;
@@ -50,8 +51,8 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const osDriverSupportMDS = getClientSupportMDS({
       core,
       client: legacyClient,
-      getDataSourceId() {
-        return "3e2ff6a0-de64-11ed-b697-57f5dd34beb6";
+      getDataSourceId(context, request) {
+        return request?.headers?.[`_${PLUGIN_NAME}_data_source_id_`] as string;
       },
       onExtendClient(client) {
         const finalClient = (client as unknown) as OpenSearchDashboardsClient & { ism?: any };
@@ -74,7 +75,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
           ism,
         };
       },
-      pluginId: "opensearch_index_management_dashboards",
+      pluginId: PLUGIN_NAME,
       logger: this.logger,
     });
 
