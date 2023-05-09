@@ -30,7 +30,7 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters, land
   const mdsInterceptInstance = new MDSIntercept({
     pluginId: PLUGIN_NAME,
     http,
-    getDataSourceId: () => "3e2ff6a0-de64-11ed-b697-57f5dd34beb6",
+    getDataSourceId: () => "e22a0790-cf97-11ed-acf6-ed047b89ac83",
   });
   mdsInterceptInstance.start();
 
