@@ -47,6 +47,7 @@ describe("<AssociatedTemplatesModal /> spec", () => {
     await findByText("123");
     await userEvent.click(getByTestId("test"));
     await findByText("Associated index templates");
+    await findByText(/This table contains 0 rows;/);
     expect(document.body.children).toMatchSnapshot();
   });
 });
