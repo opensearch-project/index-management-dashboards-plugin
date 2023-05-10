@@ -52,6 +52,24 @@ export function diffJson(oldJson?: Record<string, any>, newJson?: Record<string,
   return initial + addOrChanged + oldKeys.length;
 }
 
+export const getClusterInfo = (props: { commonService: CommonService }): Promise<ClusterInfo> => {
+  return props.commonService
+    .apiCaller<{
+      cluster_name: string;
+    }>({
+      endpoint: "cluster.health",
+    })
+    .then((res) => {
+      if (res && res.ok) {
+        return {
+          cluster_name: res?.response?.cluster_name,
+        };
+      }
+
+      return {};
+    });
+};
+
 interface BlockedIndices {
   [indexName: string]: String[];
 }
@@ -203,20 +221,3 @@ export async function filterBlockedItems(
   }
   return result;
 }
-export const getClusterInfo = (props: { commonService: CommonService }): Promise<ClusterInfo> => {
-  return props.commonService
-    .apiCaller<{
-      cluster_name: string;
-    }>({
-      endpoint: "cluster.health",
-    })
-    .then((res) => {
-      if (res && res.ok) {
-        return {
-          cluster_name: res.response.cluster_name,
-        };
-      }
-
-      return {};
-    });
-};
