@@ -55,7 +55,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
   }, [coreServices, getAllPipelines]);
 
   return (
-    <div style={{ padding: "10px 10px" }}>
+    <div style={{ padding: "10px 0px" }}>
       <CustomFormRow
         label="Reindex only unique documents"
         helpText={

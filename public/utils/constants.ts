@@ -65,6 +65,7 @@ export const ROUTES = Object.freeze({
   DATA_STREAMS: "/data-streams",
   CREATE_DATA_STREAM: "/create-data-stream",
   FORCE_MERGE: "/force-merge",
+  NOTIFICATIONS: "/notifications",
   COMPOSABLE_TEMPLATES: "/composable-templates",
   CREATE_COMPOSABLE_TEMPLATE: "/create-composable-template",
 });
@@ -118,6 +119,7 @@ export const BREADCRUMBS = Object.freeze({
   FORCE_MERGE: { text: "Force merge", href: `#${ROUTES.FORCE_MERGE}` },
   COMPOSABLE_TEMPLATES: { text: "Component templates", href: `#${ROUTES.COMPOSABLE_TEMPLATES}` },
   CREATE_COMPOSABLE_TEMPLATE: { text: "Create component template", href: `#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}` },
+  NOTIFICATION_SETTINGS: { text: "Notification settings", href: `#${ROUTES.NOTIFICATIONS}` },
 });
 
 // TODO: EUI has a SortDirection already

@@ -33,12 +33,12 @@ export interface IField {
   options?: Omit<IInitOption, "name">;
 }
 
-export interface IFormGeneratorProps<T> {
+export interface IFormGeneratorProps<T extends object = any> {
   formFields: IField[];
   resetValuesWhenPropsValueChange?: boolean;
   hasAdvancedSettings?: boolean;
   advancedSettingsProps?: IFormGeneratorAdvancedSettings<T>;
-  fieldProps?: FieldOption;
+  fieldProps?: FieldOption<T>;
   formProps?: EuiFormProps;
   value?: T;
   onChange?: (totalValue: IFormGeneratorProps<T>["value"], key?: FieldName, value?: any) => void;
@@ -48,7 +48,7 @@ export interface IFormGeneratorRef extends FieldInstance {}
 
 export { AllBuiltInComponents };
 
-function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGeneratorRef>) {
+function FormGenerator<T extends object = any>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGeneratorRef>) {
   const { fieldProps, formFields, advancedSettingsProps } = props;
   const { blockedNameList } = advancedSettingsProps || {};
   const propsRef = useRef(props);
@@ -80,9 +80,9 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
   useEffect(() => {
     if (!isEqual(field.getValues(), props.value)) {
       if (propsRef.current.resetValuesWhenPropsValueChange) {
-        field.resetValues(props.value);
+        field.resetValues(props.value as T);
       } else {
-        field.setValues(props.value);
+        field.setValues(props.value as T);
       }
     }
   }, [props.value]);
@@ -117,7 +117,7 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
     });
   }, [formFields, field]);
 
-  const finalValue: T = useMemo(() => {
+  const finalValue = useMemo(() => {
     const value = field.getValues();
     if (!blockedNameList) {
       return field.getValues();
@@ -157,14 +157,14 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
               "data-test-subj": "formNameAdvancedSettings",
               ...props.advancedSettingsProps?.rowProps,
             }}
-            value={finalValue}
+            value={finalValue as T}
             onChange={(val) => {
               const totalValue = field.getValues();
               const editorValue = omit(val || {}, blockedNameList || []);
               const resetValue = {
                 ...editorValue,
                 ...pick(totalValue, blockedNameList || []),
-              };
+              } as T;
               // update form field value to rerender
               field.resetValues(resetValue);
 
@@ -184,6 +184,6 @@ function FormGenerator<T>(props: IFormGeneratorProps<T>, ref: React.Ref<IFormGen
   );
 }
 
-export default forwardRef(FormGenerator) as <T>(
+export default forwardRef(FormGenerator) as <T extends object = any>(
   props: IFormGeneratorProps<T> & { ref?: React.Ref<IFormGeneratorRef> }
 ) => ReturnType<typeof FormGenerator>;

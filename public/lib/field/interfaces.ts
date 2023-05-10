@@ -8,7 +8,11 @@ import React from "react";
 // registerField({ name: ['a', 'b', 'c.d'] }) => { a: { b: { c,d: '' } } }
 export type FieldName = string | string[];
 
-export type FieldOption = {
+export type FieldOption<T extends object> = {
+  /**
+   * All component changes will arrive here [set value will not trigger this function], before the onChange
+   */
+  onBeforeChange?: (name: FieldName, value?: any) => void;
   /**
    * All component changes will arrive here [set value will not trigger this function]
    */
@@ -17,7 +21,7 @@ export type FieldOption = {
   /**
    * Initialization data
    */
-  values?: {};
+  values?: T;
 
   /**
    * OriginalValues
@@ -27,12 +31,12 @@ export type FieldOption = {
   unmountComponent?: boolean;
 };
 
-export type ValidateResults = {
+export type ValidateResults<T extends object> = {
   errors: Record<string, string[]> | null;
-  values: any;
+  values: T;
 };
 
-export type InitResult<T> = {
+export type InitResult<T = any> = {
   value?: T;
   onChange(value: T): void;
   ref?: React.RefCallback<any>;
@@ -116,17 +120,17 @@ export type InitOption = {
   props?: any;
 };
 
-export type FieldInstance = {
+export type FieldInstance<T extends object = any> = {
   /**
    * Initialize each component
    */
-  registerField(option?: InitOption): InitResult<any>;
+  registerField<ItemType = any>(option?: InitOption): InitResult<ItemType>;
 
   /**
    * check
    * @param name
    */
-  validatePromise(name?: FieldName): Promise<ValidateResults>;
+  validatePromise(name?: FieldName): Promise<ValidateResults<T>>;
 
   /**
    * 	Get the value of a single input control
@@ -138,13 +142,13 @@ export type FieldInstance = {
    * Get the values ​​of a set of input controls, if no parameters are passed in, get the values ​​of all components
    * @param names
    */
-  getValues(): any;
+  getValues(): T;
 
   /**
    * Get the values ​​of a set of input controls, if no parameters are passed in, get the values ​​of all components
    * @param names
    */
-  getOriginalValues(): any;
+  getOriginalValues(): T;
 
   /**
    * Set the value of a single input control (will trigger render, please follow the timing of react)
@@ -154,17 +158,17 @@ export type FieldInstance = {
   /**
    * Set the value of a set of input controls (will trigger render, please follow the timing of react)
    */
-  setValues(obj: any): void;
+  setValues(obj: T): void;
 
   /**
    *
    */
-  setOriginalValues(obj: any): void;
+  setOriginalValues(obj: T): void;
 
   /**
    * Reset values
    */
-  resetValues(obj: any): void;
+  resetValues(obj: T): void;
 
   /**
    * Delete value
@@ -180,7 +184,7 @@ export type FieldInstance = {
    * Get the Error for a set of input controls
    * @param names field name
    */
-  getErrors(): any;
+  getErrors(): Record<string, string[] | null>;
 
   /**
    * Sets the Error for a single input control
