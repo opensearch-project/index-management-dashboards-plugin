@@ -52,6 +52,23 @@ export function diffJson(oldJson?: Record<string, any>, newJson?: Record<string,
   return initial + addOrChanged + oldKeys.length;
 }
 
+export const getClusterInfo = (props: { commonService: CommonService }): Promise<ClusterInfo> => {
+  return props.commonService
+    .apiCaller<{
+      cluster_name: string;
+    }>({
+      endpoint: "cluster.health",
+    })
+    .then((res) => {
+      if (res && res.ok) {
+        return {
+          cluster_name: res?.response?.cluster_name,
+        };
+      }
+
+      return {};
+    });
+};
 // code related to filter blocked index/alias/datastream
 // an example to use:
 // import { aliasBlockedPredicate, filterBlockedItems } from "./helpers";
@@ -150,20 +167,3 @@ export async function filterBlockedItems<T>(
   });
   return result;
 }
-export const getClusterInfo = (props: { commonService: CommonService }): Promise<ClusterInfo> => {
-  return props.commonService
-    .apiCaller<{
-      cluster_name: string;
-    }>({
-      endpoint: "cluster.health",
-    })
-    .then((res) => {
-      if (res && res.ok) {
-        return {
-          cluster_name: res.response.cluster_name,
-        };
-      }
-
-      return {};
-    });
-};

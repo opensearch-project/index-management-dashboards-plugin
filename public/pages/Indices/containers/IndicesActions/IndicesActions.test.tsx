@@ -48,9 +48,6 @@ describe("<IndicesActions /> spec", () => {
       onShrink: function (): void {
         throw new Error("Function not implemented.");
       },
-      getIndices: function (): Promise<void> {
-        throw new Error("Function not implemented.");
-      },
     });
 
     await waitFor(() => {
@@ -98,9 +95,6 @@ describe("<IndicesActions /> spec", () => {
       onShrink: function (): void {
         throw new Error("Function not implemented.");
       },
-      getIndices: function (): Promise<void> {
-        throw new Error("Function not implemented.");
-      },
     });
 
     await waitFor(() => {
@@ -112,7 +106,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(getByTestId("Open Confirm button"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "transport.request",
         data: {
@@ -153,9 +147,6 @@ describe("<IndicesActions /> spec", () => {
         throw new Error("Function not implemented.");
       },
       onShrink: function (): void {
-        throw new Error("Function not implemented.");
-      },
-      getIndices: function (): Promise<void> {
         throw new Error("Function not implemented.");
       },
     });
@@ -230,9 +221,6 @@ describe("<IndicesActions /> spec", () => {
       onShrink: function (): void {
         throw new Error("Function not implemented.");
       },
-      getIndices: function (): Promise<void> {
-        throw new Error("Function not implemented.");
-      },
     });
 
     await waitFor(() => {
@@ -271,9 +259,6 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
       onClose(): void {},
@@ -314,9 +299,6 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
       onClose(): void {},
@@ -370,9 +352,6 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
       onClose(): void {},
@@ -411,9 +390,6 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
       onClose(): void {},
@@ -450,9 +426,6 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
       onClose(): void {},
@@ -497,9 +470,6 @@ describe("<IndicesActions /> spec", () => {
         throw new Error("Function not implemented.");
       },
       onShrink: function (): void {
-        throw new Error("Function not implemented.");
-      },
-      getIndices: function (): Promise<void> {
         throw new Error("Function not implemented.");
       },
     });
@@ -556,9 +526,6 @@ describe("<IndicesActions /> spec", () => {
       onShrink: function (): void {
         throw new Error("Function not implemented.");
       },
-      getIndices: function (): Promise<void> {
-        throw new Error("Function not implemented.");
-      },
     });
 
     await waitFor(() => {
@@ -595,9 +562,6 @@ describe("<IndicesActions /> spec", () => {
         throw new Error("Function not implemented.");
       },
       onShrink: function (): void {
-        throw new Error("Function not implemented.");
-      },
-      getIndices: function (): Promise<void> {
         throw new Error("Function not implemented.");
       },
     });
