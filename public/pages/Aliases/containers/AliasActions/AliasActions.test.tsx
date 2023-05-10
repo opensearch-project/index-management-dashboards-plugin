@@ -159,7 +159,7 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
-      getByText("Caches of the indexes behind the following aliases will be cleared.");
+      getByText("Caches will be cleared for the following aliases.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -182,7 +182,7 @@ describe("<AliasesActions /> spec", () => {
     });
   });
 
-  it("cannot clear cache for aliases if some indexes are closed or have other blocks", async () => {
+  it("cannot clear cache for aliases if some indexes are closed or blocked", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         switch (payload.endpoint) {
@@ -250,7 +250,7 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
-      getByText("Caches of the indexes behind the following aliases will not be cleared because of index closed or other blocks.");
+      getByText("Caches will not be cleared for the following aliases because one or more indexes are closed or blocked.");
     });
 
     await waitFor(() => {

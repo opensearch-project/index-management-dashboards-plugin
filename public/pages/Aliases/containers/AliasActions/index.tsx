@@ -7,9 +7,9 @@ import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
-import ClearCacheModal from "../../../../components/ClearCacheModal";
+import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import { IAlias } from "../../interface";
-import { ROUTES } from "../../../../utils/constants";
+import { ROUTES, SOURCE_PAGE_TYPE } from "../../../../utils/constants";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
@@ -98,7 +98,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
           onDelete();
         }}
       />
-      <ClearCacheModal selectedItems={selectedItems} visible={clearCacheModalVisible} onClose={onClearCacheModalClose} type="aliases" />
+      <ClearCacheModal
+        selectedItems={selectedItems}
+        visible={clearCacheModalVisible}
+        onClose={onClearCacheModalClose}
+        type={SOURCE_PAGE_TYPE.ALIASES}
+      />
     </>
   );
 }

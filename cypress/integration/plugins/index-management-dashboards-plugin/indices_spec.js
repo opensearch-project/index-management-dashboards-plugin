@@ -503,7 +503,7 @@ describe("Indices", () => {
       cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
 
       // Check for success toast
-      cy.contains("Clear caches for [index_d,index_e] successfully");
+      cy.contains("Clear caches for [index_d, index_e] successfully");
     });
 
     it("successfully clear caches for all indexes", () => {

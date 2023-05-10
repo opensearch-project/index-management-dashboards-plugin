@@ -104,7 +104,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
-      getByText("Caches of the folowing indexes will be cleared.");
+      getByText("Caches will be cleared for the following indexes.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -157,7 +157,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
-      getByText("All indexes' caches will be cleared.");
+      getByText("Caches will be cleared for all indexes.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -180,7 +180,7 @@ describe("<IndicesActions /> spec", () => {
     });
   });
 
-  it("clear cache for all indexes failed if some indexes have blocks by calling commonService", async () => {
+  it("clear cache for all indexes failed if some indexes are blocked", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         switch (payload.endpoint) {
@@ -233,7 +233,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
-      getByText("All indexes' caches will be cleared.");
+      getByText("Caches will be cleared for all indexes.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 

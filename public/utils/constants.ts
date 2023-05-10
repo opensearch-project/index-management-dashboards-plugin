@@ -380,3 +380,9 @@ export enum IndexOpBlocksType {
   MetaData = "9",
   ReadOnlyAllowDelete = "12",
 }
+
+export const SOURCE_PAGE_TYPE = {
+  INDEXES: "Indexes",
+  DATA_STREAMS: "Data streams",
+  ALIASES: "Aliases",
+};

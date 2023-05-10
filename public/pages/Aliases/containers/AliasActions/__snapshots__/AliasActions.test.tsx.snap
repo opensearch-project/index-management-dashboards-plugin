@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AliasesActions /> spec cannot clear cache for aliases if some indexes are closed or have other blocks 1`] = `
+exports[`<AliasesActions /> spec cannot clear cache for aliases if some indexes are closed or blocked 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"

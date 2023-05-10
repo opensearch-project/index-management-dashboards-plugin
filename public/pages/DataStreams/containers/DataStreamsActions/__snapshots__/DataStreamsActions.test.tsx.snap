@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DataStreamsActions /> spec cannot clear cache for data streams if they are closed or have blocks 1`] = `
+exports[`<DataStreamsActions /> spec cannot clear cache for data streams if they are closed or blocked 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"

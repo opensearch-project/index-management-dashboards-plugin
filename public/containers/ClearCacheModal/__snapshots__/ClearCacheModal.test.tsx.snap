@@ -52,7 +52,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  All indexes' caches will be cleared.
+                  Caches will be cleared for all indexes.
                 </p>
                 <div
                   class="euiSpacer euiSpacer--l"

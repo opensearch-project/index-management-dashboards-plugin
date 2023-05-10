@@ -146,7 +146,7 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
-      getByText("Caches of the backing indexes behind the following data streams will be cleared.");
+      getByText("Caches will be cleared for the following data streams.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -169,7 +169,7 @@ describe("<DataStreamsActions /> spec", () => {
     });
   });
 
-  it("cannot clear cache for data streams if they are closed or have blocks", async () => {
+  it("cannot clear cache for data streams if they are closed or blocked", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         switch (payload.endpoint) {
@@ -244,9 +244,7 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
-      getByText(
-        "Caches of the backing indexes behind the following data streams will not be cleared because of index closed or other blocks."
-      );
+      getByText("Caches will not be cleared for the following data streams because one or more backing indexes are closed or blocked.");
     });
 
     await waitFor(() => {

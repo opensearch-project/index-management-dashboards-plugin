@@ -27,34 +27,7 @@ exports[`<IndicesActions /> spec Split index by calling commonService 1`] = `
 </div>
 `;
 
-exports[`<IndicesActions /> spec clear cache for all indexes by calling commonService 1`] = `
-<div
-  class="euiPopover euiPopover--anchorDownCenter"
-  data-test-subj="moreAction"
->
-  <div
-    class="euiPopover__anchor"
-  >
-    <button
-      class="euiButton euiButton--primary"
-      type="button"
-    >
-      <span
-        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
-      >
-        EuiIconMock
-        <span
-          class="euiButton__text"
-        >
-          Actions
-        </span>
-      </span>
-    </button>
-  </div>
-</div>
-`;
-
-exports[`<IndicesActions /> spec clear cache for all indexes failed if some indexes have blocks by calling commonService 1`] = `
+exports[`<IndicesActions /> spec clear cache for all indexes failed if some indexes are blocked 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"

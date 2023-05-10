@@ -16,9 +16,9 @@ import { BrowserServices } from "../../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
-import ClearCacheModal from "../../../../components/ClearCacheModal";
+import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { ROUTES } from "../../../../utils/constants";
+import { ROUTES, SOURCE_PAGE_TYPE } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
@@ -256,7 +256,12 @@ export default function IndicesActions(props: IndicesActionsProps) {
         onConfirm={onCloseIndexModalConfirm}
       />
 
-      <ClearCacheModal selectedItems={selectedItems} visible={clearCacheModalVisible} onClose={onClearCacheModalClose} type="indexes" />
+      <ClearCacheModal
+        selectedItems={selectedItems}
+        visible={clearCacheModalVisible}
+        onClose={onClearCacheModalClose}
+        type={SOURCE_PAGE_TYPE.INDEXES}
+      />
     </>
   );
 }
