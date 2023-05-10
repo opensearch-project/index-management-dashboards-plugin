@@ -375,6 +375,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                               iconType="trash"
                               onClick={triggerDelete}
                               className="icon-hover-danger"
+                              data-test-subj={`DeleteComponentTemplate-${record.name}`}
                             />
                           </EuiToolTip>
                         )}

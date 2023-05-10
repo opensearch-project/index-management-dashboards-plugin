@@ -87,4 +87,28 @@ describe("<ComposableTemplates /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(3);
     });
   });
+
+  it("render without component templates", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(async (payload) => {
+      if (payload.endpoint === "transport.request") {
+        return {
+          ok: true,
+          response: {
+            component_templates: [] as ICatComposableTemplate[],
+          },
+        };
+      }
+
+      return {
+        ok: true,
+        response: {},
+      };
+    }) as any;
+    const { getByPlaceholderText, findByText, getByText } = renderWithRouter();
+    await findByText("You have no templates.");
+    await userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
+    await findByText("There are no templates matching your applied filters. Reset your filters to view your templates.");
+    await userEvent.click(getByText("Reset filters"));
+    await findByText("You have no templates.");
+  });
 });
