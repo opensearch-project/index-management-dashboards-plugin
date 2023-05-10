@@ -30,25 +30,15 @@ export interface DeleteTemplateModalProps {
   onDelete: () => void;
 }
 
-enum StepEnum {
-  confirm,
-  confirmToUnlink,
-}
-
 export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
   const { onClose, visible, selectedItems, onDelete } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const { componentMapTemplate } = useComponentMapTemplate();
-  const [step, setStep] = useState(StepEnum.confirm);
   const [checked, setChecked] = useState(false);
   const linkedIndexItemCount = componentMapTemplate[selectedItems[0]]?.length || 0;
 
   const onConfirm = async () => {
-    if (linkedIndexItemCount && step === StepEnum.confirm) {
-      setStep(StepEnum.confirmToUnlink);
-      return;
-    }
     if (services) {
       let result: ServerResponse<any> = {
         ok: true,
@@ -98,7 +88,6 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
 
   useEffect(() => {
     if (visible) {
-      setStep(StepEnum.confirm);
       setChecked(false);
     }
   }, [visible]);
@@ -117,18 +106,18 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
         <div style={{ lineHeight: 1.5 }}>
           <p>
             The following component template will be permanently deleted.{" "}
-            {step === StepEnum.confirm
+            {!linkedIndexItemCount
               ? "This action cannot be undone."
               : `The component template will be unlinked from ${linkedIndexItemCount} index templates:`}
           </p>
-          {step === StepEnum.confirm ? (
+          {!linkedIndexItemCount ? (
             <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
               {selectedItems.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
           ) : null}
-          {step === StepEnum.confirmToUnlink ? (
+          {linkedIndexItemCount ? (
             <>
               {componentMapTemplate[selectedItems[0]]?.map((item, index) => (
                 <span key={item}>
@@ -153,12 +142,12 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
         <EuiButtonEmpty data-test-subj="deletaCancelButton" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
-        {StepEnum.confirm === step ? (
+        {!linkedIndexItemCount ? (
           <EuiButton data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger">
             Delete
           </EuiButton>
         ) : null}
-        {StepEnum.confirmToUnlink === step ? (
+        {linkedIndexItemCount ? (
           <EuiButton data-test-subj="deleteConfirmUnlinkButton" onClick={onConfirm} disabled={!checked} fill color="danger">
             Apply changes
           </EuiButton>
