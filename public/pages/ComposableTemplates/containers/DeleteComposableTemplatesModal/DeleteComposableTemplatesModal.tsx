@@ -105,10 +105,11 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
           <p>
-            The following component template will be permanently deleted.{" "}
             {!linkedIndexItemCount
-              ? "This action cannot be undone."
-              : `The component template will be unlinked from ${linkedIndexItemCount} index templates:`}
+              ? "The following component template will be permanently deleted. This action cannot be undone."
+              : `The component template ${selectedItems.join(
+                  ", "
+                )} will be permanently deleted. The component template will be unlinked from ${linkedIndexItemCount} index templates:`}
           </p>
           {!linkedIndexItemCount ? (
             <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
@@ -129,7 +130,8 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
               ))}
               <EuiSpacer />
               <AllBuiltInComponents.CheckBox
-                label={`Unlink index templates and delete ${selectedItems[0]}`}
+                data-test-subj="UnlinkConfirmCheckBox"
+                label={`Unlink index templates and delete ${selectedItems.join(", ")}`}
                 value={checked}
                 onChange={(checked) => setChecked(checked)}
               />
