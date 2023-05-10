@@ -64,7 +64,6 @@ enum Navigation {
   Templates = "Templates",
   DataStreams = "Data streams",
   CreateDataStream = "Create data stream",
-  TaskManagement = "Task Management",
   Notifications = "Notification settings",
   ComposableTemplates = "Component templates",
 }
