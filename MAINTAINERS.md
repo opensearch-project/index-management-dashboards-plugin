@@ -15,5 +15,5 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 
 | Maintainer  | GitHub ID                                  | Affiliation |
 |-------------| ------------------------------------------ | ----------- |
-| Angie Zhang | [leeyun-amzn](https://github.com/Angie-Zhang)     | Amazon      |
+| Angie Zhang | [Angie-Zhang](https://github.com/Angie-Zhang)     | Amazon      |
 
