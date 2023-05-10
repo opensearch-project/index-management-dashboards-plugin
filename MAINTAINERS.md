@@ -9,3 +9,11 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Bowen Lan | [bowenlan-amzn](https://github.com/bowenlan-amzn) | Amazon      |
 | Saurabh Singh | [getsaurabh02](https://github.com/getsaurabh02)           | Amazon      |
 | Praveen Sameneni | [praveensameneni](https://github.com/praveensameneni)           | Amazon      |
+
+
+## Emeritus
+
+| Maintainer  | GitHub ID                                  | Affiliation |
+|-------------| ------------------------------------------ | ----------- |
+| Angie Zhang | [leeyun-amzn](https://github.com/Angie-Zhang)     | Amazon      |
+
