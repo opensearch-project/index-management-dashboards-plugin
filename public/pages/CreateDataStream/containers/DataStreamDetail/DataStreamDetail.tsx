@@ -145,7 +145,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               View JSON
             </EuiButton>
             <DataStreamsActions
-              selectedItems={[values?.name || ""]}
+              selectedItems={values ? ([values] as DataStreamInEdit[]) : []}
               history={props.history}
               onDelete={() => props.history.replace(ROUTES.DATA_STREAMS)}
             />
