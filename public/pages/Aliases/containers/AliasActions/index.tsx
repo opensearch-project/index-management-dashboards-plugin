@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { useMemo, useState, useContext, useCallback } from "react";
+import React, { useMemo, useState } from "react";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
@@ -10,10 +10,6 @@ import DeleteIndexModal from "../DeleteAliasModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { IAlias } from "../../interface";
 import { ROUTES } from "../../../../utils/constants";
-import { ServicesContext } from "../../../../services";
-import { BrowserServices } from "../../../../models/interfaces";
-import { aliasBlockedPredicate, filterBlockedItems } from "../../../../utils/helpers";
-import { IndexOpBlocksType } from "../../../../utils/constants";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
@@ -26,9 +22,6 @@ export default function AliasesActions(props: AliasesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [flushAliasModalVisible, setFlushAliasModalVisible] = useState(false);
-  const [blockedAliases, setBlockedAliases] = useState<string[]>([]);
-  const [flushableAliases, setFlushableAliases] = useState<string[]>([]);
-  const services = useContext(ServicesContext) as BrowserServices;
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
@@ -37,17 +30,6 @@ export default function AliasesActions(props: AliasesActionsProps) {
   const onFlushAliasModalClose = () => {
     setFlushAliasModalVisible(false);
   };
-
-  const onFlushModalClick = useCallback(async () => {
-    try {
-      const result = await filterBlockedItems<IAlias>(services, selectedItems, IndexOpBlocksType.Closed, aliasBlockedPredicate);
-      setFlushableAliases(result.unBlockedItems.map((item) => item.alias));
-      setBlockedAliases(result.blockedItems.map((item) => item.alias));
-    } catch (err) {
-      setFlushableAliases(selectedItems.map((item) => item.alias));
-    }
-    setFlushAliasModalVisible(true);
-  }, [selectedItems, services]);
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
@@ -94,7 +76,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   name: "Flush",
                   disabled: !selectedItems.length,
                   "data-test-subj": "Flush Action",
-                  onClick: onFlushModalClick,
+                  onClick: () => setFlushAliasModalVisible(true),
                 },
                 {
                   name: "Delete",
@@ -118,11 +100,10 @@ export default function AliasesActions(props: AliasesActionsProps) {
       />
 
       <FlushIndexModal
+        selectedItems={selectedItems}
         visible={flushAliasModalVisible}
         onClose={onFlushAliasModalClose}
         flushTarget="alias"
-        flushableItems={flushableAliases}
-        blockedItems={blockedAliases}
       />
     </>
   );

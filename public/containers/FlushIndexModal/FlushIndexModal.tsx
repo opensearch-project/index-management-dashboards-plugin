@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState, useEffect } from "react";
 import {
   EuiButton,
   EuiButtonEmpty,
+  EuiCallOut,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -18,6 +19,10 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../components/core_services";
 import { getErrorMessage } from "../../utils/helpers";
 import { ServicesContext } from "../../services";
+import { indexBlockedPredicate, aliasBlockedPredicate, dataStreamBlockedPredicate, filterBlockedItems } from "../../utils/helpers";
+import { IndexOpBlocksType } from "../../utils/constants";
+import { CatIndex, DataStream } from "../../../server/models/interfaces";
+import { IAlias } from "../../pages/Aliases/interface";
 
 type FlushTarget = "indices" | "data stream" | "alias";
 
@@ -36,25 +41,27 @@ const blockedMessageMap: Record<FlushTarget, string> = {
   alias: "The following aliases will not be flushed because at lease one of their indices are closed.",
 };
 
-export interface FlushIndexModalProps {
-  flushableItems: string[];
-  blockedItems: string[];
+export interface FlushIndexModalProps<T> {
+  selectedItems: T[];
   visible: boolean;
   flushTarget: FlushTarget;
   onClose: () => void;
 }
 
-export default function FlushIndexModal(props: FlushIndexModalProps) {
-  const { onClose, flushTarget, visible, flushableItems, blockedItems } = props;
+export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
+  const { onClose, flushTarget, visible, selectedItems } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
-  const flushAll = flushTarget === "indices" && !flushableItems.length && !blockedItems.length;
+  const flushAll = !selectedItems.length;
+
+  const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
+  const [blockedItems, setBlockedItems] = useState([] as string[]);
   const onFlushConfirm = useCallback(async () => {
     try {
       if (!services) {
         throw new Error("Something is wrong in ServiceContext");
       }
-      const indexPayload = flushableItems.join(",");
+      const indexPayload = unBlockedItems.join(",");
       const result = await services.commonService.apiCaller({
         endpoint: "indices.flush",
         data: {
@@ -72,7 +79,58 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
     } finally {
       onClose();
     }
-  }, [flushableItems, services, coreServices, onClose, flushAll]);
+  }, [unBlockedItems, services, coreServices, onClose, flushAll]);
+
+  useEffect(() => {
+    if (!!services && visible) {
+      switch (flushTarget) {
+        case "alias":
+          filterBlockedItems<IAlias>(services, selectedItems as IAlias[], IndexOpBlocksType.Closed, aliasBlockedPredicate)
+            .then((filterBlockedItems) => {
+              if (visible) {
+                setBlockedItems(filterBlockedItems.blockedItems.map((item) => item.alias));
+                setUnBlockedItems(filterBlockedItems.unBlockedItems.map((item) => item.alias));
+              }
+            })
+            .catch((err) => {
+              if (visible) {
+                setUnBlockedItems((selectedItems as IAlias[]).map((item) => item.alias));
+              }
+            });
+          break;
+        case "data stream":
+          filterBlockedItems<DataStream>(services, selectedItems as DataStream[], IndexOpBlocksType.Closed, dataStreamBlockedPredicate)
+            .then((filterBlockedItems) => {
+              if (visible) {
+                setBlockedItems(filterBlockedItems.blockedItems.map((item) => item.name));
+                setUnBlockedItems(filterBlockedItems.unBlockedItems.map((item) => item.name));
+              }
+            })
+            .catch((err) => {
+              if (visible) {
+                setUnBlockedItems((selectedItems as DataStream[]).map((item) => item.name));
+              }
+            });
+          break;
+        default:
+          filterBlockedItems<CatIndex>(services, selectedItems as CatIndex[], IndexOpBlocksType.Closed, indexBlockedPredicate)
+            .then((filterBlockedItems) => {
+              if (visible) {
+                setBlockedItems(filterBlockedItems.blockedItems.map((item) => item.index));
+                setUnBlockedItems(filterBlockedItems.unBlockedItems.map((item) => item.index));
+              }
+            })
+            .catch((err) => {
+              if (visible) {
+                setUnBlockedItems((selectedItems as CatIndex[]).map((item) => item.index));
+              }
+            });
+      }
+    } else {
+      setBlockedItems([]);
+      setUnBlockedItems([]);
+    }
+  }, [visible, flushTarget]);
 
   if (!visible) {
     return null;
@@ -87,26 +145,25 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
           {/* we will not display this part if not flushAll and there is no flushable items */}
-          {(flushAll || !!flushableItems.length) && (
+          {(flushAll || !!unBlockedItems.length) && (
             <>
               <p>{flushAll ? flushAllMessage : messageMap[flushTarget]}</p>
               <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-                {flushableItems.map((item) => (
+                {unBlockedItems.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </>
           )}
-          {!!blockedItems.length && (
-            <>
-              <p>{blockedMessageMap[flushTarget]}</p>
-              <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-                {blockedItems.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </>
-          )}
+          <EuiSpacer />
+          <EuiCallOut color="warning" hidden={!blockedItems.length}>
+            <p>{blockedMessageMap[flushTarget]}</p>
+            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+              {blockedItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </EuiCallOut>
           <EuiSpacer />
         </div>
       </EuiModalBody>
@@ -115,7 +172,7 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
         <EuiButtonEmpty data-test-subj="Flush Cancel button" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
-        <EuiButton data-test-subj="Flush Confirm button" onClick={onFlushConfirm} isDisabled={!flushAll && !flushableItems.length} fill>
+        <EuiButton data-test-subj="Flush Confirm button" onClick={onFlushConfirm} isDisabled={!flushAll && !unBlockedItems.length} fill>
           Flush
         </EuiButton>
       </EuiModalFooter>
