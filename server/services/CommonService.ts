@@ -35,7 +35,14 @@ export default class IndexService {
       const useQuery = !request.body;
       const usedParam = (useQuery ? request.query : request.body) as IAPICaller;
       const { endpoint, data } = usedParam || {};
-      const payload = useQuery ? JSON.parse(data || "{}") : data;
+      const finalData = data;
+      /**
+       * Update path parameter to follow RFC/generic HTTP convention
+       */
+      if (endpoint === "transport.request" && typeof finalData?.path === "string" && !/^\//.test(data?.path || "")) {
+        finalData.path = `/${finalData.path || ""}`;
+      }
+      const payload = useQuery ? JSON.parse(finalData || "{}") : finalData;
       const commonCallerResponse = await callWithRequest(endpoint, payload || {});
       return response.custom({
         statusCode: 200,
