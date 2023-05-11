@@ -22,6 +22,7 @@ import {
 } from "./FlushIndexModalTestHelper";
 import { act } from "react-dom/test-utils";
 import { IAPICaller } from "../../../models/interfaces";
+import exp from "constants";
 
 function renderWithRouter<T>(
   coreServicesContext: CoreStart | null,
@@ -333,5 +334,29 @@ describe("<FlushIndexModal /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush all open indices successfully");
     });
+  });
+
+  it("flush all aliases disabled", async () => {
+    const onClose = jest.fn();
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: [],
+      visible: true,
+      flushTarget: "alias",
+      onClose: onClose,
+    });
+    await act(async () => {});
+    expect(getByTestId("Flush Confirm Button")).toBeDisabled();
+  });
+
+  it("flush all data streams disabled", async () => {
+    const onClose = jest.fn();
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: [],
+      visible: true,
+      flushTarget: "data stream",
+      onClose: onClose,
+    });
+    await act(async () => {});
+    expect(getByTestId("Flush Confirm Button")).toBeDisabled();
   });
 });
