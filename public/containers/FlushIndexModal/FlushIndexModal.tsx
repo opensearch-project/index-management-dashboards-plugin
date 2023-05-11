@@ -52,7 +52,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
   const { onClose, flushTarget, visible, selectedItems } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
-  const flushAll = !selectedItems.length;
+  const flushAll = !selectedItems.length && flushTarget === "indices";
 
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
@@ -145,9 +145,14 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
           {/* we will not display this part if not flushAll and there is no flushable items */}
-          {(flushAll || !!unBlockedItems.length) && (
+          {flushAll && (
             <>
-              <p>{flushAll ? flushAllMessage : messageMap[flushTarget]}</p>
+              <p>{flushAllMessage}</p>
+            </>
+          )}
+          {!!unBlockedItems.length && (
+            <>
+              <p>{messageMap[flushTarget]}</p>
               <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
                 {unBlockedItems.map((item) => (
                   <li key={item}>{item}</li>
@@ -156,7 +161,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
             </>
           )}
           <EuiSpacer />
-          <EuiCallOut color="warning" hidden={!blockedItems.length}>
+          <EuiCallOut data-test-subj="Flush Blocked Callout" color="warning" hidden={!blockedItems.length}>
             <p>{blockedMessageMap[flushTarget]}</p>
             <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
               {blockedItems.map((item) => (
@@ -169,10 +174,10 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty data-test-subj="Flush Cancel button" onClick={onClose}>
+        <EuiButtonEmpty data-test-subj="Flush Cancel Button" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
-        <EuiButton data-test-subj="Flush Confirm button" onClick={onFlushConfirm} isDisabled={!flushAll && !unBlockedItems.length} fill>
+        <EuiButton data-test-subj="Flush Confirm Button" onClick={onFlushConfirm} isDisabled={!flushAll && !unBlockedItems.length} fill>
           Flush
         </EuiButton>
       </EuiModalFooter>
