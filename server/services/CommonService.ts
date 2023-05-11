@@ -39,7 +39,7 @@ export default class IndexService {
       /**
        * Update path parameter to follow RFC/generic HTTP convention
        */
-      if (endpoint === "transport.request" && typeof finalData?.path === "string" && !/^\//.test(data?.path || "")) {
+      if (endpoint === "transport.request" && typeof finalData?.path === "string" && !/^\//.test(finalData?.path || "")) {
         finalData.path = `/${finalData.path || ""}`;
       }
       const payload = useQuery ? JSON.parse(finalData || "{}") : finalData;
