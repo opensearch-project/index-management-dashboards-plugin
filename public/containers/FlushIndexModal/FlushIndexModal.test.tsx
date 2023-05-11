@@ -84,7 +84,7 @@ describe("<FlushIndexModal /> spec", () => {
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByText("The following indices will be flushed:")).toBeInTheDocument();
+      expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });
@@ -98,7 +98,7 @@ describe("<FlushIndexModal /> spec", () => {
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByText("All open indices will be flushed.")).toBeInTheDocument();
+      expect(getByText("all open indexes will be flushed.")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });
@@ -126,7 +126,7 @@ describe("<FlushIndexModal /> spec", () => {
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByText("The following indices will be flushed:")).toBeInTheDocument();
+      expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });
@@ -332,7 +332,7 @@ describe("<FlushIndexModal /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush all open indices successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush all open indexes successfully");
     });
   });
 

@@ -26,18 +26,18 @@ import { IAlias } from "../../pages/Aliases/interface";
 
 type FlushTarget = "indices" | "data stream" | "alias";
 
-const flushAllMessage = "All open indices will be flushed.";
+const flushAllMessage = "all open indexes will be flushed.";
 
 const messageMap: Record<FlushTarget, string> = {
-  indices: "The following indices will be flushed:",
+  indices: "The following indexes will be flushed:",
   "data stream": "The following data streams will be flushed:",
   alias: "The following aliases will be flushed:",
 };
 
 const blockedMessageMap: Record<FlushTarget, string> = {
-  indices: "The following indices will not be flushed because they are closed:",
-  "data stream": "The following data streams will not be flushed because one or more backing indices are closed:",
-  alias: "The following aliases will not be flushed because one or more indices are closed:",
+  indices: "The following indexes will not be flushed because they are closed:",
+  "data stream": "The following data streams will not be flushed because one or more backing indexes are closed:",
+  alias: "The following aliases will not be flushed because one or more indexes are closed:",
 };
 
 export interface FlushIndexModalProps<T> {
@@ -68,7 +68,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
         },
       });
       if (result && result.ok) {
-        const flushedItems = flushAll ? "all open indices" : `[${indexPayload}]`;
+        const flushedItems = flushAll ? "all open indexes" : `[${indexPayload}]`;
         coreServices.notifications.toasts.addSuccess(`Flush ${flushedItems} successfully`);
       } else {
         coreServices.notifications.toasts.addDanger(result.error);

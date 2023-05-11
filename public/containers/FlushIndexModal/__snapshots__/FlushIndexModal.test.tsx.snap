@@ -77,7 +77,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following aliases will not be flushed because one or more indices are closed:
+                        The following aliases will not be flushed because one or more indexes are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
@@ -220,7 +220,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following data streams will not be flushed because one or more backing indices are closed:
+                        The following data streams will not be flushed because one or more backing indexes are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
@@ -340,7 +340,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following indices will be flushed:
+                  The following indexes will be flushed:
                 </p>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
@@ -366,7 +366,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indices will not be flushed because they are closed:
+                        The following indexes will not be flushed because they are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
@@ -486,7 +486,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  All open indices will be flushed.
+                  all open indexes will be flushed.
                 </p>
                 <div
                   class="euiSpacer euiSpacer--l"
@@ -503,7 +503,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indices will not be flushed because they are closed:
+                        The following indexes will not be flushed because they are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
@@ -619,7 +619,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following indices will be flushed:
+                  The following indexes will be flushed:
                 </p>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
@@ -646,7 +646,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indices will not be flushed because they are closed:
+                        The following indexes will not be flushed because they are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
@@ -775,7 +775,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indices will not be flushed because they are closed:
+                        The following indexes will not be flushed because they are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"

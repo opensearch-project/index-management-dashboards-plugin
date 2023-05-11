@@ -262,7 +262,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following aliases will not be flushed because one or more indices are closed:
+                        The following aliases will not be flushed because one or more indexes are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"

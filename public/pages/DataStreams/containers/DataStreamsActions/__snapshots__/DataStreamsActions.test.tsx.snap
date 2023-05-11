@@ -246,7 +246,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following data streams will not be flushed because one or more backing indices are closed:
+                        The following data streams will not be flushed because one or more backing indexes are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"

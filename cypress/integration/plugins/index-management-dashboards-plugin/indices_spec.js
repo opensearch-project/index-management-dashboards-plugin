@@ -563,7 +563,7 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Flush Confirm Button"]').click();
 
       // Check for success toast
-      cy.contains(`Flush all open indices successfully`);
+      cy.contains(`Flush all open indexes successfully`);
 
       // confirm uncommitted_operations is 0 after flush
       cy.request({
