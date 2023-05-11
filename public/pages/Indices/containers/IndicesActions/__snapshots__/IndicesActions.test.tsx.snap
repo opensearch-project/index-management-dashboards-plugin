@@ -389,7 +389,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following indices will be flushed.
+                  The following indices will be flushed:
                 </p>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
@@ -415,7 +415,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indices will not be flushed because they are closed.
+                        The following indices will not be flushed because they are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"

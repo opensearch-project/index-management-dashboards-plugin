@@ -513,7 +513,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Flush Action"));
     await waitFor(() => {
-      expect(getByText("The following indices will be flushed.")).toBeInTheDocument();
+      expect(getByText("The following indices will be flushed:")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });

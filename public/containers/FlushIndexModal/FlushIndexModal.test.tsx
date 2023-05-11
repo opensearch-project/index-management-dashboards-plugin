@@ -55,7 +55,7 @@ describe("<FlushIndexModal /> spec", () => {
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByText("The following aliases will be flushed.")).toBeInTheDocument();
+      expect(getByText("The following aliases will be flushed:")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });
@@ -69,7 +69,7 @@ describe("<FlushIndexModal /> spec", () => {
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByText("The following data streams will be flushed.")).toBeInTheDocument();
+      expect(getByText("The following data streams will be flushed:")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });
@@ -83,7 +83,7 @@ describe("<FlushIndexModal /> spec", () => {
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByText("The following indices will be flushed.")).toBeInTheDocument();
+      expect(getByText("The following indices will be flushed:")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });
@@ -125,7 +125,7 @@ describe("<FlushIndexModal /> spec", () => {
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByText("The following indices will be flushed.")).toBeInTheDocument();
+      expect(getByText("The following indices will be flushed:")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });

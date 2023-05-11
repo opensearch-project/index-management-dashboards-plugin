@@ -239,7 +239,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following aliases will be flushed.
+                  The following aliases will be flushed:
                 </p>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
@@ -262,7 +262,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following aliases will not be flushed because at lease one of their indices are closed.
+                        The following aliases will not be flushed because one or more indices are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"

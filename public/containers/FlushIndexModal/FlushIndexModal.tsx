@@ -29,16 +29,15 @@ type FlushTarget = "indices" | "data stream" | "alias";
 const flushAllMessage = "All open indices will be flushed.";
 
 const messageMap: Record<FlushTarget, string> = {
-  indices: "The following indices will be flushed.",
-  "data stream": "The following data streams will be flushed.",
-  alias: "The following aliases will be flushed.",
+  indices: "The following indices will be flushed:",
+  "data stream": "The following data streams will be flushed:",
+  alias: "The following aliases will be flushed:",
 };
 
 const blockedMessageMap: Record<FlushTarget, string> = {
-  indices: "The following indices will not be flushed because they are closed.",
-  "data stream": "The following data streams will not be flushed because\
-   at least one of their backing indices are closed.",
-  alias: "The following aliases will not be flushed because at lease one of their indices are closed.",
+  indices: "The following indices will not be flushed because they are closed:",
+  "data stream": "The following data streams will not be flushed because one or more backing indices are closed:",
+  alias: "The following aliases will not be flushed because one or more indices are closed:",
 };
 
 export interface FlushIndexModalProps<T> {

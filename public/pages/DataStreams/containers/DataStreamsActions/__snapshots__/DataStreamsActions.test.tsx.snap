@@ -223,7 +223,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following data streams will be flushed.
+                  The following data streams will be flushed:
                 </p>
                 <ul
                   style="list-style-type: disc; list-style-position: inside;"
@@ -246,7 +246,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following data streams will not be flushed because   at least one of their backing indices are closed.
+                        The following data streams will not be flushed because one or more backing indices are closed:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
