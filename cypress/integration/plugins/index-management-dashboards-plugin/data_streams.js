@@ -95,7 +95,7 @@ describe("Data stream", () => {
       // Check for flush modal
       cy.contains("Flush data stream");
 
-      cy.get('[data-test-subj="Flush Confirm button"]').click();
+      cy.get('[data-test-subj="Flush Confirm Button"]').click();
 
       // Check for success toast
       cy.contains("Flush [ds-] successfully");

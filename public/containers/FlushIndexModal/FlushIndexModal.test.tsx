@@ -5,7 +5,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
 import { CoreServicesContext } from "../../components/core_services";
 import { ServicesContext } from "../../services";
@@ -13,11 +13,20 @@ import { BrowserServices } from "../../models/interfaces";
 import { ModalProvider } from "../../components/Modal";
 import { CoreStart } from "opensearch-dashboards/public";
 import FlushIndexModal, { FlushIndexModalProps } from "./FlushIndexModal";
+import {
+  buildMockApiCallerForFlush,
+  exampleBlocksStateResponse,
+  selectedAliases,
+  selectedDataStreams,
+  selectedIndices,
+} from "./FlushIndexModalTestHelper";
+import { act } from "react-dom/test-utils";
+import { IAPICaller } from "../../../models/interfaces";
 
-function renderWithRouter(
+function renderWithRouter<T>(
   coreServicesContext: CoreStart | null,
   browserServicesContext: BrowserServices | null,
-  props: FlushIndexModalProps
+  props: FlushIndexModalProps<T>
 ) {
   return {
     ...render(
@@ -33,59 +42,224 @@ function renderWithRouter(
 }
 
 describe("<FlushIndexModal /> spec", () => {
-  it("renders the component", async () => {
-    render(<FlushIndexModal flushableItems={["test1"]} visible blockedItems={["test2"]} flushTarget="indices" onClose={() => {}} />);
-    expect(document.body.children).toMatchSnapshot();
+  beforeEach(() => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
   });
 
   it("renders the component with alias", async () => {
-    render(<FlushIndexModal flushableItems={["test1"]} visible blockedItems={["test2"]} flushTarget="alias" onClose={() => {}} />);
+    const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: selectedAliases,
+      visible: true,
+      flushTarget: "alias",
+      onClose: () => {},
+    });
+    /* to wait for useEffect updating modal */
+    await waitFor(() => {
+      expect(getByText("The following aliases will be flushed.")).toBeInTheDocument();
+    });
     expect(document.body.children).toMatchSnapshot();
   });
 
   it("renders the component with data stream", async () => {
-    render(<FlushIndexModal flushableItems={["test1"]} visible blockedItems={["test2"]} flushTarget="data stream" onClose={() => {}} />);
+    const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: selectedDataStreams,
+      visible: true,
+      flushTarget: "data stream",
+      onClose: () => {},
+    });
+    /* to wait for useEffect updating modal */
+    await waitFor(() => {
+      expect(getByText("The following data streams will be flushed.")).toBeInTheDocument();
+    });
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("renders the component with indices", async () => {
+    const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: selectedIndices,
+      visible: true,
+      flushTarget: "indices",
+      onClose: () => {},
+    });
+    /* to wait for useEffect updating modal */
+    await waitFor(() => {
+      expect(getByText("The following indices will be flushed.")).toBeInTheDocument();
+    });
     expect(document.body.children).toMatchSnapshot();
   });
 
   it("renders with flush all indices", async () => {
-    render(<FlushIndexModal flushableItems={[]} visible blockedItems={[]} flushTarget="indices" onClose={() => {}} />);
+    const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: [],
+      visible: true,
+      flushTarget: "indices",
+      onClose: () => {},
+    });
+    /* to wait for useEffect updating modal */
+    await waitFor(() => {
+      expect(getByText("All open indices will be flushed.")).toBeInTheDocument();
+    });
     expect(document.body.children).toMatchSnapshot();
   });
 
   it("renders with no flushable items", async () => {
-    render(<FlushIndexModal flushableItems={[]} visible blockedItems={["test2"]} flushTarget="indices" onClose={() => {}} />);
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: [{ index: "test_index1" }],
+      visible: true,
+      flushTarget: "indices",
+      onClose: () => {},
+    });
+    /* to wait for useEffect updating modal */
+    await waitFor(() => {
+      expect(getByTestId("Flush Blocked Callout")).toBeVisible();
+    });
     expect(document.body.children).toMatchSnapshot();
   });
 
   it("renders with no blocked items", async () => {
-    render(<FlushIndexModal flushableItems={["test1"]} visible blockedItems={[]} flushTarget="indices" onClose={() => {}} />);
+    const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: [{ index: "test_index2" }, { index: "test_index3" }],
+      visible: true,
+      flushTarget: "indices",
+      onClose: () => {},
+    });
+    /* to wait for useEffect updating modal */
+    await waitFor(() => {
+      expect(getByText("The following indices will be flushed.")).toBeInTheDocument();
+    });
     expect(document.body.children).toMatchSnapshot();
   });
 
-  it("confirm flush index", async () => {
+  it("flush indices", async () => {
     const onClose = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      flushableItems: ["test1", "test2"],
-      blockedItems: ["test3"],
+      selectedItems: selectedIndices,
       visible: true,
       flushTarget: "indices",
       onClose: onClose,
     });
 
-    fireEvent.click(getByTestId("Flush Confirm button"));
+    await act(async () => {});
+    fireEvent.click(getByTestId("Flush Confirm Button"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test1,test2",
+          index: "test_index2,test_index3",
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test1,test2] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test_index2,test_index3] successfully");
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("flush alias", async () => {
+    const onClose = jest.fn();
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: selectedAliases,
+      visible: true,
+      flushTarget: "alias",
+      onClose: onClose,
+    });
+
+    await act(async () => {});
+    fireEvent.click(getByTestId("Flush Confirm Button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "alias2",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [alias2] successfully");
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("flush data stream", async () => {
+    const onClose = jest.fn();
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: selectedDataStreams,
+      visible: true,
+      flushTarget: "data stream",
+      onClose: onClose,
+    });
+
+    await act(async () => {});
+    fireEvent.click(getByTestId("Flush Confirm Button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "ds2",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [ds2] successfully");
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("flush indices has error calling blocks api", async () => {
+    const onClose = jest.fn();
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush({ block_success: false });
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: selectedIndices,
+      visible: true,
+      flushTarget: "indices",
+      onClose: onClose,
+    });
+
+    await act(async () => {});
+    fireEvent.click(getByTestId("Flush Confirm Button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "test_index1,test_index2,test_index3",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Flush [test_index1,test_index2,test_index3] successfully"
+      );
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("flush indices has error calling flush api", async () => {
+    const onClose = jest.fn();
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush({ flush_success: false });
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: selectedIndices,
+      visible: true,
+      flushTarget: "indices",
+      onClose: onClose,
+    });
+
+    await act(async () => {});
+    fireEvent.click(getByTestId("Flush Confirm Button"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.flush",
+        data: {
+          index: "test_index2,test_index3",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error in flush");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -94,42 +268,42 @@ describe("<FlushIndexModal /> spec", () => {
     const onClose = jest.fn();
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
     const { getByTestId } = renderWithRouter(coreServicesMock, null, {
-      flushableItems: ["test1", "test2"],
-      blockedItems: ["test3"],
+      selectedItems: selectedIndices,
       visible: true,
       flushTarget: "indices",
       onClose: onClose,
     });
-
-    fireEvent.click(getByTestId("Flush Confirm button"));
-
-    await waitFor(() => {
-      expect(onClose).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
-      expect(browserServicesMock.commonService.apiCaller).not.toHaveBeenCalled();
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Something is wrong in ServiceContext");
-    });
+    await act(async () => {});
+    expect(getByTestId("Flush Confirm Button")).toBeDisabled();
   });
 
   it("flush index returns an error", async () => {
     const onClose = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: false, response: {} });
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
+      if (params.endpoint === "indices.flush") {
+        return { ok: false, response: {} };
+      } else {
+        return {
+          ok: true,
+          response: exampleBlocksStateResponse,
+        };
+      }
+    });
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      flushableItems: ["test1", "test2"],
-      blockedItems: ["test3"],
+      selectedItems: selectedIndices,
       visible: true,
       flushTarget: "indices",
       onClose: onClose,
     });
-
-    fireEvent.click(getByTestId("Flush Confirm button"));
+    await act(async () => {});
+    fireEvent.click(getByTestId("Flush Confirm Button"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test1,test2",
+          index: "test_index2,test_index3",
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
@@ -139,19 +313,17 @@ describe("<FlushIndexModal /> spec", () => {
 
   it("flush all indices", async () => {
     const onClose = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      flushableItems: [],
-      blockedItems: [],
+      selectedItems: [],
       visible: true,
       flushTarget: "indices",
       onClose: onClose,
     });
-
-    fireEvent.click(getByTestId("Flush Confirm button"));
+    await act(async () => {});
+    fireEvent.click(getByTestId("Flush Confirm Button"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
