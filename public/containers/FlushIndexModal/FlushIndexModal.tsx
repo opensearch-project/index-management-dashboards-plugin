@@ -129,7 +129,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
       setBlockedItems([]);
       setUnBlockedItems([]);
     }
-  }, [visible, flushTarget]);
+  }, [visible, flushTarget, selectedItems]);
 
   if (!visible) {
     return null;
