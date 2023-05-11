@@ -13,6 +13,7 @@ import AliasesActions, { AliasesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { IAlias } from "../../interface";
 
 function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
   return {
@@ -27,6 +28,27 @@ function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
     ),
   };
 }
+
+const selectedItems: IAlias[] = [
+  {
+    index: "test_index",
+    alias: "1",
+    filter: "1",
+    "routing.index": "1",
+    "routing.search": "1",
+    is_write_index: "1",
+    indexArray: ["test_index", "test_index1"],
+  },
+  {
+    index: "test_index2",
+    alias: "2",
+    filter: "1",
+    "routing.index": "1",
+    "routing.search": "1",
+    is_write_index: "1",
+    indexArray: ["test_index2", "test_index3"],
+  },
+];
 
 describe("<AliasesActions /> spec", () => {
   it("renders the component and all the actions should be disabled when no items selected", async () => {
@@ -114,6 +136,69 @@ describe("<AliasesActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [1] successfully");
       expect(onDelete).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+
+describe("<AliasesActions /> spec", () => {
+  it("refresh alias by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        console.log(payload.endpoint);
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  test_index1: {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems,
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      getByText("The following alias will be refreshed.");
+      expect(getByTestId("UnblockedItem-2")).not.toBeNull();
+      getByText("The following alias will not be refreshed because they are closed.");
+      expect(getByTestId("BlockedItem-1")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.refresh",
+        data: {
+          index: selectedItems[1].alias,
+        },
+      });
+
+      expect(document.body).toMatchSnapshot();
+
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh alias [2] successfully");
     });
   });
 });

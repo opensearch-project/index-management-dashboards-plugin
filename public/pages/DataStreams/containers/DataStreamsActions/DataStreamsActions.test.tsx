@@ -102,4 +102,89 @@ describe("<DataStreamsActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_data_stream] successfully");
     });
   }, 30000);
+
+  it("refresh data streams by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  ".ds-blocked-000001": {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "unblocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-unblocked-000001",
+            },
+            {
+              index_name: ".ds-blocked-000002",
+            },
+          ],
+        },
+        {
+          name: "blocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-blocked-000001",
+            },
+            {
+              index_name: ".ds-blocked-000002",
+            },
+          ],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      getByText("The following datastream will be refreshed.");
+      expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
+      getByText("The following datastream will not be refreshed because they are closed.");
+      expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.refresh",
+        data: {
+          index: "unblocked_data_stream",
+        },
+      });
+
+      expect(document.body).toMatchSnapshot();
+
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Refresh datastream [unblocked_data_stream] successfully"
+      );
+    });
+  }, 30000);
 });

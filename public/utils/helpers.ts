@@ -74,8 +74,8 @@ interface ClusterBlocksStateResponse {
   };
 }
 
-export async function getBlockedIndices(broswerServices: BrowserServices): Promise<BlockedIndices> {
-  const result = await broswerServices.commonService.apiCaller<ClusterBlocksStateResponse>({
+export async function getBlockedIndices(browserServices: BrowserServices): Promise<BlockedIndices> {
+  const result = await browserServices.commonService.apiCaller<ClusterBlocksStateResponse>({
     endpoint: "cluster.state",
     data: {
       metric: "blocks",
@@ -93,8 +93,7 @@ export async function getBlockedIndices(broswerServices: BrowserServices): Promi
   const blockedIndices: BlockedIndices = {};
   Object.keys(blocksResponse.indices).forEach((indexName) => {
     const innerBlocksInfo = blocksResponse.indices![indexName];
-    const indexOpBlocksIds = Object.keys(innerBlocksInfo);
-    blockedIndices[indexName] = indexOpBlocksIds;
+    blockedIndices[indexName] = Object.keys(innerBlocksInfo);
   });
   return blockedIndices;
 }
@@ -117,15 +116,15 @@ export function dataStreamBlockedPredicate(item: Pick<DataStream, "indices">, bl
 }
 
 export async function filterBlockedItems<T>(
-  broswerServices: BrowserServices,
+  browserServices: BrowserServices,
   inputItems: T[],
   blocksTypes: IndexOpBlocksType | IndexOpBlocksType[],
   blocksPredicate: (item: T, blockedItemsSet: Set<string>) => boolean
 ): Promise<FilteredBlockedItems<T>> {
   const blocksTypesSet = new Set(Array.isArray(blocksTypes) ? blocksTypes : [blocksTypes]);
-  const blockedIndices = await getBlockedIndices(broswerServices);
+  const blockedIndices = await getBlockedIndices(browserServices);
   // we only care about the indices with blocks type in blocksTypesSet
-  // use set to accelarate execution
+  // use set to accelerate execution
   const filteredBlockedIndicesSet = new Set(
     Object.entries(blockedIndices)
       .filter(

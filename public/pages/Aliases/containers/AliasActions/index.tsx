@@ -8,7 +8,8 @@ import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
 import { IAlias } from "../../interface";
-import { ROUTES } from "../../../../utils/constants";
+import { INDEX_OP_TARGET_TYPE, ROUTES } from "../../../../utils/constants";
+import RefreshActionModal from "../../../../containers/RefreshAction";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
@@ -20,9 +21,14 @@ export interface AliasesActionsProps {
 export default function AliasesActions(props: AliasesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [refreshModalVisible, setRefreshModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
+  };
+
+  const onRefreshModalClose = () => {
+    setRefreshModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -61,6 +67,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   },
                 },
                 {
+                  name: "Refresh",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "refreshAction",
+                  onClick: () => setRefreshModalVisible(true),
+                },
+                {
                   name: "Roll over",
                   disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
@@ -85,6 +97,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
           onDeleteIndexModalClose();
           onDelete();
         }}
+      />
+      <RefreshActionModal
+        selectedItems={selectedItems}
+        visible={refreshModalVisible}
+        onClose={onRefreshModalClose}
+        type={INDEX_OP_TARGET_TYPE.ALIAS}
       />
     </>
   );

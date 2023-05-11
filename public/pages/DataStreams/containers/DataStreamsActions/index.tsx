@@ -7,7 +7,8 @@ import { RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
-import { ROUTES } from "../../../../utils/constants";
+import { INDEX_OP_TARGET_TYPE, ROUTES } from "../../../../utils/constants";
+import RefreshActionModal from "../../../../containers/RefreshAction";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 export interface DataStreamsActionsProps {
@@ -19,9 +20,14 @@ export interface DataStreamsActionsProps {
 export default function DataStreamsActions(props: DataStreamsActionsProps) {
   const { selectedItems, onDelete, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [refreshModalVisible, setRefreshModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
+  };
+
+  const onRefreshModalClose = () => {
+    setRefreshModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -55,6 +61,12 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
                   },
                 },
                 {
+                  name: "Refresh",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "refreshAction",
+                  onClick: () => setRefreshModalVisible(true),
+                },
+                {
                   name: "Roll over",
                   disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
@@ -79,6 +91,12 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
           onDeleteIndexModalClose();
           onDelete();
         }}
+      />
+      <RefreshActionModal
+        selectedItems={selectedItems}
+        visible={refreshModalVisible}
+        onClose={onRefreshModalClose}
+        type={INDEX_OP_TARGET_TYPE.DATA_STREAM}
       />
     </>
   );
