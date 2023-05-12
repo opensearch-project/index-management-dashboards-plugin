@@ -56,28 +56,25 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
   const onFlushConfirm = useCallback(async () => {
-    try {
-      if (!services) {
-        throw new Error("Something is wrong in ServiceContext");
-      }
-      const indexPayload = unBlockedItems.join(",");
-      const result = await services.commonService.apiCaller({
-        endpoint: "indices.flush",
-        data: {
-          index: indexPayload,
-        },
-      });
-      if (result && result.ok) {
-        const flushedItems = flushAll ? "all open indexes" : `[${indexPayload}]`;
-        coreServices.notifications.toasts.addSuccess(`Flush ${flushedItems} successfully`);
-      } else {
-        coreServices.notifications.toasts.addDanger(result.error);
-      }
-    } catch (err) {
-      coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem flushing index."));
-    } finally {
+    if (!services) {
+      coreServices.notifications.toasts.addDanger("Something is wrong in ServiceContext");
       onClose();
+      return;
     }
+    const indexPayload = unBlockedItems.join(",");
+    const result = await services.commonService.apiCaller({
+      endpoint: "indices.flush",
+      data: {
+        index: indexPayload,
+      },
+    });
+    if (result && result.ok) {
+      const flushedItems = flushAll ? "all open indexes" : `[${indexPayload}]`;
+      coreServices.notifications.toasts.addSuccess(`Flush ${flushedItems} successfully`);
+    } else {
+      coreServices.notifications.toasts.addDanger(result.error);
+    }
+    onClose();
   }, [unBlockedItems, services, coreServices, onClose, flushAll]);
 
   useEffect(() => {
