@@ -119,7 +119,7 @@ describe("Aliases", () => {
         .click()
         .end();
 
-      cy.contains(`Refresh alias [${SAMPLE_ALIAS_PREFIX}-10,${SAMPLE_ALIAS_PREFIX}-11] successfully`).end();
+      cy.contains(`Refresh aliases [${SAMPLE_ALIAS_PREFIX}-10, ${SAMPLE_ALIAS_PREFIX}-11] successfully`).end();
     });
   });
 

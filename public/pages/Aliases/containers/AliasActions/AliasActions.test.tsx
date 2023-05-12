@@ -173,9 +173,9 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
-      getByText("The following alias will be refreshed.");
+      getByText("The following aliases will be refreshed.");
       expect(getByTestId("UnblockedItem-2")).not.toBeNull();
-      getByText("The following alias will not be refreshed because they are closed.");
+      getByText("The following aliases will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-1")).not.toBeNull();
     });
 
@@ -197,7 +197,7 @@ describe("<AliasesActions /> spec", () => {
 
       expect(document.body).toMatchSnapshot();
 
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh alias [2] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh aliases [2] successfully");
     });
   });
 
@@ -243,7 +243,7 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(getByTestId("refreshAction"));
 
     await waitFor(() => {
-      getByText("The following alias will not be refreshed because they are closed.");
+      getByText("The following aliases will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-1")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeDisabled();
     });
@@ -271,7 +271,7 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(getByTestId("refreshAction"));
 
     await waitFor(() => {
-      getByText("The following alias will be refreshed.");
+      getByText("The following aliases will be refreshed.");
       expect(getByTestId("UnblockedItem-1")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeEnabled();
     });

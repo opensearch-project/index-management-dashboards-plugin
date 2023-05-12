@@ -71,7 +71,7 @@ describe("Data stream", () => {
         .click()
         .end();
 
-      cy.contains(`Refresh data stream [ds-] successfully`).end();
+      cy.contains(`Refresh data streams [ds-] successfully`).end();
     });
   });
 

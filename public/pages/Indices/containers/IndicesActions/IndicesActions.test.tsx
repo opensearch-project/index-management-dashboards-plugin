@@ -537,9 +537,9 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
-      getByText("The following index will be refreshed.");
+      getByText("The following indexes will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
-      getByText("The following index will not be refreshed because they are closed.");
+      getByText("The following indexes will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
     });
 
@@ -560,7 +560,7 @@ describe("<IndicesActions /> spec", () => {
 
       expect(document.body).toMatchSnapshot();
 
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh index [unblocked_index] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh indexes [unblocked_index] successfully");
     });
   });
 
@@ -600,7 +600,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
-      getByText("The following index will not be refreshed because they are closed.");
+      getByText("The following indexes will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeDisabled();
     });
@@ -672,7 +672,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
-      getByText("The following index will be refreshed.");
+      getByText("The following indexes will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
       expect(getByTestId("UnblockedItem-blocked_index")).not.toBeNull();
     });
@@ -693,7 +693,7 @@ describe("<IndicesActions /> spec", () => {
       });
 
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Refresh index [unblocked_index,blocked_index] successfully"
+        "Refresh indexes [unblocked_index, blocked_index] successfully"
       );
     });
   });

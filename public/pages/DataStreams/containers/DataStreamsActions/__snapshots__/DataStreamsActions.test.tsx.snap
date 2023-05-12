@@ -94,7 +94,7 @@ exports[`<DataStreamsActions /> spec refresh data streams by calling commonServi
               class="euiModalHeader__title"
             >
               Refresh 
-              datastream
+              data streams
             </div>
           </div>
           <div
@@ -108,7 +108,7 @@ exports[`<DataStreamsActions /> spec refresh data streams by calling commonServi
               >
                 <p>
                   The following 
-                  datastream
+                  data streams
                    will be refreshed.
                 </p>
                 <ul
@@ -133,7 +133,7 @@ exports[`<DataStreamsActions /> spec refresh data streams by calling commonServi
                     <span
                       class="euiCallOutHeader__title"
                     >
-                      The following datastream will not be refreshed because they are closed.
+                      The following data streams will not be refreshed because they are closed.
                     </span>
                   </div>
                 </div>

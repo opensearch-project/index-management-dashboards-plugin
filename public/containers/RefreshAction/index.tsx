@@ -98,7 +98,7 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
         },
       });
       if (result && result.ok) {
-        let message = `Refresh ${type} [${unBlockedItems.join(",")}] successfully`;
+        let message = `Refresh ${type} [${unBlockedItems.join(", ")}] successfully`;
         if (selectedItems.length === 0) {
           message = `Refresh all open indexes successfully`;
         }

@@ -158,9 +158,9 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
-      getByText("The following datastream will be refreshed.");
+      getByText("The following data streams will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
-      getByText("The following datastream will not be refreshed because they are closed.");
+      getByText("The following data streams will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
     });
 
@@ -183,7 +183,7 @@ describe("<DataStreamsActions /> spec", () => {
       expect(document.body).toMatchSnapshot();
 
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Refresh datastream [unblocked_data_stream] successfully"
+        "Refresh data streams [unblocked_data_stream] successfully"
       );
     });
   }, 30000);
@@ -229,7 +229,7 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
-      getByText("The following datastream will not be refreshed because they are closed.");
+      getByText("The following data streams will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeDisabled();
     });
@@ -265,7 +265,7 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
-      getByText("The following datastream will be refreshed.");
+      getByText("The following data streams will be refreshed.");
       expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeEnabled();
     });

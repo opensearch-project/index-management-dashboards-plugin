@@ -48,7 +48,7 @@ describe("Refresh Index", () => {
         .click()
         .end();
 
-      cy.contains(`Refresh index [${sampleIndex}-0,${sampleIndex}-1] successfully`).end();
+      cy.contains(`Refresh indexes [${sampleIndex}-0, ${sampleIndex}-1] successfully`).end();
     });
   });
 

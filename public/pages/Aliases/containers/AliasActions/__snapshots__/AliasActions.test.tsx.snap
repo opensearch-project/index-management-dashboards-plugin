@@ -227,7 +227,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
               class="euiModalHeader__title"
             >
               Refresh 
-              alias
+              aliases
             </div>
           </div>
           <div
@@ -241,7 +241,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
               >
                 <p>
                   The following 
-                  alias
+                  aliases
                    will be refreshed.
                 </p>
                 <ul
@@ -266,7 +266,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
                     <span
                       class="euiCallOutHeader__title"
                     >
-                      The following alias will not be refreshed because they are closed.
+                      The following aliases will not be refreshed because they are closed.
                     </span>
                   </div>
                 </div>
