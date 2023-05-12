@@ -9,6 +9,10 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Bowen Lan | [bowenlan-amzn](https://github.com/bowenlan-amzn) | Amazon      |
 | Saurabh Singh | [getsaurabh02](https://github.com/getsaurabh02)           | Amazon      |
 | Praveen Sameneni | [praveensameneni](https://github.com/praveensameneni)           | Amazon      |
+| Xuesong Luo           | [xluo-aws](https://github.com/xluo-aws)       | Amazon      |
+| Hailong Cui           | [Hailong-am](https://github.com/Hailong-am)   | Amazon      |
+| Binlong Gao           | [gaobinlong](https://github.com/gaobinlong)   | Amazon      |
+| Zhou Su               | [SuZhou-Joe](https://github.com/SuZhou-Joe)   | Amazon      |
 
 
 ## Emeritus
