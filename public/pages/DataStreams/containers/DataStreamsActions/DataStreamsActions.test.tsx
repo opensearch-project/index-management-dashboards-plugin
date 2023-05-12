@@ -187,4 +187,87 @@ describe("<DataStreamsActions /> spec", () => {
       );
     });
   }, 30000);
+
+  it("refresh data streams disabled because all indexes are closed calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  ".ds-blocked-000001": {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "blocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-blocked-000001",
+            },
+          ],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      getByText("The following datastream will not be refreshed because they are closed.");
+      expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
+      expect(getByTestId("refreshConfirmButton")).toBeDisabled();
+    });
+  }, 30000);
+
+  it("refresh data streams even failed to get index status", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          throw "failed to call cluster.state";
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "blocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-blocked-000001",
+            },
+          ],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      getByText("The following datastream will be refreshed.");
+      expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
+      expect(getByTestId("refreshConfirmButton")).toBeEnabled();
+    });
+  }, 30000);
 });

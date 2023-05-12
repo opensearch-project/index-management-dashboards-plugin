@@ -41,38 +41,53 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
     if (!!services && visible) {
       switch (type) {
         case INDEX_OP_TARGET_TYPE.INDEX:
-          filterBlockedItems<CatIndex>(services, selectedItems as CatIndex[], IndexOpBlocksType.Closed, indexBlockedPredicate).then(
-            (filteredStreamsResult) => {
+          filterBlockedItems<CatIndex>(services, selectedItems as CatIndex[], IndexOpBlocksType.Closed, indexBlockedPredicate)
+            .then((filteredStreamsResult) => {
               setUnBlockedItems(filteredStreamsResult.unBlockedItems.map((item) => item.index));
               setBlockedItems(filteredStreamsResult.blockedItems.map((item) => item.index));
-            }
-          );
+            })
+            .catch(() => {
+              /*
+            It's not a critical error although if it fails unlikely other call will succeed,
+            set unblocked items to all so we won't filter any of the selected items.
+             */
+              setUnBlockedItems(selectedItems.map((item: CatIndex) => item.index));
+            });
           break;
         case INDEX_OP_TARGET_TYPE.ALIAS:
-          filterBlockedItems<IAlias>(services, selectedItems as IAlias[], IndexOpBlocksType.Closed, aliasBlockedPredicate).then(
-            (filteredDataStreamsResult) => {
+          filterBlockedItems<IAlias>(services, selectedItems as IAlias[], IndexOpBlocksType.Closed, aliasBlockedPredicate)
+            .then((filteredDataStreamsResult) => {
               setUnBlockedItems(filteredDataStreamsResult.unBlockedItems.map((item) => item.alias));
               setBlockedItems(filteredDataStreamsResult.blockedItems.map((item) => item.alias));
-            }
-          );
+            })
+            .catch(() => {
+              /*
+            It's not a critical error although if it fails unlikely other call will succeed,
+            set unblocked items to all so we won't filter any of the selected items.
+             */
+              setUnBlockedItems(selectedItems.map((item: IAlias) => item.alias));
+            });
           break;
         case INDEX_OP_TARGET_TYPE.DATA_STREAM:
-          filterBlockedItems<DataStream>(
-            services,
-            selectedItems as DataStream[],
-            IndexOpBlocksType.Closed,
-            dataStreamBlockedPredicate
-          ).then((filteredDataStreamsResult) => {
-            setUnBlockedItems(filteredDataStreamsResult.unBlockedItems.map((item) => item.name));
-            setBlockedItems(filteredDataStreamsResult.blockedItems.map((item) => item.name));
-          });
+          filterBlockedItems<DataStream>(services, selectedItems as DataStream[], IndexOpBlocksType.Closed, dataStreamBlockedPredicate)
+            .then((filteredDataStreamsResult) => {
+              setUnBlockedItems(filteredDataStreamsResult.unBlockedItems.map((item) => item.name));
+              setBlockedItems(filteredDataStreamsResult.blockedItems.map((item) => item.name));
+            })
+            .catch(() => {
+              /*
+            It's not a critical error although if it fails unlikely other call will succeed,
+            set unblocked items to all so we won't filter any of the selected items.
+             */
+              setUnBlockedItems(selectedItems.map((item: DataStream) => item.name));
+            });
           break;
       }
     } else {
       setUnBlockedItems([]);
       setBlockedItems([]);
     }
-  }, [visible, services]);
+  }, [visible, services, type, selectedItems]);
 
   const onConfirm = useCallback(async () => {
     if (!!services) {
@@ -93,7 +108,7 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
         coreServices.notifications.toasts.addDanger(result?.error || "");
       }
     }
-  }, [unBlockedItems, services, coreServices]);
+  }, [unBlockedItems, services, coreServices, selectedItems, onClose]);
 
   if (!visible) {
     return null;
@@ -143,7 +158,12 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
 
       <EuiModalFooter>
         <EuiButtonEmpty onClick={onClose}>Cancel</EuiButtonEmpty>
-        <EuiButton data-test-subj="refreshConfirmButton" onClick={onConfirm} fill>
+        <EuiButton
+          data-test-subj="refreshConfirmButton"
+          onClick={onConfirm}
+          fill
+          disabled={unBlockedItems.length == 0 && selectedItems.length != 0}
+        >
           Refresh
         </EuiButton>
       </EuiModalFooter>

@@ -523,17 +523,15 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const selectedItems = [
-      {
-        index: "unblocked_index",
-      },
-      {
-        index: "blocked_index",
-      },
-    ];
-
     const { getByTestId, getByText } = renderWithRouter({
-      selectedItems,
+      selectedItems: [
+        {
+          index: "unblocked_index",
+        },
+        {
+          index: "blocked_index",
+        },
+      ],
     });
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
@@ -566,6 +564,48 @@ describe("<IndicesActions /> spec", () => {
     });
   });
 
+  it("refresh selected indexes disabled because all of them are closed", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  blocked_index: {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "blocked_index",
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Refresh Index Action"));
+    await waitFor(() => {
+      getByText("The following index will not be refreshed because they are closed.");
+      expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
+      expect(getByTestId("refreshConfirmButton")).toBeDisabled();
+    });
+  });
+
   it("refresh all open index by calling commonService", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
@@ -586,10 +626,8 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const selectedItems = [];
-
     const { getByTestId, getByText } = renderWithRouter({
-      selectedItems,
+      selectedItems: [],
     });
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
@@ -600,10 +638,63 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(getByTestId("refreshConfirmButton"));
 
-    expect(document.body).toMatchSnapshot();
-
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh all open indexes successfully");
+    });
+  });
+
+  it("refresh selected indexes even failed to get index status", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          throw "failed to call cluster.state";
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        }
+        return { ok: false, error: "wrong endpoint" };
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "unblocked_index",
+        },
+        {
+          index: "blocked_index",
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Refresh Index Action"));
+    await waitFor(() => {
+      getByText("The following index will be refreshed.");
+      expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
+      expect(getByTestId("UnblockedItem-blocked_index")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.refresh",
+        data: {
+          index: "unblocked_index,blocked_index",
+        },
+      });
+
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Refresh index [unblocked_index,blocked_index] successfully"
+      );
     });
   });
 });
