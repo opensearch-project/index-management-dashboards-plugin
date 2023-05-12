@@ -22,7 +22,7 @@ import {
 } from "./FlushIndexModalTestHelper";
 import { act } from "react-dom/test-utils";
 import { IAPICaller } from "../../../models/interfaces";
-import exp from "constants";
+import { INDEX_OP_TARGET_TYPE } from "../../utils/constants";
 
 function renderWithRouter<T>(
   coreServicesContext: CoreStart | null,
@@ -51,7 +51,7 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedAliases,
       visible: true,
-      flushTarget: "alias",
+      flushTarget: INDEX_OP_TARGET_TYPE.ALIAS,
       onClose: () => {},
     });
     /* to wait for useEffect updating modal */
@@ -65,7 +65,7 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedDataStreams,
       visible: true,
-      flushTarget: "data stream",
+      flushTarget: INDEX_OP_TARGET_TYPE.DATA_STREAM,
       onClose: () => {},
     });
     /* to wait for useEffect updating modal */
@@ -79,7 +79,7 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedIndices,
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: () => {},
     });
     /* to wait for useEffect updating modal */
@@ -93,7 +93,7 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: [],
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: () => {},
     });
     /* to wait for useEffect updating modal */
@@ -107,12 +107,12 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: [{ index: "test_index1" }],
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: () => {},
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByTestId("Flush Blocked Callout")).toBeVisible();
+      expect(getByTestId("flushBlockedCallout")).toBeVisible();
     });
     expect(document.body.children).toMatchSnapshot();
   });
@@ -121,7 +121,7 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: [{ index: "test_index2" }, { index: "test_index3" }],
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: () => {},
     });
     /* to wait for useEffect updating modal */
@@ -136,23 +136,23 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedIndices,
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
     });
 
     await act(async () => {});
-    fireEvent.click(getByTestId("Flush Confirm Button"));
+    fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test_index2,test_index3",
+          index: "test_index2, test_index3",
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test_index2,test_index3] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test_index2, test_index3] successfully");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -162,12 +162,12 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedAliases,
       visible: true,
-      flushTarget: "alias",
+      flushTarget: INDEX_OP_TARGET_TYPE.ALIAS,
       onClose: onClose,
     });
 
     await act(async () => {});
-    fireEvent.click(getByTestId("Flush Confirm Button"));
+    fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -188,12 +188,12 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedDataStreams,
       visible: true,
-      flushTarget: "data stream",
+      flushTarget: INDEX_OP_TARGET_TYPE.DATA_STREAM,
       onClose: onClose,
     });
 
     await act(async () => {});
-    fireEvent.click(getByTestId("Flush Confirm Button"));
+    fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -215,24 +215,24 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedIndices,
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
     });
 
     await act(async () => {});
-    fireEvent.click(getByTestId("Flush Confirm Button"));
+    fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test_index1,test_index2,test_index3",
+          index: "test_index1, test_index2, test_index3",
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Flush [test_index1,test_index2,test_index3] successfully"
+        "Flush [test_index1, test_index2, test_index3] successfully"
       );
       expect(onClose).toHaveBeenCalledTimes(1);
     });
@@ -244,19 +244,19 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedIndices,
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
     });
 
     await act(async () => {});
-    fireEvent.click(getByTestId("Flush Confirm Button"));
+    fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test_index2,test_index3",
+          index: "test_index2, test_index3",
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
@@ -271,11 +271,11 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, null, {
       selectedItems: selectedIndices,
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
     });
     await act(async () => {});
-    expect(getByTestId("Flush Confirm Button")).toBeDisabled();
+    expect(getByTestId("flushConfirmButton")).toBeDisabled();
   });
 
   it("flush index returns an error", async () => {
@@ -293,18 +293,18 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: selectedIndices,
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
     });
     await act(async () => {});
-    fireEvent.click(getByTestId("Flush Confirm Button"));
+    fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test_index2,test_index3",
+          index: "test_index2, test_index3",
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
@@ -317,11 +317,11 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: [],
       visible: true,
-      flushTarget: "indices",
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
     });
     await act(async () => {});
-    fireEvent.click(getByTestId("Flush Confirm Button"));
+    fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
@@ -341,11 +341,11 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: [],
       visible: true,
-      flushTarget: "alias",
+      flushTarget: INDEX_OP_TARGET_TYPE.ALIAS,
       onClose: onClose,
     });
     await act(async () => {});
-    expect(getByTestId("Flush Confirm Button")).toBeDisabled();
+    expect(getByTestId("flushConfirmButton")).toBeDisabled();
   });
 
   it("flush all data streams disabled", async () => {
@@ -353,10 +353,10 @@ describe("<FlushIndexModal /> spec", () => {
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: [],
       visible: true,
-      flushTarget: "data stream",
+      flushTarget: INDEX_OP_TARGET_TYPE.DATA_STREAM,
       onClose: onClose,
     });
     await act(async () => {});
-    expect(getByTestId("Flush Confirm Button")).toBeDisabled();
+    expect(getByTestId("flushConfirmButton")).toBeDisabled();
   });
 });

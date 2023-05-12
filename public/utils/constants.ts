@@ -380,3 +380,9 @@ export enum IndexOpBlocksType {
   MetaData = "9",
   ReadOnlyAllowDelete = "12",
 }
+
+export enum INDEX_OP_TARGET_TYPE {
+  INDEX = "index",
+  ALIAS = "aliases",
+  DATA_STREAM = "data streams",
+}

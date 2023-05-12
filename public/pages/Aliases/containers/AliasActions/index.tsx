@@ -9,7 +9,7 @@ import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { IAlias } from "../../interface";
-import { ROUTES } from "../../../../utils/constants";
+import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
@@ -103,7 +103,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
         selectedItems={selectedItems}
         visible={flushAliasModalVisible}
         onClose={onFlushAliasModalClose}
-        flushTarget="alias"
+        flushTarget={INDEX_OP_TARGET_TYPE.ALIAS}
       />
     </>
   );

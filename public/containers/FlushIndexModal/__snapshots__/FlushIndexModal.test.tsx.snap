@@ -38,10 +38,10 @@ HTMLCollection [
           >
             <div
               class="euiModalHeader__title"
-              data-test-subj="Flush Modal Title"
+              data-test-subj="flushModalTitle"
             >
               Flush 
-              alias
+              aliases
             </div>
           </div>
           <div
@@ -68,7 +68,7 @@ HTMLCollection [
                 />
                 <div
                   class="euiCallOut euiCallOut--warning"
-                  data-test-subj="Flush Blocked Callout"
+                  data-test-subj="flushBlockedCallout"
                 >
                   <div
                     class="euiText euiText--small"
@@ -100,7 +100,7 @@ HTMLCollection [
           >
             <button
               class="euiButtonEmpty euiButtonEmpty--primary"
-              data-test-subj="Flush Cancel Button"
+              data-test-subj="flushCancelButton"
               type="button"
             >
               <span
@@ -115,7 +115,7 @@ HTMLCollection [
             </button>
             <button
               class="euiButton euiButton--primary euiButton--fill"
-              data-test-subj="Flush Confirm Button"
+              data-test-subj="flushConfirmButton"
               type="button"
             >
               <span
@@ -181,10 +181,10 @@ HTMLCollection [
           >
             <div
               class="euiModalHeader__title"
-              data-test-subj="Flush Modal Title"
+              data-test-subj="flushModalTitle"
             >
               Flush 
-              data stream
+              data streams
             </div>
           </div>
           <div
@@ -211,7 +211,7 @@ HTMLCollection [
                 />
                 <div
                   class="euiCallOut euiCallOut--warning"
-                  data-test-subj="Flush Blocked Callout"
+                  data-test-subj="flushBlockedCallout"
                 >
                   <div
                     class="euiText euiText--small"
@@ -243,7 +243,7 @@ HTMLCollection [
           >
             <button
               class="euiButtonEmpty euiButtonEmpty--primary"
-              data-test-subj="Flush Cancel Button"
+              data-test-subj="flushCancelButton"
               type="button"
             >
               <span
@@ -258,7 +258,7 @@ HTMLCollection [
             </button>
             <button
               class="euiButton euiButton--primary euiButton--fill"
-              data-test-subj="Flush Confirm Button"
+              data-test-subj="flushConfirmButton"
               type="button"
             >
               <span
@@ -324,10 +324,10 @@ HTMLCollection [
           >
             <div
               class="euiModalHeader__title"
-              data-test-subj="Flush Modal Title"
+              data-test-subj="flushModalTitle"
             >
               Flush 
-              indices
+              index
             </div>
           </div>
           <div
@@ -357,7 +357,7 @@ HTMLCollection [
                 />
                 <div
                   class="euiCallOut euiCallOut--warning"
-                  data-test-subj="Flush Blocked Callout"
+                  data-test-subj="flushBlockedCallout"
                 >
                   <div
                     class="euiText euiText--small"
@@ -389,7 +389,7 @@ HTMLCollection [
           >
             <button
               class="euiButtonEmpty euiButtonEmpty--primary"
-              data-test-subj="Flush Cancel Button"
+              data-test-subj="flushCancelButton"
               type="button"
             >
               <span
@@ -404,7 +404,7 @@ HTMLCollection [
             </button>
             <button
               class="euiButton euiButton--primary euiButton--fill"
-              data-test-subj="Flush Confirm Button"
+              data-test-subj="flushConfirmButton"
               type="button"
             >
               <span
@@ -470,10 +470,10 @@ HTMLCollection [
           >
             <div
               class="euiModalHeader__title"
-              data-test-subj="Flush Modal Title"
+              data-test-subj="flushModalTitle"
             >
               Flush 
-              indices
+              index
             </div>
           </div>
           <div
@@ -493,7 +493,7 @@ HTMLCollection [
                 />
                 <div
                   class="euiCallOut euiCallOut--warning"
-                  data-test-subj="Flush Blocked Callout"
+                  data-test-subj="flushBlockedCallout"
                   hidden=""
                 >
                   <div
@@ -522,7 +522,7 @@ HTMLCollection [
           >
             <button
               class="euiButtonEmpty euiButtonEmpty--primary"
-              data-test-subj="Flush Cancel Button"
+              data-test-subj="flushCancelButton"
               type="button"
             >
               <span
@@ -537,7 +537,7 @@ HTMLCollection [
             </button>
             <button
               class="euiButton euiButton--primary euiButton--fill"
-              data-test-subj="Flush Confirm Button"
+              data-test-subj="flushConfirmButton"
               type="button"
             >
               <span
@@ -603,10 +603,10 @@ HTMLCollection [
           >
             <div
               class="euiModalHeader__title"
-              data-test-subj="Flush Modal Title"
+              data-test-subj="flushModalTitle"
             >
               Flush 
-              indices
+              index
             </div>
           </div>
           <div
@@ -636,7 +636,7 @@ HTMLCollection [
                 />
                 <div
                   class="euiCallOut euiCallOut--warning"
-                  data-test-subj="Flush Blocked Callout"
+                  data-test-subj="flushBlockedCallout"
                   hidden=""
                 >
                   <div
@@ -665,7 +665,7 @@ HTMLCollection [
           >
             <button
               class="euiButtonEmpty euiButtonEmpty--primary"
-              data-test-subj="Flush Cancel Button"
+              data-test-subj="flushCancelButton"
               type="button"
             >
               <span
@@ -680,7 +680,7 @@ HTMLCollection [
             </button>
             <button
               class="euiButton euiButton--primary euiButton--fill"
-              data-test-subj="Flush Confirm Button"
+              data-test-subj="flushConfirmButton"
               type="button"
             >
               <span
@@ -746,10 +746,10 @@ HTMLCollection [
           >
             <div
               class="euiModalHeader__title"
-              data-test-subj="Flush Modal Title"
+              data-test-subj="flushModalTitle"
             >
               Flush 
-              indices
+              index
             </div>
           </div>
           <div
@@ -766,7 +766,7 @@ HTMLCollection [
                 />
                 <div
                   class="euiCallOut euiCallOut--warning"
-                  data-test-subj="Flush Blocked Callout"
+                  data-test-subj="flushBlockedCallout"
                 >
                   <div
                     class="euiText euiText--small"
@@ -798,7 +798,7 @@ HTMLCollection [
           >
             <button
               class="euiButtonEmpty euiButtonEmpty--primary"
-              data-test-subj="Flush Cancel Button"
+              data-test-subj="flushCancelButton"
               type="button"
             >
               <span
@@ -813,7 +813,7 @@ HTMLCollection [
             </button>
             <button
               class="euiButton euiButton--primary euiButton--fill euiButton-isDisabled"
-              data-test-subj="Flush Confirm Button"
+              data-test-subj="flushConfirmButton"
               disabled=""
               type="button"
             >

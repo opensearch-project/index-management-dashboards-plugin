@@ -8,7 +8,7 @@ import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
-import { ROUTES } from "../../../../utils/constants";
+import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 export interface DataStreamsActionsProps {
@@ -97,7 +97,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         selectedItems={selectedItems}
         visible={flushDataStreamModalVisible}
         onClose={onFlushDataStreamModalClose}
-        flushTarget="data stream"
+        flushTarget={INDEX_OP_TARGET_TYPE.DATA_STREAM}
       />
     </>
   );

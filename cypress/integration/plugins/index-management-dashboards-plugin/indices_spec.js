@@ -515,7 +515,7 @@ describe("Indices", () => {
       // Check for flush index modal
       cy.contains("Flush indices");
 
-      cy.get('[data-test-subj="Flush Confirm Button"]').click();
+      cy.get('[data-test-subj="flushConfirmButton"]').click();
 
       // Check for success toast
       cy.contains(`Flush [${SAMPLE_INDEX}] successfully`);
@@ -560,7 +560,7 @@ describe("Indices", () => {
       // Check for flush index modal
       cy.contains("Flush indices");
 
-      cy.get('[data-test-subj="Flush Confirm Button"]').click();
+      cy.get('[data-test-subj="flushConfirmButton"]').click();
 
       // Check for success toast
       cy.contains(`Flush all open indexes successfully`);

@@ -17,33 +17,30 @@ import {
 } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../components/core_services";
-import { getErrorMessage } from "../../utils/helpers";
 import { ServicesContext } from "../../services";
 import { indexBlockedPredicate, aliasBlockedPredicate, dataStreamBlockedPredicate, filterBlockedItems } from "../../utils/helpers";
-import { IndexOpBlocksType } from "../../utils/constants";
+import { IndexOpBlocksType, INDEX_OP_TARGET_TYPE } from "../../utils/constants";
 import { CatIndex, DataStream } from "../../../server/models/interfaces";
 import { IAlias } from "../../pages/Aliases/interface";
 
-type FlushTarget = "indices" | "data stream" | "alias";
-
 const flushAllMessage = "all open indexes will be flushed.";
 
-const messageMap: Record<FlushTarget, string> = {
-  indices: "The following indexes will be flushed:",
-  "data stream": "The following data streams will be flushed:",
-  alias: "The following aliases will be flushed:",
+const messageMap: Record<INDEX_OP_TARGET_TYPE, string> = {
+  [INDEX_OP_TARGET_TYPE.INDEX]: "The following indexes will be flushed:",
+  [INDEX_OP_TARGET_TYPE.DATA_STREAM]: "The following data streams will be flushed:",
+  [INDEX_OP_TARGET_TYPE.ALIAS]: "The following aliases will be flushed:",
 };
 
-const blockedMessageMap: Record<FlushTarget, string> = {
-  indices: "The following indexes will not be flushed because they are closed:",
-  "data stream": "The following data streams will not be flushed because one or more backing indexes are closed:",
-  alias: "The following aliases will not be flushed because one or more indexes are closed:",
+const blockedMessageMap: Record<INDEX_OP_TARGET_TYPE, string> = {
+  [INDEX_OP_TARGET_TYPE.INDEX]: "The following indexes will not be flushed because they are closed:",
+  [INDEX_OP_TARGET_TYPE.DATA_STREAM]: "The following data streams will not be flushed because one or more backing indexes are closed:",
+  [INDEX_OP_TARGET_TYPE.ALIAS]: "The following aliases will not be flushed because one or more indexes are closed:",
 };
 
 export interface FlushIndexModalProps<T> {
   selectedItems: T[];
   visible: boolean;
-  flushTarget: FlushTarget;
+  flushTarget: INDEX_OP_TARGET_TYPE;
   onClose: () => void;
 }
 
@@ -51,7 +48,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
   const { onClose, flushTarget, visible, selectedItems } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
-  const flushAll = !selectedItems.length && flushTarget === "indices";
+  const flushAll = !selectedItems.length && flushTarget === INDEX_OP_TARGET_TYPE.INDEX;
 
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
@@ -61,7 +58,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
       onClose();
       return;
     }
-    const indexPayload = unBlockedItems.join(",");
+    const indexPayload = unBlockedItems.join(", ");
     const result = await services.commonService.apiCaller({
       endpoint: "indices.flush",
       data: {
@@ -80,7 +77,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
   useEffect(() => {
     if (!!services && visible) {
       switch (flushTarget) {
-        case "alias":
+        case INDEX_OP_TARGET_TYPE.ALIAS:
           filterBlockedItems<IAlias>(services, selectedItems as IAlias[], IndexOpBlocksType.Closed, aliasBlockedPredicate)
             .then((filterBlockedItems) => {
               if (visible) {
@@ -94,7 +91,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
               }
             });
           break;
-        case "data stream":
+        case INDEX_OP_TARGET_TYPE.DATA_STREAM:
           filterBlockedItems<DataStream>(services, selectedItems as DataStream[], IndexOpBlocksType.Closed, dataStreamBlockedPredicate)
             .then((filterBlockedItems) => {
               if (visible) {
@@ -126,7 +123,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
       setBlockedItems([]);
       setUnBlockedItems([]);
     }
-  }, [visible, flushTarget, selectedItems]);
+  }, [visible, flushTarget, selectedItems, services]);
 
   if (!visible) {
     return null;
@@ -135,17 +132,13 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle data-test-subj="Flush Modal Title">Flush {flushTarget}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle data-test-subj="flushModalTitle">Flush {flushTarget}</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
         <div style={{ lineHeight: 1.5 }}>
           {/* we will not display this part if not flushAll and there is no flushable items */}
-          {flushAll && (
-            <>
-              <p>{flushAllMessage}</p>
-            </>
-          )}
+          {flushAll && <p>{flushAllMessage}</p>}
           {!!unBlockedItems.length && (
             <>
               <p>{messageMap[flushTarget]}</p>
@@ -157,7 +150,7 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
             </>
           )}
           <EuiSpacer />
-          <EuiCallOut data-test-subj="Flush Blocked Callout" color="warning" hidden={!blockedItems.length}>
+          <EuiCallOut data-test-subj="flushBlockedCallout" color="warning" hidden={!blockedItems.length}>
             <p>{blockedMessageMap[flushTarget]}</p>
             <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
               {blockedItems.map((item) => (
@@ -170,10 +163,10 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty data-test-subj="Flush Cancel Button" onClick={onClose}>
+        <EuiButtonEmpty data-test-subj="flushCancelButton" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
-        <EuiButton data-test-subj="Flush Confirm Button" onClick={onFlushConfirm} isDisabled={!flushAll && !unBlockedItems.length} fill>
+        <EuiButton data-test-subj="flushConfirmButton" onClick={onFlushConfirm} isDisabled={!flushAll && !unBlockedItems.length} fill>
           Flush
         </EuiButton>
       </EuiModalFooter>

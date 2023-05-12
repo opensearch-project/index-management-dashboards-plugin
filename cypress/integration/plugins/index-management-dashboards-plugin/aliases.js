@@ -140,7 +140,7 @@ describe("Aliases", () => {
       // Check for flush index modal
       cy.contains("Flush alias");
 
-      cy.get('[data-test-subj="Flush Confirm Button"]').click();
+      cy.get('[data-test-subj="flushConfirmButton"]').click();
 
       // Check for success toast
       cy.contains(`Flush [${sample_alias}] successfully`);
