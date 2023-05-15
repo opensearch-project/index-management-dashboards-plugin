@@ -5,7 +5,18 @@
 
 import React, { ReactChild, useContext, useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import { EuiButton, EuiCallOut, EuiCard, EuiEmptyPrompt, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiCallOut,
+  EuiCard,
+  EuiEmptyPrompt,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiPanel,
+  EuiSpacer,
+  EuiText,
+  EuiTitle,
+} from "@elastic/eui";
 import { get } from "lodash";
 import { CoreStart } from "opensearch-dashboards/public";
 import useField from "../../../../lib/field";
@@ -180,16 +191,19 @@ const Notifications = (props: NotificationsProps) => {
       </EuiFlexGroup>
       <EuiSpacer />
       {noPermission ? (
-        <EuiCard title="">
+        <EuiPanel>
           <EuiEmptyPrompt
             iconType="alert"
             iconColor="danger"
             title={<h2>Error loading Notification settings</h2>}
             body={<p>You do not have permissions to view Notification settings. Contact your administrator to request permissions.</p>}
           />
-        </EuiCard>
+        </EuiPanel>
       ) : (
-        <EuiCard title="Defaults for index operations" textAlign="left">
+        <EuiPanel>
+          <EuiText>
+            <h2>Defaults for index operations</h2>
+          </EuiText>
           {submitClicked && allErrors.length ? (
             <EuiCallOut iconType="iInCircle" color="danger" title="Address the following error(s) in the form">
               <ul>
@@ -285,7 +299,7 @@ const Notifications = (props: NotificationsProps) => {
               </CustomFormRow>
             );
           })}
-        </EuiCard>
+        </EuiPanel>
       )}
       {diffJson(
         getDiffableMapFromPlainList(values.dataSource || []),
