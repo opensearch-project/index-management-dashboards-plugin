@@ -216,7 +216,9 @@ const NotificationConfig = (
                     />
                   </EuiFlexItem>
                   <EuiFlexItem>
-                    <EuiButton onClick={() => window.open("/app/notifications-dashboards#/channels")}>Manage channels</EuiButton>
+                    <EuiButton onClick={() => window.open("/app/notifications-dashboards#/channels")} iconType="popout">
+                      Manage channels
+                    </EuiButton>
                   </EuiFlexItem>
                 </EuiFlexGroup>
               </CustomFormRow>
