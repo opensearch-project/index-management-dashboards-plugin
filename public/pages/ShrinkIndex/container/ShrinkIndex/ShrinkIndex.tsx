@@ -622,7 +622,6 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             }}
           />
         </ContentPanel>
-        <EuiSpacer size="m" />
       </>
     );
 
