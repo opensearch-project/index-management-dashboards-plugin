@@ -245,32 +245,32 @@ const Notifications = (props: NotificationsProps) => {
                 key={record.action_name}
               >
                 <>
-                  <div>{LABEL_FOR_CONDITION}</div>
-                  <EuiSpacer size="s" />
-                  <EuiFlexGroup alignItems="flexStart">
-                    <EuiFlexItem>
-                      <AllBuiltInComponents.CheckBox
-                        {...field.registerField({
-                          name: ["dataSource", `${record.index}`, FieldEnum.failure],
-                        })}
-                        data-test-subj={["dataSource", `${record.index}`, FieldEnum.failure].join(".")}
-                        label="Has failed"
-                      />
-                    </EuiFlexItem>
-                    <EuiFlexItem>
-                      <AllBuiltInComponents.CheckBox
-                        {...field.registerField({
-                          name: ["dataSource", `${record.index}`, FieldEnum.success],
-                        })}
-                        data-test-subj={["dataSource", `${record.index}`, FieldEnum.success].join(".")}
-                        label="Has completed"
-                      />
-                    </EuiFlexItem>
-                  </EuiFlexGroup>
+                  <CustomFormRow label={LABEL_FOR_CONDITION}>
+                    <EuiFlexGroup alignItems="flexStart">
+                      <EuiFlexItem>
+                        <AllBuiltInComponents.CheckBox
+                          {...field.registerField({
+                            name: ["dataSource", `${record.index}`, FieldEnum.failure],
+                          })}
+                          data-test-subj={["dataSource", `${record.index}`, FieldEnum.failure].join(".")}
+                          label="Has failed"
+                        />
+                      </EuiFlexItem>
+                      <EuiFlexItem>
+                        <AllBuiltInComponents.CheckBox
+                          {...field.registerField({
+                            name: ["dataSource", `${record.index}`, FieldEnum.success],
+                          })}
+                          data-test-subj={["dataSource", `${record.index}`, FieldEnum.success].join(".")}
+                          label="Has completed"
+                        />
+                      </EuiFlexItem>
+                    </EuiFlexGroup>
+                  </CustomFormRow>
                   {field.getValue(["dataSource", `${record.index}`, FieldEnum.failure]) ||
                   field.getValue(["dataSource", `${record.index}`, FieldEnum.success]) ? (
                     <>
-                      <EuiSpacer size="s" />
+                      <EuiSpacer />
                       <CustomFormRow
                         label={FieldMapLabel[FieldEnum.channels]}
                         isInvalid={!!field.getError(["dataSource", `${record.index}`, FieldEnum.channels])}

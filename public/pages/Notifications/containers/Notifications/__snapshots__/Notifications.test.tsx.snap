@@ -212,68 +212,81 @@ exports[`<Notifications /> spec renders 1`] = `
                 <div
                   class="euiFormRow__fieldWrapper"
                 >
-                  <div>
-                    Notify when operation
-                  </div>
                   <div
-                    class="euiSpacer euiSpacer--s"
-                  />
-                  <div
-                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+                    class="euiFormRow"
+                    id="some_html_id-row"
                   >
                     <div
-                      class="euiFlexItem"
+                      class="euiFormRow__labelWrapper"
                     >
-                      <span
-                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      <label
+                        class="euiFormLabel euiFormRow__label"
+                        for="some_html_id"
                       >
-                        <div
-                          class="euiCheckbox"
-                        >
-                          <input
-                            class="euiCheckbox__input"
-                            data-test-subj="dataSource.0.failure"
-                            id="builtInCheckBoxId-0"
-                            type="checkbox"
-                          />
-                          <div
-                            class="euiCheckbox__square"
-                          />
-                          <label
-                            class="euiCheckbox__label"
-                            for="builtInCheckBoxId-0"
-                          >
-                            Has failed
-                          </label>
-                        </div>
-                      </span>
+                        Notify when operation
+                      </label>
                     </div>
                     <div
-                      class="euiFlexItem"
+                      class="euiFormRow__fieldWrapper"
                     >
-                      <span
-                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiFlexItem"
                         >
-                          <input
-                            class="euiCheckbox__input"
-                            data-test-subj="dataSource.0.success"
-                            id="builtInCheckBoxId-1"
-                            type="checkbox"
-                          />
-                          <div
-                            class="euiCheckbox__square"
-                          />
-                          <label
-                            class="euiCheckbox__label"
-                            for="builtInCheckBoxId-1"
+                          <span
+                            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                           >
-                            Has completed
-                          </label>
+                            <div
+                              class="euiCheckbox"
+                            >
+                              <input
+                                class="euiCheckbox__input"
+                                data-test-subj="dataSource.0.failure"
+                                id="builtInCheckBoxId-0"
+                                type="checkbox"
+                              />
+                              <div
+                                class="euiCheckbox__square"
+                              />
+                              <label
+                                class="euiCheckbox__label"
+                                for="builtInCheckBoxId-0"
+                              >
+                                Has failed
+                              </label>
+                            </div>
+                          </span>
                         </div>
-                      </span>
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <span
+                            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                          >
+                            <div
+                              class="euiCheckbox"
+                            >
+                              <input
+                                class="euiCheckbox__input"
+                                data-test-subj="dataSource.0.success"
+                                id="builtInCheckBoxId-1"
+                                type="checkbox"
+                              />
+                              <div
+                                class="euiCheckbox__square"
+                              />
+                              <label
+                                class="euiCheckbox__label"
+                                for="builtInCheckBoxId-1"
+                              >
+                                Has completed
+                              </label>
+                            </div>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -321,68 +334,81 @@ exports[`<Notifications /> spec renders 1`] = `
                 <div
                   class="euiFormRow__fieldWrapper"
                 >
-                  <div>
-                    Notify when operation
-                  </div>
                   <div
-                    class="euiSpacer euiSpacer--s"
-                  />
-                  <div
-                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+                    class="euiFormRow"
+                    id="some_html_id-row"
                   >
                     <div
-                      class="euiFlexItem"
+                      class="euiFormRow__labelWrapper"
                     >
-                      <span
-                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      <label
+                        class="euiFormLabel euiFormRow__label"
+                        for="some_html_id"
                       >
-                        <div
-                          class="euiCheckbox"
-                        >
-                          <input
-                            class="euiCheckbox__input"
-                            data-test-subj="dataSource.1.failure"
-                            id="builtInCheckBoxId-2"
-                            type="checkbox"
-                          />
-                          <div
-                            class="euiCheckbox__square"
-                          />
-                          <label
-                            class="euiCheckbox__label"
-                            for="builtInCheckBoxId-2"
-                          >
-                            Has failed
-                          </label>
-                        </div>
-                      </span>
+                        Notify when operation
+                      </label>
                     </div>
                     <div
-                      class="euiFlexItem"
+                      class="euiFormRow__fieldWrapper"
                     >
-                      <span
-                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiFlexItem"
                         >
-                          <input
-                            class="euiCheckbox__input"
-                            data-test-subj="dataSource.1.success"
-                            id="builtInCheckBoxId-3"
-                            type="checkbox"
-                          />
-                          <div
-                            class="euiCheckbox__square"
-                          />
-                          <label
-                            class="euiCheckbox__label"
-                            for="builtInCheckBoxId-3"
+                          <span
+                            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                           >
-                            Has completed
-                          </label>
+                            <div
+                              class="euiCheckbox"
+                            >
+                              <input
+                                class="euiCheckbox__input"
+                                data-test-subj="dataSource.1.failure"
+                                id="builtInCheckBoxId-2"
+                                type="checkbox"
+                              />
+                              <div
+                                class="euiCheckbox__square"
+                              />
+                              <label
+                                class="euiCheckbox__label"
+                                for="builtInCheckBoxId-2"
+                              >
+                                Has failed
+                              </label>
+                            </div>
+                          </span>
                         </div>
-                      </span>
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <span
+                            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                          >
+                            <div
+                              class="euiCheckbox"
+                            >
+                              <input
+                                class="euiCheckbox__input"
+                                data-test-subj="dataSource.1.success"
+                                id="builtInCheckBoxId-3"
+                                type="checkbox"
+                              />
+                              <div
+                                class="euiCheckbox__square"
+                              />
+                              <label
+                                class="euiCheckbox__label"
+                                for="builtInCheckBoxId-3"
+                              >
+                                Has completed
+                              </label>
+                            </div>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -430,68 +456,81 @@ exports[`<Notifications /> spec renders 1`] = `
                 <div
                   class="euiFormRow__fieldWrapper"
                 >
-                  <div>
-                    Notify when operation
-                  </div>
                   <div
-                    class="euiSpacer euiSpacer--s"
-                  />
-                  <div
-                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+                    class="euiFormRow"
+                    id="some_html_id-row"
                   >
                     <div
-                      class="euiFlexItem"
+                      class="euiFormRow__labelWrapper"
                     >
-                      <span
-                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      <label
+                        class="euiFormLabel euiFormRow__label"
+                        for="some_html_id"
                       >
-                        <div
-                          class="euiCheckbox"
-                        >
-                          <input
-                            class="euiCheckbox__input"
-                            data-test-subj="dataSource.2.failure"
-                            id="builtInCheckBoxId-4"
-                            type="checkbox"
-                          />
-                          <div
-                            class="euiCheckbox__square"
-                          />
-                          <label
-                            class="euiCheckbox__label"
-                            for="builtInCheckBoxId-4"
-                          >
-                            Has failed
-                          </label>
-                        </div>
-                      </span>
+                        Notify when operation
+                      </label>
                     </div>
                     <div
-                      class="euiFlexItem"
+                      class="euiFormRow__fieldWrapper"
                     >
-                      <span
-                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiFlexItem"
                         >
-                          <input
-                            class="euiCheckbox__input"
-                            data-test-subj="dataSource.2.success"
-                            id="builtInCheckBoxId-5"
-                            type="checkbox"
-                          />
-                          <div
-                            class="euiCheckbox__square"
-                          />
-                          <label
-                            class="euiCheckbox__label"
-                            for="builtInCheckBoxId-5"
+                          <span
+                            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                           >
-                            Has completed
-                          </label>
+                            <div
+                              class="euiCheckbox"
+                            >
+                              <input
+                                class="euiCheckbox__input"
+                                data-test-subj="dataSource.2.failure"
+                                id="builtInCheckBoxId-4"
+                                type="checkbox"
+                              />
+                              <div
+                                class="euiCheckbox__square"
+                              />
+                              <label
+                                class="euiCheckbox__label"
+                                for="builtInCheckBoxId-4"
+                              >
+                                Has failed
+                              </label>
+                            </div>
+                          </span>
                         </div>
-                      </span>
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <span
+                            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                          >
+                            <div
+                              class="euiCheckbox"
+                            >
+                              <input
+                                class="euiCheckbox__input"
+                                data-test-subj="dataSource.2.success"
+                                id="builtInCheckBoxId-5"
+                                type="checkbox"
+                              />
+                              <div
+                                class="euiCheckbox__square"
+                              />
+                              <label
+                                class="euiCheckbox__label"
+                                for="builtInCheckBoxId-5"
+                              >
+                                Has completed
+                              </label>
+                            </div>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -539,68 +578,81 @@ exports[`<Notifications /> spec renders 1`] = `
                 <div
                   class="euiFormRow__fieldWrapper"
                 >
-                  <div>
-                    Notify when operation
-                  </div>
                   <div
-                    class="euiSpacer euiSpacer--s"
-                  />
-                  <div
-                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+                    class="euiFormRow"
+                    id="some_html_id-row"
                   >
                     <div
-                      class="euiFlexItem"
+                      class="euiFormRow__labelWrapper"
                     >
-                      <span
-                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      <label
+                        class="euiFormLabel euiFormRow__label"
+                        for="some_html_id"
                       >
-                        <div
-                          class="euiCheckbox"
-                        >
-                          <input
-                            class="euiCheckbox__input"
-                            data-test-subj="dataSource.3.failure"
-                            id="builtInCheckBoxId-6"
-                            type="checkbox"
-                          />
-                          <div
-                            class="euiCheckbox__square"
-                          />
-                          <label
-                            class="euiCheckbox__label"
-                            for="builtInCheckBoxId-6"
-                          >
-                            Has failed
-                          </label>
-                        </div>
-                      </span>
+                        Notify when operation
+                      </label>
                     </div>
                     <div
-                      class="euiFlexItem"
+                      class="euiFormRow__fieldWrapper"
                     >
-                      <span
-                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      <div
+                        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
                       >
                         <div
-                          class="euiCheckbox"
+                          class="euiFlexItem"
                         >
-                          <input
-                            class="euiCheckbox__input"
-                            data-test-subj="dataSource.3.success"
-                            id="builtInCheckBoxId-7"
-                            type="checkbox"
-                          />
-                          <div
-                            class="euiCheckbox__square"
-                          />
-                          <label
-                            class="euiCheckbox__label"
-                            for="builtInCheckBoxId-7"
+                          <span
+                            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                           >
-                            Has completed
-                          </label>
+                            <div
+                              class="euiCheckbox"
+                            >
+                              <input
+                                class="euiCheckbox__input"
+                                data-test-subj="dataSource.3.failure"
+                                id="builtInCheckBoxId-6"
+                                type="checkbox"
+                              />
+                              <div
+                                class="euiCheckbox__square"
+                              />
+                              <label
+                                class="euiCheckbox__label"
+                                for="builtInCheckBoxId-6"
+                              >
+                                Has failed
+                              </label>
+                            </div>
+                          </span>
                         </div>
-                      </span>
+                        <div
+                          class="euiFlexItem"
+                        >
+                          <span
+                            class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                          >
+                            <div
+                              class="euiCheckbox"
+                            >
+                              <input
+                                class="euiCheckbox__input"
+                                data-test-subj="dataSource.3.success"
+                                id="builtInCheckBoxId-7"
+                                type="checkbox"
+                              />
+                              <div
+                                class="euiCheckbox__square"
+                              />
+                              <label
+                                class="euiCheckbox__label"
+                                for="builtInCheckBoxId-7"
+                              >
+                                Has completed
+                              </label>
+                            </div>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
