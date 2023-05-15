@@ -218,11 +218,13 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
 
       <EuiSpacer />
 
-      <ContentPanel title={advanceTitle}>
+      <ContentPanel title={advanceTitle} noExtraPadding>
         {advancedSettingsOpen && (
           <>
+            <EuiSpacer size="s" />
             <ForceMergeAdvancedOptions field={field} />
             <NotificationConfig ref={notificationRef} actionType={ActionType.FORCEMERGE} />
+            <EuiSpacer size="s" />
           </>
         )}
       </ContentPanel>

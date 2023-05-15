@@ -664,41 +664,80 @@ exports[`<Shrink index /> spec renders the component 1`] = `
       </div>
     </div>
     <div
-      class="euiSpacer euiSpacer--m"
-    />
-    <div
       class="euiSpacer euiSpacer--l"
     />
     <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-      style="padding-left: 0px; padding-right: 0px;"
+      style="padding: 0px 0px 0px 0px;"
     >
       <div
-        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-        style="padding: 0px 10px;"
+        class="euiAccordion"
       >
         <div
-          class="euiFlexItem"
+          class="euiAccordion__triggerWrapper"
         >
-          <h3
-            class="euiTitle euiTitle--small"
+          <button
+            aria-controls="some_html_id"
+            aria-expanded="false"
+            class="euiAccordion__button"
+            id="some_html_id"
+            type="button"
           >
-            Advanced settings
             <span
-              class="panel-header-count"
+              class="euiAccordion__iconWrapper"
             >
-               
-               
+              EuiIconMock
             </span>
-          </h3>
+            <span
+              class="euiIEFlexWrapFix"
+            >
+              <div
+                class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+                style="margin-top: 0px; margin-bottom: 0px;"
+              >
+                <div
+                  class="euiFlexItem"
+                >
+                  <h3
+                    class="euiTitle euiTitle--small"
+                  >
+                    Advanced settings
+                    <span
+                      class="panel-header-count"
+                    >
+                       
+                       
+                    </span>
+                  </h3>
+                </div>
+              </div>
+            </span>
+          </button>
+        </div>
+        <div
+          aria-labelledby="some_html_id"
+          class="euiAccordion__childWrapper"
+          id="some_html_id"
+          role="region"
+          style="height: 0px"
+          tabindex="-1"
+        >
+          <div>
+            <div
+              class=""
+            />
+          </div>
         </div>
       </div>
       <hr
-        class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+        class="euiHorizontalRule euiHorizontalRule--full"
       />
       <div
-        style="padding: 0px 10px;"
+        style="padding: 0px 10px; display: none;"
       >
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
         <div>
           <h5
             class="euiTitle euiTitle--small"
@@ -778,6 +817,9 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             </div>
           </div>
         </div>
+        <div
+          class="euiSpacer euiSpacer--s"
+        />
       </div>
     </div>
     <div

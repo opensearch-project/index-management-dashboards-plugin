@@ -662,9 +662,10 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
         <EuiSpacer />
 
-        <ContentPanel title={advanceTitle}>
+        <ContentPanel title={advanceTitle} noExtraPadding>
           {advancedSettingsOpen && (
             <>
+              <EuiSpacer size="s" />
               <ReindexAdvancedOptions
                 slices={slices}
                 onSlicesChange={this.onSliceChange}
@@ -678,6 +679,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
                 onReindexUniqueDocumentsChange={this.onReindexUniqueDocuments}
               />
               <NotificationConfig ref={(ref) => (this.notificationRef = ref)} actionType={ActionType.REINDEX} />
+              <EuiSpacer size="s" />
             </>
           )}
         </ContentPanel>
