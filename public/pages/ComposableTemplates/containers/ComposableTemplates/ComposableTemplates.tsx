@@ -316,6 +316,8 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
             {
               field: "templateTypes",
               name: "Type",
+              truncateText: true,
+              textOnly: false,
               render: (value: string, record: ICatComposableTemplate) => {
                 return <ComponentTemplateBadge template={record.component_template.template} />;
               },
