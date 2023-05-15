@@ -39,7 +39,8 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Clear cache
+              Clear caches for 
+              indexes
             </div>
           </div>
           <div

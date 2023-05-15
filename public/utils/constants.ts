@@ -382,7 +382,7 @@ export enum IndexOpBlocksType {
 }
 
 export const SOURCE_PAGE_TYPE = {
-  INDEXES: "Indexes",
-  DATA_STREAMS: "Data streams",
-  ALIASES: "Aliases",
+  INDEXES: "indexes",
+  DATA_STREAMS: "data streams",
+  ALIASES: "aliases",
 };

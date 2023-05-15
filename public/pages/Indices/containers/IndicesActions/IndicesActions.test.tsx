@@ -258,6 +258,69 @@ describe("<IndicesActions /> spec", () => {
     });
   });
 
+  it("filter indices failed when clearing caches for multiple indices", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "cluster.state":
+            return {
+              ok: false,
+              error: "test failure",
+            };
+          default:
+            return {
+              ok: true,
+              response: {},
+            };
+        }
+      }
+    );
+
+    const { container, getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          health: "green",
+          index: "test_index1",
+        },
+        {
+          health: "green",
+          index: "test_index2",
+        },
+      ],
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Clear cache Action"));
+    await waitFor(() => {
+      getByText("Caches will be cleared for the following indexes.");
+    });
+    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.clearCache",
+        data: {
+          index: "test_index1,test_index2",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Clear caches for [test_index1, test_index2] successfully"
+      );
+    });
+  });
+
   it("open index by calling commonService", async () => {
     const onOpen = jest.fn();
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });

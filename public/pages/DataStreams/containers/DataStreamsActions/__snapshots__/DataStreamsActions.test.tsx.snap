@@ -81,6 +81,33 @@ exports[`<DataStreamsActions /> spec delete data streams by calling commonServic
 </div>
 `;
 
+exports[`<DataStreamsActions /> spec filter data streams failed when clearing caches for multiple data streams 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<DataStreamsActions /> spec renders the component and all the actions should be disabled when no items selected 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"

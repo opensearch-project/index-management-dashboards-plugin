@@ -264,4 +264,78 @@ describe("<AliasesActions /> spec", () => {
       expect(getByTestId("ClearCacheConfirmButton")).toBeDisabled();
     });
   });
+
+  it("filter aliases failed when clearing caches for multiple aliases", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "cluster.state":
+            return {
+              ok: true,
+              error: "test failure",
+            };
+          default:
+            return {
+              ok: true,
+              response: {},
+            };
+        }
+      }
+    );
+    const { container, getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "test_index1",
+          alias: "test_alias1",
+          filter: "1",
+          "routing.index": "1",
+          "routing.search": "1",
+          is_write_index: "1",
+          indexArray: ["test_index1"],
+        },
+        {
+          index: "test_index2",
+          alias: "test_alias2",
+          filter: "1",
+          "routing.index": "1",
+          "routing.search": "1",
+          is_write_index: "1",
+          indexArray: ["test_index2"],
+        },
+      ],
+      onUpdateAlias: () => null,
+      onDelete: () => {},
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("ClearCacheAction"));
+    await waitFor(() => {
+      getByText("Caches will be cleared for the following aliases.");
+    });
+    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.clearCache",
+        data: {
+          index: "test_alias1,test_alias2",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Clear caches for [test_alias1, test_alias2] successfully"
+      );
+    });
+  });
 });

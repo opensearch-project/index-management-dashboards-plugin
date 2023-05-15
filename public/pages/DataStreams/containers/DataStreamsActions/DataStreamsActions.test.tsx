@@ -258,4 +258,81 @@ describe("<DataStreamsActions /> spec", () => {
       expect(getByTestId("ClearCacheConfirmButton")).toBeDisabled();
     });
   });
+
+  it("filter data streams failed when clearing caches for multiple data streams", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "cluster.state":
+            return {
+              ok: true,
+              error: "test failure",
+            };
+          default:
+            return {
+              ok: true,
+              response: {},
+            };
+        }
+      }
+    );
+    const { container, getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "test_data_stream1",
+          indices: [
+            {
+              index_name: ".ds-test_data_stream1-000001",
+            },
+            {
+              index_name: ".ds-test_data_stream1-000002",
+            },
+          ],
+        },
+        {
+          name: "test_data_stream2",
+          indices: [
+            {
+              index_name: ".ds-test_data_stream2-000001",
+            },
+            {
+              index_name: ".ds-test_data_stream2-000002",
+            },
+          ],
+        },
+      ],
+      onDelete: () => {},
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("ClearCacheAction"));
+    await waitFor(() => {
+      getByText("Caches will be cleared for the following data streams.");
+    });
+    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.clearCache",
+        data: {
+          index: "test_data_stream1,test_data_stream2",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Clear caches for [test_data_stream1, test_data_stream2] successfully"
+      );
+    });
+  });
 });
