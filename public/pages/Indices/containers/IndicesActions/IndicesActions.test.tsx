@@ -523,7 +523,7 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [
         {
           index: "unblocked_index",
@@ -537,10 +537,12 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
+      expect(queryByTestId("Refresh Index Action")).toBeNull();
       getByText("The following indexes will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
       getByText("The following indexes will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
     });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
@@ -557,11 +559,9 @@ describe("<IndicesActions /> spec", () => {
           index: "unblocked_index",
         },
       });
-
-      expect(document.body).toMatchSnapshot();
-
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh indexes [unblocked_index] successfully");
     });
+
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh indexes [unblocked_index] successfully");
   });
 
   it("refresh selected indexes disabled because all of them are closed", async () => {
@@ -589,7 +589,7 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [
         {
           index: "blocked_index",
@@ -600,9 +600,11 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
+      expect(queryByTestId("Refresh Index Action")).toBeNull();
       getByText("The following indexes will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeDisabled();
+      expect(document.body).toMatchSnapshot();
     });
   });
 
@@ -626,14 +628,16 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [],
     });
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
+      expect(queryByTestId("Refresh Index Action")).toBeNull();
       getByText("All open indexes will be refreshed.");
+      expect(document.body).toMatchSnapshot();
     });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
@@ -658,7 +662,7 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [
         {
           index: "unblocked_index",
@@ -672,9 +676,11 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(() => {
+      expect(queryByTestId("Refresh Index Action")).toBeNull();
       getByText("The following indexes will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
       expect(getByTestId("UnblockedItem-blocked_index")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
     });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
@@ -691,10 +697,10 @@ describe("<IndicesActions /> spec", () => {
           index: "unblocked_index,blocked_index",
         },
       });
-
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Refresh indexes [unblocked_index, blocked_index] successfully"
-      );
     });
+
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+      "Refresh indexes [unblocked_index, blocked_index] successfully"
+    );
   });
 });

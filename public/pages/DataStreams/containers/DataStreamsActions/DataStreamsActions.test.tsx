@@ -128,7 +128,7 @@ describe("<DataStreamsActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [
         {
           name: "unblocked_data_stream",
@@ -158,10 +158,12 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
       getByText("The following data streams will be refreshed.");
       expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
       getByText("The following data streams will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
     });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
@@ -179,8 +181,6 @@ describe("<DataStreamsActions /> spec", () => {
           index: "unblocked_data_stream",
         },
       });
-
-      expect(document.body).toMatchSnapshot();
 
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
         "Refresh data streams [unblocked_data_stream] successfully"
@@ -213,7 +213,7 @@ describe("<DataStreamsActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [
         {
           name: "blocked_data_stream",
@@ -229,9 +229,11 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
       getByText("The following data streams will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeDisabled();
+      expect(document.body).toMatchSnapshot();
     });
   }, 30000);
 
@@ -249,7 +251,7 @@ describe("<DataStreamsActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems: [
         {
           name: "blocked_data_stream",
@@ -265,9 +267,11 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
       getByText("The following data streams will be refreshed.");
       expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeEnabled();
+      expect(document.body).toMatchSnapshot();
     });
   }, 30000);
 });

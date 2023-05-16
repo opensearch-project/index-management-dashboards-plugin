@@ -166,17 +166,19 @@ describe("<AliasesActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems,
     });
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
     await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
       getByText("The following aliases will be refreshed.");
       expect(getByTestId("UnblockedItem-2")).not.toBeNull();
       getByText("The following aliases will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-1")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
     });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
@@ -194,11 +196,9 @@ describe("<AliasesActions /> spec", () => {
           index: selectedItems[1].alias,
         },
       });
-
-      expect(document.body).toMatchSnapshot();
-
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh aliases [2] successfully");
     });
+
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh aliases [2] successfully");
   });
 
   it("refresh alias blocked because all index are blocked", async () => {
@@ -235,7 +235,7 @@ describe("<AliasesActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems,
     });
 
@@ -243,9 +243,11 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(getByTestId("refreshAction"));
 
     await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
       getByText("The following aliases will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-1")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeDisabled();
+      expect(document.body).toMatchSnapshot();
     });
   });
 
@@ -263,7 +265,7 @@ describe("<AliasesActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
       selectedItems,
     });
 
@@ -271,9 +273,11 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(getByTestId("refreshAction"));
 
     await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
       getByText("The following aliases will be refreshed.");
       expect(getByTestId("UnblockedItem-1")).not.toBeNull();
       expect(getByTestId("refreshConfirmButton")).toBeEnabled();
+      expect(document.body).toMatchSnapshot();
     });
   });
 });
