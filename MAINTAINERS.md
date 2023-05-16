@@ -13,11 +13,11 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Hailong Cui           | [Hailong-am](https://github.com/Hailong-am)   | Amazon      |
 | Binlong Gao           | [gaobinlong](https://github.com/gaobinlong)   | Amazon      |
 | Zhou Su               | [SuZhou-Joe](https://github.com/SuZhou-Joe)   | Amazon      |
-
+| Amardeepsingh Siglani | [amsiglan](https://github.com/amsiglan) | Amazon      |
+| Thomas Hurney         | [AWSHurneyt](https://github.com/AWSHurneyt) | Amazon      |
 
 ## Emeritus
 
 | Maintainer  | GitHub ID                                  | Affiliation |
 |-------------| ------------------------------------------ | ----------- |
 | Angie Zhang | [Angie-Zhang](https://github.com/Angie-Zhang)     | Amazon      |
-
