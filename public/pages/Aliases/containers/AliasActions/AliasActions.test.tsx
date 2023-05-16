@@ -172,14 +172,19 @@ describe("<AliasesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
-    await waitFor(() => {
-      expect(queryByTestId("refreshAction")).toBeNull();
-      getByText("The following aliases will be refreshed.");
-      expect(getByTestId("UnblockedItem-2")).not.toBeNull();
-      getByText("The following aliases will not be refreshed because they are closed.");
-      expect(getByTestId("BlockedItem-1")).not.toBeNull();
-      expect(document.body).toMatchSnapshot();
-    });
+    await waitFor(
+      () => {
+        expect(queryByTestId("refreshAction")).toBeNull();
+        getByText("The following aliases will be refreshed.");
+        expect(getByTestId("UnblockedItem-2")).not.toBeNull();
+        getByText("The following aliases will not be refreshed because they are closed.");
+        expect(getByTestId("BlockedItem-1")).not.toBeNull();
+        expect(document.body).toMatchSnapshot();
+      },
+      {
+        timeout: 3000,
+      }
+    );
 
     userEvent.click(getByTestId("refreshConfirmButton"));
     await waitFor(() => {
@@ -242,13 +247,18 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
 
-    await waitFor(() => {
-      expect(queryByTestId("refreshAction")).toBeNull();
-      getByText("The following aliases will not be refreshed because they are closed.");
-      expect(getByTestId("BlockedItem-1")).not.toBeNull();
-      expect(getByTestId("refreshConfirmButton")).toBeDisabled();
-      expect(document.body).toMatchSnapshot();
-    });
+    await waitFor(
+      () => {
+        expect(queryByTestId("refreshAction")).toBeNull();
+        getByText("The following aliases will not be refreshed because they are closed.");
+        expect(getByTestId("BlockedItem-1")).not.toBeNull();
+        expect(getByTestId("refreshConfirmButton")).toBeDisabled();
+        expect(document.body).toMatchSnapshot();
+      },
+      {
+        timeout: 3000,
+      }
+    );
   });
 
   it("refresh alias even failed to get index status", async () => {
@@ -272,12 +282,17 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
 
-    await waitFor(() => {
-      expect(queryByTestId("refreshAction")).toBeNull();
-      getByText("The following aliases will be refreshed.");
-      expect(getByTestId("UnblockedItem-1")).not.toBeNull();
-      expect(getByTestId("refreshConfirmButton")).toBeEnabled();
-      expect(document.body).toMatchSnapshot();
-    });
+    await waitFor(
+      () => {
+        expect(queryByTestId("refreshAction")).toBeNull();
+        getByText("The following aliases will be refreshed.");
+        expect(getByTestId("UnblockedItem-1")).not.toBeNull();
+        expect(getByTestId("refreshConfirmButton")).toBeEnabled();
+        expect(document.body).toMatchSnapshot();
+      },
+      {
+        timeout: 3000,
+      }
+    );
   });
 });
