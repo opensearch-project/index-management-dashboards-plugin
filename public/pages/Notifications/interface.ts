@@ -2,15 +2,16 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { ActionType } from "./constant";
+import { ActionTypeMapName } from "./constant";
 
+type ValueOf<T> = T[keyof T];
 export interface ILronConfig {
   lron_condition: {
     success?: boolean;
     failure?: boolean;
   };
   task_id?: string;
-  action_name: ActionType;
+  action_name?: ValueOf<typeof ActionTypeMapName>;
   channels: {
     id: string;
   }[];

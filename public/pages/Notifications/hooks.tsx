@@ -68,7 +68,7 @@ export const getDiffableMapFromPlainList = (plainConfigs: ILronPlainConfig[]): R
   return plainConfigs.reduce(
     (total, current) => ({
       ...total,
-      [current.action_name]: current,
+      [current.action_name as string]: current,
     }),
     {}
   );

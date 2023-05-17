@@ -53,6 +53,14 @@ const NotificationConfig = (
         field.validatePromise();
       }
     },
+    values: {
+      customize: false,
+      lron_condition: {
+        success: false,
+        failure: false,
+      },
+      channels: [],
+    },
   });
   const [LronConfig, setLronConfig] = useState<ILronConfig | undefined>();
   const [permissionForCreateLRON, setPermissionForCreateLRON] = useState(false);

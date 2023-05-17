@@ -40,7 +40,7 @@ export const ActionTypeMapName = {
   [ActionType.RESIZE]: "indices:admin/resize",
   [ActionType.FORCEMERGE]: "indices:admin/forcemerge",
   [ActionType.OPEN]: "indices:admin/open",
-};
+} as const;
 
 export const getKeyByValue = <T extends {}, Key extends keyof T>(obj: T, value: T[Key]) => {
   if (!obj) {
