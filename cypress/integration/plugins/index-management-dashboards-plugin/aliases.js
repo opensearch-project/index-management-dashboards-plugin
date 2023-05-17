@@ -143,7 +143,7 @@ describe("Aliases", () => {
       cy.get('[data-test-subj="flushConfirmButton"]').click();
 
       // Check for success toast
-      cy.contains(`Flush [${sample_alias}] successfully`);
+      cy.contains(`The alias ${sample_alias} has been successfully flushed.`);
 
       // confirm uncommitted_operations is 0 after flush
       cy.request({

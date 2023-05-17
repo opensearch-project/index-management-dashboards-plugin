@@ -98,7 +98,7 @@ describe("Data stream", () => {
       cy.get('[data-test-subj="flushConfirmButton"]').click();
 
       // Check for success toast
-      cy.contains("Flush [ds-] successfully");
+      cy.contains("The data stream ds- has been successfully flushed.");
 
       // confirm uncommitted_operations is 0 after flush
       cy.request({

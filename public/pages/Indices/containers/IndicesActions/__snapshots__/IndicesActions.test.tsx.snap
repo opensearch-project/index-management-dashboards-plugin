@@ -376,7 +376,7 @@ HTMLCollection [
               data-test-subj="flushModalTitle"
             >
               Flush 
-              index
+              indexes
             </div>
           </div>
           <div
@@ -405,11 +405,11 @@ HTMLCollection [
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiCallOut euiCallOut--warning"
+                  class="euiCallOut euiCallOut--warning euiCallOut--small"
                   data-test-subj="flushBlockedCallout"
                 >
                   <div
-                    class="euiText euiText--small"
+                    class="euiText euiText--extraSmall"
                   >
                     <div
                       class="euiTextColor euiTextColor--default"

@@ -98,21 +98,7 @@ describe("<FlushIndexModal /> spec", () => {
     });
     /* to wait for useEffect updating modal */
     await waitFor(() => {
-      expect(getByText("all open indexes will be flushed.")).toBeInTheDocument();
-    });
-    expect(document.body.children).toMatchSnapshot();
-  });
-
-  it("renders with no flushable items", async () => {
-    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      selectedItems: [{ index: "test_index1" }],
-      visible: true,
-      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: () => {},
-    });
-    /* to wait for useEffect updating modal */
-    await waitFor(() => {
-      expect(getByTestId("flushBlockedCallout")).toBeVisible();
+      expect(getByText("All open indexes will be flushed.")).toBeInTheDocument();
     });
     expect(document.body.children).toMatchSnapshot();
   });
@@ -152,7 +138,7 @@ describe("<FlushIndexModal /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [test_index2, test_index3] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("2 indexes have been successfully flushed.");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -178,7 +164,7 @@ describe("<FlushIndexModal /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [alias2] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("The alias alias2 has been successfully flushed.");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -204,7 +190,7 @@ describe("<FlushIndexModal /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush [ds2] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("The data stream ds2 has been successfully flushed.");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -231,9 +217,7 @@ describe("<FlushIndexModal /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Flush [test_index1, test_index2, test_index3] successfully"
-      );
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("3 indexes have been successfully flushed.");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -260,7 +244,10 @@ describe("<FlushIndexModal /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("some error in flush");
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        text: "some error in flush",
+        title: "Unable to flush indexes",
+      });
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -332,7 +319,27 @@ describe("<FlushIndexModal /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Flush all open indexes successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("All open indexes have been successfully flushed.");
+    });
+  });
+
+  it("no flushable indices", async () => {
+    const onClose = jest.fn();
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: [{ index: "test_index1" }],
+      visible: true,
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
+      onClose: onClose,
+    });
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        title: "Unable to flush indexes",
+        text: "The selected indexes cannot be flushed because they are closed.",
+      });
+      expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
 

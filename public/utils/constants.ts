@@ -382,7 +382,7 @@ export enum IndexOpBlocksType {
 }
 
 export enum INDEX_OP_TARGET_TYPE {
-  INDEX = "index",
+  INDEX = "indexes",
   ALIAS = "aliases",
   DATA_STREAM = "data streams",
 }

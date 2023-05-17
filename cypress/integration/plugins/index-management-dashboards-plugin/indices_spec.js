@@ -513,12 +513,12 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Flush Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
       // Check for flush index modal
-      cy.contains("Flush indices");
+      cy.contains("Flush indexes");
 
       cy.get('[data-test-subj="flushConfirmButton"]').click();
 
       // Check for success toast
-      cy.contains(`Flush [${SAMPLE_INDEX}] successfully`);
+      cy.contains(`The index ${SAMPLE_INDEX} has been successfully flushed.`);
 
       // confirm uncommitted_operations is 0 after flush
       cy.request({
@@ -558,12 +558,12 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Flush Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
       // Check for flush index modal
-      cy.contains("Flush indices");
+      cy.contains("Flush indexes");
 
       cy.get('[data-test-subj="flushConfirmButton"]').click();
 
       // Check for success toast
-      cy.contains(`Flush all open indexes successfully`);
+      cy.contains(`All open indexes have been successfully flushed.`);
 
       // confirm uncommitted_operations is 0 after flush
       cy.request({
