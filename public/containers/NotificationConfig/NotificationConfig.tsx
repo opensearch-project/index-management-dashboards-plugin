@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
+import React, { useRef, forwardRef, useMemo, useImperativeHandle, useContext, useEffect, useState } from "react";
 import { EuiBadge, EuiButton, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import ChannelSelect, { useChannels } from "../ChannelSelect";
 import { AllBuiltInComponents } from "../../components/FormGenerator";
@@ -15,19 +15,13 @@ import {
   OperationTypeMapTitle,
   VALIDATE_ERROR_FOR_CHANNELS,
 } from "../../pages/Notifications/constant";
-import { useState } from "react";
-import { useEffect } from "react";
 import { GetLronConfig, associateWithTask, checkPermissionForSubmitLRONConfig, ifSetDefaultNotification } from "./hooks";
-import { useContext } from "react";
 import { ServicesContext } from "../../services";
 import { BrowserServices } from "../../models/interfaces";
 import { ILronConfig } from "../../pages/Notifications/interface";
 import useField, { FieldInstance } from "../../lib/field";
-import { useMemo } from "react";
 import { FeatureChannelList } from "../../../server/models/interfaces";
 import CustomFormRow from "../../components/CustomFormRow";
-import { useImperativeHandle } from "react";
-import { forwardRef } from "react";
 import { CoreServicesContext } from "../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
 import NotificationCallout from "./NotificationCallout";
@@ -65,6 +59,12 @@ const NotificationConfig = (
   const [permissionForViewLRON, setPermissionForViewLRON] = useState(false);
   const context = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
+  const stateRef = useRef<{
+    permissionForCreateLRON: boolean;
+  }>({
+    permissionForCreateLRON,
+  });
+  stateRef.current.permissionForCreateLRON = permissionForCreateLRON;
   useEffect(() => {
     GetLronConfig({
       actionType,
@@ -95,7 +95,7 @@ const NotificationConfig = (
     ...field,
     associateWithTask: ({ taskId }) => {
       const { customize, ...others } = field.getValues();
-      if (!customize) {
+      if (!customize || !stateRef.current.permissionForCreateLRON) {
         return Promise.resolve(true);
       }
 
