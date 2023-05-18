@@ -117,7 +117,7 @@ exports[`<IndicesActions /> spec refresh all open index by calling commonService
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div
@@ -422,7 +422,7 @@ exports[`<IndicesActions /> spec refresh selected indexes disabled because all o
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div
@@ -579,7 +579,7 @@ exports[`<IndicesActions /> spec refresh selected indexes even failed to get ind
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div

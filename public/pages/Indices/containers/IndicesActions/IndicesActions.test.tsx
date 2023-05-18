@@ -31,6 +31,19 @@ function renderWithRouter(props: IndicesActionsProps) {
 }
 
 describe("<IndicesActions /> spec", () => {
+  /**
+   * OuiPopover is using requestAnimationFrame
+   * to do some async state change.
+   * But requestAnimationFrame behaves with long delay in JSDom env
+   * Rewrite the request animation frame to make it run immediately.
+   * https://github.com/jestjs/jest/issues/5147 for reference
+   */
+  beforeEach(() => {
+    jest.spyOn(window, "requestAnimationFrame").mockImplementation((cb: any) => cb());
+  });
+  afterEach(() => {
+    (window.requestAnimationFrame as any).mockRestore();
+  });
   it("renders the component and all the actions should be disabled when no items selected", async () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
