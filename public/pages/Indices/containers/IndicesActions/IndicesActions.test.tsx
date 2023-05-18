@@ -35,7 +35,7 @@ describe("<IndicesActions /> spec", () => {
    * OuiPopover is using requestAnimationFrame
    * to do some async state change.
    * But requestAnimationFrame behaves with long delay in JSDom env
-   * Rewrite the request animation frame to be
+   * Rewrite the request animation frame to make it run immediately
    */
   beforeEach(() => {
     jest.spyOn(window, "requestAnimationFrame").mockImplementation((cb: any) => cb());
