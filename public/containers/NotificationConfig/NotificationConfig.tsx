@@ -146,7 +146,7 @@ const NotificationConfig = (
             </EuiFlexItem>
             <EuiFlexItem>
               <CustomFormRow label="Channels to notify">
-                <div>
+                <div style={{ lineHeight: 1.5 }}>
                   {selectedChannels?.map((item) => (
                     <EuiBadge color="hollow" key={item.name}>
                       {item.name} ({item.config_type})
