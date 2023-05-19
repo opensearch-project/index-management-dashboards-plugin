@@ -110,7 +110,7 @@ exports[`<AliasesActions /> spec refresh alias blocked because all index are blo
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiCallOut euiCallOut--warning"
+                  class="euiCallOut euiCallOut--warning euiCallOut--small"
                 >
                   <div
                     class="euiCallOutHeader"
@@ -122,22 +122,30 @@ exports[`<AliasesActions /> spec refresh alias blocked because all index are blo
                       The following aliases will not be refreshed because they are closed.
                     </span>
                   </div>
+                  <div
+                    class="euiText euiText--extraSmall"
+                  >
+                    <div
+                      class="euiTextColor euiTextColor--default"
+                    >
+                      <p />
+                      <ul
+                        style="list-style-type: disc; list-style-position: inside;"
+                      >
+                        <li
+                          data-test-subj="BlockedItem-1"
+                        >
+                          1
+                        </li>
+                        <li
+                          data-test-subj="BlockedItem-2"
+                        >
+                          2
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-                <p />
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                >
-                  <li
-                    data-test-subj="BlockedItem-1"
-                  >
-                    1
-                  </li>
-                  <li
-                    data-test-subj="BlockedItem-2"
-                  >
-                    2
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
@@ -269,8 +277,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following 
-                  aliases
+                  The following alias
                    will be refreshed.
                 </p>
                 <ul
@@ -286,7 +293,7 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiCallOut euiCallOut--warning"
+                  class="euiCallOut euiCallOut--warning euiCallOut--small"
                 >
                   <div
                     class="euiCallOutHeader"
@@ -295,20 +302,28 @@ exports[`<AliasesActions /> spec refresh alias by calling commonService 1`] = `
                     <span
                       class="euiCallOutHeader__title"
                     >
-                      The following aliases will not be refreshed because they are closed.
+                      The following alias will not be refreshed because it is closed.
                     </span>
                   </div>
-                </div>
-                <p />
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                >
-                  <li
-                    data-test-subj="BlockedItem-1"
+                  <div
+                    class="euiText euiText--extraSmall"
                   >
-                    1
-                  </li>
-                </ul>
+                    <div
+                      class="euiTextColor euiTextColor--default"
+                    >
+                      <p />
+                      <ul
+                        style="list-style-type: disc; list-style-position: inside;"
+                      >
+                        <li
+                          data-test-subj="BlockedItem-1"
+                        >
+                          1
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -439,8 +454,7 @@ exports[`<AliasesActions /> spec refresh alias even failed to get index status 1
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following 
-                  aliases
+                  The following aliases
                    will be refreshed.
                 </p>
                 <ul

@@ -36,50 +36,127 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
+  const [unblockedWording, setUnblockedWording] = useState("" as string);
+  const [blockedWording, setBlockedWording] = useState("" as string);
+  const [toastWording, setToastWording] = useState("" as string);
 
   useEffect(() => {
     if (!!services && visible) {
+      if (selectedItems.length === 0) {
+        setToastWording("All open indexes are successfully refreshed.");
+      }
       switch (type) {
         case INDEX_OP_TARGET_TYPE.INDEX:
           filterBlockedItems<CatIndex>(services, selectedItems as CatIndex[], IndexOpBlocksType.Closed, indexBlockedPredicate)
             .then((filteredStreamsResult) => {
-              setUnBlockedItems(filteredStreamsResult.unBlockedItems.map((item) => item.index));
-              setBlockedItems(filteredStreamsResult.blockedItems.map((item) => item.index));
+              const unBlocked = filteredStreamsResult.unBlockedItems.map((item) => item.index);
+              const blocked = filteredStreamsResult.blockedItems.map((item) => item.index);
+
+              if (unBlocked.length === 1) {
+                setUnblockedWording("The following index");
+                setToastWording("The index [" + unBlocked.join(", ") + "] has been successfully refreshed.");
+              } else if (unBlocked.length > 1) {
+                setUnblockedWording("The following " + type);
+                setToastWording(unBlocked.length + " " + type + " [" + unBlocked.join(", ") + "] have been successfully refreshed.");
+              }
+              if (blocked.length === 1) {
+                setBlockedWording("The following index will not be refreshed because it is closed.");
+              } else if (blocked.length > 1) {
+                setBlockedWording("The following " + type + " will not be refreshed because they are closed.");
+              }
+
+              setUnBlockedItems(unBlocked);
+              setBlockedItems(blocked);
             })
             .catch(() => {
               /*
             It's not a critical error although if it fails unlikely other call will succeed,
-            set unblocked items to all so we won't filter any of the selected items.
+            set unblocked items to all, so we won't filter any of the selected items.
              */
-              setUnBlockedItems(selectedItems.map((item: CatIndex) => item.index));
+              const unBlocked = selectedItems.map((item: CatIndex) => item.index);
+              if (unBlocked.length === 1) {
+                setUnblockedWording("The following index");
+                setToastWording("The index [" + unBlocked.join(", ") + "] has been successfully refreshed.");
+              } else if (unBlocked.length > 1) {
+                setUnblockedWording("The following " + type);
+                setToastWording(unBlocked.length + " " + type + " [" + unBlocked.join(", ") + "] have been successfully refreshed.");
+              }
+              setUnBlockedItems(unBlocked);
             });
           break;
         case INDEX_OP_TARGET_TYPE.ALIAS:
           filterBlockedItems<IAlias>(services, selectedItems as IAlias[], IndexOpBlocksType.Closed, aliasBlockedPredicate)
-            .then((filteredDataStreamsResult) => {
-              setUnBlockedItems(filteredDataStreamsResult.unBlockedItems.map((item) => item.alias));
-              setBlockedItems(filteredDataStreamsResult.blockedItems.map((item) => item.alias));
+            .then((filteredStreamsResult) => {
+              const unBlocked = filteredStreamsResult.unBlockedItems.map((item) => item.alias);
+              const blocked = filteredStreamsResult.blockedItems.map((item) => item.alias);
+              if (unBlocked.length === 1) {
+                setUnblockedWording("The following alias");
+                setToastWording("The alias [" + unBlocked.join(", ") + "] has been successfully refreshed.");
+              } else if (unBlocked.length > 1) {
+                setUnblockedWording("The following " + type);
+                setToastWording(unBlocked.length + " " + type + " [" + unBlocked.join(", ") + "] have been successfully refreshed.");
+              }
+              if (blocked.length === 1) {
+                setBlockedWording("The following alias will not be refreshed because it is closed.");
+              } else if (blocked.length > 1) {
+                setBlockedWording("The following " + type + " will not be refreshed because they are closed.");
+              }
+
+              setUnBlockedItems(unBlocked);
+              setBlockedItems(blocked);
             })
             .catch(() => {
               /*
             It's not a critical error although if it fails unlikely other call will succeed,
-            set unblocked items to all so we won't filter any of the selected items.
+            set unblocked items to all, so we won't filter any of the selected items.
              */
-              setUnBlockedItems(selectedItems.map((item: IAlias) => item.alias));
+              const unBlocked = selectedItems.map((item: IAlias) => item.alias);
+              if (unBlocked.length === 1) {
+                setUnblockedWording("The following alias");
+                setToastWording("The alias [" + unBlocked.join(", ") + "] has been successfully refreshed.");
+              } else if (unBlocked.length > 1) {
+                setUnblockedWording("The following " + type);
+                setToastWording(unBlocked.length + " " + type + " [" + unBlocked.join(", ") + "] have been successfully refreshed.");
+              }
+              setUnBlockedItems(unBlocked);
             });
           break;
         case INDEX_OP_TARGET_TYPE.DATA_STREAM:
           filterBlockedItems<DataStream>(services, selectedItems as DataStream[], IndexOpBlocksType.Closed, dataStreamBlockedPredicate)
-            .then((filteredDataStreamsResult) => {
-              setUnBlockedItems(filteredDataStreamsResult.unBlockedItems.map((item) => item.name));
-              setBlockedItems(filteredDataStreamsResult.blockedItems.map((item) => item.name));
+            .then((filteredStreamsResult) => {
+              const unBlocked = filteredStreamsResult.unBlockedItems.map((item) => item.name);
+              const blocked = filteredStreamsResult.blockedItems.map((item) => item.name);
+
+              if (unBlocked.length === 1) {
+                setUnblockedWording("The following data stream");
+                setToastWording("The data stream [" + unBlocked.join(", ") + "] has been successfully refreshed.");
+              } else if (unBlocked.length > 1) {
+                setUnblockedWording("The following " + type);
+                setToastWording(unBlocked.length + " " + type + " [" + unBlocked.join(", ") + "] have been successfully refreshed.");
+              }
+              if (blocked.length === 1) {
+                setBlockedWording("The following data stream will not be refreshed because it is closed.");
+              } else if (blocked.length > 1) {
+                setBlockedWording("The following " + type + " will not be refreshed because they are closed.");
+              }
+
+              setUnBlockedItems(unBlocked);
+              setBlockedItems(blocked);
             })
             .catch(() => {
               /*
             It's not a critical error although if it fails unlikely other call will succeed,
-            set unblocked items to all so we won't filter any of the selected items.
+            set unblocked items to all, so we won't filter any of the selected items.
              */
-              setUnBlockedItems(selectedItems.map((item: DataStream) => item.name));
+              const unBlocked = selectedItems.map((item: DataStream) => item.name);
+              if (unBlocked.length === 1) {
+                setUnblockedWording("The following data stream");
+                setToastWording("The data stream [" + unBlocked.join(", ") + "] has been successfully refreshed.");
+              } else if (unBlocked.length > 1) {
+                setUnblockedWording("The following " + type);
+                setToastWording(unBlocked.length + " " + type + " [" + unBlocked.join(", ") + "] have been successfully refreshed.");
+              }
+              setUnBlockedItems(unBlocked);
             });
           break;
       }
@@ -98,17 +175,13 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
         },
       });
       if (result && result.ok) {
-        let message = `Refresh ${type} [${unBlockedItems.join(", ")}] successfully`;
-        if (selectedItems.length === 0) {
-          message = `Refresh all open indexes successfully`;
-        }
-        coreServices.notifications.toasts.addSuccess(message);
+        coreServices.notifications.toasts.addSuccess(toastWording);
         onClose();
       } else {
         coreServices.notifications.toasts.addDanger(result?.error || "");
       }
     }
-  }, [unBlockedItems, services, coreServices, selectedItems, onClose]);
+  }, [unBlockedItems, services, coreServices, onClose]);
 
   if (!visible) {
     return null;
@@ -129,7 +202,7 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
           )}
           {!!unBlockedItems.length && (
             <>
-              <p>The following {type} will be refreshed.</p>
+              <p>{unblockedWording} will be refreshed.</p>
               <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
                 {unBlockedItems.map((item) => (
                   <li key={item} data-test-subj={`UnblockedItem-${item}`}>
@@ -142,15 +215,16 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
           <EuiSpacer />
           {!!blockedItems.length && (
             <>
-              <EuiCallOut color="warning" iconType="alert" title={`The following ${type} will not be refreshed because they are closed.`} />
-              <p />
-              <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-                {blockedItems.map((item) => (
-                  <li key={item} data-test-subj={`BlockedItem-${item}`}>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <EuiCallOut color="warning" iconType="alert" size="s" title={`${blockedWording}`}>
+                <p />
+                <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+                  {blockedItems.map((item) => (
+                    <li key={item} data-test-subj={`BlockedItem-${item}`}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </EuiCallOut>
             </>
           )}
         </div>

@@ -107,8 +107,7 @@ exports[`<DataStreamsActions /> spec refresh data streams by calling commonServi
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following 
-                  data streams
+                  The following data stream
                    will be refreshed.
                 </p>
                 <ul
@@ -124,7 +123,7 @@ exports[`<DataStreamsActions /> spec refresh data streams by calling commonServi
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiCallOut euiCallOut--warning"
+                  class="euiCallOut euiCallOut--warning euiCallOut--small"
                 >
                   <div
                     class="euiCallOutHeader"
@@ -133,20 +132,28 @@ exports[`<DataStreamsActions /> spec refresh data streams by calling commonServi
                     <span
                       class="euiCallOutHeader__title"
                     >
-                      The following data streams will not be refreshed because they are closed.
+                      The following data stream will not be refreshed because it is closed.
                     </span>
                   </div>
-                </div>
-                <p />
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                >
-                  <li
-                    data-test-subj="BlockedItem-blocked_data_stream"
+                  <div
+                    class="euiText euiText--extraSmall"
                   >
-                    blocked_data_stream
-                  </li>
-                </ul>
+                    <div
+                      class="euiTextColor euiTextColor--default"
+                    >
+                      <p />
+                      <ul
+                        style="list-style-type: disc; list-style-position: inside;"
+                      >
+                        <li
+                          data-test-subj="BlockedItem-blocked_data_stream"
+                        >
+                          blocked_data_stream
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -280,7 +287,7 @@ exports[`<DataStreamsActions /> spec refresh data streams disabled because all i
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiCallOut euiCallOut--warning"
+                  class="euiCallOut euiCallOut--warning euiCallOut--small"
                 >
                   <div
                     class="euiCallOutHeader"
@@ -289,20 +296,28 @@ exports[`<DataStreamsActions /> spec refresh data streams disabled because all i
                     <span
                       class="euiCallOutHeader__title"
                     >
-                      The following data streams will not be refreshed because they are closed.
+                      The following data stream will not be refreshed because it is closed.
                     </span>
                   </div>
-                </div>
-                <p />
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                >
-                  <li
-                    data-test-subj="BlockedItem-blocked_data_stream"
+                  <div
+                    class="euiText euiText--extraSmall"
                   >
-                    blocked_data_stream
-                  </li>
-                </ul>
+                    <div
+                      class="euiTextColor euiTextColor--default"
+                    >
+                      <p />
+                      <ul
+                        style="list-style-type: disc; list-style-position: inside;"
+                      >
+                        <li
+                          data-test-subj="BlockedItem-blocked_data_stream"
+                        >
+                          blocked_data_stream
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -434,8 +449,7 @@ exports[`<DataStreamsActions /> spec refresh data streams even failed to get ind
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following 
-                  data streams
+                  The following data stream
                    will be refreshed.
                 </p>
                 <ul

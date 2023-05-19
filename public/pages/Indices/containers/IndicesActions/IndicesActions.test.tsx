@@ -552,9 +552,9 @@ describe("<IndicesActions /> spec", () => {
     await waitFor(
       () => {
         expect(queryByTestId("Refresh Index Action")).toBeNull();
-        getByText("The following indexes will be refreshed.");
+        getByText("The following index will be refreshed.");
         expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
-        getByText("The following indexes will not be refreshed because they are closed.");
+        getByText("The following index will not be refreshed because it is closed.");
         expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
         expect(document.body).toMatchSnapshot();
       },
@@ -579,7 +579,9 @@ describe("<IndicesActions /> spec", () => {
       });
     });
 
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh indexes [unblocked_index] successfully");
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+      "The index [unblocked_index] has been successfully refreshed."
+    );
   });
 
   it("refresh selected indexes disabled because all of them are closed", async () => {
@@ -592,6 +594,9 @@ describe("<IndicesActions /> spec", () => {
               blocks: {
                 indices: {
                   blocked_index: {
+                    "4": {},
+                  },
+                  blocked_index1: {
                     "4": {},
                   },
                 },
@@ -611,6 +616,9 @@ describe("<IndicesActions /> spec", () => {
       selectedItems: [
         {
           index: "blocked_index",
+        },
+        {
+          index: "blocked_index1",
         },
       ],
     });
@@ -671,7 +679,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(getByTestId("refreshConfirmButton"));
 
     await waitFor(() => {
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh all open indexes successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("All open indexes are successfully refreshed.");
     });
   });
 
@@ -733,7 +741,7 @@ describe("<IndicesActions /> spec", () => {
     });
 
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-      "Refresh indexes [unblocked_index, blocked_index] successfully"
+      "2 indexes [unblocked_index, blocked_index] have been successfully refreshed."
     );
   });
 });

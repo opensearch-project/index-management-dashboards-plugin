@@ -160,9 +160,9 @@ describe("<DataStreamsActions /> spec", () => {
     await waitFor(
       () => {
         expect(queryByTestId("refreshAction")).toBeNull();
-        getByText("The following data streams will be refreshed.");
+        getByText("The following data stream will be refreshed.");
         expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
-        getByText("The following data streams will not be refreshed because they are closed.");
+        getByText("The following data stream will not be refreshed because it is closed.");
         expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
         expect(document.body).toMatchSnapshot();
       },
@@ -188,7 +188,7 @@ describe("<DataStreamsActions /> spec", () => {
       });
 
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Refresh data streams [unblocked_data_stream] successfully"
+        "The data stream [unblocked_data_stream] has been successfully refreshed."
       );
     });
   }, 30000);
@@ -236,7 +236,7 @@ describe("<DataStreamsActions /> spec", () => {
     await waitFor(
       () => {
         expect(queryByTestId("refreshAction")).toBeNull();
-        getByText("The following data streams will not be refreshed because they are closed.");
+        getByText("The following data stream will not be refreshed because it is closed.");
         expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
         expect(getByTestId("refreshConfirmButton")).toBeDisabled();
         expect(document.body).toMatchSnapshot();
@@ -279,7 +279,7 @@ describe("<DataStreamsActions /> spec", () => {
     await waitFor(
       () => {
         expect(queryByTestId("refreshAction")).toBeNull();
-        getByText("The following data streams will be refreshed.");
+        getByText("The following data stream will be refreshed.");
         expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
         expect(getByTestId("refreshConfirmButton")).toBeEnabled();
         expect(document.body).toMatchSnapshot();

@@ -175,9 +175,9 @@ describe("<AliasesActions /> spec", () => {
     await waitFor(
       () => {
         expect(queryByTestId("refreshAction")).toBeNull();
-        getByText("The following aliases will be refreshed.");
+        getByText("The following alias will be refreshed.");
         expect(getByTestId("UnblockedItem-2")).not.toBeNull();
-        getByText("The following aliases will not be refreshed because they are closed.");
+        getByText("The following alias will not be refreshed because it is closed.");
         expect(getByTestId("BlockedItem-1")).not.toBeNull();
         expect(document.body).toMatchSnapshot();
       },
@@ -203,7 +203,7 @@ describe("<AliasesActions /> spec", () => {
       });
     });
 
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Refresh aliases [2] successfully");
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("The alias [2] has been successfully refreshed.");
   });
 
   it("refresh alias blocked because all index are blocked", async () => {
@@ -252,6 +252,7 @@ describe("<AliasesActions /> spec", () => {
         expect(queryByTestId("refreshAction")).toBeNull();
         getByText("The following aliases will not be refreshed because they are closed.");
         expect(getByTestId("BlockedItem-1")).not.toBeNull();
+        expect(getByTestId("BlockedItem-2")).not.toBeNull();
         expect(getByTestId("refreshConfirmButton")).toBeDisabled();
         expect(document.body).toMatchSnapshot();
       },
@@ -287,6 +288,7 @@ describe("<AliasesActions /> spec", () => {
         expect(queryByTestId("refreshAction")).toBeNull();
         getByText("The following aliases will be refreshed.");
         expect(getByTestId("UnblockedItem-1")).not.toBeNull();
+        expect(getByTestId("UnblockedItem-2")).not.toBeNull();
         expect(getByTestId("refreshConfirmButton")).toBeEnabled();
         expect(document.body).toMatchSnapshot();
       },
@@ -294,5 +296,24 @@ describe("<AliasesActions /> spec", () => {
         timeout: 3000,
       }
     );
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.refresh",
+        data: {
+          index: "1,2",
+        },
+      });
+    });
+
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("2 aliases [1, 2] have been successfully refreshed.");
   });
 });

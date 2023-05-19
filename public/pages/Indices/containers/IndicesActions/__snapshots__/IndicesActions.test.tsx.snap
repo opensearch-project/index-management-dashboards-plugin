@@ -323,8 +323,7 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following 
-                  indexes
+                  The following index
                    will be refreshed.
                 </p>
                 <ul
@@ -340,7 +339,7 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiCallOut euiCallOut--warning"
+                  class="euiCallOut euiCallOut--warning euiCallOut--small"
                 >
                   <div
                     class="euiCallOutHeader"
@@ -349,20 +348,28 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
                     <span
                       class="euiCallOutHeader__title"
                     >
-                      The following indexes will not be refreshed because they are closed.
+                      The following index will not be refreshed because it is closed.
                     </span>
                   </div>
-                </div>
-                <p />
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                >
-                  <li
-                    data-test-subj="BlockedItem-blocked_index"
+                  <div
+                    class="euiText euiText--extraSmall"
                   >
-                    blocked_index
-                  </li>
-                </ul>
+                    <div
+                      class="euiTextColor euiTextColor--default"
+                    >
+                      <p />
+                      <ul
+                        style="list-style-type: disc; list-style-position: inside;"
+                      >
+                        <li
+                          data-test-subj="BlockedItem-blocked_index"
+                        >
+                          blocked_index
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -496,7 +503,7 @@ exports[`<IndicesActions /> spec refresh selected indexes disabled because all o
                   class="euiSpacer euiSpacer--l"
                 />
                 <div
-                  class="euiCallOut euiCallOut--warning"
+                  class="euiCallOut euiCallOut--warning euiCallOut--small"
                 >
                   <div
                     class="euiCallOutHeader"
@@ -508,17 +515,30 @@ exports[`<IndicesActions /> spec refresh selected indexes disabled because all o
                       The following indexes will not be refreshed because they are closed.
                     </span>
                   </div>
-                </div>
-                <p />
-                <ul
-                  style="list-style-type: disc; list-style-position: inside;"
-                >
-                  <li
-                    data-test-subj="BlockedItem-blocked_index"
+                  <div
+                    class="euiText euiText--extraSmall"
                   >
-                    blocked_index
-                  </li>
-                </ul>
+                    <div
+                      class="euiTextColor euiTextColor--default"
+                    >
+                      <p />
+                      <ul
+                        style="list-style-type: disc; list-style-position: inside;"
+                      >
+                        <li
+                          data-test-subj="BlockedItem-blocked_index"
+                        >
+                          blocked_index
+                        </li>
+                        <li
+                          data-test-subj="BlockedItem-blocked_index1"
+                        >
+                          blocked_index1
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -650,8 +670,7 @@ exports[`<IndicesActions /> spec refresh selected indexes even failed to get ind
                 style="line-height: 1.5;"
               >
                 <p>
-                  The following 
-                  indexes
+                  The following indexes
                    will be refreshed.
                 </p>
                 <ul

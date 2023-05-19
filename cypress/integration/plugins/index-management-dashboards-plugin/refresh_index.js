@@ -32,7 +32,7 @@ describe("Refresh Index", () => {
         .click()
         .end();
 
-      cy.contains(`Refresh all open indexes successfully`).end();
+      cy.contains(`All open indexes are successfully refreshed.`).end();
     });
 
     it("Refresh selected index successfully", () => {
@@ -48,7 +48,7 @@ describe("Refresh Index", () => {
         .click()
         .end();
 
-      cy.contains(`Refresh indexes [${sampleIndex}-0, ${sampleIndex}-1] successfully`).end();
+      cy.contains(`2 indexes [${sampleIndex}-0, ${sampleIndex}-1] have been successfully refreshed.`).end();
     });
   });
 
