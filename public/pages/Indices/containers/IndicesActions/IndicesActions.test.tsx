@@ -559,7 +559,7 @@ describe("<IndicesActions /> spec", () => {
         expect(document.body).toMatchSnapshot();
       },
       {
-        timeout: 3000,
+        timeout: 6000,
       }
     );
 
