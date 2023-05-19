@@ -181,7 +181,7 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
         coreServices.notifications.toasts.addDanger(result?.error || "");
       }
     }
-  }, [unBlockedItems, services, coreServices, onClose]);
+  }, [unBlockedItems, toastWording, services, coreServices, onClose]);
 
   if (!visible) {
     return null;

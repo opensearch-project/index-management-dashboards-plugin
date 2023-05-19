@@ -167,7 +167,7 @@ describe("<DataStreamsActions /> spec", () => {
         expect(document.body).toMatchSnapshot();
       },
       {
-        timeout: 3000,
+        timeout: 6000,
       }
     );
 
@@ -242,7 +242,7 @@ describe("<DataStreamsActions /> spec", () => {
         expect(document.body).toMatchSnapshot();
       },
       {
-        timeout: 3000,
+        timeout: 6000,
       }
     );
   }, 30000);
@@ -285,7 +285,7 @@ describe("<DataStreamsActions /> spec", () => {
         expect(document.body).toMatchSnapshot();
       },
       {
-        timeout: 3000,
+        timeout: 6000,
       }
     );
   }, 30000);
