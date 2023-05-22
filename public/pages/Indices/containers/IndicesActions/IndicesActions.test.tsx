@@ -612,7 +612,7 @@ describe("<IndicesActions /> spec", () => {
       }
     );
 
-    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
+    const { getByTestId, getByText, queryByTestId, debug } = renderWithRouter({
       selectedItems: [
         {
           index: "blocked_index",
@@ -627,6 +627,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(getByTestId("Refresh Index Action"));
     await waitFor(
       () => {
+        debug();
         expect(queryByTestId("Refresh Index Action")).toBeNull();
         getByText("The following indexes will not be refreshed because they are closed.");
         expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
