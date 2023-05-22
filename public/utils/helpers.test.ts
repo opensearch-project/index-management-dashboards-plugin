@@ -13,7 +13,7 @@ import {
 import { CatIndex, DataStream } from "../../server/models/interfaces";
 import { IAlias } from "../pages/Aliases/interface";
 import { browserServicesMock } from "../../test/mocks";
-import { IndexOpBlocksType } from "./constants";
+import { INDEX_OP_BLOCKS_TYPE } from "./constants";
 
 const exampleBlocksStateResponse = {
   cluster_name: "opensearch-cluster",
@@ -139,7 +139,7 @@ describe("helpers spec", () => {
     });
     const selectedItems = [{ index: "test_index1" }, { index: "test_index2" }, { index: "test_index3" }];
     expect(
-      filterBlockedItems<CatIndex>(browserServicesMock, selectedItems, IndexOpBlocksType.Closed, indexBlockedPredicate)
+      filterBlockedItems<CatIndex>(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, indexBlockedPredicate)
     ).resolves.toEqual({
       blockedItems: [{ index: "test_index1" }, { index: "test_index2" }],
       unBlockedItems: [{ index: "test_index3" }],
@@ -149,7 +149,7 @@ describe("helpers spec", () => {
       filterBlockedItems<CatIndex>(
         browserServicesMock,
         selectedItems,
-        [IndexOpBlocksType.ReadOnly, IndexOpBlocksType.MetaData],
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
         indexBlockedPredicate
       )
     ).resolves.toEqual({
@@ -166,7 +166,7 @@ describe("helpers spec", () => {
       filterBlockedItems<CatIndex>(
         browserServicesMock,
         selectedItems,
-        [IndexOpBlocksType.ReadOnly, IndexOpBlocksType.MetaData],
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
         indexBlockedPredicate
       )
     ).resolves.toEqual({
@@ -187,7 +187,7 @@ describe("helpers spec", () => {
     ];
 
     expect(
-      filterBlockedItems<IAlias>(browserServicesMock, selectedItems, IndexOpBlocksType.Closed, aliasBlockedPredicate)
+      filterBlockedItems<IAlias>(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, aliasBlockedPredicate)
     ).resolves.toEqual({
       blockedItems: selectedItems,
       unBlockedItems: [],
@@ -197,7 +197,7 @@ describe("helpers spec", () => {
       filterBlockedItems<IAlias>(
         browserServicesMock,
         selectedItems,
-        [IndexOpBlocksType.ReadOnly, IndexOpBlocksType.MetaData],
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
         aliasBlockedPredicate
       )
     ).resolves.toEqual({
@@ -217,7 +217,7 @@ describe("helpers spec", () => {
       { indices: [{ index_name: "test_index2" }, { index_name: "test_index3" }] },
     ];
     expect(
-      filterBlockedItems<DataStream>(browserServicesMock, selectedItems, IndexOpBlocksType.Closed, dataStreamBlockedPredicate)
+      filterBlockedItems<DataStream>(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, dataStreamBlockedPredicate)
     ).resolves.toEqual({
       blockedItems: selectedItems,
       unBlockedItems: [],
@@ -227,7 +227,7 @@ describe("helpers spec", () => {
       filterBlockedItems<DataStream>(
         browserServicesMock,
         selectedItems,
-        [IndexOpBlocksType.ReadOnly, IndexOpBlocksType.MetaData],
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
         dataStreamBlockedPredicate
       )
     ).resolves.toEqual({

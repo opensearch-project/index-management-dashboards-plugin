@@ -374,9 +374,9 @@ export const ALIAS_SELECT_RULE = [
   },
 ];
 
-export enum IndexOpBlocksType {
-  Closed = "4",
-  ReadOnly = "5",
-  MetaData = "9",
-  ReadOnlyAllowDelete = "12",
+export enum INDEX_OP_BLOCKS_TYPE {
+  CLOSED = "4",
+  READ_ONLY = "5",
+  META_DATA = "9",
+  READ_ONLY_ALLOW_DELETE = "12",
 }

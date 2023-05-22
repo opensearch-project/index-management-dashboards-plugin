@@ -7,7 +7,7 @@
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
 import { isEqual } from "lodash";
 import { BrowserServices } from "../models/interfaces";
-import { IndexOpBlocksType } from "./constants";
+import { INDEX_OP_BLOCKS_TYPE } from "./constants";
 import { CatIndex, DataStream } from "../../server/models/interfaces";
 import { IAlias } from "../pages/Aliases/interface";
 
@@ -53,8 +53,8 @@ export function diffJson(oldJson?: Record<string, any>, newJson?: Record<string,
 // code related to filter blocked index/alias/datastream
 // an example to use:
 // import { aliasBlockedPredicate, filterBlockedItems } from "./helpers";
-// import { IndexOpBlocksType } from "./constants";
-// const result = filterBlockedItems<IAlias>(services, selectedItems, IndexOpBlocksType.Closed, aliasBlockedPredicate)
+// import { INDEX_OP_BLOCKS_TYPE } from "./constants";
+// const result = filterBlockedItems<IAlias>(services, selectedItems,INDEX_OP_BLOCKS_TYPE.CLOSED, aliasBlockedPredicate)
 
 interface BlockedIndices {
   [indexName: string]: String[];
@@ -119,7 +119,7 @@ export function dataStreamBlockedPredicate(item: Pick<DataStream, "indices">, bl
 export async function filterBlockedItems<T>(
   broswerServices: BrowserServices,
   inputItems: T[],
-  blocksTypes: IndexOpBlocksType | IndexOpBlocksType[],
+  blocksTypes: INDEX_OP_BLOCKS_TYPE | INDEX_OP_BLOCKS_TYPE[],
   blocksPredicate: (item: T, blockedItemsSet: Set<string>) => boolean
 ): Promise<FilteredBlockedItems<T>> {
   const blocksTypesSet = new Set(Array.isArray(blocksTypes) ? blocksTypes : [blocksTypes]);
@@ -130,7 +130,7 @@ export async function filterBlockedItems<T>(
     Object.entries(blockedIndices)
       .filter(
         // blockedIndex is like this: ["index_name": ["4","5"]]
-        (blockedIndex) => blockedIndex[1].find((s) => blocksTypesSet.has(s as IndexOpBlocksType))
+        (blockedIndex) => blockedIndex[1].find((s) => blocksTypesSet.has(s as INDEX_OP_BLOCKS_TYPE))
         // we only take index name, do not need blocksType
       )
       .map((blockedIndex) => blockedIndex[0])
