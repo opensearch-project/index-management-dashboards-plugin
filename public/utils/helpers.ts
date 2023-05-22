@@ -10,6 +10,7 @@ import { BrowserServices } from "../models/interfaces";
 import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "./constants";
 import { CatIndex, DataStream } from "../../server/models/interfaces";
 import { IAlias } from "../pages/Aliases/interface";
+import Indices from "../pages/Indices";
 
 export function getErrorMessage(err: any, defaultMessage: string) {
   if (err && err.message) return err.message;
@@ -119,6 +120,25 @@ export async function getBlockedIndices(browserServices: BrowserServices): Promi
   return blockedIndices;
 }
 
+export async function getBlockedIndicesSetWithBlocksType(
+  browserServices: BrowserServices,
+  blocksTypes: INDEX_OP_BLOCKS_TYPE | INDEX_OP_BLOCKS_TYPE[]
+): Promise<Set<string>> {
+  const blocksTypesSet = new Set(Array.isArray(blocksTypes) ? blocksTypes : [blocksTypes]);
+  const blockedIndices = await getBlockedIndices(browserServices);
+  // we only care about the indices with blocks type in blocksTypesSet
+  // use set to accelarate execution
+  return new Set(
+    Object.entries(blockedIndices)
+      .filter(
+        // blockedIndex is like this: ["index_name": ["4","5"]]
+        (blockedIndex) => blockedIndex[1].find((s) => blocksTypesSet.has(s as INDEX_OP_BLOCKS_TYPE))
+        // we only take index name, do not need blocksType
+      )
+      .map((blockedIndex) => blockedIndex[0])
+  );
+}
+
 export interface FilteredBlockedItems {
   unBlockedItems: string[];
   blockedItems: string[];
@@ -139,22 +159,10 @@ export function dataStreamBlockedPredicate(item: Pick<DataStream, "indices">, bl
 export async function filterBlockedItems(
   browserServices: BrowserServices,
   originInputItems: IAlias[] | DataStream[] | CatIndex[],
-  indexOpTargetType: INDEX_OP_TARGET_TYPE,
-  blocksTypes: INDEX_OP_BLOCKS_TYPE | INDEX_OP_BLOCKS_TYPE[]
+  blocksTypes: INDEX_OP_BLOCKS_TYPE | INDEX_OP_BLOCKS_TYPE[],
+  indexOpTargetType: INDEX_OP_TARGET_TYPE
 ): Promise<FilteredBlockedItems> {
-  const blocksTypesSet = new Set(Array.isArray(blocksTypes) ? blocksTypes : [blocksTypes]);
-  const blockedIndices = await getBlockedIndices(browserServices);
-  // we only care about the indices with blocks type in blocksTypesSet
-  // use set to accelarate execution
-  const filteredBlockedIndicesSet = new Set(
-    Object.entries(blockedIndices)
-      .filter(
-        // blockedIndex is like this: ["index_name": ["4","5"]]
-        (blockedIndex) => blockedIndex[1].find((s) => blocksTypesSet.has(s as INDEX_OP_BLOCKS_TYPE))
-        // we only take index name, do not need blocksType
-      )
-      .map((blockedIndex) => blockedIndex[0])
-  );
+  const filteredBlockedIndicesSet = await getBlockedIndicesSetWithBlocksType(browserServices, blocksTypes);
   const result: FilteredBlockedItems = {
     unBlockedItems: [],
     blockedItems: [],

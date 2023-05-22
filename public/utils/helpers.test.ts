@@ -9,6 +9,7 @@ import {
   aliasBlockedPredicate,
   dataStreamBlockedPredicate,
   filterBlockedItems,
+  getBlockedIndicesSetWithBlocksType,
 } from "./helpers";
 import { CatIndex, DataStream } from "../../server/models/interfaces";
 import { IAlias } from "../pages/Aliases/interface";
@@ -112,6 +113,22 @@ describe("helpers spec", () => {
     } catch (err) {
       expect(err).toEqual("test");
     }
+  });
+
+  it(`getBlockedIndicesWithType`, async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: exampleBlocksStateResponse,
+    });
+    expect(getBlockedIndicesSetWithBlocksType(browserServicesMock, INDEX_OP_BLOCKS_TYPE.READ_ONLY)).resolves.toEqual(
+      new Set(["test_index1"])
+    );
+    expect(
+      getBlockedIndicesSetWithBlocksType(browserServicesMock, [INDEX_OP_BLOCKS_TYPE.CLOSED, INDEX_OP_BLOCKS_TYPE.READ_ONLY])
+    ).resolves.toEqual(new Set(["test_index1", "test_index2"]));
+    expect(
+      getBlockedIndicesSetWithBlocksType(browserServicesMock, [INDEX_OP_BLOCKS_TYPE.META_DATA, INDEX_OP_BLOCKS_TYPE.READ_ONLY_ALLOW_DELETE])
+    ).resolves.toEqual(new Set([]));
   });
 
   it(`indexBlockedPredicate`, async () => {
@@ -234,5 +251,20 @@ describe("helpers spec", () => {
       blockedItems: ["ds1", "ds2"],
       unBlockedItems: ["ds3"],
     });
+  });
+
+  it(`unexpected INDEX_OP_TARGET_TYPE`, async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: exampleBlocksStateResponse,
+    });
+    const selectedItems = [
+      { name: "ds1", indices: [{ index_name: "test_index1" }, { index_name: "test_index2" }] },
+      { name: "ds2", indices: [{ index_name: "test_index1" }, { index_name: "test_index3" }] },
+      { name: "ds3", indices: [{ index_name: "test_index2" }, { index_name: "test_index3" }] },
+    ];
+    expect(filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, "test")).rejects.toEqual(
+      new Error("Unexpected INDEX_OP_TARGET_TYPE: test")
+    );
   });
 });
