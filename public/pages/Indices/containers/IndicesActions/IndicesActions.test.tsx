@@ -620,9 +620,7 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
-    const now = Date.now();
     await waitFor(() => {
-      console.log("Date.now() - now: ", Date.now() - now);
       expect(queryByTestId("Refresh Index Action")).toBeNull();
       getByText("The following indexes will not be refreshed because they are closed.");
       expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
