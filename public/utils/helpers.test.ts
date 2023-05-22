@@ -13,7 +13,7 @@ import {
 import { CatIndex, DataStream } from "../../server/models/interfaces";
 import { IAlias } from "../pages/Aliases/interface";
 import { browserServicesMock } from "../../test/mocks";
-import { INDEX_OP_BLOCKS_TYPE } from "./constants";
+import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "./constants";
 
 const exampleBlocksStateResponse = {
   cluster_name: "opensearch-cluster",
@@ -139,22 +139,22 @@ describe("helpers spec", () => {
     });
     const selectedItems = [{ index: "test_index1" }, { index: "test_index2" }, { index: "test_index3" }];
     expect(
-      filterBlockedItems<CatIndex>(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, indexBlockedPredicate)
+      filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, INDEX_OP_TARGET_TYPE.INDEX)
     ).resolves.toEqual({
-      blockedItems: [{ index: "test_index1" }, { index: "test_index2" }],
-      unBlockedItems: [{ index: "test_index3" }],
+      blockedItems: ["test_index1", "test_index2"],
+      unBlockedItems: ["test_index3"],
     });
 
     expect(
-      filterBlockedItems<CatIndex>(
+      filterBlockedItems(
         browserServicesMock,
         selectedItems,
         [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
-        indexBlockedPredicate
+        INDEX_OP_TARGET_TYPE.INDEX
       )
     ).resolves.toEqual({
-      blockedItems: [{ index: "test_index1" }],
-      unBlockedItems: [{ index: "test_index2" }, { index: "test_index3" }],
+      blockedItems: ["test_index1"],
+      unBlockedItems: ["test_index2", "test_index3"],
     });
 
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
@@ -163,15 +163,15 @@ describe("helpers spec", () => {
     });
 
     expect(
-      filterBlockedItems<CatIndex>(
+      filterBlockedItems(
         browserServicesMock,
         selectedItems,
         [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
-        indexBlockedPredicate
+        INDEX_OP_TARGET_TYPE.INDEX
       )
     ).resolves.toEqual({
       blockedItems: [],
-      unBlockedItems: selectedItems,
+      unBlockedItems: ["test_index1", "test_index2", "test_index3"],
     });
   });
 
@@ -181,28 +181,28 @@ describe("helpers spec", () => {
       response: exampleBlocksStateResponse,
     });
     const selectedItems = [
-      { indexArray: ["test_index1", "test_index3"] },
-      { indexArray: ["test_index1", "test_index3"] },
-      { indexArray: ["test_index2", "test_index3"] },
+      { alias: "alias1", indexArray: ["test_index1", "test_index3"] },
+      { alias: "alias2", indexArray: ["test_index1", "test_index3"] },
+      { alias: "alias3", indexArray: ["test_index2", "test_index3"] },
     ];
 
     expect(
-      filterBlockedItems<IAlias>(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, aliasBlockedPredicate)
+      filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, INDEX_OP_TARGET_TYPE.ALIAS)
     ).resolves.toEqual({
-      blockedItems: selectedItems,
+      blockedItems: ["alias1", "alias2", "alias3"],
       unBlockedItems: [],
     });
 
     expect(
-      filterBlockedItems<IAlias>(
+      filterBlockedItems(
         browserServicesMock,
         selectedItems,
         [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
-        aliasBlockedPredicate
+        INDEX_OP_TARGET_TYPE.ALIAS
       )
     ).resolves.toEqual({
-      blockedItems: [selectedItems[0], selectedItems[1]],
-      unBlockedItems: [selectedItems[2]],
+      blockedItems: ["alias1", "alias2"],
+      unBlockedItems: ["alias3"],
     });
   });
 
@@ -212,27 +212,27 @@ describe("helpers spec", () => {
       response: exampleBlocksStateResponse,
     });
     const selectedItems = [
-      { indices: [{ index_name: "test_index1" }, { index_name: "test_index2" }] },
-      { indices: [{ index_name: "test_index1" }, { index_name: "test_index3" }] },
-      { indices: [{ index_name: "test_index2" }, { index_name: "test_index3" }] },
+      { name: "ds1", indices: [{ index_name: "test_index1" }, { index_name: "test_index2" }] },
+      { name: "ds2", indices: [{ index_name: "test_index1" }, { index_name: "test_index3" }] },
+      { name: "ds3", indices: [{ index_name: "test_index2" }, { index_name: "test_index3" }] },
     ];
     expect(
-      filterBlockedItems<DataStream>(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, dataStreamBlockedPredicate)
+      filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, INDEX_OP_TARGET_TYPE.DATA_STREAM)
     ).resolves.toEqual({
-      blockedItems: selectedItems,
+      blockedItems: ["ds1", "ds2", "ds3"],
       unBlockedItems: [],
     });
 
     expect(
-      filterBlockedItems<DataStream>(
+      filterBlockedItems(
         browserServicesMock,
         selectedItems,
         [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
-        dataStreamBlockedPredicate
+        INDEX_OP_TARGET_TYPE.DATA_STREAM
       )
     ).resolves.toEqual({
-      blockedItems: [selectedItems[0], selectedItems[1]],
-      unBlockedItems: [selectedItems[2]],
+      blockedItems: ["ds1", "ds2"],
+      unBlockedItems: ["ds3"],
     });
   });
 });
