@@ -157,19 +157,14 @@ describe("<DataStreamsActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
-    await waitFor(
-      () => {
-        expect(queryByTestId("refreshAction")).toBeNull();
-        getByText("The following data stream will be refreshed.");
-        expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
-        getByText("The following data stream will not be refreshed because it is closed.");
-        expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
-        expect(document.body).toMatchSnapshot();
-      },
-      {
-        timeout: 6000,
-      }
-    );
+    await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
+      getByText("The following data stream will be refreshed.");
+      expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
+      getByText("The following data stream will not be refreshed because it is closed.");
+      expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
+    });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
 
@@ -233,18 +228,13 @@ describe("<DataStreamsActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
-    await waitFor(
-      () => {
-        expect(queryByTestId("refreshAction")).toBeNull();
-        getByText("The following data stream will not be refreshed because it is closed.");
-        expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
-        expect(getByTestId("refreshConfirmButton")).toBeDisabled();
-        expect(document.body).toMatchSnapshot();
-      },
-      {
-        timeout: 6000,
-      }
-    );
+    await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
+      getByText("The following data stream will not be refreshed because it is closed.");
+      expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
+      expect(getByTestId("refreshConfirmButton")).toBeDisabled();
+      expect(document.body).toMatchSnapshot();
+    });
   }, 30000);
 
   it("refresh data streams even failed to get index status", async () => {
@@ -276,17 +266,12 @@ describe("<DataStreamsActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("refreshAction"));
-    await waitFor(
-      () => {
-        expect(queryByTestId("refreshAction")).toBeNull();
-        getByText("The following data stream will be refreshed.");
-        expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
-        expect(getByTestId("refreshConfirmButton")).toBeEnabled();
-        expect(document.body).toMatchSnapshot();
-      },
-      {
-        timeout: 6000,
-      }
-    );
+    await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
+      getByText("The following data stream will be refreshed.");
+      expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
+      expect(getByTestId("refreshConfirmButton")).toBeEnabled();
+      expect(document.body).toMatchSnapshot();
+    });
   }, 30000);
 });
