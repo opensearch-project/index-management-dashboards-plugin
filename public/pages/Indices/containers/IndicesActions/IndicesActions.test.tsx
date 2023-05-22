@@ -549,19 +549,14 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
-    await waitFor(
-      () => {
-        expect(queryByTestId("Refresh Index Action")).toBeNull();
-        getByText("The following index will be refreshed.");
-        expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
-        getByText("The following index will not be refreshed because it is closed.");
-        expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
-        expect(document.body).toMatchSnapshot();
-      },
-      {
-        timeout: 6000,
-      }
-    );
+    await waitFor(() => {
+      expect(queryByTestId("Refresh Index Action")).toBeNull();
+      getByText("The following index will be refreshed.");
+      expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
+      getByText("The following index will not be refreshed because it is closed.");
+      expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
+    });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
     await waitFor(() => {
@@ -626,19 +621,14 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
     const now = Date.now();
-    await waitFor(
-      () => {
-        console.log("Date.now() - now: ", Date.now() - now);
-        expect(queryByTestId("Refresh Index Action")).toBeNull();
-        getByText("The following indexes will not be refreshed because they are closed.");
-        expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
-        expect(getByTestId("refreshConfirmButton")).toBeDisabled();
-        expect(document.body).toMatchSnapshot();
-      },
-      {
-        timeout: 3000,
-      }
-    );
+    await waitFor(() => {
+      console.log("Date.now() - now: ", Date.now() - now);
+      expect(queryByTestId("Refresh Index Action")).toBeNull();
+      getByText("The following indexes will not be refreshed because they are closed.");
+      expect(getByTestId("BlockedItem-blocked_index")).not.toBeNull();
+      expect(getByTestId("refreshConfirmButton")).toBeDisabled();
+      expect(document.body).toMatchSnapshot();
+    });
   });
 
   it("refresh all open index by calling commonService", async () => {
@@ -667,16 +657,11 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
-    await waitFor(
-      () => {
-        expect(queryByTestId("Refresh Index Action")).toBeNull();
-        getByText("All open indexes will be refreshed.");
-        expect(document.body).toMatchSnapshot();
-      },
-      {
-        timeout: 3000,
-      }
-    );
+    await waitFor(() => {
+      expect(queryByTestId("Refresh Index Action")).toBeNull();
+      getByText("All open indexes will be refreshed.");
+      expect(document.body).toMatchSnapshot();
+    });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
 
@@ -713,18 +698,13 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Refresh Index Action"));
-    await waitFor(
-      () => {
-        expect(queryByTestId("Refresh Index Action")).toBeNull();
-        getByText("The following indexes will be refreshed.");
-        expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
-        expect(getByTestId("UnblockedItem-blocked_index")).not.toBeNull();
-        expect(document.body).toMatchSnapshot();
-      },
-      {
-        timeout: 3000,
-      }
-    );
+    await waitFor(() => {
+      expect(queryByTestId("Refresh Index Action")).toBeNull();
+      getByText("The following indexes will be refreshed.");
+      expect(getByTestId("UnblockedItem-unblocked_index")).not.toBeNull();
+      expect(getByTestId("UnblockedItem-blocked_index")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
+    });
 
     userEvent.click(getByTestId("refreshConfirmButton"));
     await waitFor(() => {
