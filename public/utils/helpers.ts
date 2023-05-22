@@ -10,7 +10,6 @@ import { BrowserServices } from "../models/interfaces";
 import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "./constants";
 import { CatIndex, DataStream } from "../../server/models/interfaces";
 import { IAlias } from "../pages/Aliases/interface";
-import Indices from "../pages/Indices";
 
 export function getErrorMessage(err: any, defaultMessage: string) {
   if (err && err.message) return err.message;
@@ -83,15 +82,12 @@ export async function getRedIndices(browserServices: BrowserServices, filterRedI
       e.g. {"ok":true,"response":"index1\nindex2\n"}
       */
       h: "i",
-      health: "green",
+      health: "red",
     },
   });
   if (!result.ok) {
     throw result.error;
   }
-  console.log(JSON.stringify(result.response.split("\n").filter((s) => s !== "")));
-  console.log(filterRedIndices);
-  console.log(typeof result);
   return result.response.split("\n").filter((s) => s !== "");
 }
 
@@ -160,13 +156,28 @@ export async function filterBlockedItems(
   browserServices: BrowserServices,
   originInputItems: IAlias[] | DataStream[] | CatIndex[],
   blocksTypes: INDEX_OP_BLOCKS_TYPE | INDEX_OP_BLOCKS_TYPE[],
-  indexOpTargetType: INDEX_OP_TARGET_TYPE
+  indexOpTargetType: INDEX_OP_TARGET_TYPE,
+  filterRedIndices: boolean = false
 ): Promise<FilteredBlockedItems> {
-  const filteredBlockedIndicesSet = await getBlockedIndicesSetWithBlocksType(browserServices, blocksTypes);
   const result: FilteredBlockedItems = {
     unBlockedItems: [],
     blockedItems: [],
   };
+  var redIndices: string[] = [];
+  if (filterRedIndices) {
+    if (!originInputItems.length && indexOpTargetType !== INDEX_OP_TARGET_TYPE.INDEX) {
+      throw new Error("Can only filter red indices for type index.");
+    }
+    redIndices = await getRedIndices(browserServices);
+  }
+  if (!originInputItems.length) {
+    /* for refresh all or flush all indices, we need to find all indices in red status,
+    for other case, we just return [] for blockedItems and unBlockedItems */
+    result.blockedItems = redIndices;
+    return result;
+  }
+  var filteredBlockedIndicesSet = await getBlockedIndicesSetWithBlocksType(browserServices, blocksTypes);
+  filteredBlockedIndicesSet = new Set([...filteredBlockedIndicesSet, ...redIndices]);
 
   var inputItems: IAlias[] | DataStream[] | CatIndex[];
   switch (indexOpTargetType) {
@@ -194,6 +205,5 @@ export async function filterBlockedItems(
     default:
       throw new Error(`Unexpected INDEX_OP_TARGET_TYPE: ${indexOpTargetType}`);
   }
-
   return result;
 }

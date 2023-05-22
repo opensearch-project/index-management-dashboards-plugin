@@ -11,10 +11,9 @@ import {
   filterBlockedItems,
   getBlockedIndicesSetWithBlocksType,
 } from "./helpers";
-import { CatIndex, DataStream } from "../../server/models/interfaces";
-import { IAlias } from "../pages/Aliases/interface";
 import { browserServicesMock } from "../../test/mocks";
 import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "./constants";
+import { IAPICaller } from "plugins/index-management-dashboards-plugin/models/interfaces";
 
 const exampleBlocksStateResponse = {
   cluster_name: "opensearch-cluster",
@@ -266,5 +265,150 @@ describe("helpers spec", () => {
     expect(filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, "test")).rejects.toEqual(
       new Error("Unexpected INDEX_OP_TARGET_TYPE: test")
     );
+  });
+
+  it(`filterBlockedItems index with red indices`, async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: exampleBlocksStateResponse,
+    });
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
+      if (params.endpoint === "cluster.state") {
+        return { ok: true, response: exampleBlocksStateResponse };
+      } else {
+        return { ok: true, response: "test_index2\ntest_index4\n" };
+      }
+    });
+    const selectedItems = [{ index: "test_index1" }, { index: "test_index2" }, { index: "test_index3" }, { index: "test_index4" }];
+    expect(
+      filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, INDEX_OP_TARGET_TYPE.INDEX, true)
+    ).resolves.toEqual({
+      blockedItems: ["test_index1", "test_index2", "test_index4"],
+      unBlockedItems: ["test_index3"],
+    });
+
+    expect(
+      filterBlockedItems(
+        browserServicesMock,
+        selectedItems,
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
+        INDEX_OP_TARGET_TYPE.INDEX,
+        true
+      )
+    ).resolves.toEqual({
+      blockedItems: ["test_index1", "test_index2", "test_index4"],
+      unBlockedItems: ["test_index3"],
+    });
+
+    expect(
+      filterBlockedItems(
+        browserServicesMock,
+        [],
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
+        INDEX_OP_TARGET_TYPE.INDEX,
+        true
+      )
+    ).resolves.toEqual({
+      blockedItems: ["test_index2", "test_index4"],
+      unBlockedItems: [],
+    });
+  });
+
+  it(`filterBlockedItems alias with red indices`, async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: exampleBlocksStateResponse,
+    });
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
+      if (params.endpoint === "cluster.state") {
+        return { ok: true, response: exampleBlocksStateResponse };
+      } else {
+        return { ok: true, response: "test_index2\ntest_index4\n" };
+      }
+    });
+    const selectedItems = [
+      { alias: "alias1", indexArray: ["test_index1", "test_index3"] },
+      { alias: "alias2", indexArray: ["test_index1", "test_index4"] },
+      { alias: "alias3", indexArray: ["test_index2", "test_index3"] },
+    ];
+
+    expect(
+      filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, INDEX_OP_TARGET_TYPE.ALIAS, true)
+    ).resolves.toEqual({
+      blockedItems: ["alias1", "alias2", "alias3"],
+      unBlockedItems: [],
+    });
+
+    expect(
+      filterBlockedItems(
+        browserServicesMock,
+        selectedItems,
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY_ALLOW_DELETE, INDEX_OP_BLOCKS_TYPE.META_DATA],
+        INDEX_OP_TARGET_TYPE.ALIAS,
+        true
+      )
+    ).resolves.toEqual({
+      blockedItems: ["alias2", "alias3"],
+      unBlockedItems: ["alias1"],
+    });
+
+    expect(
+      filterBlockedItems(
+        browserServicesMock,
+        [],
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
+        INDEX_OP_TARGET_TYPE.ALIAS,
+        true
+      )
+    ).rejects.toEqual(new Error("Can only filter red indices for type index."));
+  });
+
+  it(`filterBlockedItems data streams with red indices`, async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: exampleBlocksStateResponse,
+    });
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
+      if (params.endpoint === "cluster.state") {
+        return { ok: true, response: exampleBlocksStateResponse };
+      } else {
+        return { ok: true, response: "test_index2\ntest_index4\n" };
+      }
+    });
+    const selectedItems = [
+      { name: "ds1", indices: [{ index_name: "test_index1" }, { index_name: "test_index3" }] },
+      { name: "ds2", indices: [{ index_name: "test_index1" }, { index_name: "test_index4" }] },
+      { name: "ds3", indices: [{ index_name: "test_index2" }, { index_name: "test_index3" }] },
+    ];
+
+    expect(
+      filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, INDEX_OP_TARGET_TYPE.DATA_STREAM, true)
+    ).resolves.toEqual({
+      blockedItems: ["ds1", "ds2", "ds3"],
+      unBlockedItems: [],
+    });
+
+    expect(
+      filterBlockedItems(
+        browserServicesMock,
+        selectedItems,
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY_ALLOW_DELETE, INDEX_OP_BLOCKS_TYPE.META_DATA],
+        INDEX_OP_TARGET_TYPE.DATA_STREAM,
+        true
+      )
+    ).resolves.toEqual({
+      blockedItems: ["ds2", "ds3"],
+      unBlockedItems: ["ds1"],
+    });
+
+    expect(
+      filterBlockedItems(
+        browserServicesMock,
+        [],
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
+        INDEX_OP_TARGET_TYPE.DATA_STREAM,
+        true
+      )
+    ).rejects.toEqual(new Error("Can only filter red indices for type index."));
   });
 });
