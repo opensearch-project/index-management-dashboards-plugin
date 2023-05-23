@@ -55,7 +55,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
         endpoint: "transport.request",
         data: {
           method: "GET",
-          path: `_component_template/*`,
+          path: `/_component_template/*`,
         },
         hideLog: true,
       })

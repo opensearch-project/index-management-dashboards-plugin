@@ -20,7 +20,7 @@ export const getTemplate = async (props: {
     endpoint: "transport.request",
     data: {
       method: "GET",
-      path: `_index_template/${props.templateName}?flat_settings=true`,
+      path: `/_index_template/${props.templateName}?flat_settings=true`,
     },
   });
   let error: string = "";
@@ -95,7 +95,7 @@ export const submitTemplateChange = async (props: {
     endpoint: "transport.request",
     data: {
       method: "POST",
-      path: `_index_template/${templateName}`,
+      path: `/_index_template/${templateName}`,
       body: transformTemplate(currentTemplate),
     },
   });

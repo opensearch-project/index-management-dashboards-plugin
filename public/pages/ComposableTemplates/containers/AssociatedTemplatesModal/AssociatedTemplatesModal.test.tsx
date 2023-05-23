@@ -16,7 +16,7 @@ describe("<AssociatedTemplatesModal /> spec", () => {
   it("renders the component", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        if (payload.endpoint === "transport.request" && payload.data.path === "_index_template/*") {
+        if (payload.endpoint === "transport.request" && payload.data.path === "/_index_template/*") {
           return {
             ok: true,
             response: {

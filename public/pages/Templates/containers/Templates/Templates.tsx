@@ -133,7 +133,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       endpoint: "transport.request",
       data: {
         method: "GET",
-        path: "_index_template/*",
+        path: "/_index_template/*",
       },
     });
 

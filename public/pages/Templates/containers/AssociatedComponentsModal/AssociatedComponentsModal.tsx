@@ -92,7 +92,7 @@ export default function AssociatedComponentsModalProps(props: AssociatedComponen
                                   endpoint: "transport.request",
                                   data: {
                                     method: "POST",
-                                    path: `_index_template/${template.name}`,
+                                    path: `/_index_template/${template.name}`,
                                     body: {
                                       ...currentTemplate,
                                       composed_of: currentTemplate?.composed_of?.filter((item) => item !== record.name) || [],

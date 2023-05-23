@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useState } from "react";
-import { RouteComponentProps } from "react-router-dom";
 import { EuiButton } from "@elastic/eui";
 import DeleteIndexModal from "../DeleteComposableTemplatesModal";
 import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
@@ -16,7 +15,6 @@ export interface renderDeleteButtonProps {
 export interface ComposableTemplatesActionsProps {
   selectedItems: renderDeleteButtonProps["selectedItems"];
   onDelete: () => void;
-  history: RouteComponentProps["history"];
   renderDeleteButton?: (props: renderDeleteButtonProps) => React.ReactChild;
 }
 

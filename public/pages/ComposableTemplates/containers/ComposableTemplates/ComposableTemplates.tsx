@@ -124,7 +124,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       endpoint: "transport.request",
       data: {
         method: "GET",
-        path: `_component_template/*${search}*`,
+        path: `/_component_template/*${search}*`,
       },
       hideLog: true,
     });
@@ -248,7 +248,6 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                   <ComposableTemplatesActions
                     selectedItems={this.state.selectedItems.map((item) => item.name)}
                     onDelete={this.getComposableTemplates}
-                    history={this.props.history}
                   />
                 ),
               },
@@ -381,7 +380,6 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                             />
                           </EuiToolTip>
                         )}
-                        history={this.props.history}
                       />
                     );
                   },

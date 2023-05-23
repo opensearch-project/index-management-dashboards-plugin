@@ -10,6 +10,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import {
   EuiButton,
   EuiButtonEmpty,
+  EuiLoadingSpinner,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -34,7 +35,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
   const { onClose, visible, selectedItems, onDelete } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
-  const { componentMapTemplate } = useComponentMapTemplate();
+  const { componentMapTemplate, loading } = useComponentMapTemplate();
   const [checked, setChecked] = useState(false);
   const linkedIndexItemCount = componentMapTemplate[selectedItems[0]]?.length || 0;
 
@@ -78,7 +79,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
         });
       }
       if (result && result.ok) {
-        coreServices.notifications.toasts.addSuccess(`Delete [${selectedItems.join(",")}] successfully`);
+        coreServices.notifications.toasts.addSuccess(`Delete [${selectedItems.join(", ")}] successfully`);
         onDelete();
       } else {
         coreServices.notifications.toasts.addDanger(result?.error || "");
@@ -103,54 +104,65 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
       </EuiModalHeader>
 
       <EuiModalBody>
-        <div style={{ lineHeight: 1.5 }}>
-          <p>
-            {!linkedIndexItemCount
-              ? "The following component template will be permanently deleted. This action cannot be undone."
-              : `The component template ${selectedItems.join(
-                  ", "
-                )} will be permanently deleted. The component template will be unlinked from ${linkedIndexItemCount} index templates:`}
-          </p>
-          {!linkedIndexItemCount ? (
-            <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
-              {selectedItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          ) : null}
-          {linkedIndexItemCount ? (
-            <>
-              {componentMapTemplate[selectedItems[0]]?.map((item, index) => (
-                <span key={item}>
-                  {index > 0 && ", "}
-                  <Link target="_blank" to={`${ROUTES.CREATE_TEMPLATE}/${item}`}>
-                    {item}
-                  </Link>
-                </span>
-              ))}
-              <EuiSpacer />
-              <AllBuiltInComponents.CheckBox
-                data-test-subj="UnlinkConfirmCheckBox"
-                label={`Unlink index templates and delete ${selectedItems.join(", ")}`}
-                value={checked}
-                onChange={(checked) => setChecked(checked)}
-              />
-            </>
-          ) : null}
-        </div>
+        {loading ? (
+          <EuiLoadingSpinner size="xl" />
+        ) : (
+          <div style={{ lineHeight: 1.5 }}>
+            <p>
+              {!linkedIndexItemCount
+                ? "The following component template will be permanently deleted. This action cannot be undone."
+                : `The component template ${selectedItems.join(
+                    ", "
+                  )} will be permanently deleted. The component template will be unlinked from ${linkedIndexItemCount} index templates:`}
+            </p>
+            {!linkedIndexItemCount ? (
+              <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
+                {selectedItems.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+            {linkedIndexItemCount ? (
+              <>
+                {componentMapTemplate[selectedItems[0]]?.map((item, index) => (
+                  <span key={item}>
+                    {index > 0 && ", "}
+                    <Link target="_blank" to={`${ROUTES.CREATE_TEMPLATE}/${item}`}>
+                      {item}
+                    </Link>
+                  </span>
+                ))}
+                <EuiSpacer />
+                <AllBuiltInComponents.CheckBox
+                  data-test-subj="UnlinkConfirmCheckBox"
+                  label={`Unlink index templates and delete ${selectedItems.join(", ")}`}
+                  value={checked}
+                  onChange={(checked) => setChecked(checked)}
+                />
+              </>
+            ) : null}
+          </div>
+        )}
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty data-test-subj="deletaCancelButton" onClick={onClose}>
+        <EuiButtonEmpty disabled={loading} isLoading={loading} data-test-subj="deletaCancelButton" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
         {!linkedIndexItemCount ? (
-          <EuiButton data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger">
+          <EuiButton disabled={loading} isLoading={loading} data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger">
             Delete
           </EuiButton>
         ) : null}
         {linkedIndexItemCount ? (
-          <EuiButton data-test-subj="deleteConfirmUnlinkButton" onClick={onConfirm} disabled={!checked} fill color="danger">
+          <EuiButton
+            data-test-subj="deleteConfirmUnlinkButton"
+            onClick={onConfirm}
+            disabled={!checked || loading}
+            isLoading={loading}
+            fill
+            color="danger"
+          >
             Apply changes
           </EuiButton>
         ) : null}

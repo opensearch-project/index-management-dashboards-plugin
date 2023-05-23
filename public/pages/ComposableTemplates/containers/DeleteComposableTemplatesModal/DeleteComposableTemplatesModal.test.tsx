@@ -26,12 +26,13 @@ function renderWithContext(props: DeleteTemplateModalProps) {
 describe("<DeleteTemplateModal /> spec", () => {
   it("renders the component", async () => {
     // the main unit test case is in TemplateActions.test.tsx
-    renderWithContext({
+    const { findByText } = renderWithContext({
       selectedItems: [],
       visible: true,
       onDelete: () => {},
       onClose: () => {},
     });
+    await findByText(/The following component template will be permanently deleted/);
     expect(document.body.children).toMatchSnapshot();
   });
 });
