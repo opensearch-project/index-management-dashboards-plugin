@@ -35,8 +35,14 @@ export default class IndexService {
     const { endpoint, data, hideLog } = usedParam || {};
     try {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-
-      const payload = useQuery ? JSON.parse(data || "{}") : data;
+      const finalData = data;
+      /**
+       * Update path parameter to follow RFC/generic HTTP convention
+       */
+      if (endpoint === "transport.request" && typeof finalData?.path === "string" && !/^\//.test(finalData?.path || "")) {
+        finalData.path = `/${finalData.path || ""}`;
+      }
+      const payload = useQuery ? JSON.parse(finalData || "{}") : finalData;
       const commonCallerResponse = await callWithRequest(endpoint, payload || {});
       return response.custom({
         statusCode: 200,
