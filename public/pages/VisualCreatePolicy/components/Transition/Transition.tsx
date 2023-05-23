@@ -179,7 +179,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             helpText="The matching cron expression required to transition to the next state."
             learnMore={
               <EuiLink href={TRANSITION_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                Learn more <EuiIcon type="popout" size="s" />
+                Learn more
               </EuiLink>
             }
           />

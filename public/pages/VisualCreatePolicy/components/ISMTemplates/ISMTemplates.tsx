@@ -55,7 +55,7 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
           <p style={{ fontWeight: 200 }}>
             Specify ISM template patterns that match the index to apply the policy.{" "}
             <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more <EuiIcon type="popout" size="s" />
+              Learn more
             </EuiLink>
           </p>
         </EuiText>
