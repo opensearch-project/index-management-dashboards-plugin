@@ -18,7 +18,7 @@ import {
 import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../components/core_services";
 import { ServicesContext } from "../../services";
-import { indexBlockedPredicate, aliasBlockedPredicate, dataStreamBlockedPredicate, filterBlockedItems } from "../../utils/helpers";
+import { filterBlockedItems } from "../../utils/helpers";
 import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "../../utils/constants";
 import { CatIndex, DataStream } from "../../../server/models/interfaces";
 import { IAlias } from "../../pages/Aliases/interface";
@@ -42,10 +42,9 @@ const blockedItemsMessageTemplate = (flushTarget: INDEX_OP_TARGET_TYPE) => {
     default:
       blockedReason = "they";
   }
-  return `The following ${flushTarget} will not be flushed because ${blockedReason} are closed:`;
+  return `The following ${flushTarget} will not be flushed because ${blockedReason} are closed or in red health status:`;
 };
-const blockedAllErrorTitle = (flushTarget: INDEX_OP_TARGET_TYPE) => `Unable to flush ${flushTarget}`;
-const blockedAllErrorText = (flushTarget: INDEX_OP_TARGET_TYPE) => `The selected ${flushTarget} cannot be flushed because they are closed.`;
+
 const successToastTemplate = (flushTarget: INDEX_OP_TARGET_TYPE, unBlockedItems: string[]) => {
   if (!unBlockedItems.length) {
     /* This will only happen when flush all indices. Otherwise the confirm button is disabled */
@@ -95,14 +94,25 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
 
   useEffect(() => {
     if (!!services && visible) {
-      filterBlockedItems(services, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, flushTarget)
+      filterBlockedItems(services, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, flushTarget, true)
         .then((filterResultItems) => {
           if (visible) {
             if (!!selectedItems.length && selectedItems.length === filterResultItems.blockedItems.length) {
               /* all items are blocked, show error message */
               coreServices.notifications.toasts.addDanger({
-                title: blockedAllErrorTitle(flushTarget),
-                text: blockedAllErrorText(flushTarget),
+                title: `Unable to flush ${flushTarget}`,
+                text: `The selected ${flushTarget} cannot be flushed because they are closed or in red health status.`,
+              });
+              onClose();
+              return;
+            }
+            if (!selectedItems.length && !!filterResultItems.blockedItems.length) {
+              /* flush all, but there are red indexes */
+              coreServices.notifications.toasts.addDanger({
+                title: `Unable to flush ${flushTarget}`,
+                text: `Can not flush all open indexes because indexes [${filterResultItems.blockedItems.join(
+                  ","
+                )}] are in red health status.`,
               });
               onClose();
               return;

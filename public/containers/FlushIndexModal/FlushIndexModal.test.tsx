@@ -130,7 +130,7 @@ describe("<FlushIndexModal /> spec", () => {
     fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
@@ -156,7 +156,7 @@ describe("<FlushIndexModal /> spec", () => {
     fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
@@ -182,7 +182,7 @@ describe("<FlushIndexModal /> spec", () => {
     fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
@@ -209,15 +209,15 @@ describe("<FlushIndexModal /> spec", () => {
     fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test_index1, test_index2, test_index3",
+          index: "test_index1, test_index2, test_index3, test_index4",
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("3 indexes have been successfully flushed.");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("4 indexes have been successfully flushed.");
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
@@ -236,7 +236,7 @@ describe("<FlushIndexModal /> spec", () => {
     fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(3);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
@@ -265,20 +265,11 @@ describe("<FlushIndexModal /> spec", () => {
     expect(getByTestId("flushConfirmButton")).toBeDisabled();
   });
 
-  it("flush index returns an error", async () => {
+  it("flush all indices without red indices", async () => {
     const onClose = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
-      if (params.endpoint === "indices.flush") {
-        return { ok: false, response: {} };
-      } else {
-        return {
-          ok: true,
-          response: exampleBlocksStateResponse,
-        };
-      }
-    });
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush({ has_red_indices: false });
     const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      selectedItems: selectedIndices,
+      selectedItems: [],
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
@@ -291,30 +282,6 @@ describe("<FlushIndexModal /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {
-          index: "test_index2, test_index3",
-        },
-      });
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
-      expect(onClose).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  it("flush all indices", async () => {
-    const onClose = jest.fn();
-    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      selectedItems: [],
-      visible: true,
-      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: onClose,
-    });
-    await act(async () => {});
-    fireEvent.click(getByTestId("flushConfirmButton"));
-
-    await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.flush",
-        data: {
           index: "",
         },
       });
@@ -323,21 +290,42 @@ describe("<FlushIndexModal /> spec", () => {
     });
   });
 
-  it("no flushable indices", async () => {
+  it("flush all indices with red indices", async () => {
     const onClose = jest.fn();
-    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      selectedItems: [{ index: "test_index1" }],
+    renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: [],
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
     });
+    await act(async () => {});
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
         title: "Unable to flush indexes",
-        text: "The selected indexes cannot be flushed because they are closed.",
+        text: "Can not flush all open indexes because indexes [test_index4] are in red health status.",
+      });
+    });
+  });
+
+  it("no flushable indices", async () => {
+    const onClose = jest.fn();
+    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
+      selectedItems: [{ index: "test_index1" }, { index: "test_index4" }],
+      visible: true,
+      flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
+      onClose: onClose,
+    });
+    await act(async () => {});
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        title: "Unable to flush indexes",
+        text: "The selected indexes cannot be flushed because they are closed or in red health status.",
       });
       expect(onClose).toHaveBeenCalledTimes(1);
     });

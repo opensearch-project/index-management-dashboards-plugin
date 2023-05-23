@@ -77,13 +77,16 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following aliases will not be flushed because one or more indexes are closed:
+                        The following aliases will not be flushed because one or more indexes are closed or in red health status:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
                         <li>
                           alias1
+                        </li>
+                        <li>
+                          alias3
                         </li>
                       </ul>
                     </div>
@@ -220,13 +223,16 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following data streams will not be flushed because one or more backing indexes are closed:
+                        The following data streams will not be flushed because one or more backing indexes are closed or in red health status:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
                         <li>
                           ds1
+                        </li>
+                        <li>
+                          ds3
                         </li>
                       </ul>
                     </div>
@@ -366,13 +372,16 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indexes will not be flushed because they are closed:
+                        The following indexes will not be flushed because they are closed or in red health status:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
                         <li>
                           test_index1
+                        </li>
+                        <li>
+                          test_index4
                         </li>
                       </ul>
                     </div>
@@ -503,7 +512,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indexes will not be flushed because they are closed:
+                        The following indexes will not be flushed because they are closed or in red health status:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
@@ -646,7 +655,7 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indexes will not be flushed because they are closed:
+                        The following indexes will not be flushed because they are closed or in red health status:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"

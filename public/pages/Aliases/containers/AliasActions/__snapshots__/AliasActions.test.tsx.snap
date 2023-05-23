@@ -262,13 +262,16 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following aliases will not be flushed because one or more indexes are closed:
+                        The following aliases will not be flushed because one or more indexes are closed or in red health status:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
                         <li>
                           alias1
+                        </li>
+                        <li>
+                          alias3
                         </li>
                       </ul>
                     </div>

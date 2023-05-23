@@ -415,13 +415,16 @@ HTMLCollection [
                       class="euiTextColor euiTextColor--default"
                     >
                       <p>
-                        The following indexes will not be flushed because they are closed:
+                        The following indexes will not be flushed because they are closed or in red health status:
                       </p>
                       <ul
                         style="list-style-type: disc; list-style-position: inside;"
                       >
                         <li>
                           test_index1
+                        </li>
+                        <li>
+                          test_index4
                         </li>
                       </ul>
                     </div>
