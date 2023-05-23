@@ -110,18 +110,19 @@ export default class AliasUIAction implements UIAction<AliasAction> {
     const selectedItems = this.parseToComboBoxOptions(uiAction.action);
     return (
       <>
-        <EuiFormCustomLabel
-          title={"Aliases to add"}
-          helpText={"The provided aliases will be applied to the manage index."}
-          isInvalid={this.getAliasActionErrorText(selectedItems).add}
-        />
         <EuiFormRow
           fullWidth
           style={{ maxWidth: "100%" }}
           isInvalid={!this.isValid()}
           error={this.getAliasActionErrorText(selectedItems).add}
+          data-test-subj={"add-alias-row"}
         >
           <>
+            <EuiFormCustomLabel
+              title={"Aliases to add"}
+              helpText={"The provided aliases will be applied to the manage index."}
+              isInvalid={this.getAliasActionErrorText(selectedItems).add}
+            />
             <EuiComboBox
               placeholder={"Enter aliases to apply"}
               noSuggestions={true}
@@ -153,18 +154,19 @@ export default class AliasUIAction implements UIAction<AliasAction> {
 
         <EuiSpacer size={"s"} />
 
-        <EuiFormCustomLabel
-          title={"Aliases to remove"}
-          helpText={"The provided aliases will be removed from the manage index."}
-          isInvalid={this.getAliasActionErrorText(selectedItems).remove}
-        />
         <EuiFormRow
           fullWidth
           style={{ maxWidth: "100%" }}
           isInvalid={!this.isValid()}
           error={this.getAliasActionErrorText(selectedItems).remove}
+          data-test-subj={"remove-alias-row"}
         >
           <>
+            <EuiFormCustomLabel
+              title={"Aliases to remove"}
+              helpText={"The provided aliases will be removed from the manage index."}
+              isInvalid={this.getAliasActionErrorText(selectedItems).remove}
+            />
             <EuiComboBox
               placeholder={"Enter aliases to remove"}
               noSuggestions={true}

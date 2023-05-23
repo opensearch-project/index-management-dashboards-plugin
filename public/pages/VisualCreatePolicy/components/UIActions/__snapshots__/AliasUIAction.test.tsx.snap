@@ -1,0 +1,557 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AliasUIAction component renders with blank action 1`] = `
+<div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth"
+    data-test-subj="add-alias-row"
+    id="some_html_id-row"
+    style="max-width: 100%;"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Aliases to add
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The provided aliases will be applied to the manage index.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        class="euiComboBox"
+        data-test-subj="add-alias-combo-box"
+        role="combobox"
+      >
+        <div
+          class="euiFormControlLayout"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <div
+              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              data-test-subj="comboBoxInput"
+              tabindex="-1"
+            >
+              <p
+                class="euiComboBoxPlaceholder"
+              >
+                Enter aliases to apply
+              </p>
+              <div
+                class="euiComboBox__input"
+                style="font-size: 14px; display: inline-block;"
+              >
+                <input
+                  aria-controls=""
+                  data-test-subj="comboBoxSearchInput"
+                  role="textbox"
+                  style="box-sizing: content-box; width: 2px;"
+                  value=""
+                />
+                <div
+                  style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <div
+          class="euiTextColor euiTextColor--subdued"
+        >
+          You can add up to 10 more aliases.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiFormRow euiFormRow--fullWidth"
+    data-test-subj="remove-alias-row"
+    id="some_html_id-row"
+    style="max-width: 100%;"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Aliases to remove
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The provided aliases will be removed from the manage index.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        class="euiComboBox"
+        data-test-subj="remove-alias-combo-box"
+        role="combobox"
+      >
+        <div
+          class="euiFormControlLayout"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <div
+              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              data-test-subj="comboBoxInput"
+              tabindex="-1"
+            >
+              <p
+                class="euiComboBoxPlaceholder"
+              >
+                Enter aliases to remove
+              </p>
+              <div
+                class="euiComboBox__input"
+                style="font-size: 14px; display: inline-block;"
+              >
+                <input
+                  aria-controls=""
+                  data-test-subj="comboBoxSearchInput"
+                  role="textbox"
+                  style="box-sizing: content-box; width: 2px;"
+                  value=""
+                />
+                <div
+                  style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <div
+          class="euiTextColor euiTextColor--subdued"
+        >
+          You can add up to 10 more aliases.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AliasUIAction component renders with pre-defined actions 1`] = `
+<div>
+  <div
+    class="euiFormRow euiFormRow--fullWidth"
+    data-test-subj="add-alias-row"
+    id="some_html_id-row"
+    style="max-width: 100%;"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Aliases to add
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The provided aliases will be applied to the manage index.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        class="euiComboBox"
+        data-test-subj="add-alias-combo-box"
+        role="combobox"
+      >
+        <div
+          class="euiFormControlLayout"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <div
+              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              data-test-subj="comboBoxInput"
+              tabindex="-1"
+            >
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias1"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias1
+                  </span>
+                  <button
+                    aria-label="Remove alias1 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias1 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias3"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias3
+                  </span>
+                  <button
+                    aria-label="Remove alias3 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias3 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias5"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias5
+                  </span>
+                  <button
+                    aria-label="Remove alias5 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias5 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias7"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias7
+                  </span>
+                  <button
+                    aria-label="Remove alias7 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias7 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias9"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias9
+                  </span>
+                  <button
+                    aria-label="Remove alias9 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias9 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <div
+                class="euiComboBox__input"
+                style="font-size: 14px; display: inline-block;"
+              >
+                <input
+                  aria-controls=""
+                  data-test-subj="comboBoxSearchInput"
+                  role="textbox"
+                  style="box-sizing: content-box; width: 2px;"
+                  value=""
+                />
+                <div
+                  style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                />
+              </div>
+            </div>
+            <div
+              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+            >
+              <button
+                aria-label="Clear input"
+                class="euiFormControlLayoutClearButton"
+                data-test-subj="comboBoxClearButton"
+                type="button"
+              >
+                EuiIconMock
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <div
+          class="euiTextColor euiTextColor--subdued"
+        >
+          You can add up to 5 more aliases.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiFormRow euiFormRow--fullWidth"
+    data-test-subj="remove-alias-row"
+    id="some_html_id-row"
+    style="max-width: 100%;"
+  >
+    <div
+      class="euiFormRow__fieldWrapper"
+    >
+      <div
+        class="euiText euiText--medium"
+        style="margin-bottom: 5px;"
+      >
+        <h5
+          class="euiFormLabel "
+          style="margin-bottom: 2px;"
+        >
+          Aliases to remove
+        </h5>
+        <p>
+           
+          <span
+            style="font-weight: 200; font-size: 12px;"
+          >
+            The provided aliases will be removed from the manage index.
+             
+          </span>
+        </p>
+      </div>
+      <div
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        class="euiComboBox"
+        data-test-subj="remove-alias-combo-box"
+        role="combobox"
+      >
+        <div
+          class="euiFormControlLayout"
+        >
+          <div
+            class="euiFormControlLayout__childrenWrapper"
+          >
+            <div
+              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              data-test-subj="comboBoxInput"
+              tabindex="-1"
+            >
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias2"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias2
+                  </span>
+                  <button
+                    aria-label="Remove alias2 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias2 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias4"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias4
+                  </span>
+                  <button
+                    aria-label="Remove alias4 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias4 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias6"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias6
+                  </span>
+                  <button
+                    aria-label="Remove alias6 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias6 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <span
+                class="euiBadge euiBadge--hollow euiBadge--iconRight euiComboBoxPill"
+                title="alias8"
+              >
+                <span
+                  class="euiBadge__content"
+                >
+                  <span
+                    class="euiBadge__text"
+                  >
+                    alias8
+                  </span>
+                  <button
+                    aria-label="Remove alias8 from selection in this group"
+                    class="euiBadge__iconButton"
+                    title="Remove alias8 from selection in this group"
+                    type="button"
+                  >
+                    EuiIconMock
+                  </button>
+                </span>
+              </span>
+              <div
+                class="euiComboBox__input"
+                style="font-size: 14px; display: inline-block;"
+              >
+                <input
+                  aria-controls=""
+                  data-test-subj="comboBoxSearchInput"
+                  role="textbox"
+                  style="box-sizing: content-box; width: 2px;"
+                  value=""
+                />
+                <div
+                  style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                />
+              </div>
+            </div>
+            <div
+              class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+            >
+              <button
+                aria-label="Clear input"
+                class="euiFormControlLayoutClearButton"
+                data-test-subj="comboBoxClearButton"
+                type="button"
+              >
+                EuiIconMock
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="euiText euiText--extraSmall"
+      >
+        <div
+          class="euiTextColor euiTextColor--subdued"
+        >
+          You can add up to 6 more aliases.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

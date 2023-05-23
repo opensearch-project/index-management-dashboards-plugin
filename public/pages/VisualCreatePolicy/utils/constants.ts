@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { AllocationAction } from "../../../../models/interfaces";
+import { AliasAction, AllocationAction } from "../../../../models/interfaces";
 
 export enum ActionType {
   Alias = "alias",
@@ -64,7 +64,7 @@ export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
   },
 };
 
-export const DEFAULT_ALIAS = {
+export const DEFAULT_ALIAS: AliasAction = {
   alias: {
     actions: [],
   },
