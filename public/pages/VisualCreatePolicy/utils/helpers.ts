@@ -6,6 +6,7 @@
 import { UIAction, Action, Transition, ISMTemplate, State, Policy } from "../../../../models/interfaces";
 import {
   ActionType,
+  DEFAULT_ALIAS,
   DEFAULT_ALLOCATION,
   DEFAULT_CLOSE,
   DEFAULT_DELETE,
@@ -22,6 +23,7 @@ import {
   DEFAULT_SNAPSHOT,
 } from "./constants";
 import {
+  AliasUIAction,
   AllocationUIAction,
   CloseUIAction,
   DeleteUIAction,
@@ -67,6 +69,8 @@ export const getUIActionFromData = (action: Action): UIAction<any> => {
 
 export const getUIAction = (actionType: string): UIAction<any> => {
   switch (actionType) {
+    case ActionType.Alias:
+      return new AliasUIAction(DEFAULT_ALIAS);
     case ActionType.Allocation:
       return new AllocationUIAction(DEFAULT_ALLOCATION);
     case ActionType.Close:
@@ -102,6 +106,7 @@ export const getUIAction = (actionType: string): UIAction<any> => {
 
 class ActionRepository {
   repository: { [actionType: string]: [new (action: Action) => UIAction<any>, Action] } = {
+    alias: [AliasUIAction, DEFAULT_ALIAS],
     allocation: [AllocationUIAction, DEFAULT_ALLOCATION],
     close: [CloseUIAction, DEFAULT_CLOSE],
     delete: [DeleteUIAction, DEFAULT_DELETE],

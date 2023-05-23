@@ -433,6 +433,24 @@ export interface IndexPriorityAction extends Action {
   };
 }
 
+export enum AliasActions {
+  ADD = "add",
+  REMOVE = "remove",
+}
+
+export type AliasActionItem = {
+  [key in AliasActions]: {
+    alias?: string;
+    aliases?: string[];
+  };
+};
+
+export interface AliasAction extends Action {
+  alias: {
+    actions: AliasActionItem[];
+  };
+}
+
 export interface AllocationAction extends Action {
   allocation: {
     // TODO: These require a complete UI and we are only supporting JSON editor for allocation for now

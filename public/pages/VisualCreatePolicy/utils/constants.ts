@@ -6,6 +6,7 @@
 import { AllocationAction } from "../../../../models/interfaces";
 
 export enum ActionType {
+  Alias = "alias",
   Allocation = "allocation",
   Close = "close",
   Delete = "delete",
@@ -60,6 +61,12 @@ export const DEFAULT_LEGACY_ERROR_NOTIFICATION = {
   },
   message_template: {
     source: "The index {{ctx.index}} failed during policy execution.",
+  },
+};
+
+export const DEFAULT_ALIAS = {
+  alias: {
+    actions: [],
   },
 };
 
@@ -189,6 +196,7 @@ export const DEFAULT_SNAPSHOT = {
 };
 
 export const actions = [
+  DEFAULT_ALIAS,
   DEFAULT_ALLOCATION,
   DEFAULT_CLOSE,
   DEFAULT_DELETE,
