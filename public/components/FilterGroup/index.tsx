@@ -1,6 +1,7 @@
-import { EuiFilterButton, EuiFilterButtonProps, EuiFilterGroup, EuiFilterSelectItem, EuiLoadingChart, EuiPopover } from "@elastic/eui";
+import { EuiFilterButton, EuiFilterButtonProps, EuiFilterGroup, EuiFilterSelectItem, EuiPopover } from "@elastic/eui";
 import React, { useState } from "react";
-interface IFilterGroupProps {
+
+export interface IFilterGroupProps {
   options: { label: string }[];
   value?: string[];
   filterButtonProps?: EuiFilterButtonProps;
@@ -43,12 +44,13 @@ export default function FilterGroup({ options, value, filterButtonProps, onChang
               key={item.label}
               onClick={() => {
                 const findIndex = (value || []).findIndex((valueItem) => valueItem === item.label);
+                const finalValue = value || [];
                 if (findIndex > -1) {
-                  value?.splice(findIndex, 1);
+                  finalValue.splice(findIndex, 1);
                 } else {
-                  value?.push(item.label);
+                  finalValue.push(item.label);
                 }
-                onChange?.([...(value || [])]);
+                onChange?.([...finalValue]);
               }}
             >
               {item.label}

@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
-import FilterGroup from "../../../CreateIndexTemplate/components/FilterGroup";
+import FilterGroup from "../../../../components/FilterGroup";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 
 export interface SearchControlsProps {
