@@ -386,9 +386,3 @@ export enum INDEX_OP_TARGET_TYPE {
   ALIAS = "aliases",
   DATA_STREAM = "data streams",
 }
-
-export enum INDEX_OP_TARGET_TYPE {
-  INDEX = "indexes",
-  ALIAS = "aliases",
-  DATA_STREAM = "data streams",
-}
