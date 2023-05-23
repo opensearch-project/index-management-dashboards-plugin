@@ -360,7 +360,7 @@ describe("helpers spec", () => {
         INDEX_OP_TARGET_TYPE.ALIAS,
         true
       )
-    ).rejects.toEqual(new Error("Can only filter red indices for type index."));
+    ).rejects.toEqual(new Error("Can only filter red indexes for type index."));
   });
 
   it(`filterBlockedItems data streams with red indices`, async () => {
@@ -409,6 +409,6 @@ describe("helpers spec", () => {
         INDEX_OP_TARGET_TYPE.DATA_STREAM,
         true
       )
-    ).rejects.toEqual(new Error("Can only filter red indices for type index."));
+    ).rejects.toEqual(new Error("Can only filter red indexes for type index."));
   });
 });
