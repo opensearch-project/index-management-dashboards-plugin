@@ -5,6 +5,7 @@
 
 import { BASE_PATH, IM_PLUGIN_NAME } from "../../../utils/constants";
 import samplePolicy from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_policy";
+import sampleAliasPolicy from "../../../fixtures/plugins/index-management-dashboards-plugin/sample_policy_alias_action.json";
 
 const POLICY_ID = "test_policy_id";
 
@@ -64,6 +65,92 @@ describe("Policies", () => {
       // Confirm we can see the created policy's description in table
       cy.contains("A simple description");
     });
+
+    it("with an alias action using the visual editor", () => {
+      /* Create a policy with an alias action */
+      const aliasPolicyId = "visual-editor-alias-policy";
+      const testInputs = {
+        add: ["alias1", "alias2"],
+        remove: ["alias3", "alias5", "alias6"],
+      };
+
+      // Route us to create policy page
+      cy.contains("Create policy").click({ force: true });
+
+      // Use the visual editor
+      cy.contains("Visual editor").click({ force: true });
+      cy.contains("Continue").click({ force: true });
+
+      // Wait for input to load and then type in the policy ID
+      cy.get(`input[placeholder="hot_cold_workflow"]`).type(aliasPolicyId, {
+        force: true,
+      });
+
+      // Type in the policy description
+      cy.get(`[data-test-subj="create-policy-description"]`).type("{selectall}{backspace}" + sampleAliasPolicy.policy.description);
+
+      // Add a state
+      cy.get("button").contains("Add state").click({ force: true });
+
+      // Enter a state name
+      cy.get(`[data-test-subj="create-state-state-name"]`).type(sampleAliasPolicy.policy.states[0].name);
+
+      // Add a new action
+      cy.get("button").contains("+ Add action").click({ force: true });
+
+      // Select 'Alias' type
+      cy.get(`[data-test-subj="create-state-action-type"]`).select("Alias");
+
+      // Confirm 'Add action' button is disabled
+      cy.get(`[data-test-subj="flyout-footer-action-button"]`).should("be.disabled");
+
+      // Enter aliases to add
+      cy.get(`[data-test-subj="add-alias-combo-box"]`).click({ force: true }).type(testInputs.add.join("{enter}"));
+
+      // Enter aliases to remove
+      cy.get(`[data-test-subj="remove-alias-combo-box"]`).click({ force: true }).type(testInputs.remove.join("{enter}"));
+
+      // Click the 'Add action' button
+      cy.get(`[data-test-subj="flyout-footer-action-button"]`).click({ force: true });
+
+      // Click the 'Save action' button
+      cy.get("button").contains("Save state").click({ force: true });
+
+      // Click the 'Create' button
+      cy.get("button").contains("Create").click({ force: true });
+
+      /* Confirm policy was created as expected */
+
+      // Wait for the 'State management' dashboard to load
+      cy.contains("State management policies (", { timeout: 60000 });
+
+      // Click on the test alias to navigate to the details page
+      cy.contains(aliasPolicyId).click({ force: true });
+
+      // Wait for the details page to load, and click the 'Edit' button
+      cy.url({ timeout: 60000 }).should("include", "policy-details");
+      cy.contains("Edit").click({ force: true });
+
+      // Use the visual editor
+      cy.contains("Visual editor").click({ force: true });
+      cy.contains("Continue").click({ force: true });
+
+      // Click the state edit icon
+      cy.get(`[aria-label="Edit"]`).click({ force: true });
+      cy.get(`[data-test-subj="draggable"]`).within(() => {
+        cy.get(`[aria-label="Edit"]`).click({ force: true });
+      });
+
+      // Confirm all of the expected inputs are in the 'Add' combo box
+      testInputs.add.forEach((alias) => {
+        cy.get(`[data-test-subj="add-alias-combo-box"]`).contains(alias);
+      });
+
+      // Confirm all of the expected inputs are in the 'Remove' combo box
+      testInputs.remove.forEach((alias) => {
+        cy.get(`[data-test-subj="remove-alias-combo-box"]`).contains(alias);
+      });
+    });
   });
 
   describe("can be edited", () => {
@@ -71,6 +158,7 @@ describe("Policies", () => {
       cy.deleteAllIndices();
       cy.deleteIMJobs();
       cy.createPolicy(POLICY_ID, samplePolicy);
+      cy.createPolicy(sampleAliasPolicy.policy.policy_id, sampleAliasPolicy);
     });
 
     it("successfully", () => {
@@ -115,6 +203,79 @@ describe("Policies", () => {
 
       // Confirm new description shows in table
       cy.contains("A new description");
+    });
+
+    it("with more aliases", () => {
+      // Click on the test alias to navigate to the details page
+      const testInputs = {
+        add: ["alias4", "alias6"],
+        remove: ["alias1", "alias2", "alias3", "alias7"],
+      };
+      /* Edit the policy */
+
+      // Click on the test alias to navigate to the details page
+      cy.contains(sampleAliasPolicy.policy.policy_id).click({ force: true });
+
+      // Wait for the details page to load, and click the 'Edit' button
+      cy.url({ timeout: 60000 }).should("include", "policy-details");
+      cy.contains("Edit").click({ force: true });
+
+      // Use the visual editor
+      cy.contains("Visual editor").click({ force: true });
+      cy.contains("Continue").click({ force: true });
+
+      // Click the 'Edit state' icon
+      cy.get(`[aria-label="Edit"]`).click({ force: true });
+
+      // Click the 'Edit action' icon
+      cy.get(`[data-test-subj="draggable"]`).within(() => {
+        cy.get(`[aria-label="Edit"]`).click({ force: true });
+      });
+
+      // Remove an alias from the 'Add' combo box
+      cy.get(`[aria-label="Remove alias5 from selection in this group"]`).click({ force: true });
+
+      // Add a new alias to the 'Remove' combo box
+      cy.get(`[data-test-subj="remove-alias-combo-box"]`).click({ force: true }).type("alias7{enter}");
+
+      // Save the edits
+      cy.get(`[data-test-subj="flyout-footer-action-button"]`).click({ force: true });
+      cy.get("button").contains("Update state").click({ force: true });
+      cy.get("button").contains("Update").click({ force: true });
+
+      /* Confirm policy was edited as expected */
+
+      // Wait for the 'State management' dashboard to load
+      cy.contains("State management policies (", { timeout: 60000 });
+
+      // Click on the test alias to navigate to the details page
+      cy.contains(sampleAliasPolicy.policy.policy_id).click({ force: true });
+
+      // Wait for the details page to load, and click the 'Edit' button
+      cy.url({ timeout: 60000 }).should("include", "policy-details");
+      cy.contains("Edit").click({ force: true });
+
+      // Use the visual editor
+      cy.contains("Visual editor").click({ force: true });
+      cy.contains("Continue").click({ force: true });
+
+      // Click the 'Edit state' icon
+      cy.get(`[aria-label="Edit"]`).click({ force: true });
+
+      // Click the 'Edit action' icon
+      cy.get(`[data-test-subj="draggable"]`).within(() => {
+        cy.get(`[aria-label="Edit"]`).click({ force: true });
+      });
+
+      // Confirm all of the expected inputs are in the 'Add' combo box
+      testInputs.add.forEach((alias) => {
+        cy.get(`[data-test-subj="add-alias-combo-box"]`).contains(alias);
+      });
+
+      // Confirm all of the expected inputs are in the 'Remove' combo box
+      testInputs.remove.forEach((alias) => {
+        cy.get(`[data-test-subj="remove-alias-combo-box"]`).contains(alias);
+      });
     });
   });
 

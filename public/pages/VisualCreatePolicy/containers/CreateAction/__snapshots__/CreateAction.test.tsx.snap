@@ -90,6 +90,11 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                    
                 </option>
                 <option
+                  value="alias"
+                >
+                  Alias
+                </option>
+                <option
                   value="allocation"
                 >
                   Allocation
