@@ -44,11 +44,10 @@ export default class AliasUIAction implements UIAction<AliasAction> {
 
     // Each alias is valid
     let aliasError: string | undefined;
-    this.action.alias.actions.find((action) => {
+    this.action.alias.actions.forEach((action) => {
       const aliasActionType = Object.keys(action)[0];
       aliasError = this.getAliasErrorText(action, selectedItems);
       errors[aliasActionType] = aliasError;
-      return aliasError != undefined;
     });
     return errors;
   };
@@ -145,7 +144,7 @@ export default class AliasUIAction implements UIAction<AliasAction> {
                   })
                 );
               }}
-              isInvalid={this.getAliasActionErrorText(selectedItems).add}
+              isInvalid={this.getAliasActionErrorText(selectedItems).add !== undefined}
               data-test-subj={"add-alias-combo-box"}
             />
             {inputLimitText(selectedItems.add?.length, MAX_ALIAS_ACTIONS, "alias", "aliases")}
@@ -188,7 +187,7 @@ export default class AliasUIAction implements UIAction<AliasAction> {
                   })
                 );
               }}
-              isInvalid={this.getAliasActionErrorText(selectedItems).remove}
+              isInvalid={this.getAliasActionErrorText(selectedItems).remove !== undefined}
               data-test-subj={"remove-alias-combo-box"}
             />
             {inputLimitText(selectedItems.remove?.length, MAX_ALIAS_ACTIONS, "alias", "aliases")}
