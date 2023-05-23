@@ -24,10 +24,10 @@ import { act } from "react-dom/test-utils";
 import { IAPICaller } from "../../../models/interfaces";
 import { INDEX_OP_TARGET_TYPE } from "../../utils/constants";
 
-function renderWithRouter<T>(
+function renderWithRouter(
   coreServicesContext: CoreStart | null,
   browserServicesContext: BrowserServices | null,
-  props: FlushIndexModalProps<T>
+  props: FlushIndexModalProps
 ) {
   return {
     ...render(
@@ -311,7 +311,7 @@ describe("<FlushIndexModal /> spec", () => {
     fireEvent.click(getByTestId("flushConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.flush",
         data: {

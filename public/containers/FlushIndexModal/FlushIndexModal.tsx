@@ -19,7 +19,7 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../components/core_services";
 import { ServicesContext } from "../../services";
 import { indexBlockedPredicate, aliasBlockedPredicate, dataStreamBlockedPredicate, filterBlockedItems } from "../../utils/helpers";
-import { IndexOpBlocksType, INDEX_OP_TARGET_TYPE } from "../../utils/constants";
+import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "../../utils/constants";
 import { CatIndex, DataStream } from "../../../server/models/interfaces";
 import { IAlias } from "../../pages/Aliases/interface";
 
@@ -57,14 +57,14 @@ const successToastTemplate = (flushTarget: INDEX_OP_TARGET_TYPE, unBlockedItems:
   }
 };
 
-export interface FlushIndexModalProps<T> {
-  selectedItems: T[];
+export interface FlushIndexModalProps {
+  selectedItems: CatIndex[] | DataStream[] | IAlias[];
   visible: boolean;
   flushTarget: INDEX_OP_TARGET_TYPE;
   onClose: () => void;
 }
 
-export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
+export default function FlushIndexModal(props: FlushIndexModalProps) {
   const { onClose, flushTarget, visible, selectedItems } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -95,74 +95,36 @@ export default function FlushIndexModal<T>(props: FlushIndexModalProps<T>) {
 
   useEffect(() => {
     if (!!services && visible) {
-      switch (flushTarget) {
-        case INDEX_OP_TARGET_TYPE.ALIAS:
-          filterBlockedItems<IAlias>(services, selectedItems as IAlias[], IndexOpBlocksType.Closed, aliasBlockedPredicate)
-            .then((filterResultItems) => {
-              if (visible) {
-                if (!!selectedItems.length && selectedItems.length === filterResultItems.blockedItems.length) {
-                  /* all items are blocked, show error message */
-                  coreServices.notifications.toasts.addDanger({
-                    title: blockedAllErrorTitle(flushTarget),
-                    text: blockedAllErrorText(flushTarget),
-                  });
-                  onClose();
-                  return;
-                }
-                setBlockedItems(filterResultItems.blockedItems.map((item) => item.alias));
-                setUnBlockedItems(filterResultItems.unBlockedItems.map((item) => item.alias));
-              }
-            })
-            .catch((err) => {
-              if (visible) {
+      filterBlockedItems(services, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, flushTarget)
+        .then((filterResultItems) => {
+          if (visible) {
+            if (!!selectedItems.length && selectedItems.length === filterResultItems.blockedItems.length) {
+              /* all items are blocked, show error message */
+              coreServices.notifications.toasts.addDanger({
+                title: blockedAllErrorTitle(flushTarget),
+                text: blockedAllErrorText(flushTarget),
+              });
+              onClose();
+              return;
+            }
+            setBlockedItems(filterResultItems.blockedItems);
+            setUnBlockedItems(filterResultItems.unBlockedItems);
+          }
+        })
+        .catch((err) => {
+          if (visible) {
+            switch (flushTarget) {
+              case INDEX_OP_TARGET_TYPE.ALIAS:
                 setUnBlockedItems((selectedItems as IAlias[]).map((item) => item.alias));
-              }
-            });
-          break;
-        case INDEX_OP_TARGET_TYPE.DATA_STREAM:
-          filterBlockedItems<DataStream>(services, selectedItems as DataStream[], IndexOpBlocksType.Closed, dataStreamBlockedPredicate)
-            .then((filterResultItems) => {
-              if (visible) {
-                if (!!selectedItems.length && selectedItems.length === filterResultItems.blockedItems.length) {
-                  coreServices.notifications.toasts.addDanger({
-                    title: blockedAllErrorTitle(flushTarget),
-                    text: blockedAllErrorText(flushTarget),
-                  });
-                  onClose();
-                  return;
-                }
-                setBlockedItems(filterResultItems.blockedItems.map((item) => item.name));
-                setUnBlockedItems(filterResultItems.unBlockedItems.map((item) => item.name));
-              }
-            })
-            .catch((err) => {
-              if (visible) {
+                break;
+              case INDEX_OP_TARGET_TYPE.DATA_STREAM:
                 setUnBlockedItems((selectedItems as DataStream[]).map((item) => item.name));
-              }
-            });
-          break;
-        default:
-          filterBlockedItems<CatIndex>(services, selectedItems as CatIndex[], IndexOpBlocksType.Closed, indexBlockedPredicate)
-            .then((filterResultItems) => {
-              if (visible) {
-                if (!!selectedItems.length && selectedItems.length === filterResultItems.blockedItems.length) {
-                  coreServices.notifications.toasts.addDanger({
-                    title: blockedAllErrorTitle(flushTarget),
-                    text: blockedAllErrorText(flushTarget),
-                  });
-                  onClose();
-                  return;
-                }
-                setBlockedItems(filterResultItems.blockedItems.map((item) => item.index));
-                setUnBlockedItems(filterResultItems.unBlockedItems.map((item) => item.index));
-              }
-            })
-            .catch((err) => {
-              if (visible) {
+                break;
+              default:
                 setUnBlockedItems((selectedItems as CatIndex[]).map((item) => item.index));
-              }
-            });
-      }
+            }
+          }
+        });
     } else {
       setBlockedItems([]);
       setUnBlockedItems([]);
