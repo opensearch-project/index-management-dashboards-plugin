@@ -160,7 +160,7 @@ export async function filterBlockedItems(
   var redIndices: string[] = [];
   if (filterRedIndices) {
     if (!originInputItems.length && indexOpTargetType !== INDEX_OP_TARGET_TYPE.INDEX) {
-      throw new Error("Can only filter red indices for type index.");
+      throw new Error("Can only filter red indexes for type index.");
     }
     redIndices = await getRedIndices(browserServices);
   }
