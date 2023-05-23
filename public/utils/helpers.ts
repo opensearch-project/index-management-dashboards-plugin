@@ -68,7 +68,7 @@ interface ClusterBlocksStateResponse {
   };
 }
 
-async function getRedIndicesInOpenStatus(browserServices: BrowserServices): Promise<string[]> {
+export async function getRedIndicesInOpenStatus(browserServices: BrowserServices): Promise<string[]> {
   const result = await browserServices.commonService.apiCaller<string>({
     endpoint: "cat.indices",
     data: {
@@ -82,7 +82,8 @@ async function getRedIndicesInOpenStatus(browserServices: BrowserServices): Prom
   if (!result.ok) {
     throw result.error;
   }
-  if (typeof result.response === "undefined") {
+  /* in case result.response is undefined or null */
+  if (!result.response) {
     return [];
   }
   return result.response

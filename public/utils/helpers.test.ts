@@ -10,6 +10,7 @@ import {
   dataStreamBlockedPredicate,
   filterBlockedItems,
   getBlockedIndicesSetWithBlocksType,
+  getRedIndicesInOpenStatus,
 } from "./helpers";
 import { browserServicesMock } from "../../test/mocks";
 import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "./constants";
@@ -128,6 +129,32 @@ describe("helpers spec", () => {
     expect(
       getBlockedIndicesSetWithBlocksType(browserServicesMock, [INDEX_OP_BLOCKS_TYPE.META_DATA, INDEX_OP_BLOCKS_TYPE.READ_ONLY_ALLOW_DELETE])
     ).resolves.toEqual(new Set([]));
+  });
+
+  it(`filter open red indices`, async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: "a1 open\na2 close\na3 open\n",
+    });
+    expect(getRedIndicesInOpenStatus(browserServicesMock)).resolves.toEqual(["a1", "a3"]);
+
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: null,
+    });
+    expect(getRedIndicesInOpenStatus(browserServicesMock)).resolves.toEqual([]);
+
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: "\n",
+    });
+    expect(getRedIndicesInOpenStatus(browserServicesMock)).resolves.toEqual([]);
+
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: undefined,
+    });
+    expect(getRedIndicesInOpenStatus(browserServicesMock)).resolves.toEqual([]);
   });
 
   it(`indexBlockedPredicate`, async () => {
