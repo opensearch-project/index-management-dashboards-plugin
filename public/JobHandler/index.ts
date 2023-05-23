@@ -12,10 +12,27 @@ import OSDPkg from "../../../../package.json";
 import { ListenType } from "../lib/JobScheduler";
 import { callbackForForceMerge, callbackForForceMergeTimeout } from "./callbacks/force_merge";
 import { callbackForOpen, callbackForOpenTimeout } from "./callbacks/open";
+import { CommonService } from "../services";
 export { listenEvent, destroyListener, EVENT_MAP } from "./utils";
 
-export function JobHandlerRegister(core: CoreSetup) {
-  jobSchedulerInstance.setStorage(new StoreLocalStorage(`OSD_VERSION_${OSDPkg.version}_ISM_JOBS`));
+export async function JobHandlerRegister(core: CoreSetup) {
+  const commonService = new CommonService(core.http);
+  const accountResult = await commonService.apiCaller<{
+    user_name: string;
+  }>({
+    endpoint: "transport.request",
+    data: {
+      path: "/_plugins/_security/api/account",
+    },
+  });
+  /**
+   * If security plugin is enabled, add user_name into storageKey
+   */
+  let storeLocalStorageKey = `OSD_VERSION_${OSDPkg.version}_ISM_JOBS`;
+  if (accountResult && accountResult.ok && accountResult.response && accountResult.response.user_name) {
+    storeLocalStorageKey = `OSD_VERSION_${OSDPkg.version}_${accountResult.response.user_name}_ISM_JOBS`;
+  }
+  jobSchedulerInstance.setStorage(new StoreLocalStorage(storeLocalStorageKey));
   jobSchedulerInstance.addCallback({
     callbackName: "callbackForReindex",
     callback: (job) => callbackForReindex(job, { core }),
