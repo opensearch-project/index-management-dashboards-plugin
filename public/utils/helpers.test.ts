@@ -10,10 +10,11 @@ import {
   dataStreamBlockedPredicate,
   filterBlockedItems,
   getBlockedIndicesSetWithBlocksType,
+  getRedIndicesInOpenStatus,
 } from "./helpers";
 import { browserServicesMock } from "../../test/mocks";
 import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "./constants";
-import { IAPICaller } from "plugins/index-management-dashboards-plugin/models/interfaces";
+import { IAPICaller } from "../../models/interfaces";
 
 const exampleBlocksStateResponse = {
   cluster_name: "opensearch-cluster",
@@ -128,6 +129,32 @@ describe("helpers spec", () => {
     expect(
       getBlockedIndicesSetWithBlocksType(browserServicesMock, [INDEX_OP_BLOCKS_TYPE.META_DATA, INDEX_OP_BLOCKS_TYPE.READ_ONLY_ALLOW_DELETE])
     ).resolves.toEqual(new Set([]));
+  });
+
+  it(`filter open red indices`, async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: "a1 open\na2 close\na3 open\n",
+    });
+    expect(getRedIndicesInOpenStatus(browserServicesMock)).resolves.toEqual(["a1", "a3"]);
+
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: null,
+    });
+    expect(getRedIndicesInOpenStatus(browserServicesMock)).resolves.toEqual([]);
+
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: "\n",
+    });
+    expect(getRedIndicesInOpenStatus(browserServicesMock)).resolves.toEqual([]);
+
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: undefined,
+    });
+    expect(getRedIndicesInOpenStatus(browserServicesMock)).resolves.toEqual([]);
   });
 
   it(`indexBlockedPredicate`, async () => {
@@ -276,7 +303,7 @@ describe("helpers spec", () => {
       if (params.endpoint === "cluster.state") {
         return { ok: true, response: exampleBlocksStateResponse };
       } else {
-        return { ok: true, response: "test_index2\ntest_index4\n" };
+        return { ok: true, response: "test_index2 open\ntest_index4 open\ntest_index3 close\n" };
       }
     });
     const selectedItems = [{ index: "test_index1" }, { index: "test_index2" }, { index: "test_index3" }, { index: "test_index4" }];
@@ -314,6 +341,53 @@ describe("helpers spec", () => {
     });
   });
 
+  it(`filterBlockedItems index with red indices empty response`, async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
+      ok: true,
+      response: exampleBlocksStateResponse,
+    });
+    browserServicesMock.commonService.apiCaller = jest.fn().mockImplementation((params: IAPICaller) => {
+      if (params.endpoint === "cluster.state") {
+        return { ok: true, response: exampleBlocksStateResponse };
+      } else {
+        return { ok: true };
+      }
+    });
+    const selectedItems = [{ index: "test_index1" }, { index: "test_index2" }, { index: "test_index3" }, { index: "test_index4" }];
+    expect(
+      filterBlockedItems(browserServicesMock, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, INDEX_OP_TARGET_TYPE.INDEX, true)
+    ).resolves.toEqual({
+      blockedItems: ["test_index1", "test_index2"],
+      unBlockedItems: ["test_index3", "test_index4"],
+    });
+
+    expect(
+      filterBlockedItems(
+        browserServicesMock,
+        selectedItems,
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
+        INDEX_OP_TARGET_TYPE.INDEX,
+        true
+      )
+    ).resolves.toEqual({
+      blockedItems: ["test_index1"],
+      unBlockedItems: ["test_index2", "test_index3", "test_index4"],
+    });
+
+    expect(
+      filterBlockedItems(
+        browserServicesMock,
+        [],
+        [INDEX_OP_BLOCKS_TYPE.READ_ONLY, INDEX_OP_BLOCKS_TYPE.META_DATA],
+        INDEX_OP_TARGET_TYPE.INDEX,
+        true
+      )
+    ).resolves.toEqual({
+      blockedItems: [],
+      unBlockedItems: [],
+    });
+  });
+
   it(`filterBlockedItems alias with red indices`, async () => {
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({
       ok: true,
@@ -323,7 +397,7 @@ describe("helpers spec", () => {
       if (params.endpoint === "cluster.state") {
         return { ok: true, response: exampleBlocksStateResponse };
       } else {
-        return { ok: true, response: "test_index2\ntest_index4\n" };
+        return { ok: true, response: "test_index2 open\ntest_index4 open\ntest_index3 close\n" };
       }
     });
     const selectedItems = [
@@ -372,7 +446,7 @@ describe("helpers spec", () => {
       if (params.endpoint === "cluster.state") {
         return { ok: true, response: exampleBlocksStateResponse };
       } else {
-        return { ok: true, response: "test_index2\ntest_index4\n" };
+        return { ok: true, response: "test_index2 open\ntest_index4 open\ntest_index3 close\n" };
       }
     });
     const selectedItems = [
