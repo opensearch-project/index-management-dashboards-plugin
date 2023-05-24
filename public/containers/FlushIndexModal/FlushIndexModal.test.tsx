@@ -13,15 +13,8 @@ import { BrowserServices } from "../../models/interfaces";
 import { ModalProvider } from "../../components/Modal";
 import { CoreStart } from "opensearch-dashboards/public";
 import FlushIndexModal, { FlushIndexModalProps } from "./FlushIndexModal";
-import {
-  buildMockApiCallerForFlush,
-  exampleBlocksStateResponse,
-  selectedAliases,
-  selectedDataStreams,
-  selectedIndices,
-} from "./FlushIndexModalTestHelper";
+import { buildMockApiCallerForFlush, selectedAliases, selectedDataStreams, selectedIndices } from "./FlushIndexModalTestHelper";
 import { act } from "react-dom/test-utils";
-import { IAPICaller } from "../../../models/interfaces";
 import { INDEX_OP_TARGET_TYPE } from "../../utils/constants";
 
 function renderWithRouter(
@@ -90,6 +83,7 @@ describe("<FlushIndexModal /> spec", () => {
   });
 
   it("renders with flush all indices", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush({ has_red_indices: false });
     const { getByText } = renderWithRouter(coreServicesMock, browserServicesMock, {
       selectedItems: [],
       visible: true,
@@ -97,9 +91,8 @@ describe("<FlushIndexModal /> spec", () => {
       onClose: () => {},
     });
     /* to wait for useEffect updating modal */
-    await waitFor(() => {
-      expect(getByText("All open indexes will be flushed.")).toBeInTheDocument();
-    });
+    await act(async () => {});
+    expect(getByText("All open indexes will be flushed.")).toBeInTheDocument();
     expect(document.body.children).toMatchSnapshot();
   });
 
@@ -254,15 +247,14 @@ describe("<FlushIndexModal /> spec", () => {
 
   it("browser service context not ready", async () => {
     const onClose = jest.fn();
-    browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
-    const { getByTestId } = renderWithRouter(coreServicesMock, null, {
+    const { queryByText } = renderWithRouter(coreServicesMock, null, {
       selectedItems: selectedIndices,
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
       onClose: onClose,
     });
     await act(async () => {});
-    expect(getByTestId("flushConfirmButton")).toBeDisabled();
+    expect(queryByText("flushConfirmButton")).toBeNull();
   });
 
   it("flush all indices without red indices", async () => {

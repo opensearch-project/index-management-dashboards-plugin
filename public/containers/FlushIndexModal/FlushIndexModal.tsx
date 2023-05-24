@@ -71,9 +71,14 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
 
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
+  const [loading, setLoading] = useState(true);
   const onFlushConfirm = useCallback(async () => {
     if (!services) {
-      coreServices.notifications.toasts.addDanger("Something is wrong in ServiceContext");
+      coreServices.notifications.toasts.addDanger({
+        title: `Unable to flush ${flushTarget}`,
+        text: "Something is wrong in ServiceContext",
+      });
+      setLoading(true);
       onClose();
       return;
     }
@@ -89,6 +94,7 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
     } else {
       coreServices.notifications.toasts.addDanger({ title: `Unable to flush ${flushTarget}`, text: result.error });
     }
+    setLoading(true);
     onClose();
   }, [unBlockedItems, services, coreServices, onClose, flushAll]);
 
@@ -103,6 +109,7 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
                 title: `Unable to flush ${flushTarget}`,
                 text: `The selected ${flushTarget} cannot be flushed because they are either closed or in red status.`,
               });
+              setLoading(true);
               onClose();
               return;
             }
@@ -112,11 +119,13 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
                 title: `Unable to flush ${flushTarget}`,
                 text: `Can not flush all open indexes because indexes [${filterResultItems.blockedItems.join(",")}] are in red status.`,
               });
+              setLoading(true);
               onClose();
               return;
             }
             setBlockedItems(filterResultItems.blockedItems);
             setUnBlockedItems(filterResultItems.unBlockedItems);
+            setLoading(false);
           }
         })
         .catch((err) => {
@@ -131,15 +140,17 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
               default:
                 setUnBlockedItems((selectedItems as CatIndex[]).map((item) => item.index));
             }
+            setLoading(false);
           }
         });
     } else {
       setBlockedItems([]);
       setUnBlockedItems([]);
+      setLoading(true);
     }
   }, [visible, flushTarget, selectedItems, services]);
 
-  if (!visible) {
+  if (!visible || loading) {
     return null;
   }
 

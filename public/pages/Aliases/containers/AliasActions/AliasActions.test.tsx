@@ -14,6 +14,7 @@ import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { buildMockApiCallerForFlush, selectedAliases } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
+import { act } from "react-dom/test-utils";
 
 function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
   return {
@@ -131,9 +132,8 @@ describe("<AliasesActions /> spec", () => {
     );
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Flush Action"));
-    await waitFor(() => {
-      expect(getByText("The following aliases will be flushed:")).toBeInTheDocument();
-    });
+    await act(async () => {});
+    expect(getByText("The following aliases will be flushed:")).toBeInTheDocument();
     expect(document.body.children).toMatchSnapshot();
   });
 });

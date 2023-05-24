@@ -14,6 +14,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import { buildMockApiCallerForFlush, selectedDataStreams } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
+import { act } from "react-dom/test-utils";
 const historyPushMock = jest.fn();
 
 function renderWithRouter(props: Omit<DataStreamsActionsProps, "history">) {
@@ -138,9 +139,8 @@ describe("<DataStreamsActions /> spec", () => {
     );
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Flush Action"));
-    await waitFor(() => {
-      expect(getByText("The following data streams will be flushed:")).toBeInTheDocument();
-    });
+    await act(async () => {});
+    expect(getByText("The following data streams will be flushed:")).toBeInTheDocument();
     expect(document.body.children).toMatchSnapshot();
   });
 });

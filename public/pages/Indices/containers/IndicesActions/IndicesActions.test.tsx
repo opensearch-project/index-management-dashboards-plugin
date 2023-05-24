@@ -16,6 +16,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { createMemoryHistory } from "history";
 import { ROUTES } from "../../../../utils/constants";
 import { buildMockApiCallerForFlush, selectedIndices } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
+import { act } from "react-dom/test-utils";
 
 function renderWithRouter(props: IndicesActionsProps) {
   return {
@@ -512,9 +513,8 @@ describe("<IndicesActions /> spec", () => {
     );
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Flush Action"));
-    await waitFor(() => {
-      expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
-    });
+    await act(async () => {});
+    expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
     expect(document.body.children).toMatchSnapshot();
   });
 });
