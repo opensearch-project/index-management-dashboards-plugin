@@ -97,6 +97,66 @@ describe("Aliases", () => {
     });
   });
 
+  describe("can flush an alias", () => {
+    it("successfully flush an index", () => {
+      let sample_alias = `${SAMPLE_ALIAS_PREFIX}-${1}`;
+      // Sort all aliases in asc order to make it at first page
+      cy.contains("Alias name").click();
+      // Confirm we have our initial alias
+      cy.contains(sample_alias);
+      // index a test doc
+      cy.request({
+        method: "POST",
+        url: `${Cypress.env("openSearchUrl")}/${sample_alias}/_doc`,
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+        },
+        body: { test: "test" },
+      });
+
+      // confirm uncommitted_operations is 1 after indexing doc
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/${sample_alias}/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(1);
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be disabled if no items selected
+      cy.get('[data-test-subj="Flush Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select an alias
+      cy.get(`[data-test-subj="checkboxSelectRow-${sample_alias}"]`).check({
+        force: true,
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be enabled
+      cy.get('[data-test-subj="Flush Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for flush index modal
+      cy.contains("Flush alias");
+
+      cy.get('[data-test-subj="flushConfirmButton"]').click();
+
+      // Check for success toast
+      cy.contains(`The alias ${sample_alias} has been successfully flushed.`);
+
+      // confirm uncommitted_operations is 0 after flush
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/${sample_alias}/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(0);
+      });
+    });
+  });
+
   after(() => {
     cy.deleteAllIndices();
     for (let i = 0; i < 30; i++) {
