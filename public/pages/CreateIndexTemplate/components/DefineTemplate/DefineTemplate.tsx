@@ -31,7 +31,7 @@ export default function DefineTemplate(props: SubDetailProps) {
           <CustomFormRow
             {...getCommonFormRowProps("name", field)}
             label="Template name"
-            direction={isEdit ? "hoz" : "ver"}
+            direction="ver"
             helpText={<div>Template name cannot be changed after the template is created.</div>}
           >
             <Component
@@ -76,7 +76,7 @@ export default function DefineTemplate(props: SubDetailProps) {
                     return Promise.reject("Index patterns must be defined");
                   }
 
-                  return Promise.reject("");
+                  return Promise.resolve("");
                 },
               },
             ],
@@ -149,7 +149,9 @@ export default function DefineTemplate(props: SubDetailProps) {
                 </>
               }
               id="checkboxForIndexTemplateFlowSimple"
-              onChange={() => registeredFlowField.onChange(FLOW_ENUM.SIMPLE)}
+              onChange={() => {
+                registeredFlowField.onChange(FLOW_ENUM.SIMPLE);
+              }}
               checked={registeredFlowField.value === FLOW_ENUM.SIMPLE}
             />
           </EuiFlexItem>
