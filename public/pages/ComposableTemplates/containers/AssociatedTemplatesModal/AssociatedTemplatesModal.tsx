@@ -39,7 +39,7 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
 
   return (
     <>
-      {renderProps ? renderProps({ setVisible }) : null}
+      {renderProps({ setVisible })}
       {visible ? (
         <EuiFlyout onClose={() => setVisible(false)}>
           <EuiFlyoutHeader>
@@ -112,6 +112,7 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
                                   );
                                 } else {
                                   coreServices.notifications.toasts.addDanger(updateResult.error);
+                                  return Promise.reject(updateResult.error);
                                 }
                               },
                             });
