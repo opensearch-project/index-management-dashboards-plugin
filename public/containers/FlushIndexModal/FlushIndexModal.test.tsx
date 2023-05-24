@@ -322,28 +322,4 @@ describe("<FlushIndexModal /> spec", () => {
       expect(onClose).toHaveBeenCalledTimes(1);
     });
   });
-
-  it("flush all aliases disabled", async () => {
-    const onClose = jest.fn();
-    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      selectedItems: [],
-      visible: true,
-      flushTarget: INDEX_OP_TARGET_TYPE.ALIAS,
-      onClose: onClose,
-    });
-    await act(async () => {});
-    expect(getByTestId("flushConfirmButton")).toBeDisabled();
-  });
-
-  it("flush all data streams disabled", async () => {
-    const onClose = jest.fn();
-    const { getByTestId } = renderWithRouter(coreServicesMock, browserServicesMock, {
-      selectedItems: [],
-      visible: true,
-      flushTarget: INDEX_OP_TARGET_TYPE.DATA_STREAM,
-      onClose: onClose,
-    });
-    await act(async () => {});
-    expect(getByTestId("flushConfirmButton")).toBeDisabled();
-  });
 });

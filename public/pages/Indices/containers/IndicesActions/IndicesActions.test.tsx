@@ -517,4 +517,19 @@ describe("<IndicesActions /> spec", () => {
     expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
     expect(document.body.children).toMatchSnapshot();
   });
+
+  it("renders all indices enabled", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId, getByText } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ModalProvider>
+            <IndicesActions selectedItems={[]} />
+          </ModalProvider>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    expect(getByTestId("Flush Action")).toBeEnabled();
+  });
 });

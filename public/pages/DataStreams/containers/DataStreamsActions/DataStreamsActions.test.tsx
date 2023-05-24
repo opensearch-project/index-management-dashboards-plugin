@@ -143,4 +143,40 @@ describe("<DataStreamsActions /> spec", () => {
     expect(getByText("The following data streams will be flushed:")).toBeInTheDocument();
     expect(document.body.children).toMatchSnapshot();
   });
+
+  it("flush all data streams disabled", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <Router>
+            <Switch>
+              <Route
+                path={ROUTES.DATA_STREAMS}
+                render={(routeProps) => (
+                  <CoreServicesContext.Provider value={coreServicesMock}>
+                    <ServicesContext.Provider value={browserServicesMock}>
+                      <DataStreamsActions
+                        selectedItems={[]}
+                        history={{
+                          ...routeProps.history,
+                          push: (...args) => {
+                            routeProps.history.push(...args);
+                            historyPushMock(...args);
+                          },
+                        }}
+                      />
+                    </ServicesContext.Provider>
+                  </CoreServicesContext.Provider>
+                )}
+              />
+              <Redirect from="/" to={ROUTES.DATA_STREAMS} />
+            </Switch>
+          </Router>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    expect(getByTestId("Flush Action")).toBeDisabled();
+  });
 });

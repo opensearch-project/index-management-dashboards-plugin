@@ -191,7 +191,7 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
         <EuiButtonEmpty data-test-subj="flushCancelButton" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
-        <EuiButton data-test-subj="flushConfirmButton" onClick={onFlushConfirm} isDisabled={!flushAll && !unBlockedItems.length} fill>
+        <EuiButton data-test-subj="flushConfirmButton" onClick={onFlushConfirm} fill>
           Flush
         </EuiButton>
       </EuiModalFooter>

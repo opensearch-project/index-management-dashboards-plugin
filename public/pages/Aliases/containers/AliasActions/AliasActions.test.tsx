@@ -136,4 +136,19 @@ describe("<AliasesActions /> spec", () => {
     expect(getByText("The following aliases will be flushed:")).toBeInTheDocument();
     expect(document.body.children).toMatchSnapshot();
   });
+
+  it("flush all aliases disabled", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ModalProvider>
+            <AliasesActions selectedItems={[]} history={{} as any} />
+          </ModalProvider>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    expect(getByTestId("Flush Action")).toBeDisabled();
+  });
 });
