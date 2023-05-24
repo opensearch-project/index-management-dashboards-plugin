@@ -16,13 +16,13 @@ import { TemplateItemRemote } from "../../../../../models/interfaces";
 import { ITemplate } from "../../interface";
 import { getTemplate } from "../../../ComposableTemplates/utils/hooks";
 
-interface AssociatedComponentsModalProps {
+export interface AssociatedComponentsModalProps {
   template: ITemplate;
   onUnlink?: (unlinkTemplate: string) => void;
   renderProps: (params: { setVisible: Dispatch<SetStateAction<boolean>> }) => ReactChild;
 }
 
-export default function AssociatedComponentsModalProps(props: AssociatedComponentsModalProps) {
+export default function AssociatedComponentsModal(props: AssociatedComponentsModalProps) {
   const { onUnlink, renderProps, template } = props;
   const [visible, setVisible] = useState(false);
   const services = useContext(ServicesContext) as BrowserServices;
@@ -30,7 +30,7 @@ export default function AssociatedComponentsModalProps(props: AssociatedComponen
 
   return (
     <>
-      {renderProps ? renderProps({ setVisible }) : null}
+      {renderProps({ setVisible })}
       {visible ? (
         <EuiFlyout onClose={() => setVisible(false)}>
           <EuiFlyoutHeader>
@@ -106,6 +106,7 @@ export default function AssociatedComponentsModalProps(props: AssociatedComponen
                                   );
                                 } else {
                                   coreServices.notifications.toasts.addDanger(updateResult.error);
+                                  return Promise.reject(updateResult.error);
                                 }
                               },
                             });
