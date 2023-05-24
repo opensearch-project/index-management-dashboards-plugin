@@ -81,7 +81,7 @@ jobs:
           command: yarn run cypress run
           wait-on: 'http://localhost:5601'
           browser: chrome
-      Screenshots are only captured on failure, will change this once we do visual regression tests
+      # Screenshots are only captured on failure, will change this once we do visual regression tests
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
