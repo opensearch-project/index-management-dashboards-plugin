@@ -42,7 +42,7 @@ const blockedItemsMessageTemplate = (flushTarget: INDEX_OP_TARGET_TYPE) => {
     default:
       blockedReason = "they";
   }
-  return `The following ${flushTarget} will not be flushed because ${blockedReason} are closed or in red health status:`;
+  return `The following ${flushTarget} will not be flushed because ${blockedReason} are either closed or in red status:`;
 };
 
 const successToastTemplate = (flushTarget: INDEX_OP_TARGET_TYPE, unBlockedItems: string[]) => {
@@ -101,7 +101,7 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
               /* all items are blocked, show error message */
               coreServices.notifications.toasts.addDanger({
                 title: `Unable to flush ${flushTarget}`,
-                text: `The selected ${flushTarget} cannot be flushed because they are closed or in red health status.`,
+                text: `The selected ${flushTarget} cannot be flushed because they are either closed or in red status.`,
               });
               onClose();
               return;
@@ -110,9 +110,7 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
               /* flush all, but there are red indexes */
               coreServices.notifications.toasts.addDanger({
                 title: `Unable to flush ${flushTarget}`,
-                text: `Can not flush all open indexes because indexes [${filterResultItems.blockedItems.join(
-                  ","
-                )}] are in red health status.`,
+                text: `Can not flush all open indexes because indexes [${filterResultItems.blockedItems.join(",")}] are in red status.`,
               });
               onClose();
               return;

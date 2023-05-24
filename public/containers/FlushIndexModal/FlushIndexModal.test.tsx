@@ -305,7 +305,7 @@ describe("<FlushIndexModal /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
         title: "Unable to flush indexes",
-        text: "Can not flush all open indexes because indexes [test_index4] are in red health status.",
+        text: "Can not flush all open indexes because indexes [test_index4] are in red status.",
       });
     });
   });
@@ -325,7 +325,7 @@ describe("<FlushIndexModal /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
         title: "Unable to flush indexes",
-        text: "The selected indexes cannot be flushed because they are closed or in red health status.",
+        text: "The selected indexes cannot be flushed because they are either closed or in red status.",
       });
       expect(onClose).toHaveBeenCalledTimes(1);
     });
