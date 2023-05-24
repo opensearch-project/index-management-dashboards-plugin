@@ -8,7 +8,6 @@ import { RecoveryJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
 import { DetailLink } from "../components/DetailLink";
-import { FormatResourceWithClusterInfo } from "../components/FormatResourceWithClusterInfo";
 
 export const callbackForSplit: CallbackType = async (job: RecoveryJobMetaData, { core }) => {
   const extras = job.extras;
@@ -18,7 +17,7 @@ export const callbackForSplit: CallbackType = async (job: RecoveryJobMetaData, {
     const tasksResult = await commonService.apiCaller<TaskResult>({
       endpoint: "transport.request",
       data: {
-        path: `.tasks/_doc/${extras.taskId}`,
+        path: `/.tasks/_doc/${extras.taskId}`,
         method: "GET",
       },
     });
@@ -35,8 +34,12 @@ export const callbackForSplit: CallbackType = async (job: RecoveryJobMetaData, {
             {
               title: ((
                 <>
-                  Source index <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has been successfully split as{" "}
-                  <DetailLink index={extras.destIndex} clusterInfo={extras.clusterInfo} />.
+                  Split operation on <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has been completed.
+                </>
+              ) as unknown) as string,
+              text: ((
+                <>
+                  The split index is <DetailLink index={extras.destIndex} clusterInfo={extras.clusterInfo} />.
                 </>
               ) as unknown) as string,
             },
@@ -47,10 +50,10 @@ export const callbackForSplit: CallbackType = async (job: RecoveryJobMetaData, {
         } else {
           core.notifications.toasts.addDanger(
             {
+              iconType: "alert",
               title: ((
                 <>
-                  Split from <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> to{" "}
-                  <FormatResourceWithClusterInfo resource={extras.destIndex} clusterInfo={extras.clusterInfo} /> has failed.
+                  Split operation on <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has failed.
                 </>
               ) as unknown) as string,
               text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{error.reason}</div>) as unknown) as string,
@@ -73,14 +76,15 @@ export const callbackForSplitTimeout: CallbackType = (job: RecoveryJobMetaData, 
   if (extras.toastId) {
     core.notifications.toasts.remove(extras.toastId);
   }
-  core.notifications.toasts.addDanger(
+  core.notifications.toasts.addWarning(
     {
       title: ((
         <>
-          Split <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> to{" "}
-          <FormatResourceWithClusterInfo resource={extras.destIndex} clusterInfo={extras.clusterInfo} /> does not finish in reasonable time,
-          please check the index manually
+          Split operation on <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has timed out.
         </>
+      ) as unknown) as string,
+      text: ((
+        <>The split operation has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/{extras.taskId}`</>
       ) as unknown) as string,
     },
     {

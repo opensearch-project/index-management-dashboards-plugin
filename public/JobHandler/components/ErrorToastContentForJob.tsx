@@ -7,7 +7,7 @@ import React from "react";
 import { Modal } from "../../components/Modal";
 
 export const ErrorToastContentForJob = (props: { shortError?: React.ReactChild; fullError?: React.ReactChild }) => {
-  const { shortError, fullError } = props;
+  const { shortError = null, fullError } = props;
   return (
     <div>
       <div>{shortError}</div>
@@ -21,7 +21,7 @@ export const ErrorToastContentForJob = (props: { shortError?: React.ReactChild; 
                   locale: {
                     ok: "Close",
                   },
-                  title: shortError,
+                  title: shortError || "",
                   content: (
                     <EuiText>
                       <div>{fullError}</div>

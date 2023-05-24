@@ -12,10 +12,12 @@ import { FormatResourceWithClusterInfo } from "../components/FormatResourceWithC
 import { ErrorToastContentForJob } from "../components/ErrorToastContentForJob";
 
 type ReindexTaskResult = TaskResult<{
+  canceled?: string;
   failures: {
     cause?: {
       reason: string;
     };
+    id?: string;
   }[];
 }>;
 
@@ -25,61 +27,58 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
   const tasksResult = await commonService.apiCaller<TaskResult>({
     endpoint: "transport.request",
     data: {
-      path: `.tasks/_doc/${extras.taskId}`,
+      path: `/.tasks/_doc/${extras.taskId}`,
       method: "GET",
     },
   });
   if (tasksResult.ok) {
     const { _source, found } = tasksResult.response;
     const { completed, response, error } = (_source || {}) as ReindexTaskResult["_source"];
-    const { failures } = response || {};
+    const { failures, canceled } = response || {};
     if (completed && found) {
-      if (!failures?.length && !error?.reason) {
-        if (extras.toastId) {
-          core.notifications.toasts.remove(extras.toastId);
-        }
-        triggerEvent(EVENT_MAP.REINDEX_COMPLETE, job);
-        core.notifications.toasts.addSuccess(
-          {
-            title: ((
-              <>
-                Source <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has been
-                successfully reindexed as <DetailLink index={extras.destIndex} writingIndex={extras.writingIndex} />
-              </>
-            ) as unknown) as string,
-          },
-          {
-            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
-          }
-        );
-      } else {
-        if (extras.toastId) {
-          core.notifications.toasts.remove(extras.toastId);
-        }
+      if (extras.toastId) {
+        core.notifications.toasts.remove(extras.toastId);
+      }
+
+      if (canceled) {
         core.notifications.toasts.addDanger(
           {
             iconType: "alert",
             title: ((
               <>
-                Reindex from <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> to{" "}
-                {extras.destIndex} has failed
+                Reindex operation on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has
+                been cancelled
+              </>
+            ) as unknown) as string,
+            text: `The reindex job has been cancelled ${canceled}.`,
+          },
+          {
+            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+          }
+        );
+        return true;
+      }
+
+      if (failures?.length || error?.reason) {
+        core.notifications.toasts.addDanger(
+          {
+            iconType: "alert",
+            title: ((
+              <>
+                Reindex operation on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has
+                failed
               </>
             ) as unknown) as string,
             text: ((
               <ErrorToastContentForJob
-                shortError={
-                  error?.reason || (
-                    <>
-                      There is some error(s) when reindexing{" "}
-                      <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} />
-                    </>
-                  )
-                }
+                shortError={error?.reason || <>{failures?.length || 0} error(s) were found</>}
                 fullError={
                   failures?.length ? (
                     <ul key="response.failures">
-                      {Array.from(new Set(failures.map((item) => item.cause?.reason).filter((item) => item))).map((item) => (
-                        <li key={item}>{item}</li>
+                      {failures.map((item) => (
+                        <li key={item.id}>
+                          {item.id || ""}: {item.cause?.reason}
+                        </li>
                       ))}
                     </ul>
                   ) : undefined
@@ -91,7 +90,31 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           }
         );
+        return true;
       }
+
+      /**
+       * If goes here, then the reindex is completed
+       */
+      triggerEvent(EVENT_MAP.REINDEX_COMPLETE, job);
+      core.notifications.toasts.addSuccess(
+        {
+          title: ((
+            <>
+              Reindex operation on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has been
+              completed.
+            </>
+          ) as unknown) as string,
+          text: ((
+            <>
+              The reindexed index is <DetailLink index={extras.writingIndex} clusterInfo={extras.clusterInfo} />.
+            </>
+          ) as unknown) as string,
+        },
+        {
+          toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+        }
+      );
       return true;
     }
   }
@@ -104,13 +127,16 @@ export const callbackForReindexTimeout: CallbackType = (job: ReindexJobMetaData,
   if (extras.toastId) {
     core.notifications.toasts.remove(extras.toastId);
   }
-  core.notifications.toasts.addDanger(
+  core.notifications.toasts.addWarning(
     {
       title: ((
         <>
-          Reindex from <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> to{" "}
-          <FormatResourceWithClusterInfo resource={extras.destIndex} clusterInfo={extras.clusterInfo} /> does not finish in reasonable time,
-          please check the task {extras.taskId} manually
+          Reindex on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has timed out.
+        </>
+      ) as unknown) as string,
+      text: ((
+        <>
+          The reindex operation has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/{extras.taskId}`
         </>
       ) as unknown) as string,
     },
