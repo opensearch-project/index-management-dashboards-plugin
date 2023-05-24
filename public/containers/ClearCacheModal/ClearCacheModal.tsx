@@ -10,6 +10,7 @@ import { IAlias } from "../../pages/Aliases/interface";
 import { ServicesContext } from "../../services";
 import { CoreServicesContext } from "../../components/core_services";
 import { IndexOpBlocksType, SOURCE_PAGE_TYPE } from "../../utils/constants";
+import { Modal } from "../../components/Modal";
 import {
   getErrorMessage,
   aliasBlockedPredicate,
@@ -21,6 +22,7 @@ import {
   EuiButton,
   EuiButtonEmpty,
   EuiCallOut,
+  EuiText,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -28,6 +30,7 @@ import {
   EuiModalHeaderTitle,
   EuiSpacer,
 } from "@elastic/eui";
+import { OuiCallOut } from "@opensearch-project/oui";
 
 interface ClearCacheModalProps<T> {
   selectedItems: T[];
@@ -42,6 +45,7 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
   const [blockHint, setBlockHint] = useState("");
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
+  const [loading, setLoading] = useState(false);
 
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -54,11 +58,12 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
       IndexOpBlocksType.ReadOnlyAllowDelete,
     ];
     if (!!services && visible) {
+      setLoading(true);
       switch (type) {
         case SOURCE_PAGE_TYPE.DATA_STREAMS:
-          setHint("Caches will be cleared for the following data streams.");
+          setHint("Cache will be cleared for the following data streams.");
           setBlockHint(
-            "Caches will not be cleared for the following data streams because one or more backing indexes are closed or blocked."
+            "Cache will not be cleared for the following data streams because one or more backing indexes are closed or blocked."
           );
           filterBlockedItems<DataStream>(services, selectedItems as DataStream[], indexBlocksTypes, dataStreamBlockedPredicate)
             .then((filteredDataStreamsResult) => {
@@ -69,11 +74,14 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
               // set unBlockedItems to all when filter is failed
               const items = selectedItems as DataStream[];
               setUnBlockedItems(items.map((item) => item.name));
+            })
+            .finally(() => {
+              setLoading(false);
             });
           break;
         case SOURCE_PAGE_TYPE.ALIASES:
-          setHint("Caches will be cleared for the following aliases.");
-          setBlockHint("Caches will not be cleared for the following aliases because one or more indexes are closed or blocked.");
+          setHint("Cache will be cleared for the following aliases.");
+          setBlockHint("Cache will not be cleared for the following aliases because one or more indexes are closed or blocked.");
           filterBlockedItems<IAlias>(services, selectedItems as IAlias[], indexBlocksTypes, aliasBlockedPredicate)
             .then((filteredAliasesResult) => {
               setUnBlockedItems(filteredAliasesResult.unBlockedItems.map((item) => item.alias));
@@ -83,11 +91,14 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
               // set unBlockedItems to all when filter is failed
               const items = selectedItems as IAlias[];
               setUnBlockedItems(items.map((item) => item.alias));
+            })
+            .finally(() => {
+              setLoading(false);
             });
           break;
         default:
-          setHint("Caches will be cleared for the following indexes.");
-          setBlockHint("Caches will not be cleared for the following indexes because they may be closed or blocked.");
+          setHint("Cache will be cleared for the following indexes.");
+          setBlockHint("Cache will not be cleared for the following indexes because they may be closed or blocked.");
           filterBlockedItems<CatIndex>(services, selectedItems as CatIndex[], indexBlocksTypes, indexBlockedPredicate)
             .then((filteredIndexesResult) => {
               setUnBlockedItems(filteredIndexesResult.unBlockedItems.map((item) => item.index));
@@ -97,13 +108,17 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
               // set unBlockedItems to all when filter is failed
               const items = selectedItems as CatIndex[];
               setUnBlockedItems(items.map((item) => item.index));
+            })
+            .finally(() => {
+              setLoading(false);
             });
       }
     } else if (!visible) {
       setUnBlockedItems([] as string[]);
       setBlockedItems([] as string[]);
+      setLoading(false);
     }
-  }, [services, visible, type, selectedItems]);
+  }, [services, visible, type, selectedItems, setLoading]);
 
   const onConfirm = useCallback(async () => {
     if (!!services) {
@@ -116,21 +131,56 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
         });
         if (result && result.ok) {
           onClose();
-          let toast = `Clear caches for [${unBlockedItems.join(", ")}] successfully`;
+          let toast = "";
+          if (unBlockedItems.length > 1) {
+            toast = `Cache for ${unBlockedItems.length} ${type} [${unBlockedItems.join(", ")}] have been successfully cleared.`;
+          } else if (unBlockedItems.length == 1) {
+            toast = `Cache for ${unBlockedItems[0]} has been successfully cleared.`;
+          }
+
           if (!selectedItems || selectedItems.length == 0) {
-            toast = "Clear caches for all indexes successfully";
+            toast = "Cache for all open indexes have been successfully cleared.";
           }
           coreServices.notifications.toasts.addSuccess(toast);
         } else {
-          coreServices.notifications.toasts.addDanger(result.error);
+          if (result.error.includes("cluster_block_exception")) {
+            coreServices.notifications.toasts.addError(new Error(result.error), {
+              title: "Clear cache failed.",
+              toastMessage: "One or more indexes are blocked.",
+            });
+          } else {
+            coreServices.notifications.toasts.addError(new Error(result.error), {
+              title: "Clear cache failed.",
+            });
+          }
         }
       } catch (err) {
-        coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem clearing caches."));
+        coreServices.notifications.toasts.addDanger({
+          title: "Unable to clear cache",
+          text: getErrorMessage(err, "There was a problem clearing cache."),
+        });
       }
     }
-  }, [services, coreServices, onClose, unBlockedItems, selectedItems]);
+  }, [services, coreServices, onClose, unBlockedItems, selectedItems, type]);
 
-  if (!visible) {
+  useEffect(() => {
+    if (visible && selectedItems.length > 0 && selectedItems.length == blockedItems.length) {
+      if (selectedItems.length == 1) {
+        coreServices.notifications.toasts.addDanger({
+          title: "Unable to clear cache",
+          text: `Cache cannot be cleared for ${blockedItems[0]} because it is closed or blocked.`,
+        });
+      } else {
+        coreServices.notifications.toasts.addDanger({
+          title: "Unable to clear cache",
+          text: `Cache cannot be cleared for the selected ${type} because they are closed or blocked.`,
+        });
+      }
+      onClose();
+    }
+  }, [visible, unBlockedItems, blockedItems, coreServices, onClose, type]);
+
+  if (!visible || loading) {
     return null;
   }
 
@@ -149,7 +199,7 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
           </>
         )}
       </div>
-      <EuiCallOut color="warning" hidden={blockedItems.length == 0}>
+      <EuiCallOut color="warning" iconType="warning" hidden={blockedItems.length == 0} size="s">
         <p>{blockHint}</p>
         <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
           {blockedItems.map((item) => (
@@ -163,7 +213,7 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
   const noSpecificIndexesChildren: React.ReactChild = (
     <>
       <div style={{ lineHeight: 1.5 }}>
-        <p>Caches will be cleared for all indexes.</p>
+        <p>Cache will be cleared for all open indexes.</p>
         <EuiSpacer />
       </div>
     </>
@@ -172,7 +222,7 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Clear caches for {type}</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>Clear cache for {type}</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>{!!selectedItems && selectedItems.length > 0 ? specificIndexesChildren : noSpecificIndexesChildren}</EuiModalBody>
