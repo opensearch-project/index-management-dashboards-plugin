@@ -36,63 +36,63 @@ jobs:
           ./gradlew run -Dopensearch.version=${{ env.OPENSEARCH_VERSION }} > nohup.out &
           sleep 300
         # timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:9200)" != "200" ]]; do sleep 5; done'
-      # - name: Checkout Index Management Dashboards plugin
-      #   uses: actions/checkout@v2
-      #   with:
-      #     path: index-management-dashboards-plugin
-      # - name: Checkout OpenSearch-Dashboards
-      #   uses: actions/checkout@v2
-      #   with:
-      #     repository: opensearch-project/OpenSearch-Dashboards
-      #     path: OpenSearch-Dashboards
-      #     ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
-      # - name: Setup Node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version-file: './OpenSearch-Dashboards/.nvmrc'
-      #     registry-url: 'https://registry.npmjs.org'
-      # - name: Install Yarn
-      #   # Need to use bash to avoid having a windows/linux specific step
-      #   shell: bash
-      #   run: |
-      #     YARN_VERSION=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")
-      #     echo "Installing yarn@$YARN_VERSION"
-      #     npm i -g yarn@$YARN_VERSION
-      # - run: node -v
-      # - run: yarn -v
-      # - name: Bootstrap plugin/OpenSearch-Dashboards
-      #   run: |
-      #     mkdir -p OpenSearch-Dashboards/plugins
-      #     mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
-      #     cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
-      #     yarn osd bootstrap
-      # - name: Run OpenSearch-Dashboards server
-      #   run: |
-      #     cd OpenSearch-Dashboards
-      #     yarn start --no-base-path --no-watch &
-      #     sleep 420
-      #   # in main branch, OSD server requires more time to bundle and bootstrap
-      #   # timeout 300 bash -c 'while [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
-      # # for now just chrome, use matrix to do all browsers later
-      # - name: Cypress tests
-      #   uses: cypress-io/github-action@v2
-      #   with:
-      #     working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
-      #     command: yarn run cypress run
-      #     wait-on: 'http://localhost:5601'
-      #     browser: chrome
-      # Screenshots are only captured on failure, will change this once we do visual regression tests
-      # - uses: actions/upload-artifact@v1
-      #   if: failure()
-      #   with:
-      #     name: cypress-screenshots
-      #     path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/screenshots
-      # # Test run video was always captured, so this action uses "always()" condition
-      # - uses: actions/upload-artifact@v1
-      #   if: always()
-      #   with:
-      #     name: cypress-videos
-      #     path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/videos
+      - name: Checkout Index Management Dashboards plugin
+        uses: actions/checkout@v2
+        with:
+          path: index-management-dashboards-plugin
+      - name: Checkout OpenSearch-Dashboards
+        uses: actions/checkout@v2
+        with:
+          repository: opensearch-project/OpenSearch-Dashboards
+          path: OpenSearch-Dashboards
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: './OpenSearch-Dashboards/.nvmrc'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install Yarn
+        # Need to use bash to avoid having a windows/linux specific step
+        shell: bash
+        run: |
+          YARN_VERSION=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")
+          echo "Installing yarn@$YARN_VERSION"
+          npm i -g yarn@$YARN_VERSION
+      - run: node -v
+      - run: yarn -v
+      - name: Bootstrap plugin/OpenSearch-Dashboards
+        run: |
+          mkdir -p OpenSearch-Dashboards/plugins
+          mv index-management-dashboards-plugin OpenSearch-Dashboards/plugins
+          cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+          yarn osd bootstrap
+      - name: Run OpenSearch-Dashboards server
+        run: |
+          cd OpenSearch-Dashboards
+          yarn start --no-base-path --no-watch &
+          sleep 420
+        # in main branch, OSD server requires more time to bundle and bootstrap
+        # timeout 300 bash -c 'while [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
+      # for now just chrome, use matrix to do all browsers later
+      - name: Cypress tests
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+          command: yarn run cypress run
+          wait-on: 'http://localhost:5601'
+          browser: chrome
+      Screenshots are only captured on failure, will change this once we do visual regression tests
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/screenshots
+      # Test run video was always captured, so this action uses "always()" condition
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin/cypress/videos
       - uses: actions/upload-artifact@v1
         if: always()
         with:
