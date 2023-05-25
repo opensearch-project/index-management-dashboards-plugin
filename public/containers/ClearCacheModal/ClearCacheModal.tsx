@@ -104,7 +104,7 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
     } else if (!visible) {
       setUnBlockedItems([] as string[]);
       setBlockedItems([] as string[]);
-      setLoading(false);
+      setLoading(true);
     }
   }, [services, visible, type, selectedItems, setLoading]);
 
