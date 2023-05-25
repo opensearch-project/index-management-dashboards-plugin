@@ -215,7 +215,9 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
           <div
             class="euiFormRow__fieldWrapper"
           >
-            <div>
+            <div
+              style="line-height: 1.5;"
+            >
               <span
                 class="euiBadge euiBadge--hollow euiBadge--iconLeft"
                 title="1 (chime)"
@@ -497,7 +499,9 @@ exports[`<ChannelNotification /> spec renders with view permission and default n
           <div
             class="euiFormRow__fieldWrapper"
           >
-            <div>
+            <div
+              style="line-height: 1.5;"
+            >
               <span
                 class="euiBadge euiBadge--hollow euiBadge--iconLeft"
                 title="1 (chime)"

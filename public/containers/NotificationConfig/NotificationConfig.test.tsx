@@ -315,6 +315,7 @@ describe("<ChannelNotification /> spec", () => {
             lron_config: {
               lron_condition: {
                 failure: true,
+                success: false,
               },
               channels: [
                 {
