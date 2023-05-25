@@ -6,6 +6,7 @@ import React, { useMemo, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
+import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
 import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
@@ -20,10 +21,15 @@ export interface DataStreamsActionsProps {
 export default function DataStreamsActions(props: DataStreamsActionsProps) {
   const { selectedItems, onDelete, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [flushDataStreamModalVisible, setFlushDataStreamModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
+  };
+
+  const onClearCacheModalClose = () => {
+    setClearCacheModalVisible(false);
   };
 
   const onFlushDataStreamModalClose = () => {
@@ -53,6 +59,12 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
             {
               id: 0,
               items: [
+                {
+                  name: "Clear cache",
+                  disabled: selectedItems.length < 1,
+                  "data-test-subj": "ClearCacheAction",
+                  onClick: () => setClearCacheModalVisible(true),
+                },
                 {
                   name: "Force merge",
                   "data-test-subj": "ForceMergeAction",
@@ -92,7 +104,12 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
           onDelete();
         }}
       />
-
+      <ClearCacheModal
+        selectedItems={selectedItems}
+        visible={clearCacheModalVisible}
+        onClose={onClearCacheModalClose}
+        type={INDEX_OP_TARGET_TYPE.DATA_STREAM}
+      />
       <FlushIndexModal
         selectedItems={selectedItems}
         visible={flushDataStreamModalVisible}
