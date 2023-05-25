@@ -119,6 +119,222 @@ describe("<AliasesActions /> spec", () => {
     });
   });
 
+  it("clear cache for aliases by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "cluster.state":
+            return {
+              ok: true,
+              response: {
+                blocks: {},
+              },
+            };
+          default:
+            return {
+              ok: true,
+              response: {},
+            };
+        }
+      }
+    );
+    const { container, getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "test_index",
+          alias: "test_alias",
+          filter: "1",
+          "routing.index": "1",
+          "routing.search": "1",
+          is_write_index: "1",
+          indexArray: ["test_index"],
+        },
+      ],
+      onUpdateAlias: () => null,
+      onDelete: () => {},
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("ClearCacheAction"));
+    await waitFor(() => {
+      getByText("Cache will be cleared for the following aliases.");
+    });
+    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.clearCache",
+        data: {
+          index: "test_alias",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Cache for test_alias has been successfully cleared.");
+    });
+  });
+
+  it("cannot clear cache for aliases if some indexes are closed or blocked", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                test_1: {
+                  "4": {
+                    description: "index closed",
+                    retryable: false,
+                    levels: ["read", "write"],
+                  },
+                },
+                test_2: {
+                  "5": {
+                    description: "index read-only (api)",
+                    retryable: false,
+                    levels: ["write", "metadata_write"],
+                  },
+                },
+              },
+            },
+          },
+        };
+      }
+    );
+
+    const { container, getByTestId } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "test_1",
+          alias: "test_alias1",
+          filter: "1",
+          "routing.index": "1",
+          "routing.search": "1",
+          is_write_index: "1",
+          indexArray: ["test_1"],
+        },
+        {
+          index: "test_2",
+          alias: "test_alias2",
+          filter: "1",
+          "routing.index": "1",
+          "routing.search": "1",
+          is_write_index: "1",
+          indexArray: ["test_2"],
+        },
+      ],
+      onUpdateAlias: () => null,
+      onDelete: () => {},
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("ClearCacheAction"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        title: "Unable to clear cache",
+        text: "Cache cannot be cleared for the selected aliases because they are closed or blocked.",
+      });
+    });
+  });
+
+  it("filter aliases failed when clearing caches for multiple aliases", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        switch (payload.endpoint) {
+          case "cluster.state":
+            return {
+              ok: true,
+              error: "test failure",
+            };
+          default:
+            return {
+              ok: true,
+              response: {},
+            };
+        }
+      }
+    );
+    const { container, getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "test_index1",
+          alias: "test_alias1",
+          filter: "1",
+          "routing.index": "1",
+          "routing.search": "1",
+          is_write_index: "1",
+          indexArray: ["test_index1"],
+        },
+        {
+          index: "test_index2",
+          alias: "test_alias2",
+          filter: "1",
+          "routing.index": "1",
+          "routing.search": "1",
+          is_write_index: "1",
+          indexArray: ["test_index2"],
+        },
+      ],
+      onUpdateAlias: () => null,
+      onDelete: () => {},
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("ClearCacheAction"));
+    await waitFor(() => {
+      getByText("Cache will be cleared for the following aliases.");
+    });
+    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.clearCache",
+        data: {
+          index: "test_alias1,test_alias2",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Cache for 2 aliases [test_alias1, test_alias2] have been successfully cleared."
+      );
+    });
+  });
+
   it("renders flush component", async () => {
     browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
     const { getByTestId, getByText } = render(

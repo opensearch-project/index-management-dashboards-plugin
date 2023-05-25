@@ -27,6 +27,87 @@ exports[`<IndicesActions /> spec Split index by calling commonService 1`] = `
 </div>
 `;
 
+exports[`<IndicesActions /> spec clear cache for all indexes failed if some indexes are blocked 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<IndicesActions /> spec clear cache for all indexes successfully by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<IndicesActions /> spec clear cache for mulitple indexes by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<IndicesActions /> spec close index by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
@@ -55,6 +136,60 @@ exports[`<IndicesActions /> spec close index by calling commonService 1`] = `
 `;
 
 exports[`<IndicesActions /> spec delete index by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<IndicesActions /> spec filter indices failed when clearing caches for multiple indices 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<IndicesActions /> spec filter some closed or blocked indices when clearing caches for multiple indices 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"
@@ -200,6 +335,21 @@ HTMLCollection [
                   <hr
                     class="euiHorizontalRule euiHorizontalRule--full"
                   />
+                  <button
+                    class="euiContextMenuItem"
+                    data-test-subj="Clear cache Action"
+                    type="button"
+                  >
+                    <span
+                      class="euiContextMenu__itemLayout"
+                    >
+                      <span
+                        class="euiContextMenuItem__text"
+                      >
+                        Clear cache
+                      </span>
+                    </span>
+                  </button>
                   <button
                     class="euiContextMenuItem"
                     data-test-subj="Close Action"
@@ -620,6 +770,33 @@ exports[`<IndicesActions /> spec split action is disabled if multiple indices ar
 `;
 
 exports[`<IndicesActions /> spec split action is disabled if the selected index is data_stream 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<IndicesActions /> spec unable to clear cache when clearing cache for a closed or blocked index 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"

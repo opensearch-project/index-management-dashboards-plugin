@@ -7,6 +7,7 @@ import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
+import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { IAlias } from "../../interface";
 import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
@@ -21,10 +22,15 @@ export interface AliasesActionsProps {
 export default function AliasesActions(props: AliasesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [flushAliasModalVisible, setFlushAliasModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
+  };
+
+  const onClearCacheModalClose = () => {
+    setClearCacheModalVisible(false);
   };
 
   const onFlushAliasModalClose = () => {
@@ -58,6 +64,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   disabled: selectedItems.length !== 1,
                   "data-test-subj": "editAction",
                   onClick: onUpdateAlias,
+                },
+                {
+                  name: "Clear cache",
+                  disabled: selectedItems.length < 1,
+                  "data-test-subj": "ClearCacheAction",
+                  onClick: () => setClearCacheModalVisible(true),
                 },
                 {
                   name: "Force merge",
@@ -98,7 +110,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
           onDelete();
         }}
       />
-
+      <ClearCacheModal
+        selectedItems={selectedItems}
+        visible={clearCacheModalVisible}
+        onClose={onClearCacheModalClose}
+        type={INDEX_OP_TARGET_TYPE.ALIAS}
+      />
       <FlushIndexModal
         selectedItems={selectedItems}
         visible={flushAliasModalVisible}
