@@ -98,7 +98,6 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
               setUnBlockedItems((selectedItems as CatIndex[]).map((item) => item.index));
             })
             .finally(() => {
-              console.log("set loading false");
               setLoading(false);
             });
       }
@@ -170,7 +169,6 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
   }, [visible, unBlockedItems, blockedItems, coreServices, onClose, type]);
 
   if (!visible || loading) {
-    console.log("return null, visible:" + visible + ", loading:" + loading);
     return null;
   }
 
