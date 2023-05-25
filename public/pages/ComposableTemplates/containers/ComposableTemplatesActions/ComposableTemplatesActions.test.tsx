@@ -8,39 +8,20 @@ import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
-import ComposableTemplatesActions, { ComposableTemplatesActionsProps } from "./index";
+import ComposableTemplatesActions, { ComposableTemplatesActionsProps, ComposableTemplatesDeleteAction } from "./index";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
-const historyPushMock = jest.fn();
 
-function renderWithRouter(props: Omit<ComposableTemplatesActionsProps, "history">) {
+function renderWithRouter(props: Omit<ComposableTemplatesActionsProps, "history">, Component = ComposableTemplatesActions) {
   return {
     ...render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
           <Router>
             <Switch>
-              <Route
-                path={ROUTES.COMPOSABLE_TEMPLATES}
-                render={(routeProps) => (
-                  <CoreServicesContext.Provider value={coreServicesMock}>
-                    <ServicesContext.Provider value={browserServicesMock}>
-                      <ComposableTemplatesActions
-                        {...props}
-                        history={{
-                          ...routeProps.history,
-                          push: (...args) => {
-                            routeProps.history.push(...args);
-                            historyPushMock(...args);
-                          },
-                        }}
-                      />
-                    </ServicesContext.Provider>
-                  </CoreServicesContext.Provider>
-                )}
-              />
+              <Route path={ROUTES.COMPOSABLE_TEMPLATES} render={(routeProps) => <Component {...props} />} />
               <Redirect from="/" to={ROUTES.COMPOSABLE_TEMPLATES} />
             </Switch>
           </Router>
@@ -136,4 +117,58 @@ describe("<ComposableTemplatesActions /> spec", () => {
       expect(onDelete).toHaveBeenCalledTimes(1);
     });
   }, 30000);
+
+  it("renders delete action by using renderDeleteButton", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.data?.path?.startsWith("/_component_template/")) {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.data?.path?.startsWith("/_index_template")) {
+          return {
+            ok: true,
+            response: {
+              index_templates: [
+                {
+                  name: "test",
+                  index_template: {
+                    composed_of: ["test_component_template"],
+                  },
+                },
+              ],
+            },
+          };
+        }
+        return { ok: true, response: {} };
+      }
+    );
+    const { container, findByText, getByText, findByTestId, getByTestId } = renderWithRouter({
+      selectedItems: ["test_component_template"],
+      onDelete: () => {},
+      renderDeleteButton: ({ triggerDelete }) => <button onClick={triggerDelete}>test button</button>,
+    });
+    await findByText("test button");
+    await userEvent.click(getByText("test button"));
+    await findByTestId("UnlinkConfirmCheckBox");
+    expect(container).toMatchSnapshot();
+    await waitFor(() => {
+      expect(getByTestId("UnlinkConfirmCheckBox")).not.toBeChecked();
+    });
+    userEvent.click(getByTestId("UnlinkConfirmCheckBox"));
+    await waitFor(() => {
+      expect(getByTestId("deleteConfirmUnlinkButton")).toBeEnabled();
+    });
+    await userEvent.click(getByTestId("deleteConfirmUnlinkButton"));
+    await waitFor(
+      () => {
+        expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(4);
+        expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalledWith(`Delete [test_component_template] successfully`);
+      },
+      {
+        timeout: 3000,
+      }
+    );
+  });
 });

@@ -18,6 +18,17 @@ exports[`<ComposableTemplatesActions /> spec delete templates by calling commonS
 </button>
 `;
 
+exports[`<ComposableTemplatesActions /> spec renders delete action by using renderDeleteButton 1`] = `
+<div
+  aria-hidden="true"
+  data-aria-hidden="true"
+>
+  <button>
+    test button
+  </button>
+</div>
+`;
+
 exports[`<ComposableTemplatesActions /> spec renders the component and all the actions should be disabled when no items selected 1`] = `
 <button
   class="euiButton euiButton--danger euiButton-isDisabled"

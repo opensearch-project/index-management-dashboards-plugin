@@ -11,7 +11,7 @@ export const getAllUsedComponents = async ({ commonService }: { commonService: C
     endpoint: "transport.request",
     data: {
       method: "GET",
-      path: "_index_template/*",
+      path: "/_index_template/*",
     },
   });
 

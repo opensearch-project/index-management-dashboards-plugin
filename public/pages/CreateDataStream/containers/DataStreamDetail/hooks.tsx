@@ -61,7 +61,7 @@ export const getAllDataStreamTemplate = (props: {
     }>({
       data: {
         method: "GET",
-        path: "_index_template/*",
+        path: "/_index_template/*",
       },
       endpoint: "transport.request",
     })

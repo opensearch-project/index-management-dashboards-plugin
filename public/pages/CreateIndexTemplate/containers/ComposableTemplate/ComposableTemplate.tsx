@@ -34,7 +34,7 @@ import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadg
 import ComponentTemplateDetail, { IComponentTemplateDetailInstance } from "../../../CreateComposableTemplate/containers/TemplateDetail";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
-import FilterGroup from "../../components/FilterGroup";
+import FilterGroup from "../../../../components/FilterGroup";
 
 export default function ComposableTemplate(props: SubDetailProps) {
   const { field, readonly, history } = props;
@@ -55,7 +55,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
         endpoint: "transport.request",
         data: {
           method: "GET",
-          path: `_component_template/*`,
+          path: `/_component_template/*`,
         },
         hideLog: true,
       })
