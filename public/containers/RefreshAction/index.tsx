@@ -23,68 +23,70 @@ import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "../../utils/constant
 import { CatIndex, DataStream } from "../../../server/models/interfaces";
 import { IAlias } from "../../pages/Aliases/interface";
 
-interface RefreshActionModalProps<T> {
-  selectedItems: T[];
+interface RefreshActionModalProps {
+  selectedItems: IAlias[] | DataStream[] | CatIndex[];
   visible: boolean;
   onClose: () => void;
   type: INDEX_OP_TARGET_TYPE;
 }
 
-export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>) {
+const wordingMap = {
+  [INDEX_OP_TARGET_TYPE.ALIAS]: "alias",
+  [INDEX_OP_TARGET_TYPE.DATA_STREAM]: "data stream",
+  [INDEX_OP_TARGET_TYPE.INDEX]: "index",
+};
+
+const getClosedTypeWording = (props: { type: INDEX_OP_TARGET_TYPE }) => {
+  return props.type === INDEX_OP_TARGET_TYPE.INDEX ? "they" : `each ${wordingMap[props.type]} has one or more indexes that`;
+};
+
+export default function RefreshActionModal<T>(props: RefreshActionModalProps) {
   const { onClose, visible, selectedItems, type } = props;
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
-  const [unblockedWording, setUnblockedWording] = useState("" as string);
-  const [blockedWording, setBlockedWording] = useState("" as string);
-  const [toastWording, setToastWording] = useState("" as string);
   const [loading, setLoading] = useState(true);
+
+  /**
+   * generate wordings here
+   */
+  let unblockedWording = "";
+  let blockedWording = "";
+  let toastWording = "";
+  if (unBlockedItems.length === 1) {
+    unblockedWording = `The following ${wordingMap[type]}`;
+    toastWording = `The ${wordingMap[type]} [${unBlockedItems.join(", ")}] has been successfully refreshed.`;
+  } else if (unBlockedItems.length > 1) {
+    unblockedWording = `The following ${type}`;
+    toastWording = `${unBlockedItems.length} ${type} [${unBlockedItems.join(", ")}] have been successfully refreshed.`;
+  }
+
+  if (blockedItems.length === 1) {
+    blockedWording = `The following ${wordingMap[type]} cannot be refreshed because ${getClosedTypeWording({
+      type,
+    })} are either closed or in red status.`;
+  } else {
+    blockedWording = `The following ${type} cannot be refreshed because ${getClosedTypeWording({
+      type,
+    })} are either closed or in red status.`;
+  }
+
+  if (!selectedItems.length && !blockedItems.length) {
+    toastWording = `All open indexes have been successfully refreshed.`;
+  }
 
   useEffect(() => {
     if (!!services && visible) {
       const filterRedStatus = true;
-      let singleTypeWording = "";
-      let closedTypeWording = "";
-
-      switch (type) {
-        case INDEX_OP_TARGET_TYPE.ALIAS:
-          singleTypeWording = "alias";
-          closedTypeWording = "each alias has one or more indexes that";
-          break;
-        case INDEX_OP_TARGET_TYPE.DATA_STREAM:
-          singleTypeWording = "data stream";
-          closedTypeWording = "each data stream has one or more indexes that";
-          break;
-        default:
-          singleTypeWording = "index";
-          closedTypeWording = "they";
-          break;
-      }
-
       filterBlockedItems(services, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, type, filterRedStatus)
         .then((filteredStreamsResult) => {
-          const unBlocked = filteredStreamsResult.unBlockedItems;
-          const blocked = filteredStreamsResult.blockedItems;
-          if (unBlocked.length === 1) {
-            setUnblockedWording(`The following ${singleTypeWording}`);
-            setToastWording(`The ${singleTypeWording} [${unBlocked.join(", ")}] has been successfully refreshed.`);
-          } else if (unBlocked.length > 1) {
-            setUnblockedWording(`The following ${type}`);
-            setToastWording(`${unBlocked.length} ${type} [${unBlocked.join(", ")}] have been successfully refreshed.`);
-          }
-
-          if (blocked.length === 1) {
-            setBlockedWording(
-              `The following ${singleTypeWording} cannot be refreshed because ${closedTypeWording} are either closed or in red status.`
-            );
-          } else if (blocked.length > 1) {
-            setBlockedWording(`The following ${type} cannot be refreshed because ${closedTypeWording} are either closed or in red status.`);
-          }
+          const { blockedItems, unBlockedItems } = filteredStreamsResult;
+          setBlockedItems(blockedItems);
+          setUnBlockedItems(unBlockedItems);
 
           if (!selectedItems.length) {
-            if (!blocked.length) {
-              setToastWording(`All open indexes have been successfully refreshed.`);
+            if (!blockedItems.length) {
               setLoading(false);
             } else {
               coreServices.notifications.toasts.addDanger({
@@ -93,43 +95,37 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
               });
               onClose();
             }
-          } else if (selectedItems.length != 0 && unBlocked.length == 0) {
+          } else if (selectedItems.length != 0 && unBlockedItems.length == 0) {
             coreServices.notifications.toasts.addDanger({
               title: `Unable to refresh ${type}.`,
-              text: `All selected ${type} cannot be refreshed because ${closedTypeWording} are either closed or in red status.`,
+              text: `All selected ${type} cannot be refreshed because ${getClosedTypeWording({
+                type,
+              })} are either closed or in red status.`,
             });
             onClose();
           } else {
-            setUnBlockedItems(unBlocked);
-            setBlockedItems(blocked);
             setLoading(false);
           }
         })
         .catch(() => {
-          /*
-      It's not a critical error although if it fails unlikely other call will succeed,
-      set unblocked items to all, so we won't filter any of the selected items.
-       */
+          /**
+           * It's not a critical error although if it fails unlikely other call will succeed,
+           * set unblocked items to all, so we won't filter any of the selected items.
+           * */
           if (selectedItems.length > 0) {
             let unBlocked;
             switch (type) {
               case INDEX_OP_TARGET_TYPE.ALIAS:
-                unBlocked = selectedItems.map((item: IAlias) => item.alias);
+                unBlocked = (selectedItems as IAlias[]).map((item) => item.alias);
                 break;
               case INDEX_OP_TARGET_TYPE.DATA_STREAM:
-                unBlocked = selectedItems.map((item: DataStream) => item.name);
+                unBlocked = (selectedItems as DataStream[]).map((item) => item.name);
                 break;
               default:
-                unBlocked = selectedItems.map((item: CatIndex) => item.index);
+                unBlocked = (selectedItems as CatIndex[]).map((item) => item.index);
                 break;
             }
-            if (unBlocked.length === 1) {
-              setUnblockedWording(`The following ${singleTypeWording}`);
-              setToastWording(`The ${singleTypeWording} [${unBlocked.join(", ")}] has been successfully refreshed.`);
-            } else if (unBlocked.length > 1) {
-              setUnblockedWording(`The following ${type}`);
-              setToastWording(`${unBlocked.length} ${type} [${unBlocked.join(", ")}] have been successfully refreshed.`);
-            }
+            setBlockedItems([]);
             setUnBlockedItems(unBlocked);
           }
           setLoading(false);
@@ -137,6 +133,7 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps<T>)
     } else {
       setUnBlockedItems([]);
       setBlockedItems([]);
+      setLoading(true);
     }
   }, [visible, services, type, selectedItems, onClose]);
 
