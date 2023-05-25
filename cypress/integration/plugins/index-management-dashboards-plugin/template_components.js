@@ -92,19 +92,13 @@ describe("Component templates", () => {
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_TEMPLATE_PREFIX}-0`);
       cy.contains(`${SAMPLE_TEMPLATE_PREFIX}-0`);
       cy.get(`#_selection_column_${SAMPLE_TEMPLATE_PREFIX}-0-checkbox`).click();
-
       cy.get('[data-test-subj="deleteAction"]').click();
-      cy.contains(/Unable to delete/);
-      cy.get('[data-test-subj="viewAssociatedTemplatesInToast"]').click();
+      cy.contains(/The component template will be unlinked from 1 index templates/);
+      cy.contains(associatedTemplate);
+      cy.get('[data-test-subj="UnlinkConfirmCheckBox"]').parent().click();
       cy.contains("Associated index templates");
-      cy.get(`[aria-label="Unlink from ${associatedTemplate}?"]`).click();
-      cy.get(`[data-test-subj="Unlink from ${associatedTemplate}?-confirm"]`).click();
-      cy.contains(/has been successfully unlinked from/);
-      cy.get('[data-test-subj="euiFlyoutCloseButton"]').click();
-      cy.get('[data-test-subj="deleteAction"]').click();
-      cy.get('[data-test-subj="deleteConfirmButton"]').should("not.be.disabled");
       // click to delete
-      cy.get('[data-test-subj="deleteConfirmButton"]').click();
+      cy.get('[data-test-subj="deleteConfirmUnlinkButton"]').click();
       cy.wait(500);
       cy.get(`#_selection_column_${SAMPLE_TEMPLATE_PREFIX}-0-checkbox`).should("not.exist");
     });
