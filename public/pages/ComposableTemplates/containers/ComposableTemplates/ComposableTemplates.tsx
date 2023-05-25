@@ -345,12 +345,13 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                     return (
                       <AssociatedTemplatesModal
                         componentTemplate={record.name}
-                        onUnlink={() => this.getComposableTemplates()}
+                        onUnlink={/* istanbul ignore next */ () => this.getComposableTemplates()}
                         renderProps={({ setVisible }) => (
                           <EuiToolTip content="View associated index templates">
                             <EuiButtonIcon
                               aria-label="View associated index templates"
                               iconType="kqlSelector"
+                              data-test-subj={`ViewAssociatedIndexTemplates-${record.name}`}
                               onClick={() => setVisible(true)}
                               className="icon-hover-info"
                             />
@@ -413,6 +414,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                     onClick={() => {
                       this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                     }}
+                    data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
                   >
                     Create component template
                   </EuiButton>,

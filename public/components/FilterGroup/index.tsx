@@ -42,6 +42,7 @@ export default function FilterGroup({ options, value, filterButtonProps, onChang
             <EuiFilterSelectItem
               checked={value?.includes(item.label) ? "on" : "off"}
               key={item.label}
+              data-test-subj={`FilterGroupSelectItem-${item.label}`}
               onClick={() => {
                 const findIndex = (value || []).findIndex((valueItem) => valueItem === item.label);
                 const finalValue = value || [];
