@@ -4,7 +4,7 @@
  */
 import { CoreStart } from "opensearch-dashboards/public";
 import { CommonService, ServicesContext } from "../../../services";
-import { TemplateItem, TemplateItemRemote } from "../../../../models/interfaces";
+import { TemplateItemRemote } from "../../../../models/interfaces";
 import { getAllUsedComponents } from "./services";
 import { useState, useCallback, useContext, useEffect, useRef } from "react";
 import { BrowserServices } from "../../../models/interfaces";
@@ -13,14 +13,14 @@ export const getTemplate = async (props: {
   templateName: string;
   commonService: CommonService;
   coreService: CoreStart;
-}): Promise<TemplateItem> => {
+}): Promise<TemplateItemRemote> => {
   const response = await props.commonService.apiCaller<{
     index_templates: { name: string; index_template: TemplateItemRemote }[];
   }>({
     endpoint: "transport.request",
     data: {
       method: "GET",
-      path: `_index_template/${props.templateName}?flat_settings=true`,
+      path: `/_index_template/${props.templateName}?flat_settings=true`,
     },
   });
   let error: string = "";
@@ -77,6 +77,29 @@ export const getComponentMapTemplateWithCache = (
     });
   }
   return cache.usedRequest;
+};
+
+export const submitTemplateChange = async (props: {
+  templateName: string;
+  commonService: CommonService;
+  coreService: CoreStart;
+  transformTemplate: (templateItem: TemplateItemRemote) => TemplateItemRemote;
+}) => {
+  const { templateName, commonService, coreService, transformTemplate = (templateItem) => templateItem } = props;
+  const currentTemplate = await getTemplate({
+    templateName,
+    commonService,
+    coreService,
+  });
+  const updateResult = await commonService.apiCaller({
+    endpoint: "transport.request",
+    data: {
+      method: "POST",
+      path: `/_index_template/${templateName}`,
+      body: transformTemplate(currentTemplate),
+    },
+  });
+  return updateResult;
 };
 
 export const useComponentMapTemplate = () => {

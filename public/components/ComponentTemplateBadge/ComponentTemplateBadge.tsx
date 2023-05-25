@@ -13,7 +13,7 @@ interface CustomLabelProps {
 }
 
 const ComponentTemplateBadge = ({ template }: CustomLabelProps) => (
-  <>
+  <div style={{ lineHeight: 2 }}>
     {[IndicesUpdateMode.alias, IndicesUpdateMode.settings, IndicesUpdateMode.mappings]
       .filter((item) => template[item])
       .map((item) => {
@@ -29,7 +29,7 @@ const ComponentTemplateBadge = ({ template }: CustomLabelProps) => (
           </EuiBadge>
         );
       })}
-  </>
+  </div>
 );
 
 export default ComponentTemplateBadge;
