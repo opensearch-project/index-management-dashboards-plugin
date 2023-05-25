@@ -250,7 +250,7 @@ HTMLCollection [
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter"
+      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
       data-test-subj="moreAction"
     >
       <div
@@ -290,7 +290,7 @@ HTMLCollection [
         aria-describedby="some_html_id"
         aria-live="off"
         aria-modal="true"
-        class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--noShadow euiPopover__panel euiPopover__panel--bottom"
+        class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--noShadow euiPopover__panel euiPopover__panel--bottom euiPopover__panel-isOpen"
         data-autofocus="true"
         role="dialog"
         style="top: 16px; left: -22px; z-index: 2000;"
