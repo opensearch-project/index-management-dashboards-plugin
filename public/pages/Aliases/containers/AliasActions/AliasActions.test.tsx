@@ -159,7 +159,7 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
-      getByText("Caches will be cleared for the following aliases.");
+      getByText("Cache will be cleared for the following aliases.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -178,47 +178,40 @@ describe("<AliasesActions /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Clear caches for [test_alias] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Cache for test_alias has been successfully cleared.");
     });
   });
 
   it("cannot clear cache for aliases if some indexes are closed or blocked", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cluster.state":
-            return {
-              ok: true,
-              response: {
-                blocks: {
-                  indices: {
-                    test_1: {
-                      "4": {
-                        description: "index closed",
-                        retryable: false,
-                        levels: ["read", "write"],
-                      },
-                    },
-                    test_2: {
-                      "5": {
-                        description: "index read-only (api)",
-                        retryable: false,
-                        levels: ["write", "metadata_write"],
-                      },
-                    },
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                test_1: {
+                  "4": {
+                    description: "index closed",
+                    retryable: false,
+                    levels: ["read", "write"],
+                  },
+                },
+                test_2: {
+                  "5": {
+                    description: "index read-only (api)",
+                    retryable: false,
+                    levels: ["write", "metadata_write"],
                   },
                 },
               },
-            };
-          default:
-            return {
-              ok: true,
-              response: {},
-            };
-        }
+            },
+          },
+        };
       }
     );
-    const { container, getByTestId, getByText } = renderWithRouter({
+
+    const { container, getByTestId } = renderWithRouter({
       selectedItems: [
         {
           index: "test_1",
@@ -249,9 +242,6 @@ describe("<AliasesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
-    await waitFor(() => {
-      getByText("Caches will not be cleared for the following aliases because one or more indexes are closed or blocked.");
-    });
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -261,7 +251,11 @@ describe("<AliasesActions /> spec", () => {
           metric: "blocks",
         },
       });
-      expect(getByTestId("ClearCacheConfirmButton")).toBeDisabled();
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        title: "Unable to clear cache",
+        text: "Cache cannot be cleared for the selected aliases because they are closed or blocked.",
+      });
     });
   });
 
@@ -314,7 +308,7 @@ describe("<AliasesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
-      getByText("Caches will be cleared for the following aliases.");
+      getByText("Cache will be cleared for the following aliases.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -334,7 +328,7 @@ describe("<AliasesActions /> spec", () => {
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Clear caches for [test_alias1, test_alias2] successfully"
+        "Cache for 2 aliases [test_alias1, test_alias2] have been successfully cleared."
       );
     });
   });

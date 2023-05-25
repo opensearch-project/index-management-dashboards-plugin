@@ -55,7 +55,7 @@ describe("Data stream", () => {
     });
   });
 
-  describe("can clear caches for a data stream", () => {
+  describe("can clear cache for a data stream", () => {
     it("successfully", () => {
       cy.get('[data-test-subj="moreAction"] button')
         .click()
@@ -74,7 +74,7 @@ describe("Data stream", () => {
       // click to clear caches
       cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
       // Check for success toast
-      cy.contains("Clear caches for [ds-] successfully");
+      cy.contains("Cache for ds- has been successfully cleared.");
     });
   });
 

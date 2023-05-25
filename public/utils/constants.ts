@@ -386,9 +386,3 @@ export enum INDEX_OP_TARGET_TYPE {
   ALIAS = "aliases",
   DATA_STREAM = "data streams",
 }
-
-export const SOURCE_PAGE_TYPE = {
-  INDEXES: "indexes",
-  DATA_STREAMS: "data streams",
-  ALIASES: "aliases",
-};

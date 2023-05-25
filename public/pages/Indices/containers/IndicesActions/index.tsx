@@ -18,7 +18,7 @@ import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
 import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { ROUTES, SOURCE_PAGE_TYPE } from "../../../../utils/constants";
+import { INDEX_OP_TARGET_TYPE, ROUTES } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
@@ -260,7 +260,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
         selectedItems={selectedItems}
         visible={clearCacheModalVisible}
         onClose={onClearCacheModalClose}
-        type={SOURCE_PAGE_TYPE.INDEXES}
+        type={INDEX_OP_TARGET_TYPE.INDEX}
       />
     </>
   );

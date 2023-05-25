@@ -189,6 +189,33 @@ exports[`<IndicesActions /> spec filter indices failed when clearing caches for 
 </div>
 `;
 
+exports[`<IndicesActions /> spec filter some closed or blocked indices when clearing caches for multiple indices 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<IndicesActions /> spec open index by calling commonService 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
@@ -352,6 +379,33 @@ exports[`<IndicesActions /> spec split action is disabled if multiple indices ar
 `;
 
 exports[`<IndicesActions /> spec split action is disabled if the selected index is data_stream 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<IndicesActions /> spec unable to clear cache when clearing cache for a closed or blocked index 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"

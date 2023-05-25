@@ -68,7 +68,7 @@ describe("Aliases", () => {
     });
   });
 
-  describe("can clear caches for an alias", () => {
+  describe("can clear cache for an alias", () => {
     it("successfully", () => {
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_ALIAS_PREFIX}-0{enter}`);
       cy.contains(`${SAMPLE_ALIAS_PREFIX}-0`);
@@ -89,7 +89,7 @@ describe("Aliases", () => {
       // click to clear caches
       cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
       // Check for success toast
-      cy.contains(`Clear caches for [${SAMPLE_ALIAS_PREFIX}-0] successfully`);
+      cy.contains(`Cache for ${SAMPLE_ALIAS_PREFIX}-0 has been successfully cleared.`);
     });
   });
 

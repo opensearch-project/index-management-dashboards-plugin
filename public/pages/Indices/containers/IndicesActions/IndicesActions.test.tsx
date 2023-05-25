@@ -104,7 +104,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
-      getByText("Caches will be cleared for the following indexes.");
+      getByText("Cache will be cleared for the following indexes.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -123,27 +123,17 @@ describe("<IndicesActions /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Clear caches for [test_index2] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Cache for test_index2 has been successfully cleared.");
     });
   });
 
   it("clear cache for all indexes successfully by calling commonService", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cluster.state":
-            return {
-              ok: true,
-              response: {
-                blocks: {},
-              },
-            };
-          default:
-            return {
-              ok: true,
-              response: {},
-            };
-        }
+        return {
+          ok: true,
+          response: {},
+        };
       }
     );
     const { container, getByTestId, getByText } = renderWithRouter({
@@ -157,18 +147,12 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
-      getByText("Caches will be cleared for all indexes.");
+      getByText("Cache will be cleared for all open indexes.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "cluster.state",
-        data: {
-          metric: "blocks",
-        },
-      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.clearCache",
         data: {
@@ -176,11 +160,124 @@ describe("<IndicesActions /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Clear caches for all indexes successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Cache for all open indexes have been successfully cleared."
+      );
     });
   });
 
   it("clear cache for all indexes failed if some indexes are blocked", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        return {
+          ok: false,
+          error: "[cluster_block_exception] index [test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
+          body: {
+            error: {
+              root_cause: [
+                {
+                  type: "cluster_block_exception",
+                  reason: "index[test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
+                },
+              ],
+              type: "cluster_block_exception",
+              reason: "index[test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
+            },
+            status: 403,
+          },
+        };
+      }
+    );
+    coreServicesMock.notifications.toasts.addError = jest.fn();
+    const { container, getByTestId, getByText } = renderWithRouter({
+      selectedItems: [],
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Clear cache Action"));
+    await waitFor(() => {
+      getByText("Cache will be cleared for all open indexes.");
+    });
+    userEvent.click(getByTestId("ClearCacheConfirmButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.clearCache",
+        data: {
+          index: "",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addError).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addError).toHaveBeenCalledWith(
+        new Error("[cluster_block_exception] index [test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];"),
+        {
+          title: "Clear cache failed.",
+          toastMessage: "One or more indexes are blocked.",
+        }
+      );
+    });
+  });
+
+  it("unable to clear cache when clearing cache for a closed or blocked index", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                test_index1: {
+                  "5": {
+                    description: "index read-only (api)",
+                    retryable: false,
+                    levels: ["write", "metadata_write"],
+                  },
+                },
+              },
+            },
+          },
+        };
+      }
+    );
+
+    const { container, getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          health: "green",
+          index: "test_index1",
+        },
+      ],
+    });
+
+    await waitFor(() => {
+      expect(container.firstChild).toMatchSnapshot();
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Clear cache Action"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        title: "Unable to clear cache",
+        text: "Cache cannot be cleared for test_index1 because it is closed or blocked.",
+      });
+    });
+  });
+
+  it("filter some closed or blocked indices when clearing caches for multiple indices", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         switch (payload.endpoint) {
@@ -203,27 +300,28 @@ describe("<IndicesActions /> spec", () => {
             };
           default:
             return {
-              ok: false,
-              error: "[cluster_block_exception] index [test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
-              body: {
-                error: {
-                  root_cause: [
-                    {
-                      type: "cluster_block_exception",
-                      reason: "index[test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
-                    },
-                  ],
-                  type: "cluster_block_exception",
-                  reason: "index[test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];",
-                },
-                status: 403,
-              },
+              ok: true,
+              response: {},
             };
         }
       }
     );
+
     const { container, getByTestId, getByText } = renderWithRouter({
-      selectedItems: [],
+      selectedItems: [
+        {
+          health: "green",
+          index: "test_index1",
+        },
+        {
+          health: "green",
+          index: "test_index2",
+        },
+        {
+          health: "green",
+          index: "test_index3",
+        },
+      ],
     });
 
     await waitFor(() => {
@@ -233,7 +331,8 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
-      getByText("Caches will be cleared for all indexes.");
+      getByText("Cache will be cleared for the following indexes.");
+      getByText("Cache will not be cleared for the following indexes because they may be closed or blocked.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -248,12 +347,12 @@ describe("<IndicesActions /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.clearCache",
         data: {
-          index: "",
+          index: "test_index2,test_index3",
         },
       });
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith(
-        "[cluster_block_exception] index [test_index1] blocked by: [FORBIDDEN/5/index read-only (api)];"
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Cache for 2 indexes [test_index2, test_index3] have been successfully cleared."
       );
     });
   });
@@ -296,7 +395,7 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Clear cache Action"));
     await waitFor(() => {
-      getByText("Caches will be cleared for the following indexes.");
+      getByText("Cache will be cleared for the following indexes.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -316,7 +415,7 @@ describe("<IndicesActions /> spec", () => {
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Clear caches for [test_index1, test_index2] successfully"
+        "Cache for 2 indexes [test_index1, test_index2] have been successfully cleared."
       );
     });
   });

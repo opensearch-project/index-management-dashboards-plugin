@@ -39,7 +39,7 @@ HTMLCollection [
             <div
               class="euiModalHeader__title"
             >
-              Clear caches for 
+              Clear cache for 
               indexes
             </div>
           </div>
@@ -53,7 +53,7 @@ HTMLCollection [
                 style="line-height: 1.5;"
               >
                 <p>
-                  Caches will be cleared for all indexes.
+                  Cache will be cleared for all open indexes.
                 </p>
                 <div
                   class="euiSpacer euiSpacer--l"

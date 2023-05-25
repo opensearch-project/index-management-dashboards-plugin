@@ -146,7 +146,7 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
-      getByText("Caches will be cleared for the following data streams.");
+      getByText("Cache will be cleared for the following data streams.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -165,44 +165,38 @@ describe("<DataStreamsActions /> spec", () => {
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Clear caches for [test_data_stream] successfully");
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "Cache for test_data_stream has been successfully cleared."
+      );
     });
   });
 
   it("cannot clear cache for data streams if they are closed or blocked", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
-        switch (payload.endpoint) {
-          case "cluster.state":
-            return {
-              ok: true,
-              response: {
-                blocks: {
-                  indices: {
-                    ".ds-test_data_stream_1-000001": {
-                      "4": {
-                        description: "index closed",
-                        retryable: false,
-                        levels: ["read", "write"],
-                      },
-                    },
-                    ".ds-test_data_stream_2-000001": {
-                      "5": {
-                        description: "index read-only (api)",
-                        retryable: false,
-                        levels: ["write", "metadata_write"],
-                      },
-                    },
+        return {
+          ok: true,
+          response: {
+            blocks: {
+              indices: {
+                ".ds-test_data_stream_1-000001": {
+                  "4": {
+                    description: "index closed",
+                    retryable: false,
+                    levels: ["read", "write"],
+                  },
+                },
+                ".ds-test_data_stream_2-000001": {
+                  "5": {
+                    description: "index read-only (api)",
+                    retryable: false,
+                    levels: ["write", "metadata_write"],
                   },
                 },
               },
-            };
-          default:
-            return {
-              ok: true,
-              response: {},
-            };
-        }
+            },
+          },
+        };
       }
     );
     const { container, getByTestId, getByText } = renderWithRouter({
@@ -243,9 +237,6 @@ describe("<DataStreamsActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
-    await waitFor(() => {
-      getByText("Caches will not be cleared for the following data streams because one or more backing indexes are closed or blocked.");
-    });
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
@@ -255,7 +246,11 @@ describe("<DataStreamsActions /> spec", () => {
           metric: "blocks",
         },
       });
-      expect(getByTestId("ClearCacheConfirmButton")).toBeDisabled();
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        title: "Unable to clear cache",
+        text: "Cache cannot be cleared for the selected data streams because they are closed or blocked.",
+      });
     });
   });
 
@@ -311,7 +306,7 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("ClearCacheAction"));
     await waitFor(() => {
-      getByText("Caches will be cleared for the following data streams.");
+      getByText("Cache will be cleared for the following data streams.");
     });
     userEvent.click(getByTestId("ClearCacheConfirmButton"));
 
@@ -331,7 +326,7 @@ describe("<DataStreamsActions /> spec", () => {
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
-        "Clear caches for [test_data_stream1, test_data_stream2] successfully"
+        "Cache for 2 data streams [test_data_stream1, test_data_stream2] have been successfully cleared."
       );
     });
   });

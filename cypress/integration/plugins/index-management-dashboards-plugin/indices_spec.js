@@ -473,7 +473,7 @@ describe("Indices", () => {
     });
   });
 
-  describe("can clear caches for indexes", () => {
+  describe("can clear cache for indexes", () => {
     before(() => {
       cy.deleteAllIndices();
       cy.deleteIMJobs();
@@ -483,7 +483,7 @@ describe("Indices", () => {
       }
     });
 
-    it("successfully clear caches for multiple indexes", () => {
+    it("successfully clear cache for multiple indexes", () => {
       // Select multiple indexes
       cy.get(`[data-test-subj="checkboxSelectRow-index_d"]`).check({
         force: true,
@@ -503,10 +503,10 @@ describe("Indices", () => {
       cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
 
       // Check for success toast
-      cy.contains("Clear caches for [index_d, index_e] successfully");
+      cy.contains("Cache for 2 indexes [index_d, index_e] have been successfully cleared.");
     });
 
-    it("successfully clear caches for all indexes", () => {
+    it("successfully clear cache for all indexes", () => {
       cy.get('[data-test-subj="moreAction"]').click();
 
       // Clear cache btn should be enabled
@@ -519,7 +519,7 @@ describe("Indices", () => {
       cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
 
       // Check for success toast
-      cy.contains("Clear caches for all indexes successfully");
+      cy.contains("Cache for all open indexes have been successfully cleared.");
     });
   });
 });

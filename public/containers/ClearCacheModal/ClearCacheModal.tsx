@@ -9,20 +9,12 @@ import { CatIndex, DataStream } from "../../../server/models/interfaces";
 import { IAlias } from "../../pages/Aliases/interface";
 import { ServicesContext } from "../../services";
 import { CoreServicesContext } from "../../components/core_services";
-import { IndexOpBlocksType, SOURCE_PAGE_TYPE } from "../../utils/constants";
-import { Modal } from "../../components/Modal";
-import {
-  getErrorMessage,
-  aliasBlockedPredicate,
-  indexBlockedPredicate,
-  dataStreamBlockedPredicate,
-  filterBlockedItems,
-} from "../../utils/helpers";
+import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "../../utils/constants";
+import { getErrorMessage, filterBlockedItems } from "../../utils/helpers";
 import {
   EuiButton,
   EuiButtonEmpty,
   EuiCallOut,
-  EuiText,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -30,16 +22,15 @@ import {
   EuiModalHeaderTitle,
   EuiSpacer,
 } from "@elastic/eui";
-import { OuiCallOut } from "@opensearch-project/oui";
 
-interface ClearCacheModalProps<T> {
-  selectedItems: T[];
+interface ClearCacheModalProps {
+  selectedItems: CatIndex[] | DataStream[] | IAlias[];
   visible: boolean;
   onClose: () => void;
   type: string;
 }
 
-export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
+export default function ClearCacheModal(props: ClearCacheModalProps) {
   const { onClose, visible, selectedItems, type } = props;
   const [hint, setHint] = useState("");
   const [blockHint, setBlockHint] = useState("");
@@ -52,45 +43,43 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
 
   useEffect(() => {
     const indexBlocksTypes = [
-      IndexOpBlocksType.Closed,
-      IndexOpBlocksType.MetaData,
-      IndexOpBlocksType.ReadOnly,
-      IndexOpBlocksType.ReadOnlyAllowDelete,
+      INDEX_OP_BLOCKS_TYPE.CLOSED,
+      INDEX_OP_BLOCKS_TYPE.META_DATA,
+      INDEX_OP_BLOCKS_TYPE.READ_ONLY,
+      INDEX_OP_BLOCKS_TYPE.READ_ONLY_ALLOW_DELETE,
     ];
     if (!!services && visible) {
       setLoading(true);
       switch (type) {
-        case SOURCE_PAGE_TYPE.DATA_STREAMS:
+        case INDEX_OP_TARGET_TYPE.DATA_STREAM:
           setHint("Cache will be cleared for the following data streams.");
           setBlockHint(
             "Cache will not be cleared for the following data streams because one or more backing indexes are closed or blocked."
           );
-          filterBlockedItems<DataStream>(services, selectedItems as DataStream[], indexBlocksTypes, dataStreamBlockedPredicate)
+          filterBlockedItems(services, selectedItems, indexBlocksTypes, INDEX_OP_TARGET_TYPE.DATA_STREAM, false)
             .then((filteredDataStreamsResult) => {
-              setUnBlockedItems(filteredDataStreamsResult.unBlockedItems.map((item) => item.name));
-              setBlockedItems(filteredDataStreamsResult.blockedItems.map((item) => item.name));
+              setUnBlockedItems(filteredDataStreamsResult.unBlockedItems);
+              setBlockedItems(filteredDataStreamsResult.blockedItems);
             })
             .catch(() => {
               // set unBlockedItems to all when filter is failed
-              const items = selectedItems as DataStream[];
-              setUnBlockedItems(items.map((item) => item.name));
+              setUnBlockedItems((selectedItems as DataStream[]).map((item) => item.name));
             })
             .finally(() => {
               setLoading(false);
             });
           break;
-        case SOURCE_PAGE_TYPE.ALIASES:
+        case INDEX_OP_TARGET_TYPE.ALIAS:
           setHint("Cache will be cleared for the following aliases.");
           setBlockHint("Cache will not be cleared for the following aliases because one or more indexes are closed or blocked.");
-          filterBlockedItems<IAlias>(services, selectedItems as IAlias[], indexBlocksTypes, aliasBlockedPredicate)
+          filterBlockedItems(services, selectedItems as IAlias[], indexBlocksTypes, INDEX_OP_TARGET_TYPE.ALIAS, false)
             .then((filteredAliasesResult) => {
-              setUnBlockedItems(filteredAliasesResult.unBlockedItems.map((item) => item.alias));
-              setBlockedItems(filteredAliasesResult.blockedItems.map((item) => item.alias));
+              setUnBlockedItems(filteredAliasesResult.unBlockedItems);
+              setBlockedItems(filteredAliasesResult.blockedItems);
             })
             .catch(() => {
               // set unBlockedItems to all when filter is failed
-              const items = selectedItems as IAlias[];
-              setUnBlockedItems(items.map((item) => item.alias));
+              setUnBlockedItems((selectedItems as IAlias[]).map((item) => item.alias));
             })
             .finally(() => {
               setLoading(false);
@@ -99,17 +88,17 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
         default:
           setHint("Cache will be cleared for the following indexes.");
           setBlockHint("Cache will not be cleared for the following indexes because they may be closed or blocked.");
-          filterBlockedItems<CatIndex>(services, selectedItems as CatIndex[], indexBlocksTypes, indexBlockedPredicate)
+          filterBlockedItems(services, selectedItems as CatIndex[], indexBlocksTypes, INDEX_OP_TARGET_TYPE.INDEX, false)
             .then((filteredIndexesResult) => {
-              setUnBlockedItems(filteredIndexesResult.unBlockedItems.map((item) => item.index));
-              setBlockedItems(filteredIndexesResult.blockedItems.map((item) => item.index));
+              setUnBlockedItems(filteredIndexesResult.unBlockedItems);
+              setBlockedItems(filteredIndexesResult.blockedItems);
             })
             .catch(() => {
               // set unBlockedItems to all when filter is failed
-              const items = selectedItems as CatIndex[];
-              setUnBlockedItems(items.map((item) => item.index));
+              setUnBlockedItems((selectedItems as CatIndex[]).map((item) => item.index));
             })
             .finally(() => {
+              console.log("set loading false");
               setLoading(false);
             });
       }
@@ -181,6 +170,7 @@ export default function ClearCacheModal<T>(props: ClearCacheModalProps<T>) {
   }, [visible, unBlockedItems, blockedItems, coreServices, onClose, type]);
 
   if (!visible || loading) {
+    console.log("return null, visible:" + visible + ", loading:" + loading);
     return null;
   }
 
