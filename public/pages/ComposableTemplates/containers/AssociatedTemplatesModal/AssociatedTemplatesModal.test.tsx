@@ -69,6 +69,7 @@ describe("<AssociatedTemplatesModal /> spec", () => {
     await userEvent.click(getByTestId("test"));
     await findByText("Associated index templates");
     await findByText(templateName);
+    await findByText(/This table contains 1 rows out of 1 rows;/);
     expect(document.body.children).toMatchSnapshot();
     await userEvent.click(document.querySelector(`[aria-label='Unlink from ${templateName}?']`) as Element);
     await findByText(`Unlink from ${templateName}?`);
