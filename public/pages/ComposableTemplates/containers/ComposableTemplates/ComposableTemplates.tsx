@@ -21,20 +21,23 @@ import {
   EuiEmptyPrompt,
   EuiText,
   EuiTableSortingType,
+  EuiButtonIcon,
+  EuiToolTip,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
 import { ICatComposableTemplate } from "../../interface";
-import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
-import ComposableTemplatesActions from "../ComposableTemplatesActions";
+import ComposableTemplatesActions, { ComposableTemplatesDeleteAction } from "../ComposableTemplatesActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
 import { useComponentMapTemplate } from "../../utils/hooks";
+import "./index.scss";
 
 interface ComposableTemplatesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -85,6 +88,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       selectedItems: [],
       composableTemplates: [],
       loading: false,
+      selectedTypes: [],
     };
 
     this.getComposableTemplates = debounce(this.getComposableTemplatesOriginal, 500, { leading: true });
@@ -120,7 +124,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       endpoint: "transport.request",
       data: {
         method: "GET",
-        path: `_component_template/*${search}*`,
+        path: `/_component_template/*${search}*`,
       },
       hideLog: true,
     });
@@ -172,7 +176,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
   };
 
   getFinalItems = (allTemplates: ICatComposableTemplate[]) => {
-    const { from, size, sortDirection, sortField } = this.state;
+    const { from, size, sortDirection, sortField, selectedTypes } = this.state;
     const fromNumber = Number(from);
     const sizeNumber = Number(size);
     const componentMapTemplate = this.props.componentMapTemplate;
@@ -198,6 +202,15 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
 
         return 1;
       }
+    });
+
+    // filter by types
+    listResponse = listResponse.filter((item) => {
+      if (!selectedTypes.length) {
+        return true;
+      }
+
+      return selectedTypes.every((type) => !!item.component_template.template[type as IndicesUpdateMode]);
     });
 
     //pagination
@@ -235,7 +248,6 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                   <ComposableTemplatesActions
                     selectedItems={this.state.selectedItems.map((item) => item.name)}
                     onDelete={this.getComposableTemplates}
-                    history={this.props.history}
                   />
                 ),
               },
@@ -277,12 +289,14 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
         <IndexControls
           value={{
             search: this.state.search,
+            selectedTypes: this.state.selectedTypes,
           }}
           onSearchChange={this.onSearchChange}
         />
         <EuiHorizontalRule margin="xs" />
 
         <EuiBasicTable
+          className="ISM-component-templates-table"
           data-test-subj="templatesTable"
           loading={this.state.loading || this.props.loading}
           columns={[
@@ -301,6 +315,8 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
             {
               field: "templateTypes",
               name: "Type",
+              truncateText: true,
+              textOnly: false,
               render: (value: string, record: ICatComposableTemplate) => {
                 return <ComponentTemplateBadge template={record.component_template.template} />;
               },
@@ -318,15 +334,58 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
               name: "Associated index templates",
               sortable: true,
               align: "right",
-              render: (value: number, record: ICatComposableTemplate) => {
-                return (
-                  <AssociatedTemplatesModal
-                    componentTemplate={record.name}
-                    onUnlink={() => this.getComposableTemplates()}
-                    renderProps={({ setVisible }) => <EuiLink onClick={() => setVisible(true)}>{value}</EuiLink>}
-                  />
-                );
-              },
+            },
+            {
+              field: "actions",
+              name: "Actions",
+              align: "right",
+              actions: [
+                {
+                  render: (record: ICatComposableTemplate) => {
+                    return (
+                      <AssociatedTemplatesModal
+                        componentTemplate={record.name}
+                        onUnlink={/* istanbul ignore next */ () => this.getComposableTemplates()}
+                        renderProps={({ setVisible }) => (
+                          <EuiToolTip content="View associated index templates">
+                            <EuiButtonIcon
+                              aria-label="View associated index templates"
+                              iconType="kqlSelector"
+                              data-test-subj={`ViewAssociatedIndexTemplates-${record.name}`}
+                              onClick={() => setVisible(true)}
+                              className="icon-hover-info"
+                            />
+                          </EuiToolTip>
+                        )}
+                      />
+                    );
+                  },
+                },
+                {
+                  render: (record: ICatComposableTemplate) => {
+                    return (
+                      <ComposableTemplatesDeleteAction
+                        selectedItems={[record.name]}
+                        onDelete={() => {
+                          this.getComposableTemplates();
+                        }}
+                        renderDeleteButton={({ triggerDelete }) => (
+                          <EuiToolTip content="Delete component template">
+                            <EuiButtonIcon
+                              aria-label="Delete component template"
+                              color="danger"
+                              iconType="trash"
+                              onClick={triggerDelete}
+                              className="icon-hover-danger"
+                              data-test-subj={`DeleteComponentTemplate-${record.name}`}
+                            />
+                          </EuiToolTip>
+                        )}
+                      />
+                    );
+                  },
+                },
+              ],
             },
           ]}
           isSelectable={true}
@@ -355,6 +414,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
                     onClick={() => {
                       this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                     }}
+                    data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
                   >
                     Create component template
                   </EuiButton>,

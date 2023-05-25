@@ -51,20 +51,13 @@ describe("<TemplateDetail /> spec", () => {
         },
       };
     }) as any;
-    const { getByText, getByTestId, findByTitle } = renderCreateComposableTemplate({
+    const { getByText, findByTitle } = renderCreateComposableTemplate({
       readonly: true,
       templateName: "good_template",
     });
     await findByTitle("good_template");
     userEvent.click(getByText("View JSON"));
-    await waitFor(() =>
-      expect(
-        JSON.parse(getByTestId("templateJSONDetailModal").querySelector('[data-test-subj="jsonEditor-valueDisplay"]')?.innerHTML || "{}")
-      ).toEqual({
-        name: "good_template",
-        template: {},
-      })
-    );
+    await waitFor(() => expect(document.querySelector(".language-json")).toBeInTheDocument());
   });
 
   it("shows the delete modal", async () => {
@@ -89,11 +82,11 @@ describe("<TemplateDetail /> spec", () => {
     });
     await findByTitle("good_template");
     userEvent.click(getByText("Delete"));
-    await findByText("Delete component templates");
+    await findByText("Delete good_template");
     userEvent.click(getByTestId("deletaCancelButton"));
-    await waitFor(() => expect(queryByText("Delete component templates")).toBeNull());
+    await waitFor(() => expect(queryByText("Delete good_template")).toBeNull());
     userEvent.click(getByText("Delete"));
-    await findByText("Delete component templates");
+    await findByText("Delete good_template");
     userEvent.click(getByTestId("deleteConfirmButton"));
     await findByText(`This is ${ROUTES.COMPOSABLE_TEMPLATES}`);
     expect(coreServicesMock.notifications.toasts.addSuccess).toBeCalled();

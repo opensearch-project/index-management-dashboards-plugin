@@ -156,7 +156,7 @@ exports[`<Templates /> spec renders the component 1`] = `
       class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
     />
     <div
-      class="euiBasicTable euiBasicTable-loading"
+      class="euiBasicTable euiBasicTable-loading ISM-templates-table"
       data-test-subj="templatesTable"
     >
       <div>
@@ -367,6 +367,22 @@ exports[`<Templates /> spec renders the component 1`] = `
                   </span>
                 </span>
               </th>
+              <th
+                class="euiTableHeaderCell"
+                role="columnheader"
+                scope="col"
+              >
+                <span
+                  class="euiTableCellContent euiTableCellContent--alignRight"
+                >
+                  <span
+                    class="euiTableCellContent__text"
+                    title="Actions"
+                  >
+                    Actions
+                  </span>
+                </span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -375,7 +391,7 @@ exports[`<Templates /> spec renders the component 1`] = `
             >
               <td
                 class="euiTableRowCell euiTableRowCell--isMobileFullWidth"
-                colspan="6"
+                colspan="7"
               >
                 <div
                   class="euiTableCellContent euiTableCellContent--alignCenter"
