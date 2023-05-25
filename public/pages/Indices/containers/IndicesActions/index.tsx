@@ -17,8 +17,9 @@ import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
 import ClearCacheModal from "../../../../containers/ClearCacheModal";
+import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { INDEX_OP_TARGET_TYPE, ROUTES } from "../../../../utils/constants";
+import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
@@ -36,6 +37,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const [closeIndexModalVisible, setCloseIndexModalVisible] = useState(false);
   const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
+  const [flushIndexModalVisible, setFlushIndexModalVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -122,6 +124,10 @@ export default function IndicesActions(props: IndicesActionsProps) {
       coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem closing index."));
     }
   }, [services, coreServices, props.onClose, onCloseIndexModalClose]);
+
+  const onFlushIndexModalClose = () => {
+    setFlushIndexModalVisible(false);
+  };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
@@ -220,6 +226,11 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       },
                     },
                     {
+                      name: "Flush",
+                      "data-test-subj": "Flush Action",
+                      onClick: () => setFlushIndexModalVisible(true),
+                    },
+                    {
                       isSeparator: true,
                     },
                     {
@@ -261,6 +272,12 @@ export default function IndicesActions(props: IndicesActionsProps) {
         visible={clearCacheModalVisible}
         onClose={onClearCacheModalClose}
         type={INDEX_OP_TARGET_TYPE.INDEX}
+      />
+      <FlushIndexModal
+        selectedItems={selectedItems}
+        visible={flushIndexModalVisible}
+        onClose={onFlushIndexModalClose}
+        flushTarget={INDEX_OP_TARGET_TYPE.INDEX}
       />
     </>
   );

@@ -8,8 +8,9 @@ import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
 import ClearCacheModal from "../../../../containers/ClearCacheModal";
+import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { IAlias } from "../../interface";
-import { INDEX_OP_TARGET_TYPE, ROUTES } from "../../../../utils/constants";
+import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
@@ -22,6 +23,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
+  const [flushAliasModalVisible, setFlushAliasModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
@@ -29,6 +31,10 @@ export default function AliasesActions(props: AliasesActionsProps) {
 
   const onClearCacheModalClose = () => {
     setClearCacheModalVisible(false);
+  };
+
+  const onFlushAliasModalClose = () => {
+    setFlushAliasModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -79,6 +85,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   onClick: () => history.push(selectedItems.length ? `${ROUTES.ROLLOVER}/${selectedItems[0].alias}` : ROUTES.ROLLOVER),
                 },
                 {
+                  name: "Flush",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "Flush Action",
+                  onClick: () => setFlushAliasModalVisible(true),
+                },
+                {
                   name: "Delete",
                   disabled: !selectedItems.length,
                   "data-test-subj": "deleteAction",
@@ -103,6 +115,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
         visible={clearCacheModalVisible}
         onClose={onClearCacheModalClose}
         type={INDEX_OP_TARGET_TYPE.ALIAS}
+      />
+      <FlushIndexModal
+        selectedItems={selectedItems}
+        visible={flushAliasModalVisible}
+        onClose={onFlushAliasModalClose}
+        flushTarget={INDEX_OP_TARGET_TYPE.ALIAS}
       />
     </>
   );

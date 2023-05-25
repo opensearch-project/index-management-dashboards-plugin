@@ -6,9 +6,10 @@ import React, { useMemo, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
-import DeleteIndexModal from "../DeleteDataStreamsModal";
 import ClearCacheModal from "../../../../containers/ClearCacheModal";
-import { INDEX_OP_TARGET_TYPE, ROUTES } from "../../../../utils/constants";
+import FlushIndexModal from "../../../../containers/FlushIndexModal";
+import DeleteIndexModal from "../DeleteDataStreamsModal";
+import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 export interface DataStreamsActionsProps {
@@ -21,6 +22,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
   const { selectedItems, onDelete, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
+  const [flushDataStreamModalVisible, setFlushDataStreamModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
@@ -28,6 +30,10 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
 
   const onClearCacheModalClose = () => {
     setClearCacheModalVisible(false);
+  };
+
+  const onFlushDataStreamModalClose = () => {
+    setFlushDataStreamModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -73,6 +79,12 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
                   onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItemsInString.join(",")}`),
                 },
                 {
+                  name: "Flush",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "Flush Action",
+                  onClick: () => setFlushDataStreamModalVisible(true),
+                },
+                {
                   name: "Delete",
                   disabled: selectedItems.length < 1,
                   "data-test-subj": "deleteAction",
@@ -97,6 +109,12 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         visible={clearCacheModalVisible}
         onClose={onClearCacheModalClose}
         type={INDEX_OP_TARGET_TYPE.DATA_STREAM}
+      />
+      <FlushIndexModal
+        selectedItems={selectedItems}
+        visible={flushDataStreamModalVisible}
+        onClose={onFlushDataStreamModalClose}
+        flushTarget={INDEX_OP_TARGET_TYPE.DATA_STREAM}
       />
     </>
   );

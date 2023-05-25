@@ -13,6 +13,8 @@ import AliasesActions, { AliasesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { buildMockApiCallerForFlush, selectedAliases } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
+import { act } from "react-dom/test-utils";
 
 function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
   return {
@@ -331,5 +333,38 @@ describe("<AliasesActions /> spec", () => {
         "Cache for 2 aliases [test_alias1, test_alias2] have been successfully cleared."
       );
     });
+  });
+
+  it("renders flush component", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId, getByText } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ModalProvider>
+            <AliasesActions selectedItems={selectedAliases} history={{} as any} />
+          </ModalProvider>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Flush Action"));
+    await act(async () => {});
+    expect(getByText("The following aliases will be flushed:")).toBeInTheDocument();
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("flush all aliases disabled", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ModalProvider>
+            <AliasesActions selectedItems={[]} history={{} as any} />
+          </ModalProvider>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    expect(getByTestId("Flush Action")).toBeDisabled();
   });
 });

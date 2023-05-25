@@ -15,6 +15,8 @@ import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { createMemoryHistory } from "history";
 import { ROUTES } from "../../../../utils/constants";
+import { buildMockApiCallerForFlush, selectedIndices } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
+import { act } from "react-dom/test-utils";
 
 function renderWithRouter(props: IndicesActionsProps) {
   return {
@@ -51,6 +53,7 @@ describe("<IndicesActions /> spec", () => {
       expect(getByTestId("Split Action")).toBeDisabled();
       expect(getByTestId("Reindex Action")).toBeEnabled();
       expect(getByTestId("Clear cache Action")).toBeEnabled();
+      expect(getByTestId("Flush Action")).toBeEnabled();
     });
   });
 
@@ -862,5 +865,38 @@ describe("<IndicesActions /> spec", () => {
 
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Split Action")).toBeDisabled();
+  });
+
+  it("renders flush component", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId, getByText } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ModalProvider>
+            <IndicesActions selectedItems={selectedIndices} />
+          </ModalProvider>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Flush Action"));
+    await act(async () => {});
+    expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("renders all indices enabled", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId, getByText } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <ModalProvider>
+            <IndicesActions selectedItems={[]} />
+          </ModalProvider>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    expect(getByTestId("Flush Action")).toBeEnabled();
   });
 });
