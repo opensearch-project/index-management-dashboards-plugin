@@ -462,7 +462,7 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Open Confirm button"]').click();
 
       // Check for success toast
-      cy.contains(/.*\/sample_index have been opened opened\./);
+      cy.contains(/sample_index have been opened/);
 
       // Confirm the index is open
       cy.get(`input[type="search"]`).focus().type(SAMPLE_INDEX);
