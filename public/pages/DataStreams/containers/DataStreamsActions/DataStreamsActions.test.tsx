@@ -13,6 +13,8 @@ import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
+import { buildMockApiCallerForFlush, selectedDataStreams } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
+import { act } from "react-dom/test-utils";
 const historyPushMock = jest.fn();
 
 function renderWithRouter(props: Omit<DataStreamsActionsProps, "history">) {
@@ -102,4 +104,79 @@ describe("<DataStreamsActions /> spec", () => {
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Delete [test_data_stream] successfully");
     });
   }, 30000);
+
+  it("renders flush component", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId, getByText } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <Router>
+            <Switch>
+              <Route
+                path={ROUTES.DATA_STREAMS}
+                render={(routeProps) => (
+                  <CoreServicesContext.Provider value={coreServicesMock}>
+                    <ServicesContext.Provider value={browserServicesMock}>
+                      <DataStreamsActions
+                        selectedItems={selectedDataStreams}
+                        history={{
+                          ...routeProps.history,
+                          push: (...args) => {
+                            routeProps.history.push(...args);
+                            historyPushMock(...args);
+                          },
+                        }}
+                      />
+                    </ServicesContext.Provider>
+                  </CoreServicesContext.Provider>
+                )}
+              />
+              <Redirect from="/" to={ROUTES.DATA_STREAMS} />
+            </Switch>
+          </Router>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("Flush Action"));
+    await act(async () => {});
+    expect(getByText("The following data streams will be flushed:")).toBeInTheDocument();
+    expect(document.body.children).toMatchSnapshot();
+  });
+
+  it("flush all data streams disabled", async () => {
+    browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
+    const { getByTestId } = render(
+      <CoreServicesContext.Provider value={coreServicesMock}>
+        <ServicesContext.Provider value={browserServicesMock}>
+          <Router>
+            <Switch>
+              <Route
+                path={ROUTES.DATA_STREAMS}
+                render={(routeProps) => (
+                  <CoreServicesContext.Provider value={coreServicesMock}>
+                    <ServicesContext.Provider value={browserServicesMock}>
+                      <DataStreamsActions
+                        selectedItems={[]}
+                        history={{
+                          ...routeProps.history,
+                          push: (...args) => {
+                            routeProps.history.push(...args);
+                            historyPushMock(...args);
+                          },
+                        }}
+                      />
+                    </ServicesContext.Provider>
+                  </CoreServicesContext.Provider>
+                )}
+              />
+              <Redirect from="/" to={ROUTES.DATA_STREAMS} />
+            </Switch>
+          </Router>
+        </ServicesContext.Provider>
+      </CoreServicesContext.Provider>
+    );
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    expect(getByTestId("Flush Action")).toBeDisabled();
+  });
 });
