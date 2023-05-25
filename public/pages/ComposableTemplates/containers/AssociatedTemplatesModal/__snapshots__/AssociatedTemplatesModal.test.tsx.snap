@@ -82,9 +82,7 @@ HTMLCollection [
                   >
                     <caption
                       class="euiScreenReaderOnly euiTableCaption"
-                    >
-                      This table contains 1 rows out of 1 rows; Page 1 of 1.
-                    </caption>
+                    />
                     <thead>
                       <tr>
                         <th

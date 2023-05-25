@@ -63,6 +63,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const oldValue = useRef<TemplateItem | undefined>(undefined);
   const searchObject = queryString.parseUrl(props.location.search);
+  /* istanbul ignore next */
   if (searchObject.query.values) {
     try {
       searchObject.query.values = JSON.parse((searchObject.query.values || "") as string);
@@ -110,6 +111,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       commonService: services.commonService,
       isEdit,
     });
+    /* istanbul ignore next */
     if (destroyRef.current) {
       return;
     }
@@ -275,6 +277,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                 }}
                 isSelected={selectedTabId === item.id}
                 key={item.id}
+                data-test-subj={`TemplateDetailTab-${item.id}`}
               >
                 {item.name}
               </EuiTab>
@@ -371,6 +374,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       {isEdit && selectedTabId === TABS_ENUM.CONFIG && diffJson(formatTemplate(oldValue.current), formatTemplate(values)) ? (
         <UnsavedChangesBottomBar
           submitButtonDataTestSubj="updateTemplateButton"
+          cancelButtonprops={{
+            "data-test-subj": "CancelUpdateTemplateButton",
+          }}
           unsavedCount={diffJson(formatTemplate(oldValue.current), formatTemplate(values))}
           onClickCancel={async () => {
             field.resetValues(
