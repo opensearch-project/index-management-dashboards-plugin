@@ -1,6 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<AliasesActions /> spec cannot clear cache for aliases if some indexes are closed or blocked 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<AliasesActions /> spec clear cache for aliases by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<AliasesActions /> spec delete alias by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<AliasesActions /> spec filter aliases failed when clearing caches for multiple aliases 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"
@@ -114,6 +195,21 @@ HTMLCollection [
                         class="euiContextMenuItem__text"
                       >
                         Edit
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="euiContextMenuItem"
+                    data-test-subj="ClearCacheAction"
+                    type="button"
+                  >
+                    <span
+                      class="euiContextMenu__itemLayout"
+                    >
+                      <span
+                        class="euiContextMenuItem__text"
+                      >
+                        Clear cache
                       </span>
                     </span>
                   </button>

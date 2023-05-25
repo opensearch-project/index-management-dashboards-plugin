@@ -1,6 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<DataStreamsActions /> spec cannot clear cache for data streams if they are closed or blocked 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<DataStreamsActions /> spec clear cache for data streams by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<DataStreamsActions /> spec delete data streams by calling commonService 1`] = `
+<div
+  class="euiPopover euiPopover--anchorDownCenter"
+  data-test-subj="moreAction"
+>
+  <div
+    class="euiPopover__anchor"
+  >
+    <button
+      class="euiButton euiButton--primary"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+      >
+        EuiIconMock
+        <span
+          class="euiButton__text"
+        >
+          Actions
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<DataStreamsActions /> spec filter data streams failed when clearing caches for multiple data streams 1`] = `
 <div
   class="euiPopover euiPopover--anchorDownCenter"
   data-test-subj="moreAction"
@@ -101,6 +182,21 @@ HTMLCollection [
             >
               <div>
                 <div>
+                  <button
+                    class="euiContextMenuItem"
+                    data-test-subj="ClearCacheAction"
+                    type="button"
+                  >
+                    <span
+                      class="euiContextMenu__itemLayout"
+                    >
+                      <span
+                        class="euiContextMenuItem__text"
+                      >
+                        Clear cache
+                      </span>
+                    </span>
+                  </button>
                   <button
                     class="euiContextMenuItem"
                     data-test-subj="ForceMergeAction"

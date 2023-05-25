@@ -55,6 +55,29 @@ describe("Data stream", () => {
     });
   });
 
+  describe("can clear cache for a data stream", () => {
+    it("successfully", () => {
+      cy.get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="ClearCacheAction"]')
+        .should("be.disabled")
+        .get(`#_selection_column_ds--checkbox`)
+        .click()
+        .get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="ClearCacheAction"]')
+        .click();
+
+      // Check for clear cache index modal
+      cy.contains("Clear cache");
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').should("not.be.disabled");
+      // click to clear caches
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
+      // Check for success toast
+      cy.contains("Cache for ds- has been successfully cleared.");
+    });
+  });
+
   describe("can flush a data stream", () => {
     it("successfully flush a data stream", () => {
       // Confirm we have our initial ds
