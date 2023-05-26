@@ -16,7 +16,7 @@ exports[`<ChannelNotification /> spec renders the component 1`] = `
         <div
           aria-expanded="false"
           aria-haspopup="listbox"
-          class="euiComboBox"
+          class="euiComboBox channelSelect-combobox"
           role="combobox"
         >
           <div
@@ -83,7 +83,7 @@ exports[`<ChannelNotification /> spec renders the component 1`] = `
         <div
           aria-expanded="false"
           aria-haspopup="listbox"
-          class="euiComboBox"
+          class="euiComboBox channelSelect-combobox"
           role="combobox"
         >
           <div
