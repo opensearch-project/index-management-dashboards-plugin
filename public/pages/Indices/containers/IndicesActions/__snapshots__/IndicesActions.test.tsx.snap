@@ -243,6 +243,183 @@ exports[`<IndicesActions /> spec open index by calling commonService 1`] = `
 </div>
 `;
 
+exports[`<IndicesActions /> spec refresh selected indexes by calling commonService 1`] = `
+<body
+  class="euiBody-hasOverlayMask"
+>
+  <div
+    aria-hidden="true"
+    data-aria-hidden="true"
+  >
+    <div
+      class="euiPopover euiPopover--anchorDownCenter"
+      data-test-subj="moreAction"
+    >
+      <div
+        class="euiPopover__anchor"
+      >
+        <button
+          class="euiButton euiButton--primary"
+          type="button"
+        >
+          <span
+            class="euiButtonContent euiButtonContent--iconRight euiButton__content"
+          >
+            EuiIconMock
+            <span
+              class="euiButton__text"
+            >
+              Actions
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="euiOverlayMask euiOverlayMask--aboveHeader"
+  >
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+    <div
+      data-focus-lock-disabled="false"
+    >
+      <div
+        class="euiModal euiModal--maxWidth-default"
+        tabindex="0"
+      >
+        <button
+          aria-label="Closes this modal window"
+          class="euiButtonIcon euiButtonIcon--text euiButtonIcon--empty euiButtonIcon--xSmall euiModal__closeIcon"
+          type="button"
+        >
+          EuiIconMock
+        </button>
+        <div
+          class="euiModal__flex"
+        >
+          <div
+            class="euiModalHeader"
+          >
+            <div
+              class="euiModalHeader__title"
+            >
+              Refresh 
+              indexes
+            </div>
+          </div>
+          <div
+            class="euiModalBody"
+          >
+            <div
+              class="euiModalBody__overflow"
+            >
+              <div
+                style="line-height: 1.5;"
+              >
+                <p>
+                  The following index
+                   will be refreshed.
+                </p>
+                <ul
+                  style="list-style-type: disc; list-style-position: inside;"
+                >
+                  <li
+                    data-test-subj="UnblockedItem-unblocked_index"
+                  >
+                    unblocked_index
+                  </li>
+                </ul>
+                <div
+                  class="euiSpacer euiSpacer--l"
+                />
+                <div
+                  class="euiCallOut euiCallOut--warning euiCallOut--small"
+                >
+                  <div
+                    class="euiCallOutHeader"
+                  >
+                    EuiIconMock
+                    <span
+                      class="euiCallOutHeader__title"
+                    >
+                      The following index cannot be refreshed because they are either closed or in red status.
+                    </span>
+                  </div>
+                  <div
+                    class="euiText euiText--extraSmall"
+                  >
+                    <div
+                      class="euiTextColor euiTextColor--default"
+                    >
+                      <p />
+                      <ul
+                        style="list-style-type: disc; list-style-position: inside;"
+                      >
+                        <li
+                          data-test-subj="BlockedItem-blocked_index"
+                        >
+                          blocked_index
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="euiModalFooter"
+          >
+            <button
+              class="euiButtonEmpty euiButtonEmpty--primary"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButtonEmpty__content"
+              >
+                <span
+                  class="euiButtonEmpty__text"
+                >
+                  Cancel
+                </span>
+              </span>
+            </button>
+            <button
+              class="euiButton euiButton--primary euiButton--fill"
+              data-test-subj="refreshConfirmButton"
+              type="button"
+            >
+              <span
+                class="euiButtonContent euiButton__content"
+              >
+                <span
+                  class="euiButton__text"
+                >
+                  Refresh
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      data-aria-hidden="true"
+      data-focus-guard="true"
+      style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"
+      tabindex="0"
+    />
+  </div>
+</body>
+`;
+
 exports[`<IndicesActions /> spec renders flush component 1`] = `
 HTMLCollection [
   <div
@@ -250,7 +427,7 @@ HTMLCollection [
     data-aria-hidden="true"
   >
     <div
-      class="euiPopover euiPopover--anchorDownCenter euiPopover-isOpen"
+      class="euiPopover euiPopover--anchorDownCenter"
       data-test-subj="moreAction"
     >
       <div
@@ -290,7 +467,7 @@ HTMLCollection [
         aria-describedby="some_html_id"
         aria-live="off"
         aria-modal="true"
-        class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--noShadow euiPopover__panel euiPopover__panel--bottom euiPopover__panel-isOpen"
+        class="euiPanel euiPanel--borderRadiusMedium euiPanel--plain euiPanel--noShadow euiPopover__panel euiPopover__panel--bottom"
         data-autofocus="true"
         role="dialog"
         style="top: 16px; left: -22px; z-index: 2000;"
@@ -335,21 +512,6 @@ HTMLCollection [
                   <hr
                     class="euiHorizontalRule euiHorizontalRule--full"
                   />
-                  <button
-                    class="euiContextMenuItem"
-                    data-test-subj="Clear cache Action"
-                    type="button"
-                  >
-                    <span
-                      class="euiContextMenu__itemLayout"
-                    >
-                      <span
-                        class="euiContextMenuItem__text"
-                      >
-                        Clear cache
-                      </span>
-                    </span>
-                  </button>
                   <button
                     class="euiContextMenuItem"
                     data-test-subj="Close Action"
@@ -445,6 +607,24 @@ HTMLCollection [
                       </span>
                     </span>
                   </button>
+                  <hr
+                    class="euiHorizontalRule euiHorizontalRule--full"
+                  />
+                  <button
+                    class="euiContextMenuItem"
+                    data-test-subj="Clear cache Action"
+                    type="button"
+                  >
+                    <span
+                      class="euiContextMenu__itemLayout"
+                    >
+                      <span
+                        class="euiContextMenuItem__text"
+                      >
+                        Clear cache
+                      </span>
+                    </span>
+                  </button>
                   <button
                     class="euiContextMenuItem"
                     data-test-subj="Flush Action"
@@ -457,6 +637,21 @@ HTMLCollection [
                         class="euiContextMenuItem__text"
                       >
                         Flush
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="euiContextMenuItem"
+                    data-test-subj="Refresh Index Action"
+                    type="button"
+                  >
+                    <span
+                      class="euiContextMenu__itemLayout"
+                    >
+                      <span
+                        class="euiContextMenuItem__text"
+                      >
+                        Refresh
                       </span>
                     </span>
                   </button>

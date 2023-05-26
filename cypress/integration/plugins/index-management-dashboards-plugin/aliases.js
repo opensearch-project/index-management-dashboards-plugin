@@ -182,6 +182,32 @@ describe("Aliases", () => {
     });
   });
 
+  describe("can refresh aliases", () => {
+    it("successfully", () => {
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_ALIAS_PREFIX}-1{enter}`);
+      cy.contains(`${SAMPLE_ALIAS_PREFIX}-10`);
+      cy.contains(`${SAMPLE_ALIAS_PREFIX}-11`);
+
+      // If no alias is selected, refresh button is disabled
+      cy.get('[data-test-subj="moreAction"] button').click().get('[data-test-subj="refreshAction"]').should("be.disabled").end();
+
+      // Refresh multiple aliases
+      cy.get(`#_selection_column_${SAMPLE_ALIAS_PREFIX}-10-checkbox`)
+        .click()
+        .get(`#_selection_column_${SAMPLE_ALIAS_PREFIX}-11-checkbox`)
+        .click()
+        .get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="refreshAction"]')
+        .click()
+        .get('[data-test-subj="refreshConfirmButton"]')
+        .click()
+        .end();
+
+      cy.contains(`2 aliases [${SAMPLE_ALIAS_PREFIX}-10, ${SAMPLE_ALIAS_PREFIX}-11] have been successfully refreshed.`).end();
+    });
+  });
+
   after(() => {
     cy.deleteAllIndices();
     for (let i = 0; i < 30; i++) {

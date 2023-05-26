@@ -135,6 +135,26 @@ describe("Data stream", () => {
     });
   });
 
+  describe("can refresh data streams", () => {
+    it("successfully", () => {
+      cy.get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="refreshAction"]')
+        .should("be.disabled")
+        .get(`#_selection_column_ds--checkbox`)
+        .click()
+        .get('[data-test-subj="moreAction"]')
+        .click()
+        .get('[data-test-subj="refreshAction"]')
+        .click()
+        .get('[data-test-subj="refreshConfirmButton"]')
+        .click()
+        .end();
+
+      cy.contains(`The data stream [ds-] has been successfully refreshed.`).end();
+    });
+  });
+
   describe("can delete a data stream", () => {
     it("successfully", () => {
       cy.get('[data-test-subj="moreAction"] button')
