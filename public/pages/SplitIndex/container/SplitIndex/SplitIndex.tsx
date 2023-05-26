@@ -27,6 +27,7 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
+import { ServerResponse } from "../../../../../server/models/types";
 
 interface SplitIndexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -197,9 +198,12 @@ export class SplitIndex extends Component<SplitIndexProps> {
     });
   };
 
-  onSplitIndex = async (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]): Promise<void> => {
+  onSplitIndex = async (
+    targetIndex: string,
+    settingsPayload: Required<IndexItem>["settings"]
+  ): Promise<ServerResponse<{ task: string }>> => {
     const { sourceIndex } = this.state;
-    await splitIndex({
+    return await splitIndex({
       sourceIndex: sourceIndex.index,
       targetIndex,
       settingsPayload,

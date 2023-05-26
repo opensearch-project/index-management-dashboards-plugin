@@ -3,11 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { forwardRef, useRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox } from "@elastic/eui";
+import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox, EuiComboBoxOptionOption } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
 import EuiComboBox from "../../ComboBoxWithoutWarning";
 
-export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle" | "CheckBox";
+export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle" | "CheckBox" | "ComboBoxMultiple";
 
 export interface IFieldComponentProps extends IEuiToolTipWrapperProps {
   onChange: (val: IFieldComponentProps["value"], ...args: any) => void;
@@ -101,6 +101,58 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
         />
       );
     })
+  ) as React.ComponentType<IFieldComponentProps>,
+  ComboBoxMultiple: EuiToolTipWrapper(
+    forwardRef(
+      (
+        {
+          onChange,
+          value,
+          ...others
+        }: {
+          value?: string[];
+          options: EuiComboBoxOptionOption<string>[];
+          onChange: (val: string[], values: EuiComboBoxOptionOption<string>[], ...args: any) => void;
+        },
+        ref: React.Ref<any>
+      ) => {
+        return (
+          <EuiComboBox
+            onCreateOption={(searchValue) => {
+              const allOptions = others.options.reduce((total, current) => {
+                if (current.options) {
+                  return [...total, ...current.options];
+                } else {
+                  return [...total, current];
+                }
+              }, [] as EuiComboBoxOptionOption<string>[]);
+              const findItem = allOptions.find((item: { label: string }) => item.label === searchValue);
+              if (findItem) {
+                onChange(
+                  [...(value || []), searchValue],
+                  [
+                    ...allOptions.filter((item) => value?.includes(item.label)),
+                    {
+                      label: searchValue,
+                    },
+                  ]
+                );
+              }
+            }}
+            {...others}
+            ref={ref}
+            onChange={(selectedOptions) => {
+              onChange(selectedOptions.map((item) => item.value) as string[], selectedOptions);
+            }}
+            selectedOptions={
+              (value || [])
+                .map((item: string) => others.options.find((option) => option.value === item) || { label: item, value: item })
+                .filter((item) => item !== undefined) as EuiComboBoxOptionOption<string>[]
+            }
+          />
+        );
+      }
+    )
   ) as React.ComponentType<IFieldComponentProps>,
 };
 

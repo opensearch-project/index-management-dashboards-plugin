@@ -17,15 +17,16 @@ export function transformNameToString(name: FieldName) {
   }
 }
 
-export default function useField<T>(options?: FieldOption): FieldInstance {
-  const [, setValuesState] = useState((options?.values || {}) as Record<string, any>);
+export default function useField<T extends object>(options?: FieldOption<T>): FieldInstance<T> {
+  const [, setValuesState] = useState(options?.values || {});
+  const [, setOriginalValuesState] = useState(options?.values || {});
   const [, setErrorsState] = useState({} as Record<string, null | string[]>);
   const destroyRef = useRef<boolean>(false);
-  const values = useRef<Record<string, any>>(options?.values || {});
+  const values = useRef<T>((options?.values || {}) as T);
   const errors = useRef<Record<string, null | string[]>>({});
-  const originalValuesRef = useRef<Record<string, any>>(options?.originalValues || {});
+  const originalValuesRef = useRef<T>((options?.originalValues || {}) as T);
   const fieldsMapRef = useRef<Record<string, InitOption>>({});
-  const setValues = (obj: Record<string, any>) => {
+  const setValues = (obj: T) => {
     if (destroyRef.current) {
       return;
     }
@@ -35,7 +36,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     };
     setValuesState(values.current);
   };
-  const resetValues = (obj: Record<string, any>) => {
+  const resetValues = (obj: T) => {
     if (destroyRef.current) {
       return;
     }
@@ -120,8 +121,9 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
         ...initOptions.props,
         value: get(values.current, initOptions.name),
         onChange: async (val) => {
+          options?.onBeforeChange?.(initOptions.name, val);
           setValue(initOptions.name, val);
-          options?.onChange && options?.onChange(initOptions.name, val);
+          options?.onChange?.(initOptions.name, val);
           const validateErros = await validateField(initOptions.name);
           setError(initOptions.name, validateErros.length ? validateErros : null);
         },
@@ -144,7 +146,17 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     getValue: (name) => get(values.current, name),
     getValues: () => values.current,
     getError: (name) => errors.current[transformNameToString(name)],
-    getErrors: () => errors.current,
+    getErrors: () =>
+      Object.entries(errors.current || {}).reduce((total, [key, value]) => {
+        if (value) {
+          return {
+            ...total,
+            [key]: value,
+          };
+        }
+
+        return total;
+      }, {} as Record<string, string[]>),
     validatePromise: async () => {
       const result = await Promise.all(
         Object.values(fieldsMapRef.current).map(({ name }) => {
@@ -177,6 +189,7 @@ export default function useField<T>(options?: FieldOption): FieldInstance {
     },
     setOriginalValues: (obj) => {
       originalValuesRef.current = obj;
+      setOriginalValuesState(originalValuesRef.current);
     },
     getOriginalValues: () => originalValuesRef.current,
     computeDifference: () => {

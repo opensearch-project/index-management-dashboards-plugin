@@ -375,11 +375,11 @@ exports[`<Reindex /> spec renders the component 1`] = `
   />
   <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
-    style="padding-left: 0px; padding-right: 0px;"
+    style="padding: 0px 0px 0px 0px;"
   >
     <div
       class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
-      style="padding: 0px 10px;"
+      style="margin-top: 0px; margin-bottom: 0px; padding: 0px 10px;"
     >
       <div
         class="euiFlexItem"
@@ -412,7 +412,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
       </div>
     </div>
     <hr
-      class="euiHorizontalRule euiHorizontalRule--full euiHorizontalRule--marginXSmall"
+      class="euiHorizontalRule euiHorizontalRule--full"
     />
   </div>
   <div

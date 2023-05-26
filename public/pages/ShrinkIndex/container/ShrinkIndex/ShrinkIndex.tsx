@@ -44,6 +44,9 @@ import { ServerResponse } from "../../../../../server/models/types";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DEFAULT_INDEX_SETTINGS, INDEX_BLOCKS_WRITE_SETTING, INDEX_BLOCKS_READONLY_SETTING } from "../../utils/constants";
 import { get } from "lodash";
+import NotificationConfig from "../../../../containers/NotificationConfig";
+import { ActionType, OperationType } from "../../../Notifications/constant";
+import { NotificationConfigRef } from "../../../../containers/NotificationConfig/NotificationConfig";
 import { ListenType } from "../../../../lib/JobScheduler";
 import { openIndices } from "../../../Indices/utils/helpers";
 import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
@@ -137,6 +140,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   };
 
   formRef: IFormGeneratorRef | null = null;
+  notificationRef: NotificationConfigRef | null = null;
 
   onClickAction = async () => {
     const { sourceIndex } = this.state;
@@ -144,6 +148,10 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
 
     const result = await this.formRef?.validatePromise();
     if (result?.errors) {
+      return;
+    }
+    const notificationsResult = await this.notificationRef?.validatePromise();
+    if (notificationsResult?.errors) {
       return;
     }
     this.shrinkIndex(sourceIndex.index, targetIndex, others);
@@ -175,6 +183,9 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         },
       });
       if (result && result.ok) {
+        await this.notificationRef?.associateWithTask({
+          taskId: result.response?.task,
+        });
         const toastInstance = this.context.notifications.toasts.addSuccess(
           `Successfully started shrinking ${sourceIndexName}. The shrunken index will be named ${targetIndexName}.`,
           {
@@ -611,7 +622,6 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             }}
           />
         </ContentPanel>
-        <EuiSpacer size="m" />
       </>
     );
 
@@ -640,6 +650,16 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         <EuiSpacer />
         <IndexDetail indices={indices} children={indexDetailChildren} />
         {!!disableShrinkButton ? null : configurationChildren}
+        <NotificationConfig
+          withPanel
+          panelProps={{
+            title: "Advanced settings",
+            titleSize: "s",
+          }}
+          ref={(ref) => (this.notificationRef = ref)}
+          actionType={ActionType.RESIZE}
+          operationType={OperationType.SHRINK}
+        />
         <EuiSpacer />
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">

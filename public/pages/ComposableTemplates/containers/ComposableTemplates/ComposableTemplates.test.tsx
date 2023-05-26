@@ -5,7 +5,7 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { act, render, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import { act, render, waitFor } from "@testing-library/react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -133,7 +133,9 @@ describe("<ComposableTemplates /> spec", () => {
      * search
      */
     await userEvent.type(getByPlaceholderText("Search..."), `${testTemplateId}{enter}`);
-    await waitForElementToBeRemoved(getByTestId(`templateDetail-${testTemplateId}`));
+    await waitFor(() => {
+      expect(queryByTestId(`templateDetail-${testTemplateId}`)).toBeNull();
+    });
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toBeCalledTimes(5);
       expect(coreServicesMock.notifications.toasts.addDanger).toBeCalledTimes(1);
@@ -148,7 +150,9 @@ describe("<ComposableTemplates /> spec", () => {
     await act(async () => {
       await userEvent.click(document.body);
     });
-    await waitForElementToBeRemoved(queryByTestId(`FilterGroupSelectItem-aliases`));
+    await waitFor(() => {
+      expect(queryByTestId(`FilterGroupSelectItem-aliases`)).toBeNull();
+    });
 
     /**
      * sort

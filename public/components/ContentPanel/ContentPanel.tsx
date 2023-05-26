@@ -16,7 +16,7 @@ import {
   EuiTextColor,
 } from "@elastic/eui";
 
-interface ContentPanelProps {
+export interface ContentPanelProps {
   title?: string | JSX.Element;
   titleSize?: "xxxs" | "xxs" | "xs" | "s" | "m" | "l";
   subTitleText?: string | JSX.Element;

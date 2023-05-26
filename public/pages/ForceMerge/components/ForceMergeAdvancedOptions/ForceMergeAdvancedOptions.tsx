@@ -17,7 +17,7 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
   const { field } = props;
 
   return (
-    <div style={{ padding: "10px 0px" }}>
+    <div>
       <CustomFormRow
         isInvalid={!!field.getError("max_num_segments")}
         error={field.getError("max_num_segments")}
@@ -66,7 +66,6 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
           label="Completely remove deleted documents"
         />
       </CustomFormRow>
-      <EuiSpacer />
     </div>
   );
 };
