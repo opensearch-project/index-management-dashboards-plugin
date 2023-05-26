@@ -84,7 +84,7 @@ export const callbackForSplitTimeout: CallbackType = (job: RecoveryJobMetaData, 
         </>
       ) as unknown) as string,
       text: ((
-        <>The split operation has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/{extras.taskId}`</>
+        <>The split operation has taken more than one hour to complete. To see the latest status, use `GET /_tasks/{extras.taskId}`</>
       ) as unknown) as string,
     },
     {

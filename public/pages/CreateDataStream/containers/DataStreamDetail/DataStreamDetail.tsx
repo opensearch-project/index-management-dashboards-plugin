@@ -57,13 +57,13 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     }
     setIsLoading(true);
     const result = await createDataStream({
-      value: dataStream.name,
+      value: dataStream.name || "",
       commonService: services.commonService,
       isEdit,
     });
     if (result && result.ok) {
       coreServices.notifications.toasts.addSuccess(`${dataStream.name} has been successfully ${isEdit ? "updated" : "created"}.`);
-      onSubmitSuccess && onSubmitSuccess(dataStream.name);
+      onSubmitSuccess && onSubmitSuccess(dataStream.name || "");
     } else {
       coreServices.notifications.toasts.addDanger(result.error);
     }
@@ -100,7 +100,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
       destroyRef.current = true;
     };
   }, []);
-  const values: DataStreamInEdit = field.getValues();
+  const values = field.getValues();
   const subCompontentProps = {
     ...props,
     isEdit,
@@ -145,7 +145,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               View JSON
             </EuiButton>
             <DataStreamsActions
-              selectedItems={values ? [values] : []}
+              selectedItems={values ? ([values] as DataStreamInEdit[]) : []}
               history={props.history}
               onDelete={() => props.history.replace(ROUTES.DATA_STREAMS)}
             />

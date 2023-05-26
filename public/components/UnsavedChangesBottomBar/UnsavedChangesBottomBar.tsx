@@ -4,11 +4,14 @@
  */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty, EuiButtonProps, EuiButtonEmptyProps } from "@elastic/eui";
+import classNames from "classnames";
 import BottomBar from "../BottomBar";
+import "./index.scss";
 
 export type CustomFormRowProps = {
   unsavedCount: number;
-  onClickCancel: () => Promise<void>;
+  formErrorsCount?: number;
+  onClickCancel?: () => void;
   onClickSubmit: () => Promise<void>;
   submitButtonDataTestSubj?: string;
   renderProps?: (props: {
@@ -22,7 +25,7 @@ export type CustomFormRowProps = {
 };
 
 export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
-  const { unsavedCount, onClickCancel, onClickSubmit, submitButtonDataTestSubj } = props;
+  const { unsavedCount, onClickCancel, onClickSubmit, submitButtonDataTestSubj, formErrorsCount } = props;
   const [loading, setLoading] = useState(false);
   const destroyRef = useRef(false);
   const onClick = async () => {
@@ -73,7 +76,35 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
     [onClick, submitButtonDataTestSubj, loading]
   );
 
-  const renderUnsavedText = useCallback(() => <EuiFlexItem>{unsavedCount} unsaved changes.</EuiFlexItem>, [unsavedCount]);
+  const renderUnsavedText = useCallback(
+    () => (
+      <>
+        {formErrorsCount ? (
+          <EuiFlexItem style={{ flexDirection: "row" }}>
+            <div
+              className={classNames({
+                "ISM-unsaved-changes-blocks": true,
+                danger: true,
+              })}
+            />
+            {formErrorsCount} form errors.
+          </EuiFlexItem>
+        ) : null}
+        {unsavedCount && !formErrorsCount ? (
+          <EuiFlexItem style={{ flexDirection: "row" }}>
+            <div
+              className={classNames({
+                "ISM-unsaved-changes-blocks": true,
+                warning: true,
+              })}
+            />
+            {unsavedCount} unsaved changes.
+          </EuiFlexItem>
+        ) : null}
+      </>
+    ),
+    [unsavedCount, formErrorsCount]
+  );
 
   const renderProps =
     props.renderProps ||

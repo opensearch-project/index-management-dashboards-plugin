@@ -110,7 +110,7 @@ export const callbackForOpenTimeout: CallbackType = (job: OpenJobMetaData, { cor
         </>
       ) as unknown) as string,
       text: ((
-        <>Opening the index has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/{extras.taskId}`</>
+        <>Opening the index has taken more than one hour to complete. To see the latest status, use `GET /_tasks/{extras.taskId}`</>
       ) as unknown) as string,
     },
     {

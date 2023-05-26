@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChannelNotification /> spec renders with create permission and no default notification 1`] = `
+<div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiCallOut euiCallOut--primary"
+    data-test-subj="defaultNotificationCallout"
+  >
+    <div
+      class="euiCallOutHeader"
+    >
+      EuiIconMock
+      <span
+        class="euiCallOutHeader__title"
+      >
+        Your administrator may have set default notification settings for 
+        shrink
+         operations. You can send additional notifications for this operation.
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChannelNotification /> spec renders with full permission and default notification 1`] = `
+<div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiCallOut euiCallOut--primary"
+    data-test-subj="defaultNotificationCallout"
+  >
+    <div
+      class="euiCallOutHeader"
+    >
+      EuiIconMock
+      <span
+        class="euiCallOutHeader__title"
+      >
+        Default notification settings are set for 
+        shrink
+         operations. Configure default settings at
+         
+        <a
+          class="euiLink euiLink--primary"
+          href="#/notifications"
+          rel="noopener noreferrer"
+          style="text-decoration: underline;"
+          target="_blank"
+        >
+          Notifications
+          <span
+            class="euiScreenReaderOnly"
+          >
+            (opens in a new tab or window)
+          </span>
+        </a>
+        .
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChannelNotification /> spec renders with no permission and no default notification 1`] = `
+<div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiCallOut euiCallOut--primary"
+    data-test-subj="defaultNotificationCallout"
+  >
+    <div
+      class="euiCallOutHeader"
+    >
+      EuiIconMock
+      <span
+        class="euiCallOutHeader__title"
+      >
+        Your administrator may have set default notification settings for 
+        shrink
+         operations. Contact your administrator to request access to notification settings.
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChannelNotification /> spec renders with view permission and default notification 1`] = `
+<div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiCallOut euiCallOut--primary"
+    data-test-subj="defaultNotificationCallout"
+  >
+    <div
+      class="euiCallOutHeader"
+    >
+      EuiIconMock
+      <span
+        class="euiCallOutHeader__title"
+      >
+        Your administrator has set default notification settings for 
+        shrink
+         operations. Contact your administrator to request access to notification settings.
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChannelNotification /> spec renders with view permission and no default notification 1`] = `
+<div>
+  <div
+    class="euiSpacer euiSpacer--s"
+  />
+  <div
+    class="euiCallOut euiCallOut--primary"
+    data-test-subj="defaultNotificationCallout"
+  >
+    <div
+      class="euiCallOutHeader"
+    >
+      EuiIconMock
+      <span
+        class="euiCallOutHeader__title"
+      >
+        Your administrator has not set default notification settings for 
+        shrink
+         operations.
+      </span>
+    </div>
+  </div>
+</div>
+`;

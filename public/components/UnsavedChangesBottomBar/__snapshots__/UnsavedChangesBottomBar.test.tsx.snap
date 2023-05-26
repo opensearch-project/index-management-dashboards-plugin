@@ -18,12 +18,6 @@ HTMLCollection [
         class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"
       >
         <div
-          class="euiFlexItem"
-        >
-          0
-           unsaved changes.
-        </div>
-        <div
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
           <button

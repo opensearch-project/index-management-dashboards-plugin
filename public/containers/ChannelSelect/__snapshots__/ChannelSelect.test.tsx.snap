@@ -1,0 +1,140 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChannelNotification /> spec renders the component 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+    data-test-subj="1"
+    style="max-width: unset; min-width: 300px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <span
+        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="euiComboBox channelSelect-combobox"
+          role="combobox"
+        >
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <div
+                class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                data-test-subj="comboBoxInput"
+                tabindex="-1"
+              >
+                <p
+                  class="euiComboBoxPlaceholder"
+                >
+                  Select channel
+                </p>
+                <div
+                  class="euiComboBox__input"
+                  style="font-size: 14px; display: inline-block;"
+                >
+                  <input
+                    aria-controls=""
+                    data-test-subj="comboBoxSearchInput"
+                    role="textbox"
+                    style="box-sizing: content-box; width: 2px;"
+                    value=""
+                  />
+                  <div
+                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                  />
+                </div>
+              </div>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <button
+                  aria-label="Open list of options"
+                  class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                  data-test-subj="comboBoxToggleListButton"
+                  type="button"
+                >
+                  EuiIconMock
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterSmall euiFlexGroup--directionRow euiFlexGroup--responsive"
+    data-test-subj="2"
+    style="max-width: unset; min-width: 300px;"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <span
+        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="euiComboBox channelSelect-combobox"
+          role="combobox"
+        >
+          <div
+            class="euiFormControlLayout"
+          >
+            <div
+              class="euiFormControlLayout__childrenWrapper"
+            >
+              <div
+                class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                data-test-subj="comboBoxInput"
+                tabindex="-1"
+              >
+                <p
+                  class="euiComboBoxPlaceholder"
+                >
+                  Select channel
+                </p>
+                <div
+                  class="euiComboBox__input"
+                  style="font-size: 14px; display: inline-block;"
+                >
+                  <input
+                    aria-controls=""
+                    data-test-subj="comboBoxSearchInput"
+                    role="textbox"
+                    style="box-sizing: content-box; width: 2px;"
+                    value=""
+                  />
+                  <div
+                    style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;"
+                  />
+                </div>
+              </div>
+              <div
+                class="euiFormControlLayoutIcons euiFormControlLayoutIcons--right"
+              >
+                <button
+                  aria-label="Open list of options"
+                  class="euiFormControlLayoutCustomIcon euiFormControlLayoutCustomIcon--clickable"
+                  data-test-subj="comboBoxToggleListButton"
+                  type="button"
+                >
+                  EuiIconMock
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+</div>
+`;

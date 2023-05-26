@@ -5,9 +5,7 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <div
-        style="padding: 10px 0px;"
-      >
+      <div>
         <div
           class="euiFormRow"
           id="some_html_id-row"
@@ -175,16 +173,11 @@ Object {
             </span>
           </div>
         </div>
-        <div
-          class="euiSpacer euiSpacer--l"
-        />
       </div>
     </div>
   </body>,
   "container": <div>
-    <div
-      style="padding: 10px 0px;"
-    >
+    <div>
       <div
         class="euiFormRow"
         id="some_html_id-row"
@@ -352,9 +345,6 @@ Object {
           </span>
         </div>
       </div>
-      <div
-        class="euiSpacer euiSpacer--l"
-      />
     </div>
   </div>,
   "debug": [Function],

@@ -55,7 +55,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
   }, [coreServices, getAllPipelines]);
 
   return (
-    <div style={{ padding: "10px 10px" }}>
+    <div>
       <CustomFormRow
         label="Reindex only unique documents"
         helpText={
@@ -112,52 +112,52 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
             }}
           />
 
-          <EuiSpacer />
-
           {sliceEnabled ? (
-            <EuiRadioGroup
-              options={[
-                {
-                  id: "auto",
-                  label: "Automatic",
-                },
-                {
-                  id: "manual",
-                  label: "Manually slice into subtasks",
-                },
-              ]}
-              idSelected={sliceOption}
-              onChange={(id) => {
-                onSlicesChange(id === "auto" ? "auto" : "");
-              }}
-              name="sliceOption"
-              data-test-subj="sliceOption"
-            />
-          ) : (
-            ""
-          )}
+            <>
+              <EuiSpacer />
+              <EuiRadioGroup
+                options={[
+                  {
+                    id: "auto",
+                    label: "Automatic",
+                  },
+                  {
+                    id: "manual",
+                    label: "Manually slice into subtasks",
+                  },
+                ]}
+                idSelected={sliceOption}
+                onChange={(id) => {
+                  onSlicesChange(id === "auto" ? "auto" : "");
+                }}
+                name="sliceOption"
+                data-test-subj="sliceOption"
+              />
+            </>
+          ) : null}
         </>
       </CustomFormRow>
 
       {showSliceInput ? (
-        <CustomFormRow
-          isInvalid={!!sliceErr}
-          error={sliceErr}
-          label="Number of subtasks"
-          helpText="Specify the number of subtasks to divide this operation into."
-        >
-          <EuiFieldNumber
-            data-test-subj="slices"
-            value={slices}
-            placeholder="Specify a number"
-            type="number"
-            min={2}
-            onChange={(e) => onSlicesChange(e.target.value)}
-          />
-        </CustomFormRow>
-      ) : (
-        ""
-      )}
+        <>
+          <EuiSpacer />
+          <CustomFormRow
+            isInvalid={!!sliceErr}
+            error={sliceErr}
+            label="Number of subtasks"
+            helpText="Specify the number of subtasks to divide this operation into."
+          >
+            <EuiFieldNumber
+              data-test-subj="slices"
+              value={slices}
+              placeholder="Specify a number"
+              type="number"
+              min={2}
+              onChange={(e) => onSlicesChange(e.target.value)}
+            />
+          </CustomFormRow>
+        </>
+      ) : null}
 
       <EuiSpacer />
       <CustomFormRow

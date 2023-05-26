@@ -135,9 +135,7 @@ export const callbackForReindexTimeout: CallbackType = (job: ReindexJobMetaData,
         </>
       ) as unknown) as string,
       text: ((
-        <>
-          The reindex operation has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/{extras.taskId}`
-        </>
+        <>The reindex operation has taken more than one hour to complete. To see the latest status, use `GET /_tasks/{extras.taskId}`</>
       ) as unknown) as string,
     },
     {

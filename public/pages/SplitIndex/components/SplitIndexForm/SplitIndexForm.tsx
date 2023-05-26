@@ -17,6 +17,9 @@ import {
   REPLICA_NUMBER_MESSAGE,
   ALIAS_SELECT_RULE,
 } from "../../../../utils/constants";
+import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
+import { ServerResponse } from "../../../../../server/models/types";
+import { ActionType, OperationType } from "../../../Notifications/constant";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect, {
   disabledKey: "isDisabled",
@@ -27,7 +30,7 @@ interface SplitIndexComponentProps {
   reasons: React.ReactChild[];
   sourceShards: string;
   shardsSelectOptions: { label: string }[];
-  onSplitIndex: (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]) => Promise<void>;
+  onSplitIndex: (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]) => Promise<ServerResponse<{ task: string }>>;
   onCancel: () => void;
   getAlias: AliasSelectProps["refreshOptions"];
   loading: boolean;
@@ -40,16 +43,26 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
   };
 
   formRef: IFormGeneratorRef | null = null;
+  notificationRef: NotificationConfigRef | null = null;
   onSubmit = async () => {
     // trigger the validation manually here
     const validateResult = await this.formRef?.validatePromise();
+    const notificationResult = await this.notificationRef?.validatePromise();
     const { targetIndex, ...others } = this.state.settings;
     const { errors } = validateResult || {};
     if (errors) {
       return;
     }
+    if (notificationResult?.errors) {
+      return;
+    }
     try {
-      await this.props.onSplitIndex(targetIndex, others);
+      const result = await this.props.onSplitIndex(targetIndex, others);
+      if (result && result.ok) {
+        this.notificationRef?.associateWithTask({
+          taskId: result.response.task,
+        });
+      }
       this.props.onCancel();
     } catch (err) {
       // no need to log anything since getIndexSettings will log the error
@@ -176,44 +189,55 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
             ))}
           </ul>
         </IndexDetail>
-        <EuiSpacer />
-
         {readyForSplit && (
-          <ContentPanel title="Configure target index" titleSize="s">
-            <FormGenerator
-              value={{ "index.number_of_replicas": "1", ...this.state.settings }}
-              onChange={(totalValue) =>
-                this.setState({
-                  settings: totalValue,
-                })
-              }
-              formFields={formFields}
-              ref={(ref) => (this.formRef = ref)}
-              hasAdvancedSettings={true}
-              advancedSettingsProps={{
-                accordionProps: {
-                  initialIsOpen: false,
-                  id: "accordionForCreateIndexSettings",
-                  buttonContent: <h4>Advanced settings</h4>,
-                },
-                blockedNameList: blockNameList,
-                rowProps: {
-                  label: "Specify advanced index settings",
-                  helpText: (
-                    <>
-                      Specify a comma-delimited list of settings.&nbsp;
-                      <EuiLink href={INDEX_SETTINGS_URL} target="_blank">
-                        View index settings
-                      </EuiLink>
-                    </>
-                  ),
-                },
-              }}
-            />
-          </ContentPanel>
+          <>
+            <EuiSpacer />
+            <ContentPanel title="Configure target index" titleSize="s">
+              <FormGenerator
+                value={{ "index.number_of_replicas": "1", ...this.state.settings }}
+                onChange={(totalValue) =>
+                  this.setState({
+                    settings: totalValue,
+                  })
+                }
+                formFields={formFields}
+                ref={(ref) => (this.formRef = ref)}
+                hasAdvancedSettings={true}
+                advancedSettingsProps={{
+                  accordionProps: {
+                    initialIsOpen: false,
+                    id: "accordionForCreateIndexSettings",
+                    buttonContent: <h4>Advanced settings</h4>,
+                  },
+                  blockedNameList: blockNameList,
+                  rowProps: {
+                    label: "Specify advanced index settings",
+                    helpText: (
+                      <>
+                        Specify a comma-delimited list of settings.&nbsp;
+                        <EuiLink href={INDEX_SETTINGS_URL} target="_blank">
+                          View index settings
+                        </EuiLink>
+                      </>
+                    ),
+                  },
+                }}
+              />
+            </ContentPanel>
+          </>
         )}
-        <EuiSpacer />
+        <NotificationConfig
+          withPanel
+          panelProps={{
+            title: "Advanced settings",
+            titleSize: "s",
+          }}
+          ref={(ref) => (this.notificationRef = ref)}
+          actionType={ActionType.RESIZE}
+          operationType={OperationType.SHRINK}
+        />
 
+        <EuiSpacer />
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
             <EuiButtonEmpty onClick={this.props.onCancel} data-test-subj="splitCancelButton">

@@ -1,0 +1,8 @@
+.channelSelect-combobox {
+    .euiComboBoxPill {
+        display: none;
+        &.valid-option {
+            display: inline-block;
+        }
+    }
+}
