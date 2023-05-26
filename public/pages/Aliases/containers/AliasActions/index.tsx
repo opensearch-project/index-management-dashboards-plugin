@@ -9,6 +9,7 @@ import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
 import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
+import RefreshActionModal from "../../../../containers/RefreshAction";
 import { IAlias } from "../../interface";
 import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 
@@ -24,6 +25,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [flushAliasModalVisible, setFlushAliasModalVisible] = useState(false);
+  const [refreshModalVisible, setRefreshModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
@@ -35,6 +37,10 @@ export default function AliasesActions(props: AliasesActionsProps) {
 
   const onFlushAliasModalClose = () => {
     setFlushAliasModalVisible(false);
+  };
+
+  const onRefreshModalClose = () => {
+    setRefreshModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -66,10 +72,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   onClick: onUpdateAlias,
                 },
                 {
-                  name: "Clear cache",
-                  disabled: selectedItems.length < 1,
-                  "data-test-subj": "ClearCacheAction",
-                  onClick: () => setClearCacheModalVisible(true),
+                  isSeparator: true,
                 },
                 {
                   name: "Force merge",
@@ -85,10 +88,28 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   onClick: () => history.push(selectedItems.length ? `${ROUTES.ROLLOVER}/${selectedItems[0].alias}` : ROUTES.ROLLOVER),
                 },
                 {
+                  isSeparator: true,
+                },
+                {
+                  name: "Clear cache",
+                  disabled: selectedItems.length < 1,
+                  "data-test-subj": "ClearCacheAction",
+                  onClick: () => setClearCacheModalVisible(true),
+                },
+                {
                   name: "Flush",
                   disabled: !selectedItems.length,
                   "data-test-subj": "Flush Action",
                   onClick: () => setFlushAliasModalVisible(true),
+                },
+                {
+                  name: "Refresh",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "refreshAction",
+                  onClick: () => setRefreshModalVisible(true),
+                },
+                {
+                  isSeparator: true,
                 },
                 {
                   name: "Delete",
@@ -121,6 +142,12 @@ export default function AliasesActions(props: AliasesActionsProps) {
         visible={flushAliasModalVisible}
         onClose={onFlushAliasModalClose}
         flushTarget={INDEX_OP_TARGET_TYPE.ALIAS}
+      />
+      <RefreshActionModal
+        selectedItems={selectedItems}
+        visible={refreshModalVisible}
+        onClose={onRefreshModalClose}
+        type={INDEX_OP_TARGET_TYPE.ALIAS}
       />
     </>
   );

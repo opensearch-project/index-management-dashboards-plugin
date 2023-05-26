@@ -10,6 +10,7 @@ import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import DeleteIndexModal from "../DeleteDataStreamsModal";
 import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
+import RefreshActionModal from "../../../../containers/RefreshAction";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 export interface DataStreamsActionsProps {
@@ -23,6 +24,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [flushDataStreamModalVisible, setFlushDataStreamModalVisible] = useState(false);
+  const [refreshModalVisible, setRefreshModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
@@ -34,6 +36,10 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
 
   const onFlushDataStreamModalClose = () => {
     setFlushDataStreamModalVisible(false);
+  };
+
+  const onRefreshModalClose = () => {
+    setRefreshModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -60,12 +66,6 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
               id: 0,
               items: [
                 {
-                  name: "Clear cache",
-                  disabled: selectedItems.length < 1,
-                  "data-test-subj": "ClearCacheAction",
-                  onClick: () => setClearCacheModalVisible(true),
-                },
-                {
                   name: "Force merge",
                   "data-test-subj": "ForceMergeAction",
                   onClick: () => {
@@ -79,10 +79,28 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
                   onClick: () => history.push(`${ROUTES.ROLLOVER}/${selectedItemsInString.join(",")}`),
                 },
                 {
+                  isSeparator: true,
+                },
+                {
+                  name: "Clear cache",
+                  disabled: selectedItems.length < 1,
+                  "data-test-subj": "ClearCacheAction",
+                  onClick: () => setClearCacheModalVisible(true),
+                },
+                {
                   name: "Flush",
                   disabled: !selectedItems.length,
                   "data-test-subj": "Flush Action",
                   onClick: () => setFlushDataStreamModalVisible(true),
+                },
+                {
+                  name: "Refresh",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "refreshAction",
+                  onClick: () => setRefreshModalVisible(true),
+                },
+                {
+                  isSeparator: true,
                 },
                 {
                   name: "Delete",
@@ -115,6 +133,12 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         visible={flushDataStreamModalVisible}
         onClose={onFlushDataStreamModalClose}
         flushTarget={INDEX_OP_TARGET_TYPE.DATA_STREAM}
+      />
+      <RefreshActionModal
+        selectedItems={selectedItems}
+        visible={refreshModalVisible}
+        onClose={onRefreshModalClose}
+        type={INDEX_OP_TARGET_TYPE.DATA_STREAM}
       />
     </>
   );
