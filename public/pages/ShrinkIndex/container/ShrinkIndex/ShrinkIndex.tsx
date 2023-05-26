@@ -39,16 +39,14 @@ import { BREADCRUMBS } from "../../../../utils/constants";
 import queryString from "query-string";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { RecoveryJobMetaData } from "../../../../models/interfaces";
-import { getErrorMessage } from "../../../../utils/helpers";
+import { getClusterInfo, getErrorMessage } from "../../../../utils/helpers";
 import { ServerResponse } from "../../../../../server/models/types";
 import { CoreServicesContext } from "../../../../components/core_services";
-import {
-  DEFAULT_INDEX_SETTINGS,
-  INDEX_BLOCKS_WRITE_SETTING,
-  INDEX_BLOCKS_READONLY_SETTING,
-  INDEX_ROUTING_ALLOCATION_SETTING,
-} from "../../utils/constants";
+import { DEFAULT_INDEX_SETTINGS, INDEX_BLOCKS_WRITE_SETTING, INDEX_BLOCKS_READONLY_SETTING } from "../../utils/constants";
 import { get } from "lodash";
+import { ListenType } from "../../../../lib/JobScheduler";
+import { openIndices } from "../../../Indices/utils/helpers";
+import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -62,10 +60,13 @@ interface ShrinkIndexState {
   sourceIndex: CatIndex;
   requestPayload: Required<IndexItem>["settings"];
   sourceIndexSettings: Object;
+  loading: boolean;
 }
 
 export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
   static contextType = CoreServicesContext;
+
+  destroyed: boolean = false;
 
   constructor(props: ShrinkIndexProps) {
     super(props);
@@ -74,6 +75,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       sourceIndex: {} as CatIndex,
       requestPayload: DEFAULT_INDEX_SETTINGS,
       sourceIndexSettings: {},
+      loading: false,
     };
   }
 
@@ -91,7 +93,21 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       this.context.notifications.toasts.addDanger(errorMessage);
       this.props.history.push(ROUTES.INDICES);
     }
+    listenEvent(EVENT_MAP.OPEN_COMPLETE, this.openCompleteHandler);
   }
+
+  componentWillUnmount(): void {
+    destroyListener(EVENT_MAP.OPEN_COMPLETE, this.openCompleteHandler);
+    this.destroyed = true;
+  }
+
+  openCompleteHandler = () => {
+    this.setState({
+      loading: false,
+    });
+    // refresh status
+    this.getIndex(this.state.sourceIndex.index);
+  };
 
   getIndex = async (indexName: string) => {
     try {
@@ -138,19 +154,22 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   };
 
   shrinkIndex = async (sourceIndexName: string, targetIndexName: string, requestPayload: Required<IndexItem>["settings"]) => {
+    this.setState({
+      loading: true,
+    });
     try {
       const { commonService } = this.props;
       const { aliases, ...settings } = requestPayload;
 
-      const result = await commonService.apiCaller({
-        endpoint: "indices.shrink",
+      const result = await commonService.apiCaller<{
+        task: string;
+      }>({
+        endpoint: "transport.request",
         data: {
-          index: sourceIndexName,
-          target: targetIndexName,
+          path: `/${sourceIndexName}/_shrink/${targetIndexName}?wait_for_completion=false`,
+          method: "PUT",
           body: {
-            settings: {
-              ...settings,
-            },
+            settings,
             aliases,
           },
         },
@@ -163,14 +182,19 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
           }
         );
         this.onCancel();
+        const clusterInfo = await getClusterInfo({
+          commonService,
+        });
         jobSchedulerInstance.addJob({
           interval: 30000,
           extras: {
+            clusterInfo,
             toastId: toastInstance.id,
             sourceIndex: sourceIndexName,
             destIndex: targetIndexName,
+            taskId: result.response?.task,
           },
-          type: "shrink",
+          type: ListenType.SHRINK,
         } as RecoveryJobMetaData);
       } else {
         this.context.notifications.toasts.addDanger(result.error);
@@ -178,6 +202,12 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem shrinking index."));
     }
+    if (this.destroyed) {
+      return;
+    }
+    this.setState({
+      loading: false,
+    });
   };
 
   getIndexSettings = async (indexName: string, flat: boolean): Promise<Record<string, IndexItem> | void> => {
@@ -245,22 +275,17 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   };
 
   openIndex = async (index: string) => {
-    try {
-      const { commonService } = this.props;
-      const result = await commonService.apiCaller({
-        endpoint: "indices.open",
-        data: {
-          index: index,
-        },
-      });
-      if (result && result.ok) {
-        this.context.notifications.toasts.addSuccess(`[${index}] has been set to Open.`);
-      } else {
-        this.context.notifications.toasts.addDanger(result.error);
-      }
-    } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem opening index."));
-    }
+    this.setState({
+      loading: true,
+    });
+    openIndices({
+      indices: [index],
+      commonService: this.props.commonService,
+      coreServices: this.context,
+      jobConfig: {
+        firstRunTimeout: 5000,
+      },
+    });
   };
 
   isSourceIndexReady = async () => {
@@ -288,9 +313,6 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   onOpenIndex = async () => {
     const { sourceIndex } = this.state;
     await this.openIndex(sourceIndex.index);
-
-    // refresh status
-    await this.getIndex(sourceIndex.index);
   };
 
   render() {
@@ -374,6 +396,8 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 onClick={() => {
                   this.onOpenIndex();
                 }}
+                isLoading={this.state.loading}
+                isDisabled={this.state.loading}
                 fill
                 data-test-subj="onOpenIndexButton"
               >
@@ -625,7 +649,14 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton onClick={this.onClickAction} fill data-test-subj="shrinkIndexConfirmButton" disabled={disableShrinkButton}>
+            <EuiButton
+              isLoading={this.state.loading}
+              isDisabled={this.state.loading}
+              onClick={this.onClickAction}
+              fill
+              data-test-subj="shrinkIndexConfirmButton"
+              disabled={disableShrinkButton}
+            >
               Shrink
             </EuiButton>
           </EuiFlexItem>

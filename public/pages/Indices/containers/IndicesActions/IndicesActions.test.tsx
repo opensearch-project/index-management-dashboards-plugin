@@ -8,6 +8,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
+import { Route, Switch, HashRouter as Router, RouteComponentProps } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import IndicesActions, { IndicesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
@@ -18,16 +19,22 @@ import { ROUTES } from "../../../../utils/constants";
 import { buildMockApiCallerForFlush, selectedIndices } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
 import { act } from "react-dom/test-utils";
 
-function renderWithRouter(props: IndicesActionsProps) {
+function renderWithRouter(
+  props: Omit<IndicesActionsProps, "history"> & { history?: IndicesActionsProps["history"]; location?: RouteComponentProps["location"] }
+) {
   return {
     ...render(
-      <CoreServicesContext.Provider value={coreServicesMock}>
-        <ServicesContext.Provider value={browserServicesMock}>
-          <ModalProvider>
-            <IndicesActions {...props} />
-          </ModalProvider>
-        </ServicesContext.Provider>
-      </CoreServicesContext.Provider>
+      <Router>
+        <CoreServicesContext.Provider value={coreServicesMock}>
+          <ServicesContext.Provider value={browserServicesMock}>
+            <ModalProvider>
+              <Switch>
+                <Route path="/" render={(routeProps) => <IndicesActions history={routeProps.history} {...props} />} />
+              </Switch>
+            </ModalProvider>
+          </ServicesContext.Provider>
+        </CoreServicesContext.Provider>
+      </Router>
     ),
   };
 }
@@ -50,6 +57,12 @@ describe("<IndicesActions /> spec", () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
       onDelete: () => null,
+      onClose: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onShrink: function (): void {
+        throw new Error("Function not implemented.");
+      },
     });
 
     await waitFor(() => {
@@ -438,7 +451,6 @@ describe("<IndicesActions /> spec", () => {
   });
 
   it("open index by calling commonService", async () => {
-    const onOpen = jest.fn();
     browserServicesMock.commonService.apiCaller = jest.fn().mockResolvedValue({ ok: true, response: {} });
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [
@@ -458,7 +470,15 @@ describe("<IndicesActions /> spec", () => {
           data_stream: "",
         },
       ],
-      onOpen,
+      onDelete: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onClose: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onShrink: function (): void {
+        throw new Error("Function not implemented.");
+      },
     });
 
     await waitFor(() => {
@@ -470,16 +490,18 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(getByTestId("Open Confirm button"));
 
     await waitFor(() => {
-      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(1);
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledTimes(2);
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.open",
+        endpoint: "transport.request",
         data: {
-          index: "test_index",
+          method: "POST",
+          path: `/test_index/_open?wait_for_completion=false`,
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Open [test_index] successfully");
-      expect(onOpen).toHaveBeenCalledTimes(1);
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Successfully started opening test_index.", {
+        toastLifeTimeMs: 432000000,
+      });
     });
   });
 
@@ -505,6 +527,12 @@ describe("<IndicesActions /> spec", () => {
         },
       ],
       onClose,
+      onDelete: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onShrink: function (): void {
+        throw new Error("Function not implemented.");
+      },
     });
 
     await waitFor(() => {
@@ -571,6 +599,12 @@ describe("<IndicesActions /> spec", () => {
         },
       ],
       onDelete,
+      onClose: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onShrink: function (): void {
+        throw new Error("Function not implemented.");
+      },
     });
 
     await waitFor(() => {
@@ -609,15 +643,10 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
-      match: { path: "/", url: "/", isExact: true, params: {} },
       onClose(): void {},
       onDelete(): void {},
-      onOpen(): void {},
       onShrink(): void {},
       selectedItems: [
         {
@@ -654,15 +683,10 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
-      match: { path: "/", url: "/", isExact: true, params: {} },
       onClose(): void {},
       onDelete(): void {},
-      onOpen(): void {},
       onShrink(): void {},
       selectedItems: [
         {
@@ -712,15 +736,10 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
-      match: { path: "/", url: "/", isExact: true, params: {} },
       onClose(): void {},
       onDelete(): void {},
-      onOpen(): void {},
       onShrink(): void {},
       selectedItems: [
         {
@@ -755,15 +774,10 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
-      match: { path: "/", url: "/", isExact: true, params: {} },
       onClose(): void {},
       onDelete(): void {},
-      onOpen(): void {},
       onShrink(): void {},
       selectedItems: [
         {
@@ -796,15 +810,10 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { getByTestId } = renderWithRouter({
-      getIndices(): Promise<void> {
-        return Promise.resolve(undefined);
-      },
       history: history,
       location: history.location,
-      match: { path: "/", url: "/", isExact: true, params: {} },
       onClose(): void {},
       onDelete(): void {},
-      onOpen(): void {},
       onShrink(): void {},
       selectedItems: [],
     });
@@ -830,8 +839,23 @@ describe("<IndicesActions /> spec", () => {
           rep: "0",
           status: "open",
           data_stream: null,
+          "docs.count": "5",
+          "docs.deleted": "2",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+          "store.size": "100KB",
         },
       ],
+      onDelete: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onClose: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onShrink: function (): void {
+        throw new Error("Function not implemented.");
+      },
     });
 
     await waitFor(() => {
@@ -848,11 +872,44 @@ describe("<IndicesActions /> spec", () => {
       selectedItems: [
         {
           index: "test_index1",
+          health: "green",
+          pri: "3",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          data_stream: null,
+          "docs.count": "5",
+          "docs.deleted": "2",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+          "store.size": "100KB",
         },
         {
           index: "test_index2",
+          health: "green",
+          pri: "3",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          data_stream: null,
+          "docs.count": "5",
+          "docs.deleted": "2",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+          "store.size": "100KB",
         },
       ],
+      onDelete: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onClose: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onShrink: function (): void {
+        throw new Error("Function not implemented.");
+      },
     });
 
     await waitFor(() => {
@@ -869,8 +926,28 @@ describe("<IndicesActions /> spec", () => {
         {
           index: "test_index",
           data_stream: "test",
+          health: "green",
+          pri: "3",
+          "pri.store.size": "100KB",
+          rep: "0",
+          status: "open",
+          "docs.count": "5",
+          "docs.deleted": "2",
+          uuid: "some_uuid",
+          managed: "",
+          managedPolicy: "",
+          "store.size": "100KB",
         },
       ],
+      onDelete: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onClose: function (): void {
+        throw new Error("Function not implemented.");
+      },
+      onShrink: function (): void {
+        throw new Error("Function not implemented.");
+      },
     });
 
     await waitFor(() => {

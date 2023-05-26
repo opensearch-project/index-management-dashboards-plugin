@@ -29,6 +29,7 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import { Modal } from "../../../../components/Modal";
 import { IFinalDetail } from "./interface";
 import { OVERVIEW_DISPLAY_INFO } from "./constants";
+import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
 
 export interface IndexDetailModalProps extends RouteComponentProps<{ index: string }> {}
 
@@ -224,6 +225,13 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     ]);
   }, []);
 
+  useEffect(() => {
+    listenEvent(EVENT_MAP.OPEN_COMPLETE, refreshDetails);
+    return () => {
+      destroyListener(EVENT_MAP.OPEN_COMPLETE, refreshDetails);
+    };
+  }, [refreshDetails]);
+
   if (!record || !detail || !finalDetail) {
     return null;
   }
@@ -238,7 +246,6 @@ export default function IndexDetail(props: IndexDetailModalProps) {
           selectedItems={[record]}
           history={props.history}
           onDelete={() => props.history.replace(ROUTES.INDICES)}
-          onOpen={refreshDetails}
           onClose={refreshDetails}
           onShrink={() => props.history.replace(ROUTES.INDICES)}
           getIndices={async () => {}}

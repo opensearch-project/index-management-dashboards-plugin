@@ -83,16 +83,18 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
   async componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES]);
-    await this.getIndices();
     listenEvent(EVENT_MAP.REINDEX_COMPLETE, this.getIndices);
     listenEvent(EVENT_MAP.SHRINK_COMPLETE, this.getIndices);
     listenEvent(EVENT_MAP.SPLIT_COMPLETE, this.getIndices);
+    listenEvent(EVENT_MAP.OPEN_COMPLETE, this.getIndices);
+    await this.getIndices();
   }
 
   componentWillUnmount(): void {
     destroyListener(EVENT_MAP.REINDEX_COMPLETE, this.getIndices);
     destroyListener(EVENT_MAP.SHRINK_COMPLETE, this.getIndices);
     destroyListener(EVENT_MAP.SPLIT_COMPLETE, this.getIndices);
+    destroyListener(EVENT_MAP.OPEN_COMPLETE, this.getIndices);
   }
 
   async componentDidUpdate(prevProps: IndicesProps, prevState: IndicesState) {
@@ -246,7 +248,6 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                   <IndicesActions
                     {...this.props}
                     onDelete={this.getIndices}
-                    onOpen={this.getIndices}
                     onClose={this.getIndices}
                     onShrink={this.getIndices}
                     selectedItems={this.state.selectedItems}
