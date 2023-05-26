@@ -10,6 +10,8 @@ import { BrowserServices } from "../models/interfaces";
 import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "./constants";
 import { CatIndex, DataStream } from "../../server/models/interfaces";
 import { IAlias } from "../pages/Aliases/interface";
+import { ClusterInfo } from "../models/interfaces";
+import { CommonService } from "../services";
 
 export function getErrorMessage(err: any, defaultMessage: string) {
   if (err && err.message) return err.message;
@@ -49,6 +51,24 @@ export function diffJson(oldJson?: Record<string, any>, newJson?: Record<string,
   }
   return initial + addOrChanged + oldKeys.length;
 }
+
+export const getClusterInfo = (props: { commonService: CommonService }): Promise<ClusterInfo> => {
+  return props.commonService
+    .apiCaller<{
+      cluster_name: string;
+    }>({
+      endpoint: "cluster.health",
+    })
+    .then((res) => {
+      if (res && res.ok) {
+        return {
+          cluster_name: res?.response?.cluster_name,
+        };
+      }
+
+      return {};
+    });
+};
 
 interface BlockedIndices {
   [indexName: string]: String[];

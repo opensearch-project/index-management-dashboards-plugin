@@ -14,6 +14,10 @@ export class JobScheduler {
     this.options = options;
     this.storage = options.storage || new StoreLocalStorage();
   }
+  public setStorage(storage: IStorage): JobScheduler {
+    this.storage = storage;
+    return this;
+  }
   async init(): Promise<boolean> {
     this.loopJob();
     return true;
@@ -22,7 +26,8 @@ export class JobScheduler {
     return `${Date.now()}_${Math.floor(Math.random() * 10)}`;
   }
   private formatJob(job: IJobItemMetadata): JobItemMetadata {
-    const formattedJob = { ...job };
+    const { firstRunTimeout, ...others } = job;
+    const formattedJob = { ...others };
     if (!formattedJob.id) {
       formattedJob.id = this.getId();
     }
@@ -32,7 +37,7 @@ export class JobScheduler {
     }
 
     if (!formattedJob.timeout) {
-      formattedJob.timeout = 1000 * 60 * 60 * 24;
+      formattedJob.timeout = 1000 * 60 * 60;
     }
 
     return formattedJob as JobItemMetadata;
@@ -130,6 +135,11 @@ export class JobScheduler {
     }
 
     await this.storage.set(formattedJob.id, formattedJob);
+    if (job.firstRunTimeout) {
+      setTimeout(() => {
+        this.runJob(formattedJob.id);
+      }, job.firstRunTimeout);
+    }
     this.loopJob();
     return formattedJob;
   }

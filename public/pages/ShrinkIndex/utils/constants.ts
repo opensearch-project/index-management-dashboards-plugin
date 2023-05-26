@@ -4,8 +4,8 @@
  */
 
 export const DEFAULT_INDEX_SETTINGS = {
-  "index.number_of_shards": "1",
-  "index.number_of_replicas": "1",
+  "index.number_of_shards": 1,
+  "index.number_of_replicas": 1,
 };
 
 export const INDEX_BLOCKS_WRITE_SETTING = "index.blocks.write";

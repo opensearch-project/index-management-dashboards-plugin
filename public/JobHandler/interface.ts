@@ -11,3 +11,21 @@ export type CallbackType = (
     core: CoreSetup;
   }
 ) => Promise<boolean>;
+
+export type TaskResult<T = {}> = {
+  found: boolean;
+  _source: {
+    completed: boolean;
+    response: T;
+    error?: {
+      type: string;
+      reason: string;
+    };
+  };
+};
+
+export type RecoveryTaskResult = TaskResult<{
+  acknowledged: boolean;
+  index: string;
+  shards_acknowledged: boolean;
+}>;
