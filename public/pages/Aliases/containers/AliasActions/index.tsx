@@ -7,8 +7,11 @@ import { EuiButton, EuiContextMenu } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
+import ClearCacheModal from "../../../../containers/ClearCacheModal";
+import FlushIndexModal from "../../../../containers/FlushIndexModal";
+import RefreshActionModal from "../../../../containers/RefreshAction";
 import { IAlias } from "../../interface";
-import { ROUTES } from "../../../../utils/constants";
+import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
@@ -20,9 +23,24 @@ export interface AliasesActionsProps {
 export default function AliasesActions(props: AliasesActionsProps) {
   const { selectedItems, onDelete, onUpdateAlias, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
+  const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
+  const [flushAliasModalVisible, setFlushAliasModalVisible] = useState(false);
+  const [refreshModalVisible, setRefreshModalVisible] = useState(false);
 
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
+  };
+
+  const onClearCacheModalClose = () => {
+    setClearCacheModalVisible(false);
+  };
+
+  const onFlushAliasModalClose = () => {
+    setFlushAliasModalVisible(false);
+  };
+
+  const onRefreshModalClose = () => {
+    setRefreshModalVisible(false);
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
@@ -54,6 +72,9 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   onClick: onUpdateAlias,
                 },
                 {
+                  isSeparator: true,
+                },
+                {
                   name: "Force merge",
                   "data-test-subj": "ForceMergeAction",
                   onClick: () => {
@@ -65,6 +86,30 @@ export default function AliasesActions(props: AliasesActionsProps) {
                   disabled: selectedItems.length > 1,
                   "data-test-subj": "rolloverAction",
                   onClick: () => history.push(selectedItems.length ? `${ROUTES.ROLLOVER}/${selectedItems[0].alias}` : ROUTES.ROLLOVER),
+                },
+                {
+                  isSeparator: true,
+                },
+                {
+                  name: "Clear cache",
+                  disabled: selectedItems.length < 1,
+                  "data-test-subj": "ClearCacheAction",
+                  onClick: () => setClearCacheModalVisible(true),
+                },
+                {
+                  name: "Flush",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "Flush Action",
+                  onClick: () => setFlushAliasModalVisible(true),
+                },
+                {
+                  name: "Refresh",
+                  disabled: !selectedItems.length,
+                  "data-test-subj": "refreshAction",
+                  onClick: () => setRefreshModalVisible(true),
+                },
+                {
+                  isSeparator: true,
                 },
                 {
                   name: "Delete",
@@ -85,6 +130,24 @@ export default function AliasesActions(props: AliasesActionsProps) {
           onDeleteIndexModalClose();
           onDelete();
         }}
+      />
+      <ClearCacheModal
+        selectedItems={selectedItems}
+        visible={clearCacheModalVisible}
+        onClose={onClearCacheModalClose}
+        type={INDEX_OP_TARGET_TYPE.ALIAS}
+      />
+      <FlushIndexModal
+        selectedItems={selectedItems}
+        visible={flushAliasModalVisible}
+        onClose={onFlushAliasModalClose}
+        flushTarget={INDEX_OP_TARGET_TYPE.ALIAS}
+      />
+      <RefreshActionModal
+        selectedItems={selectedItems}
+        visible={refreshModalVisible}
+        onClose={onRefreshModalClose}
+        type={INDEX_OP_TARGET_TYPE.ALIAS}
       />
     </>
   );

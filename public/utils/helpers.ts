@@ -88,21 +88,28 @@ interface ClusterBlocksStateResponse {
   };
 }
 
-export async function getRedIndices(browserServices: BrowserServices, filterRedIndices: boolean = false): Promise<string[]> {
+export async function getRedIndicesInOpenStatus(browserServices: BrowserServices): Promise<string[]> {
   const result = await browserServices.commonService.apiCaller<string>({
     endpoint: "cat.indices",
     data: {
       /* only return index_names and "\n" 
-      e.g. {"ok":true,"response":"index1\nindex2\n"}
+      e.g. {"ok":true,"response":"index1 open\nindex2 close\n"}
       */
-      h: "i",
+      h: "i,s",
       health: "red",
     },
   });
   if (!result.ok) {
     throw result.error;
   }
-  return result.response.split("\n").filter((s) => s !== "");
+  /* in case result.response is undefined or null */
+  if (!result.response) {
+    return [];
+  }
+  return result.response
+    .split("\n")
+    .filter((s) => s !== "" && s.endsWith("open"))
+    .map((s) => s.split(" ")[0]);
 }
 
 export async function getBlockedIndices(browserServices: BrowserServices): Promise<BlockedIndices> {
@@ -182,7 +189,7 @@ export async function filterBlockedItems(
     if (!originInputItems.length && indexOpTargetType !== INDEX_OP_TARGET_TYPE.INDEX) {
       throw new Error("Can only filter red indexes for type index.");
     }
-    redIndices = await getRedIndices(browserServices);
+    redIndices = await getRedIndicesInOpenStatus(browserServices);
   }
   if (!originInputItems.length) {
     /* for refresh all or flush all indices, we need to find all indices in red status,
