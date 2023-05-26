@@ -30,6 +30,7 @@ interface SplitIndexComponentProps {
   onSplitIndex: (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]) => Promise<void>;
   onCancel: () => void;
   getAlias: AliasSelectProps["refreshOptions"];
+  loading: boolean;
 }
 
 export default class SplitIndexForm extends Component<SplitIndexComponentProps> {
@@ -220,7 +221,14 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit} data-test-subj="splitButton" isDisabled={!readyForSplit}>
+            <EuiButton
+              fill
+              onClick={this.onSubmit}
+              isLoading={this.props.loading}
+              disabled={this.props.loading}
+              data-test-subj="splitButton"
+              isDisabled={!readyForSplit}
+            >
               Split
             </EuiButton>
           </EuiFlexItem>

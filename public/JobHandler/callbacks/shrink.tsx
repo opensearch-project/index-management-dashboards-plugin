@@ -3,45 +3,70 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { CallbackType } from "../interface";
+import { CallbackType, TaskResult } from "../interface";
 import { RecoveryJobMetaData } from "../../models/interfaces";
-import { IndexService } from "../../services";
+import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
 import { DetailLink } from "../components/DetailLink";
+import { FormatResourceWithClusterInfo } from "../components/FormatResourceWithClusterInfo";
 
 export const callbackForShrink: CallbackType = async (job: RecoveryJobMetaData, { core }) => {
   const extras = job.extras;
-  const indexService = new IndexService(core.http);
-  const indexResult = await indexService.getIndices({
-    from: 0,
-    size: 10,
-    search: extras.destIndex,
-    terms: extras.destIndex,
-    sortField: "index",
-    sortDirection: "desc",
-    showDataStreams: false,
-  });
-  if (indexResult.ok) {
-    const [firstItem] = indexResult.response.indices || [];
-    if (firstItem && firstItem.health !== "red") {
-      if (extras.toastId) {
-        core.notifications.toasts.remove(extras.toastId);
-      }
-      triggerEvent(EVENT_MAP.SHRINK_COMPLETE, job);
-      core.notifications.toasts.addSuccess(
-        {
-          title: ((
-            <>
-              Source index <DetailLink index={extras.sourceIndex} /> has been successfully shrunken as{" "}
-              <DetailLink index={extras.destIndex} />.
-            </>
-          ) as unknown) as string,
-        },
-        {
-          toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+  const commonService = new CommonService(core.http);
+  if (extras.taskId) {
+    const tasksResult = await commonService.apiCaller<TaskResult>({
+      endpoint: "transport.request",
+      data: {
+        path: `/.tasks/_doc/${extras.taskId}`,
+        method: "GET",
+      },
+    });
+
+    if (tasksResult.ok) {
+      const { _source, found } = tasksResult.response;
+      const { completed, error } = (_source || {}) as TaskResult["_source"];
+      if (completed && found) {
+        if (extras.toastId) {
+          core.notifications.toasts.remove(extras.toastId);
         }
-      );
-      return true;
+        if (!error?.reason) {
+          triggerEvent(EVENT_MAP.SHRINK_COMPLETE, job);
+          core.notifications.toasts.addSuccess(
+            {
+              title: ((
+                <>
+                  Shrink operation on <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has been completed.
+                </>
+              ) as unknown) as string,
+              text: ((
+                <>
+                  The shrunken index is <DetailLink index={extras.destIndex} clusterInfo={extras.clusterInfo} />.
+                </>
+              ) as unknown) as string,
+            },
+            {
+              toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+            }
+          );
+        } else {
+          core.notifications.toasts.addDanger(
+            {
+              iconType: "alert",
+              title: ((
+                <>
+                  Shrink operation on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has
+                  failed.
+                </>
+              ) as unknown) as string,
+              text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{error.reason}</div>) as unknown) as string,
+            },
+            {
+              toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+            }
+          );
+        }
+        return true;
+      }
     }
   }
 
@@ -53,13 +78,15 @@ export const callbackForShrinkTimeout: CallbackType = (job: RecoveryJobMetaData,
   if (extras.toastId) {
     core.notifications.toasts.remove(extras.toastId);
   }
-  core.notifications.toasts.addDanger(
+  core.notifications.toasts.addWarning(
     {
       title: ((
         <>
-          Shrink <DetailLink index={extras.sourceIndex} /> to {extras.destIndex} does not finish in reasonable time, please check the index
-          manually.
+          Shrink operation on <DetailLink index={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has timed out.
         </>
+      ) as unknown) as string,
+      text: ((
+        <>The shrink operation has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/{extras.taskId}`</>
       ) as unknown) as string,
     },
     {
