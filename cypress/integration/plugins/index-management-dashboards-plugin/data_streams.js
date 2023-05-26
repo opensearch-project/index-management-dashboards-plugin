@@ -55,6 +55,106 @@ describe("Data stream", () => {
     });
   });
 
+  describe("can clear cache for a data stream", () => {
+    it("successfully", () => {
+      cy.get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="ClearCacheAction"]')
+        .should("be.disabled")
+        .get(`#_selection_column_ds--checkbox`)
+        .click()
+        .get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="ClearCacheAction"]')
+        .click();
+
+      // Check for clear cache index modal
+      cy.contains("Clear cache");
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').should("not.be.disabled");
+      // click to clear caches
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
+      // Check for success toast
+      cy.contains("Cache for ds- has been successfully cleared.");
+    });
+  });
+
+  describe("can flush a data stream", () => {
+    it("successfully flush a data stream", () => {
+      // Confirm we have our initial ds
+      cy.contains("ds-");
+      // index a test doc
+      cy.request({
+        method: "POST",
+        url: `${Cypress.env("openSearchUrl")}/ds-/_doc`,
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+        },
+        body: { "@timestamp": 123123123 },
+      });
+
+      // confirm uncommitted_operations is 1 after indexing doc
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/ds-/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(1);
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be disabled if no items selected
+      cy.get('[data-test-subj="Flush Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select a ds
+      cy.get(`[data-test-subj="checkboxSelectRow-ds-"]`).check({
+        force: true,
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be enabled
+      cy.get('[data-test-subj="Flush Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for flush modal
+      cy.contains("Flush data stream");
+
+      cy.get('[data-test-subj="flushConfirmButton"]').click();
+
+      // Check for success toast
+      cy.contains("The data stream ds- has been successfully flushed.");
+
+      // confirm uncommitted_operations is 0 after flush
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/ds-/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(0);
+      });
+    });
+  });
+
+  describe("can refresh data streams", () => {
+    it("successfully", () => {
+      cy.get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="refreshAction"]')
+        .should("be.disabled")
+        .get(`#_selection_column_ds--checkbox`)
+        .click()
+        .get('[data-test-subj="moreAction"]')
+        .click()
+        .get('[data-test-subj="refreshAction"]')
+        .click()
+        .get('[data-test-subj="refreshConfirmButton"]')
+        .click()
+        .end();
+
+      cy.contains(`The data stream [ds-] has been successfully refreshed.`).end();
+    });
+  });
+
   describe("can delete a data stream", () => {
     it("successfully", () => {
       cy.get('[data-test-subj="moreAction"] button')

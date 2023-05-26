@@ -30,7 +30,7 @@ export const callbackForForceMerge: CallbackType = async (job: ForceMergeJobMeta
   const tasksResult = await commonService.apiCaller<ForceMergeTaskResult>({
     endpoint: "transport.request",
     data: {
-      path: `.tasks/_doc/${extras.taskId}`,
+      path: `/.tasks/_doc/${extras.taskId}`,
       method: "GET",
     },
   });
@@ -147,12 +147,17 @@ export const callbackForForceMergeTimeout: CallbackType = (job: ForceMergeJobMet
   if (extras.toastId) {
     core.notifications.toasts.remove(extras.toastId);
   }
-  core.notifications.toasts.addDanger(
+  core.notifications.toasts.addWarning(
     {
       title: ((
         <>
-          Force merge <FormatResourcesWithClusterInfo resources={extras.sourceIndex} clusterInfo={extras.clusterInfo} />
-          does not finish in reasonable time, please check the index manually
+          Force merging <FormatResourcesWithClusterInfo resources={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has failed.
+        </>
+      ) as unknown) as string,
+      text: ((
+        <>
+          The force merge operation has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/
+          {extras.taskId}`
         </>
       ) as unknown) as string,
     },

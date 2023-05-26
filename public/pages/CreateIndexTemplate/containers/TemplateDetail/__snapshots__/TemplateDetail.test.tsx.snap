@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TemplateDetail /> spec render component 1`] = `
+exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
 <div>
   <div
     class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"

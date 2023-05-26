@@ -100,6 +100,6 @@ describe("callbackForOpen spec", () => {
     });
     expect(result).toBe(true);
     expect(core.notifications.toasts.remove).toBeCalledWith("toastId");
-    expect(core.notifications.toasts.addDanger).toBeCalledTimes(1);
+    expect(core.notifications.toasts.addWarning).toBeCalledTimes(1);
   });
 });

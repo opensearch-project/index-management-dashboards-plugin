@@ -19,12 +19,12 @@ const apiCallerMock = (browserServicesMockObject: typeof browserServicesMock) =>
               ok: true,
               response: {},
             };
-          } else if (payload.data?.path?.startsWith("_index_template/bad_template")) {
+          } else if (payload.data?.path?.startsWith("/_index_template/bad_template")) {
             return {
               ok: false,
               error: "bad template",
             };
-          } else if (payload.data?.path?.startsWith("_index_template/good_template")) {
+          } else if (payload.data?.path?.startsWith("/_index_template/good_template")) {
             return {
               ok: true,
               response: {
@@ -36,7 +36,7 @@ const apiCallerMock = (browserServicesMockObject: typeof browserServicesMock) =>
                 ],
               },
             };
-          } else if (payload.data?.path?.startsWith("_component_template/good_template")) {
+          } else if (payload.data?.path?.startsWith("/_component_template/good_template")) {
             return {
               ok: true,
               response: {

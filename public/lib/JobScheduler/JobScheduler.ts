@@ -26,7 +26,8 @@ export class JobScheduler {
     return `${Date.now()}_${Math.floor(Math.random() * 10)}`;
   }
   private formatJob(job: IJobItemMetadata): JobItemMetadata {
-    const formattedJob = { ...job };
+    const { firstRunTimeout, ...others } = job;
+    const formattedJob = { ...others };
     if (!formattedJob.id) {
       formattedJob.id = this.getId();
     }
@@ -36,7 +37,7 @@ export class JobScheduler {
     }
 
     if (!formattedJob.timeout) {
-      formattedJob.timeout = 1000 * 60 * 60 * 24;
+      formattedJob.timeout = 1000 * 60 * 60;
     }
 
     return formattedJob as JobItemMetadata;

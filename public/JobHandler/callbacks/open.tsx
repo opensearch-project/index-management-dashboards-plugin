@@ -8,6 +8,7 @@ import { OpenJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
 import { DetailLink } from "../components/DetailLink";
+import { ErrorToastContentForJob } from "../components/ErrorToastContentForJob";
 
 type OpenTaskResult = TaskResult<{
   acknowledged: boolean;
@@ -21,7 +22,7 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
   const tasksResult = await commonService.apiCaller<OpenTaskResult>({
     endpoint: "transport.request",
     data: {
-      path: `.tasks/_doc/${extras.taskId}`,
+      path: `/.tasks/_doc/${extras.taskId}`,
       method: "GET",
     },
   });
@@ -39,14 +40,13 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
           {
             title: ((
               <>
-                The indexes{" "}
                 {extras.indexes.map((item, index) => (
                   <span key={item}>
                     {index > 0 && ", "}
                     <DetailLink key={item} index={item} clusterInfo={extras.clusterInfo} />
                   </span>
                 ))}{" "}
-                are successfully opened.
+                have been opened.
               </>
             ) as unknown) as string,
           },
@@ -64,17 +64,18 @@ export const callbackForOpen: CallbackType = async (job: OpenJobMetaData, { core
           {
             title: ((
               <>
-                Open{" "}
                 {extras.indexes.map((item, index) => (
                   <span key={item}>
                     {index > 0 && ", "}
                     <DetailLink key={item} index={item} clusterInfo={extras.clusterInfo} />
                   </span>
                 ))}{" "}
-                has failed
+                has failed to open.
               </>
             ) as unknown) as string,
-            text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{error.reason}</div>) as unknown) as string,
+            text: ((
+              <ErrorToastContentForJob fullError={<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{error?.reason}</div>} />
+            ) as unknown) as string,
           },
           {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
@@ -94,19 +95,22 @@ export const callbackForOpenTimeout: CallbackType = (job: OpenJobMetaData, { cor
   if (extras.toastId) {
     core.notifications.toasts.remove(extras.toastId);
   }
-  core.notifications.toasts.addDanger(
+  core.notifications.toasts.addWarning(
     {
       title: ((
         <>
-          Open{" "}
+          Opening the index(es){" "}
           {extras.indexes.map((item, index) => (
             <span key={item}>
               {index > 0 && ", "}
               <DetailLink key={item} index={item} clusterInfo={extras.clusterInfo} />
             </span>
           ))}{" "}
-          does not finish in reasonable time, please check the index manually
+          has timed out
         </>
+      ) as unknown) as string,
+      text: ((
+        <>Opening the index has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/{extras.taskId}`</>
       ) as unknown) as string,
     },
     {

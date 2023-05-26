@@ -73,7 +73,8 @@ jobs:
         run: |
           cd OpenSearch-Dashboards
           yarn start --no-base-path --no-watch &
-          sleep 300
+          sleep 420
+        # in main branch, OSD server requires more time to bundle and bootstrap
         # timeout 300 bash -c 'while [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
       # for now just chrome, use matrix to do all browsers later
       - name: Cypress tests

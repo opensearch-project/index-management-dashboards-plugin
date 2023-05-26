@@ -43,5 +43,49 @@ exports[`<IndexControls /> spec renders the component 1`] = `
       </div>
     </div>
   </div>
+  <div
+    class="euiFlexItem euiFlexItem--flexGrowZero"
+    style="flex-basis: 100px;"
+  >
+    <div
+      class="euiFilterGroup"
+    >
+      <div
+        class="euiPopover euiPopover--anchorDownCenter"
+      >
+        <div
+          class="euiPopover__anchor"
+        >
+          <button
+            class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton-hasNotification euiFilterButton--hasIcon"
+            type="button"
+          >
+            <span
+              class="euiButtonContent euiButtonContent--iconRight euiButtonEmpty__content"
+            >
+              EuiIconMock
+              <span
+                class="euiButtonEmpty__text euiFilterButton__text-hasNotification"
+              >
+                <span
+                  class="euiFilterButton__textShift"
+                  data-text="Types"
+                  title="Types"
+                >
+                  Types
+                </span>
+                <span
+                  aria-label="3 available filters"
+                  class="euiNotificationBadge euiNotificationBadge--medium euiNotificationBadge--subdued euiFilterButton__notification"
+                >
+                  3
+                </span>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;

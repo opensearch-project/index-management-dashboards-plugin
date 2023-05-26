@@ -7,6 +7,17 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Maintainer | GitHub ID                                         | Affiliation |
 |----------|---------------------------------------------------| ----------- |
 | Bowen Lan | [bowenlan-amzn](https://github.com/bowenlan-amzn) | Amazon      |
-| Angie Zhang | [Angie-Zhang](https://github.com/Angie-Zhang)     | Amazon      |
 | Saurabh Singh | [getsaurabh02](https://github.com/getsaurabh02)           | Amazon      |
 | Praveen Sameneni | [praveensameneni](https://github.com/praveensameneni)           | Amazon      |
+| Xuesong Luo           | [xluo-aws](https://github.com/xluo-aws)       | Amazon      |
+| Hailong Cui           | [Hailong-am](https://github.com/Hailong-am)   | Amazon      |
+| Binlong Gao           | [gaobinlong](https://github.com/gaobinlong)   | Amazon      |
+| Zhou Su               | [SuZhou-Joe](https://github.com/SuZhou-Joe)   | Amazon      |
+| Amardeepsingh Siglani | [amsiglan](https://github.com/amsiglan) | Amazon      |
+| Thomas Hurney         | [AWSHurneyt](https://github.com/AWSHurneyt) | Amazon      |
+
+## Emeritus
+
+| Maintainer  | GitHub ID                                  | Affiliation |
+|-------------| ------------------------------------------ | ----------- |
+| Angie Zhang | [Angie-Zhang](https://github.com/Angie-Zhang)     | Amazon      |
