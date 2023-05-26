@@ -175,7 +175,7 @@ describe("<DataStreamsActions /> spec", () => {
 
   it("cannot clear cache for data streams if they are closed or blocked", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
+      async (): Promise<any> => {
         return {
           ok: true,
           response: {
@@ -201,7 +201,7 @@ describe("<DataStreamsActions /> spec", () => {
         };
       }
     );
-    const { container, getByTestId, getByText } = renderWithRouter({
+    const { container, getByTestId } = renderWithRouter({
       selectedItems: [
         {
           name: "test_data_stream_1",
@@ -407,4 +407,384 @@ describe("<DataStreamsActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Flush Action")).toBeDisabled();
   });
+
+  it("refresh data streams by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  ".ds-blocked-000001": {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: "red_index close\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "unblocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-unblocked-000001",
+            },
+            {
+              index_name: ".ds-blocked-000002",
+            },
+          ],
+        },
+        {
+          name: "blocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-blocked-000001",
+            },
+            {
+              index_name: ".ds-blocked-000002",
+            },
+          ],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
+      getByText("The following data stream will be refreshed.");
+      expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
+      getByText(
+        "The following data stream cannot be refreshed because each data stream has one or more indexes that are either closed or in red status."
+      );
+      expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.refresh",
+        data: {
+          index: "unblocked_data_stream",
+        },
+      });
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cat.indices",
+        data: {
+          h: "i,s",
+          health: "red",
+        },
+      });
+
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "The data stream [unblocked_data_stream] has been successfully refreshed."
+      );
+    });
+  }, 30000);
+
+  it("refresh multiple data streams by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  ".ds-blocked-000001": {
+                    "4": {},
+                  },
+                  ".ds-blocked1-000001": {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: ".ds-red-000001 close\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "unblocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-unblocked-000001",
+            },
+            {
+              index_name: ".ds-unblocked-000002",
+            },
+          ],
+        },
+        {
+          name: "unblocked_data_stream1",
+          indices: [
+            {
+              index_name: ".ds-unblocked1-000001",
+            },
+            {
+              index_name: ".ds-unblocked1-000002",
+            },
+          ],
+        },
+        {
+          name: "blocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-blocked-000001",
+            },
+            {
+              index_name: ".ds-blocked-000002",
+            },
+          ],
+        },
+        {
+          name: "blocked_data_stream1",
+          indices: [
+            {
+              index_name: ".ds-blocked1-000001",
+            },
+            {
+              index_name: ".ds-blocked1-000002",
+            },
+          ],
+        },
+        {
+          name: "red_data_stream",
+          indices: [
+            {
+              index_name: ".ds-red-000001",
+            },
+          ],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      getByText("The following data streams will be refreshed.");
+      expect(getByTestId("UnblockedItem-unblocked_data_stream")).not.toBeNull();
+      expect(getByTestId("UnblockedItem-unblocked_data_stream1")).not.toBeNull();
+      expect(getByTestId("UnblockedItem-red_data_stream")).not.toBeNull();
+      getByText(
+        "The following data streams cannot be refreshed because each data stream has one or more indexes that are either closed or in red status."
+      );
+      expect(getByTestId("BlockedItem-blocked_data_stream")).not.toBeNull();
+      expect(getByTestId("BlockedItem-blocked_data_stream1")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+
+    await waitFor(() => {
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "3 data streams [unblocked_data_stream, unblocked_data_stream1, red_data_stream] have been successfully refreshed."
+      );
+    });
+  }, 30000);
+
+  it("refresh data streams disabled because all indexes are closed calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  ".ds-blocked-000001": {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: ".ds-red-000001 open\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "blocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-blocked-000001",
+            },
+          ],
+        },
+        {
+          name: "red_data_stream",
+          indices: [
+            {
+              index_name: ".ds-red-000001",
+            },
+          ],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+
+    await waitFor(() => {
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        text:
+          "All selected data streams cannot be refreshed because each data stream has one or more indexes that are either closed or in red status.",
+        title: "Unable to refresh data streams.",
+      });
+    });
+  }, 30000);
+
+  it("refresh data streams even failed to get index status", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          throw "failed to call cluster.state";
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: "red_index close\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "blocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-blocked-000001",
+            },
+          ],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      getByText("The following data stream will be refreshed.");
+      expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+
+    await waitFor(() => {
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "The data stream [blocked_data_stream] has been successfully refreshed."
+      );
+    });
+  }, 30000);
+
+  it("refresh multi data streams even failed to get index status", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          throw "failed to call cluster.state";
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: "red_index close\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          name: "blocked_data_stream",
+          indices: [
+            {
+              index_name: ".ds-blocked-000001",
+            },
+          ],
+        },
+        {
+          name: "blocked_data_stream1",
+          indices: [
+            {
+              index_name: ".ds-blocked1-000001",
+            },
+          ],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      getByText("The following data streams will be refreshed.");
+      expect(getByTestId("UnblockedItem-blocked_data_stream")).not.toBeNull();
+      expect(getByTestId("UnblockedItem-blocked_data_stream1")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+
+    await waitFor(() => {
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith(
+        "2 data streams [blocked_data_stream, blocked_data_stream1] have been successfully refreshed."
+      );
+    });
+  }, 30000);
 });

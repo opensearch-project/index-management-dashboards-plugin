@@ -21,13 +21,13 @@ import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
+import RefreshActionModal from "../../../../containers/RefreshAction";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
   selectedItems: ManagedCatIndex[];
   onDelete: () => void;
   onOpen: () => void;
   onClose: () => void;
-  onShrink: () => void;
   getIndices: () => Promise<void>;
 }
 
@@ -38,6 +38,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [openIndexModalVisible, setOpenIndexModalVisible] = useState(false);
   const [flushIndexModalVisible, setFlushIndexModalVisible] = useState(false);
+  const [refreshModalVisible, setRefreshModalVisible] = useState(false);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
@@ -129,6 +130,10 @@ export default function IndicesActions(props: IndicesActionsProps) {
     setFlushIndexModalVisible(false);
   };
 
+  const onRefreshModalClose = () => {
+    setRefreshModalVisible(false);
+  };
+
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
   return (
@@ -165,11 +170,6 @@ export default function IndicesActions(props: IndicesActionsProps) {
                     },
                     {
                       isSeparator: true,
-                    },
-                    {
-                      name: "Clear cache",
-                      "data-test-subj": "Clear cache Action",
-                      onClick: () => setClearCacheModalVisible(true),
                     },
                     {
                       name: "Close",
@@ -226,9 +226,22 @@ export default function IndicesActions(props: IndicesActionsProps) {
                       },
                     },
                     {
+                      isSeparator: true,
+                    },
+                    {
+                      name: "Clear cache",
+                      "data-test-subj": "Clear cache Action",
+                      onClick: () => setClearCacheModalVisible(true),
+                    },
+                    {
                       name: "Flush",
                       "data-test-subj": "Flush Action",
                       onClick: () => setFlushIndexModalVisible(true),
+                    },
+                    {
+                      name: "Refresh",
+                      "data-test-subj": "Refresh Index Action",
+                      onClick: () => setRefreshModalVisible(true),
                     },
                     {
                       isSeparator: true,
@@ -273,11 +286,19 @@ export default function IndicesActions(props: IndicesActionsProps) {
         onClose={onClearCacheModalClose}
         type={INDEX_OP_TARGET_TYPE.INDEX}
       />
+
       <FlushIndexModal
         selectedItems={selectedItems}
         visible={flushIndexModalVisible}
         onClose={onFlushIndexModalClose}
         flushTarget={INDEX_OP_TARGET_TYPE.INDEX}
+      />
+
+      <RefreshActionModal
+        selectedItems={selectedItems}
+        visible={refreshModalVisible}
+        onClose={onRefreshModalClose}
+        type={INDEX_OP_TARGET_TYPE.INDEX}
       />
     </>
   );

@@ -15,6 +15,7 @@ import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { buildMockApiCallerForFlush, selectedAliases } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
 import { act } from "react-dom/test-utils";
+import { IAlias } from "../../interface";
 
 function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
   return {
@@ -29,6 +30,27 @@ function renderWithRouter(props: Omit<AliasesActionsProps, "history">) {
     ),
   };
 }
+
+const selectedItems: IAlias[] = [
+  {
+    index: "test_index",
+    alias: "1",
+    filter: "1",
+    "routing.index": "1",
+    "routing.search": "1",
+    is_write_index: "1",
+    indexArray: ["test_index", "test_index1"],
+  },
+  {
+    index: "test_index2",
+    alias: "2",
+    filter: "1",
+    "routing.index": "1",
+    "routing.search": "1",
+    is_write_index: "1",
+    indexArray: ["test_index2", "test_index3", "red_index"],
+  },
+];
 
 describe("<AliasesActions /> spec", () => {
   it("renders the component and all the actions should be disabled when no items selected", async () => {
@@ -186,7 +208,7 @@ describe("<AliasesActions /> spec", () => {
 
   it("cannot clear cache for aliases if some indexes are closed or blocked", async () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
-      async (payload): Promise<any> => {
+      async (): Promise<any> => {
         return {
           ok: true,
           response: {
@@ -366,5 +388,279 @@ describe("<AliasesActions /> spec", () => {
     );
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     expect(getByTestId("Flush Action")).toBeDisabled();
+  });
+
+  it("refresh alias by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  test_index1: {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: "red_index close\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
+      selectedItems,
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
+      getByText("The following alias will be refreshed.");
+      expect(getByTestId("UnblockedItem-2")).not.toBeNull();
+      getByText(
+        "The following alias cannot be refreshed because each alias has one or more indexes that are either closed or in red status."
+      );
+      expect(getByTestId("BlockedItem-1")).not.toBeNull();
+      expect(document.body).toMatchSnapshot();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.refresh",
+        data: {
+          index: selectedItems[1].alias,
+        },
+      });
+
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cat.indices",
+        data: {
+          h: "i,s",
+          health: "red",
+        },
+      });
+    });
+
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("The alias [2] has been successfully refreshed.");
+  });
+
+  it("refresh multiple aliases by calling commonService", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {},
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: "red_index open\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "test_index",
+          alias: "1",
+          indexArray: ["test_index", "test_index1"],
+        },
+        {
+          index: "test_index2",
+          alias: "2",
+          indexArray: ["test_index2", "test_index3"],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+    await waitFor(() => {
+      getByText("The following aliases will be refreshed.");
+      expect(getByTestId("UnblockedItem-1")).not.toBeNull();
+      expect(getByTestId("UnblockedItem-2")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+
+    await waitFor(() => {
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("2 aliases [1, 2] have been successfully refreshed.");
+    });
+  });
+
+  it("refresh alias blocked because all index are blocked", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          return {
+            ok: true,
+            response: {
+              blocks: {
+                indices: {
+                  test_index: {
+                    "4": {},
+                  },
+                },
+              },
+            },
+          };
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: "red_index open\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId } = renderWithRouter({
+      selectedItems,
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+
+    await waitFor(() => {
+      expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
+        text:
+          "All selected aliases cannot be refreshed because each alias has one or more indexes that are either closed or in red status.",
+        title: "Unable to refresh aliases.",
+      });
+    });
+  });
+
+  it("refresh alias even failed to get index status", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          throw "failed to call cluster.state";
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: "red_index open\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText } = renderWithRouter({
+      selectedItems: [
+        {
+          index: "test_index",
+          alias: "1",
+          indexArray: ["test_index", "test_index1"],
+        },
+      ],
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+
+    await waitFor(() => {
+      getByText("The following alias will be refreshed.");
+      expect(getByTestId("UnblockedItem-1")).not.toBeNull();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+
+    await waitFor(() => {
+      expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("The alias [1] has been successfully refreshed.");
+    });
+  });
+
+  it("refresh multi alias even failed to get index status", async () => {
+    browserServicesMock.commonService.apiCaller = jest.fn(
+      async (payload): Promise<any> => {
+        if (payload.endpoint === "cluster.state") {
+          throw "failed to call cluster.state";
+        } else if (payload.endpoint === "indices.refresh") {
+          return {
+            ok: true,
+            response: {},
+          };
+        } else if (payload.endpoint === "cat.indices") {
+          return {
+            ok: true,
+            response: "red_index open\n",
+          };
+        }
+      }
+    );
+
+    const { getByTestId, getByText, queryByTestId } = renderWithRouter({
+      selectedItems,
+    });
+
+    userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
+    userEvent.click(getByTestId("refreshAction"));
+
+    await waitFor(() => {
+      expect(queryByTestId("refreshAction")).toBeNull();
+      getByText("The following aliases will be refreshed.");
+      expect(getByTestId("UnblockedItem-1")).not.toBeNull();
+      expect(getByTestId("UnblockedItem-2")).not.toBeNull();
+      expect(getByTestId("refreshConfirmButton")).toBeEnabled();
+      expect(document.body).toMatchSnapshot();
+    });
+
+    userEvent.click(getByTestId("refreshConfirmButton"));
+    await waitFor(() => {
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "cluster.state",
+        data: {
+          metric: "blocks",
+        },
+      });
+
+      expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
+        endpoint: "indices.refresh",
+        data: {
+          index: "1,2",
+        },
+      });
+    });
+
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("2 aliases [1, 2] have been successfully refreshed.");
   });
 });
