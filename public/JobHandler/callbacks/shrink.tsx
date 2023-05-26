@@ -86,7 +86,7 @@ export const callbackForShrinkTimeout: CallbackType = (job: RecoveryJobMetaData,
         </>
       ) as unknown) as string,
       text: ((
-        <>The shrink operation has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/{extras.taskId}`</>
+        <>The shrink operation has taken more than one hour to complete. To see the latest status, use `GET /_tasks/{extras.taskId}`</>
       ) as unknown) as string,
     },
     {

@@ -156,7 +156,7 @@ export const callbackForForceMergeTimeout: CallbackType = (job: ForceMergeJobMet
       ) as unknown) as string,
       text: ((
         <>
-          The force merge operation has taken more than one hour to complete. To see the latest status, use `GET /.tasks/_doc/
+          The force merge operation has taken more than one hour to complete. To see the latest status, use `GET /_tasks/
           {extras.taskId}`
         </>
       ) as unknown) as string,
