@@ -29,7 +29,6 @@ export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"
   onDelete: () => void;
   onClose: () => void;
   onShrink: () => void;
-  getIndices: () => Promise<void>;
 }
 
 export default function IndicesActions(props: IndicesActionsProps) {

@@ -45,6 +45,7 @@ import Rollover from "../Rollover";
 import DataStreams from "../DataStreams";
 import CreateDataStream from "../CreateDataStream";
 import ForceMerge from "../ForceMerge";
+import Notifications from "../Notifications";
 import ComposableTemplates from "../ComposableTemplates";
 import CreateComposableTemplate from "../CreateComposableTemplate";
 
@@ -63,6 +64,7 @@ enum Navigation {
   Templates = "Templates",
   DataStreams = "Data streams",
   CreateDataStream = "Create data stream",
+  Notifications = "Notification settings",
   ComposableTemplates = "Component templates",
 }
 
@@ -179,6 +181,12 @@ export default class Main extends Component<MainProps, object> {
             id: 5,
             href: `#${Pathname.Transforms}`,
             isSelected: pathname === Pathname.Transforms,
+          },
+          {
+            name: Navigation.Notifications,
+            id: 10,
+            href: `#${ROUTES.NOTIFICATIONS}`,
+            isSelected: pathname === ROUTES.NOTIFICATIONS,
           },
         ],
       },
@@ -615,6 +623,14 @@ export default class Main extends Component<MainProps, object> {
                             render={(props) => (
                               <div style={ROUTE_STYLE}>
                                 <ForceMerge {...props} />
+                              </div>
+                            )}
+                          />
+                          <Route
+                            path={ROUTES.NOTIFICATIONS}
+                            render={(props) => (
+                              <div style={ROUTE_STYLE}>
+                                <Notifications {...props} />
                               </div>
                             )}
                           />

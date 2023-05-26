@@ -960,7 +960,7 @@ describe("<IndicesActions /> spec", () => {
 
   it("renders flush component", async () => {
     browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
-    const { getByTestId, getByText } = render(
+    const { getByTestId, getByText, queryByTestId } = render(
       <CoreServicesContext.Provider value={coreServicesMock}>
         <ServicesContext.Provider value={browserServicesMock}>
           <ModalProvider>
@@ -972,8 +972,11 @@ describe("<IndicesActions /> spec", () => {
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Flush Action"));
     await act(async () => {});
-    expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
-    expect(document.body.children).toMatchSnapshot();
+    await waitFor(() => {
+      expect(queryByTestId("Flush Action")).toBeNull();
+      expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
+      expect(document.body.children).toMatchSnapshot();
+    });
   });
 
   it("renders all indices enabled", async () => {

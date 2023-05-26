@@ -80,7 +80,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         flow: FLOW_ENUM.SIMPLE,
       },
     } as Partial<TemplateItem>,
-    searchObject.query.values
+    searchObject.query.values as any
   );
   const field = useField({
     values: defaultValues,

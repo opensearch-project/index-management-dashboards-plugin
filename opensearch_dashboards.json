@@ -2,13 +2,8 @@
   "id": "indexManagementDashboards",
   "version": "3.0.0.0",
   "opensearchDashboardsVersion": "3.0.0",
-  "configPath": [
-    "opensearch_index_management"
-  ],
-  "requiredPlugins": [
-    "navigation",
-    "opensearchDashboardsReact"
-  ],
+  "configPath": ["opensearch_index_management"],
+  "requiredPlugins": ["navigation", "opensearchDashboardsReact"],
   "server": true,
   "ui": true
 }

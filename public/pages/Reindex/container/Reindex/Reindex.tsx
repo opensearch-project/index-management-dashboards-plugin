@@ -39,6 +39,8 @@ import { parseIndexNames, checkDuplicate } from "../../utils/helper";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { ReindexJobMetaData } from "../../../../models/interfaces";
 import { ListenType } from "../../../../lib/JobScheduler";
+import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
+import { ActionType } from "../../../Notifications/constant";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -67,7 +69,7 @@ interface ReindexState {
 
 export default class Reindex extends Component<ReindexProps, ReindexState> {
   static contextType = CoreServicesContext;
-
+  notificationRef: NotificationConfigRef | null = null;
   constructor(props: ReindexProps) {
     super(props);
 
@@ -198,7 +200,17 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   };
 
   onClickAction = async () => {
-    const { sourceQuery, destination, slices, selectedPipelines, ignoreConflicts, sources, subset, reindexUniqueDocuments } = this.state;
+    const {
+      sourceQuery,
+      destination,
+      slices,
+      selectedPipelines,
+      ignoreConflicts,
+      sources,
+      subset,
+      reindexUniqueDocuments,
+      advancedSettingsOpen,
+    } = this.state;
 
     if (!(await this.validateSource(sources)) || !this.validateDestination(destination) || !this.validateSlices(slices)) {
       return;
@@ -206,6 +218,13 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     // validate query DSL
     if (subset && !(await this.validateQueryDSL(sources, sourceQuery))) {
       return;
+    }
+
+    if (advancedSettingsOpen) {
+      const result = await this.notificationRef?.validatePromise();
+      if (result?.errors) {
+        return;
+      }
     }
 
     const [isDestAsDataStream] = destination.map((dest) => dest.value?.isDataStream);
@@ -237,6 +256,11 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       const result = await this.onReindexConfirm(reindexReq);
       const destinationItem = destination[0];
       if (result.ok) {
+        if (advancedSettingsOpen) {
+          this.notificationRef?.associateWithTask({
+            taskId: result.response?.taskId || "",
+          });
+        }
         const clusterInfo = await getClusterInfo({
           commonService: this.props.commonService,
         });
@@ -638,20 +662,25 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
         <EuiSpacer />
 
-        <ContentPanel title={advanceTitle}>
+        <ContentPanel title={advanceTitle} noExtraPadding>
           {advancedSettingsOpen && (
-            <ReindexAdvancedOptions
-              slices={slices}
-              onSlicesChange={this.onSliceChange}
-              sliceErr={this.state.sliceError}
-              getAllPipelines={this.getAllPipelines}
-              selectedPipelines={this.state.selectedPipelines}
-              onSelectedPipelinesChange={this.onPipelineChange}
-              ignoreConflicts={ignoreConflicts}
-              onIgnoreConflictsChange={this.onIgnoreConflictsChange}
-              reindexUniqueDocuments={reindexUniqueDocuments}
-              onReindexUniqueDocumentsChange={this.onReindexUniqueDocuments}
-            />
+            <>
+              <EuiSpacer size="s" />
+              <ReindexAdvancedOptions
+                slices={slices}
+                onSlicesChange={this.onSliceChange}
+                sliceErr={this.state.sliceError}
+                getAllPipelines={this.getAllPipelines}
+                selectedPipelines={this.state.selectedPipelines}
+                onSelectedPipelinesChange={this.onPipelineChange}
+                ignoreConflicts={ignoreConflicts}
+                onIgnoreConflictsChange={this.onIgnoreConflictsChange}
+                reindexUniqueDocuments={reindexUniqueDocuments}
+                onReindexUniqueDocumentsChange={this.onReindexUniqueDocuments}
+              />
+              <NotificationConfig ref={(ref) => (this.notificationRef = ref)} actionType={ActionType.REINDEX} />
+              <EuiSpacer size="s" />
+            </>
           )}
         </ContentPanel>
 
