@@ -12,7 +12,9 @@ import { CommonService } from "../../../services";
 import { CoreStart } from "opensearch-dashboards/public";
 import { CatIndex } from "../../../../server/models/interfaces";
 import { jobSchedulerInstance } from "../../../context/JobSchedulerContext";
-import { RecoveryJobMetaData } from "../../../models/interfaces";
+import { OpenJobMetaData, RecoveryJobMetaData } from "../../../models/interfaces";
+import { ListenType } from "../../../lib/JobScheduler";
+import { getClusterInfo } from "../../../utils/helpers";
 
 export function getURLQueryParams(location: { search: string }): IndicesQueryParams {
   const { from, size, search, sortField, sortDirection, showDataStreams } = queryString.parse(location.search);
@@ -28,20 +30,47 @@ export function getURLQueryParams(location: { search: string }): IndicesQueryPar
   };
 }
 
-export async function openIndices(props: { indices: string[]; commonService: CommonService; coreServices: CoreStart }) {
-  const result = await props.commonService.apiCaller({
-    endpoint: "indices.open",
+export async function openIndices(props: {
+  indices: string[];
+  commonService: CommonService;
+  coreServices: CoreStart;
+  jobConfig?: Partial<OpenJobMetaData>;
+}) {
+  const indexPayload = props.indices.join(",");
+  const result = await props.commonService.apiCaller<{
+    task: string;
+  }>({
+    endpoint: "transport.request",
     data: {
-      index: props.indices,
+      method: "POST",
+      path: `/${indexPayload}/_open?wait_for_completion=false`,
     },
   });
+
   if (result && result.ok) {
-    props.coreServices.notifications.toasts.addSuccess(`Open [${props.indices}] successfully`);
+    const toast = `Successfully started opening ${indexPayload}.`;
+    const toastInstance = props.coreServices.notifications.toasts.addSuccess(toast, {
+      toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+    });
+    const clusterInfo = await getClusterInfo({
+      commonService: props.commonService,
+    });
+    await jobSchedulerInstance.addJob({
+      type: ListenType.OPEN,
+      extras: {
+        clusterInfo,
+        toastId: toastInstance.id,
+        taskId: result.response?.task,
+        indexes: props.indices,
+      },
+      interval: 3000,
+      ...props.jobConfig,
+    } as OpenJobMetaData);
   } else {
-    const errorMessage = `There is a problem open index ${props.indices}, please check with Admin`;
-    props.coreServices.notifications.toasts.addDanger(result?.error || errorMessage);
-    throw new Error(result?.error || errorMessage);
+    props.coreServices.notifications.toasts.addDanger(result.error);
   }
+
+  return result;
 }
 
 export async function getIndexSettings(props: {
@@ -139,12 +168,13 @@ export async function splitIndex(props: {
   coreServices: CoreStart;
 }) {
   const { aliases, ...settings } = props.settingsPayload;
-  const result = await props.commonService.apiCaller({
-    endpoint: "indices.split",
-    method: "PUT",
+  const result = await props.commonService.apiCaller<{
+    task: string;
+  }>({
+    endpoint: "transport.request",
     data: {
-      index: props.sourceIndex,
-      target: props.targetIndex,
+      path: `/${props.sourceIndex}/_split/${props.targetIndex}?wait_for_completion=false`,
+      method: "PUT",
       body: {
         settings: {
           ...settings,
@@ -161,14 +191,19 @@ export async function splitIndex(props: {
         toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
       }
     );
+    const clusterInfo = await getClusterInfo({
+      commonService: props.commonService,
+    });
     await jobSchedulerInstance.addJob({
       interval: 30000,
       extras: {
+        clusterInfo,
         toastId: toastInstance.id,
         sourceIndex: props.sourceIndex,
         destIndex: props.targetIndex,
+        taskId: result.response?.task,
       },
-      type: "split",
+      type: ListenType.SPLIT,
     } as RecoveryJobMetaData);
     return result;
   } else {

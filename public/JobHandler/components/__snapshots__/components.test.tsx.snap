@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DetailLink /> spec render with cluster info 1`] = `
+<div>
+  <a
+    class="euiLink euiLink--primary"
+    href="#/index-detail/writingIndex"
+    rel="noreferrer"
+  >
+    cluster_name
+    /
+    index
+  </a>
+</div>
+`;
+
+exports[`<DetailLink /> spec render with default props 1`] = `
+<div>
+  <a
+    class="euiLink euiLink--primary"
+    href="#/index-detail/index"
+    rel="noreferrer"
+  >
+    index
+  </a>
+</div>
+`;
+
+exports[`<DetailLink /> spec render with writing index 1`] = `
+<div>
+  <a
+    class="euiLink euiLink--primary"
+    href="#/index-detail/writingIndex"
+    rel="noreferrer"
+  >
+    index
+  </a>
+</div>
+`;
+
+exports[`<ErrorToastContentForJob /> spec render with action 1`] = `
+<div>
+  <div>
+    <div>
+      shortError
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <button
+      class="euiButton euiButton--danger"
+      style="float: right;"
+      type="button"
+    >
+      <span
+        class="euiButtonContent euiButton__content"
+      >
+        <span
+          class="euiButton__text"
+        >
+          See full error
+        </span>
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<ErrorToastContentForJob /> spec render with default props 1`] = `
+<div>
+  <div>
+    <div />
+  </div>
+</div>
+`;
+
+exports[`<FormatResourceWithClusterInfo /> spec render with cluster info 1`] = `
+<div>
+  cluster_name
+  /
+  index
+</div>
+`;
+
+exports[`<FormatResourceWithClusterInfo /> spec render with default props 1`] = `
+<div>
+  index
+</div>
+`;
+
+exports[`<FormatResourcesWithClusterInfo /> spec render with cluster info 1`] = `
+<div>
+  <span>
+    cluster_name
+    /
+    index
+  </span>
+  <span>
+    , 
+    cluster_name
+    /
+    index1
+  </span>
+  <span>
+    , 
+    cluster_name
+    /
+    index2
+  </span>
+</div>
+`;
+
+exports[`<FormatResourcesWithClusterInfo /> spec render with default props 1`] = `
+<div>
+  <span>
+    index
+  </span>
+  <span>
+    , 
+    index1
+  </span>
+  <span>
+    , 
+    index2
+  </span>
+</div>
+`;

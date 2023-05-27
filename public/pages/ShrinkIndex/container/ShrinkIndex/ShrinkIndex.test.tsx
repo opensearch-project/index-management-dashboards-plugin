@@ -219,8 +219,8 @@ const mockApi = () => {
               response: {},
             };
           }
-        case "indices.open":
-          if (payload.data.index === "test7") {
+        case "transport.request":
+          if (payload.data.path.startsWith("/test7/_open")) {
             return {
               ok: false,
               error: "[cluster_block_exception] index [test7] blocked by: [FORBIDDEN/5/index read-only (api)];",
@@ -473,9 +473,10 @@ describe("<Shrink index /> spec", () => {
 
     userEvent.click(getByTestId("onOpenIndexButton"));
     expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-      endpoint: "indices.open",
+      endpoint: "transport.request",
       data: {
-        index: "test5",
+        method: "POST",
+        path: `/test5/_open?wait_for_completion=false`,
       },
     });
   });
@@ -518,9 +519,10 @@ describe("<Shrink index /> spec", () => {
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.open",
+        endpoint: "transport.request",
         data: {
-          index: "test7",
+          method: "POST",
+          path: `/test7/_open?wait_for_completion=false`,
         },
       });
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledTimes(1);
@@ -586,14 +588,14 @@ describe("<Shrink index /> spec", () => {
 
     await waitFor(() => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
-        endpoint: "indices.shrink",
+        endpoint: "transport.request",
         data: {
-          index: "test3",
-          target: "test3_shrunken",
+          path: `/test3/_shrink/test3_shrunken?wait_for_completion=false`,
+          method: "PUT",
           body: {
             settings: {
-              "index.number_of_shards": "1",
-              "index.number_of_replicas": "1",
+              "index.number_of_shards": 1,
+              "index.number_of_replicas": 1,
             },
           },
         },

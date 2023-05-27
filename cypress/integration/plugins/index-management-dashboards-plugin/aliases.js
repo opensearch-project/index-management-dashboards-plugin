@@ -68,6 +68,31 @@ describe("Aliases", () => {
     });
   });
 
+  describe("can clear cache for an alias", () => {
+    it("successfully", () => {
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_ALIAS_PREFIX}-0{enter}`);
+      cy.contains(`${SAMPLE_ALIAS_PREFIX}-0`);
+      cy.get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="ClearCacheAction"]')
+        .should("be.disabled")
+        .get(`#_selection_column_${SAMPLE_ALIAS_PREFIX}-0-checkbox`)
+        .click()
+        .get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="ClearCacheAction"]')
+        .click();
+
+      // Check for clear cache index modal
+      cy.contains("Clear cache");
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').should("not.be.disabled");
+      // click to clear caches
+      cy.get('[data-test-subj="ClearCacheConfirmButton"]').click();
+      // Check for success toast
+      cy.contains(`Cache for ${SAMPLE_ALIAS_PREFIX}-0 has been successfully cleared.`);
+    });
+  });
+
   describe("can edit / delete a alias", () => {
     it("successfully", () => {
       cy.get('[placeholder="Search..."]').type(`${SAMPLE_ALIAS_PREFIX}-0{enter}`);
@@ -94,6 +119,92 @@ describe("Aliases", () => {
         .end();
 
       cy.get('[data-test-subj="7 more"]').should("exist");
+    });
+  });
+
+  describe("can flush an alias", () => {
+    it("successfully flush an index", () => {
+      let sample_alias = `${SAMPLE_ALIAS_PREFIX}-${1}`;
+      // Sort all aliases in asc order to make it at first page
+      cy.contains("Alias name").click();
+      // Confirm we have our initial alias
+      cy.contains(sample_alias);
+      // index a test doc
+      cy.request({
+        method: "POST",
+        url: `${Cypress.env("openSearchUrl")}/${sample_alias}/_doc`,
+        headers: {
+          "content-type": "application/json;charset=UTF-8",
+        },
+        body: { test: "test" },
+      });
+
+      // confirm uncommitted_operations is 1 after indexing doc
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/${sample_alias}/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(1);
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be disabled if no items selected
+      cy.get('[data-test-subj="Flush Action"]').should("have.class", "euiContextMenuItem-isDisabled");
+
+      // Select an alias
+      cy.get(`[data-test-subj="checkboxSelectRow-${sample_alias}"]`).check({
+        force: true,
+      });
+
+      cy.get('[data-test-subj="moreAction"]').click();
+      // Flush btn should be enabled
+      cy.get('[data-test-subj="Flush Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
+
+      // Check for flush index modal
+      cy.contains("Flush alias");
+
+      cy.get('[data-test-subj="flushConfirmButton"]').click();
+
+      // Check for success toast
+      cy.contains(`The alias ${sample_alias} has been successfully flushed.`);
+
+      // confirm uncommitted_operations is 0 after flush
+      cy.request({
+        method: "GET",
+        url: `${Cypress.env("openSearchUrl")}/${sample_alias}/_stats/translog`,
+      }).then((response) => {
+        let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
+        let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
+        expect(num).to.equal(0);
+      });
+    });
+  });
+
+  describe("can refresh aliases", () => {
+    it("successfully", () => {
+      cy.get('[placeholder="Search..."]').type(`${SAMPLE_ALIAS_PREFIX}-1{enter}`);
+      cy.contains(`${SAMPLE_ALIAS_PREFIX}-10`);
+      cy.contains(`${SAMPLE_ALIAS_PREFIX}-11`);
+
+      // If no alias is selected, refresh button is disabled
+      cy.get('[data-test-subj="moreAction"] button').click().get('[data-test-subj="refreshAction"]').should("be.disabled").end();
+
+      // Refresh multiple aliases
+      cy.get(`#_selection_column_${SAMPLE_ALIAS_PREFIX}-10-checkbox`)
+        .click()
+        .get(`#_selection_column_${SAMPLE_ALIAS_PREFIX}-11-checkbox`)
+        .click()
+        .get('[data-test-subj="moreAction"] button')
+        .click()
+        .get('[data-test-subj="refreshAction"]')
+        .click()
+        .get('[data-test-subj="refreshConfirmButton"]')
+        .click()
+        .end();
+
+      cy.contains(`2 aliases [${SAMPLE_ALIAS_PREFIX}-10, ${SAMPLE_ALIAS_PREFIX}-11] have been successfully refreshed.`).end();
     });
   });
 

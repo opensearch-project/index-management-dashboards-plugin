@@ -79,7 +79,7 @@ export const submitTemplate = async (props: { value: TemplateItem; isEdit: boole
     endpoint: "transport.request",
     data: {
       method: props.isEdit ? "POST" : "PUT",
-      path: `_index_template/${name}`,
+      path: `/_index_template/${name}`,
       body: formatTemplateToSubmitPayload(props.value),
     },
   });
@@ -96,7 +96,7 @@ export const getTemplate = async (props: {
     endpoint: "transport.request",
     data: {
       method: "GET",
-      path: `_index_template/${props.templateName}?flat_settings=true`,
+      path: `/_index_template/${props.templateName}?flat_settings=true`,
     },
   });
   let error: string = "";
@@ -138,7 +138,7 @@ export const simulateTemplate = (props: { template: TemplateItem; commonService:
       endpoint: "transport.request",
       data: {
         method: "POST",
-        path: `_index_template/_simulate`,
+        path: `/_index_template/_simulate`,
         body: payload,
       },
     })

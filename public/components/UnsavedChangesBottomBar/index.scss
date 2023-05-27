@@ -1,0 +1,12 @@
+.ISM-unsaved-changes-blocks {
+    width: 4px;
+    height: 16px;
+    display: inline-block;
+    margin-right: 8px;
+    &.warning {
+        background-color: $ouiColorWarning;
+    }
+    &.danger {
+        background-color: $ouiColorDanger;
+    }
+}

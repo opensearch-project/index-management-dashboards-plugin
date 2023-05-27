@@ -1,0 +1,648 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Notifications /> spec View without permission 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h1
+        class="euiTitle euiTitle--large"
+      >
+        Notification settings
+      </h1>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Configure the default notification settings on index operation statuses such as failed or completed. You can configure additional notification settings while performing an index operation.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <a
+        class="euiButton euiButton--primary"
+        href="notifications-dashboards#/channels"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          EuiIconMock
+          <span
+            class="euiButton__text"
+          >
+            Manage channels
+          </span>
+        </span>
+      </a>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  >
+    <div
+      class="euiEmptyPrompt"
+    >
+      EuiIconMock
+      <div
+        class="euiSpacer euiSpacer--m"
+      />
+      <h2
+        class="euiTitle euiTitle--medium"
+      >
+        Error loading Notification settings
+      </h2>
+      <span
+        class="euiTextColor euiTextColor--subdued"
+      >
+        <div
+          class="euiSpacer euiSpacer--m"
+        />
+        <div
+          class="euiText euiText--medium"
+        >
+          <p>
+            You do not have permissions to view Notification settings. Contact your administrator to request permissions.
+          </p>
+        </div>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Notifications /> spec renders 1`] = `
+<div>
+  <div
+    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--justifyContentSpaceBetween euiFlexGroup--directionRow euiFlexGroup--responsive"
+  >
+    <div
+      class="euiFlexItem"
+    >
+      <h1
+        class="euiTitle euiTitle--large"
+      >
+        Notification settings
+      </h1>
+      <div
+        class="euiFormRow euiFormRow--fullWidth"
+        id="some_html_id-row"
+      >
+        <div
+          class="euiFormRow__fieldWrapper"
+        >
+          <div
+            class="euiFormHelpText euiFormRow__text"
+            style="padding-top: 0px; padding-bottom: 4px;"
+          >
+            Configure the default notification settings on index operation statuses such as failed or completed. You can configure additional notification settings while performing an index operation.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <a
+        class="euiButton euiButton--primary"
+        href="notifications-dashboards#/channels"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <span
+          class="euiButtonContent euiButton__content"
+        >
+          EuiIconMock
+          <span
+            class="euiButton__text"
+          >
+            Manage channels
+          </span>
+        </span>
+      </a>
+    </div>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
+  >
+    <div
+      class="euiText euiText--medium"
+    >
+      <h2>
+        Defaults for index operations
+      </h2>
+    </div>
+    <div
+      class="euiSpacer euiSpacer--l"
+    />
+    <div
+      class="euiDescribedFormGroup euiDescribedFormGroup--fullWidth"
+      role="group"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+          style="max-width: 700px;"
+        >
+          <div
+            class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
+          >
+            <div
+              class="ISM-notifications-first-letter-uppercase"
+            >
+              reindex
+            </div>
+          </div>
+          <div
+            class="euiText euiText--small euiDescribedFormGroup__description"
+          >
+            <div
+              class="euiTextColor euiTextColor--subdued"
+            >
+              Notify when any reindex operations has failed or completed.
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+        >
+          <div
+            class="euiFormRow"
+            id="some_html_id-row"
+          >
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormRow"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="some_html_id"
+                  >
+                    Notify when operation
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  >
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <span
+                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      >
+                        <div
+                          class="euiCheckbox"
+                        >
+                          <input
+                            class="euiCheckbox__input"
+                            data-test-subj="dataSource.0.failure"
+                            id="builtInCheckBoxId-0"
+                            type="checkbox"
+                          />
+                          <div
+                            class="euiCheckbox__square"
+                          />
+                          <label
+                            class="euiCheckbox__label"
+                            for="builtInCheckBoxId-0"
+                          >
+                            Has failed
+                          </label>
+                        </div>
+                      </span>
+                    </div>
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <span
+                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      >
+                        <div
+                          class="euiCheckbox"
+                        >
+                          <input
+                            class="euiCheckbox__input"
+                            data-test-subj="dataSource.0.success"
+                            id="builtInCheckBoxId-1"
+                            type="checkbox"
+                          />
+                          <div
+                            class="euiCheckbox__square"
+                          />
+                          <label
+                            class="euiCheckbox__label"
+                            for="builtInCheckBoxId-1"
+                          >
+                            Has completed
+                          </label>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiDescribedFormGroup euiDescribedFormGroup--fullWidth"
+      role="group"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+          style="max-width: 700px;"
+        >
+          <div
+            class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
+          >
+            <div
+              class="ISM-notifications-first-letter-uppercase"
+            >
+              shrink, split, clone
+            </div>
+          </div>
+          <div
+            class="euiText euiText--small euiDescribedFormGroup__description"
+          >
+            <div
+              class="euiTextColor euiTextColor--subdued"
+            >
+              Notify when any shrink, split, or clone operations has failed or completed.
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+        >
+          <div
+            class="euiFormRow"
+            id="some_html_id-row"
+          >
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormRow"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="some_html_id"
+                  >
+                    Notify when operation
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  >
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <span
+                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      >
+                        <div
+                          class="euiCheckbox"
+                        >
+                          <input
+                            class="euiCheckbox__input"
+                            data-test-subj="dataSource.1.failure"
+                            id="builtInCheckBoxId-2"
+                            type="checkbox"
+                          />
+                          <div
+                            class="euiCheckbox__square"
+                          />
+                          <label
+                            class="euiCheckbox__label"
+                            for="builtInCheckBoxId-2"
+                          >
+                            Has failed
+                          </label>
+                        </div>
+                      </span>
+                    </div>
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <span
+                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      >
+                        <div
+                          class="euiCheckbox"
+                        >
+                          <input
+                            class="euiCheckbox__input"
+                            data-test-subj="dataSource.1.success"
+                            id="builtInCheckBoxId-3"
+                            type="checkbox"
+                          />
+                          <div
+                            class="euiCheckbox__square"
+                          />
+                          <label
+                            class="euiCheckbox__label"
+                            for="builtInCheckBoxId-3"
+                          >
+                            Has completed
+                          </label>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiDescribedFormGroup euiDescribedFormGroup--fullWidth"
+      role="group"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+          style="max-width: 700px;"
+        >
+          <div
+            class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
+          >
+            <div
+              class="ISM-notifications-first-letter-uppercase"
+            >
+              force merge
+            </div>
+          </div>
+          <div
+            class="euiText euiText--small euiDescribedFormGroup__description"
+          >
+            <div
+              class="euiTextColor euiTextColor--subdued"
+            >
+              Notify when any force merge operations has failed or completed.
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+        >
+          <div
+            class="euiFormRow"
+            id="some_html_id-row"
+          >
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormRow"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="some_html_id"
+                  >
+                    Notify when operation
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  >
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <span
+                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      >
+                        <div
+                          class="euiCheckbox"
+                        >
+                          <input
+                            class="euiCheckbox__input"
+                            data-test-subj="dataSource.2.failure"
+                            id="builtInCheckBoxId-4"
+                            type="checkbox"
+                          />
+                          <div
+                            class="euiCheckbox__square"
+                          />
+                          <label
+                            class="euiCheckbox__label"
+                            for="builtInCheckBoxId-4"
+                          >
+                            Has failed
+                          </label>
+                        </div>
+                      </span>
+                    </div>
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <span
+                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      >
+                        <div
+                          class="euiCheckbox"
+                        >
+                          <input
+                            class="euiCheckbox__input"
+                            data-test-subj="dataSource.2.success"
+                            id="builtInCheckBoxId-5"
+                            type="checkbox"
+                          />
+                          <div
+                            class="euiCheckbox__square"
+                          />
+                          <label
+                            class="euiCheckbox__label"
+                            for="builtInCheckBoxId-5"
+                          >
+                            Has completed
+                          </label>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="euiDescribedFormGroup euiDescribedFormGroup--fullWidth"
+      role="group"
+    >
+      <div
+        class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionRow euiFlexGroup--responsive"
+      >
+        <div
+          class="euiFlexItem"
+          style="max-width: 700px;"
+        >
+          <div
+            class="euiTitle euiTitle--xsmall euiDescribedFormGroup__title"
+          >
+            <div
+              class="ISM-notifications-first-letter-uppercase"
+            >
+              open
+            </div>
+          </div>
+          <div
+            class="euiText euiText--small euiDescribedFormGroup__description"
+          >
+            <div
+              class="euiTextColor euiTextColor--subdued"
+            >
+              Notify when any open operations has failed or completed.
+            </div>
+          </div>
+        </div>
+        <div
+          class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
+        >
+          <div
+            class="euiFormRow"
+            id="some_html_id-row"
+          >
+            <div
+              class="euiFormRow__fieldWrapper"
+            >
+              <div
+                class="euiFormRow"
+                id="some_html_id-row"
+              >
+                <div
+                  class="euiFormRow__labelWrapper"
+                >
+                  <label
+                    class="euiFormLabel euiFormRow__label"
+                    for="some_html_id"
+                  >
+                    Notify when operation
+                  </label>
+                </div>
+                <div
+                  class="euiFormRow__fieldWrapper"
+                >
+                  <div
+                    class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsFlexStart euiFlexGroup--directionRow euiFlexGroup--responsive"
+                  >
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <span
+                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      >
+                        <div
+                          class="euiCheckbox"
+                        >
+                          <input
+                            class="euiCheckbox__input"
+                            data-test-subj="dataSource.3.failure"
+                            id="builtInCheckBoxId-6"
+                            type="checkbox"
+                          />
+                          <div
+                            class="euiCheckbox__square"
+                          />
+                          <label
+                            class="euiCheckbox__label"
+                            for="builtInCheckBoxId-6"
+                          >
+                            Has failed
+                          </label>
+                        </div>
+                      </span>
+                    </div>
+                    <div
+                      class="euiFlexItem"
+                    >
+                      <span
+                        class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
+                      >
+                        <div
+                          class="euiCheckbox"
+                        >
+                          <input
+                            class="euiCheckbox__input"
+                            data-test-subj="dataSource.3.success"
+                            id="builtInCheckBoxId-7"
+                            type="checkbox"
+                          />
+                          <div
+                            class="euiCheckbox__square"
+                          />
+                          <label
+                            class="euiCheckbox__label"
+                            for="builtInCheckBoxId-7"
+                          >
+                            Has completed
+                          </label>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

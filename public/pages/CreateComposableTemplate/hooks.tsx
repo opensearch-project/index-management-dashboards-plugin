@@ -93,7 +93,7 @@ export const submitTemplate = async (props: { value: Partial<TemplateItem>; isEd
     endpoint: "transport.request",
     data: {
       method: props.isEdit ? "POST" : "PUT",
-      path: `_component_template/${name}`,
+      path: `/_component_template/${name}`,
       body: {
         ...others,
         template: IndexForm.transformIndexDetailToRemote(template),
@@ -109,7 +109,7 @@ export const getTemplate = async (props: { templateName: string; commonService: 
     endpoint: "transport.request",
     data: {
       method: "GET",
-      path: `_component_template/${props.templateName}?flat_settings=true`,
+      path: `/_component_template/${props.templateName}?flat_settings=true`,
     },
   });
   let error: string = "";

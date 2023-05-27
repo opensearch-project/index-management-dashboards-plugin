@@ -2,30 +2,24 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import React, { ReactChild } from "react";
-import { CallbackType } from "../interface";
+import React from "react";
+import { CallbackType, TaskResult } from "../interface";
 import { ReindexJobMetaData } from "../../models/interfaces";
 import { CommonService } from "../../services";
 import { triggerEvent, EVENT_MAP } from "../utils";
 import { DetailLink } from "../components/DetailLink";
+import { FormatResourceWithClusterInfo } from "../components/FormatResourceWithClusterInfo";
+import { ErrorToastContentForJob } from "../components/ErrorToastContentForJob";
 
-type TaskResult = {
-  found: boolean;
-  _source: {
-    completed: boolean;
-    response: {
-      failures: {
-        cause?: {
-          reason: string;
-        };
-      }[];
-    };
-    error?: {
-      type: string;
+type ReindexTaskResult = TaskResult<{
+  canceled?: string;
+  failures: {
+    cause?: {
       reason: string;
     };
-  };
-};
+    id?: string;
+  }[];
+}>;
 
 export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, { core }) => {
   const extras = job.extras;
@@ -33,70 +27,94 @@ export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, 
   const tasksResult = await commonService.apiCaller<TaskResult>({
     endpoint: "transport.request",
     data: {
-      path: `.tasks/_doc/${extras.taskId}`,
+      path: `/.tasks/_doc/${extras.taskId}`,
       method: "GET",
     },
   });
   if (tasksResult.ok) {
     const { _source, found } = tasksResult.response;
-    const { completed, response, error } = (_source || {}) as TaskResult["_source"];
-    const { failures } = response;
+    const { completed, response, error } = (_source || {}) as ReindexTaskResult["_source"];
+    const { failures, canceled } = response || {};
     if (completed && found) {
-      if (!failures.length && !error?.reason) {
-        if (extras.toastId) {
-          core.notifications.toasts.remove(extras.toastId);
-        }
-        triggerEvent(EVENT_MAP.REINDEX_COMPLETE, job);
-        core.notifications.toasts.addSuccess(
-          {
-            title: ((
-              <>
-                Source {extras.sourceIndex} has been successfully reindexed as{" "}
-                <DetailLink index={extras.destIndex} writingIndex={extras.writingIndex} />
-              </>
-            ) as unknown) as string,
-          },
-          {
-            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
-          }
-        );
-      } else {
-        let errors: ReactChild[] = [];
-        if (failures.length) {
-          errors.push(
-            <ul key="response.failures">
-              {Array.from(new Set(failures.map((item) => item.cause?.reason).filter((item) => item))).map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          );
-        }
+      if (extras.toastId) {
+        core.notifications.toasts.remove(extras.toastId);
+      }
 
-        if (error?.reason) {
-          errors.push(
-            <ul key="error.reason">
-              <li>{error.reason}</li>
-            </ul>
-          );
-        }
-
-        if (extras.toastId) {
-          core.notifications.toasts.remove(extras.toastId);
-        }
+      if (canceled) {
         core.notifications.toasts.addDanger(
           {
+            iconType: "alert",
             title: ((
               <>
-                Reindex from {extras.sourceIndex} to {extras.destIndex} has some errors, please check the errors below:
+                Reindex operation on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has
+                been cancelled
               </>
             ) as unknown) as string,
-            text: ((<div style={{ maxHeight: "30vh", overflowY: "auto" }}>{errors}</div>) as unknown) as string,
+            text: `The reindex job has been cancelled ${canceled}.`,
           },
           {
             toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
           }
         );
+        return true;
       }
+
+      if (failures?.length || error?.reason) {
+        core.notifications.toasts.addDanger(
+          {
+            iconType: "alert",
+            title: ((
+              <>
+                Reindex operation on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has
+                failed
+              </>
+            ) as unknown) as string,
+            text: ((
+              <ErrorToastContentForJob
+                shortError={error?.reason || <>{failures?.length || 0} error(s) were found</>}
+                fullError={
+                  failures?.length ? (
+                    <ul key="response.failures">
+                      {failures.map((item) => (
+                        <li key={item.id}>
+                          {item.id || ""}: {item.cause?.reason}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : undefined
+                }
+              />
+            ) as unknown) as string,
+          },
+          {
+            toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+          }
+        );
+        return true;
+      }
+
+      /**
+       * If goes here, then the reindex is completed
+       */
+      triggerEvent(EVENT_MAP.REINDEX_COMPLETE, job);
+      core.notifications.toasts.addSuccess(
+        {
+          title: ((
+            <>
+              Reindex operation on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has been
+              completed.
+            </>
+          ) as unknown) as string,
+          text: ((
+            <>
+              The reindexed index is <DetailLink index={extras.writingIndex} clusterInfo={extras.clusterInfo} />.
+            </>
+          ) as unknown) as string,
+        },
+        {
+          toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+        }
+      );
       return true;
     }
   }
@@ -109,13 +127,15 @@ export const callbackForReindexTimeout: CallbackType = (job: ReindexJobMetaData,
   if (extras.toastId) {
     core.notifications.toasts.remove(extras.toastId);
   }
-  core.notifications.toasts.addDanger(
+  core.notifications.toasts.addWarning(
     {
       title: ((
         <>
-          Reindex from {extras.sourceIndex} to {extras.destIndex} does not finish in reasonable time, please check the task {extras.taskId}{" "}
-          manually
+          Reindex on <FormatResourceWithClusterInfo resource={extras.sourceIndex} clusterInfo={extras.clusterInfo} /> has timed out.
         </>
+      ) as unknown) as string,
+      text: ((
+        <>The reindex operation has taken more than one hour to complete. To see the latest status, use `GET /_tasks/{extras.taskId}`</>
       ) as unknown) as string,
     },
     {

@@ -110,8 +110,14 @@ export interface IndexItem {
   index: string;
   restore_status?: string;
 }
+
+export interface ClusterInfo {
+  cluster_name?: string;
+}
+
 export interface ReindexJobMetaData extends IJobItemMetadata {
   extras: {
+    clusterInfo: ClusterInfo;
     toastId: string;
     sourceIndex: string;
     destIndex: string;
@@ -123,8 +129,28 @@ export interface ReindexJobMetaData extends IJobItemMetadata {
 
 export interface RecoveryJobMetaData extends IJobItemMetadata {
   extras: {
+    clusterInfo: ClusterInfo;
     toastId: string;
     sourceIndex: string;
     destIndex: string;
+    taskId: string;
+  };
+}
+
+export interface ForceMergeJobMetaData extends IJobItemMetadata {
+  extras: {
+    clusterInfo: ClusterInfo;
+    toastId: string;
+    sourceIndex: string[];
+    taskId: string;
+  };
+}
+
+export interface OpenJobMetaData extends IJobItemMetadata {
+  extras: {
+    clusterInfo: ClusterInfo;
+    toastId: string;
+    indexes: string[];
+    taskId: string;
   };
 }

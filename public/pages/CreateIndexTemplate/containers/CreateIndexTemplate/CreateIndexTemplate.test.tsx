@@ -94,7 +94,7 @@ describe("<CreateIndexTemplate /> spec", () => {
           endpoint: "transport.request",
           data: {
             method: "PUT",
-            path: "_index_template/good_template",
+            path: "/_index_template/good_template",
             body: {
               _meta: {
                 flow: "simple",

@@ -3,17 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import {
-  EuiButton,
-  EuiButtonEmpty,
-  EuiButtonIcon,
-  EuiCallOut,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiSpacer,
-  EuiText,
-  EuiTitle,
-} from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
 import _ from "lodash";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -24,12 +14,16 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import ForceMergeAdvancedOptions from "../../components/ForceMergeAdvancedOptions";
 import IndexSelect from "../../components/IndexSelect";
 import { checkNotReadOnlyIndexes, getIndexOptions } from "../../utils/helper";
-import { BrowserServices } from "../../../../models/interfaces";
+import { BrowserServices, ForceMergeJobMetaData } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
 import useField from "../../../../lib/field";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
-import { Modal } from "../../../../components/Modal";
 import { IndexItem } from "../../../../../models/interfaces";
+import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
+import { ListenType } from "../../../../lib/JobScheduler";
+import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
+import { ActionType } from "../../../Notifications/constant";
+import { getClusterInfo } from "../../../../utils/helpers";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -50,6 +44,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   >([]);
   const { indexes = "" } = props.match.params;
   const destroyedRef = useRef(false);
+  const notificationRef = useRef<NotificationConfigRef | null>(null);
   const field = useField({
     values: {
       flush: true,
@@ -69,6 +64,12 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   };
   const onClickAction = async () => {
     const { errors, values } = await field.validatePromise();
+    if (advancedSettingsOpen) {
+      const notificationResult = await notificationRef.current?.validatePromise();
+      if (notificationResult?.errors) {
+        return;
+      }
+    }
     if (errors) {
       const errorsKey = Object.keys(errors);
       if (errorsKey.includes("max_num_segments")) {
@@ -77,88 +78,40 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       return;
     }
     setExecuting(true);
-    const { indexes, ...others } = values as { indexes: { label: string }[] };
+    const { indexes, ...others } = values;
     const result = await services.commonService.apiCaller<{
-      _shards?: {
-        successful: number;
-        total: number;
-        failed: number;
-        failures?: {
-          index: string;
-          status: string;
-          shard: number;
-        }[];
-      };
+      task: string;
     }>({
-      endpoint: "indices.forcemerge",
+      endpoint: "transport.request",
       data: {
-        index: indexes,
-        ...others,
+        path: `/${indexes.join(",")}/_forcemerge?wait_for_completion=false`,
+        method: "POST",
+        body: others,
       },
     });
     if (result && result.ok) {
-      const { _shards } = result.response || {};
-      const { successful = 0, total = 0, failures = [] } = _shards || {};
-      if (successful === total) {
-        context.notifications.toasts.addSuccess("The indexes are successfully force merged.");
-      } else {
-        context.notifications.toasts.addWarning({
-          title: "Some shards could not be force merged",
-          text: ((
-            <>
-              <div>
-                {total - successful} out of {total} could not be force merged.
-              </div>
-              <EuiSpacer />
-              <EuiButton
-                onClick={() => {
-                  Modal.show({
-                    locale: {
-                      ok: "Close",
-                    },
-                    title: "Some shards could not be force merged",
-                    content: (
-                      <EuiText>
-                        <div>
-                          {total - successful} out of {total} could not be force merged. The following reasons may prevent shards from
-                          performing a force merge:
-                        </div>
-                        <ul>
-                          {failures.map((item) => (
-                            <li key={`${item.index}-${item.index}-${item.status}`}>
-                              The shard {item.shard} of index {item.index} failed to merge because of {item.status}.
-                            </li>
-                          ))}
-                          <li>Some shards are unassigned.</li>
-                          <li>
-                            Insufficient disk space: Force merging requires disk space to create a new, larger segment. If the disk does not
-                            have enough space, the merge process may fail.
-                          </li>
-                          <li>
-                            Index read-only: If the index is marked as read-only, a force merge operation cannot modify the index, and the
-                            merge process will fail.
-                          </li>
-                          <li>
-                            Too many open files: The operating system may limit the number of files that a process can have open
-                            simultaneously, and a force merge operation may exceed this limit, causing the merge process to fail.
-                          </li>
-                          <li>
-                            Index corruption: If the index is corrupted or has some inconsistencies, the force merge operation may fail.
-                          </li>
-                        </ul>
-                      </EuiText>
-                    ),
-                  });
-                }}
-                style={{ float: "right" }}
-              >
-                View details
-              </EuiButton>
-            </>
-          ) as unknown) as string,
-          iconType: "",
+      const toast = `Successfully started force merging ${indexes.join(", ")}.`;
+      const toastInstance = context.notifications.toasts.addSuccess(toast, {
+        toastLifeTimeMs: 1000 * 60 * 60 * 24 * 5,
+      });
+      if (advancedSettingsOpen) {
+        notificationRef.current?.associateWithTask({
+          taskId: result.response?.task,
         });
       }
+      const clusterInfo = await getClusterInfo({
+        commonService: services.commonService,
+      });
+      await jobSchedulerInstance.addJob({
+        type: ListenType.FORCE_MERGE,
+        extras: {
+          clusterInfo,
+          toastId: toastInstance.id,
+          sourceIndex: indexes,
+          taskId: result.response?.task,
+        },
+        interval: 30000,
+      } as ForceMergeJobMetaData);
       props.history.push(ROUTES.INDICES);
     } else {
       context.notifications.toasts.addDanger(result.error);
@@ -265,7 +218,16 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
 
       <EuiSpacer />
 
-      <ContentPanel title={advanceTitle}>{advancedSettingsOpen && <ForceMergeAdvancedOptions field={field} />}</ContentPanel>
+      <ContentPanel title={advanceTitle} noExtraPadding>
+        {advancedSettingsOpen && (
+          <>
+            <EuiSpacer size="s" />
+            <ForceMergeAdvancedOptions field={field} />
+            <NotificationConfig ref={notificationRef} actionType={ActionType.FORCEMERGE} />
+            <EuiSpacer size="s" />
+          </>
+        )}
+      </ContentPanel>
 
       <EuiSpacer />
 

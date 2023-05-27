@@ -3,11 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { configure } from "@testing-library/react";
 
-configure({ testIdAttribute: "data-test-subj" });
+configure({
+  testIdAttribute: "data-test-subj",
+  asyncUtilTimeout: 10000,
+});
 
 jest.mock("@elastic/eui/lib/eui_components/form/form_row/make_id", () => () => "some_make_id");
 
