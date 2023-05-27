@@ -99,13 +99,19 @@ describe("Policies", () => {
       cy.get("button").contains("+ Add action").click({ force: true });
 
       // Select 'Alias' type
-      cy.get(`[data-test-subj="create-state-action-type"]`).select("Alias");
+      cy.get(`[data-test-subj="create-state-action-type"]`).select("Add / remove aliases");
 
       // Confirm 'Add action' button is disabled
       cy.get(`[data-test-subj="flyout-footer-action-button"]`).should("be.disabled");
 
+      // Toggle the add alias combo box
+      cy.get(`[data-test-subj="add-alias-toggle"]`).click({ force: true });
+
       // Enter aliases to add
       cy.get(`[data-test-subj="add-alias-combo-box"]`).click({ force: true }).type(testInputs.add.join("{enter}"));
+
+      // Toggle the add alias combo box
+      cy.get(`[data-test-subj="remove-alias-toggle"]`).click({ force: true });
 
       // Enter aliases to remove
       cy.get(`[data-test-subj="remove-alias-combo-box"]`).click({ force: true }).type(testInputs.remove.join("{enter}"));

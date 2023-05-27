@@ -6,9 +6,10 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
-import { DEFAULT_ALIAS } from "../../utils/constants";
-import { AliasAction, AliasActions, UIAction } from "../../../../../models/interfaces";
-import { actionRepoSingleton } from "../../utils/helpers";
+import userEvent from "@testing-library/user-event";
+import { DEFAULT_ALIAS } from "../../../utils/constants";
+import { AliasAction, AliasActions, UIAction } from "../../../../../../models/interfaces";
+import { actionRepoSingleton } from "../../../utils/helpers";
 
 const TEST_PROPS: UIAction<AliasAction> = { action: DEFAULT_ALIAS } as UIAction<AliasAction>;
 
@@ -26,15 +27,16 @@ describe("AliasUIAction component", () => {
   it("renders with blank action", () => {
     const { container } = render(actionRepoSingleton.getUIAction("alias").render(TEST_PROPS, mockOnChangeAction));
 
+    userEvent.click(screen.getByTestId("add-alias-toggle"));
+    userEvent.click(screen.getByTestId("remove-alias-toggle"));
+
     const addAliasRow = screen.getByTestId("add-alias-row");
     const removeAliasRow = screen.getByTestId("remove-alias-row");
 
-    expect(addAliasRow).toHaveTextContent("Aliases to add");
-    expect(addAliasRow).toHaveTextContent("The provided aliases will be applied to the manage index.");
+    expect(addAliasRow).toHaveTextContent("Select aliases to add to indexes");
     expect(addAliasRow).toHaveTextContent("You can add up to 10 more aliases.");
 
-    expect(removeAliasRow).toHaveTextContent("Aliases to remove");
-    expect(removeAliasRow).toHaveTextContent("The provided aliases will be removed from the manage index.");
+    expect(removeAliasRow).toHaveTextContent("Select aliases to remove from indexes");
     expect(removeAliasRow).toHaveTextContent("You can add up to 10 more aliases.");
 
     expect(container).toMatchSnapshot();

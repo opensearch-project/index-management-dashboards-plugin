@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import AliasUIAction from "./AliasUIAction";
+import AliasUIAction from "./AliasUIAction/AliasUIAction";
 import AllocationUIAction from "./AllocationUIAction";
 import CloseUIAction from "./CloseUIAction";
 import DeleteUIAction from "./DeleteUIAction";

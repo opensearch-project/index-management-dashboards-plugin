@@ -4,10 +4,10 @@
  */
 
 import React, { Component, ChangeEvent } from "react";
-import { EuiText, EuiLink, EuiIcon, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSelect, EuiSpacer } from "@elastic/eui";
+import { EuiText, EuiLink, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSelect, EuiSpacer } from "@elastic/eui";
 import { UIAction, Action } from "../../../../../models/interfaces";
 import TimeoutRetrySettings from "../../components/TimeoutRetrySettings";
-import { actionRepoSingleton, capitalizeFirstLetter } from "../../utils/helpers";
+import { actionRepoSingleton, getActionOptions } from "../../utils/helpers";
 import FlyoutFooter from "../../components/FlyoutFooter";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
 import { ACTIONS_DOCUMENTATION_URL } from "../../../../utils/constants";
@@ -55,15 +55,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
     const { action } = this.state;
     const { editAction } = this.props;
 
-    const actionOptions = actionRepoSingleton.getAllActionTypes().map((key) => {
-      return {
-        value: key,
-        text: key
-          .split("_")
-          .map((str) => capitalizeFirstLetter(str))
-          .join(" "),
-      };
-    });
+    const actionOptions = getActionOptions(actionRepoSingleton);
 
     let bodyTitle = "Add action";
     if (!!editAction) bodyTitle = "Edit action";

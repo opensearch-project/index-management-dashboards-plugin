@@ -325,6 +325,7 @@ export interface UIAction<Data> {
   clone: (action: Data) => UIAction<Data>;
   content: () => JSX.Element | string | null;
   toAction: () => Action;
+  customDisplayText?: string;
 }
 
 export interface ForceMergeAction extends Action {

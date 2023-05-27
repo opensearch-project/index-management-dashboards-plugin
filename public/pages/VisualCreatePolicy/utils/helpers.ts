@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { UIAction, Action, Transition, ISMTemplate, State, Policy } from "../../../../models/interfaces";
+import { Action, ISMTemplate, Policy, State, Transition, UIAction } from "../../../../models/interfaces";
 import {
   ActionType,
   DEFAULT_ALIAS,
@@ -102,6 +102,24 @@ export const getUIAction = (actionType: string): UIAction<any> => {
     default:
       throw new Error(`Action type [${actionType}] not supported`);
   }
+};
+
+export const getActionOptions = (actionRepoSingleton: ActionRepository) => {
+  return actionRepoSingleton.getAllActionTypes().map((key) => {
+    let uiAction;
+    let text = key
+      .split("_")
+      .map((str) => capitalizeFirstLetter(str))
+      .join(" ");
+    try {
+      uiAction = getUIAction(key)?.customDisplayText;
+      if (uiAction !== undefined) text = uiAction;
+    } catch (e) {}
+    return {
+      value: key,
+      text: text,
+    };
+  });
 };
 
 class ActionRepository {

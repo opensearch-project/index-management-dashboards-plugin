@@ -3,34 +3,61 @@
 exports[`AliasUIAction component renders with blank action 1`] = `
 <div>
   <div
+    class="euiSwitch"
+  >
+    <button
+      aria-checked="true"
+      aria-labelledby="some_html_id"
+      class="euiSwitch__button"
+      data-test-subj="add-alias-toggle"
+      id="some_html_id"
+      role="switch"
+      type="button"
+    >
+      <span
+        class="euiSwitch__body"
+      >
+        <span
+          class="euiSwitch__thumb"
+        />
+        <span
+          class="euiSwitch__track"
+        >
+          EuiIconMock
+          EuiIconMock
+        </span>
+      </span>
+    </button>
+    <span
+      class="euiSwitch__label"
+      id="some_html_id"
+    >
+      Add aliases
+    </span>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--m"
+  />
+  <div
     class="euiFormRow euiFormRow--fullWidth"
     data-test-subj="add-alias-row"
     id="some_html_id-row"
     style="max-width: 100%;"
   >
     <div
+      class="euiFormRow__labelWrapper"
+    >
+      <label
+        aria-invalid="false"
+        class="euiFormLabel euiFormRow__label"
+        for="some_html_id"
+      >
+        Select aliases to add to indexes
+      </label>
+    </div>
+    <div
       class="euiFormRow__fieldWrapper"
     >
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
-        >
-          Aliases to add
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
-          >
-            The provided aliases will be applied to the manage index.
-             
-          </span>
-        </p>
-      </div>
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
@@ -52,7 +79,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
               <p
                 class="euiComboBoxPlaceholder"
               >
-                Enter aliases to apply
+                Enter aliases to add
               </p>
               <div
                 class="euiComboBox__input"
@@ -85,7 +112,43 @@ exports[`AliasUIAction component renders with blank action 1`] = `
     </div>
   </div>
   <div
-    class="euiSpacer euiSpacer--s"
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiSwitch"
+  >
+    <button
+      aria-checked="true"
+      aria-labelledby="some_html_id"
+      class="euiSwitch__button"
+      data-test-subj="remove-alias-toggle"
+      id="some_html_id"
+      role="switch"
+      type="button"
+    >
+      <span
+        class="euiSwitch__body"
+      >
+        <span
+          class="euiSwitch__thumb"
+        />
+        <span
+          class="euiSwitch__track"
+        >
+          EuiIconMock
+          EuiIconMock
+        </span>
+      </span>
+    </button>
+    <span
+      class="euiSwitch__label"
+      id="some_html_id"
+    >
+      Remove aliases
+    </span>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--m"
   />
   <div
     class="euiFormRow euiFormRow--fullWidth"
@@ -94,28 +157,19 @@ exports[`AliasUIAction component renders with blank action 1`] = `
     style="max-width: 100%;"
   >
     <div
+      class="euiFormRow__labelWrapper"
+    >
+      <label
+        aria-invalid="false"
+        class="euiFormLabel euiFormRow__label"
+        for="some_html_id"
+      >
+        Select aliases to remove from indexes
+      </label>
+    </div>
+    <div
       class="euiFormRow__fieldWrapper"
     >
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
-        >
-          Aliases to remove
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
-          >
-            The provided aliases will be removed from the manage index.
-             
-          </span>
-        </p>
-      </div>
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
@@ -175,34 +229,61 @@ exports[`AliasUIAction component renders with blank action 1`] = `
 exports[`AliasUIAction component renders with pre-defined actions 1`] = `
 <div>
   <div
+    class="euiSwitch"
+  >
+    <button
+      aria-checked="true"
+      aria-labelledby="some_html_id"
+      class="euiSwitch__button"
+      data-test-subj="add-alias-toggle"
+      id="some_html_id"
+      role="switch"
+      type="button"
+    >
+      <span
+        class="euiSwitch__body"
+      >
+        <span
+          class="euiSwitch__thumb"
+        />
+        <span
+          class="euiSwitch__track"
+        >
+          EuiIconMock
+          EuiIconMock
+        </span>
+      </span>
+    </button>
+    <span
+      class="euiSwitch__label"
+      id="some_html_id"
+    >
+      Add aliases
+    </span>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--m"
+  />
+  <div
     class="euiFormRow euiFormRow--fullWidth"
     data-test-subj="add-alias-row"
     id="some_html_id-row"
     style="max-width: 100%;"
   >
     <div
+      class="euiFormRow__labelWrapper"
+    >
+      <label
+        aria-invalid="false"
+        class="euiFormLabel euiFormRow__label"
+        for="some_html_id"
+      >
+        Select aliases to add to indexes
+      </label>
+    </div>
+    <div
       class="euiFormRow__fieldWrapper"
     >
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
-        >
-          Aliases to add
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
-          >
-            The provided aliases will be applied to the manage index.
-             
-          </span>
-        </p>
-      </div>
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
@@ -374,7 +455,43 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
     </div>
   </div>
   <div
-    class="euiSpacer euiSpacer--s"
+    class="euiSpacer euiSpacer--l"
+  />
+  <div
+    class="euiSwitch"
+  >
+    <button
+      aria-checked="true"
+      aria-labelledby="some_html_id"
+      class="euiSwitch__button"
+      data-test-subj="remove-alias-toggle"
+      id="some_html_id"
+      role="switch"
+      type="button"
+    >
+      <span
+        class="euiSwitch__body"
+      >
+        <span
+          class="euiSwitch__thumb"
+        />
+        <span
+          class="euiSwitch__track"
+        >
+          EuiIconMock
+          EuiIconMock
+        </span>
+      </span>
+    </button>
+    <span
+      class="euiSwitch__label"
+      id="some_html_id"
+    >
+      Remove aliases
+    </span>
+  </div>
+  <div
+    class="euiSpacer euiSpacer--m"
   />
   <div
     class="euiFormRow euiFormRow--fullWidth"
@@ -383,28 +500,19 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
     style="max-width: 100%;"
   >
     <div
+      class="euiFormRow__labelWrapper"
+    >
+      <label
+        aria-invalid="false"
+        class="euiFormLabel euiFormRow__label"
+        for="some_html_id"
+      >
+        Select aliases to remove from indexes
+      </label>
+    </div>
+    <div
       class="euiFormRow__fieldWrapper"
     >
-      <div
-        class="euiText euiText--medium"
-        style="margin-bottom: 5px;"
-      >
-        <h5
-          class="euiFormLabel "
-          style="margin-bottom: 2px;"
-        >
-          Aliases to remove
-        </h5>
-        <p>
-           
-          <span
-            style="font-weight: 200; font-size: 12px;"
-          >
-            The provided aliases will be removed from the manage index.
-             
-          </span>
-        </p>
-      </div>
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
