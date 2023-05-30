@@ -1262,7 +1262,7 @@ describe("<IndicesActions /> spec", () => {
 
     await waitFor(() => {
       expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith({
-        text: "Cannot refresh all open indexes because one or more indexes are in red status.",
+        text: "Cannot refresh all open indexes because [red_index] is in red status.",
         title: "Unable to refresh indexes.",
       });
     });

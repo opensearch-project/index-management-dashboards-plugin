@@ -88,10 +88,16 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps) {
           if (!selectedItems.length) {
             if (!blockedItems.length) {
               setLoading(false);
+            } else if (blockedItems.length === 1) {
+              coreServices.notifications.toasts.addDanger({
+                title: `Unable to refresh indexes.`,
+                text: `Cannot refresh all open indexes because [${blockedItems.join(", ")}] is in red status.`,
+              });
+              onClose();
             } else {
               coreServices.notifications.toasts.addDanger({
                 title: `Unable to refresh indexes.`,
-                text: `Cannot refresh all open indexes because one or more indexes are in red status.`,
+                text: `Cannot refresh all open indexes because [${blockedItems.join(", ")}] are in red status.`,
               });
               onClose();
             }
