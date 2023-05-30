@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiComboBox, EuiComboBoxOptionOption, EuiConfirmModal, EuiFormRow, EuiSpacer, EuiSwitch } from "@elastic/eui";
+import { EuiComboBox, EuiComboBoxOptionOption, EuiFormRow, EuiSpacer, EuiSwitch } from "@elastic/eui";
 import { AliasAction, AliasActionItem, AliasActions, UIAction } from "../../../../../../models/interfaces";
 import AliasUIAction, { MAX_ALIAS_ACTIONS } from "./AliasUIAction";
 import { inputLimitText } from "../../../../CreatePolicy/utils/helpers";
@@ -20,7 +20,6 @@ export interface AliasUIActionComponentProps {
 export interface AliasUIActionComponentState {
   addAliasToggle: boolean;
   removeAliasToggle: boolean;
-  openModal?: AliasActions;
 }
 
 export default class AliasUIActionComponent extends Component<AliasUIActionComponentProps, AliasUIActionComponentState> {
@@ -31,7 +30,6 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
     this.state = {
       addAliasToggle: selectedItems.add?.length > 0,
       removeAliasToggle: selectedItems.remove?.length > 0,
-      openModal: undefined,
     };
   }
 
@@ -80,62 +78,18 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
     );
   };
 
-  onConfirmModal = () => {
-    const { openModal } = this.state;
-    switch (openModal) {
-      case AliasActions.ADD:
-        this.onAddAliasChange([]);
-        break;
-      case AliasActions.REMOVE:
-        this.onRemoveAliasChange([]);
-        break;
-    }
-    this.setState({
-      ...this.state,
-      // Disable the alias toggle
-      [openModal + "AliasToggle"]: false,
-      // Reset the modal
-      openModal: undefined,
-    });
-  };
-
-  renderModal = () => {
-    const { selectedItems } = this.props;
-    const { openModal } = this.state;
-    const aliasCount = (selectedItems[openModal] || []).length;
-    return (
-      <EuiConfirmModal
-        title={`Clear ${aliasCount} ${aliasCount > 1 ? "aliases" : "alias"}?`}
-        cancelButtonText={"Cancel"}
-        onCancel={() => {
-          this.setState({
-            ...this.state,
-            // Reset the modal
-            openModal: undefined,
-          });
-        }}
-        confirmButtonText={"Clear"}
-        onConfirm={this.onConfirmModal}
-        data-test-subj={"clear-aliases-modal"}
-      />
-    );
-  };
-
   render() {
     const { errors, selectedItems } = this.props;
-    const { addAliasToggle, removeAliasToggle, openModal } = this.state;
+    const { addAliasToggle, removeAliasToggle } = this.state;
     return (
       <>
-        {openModal && this.renderModal()}
-
         <EuiSwitch
           label={"Add aliases"}
           checked={addAliasToggle}
           onChange={(e) => {
-            // If the user disables the combo box while there are entries in it,
-            // warn the user that they will be cleared
-            if (addAliasToggle && selectedItems.add?.length > 0) this.setState({ ...this.state, openModal: AliasActions.ADD });
-            else this.setState({ ...this.state, addAliasToggle: e.target.checked });
+            // If the user disables the combo box while there are entries in it, clear the inputs
+            if (addAliasToggle && selectedItems.add?.length > 0) this.onAddAliasChange([]);
+            this.setState({ ...this.state, addAliasToggle: e.target.checked });
           }}
           data-test-subj={"add-alias-toggle"}
         />
@@ -176,10 +130,9 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
           label={"Remove aliases"}
           checked={removeAliasToggle}
           onChange={(e) => {
-            // If the user disables the combo box while there are entries in it,
-            // warn the user that they will be cleared
-            if (removeAliasToggle && selectedItems.remove?.length > 0) this.setState({ ...this.state, openModal: AliasActions.REMOVE });
-            else this.setState({ ...this.state, removeAliasToggle: e.target.checked });
+            // If the user disables the combo box while there are entries in it, clear the inputs
+            if (removeAliasToggle && selectedItems.remove?.length > 0) this.onRemoveAliasChange([]);
+            this.setState({ ...this.state, removeAliasToggle: e.target.checked });
           }}
           data-test-subj={"remove-alias-toggle"}
         />
