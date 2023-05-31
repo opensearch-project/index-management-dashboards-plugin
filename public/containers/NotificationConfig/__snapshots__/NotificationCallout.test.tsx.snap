@@ -52,7 +52,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
           style="text-decoration: underline;"
           target="_blank"
         >
-          Notifications
+          Notifications settings
           <span
             class="euiScreenReaderOnly"
           >
@@ -84,7 +84,7 @@ exports[`<ChannelNotification /> spec renders with no permission and no default 
       >
         Your administrator may have set default notification settings for 
         shrink
-         operations. Contact your administrator to request access to notification settings.
+         operations. Contact your administrator to request access.
       </span>
     </div>
   </div>
@@ -109,7 +109,7 @@ exports[`<ChannelNotification /> spec renders with view permission and default n
       >
         Your administrator has set default notification settings for 
         shrink
-         operations. Contact your administrator to request access to notification settings.
+         operations. Contact your administrator to request access.
       </span>
     </div>
   </div>
