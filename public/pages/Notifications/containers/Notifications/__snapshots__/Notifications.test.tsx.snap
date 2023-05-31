@@ -24,7 +24,7 @@ exports[`<Notifications /> spec View without permission 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Configure the default notification settings on index operation statuses such as failed or completed. You can configure additional notification settings while performing an index operation.
+            Configure the default notification settings on index operation statuses, such as failed or completed. You can configure additional notification settings while performing an index operation.
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@ exports[`<Notifications /> spec renders 1`] = `
             class="euiFormHelpText euiFormRow__text"
             style="padding-top: 0px; padding-bottom: 4px;"
           >
-            Configure the default notification settings on index operation statuses such as failed or completed. You can configure additional notification settings while performing an index operation.
+            Configure the default notification settings on index operation statuses, such as failed or completed. You can configure additional notification settings while performing an index operation.
           </div>
         </div>
       </div>
@@ -181,7 +181,7 @@ exports[`<Notifications /> spec renders 1`] = `
             <div
               class="euiTextColor euiTextColor--subdued"
             >
-              Notify when any reindex operations has failed or completed.
+              Notify when any reindex operation has failed or completed.
             </div>
           </div>
         </div>
@@ -303,7 +303,7 @@ exports[`<Notifications /> spec renders 1`] = `
             <div
               class="euiTextColor euiTextColor--subdued"
             >
-              Notify when any shrink, split, or clone operations has failed or completed.
+              Notify when any shrink, split, or clone operation has failed or completed.
             </div>
           </div>
         </div>
@@ -425,7 +425,7 @@ exports[`<Notifications /> spec renders 1`] = `
             <div
               class="euiTextColor euiTextColor--subdued"
             >
-              Notify when any force merge operations has failed or completed.
+              Notify when any force merge operation has failed or completed.
             </div>
           </div>
         </div>
@@ -547,7 +547,7 @@ exports[`<Notifications /> spec renders 1`] = `
             <div
               class="euiTextColor euiTextColor--subdued"
             >
-              Notify when any open operations has failed or completed.
+              Notify when any open operation has failed or completed.
             </div>
           </div>
         </div>
