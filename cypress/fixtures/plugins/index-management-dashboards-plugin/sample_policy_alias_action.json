@@ -1,0 +1,41 @@
+{
+  "policy": {
+    "policy_id": "test_alias_policy_id",
+    "description": "Example policy with an alias action.",
+    "default_state": "alias-state",
+    "states": [
+      {
+        "name": "alias-state",
+        "actions": [
+          {
+            "alias": {
+              "actions": [
+                {
+                  "remove": {
+                    "aliases": ["alias1", "alias2"]
+                  }
+                },
+                {
+                  "remove": {
+                    "alias": "alias3"
+                  }
+                },
+                {
+                  "add": {
+                    "aliases": ["alias4", "alias5"]
+                  }
+                },
+                {
+                  "add": {
+                    "aliases": "alias6"
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "transitions": []
+      }
+    ]
+  }
+}

@@ -94,7 +94,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
             <p>
               When the new policy will take effect depends on the current state of indices and the states of the new policy.{" "}
               <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                Learn more <EuiIcon type="popout" size="s" />
+                Learn more
               </EuiLink>
             </p>
           </EuiText>

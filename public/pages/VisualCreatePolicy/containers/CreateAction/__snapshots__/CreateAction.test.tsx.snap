@@ -28,8 +28,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
           rel="noopener noreferrer"
           target="_blank"
         >
-          Learn more 
-          EuiIconMock
+          Learn more
           EuiIconMock
           <span
             class="euiScreenReaderOnly"
@@ -88,6 +87,11 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                   value=""
                 >
                    
+                </option>
+                <option
+                  value="alias"
+                >
+                  Add / remove aliases
                 </option>
                 <option
                   value="allocation"
