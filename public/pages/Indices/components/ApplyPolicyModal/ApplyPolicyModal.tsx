@@ -207,7 +207,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
               <p>
                 This policy includes a rollover action. Specify a rollover alias.{" "}
                 <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                  Learn more <EuiIcon type="popout" size="s" />
+                  Learn more
                 </EuiLink>
               </p>
             </EuiText>
