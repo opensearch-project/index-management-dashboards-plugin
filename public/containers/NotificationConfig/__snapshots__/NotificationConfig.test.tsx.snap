@@ -9,9 +9,7 @@ exports[`<ChannelNotification /> spec renders with create permission and no defa
     <h5
       class="euiTitle euiTitle--small"
     >
-      Notify on 
-      shrink
-       status
+      Notifications
     </h5>
     <div
       class="euiSpacer euiSpacer--s"
@@ -116,9 +114,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
     <h5
       class="euiTitle euiTitle--small"
     >
-      Notify on 
-      shrink
-       status
+      Notifications
     </h5>
     <div
       class="euiSpacer euiSpacer--s"
@@ -145,7 +141,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
             style="text-decoration: underline;"
             target="_blank"
           >
-            Notifications
+            Notifications settings
             <span
               class="euiScreenReaderOnly"
             >
@@ -294,9 +290,7 @@ exports[`<ChannelNotification /> spec renders with full permission and no defaul
     <h5
       class="euiTitle euiTitle--small"
     >
-      Notify on 
-      shrink
-       status
+      Notifications
     </h5>
     <div
       class="euiSpacer euiSpacer--s"
@@ -416,9 +410,7 @@ exports[`<ChannelNotification /> spec renders with view permission and default n
     <h5
       class="euiTitle euiTitle--small"
     >
-      Notify on 
-      shrink
-       status
+      Notifications
     </h5>
     <div
       class="euiSpacer euiSpacer--s"
@@ -436,7 +428,7 @@ exports[`<ChannelNotification /> spec renders with view permission and default n
         >
           Your administrator has set default notification settings for 
           shrink
-           operations. Contact your administrator to request access to notification settings.
+           operations. Contact your administrator to request access.
         </span>
       </div>
     </div>

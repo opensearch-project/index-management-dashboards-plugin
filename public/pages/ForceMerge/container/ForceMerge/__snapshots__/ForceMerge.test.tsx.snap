@@ -20,7 +20,7 @@ exports[`<ForceMerge /> spec renders the component 1`] = `
         class="euiFormHelpText euiFormRow__text"
         style="padding-top: 0px; padding-bottom: 4px;"
       >
-        Manually merge data stream index shards or backing indexes. You can also use force merge to remove deleted documents within indexes.
+        Manually merge shards of indexes or backing indexes of data streams. You can also use force merge to clear up deleted documents within indexes.
       </div>
     </div>
   </div>
