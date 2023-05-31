@@ -123,7 +123,7 @@ const NotificationConfig = (
   const content = (
     <div>
       <EuiTitle size="s">
-        <h5>Notify on {OperationTypeMapTitle[operationType || actionType]} status</h5>
+        <h5>Notifications</h5>
       </EuiTitle>
       <NotificationCallout
         actionType={actionType}

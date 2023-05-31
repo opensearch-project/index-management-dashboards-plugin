@@ -170,7 +170,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       </EuiTitle>
       <CustomFormRow
         fullWidth
-        helpText="Manually merge data stream index shards or backing indexes. You can also use force merge to remove deleted documents within indexes."
+        helpText="Manually merge shards of indexes or backing indexes of data streams. You can also use force merge to clear up deleted documents within indexes."
       >
         <></>
       </CustomFormRow>
