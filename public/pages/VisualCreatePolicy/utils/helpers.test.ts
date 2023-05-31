@@ -75,9 +75,9 @@ class DummyUIAction implements UIAction<DummyAction> {
 }
 
 test("action repository usage", () => {
-  expect(actionRepoSingleton.getAllActionTypes().length).toBe(14);
-  actionRepoSingleton.registerAction("dummy", DummyUIAction, DEFAULT_DUMMY);
   expect(actionRepoSingleton.getAllActionTypes().length).toBe(15);
+  actionRepoSingleton.registerAction("dummy", DummyUIAction, DEFAULT_DUMMY);
+  expect(actionRepoSingleton.getAllActionTypes().length).toBe(16);
   expect(actionRepoSingleton.getUIAction("dummy") instanceof DummyUIAction).toBe(true);
   expect(actionRepoSingleton.getUIActionFromData(DEFAULT_DUMMY) instanceof DummyUIAction).toBe(true);
 });

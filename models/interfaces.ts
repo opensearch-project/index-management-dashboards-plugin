@@ -325,6 +325,7 @@ export interface UIAction<Data> {
   clone: (action: Data) => UIAction<Data>;
   content: () => JSX.Element | string | null;
   toAction: () => Action;
+  customDisplayText?: string;
 }
 
 export interface ForceMergeAction extends Action {
@@ -430,6 +431,24 @@ export interface SnapshotAction extends Action {
 export interface IndexPriorityAction extends Action {
   index_priority: {
     priority?: number;
+  };
+}
+
+export enum AliasActions {
+  ADD = "add",
+  REMOVE = "remove",
+}
+
+export type AliasActionItem = {
+  [key in AliasActions]: {
+    alias?: string;
+    aliases?: string[];
+  };
+};
+
+export interface AliasAction extends Action {
+  alias: {
+    actions: AliasActionItem[];
   };
 }
 

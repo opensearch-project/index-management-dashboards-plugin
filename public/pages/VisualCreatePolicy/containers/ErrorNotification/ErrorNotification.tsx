@@ -121,7 +121,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
             <p style={{ fontWeight: 200 }}>
               You can set up an error notification for when a policy execution fails.{" "}
               <EuiLink href={ERROR_NOTIFICATION_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-                Learn more <EuiIcon type="popout" size="s" />
+                Learn more
               </EuiLink>
             </p>
           </EuiText>

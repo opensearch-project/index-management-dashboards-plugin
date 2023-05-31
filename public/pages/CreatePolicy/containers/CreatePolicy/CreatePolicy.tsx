@@ -197,7 +197,7 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
             over your edits to these indices, please use the "Change Policy" under "Managed Indices" to reapply the policy after submitting
             your edits.{" "}
             <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more <EuiIcon type="popout" size="s" />
+              Learn more
             </EuiLink>
           </p>
         </EuiCallOut>

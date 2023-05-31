@@ -358,6 +358,15 @@ export const TEMPLATE_TYPE = {
 export const INDEX_NAMING_PATTERN = /^[^A-Z-_"*+/\\|?#<>][^A-Z"*+/\\|?#<>]*$/;
 export const TEMPLATE_NAMING_PATTERN = /^[^A-Z_*,\s#][^A-Z*,\s#]*$/;
 
+// Based on the alias validation logic in the core repo:
+// https://github.com/opensearch-project/OpenSearch/blob/main/server/src/main/java/org/opensearch/cluster/metadata/MetadataCreateIndexService.java#L267
+export const ALIAS_NAMING_MESSAGE =
+  "An alias must be 1-255 characters long" +
+  ', cannot be ".", or ".."' +
+  ", cannot start with _, -, or +" +
+  ', and cannot contain spaces, commas, \\, /, *, ?, ", <, >, |, #, or :.';
+export const ALIAS_NAMING_PATTERN = /^(?![_\-\+])(?!.*\.\.)[^\s,\\\/\*\?"<>|#:\.]{1,255}$/;
+
 export const ALIAS_SELECT_RULE = [
   {
     validator: (rules: any, valueObject?: Record<string, any>) => {

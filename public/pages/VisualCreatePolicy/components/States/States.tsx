@@ -46,7 +46,7 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
             <br />
             "Transitions" define when to move from one state to another.{" "}
             <EuiLink href={STATES_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more <EuiIcon type="popout" size="s" />
+              Learn more
             </EuiLink>
           </p>
         </EuiText>

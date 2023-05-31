@@ -96,8 +96,7 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
             rel="noopener noreferrer"
             target="_blank"
           >
-            Learn more 
-            EuiIconMock
+            Learn more
             EuiIconMock
             <span
               class="euiScreenReaderOnly"

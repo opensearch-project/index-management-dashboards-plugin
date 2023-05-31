@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`inputLimitText renders the component with 0 inputs 1`] = `
+<div
+  class="euiText euiText--extraSmall"
+>
+  <div
+    class="euiTextColor euiTextColor--subdued"
+  >
+    You can add up to 10 more aliases.
+  </div>
+</div>
+`;
+
+exports[`inputLimitText renders the component with 0 inputs remaining 1`] = `
+<div
+  class="euiText euiText--extraSmall"
+>
+  <div
+    class="euiTextColor euiTextColor--subdued"
+  >
+    You have reached the limit of 10 aliases.
+  </div>
+</div>
+`;
+
+exports[`inputLimitText renders the component with 1 input remaining 1`] = `
+<div
+  class="euiText euiText--extraSmall"
+>
+  <div
+    class="euiTextColor euiTextColor--subdued"
+  >
+    You can add up to 1 more alias.
+  </div>
+</div>
+`;
