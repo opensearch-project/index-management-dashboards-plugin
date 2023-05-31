@@ -15,6 +15,7 @@ Compatible with OpenSearch 2.8.0
 
 ### Maintenance
 * Bumped version to 2.8. ([#721](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/721))
+* Fix CI on Node.js v18. ([#785](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/785))
 
 ### Documentation
 * 2.8 release note ([#765](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/765))
