@@ -26,7 +26,7 @@ export default function NotificationCallout(props: INotificationCalloutProps) {
       title = (
         <>
           Your administrator may have set default notification settings for {OperationTypeMapTitle[operationType || actionType]} operations.
-          Contact your administrator to request access to notification settings.
+          Contact your administrator to request access.
         </>
       );
       break;
@@ -49,7 +49,7 @@ export default function NotificationCallout(props: INotificationCalloutProps) {
       title = (
         <>
           Your administrator has set default notification settings for {OperationTypeMapTitle[operationType || actionType]} operations.
-          Contact your administrator to request access to notification settings.
+          Contact your administrator to request access.
         </>
       );
       break;
@@ -59,7 +59,7 @@ export default function NotificationCallout(props: INotificationCalloutProps) {
           Default notification settings are set for {OperationTypeMapTitle[operationType || actionType]} operations. Configure default
           settings at{" "}
           <EuiLink style={{ textDecoration: "underline" }} href={`#${ROUTES.NOTIFICATIONS}`} target="_blank" external={false}>
-            Notifications
+            Notifications settings
           </EuiLink>
           .
         </>
