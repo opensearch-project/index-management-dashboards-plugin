@@ -22,10 +22,10 @@ export const ActionTypeMapTitle = {
 };
 
 export const ActionTypeMapDescription = {
-  [ActionType.REINDEX]: "Notify when any reindex operations has failed or completed.",
-  [ActionType.RESIZE]: "Notify when any shrink, split, or clone operations has failed or completed.",
-  [ActionType.FORCEMERGE]: "Notify when any force merge operations has failed or completed.",
-  [ActionType.OPEN]: "Notify when any open operations has failed or completed.",
+  [ActionType.REINDEX]: "Notify when any reindex operation has failed or completed.",
+  [ActionType.RESIZE]: "Notify when any shrink, split, or clone operation has failed or completed.",
+  [ActionType.FORCEMERGE]: "Notify when any force merge operation has failed or completed.",
+  [ActionType.OPEN]: "Notify when any open operation has failed or completed.",
 };
 
 export const OperationTypeMapTitle = {

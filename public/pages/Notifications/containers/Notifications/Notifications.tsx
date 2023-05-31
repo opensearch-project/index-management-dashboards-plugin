@@ -175,7 +175,7 @@ const Notifications = (props: NotificationsProps) => {
             fullWidth
             helpText={
               <>
-                Configure the default notification settings on index operation statuses such as failed or completed. You can configure
+                Configure the default notification settings on index operation statuses, such as failed or completed. You can configure
                 additional notification settings while performing an index operation.
               </>
             }
@@ -214,7 +214,7 @@ const Notifications = (props: NotificationsProps) => {
                     const index = matchResult[1];
                     const itemField = matchResult[2];
                     const notificationItem = (field.getValues().dataSource || [])[parseInt(index, 10)];
-                    const errorMessagePrefix = `${notificationItem.title} - ${FieldMapLabel[itemField as keyof typeof FieldMapLabel]}: `;
+                    const errorMessagePrefix = `${notificationItem.title} — ${FieldMapLabel[itemField as keyof typeof FieldMapLabel]}: `;
                     return [
                       ...total,
                       ...(errors || []).map((item) => (
