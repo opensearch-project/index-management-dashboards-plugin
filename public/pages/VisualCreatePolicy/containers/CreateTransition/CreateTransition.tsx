@@ -91,7 +91,7 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
             Transitions define the conditions that need to be met for a state to change. After all actions in the current state are
             completed, the policy starts checking the conditions for transitions.{" "}
             <EuiLink href={TRANSITION_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-              Learn more <EuiIcon type="popout" size="s" />
+              Learn more
             </EuiLink>
           </EuiText>
 
