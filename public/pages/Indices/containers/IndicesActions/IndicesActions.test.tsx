@@ -17,7 +17,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { createMemoryHistory } from "history";
 import { ROUTES } from "../../../../utils/constants";
 import { buildMockApiCallerForFlush, selectedIndices } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
-import { act } from "react-dom/test-utils";
 
 function renderWithRouter(
   props: Omit<IndicesActionsProps, "history"> & { history?: IndicesActionsProps["history"]; location?: RouteComponentProps["location"] }
@@ -971,7 +970,6 @@ describe("<IndicesActions /> spec", () => {
     );
     userEvent.click(document.querySelector('[data-test-subj="moreAction"] button') as Element);
     userEvent.click(getByTestId("Flush Action"));
-    await act(async () => {});
     await waitFor(() => {
       expect(queryByTestId("Flush Action")).toBeNull();
       expect(getByText("The following indexes will be flushed:")).toBeInTheDocument();
@@ -979,7 +977,7 @@ describe("<IndicesActions /> spec", () => {
     });
   });
 
-  it("renders all indices enabled", async () => {
+  it("renders flush all indices enabled", async () => {
     browserServicesMock.commonService.apiCaller = buildMockApiCallerForFlush();
     const { getByTestId } = render(
       <CoreServicesContext.Provider value={coreServicesMock}>
