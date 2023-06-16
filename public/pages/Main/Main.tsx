@@ -49,7 +49,7 @@ import Notifications from "../Notifications";
 import ComposableTemplates from "../ComposableTemplates";
 import CreateComposableTemplate from "../CreateComposableTemplate";
 
-export enum Navigation {
+enum Navigation {
   IndexManagement = "Index Management",
   IndexPolicies = "State management policies",
   ManagedIndices = "Policy managed indices",
@@ -68,7 +68,7 @@ export enum Navigation {
   ComposableTemplates = "Component templates",
 }
 
-export enum Pathname {
+enum Pathname {
   IndexPolicies = "/index-policies",
   ManagedIndices = "/managed-indices",
   Indices = "/indices",

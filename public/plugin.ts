@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { i18n } from "@osd/i18n";
+import { IndexManagementPluginStart, IndexManagementPluginSetup } from ".";
 import {
   AppMountParameters,
   CoreSetup,
@@ -11,12 +13,9 @@ import {
   Plugin,
   PluginInitializerContext,
 } from "../../../src/core/public";
-import { IndexManagementPluginSetup } from ".";
-import { IndexManagementPluginStart } from ".";
 import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 import { ROUTES } from "./utils/constants";
 import { JobHandlerRegister } from "./JobHandler";
-import { Navigation, Pathname } from "./pages/Main/Main";
 import { ManagementOverViewPluginSetup } from "../../../src/plugins/management_overview/public";
 
 interface IndexManagementSetupDeps {
@@ -36,60 +35,17 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         id: "opensearch_index_management_dashboards",
         title: "Index Management",
         order: 9010,
-        pages: [
-          {
-            title: Navigation.IndexPolicies,
-            url: `#${Pathname.IndexPolicies}`,
-            order: 100,
-          },
-          {
-            title: Navigation.Indices,
-            url: `#${Pathname.Indices}`,
-            order: 200,
-          },
-          {
-            title: Navigation.Templates,
-            url: `#${ROUTES.TEMPLATES}`,
-            order: 300,
-          },
-          {
-            title: Navigation.Aliases,
-            url: `#${ROUTES.ALIASES}`,
-            order: 400,
-          },
-          {
-            title: Navigation.DataStreams,
-            url: `#${ROUTES.DATA_STREAMS}`,
-            order: 500,
-          },
-          {
-            title: Navigation.Rollups,
-            url: `#${ROUTES.ROLLUPS}`,
-            order: 600,
-          },
-        ],
+        description: i18n.translate("indexManagement.description", {
+          defaultMessage: "Manage your indexes with state polices, templates and aliases. You can also rollup or transform your indexes.",
+        }),
       });
       managementOverview.register({
         id: "opensearch_snapshot_management_dashboards",
         title: "Snapshot Management",
         order: 9020,
-        pages: [
-          {
-            title: Navigation.SnapshotPolicies,
-            url: `#${Pathname.SnapshotPolicies}`,
-            order: 100,
-          },
-          {
-            title: Navigation.Snapshots,
-            url: `#${Pathname.Snapshots}`,
-            order: 200,
-          },
-          {
-            title: Navigation.Repositories,
-            url: `#${ROUTES.REPOSITORIES}`,
-            order: 300,
-          },
-        ],
+        description: i18n.translate("snapshotManagement.description", {
+          defaultMessage: "Backup and restore your cluster's indexes and state. Setup a policy to automate snapshot creation and deletion.",
+        }),
       });
     }
 
