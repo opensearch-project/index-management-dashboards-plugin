@@ -36,7 +36,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         title: "Index Management",
         order: 9010,
         description: i18n.translate("indexManagement.description", {
-          defaultMessage: "Manage your indexes with state polices, templates and aliases. You can also rollup or transform your indexes.",
+          defaultMessage: "Manage your indexes with state polices, templates and aliases. You can also roll up or transform your indexes.",
         }),
       });
       managementOverview.register({
@@ -44,7 +44,8 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         title: "Snapshot Management",
         order: 9020,
         description: i18n.translate("snapshotManagement.description", {
-          defaultMessage: "Backup and restore your cluster's indexes and state. Setup a policy to automate snapshot creation and deletion.",
+          defaultMessage:
+            "Back up and restore your cluster's indexes and state. Setup a policy to automate snapshot creation and deletion.",
         }),
       });
     }
