@@ -14,6 +14,8 @@ import {
 } from "../../../../src/core/server";
 import { IAPICaller } from "../../models/interfaces";
 
+const VALID_METHODS = ["HEAD", "GET", "POST", "PUT", "DELETE"];
+
 export interface ICommonCaller {
   <T>(arg: any): T;
 }
@@ -42,6 +44,22 @@ export default class IndexService {
       if (endpoint === "transport.request" && typeof finalData?.path === "string" && !/^\//.test(finalData?.path || "")) {
         finalData.path = `/${finalData.path || ""}`;
       }
+
+      /**
+       * Check valid method here
+       */
+      if (endpoint === "transport.request" && data?.method) {
+        if (VALID_METHODS.indexOf(data.method?.toUpperCase()) === -1) {
+          return response.custom({
+            statusCode: 200,
+            body: {
+              ok: false,
+              error: `Method must be one of, case insensitive ['HEAD', 'GET', 'POST', 'PUT', 'DELETE']. Received '${data.method}'.`,
+            },
+          });
+        }
+      }
+
       const payload = useQuery ? JSON.parse(finalData || "{}") : finalData;
       const commonCallerResponse = await callWithRequest(endpoint, payload || {});
       return response.custom({
