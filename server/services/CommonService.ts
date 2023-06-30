@@ -38,6 +38,20 @@ export default class IndexService {
     try {
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const finalData = data;
+
+      /**
+       * The endpoint must not be an empty string, reference from proxy caller
+       */
+      if (!endpoint) {
+        return response.custom({
+          statusCode: 200,
+          body: {
+            ok: false,
+            error: `Expected non-empty string on endpoint`,
+          },
+        });
+      }
+
       /**
        * Update path parameter to follow RFC/generic HTTP convention
        */
