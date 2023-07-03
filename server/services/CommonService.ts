@@ -63,7 +63,7 @@ export default class CommonService {
        * Check valid method here
        */
       if (endpoint === "transport.request" && data?.method) {
-        if (VALID_METHODS.indexOf(data.method?.toUpperCase()) === -1) {
+        if (VALID_METHODS.indexOf(data.method.toUpperCase?.()) === -1) {
           return response.custom({
             statusCode: 200,
             body: {
