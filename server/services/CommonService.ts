@@ -20,7 +20,7 @@ export interface ICommonCaller {
   <T>(arg: any): T;
 }
 
-export default class IndexService {
+export default class CommonService {
   osDriver: ILegacyCustomClusterClient;
 
   constructor(osDriver: ILegacyCustomClusterClient) {
