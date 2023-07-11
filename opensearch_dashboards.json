@@ -9,6 +9,9 @@
     "navigation",
     "opensearchDashboardsReact"
   ],
+  "optionalPlugins": [
+    "managementOverview"
+  ],
   "server": true,
   "ui": true
 }
