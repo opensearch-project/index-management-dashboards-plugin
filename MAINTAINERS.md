@@ -13,8 +13,11 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Hailong Cui           | [Hailong-am](https://github.com/Hailong-am)   | Amazon      |
 | Binlong Gao           | [gaobinlong](https://github.com/gaobinlong)   | Amazon      |
 | Zhou Su               | [SuZhou-Joe](https://github.com/SuZhou-Joe)   | Amazon      |
-| Amardeepsingh Siglani | [amsiglan](https://github.com/amsiglan) | Amazon      |
-| Thomas Hurney         | [AWSHurneyt](https://github.com/AWSHurneyt) | Amazon      |
+| Amardeepsingh Siglani | [amsiglan](https://github.com/amsiglan)       | Amazon      |
+| Thomas Hurney         | [AWSHurneyt](https://github.com/AWSHurneyt)   | Amazon      |
+| Ashish Agrawal        | [lezzago](https://github.com/lezzago)         | Amazon      |
+| Subhobrata DEY        | [sbcd90](https://github.com/sbcd90)           | Amazon      |
+| Surya Sashank Nistala | [eirsep](https://github.com/eirsep)           | Amazon      |
 
 ## Emeritus
 
