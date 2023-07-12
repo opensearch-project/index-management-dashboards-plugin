@@ -20,4 +20,4 @@ Compatible with OpenSearch 2.9.0
 * Wording changes. ([#784](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/784))
 
 ### Documentation
-* Added 2.9 release notes. ([#]())
+* Added 2.9 release notes. ([#808](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/808))
