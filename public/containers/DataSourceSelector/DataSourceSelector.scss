@@ -1,0 +1,22 @@
+.ism-data-source-selector-section {
+    padding-left: $ouiSizeS;
+    position: relative;
+    padding-right: $ouiSizeS;
+    &::after {
+        right: 0;
+        width: 1px;
+        bottom: -1 * $ouiSizeS;
+        height: $ouiSizeXL;
+        content: '';
+        display: inline-block;
+        position: absolute;
+        border-right: $ouiBorderThin;
+    }
+    .content {
+        display: flex;
+        align-items: center;
+    }
+    .data-source-label {
+        margin-right: $ouiSizeS;
+    }
+}

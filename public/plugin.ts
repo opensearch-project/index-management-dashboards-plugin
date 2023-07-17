@@ -9,6 +9,7 @@ import { IndexManagementPluginStart } from ".";
 import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 import { PLUGIN_NAME, ROUTES } from "./utils/constants";
 import { JobHandlerRegister } from "./JobHandler";
+import { mountDataSourceSelector } from "./containers/DataSourceSelector";
 
 export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
   constructor(private readonly initializerContext: PluginInitializerContext) {
@@ -57,6 +58,16 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
   }
 
   public start(core: CoreStart): IndexManagementPluginStart {
+    core.chrome.navControls.registerRight({
+      order: -100,
+      mount: (element) => {
+        const destroy = mountDataSourceSelector({
+          element,
+          coreStart: core,
+        });
+        return destroy;
+      },
+    });
     Object.freeze(actionRepoSingleton.repository);
     // After this point, calling registerAction will throw error because "Object is not extensible"
     return {};

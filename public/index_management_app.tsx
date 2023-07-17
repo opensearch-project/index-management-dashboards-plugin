@@ -23,6 +23,7 @@ import Main from "./pages/Main";
 import { CoreServicesContext } from "./components/core_services";
 import { PLUGIN_NAME } from "./utils/constants";
 import { MDSIntercept } from "./utils/MDSIntercept";
+import { getDataSource } from "./containers/DataSourceSelector/utils";
 import "./app.scss";
 
 export function renderApp(coreStart: CoreStart, params: AppMountParameters, landingPage: string) {
@@ -30,7 +31,7 @@ export function renderApp(coreStart: CoreStart, params: AppMountParameters, land
   const mdsInterceptInstance = new MDSIntercept({
     pluginId: PLUGIN_NAME,
     http,
-    getDataSourceId: () => "e22a0790-cf97-11ed-acf6-ed047b89ac83",
+    getDataSourceId: () => getDataSource(),
   });
   mdsInterceptInstance.start();
 
