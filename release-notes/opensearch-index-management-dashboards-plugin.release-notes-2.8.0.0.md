@@ -3,17 +3,19 @@
 Compatible with OpenSearch 2.8.0
 
 ### Features
-* Feature: Add refresh index operation to UI  ([#762](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/762))
-* Feature: Add clear cache operation to UI  ([#728](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/728))
-* Feature: Add flush index operation to UI  ([#757](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/757),[#719](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/719),[#752](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/752),[#755](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/755))
-* Feature: Add notification settings page and runtime notification option for long running index operations  ([#764](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/764),[#763](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/763))
-* Feature: Composable templates enhancement  ([#759](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/759))
+* Feature: Add refresh index operation to UI  ([#761](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/761))
+* Feature: Add clear cache operation to UI  ([#728](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/728),[#773](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/773))
+* Feature: Add flush index operation to UI  ([#713](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/713),[#718](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/718),[#751](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/751),[#753](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/753),[#779](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/779))
+* Feature: Add notification settings page and runtime notification option for long running index operations  ([#731](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/731),[#732](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/732)),[#784](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/784))
+* Feature: Composable templates enhancement  ([#730](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/730))
+* Implemented alias action UX. ([#754](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/754))
 
 ### Bug Fixes
 * Update path parameter to follow RFC/generic HTTP convention. ([#742](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/742))
 
 ### Maintenance
 * Bumped version to 2.8. ([#721](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/721))
+* Fix CI on Node.js v18. ([#785](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/785))
 
 ### Documentation
 * 2.8 release note ([#765](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/765))

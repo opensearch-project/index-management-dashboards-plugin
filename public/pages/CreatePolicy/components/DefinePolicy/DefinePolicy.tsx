@@ -53,7 +53,7 @@ const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError }: Defi
           You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
           "Transitions" define when to move from one state to another.{" "}
           <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
-            Learn more <EuiIcon type="popout" size="s" />
+            Learn more
           </EuiLink>
         </p>
       </EuiText>

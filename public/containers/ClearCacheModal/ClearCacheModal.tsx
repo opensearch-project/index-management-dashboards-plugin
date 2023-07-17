@@ -23,7 +23,7 @@ import {
   EuiSpacer,
 } from "@elastic/eui";
 
-interface ClearCacheModalProps {
+export interface ClearCacheModalProps {
   selectedItems: CatIndex[] | DataStream[] | IAlias[];
   visible: boolean;
   onClose: () => void;
@@ -36,7 +36,7 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
   const [blockHint, setBlockHint] = useState("");
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -49,7 +49,6 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
       INDEX_OP_BLOCKS_TYPE.READ_ONLY_ALLOW_DELETE,
     ];
     if (!!services && visible) {
-      setLoading(true);
       switch (type) {
         case INDEX_OP_TARGET_TYPE.DATA_STREAM:
           setHint("Cache will be cleared for the following data streams.");
@@ -106,7 +105,7 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
       setBlockedItems([] as string[]);
       setLoading(true);
     }
-  }, [services, visible, type, selectedItems, setLoading]);
+  }, [services, visible, type, selectedItems]);
 
   const onConfirm = useCallback(async () => {
     if (!!services) {
