@@ -14,8 +14,9 @@ import {
   PluginInitializerContext,
 } from "../../../src/core/public";
 import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
-import { ROUTES } from "./utils/constants";
+import { PLUGIN_NAME, ROUTES } from "./utils/constants";
 import { JobHandlerRegister } from "./JobHandler";
+import { mountDataSourceSelector } from "./containers/DataSourceSelector";
 import { ManagementOverViewPluginSetup } from "../../../src/plugins/management_overview/public";
 
 interface IndexManagementSetupDeps {
@@ -51,7 +52,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
     }
 
     core.application.register({
-      id: "opensearch_index_management_dashboards",
+      id: PLUGIN_NAME,
       title: "Index Management",
       order: 9010,
       category: DEFAULT_APP_CATEGORIES.management,
@@ -82,6 +83,16 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
   }
 
   public start(core: CoreStart): IndexManagementPluginStart {
+    core.chrome.navControls.registerRight({
+      order: -100,
+      mount: (element) => {
+        const destroy = mountDataSourceSelector({
+          element,
+          coreStart: core,
+        });
+        return destroy;
+      },
+    });
     Object.freeze(actionRepoSingleton.repository);
     // After this point, calling registerAction will throw error because "Object is not extensible"
     return {};
