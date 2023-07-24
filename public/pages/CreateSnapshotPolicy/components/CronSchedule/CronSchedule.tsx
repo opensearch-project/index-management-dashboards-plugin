@@ -55,6 +55,25 @@ const CronSchedule = ({
   const [dayOfWeek, setWeek] = useState(initWeek);
   const [dayOfMonth, setMonth] = useState(initMonth);
 
+  // When edit policy is clicked, during the initial render DEFAULT values get passed
+  // As a result when the actual policy details are passed, the state does not get updated and we end up
+  // showing incorrect values in schedule controls.
+  if (initHour !== hour) {
+    setHour(initHour);
+  }
+
+  if (initMin !== minute) {
+    setMinute(initMin);
+  }
+
+  if (initWeek !== dayOfWeek) {
+    setWeek(initWeek);
+  }
+
+  if (initMonth !== dayOfMonth) {
+    setMonth(initMonth);
+  }
+
   useEffect(() => {
     changeCron();
   }, [minute, hour, dayOfWeek, dayOfMonth]);
