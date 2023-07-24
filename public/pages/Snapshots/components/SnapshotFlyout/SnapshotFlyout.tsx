@@ -67,7 +67,7 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
   };
 
   render() {
-    const { onCloseFlyout } = this.props;
+    const { onCloseFlyout, repository } = this.props;
     const { snapshot } = this.state;
 
     const items1 = [
@@ -78,7 +78,7 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
     const items2 = [
       { term: "Start time", value: snapshot?.start_time },
       { term: "End time", value: snapshot?.end_time },
-      { term: "Repository", value: snapshot?.snapshot },
+      { term: "Repository", value: repository },
       {
         term: "Policy",
         value: (
