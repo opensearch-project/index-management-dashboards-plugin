@@ -11,5 +11,6 @@ module.exports = {
     [require("@babel/plugin-transform-runtime"), { regenerator: true }],
     require("@babel/plugin-proposal-class-properties"),
     require("@babel/plugin-proposal-object-rest-spread"),
+    [require("@babel/plugin-transform-modules-commonjs"), { allowTopLevelThis: true }],
   ],
 };
