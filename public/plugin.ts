@@ -9,10 +9,10 @@ import {
   AppMountParameters,
   CoreSetup,
   CoreStart,
-  DEFAULT_APP_CATEGORIES,
   Plugin,
   PluginInitializerContext,
 } from "../../../src/core/public";
+import { DEFAULT_APP_CATEGORIES } from "../../../src/core/utils/default_app_categories";
 import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 import { ROUTES } from "./utils/constants";
 import { JobHandlerRegister } from "./JobHandler";
