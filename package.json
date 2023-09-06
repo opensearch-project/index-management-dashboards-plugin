@@ -48,7 +48,8 @@
     "async": "^3.2.3",
     "semver": "^7.5.3",
     "terser": "^4.8.1",
-    "tough-cookie": "^4.1.3"
+    "tough-cookie": "^4.1.3",
+    "@cypress/request": "^3.0.0"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
