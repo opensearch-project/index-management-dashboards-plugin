@@ -7,7 +7,6 @@ HTMLCollection [
     <section
       aria-label="Page level controls"
       class="euiBottomBar euiBottomBar--fixed euiBottomBar--paddingMedium"
-      style="left: 0px; right: 0px; bottom: 0px;"
     >
       <h2
         class="euiScreenReaderOnly"
