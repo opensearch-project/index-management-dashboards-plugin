@@ -5,6 +5,7 @@
   - [Build](#build)
   - [Run](#run)
   - [Test](#test)
+  - [Backport](#backport)
 
 ## Developer guide
 
@@ -54,6 +55,10 @@ In the base OpenSearch Dashboards directory, run
 - `yarn start --no-base-path`
 
   Starts OpenSearch Dashboards and includes this plugin. OpenSearch Dashboards will be available on `localhost:5601`.
+
+- `yarn start --no-base-path --no-watch --server.host="0.0.0.0"`
+
+  Starts OpenSearch Dashboards and includes this plugin. This setup is suitable for running tests using `Cypress` on `localhost:5601`.
 
 ### Test
 
