@@ -56,11 +56,14 @@ In the base OpenSearch Dashboards directory, run
 
   Starts OpenSearch Dashboards and includes this plugin. OpenSearch Dashboards will be available on `localhost:5601`.
 
+### Test
+
 - `yarn start --no-base-path --no-watch --server.host="0.0.0.0"`
 
-  Starts OpenSearch Dashboards and includes this plugin. This setup is suitable for running tests using `Cypress` on `localhost:5601`.
+  Starts OpenSearch Dashboards and includes this plugin. This setup is necessary for running tests using `Cypress` on `localhost:5601`.
 
-### Test
+  **Important:** The `--server.host="0.0.0.0"` parameter is crucial as it configures the server to accept connections from any IP address, which is necessary for `Cypress` to connect to the dashboard server.
+
 
 - `yarn test:jest`
 
