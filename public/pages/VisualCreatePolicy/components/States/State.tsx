@@ -102,7 +102,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
     }
     paddingSize="l"
   >
-    <EuiFlexGroup direction="column" gutterSize="m">
+    <EuiFlexGroup direction="column" gutterSize="l">
       <EuiFlexItem grow={false}>
         <EuiText>
           <h4>Actions</h4>
