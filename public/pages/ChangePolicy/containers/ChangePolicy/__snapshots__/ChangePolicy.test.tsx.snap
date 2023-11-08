@@ -428,6 +428,25 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
   <div
     class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--justifyContentFlexEnd euiFlexGroup--directionRow euiFlexGroup--responsive"
   >
+    <div 
+      class="euiFlexItem euiFlexItem--flexGrowZero"
+    >
+      <button 
+        class="euiButtonEmpty euiButtonEmpty--primary" 
+        type="button" 
+        data-test-subj="changePolicyCancelButton"
+      >
+        <span 
+          class="euiButtonContent euiButtonEmpty__content"
+        >
+          <span 
+            class="euiButtonEmpty__text"
+          >
+            Cancel
+          </span>
+        </span>
+      </button>
+    </div>
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
