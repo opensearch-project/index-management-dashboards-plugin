@@ -97,13 +97,13 @@ Cypress.Commands.add("login", () => {
 });
 
 Cypress.Commands.add("deleteAllIndices", () => {
-  cy.log("Deleting all indices");
+  cy.log("Deleting all indexes");
   cy.request("DELETE", `${Cypress.env("openSearchUrl")}/index*,sample*,opensearch_dashboards*`);
   cy.request("DELETE", `${Cypress.env("openSearchUrl")}/.opendistro-ism*?expand_wildcards=all`);
 });
 
 Cypress.Commands.add("deleteADSystemIndices", () => {
-  cy.log("Deleting AD system indices");
+  cy.log("Deleting AD system indexes");
   cy.request("DELETE", `${Cypress.env("openSearchUrl")}/.opendistro-anomaly*`);
 });
 
