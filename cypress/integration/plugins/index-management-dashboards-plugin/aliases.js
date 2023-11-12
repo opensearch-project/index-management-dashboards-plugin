@@ -33,6 +33,10 @@ describe("Aliases", () => {
       }
     });
 
+    // Wait for 10 seconds for OSD to start.
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(10000);
+
     // Visit ISM OSD
     cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/aliases`);
 
