@@ -280,6 +280,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
             columns={this.columns}
             pagination={true}
             isSelectable={true}
+            // eslint-disable-next-line no-shadow
             selection={{ onSelectionChange: (selectedItems) => this.setState({ selectedItems }) }}
             search={search}
             loading={loading}

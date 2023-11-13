@@ -1,15 +1,19 @@
-name: Link Checker
+name: Link Checker and ESLint Run
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   linkchecker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Run ESLint Run
+        run: yarn eslint:run
+
       - name: lychee Link Checker
         id: lychee
         uses: lycheeverse/lychee-action@master
@@ -17,5 +21,6 @@ jobs:
           args: --accept=200,403,429 --exclude=localhost "**/*.html" "**/*.md" "**/*.txt" "**/*.json"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
       - name: Fail if there were link errors
         run: exit ${{ steps.lychee.outputs.exit_code }}

@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* eslint-disable prefer-const */
+
 import _ from "lodash";
 import { RequestParams } from "@elastic/elasticsearch";
 import {

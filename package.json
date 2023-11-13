@@ -19,6 +19,7 @@
     "opensearch": "node ../../scripts/opensearch",
     "lint": "node ../../scripts/eslint . && node ../../scripts/stylelint",
     "eslint:fix": "npx eslint '**/*.{ts,tsx}' --fix",
+    "eslint:run": "npx eslint '**/*.{ts,tsx}'",
     "plugin-helpers": "node ../../scripts/plugin_helpers",
     "test:jest": "../../node_modules/.bin/jest --config ./test/jest.config.js",
     "build": "yarn plugin-helpers build",

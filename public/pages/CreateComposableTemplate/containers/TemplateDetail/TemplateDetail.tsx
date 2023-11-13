@@ -98,17 +98,21 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
       };
     }
   };
-  const onClickSubmit = useCallback(async () => {
-    const result = await onSubmit();
-    if (result) {
-      if (result.ok) {
-        coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully created.`);
-        onSubmitSuccess && onSubmitSuccess(values.name);
-      } else {
-        coreServices.notifications.toasts.addDanger(result.error);
+  const onClickSubmit = useCallback(
+    async () => {
+      const result = await onSubmit();
+      if (result) {
+        if (result.ok) {
+          coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully created.`);
+          if (onSubmitSuccess) onSubmitSuccess(values.name);
+        } else {
+          coreServices.notifications.toasts.addDanger(result.error);
+        }
       }
-    }
-  }, [onSubmit]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [onSubmit]
+  );
   useImperativeHandle(ref, () => ({
     submit: onClickSubmit,
   }));
@@ -126,14 +130,18 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
         props.history.replace(ROUTES.COMPOSABLE_TEMPLATES);
       });
   };
-  useEffect(() => {
-    if (isEdit) {
-      refreshTemplate();
-    }
-    return () => {
-      destroyRef.current = true;
-    };
-  }, []);
+  useEffect(
+    () => {
+      if (isEdit) {
+        refreshTemplate();
+      }
+      return () => {
+        destroyRef.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const values: ComponentTemplateEdit = field.getValues();
   const subCompontentProps = {
     ...props,

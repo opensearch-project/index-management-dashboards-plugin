@@ -77,6 +77,7 @@ interface ShrinkIndexProps extends RouteComponentProps {
 interface ShrinkIndexState {
   sourceIndex: CatIndex;
   requestPayload: Required<IndexItem>["settings"];
+  // eslint-disable-next-line @typescript-eslint/ban-types
   sourceIndexSettings: Object;
   loading: boolean;
 }

@@ -124,6 +124,7 @@ describe("helpers spec", () => {
     });
     try {
       await getBlockedIndices(browserServicesMock);
+      // eslint-disable-next-line no-throw-literal
       throw "fail";
     } catch (err) {
       expect(err).toEqual("test");

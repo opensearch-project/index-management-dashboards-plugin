@@ -71,6 +71,7 @@ describe("<AssociatedTemplatesModal /> spec", () => {
           <AssociatedTemplatesModal
             componentTemplate="test_component_template"
             renderProps={({ setVisible }) => (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events
               <div data-test-subj="test" onClick={() => setVisible(true)}>
                 123
               </div>

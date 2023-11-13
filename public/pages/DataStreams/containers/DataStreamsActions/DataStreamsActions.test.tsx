@@ -703,6 +703,7 @@ describe("<DataStreamsActions /> spec", () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         if (payload.endpoint === "cluster.state") {
+          // eslint-disable-next-line no-throw-literal
           throw "failed to call cluster.state";
         } else if (payload.endpoint === "indices.refresh") {
           return {
@@ -751,6 +752,7 @@ describe("<DataStreamsActions /> spec", () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         if (payload.endpoint === "cluster.state") {
+          // eslint-disable-next-line no-throw-literal
           throw "failed to call cluster.state";
         } else if (payload.endpoint === "indices.refresh") {
           return {

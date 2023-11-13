@@ -33,6 +33,7 @@ import { getClusterInfo } from "../../../utils/helpers";
 
 export function getURLQueryParams(location: { search: string }): IndicesQueryParams {
   const { from, size, search, sortField, sortDirection, showDataStreams } = queryString.parse(location.search);
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return <IndicesQueryParams>{
     // @ts-ignore
     from: isNaN(parseInt(from, 10)) ? DEFAULT_QUERY_PARAMS.from : parseInt(from, 10),

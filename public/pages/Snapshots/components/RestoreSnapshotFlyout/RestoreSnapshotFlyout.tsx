@@ -18,6 +18,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import {
   EuiComboBoxOptionOption,
   EuiHealth,
@@ -379,7 +381,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const status = snapshot ? snapshot?.state[0] + snapshot?.state.slice(1).toLowerCase() : undefined;
     const restoreDisabled = snapshot?.failed_shards && !snapshot?.partial;
-    const snapshotIndices: IndexItem[] = snapshot?.indices.map((index) => ({ index }));
+    const snapshotIndices: IndexItem[] = snapshot?.indices.map((index) => ({ index })) || [];
 
     return (
       <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m" hideCloseButton>

@@ -26,6 +26,7 @@ import { DEFAULT_QUERY_PARAMS } from "./constants";
 export function getURLQueryParams(location: { search: string }): TransformQueryParams {
   const { from, size, search, sortField, sortDirection } = queryString.parse(location.search);
 
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return <TransformQueryParams>{
     // @ts-ignores
     from: isNaN(parseInt(from, 10)) ? DEFAULT_QUERY_PARAMS.from : parseInt(from, 10),
