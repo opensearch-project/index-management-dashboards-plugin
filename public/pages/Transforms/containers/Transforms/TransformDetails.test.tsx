@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -6,7 +21,7 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter as Router } from "react-router";
+import { MemoryRouter as Router } from "react-router-dom";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -195,7 +210,7 @@ describe("<TransformDetails /> spec", () => {
   }, 30000);
 
   it("can show a started transform job", async () => {
-    let startedJob = testTransform2;
+    const startedJob = testTransform2;
     startedJob.metadata.test1.transform_metadata.status = "init";
 
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
@@ -211,7 +226,7 @@ describe("<TransformDetails /> spec", () => {
   });
 
   it("can show a stopped transform job", async () => {
-    let stoppedJob = testTransform2;
+    const stoppedJob = testTransform2;
     stoppedJob.metadata.test1.transform_metadata.status = "stopped";
 
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({

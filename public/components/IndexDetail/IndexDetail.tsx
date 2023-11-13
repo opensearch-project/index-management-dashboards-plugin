@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -123,13 +138,14 @@ const IndexDetail = (
   const hasEdit = useRef(false);
   const onValueChange = useCallback(
     (name: string | string[], val) => {
-      let finalValue = valueRef.current || {};
+      const finalValue = valueRef.current || {};
       set(finalValue, name, val);
       onChange({ ...finalValue });
       if (name !== "index") {
         hasEdit.current = true;
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onChange, value]
   );
   const destroyRef = useRef<boolean>(false);
@@ -139,68 +155,72 @@ const IndexDetail = (
   const aliasesRef = useRef<IFormGeneratorRef>(null);
   const settingsRef = useRef<IFormGeneratorRef>(null);
   const mappingsRef = useRef<IIndexMappingsRef>(null);
-  const onIndexInputBlur = useCallback(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    if (destroyRef.current) {
-      return;
-    }
-    if (finalValue.index && onSimulateIndexTemplate) {
-      setTemplateSimulateLoading(true);
-      const result = await onSimulateIndexTemplate(finalValue.index);
+  const onIndexInputBlur = useCallback(
+    async () => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
       if (destroyRef.current) {
         return;
       }
-      setTemplateSimulateLoading(false);
-      if (result && result.ok) {
-        let onChangePromise: Promise<IndexItemRemote>;
-        if (hasEdit.current) {
-          onChangePromise = new Promise((resolve) => {
-            Modal.show({
-              title: "Merge your changes with templates?",
-              content:
-                "The index name matches one or more index templates. Index aliases, settings, and mappings are inherited from matching templates. Do you want to merge your changes with templates?",
-              locale: {
-                confirm: "Merge with templates",
-                cancel: "Overwrite by templates",
-              },
-              footer: ["cancel", "confirm"],
-              type: "confirm",
-              "data-test-subj": "simulate-confirm",
-              onCancel: () => resolve(result.response),
-              onOk: () => {
-                const formatValue: IndexItemRemote = {
-                  index: "",
-                  ...finalValue,
-                  mappings: {
-                    properties: transformArrayToObject(finalValue.mappings?.properties || []),
-                  },
-                };
-                const mergedValue: IndexItemRemote = {
-                  index: finalValue.index || "",
-                };
-                merge(mergedValue, result.response, formatValue);
-                resolve(mergedValue);
+      if (finalValue.index && onSimulateIndexTemplate) {
+        setTemplateSimulateLoading(true);
+        const result = await onSimulateIndexTemplate(finalValue.index);
+        if (destroyRef.current) {
+          return;
+        }
+        setTemplateSimulateLoading(false);
+        if (result && result.ok) {
+          let onChangePromise: Promise<IndexItemRemote>;
+          if (hasEdit.current) {
+            onChangePromise = new Promise((resolve) => {
+              Modal.show({
+                title: "Merge your changes with templates?",
+                content:
+                  "The index name matches one or more index templates. Index aliases, settings, and mappings are inherited from matching templates. Do you want to merge your changes with templates?",
+                locale: {
+                  confirm: "Merge with templates",
+                  cancel: "Overwrite by templates",
+                },
+                footer: ["cancel", "confirm"],
+                type: "confirm",
+                "data-test-subj": "simulate-confirm",
+                onCancel: () => resolve(result.response),
+                onOk: () => {
+                  const formatValue: IndexItemRemote = {
+                    index: "",
+                    ...finalValue,
+                    mappings: {
+                      properties: transformArrayToObject(finalValue.mappings?.properties || []),
+                    },
+                  };
+                  const mergedValue: IndexItemRemote = {
+                    index: finalValue.index || "",
+                  };
+                  merge(mergedValue, result.response, formatValue);
+                  resolve(mergedValue);
+                },
+              });
+            });
+          } else {
+            onChangePromise = Promise.resolve(result.response);
+          }
+          onChangePromise.then((data) => {
+            onChange({
+              ...data,
+              mappings: {
+                properties: transformObjectToArray(data?.mappings?.properties || {}),
               },
             });
+            hasEdit.current = false;
+            setIsMatchingTemplate(true);
           });
         } else {
-          onChangePromise = Promise.resolve(result.response);
+          setIsMatchingTemplate(false);
         }
-        onChangePromise.then((data) => {
-          onChange({
-            ...data,
-            mappings: {
-              properties: transformObjectToArray(data?.mappings?.properties || {}),
-            },
-          });
-          hasEdit.current = false;
-          setIsMatchingTemplate(true);
-        });
-      } else {
-        setIsMatchingTemplate(false);
       }
-    }
-  }, [finalValue.index, onSimulateIndexTemplate]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [finalValue.index, onSimulateIndexTemplate]
+  );
   const onImportSettings = async ({ index }: { index: string }) => {
     if (onGetIndexDetail) {
       const indexDetail: IndexItemRemote = await new Promise((resolve) => {
@@ -237,102 +257,106 @@ const IndexDetail = (
   useImperativeHandle(ref, () => ({
     validate: async () => {
       const result = await Promise.all([
-        aliasesRef.current?.validatePromise().then((result) => result.errors),
+        aliasesRef.current?.validatePromise().then((aliasResult) => aliasResult.errors),
         mappingsRef.current?.validate(),
-        settingsRef.current?.validatePromise().then((result) => result.errors),
+        settingsRef.current?.validatePromise().then((settingsResult) => settingsResult.errors),
       ]);
       return result.every((item) => !item);
     },
-    hasUnsavedChanges: (mode: IndicesUpdateMode) => diffJson(oldValue?.[mode], finalValue[mode]),
+    hasUnsavedChanges: (indMode: IndicesUpdateMode) => diffJson(oldValue?.[indMode], finalValue[indMode]),
     getMappingsJSONEditorValue: () => mappingsRef.current?.getJSONEditorValue() || "",
     simulateFromTemplate: onIndexInputBlur,
     importSettings: onImportSettings,
   }));
-  const formFields: IField[] = useMemo(() => {
-    return [
-      {
-        rowProps: {
-          label: "Number of primary shards",
-          helpText: (
-            <>
-              <div>Specify the number of primary shards for the index. Default is 1. </div>
-              <div>The number of primary shards cannot be changed after the index is created.</div>
-            </>
-          ),
-          direction: isEdit ? "hoz" : "ver",
-        },
-        name: "index.number_of_shards",
-        type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) ? "Text" : "Number",
-        options: {
-          rules: [
-            {
-              min: 1,
-              message: "Number of primary shards cannot be smaller than 1.",
-            },
-            {
-              validator(rule, value, values) {
-                if (Number(value) !== parseInt(value)) {
-                  return Promise.reject("Number of primary shards must be an integer.");
-                }
-
-                return Promise.resolve();
+  const formFields: IField[] = useMemo(
+    () => {
+      return [
+        {
+          rowProps: {
+            label: "Number of primary shards",
+            helpText: (
+              <>
+                <div>Specify the number of primary shards for the index. Default is 1. </div>
+                <div>The number of primary shards cannot be changed after the index is created.</div>
+              </>
+            ),
+            direction: isEdit ? "hoz" : "ver",
+          },
+          name: "index.number_of_shards",
+          type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_shards")) ? "Text" : "Number",
+          options: {
+            rules: [
+              {
+                min: 1,
+                message: "Number of primary shards cannot be smaller than 1.",
               },
-            },
-          ],
-          props: {
-            placeholder: "Specify primary shard count.",
-            removeWhenEmpty: true,
-          },
-        },
-      },
-      {
-        rowProps: {
-          label: "Number of replicas",
-          helpText: REPLICA_NUMBER_MESSAGE,
-          direction: isEdit ? "hoz" : "ver",
-        },
-        name: "index.number_of_replicas",
-        type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
-        options: {
-          rules: [
-            {
-              min: 0,
-              message: "Number of replicas cannot be smaller than 0.",
-            },
-            {
-              validator(rule, value, values) {
-                if (Number(value) !== parseInt(value)) {
-                  return Promise.reject("Number of replicas must be an integer.");
-                }
+              {
+                validator(rule, v, values) {
+                  if (Number(v) !== parseInt(v, 10)) {
+                    return Promise.reject("Number of primary shards must be an integer.");
+                  }
 
-                return Promise.resolve();
+                  return Promise.resolve();
+                },
               },
+            ],
+            props: {
+              placeholder: "Specify primary shard count.",
+              removeWhenEmpty: true,
             },
-          ],
-          props: {
-            placeholder: "Specify number of replicas.",
-            removeWhenEmpty: true,
           },
         },
-      },
-      {
-        rowProps: {
-          label: "Refresh interval",
-          helpText:
-            "Specify how often the index should refresh, which publishes the most recent changes and make them available for search. Default is 1 second.",
-          direction: isEdit ? "hoz" : "ver",
-        },
-        name: "index.refresh_interval",
-        type: readonly ? "Text" : "Input",
-        options: {
-          props: {
-            placeholder: "Can be set to -1 to disable refreshing.",
-            removeWhenEmpty: true,
+        {
+          rowProps: {
+            label: "Number of replicas",
+            helpText: REPLICA_NUMBER_MESSAGE,
+            direction: isEdit ? "hoz" : "ver",
+          },
+          name: "index.number_of_replicas",
+          type: readonly || (isEdit && !INDEX_DYNAMIC_SETTINGS.includes("index.number_of_replicas")) ? "Text" : "Number",
+          options: {
+            rules: [
+              {
+                min: 0,
+                message: "Number of replicas cannot be smaller than 0.",
+              },
+              {
+                validator(rule, v, values) {
+                  if (Number(v) !== parseInt(v, 10)) {
+                    return Promise.reject("Number of replicas must be an integer.");
+                  }
+
+                  return Promise.resolve();
+                },
+              },
+            ],
+            props: {
+              placeholder: "Specify number of replicas.",
+              removeWhenEmpty: true,
+            },
           },
         },
-      },
-    ] as IField[];
-  }, [isEdit, finalValue.index, templateSimulateLoading]);
+        {
+          rowProps: {
+            label: "Refresh interval",
+            helpText:
+              "Specify how often the index should refresh, which publishes the most recent changes and make them available for search. Default is 1 second.",
+            direction: isEdit ? "hoz" : "ver",
+          },
+          name: "index.refresh_interval",
+          type: readonly ? "Text" : "Input",
+          options: {
+            props: {
+              placeholder: "Can be set to -1 to disable refreshing.",
+              removeWhenEmpty: true,
+            },
+          },
+        },
+      ] as IField[];
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isEdit, finalValue.index, templateSimulateLoading]
+  );
   useEffect(() => {
     return () => {
       destroyRef.current = true;
@@ -395,7 +419,7 @@ const IndexDetail = (
                     },
                     options: {
                       props: {
-                        refreshOptions: refreshOptions,
+                        refreshOptions,
                       },
                       rules: [...ALIAS_SELECT_RULE],
                     },

@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -98,6 +113,7 @@ describe("<CreatePolicy /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Could not load the policy: some error");
   });
 
+  // eslint-disable-next-line jest/no-identical-title
   it("routes back to policies if getPolicy gracefully fails", async () => {
     browserServicesMock.policyService.getPolicy = jest.fn().mockRejectedValue(new Error("another error"));
     const { getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_id`]);
@@ -203,6 +219,7 @@ describe("<CreatePolicy /> spec", () => {
     await waitFor(() => getByText("bad policy"));
   });
 
+  // eslint-disable-next-line jest/no-identical-title
   it("shows a danger toaster when getting error from create policy", async () => {
     browserServicesMock.policyService.putPolicy = jest.fn().mockRejectedValue(new Error("this is an error"));
     browserServicesMock.policyService.getPolicy = jest

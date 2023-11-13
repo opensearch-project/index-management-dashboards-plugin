@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -35,12 +50,14 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const [advancedSettingsOpen, setAdvancedSettingsOpen] = useState(false);
   const [executing, setExecuting] = useState(false);
   const [notReadOnlyIndexes, setNotReadOnlyIndexes] = useState<
-    [
-      string,
-      {
-        settings: IndexItem["settings"];
-      }
-    ][]
+    Array<
+      [
+        string,
+        {
+          settings: IndexItem["settings"];
+        }
+      ]
+    >
   >([]);
   const { indexes = "" } = props.match.params;
   const destroyedRef = useRef(false);
@@ -78,6 +95,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       return;
     }
     setExecuting(true);
+    // eslint-disable-next-line no-shadow
     const { indexes, ...others } = values;
     const result = await services.commonService.apiCaller<{
       task: string;
@@ -143,25 +161,33 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
     </EuiFlexGroup>
   );
 
-  useEffect(() => {
-    context.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      { ...BREADCRUMBS.FORCE_MERGE, href: `#${props.location.pathname}` },
-    ]);
-    return () => {
-      destroyedRef.current = true;
-    };
-  }, []);
+  useEffect(
+    () => {
+      context.chrome.setBreadcrumbs([
+        BREADCRUMBS.INDEX_MANAGEMENT,
+        BREADCRUMBS.INDICES,
+        { ...BREADCRUMBS.FORCE_MERGE, href: `#${props.location.pathname}` },
+      ]);
+      return () => {
+        destroyedRef.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
-  useEffect(() => {
-    checkNotReadOnlyIndexes({
-      services,
-      indexes: field.getValue("indexes"),
-    }).then((result) => {
-      setNotReadOnlyIndexes(result);
-    });
-  }, [field.getValue("indexes")]);
+  useEffect(
+    () => {
+      checkNotReadOnlyIndexes({
+        services,
+        indexes: field.getValue("indexes"),
+      }).then((result) => {
+        setNotReadOnlyIndexes(result);
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [field.getValue("indexes")]
+  );
 
   return (
     <div style={{ padding: "0px 50px" }}>

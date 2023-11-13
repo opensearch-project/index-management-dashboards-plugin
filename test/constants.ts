@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -255,8 +270,8 @@ export const testTransform2 = {
       interval: {
         period: 1,
         unit: "Minutes",
-        start_time: 1602100553
-      }
+        start_time: 1602100553,
+      },
     },
     metadata_id: null,
     updated_at: 1619725487957,
@@ -265,31 +280,31 @@ export const testTransform2 = {
     source_index: "opensearch_dashboards_sample_data_ecommerce",
     target_index: "test_transform",
     data_selection_query: {
-      match_all: {}
+      match_all: {},
     },
     page_size: 1000,
-    roles: [ ],
+    roles: [],
     groups: [
       {
         terms: {
           source_field: "customer_gender",
-          target_field: "gender"
-        }
+          target_field: "gender",
+        },
       },
       {
         terms: {
           source_field: "day_of_week",
-          target_field: "day"
-        }
-      }
+          target_field: "day",
+        },
+      },
     ],
     aggregations: {
       quantity: {
         sum: {
-          field: "total_quantity"
-        }
-      }
-    }
+          field: "total_quantity",
+        },
+      },
+    },
   },
   metadata: {
     test1: {
@@ -307,9 +322,9 @@ export const testTransform2 = {
           search_time_in_millis: 1168,
         },
       },
-    }
-  }
-}
+    },
+  },
+};
 
 export const testTransformDisabled = {
   _id: "test1",
@@ -323,8 +338,8 @@ export const testTransformDisabled = {
       interval: {
         period: 1,
         unit: "Minutes",
-        start_time: 1602100553
-      }
+        start_time: 1602100553,
+      },
     },
     metadata_id: null,
     updated_at: 1619725487957,
@@ -333,31 +348,31 @@ export const testTransformDisabled = {
     source_index: "opensearch_dashboards_sample_data_ecommerce",
     target_index: "test_transform",
     data_selection_query: {
-      match_all: {}
+      match_all: {},
     },
     page_size: 1000,
-    roles: [ ],
+    roles: [],
     groups: [
       {
         terms: {
           source_field: "customer_gender",
-          target_field: "gender"
-        }
+          target_field: "gender",
+        },
       },
       {
         terms: {
           source_field: "day_of_week",
-          target_field: "day"
-        }
-      }
+          target_field: "day",
+        },
+      },
     ],
     aggregations: {
       quantity: {
         sum: {
-          field: "total_quantity"
-        }
-      }
-    }
+          field: "total_quantity",
+        },
+      },
+    },
   },
   metadata: {
     test1: {
@@ -375,6 +390,6 @@ export const testTransformDisabled = {
           search_time_in_millis: 1168,
         },
       },
-    }
-  }
-}
+    },
+  },
+};

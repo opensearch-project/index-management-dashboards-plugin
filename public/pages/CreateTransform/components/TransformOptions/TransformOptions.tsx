@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -42,8 +57,8 @@ export default function TransformOptions({
   onAggregationSelectionChange,
 }: TransformOptionsProps) {
   const isNumeric = isNumericMapping(type);
-  const isDate = type == "date";
-  const isText = type == "text";
+  const isDate = type === "date";
+  const isText = type === "text";
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [groupSelection] = useState<TransformGroupItem[]>(selectedGroupField);
@@ -53,6 +68,7 @@ export default function TransformOptions({
     setIsPopoverOpen(false);
   };
 
+  // eslint-disable-next-line no-shadow
   const handleGroupSelectionChange = (newAggItem: any, type: TRANSFORM_AGG_TYPE, name: string): void => {
     groupSelection.push(newAggItem);
     onGroupSelectionChange(groupSelection, {

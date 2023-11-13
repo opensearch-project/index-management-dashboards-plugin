@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -22,8 +37,8 @@ interface ChangePolicyProps extends RouteComponentProps {
 
 interface ChangePolicyState {
   selectedPolicies: PolicyOption[];
-  selectedManagedIndices: { label: string; value?: ManagedIndexItem }[];
-  selectedStateFilters: { label: string }[];
+  selectedManagedIndices: Array<{ label: string; value?: ManagedIndexItem }>;
+  selectedStateFilters: Array<{ label: string }>;
   stateSelected: string;
   stateRadioIdSelected: string;
   managedIndicesError: string;
@@ -59,7 +74,7 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
     this.setState({ selectedPolicies, selectedPoliciesError, stateSelected: "", stateRadioIdSelected: Radio.Current });
   };
 
-  onChangeManagedIndices = (selectedManagedIndices: { label: string; value?: ManagedIndexItem }[]): void => {
+  onChangeManagedIndices = (selectedManagedIndices: Array<{ label: string; value?: ManagedIndexItem }>): void => {
     const managedIndicesError = selectedManagedIndices.length ? "" : "Required";
     if (!selectedManagedIndices.length) {
       this.onChangeStateFilters([]);
@@ -67,7 +82,7 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
     this.setState({ selectedManagedIndices, managedIndicesError });
   };
 
-  onChangeStateFilters = (selectedStateFilters: { label: string }[]): void => {
+  onChangeStateFilters = (selectedStateFilters: Array<{ label: string }>): void => {
     this.setState({ selectedStateFilters });
   };
 

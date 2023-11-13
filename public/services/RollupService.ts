@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -17,7 +32,7 @@ export default class RollupService {
   }
 
   getRollups = async (queryObject: object): Promise<ServerResponse<GetRollupsResponse>> => {
-    let url = `..${NODE_API.ROLLUPS}`;
+    const url = `..${NODE_API.ROLLUPS}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetRollupsResponse>;
     return response;
   };
@@ -28,7 +43,7 @@ export default class RollupService {
     seqNo?: number,
     primaryTerm?: number
   ): Promise<ServerResponse<PutRollupResponse>> => {
-    let url = `..${NODE_API.ROLLUPS}/${rollupId}`;
+    const url = `..${NODE_API.ROLLUPS}/${rollupId}`;
     const response = (await this.httpClient.put(url, { query: { seqNo, primaryTerm }, body: JSON.stringify(rollup) })) as ServerResponse<
       PutRollupResponse
     >;
@@ -59,10 +74,10 @@ export default class RollupService {
     return response;
   };
 
-  //Function to search for fields from a source index using GET /${source_index}/_mapping
+  // Function to search for fields from a source index using GET /${source_index}/_mapping
   getMappings = async (index: string): Promise<ServerResponse<any>> => {
     const url = `..${NODE_API._MAPPINGS}`;
-    const body = { index: index };
+    const body = { index };
     const response = (await this.httpClient.post(url, { body: JSON.stringify(body) })) as ServerResponse<GetFieldsResponse>;
     return response;
   };

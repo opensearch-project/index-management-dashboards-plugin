@@ -1,24 +1,44 @@
+/*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import { CoreStart } from "opensearch-dashboards/public";
 import { BrowserServices } from "../../models/interfaces";
 import { ServerResponse } from "../../../server/models/types";
 import { ActionType, ActionTypeMapName } from "../../pages/Notifications/constant";
 import { ILronConfig } from "../../pages/Notifications/interface";
-import { CoreStart } from "opensearch-dashboards/public";
 
 export const GetLronConfig = async (props: {
   services: BrowserServices;
   actionType: ActionType;
 }): Promise<
   ServerResponse<{
-    lron_configs: {
+    lron_configs: Array<{
       lron_config: ILronConfig;
-    }[];
+    }>;
     total_number: number;
   }>
 > => {
   return props.services.commonService.apiCaller<{
-    lron_configs: {
+    lron_configs: Array<{
       lron_config: ILronConfig;
-    }[];
+    }>;
     total_number: number;
   }>({
     endpoint: "transport.request",

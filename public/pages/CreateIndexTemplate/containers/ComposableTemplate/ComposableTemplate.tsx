@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -21,6 +36,7 @@ import {
   EuiTitle,
   euiDragDropReorder,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
@@ -33,7 +49,6 @@ import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 import ComponentTemplateDetail, { IComponentTemplateDetailInstance } from "../../../CreateComposableTemplate/containers/TemplateDetail";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 import FilterGroup from "../../../../components/FilterGroup";
 
 export default function ComposableTemplate(props: SubDetailProps) {
@@ -64,9 +79,13 @@ export default function ComposableTemplate(props: SubDetailProps) {
           setAllComposableTemplates(res.response.component_templates || []);
         }
       });
-  useEffect(() => {
-    reloadAllComposableTemplates();
-  }, []);
+  useEffect(
+    () => {
+      reloadAllComposableTemplates();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const finalOptions = useMemo(
     () =>
       allComposableTemplates.filter((item) => {

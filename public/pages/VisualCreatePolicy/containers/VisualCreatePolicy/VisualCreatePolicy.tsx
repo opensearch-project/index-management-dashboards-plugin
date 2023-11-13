@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -121,7 +136,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
   };
 
   onChangePolicy = (policy: Policy): void => {
-    this.setState({ policy: policy });
+    this.setState({ policy });
   };
 
   onChangeChannelId = (e: ChangeEvent<HTMLSelectElement>): void => {
@@ -183,9 +198,9 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
     if (policy.default_state === state?.name) {
       defaultState = states[0]?.name || "";
     }
-    this.setState((state) => ({
+    this.setState((newState) => ({
       policy: {
-        ...state.policy,
+        ...newState.policy,
         states,
         default_state: defaultState,
       },
@@ -205,7 +220,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
   onCreate = async (policyId: string, policy: Policy): Promise<void> => {
     const { policyService } = this.props;
     try {
-      const response = await policyService.putPolicy({ policy: policy }, policyId);
+      const response = await policyService.putPolicy({ policy }, policyId);
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Created policy: ${response.response._id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);
@@ -228,7 +243,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         this.context.notifications.toasts.addDanger("Could not update policy without seqNo and primaryTerm");
         return;
       }
-      const response = await policyService.putPolicy({ policy: policy }, policyId, policySeqNo, policyPrimaryTerm);
+      const response = await policyService.putPolicy({ policy }, policyId, policySeqNo, policyPrimaryTerm);
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Updated policy: ${response.response._id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);

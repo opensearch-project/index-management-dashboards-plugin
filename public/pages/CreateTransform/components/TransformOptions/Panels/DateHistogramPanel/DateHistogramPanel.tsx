@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -21,7 +36,8 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
   const [dateHistogramInterval, setDateHistogramInterval] = useState(1);
   const [dateHistogramTimeunit, setDateHistogramTimeunit] = useState("m");
 
-  let timeunitOptions, intervalDefinition;
+  let timeunitOptions;
+  let intervalDefinition;
   if (intervalType === IntervalType.FIXED) {
     intervalDefinition = (
       <EuiFieldNumber
@@ -87,7 +103,7 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
             onClick={() => {
               const targetFieldName = `${name} _${GROUP_TYPES.dateHistogram}_${dateHistogramInterval}_${dateHistogramTimeunit}_${intervalType}`;
 
-              //Switch between fixed interval and calendar interval by checking timeunit
+              // Switch between fixed interval and calendar interval by checking timeunit
               const dateHistogramGroupItem = getDateHistogramGroupItem(
                 name,
                 targetFieldName,

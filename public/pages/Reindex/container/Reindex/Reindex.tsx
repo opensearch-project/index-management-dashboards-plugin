@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -20,6 +35,8 @@ import {
 import _ from "lodash";
 import React, { ChangeEvent, Component } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
+import { RouteComponentProps } from "react-router-dom";
+import queryString from "query-string";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getClusterInfo, getErrorMessage } from "../../../../utils/helpers";
 import { IndexSelectItem, ReindexRequest, ReindexResponse } from "../../models/interfaces";
@@ -28,13 +45,11 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import ReindexAdvancedOptions from "../../components/ReindexAdvancedOptions";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CommonService, IndexService } from "../../../../services";
-import { RouteComponentProps } from "react-router-dom";
 import IndexSelect from "../../components/IndexSelect";
 import { DEFAULT_QUERY, REINDEX_ERROR_PROMPT, DEFAULT_SLICE } from "../../utils/constants";
 import JSONEditor from "../../../../components/JSONEditor";
 import { REQUEST } from "../../../../../utils/constants";
 import CreateIndexFlyout from "../../components/CreateIndexFlyout";
-import queryString from "query-string";
 import { parseIndexNames, checkDuplicate } from "../../utils/helper";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { ReindexJobMetaData } from "../../../../models/interfaces";
@@ -48,10 +63,10 @@ interface ReindexProps extends RouteComponentProps {
 }
 
 interface ReindexState {
-  indexOptions: EuiComboBoxOptionOption<IndexSelectItem>[];
-  sources: EuiComboBoxOptionOption<IndexSelectItem>[];
+  indexOptions: Array<EuiComboBoxOptionOption<IndexSelectItem>>;
+  sources: Array<EuiComboBoxOptionOption<IndexSelectItem>>;
   sourceErr: string[];
-  destination: EuiComboBoxOptionOption<IndexSelectItem>[];
+  destination: Array<EuiComboBoxOptionOption<IndexSelectItem>>;
   destError: string | null;
   subset: boolean;
   sourceQuery: string;
@@ -109,11 +124,14 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     }
   }
 
-  getIndexOptions = async (searchValue: string, excludeDataStreamIndex?: boolean): Promise<EuiComboBoxOptionOption<IndexSelectItem>[]> => {
+  getIndexOptions = async (
+    searchValue: string,
+    excludeDataStreamIndex?: boolean
+  ): Promise<Array<EuiComboBoxOptionOption<IndexSelectItem>>> => {
     const { indexService } = this.props;
-    let options: EuiComboBoxOptionOption<IndexSelectItem>[] = [];
+    const options: Array<EuiComboBoxOptionOption<IndexSelectItem>> = [];
     try {
-      let actualSearchValue = parseIndexNames(searchValue);
+      const actualSearchValue = parseIndexNames(searchValue);
 
       const [indexResponse, dataStreamResponse, aliasResponse] = await Promise.all([
         indexService.getIndices({
@@ -231,7 +249,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
     try {
       this.setState({ executing: true });
-      let reindexReq: ReindexRequest = {
+      const reindexReq: ReindexRequest = {
         waitForCompletion: false,
         slices: slices === undefined ? DEFAULT_SLICE : slices,
         body: {
@@ -298,7 +316,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
         body: reindexRequest.body,
       },
     });
-    let response: {
+    const response: {
       ok: boolean;
       response?: {
         toastId: string;
@@ -325,19 +343,19 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
 
   getAllSelectedIndices = (): string[] => {
     const { sources } = this.state;
-    let result: string[] = [];
+    const result: string[] = [];
     sources.forEach((item) => {
-      item.value?.isIndex && result.push(item.label);
-      item.value?.isAlias && item.value.indices && result.push(...item.value.indices);
-      item.value?.isDataStream && item.value.writingIndex && result.push(item.value.writingIndex);
+      if (item.value?.isIndex) result.push(item.label);
+      if (item.value?.isAlias && item.value.indices) result.push(...item.value.indices);
+      if (item.value?.isDataStream && item.value.writingIndex) result.push(item.value.writingIndex);
     });
     return result;
   };
 
   // validation
-  validateDestination = (selectedOptions: EuiComboBoxOptionOption<IndexSelectItem>[]): boolean => {
+  validateDestination = (selectedOptions: Array<EuiComboBoxOptionOption<IndexSelectItem>>): boolean => {
     const { sources } = this.state;
-    if (!selectedOptions || selectedOptions.length != 1) {
+    if (!selectedOptions || selectedOptions.length !== 1) {
       this.setState({ destError: REINDEX_ERROR_PROMPT.DEST_REQUIRED });
       return false;
     }
@@ -369,13 +387,13 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     return true;
   };
 
-  validateSource = async (sourceIndices: EuiComboBoxOptionOption<IndexSelectItem>[]): Promise<boolean> => {
-    if (sourceIndices.length == 0) {
+  validateSource = async (sourceIndices: Array<EuiComboBoxOptionOption<IndexSelectItem>>): Promise<boolean> => {
+    if (sourceIndices.length === 0) {
       this.setState({ sourceErr: [REINDEX_ERROR_PROMPT.SOURCE_REQUIRED] });
       return false;
     }
 
-    let errors = [];
+    const errors = [];
 
     for (const source of sourceIndices) {
       if (source.value?.health === "red") {
@@ -414,7 +432,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     }
 
     const error = checkDuplicate(sourceIndices, this.state.destination);
-    error && this.setState({ destError: error });
+    if (error) this.setState({ destError: error });
 
     this.setState({ sourceErr: errors });
     return errors.length === 0;
@@ -430,15 +448,15 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     return true;
   };
 
-  validateQueryDSL = async (sourceIndices: EuiComboBoxOptionOption<IndexSelectItem>[], queryString: string): Promise<boolean> => {
-    if (!queryString) return true;
+  validateQueryDSL = async (sourceIndices: Array<EuiComboBoxOptionOption<IndexSelectItem>>, qryString: string): Promise<boolean> => {
+    if (!qryString) return true;
     const { commonService } = this.props;
     const validateRes = await commonService.apiCaller({
       endpoint: "indices.validateQuery",
       data: {
         index: sourceIndices.map((item) => item.label).join(","),
         body: {
-          ...JSON.parse(queryString),
+          ...JSON.parse(qryString),
         },
       },
     });
@@ -458,12 +476,12 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
   };
 
   onCreateIndexSuccess = (indexName: string) => {
-    const option: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: indexName, value: { isIndex: true } }];
+    const option: Array<EuiComboBoxOptionOption<IndexSelectItem>> = [{ label: indexName, value: { isIndex: true } }];
     this.setState({ destination: option, showCreateIndexFlyout: false, destError: null });
   };
 
   // onChange
-  onSourceSelection = async (selectedOptions: EuiComboBoxOptionOption<IndexSelectItem>[]) => {
+  onSourceSelection = async (selectedOptions: Array<EuiComboBoxOptionOption<IndexSelectItem>>) => {
     this.setState({
       sources: selectedOptions,
       sourceErr: [],
@@ -472,7 +490,7 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
     await this.validateSource(selectedOptions);
   };
 
-  onDestinationSelection = (selectedOptions: EuiComboBoxOptionOption<IndexSelectItem>[]) => {
+  onDestinationSelection = (selectedOptions: Array<EuiComboBoxOptionOption<IndexSelectItem>>) => {
     this.setState({
       destination: selectedOptions,
       destError: null,

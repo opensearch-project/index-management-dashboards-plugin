@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -31,7 +46,7 @@ const pluralToSingular: Record<INDEX_OP_TARGET_TYPE, string> = {
 
 const flushAllMessage = "All open indexes will be flushed.";
 const blockedItemsMessageTemplate = (flushTarget: INDEX_OP_TARGET_TYPE) => {
-  var blockedReason: string;
+  let blockedReason: string;
   switch (flushTarget) {
     case INDEX_OP_TARGET_TYPE.ALIAS:
       blockedReason = "one or more indexes";
@@ -72,83 +87,91 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
   const [unBlockedItems, setUnBlockedItems] = useState([] as string[]);
   const [blockedItems, setBlockedItems] = useState([] as string[]);
   const [loading, setLoading] = useState(true);
-  const onFlushConfirm = useCallback(async () => {
-    if (!services) {
-      coreServices.notifications.toasts.addDanger({
-        title: `Unable to flush ${flushTarget}`,
-        text: "Something is wrong in ServiceContext",
+  const onFlushConfirm = useCallback(
+    async () => {
+      if (!services) {
+        coreServices.notifications.toasts.addDanger({
+          title: `Unable to flush ${flushTarget}`,
+          text: "Something is wrong in ServiceContext",
+        });
+        setLoading(true);
+        onClose();
+        return;
+      }
+      const indexPayload = unBlockedItems.join(", ");
+      const result = await services.commonService.apiCaller({
+        endpoint: "indices.flush",
+        data: {
+          index: indexPayload,
+        },
       });
+      if (result && result.ok) {
+        coreServices.notifications.toasts.addSuccess(successToastTemplate(flushTarget, unBlockedItems));
+      } else {
+        coreServices.notifications.toasts.addDanger({ title: `Unable to flush ${flushTarget}`, text: result.error });
+      }
       setLoading(true);
       onClose();
-      return;
-    }
-    const indexPayload = unBlockedItems.join(", ");
-    const result = await services.commonService.apiCaller({
-      endpoint: "indices.flush",
-      data: {
-        index: indexPayload,
-      },
-    });
-    if (result && result.ok) {
-      coreServices.notifications.toasts.addSuccess(successToastTemplate(flushTarget, unBlockedItems));
-    } else {
-      coreServices.notifications.toasts.addDanger({ title: `Unable to flush ${flushTarget}`, text: result.error });
-    }
-    setLoading(true);
-    onClose();
-  }, [unBlockedItems, services, coreServices, onClose, flushAll]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [unBlockedItems, services, coreServices, onClose, flushAll]
+  );
 
-  useEffect(() => {
-    if (!!services && visible) {
-      filterBlockedItems(services, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, flushTarget, true)
-        .then((filterResultItems) => {
-          if (visible) {
-            if (!!selectedItems.length && selectedItems.length === filterResultItems.blockedItems.length) {
-              /* all items are blocked, show error message */
-              coreServices.notifications.toasts.addDanger({
-                title: `Unable to flush ${flushTarget}`,
-                text: `The selected ${flushTarget} cannot be flushed because they are either closed or in red status.`,
-              });
-              setLoading(true);
-              onClose();
-              return;
+  useEffect(
+    () => {
+      if (!!services && visible) {
+        filterBlockedItems(services, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, flushTarget, true)
+          .then((filterResultItems) => {
+            if (visible) {
+              if (!!selectedItems.length && selectedItems.length === filterResultItems.blockedItems.length) {
+                /* all items are blocked, show error message */
+                coreServices.notifications.toasts.addDanger({
+                  title: `Unable to flush ${flushTarget}`,
+                  text: `The selected ${flushTarget} cannot be flushed because they are either closed or in red status.`,
+                });
+                setLoading(true);
+                onClose();
+                return;
+              }
+              if (!selectedItems.length && !!filterResultItems.blockedItems.length) {
+                /* flush all, but there are red indexes */
+                coreServices.notifications.toasts.addDanger({
+                  title: `Unable to flush ${flushTarget}`,
+                  text: `Can not flush all open indexes because indexes [${filterResultItems.blockedItems.join(",")}] are in red status.`,
+                });
+                setLoading(true);
+                onClose();
+                return;
+              }
+              setBlockedItems(filterResultItems.blockedItems);
+              setUnBlockedItems(filterResultItems.unBlockedItems);
+              setLoading(false);
             }
-            if (!selectedItems.length && !!filterResultItems.blockedItems.length) {
-              /* flush all, but there are red indexes */
-              coreServices.notifications.toasts.addDanger({
-                title: `Unable to flush ${flushTarget}`,
-                text: `Can not flush all open indexes because indexes [${filterResultItems.blockedItems.join(",")}] are in red status.`,
-              });
-              setLoading(true);
-              onClose();
-              return;
+          })
+          .catch((err) => {
+            if (visible) {
+              switch (flushTarget) {
+                case INDEX_OP_TARGET_TYPE.ALIAS:
+                  setUnBlockedItems((selectedItems as IAlias[]).map((item) => item.alias));
+                  break;
+                case INDEX_OP_TARGET_TYPE.DATA_STREAM:
+                  setUnBlockedItems((selectedItems as DataStream[]).map((item) => item.name));
+                  break;
+                default:
+                  setUnBlockedItems((selectedItems as CatIndex[]).map((item) => item.index));
+              }
+              setLoading(false);
             }
-            setBlockedItems(filterResultItems.blockedItems);
-            setUnBlockedItems(filterResultItems.unBlockedItems);
-            setLoading(false);
-          }
-        })
-        .catch((err) => {
-          if (visible) {
-            switch (flushTarget) {
-              case INDEX_OP_TARGET_TYPE.ALIAS:
-                setUnBlockedItems((selectedItems as IAlias[]).map((item) => item.alias));
-                break;
-              case INDEX_OP_TARGET_TYPE.DATA_STREAM:
-                setUnBlockedItems((selectedItems as DataStream[]).map((item) => item.name));
-                break;
-              default:
-                setUnBlockedItems((selectedItems as CatIndex[]).map((item) => item.index));
-            }
-            setLoading(false);
-          }
-        });
-    } else {
-      setBlockedItems([]);
-      setUnBlockedItems([]);
-      setLoading(true);
-    }
-  }, [visible, flushTarget, selectedItems, services]);
+          });
+      } else {
+        setBlockedItems([]);
+        setUnBlockedItems([]);
+        setLoading(true);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [visible, flushTarget, selectedItems, services]
+  );
 
   if (!visible || loading) {
     return null;

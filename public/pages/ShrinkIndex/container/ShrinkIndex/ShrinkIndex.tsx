@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -17,6 +32,9 @@ import {
 } from "@elastic/eui";
 import React, { Component } from "react";
 
+import { RouteComponentProps } from "react-router-dom";
+import queryString from "query-string";
+import { get } from "lodash";
 import { CatIndex } from "../../../../../server/models/interfaces";
 import FormGenerator, { IField, IFormGeneratorRef } from "../../../../components/FormGenerator";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -26,7 +44,6 @@ import { IFieldComponentProps } from "../../../../components/FormGenerator/built
 import AliasSelect from "../../../../components/AliasSelect";
 import EuiToolTipWrapper from "../../../../components/EuiToolTipWrapper";
 import { CommonService } from "../../../../services";
-import { RouteComponentProps } from "react-router-dom";
 import {
   SHRINK_DOCUMENTATION_URL,
   INDEX_SETTINGS_URL,
@@ -36,14 +53,12 @@ import {
   ALIAS_SELECT_RULE,
 } from "../../../../utils/constants";
 import { BREADCRUMBS } from "../../../../utils/constants";
-import queryString from "query-string";
 import { jobSchedulerInstance } from "../../../../context/JobSchedulerContext";
 import { RecoveryJobMetaData } from "../../../../models/interfaces";
 import { getClusterInfo, getErrorMessage } from "../../../../utils/helpers";
 import { ServerResponse } from "../../../../../server/models/types";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DEFAULT_INDEX_SETTINGS, INDEX_BLOCKS_WRITE_SETTING, INDEX_BLOCKS_READONLY_SETTING } from "../../utils/constants";
-import { get } from "lodash";
 import NotificationConfig from "../../../../containers/NotificationConfig";
 import { ActionType, OperationType } from "../../../Notifications/constant";
 import { NotificationConfigRef } from "../../../../containers/NotificationConfig/NotificationConfig";
@@ -271,7 +286,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   getAlias = async (aliasName: string) => {
     try {
       const { commonService } = this.props;
-      return await commonService.apiCaller<{ alias: string }[]>({
+      return await commonService.apiCaller<Array<{ alias: string }>>({
         endpoint: "cat.aliases",
         method: "GET",
         data: {
@@ -359,14 +374,14 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       disableShrinkButton = true;
       sourceIndexNotReadyToShrinkReasons.push(
         <>
-          <EuiCallOut title="Cannot shrink source index with only one primary shard." color="danger" iconType="alert"></EuiCallOut>
+          <EuiCallOut title="Cannot shrink source index with only one primary shard." color="danger" iconType="alert" />
           <EuiSpacer />
         </>
       );
     }
 
     // check index settings only if the source index is not red or has more than one primary shard.
-    if (sourceIndexNotReadyToShrinkReasons.length == 0) {
+    if (sourceIndexNotReadyToShrinkReasons.length === 0) {
       const indexWriteBlock = get(sourceIndexSettings, [sourceIndex.index, "settings", INDEX_BLOCKS_WRITE_SETTING]);
       if (indexWriteBlock !== "true" && indexWriteBlock !== true) {
         disableShrinkButton = true;
@@ -448,7 +463,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
               <EuiCallOut title="Index setting [index.blocks.read_only] is [true]." color="warning" iconType="help">
                 <p>
                   Index setting [index.blocks.read_only] of the source index is [true], it will be copied to the new shrunken index and then
-                  cause the new shrunken index's shards to be unassigned, you can set the setting to [null] or [false] in the advanced
+                  cause the new shrunken index&apos;s shards to be unassigned, you can set the setting to [null] or [false] in the advanced
                   settings bellow.
                 </p>
               </EuiCallOut>
@@ -516,7 +531,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
           rules: [
             {
               validator: (_, value) => {
-                if (!value || !value.toString().trim() || Number(value) <= 0 || Number(sourceIndex.pri) % value != 0) {
+                if (!value || !value.toString().trim() || Number(value) <= 0 || Number(sourceIndex.pri) % value !== 0) {
                   return Promise.reject(
                     "The number of primary shards in the new shrunken index " +
                       " must be a positive factor of the number of primary shards in the source index."

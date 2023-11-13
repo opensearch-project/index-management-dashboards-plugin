@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -171,7 +186,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
 
   parseDimension = (dimensions: RollupDimensionItem[]): DimensionItem[] => {
     const sourceArray = dimensions.slice(1, dimensions.length);
-    if (sourceArray.length == 0) return [];
+    if (sourceArray.length === 0) return [];
     const result = sourceArray.map((dimension: RollupDimensionItem) => ({
       sequence: dimensions.indexOf(dimension),
       aggregationMethod: dimension.histogram == null ? "terms" : "histogram",
@@ -182,7 +197,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
   };
 
   parseMetric = (metrics: RollupMetricItem[]): MetricItem[] => {
-    if (metrics.length == 0) return [];
+    if (metrics.length === 0) return [];
     const result = metrics.map((metric) => ({
       source_field: metric.source_field,
       all: false,
@@ -203,7 +218,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
 
       if (response.ok) {
         this.setState({ enabled: false });
-        //Show success message
+        // Show success message
         await this.getRollup(rollupId);
         this.forceUpdate();
         this.context.notifications.toasts.addSuccess(`${rollupId} is disabled`);
@@ -224,7 +239,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
 
       if (response.ok) {
         this.setState({ enabled: true });
-        //Show success message
+        // Show success message
         await this.getRollup(rollupId);
         this.forceUpdate();
         this.context.notifications.toasts.addSuccess(`${rollupId} is enabled`);
@@ -262,7 +277,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
 
       if (response.ok) {
         this.closeDeleteModal();
-        //Show success message
+        // Show success message
         this.context.notifications.toasts.addSuccess(`"${rollupId}" successfully deleted!`);
         this.props.history.push(ROUTES.ROLLUPS);
       } else {

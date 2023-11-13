@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -108,19 +123,19 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
 
   indexDetailRef: IIndexDetailRef | null = null;
 
-  get commonService() {
+  public get commonService() {
     return this.props.services.commonService;
   }
 
-  get index() {
+  public get index() {
     return this.props.index;
   }
 
-  get isEdit() {
+  public get isEdit() {
     return this.index !== undefined;
   }
 
-  get mode() {
+  public get mode() {
     return this.props.mode;
   }
 
@@ -168,7 +183,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
   };
 
   onCancel = () => {
-    this.props.onCancel && this.props.onCancel();
+    if (this.props.onCancel) this.props.onCancel();
   };
 
   onDetailChange: IndexDetailProps["onChange"] = (value) => {
@@ -254,7 +269,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       (oldIndexDetail?.mappings?.properties || []).map((item) => item.fieldName),
       newMappingProperties.map((item) => item.fieldName)
     );
-    const newValue = newMappingProperties.filter((item, index) => index >= (oldIndexDetail?.mappings?.properties || []).length);
+    const newValue = newMappingProperties.filter((item, idx) => idx >= (oldIndexDetail?.mappings?.properties || []).length);
     const newMappingFields: MappingsProperties = diffedMappingArrayes
       .filter((item) => item.added)
       .reduce((total, current) => [...total, ...current.value], [] as string[])
@@ -282,7 +297,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     });
   };
 
-  chainPromise = async (promises: Promise<ServerResponse<any>>[]): Promise<ServerResponse<any>> => {
+  chainPromise = async (promises: Array<Promise<ServerResponse<any>>>): Promise<ServerResponse<any>> => {
     const newPromises = [...promises];
     while (newPromises.length) {
       const result = (await newPromises.shift()) as ServerResponse<any>;
@@ -307,7 +322,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     this.setState({ isSubmitting: true });
     let result: ServerResponse<any>;
     if (this.isEdit) {
-      let chainedPromises: Promise<ServerResponse<any>>[] = [];
+      const chainedPromises: Array<Promise<ServerResponse<any>>> = [];
       if (!mode) {
         chainedPromises.push(...[this.updateMappings(), this.updateAlias(), this.updateSettings()]);
       } else {
@@ -345,7 +360,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     // handle all the response here
     if (result && result.ok) {
       this.context.notifications.toasts.addSuccess(`${indexDetail.index} has been successfully ${this.isEdit ? "updated" : "created"}.`);
-      this.props.onSubmitSuccess && this.props.onSubmitSuccess(indexDetail.index);
+      if (this.props.onSubmitSuccess) this.props.onSubmitSuccess(indexDetail.index);
     } else {
       const mapperParseExceptionReg = /\[mapper_parsing_exception\] unknown parameter \[([^\]]+)\] on mapper \[([^\]]+)\] of type \[([^\]]+)\]/;
       const mapperTypeParseExceptionReg = /\[mapper_parsing_exception\] No handler for type \[([^\]]+)\] declared on field \[([^\]]+)\]/;

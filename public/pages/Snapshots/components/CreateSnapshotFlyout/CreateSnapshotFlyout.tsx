@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -18,6 +33,7 @@ import {
 import _ from "lodash";
 
 import React, { Component } from "react";
+import { ChangeEvent } from "react";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexService, SnapshotManagementService } from "../../../../services";
@@ -27,7 +43,6 @@ import { CatRepository } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 import SnapshotAdvancedSettings from "../../../CreateSnapshotPolicy/components/SnapshotAdvancedSettings";
 import SnapshotIndicesRepoInput from "../../../CreateSnapshotPolicy/components/SnapshotIndicesRepoInput";
-import { ChangeEvent } from "react";
 import { getEmptySnapshot } from "./constants";
 import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
 
@@ -39,8 +54,8 @@ interface CreateSnapshotProps {
 }
 
 interface CreateSnapshotState {
-  indexOptions: EuiComboBoxOptionOption<IndexItem>[];
-  selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
+  indexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
+  selectedIndexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
 
   repositories: CatRepository[];
   selectedRepoValue: string;
@@ -90,9 +105,9 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
     createSnapshot(snapshotId, selectedRepoValue, snapshot);
   };
 
-  onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
+  onIndicesSelectionChange = (selectedOptions: Array<EuiComboBoxOptionOption<IndexItem>>) => {
     const selectedIndexOptions = selectedOptions.map((o) => o.label);
-    let newJSON = this.state.snapshot;
+    const newJSON = this.state.snapshot;
     newJSON.indices = selectedIndexOptions.toString();
     this.setState({ snapshot: newJSON, selectedIndexOptions: selectedOptions });
   };
@@ -135,7 +150,7 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
     }
 
     const selectedIndexOptions = [...this.state.selectedIndexOptions, newOption];
-    this.setState({ selectedIndexOptions: selectedIndexOptions });
+    this.setState({ selectedIndexOptions });
   };
 
   getRepos = async () => {
@@ -172,7 +187,7 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
 
   onPartialToggle = (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
-    let newJSON = this.state.snapshot;
+    const newJSON = this.state.snapshot;
     newJSON.partial = checked;
     this.setState({ snapshot: newJSON });
   };
@@ -232,11 +247,11 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
             <EuiSpacer size="m" />
 
             <SnapshotAdvancedSettings
-              includeGlobalState={String(_.get(snapshot, "include_global_state", false)) == "true"}
+              includeGlobalState={String(_.get(snapshot, "include_global_state", false)) === "true"}
               onIncludeGlobalStateToggle={this.onIncludeGlobalStateToggle}
-              ignoreUnavailable={String(_.get(snapshot, "ignore_unavailable", false)) == "true"}
+              ignoreUnavailable={String(_.get(snapshot, "ignore_unavailable", false)) === "true"}
               onIgnoreUnavailableToggle={this.onIgnoreUnavailableToggle}
-              partial={String(_.get(snapshot, "partial", false)) == "true"}
+              partial={String(_.get(snapshot, "partial", false)) === "true"}
               onPartialToggle={this.onPartialToggle}
               width="200%"
             />

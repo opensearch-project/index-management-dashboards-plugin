@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -53,6 +68,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             value={rollover.min_index_age || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minIndexAge = e.target.value;
+              // eslint-disable-next-line no-shadow
               const rollover = { ...action.action.rollover };
               if (minIndexAge) rollover.min_index_age = minIndexAge;
               else delete rollover.min_index_age;
@@ -73,6 +89,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             value={typeof rollover.min_doc_count === "undefined" ? "" : rollover.min_doc_count}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minDocCount = e.target.valueAsNumber;
+              // eslint-disable-next-line no-shadow
               const rollover = { ...action.action.rollover };
               if (!isNaN(minDocCount)) rollover.min_doc_count = minDocCount;
               else delete rollover.min_doc_count;
@@ -93,6 +110,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             value={rollover.min_size || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minSize = e.target.value;
+              // eslint-disable-next-line no-shadow
               const rollover = { ...action.action.rollover };
               if (minSize) rollover.min_size = minSize;
               else delete rollover.min_size;
@@ -113,6 +131,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             value={rollover.min_primary_shard_size || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minPrimaryShardSize = e.target.value;
+              // eslint-disable-next-line no-shadow
               const rollover = { ...action.action.rollover };
               if (minPrimaryShardSize) rollover.min_primary_shard_size = minPrimaryShardSize;
               else delete rollover.min_primary_shard_size;

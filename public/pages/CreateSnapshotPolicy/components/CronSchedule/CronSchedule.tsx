@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -19,10 +34,10 @@ import {
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
+import moment from "moment-timezone";
 import CustomLabel from "../../../../components/CustomLabel";
 import { WEEK_DAYS, CRON_SCHEDULE_FREQUENCY_TYPE, TIMEZONES } from "./constants";
 import { buildCronExpression, parseCronExpression, startTime } from "./helper";
-import moment from "moment-timezone";
 import { CRON_EXPRESSION_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 interface CronScheduleProps {
@@ -74,9 +89,13 @@ const CronSchedule = ({
     setMonth(initMonth);
   }
 
-  useEffect(() => {
-    changeCron();
-  }, [minute, hour, dayOfWeek, dayOfMonth]);
+  useEffect(
+    () => {
+      changeCron();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [minute, hour, dayOfWeek, dayOfMonth]
+  );
 
   const changeCron = (input?: any) => {
     let cronParts = { hour, minute, dayOfWeek, dayOfMonth, frequencyType };
@@ -86,29 +105,29 @@ const CronSchedule = ({
     onCronExpressionChange(expression);
   };
 
-  function onDayOfWeekChange(dayOfWeek: string) {
-    setWeek(dayOfWeek);
+  function onDayOfWeekChange(newDayOfWeek: string) {
+    setWeek(newDayOfWeek);
     // changeCron({ dayOfWeek });
   }
 
-  function onDayOfMonthChange(dayOfMonth: number) {
-    setMonth(dayOfMonth);
+  function onDayOfMonthChange(newDayOfMonth: number) {
+    setMonth(newDayOfMonth);
     // changeCron({ dayOfMonth });
   }
 
   function onStartTimeChange(date: moment.Moment) {
-    const minute = date.minute();
-    const hour = date.hour();
-    setMinute(minute);
-    setHour(hour);
+    const min = date.minute();
+    const hr = date.hour();
+    setMinute(min);
+    setHour(hr);
     // changeCron({ minute, hour });
   }
 
   function onTypeChange(e: ChangeEvent<HTMLSelectElement>) {
-    const frequencyType = e.target.value;
+    const freqType = e.target.value;
     onChangeFrequencyType(e);
-    if (frequencyType === "hourly") setMinute(0);
-    changeCron({ frequencyType });
+    if (freqType === "hourly") setMinute(0);
+    changeCron({ freqType });
   }
 
   const dayOfWeekCheckbox = (day: string, checkedDay: string) => (
@@ -149,7 +168,7 @@ const CronSchedule = ({
             <EuiFieldNumber
               value={dayOfMonth}
               onChange={(e) => {
-                onDayOfMonthChange(parseInt(e.target.value));
+                onDayOfMonthChange(parseInt(e.target.value, 10));
               }}
               min={1}
               max={31}

@@ -1,11 +1,26 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { EuiComboBoxOptionOption } from "@elastic/eui";
 import { checkDuplicate, filterOverlaps, parseIndexNames } from "./helper";
 import { IndexSelectItem } from "../models/interfaces";
-import { EuiComboBoxOptionOption } from "@elastic/eui";
 
 test("parse index names", () => {
   expect(parseIndexNames("")).toEqual([]);
@@ -30,8 +45,8 @@ test("test check duplication has duplication", () => {
 });
 
 test("test check duplication for alias", () => {
-  let source: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: "s1", value: { isIndex: true } }];
-  let dest: EuiComboBoxOptionOption<IndexSelectItem>[] = [
+  let source: Array<EuiComboBoxOptionOption<IndexSelectItem>> = [{ label: "s1", value: { isIndex: true } }];
+  let dest: Array<EuiComboBoxOptionOption<IndexSelectItem>> = [
     {
       label: "a1",
       value: { isAlias: true, writingIndex: "s2" },
@@ -63,36 +78,38 @@ test("test check duplication for data streams", () => {
 });
 
 test("test filter overlap for indices", () => {
-  let list: EuiComboBoxOptionOption<IndexSelectItem>[] = [{ label: "indices", options: [{ label: "index-1", value: { isIndex: true } }] }];
-  let excludedList = [{ label: "index-1", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  let list: Array<EuiComboBoxOptionOption<IndexSelectItem>> = [
+    { label: "indices", options: [{ label: "index-1", value: { isIndex: true } }] },
+  ];
+  let excludedList = [{ label: "index-1", value: { isIndex: true } }] as Array<EuiComboBoxOptionOption<IndexSelectItem>>;
   let result = filterOverlaps(list, excludedList);
   expect(result[0].options?.length).toEqual(0);
 
   list = [{ label: "indices", options: [{ label: "index-1", value: { isIndex: true } }] }];
-  excludedList = [{ label: "index-2", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  excludedList = [{ label: "index-2", value: { isIndex: true } }] as Array<EuiComboBoxOptionOption<IndexSelectItem>>;
   result = filterOverlaps(list, excludedList);
   expect(result[0].options?.length).toEqual(1);
 });
 
 test("test filter overlap for aliases", () => {
-  let list: EuiComboBoxOptionOption<IndexSelectItem>[] = [
+  let list: Array<EuiComboBoxOptionOption<IndexSelectItem>> = [
     { label: "aliases", options: [{ label: "alias-1", value: { isAlias: true, indices: ["test-1", "test-2"], writingIndex: "test-1" } }] },
   ];
-  let excludedList = [{ label: "test-1", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  let excludedList = [{ label: "test-1", value: { isIndex: true } }] as Array<EuiComboBoxOptionOption<IndexSelectItem>>;
   let result = filterOverlaps(list, excludedList);
   expect(result[0].options?.length).toEqual(0);
 
   list = [{ label: "aliases", options: [{ label: "alias-1", value: { isAlias: true, indices: ["test-1", "test-2"] } }] }];
-  excludedList = [{ label: "test-1", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  excludedList = [{ label: "test-1", value: { isIndex: true } }] as Array<EuiComboBoxOptionOption<IndexSelectItem>>;
   result = filterOverlaps(list, excludedList);
   expect(result[0].options?.length).toEqual(1);
 });
 
 test("test filter overlap for data streams", () => {
-  const list: EuiComboBoxOptionOption<IndexSelectItem>[] = [
+  const list: Array<EuiComboBoxOptionOption<IndexSelectItem>> = [
     { label: "data streams", options: [{ label: "ds-1", value: { isDataStream: true, writingIndex: ".ds-ds-1-000001" } }] },
   ];
-  let excludedList = [{ label: ".ds-ds-1-000001", value: { isIndex: true } }] as EuiComboBoxOptionOption<IndexSelectItem>[];
+  let excludedList = [{ label: ".ds-ds-1-000001", value: { isIndex: true } }] as Array<EuiComboBoxOptionOption<IndexSelectItem>>;
   let result = filterOverlaps(list, excludedList);
   expect(result[0].options?.length).toEqual(0);
 

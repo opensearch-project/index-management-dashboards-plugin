@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -24,6 +39,7 @@ import {
   EuiToolTip,
   EuiButtonIcon,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
@@ -33,7 +49,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import TemplatesActions from "../TemplatesActions";
-import { CoreStart } from "opensearch-dashboards/public";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
 import AssociatedComponentsModal from "../AssociatedComponentsModal";
@@ -125,10 +140,10 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
     let allTemplatesDetail: TemplateItemRemote[] = [];
 
     const allTemplatesResponse = await commonService.apiCaller<{
-      index_templates?: {
+      index_templates?: Array<{
         name: string;
         index_template: TemplateItemRemote;
-      }[];
+      }>;
     }>({
       endpoint: "transport.request",
       data: {
@@ -161,14 +176,14 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
           templateDetail: allTemplatesDetail.find((detailItem) => detailItem.name === item.name),
         }));
       const totalTemplates = response.length;
-      const payload = {
+      const newPayload = {
         templates: response.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
         totalTemplates,
         selectedItems: this.state.selectedItems
           .map((item) => response.find((remoteItem) => remoteItem.name === item.name))
           .filter((item) => item),
       } as TemplatesState;
-      this.setState(payload);
+      this.setState(newPayload);
     } else {
       this.context.notifications.toasts.addDanger(getTemplatesResponse.error);
     }

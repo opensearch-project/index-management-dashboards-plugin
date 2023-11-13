@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -41,9 +56,9 @@ interface CreateRollupFormState {
   totalIndices: number;
 
   description: string;
-  sourceIndex: { label: string; value?: IndexItem }[];
+  sourceIndex: Array<{ label: string; value?: IndexItem }>;
   sourceIndexError: string;
-  targetIndex: { label: string; value?: IndexItem }[];
+  targetIndex: Array<{ label: string; value?: IndexItem }>;
   targetIndexError: string;
 
   mappings: any;
@@ -53,7 +68,7 @@ interface CreateRollupFormState {
   selectedDimensionField: DimensionItem[];
   selectedMetrics: MetricItem[];
   metricError: string;
-  timestamp: EuiComboBoxOptionOption<String>[];
+  timestamp: Array<EuiComboBoxOptionOption<string>>;
   timestampError: string;
   intervalType: string;
   intervalValue: number;
@@ -149,13 +164,15 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
       const { rollupService } = this.props;
       const response = await rollupService.getMappings(srcIndex);
       if (response.ok) {
-        let allMappings: FieldItem[][] = [];
+        const allMappings: FieldItem[][] = [];
         const mappings = response.response;
-        //Push mappings array to allMappings 2D array first
-        for (let index in mappings) {
-          allMappings.push(parseFieldOptions("", mappings[index].mappings.properties));
+        // Push mappings array to allMappings 2D array first
+        for (const index in mappings) {
+          if (Object.prototype.hasOwnProperty.call(mappings, index)) {
+            allMappings.push(parseFieldOptions("", mappings[index].mappings.properties));
+          }
         }
-        //Find intersect from all mappings
+        // Find intersect from all mappings
         const fields = allMappings.reduce((mappingA, mappingB) =>
           mappingA.filter((itemA) => mappingB.some((itemB) => compareFieldItem(itemA, itemB)))
         );
@@ -171,31 +188,31 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
   _next() {
     let currentStep = this.state.currentStep;
     let error = false;
-    //Verification here
-    if (currentStep == 1) {
+    // Verification here
+    if (currentStep === 1) {
       const { rollupId, sourceIndex, targetIndex } = this.state;
 
       if (!rollupId) {
         this.setState({ submitError: "Job name is required.", rollupIdError: "Job name is required." });
         error = true;
       }
-      if (sourceIndex.length == 0) {
+      if (sourceIndex.length === 0) {
         this.setState({ submitError: "Source index is required.", sourceIndexError: "Source index is required." });
         error = true;
       }
-      if (targetIndex.length == 0) {
+      if (targetIndex.length === 0) {
         this.setState({ submitError: "Target index is required.", targetIndexError: "Target index is required." });
         error = true;
       }
-    } else if (currentStep == 2) {
+    } else if (currentStep === 2) {
       const { timestamp, selectedMetrics } = this.state;
-      if (timestamp.length == 0) {
+      if (timestamp.length === 0) {
         this.setState({ submitError: "Timestamp is required.", timestampError: "Timestamp is required." });
         error = true;
       }
-      if (selectedMetrics.length != 0) {
-        //Check if there's any metric item with no method selected.
-        //TODO: Could Probably store all invalid fields in an array and highlight them in table.
+      if (selectedMetrics.length !== 0) {
+        // Check if there's any metric item with no method selected.
+        // TODO: Could Probably store all invalid fields in an array and highlight them in table.
         let invalidMetric = false;
         selectedMetrics.map((metric) => {
           if (!(metric.min || metric.max || metric.sum || metric.avg || metric.value_count)) {
@@ -205,14 +222,14 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
             error = true;
           }
         });
-        //If nothing invalid found, clear error.
+        // If nothing invalid found, clear error.
         if (!invalidMetric) this.setState({ metricError: "" });
       }
-    } else if (currentStep == 3) {
-      //Check if interval is a valid value and is specified.
+    } else if (currentStep === 3) {
+      // Check if interval is a valid value and is specified.
       const { intervalError, continuousDefinition } = this.state;
-      if (continuousDefinition == "fixed") {
-        if (intervalError != "") {
+      if (continuousDefinition === "fixed") {
+        if (intervalError !== "") {
           const intervalErrorMsg = "Interval value is required.";
           this.setState({ submitError: intervalErrorMsg, intervalError: intervalErrorMsg });
           error = true;
@@ -226,7 +243,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
     this.setState({
       submitError: "",
-      currentStep: currentStep,
+      currentStep,
     });
   }
 
@@ -235,7 +252,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
     // If the current step is 2 or 3, then subtract one on "previous" button click
     currentStep = currentStep <= 1 ? 1 : currentStep - 1;
     this.setState({
-      currentStep: currentStep,
+      currentStep,
     });
   }
 
@@ -248,9 +265,9 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
   onChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const description = e.target.value;
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.description = description;
-    this.setState({ description: description, rollupJSON: newJSON });
+    this.setState({ description, rollupJSON: newJSON });
   };
 
   onChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -258,15 +275,15 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
     this.setState({ rollupId, rollupIdError: rollupId ? "" : "Name is required" });
   };
 
-  onChangeSourceIndex = async (options: EuiComboBoxOptionOption<IndexItem>[]): Promise<void> => {
-    let newJSON = this.state.rollupJSON;
-    let sourceIndex = options.map(function (option) {
+  onChangeSourceIndex = async (options: Array<EuiComboBoxOptionOption<IndexItem>>): Promise<void> => {
+    const newJSON = this.state.rollupJSON;
+    const sourceIndex = options.map(function (option) {
       return option.label;
     });
     const sourceIndexError = sourceIndex.length ? "" : "Source index is required";
     const srcIndexText = sourceIndex.length ? sourceIndex[0] : "";
     newJSON.rollup.source_index = srcIndexText;
-    this.setState({ sourceIndex: options, rollupJSON: newJSON, sourceIndexError: sourceIndexError });
+    this.setState({ sourceIndex: options, rollupJSON: newJSON, sourceIndexError });
     this.setState({
       selectedDimensionField: [],
       selectedMetrics: [],
@@ -274,17 +291,17 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
     await this.getMappings(srcIndexText);
   };
 
-  onChangeTargetIndex = (options: EuiComboBoxOptionOption<IndexItem>[]): void => {
-    //Try to get label text from option from the only array element in options, if exists
-    let newJSON = this.state.rollupJSON;
-    let targetIndex = options.map(function (option) {
+  onChangeTargetIndex = (options: Array<EuiComboBoxOptionOption<IndexItem>>): void => {
+    // Try to get label text from option from the only array element in options, if exists
+    const newJSON = this.state.rollupJSON;
+    const targetIndex = options.map(function (option) {
       return option.label;
     });
 
     const targetIndexError = targetIndex.length ? "" : "Target index is required";
 
     newJSON.rollup.target_index = targetIndex[0];
-    this.setState({ targetIndex: options, rollupJSON: newJSON, targetIndexError: targetIndexError });
+    this.setState({ targetIndex: options, rollupJSON: newJSON, targetIndexError });
   };
 
   onChangeIntervalType = (intervalType: string): void => {
@@ -301,19 +318,19 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
   setDateHistogram = (): void => {
     const { intervalType, intervalValue, timeunit } = this.state;
-    let newJSON = this.state.rollupJSON;
-    if (intervalType == "calendar") {
+    const newJSON = this.state.rollupJSON;
+    if (intervalType === "calendar") {
       newJSON.rollup.dimensions[0].date_histogram.calendar_interval = `1${timeunit}`;
-      delete newJSON.rollup.dimensions[0].date_histogram["fixed_interval"];
+      delete newJSON.rollup.dimensions[0].date_histogram.fixed_interval;
     } else {
       newJSON.rollup.dimensions[0].date_histogram.fixed_interval = `${intervalValue}${timeunit}`;
-      delete newJSON.rollup.dimensions[0].date_histogram["calendar_interval"];
+      delete newJSON.rollup.dimensions[0].date_histogram.calendar_interval;
     }
     this.setState({ rollupJSON: newJSON });
   };
 
-  onChangeTimestamp = (selectedOptions: EuiComboBoxOptionOption<String>[]): void => {
-    let newJSON = this.state.rollupJSON;
+  onChangeTimestamp = (selectedOptions: Array<EuiComboBoxOptionOption<string>>): void => {
+    const newJSON = this.state.rollupJSON;
     const timestamp = selectedOptions.map(function (option) {
       return option.label;
     });
@@ -321,11 +338,11 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
     const timestampError = timestamp.length ? "" : "Timestamp is required.";
 
     newJSON.rollup.dimensions[0].date_histogram.source_field = timestamp.length ? timestamp[0] : "";
-    this.setState({ timestamp: selectedOptions, rollupJSON: newJSON, timestampError: timestampError });
+    this.setState({ timestamp: selectedOptions, rollupJSON: newJSON, timestampError });
   };
 
   onChangeTimezone = (e: ChangeEvent<HTMLSelectElement>): void => {
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.dimensions[0].date_histogram.timezone = e.target.value;
     this.setState({ timezone: e.target.value, rollupJSON: newJSON });
   };
@@ -340,7 +357,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
   onChangeJobEnabledByDefault = (): void => {
     const checked = this.state.jobEnabledByDefault;
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.enabled = !checked;
     this.setState({ jobEnabledByDefault: !checked, rollupJSON: newJSON });
   };
@@ -359,15 +376,15 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
   updateDelay = (): void => {
     const { delayTimeunit, delayTime } = this.state;
-    let newJSON = this.state.rollupJSON;
-    if (delayTime == undefined) newJSON.rollup.delay = 0;
+    const newJSON = this.state.rollupJSON;
+    if (delayTime === undefined) newJSON.rollup.delay = 0;
     else newJSON.rollup.delay = delayTimeUnitToMS(delayTime, delayTimeunit);
     this.setState({ rollupJSON: newJSON });
   };
 
   onChangeIntervalTime = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ interval: e.target.valueAsNumber });
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       const intervalErrorMsg = "Interval value is required.";
       this.setState({ submitError: intervalErrorMsg, intervalError: intervalErrorMsg });
     } else {
@@ -376,7 +393,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
   };
 
   onChangePage = (e: ChangeEvent<HTMLInputElement>): void => {
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.page_size = e.target.valueAsNumber;
     this.setState({ pageSize: e.target.valueAsNumber, rollupJSON: newJSON });
   };
@@ -387,29 +404,29 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
   updateSchedule = (): void => {
     const { continuousDefinition, cronExpression, interval, intervalTimeunit, cronTimezone } = this.state;
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
 
-    if (continuousDefinition == "cron") {
+    if (continuousDefinition === "cron") {
       newJSON.rollup.schedule.cron = { expression: `${cronExpression}`, timezone: `${cronTimezone}` };
-      delete newJSON.rollup.schedule["interval"];
+      delete newJSON.rollup.schedule.interval;
     } else {
       newJSON.rollup.schedule.interval = {
         start_time: moment().unix(),
         unit: `${intervalTimeunit}`,
         period: `${interval}`,
       };
-      delete newJSON.rollup.schedule["cron"];
+      delete newJSON.rollup.schedule.cron;
     }
     this.setState({ rollupJSON: newJSON });
   };
 
   onChangeContinuousJob = (optionId: string): void => {
-    let newJSON = this.state.rollupJSON;
-    newJSON.rollup.continuous = optionId == "yes";
+    const newJSON = this.state.rollupJSON;
+    newJSON.rollup.continuous = optionId === "yes";
     this.setState({ continuousJob: optionId, rollupJSON: newJSON });
   };
 
-  //Update delay field in JSON if delay value is defined.
+  // Update delay field in JSON if delay value is defined.
   onChangeDelayTimeunit = (e: ChangeEvent<HTMLSelectElement>): void => {
     this.setState({ delayTimeunit: e.target.value });
   };
@@ -420,14 +437,14 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
   updateDimension = (): void => {
     const { rollupJSON, selectedDimensionField } = this.state;
-    let newJSON = rollupJSON;
+    const newJSON = rollupJSON;
 
-    //Clear the dimensions fields except the first item (date histogram)
+    // Clear the dimensions fields except the first item (date histogram)
     newJSON.rollup.dimensions = rollupJSON.rollup.dimensions.splice(0, 1);
 
-    //Push rest of dimensions
+    // Push rest of dimensions
     selectedDimensionField.map((dimension) => {
-      if (dimension.aggregationMethod == "terms") {
+      if (dimension.aggregationMethod === "terms") {
         newJSON.rollup.dimensions.push({
           terms: {
             source_field: dimension.field.label,
@@ -447,12 +464,12 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
   updateMetric = (): void => {
     const { rollupJSON, selectedMetrics } = this.state;
-    let newJSON = rollupJSON;
+    const newJSON = rollupJSON;
 
-    //Clear the metrics array before pushing
+    // Clear the metrics array before pushing
     newJSON.rollup.metrics = [];
 
-    //Push all metrics
+    // Push all metrics
     selectedMetrics.map((metric) => {
       const metrics = [];
       if (metric.min) metrics.push({ min: {} });
@@ -462,7 +479,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
       if (metric.value_count) metrics.push({ value_count: {} });
       newJSON.rollup.metrics.push({
         source_field: metric.source_field.label,
-        metrics: metrics,
+        metrics,
       });
     });
     this.setState({ rollupJSON: newJSON });
@@ -572,7 +589,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
           onChangeSourceIndex={this.onChangeSourceIndex}
           onChangeTargetIndex={this.onChangeTargetIndex}
           currentStep={this.state.currentStep}
-          hasAggregation={selectedDimensionField.length != 0 || selectedMetrics.length != 0}
+          hasAggregation={selectedDimensionField.length !== 0 || selectedMetrics.length !== 0}
         />
         <CreateRollupStep2
           {...this.props}
@@ -654,7 +671,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
               Cancel
             </EuiButtonEmpty>
           </EuiFlexItem>
-          {currentStep != 1 && (
+          {currentStep !== 1 && (
             <EuiFlexItem grow={false}>
               <EuiButton onClick={this._prev} data-test-subj="createRollupPreviousButton">
                 Previous
@@ -662,7 +679,7 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
             </EuiFlexItem>
           )}
 
-          {currentStep == 4 ? (
+          {currentStep === 4 ? (
             <EuiFlexItem grow={false}>
               <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createRollupSubmitButton">
                 Create

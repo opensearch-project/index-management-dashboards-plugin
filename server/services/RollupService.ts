@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -187,7 +202,7 @@ export default class RollupService {
       const seqNo = _.get(getResponse, "_seq_no");
       const primaryTerm = _.get(getResponse, "_primary_term");
 
-      //Form response
+      // Form response
       if (rollup) {
         if (metadata) {
           return response.custom({
@@ -199,7 +214,7 @@ export default class RollupService {
                 _seqNo: seqNo as number,
                 _primaryTerm: primaryTerm as number,
                 rollup: rollup as Rollup,
-                metadata: metadata,
+                metadata,
               },
             },
           });
@@ -239,7 +254,7 @@ export default class RollupService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<any>>> => {
     try {
       const { index } = request.body as { index: string };
-      const params = { index: index };
+      const params = { index };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const mappings = await callWithRequest("indices.getMapping", params);
       return response.custom({
@@ -314,7 +329,7 @@ export default class RollupService {
           });
           return response.custom({
             statusCode: 200,
-            body: { ok: true, response: { rollups: rollups, totalRollups: totalRollups, metadata: explainResponse } },
+            body: { ok: true, response: { rollups, totalRollups, metadata: explainResponse } },
           });
         } else
           return response.custom({
@@ -327,7 +342,7 @@ export default class RollupService {
       }
       return response.custom({
         statusCode: 200,
-        body: { ok: true, response: { rollups: rollups, totalRollups: totalRollups, metadata: {} } },
+        body: { ok: true, response: { rollups, totalRollups, metadata: {} } },
       });
     } catch (err) {
       if (err.statusCode === 404 && err.body.error.type === "index_not_found_exception") {

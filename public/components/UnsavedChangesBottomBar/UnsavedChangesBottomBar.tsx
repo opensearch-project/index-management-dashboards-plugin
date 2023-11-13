@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -8,7 +23,7 @@ import classNames from "classnames";
 import BottomBar from "../BottomBar";
 import "./index.scss";
 
-export type CustomFormRowProps = {
+export interface CustomFormRowProps {
   unsavedCount: number;
   formErrorsCount?: number;
   onClickCancel?: () => void;
@@ -22,7 +37,7 @@ export type CustomFormRowProps = {
   }) => React.ReactChild;
   confirmButtonProps?: EuiButtonProps;
   cancelButtonprops?: EuiButtonEmptyProps;
-};
+}
 
 export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
   const { unsavedCount, onClickCancel, onClickSubmit, submitButtonDataTestSubj, formErrorsCount } = props;
@@ -32,9 +47,11 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
     setLoading(true);
     try {
       await onClickSubmit();
+      // eslint-disable-next-line no-empty
     } catch (e) {
     } finally {
       if (destroyRef.current) {
+        // eslint-disable-next-line no-unsafe-finally
         return;
       }
       setLoading(false);
@@ -53,6 +70,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
         <EuiButtonEmpty onClick={onClickCancel} color="ghost" iconType="cross" children="Cancel" {...props.cancelButtonprops} />
       </EuiFlexItem>
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onClickCancel]
   );
 
@@ -73,6 +91,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
         />
       </EuiFlexItem>
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onClick, submitButtonDataTestSubj, loading]
   );
 

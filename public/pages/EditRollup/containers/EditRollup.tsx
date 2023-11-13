@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -90,7 +105,7 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
       const response = await rollupService.getRollup(rollupId);
 
       if (response.ok) {
-        let newJSON = JSON.parse(this.state.rollupJSON);
+        const newJSON = JSON.parse(this.state.rollupJSON);
         newJSON.rollup = response.response.rollup;
 
         this.setState({
@@ -103,7 +118,7 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
           delayTime: !response.response.rollup.delay ? "" : msToDelayTimeUnit(response.response.rollup.delay, this.state.delayTimeunit),
           rollupJSON: newJSON,
         });
-        if (response.response.rollup.schedule.cron == undefined) {
+        if (response.response.rollup.schedule.cron === undefined) {
           this.setState({
             interval: response.response.rollup.schedule.interval.period,
             intervalTimeunit: response.response.rollup.schedule.interval.unit,
@@ -128,23 +143,23 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
 
   onChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const description = e.target.value;
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.description = description;
-    this.setState({ description: description, rollupJSON: newJSON });
+    this.setState({ description, rollupJSON: newJSON });
   };
 
   onChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
     const { hasSubmitted } = this.state;
     const rollupId = e.target.value;
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.rollupId = rollupId;
     if (hasSubmitted) this.setState({ rollupId, rollupIdError: rollupId ? "" : "Required" });
-    else this.setState({ rollupId: rollupId, rollupJSON: newJSON });
+    else this.setState({ rollupId, rollupJSON: newJSON });
   };
 
   onChangeJobEnabledByDefault = (): void => {
     const checked = this.state.jobEnabledByDefault;
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.enabled = checked;
     this.setState({ jobEnabledByDefault: !checked, rollupJSON: newJSON });
   };
@@ -158,14 +173,14 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
   };
 
   onChangeDelayTime = (e: ChangeEvent<HTMLInputElement>): void => {
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.delay = e.target.value;
     this.setState({ delayTime: e.target.valueAsNumber, rollupJSON: newJSON });
   };
 
   onChangeIntervalTime = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ interval: e.target.valueAsNumber });
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       const intervalErrorMsg = "Interval value is required.";
       this.setState({ submitError: intervalErrorMsg, intervalError: intervalErrorMsg });
     } else {
@@ -174,7 +189,7 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
   };
 
   onChangePage = (e: ChangeEvent<HTMLInputElement>): void => {
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.page_size = e.target.value;
     this.setState({ pageSize: e.target.valueAsNumber, rollupJSON: newJSON });
   };
@@ -184,12 +199,12 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
   };
 
   onChangeContinuousJob = (optionId: string): void => {
-    let newJSON = this.state.rollupJSON;
-    newJSON.rollup.continuous = optionId == "yes";
+    const newJSON = this.state.rollupJSON;
+    newJSON.rollup.continuous = optionId === "yes";
     this.setState({ continuousJob: optionId, rollupJSON: newJSON });
   };
 
-  //Update delay field in JSON if delay value is defined.
+  // Update delay field in JSON if delay value is defined.
   onChangeDelayTimeunit = (e: ChangeEvent<HTMLSelectElement>): void => {
     this.setState({ delayTimeunit: e.target.value });
   };
@@ -201,25 +216,25 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
   // convert from delayTimeunit to ms for internal processing
   updateDelay = (): void => {
     const { delayTime, delayTimeunit } = this.state;
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
     newJSON.rollup.delay = delayTimeUnitToMS(delayTime as number, delayTimeunit).toString();
     this.setState({ rollupJSON: newJSON });
   };
 
   updateSchedule = (): void => {
     const { continuousDefinition, cronExpression, interval, intervalTimeunit, cronTimezone } = this.state;
-    let newJSON = this.state.rollupJSON;
+    const newJSON = this.state.rollupJSON;
 
-    if (continuousDefinition == "cron") {
+    if (continuousDefinition === "cron") {
       newJSON.rollup.schedule.cron = { expression: `${cronExpression}`, timezone: `${cronTimezone}` };
-      delete newJSON.rollup.schedule["interval"];
+      delete newJSON.rollup.schedule.interval;
     } else {
       newJSON.rollup.schedule.interval = {
         start_time: moment().unix(),
         unit: intervalTimeunit,
         period: interval,
       };
-      delete newJSON.rollup.schedule["cron"];
+      delete newJSON.rollup.schedule.cron;
     }
     this.setState({ rollupJSON: newJSON });
   };
@@ -231,7 +246,7 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
       if (!rollupId) {
         this.setState({ rollupIdError: "Required" });
       } else {
-        //Build JSON string here
+        // Build JSON string here
         this.updateSchedule();
         this.updateDelay();
         await this.onUpdate(rollupId, rollupJSON);

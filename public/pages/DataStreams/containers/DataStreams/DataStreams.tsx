@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -24,6 +39,7 @@ import {
   EuiHealth,
   EuiToolTip,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
@@ -33,7 +49,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import DataStreamsActions from "../DataStreamsActions";
-import { CoreStart } from "opensearch-dashboards/public";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 interface DataStreamsProps extends RouteComponentProps {

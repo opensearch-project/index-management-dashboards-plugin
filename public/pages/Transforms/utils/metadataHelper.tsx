@@ -1,12 +1,27 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { TransformMetadata } from "../../../../models/interfaces";
 import React, { ChangeEvent } from "react";
 import moment from "moment-timezone";
 import { EuiFieldNumber, EuiFlexGroup, EuiFlexItem, EuiIcon, EuiFormRow, EuiLink, EuiSelect, EuiTextArea, EuiText } from "@elastic/eui";
+import { TransformMetadata } from "../../../../models/interfaces";
 import { ScheduleIntervalTimeunitOptions } from "../../CreateTransform/utils/constants";
 import ErrorModal from "../components/ErrorModal";
 import { ModalConsumer } from "../../../components/Modal";
@@ -21,7 +36,7 @@ export const renderStatus = (metadata: TransformMetadata | undefined): JSX.Eleme
   //    'danger' = a shade of red
   //    '#DDDDDD' = a shade of grey
   let iconColor: "subdued" | "success" | "danger" | "#DDDDDD" | undefined;
-  let text;
+  let text: {} | null | undefined;
 
   switch (metadata.transform_metadata.status) {
     case "failed":
@@ -85,8 +100,8 @@ export const selectInterval = (
   <React.Fragment>
     <EuiFlexGroup style={{ maxWidth: 400 }}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
-        <EuiFormRow label="Transform execution interval" error={intervalError} isInvalid={intervalError != ""}>
-          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
+        <EuiFormRow label="Transform execution interval" error={intervalError} isInvalid={intervalError !== ""}>
+          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError !== ""} />
         </EuiFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
@@ -96,7 +111,7 @@ export const selectInterval = (
             options={ScheduleIntervalTimeunitOptions}
             value={intervalTimeunit}
             onChange={onChangeTimeunit}
-            isInvalid={interval == undefined || interval <= 0}
+            isInvalid={interval === undefined || interval <= 0}
           />
         </EuiFormRow>
       </EuiFlexItem>

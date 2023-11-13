@@ -1,12 +1,25 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import React, { useContext, useEffect, useState } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
-import { ServicesContext } from "../../../../services";
-import { CoreServicesContext } from "../../../../components/core_services";
 import {
   EuiButton,
   EuiButtonEmpty,
@@ -18,8 +31,10 @@ import {
   EuiModalHeaderTitle,
   EuiSpacer,
 } from "@elastic/eui";
-import { submitTemplateChange, useComponentMapTemplate } from "../../utils/hooks";
 import { Link } from "react-router-dom";
+import { ServicesContext } from "../../../../services";
+import { CoreServicesContext } from "../../../../components/core_services";
+import { submitTemplateChange, useComponentMapTemplate } from "../../utils/hooks";
 import { ROUTES } from "../../../../utils/constants";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import { ServerResponse } from "../../../../../server/models/types";
@@ -55,15 +70,15 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
               transformTemplate(currentTemplate) {
                 return {
                   ...currentTemplate,
-                  composed_of: currentTemplate.composed_of?.filter((item) => item !== selectedItems[0]) || [],
+                  composed_of: currentTemplate.composed_of?.filter((itm) => itm !== selectedItems[0]) || [],
                 };
               },
             })
           )
-        ).then((result) => ({
+        ).then((res) => ({
           response: {},
-          ok: result.every((item) => item.ok),
-          error: result
+          ok: res.every((item) => item.ok),
+          error: res
             .filter((item) => !item.ok)
             .map((item) => item.error)
             .join(", "),
@@ -137,7 +152,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
                   data-test-subj="UnlinkConfirmCheckBox"
                   label={`Unlink index templates and delete ${selectedItems.join(", ")}`}
                   value={checked}
-                  onChange={(checked) => setChecked(checked)}
+                  onChange={(c) => setChecked(c)}
                 />
               </>
             ) : null}

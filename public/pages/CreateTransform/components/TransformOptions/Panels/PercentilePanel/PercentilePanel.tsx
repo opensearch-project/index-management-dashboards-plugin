@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -15,10 +30,10 @@ interface PercentilePanelProps {
 }
 
 export default function PercentilePanel({ name, aggSelection, handleAggSelectionChange, closePopover }: PercentilePanelProps) {
-  const [percents, setPercents] = useState<{ label: string }[]>([]);
+  const [percents, setPercents] = useState<Array<{ label: string }>>([]);
   const [isInvalid, setInvalid] = useState(false);
 
-  const onChangePercents = (selectedPercent: { label: string }[]): void => {
+  const onChangePercents = (selectedPercent: Array<{ label: string }>): void => {
     setPercents(selectedPercent);
     setInvalid(false);
   };
@@ -76,7 +91,7 @@ export default function PercentilePanel({ name, aggSelection, handleAggSelection
           </EuiFormRow>
           <EuiSpacer size="m" />
         </EuiFlexItem>
-        <EuiFlexItem grow={false}></EuiFlexItem>
+        <EuiFlexItem grow={false} />
       </EuiFlexGroup>
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>

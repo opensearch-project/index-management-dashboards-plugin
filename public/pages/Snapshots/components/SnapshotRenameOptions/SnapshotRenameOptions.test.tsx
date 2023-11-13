@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -9,12 +24,11 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import SnapshotRenameOptions from "./SnapshotRenameOptions";
 
-
 const testProps = {
   onDoNotRenameToggle: jest.fn(),
   onAddPrefixToggle: jest.fn(),
   onRenameIndicesToggle: jest.fn(),
-  width: "200"
+  width: "200",
 };
 
 afterEach(() => {
@@ -23,13 +37,7 @@ afterEach(() => {
 
 describe("SnapshotRenameOptions component", () => {
   it("renders without error", () => {
-    const { container } = render(
-      <SnapshotRenameOptions
-        {...testProps}
-        doNotRename={true}
-        addPrefix={false}
-        renameIndices={false} />
-    );
+    const { container } = render(<SnapshotRenameOptions {...testProps} doNotRename={true} addPrefix={false} renameIndices={false} />);
 
     expect(screen.getByText("Do not rename")).toBeInTheDocument();
     expect(screen.getByText("Add prefix to restored index names")).toBeInTheDocument();
@@ -42,13 +50,7 @@ describe("SnapshotRenameOptions component", () => {
   });
 
   it("accepts user input", () => {
-    render(
-      <SnapshotRenameOptions
-        {...testProps}
-        doNotRename={true}
-        addPrefix={false}
-        renameIndices={false} />
-    );
+    render(<SnapshotRenameOptions {...testProps} doNotRename={true} addPrefix={false} renameIndices={false} />);
 
     userEvent.click(screen.getByLabelText("Add prefix to restored index names"));
 
@@ -60,17 +62,10 @@ describe("SnapshotRenameOptions component", () => {
 
     cleanup();
 
-    render(
-      <SnapshotRenameOptions
-        {...testProps}
-        doNotRename={false}
-        addPrefix={true}
-        renameIndices={false} />
-    )
+    render(<SnapshotRenameOptions {...testProps} doNotRename={false} addPrefix={true} renameIndices={false} />);
 
     userEvent.click(screen.getByLabelText("Do not rename"));
 
     expect(testProps.onDoNotRenameToggle).toBeCalled();
-
   });
 });

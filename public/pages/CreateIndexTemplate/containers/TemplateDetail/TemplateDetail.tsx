@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -17,23 +32,23 @@ import {
   EuiTitle,
 } from "@elastic/eui";
 import queryString from "query-string";
+import { CoreStart } from "opensearch-dashboards/public";
+import { RouteComponentProps } from "react-router-dom";
+import { merge } from "lodash";
 import { TemplateItem, TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 import { submitTemplate, getTemplate, simulateTemplate, formatTemplate, formatRemoteTemplateToEditTemplate } from "../../hooks";
 import { Modal } from "../../../../components/Modal";
-import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import DeleteTemplateModal from "../../../Templates/containers/DeleteTemplatesModal";
 import DefineTemplate, { OverviewTemplate } from "../../components/DefineTemplate";
 import IndexSettings from "../../components/IndexSettings";
 import IndexAlias from "../IndexAlias";
 import TemplateMappings from "../TemplateMappings";
-import { merge } from "lodash";
 import ComposableTemplate from "../ComposableTemplate";
 import PreviewTemplate from "../PreviewTemplate";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -152,14 +167,18 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         props.history.replace(ROUTES.TEMPLATES);
       });
   };
-  useEffect(() => {
-    if (isEdit) {
-      refreshTemplate();
-    }
-    return () => {
-      destroyRef.current = true;
-    };
-  }, []);
+  useEffect(
+    () => {
+      if (isEdit) {
+        refreshTemplate();
+      }
+      return () => {
+        destroyRef.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const values: TemplateItemEdit = field.getValues();
   const subCompontentProps = {
     ...props,
@@ -355,7 +374,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                     if (result) {
                       if (result.ok) {
                         coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully created.`);
-                        onSubmitSuccess && onSubmitSuccess(values.name);
+                        if (onSubmitSuccess) onSubmitSuccess(values.name);
                       } else {
                         coreServices.notifications.toasts.addDanger(result.error);
                       }

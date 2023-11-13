@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -48,6 +63,7 @@ export interface IndexFormProps extends Omit<IndexDetailProps, "refreshOptions" 
   refreshOptions?: IndexDetailProps["refreshOptions"];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface CreateIndexState {}
 
 export class IndexForm extends Component<IndexFormProps & { services: BrowserServices }, CreateIndexState> {
@@ -89,6 +105,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
 
   indexDetailRef: IIndexDetailRef | null = null;
 
+  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
   get commonService() {
     return this.props.services.commonService;
   }

@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -53,7 +68,7 @@ interface PoliciesState {
 
 export default class Policies extends Component<PoliciesProps, PoliciesState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<PolicyItem>[];
+  columns: Array<EuiTableFieldDataColumnType<PolicyItem>>;
 
   constructor(props: PoliciesProps) {
     super(props);
@@ -202,7 +217,7 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
 
     const deletePromises = policyIds.map((policyId) => this.deletePolicy(policyId));
 
-    const deleted = (await Promise.all(deletePromises)).reduce((deleted: boolean, result: boolean) => deleted && result);
+    const deleted = (await Promise.all(deletePromises)).reduce((del: boolean, result: boolean) => del && result);
     if (deleted) await this.getPolicies();
   };
 

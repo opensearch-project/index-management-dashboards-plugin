@@ -1,21 +1,36 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
+import { RouteComponentProps } from "react-router-dom";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 import { getAllDataStreamTemplate, createDataStream, getDataStream } from "./hooks";
 import { Modal } from "../../../../components/Modal";
 import JSONEditor from "../../../../components/JSONEditor";
-import { RouteComponentProps } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import DefineDataStream from "../DefineDataStream";
 import IndexSettings from "../../components/IndexSettings";
@@ -40,10 +55,10 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [templates, setTemplates] = useState<
-    {
+    Array<{
       name: string;
       index_template: TemplateItemRemote;
-    }[]
+    }>
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const field = useField({
@@ -51,6 +66,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
   });
   const destroyRef = useRef<boolean>(false);
   const onSubmit = async () => {
+    // eslint-disable-next-line no-shadow
     const { errors, values: dataStream } = (await field.validatePromise()) || {};
     if (errors) {
       return;
@@ -63,7 +79,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     });
     if (result && result.ok) {
       coreServices.notifications.toasts.addSuccess(`${dataStream.name} has been successfully ${isEdit ? "updated" : "created"}.`);
-      onSubmitSuccess && onSubmitSuccess(dataStream.name || "");
+      if (onSubmitSuccess) onSubmitSuccess(dataStream.name || "");
     } else {
       coreServices.notifications.toasts.addDanger(result.error);
     }
@@ -73,33 +89,37 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     setIsLoading(false);
   };
   useImperativeHandle(ref, () => field);
-  useEffect(() => {
-    if (isEdit) {
-      getDataStream({
-        dataStream,
-        coreService: coreServices,
-        commonService: services.commonService,
-      })
-        .then((dataStreamDetail) => {
-          field.resetValues(dataStreamDetail);
+  useEffect(
+    () => {
+      if (isEdit) {
+        getDataStream({
+          dataStream,
+          coreService: coreServices,
+          commonService: services.commonService,
         })
-        .catch(() => {
-          props.history.replace(ROUTES.DATA_STREAMS);
-        });
-    } else {
-      setIsLoading(true);
-      getAllDataStreamTemplate({
-        commonService: services.commonService,
-      })
-        .then((result) => setTemplates(result))
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-    return () => {
-      destroyRef.current = true;
-    };
-  }, []);
+          .then((dataStreamDetail) => {
+            field.resetValues(dataStreamDetail);
+          })
+          .catch(() => {
+            props.history.replace(ROUTES.DATA_STREAMS);
+          });
+      } else {
+        setIsLoading(true);
+        getAllDataStreamTemplate({
+          commonService: services.commonService,
+        })
+          .then((result) => setTemplates(result))
+          .finally(() => {
+            setIsLoading(false);
+          });
+      }
+      return () => {
+        destroyRef.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const values = field.getValues();
   const subCompontentProps = {
     ...props,

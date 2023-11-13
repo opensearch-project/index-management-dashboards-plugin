@@ -1,15 +1,30 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import queryString from "query-string";
+import { CoreStart } from "opensearch-dashboards/public";
 import { DEFAULT_QUERY_PARAMS } from "./constants";
 import { IndicesQueryParams } from "../models/interfaces";
 import { IndexItem } from "../../../../models/interfaces";
 import { ServerResponse } from "../../../../server/models/types";
 import { CommonService } from "../../../services";
-import { CoreStart } from "opensearch-dashboards/public";
 import { CatIndex } from "../../../../server/models/interfaces";
 import { jobSchedulerInstance } from "../../../context/JobSchedulerContext";
 import { OpenJobMetaData, RecoveryJobMetaData } from "../../../models/interfaces";
@@ -110,7 +125,7 @@ export async function getSingleIndice(props: {
     },
   });
 
-  if (result && result.ok && result.response.length == 1) {
+  if (result && result.ok && result.response.length === 1) {
     return result.response[0];
   } else {
     const errorMessage = `There is a problem getting index for ${props.indexName}, please check with Admin`;
@@ -149,7 +164,7 @@ export async function setIndexSettings(props: {
 }
 
 export async function getAlias(props: { aliasName?: string; commonService: CommonService }) {
-  return await props.commonService.apiCaller<{ alias: string }[]>({
+  return await props.commonService.apiCaller<Array<{ alias: string }>>({
     endpoint: "cat.aliases",
     method: "GET",
     data: {
@@ -225,7 +240,7 @@ export async function splitIndex(props: {
 export function getSplitShardOptions(sourceShards: number) {
   const MAX_SHARDS_NUMBER = 1024;
   const shardsSelectOptions = [];
-  if (sourceShards == 1) {
+  if (sourceShards === 1) {
     for (let i = 2; i <= MAX_SHARDS_NUMBER; i++) {
       shardsSelectOptions.push({
         label: i.toString(),

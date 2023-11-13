@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -17,7 +32,7 @@ import {
   EuiAccordion,
   EuiCheckbox,
   EuiCallOut,
-  EuiText
+  EuiText,
 } from "@elastic/eui";
 import _ from "lodash";
 import React, { Component, ChangeEvent } from "react";
@@ -26,9 +41,9 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexService, SnapshotManagementService } from "../../../../services";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { checkBadJSON, checkBadRegex, checkBadReplacement, checkCustomIgnoreConflict, checkNoSelectedIndices } from "../../helper"
-import { browseIndicesCols } from "../../../../utils/constants"
-import { ERROR_TOAST_TITLE } from "../../constants"
+import { checkBadJSON, checkBadRegex, checkBadReplacement, checkCustomIgnoreConflict, checkNoSelectedIndices } from "../../helper";
+import { browseIndicesCols } from "../../../../utils/constants";
+import { ERROR_TOAST_TITLE } from "../../constants";
 import { IndexItem } from "../../../../../models/interfaces";
 import { CatRepository, GetSnapshot } from "../../../../../server/models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
@@ -45,15 +60,15 @@ interface RestoreSnapshotProps {
   snapshotManagementService: SnapshotManagementService;
   indexService: IndexService;
   onCloseFlyout: () => void;
-  getRestoreTime: (time: number) => void
+  getRestoreTime: (time: number) => void;
   restoreSnapshot: (snapshotId: string, repository: string, options: object) => void;
   snapshotId: string;
   repository: string;
 }
 
 interface RestoreSnapshotState {
-  indexOptions: EuiComboBoxOptionOption<IndexItem>[];
-  selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
+  indexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
+  selectedIndexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
   renameIndices: string;
   prefix: string;
   renamePattern: string;
@@ -70,7 +85,7 @@ interface RestoreSnapshotState {
   badPattern: boolean;
   badRename: boolean;
   badJSON: boolean;
-  badIgnore: boolean
+  badIgnore: boolean;
   repoError: string;
   noIndicesSelected: boolean;
   snapshotIdError: string;
@@ -142,11 +157,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     };
     let repoError = "";
 
-    if (options.index_settings?.length == 0) {
+    if (options.index_settings?.length === 0) {
       delete options.index_settings;
     }
 
-    if (options.ignore_index_settings?.length == 0) {
+    if (options.ignore_index_settings?.length === 0) {
       delete options.ignore_index_settings;
     }
 
@@ -156,14 +171,15 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     const badIgnore = options.ignore_index_settings ? checkCustomIgnoreConflict(customIndexSettings, ignoreIndexSettings) : false;
     const noIndicesSelected = checkNoSelectedIndices(options.indices, restoreSpecific);
 
-    if ((!badIgnore) && (badPattern || badRename || noIndicesSelected || badJSON)) {
+    if (!badIgnore && (badPattern || badRename || noIndicesSelected || badJSON)) {
       this.context.notifications.toasts.addDanger(null, { title: ERROR_TOAST_TITLE });
     }
 
     if (badIgnore) {
       this.context.notifications.toasts.addDanger(null, {
         title: "Cannot apply and ignore the same index settings",
-        text: "One or more index settings was declared in both Custom index settings and Ignore index settings. Remove the index setting from either fields."
+        text:
+          "One or more index settings was declared in both Custom index settings and Ignore index settings. Remove the index setting from either fields.",
       });
     }
 
@@ -191,11 +207,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
 
     if (options.index_settings) {
-      options.index_settings = JSON.parse(options.index_settings)
+      options.index_settings = JSON.parse(options.index_settings);
     }
     getRestoreTime(Date.now());
     restoreSnapshot(snapshotId, repository, options);
-    onCloseFlyout()
+    onCloseFlyout();
   };
 
   onClickIndices = async () => {
@@ -206,9 +222,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     this.setState({ listIndices: false });
   };
 
-  onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
+  onIndicesSelectionChange = (selectedOptions: Array<EuiComboBoxOptionOption<IndexItem>>) => {
     const selectedIndexOptions = selectedOptions.map((o) => o.label);
-    let newJSON = this.state.snapshot;
+    const newJSON = this.state.snapshot;
     newJSON!.indices = [...selectedIndexOptions];
     this.setState({ snapshot: newJSON, selectedIndexOptions: selectedOptions });
   };
@@ -226,11 +242,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
         this.setState({ snapshot: response.response, indexOptions: [...newOptions] });
       } else {
-        const message = JSON.parse(response.error).error.root_cause[0].reason
+        const message = JSON.parse(response.error).error.root_cause[0].reason;
         const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
         this.context.notifications.toasts.addError(response.error, {
           title: `There was a problem getting the snapshot`,
-          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`,
         });
       }
     } catch (err) {
@@ -245,7 +261,9 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
   };
 
   getIndexSettings = (indexSettings: string, ignore: boolean) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     !ignore && this.setState({ customIndexSettings: indexSettings });
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     ignore && this.setState({ ignoreIndexSettings: indexSettings });
   };
 
@@ -263,19 +281,19 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
 
     const selectedIndexOptions = [...this.state.selectedIndexOptions, newOption];
-    this.setState({ selectedIndexOptions: selectedIndexOptions });
+    this.setState({ selectedIndexOptions });
   };
 
   getPrefix = (prefix: string) => {
-    this.setState({ prefix: prefix });
+    this.setState({ prefix });
   };
 
   getRenamePattern = (renamePattern: string) => {
-    this.setState({ renamePattern: renamePattern });
+    this.setState({ renamePattern });
   };
 
   getRenameReplacement = (renameReplacement: string) => {
-    this.setState({ renameReplacement: renameReplacement });
+    this.setState({ renameReplacement });
   };
 
   onToggle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -287,7 +305,11 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
     }
 
     if (e.target.id === restore_all_indices) {
-      this.setState({ restoreSpecific: false, noIndicesSelected: false, snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked) });
+      this.setState({
+        restoreSpecific: false,
+        noIndicesSelected: false,
+        snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked),
+      });
       return;
     }
 
@@ -308,8 +330,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       let renameReplacement = this.state.renameReplacement;
 
       if (e.target.id !== "rename_indices") {
-        renamePattern = "(.+)"
-        renameReplacement = "restored_$1"
+        renamePattern = "(.+)";
+        renameReplacement = "restored_$1";
       }
 
       this.setState({
@@ -318,7 +340,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
         badPattern: false,
         renameReplacement,
         badRename: false,
-        snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked)
+        snapshot: _.set(this.state.snapshot!, e.target.id, e.target.checked),
       });
       return;
     }
@@ -340,7 +362,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
       badRename,
       badJSON,
       badIgnore,
-      noIndicesSelected
+      noIndicesSelected,
     } = this.state;
 
     const {
@@ -357,7 +379,7 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
     const status = snapshot ? snapshot?.state[0] + snapshot?.state.slice(1).toLowerCase() : undefined;
     const restoreDisabled = snapshot?.failed_shards && !snapshot?.partial;
-    const snapshotIndices: IndexItem[] = snapshot?.indices.map((index) => ({ index: index }));
+    const snapshotIndices: IndexItem[] = snapshot?.indices.map((index) => ({ index }));
 
     return (
       <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m" hideCloseButton>
@@ -378,7 +400,6 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
             </EuiFlyoutHeader>
 
             <EuiFlyoutBody>
-
               <EuiFlexGroup alignItems="flexStart">
                 <EuiFlexItem>
                   <CustomLabel title="Snapshot name" />
@@ -387,12 +408,17 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <CustomLabel title="Status" />
-                  <EuiHealth textSize="m" color={`${status?.toLowerCase()}`} title={`${status} indicator icon`}> {status}</EuiHealth>
+                  <EuiHealth textSize="m" color={`${status?.toLowerCase()}`} title={`${status} indicator icon`}>
+                    {" "}
+                    {status}
+                  </EuiHealth>
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <CustomLabel title="Indices" />
                   <EuiSpacer size="xs" />
-                  <a onClick={this.onClickIndices} style={{ fontSize: "1.1rem" }}>{snapshot?.indices.length}</a>
+                  <a onClick={this.onClickIndices} style={{ fontSize: "1.1rem" }}>
+                    {snapshot?.indices.length}
+                  </a>
                 </EuiFlexItem>
               </EuiFlexGroup>
 
@@ -408,20 +434,18 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
               <EuiSpacer size="l" />
 
-              {
-                restoreSpecific && (
-                  <SnapshotIndicesInput
-                    indexOptions={indexOptions}
-                    selectedIndexOptions={selectedIndexOptions}
-                    onIndicesSelectionChange={this.onIndicesSelectionChange}
-                    getIndexOptions={this.getIndexOptions}
-                    onCreateOption={this.onCreateOption}
-                    selectedRepoValue={selectedRepoValue}
-                    showError={noIndicesSelected}
-                    isClearable={true}
-                  />
-                )
-              }
+              {restoreSpecific && (
+                <SnapshotIndicesInput
+                  indexOptions={indexOptions}
+                  selectedIndexOptions={selectedIndexOptions}
+                  onIndicesSelectionChange={this.onIndicesSelectionChange}
+                  getIndexOptions={this.getIndexOptions}
+                  onCreateOption={this.onCreateOption}
+                  selectedRepoValue={selectedRepoValue}
+                  showError={noIndicesSelected}
+                  isClearable={true}
+                />
+              )}
 
               <EuiSpacer size="l" />
 
@@ -436,15 +460,14 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
               />
 
               {renameIndices === add_prefix && <AddPrefixInput getPrefix={this.getPrefix} />}
-              {
-                renameIndices === rename_indices && (
-                  <RenameInput
-                    getRenamePattern={this.getRenamePattern}
-                    getRenameReplacement={this.getRenameReplacement}
-                    showPatternError={badPattern}
-                    showRenameError={badRename} />
-                )
-              }
+              {renameIndices === rename_indices && (
+                <RenameInput
+                  getRenamePattern={this.getRenamePattern}
+                  getRenameReplacement={this.getRenameReplacement}
+                  showPatternError={badPattern}
+                  showRenameError={badRename}
+                />
+              )}
 
               <EuiSpacer size="xxl" />
               <EuiAccordion id="advanced_restore_options" buttonContent="Advanced options">
@@ -452,15 +475,15 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
                 <SnapshotRestoreAdvancedOptions
                   getIndexSettings={this.getIndexSettings}
-                  restoreAliases={String(_.get(snapshot, restore_aliases, true)) == "true"}
+                  restoreAliases={String(_.get(snapshot, restore_aliases, true)) === "true"}
                   onRestoreAliasesToggle={this.onToggle}
-                  restoreClusterState={String(_.get(snapshot, include_global_state, false)) == "true"}
+                  restoreClusterState={String(_.get(snapshot, include_global_state, false)) === "true"}
                   onRestoreClusterStateToggle={this.onToggle}
-                  ignoreUnavailable={String(_.get(snapshot, ignore_unavailable, false)) == "true"}
+                  ignoreUnavailable={String(_.get(snapshot, ignore_unavailable, false)) === "true"}
                   onIgnoreUnavailableToggle={this.onToggle}
-                  customizeIndexSettings={String(_.get(snapshot, customize_index_settings, false)) == "true"}
+                  customizeIndexSettings={String(_.get(snapshot, customize_index_settings, false)) === "true"}
                   onCustomizeIndexSettingsToggle={this.onToggle}
-                  ignoreIndexSettings={String(_.get(snapshot, ignore_index_settings, false)) == "true"}
+                  ignoreIndexSettings={String(_.get(snapshot, ignore_index_settings, false)) === "true"}
                   onIgnoreIndexSettingsToggle={this.onToggle}
                   width="200%"
                   badJSONInput={badJSON}
@@ -470,24 +493,22 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
 
               <EuiSpacer size="l" />
 
-              {snapshot?.failed_shards && <EuiCallOut
-                title="Restoring a partial snapshot"
-                color="warning"
-              >
-                <p>
-                  You are about to restore a partial snapshot. One or more shards may be missing in this
-                  <br />
-                  snapshot. Do you want to continue?
-                </p>
-                <EuiSpacer size="s" />
-                <EuiCheckbox
-                  id={partial}
-                  label={<EuiText size="s">Allow restore partial snapshots</EuiText>}
-                  checked={String(_.get(snapshot, partial, false)) == "true"}
-                  onChange={this.onToggle}
-                />
-              </EuiCallOut>}
-
+              {snapshot?.failed_shards && (
+                <EuiCallOut title="Restoring a partial snapshot" color="warning">
+                  <p>
+                    You are about to restore a partial snapshot. One or more shards may be missing in this
+                    <br />
+                    snapshot. Do you want to continue?
+                  </p>
+                  <EuiSpacer size="s" />
+                  <EuiCheckbox
+                    id={partial}
+                    label={<EuiText size="s">Allow restore partial snapshots</EuiText>}
+                    checked={String(_.get(snapshot, partial, false)) === "true"}
+                    onChange={this.onToggle}
+                  />
+                </EuiCallOut>
+              )}
             </EuiFlyoutBody>
 
             <EuiFlyoutFooter>
@@ -497,7 +518,8 @@ export default class RestoreSnapshotFlyout extends Component<RestoreSnapshotProp
                 action=""
                 onClickAction={this.onClickAction}
                 onClickCancel={onCloseFlyout}
-                disabledAction={!!restoreDisabled} />
+                disabledAction={!!restoreDisabled}
+              />
             </EuiFlyoutFooter>
           </>
         )}

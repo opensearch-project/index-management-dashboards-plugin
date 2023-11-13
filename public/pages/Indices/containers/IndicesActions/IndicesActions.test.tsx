@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -9,12 +24,12 @@ import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
 import { Route, Switch, HashRouter as Router, RouteComponentProps } from "react-router-dom";
+import { createMemoryHistory } from "history";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import IndicesActions, { IndicesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { createMemoryHistory } from "history";
 import { ROUTES } from "../../../../utils/constants";
 import { buildMockApiCallerForFlush, selectedIndices } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
 
@@ -56,10 +71,10 @@ describe("<IndicesActions /> spec", () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
       onDelete: () => null,
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -469,13 +484,13 @@ describe("<IndicesActions /> spec", () => {
           data_stream: "",
         },
       ],
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -526,10 +541,10 @@ describe("<IndicesActions /> spec", () => {
         },
       ],
       onClose,
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -598,10 +613,10 @@ describe("<IndicesActions /> spec", () => {
         },
       ],
       onDelete,
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -642,7 +657,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -682,7 +697,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -735,7 +750,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -773,7 +788,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -809,7 +824,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -828,7 +843,7 @@ describe("<IndicesActions /> spec", () => {
   it("Split index by calling commonService", async () => {
     const history = createMemoryHistory();
     const { container, getByTestId } = renderWithRouter({
-      history: history,
+      history,
       selectedItems: [
         {
           health: "green",
@@ -846,13 +861,13 @@ describe("<IndicesActions /> spec", () => {
           "store.size": "100KB",
         },
       ],
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -900,13 +915,13 @@ describe("<IndicesActions /> spec", () => {
           "store.size": "100KB",
         },
       ],
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -938,13 +953,13 @@ describe("<IndicesActions /> spec", () => {
           "store.size": "100KB",
         },
       ],
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });

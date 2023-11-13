@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -8,8 +23,8 @@ import _ from "lodash";
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { getToasts } from "../../helper"
-import { Toast, ModifiedStages, IndexItem } from "../../../../models/interfaces"
+import { getToasts } from "../../helper";
+import { Toast, ModifiedStages, IndexItem } from "../../../../models/interfaces";
 import { GetIndexRecoveryResponse } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS, restoreIndicesCols } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -25,47 +40,52 @@ interface RestoreActivitiesPanelProps {
   indicesToRestore: string[];
 }
 
-const intervalIds: ReturnType<typeof setInterval>[] = [];
+const intervalIds: Array<ReturnType<typeof setInterval>> = [];
 
-export const RestoreActivitiesPanel = (
-  {
-    onOpenError,
-    sendError,
-    sendToasts,
-    snapshotManagementService,
-    snapshotId,
-    restoreStartRef,
-    indicesToRestore
-  }: RestoreActivitiesPanelProps) => {
+export const RestoreActivitiesPanel = ({
+  onOpenError,
+  sendError,
+  sendToasts,
+  snapshotManagementService,
+  snapshotId,
+  restoreStartRef,
+  indicesToRestore,
+}: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
   const [stage, setStage] = useState("");
   const [indices, setIndices] = useState<IndexItem[]>([]);
   const [flyout, setFlyout] = useState(false);
-  const [statusOk, setStatusOk] = useState(true)
+  const [statusOk, setStatusOk] = useState(true);
 
   const restoreCount = indicesToRestore.length;
 
-  useEffect(() => {
-    context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
+  useEffect(
+    () => {
+      context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
 
-    if (statusOk && stage !== "Completed (100%)") {
-      intervalIds.push(setInterval(() => {
-        getRestoreStatus();
-      }, 2000))
+      if (statusOk && stage !== "Completed (100%)") {
+        intervalIds.push(
+          setInterval(() => {
+            getRestoreStatus();
+          }, 2000)
+        );
 
-      return () => {
-        intervalIds.forEach((id) => {
-          clearInterval(id);
-        });
+        return () => {
+          intervalIds.forEach((id) => {
+            clearInterval(id);
+          });
+        };
       }
-    }
-  }, [stage]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [stage]
+  );
 
   const getRestoreStatus = async () => {
     const percent = stage.slice(stage.indexOf("("));
-    const failedStage = `Failed ${percent}`
+    const failedStage = `Failed ${percent}`;
 
     if (!restoreStartRef) {
       return;
@@ -79,35 +99,25 @@ export const RestoreActivitiesPanel = (
 
         setRestoreStatus(response);
       } else {
-        const toasts = getToasts(
-          "error_restore_toast",
-          "",
-          snapshotId,
-          onOpenError
-        );
+        const toasts = getToasts("error_restore_toast", "", snapshotId, onOpenError);
 
         res.error = res.error.concat(`, please check your connection`);
 
         setStage(failedStage);
         sendError(res);
-        sendToasts(toasts)
+        sendToasts(toasts);
         intervalIds.forEach((id) => {
           clearInterval(id);
         });
         return;
       }
     } catch (err) {
-      const toasts = getToasts(
-        "error_restore_toast",
-        "",
-        snapshotId,
-        onOpenError
-      );
+      const toasts = getToasts("error_restore_toast", "", snapshotId, onOpenError);
 
       setStage(failedStage);
       setStatusOk(false);
       sendError(err);
-      sendToasts(toasts)
+      sendToasts(toasts);
     }
   };
 
@@ -135,36 +145,39 @@ export const RestoreActivitiesPanel = (
       VERIFY_INDEX: "Verifying",
       TRANSLOG: "Replaying translog",
       FINALIZE: "Cleaning up",
-      DONE: "Completed"
-    }
+      DONE: "Completed",
+    };
     const lastStage = stages.length - 1;
 
-    // Loop through indices in response, filter out kibana index, 
+    // Loop through indices in response, filter out kibana index,
     // gather progress info then use it to create progress field values.
-    for (let item in response) {
-      const responseItem = item as keyof GetIndexRecoveryResponse;
-      if (
-        item.indexOf("kibana") < 0 &&
-        response[responseItem].shards &&
-        response[responseItem].shards[0].start_time_in_millis >= restoreStartRef
-      ) {
-        const info = response[responseItem].shards[0];
-        const stage = stages.indexOf(info.stage);
-        const time = {
-          start_time: info.start_time_in_millis,
-          stop_time: info.stop_time_in_millis ? info.stop_time_in_millis : Date.now()
-        };
+    for (const item in response) {
+      if (Object.prototype.hasOwnProperty.call(response, item)) {
+        const responseItem = item as keyof GetIndexRecoveryResponse;
+        if (
+          item.indexOf("kibana") < 0 &&
+          response[responseItem].shards &&
+          response[responseItem].shards[0].start_time_in_millis >= restoreStartRef
+        ) {
+          const info = response[responseItem].shards[0];
+          // eslint-disable-next-line no-shadow
+          const stage = stages.indexOf(info.stage);
+          const time = {
+            start_time: info.start_time_in_millis,
+            stop_time: info.stop_time_in_millis ? info.stop_time_in_millis : Date.now(),
+          };
 
-        doneCount = stage === lastStage ? doneCount + 1 : doneCount;
-        stageIndex = stage < stageIndex ? stage : stageIndex;
+          doneCount = stage === lastStage ? doneCount + 1 : doneCount;
+          stageIndex = stage < stageIndex ? stage : stageIndex;
 
-        maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
+          maxStopTime = maxStopTime && maxStopTime > time.stop_time ? maxStopTime : time.stop_time;
 
-        const indexStatus: string = modifiedStages[info.stage as keyof ModifiedStages];
+          const indexStatus: string = modifiedStages[info.stage as keyof ModifiedStages];
 
-        if (info.source.index && info.source.snapshot === snapshotId) {
-          minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
-          indexes.push({ index: info.source.index, "restore_status": indexStatus });
+          if (info.source.index && info.source.snapshot === snapshotId) {
+            minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
+            indexes.push({ index: info.source.index, restore_status: indexStatus });
+          }
         }
       }
     }
@@ -172,9 +185,9 @@ export const RestoreActivitiesPanel = (
     const updatedIndices: IndexItem[] = [...indexes];
     const indicesStarted = indexes.map((index) => index.index);
 
-    for (let index of indicesToRestore) {
+    for (const index of indicesToRestore) {
       if (indicesStarted.indexOf(index) < 0) {
-        updatedIndices.push({ index, restore_status: "Pending" })
+        updatedIndices.push({ index, restore_status: "Pending" });
       }
     }
 
@@ -185,25 +198,31 @@ export const RestoreActivitiesPanel = (
 
     setIndices(sortedUpdatedIndices);
     setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
-    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "))
+    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
 
     if (stages[stageIndex]) {
-      stageIndex = (stageIndex === lastStage && doneCount < restoreCount) ? 2 : stageIndex;
+      stageIndex = stageIndex === lastStage && doneCount < restoreCount ? 2 : stageIndex;
       setStage(`${modifiedStages[stages[stageIndex] as keyof ModifiedStages]} (${percent}%)`);
     }
-
   };
 
-  const actions = useMemo(() => (
-    [
-      <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton" isDisabled={restoreStartRef ? false : true}>
+  const actions = useMemo(
+    () => [
+      <EuiButton
+        iconType="refresh"
+        onClick={getRestoreStatus}
+        data-test-subj="refreshStatusButton"
+        isDisabled={restoreStartRef ? false : true}
+      >
         Refresh
       </EuiButton>,
-    ]
-  ), []);
-  const currentStage = stage.slice(0, stage.indexOf(" "))
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  const currentStage = stage.slice(0, stage.indexOf(" "));
   const color = currentStage === "Completed" ? "success" : currentStage === "Failed" ? "failure" : "warning";
-  const indexText = `${restoreCount === 1 ? "1 Index" : `${restoreCount} Indices`}`
+  const indexText = `${restoreCount === 1 ? "1 Index" : `${restoreCount} Indices`}`;
 
   const restoreStatus = [
     {
@@ -230,7 +249,7 @@ export const RestoreActivitiesPanel = (
     {
       field: "status",
       name: "Status",
-      render: (text: string) => <EuiHealth color={color}>{text}</EuiHealth>
+      render: (text: string) => <EuiHealth color={color}>{text}</EuiHealth>,
     },
     {
       field: "indexes",
@@ -239,21 +258,21 @@ export const RestoreActivitiesPanel = (
     },
   ];
 
-  const message = (<EuiEmptyPrompt body={<p>There are no restore activities.</p>} titleSize="s"></EuiEmptyPrompt>)
+  const message = <EuiEmptyPrompt body={<p>There are no restore activities.</p>} titleSize="s" />;
 
   return (
     <>
-      {flyout &&
-        <EuiFlyout
-          ownFocus={false}
-          maxWidth={600}
-          onClose={onCloseFlyout}
-          size="m"
-          hideCloseButton
-        >
-          <IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored" columns={restoreIndicesCols} />
+      {flyout && (
+        <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m" hideCloseButton>
+          <IndexList
+            indices={indices}
+            snapshot={snapshotId}
+            onClick={onCloseFlyout}
+            title="Indices being restored"
+            columns={restoreIndicesCols}
+          />
         </EuiFlyout>
-      }
+      )}
       <ContentPanel title="Restore activities in progress" actions={actions}>
         <EuiInMemoryTable items={snapshotId && restoreCount ? restoreStatus : []} columns={columns} pagination={false} message={message} />
         <EuiSpacer size="xxl" />

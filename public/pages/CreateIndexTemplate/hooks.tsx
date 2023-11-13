@@ -1,15 +1,30 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 import { EuiFormRowProps } from "@elastic/eui";
+import { get, set } from "lodash";
+import { flatten } from "flat";
+import { CoreStart } from "opensearch-dashboards/public";
 import { FieldInstance, transformNameToString } from "../../lib/field";
 import { IndexForm } from "../../containers/IndexForm";
 import { TemplateItem, TemplateItemRemote } from "../../../models/interfaces";
 import { TemplateItemEdit, FLOW_ENUM } from "./interface";
-import { get, set } from "lodash";
-import { flatten } from "flat";
-import { CoreStart } from "opensearch-dashboards/public";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping";
 import { CommonService } from "../../services";
 
@@ -91,7 +106,7 @@ export const getTemplate = async (props: {
   coreService: CoreStart;
 }): Promise<TemplateItemEdit> => {
   const response = await props.commonService.apiCaller<{
-    index_templates: { name: string; index_template: TemplateItemRemote }[];
+    index_templates: Array<{ name: string; index_template: TemplateItemRemote }>;
   }>({
     endpoint: "transport.request",
     data: {

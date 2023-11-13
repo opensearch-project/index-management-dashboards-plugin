@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -9,10 +24,10 @@ import { ROUTES } from "../../../../utils/constants";
 import { HEALTH_TO_COLOR } from "../../../Indices/utils/constants";
 import { IFinalDetail } from "./interface";
 
-export const OVERVIEW_DISPLAY_INFO: {
+export const OVERVIEW_DISPLAY_INFO: Array<{
   label: string;
   value: string | React.FunctionComponent<{ detail: IFinalDetail }>;
-}[] = [
+}> = [
   {
     label: "Index name",
     value: "index",
@@ -40,7 +55,7 @@ export const OVERVIEW_DISPLAY_INFO: {
     label: "Creation date",
     value: ({ detail }) => (
       <span>
-        {detail.settings?.index?.creation_date ? new Date(parseInt(detail.settings?.index?.creation_date)).toLocaleString() : "-"}
+        {detail.settings?.index?.creation_date ? new Date(parseInt(detail.settings?.index?.creation_date, 10)).toLocaleString() : "-"}
       </span>
     ),
   },

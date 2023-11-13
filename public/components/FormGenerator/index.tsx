@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -44,7 +59,7 @@ export interface IFormGeneratorProps<T extends object = any> {
   onChange?: (totalValue: IFormGeneratorProps<T>["value"], key?: FieldName, value?: any) => void;
 }
 
-export interface IFormGeneratorRef extends FieldInstance {}
+export type IFormGeneratorRef = FieldInstance;
 
 export { AllBuiltInComponents };
 
@@ -57,10 +72,10 @@ function FormGenerator<T extends object = any>(props: IFormGeneratorProps<T>, re
   const field = useField({
     ...fieldProps,
     onChange(name: FieldName, value: any) {
-      propsRef.current.onChange && propsRef.current.onChange({ ...field.getValues() }, name, value);
+      if (propsRef.current.onChange) propsRef.current.onChange({ ...field.getValues() }, name, value);
     },
   });
-  const errorMessage: Record<string, string[]> = field.getErrors();
+  const errorMessage: Record<string, string[] | null> = field.getErrors();
   useImperativeHandle(ref, () => ({
     ...field,
     validatePromise: async () => {
@@ -77,15 +92,19 @@ function FormGenerator<T extends object = any>(props: IFormGeneratorProps<T>, re
       return result;
     },
   }));
-  useEffect(() => {
-    if (!isEqual(field.getValues(), props.value)) {
-      if (propsRef.current.resetValuesWhenPropsValueChange) {
-        field.resetValues(props.value as T);
-      } else {
-        field.setValues(props.value as T);
+  useEffect(
+    () => {
+      if (!isEqual(field.getValues(), props.value)) {
+        if (propsRef.current.resetValuesWhenPropsValueChange) {
+          field.resetValues(props.value as T);
+        } else {
+          field.setValues(props.value as T);
+        }
       }
-    }
-  }, [props.value]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.value]
+  );
   const formattedFormFields = useMemo(() => {
     return formFields.map((item) => {
       const { rules } = item.options || {};
@@ -117,14 +136,18 @@ function FormGenerator<T extends object = any>(props: IFormGeneratorProps<T>, re
     });
   }, [formFields, field]);
 
-  const finalValue = useMemo(() => {
-    const value = field.getValues();
-    if (!blockedNameList) {
-      return field.getValues();
-    }
+  const finalValue = useMemo(
+    () => {
+      const value = field.getValues();
+      if (!blockedNameList) {
+        return field.getValues();
+      }
 
-    return omit(value, blockedNameList);
-  }, [field.getValues(), blockedNameList]);
+      return omit(value, blockedNameList);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [field.getValues(), blockedNameList]
+  );
 
   return (
     <EuiForm {...props.formProps}>
@@ -175,7 +198,7 @@ function FormGenerator<T extends object = any>(props: IFormGeneratorProps<T>, re
               if (!isEqual(val, finalValue)) {
                 field.validatePromise();
               }
-              propsRef.current.onChange && propsRef.current.onChange(field.getValues(), undefined, editorValue);
+              if (propsRef.current.onChange) propsRef.current.onChange(field.getValues(), undefined, editorValue);
             }}
           />
         </>

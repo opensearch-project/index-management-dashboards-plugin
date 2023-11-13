@@ -1,12 +1,27 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import React from "react";
 import _ from "lodash";
-import { Toast } from "../../models/interfaces"
 import { EuiHealth, EuiButton, EuiFlexGroup, EuiSpacer, EuiText } from "@elastic/eui";
+import { Toast } from "../../models/interfaces";
 
 export function truncateLongText(text: string, truncateLen: number = 20): string {
   if (text.length > truncateLen) {
@@ -23,13 +38,12 @@ export function truncateSpan(value: string, length: number = 20): React.ReactEle
 export function snapshotStatusRender(value: string): React.ReactElement {
   const capital = _.capitalize(value);
   let color = "success";
-  if (capital == "In_progress") color = "primary";
-  if (capital == "Failed") color = "warning";
-  if (capital == "Partial") color = "danger";
+  if (capital === "In_progress") color = "primary";
+  if (capital === "Failed") color = "warning";
+  if (capital === "Partial") color = "danger";
 
   return <EuiHealth color={color}>{capital}</EuiHealth>;
 }
-
 
 export const getToasts = (id: string, message: string | undefined, snapshotId: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
   const toasts = [
@@ -45,7 +59,7 @@ export const getToasts = (id: string, message: string | undefined, snapshotId: s
             <EuiButton onClick={onClick}>View restore activities</EuiButton>
           </EuiFlexGroup>
         </>
-      )
+      ),
     },
     {
       id: "error_restore_toast",
@@ -53,20 +67,22 @@ export const getToasts = (id: string, message: string | undefined, snapshotId: s
       color: "danger",
       text: (
         <>
-          <EuiText size="s" >{message}</EuiText>
+          <EuiText size="s">{message}</EuiText>
           <EuiSpacer size="xl" />
           <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
-            <EuiButton onClick={onClick} color="danger">View full error</EuiButton>
+            <EuiButton onClick={onClick} color="danger">
+              View full error
+            </EuiButton>
           </EuiFlexGroup>
         </>
-      )
-    }
-  ]
+      ),
+    },
+  ];
   if (id === "success_restore_toast") {
-    return [toasts[0]]
+    return [toasts[0]];
   }
   return [toasts[1]];
-}
+};
 
 interface CheckboxLabelProps {
   title: string;
@@ -76,9 +92,7 @@ interface CheckboxLabelProps {
 export const CheckBoxLabel = ({ title, helpText }: CheckboxLabelProps) => (
   <>
     <EuiText size="s">{title}</EuiText>
-    <EuiText
-      size="xs"
-      style={{ fontWeight: "200" }}>
+    <EuiText size="xs" style={{ fontWeight: "200" }}>
       {helpText}
     </EuiText>
   </>
@@ -91,7 +105,7 @@ export const checkBadJSON = (testString: string) => {
   } catch (err) {
     return true;
   }
-}
+};
 
 export const checkNoSelectedIndices = (indices: string, restoreSpecific: boolean): boolean => {
   let notSelected = false;
@@ -101,7 +115,7 @@ export const checkNoSelectedIndices = (indices: string, restoreSpecific: boolean
   }
 
   return notSelected;
-}
+};
 
 export const checkBadRegex = (regex: string): boolean => {
   try {
@@ -109,10 +123,9 @@ export const checkBadRegex = (regex: string): boolean => {
 
     return false;
   } catch (err) {
-
     return true;
   }
-}
+};
 
 export const checkBadReplacement = (regexString: string): boolean => {
   const isNotValid = regexString.indexOf("$") >= 0;
@@ -120,7 +133,7 @@ export const checkBadReplacement = (regexString: string): boolean => {
   if (isNotValid) return false;
 
   return true;
-}
+};
 
 export const checkCustomIgnoreConflict = (customIndexSettings?: string, ignoreIndexSettings?: string) => {
   if (customIndexSettings && customIndexSettings.length > 0) {
@@ -132,11 +145,11 @@ export const checkCustomIgnoreConflict = (customIndexSettings?: string, ignoreIn
 
     const customSettings = JSON.parse(customIndexSettings);
 
-    for (let setting in customSettings) {
+    for (const setting in customSettings) {
       if (ignoreIndexSettings && ignoreIndexSettings.indexOf(setting) >= 0) {
         return true;
       }
     }
   }
   return false;
-}
+};

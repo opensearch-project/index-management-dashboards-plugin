@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -15,7 +30,7 @@ export const transformConfigListToPlainList = (config: ILronConfig[]): ILronPlai
           failure: false,
           success: false,
         },
-        action_name: action_name,
+        action_name,
         channels: [],
       } as ILronConfig);
     const { lron_condition, ...rest } = findItem;
@@ -35,7 +50,7 @@ export const transformPlainListToConfigList = (config: ILronPlainConfig[]): ILro
       ({
         failure: false,
         success: false,
-        action_name: action_name,
+        action_name,
         title: ActionTypeMapTitle[actionType as ActionType],
         channels: [],
         index: currentIndex,
@@ -104,9 +119,9 @@ export const submitNotifications = async (props: { commonService: CommonService;
 export const getNotifications = async (props: { commonService: CommonService }) => {
   return props.commonService
     .apiCaller<{
-      lron_configs: {
+      lron_configs: Array<{
         lron_config: ILronConfig;
-      }[];
+      }>;
       total_number: number;
     }>({
       endpoint: "transport.request",

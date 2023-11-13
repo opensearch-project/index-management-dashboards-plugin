@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -37,7 +52,7 @@ import {
 interface HistogramAndMetricsProps {
   rollupId: string;
   onChangeStep: (step: number) => void;
-  timestamp: EuiComboBoxOptionOption<String>[];
+  timestamp: Array<EuiComboBoxOptionOption<string>>;
   intervalType: string;
   intervalValue: number;
   timezone: string;
@@ -51,21 +66,21 @@ interface HistogramAndMetricsState extends BaseAggregationAndMetricsState {
   dimensionsShown: DimensionItem[];
 }
 
-const _createFlowAggregateColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = [
+const _createFlowAggregateColumns: Array<Readonly<EuiTableFieldDataColumnType<DimensionItem>>> = [
   {
     field: "field.type",
     name: "Field type",
     align: "left",
-    render: (type) => (type == undefined ? "-" : type),
+    render: (type) => (type === undefined ? "-" : type),
   },
 ];
 
-const aggregationColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = [
+const aggregationColumns: Array<Readonly<EuiTableFieldDataColumnType<DimensionItem>>> = [
   ...BaseAggregationColumns,
   ..._createFlowAggregateColumns,
 ];
 
-const metricsColumns: EuiTableFieldDataColumnType<MetricItem>[] = BaseMetricsColumns;
+const metricsColumns: Array<EuiTableFieldDataColumnType<MetricItem>> = BaseMetricsColumns;
 
 export default class HistogramAndMetrics extends Component<HistogramAndMetricsProps, HistogramAndMetricsState> {
   constructor(props: HistogramAndMetricsProps) {
@@ -112,7 +127,7 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
   };
 
   parseMetric = (metrics: MetricItem[]): MetricItem[] => {
-    if (metrics.length == 0) return [];
+    if (metrics.length === 0) return [];
     const result = metrics.map((metric) => ({
       source_field: metric.source_field.label,
       all: false,
@@ -126,7 +141,7 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
   };
 
   parseInterval(intervalType: string, intervalValue: number, timeunit: string): string {
-    if (intervalType == "calendar") return "1 " + parseTimeunit(timeunit);
+    if (intervalType === "calendar") return "1 " + parseTimeunit(timeunit);
     return intervalValue + " " + parseTimeunit(timeunit);
   }
 

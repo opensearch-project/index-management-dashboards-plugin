@@ -1,17 +1,32 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import { EuiFormRow, EuiFieldText, EuiSpacer, EuiText, EuiLink } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
-import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
-import { BAD_RENAME_PATTERN_TEXT, BAD_RENAME_REPLACEMENT_TEXT, RENAME_HELP_TEXT, PATTERN_HELP_TEXT } from "../../constants"
+import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants";
+import { BAD_RENAME_PATTERN_TEXT, BAD_RENAME_REPLACEMENT_TEXT, RENAME_HELP_TEXT, PATTERN_HELP_TEXT } from "../../constants";
 interface RenameInputProps {
   getRenamePattern: (prefix: string) => void;
   getRenameReplacement: (prefix: string) => void;
   showPatternError: boolean;
-  showRenameError: boolean
+  showRenameError: boolean;
 }
 
 const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError, showRenameError }: RenameInputProps) => {
@@ -66,7 +81,12 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError,
       <EuiSpacer size="m" />
 
       <EuiFormRow error={BAD_RENAME_REPLACEMENT_TEXT} isInvalid={showRenameError} label={renameLabel} id="rename_replacement">
-        <EuiFieldText value={renameReplacement} onChange={onReplacementChange} isInvalid={showRenameError} data-test-subj="renameReplacementInput" />
+        <EuiFieldText
+          value={renameReplacement}
+          onChange={onReplacementChange}
+          isInvalid={showRenameError}
+          data-test-subj="renameReplacementInput"
+        />
       </EuiFormRow>
     </>
   );

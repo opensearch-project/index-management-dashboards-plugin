@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -11,7 +26,7 @@
 export default class AsyncInterval {
   timeoutId: number | undefined;
   isStopped: boolean = false;
-  __pendingFn: Function | undefined;
+  _pendingFn: Function | undefined;
 
   constructor(fn: Function, refreshInterval: number) {
     this.setAsyncInterval(fn, refreshInterval);
@@ -21,7 +36,7 @@ export default class AsyncInterval {
     if (!this.isStopped) {
       this.timeoutId = window.setTimeout(async () => {
         if (document.visibilityState === "visible") {
-          this.__pendingFn = await fn();
+          this._pendingFn = await fn();
         }
         this.setAsyncInterval(fn, ms);
       }, ms);

@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -6,15 +21,15 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { act, render, waitFor } from "@testing-library/react";
+import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import DefineTemplate from "./DefineTemplate";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import useField from "../../../../lib/field";
 import { FLOW_ENUM, SubDetailProps } from "../../interface";
-import userEvent from "@testing-library/user-event";
 
 const WrappedDefineTemplate = (props: Omit<SubDetailProps, "field"> & { onSubmit?: (value: any) => void }) => {
   const field = useField();
@@ -81,6 +96,7 @@ describe("<ComposableTemplatesActions /> spec", () => {
     await findByText("Index patterns must be defined");
     await userEvent.click(container.querySelector("#checkboxForIndexTemplateFlowSimple")?.parentNode as Element);
     await waitFor(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       expect((container.querySelector("#checkboxForIndexTemplateFlowSimple") as HTMLInputElement).checked).toBeTruthy;
       expect(onChangeMock).toBeCalledTimes(0);
     });

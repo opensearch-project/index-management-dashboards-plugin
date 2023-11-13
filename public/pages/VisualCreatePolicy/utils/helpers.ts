@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -50,11 +65,11 @@ export const getConditionContent = (transition: Transition): string => {
       cron = undefined,
     } = {},
   } = transition;
-  if (minSize != undefined) return `Minimum index size is ${minSize}`;
-  if (minDocCount != undefined) return `Minimum index doc count is ${minDocCount}`;
-  if (minIndexAge != undefined) return `Minimum index age is ${minIndexAge}`;
-  if (minRolloverAge != undefined) return `Minimum rollover age is ${minRolloverAge}`;
-  if (cron != undefined) return `After cron expression "${cron.cron.expression}" in ${cron.cron.timezone}`;
+  if (minSize !== undefined) return `Minimum index size is ${minSize}`;
+  if (minDocCount !== undefined) return `Minimum index doc count is ${minDocCount}`;
+  if (minIndexAge !== undefined) return `Minimum index age is ${minIndexAge}`;
+  if (minRolloverAge !== undefined) return `Minimum rollover age is ${minRolloverAge}`;
+  if (cron !== undefined) return `After cron expression "${cron.cron.expression}" in ${cron.cron.timezone}`;
   return "No condition";
 };
 
@@ -114,10 +129,11 @@ export const getActionOptions = (actionRepoSingleton: ActionRepository) => {
     try {
       uiAction = getUIAction(key)?.customDisplayText;
       if (uiAction !== undefined) text = uiAction;
+      // eslint-disable-next-line no-empty
     } catch (e) {}
     return {
       value: key,
-      text: text,
+      text,
     };
   });
 };

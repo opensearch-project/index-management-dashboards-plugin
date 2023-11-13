@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -23,7 +38,9 @@ const IndexMapping = (
   { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, docVersion }: IndexMappingProps,
   ref: Ref<IIndexMappingsRef>
 ) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const value = propsValue?.properties || [];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onChange = (val: MappingsProperties) => {
     propsOnChange({
       ...propsValue,
@@ -79,7 +96,7 @@ const IndexMapping = (
     let isFirstEditableField = false;
     return (formValue || []).map((item, index) => {
       const { fieldName, ...fieldSettings } = item;
-      const id = [pos, index].filter((item) => item !== "").join(".properties.");
+      const id = [pos, index].filter((itm) => itm !== "").join(".properties.");
       const readonlyFlag = readonly || (isEdit && !!get(oldValue?.properties, id));
       let shouldShowLabel = false;
       if (!readonlyFlag && !isFirstEditableField) {
@@ -90,9 +107,9 @@ const IndexMapping = (
         label: (
           <MappingLabel
             shouldShowLabel={shouldShowLabel}
-            ref={(ref) => {
-              if (ref) {
-                allFieldsRef.current[id] = ref;
+            ref={(r) => {
+              if (r) {
+                allFieldsRef.current[id] = r;
               } else {
                 delete allFieldsRef.current[id];
               }
@@ -100,12 +117,12 @@ const IndexMapping = (
             readonly={readonlyFlag}
             value={item}
             id={`mapping-visual-editor-${id}`}
-            onFieldNameCheck={(fieldName) => {
+            onFieldNameCheck={(innerFieldName) => {
               const hasDuplicateName = (formValue || [])
                 .filter((sibItem, sibIndex) => sibIndex < index)
-                .some((sibItem) => sibItem.fieldName === fieldName);
+                .some((sibItem) => sibItem.fieldName === innerFieldName);
               if (hasDuplicateName) {
-                return `Duplicate field name [${fieldName}], please change your field name`;
+                return `Duplicate field name [${innerFieldName}], please change your field name`;
               }
 
               return "";
@@ -133,6 +150,7 @@ const IndexMapping = (
         iconWhenExpanded: <EuiIcon type="arrowDown" style={{ visibility: "hidden" }} />,
       };
       if (fieldSettings.properties) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         (payload.icon = <EuiIcon type="arrowRight" />),
           (payload.iconWhenExpanded = <EuiIcon type="arrowDown" />),
           (payload.children = transformValueToTreeItems(fieldSettings.properties, id));
@@ -141,6 +159,7 @@ const IndexMapping = (
       return payload;
     });
   };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const transformedTreeItems = useMemo(() => transformValueToTreeItems(value), [value]);
   const newValue = useMemo(() => {
     const oldValueKeys = (oldValue?.properties || []).map((item) => item.fieldName);

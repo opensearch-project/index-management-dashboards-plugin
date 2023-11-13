@@ -1,15 +1,30 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
+import { EuiButtonIcon, EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader, EuiInMemoryTable, EuiLink, EuiTitle, EuiToolTip } from "@elastic/eui";
+import { ReactChild } from "react";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { EuiButtonIcon, EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader, EuiInMemoryTable, EuiLink, EuiTitle, EuiToolTip } from "@elastic/eui";
 import { ROUTES } from "../../../../utils/constants";
-import { ReactChild } from "react";
 import { Modal } from "../../../../components/Modal";
 import { BrowserServices } from "../../../../models/interfaces";
 import { TemplateItemRemote } from "../../../../../models/interfaces";

@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -6,12 +21,13 @@ import React, { Component, useContext } from "react";
 import { EuiCallOut, EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiFormRow } from "@elastic/eui";
 import { get } from "lodash";
 
+import { RouteComponentProps } from "react-router-dom";
+import queryString from "query-string";
+import { CoreStart } from "opensearch-dashboards/public";
 import { CatIndex } from "../../../../../server/models/interfaces";
 import { BrowserServices } from "../../../../models/interfaces";
 import SplitIndexForm from "../../components/SplitIndexForm";
 import { IndexItem } from "../../../../../models/interfaces";
-import { RouteComponentProps } from "react-router-dom";
-import queryString from "query-string";
 import {
   openIndices,
   getIndexSettings,
@@ -23,7 +39,6 @@ import {
 } from "../../../Indices/utils/helpers";
 
 import { CommonService, ServicesContext } from "../../../../services";
-import { CoreStart } from "opensearch-dashboards/public";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
@@ -38,7 +53,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
   static contextType = CoreServicesContext;
   state = {
     reasons: [] as React.ReactChild[],
-    shardsSelectOptions: [] as { label: string }[],
+    shardsSelectOptions: [] as Array<{ label: string }>,
     sourceIndex: {} as CatIndex,
     splitIndexFlyoutVisible: false,
     loading: false,

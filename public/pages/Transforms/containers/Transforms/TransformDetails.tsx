@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -22,12 +37,12 @@ import {
   EuiTextColor,
   EuiPopover,
 } from "@elastic/eui";
-import { TransformService } from "../../../../services";
 import { RouteComponentProps } from "react-router-dom";
 import React, { Component } from "react";
+import queryString from "query-string";
+import { TransformService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
-import queryString from "query-string";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { DimensionItem, RollupDimensionItem, TransformMetadata } from "../../../../../models/interfaces";
 import DeleteModal from "../../components/DeleteModal";
@@ -113,9 +128,9 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
       const response = await transformService.getTransform(transformId);
 
       if (response.ok) {
-        let json = response.response;
-        let aggregations = this.parseAggregations(response.response.transform.aggregations);
-        let groups = this.parseGroups(response.response.transform.groups);
+        const json = response.response;
+        const aggregations = this.parseAggregations(response.response.transform.aggregations);
+        const groups = this.parseGroups(response.response.transform.groups);
         this.setState({
           id: response.response._id,
           description: response.response.transform.description,
@@ -153,14 +168,14 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
   };
 
   parseGroups = (groups: RollupDimensionItem[]): DimensionItem[] => {
-    if (groups.length == 0) return [];
+    if (groups.length === 0) return [];
     // @ts-ignore
     return groups.map((group: RollupDimensionItem) => {
-      let sequence = groups.indexOf(group);
+      const sequence = groups.indexOf(group);
       switch (true) {
         case group.date_histogram != null:
           return {
-            sequence: sequence,
+            sequence,
             aggregationMethod: "date_histogram",
             field: {
               label: group.date_histogram?.source_field,
@@ -169,7 +184,7 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
           };
         case group.histogram != null:
           return {
-            sequence: sequence,
+            sequence,
             aggregationMethod: "histogram",
             field: {
               label: group.histogram?.source_field,
@@ -178,7 +193,7 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
           };
         case group.terms != null:
           return {
-            sequence: sequence,
+            sequence,
             aggregationMethod: "terms",
             field: {
               label: group.terms?.source_field,
@@ -190,7 +205,7 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
   };
 
   parseAggregations = (aggregations: any): any => {
-    if (aggregations.size == 0) return {};
+    if (aggregations.size === 0) return {};
     // @ts-ignore
     return aggregations;
   };

@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -23,13 +38,13 @@ interface CreateRollupStep2Props extends RouteComponentProps {
   selectedDimensionField: DimensionItem[];
   selectedMetrics: MetricItem[];
   metricError: string;
-  timestamp: EuiComboBoxOptionOption<String>[];
+  timestamp: Array<EuiComboBoxOptionOption<string>>;
   timestampError: string;
   intervalValue: number;
   intervalType: string;
   timezone: string;
   timeunit: string;
-  onChangeTimestamp: (selectedOptions: EuiComboBoxOptionOption<String>[]) => void;
+  onChangeTimestamp: (selectedOptions: Array<EuiComboBoxOptionOption<string>>) => void;
   onChangeIntervalType: (optionId: string) => void;
   onChangeIntervalValue: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -76,7 +91,7 @@ export default class CreateRollupStep2 extends Component<CreateRollupStep2Props>
             <MetricsCalculation {...this.props} fieldsOption={fields} />
             <EuiSpacer />
             <EuiCallOut color="warning">
-              <p>You can't change aggregations or metrics after creating a job. Double-check your choices before proceeding.</p>
+              <p>You can&apos;t change aggregations or metrics after creating a job. Double-check your choices before proceeding.</p>
             </EuiCallOut>
           </EuiFlexItem>
         </EuiFlexGroup>

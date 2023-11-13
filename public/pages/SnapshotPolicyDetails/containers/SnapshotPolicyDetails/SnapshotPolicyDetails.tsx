@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -55,7 +70,7 @@ interface SnapshotPolicyDetailsState {
 
 export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetailsProps, SnapshotPolicyDetailsState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<LatestActivities>[];
+  columns: Array<EuiTableFieldDataColumnType<LatestActivities>>;
 
   constructor(props: SnapshotPolicyDetailsProps) {
     super(props);
@@ -134,7 +149,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       const response = await snapshotManagementService.getPolicy(policyId);
 
       if (response.ok && !response.response) {
-        let errorMessage = "policy doesn't exist";
+        const errorMessage = "policy doesn't exist";
         this.context.notifications.toasts.addDanger(`Could not load the policy: ${errorMessage}`);
         this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
         return;
@@ -146,7 +161,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
           metadata: response.response.metadata,
         });
       } else {
-        let errorMessage = response.ok ? "Policy was empty" : response.error;
+        const errorMessage = response.ok ? "Policy was empty" : response.error;
         this.context.notifications.toasts.addDanger(`Could not load the policy: ${errorMessage}`);
         this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
       }
@@ -164,7 +179,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       if (response.ok) {
         const configList = response.response.config_list;
         let channel = null;
-        if (configList.length == 1) channel = configList[0];
+        if (configList.length === 1) channel = configList[0];
         this.setState({ channel });
       } else {
         this.context.notifications.toasts.addDanger(`Could not load notification channel: ${response.error}`);
@@ -266,7 +281,9 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       ];
       const deleteCronExpression = policy.deletion?.schedule?.cron.expression;
       if (deleteCronExpression != null) {
+        // eslint-disable-next-line no-shadow
         const { minute, hour, dayOfWeek, dayOfMonth, frequencyType } = parseCronExpression(deleteCronExpression);
+        // eslint-disable-next-line no-shadow
         const humanCron = humanCronExpression(
           { minute, hour, dayOfWeek, dayOfMonth, frequencyType },
           deleteCronExpression,
@@ -398,7 +415,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
             ))}
           </EuiFlexGrid>
 
-          {deletionScheduleItems != undefined && (
+          {deletionScheduleItems !== undefined && (
             <EuiFlexGrid columns={3}>
               {deletionScheduleItems.map((item) => (
                 <EuiFlexItem key={`${item.term}`}>

@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -6,7 +21,7 @@
 import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { MemoryRouter as Router } from "react-router";
+import { MemoryRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -228,7 +243,7 @@ describe("<CreateRollupForm /> creation", () => {
 
     expect(queryByText("Target index is required.")).toBeNull();
 
-    //Check that it routes to step 2
+    // Check that it routes to step 2
     expect(queryByText("Timestamp field")).not.toBeNull();
   });
 
@@ -285,10 +300,10 @@ describe("<CreateRollupForm /> creation", () => {
 
     userEvent.click(getByTestId("createRollupNextButton"));
 
-    //Check that it routes to step 2
+    // Check that it routes to step 2
     expect(queryByText("Timestamp field")).not.toBeNull();
 
-    //Select timestamp
+    // Select timestamp
     await userEvent.type(getByTestId("comboBoxSearchInput"), "order_date");
     await waitFor(() => {});
     fireEvent.keyDown(getByTestId("comboBoxSearchInput"), { key: "Enter", code: "Enter" });
@@ -297,15 +312,15 @@ describe("<CreateRollupForm /> creation", () => {
     userEvent.click(getByTestId("createRollupNextButton"));
     expect(queryByText("Timestamp is required.")).toBeNull();
 
-    //Check that it routes to step 3
+    // Check that it routes to step 3
     expect(queryByText("Enable job by default")).not.toBeNull();
 
     userEvent.click(getByTestId("createRollupNextButton"));
 
-    //Check that it routes to step 4
+    // Check that it routes to step 4
     expect(queryByText("Job name and indices")).not.toBeNull();
 
-    //Test create
+    // Test create
     userEvent.click(getByTestId("createRollupSubmitButton"));
     await waitFor(() => {});
 
@@ -333,102 +348,102 @@ describe("<CreateRollupForm /> creation", () => {
 
     userEvent.click(getByTestId("createRollupNextButton"));
 
-    //Check that it routes to step 2
+    // Check that it routes to step 2
     expect(queryByText("Timestamp field")).not.toBeNull();
 
-    //Select timestamp
+    // Select timestamp
     await userEvent.type(getByTestId("comboBoxSearchInput"), "order_date");
     await waitFor(() => {});
     fireEvent.keyDown(getByTestId("comboBoxSearchInput"), { key: "Enter", code: "Enter" });
     fireEvent.blur(getByTestId("comboBoxSearchInput"));
 
-    //Test calendar interval
+    // Test calendar interval
     userEvent.click(getByLabelText("Calendar"));
     expect(queryByText("Every 1")).not.toBeNull();
 
-    //Test change interval
+    // Test change interval
     userEvent.click(getByDisplayValue("Hour"));
     await waitFor(() => getByText("Week"));
     userEvent.click(getByText("Week"));
 
-    //Test change timezone
+    // Test change timezone
     userEvent.click(getByLabelText("Timezone"));
     await waitFor(() => getByText("America/Los_Angeles"));
     userEvent.click(getByText("America/Los_Angeles"));
 
-    //Test add aggregation
+    // Test add aggregation
     userEvent.dblClick(getByTestId("addFieldsAggregation"));
     userEvent.click(getByTestId("checkboxSelectRow-day_of_week_i"));
     userEvent.click(getByTestId("checkboxSelectRow-day_of_week"));
     userEvent.click(getByText("Add"));
 
-    //Go back to step 1 and check for callout
+    // Go back to step 1 and check for callout
     userEvent.click(getByTestId("createRollupPreviousButton"));
     expect(queryByText("Note: changing source index will erase all existing definitions about aggregations and metrics.")).not.toBeNull();
 
-    //Go to step 2 and continue
+    // Go to step 2 and continue
     userEvent.click(getByTestId("createRollupNextButton"));
 
-    //Test cancel add field to close modal
+    // Test cancel add field to close modal
     userEvent.dblClick(getByTestId("addFieldsAggregation"));
     userEvent.click(getByTestId("addFieldsAggregationCancel"));
 
-    //Test add aggregation second time
+    // Test add aggregation second time
     userEvent.dblClick(getByTestId("addFieldsAggregation"));
     userEvent.click(getByTestId("checkboxSelectRow-customer_gender"));
     userEvent.click(getByText("Add"));
 
-    //TODO: Test change aggregation method, cannot proceed due to getElementError for Histogram option
+    // TODO: Test change aggregation method, cannot proceed due to getElementError for Histogram option
 
     // userEvent.click(getByTestId("aggregationMethodSelect-day_of_week_i"));
     // await waitFor(() => getByText("Histogram"));
     // userEvent.click(getByText("Histogram"));
 
-    //Test move up/down of aggregations
+    // Test move up/down of aggregations
     userEvent.click(getByTestId("moveDown-day_of_week_i"));
     userEvent.click(getByTestId("moveUp-day_of_week_i"));
 
-    //TODO: Test delete aggregation, cannot proceed due to getElementError for delete button
+    // TODO: Test delete aggregation, cannot proceed due to getElementError for delete button
 
     // userEvent.click(getByTestId("delete-customer_gender"));
     // expect(queryByText("customer_gender")).toBeNull();
 
-    //Test add metric
+    // Test add metric
     userEvent.dblClick(getByTestId("addFieldsMetric"));
     userEvent.click(getByTestId("checkboxSelectAll"));
     userEvent.click(getByText("Add"));
 
-    //TODO: Test error message of no method selected for metrics calculation.
+    // TODO: Test error message of no method selected for metrics calculation.
 
     // userEvent.click(getByTestId("createRollupNextButton"));
     // expect(queryByText("Must specify at least one metric to aggregate on for:")).not.toBeNull();
 
-    //Test enable all min of metrics
+    // Test enable all min of metrics
     userEvent.click(getByText("Enable all"));
     userEvent.click(getByTestId("enable_min"));
 
-    //Test select and unselect all
+    // Test select and unselect all
     userEvent.click(getByTestId("all-day_of_week_i"));
     userEvent.click(getByTestId("all-day_of_week_i"));
 
-    //Test disable all min of metrics
+    // Test disable all min of metrics
     userEvent.click(getByText("Disable all"));
 
-    //Test disable all max of metrics
+    // Test disable all max of metrics
     userEvent.click(getByTestId("disable_max"));
 
-    //Check that it routes to step 3
+    // Check that it routes to step 3
     userEvent.click(getByTestId("createRollupNextButton"));
     expect(queryByText("Timestamp is required.")).toBeNull();
     expect(queryByText("Enable job by default")).not.toBeNull();
 
-    //Test not enabled by default
+    // Test not enabled by default
     userEvent.click(getByTestId("jobEnabledByDefault"));
 
-    //Test continuous
+    // Test continuous
     userEvent.click(getByLabelText("Yes"));
 
-    //Check that it routes to step 4
+    // Check that it routes to step 4
     userEvent.click(getByTestId("createRollupNextButton"));
     expect(queryByText("Job name and indices")).not.toBeNull();
   });

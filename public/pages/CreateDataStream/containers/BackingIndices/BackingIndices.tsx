@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -32,25 +47,29 @@ export default function BackingIndices(props: SubDetailProps) {
   const values: DataStreamInEdit = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
   const [indexes, setIndexes] = useState<ManagedCatIndex[]>([]);
-  useEffect(() => {
-    if (values.name) {
-      services.indexService
-        .getIndices({
-          from: 0,
-          size: 999,
-          search: values.name,
-          terms: values.name,
-          sortField: "index",
-          sortDirection: "desc",
-          showDataStreams: true,
-        })
-        .then((result) => {
-          if (result && result.ok) {
-            setIndexes(result.response.indices.filter((item) => item.data_stream === values.name));
-          }
-        });
-    }
-  }, [values.name]);
+  useEffect(
+    () => {
+      if (values.name) {
+        services.indexService
+          .getIndices({
+            from: 0,
+            size: 999,
+            search: values.name,
+            terms: values.name,
+            sortField: "index",
+            sortDirection: "desc",
+            showDataStreams: true,
+          })
+          .then((result) => {
+            if (result && result.ok) {
+              setIndexes(result.response.indices.filter((item) => item.data_stream === values.name));
+            }
+          });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [values.name]
+  );
   const writingIndex = (values.indices || [])[(values.indices?.length || 0) - 1]?.index_name;
   return (
     <ContentPanel

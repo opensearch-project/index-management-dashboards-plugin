@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -38,27 +53,27 @@ export function parseCronExpression(expression: string): CronUIParts {
   const expArr = expression.split(" ");
 
   if (isNumber(expArr[0]) && isNumber(expArr[1])) {
-    minute = parseInt(expArr[0]);
-    hour = parseInt(expArr[1]);
-    if (isNumber(expArr[2]) && expArr[3] == "*" && expArr[4] == "*") {
+    minute = parseInt(expArr[0], 10);
+    hour = parseInt(expArr[1], 10);
+    if (isNumber(expArr[2]) && expArr[3] === "*" && expArr[4] === "*") {
       frequencyType = "monthly";
-      dayOfMonth = parseInt(expArr[2]);
+      dayOfMonth = parseInt(expArr[2], 10);
     }
-    if (expArr[2] == "*" && expArr[3] == "*" && (isNumber(expArr[4]) || WEEK_DAYS.includes(expArr[4]))) {
+    if (expArr[2] === "*" && expArr[3] === "*" && (isNumber(expArr[4]) || WEEK_DAYS.includes(expArr[4]))) {
       frequencyType = "weekly";
       if (isNumber(expArr[4])) {
-        dayOfWeek = ["SUN", ...WEEK_DAYS][parseInt(expArr[4])];
+        dayOfWeek = ["SUN", ...WEEK_DAYS][parseInt(expArr[4], 10)];
       } else {
         dayOfWeek = expArr[4];
       }
     }
-    if (expArr[2] == "*" && expArr[3] == "*" && expArr[4] == "*") {
+    if (expArr[2] === "*" && expArr[3] === "*" && expArr[4] === "*") {
       frequencyType = "daily";
     }
   }
   if (isNumber(expArr[0])) {
-    minute = parseInt(expArr[0]);
-    if (expArr[1] == "*" && expArr[2] == "*" && expArr[3] == "*" && expArr[4] == "*") {
+    minute = parseInt(expArr[0], 10);
+    if (expArr[1] === "*" && expArr[2] === "*" && expArr[3] === "*" && expArr[4] === "*") {
       frequencyType = "hourly";
     }
   }
@@ -101,21 +116,21 @@ export function humanCronExpression(
   expression: string,
   timezone: string
 ): string {
-  if (frequencyType == "custom") {
+  if (frequencyType === "custom") {
     return expression + ` (${timezone})`;
   }
   let humanCron = `${startTime(hour, minute).format("h:mm a z")} (${timezone})`;
-  if (frequencyType == "monthly") {
+  if (frequencyType === "monthly") {
     humanCron = `Day ${dayOfMonth}, ` + humanCron;
   }
-  if (frequencyType == "weekly") {
+  if (frequencyType === "weekly") {
     humanCron = `${dayOfWeek}, ` + humanCron;
   }
   return humanCron;
 }
 
 function isNumber(value: any): boolean {
-  return !isNaN(parseInt(value));
+  return !isNaN(parseInt(value, 10));
 }
 
 export function formatNumberToHourMin(timeNumber: number) {

@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -48,7 +63,7 @@ export default function DefineTransforms({
   previewTransform,
   isReadOnly,
 }: DefineTransformsProps) {
-  let columns: EuiDataGridColumn[] = [];
+  const columns: EuiDataGridColumn[] = [];
 
   fields.map((field: FieldItem) => {
     columns.push({
@@ -93,29 +108,37 @@ export default function DefineTransforms({
   const [data, setData] = useState([]);
   const [dataCount, setDataCount] = useState<number>(0);
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await transformService.searchSampleData(sourceIndex, { from: 0, size: DefaultSampleDataSize }, sourceIndexFilter);
+  const fetchData = useCallback(
+    async () => {
+      setLoading(true);
+      try {
+        const response = await transformService.searchSampleData(sourceIndex, { from: 0, size: DefaultSampleDataSize }, sourceIndexFilter);
 
-      if (response.ok) {
-        setData(response.response.data);
-        setDataCount(response.response.total.value);
+        if (response.ok) {
+          setData(response.response.data);
+          setDataCount(response.response.total.value);
+        }
+      } catch (err) {
+        notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the transforms"));
       }
-    } catch (err) {
-      notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the transforms"));
-    }
-    setLoading(false);
-  }, [sourceIndex]);
+      setLoading(false);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [sourceIndex]
+  );
 
-  React.useEffect(() => {
-    fetchData();
-  }, []);
+  React.useEffect(
+    () => {
+      fetchData();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const onChangeItemsPerPage = useCallback(
     (pageSize) => {
-      setPagination((pagination) => ({
-        ...pagination,
+      setPagination((paginationVal) => ({
+        ...paginationVal,
         pageSize,
         pageIndex: 0,
       }));
@@ -126,15 +149,16 @@ export default function DefineTransforms({
   );
   const onChangePage = useCallback(
     (pageIndex) => {
-      setPagination((pagination) => ({ ...pagination, pageIndex }));
+      setPagination((paginationVal) => ({ ...paginationVal, pageIndex }));
       setFrom(pageIndex * size);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setPagination]
   );
 
   const onSort = useCallback(
-    (sortingColumns) => {
-      setSortingColumns(sortingColumns);
+    (sortedColumns) => {
+      setSortingColumns(sortedColumns);
     },
     [setSortingColumns]
   );
@@ -142,8 +166,8 @@ export default function DefineTransforms({
   const renderCellValue = ({ rowIndex, columnId }) => {
     if (!loading && data.hasOwnProperty(rowIndex)) {
       let lookupId = columnId;
-      if (columns?.find((column) => column.id == columnId).schema == "alias") {
-        lookupId = columns?.find((column) => column.id == columnId).path;
+      if (columns?.find((column) => column.id === columnId).schema === "alias") {
+        lookupId = columns?.find((column) => column.id === columnId).path;
       }
       return getColumnValue(rowIndex, lookupId);
     }
@@ -151,20 +175,20 @@ export default function DefineTransforms({
   };
 
   const getColumnValue = (rowIndex, columnId) => {
-    if (columns?.find((column) => column.id == columnId).schema == "keyword") {
+    if (columns?.find((column) => column.id === columnId).schema === "keyword") {
       // Remove the keyword postfix for getting correct data from array
       const correspondingTextColumnId = columnId.replace(".keyword", "");
       return data[rowIndex]._source[correspondingTextColumnId] ? data[rowIndex]._source[correspondingTextColumnId] : "-";
-    } else if (columns?.find((column) => column.id == columnId).schema == "date") {
+    } else if (columns?.find((column) => column.id === columnId).schema === "date") {
       return data[rowIndex]._source[columnId] ? renderTime(data[rowIndex]._source[columnId]) : "-";
-    } else if (columns?.find((column) => column.id == columnId).schema == "boolean") {
+    } else if (columns?.find((column) => column.id === columnId).schema === "boolean") {
       return data[rowIndex]._source[columnId] == null ? "-" : data[rowIndex]._source[columnId] ? "true" : "false";
     }
     const val = data[rowIndex]._source[columnId];
     return val !== undefined ? JSON.stringify(val) : "-";
-  }
+  };
 
-  //TODO: remove duplicate code here after extracting the first table as separate component
+  // TODO: remove duplicate code here after extracting the first table as separate component
   if (isReadOnly)
     return (
       <div>
@@ -183,8 +207,8 @@ export default function DefineTransforms({
           pagination={{
             ...pagination,
             pageSizeOptions: [5, 10, 20, 50],
-            onChangeItemsPerPage: onChangeItemsPerPage,
-            onChangePage: onChangePage,
+            onChangeItemsPerPage,
+            onChangePage,
           }}
           toolbarVisibility={{
             showColumnSelector: true,
@@ -215,7 +239,7 @@ export default function DefineTransforms({
         <h5>Original fields with sample data</h5>
       </EuiText>
       <EuiSpacer size="s" />
-      {/*TODO: Substitute "source index", and "filtered by" fields with actual values*/}
+      {/* TODO: Substitute "source index", and "filtered by" fields with actual values*/}
       <EuiText color="subdued" size="xs">
         <p>{`Viewing sample data from index ${sourceIndex}`}</p>
       </EuiText>
@@ -231,8 +255,8 @@ export default function DefineTransforms({
         pagination={{
           ...pagination,
           pageSizeOptions: [5, 10, 20, 50],
-          onChangeItemsPerPage: onChangeItemsPerPage,
-          onChangePage: onChangePage,
+          onChangeItemsPerPage,
+          onChangePage,
         }}
         toolbarVisibility={{
           showColumnSelector: true,

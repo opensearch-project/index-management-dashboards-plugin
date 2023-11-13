@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -14,7 +29,7 @@ import { ACTIONS_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 interface CreateActionProps {
   stateName: string;
-  actions: UIAction<Action>[];
+  actions: Array<UIAction<Action>>;
   editAction: UIAction<Action> | null;
   onClickCancelAction: () => void;
   onClickSaveAction: (action: UIAction<Action>) => void;
@@ -94,7 +109,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
 
           <EuiSpacer />
 
-          {/*Below is for when the specific action renders have updated their config and want to update the UIAction*/}
+          {/* Below is for when the specific action renders have updated their config and want to update the UIAction*/}
           {/* So we should not be changing the id because it'll break the UI */}
           {action?.render(action, this.onChangeAction)}
 

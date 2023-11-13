@@ -1,16 +1,31 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import React, { Component } from "react";
 import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiAccordion } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { TransformGroupItem, FieldItem, TransformAggItem, TRANSFORM_AGG_TYPE } from "../../../../../models/interfaces";
 import DefineTransforms from "../DefineTransforms";
 import { TransformService } from "../../../../services";
-import { CoreStart } from "opensearch-dashboards/public";
 
 interface ReviewDefinitionProps {
   transformService: TransformService;
@@ -56,14 +71,14 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
       let title = "";
       let field = "";
       if (
-        item.type == TRANSFORM_AGG_TYPE.histogram ||
-        item.type == TRANSFORM_AGG_TYPE.terms ||
-        item.type == TRANSFORM_AGG_TYPE.date_histogram
+        item.type === TRANSFORM_AGG_TYPE.histogram ||
+        item.type === TRANSFORM_AGG_TYPE.terms ||
+        item.type === TRANSFORM_AGG_TYPE.date_histogram
       ) {
         // is a group
         title = "Group by " + item.type;
         field = item.item[item.type].source_field;
-      } else if (item.type == TRANSFORM_AGG_TYPE.scripted_metric) {
+      } else if (item.type === TRANSFORM_AGG_TYPE.scripted_metric) {
         title = item.type + "()";
         field = item.name;
       } else {

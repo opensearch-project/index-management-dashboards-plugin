@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -44,15 +59,20 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
     };
   }
 
-  const outsideClick = useCallback(() => {
-    setTimeout(() => {
-      if (destroyRef.current) {
-        return;
-      }
-      setPopVisible(false);
-    }, 0);
-  }, [popVisible, setPopVisible]);
+  const outsideClick = useCallback(
+    () => {
+      setTimeout(() => {
+        if (destroyRef.current) {
+          return;
+        }
+        setPopVisible(false);
+      }, 0);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [popVisible, setPopVisible]
+  );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const outsideHover = useCallback(
     throttle((e: MouseEvent) => {
       if (popVisible && popoverRef.current && panelRef.current) {
@@ -65,14 +85,18 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
     [popVisible, setPopVisible]
   );
 
-  useEffect(() => {
-    if (popVisible && triggerType === "click") {
-      window.addEventListener("click", outsideClick);
-    }
-    return () => {
-      window.removeEventListener("click", outsideClick);
-    };
-  }, [outsideClick, triggerType]);
+  useEffect(
+    () => {
+      if (popVisible && triggerType === "click") {
+        window.addEventListener("click", outsideClick);
+      }
+      return () => {
+        window.removeEventListener("click", outsideClick);
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [outsideClick, triggerType]
+  );
 
   useEffect(() => {
     if (popVisible && triggerType === "hover") {

@@ -1,11 +1,26 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import { EuiFormRow, EuiText, EuiTextArea, EuiSpacer, EuiLink } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
-import { INDEX_SETTINGS_URL } from "../../../../utils/constants"
+import { INDEX_SETTINGS_URL } from "../../../../utils/constants";
 
 interface IndexSettingsInputProps {
   getIndexSettings: (indexSettings: string, ignore: boolean) => void;
@@ -50,7 +65,12 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
     <>
       <EuiSpacer size="m" />
 
-      <EuiFormRow isInvalid={showError} error={inputError} label={indexSettingsLabel} id={ignore ? "ignore_index_settings" : "customize_index_settings"}>
+      <EuiFormRow
+        isInvalid={showError}
+        error={inputError}
+        label={indexSettingsLabel}
+        id={ignore ? "ignore_index_settings" : "customize_index_settings"}
+      >
         <EuiTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} isInvalid={showError} />
       </EuiFormRow>
 

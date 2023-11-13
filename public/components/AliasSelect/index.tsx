@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -13,13 +28,13 @@ import { SYSTEM_ALIAS } from "../../../utils/constants";
 export interface AliasSelectProps extends Omit<EuiComboBoxProps<{ label: string; value: string }>, "value" | "onChange"> {
   value?: Record<string, {}>;
   onChange?: (value: AliasSelectProps["value"]) => void;
-  refreshOptions: (aliasName: string) => Promise<ServerResponse<{ alias: string; index: string; [key: string]: any }[]>>;
+  refreshOptions: (aliasName: string) => Promise<ServerResponse<Array<{ alias: string; index: string; [key: string]: any }>>>;
   onOptionsChange?: RemoteSelectProps["onOptionsChange"];
 }
 
 const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInputElement>) => {
   const { value, onChange, refreshOptions: refreshOptionsFromProps, onOptionsChange } = props;
-  const optionsRef = useRef<{ label: string; [key: string]: any }[]>([]);
+  const optionsRef = useRef<Array<{ label: string; [key: string]: any }>>([]);
   const refreshOptions: RemoteSelectProps["refreshOptions"] = ({ searchValue }) => {
     return refreshOptionsFromProps(searchValue || "").then((res) => {
       if (res?.ok) {
@@ -51,12 +66,13 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
       refreshOptions={refreshOptions}
       value={Object.keys(value || {})}
       onChange={(val) => {
-        onChange &&
+        if (onChange) {
           onChange(
             val
               .map((label) => optionsRef.current.find((item) => item.label === label) || { label })
               .reduce((total, { label, ...others }) => ({ ...total, [label]: others || {} }), {})
           );
+        }
       }}
     />
   );
@@ -64,5 +80,4 @@ const AliasSelect = forwardRef((props: AliasSelectProps, ref: React.Ref<HTMLInpu
 
 AliasSelect.displayName = "AliasSelect";
 
-// @ts-ignore
 export default AliasSelect;

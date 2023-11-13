@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -74,13 +89,13 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
       return (
         <EuiComboBox
           onCreateOption={(searchValue) => {
-            const allOptions = (options as { label: string; options?: { label: string }[] }[]).reduce((total, current) => {
+            const allOptions = (options as Array<{ label: string; options?: Array<{ label: string }> }>).reduce((total, current) => {
               if (current.options) {
                 return [...total, ...current.options];
               } else {
                 return [...total, current];
               }
-            }, [] as { label: string }[]);
+            }, [] as Array<{ label: string }>);
             const findItem = allOptions.find((item: { label: string }) => item.label === searchValue);
             if (findItem) {
               onChange(searchValue);
@@ -111,8 +126,8 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
           ...others
         }: {
           value?: string[];
-          options: EuiComboBoxOptionOption<string>[];
-          onChange: (val: string[], values: EuiComboBoxOptionOption<string>[], ...args: any) => void;
+          options: Array<EuiComboBoxOptionOption<string>>;
+          onChange: (val: string[], values: Array<EuiComboBoxOptionOption<string>>, ...args: any) => void;
         },
         ref: React.Ref<any>
       ) => {
@@ -125,7 +140,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
                 } else {
                   return [...total, current];
                 }
-              }, [] as EuiComboBoxOptionOption<string>[]);
+              }, [] as Array<EuiComboBoxOptionOption<string>>);
               const findItem = allOptions.find((item: { label: string }) => item.label === searchValue);
               if (findItem) {
                 onChange(
@@ -147,7 +162,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
             selectedOptions={
               (value || [])
                 .map((item: string) => others.options.find((option) => option.value === item) || { label: item, value: item })
-                .filter((item) => item !== undefined) as EuiComboBoxOptionOption<string>[]
+                .filter((item) => item !== undefined) as Array<EuiComboBoxOptionOption<string>>
             }
           />
         );

@@ -1,21 +1,36 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import { RouteComponentProps } from "react-router-dom";
+import React, { ChangeEvent, Component } from "react";
+import queryString from "query-string";
+import { EuiFlexItem, EuiFlexGroup, EuiButton, EuiTitle, EuiSpacer, EuiButtonEmpty } from "@elastic/eui";
+import moment from "moment";
 import { TransformService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import React, { ChangeEvent, Component } from "react";
 import { EMPTY_TRANSFORM } from "../../utils/constants";
-import queryString from "query-string";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { EuiFlexItem, EuiFlexGroup, EuiButton, EuiTitle, EuiSpacer, EuiButtonEmpty } from "@elastic/eui";
 import ConfigureTransform from "../../components/ConfigureTransform";
 import Schedule from "../../components/Schedule";
 import Indices from "../../components/Indices";
-import moment from "moment";
 import { Transform } from "../../../../../models/interfaces";
 
 interface EditTransformProps extends RouteComponentProps {
@@ -91,7 +106,7 @@ export default class EditTransform extends Component<EditTransformProps, EditTra
       const response = await transformService.getTransform(transformId);
 
       if (response.ok) {
-        let json = JSON.parse(this.state.transformJSON);
+        const json = JSON.parse(this.state.transformJSON);
         json.transform = response.response.transform;
 
         this.setState({
@@ -209,17 +224,17 @@ export default class EditTransform extends Component<EditTransformProps, EditTra
 
   updateSchedule = () => {
     const { schedule, cronExpression, cronTimeZone, interval, intervalTimeUnit } = this.state;
-    let json = this.state.transformJSON;
-    if (schedule == "cron") {
+    const json = this.state.transformJSON;
+    if (schedule === "cron") {
       json.transform.schedule.cron = { expression: `${cronExpression}`, timezone: `${cronTimeZone}` };
-      delete json.transform.schedule["interval"];
+      delete json.transform.schedule.interval;
     } else {
       json.transform.schedule.interval = {
         start_time: moment().unix(),
         unit: intervalTimeUnit,
         period: interval,
       };
-      delete json.transform.schedule["cron"];
+      delete json.transform.schedule.cron;
     }
 
     this.setState({ transformJSON: json });
@@ -252,14 +267,14 @@ export default class EditTransform extends Component<EditTransformProps, EditTra
 
   onDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const description = e.target.value;
-    let json = this.state.transformJSON;
+    const json = this.state.transformJSON;
     json.transform.description = description;
-    this.setState({ transformJSON: json, description: description });
+    this.setState({ transformJSON: json, description });
   };
 
   onEnabledChange = () => {
     const enabled = this.state.enabled;
-    let json = this.state.transformJSON;
+    const json = this.state.transformJSON;
     json.transform.enabled = enabled;
     this.setState({ transformJSON: json, enabled: !enabled });
   };
@@ -274,9 +289,9 @@ export default class EditTransform extends Component<EditTransformProps, EditTra
 
   onIntervalChange = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ interval: e.target.valueAsNumber });
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       const intervalError = "Interval value is required.";
-      this.setState({ intervalError: intervalError });
+      this.setState({ intervalError });
     } else {
       this.setState({ intervalError: "" });
     }
@@ -284,9 +299,9 @@ export default class EditTransform extends Component<EditTransformProps, EditTra
 
   onPageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const pageSize = e.target.valueAsNumber;
-    let json = this.state.transformJSON;
+    const json = this.state.transformJSON;
     json.transform.page_size = pageSize;
-    this.setState({ pageSize: pageSize, transformJSON: json });
+    this.setState({ pageSize, transformJSON: json });
   };
 
   onScheduleChange = (e: ChangeEvent<HTMLSelectElement>) => {

@@ -1,39 +1,54 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import moment from "moment";
 import { FieldItem } from "../../../../models/interfaces";
 import { COMPARISON_OPERATORS } from "./constants";
-import moment from "moment";
 
 const timeunits = {
-  isMilliseconds: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "milliseconds" || stringToCheck.trim().toLowerCase() == "ms";
+  isMilliseconds(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "milliseconds" || stringToCheck.trim().toLowerCase() === "ms";
   },
-  isSeconds: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "seconds" || stringToCheck.trim().toLowerCase() == "s";
+  isSeconds(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "seconds" || stringToCheck.trim().toLowerCase() === "s";
   },
-  isMinutes: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "minutes" || stringToCheck.trim() == "m";
+  isMinutes(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "minutes" || stringToCheck.trim() === "m";
   },
-  isHours: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "hours" || stringToCheck.trim().toLowerCase() == "h";
+  isHours(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "hours" || stringToCheck.trim().toLowerCase() === "h";
   },
-  isDays: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "days" || stringToCheck.trim().toLowerCase() == "d";
+  isDays(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "days" || stringToCheck.trim().toLowerCase() === "d";
   },
-  isWeeks: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "weeks" || stringToCheck.trim().toLowerCase() == "w";
+  isWeeks(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "weeks" || stringToCheck.trim().toLowerCase() === "w";
   },
-  isMonths: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "months" || stringToCheck.trim() == "M";
+  isMonths(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "months" || stringToCheck.trim() === "M";
   },
-  isQuarters: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "quarters" || stringToCheck.trim().toLowerCase() == "q";
+  isQuarters(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "quarters" || stringToCheck.trim().toLowerCase() === "q";
   },
-  isYears: function (stringToCheck: string): boolean {
-    return stringToCheck.trim().toLowerCase() == "years" || stringToCheck.trim().toLowerCase() == "y";
+  isYears(stringToCheck: string): boolean {
+    return stringToCheck.trim().toLowerCase() === "years" || stringToCheck.trim().toLowerCase() === "y";
   },
 } as const;
 
@@ -99,29 +114,29 @@ export const msToDelayTimeUnit = (delay: number, timeunit: string): number => {
   }
 };
 
-//Returns true if field type is numeric
+// Returns true if field type is numeric
 export const isNumericMapping = (fieldType: string | undefined): boolean => {
   return (
-    fieldType == "long" ||
-    fieldType == "integer" ||
-    fieldType == "short" ||
-    fieldType == "byte" ||
-    fieldType == "double" ||
-    fieldType == "float" ||
-    fieldType == "half_float" ||
-    fieldType == "scaled_float"
+    fieldType === "long" ||
+    fieldType === "integer" ||
+    fieldType === "short" ||
+    fieldType === "byte" ||
+    fieldType === "double" ||
+    fieldType === "float" ||
+    fieldType === "half_float" ||
+    fieldType === "scaled_float"
   );
 };
 
 export const compareFieldItem = (itemA: FieldItem, itemB: FieldItem): boolean => {
-  return itemB.label == itemA.label && itemA.type == itemB.type && itemA.path == itemB.path;
+  return itemB.label === itemA.label && itemA.type === itemB.type && itemA.path === itemB.path;
 };
 
 export const parseFieldOptions = (prefix: string, mappings: any): FieldItem[] => {
   let fieldsOption: FieldItem[] = [];
-  for (let field in mappings) {
+  for (const field in mappings) {
     if (mappings.hasOwnProperty(field)) {
-      if (mappings[field].type != "object" && mappings[field].type != null && mappings[field].type != "nested")
+      if (mappings[field].type !== "object" && mappings[field].type != null && mappings[field].type !== "nested")
         fieldsOption.push({ label: prefix + field, type: mappings[field].type });
       if (mappings[field].fields != null)
         fieldsOption = fieldsOption.concat(parseFieldOptions(prefix + field + ".", mappings[field].fields));
@@ -132,7 +147,7 @@ export const parseFieldOptions = (prefix: string, mappings: any): FieldItem[] =>
   return fieldsOption;
 };
 
-export const getOperators = (fieldType) =>
+export const getOperators = (fieldType: string) =>
   COMPARISON_OPERATORS.reduce(
     (acc, currentOperator) =>
       currentOperator.dataTypes.includes(fieldType) ? [...acc, { text: currentOperator.text, value: currentOperator.value }] : acc,

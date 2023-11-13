@@ -1,16 +1,25 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
-import { CatIndex, DataStream } from "../../../server/models/interfaces";
-import { IAlias } from "../../pages/Aliases/interface";
-import { ServicesContext } from "../../services";
-import { CoreServicesContext } from "../../components/core_services";
-import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "../../utils/constants";
-import { getErrorMessage, filterBlockedItems } from "../../utils/helpers";
 import {
   EuiButton,
   EuiButtonEmpty,
@@ -22,6 +31,12 @@ import {
   EuiModalHeaderTitle,
   EuiSpacer,
 } from "@elastic/eui";
+import { CatIndex, DataStream } from "../../../server/models/interfaces";
+import { IAlias } from "../../pages/Aliases/interface";
+import { ServicesContext } from "../../services";
+import { CoreServicesContext } from "../../components/core_services";
+import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "../../utils/constants";
+import { getErrorMessage, filterBlockedItems } from "../../utils/helpers";
 
 export interface ClearCacheModalProps {
   selectedItems: CatIndex[] | DataStream[] | IAlias[];
@@ -121,11 +136,11 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
           let toast = "";
           if (unBlockedItems.length > 1) {
             toast = `Cache for ${unBlockedItems.length} ${type} [${unBlockedItems.join(", ")}] have been successfully cleared.`;
-          } else if (unBlockedItems.length == 1) {
+          } else if (unBlockedItems.length === 1) {
             toast = `Cache for ${unBlockedItems[0]} has been successfully cleared.`;
           }
 
-          if (!selectedItems || selectedItems.length == 0) {
+          if (!selectedItems || selectedItems.length === 0) {
             toast = "Cache for all open indexes have been successfully cleared.";
           }
           coreServices.notifications.toasts.addSuccess(toast);
@@ -150,22 +165,26 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
     }
   }, [services, coreServices, onClose, unBlockedItems, selectedItems, type]);
 
-  useEffect(() => {
-    if (visible && selectedItems.length > 0 && selectedItems.length == blockedItems.length) {
-      if (selectedItems.length == 1) {
-        coreServices.notifications.toasts.addDanger({
-          title: "Unable to clear cache",
-          text: `Cache cannot be cleared for ${blockedItems[0]} because it is closed or blocked.`,
-        });
-      } else {
-        coreServices.notifications.toasts.addDanger({
-          title: "Unable to clear cache",
-          text: `Cache cannot be cleared for the selected ${type} because they are closed or blocked.`,
-        });
+  useEffect(
+    () => {
+      if (visible && selectedItems.length > 0 && selectedItems.length === blockedItems.length) {
+        if (selectedItems.length === 1) {
+          coreServices.notifications.toasts.addDanger({
+            title: "Unable to clear cache",
+            text: `Cache cannot be cleared for ${blockedItems[0]} because it is closed or blocked.`,
+          });
+        } else {
+          coreServices.notifications.toasts.addDanger({
+            title: "Unable to clear cache",
+            text: `Cache cannot be cleared for the selected ${type} because they are closed or blocked.`,
+          });
+        }
+        onClose();
       }
-      onClose();
-    }
-  }, [visible, unBlockedItems, blockedItems, coreServices, onClose, type]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [visible, unBlockedItems, blockedItems, coreServices, onClose, type]
+  );
 
   if (!visible || loading) {
     return null;
@@ -186,7 +205,7 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
           </>
         )}
       </div>
-      <EuiCallOut color="warning" iconType="warning" hidden={blockedItems.length == 0} size="s">
+      <EuiCallOut color="warning" iconType="warning" hidden={blockedItems.length === 0} size="s">
         <p>{blockHint}</p>
         <ul style={{ listStyleType: "disc", listStylePosition: "inside" }}>
           {blockedItems.map((item) => (
@@ -222,7 +241,7 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
           data-test-subj="ClearCacheConfirmButton"
           onClick={onConfirm}
           fill
-          isDisabled={selectedItems.length > 0 && unBlockedItems.length == 0}
+          isDisabled={selectedItems.length > 0 && unBlockedItems.length === 0}
         >
           Clear cache
         </EuiButton>

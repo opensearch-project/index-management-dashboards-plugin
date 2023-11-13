@@ -1,4 +1,19 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -84,6 +99,7 @@ export default function useField<T extends object>(options?: FieldOption<T>): Fi
 
         let errorInfo = null;
         try {
+          // eslint-disable-next-line no-shadow
           const result = validateFunction(
             {
               ...item,
@@ -171,7 +187,7 @@ export default function useField<T extends object>(options?: FieldOption<T>): Fi
           });
         })
       );
-      const resultArray = result.filter((item) => item) as Record<string, string[]>[];
+      const resultArray = result.filter((item) => item) as Array<Record<string, string[]>>;
       const resultPayload = resultArray.reduce((total, current) => ({ ...total, ...current }), {} as Record<string, string[]>);
       setErrors(resultPayload);
       return {

@@ -1,14 +1,29 @@
 /*
+ *   Copyright OpenSearch Contributors
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License").
+ *   You may not use this file except in compliance with the License.
+ *   A copy of the License is located at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   or in the "license" file accompanying this file. This file is distributed
+ *   on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *   express or implied. See the License for the specific language governing
+ *   permissions and limitations under the License.
+ */
+
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { DATA_STREAM_REGEX } from "./constants";
-import { IndexSelectItem } from "../models/interfaces";
 import { EuiComboBoxOptionOption } from "@elastic/eui";
 import _ from "lodash";
-import { BrowserServices } from "../../../models/interfaces";
 import { CoreStart } from "opensearch-dashboards/public";
+import { DATA_STREAM_REGEX } from "./constants";
+import { IndexSelectItem } from "../models/interfaces";
+import { BrowserServices } from "../../../models/interfaces";
 import { getErrorMessage } from "../../../utils/helpers";
 import { IndexItem } from "../../../../models/interfaces";
 
@@ -21,12 +36,12 @@ import { IndexItem } from "../../../../models/interfaces";
  * @param indices
  */
 export const parseIndexNames = (indices: string): string[] => {
-  let indexArray: string[] = [];
-  indices &&
+  const indexArray: string[] = [];
+  if (indices)
     indices.split(",").forEach((index) => {
       // need extract data stream name first
       if (DATA_STREAM_REGEX.test(index)) {
-        let match = index.match(DATA_STREAM_REGEX);
+        const match = index.match(DATA_STREAM_REGEX);
         indexArray.push(match ? match[1] : index);
       } else {
         indexArray.push(index);
@@ -37,9 +52,9 @@ export const parseIndexNames = (indices: string): string[] => {
 
 export const getIndexOptions = async (props: { services: BrowserServices; searchValue: string; context: CoreStart }) => {
   const { services, searchValue, context } = props;
-  let options: EuiComboBoxOptionOption<IndexSelectItem>[] = [];
+  const options: Array<EuiComboBoxOptionOption<IndexSelectItem>> = [];
   try {
-    let actualSearchValue = parseIndexNames(searchValue);
+    const actualSearchValue = parseIndexNames(searchValue);
 
     const [indexResponse, dataStreamResponse, aliasResponse] = await Promise.all([
       services.indexService.getIndices({
@@ -113,12 +128,14 @@ export const checkNotReadOnlyIndexes = async (props: {
   services: BrowserServices;
   indexes: string[];
 }): Promise<
-  [
-    string,
-    {
-      settings: IndexItem["settings"];
-    }
-  ][]
+  Array<
+    [
+      string,
+      {
+        settings: IndexItem["settings"];
+      }
+    ]
+  >
 > => {
   const { services, indexes } = props;
   const result = await services.commonService.apiCaller<
@@ -139,7 +156,7 @@ export const checkNotReadOnlyIndexes = async (props: {
     const valueArray = Object.entries(result?.response || {});
     if (valueArray.length) {
       return valueArray.filter(([indexName, indexDetail]) => {
-        let included = indexes.includes(indexName);
+        const included = indexes.includes(indexName);
         if (!included) {
           return false;
         }
