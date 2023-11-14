@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 /* eslint-disable max-classes-per-file */
 
 import React, { ChangeEvent } from "react";

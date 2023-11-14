@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from "react";
 import { EuiButton, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
 import { TransformAggItem } from "../../../../../../../models/interfaces";

@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { schema } from "@osd/config-schema";
 import { NodeServices } from "../models/interfaces";
 import { IRouter } from "../../../../src/core/server";

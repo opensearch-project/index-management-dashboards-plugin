@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { EuiFormRow, EuiFieldText, EuiSpacer } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
 import CustomLabel from "../../../../components/CustomLabel";

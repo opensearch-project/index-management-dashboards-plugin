@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, fireEvent, waitFor, act } from "@testing-library/react";

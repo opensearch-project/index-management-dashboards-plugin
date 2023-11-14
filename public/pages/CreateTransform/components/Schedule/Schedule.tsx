@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { ChangeEvent, Component } from "react";
 import { EuiSpacer, EuiCheckbox, EuiRadioGroup, EuiFormRow, EuiFieldNumber, EuiAccordion, EuiHorizontalRule } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";

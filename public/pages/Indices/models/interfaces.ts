@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { Direction } from "@elastic/eui";
 import { Policy } from "../../../../models/interfaces";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";

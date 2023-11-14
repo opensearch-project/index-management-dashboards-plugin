@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { FieldItem, TRANSFORM_AGG_TYPE, TransformGroupItem } from "../../../../models/interfaces";
 import { IntervalType } from "../../../utils/constants";
 

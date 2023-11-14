@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 import React, { forwardRef, useCallback, useRef, useImperativeHandle } from "react";

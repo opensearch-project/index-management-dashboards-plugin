@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { ChangeEvent } from "react";
 import { EuiCheckbox, EuiSpacer, EuiText } from "@elastic/eui";
 import { CheckBoxLabel } from "../../helper";

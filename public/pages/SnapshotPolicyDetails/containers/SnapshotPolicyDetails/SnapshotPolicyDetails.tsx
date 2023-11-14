@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import React, { Component } from "react";

@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { httpClientMock } from "../../test/mocks";
 import PolicyService from "./PolicyService";
 import { NODE_API } from "../../utils/constants";

@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { Component } from "react";
 import { EuiText, EuiLink, EuiIcon, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSpacer, EuiComboBox } from "@elastic/eui";
 import { Transition as ITransition, UITransition } from "../../../../../models/interfaces";

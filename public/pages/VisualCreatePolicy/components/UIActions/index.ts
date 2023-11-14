@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import AliasUIAction from "./AliasUIAction/AliasUIAction";
 import AllocationUIAction from "./AllocationUIAction";
 import CloseUIAction from "./CloseUIAction";

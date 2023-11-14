@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { actionRepoSingleton, capitalizeFirstLetter, convertTemplatesToArray, getOrderInfo, getUpdatedPolicy } from "./helpers";
 import { Action, ISMTemplate, UIAction } from "../../../../models/interfaces";
 import { makeId } from "../../../utils/helpers";

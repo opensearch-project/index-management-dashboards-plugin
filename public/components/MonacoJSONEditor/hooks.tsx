@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { monaco } from "@osd/monaco";
 import { euiThemeVars } from "@osd/ui-shared-deps/theme";
 import { useEffect, useRef } from "react";

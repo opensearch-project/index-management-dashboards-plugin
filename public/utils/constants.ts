@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import { JSONSchema4TypeName } from "@types/json-schema";
 import { InitOption } from "../lib/field";
 import { ComponentMapEnum } from "../components/FormGenerator";

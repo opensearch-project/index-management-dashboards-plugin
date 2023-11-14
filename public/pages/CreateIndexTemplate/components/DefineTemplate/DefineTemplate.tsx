@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import React from "react";
 import { EuiCallOut, EuiCheckableCard, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiText, EuiTextColor } from "@elastic/eui";
 import { FLOW_ENUM, SubDetailProps } from "../../interface";

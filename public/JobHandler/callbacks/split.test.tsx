@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import { CoreSetup } from "opensearch-dashboards/public";
 import { callbackForSplit, callbackForSplitTimeout } from "./split";
 import { coreServicesMock, httpClientMock } from "../../../test/mocks";

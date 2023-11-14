@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty, EuiButtonProps, EuiButtonEmptyProps } from "@elastic/eui";
 import classNames from "classnames";

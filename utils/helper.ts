@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 // minimatch is a peer dependency of glob
 import minimatch from "minimatch";
 export const filterByMinimatch = (input: string, rules: string[]): boolean => {

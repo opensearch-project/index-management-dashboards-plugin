@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { CoreStart } from "opensearch-dashboards/public";
 import { BrowserServices } from "../../models/interfaces";
 import { ServerResponse } from "../../../server/models/types";

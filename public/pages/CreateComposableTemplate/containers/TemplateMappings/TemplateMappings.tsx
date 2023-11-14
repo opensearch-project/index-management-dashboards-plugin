@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useContext, useRef } from "react";
 import { EuiFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";

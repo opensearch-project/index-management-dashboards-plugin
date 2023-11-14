@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React from "react";
 import _ from "lodash";
 import { EuiSpacer, EuiText, EuiRadioGroup, EuiFormRow, EuiSelect, EuiComboBox, EuiLink, EuiIcon } from "@elastic/eui";

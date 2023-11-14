@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { HttpSetup } from "opensearch-dashboards/public";
 import { ServerResponse } from "../../server/models/types";
 import { GetFieldsResponse, GetTransformsResponse, PreviewTransformResponse, PutTransformResponse } from "../../server/models/interfaces";

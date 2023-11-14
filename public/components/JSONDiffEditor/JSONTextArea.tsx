@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { forwardRef, useState, useEffect, useImperativeHandle, useRef } from "react";
 import { EuiFormRow } from "@elastic/eui";
 import type { MonacoDiffEditorProps } from "react-monaco-editor";

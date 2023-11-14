@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import queryString from "query-string";
 import { CoreStart } from "opensearch-dashboards/public";
 import { DEFAULT_QUERY_PARAMS } from "./constants";

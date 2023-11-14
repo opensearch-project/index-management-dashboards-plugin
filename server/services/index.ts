@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import IndexService from "./IndexService";
 import DataStreamService from "./DataStreamService";
 import PolicyService from "./PolicyService";

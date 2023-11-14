@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { INDEX_MAPPING_TYPES } from "../../constants";
 
 export const schemaId = "ISMIndexMappingProperties";

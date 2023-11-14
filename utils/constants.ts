@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export const BASE_API_PATH = "/api/ism";
 export const NODE_API = Object.freeze({
   _SEARCH: `${BASE_API_PATH}/_search`,

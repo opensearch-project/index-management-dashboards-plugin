@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export const DEFAULT_INDEX_SETTINGS = {
   "index.number_of_shards": 1,
   "index.number_of_replicas": 1,

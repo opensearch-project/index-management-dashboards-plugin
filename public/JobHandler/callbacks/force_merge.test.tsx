@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { CoreSetup } from "opensearch-dashboards/public";
 import { callbackForForceMerge, callbackForForceMergeTimeout } from "./force_merge";
 import { coreServicesMock, httpClientMock } from "../../../test/mocks";

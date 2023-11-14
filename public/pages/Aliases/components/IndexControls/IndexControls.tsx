@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useEffect, useState } from "react";
 import { EuiComboBox, EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { ALIAS_STATUS_OPTIONS } from "../../../../utils/constants";

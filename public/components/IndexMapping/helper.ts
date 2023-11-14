@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import Ajv from "ajv";
 import { DiffableMappingsPropertiesObject, MappingsProperties, MappingsPropertiesObject } from "../../../models/interfaces";
 import { noAdditionalJSONSchema } from "../../utils/JSON_schemas/index_mappings";

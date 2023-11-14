@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { EuiCheckbox, EuiSpacer } from "@elastic/eui";
 import React, { ChangeEvent } from "react";
 import CustomLabel from "../../../../components/CustomLabel";

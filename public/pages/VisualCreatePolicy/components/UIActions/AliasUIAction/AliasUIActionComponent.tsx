@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { Component } from "react";
 import { EuiComboBox, EuiComboBoxOptionOption, EuiFormRow, EuiSpacer, EuiSwitch } from "@elastic/eui";
 import { AliasAction, AliasActionItem, AliasActions, UIAction } from "../../../../../../models/interfaces";

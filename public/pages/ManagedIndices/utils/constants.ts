@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { ManagedIndicesQueryParams } from "../models/interfaces";
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];

@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useEffect, useState } from "react";
 import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import FilterGroup from "../../../../components/FilterGroup";

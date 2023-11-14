@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import { httpClientMock } from "../../test/mocks";
 import { NODE_API } from "../../utils/constants";
 import CommonService from "./CommonService";

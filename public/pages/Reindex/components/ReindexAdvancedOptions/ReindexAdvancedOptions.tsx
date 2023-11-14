@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import { EuiCheckbox, EuiComboBox, EuiComboBoxOptionOption, EuiFieldNumber, EuiLink, EuiRadioGroup, EuiSpacer } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";

@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { EuiComboBoxOptionOption } from "@elastic/eui";
 import { checkDuplicate, filterOverlaps, parseIndexNames } from "./helper";
 import { IndexSelectItem } from "../models/interfaces";

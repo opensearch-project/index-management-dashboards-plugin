@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { EuiRadio } from "@elastic/eui";
 import React from "react";
 import { TEMPLATE_TYPE } from "../../../../utils/constants";

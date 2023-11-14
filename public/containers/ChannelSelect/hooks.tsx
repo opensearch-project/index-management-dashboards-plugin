@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { useContext, useState, useEffect, useRef, useCallback } from "react";
 import { ServicesContext } from "../../services";
 import { BrowserServices } from "../../models/interfaces";

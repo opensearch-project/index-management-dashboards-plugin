@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { EuiDataGrid, EuiDataGridColumn, EuiSpacer, EuiText, EuiToolTip } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
 import React, { useCallback, useState } from "react";

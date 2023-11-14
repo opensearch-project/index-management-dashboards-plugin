@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 // TODO: Backend has PR out to change this model, this needs to be updated once that goes through
 
 import { long } from "@opensearch-project/opensearch/api/types";

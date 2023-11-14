@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { forwardRef, useRef } from "react";
 import { EuiComboBoxProps } from "@elastic/eui";
 import RemoteSelect, { RemoteSelectProps } from "../RemoteSelect";

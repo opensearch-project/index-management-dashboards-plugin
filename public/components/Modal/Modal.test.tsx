@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React from "react";
 import { EuiButton, EuiOverlayMask, EuiModal } from "@elastic/eui";
 import { render, fireEvent } from "@testing-library/react";

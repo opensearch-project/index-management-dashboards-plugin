@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import React from "react";
 import { CallbackType, TaskResult } from "../interface";
 import { ReindexJobMetaData } from "../../models/interfaces";

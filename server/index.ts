@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { schema, TypeOf } from "@osd/config-schema";
 import { PluginConfigDescriptor, PluginInitializerContext } from "../../../src/core/server";
 import { IndexPatternManagementPlugin } from "./plugin";

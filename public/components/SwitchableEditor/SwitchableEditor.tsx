@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { EuiSpacer, EuiSwitch } from "@elastic/eui";
 import React, { forwardRef, useRef, useState, useImperativeHandle } from "react";
 import JSONEditor, { IJSONEditorRef } from "../JSONEditor";

@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";

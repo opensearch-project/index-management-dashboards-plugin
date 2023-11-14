@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { DefaultHeaders, IndexManagementApi } from "../models/interfaces";
 
 export const API_ROUTE_PREFIX = "/_plugins/_ism";

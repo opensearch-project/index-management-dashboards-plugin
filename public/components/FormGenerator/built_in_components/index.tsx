@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import React, { forwardRef, useRef } from "react";
 import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox, EuiComboBoxOptionOption } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";

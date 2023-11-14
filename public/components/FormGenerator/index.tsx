@@ -12,11 +12,6 @@
  *   express or implied. See the License for the specific language governing
  *   permissions and limitations under the License.
  */
-
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
 import React, { forwardRef, useRef, useImperativeHandle, useEffect, useMemo } from "react";
 import { EuiForm, EuiFormProps, EuiSpacer } from "@elastic/eui";
 import { isEqual, omit, pick } from "lodash";

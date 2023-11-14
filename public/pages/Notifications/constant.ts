@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 export enum ActionType {
   REINDEX = "REINDEX",
   RESIZE = "RESIZE",

@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
 import { NODE_API } from "../../utils/constants";
 import {

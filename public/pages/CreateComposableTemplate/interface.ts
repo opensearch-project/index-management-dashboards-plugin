@@ -13,11 +13,6 @@
  *   permissions and limitations under the License.
  */
 
-/*
- * Copyright OpenSearch Contributors
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import { RouteComponentProps } from "react-router-dom";
 import { FieldInstance } from "../../lib/field";
 import { IComposableTemplate } from "../../../models/interfaces";
