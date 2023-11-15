@@ -25,24 +25,6 @@ describe("Aliases", () => {
     cy.addIndexAlias(`${SAMPLE_ALIAS_PREFIX}-0`, `${SAMPLE_INDEX_PREFIX}-*`);
   });
 
-  Cypress.Commands.add("waitForAliasWithRetry", (alias, retryCount = 3, timeout = 240000) => {
-    const tryWait = (currentAttempt) => {
-      cy.wait(alias, { timeout: timeout }).then(
-        () => true, // If successful, do nothing
-        (error) => {
-          if (currentAttempt < retryCount) {
-            cy.log(`Retry attempt ${currentAttempt + 1} for ${alias}`);
-            tryWait(currentAttempt + 1); // Retry
-          } else {
-            throw error; // If retries are exhausted, throw the error
-          }
-        }
-      );
-    };
-
-    tryWait(0); // Initial call to tryWait
-  });
-
   beforeEach(() => {
     // Intercept the specific POST request
     cy.intercept("POST", "/api/ism/apiCaller", (req) => {
@@ -58,8 +40,8 @@ describe("Aliases", () => {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(120000);
 
-    // Use the custom command for waiting with retries
-    cy.waitForAliasWithRetry("@apiCaller");
+    // Wait for the API call to complete
+    cy.wait("@apiCaller", { timeout: 240000 });
 
     // Common text to wait for to confirm page loaded, give up to 120 seconds for initial load
     cy.contains("Rows per page", { timeout: 120000 }).should("be.visible");
