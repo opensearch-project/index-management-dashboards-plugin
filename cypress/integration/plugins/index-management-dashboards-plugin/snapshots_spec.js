@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* eslint-disable cypress/no-unnecessary-waiting */
+
 import { IM_PLUGIN_NAME, BASE_PATH } from "../../../utils/constants";
 
 describe("Snapshots", () => {
@@ -31,6 +33,7 @@ describe("Snapshots", () => {
       // Type in repository location
       cy.get(`input[placeholder="e.g., /mnt/snapshots"]`).focus().type("~/Desktop");
 
+      // if a toast message pops up then dismiss it
       cy.dismissToast();
 
       // Click Add button
@@ -75,6 +78,7 @@ describe("Snapshots", () => {
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_2{enter}");
       cy.get(`[data-test-subj="indicesComboBoxInput"]`).type("test_index_3{enter}");
 
+      // if a toast message pops up then dismiss it
       cy.dismissToast();
 
       // Click 'Add' button to create snapshot
@@ -107,6 +111,7 @@ describe("Snapshots", () => {
       // click "Restore" button
       cy.get(`[data-test-subj="restoreButton"]`).should("be.visible").should("not.be.disabled").click({ force: true });
 
+      // if a toast message pops up then dismiss it
       cy.dismissToast();
 
       // Check for restore flyout
