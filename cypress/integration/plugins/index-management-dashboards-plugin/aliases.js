@@ -33,12 +33,12 @@ describe("Aliases", () => {
       }
     });
 
-    // Wait for 10 seconds for OSD to start.
-    // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(10000);
-
     // Visit ISM OSD
     cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/aliases`);
+
+    // Wait for 30 seconds for OSD to start.
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(30000);
 
     // Wait for the API call to complete
     cy.wait("@apiCaller", { timeout: 120000 });
