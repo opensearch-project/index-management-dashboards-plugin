@@ -1,0 +1,54 @@
+name: ESLint Checker
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+
+        # Enable longer filenames for windows
+      - name: Enable longer filenames
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: git config --system core.longpaths true
+      - name: Checkout OpenSearch-Dashboards
+        uses: actions/checkout@v2
+        with:
+          repository: opensearch-project/OpenSearch-Dashboards
+          ref: ${{ env.OPENSEARCH_DASHBOARDS_VERSION }}
+          path: OpenSearch-Dashboards
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: "./OpenSearch-Dashboards/.nvmrc"
+          registry-url: "https://registry.npmjs.org"
+      - name: Install Yarn
+        # Need to use bash to avoid having a windows/linux specific step
+        shell: bash
+        run: |
+          YARN_VERSION=$(node -p "require('./OpenSearch-Dashboards/package.json').engines.yarn")
+          echo "Installing yarn@$YARN_VERSION"
+          npm i -g yarn@$YARN_VERSION
+      - run: node -v
+      - run: yarn -v
+      - name: Checkout Index Management Dashboards plugin
+        uses: actions/checkout@v2
+        with:
+          path: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+      - name: Bootstrap plugin/OpenSearch-Dashboards
+        run: |
+          cd OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
+          yarn osd bootstrap
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Run ESLint
+        run: yarn eslint:run
+        working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
