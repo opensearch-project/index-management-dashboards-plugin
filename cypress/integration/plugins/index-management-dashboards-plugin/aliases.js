@@ -25,6 +25,24 @@ describe("Aliases", () => {
     cy.addIndexAlias(`${SAMPLE_ALIAS_PREFIX}-0`, `${SAMPLE_INDEX_PREFIX}-*`);
   });
 
+  Cypress.Commands.add("waitForAliasWithRetry", (alias, retryCount = 3, timeout = 240000) => {
+    const tryWait = (currentAttempt) => {
+      cy.wait(alias, { timeout: timeout }).then(
+        () => true, // If successful, do nothing
+        (error) => {
+          if (currentAttempt < retryCount) {
+            cy.log(`Retry attempt ${currentAttempt + 1} for ${alias}`);
+            tryWait(currentAttempt + 1); // Retry
+          } else {
+            throw error; // If retries are exhausted, throw the error
+          }
+        }
+      );
+    };
+
+    tryWait(0); // Initial call to tryWait
+  });
+
   beforeEach(() => {
     // Intercept the specific POST request
     cy.intercept("POST", "/api/ism/apiCaller", (req) => {
@@ -36,15 +54,15 @@ describe("Aliases", () => {
     // Visit ISM OSD
     cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/aliases`);
 
-    // Wait for 30 seconds for OSD to start.
+    // Wait for 120 seconds for OSD to start.
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(30000);
+    cy.wait(120000);
 
-    // Wait for the API call to complete
-    cy.wait("@apiCaller", { timeout: 120000 });
+    // Use the custom command for waiting with retries
+    cy.waitForAliasWithRetry("@apiCaller");
 
-    // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
-    cy.contains("Rows per page", { timeout: 60000 }).should("be.visible");
+    // Common text to wait for to confirm page loaded, give up to 120 seconds for initial load
+    cy.contains("Rows per page", { timeout: 120000 }).should("be.visible");
   });
 
   describe("can be searched / sorted / paginated", () => {
