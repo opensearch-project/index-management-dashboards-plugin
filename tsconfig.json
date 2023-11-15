@@ -8,7 +8,6 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "outDir": "./target",
-    "strictNullChecks": true
+    "outDir": "./target"
   }
 }
