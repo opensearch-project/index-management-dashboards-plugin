@@ -68,7 +68,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
         <h3
           class="euiTitle euiTitle--large"
         >
-          Policy managed indices
+          Policy managed indexes
           <span
             class="panel-header-count"
           >
@@ -233,7 +233,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
               class="euiSwitch__label"
               id="some_html_id"
             >
-              Show data stream indices
+              Show data stream indexes
             </span>
           </div>
         </div>
@@ -497,7 +497,7 @@ exports[`<ManagedIndices /> spec renders the component 1`] = `
                               class="euiText euiText--medium"
                             >
                               <p>
-                                Loading managed indices...
+                                Loading managed indexes...
                               </p>
                             </div>
                           </div>
