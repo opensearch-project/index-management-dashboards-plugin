@@ -303,7 +303,7 @@ exports[`<Indices /> spec renders the component 1`] = `
                 data-test-subj="tableHeaderCell_index_0"
                 role="columnheader"
                 scope="col"
-                style="width: 250px;"
+                style="width: 320px;"
               >
                 <button
                   class="euiTableHeaderButton euiTableHeaderButton-isSorted"
