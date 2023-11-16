@@ -45,7 +45,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
       sortable: true,
       truncateText: false,
       textOnly: true,
-      width: "250px",
+      width: "320px",
       render: (index: string) => {
         return <IndexDetail {...props} index={index} />;
       },
