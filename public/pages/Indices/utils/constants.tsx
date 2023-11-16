@@ -14,6 +14,7 @@ const renderNumber = (value) => {
 };
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];
+export const DEFAULT_PAGE_SIZE_OPTIONS_INDICES = [10, 20, 50, 100, 500];
 
 export const DEFAULT_QUERY_PARAMS = {
   from: 0,
