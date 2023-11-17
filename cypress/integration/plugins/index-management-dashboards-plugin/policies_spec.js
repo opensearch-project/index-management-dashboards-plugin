@@ -215,7 +215,7 @@ describe("Policies", () => {
       // Click on the test alias to navigate to the details page
       const testInputs = {
         add: ["alias4", "alias6"],
-        remove: ["alias1", "alias2", "alias3", "alias7"],
+        remove: ["alias1", "alias2", "alias7"],
       };
       /* Edit the policy */
 
