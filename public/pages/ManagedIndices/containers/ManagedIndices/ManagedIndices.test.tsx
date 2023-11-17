@@ -156,7 +156,7 @@ describe("<ManagedIndices /> spec", () => {
     await waitFor(() => {});
 
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Removed policy from 1 managed indices");
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Removed policy from 1 managed indexes");
   });
 
   it("sorts/paginates the table", async () => {
