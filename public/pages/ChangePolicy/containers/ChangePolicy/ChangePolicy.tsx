@@ -5,7 +5,7 @@
 
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiSpacer, EuiTitle, EuiButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from "@elastic/eui";
 import { IndexService, ManagedIndexService } from "../../../../services";
 import ChangeManagedIndices from "../../components/ChangeManagedIndices";
 import NewPolicy from "../../components/NewPolicy";
@@ -98,7 +98,7 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
       if (changePolicyResponse.ok) {
         const { updatedIndices, failedIndices, failures } = changePolicyResponse.response;
         if (updatedIndices) {
-          this.context.notifications.toasts.addSuccess(`Changed policy on ${updatedIndices} indices`);
+          this.context.notifications.toasts.addSuccess(`Changed policy on ${updatedIndices} indexes`);
         }
         if (failures) {
           this.context.notifications.toasts.addDanger(
@@ -114,6 +114,8 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem changing policy"));
     }
   };
+
+  onCancel = () => this.props.history.goBack();
 
   onSubmit = async () => {
     const { selectedPolicies, selectedManagedIndices } = this.state;
@@ -175,6 +177,11 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
         <EuiSpacer />
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+          <EuiFlexItem grow={false}>
+            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
+              Cancel
+            </EuiButtonEmpty>
+          </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButton fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
               Change
