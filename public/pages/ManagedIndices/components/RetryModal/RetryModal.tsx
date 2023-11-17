@@ -103,14 +103,14 @@ export default class RetryModal extends Component<RetryModalProps, RetryModalSta
         }
 
         if (updatedIndices) {
-          this.context.notifications.toasts.addSuccess(`Retried ${updatedIndices} managed indices`);
+          this.context.notifications.toasts.addSuccess(`Retried ${updatedIndices} managed indexes`);
         }
       } else {
         this.context.notifications.toasts.addDanger(response.error);
       }
       onClose();
     } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem retrying managed indices"));
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem retrying managed indexes"));
     }
   };
 
@@ -142,7 +142,7 @@ export default class RetryModal extends Component<RetryModalProps, RetryModalSta
             <EuiRadioGroup options={radioOptions} idSelected={radioIdSelected} onChange={this.onChange} />
 
             <EuiSpacer size="s" />
-            <EuiFormRow label="Start state" helpText="Only common states shared across all selected indices are available">
+            <EuiFormRow label="Start state" helpText="Only common states shared across all selected indexes are available">
               <EuiSelect
                 disabled={radioIdSelected !== Radio.State}
                 options={stateOptions}

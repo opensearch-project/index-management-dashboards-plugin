@@ -14,7 +14,7 @@ const POLICY_ID_ROLLOVER = "test_policy_rollover";
 const SAMPLE_INDEX = "sample_index";
 const SAMPLE_INDEX_ROLLOVER = "sample_index-01";
 
-describe("Managed indices", () => {
+describe("Managed indexes", () => {
   beforeEach(() => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
@@ -58,13 +58,13 @@ describe("Managed indices", () => {
       });
 
       // Confirm we got a remove policy toaster
-      cy.contains("Removed policy from 1 managed indices");
+      cy.contains("Removed policy from 1 managed indexes");
 
       // Wait some time for remove policy to execute before reload
       cy.wait(3000).reload();
 
       // Confirm we are back to empty loading state, give 20 seconds as OSD takes a while to load
-      cy.contains("There are no existing managed indices.", { timeout: 20000 });
+      cy.contains("There are no existing managed indexes.", { timeout: 20000 });
     });
   });
 
@@ -121,7 +121,7 @@ describe("Managed indices", () => {
       cy.get(`[data-test-subj="retryModalRetryButton"]`).click({ force: true });
 
       // Confirm we got retry toaster
-      cy.contains("Retried 1 managed indices");
+      cy.contains("Retried 1 managed indexes");
 
       // Reload the page
       cy.reload();
@@ -238,10 +238,10 @@ describe("Managed indices", () => {
       });
 
       // Confirm we got the change policy toaster
-      cy.contains("Changed policy on 1 indices");
+      cy.contains("Changed policy on 1 indexes");
 
       // Click back to Managed Indices page by clicking "Managed indices" breadcrumb
-      cy.contains("Policy managed indices").click();
+      cy.contains("Policy managed indexes").click();
 
       // Speed up execution of managed index
       cy.updateManagedIndexConfigStartTime(SAMPLE_INDEX);
@@ -257,7 +257,7 @@ describe("Managed indices", () => {
     });
   });
 
-  describe("can manage data stream indices", () => {
+  describe("can manage data stream indexes", () => {
     before(() => {
       cy.deleteAllIndices();
       cy.deleteIMJobs();

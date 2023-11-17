@@ -31,7 +31,7 @@ export default function OpenIndexModal(props: OpenIndexModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Open indices</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>Open indexes</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>
