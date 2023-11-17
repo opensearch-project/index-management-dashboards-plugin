@@ -9,7 +9,7 @@ import samplePolicy from "../../../fixtures/plugins/index-management-dashboards-
 const POLICY_ID = "test_policy_id";
 const SAMPLE_INDEX = "sample_index";
 
-describe("Indices", () => {
+describe("Indexes", () => {
   beforeEach(() => {
     // Set welcome screen tracking to false
     localStorage.setItem("home:welcome:show", "false");
@@ -52,7 +52,7 @@ describe("Indices", () => {
     });
   });
 
-  describe("can show data stream indices", () => {
+  describe("can show data stream indexes", () => {
     before(() => {
       cy.deleteAllIndices();
       cy.deleteIMJobs();
@@ -169,7 +169,7 @@ describe("Indices", () => {
     });
   });
 
-  describe("can make indices deleted", () => {
+  describe("can make indexes deleted", () => {
     before(() => {
       cy.deleteAllIndices();
       cy.deleteIMJobs();
@@ -417,7 +417,7 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Close Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
       // Check for close index modal
-      cy.contains("Close indices");
+      cy.contains("Close indexes");
 
       // Close confirm button should be disabled
       cy.get('[data-test-subj="Close Confirm button"]').should("have.class", "euiButton-isDisabled");
@@ -457,7 +457,7 @@ describe("Indices", () => {
       cy.get('[data-test-subj="Open Action"]').should("exist").should("not.have.class", "euiContextMenuItem-isDisabled").click();
 
       // Check for open index modal
-      cy.contains("Open indices");
+      cy.contains("Open indexes");
 
       cy.get('[data-test-subj="Open Confirm button"]').click();
 

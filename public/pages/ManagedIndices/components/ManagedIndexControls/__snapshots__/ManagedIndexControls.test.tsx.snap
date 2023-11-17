@@ -112,7 +112,7 @@ exports[`<ManagedIndexControls /> spec renders data streams selection field 1`] 
         class="euiSwitch__label"
         id="some_html_id"
       >
-        Show data stream indices
+        Show data stream indexes
       </span>
     </div>
   </div>
@@ -204,7 +204,7 @@ exports[`<ManagedIndexControls /> spec renders the component 1`] = `
         class="euiSwitch__label"
         id="some_html_id"
       >
-        Show data stream indices
+        Show data stream indexes
       </span>
     </div>
   </div>

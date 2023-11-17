@@ -246,7 +246,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
         this.context.notifications.toasts.addDanger(getManagedIndicesResponse.error);
       }
     } catch (err) {
-      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the managed indices"));
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the managed indexes"));
     }
 
     // Avoiding flicker by showing/hiding the "Data stream" column only after the results are loaded.
@@ -288,7 +288,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
       if (removePolicyResponse.ok) {
         const { updatedIndices, failedIndices, failures } = removePolicyResponse.response;
         if (updatedIndices) {
-          this.context.notifications.toasts.addSuccess(`Removed policy from ${updatedIndices} managed indices`);
+          this.context.notifications.toasts.addSuccess(`Removed policy from ${updatedIndices} managed indexes`);
         }
         if (failures) {
           this.context.notifications.toasts.addDanger(
@@ -399,10 +399,10 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
           onClickModal: (onShow: (component: any, props: object) => void) => () =>
             onShow(ConfirmationModal, {
               title: `Remove ${
-                selectedItems.length === 1 ? `policy from ${selectedItems[0].index}` : `policies from ${selectedItems.length} indices`
+                selectedItems.length === 1 ? `policy from ${selectedItems[0].index}` : `policies from ${selectedItems.length} indexes`
               }`,
               bodyMessage: `Remove ${
-                selectedItems.length === 1 ? `policy from ${selectedItems[0].index}` : `policies from ${selectedItems.length} indices`
+                selectedItems.length === 1 ? `policy from ${selectedItems[0].index}` : `policies from ${selectedItems.length} indexes`
               } permanently? This action cannot be undone.`,
               actionMessage: "Remove",
               onAction: () => this.onClickRemovePolicy(selectedItems.map((item) => item.index)),
@@ -442,7 +442,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
         <ContentPanel
           actions={<ContentPanelActions actions={actions} />}
           bodyStyles={{ padding: "initial" }}
-          title="Policy managed indices"
+          title="Policy managed indexes"
           itemCount={totalManagedIndices}
         >
           <ManagedIndexControls
