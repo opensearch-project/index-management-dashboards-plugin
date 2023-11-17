@@ -26,11 +26,32 @@ describe("Aliases", () => {
   });
 
   beforeEach(() => {
+    // Intercept the specific POST request
+    cy.intercept("POST", "/api/ism/apiCaller", (req) => {
+      if (req.body.data && req.body.data.name === "**" && req.body.data.s === "alias:desc" && req.body.endpoint === "cat.aliases") {
+        req.alias = "apiCaller"; // Assign an alias directly if the condition is met
+      }
+    });
+
     // Visit ISM OSD
     cy.visit(`${BASE_PATH}/app/${IM_PLUGIN_NAME}#/aliases`);
 
-    // Common text to wait for to confirm page loaded, give up to 60 seconds for initial load
-    cy.contains("Rows per page", { timeout: 60000 });
+    // Wait for 120 seconds for OSD to start.
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    // cy.wait(120000);
+
+    const startTime = new Date().getTime();
+
+    // Wait for the API call to complete
+    cy.wait("@apiCaller", { timeout: 240000 }).then(() => {
+      // Log the calculated duration
+      const endTime = new Date().getTime();
+      const duration = endTime - startTime; // Duration in milliseconds
+      cy.log(`@apiCaller completed in ${duration} milliseconds`);
+    });
+
+    // Common text to wait for to confirm page loaded, give up to 120 seconds for initial load
+    cy.contains("Rows per page", { timeout: 120000 }).should("be.visible");
   });
 
   describe("can be searched / sorted / paginated", () => {
