@@ -83,7 +83,7 @@ describe("Snapshots", () => {
   });
 
   describe("Snapshot can be restored", () => {
-    it("Successfully restores indices from snapshot", () => {
+    it("Successfully restores indexes from snapshot", () => {
       // Must wait here before refreshing so snapshot status becomes 'success'
       cy.wait(5000);
 
