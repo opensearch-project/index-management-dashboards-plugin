@@ -76,7 +76,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiSwitch
-            label="Show data stream indices"
+            label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}
             data-test-subj="toggleShowDataStreams"

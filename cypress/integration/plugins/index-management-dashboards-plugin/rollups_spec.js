@@ -142,7 +142,7 @@ describe("Rollups", () => {
       cy.get("button").contains("Next").click({ force: true });
 
       // Confirm that we got to step 4 of creation page
-      cy.contains("Job name and indices");
+      cy.contains("Job name and indexes");
 
       // Click the create button
       cy.get("button").contains("Create").click({ force: true });

@@ -44,7 +44,7 @@ export default function DeleteIndexModal(props: DeleteIndexModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Delete indices</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>Delete indexes</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>

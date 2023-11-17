@@ -15,7 +15,7 @@ exports[`<ManagedIndexEmptyPrompt /> spec renders the component 1`] = `
         class="euiText euiText--medium"
       >
         <p>
-          There are no existing managed indices. Create a policy to add to an index.
+          There are no existing managed indexes. Create a policy to add to an index.
         </p>
       </div>
     </div>
