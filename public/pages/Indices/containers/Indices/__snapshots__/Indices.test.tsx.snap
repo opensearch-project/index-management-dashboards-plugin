@@ -15,7 +15,7 @@ exports[`<Indices /> spec renders the component 1`] = `
       <h3
         class="euiTitle euiTitle--large"
       >
-        Indices
+        Indexes
         <span
           class="panel-header-count"
         >
@@ -187,7 +187,7 @@ exports[`<Indices /> spec renders the component 1`] = `
             class="euiSwitch__label"
             id="some_html_id"
           >
-            Show data stream indices
+            Show data stream indexes
           </span>
         </div>
       </div>

@@ -44,7 +44,7 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
   return (
     <EuiModal onClose={onClose}>
       <EuiModalHeader>
-        <EuiModalHeaderTitle>Close indices</EuiModalHeaderTitle>
+        <EuiModalHeaderTitle>Close indexes</EuiModalHeaderTitle>
       </EuiModalHeader>
 
       <EuiModalBody>

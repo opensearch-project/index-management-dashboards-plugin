@@ -98,7 +98,7 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
       if (changePolicyResponse.ok) {
         const { updatedIndices, failedIndices, failures } = changePolicyResponse.response;
         if (updatedIndices) {
-          this.context.notifications.toasts.addSuccess(`Changed policy on ${updatedIndices} indices`);
+          this.context.notifications.toasts.addSuccess(`Changed policy on ${updatedIndices} indexes`);
         }
         if (failures) {
           this.context.notifications.toasts.addDanger(

@@ -157,7 +157,6 @@ exports[`<State /> spec renders the component 1`] = `
       >
         <div
           class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--directionColumn euiFlexGroup--responsive"
-          style="background-color: rgb(248, 249, 252);"
         >
           <div
             class="euiFlexItem euiFlexItem--flexGrowZero"

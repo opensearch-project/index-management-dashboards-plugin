@@ -269,7 +269,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
           />
         }
         bodyStyles={{ padding: "initial" }}
-        title="Indices"
+        title="Indexes"
         itemCount={totalIndices}
       >
         <IndexControls
