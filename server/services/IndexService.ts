@@ -66,13 +66,17 @@ export default class IndexService {
       const params: {
         index: string;
         format: string;
-        s: string;
+        s?: string;
         expand_wildcards?: string;
       } = {
         index: getSearchString(terms, indices, dataStreams),
         format: "json",
-        s: `${sortField}:${sortDirection}`,
+        //         s: `${sortField}:${sortDirection}`,
       };
+
+      if (sortField !== "managed" && sortField !== "data_stream") {
+        params.s = `${sortField}:${sortDirection}`;
+      }
 
       if (expandWildcards) {
         params.expand_wildcards = expandWildcards;
@@ -175,11 +179,25 @@ export default class IndexService {
         body: {
           ok: true,
           response: {
-            indices: paginatedIndices.map((catIndex: CatIndex) => ({
-              ...catIndex,
-              managed: managedStatus[catIndex.index] ? "Yes" : "No",
-              managedPolicy: managedStatus[catIndex.index],
-            })),
+            indices: paginatedIndices
+              .map((catIndex: CatIndex) => ({
+                ...catIndex,
+                managed: managedStatus[catIndex.index] ? "Yes" : "No",
+                managedPolicy: managedStatus[catIndex.index],
+              }))
+              .sort((a, b) => {
+                let flag;
+                const aManaged = a.managed as string;
+                const bManaged = b.managed as string;
+
+                if (sortDirection === "asc") {
+                  flag = aManaged < bManaged;
+                } else {
+                  flag = aManaged > bManaged;
+                }
+
+                return flag ? -1 : 1;
+              }),
             totalIndices: filteredIndices.length,
           },
         },
