@@ -71,7 +71,6 @@ export default class IndexService {
       } = {
         index: getSearchString(terms, indices, dataStreams),
         format: "json",
-        //         s: `${sortField}:${sortDirection}`,
       };
 
       if (sortField !== "managed" && sortField !== "data_stream") {
@@ -146,20 +145,25 @@ export default class IndexService {
         }
       });
 
-      if (sortField === "status") {
-        // add new more status to status field so we need to sort
-        indicesResponse.sort((a, b) => {
+      function customSort(array, key, sortDirection) {
+        return array.sort((a, b) => {
           let flag;
-          const aStatus = a.extraStatus as string;
-          const bStatus = b.extraStatus as string;
+          const aValue = a[key] as string;
+          const bValue = b[key] as string;
+
           if (sortDirection === "asc") {
-            flag = aStatus < bStatus;
+            flag = aValue < bValue;
           } else {
-            flag = aStatus > bStatus;
+            flag = aValue > bValue;
           }
 
           return flag ? -1 : 1;
         });
+      }
+
+      if (sortField === "status") {
+        // add new more status to status field so we need to sort
+        customSort(indicesResponse, "extraStatus", sortDirection);
       }
 
       // Filtering out indices that belong to a data stream. This must be done before pagination.
@@ -179,25 +183,15 @@ export default class IndexService {
         body: {
           ok: true,
           response: {
-            indices: paginatedIndices
-              .map((catIndex: CatIndex) => ({
+            indices: customSort(
+              paginatedIndices.map((catIndex: CatIndex) => ({
                 ...catIndex,
                 managed: managedStatus[catIndex.index] ? "Yes" : "No",
                 managedPolicy: managedStatus[catIndex.index],
-              }))
-              .sort((a, b) => {
-                let flag;
-                const aManaged = a.managed as string;
-                const bManaged = b.managed as string;
-
-                if (sortDirection === "asc") {
-                  flag = aManaged < bManaged;
-                } else {
-                  flag = aManaged > bManaged;
-                }
-
-                return flag ? -1 : 1;
-              }),
+              })),
+              "managed",
+              sortDirection
+            ),
             totalIndices: filteredIndices.length,
           },
         },
