@@ -78,7 +78,7 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
     {
       field: "managed",
       name: "Managed by policy",
-      sortable: false,
+      sortable: true,
       truncateText: true,
       textOnly: true,
       render: renderNumber,
