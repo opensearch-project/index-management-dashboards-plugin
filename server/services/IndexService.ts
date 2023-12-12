@@ -177,21 +177,19 @@ export default class IndexService {
 
       const managedStatus = await this._getManagedStatus(request, indexNames);
 
+      const allIndices = paginatedIndices.map((catIndex: CatIndex) => ({
+        ...catIndex,
+        managed: managedStatus[catIndex.index] ? "Yes" : "No",
+        managedPolicy: managedStatus[catIndex.index],
+      }));
+
       // NOTE: Cannot use response.ok due to typescript type checking
       return response.custom({
         statusCode: 200,
         body: {
           ok: true,
           response: {
-            indices: customSort(
-              paginatedIndices.map((catIndex: CatIndex) => ({
-                ...catIndex,
-                managed: managedStatus[catIndex.index] ? "Yes" : "No",
-                managedPolicy: managedStatus[catIndex.index],
-              })),
-              "managed",
-              sortDirection
-            ),
+            indices: sortField === "managed" ? customSort(allIndices, "managed", sortDirection) : allIndices,
             totalIndices: filteredIndices.length,
           },
         },
