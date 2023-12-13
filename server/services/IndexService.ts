@@ -66,13 +66,16 @@ export default class IndexService {
       const params: {
         index: string;
         format: string;
-        s: string;
+        s?: string;
         expand_wildcards?: string;
       } = {
         index: getSearchString(terms, indices, dataStreams),
         format: "json",
-        s: `${sortField}:${sortDirection}`,
       };
+
+      if (sortField !== "managed" && sortField !== "data_stream") {
+        params.s = `${sortField}:${sortDirection}`;
+      }
 
       if (expandWildcards) {
         params.expand_wildcards = expandWildcards;
@@ -142,20 +145,25 @@ export default class IndexService {
         }
       });
 
-      if (sortField === "status") {
-        // add new more status to status field so we need to sort
-        indicesResponse.sort((a, b) => {
+      function customSort(array, key, sortDirection) {
+        return array.sort((a, b) => {
           let flag;
-          const aStatus = a.extraStatus as string;
-          const bStatus = b.extraStatus as string;
+          const aValue = a[key] as string;
+          const bValue = b[key] as string;
+
           if (sortDirection === "asc") {
-            flag = aStatus < bStatus;
+            flag = aValue < bValue;
           } else {
-            flag = aStatus > bStatus;
+            flag = aValue > bValue;
           }
 
           return flag ? -1 : 1;
         });
+      }
+
+      if (sortField === "status") {
+        // add new more status to status field so we need to sort
+        customSort(indicesResponse, "extraStatus", sortDirection);
       }
 
       // Filtering out indices that belong to a data stream. This must be done before pagination.
@@ -169,17 +177,19 @@ export default class IndexService {
 
       const managedStatus = await this._getManagedStatus(request, indexNames);
 
+      const allIndices = paginatedIndices.map((catIndex: CatIndex) => ({
+        ...catIndex,
+        managed: managedStatus[catIndex.index] ? "Yes" : "No",
+        managedPolicy: managedStatus[catIndex.index],
+      }));
+
       // NOTE: Cannot use response.ok due to typescript type checking
       return response.custom({
         statusCode: 200,
         body: {
           ok: true,
           response: {
-            indices: paginatedIndices.map((catIndex: CatIndex) => ({
-              ...catIndex,
-              managed: managedStatus[catIndex.index] ? "Yes" : "No",
-              managedPolicy: managedStatus[catIndex.index],
-            })),
+            indices: sortField === "managed" ? customSort(allIndices, "managed", sortDirection) : allIndices,
             totalIndices: filteredIndices.length,
           },
         },
