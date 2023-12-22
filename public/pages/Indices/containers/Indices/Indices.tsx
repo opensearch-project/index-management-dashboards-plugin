@@ -24,7 +24,7 @@ import {
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import IndexControls from "../../components/IndexControls";
 import IndexEmptyPrompt from "../../components/IndexEmptyPrompt";
-import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, indicesColumns } from "../../utils/constants";
+import { DEFAULT_PAGE_SIZE_OPTIONS_INDICES, DEFAULT_QUERY_PARAMS, indicesColumns } from "../../utils/constants";
 import IndexService from "../../../../services/IndexService";
 import CommonService from "../../../../services/CommonService";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
@@ -214,7 +214,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     const pagination: Pagination = {
       pageIndex: page,
       pageSize: size,
-      pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
+      pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS_INDICES,
       totalItemCount: totalIndices,
     };
 
