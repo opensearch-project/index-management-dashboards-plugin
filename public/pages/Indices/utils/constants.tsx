@@ -3,18 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from "react";
-import { EuiHealth, EuiLink, EuiTableFieldDataColumnType } from "@elastic/eui";
+import { OuiDataGridColumn } from "@opensearch-project/oui";
 import IndexDetail, { IndexDetailModalProps } from "../containers/IndexDetail";
 import { ManagedCatIndex } from "../../../../server/models/interfaces";
 import { ROUTES, SortDirection } from "../../../utils/constants";
 
-const renderNumber = (value) => {
+export const renderNumber = (value) => {
   return value || "-";
 };
 
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 20, 50];
-export const DEFAULT_PAGE_SIZE_OPTIONS_INDICES = [10, 20, 50, 100, 500];
 
 export const DEFAULT_QUERY_PARAMS = {
   from: 0,
@@ -38,122 +36,82 @@ export const HEALTH_TO_COLOR: {
 
 interface IColumnOptions extends Omit<IndexDetailModalProps, "index"> {}
 
-const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
+const getColumns = (props: IColumnOptions): OuiDataGridColumn[] => {
   return [
     {
-      field: "index",
-      name: "Index",
-      sortable: true,
-      truncateText: false,
-      textOnly: true,
-      width: "320px",
-      render: (index: string) => {
-        return <IndexDetail {...props} index={index} />;
-      },
+      id: "index",
+      displayAsText: "Index",
+      isSortable: true,
+      initialWidth: 320,
     },
     {
-      field: "health",
-      name: "Health",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      render: (health: string, item: ManagedCatIndex) => {
-        const color = health ? HEALTH_TO_COLOR[health] : "subdued";
-        const text = health || item.status;
-        return (
-          <EuiHealth color={color} className="indices-health">
-            {text}
-          </EuiHealth>
-        );
-      },
+      id: "health",
+      displayAsText: "Health",
+      isSortable: true,
     },
     {
-      field: "data_stream",
-      name: "Data stream",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      width: "120px",
-      render: (data_stream) => (data_stream ? <EuiLink href={`#${ROUTES.CREATE_DATA_STREAM}/${data_stream}`}>{data_stream}</EuiLink> : "-"),
+      id: "data_stream",
+      displayAsText: "Data stream",
+      isSortable: true,
+      initialWidth: 120,
     },
     {
-      field: "managed",
-      name: "Managed by policy",
-      sortable: false,
-      truncateText: true,
-      textOnly: true,
-      render: renderNumber,
+      id: "managed",
+      displayAsText: "Managed by policy",
+      isSortable: false,
     },
     {
-      field: "status",
-      name: "Status",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      render: (status: string, item: ManagedCatIndex) => {
-        return <span className="camel-first-letter">{item.extraStatus || status}</span>;
-      },
+      id: "status",
+      displayAsText: "Status",
+      isSortable: true,
     },
     {
-      field: "store.size",
-      name: "Total size",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      dataType: "number",
-      render: renderNumber,
+      id: "store.size",
+      displayAsText: "Total size",
+      isSortable: true,
+      schema: "numeric",
     },
     {
-      field: "pri.store.size",
-      name: "Size of primaries",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      dataType: "number",
-      render: renderNumber,
+      id: "pri.store.size",
+      displayAsText: "Size of primaries",
+      isSortable: true,
+      schema: "numeric",
     },
     {
-      field: "docs.count",
-      name: "Total documents",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      dataType: "number",
-      render: (count: string) => <span title={count}>{count || "-"}</span>,
+      id: "docs.count",
+      displayAsText: "Total documents",
+      isSortable: true,
+      schema: "numeric",
     },
     {
-      field: "docs.deleted",
-      name: "Deleted documents",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      dataType: "number",
-      render: (deleted: string) => <span title={deleted}>{deleted || "-"}</span>,
+      id: "docs.deleted",
+      displayAsText: "Deleted documents",
+      isSortable: true,
+      schema: "numeric",
     },
     {
-      field: "pri",
-      name: "Primaries",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      dataType: "number",
+      id: "pri",
+      displayAsText: "Primaries",
+      isSortable: true,
+      schema: "numeric",
     },
     {
-      field: "rep",
-      name: "Replicas",
-      sortable: true,
-      truncateText: true,
-      textOnly: true,
-      dataType: "number",
+      id: "rep",
+      displayAsText: "Replicas",
+      isSortable: true,
+      schema: "numeric",
     },
   ];
 };
 
-export const indicesColumns = (
-  isDataStreamColumnVisible: boolean,
-  options: IColumnOptions
-): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
-  return isDataStreamColumnVisible ? getColumns(options) : getColumns(options).filter((col) => col["field"] !== "data_stream");
+export const indicesColumns = (isDataStreamColumnVisible: boolean, options: IColumnOptions): OuiDataGridColumn[] => {
+  let columns = getColumns(options);
+
+  if (!isDataStreamColumnVisible) {
+    columns = columns.filter((column) => column.id !== "data_stream");
+  }
+
+  return columns;
 };
 
 export const DEFAULT_QUERY = JSON.stringify(

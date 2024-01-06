@@ -6,6 +6,7 @@
 import { PluginInitializerContext } from "opensearch-dashboards/public";
 import { IndexManagementPlugin } from "./plugin";
 import { Action, UIAction } from "../models/interfaces";
+import "@opensearch-project/oui/dist/oui_theme_light.css";
 
 // export for other plugins to register action
 export { Action, UIAction } from "../models/interfaces";

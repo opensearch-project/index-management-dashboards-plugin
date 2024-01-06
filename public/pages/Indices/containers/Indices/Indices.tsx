@@ -8,11 +8,9 @@ import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
-  EuiBasicTable,
   EuiHorizontalRule,
   // @ts-ignore
   Criteria,
-  EuiTableSortingType,
   Direction,
   // @ts-ignore
   Pagination,
@@ -20,11 +18,16 @@ import {
   ArgsWithError,
   ArgsWithQuery,
   Query,
+  EuiHealth,
+  EuiLink,
 } from "@elastic/eui";
+
+import { OuiDataGrid, OuiDataGridPaginationProps, OuiDataGridSorting, OuiText, OuiTitle } from "@opensearch-project/oui";
+
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import IndexControls from "../../components/IndexControls";
 import IndexEmptyPrompt from "../../components/IndexEmptyPrompt";
-import { DEFAULT_PAGE_SIZE_OPTIONS_INDICES, DEFAULT_QUERY_PARAMS, indicesColumns } from "../../utils/constants";
+import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR, indicesColumns, renderNumber } from "../../utils/constants";
 import IndexService from "../../../../services/IndexService";
 import CommonService from "../../../../services/CommonService";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
@@ -37,6 +40,7 @@ import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants
 import IndicesActions from "../IndicesActions";
 import { destroyListener, EVENT_MAP, listenEvent } from "../../../../JobHandler";
 import "./index.scss";
+import IndexDetail from "../../../IndexDetail/containers/IndexDetail";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
@@ -60,6 +64,7 @@ interface IndicesState {
 
 export default class Indices extends Component<IndicesProps, IndicesState> {
   static contextType = CoreServicesContext;
+
   constructor(props: IndicesProps) {
     super(props);
     const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
@@ -194,6 +199,16 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
 
+  onSort = (sortingColumns: string | any[]) => {
+    const sort = sortingColumns.length > 0 ? sortingColumns[0] : undefined;
+    if (sort) {
+      this.setState({
+        sortField: sort.id,
+        sortDirection: sort.direction,
+      });
+    }
+  };
+
   render() {
     const {
       totalIndices,
@@ -211,25 +226,79 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     const filterIsApplied = !!search;
     const page = Math.floor(from / size);
 
-    const pagination: Pagination = {
+    const pagination: OuiDataGridPaginationProps = {
       pageIndex: page,
       pageSize: size,
-      pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS_INDICES,
-      totalItemCount: totalIndices,
+      pageSizeOptions: DEFAULT_PAGE_SIZE_OPTIONS,
+      onChangeItemsPerPage: (newSize) => this.setState({ size: newSize }),
+      onChangePage: (newPage) => this.setState({ from: newPage * size }),
     };
 
-    const sorting: EuiTableSortingType<ManagedCatIndex> = {
-      sort: {
-        direction: sortDirection,
-        field: sortField,
-      },
+    const sorting: OuiDataGridSorting = {
+      onSort: this.onSort,
+      columns: this.state.sortField ? [{ id: this.state.sortField, direction: this.state.sortDirection }] : [],
     };
 
     const selection: EuiTableSelectionType<ManagedCatIndex> = {
       onSelectionChange: this.onSelectionChange,
     };
 
-    const { history } = this.props;
+    const renderCellValue = ({ rowIndex, columnId }) => {
+      const rowData = this.state.indices[rowIndex];
+
+      console.log(rowData);
+
+      switch (columnId) {
+        case "index":
+          return <IndexDetail {...this.props} index={rowData.index} />;
+
+        case "health":
+          const color = rowData.health ? HEALTH_TO_COLOR[rowData.health] : "subdued";
+          return (
+            <EuiHealth color={color} className="indices-health">
+              {rowData.health || rowData.status}
+            </EuiHealth>
+          );
+
+        case "data_stream":
+          return rowData.data_stream ? (
+            <EuiLink href={`#${ROUTES.CREATE_DATA_STREAM}/${rowData.data_stream}`}>{rowData.data_stream}</EuiLink>
+          ) : (
+            "-"
+          );
+
+        case "managed":
+          return renderNumber(rowData.managed);
+
+        case "status":
+          return <span className="camel-first-letter">{rowData.extraStatus || rowData.status}</span>;
+
+        case "store.size":
+          return renderNumber(rowData["store.size"]);
+
+        case "pri.store.size":
+          return renderNumber(rowData["pri.store.size"]);
+
+        case "docs.count":
+          return <span title={rowData["docs.count"].toString()}>{rowData["docs.count"] || "-"}</span>;
+
+        case "docs.deleted":
+          return <span title={rowData["docs.deleted"].toString()}>{rowData["docs.deleted"] || "-"}</span>;
+
+        case "pri":
+          return rowData.pri.toString();
+
+        case "rep":
+          return rowData.rep.toString();
+
+        default:
+          return rowData[columnId] ?? "-";
+      }
+    };
+
+    const columns = indicesColumns(isDataStreamColumnVisible, { history: this.props.history });
+
+    const gridLabelId = "tableIndexMangementPlugin";
 
     return (
       <ContentPanel
@@ -283,18 +352,14 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
 
         <EuiHorizontalRule margin="xs" />
 
-        <EuiBasicTable
-          columns={indicesColumns(isDataStreamColumnVisible, {
-            history,
-          })}
-          loading={this.state.loadingIndices}
-          isSelectable={true}
-          itemId="index"
-          items={indices}
-          noItemsMessage={<IndexEmptyPrompt filterIsApplied={filterIsApplied} loading={loadingIndices} resetFilters={this.resetFilters} />}
-          onChange={this.onTableChange}
+        <OuiDataGrid
+          aria-labelledby={gridLabelId}
+          columns={columns}
+          columnVisibility={{ visibleColumns: columns.map((column) => column.id), setVisibleColumns: () => {} }}
+          rowCount={totalIndices}
+          inMemory={{ level: "sorting" }}
+          renderCellValue={renderCellValue}
           pagination={pagination}
-          selection={selection}
           sorting={sorting}
         />
       </ContentPanel>
