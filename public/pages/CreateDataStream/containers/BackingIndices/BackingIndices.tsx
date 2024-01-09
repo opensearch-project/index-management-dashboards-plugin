@@ -103,7 +103,7 @@ export default function BackingIndices(props: SubDetailProps) {
           {
             field: "managed",
             name: "Managed by policy",
-            sortable: false,
+            sortable: true,
             truncateText: true,
             textOnly: true,
             render: renderNumber,
