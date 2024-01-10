@@ -52,8 +52,8 @@ import CreateComposableTemplate from "../CreateComposableTemplate";
 enum Navigation {
   IndexManagement = "Index Management",
   IndexPolicies = "State management policies",
-  ManagedIndices = "Policy managed indices",
-  Indices = "Indices",
+  ManagedIndices = "Policy managed indexes",
+  Indices = "Indexes",
   Rollups = "Rollup jobs",
   Transforms = "Transform jobs",
   SnapshotManagement = "Snapshot Management",

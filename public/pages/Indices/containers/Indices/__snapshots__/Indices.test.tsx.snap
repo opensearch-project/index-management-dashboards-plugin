@@ -15,7 +15,7 @@ exports[`<Indices /> spec renders the component 1`] = `
       <h3
         class="euiTitle euiTitle--large"
       >
-        Indices
+        Indexes
         <span
           class="panel-header-count"
         >
@@ -187,7 +187,7 @@ exports[`<Indices /> spec renders the component 1`] = `
             class="euiSwitch__label"
             id="some_html_id"
           >
-            Show data stream indices
+            Show data stream indexes
           </span>
         </div>
       </div>
@@ -349,21 +349,29 @@ exports[`<Indices /> spec renders the component 1`] = `
                 </button>
               </th>
               <th
+                aria-live="polite"
+                aria-sort="none"
                 class="euiTableHeaderCell"
                 data-test-subj="tableHeaderCell_managed_2"
                 role="columnheader"
                 scope="col"
               >
-                <span
-                  class="euiTableCellContent"
+                <button
+                  class="euiTableHeaderButton"
+                  data-test-subj="tableHeaderSortButton"
+                  type="button"
                 >
                   <span
-                    class="euiTableCellContent__text"
-                    title="Managed by policy"
+                    class="euiTableCellContent"
                   >
-                    Managed by policy
+                    <span
+                      class="euiTableCellContent__text"
+                      title="Managed by policy"
+                    >
+                      Managed by policy
+                    </span>
                   </span>
-                </span>
+                </button>
               </th>
               <th
                 aria-live="polite"

@@ -91,7 +91,7 @@ describe("Snapshots", () => {
   });
 
   describe("Snapshot can be restored", () => {
-    it("Successfully restores indices from snapshot", () => {
+    it("Successfully restores indexes from snapshot", () => {
       // Wait for snapshot to be created successfully with a 12sec timeout
       cy.get(`[data-test-subj="refreshButton"]`, { timeout: 12000 })
         .should("be.visible")
