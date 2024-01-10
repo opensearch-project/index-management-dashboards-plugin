@@ -193,7 +193,7 @@ describe("<RetryModal /> spec", () => {
 
     expect(browserServicesMock.managedIndexService.retryManagedIndexPolicy).toHaveBeenCalledWith(["some_index"], "two");
     expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
-    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Retried 1 managed indices");
+    expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledWith("Retried 1 managed indexes");
   });
 
   it("shows error toaster when error is thrown", async () => {

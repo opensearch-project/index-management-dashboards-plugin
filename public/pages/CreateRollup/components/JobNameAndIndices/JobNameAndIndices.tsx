@@ -45,7 +45,7 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
           </ModalConsumer>
         }
         bodyStyles={{ padding: "initial" }}
-        title="Job name and indices"
+        title="Job name and indexes"
         titleSize="m"
       >
         <div style={{ padding: "15px" }}>

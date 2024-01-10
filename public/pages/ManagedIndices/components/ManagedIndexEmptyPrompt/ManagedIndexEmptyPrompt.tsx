@@ -11,9 +11,9 @@ import CreatePolicyModal from "../../../../components/CreatePolicyModal";
 import { ROUTES } from "../../../../utils/constants";
 
 export const TEXT = {
-  RESET_FILTERS: "There are no managed indices matching your applied filters. Reset your filters to view your managed indices.",
-  NO_MANAGED_INDICES: "There are no existing managed indices. Create a policy to add to an index.",
-  LOADING: "Loading managed indices...",
+  RESET_FILTERS: "There are no managed indexes matching your applied filters. Reset your filters to view your managed indexes.",
+  NO_MANAGED_INDICES: "There are no existing managed indexes. Create a policy to add to an index.",
+  LOADING: "Loading managed indexes...",
 };
 
 const getMessagePrompt = ({ filterIsApplied, loading }: ManagedIndexEmptyPromptProps): string => {

@@ -302,8 +302,8 @@ describe("<CreateRollupForm /> creation", () => {
 
     userEvent.click(getByTestId("createRollupNextButton"));
 
-    // Check that it routes to step 4
-    expect(queryByText("Job name and indices")).not.toBeNull();
+    //Check that it routes to step 4
+    expect(queryByText("Job name and indexes")).not.toBeNull();
 
     // Test create
     userEvent.click(getByTestId("createRollupSubmitButton"));
@@ -430,6 +430,6 @@ describe("<CreateRollupForm /> creation", () => {
 
     // Check that it routes to step 4
     userEvent.click(getByTestId("createRollupNextButton"));
-    expect(queryByText("Job name and indices")).not.toBeNull();
+    expect(queryByText("Job name and indexes")).not.toBeNull();
   });
 });
