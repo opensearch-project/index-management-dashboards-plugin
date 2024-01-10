@@ -56,12 +56,8 @@ describe("Snapshots", () => {
       cy.createIndex("test_index_2");
       cy.createIndex("test_index_3");
 
-      // wait needed here to enable cypress to find "Take snapshot" button.  Timeout
-      // cannot be used with cy.createIndex
-      cy.wait(12000);
-
-      // Click Take snapshot button
-      cy.get(`[data-test-subj="takeSnapshotButton"]`)
+      // Click Take snapshot button with a 12sec timeout
+      cy.get(`[data-test-subj="takeSnapshotButton"]`, { timeout: 12000 })
         .should("be.visible")
         .should("not.be.disabled")
         .contains("Take snapshot")
@@ -96,17 +92,15 @@ describe("Snapshots", () => {
 
   describe("Snapshot can be restored", () => {
     it("Successfully restores indices from snapshot", () => {
-      // Must wait here before refreshing so snapshot status becomes 'success'
-      cy.wait(12000);
+      // Wait for snapshot to be created successfully with a 12sec timeout
+      cy.get(`[data-test-subj="refreshButton"]`, { timeout: 12000 })
+        .should("be.visible")
+        .should("not.be.disabled")
+        .contains("Refresh")
+        .click({ force: true });
 
-      // Wait for snapshot to be created successfully
-      cy.get(`[data-test-subj="refreshButton"]`).should("be.visible").should("not.be.disabled").contains("Refresh").click({ force: true });
-
-      //wait for the item to appear
-      cy.wait(2000);
-
-      // Select test snapshot
-      cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
+      // Select test snapshot with a 2sec timeout
+      cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`, { timeout: 2000 }).check({ force: true });
 
       // click "Restore" button
       cy.get(`[data-test-subj="restoreButton"]`).should("be.visible").should("not.be.disabled").click({ force: true });
@@ -129,7 +123,7 @@ describe("Snapshots", () => {
   });
 
   describe("Snapshot can be deleted", () => {
-    it("deletes snapshot successfully", async () => {
+    it("deletes snapshot successfully", () => {
       // Select test snapshot
       cy.get(`[data-test-subj="checkboxSelectRow-test_repo:test_snapshot"]`).check({ force: true });
 
@@ -141,11 +135,8 @@ describe("Snapshots", () => {
         .contains("Delete", { timeout: 3000 })
         .click({ force: true });
 
-      //wait for 2 seconds for the modal to show up
-      cy.wait(2000);
-
-      // click "Delete snapshot" button on modal
-      cy.get("button").contains("Delete snapshot").click({ force: true });
+      // click "Delete snapshot" button on modal with a 2sec timeout
+      cy.get("button", { timeout: 2000 }).contains("Delete snapshot").click({ force: true });
 
       cy.contains("Deleted snapshot");
       cy.contains("No items found");
