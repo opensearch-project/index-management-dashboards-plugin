@@ -14,7 +14,17 @@ module.exports = {
   root: true,
   extends: ["@elastic/eslint-config-kibana", "plugin:@elastic/eui/recommended"],
   rules: {
-    // "@osd/eslint/require-license-header": "off"
+    // "@osd/eslint/require-license-header": "off",
+    "import/no-default-export": "off",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        selector: "default",
+        format: ["camelCase", "UPPER_CASE", "PascalCase", "snake_case"],
+        leadingUnderscore: "allow",
+        trailingUnderscore: "allow",
+      },
+    ],
   },
   overrides: [
     {
