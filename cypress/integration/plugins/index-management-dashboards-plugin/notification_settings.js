@@ -60,7 +60,7 @@ describe("NotificationSettings", () => {
           config_type: "slack",
           is_enabled: true,
           slack: {
-            url: "https://sample-slack-webhook",
+            url: "https://hooks.slack.com/services/sample_url",
           },
         },
       },
