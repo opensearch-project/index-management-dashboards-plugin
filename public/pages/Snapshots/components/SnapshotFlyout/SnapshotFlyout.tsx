@@ -17,11 +17,11 @@ import {
   EuiText,
   EuiTitle,
 } from "@elastic/eui";
+import * as H from "history";
 import { SnapshotManagementService } from "../../../../services";
 import { GetSnapshot } from "../../../../../server/models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getErrorMessage } from "../../../../utils/helpers";
-import * as H from "history";
 import { ROUTES } from "../../../../utils/constants";
 import InfoModal from "../../../SnapshotPolicyDetails/components/InfoModal";
 import { ModalConsumer } from "../../../../components/Modal";

@@ -12,13 +12,13 @@ import { ServerResponse } from "../../../server/models/types";
 export interface RemoteSelectProps extends Omit<EuiComboBoxProps<{ label: string }>, "value" | "onChange"> {
   value?: string[];
   onChange?: (value: Required<RemoteSelectProps>["value"]) => void;
-  onOptionsChange?: (options: { label: string; [key: string]: any }[]) => void;
-  refreshOptions: (params: { searchValue?: string }) => Promise<ServerResponse<{ label: string; [key: string]: any }[]>>;
+  onOptionsChange?: (options: Array<{ label: string; [key: string]: any }>) => void;
+  refreshOptions: (params: { searchValue?: string }) => Promise<ServerResponse<Array<{ label: string; [key: string]: any }>>>;
 }
 
 const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLInputElement>) => {
   const { value = [], onChange, refreshOptions: refreshOptionsFromProps, onOptionsChange, ...others } = props;
-  const [allOptions, setAllOptions] = useState([] as { label: string }[]);
+  const [allOptions, setAllOptions] = useState([] as Array<{ label: string }>);
   const [isLoading, setIsLoading] = useState(false);
   const destroyRef = useRef(false);
   const refreshOptionsWithoutDebounce = useCallback(
@@ -28,7 +28,7 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
       }
       setIsLoading(true);
       refreshOptionsFromProps(params)
-        .then((res: ServerResponse<{ label: string }[]>) => {
+        .then((res: ServerResponse<Array<{ label: string }>>) => {
           if (destroyRef.current) {
             return;
           }
@@ -47,17 +47,26 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
     },
     [refreshOptionsFromProps, setAllOptions, setIsLoading]
   );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const refreshOptions = useCallback(debounce(refreshOptionsWithoutDebounce, 500), [refreshOptionsWithoutDebounce]);
-  useEffect(() => {
-    refreshOptionsWithoutDebounce({ searchValue: "" });
-    return () => {
-      destroyRef.current = true;
-    };
-  }, []);
-  useEffect(() => {
-    onOptionsChange && onOptionsChange(allOptions);
-  }, [allOptions]);
-  const onCreateOption = (searchValue: string, flattenedOptions: { label: string }[] = []) => {
+  useEffect(
+    () => {
+      refreshOptionsWithoutDebounce({ searchValue: "" });
+      return () => {
+        destroyRef.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+  useEffect(
+    () => {
+      if (onOptionsChange) onOptionsChange(allOptions);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [allOptions]
+  );
+  const onCreateOption = (searchValue: string, flattenedOptions: Array<{ label: string }> = []) => {
     const normalizedSearchValue = searchValue.trim().toLowerCase();
 
     if (!normalizedSearchValue) {
@@ -71,7 +80,7 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
     // Create the option if it doesn't exist.
     if (flattenedOptions.findIndex((option: { label: string }) => option.label.trim().toLowerCase() === normalizedSearchValue) === -1) {
       setAllOptions([...allOptions, newOption]);
-      onChange && onChange([...value, newOption.label]);
+      if (onChange) onChange([...value, newOption.label]);
     }
   };
   return (
@@ -80,8 +89,8 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
       {...others}
       inputRef={ref as (instance: HTMLInputElement | null) => void}
       selectedOptions={value?.map((item) => ({ label: item }))}
-      onChange={(value) => {
-        onChange && onChange(value.map((item) => item.label));
+      onChange={(v) => {
+        if (onChange) onChange(v.map((item) => item.label));
       }}
       options={allOptions}
       isLoading={isLoading}

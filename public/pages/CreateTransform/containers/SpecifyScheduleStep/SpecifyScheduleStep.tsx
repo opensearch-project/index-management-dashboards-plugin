@@ -108,7 +108,7 @@ export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepPr
   };
 
   render() {
-    if (this.props.currentStep != 3) return null;
+    if (this.props.currentStep !== 3) return null;
     const {
       jobEnabledByDefault,
       continuousJob,

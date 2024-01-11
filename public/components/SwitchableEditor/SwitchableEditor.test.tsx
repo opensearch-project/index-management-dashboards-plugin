@@ -6,8 +6,8 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import SwitchableEditor from "./index";
 import userEvent from "@testing-library/user-event";
+import SwitchableEditor from "./index";
 
 describe("<SwitchableEditor /> spec", () => {
   it("renders the component", async () => {

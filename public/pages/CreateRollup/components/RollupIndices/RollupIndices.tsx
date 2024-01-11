@@ -16,19 +16,19 @@ import { wildcardOption } from "../../../../utils/helpers";
 
 interface RollupIndicesProps {
   indexService: IndexService;
-  sourceIndex: { label: string; value?: IndexItem }[];
+  sourceIndex: Array<{ label: string; value?: IndexItem }>;
   sourceIndexError: string;
-  targetIndex: { label: string; value?: IndexItem }[];
+  targetIndex: Array<{ label: string; value?: IndexItem }>;
   targetIndexError: string;
-  onChangeSourceIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
-  onChangeTargetIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  onChangeSourceIndex: (options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
+  onChangeTargetIndex: (options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   hasAggregation: boolean;
 }
 
 interface RollupIndicesState {
   isLoading: boolean;
-  indexOptions: { label: string; value?: IndexItem }[];
-  targetIndexOptions: { label: string; value?: IndexItem }[];
+  indexOptions: Array<{ label: string; value?: IndexItem }>;
+  targetIndexOptions: Array<{ label: string; value?: IndexItem }>;
 }
 
 export const ROLLUP_RESULTS_HELP_TEXT_LINK = "https://opensearch.org/docs/latest/im-plugin/index-rollups/index/#step-1-set-up-indices";
@@ -88,7 +88,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
     }
   };
 
-  onCreateOption = (searchValue: string, flattenedOptions: { label: string; value?: IndexItem }[]): void => {
+  onCreateOption = (searchValue: string, flattenedOptions: Array<{ label: string; value?: IndexItem }>): void => {
     const { targetIndexOptions } = this.state;
     const { onChangeTargetIndex } = this.props;
     const normalizedSearchValue = searchValue.trim();
@@ -104,7 +104,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
     // Create the option if it doesn't exist.
     if (flattenedOptions.findIndex((option) => option.label.trim() === normalizedSearchValue) === -1) {
       targetIndexOptions.concat(newOption);
-      this.setState({ targetIndexOptions: targetIndexOptions });
+      this.setState({ targetIndexOptions });
     }
     onChangeTargetIndex([newOption]);
   };
@@ -125,7 +125,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />
           <EuiCallOut color="warning">
-            <p>You can't change indices after creating a job. Double-check the source and target index names before proceeding.</p>
+            <p>You can&apos;t change indices after creating a job. Double-check the source and target index names before proceeding.</p>
           </EuiCallOut>
           {hasAggregation && (
             <Fragment>
@@ -139,7 +139,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
           <EuiFormRow
             label="Source index"
             error={sourceIndexError}
-            isInvalid={sourceIndexError != ""}
+            isInvalid={sourceIndexError !== ""}
             helpText="The index pattern on which to performed the rollup job. You can use * as a wildcard."
           >
             <EuiComboBox
@@ -150,7 +150,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
               singleSelection={{ asPlainText: true }}
               onSearchChange={this.onIndexSearchChange}
               isLoading={isLoading}
-              isInvalid={sourceIndexError != ""}
+              isInvalid={sourceIndexError !== ""}
               data-test-subj="sourceIndexCombobox"
             />
           </EuiFormRow>
@@ -158,7 +158,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
           <EuiFormRow
             label="Target index"
             error={targetIndexError}
-            isInvalid={targetIndexError != ""}
+            isInvalid={targetIndexError !== ""}
             helpText={
               <EuiText size={"xs"}>
                 {
@@ -181,7 +181,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
               singleSelection={{ asPlainText: true }}
               onSearchChange={this.onIndexSearchChange}
               isLoading={isLoading}
-              isInvalid={targetIndexError != ""}
+              isInvalid={targetIndexError !== ""}
               data-test-subj="targetIndexCombobox"
             />
           </EuiFormRow>

@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import { EuiRadio, EuiSpacer } from "@elastic/eui";
-import { TEMPLATE_TYPE } from "../../../../utils/constants";
 import React from "react";
+import { TEMPLATE_TYPE } from "../../../../utils/constants";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import CustomFormRow from "../../../../components/CustomFormRow";
 

@@ -13,7 +13,10 @@ import { DEFAULT_CLOSE, DEFAULT_ROLLOVER } from "../../utils/constants";
 
 describe("<Actions /> spec", () => {
   it("renders the component", () => {
-    const actions: UIAction<any>[] = [new RolloverUIAction(DEFAULT_ROLLOVER, "some_id_1"), new CloseUIAction(DEFAULT_CLOSE, "some_id_2")];
+    const actions: Array<UIAction<any>> = [
+      new RolloverUIAction(DEFAULT_ROLLOVER, "some_id_1"),
+      new CloseUIAction(DEFAULT_CLOSE, "some_id_2"),
+    ];
     const { container } = render(
       <Actions
         actions={actions}

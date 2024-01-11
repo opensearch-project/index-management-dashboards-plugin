@@ -28,13 +28,13 @@ const MonacoJSONEditor = forwardRef(
         return;
       }
       try {
-        const value = editorRef.current?.getValue();
-        if (!value) {
+        const v = editorRef.current?.getValue();
+        if (!v) {
           throw new Error("Value can not be empty");
         }
-        JSON.parse(value);
+        JSON.parse(v);
         setConfirmModalVisible(false);
-        onChange && onChange(value);
+        if (onChange) onChange(v);
       } catch (e) {
         setConfirmModalVisible(true);
       }
@@ -49,6 +49,7 @@ const MonacoJSONEditor = forwardRef(
           }
         }
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [setEditorValue, isReady, inputRef.current]
     );
     const valueRef = useRef(editorValue);
@@ -73,6 +74,7 @@ const MonacoJSONEditor = forwardRef(
 
     useEffect(() => {
       return () => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         onClickOutsideHandler.current();
       };
     }, []);
@@ -100,8 +102,8 @@ const MonacoJSONEditor = forwardRef(
           onChange={(e) => {
             try {
               JSON.parse(e.target.value);
-              onChange && onChange(e.target.value);
-            } catch (e) {
+              if (onChange) onChange(e.target.value);
+            } catch (err) {
               // do nothing
             }
           }}

@@ -12,10 +12,10 @@ interface IEuiToolTipWrapperOptions {
 export interface IEuiToolTipWrapperProps {
   disabledReason?:
     | string
-    | {
+    | Array<{
         visible: boolean;
         message: string;
-      }[];
+      }>;
 }
 
 export default function EuiToolTipWrapper<T>(

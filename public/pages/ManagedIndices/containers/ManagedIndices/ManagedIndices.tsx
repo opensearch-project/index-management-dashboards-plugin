@@ -68,7 +68,7 @@ interface ManagedIndicesState {
 
 export default class ManagedIndices extends Component<ManagedIndicesProps, ManagedIndicesState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<ManagedIndexItem>[];
+  columns: Array<EuiTableFieldDataColumnType<ManagedIndexItem>>;
 
   constructor(props: ManagedIndicesProps) {
     super(props);
@@ -176,8 +176,8 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     ];
   }
 
-  managedIndicesColumns = (isDataStreamColumnVisible: boolean): EuiTableFieldDataColumnType<ManagedIndexItem>[] => {
-    return isDataStreamColumnVisible ? this.columns : this.columns.filter((col) => col["field"] !== "dataStream");
+  managedIndicesColumns = (isDataStreamColumnVisible: boolean): Array<EuiTableFieldDataColumnType<ManagedIndexItem>> => {
+    return isDataStreamColumnVisible ? this.columns : this.columns.filter((col) => col.field !== "dataStream");
   };
 
   async componentDidMount() {
@@ -198,7 +198,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
   }
 
   renderPolicyId = (policyId: string, item: ManagedIndexItem) => {
-    let errorMessage: string | undefined = undefined;
+    let errorMessage: string | undefined;
     if (item.managedIndexMetaData?.policySeqNo == null) errorMessage = `Still initializing, please wait a moment`;
     if (!item.policy) errorMessage = `Failed to load the policy: ${item.policyId}`;
 
@@ -208,7 +208,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
           <EuiLink
             onClick={() =>
               onShow(PolicyModal, {
-                policyId: policyId,
+                policyId,
                 policy: item.policy,
                 onEdit: () => this.onClickModalEdit(item, onClose),
                 errorMessage,
@@ -424,7 +424,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     return (
       <div style={{ padding: "0px 25px" }}>
         <EuiFlexGroup alignItems="center">
-          <EuiFlexItem></EuiFlexItem>
+          <EuiFlexItem />
           <EuiFlexItem grow={false}>
             <EuiButton iconType="refresh" onClick={this.getManagedIndices} data-test-subj="refreshButton">
               Refresh

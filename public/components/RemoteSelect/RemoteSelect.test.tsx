@@ -5,8 +5,8 @@
 
 import React, { useState } from "react";
 import { render, waitFor } from "@testing-library/react";
-import RemoteSelect, { RemoteSelectProps } from "./index";
 import userEvent from "@testing-library/user-event";
+import RemoteSelect, { RemoteSelectProps } from "./index";
 
 const onChangeMock = jest.fn();
 

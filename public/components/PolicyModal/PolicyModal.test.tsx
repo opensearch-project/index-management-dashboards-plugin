@@ -31,6 +31,7 @@ describe("<PolicyModal /> spec", () => {
         policy={{ policy: { name: "policy" } }} // replace with random policy w/ seed
         onClose={() => {}}
         onEdit={() => {
+          // eslint-disable-next-line no-empty
           {
           }
         }}

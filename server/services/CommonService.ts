@@ -16,9 +16,7 @@ import { IAPICaller } from "../../models/interfaces";
 
 const VALID_METHODS = ["HEAD", "GET", "POST", "PUT", "DELETE"];
 
-export interface ICommonCaller {
-  <T>(arg: any): T;
-}
+export type ICommonCaller = <T>(arg: any) => T;
 
 export default class CommonService {
   osDriver: ILegacyCustomClusterClient;

@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { CoreSetup } from "opensearch-dashboards/public";
 import { callbackForForceMerge, callbackForForceMergeTimeout } from "./force_merge";
 import { coreServicesMock, httpClientMock } from "../../../test/mocks";
 import { ListenType } from "../../lib/JobScheduler";
-import { CoreSetup } from "opensearch-dashboards/public";
 
 const getMockFn = (response = {}, ok = true) => {
   return jest.fn().mockResolvedValue({
@@ -33,7 +33,7 @@ const core = ({
 describe("callbackForForceMerge spec", () => {
   it("callback when error", async () => {
     httpClientMock.fetch = getMockFn({}, false);
-    let result = await callbackForForceMerge(forceMergeMetaData, {
+    const result = await callbackForForceMerge(forceMergeMetaData, {
       core,
     });
     expect(result).toBe(false);

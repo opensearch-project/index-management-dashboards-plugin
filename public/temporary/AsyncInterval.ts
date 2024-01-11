@@ -11,7 +11,7 @@
 export default class AsyncInterval {
   timeoutId: number | undefined;
   isStopped: boolean = false;
-  __pendingFn: Function | undefined;
+  _pendingFn: Function | undefined;
 
   constructor(fn: Function, refreshInterval: number) {
     this.setAsyncInterval(fn, refreshInterval);
@@ -21,7 +21,7 @@ export default class AsyncInterval {
     if (!this.isStopped) {
       this.timeoutId = window.setTimeout(async () => {
         if (document.visibilityState === "visible") {
-          this.__pendingFn = await fn();
+          this._pendingFn = await fn();
         }
         this.setAsyncInterval(fn, ms);
       }, ms);

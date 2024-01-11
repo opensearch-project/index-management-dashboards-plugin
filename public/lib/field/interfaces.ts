@@ -8,7 +8,7 @@ import React from "react";
 // registerField({ name: ['a', 'b', 'c.d'] }) => { a: { b: { c,d: '' } } }
 export type FieldName = string | string[];
 
-export type FieldOption<T extends object> = {
+export interface FieldOption<T extends object> {
   /**
    * All component changes will arrive here [set value will not trigger this function], before the onChange
    */
@@ -29,20 +29,20 @@ export type FieldOption<T extends object> = {
   originalValues?: {};
 
   unmountComponent?: boolean;
-};
+}
 
-export type ValidateResults<T extends object> = {
+export interface ValidateResults<T extends object> {
   errors: Record<string, string[]> | null;
   values: T;
-};
+}
 
-export type InitResult<T = any> = {
+export interface InitResult<T = any> {
   value?: T;
   onChange(value: T): void;
   ref?: React.RefCallback<any>;
-};
+}
 
-export type Rule = {
+export interface Rule {
   /**
    * cannot be empty (cannot be used with pattern)
    * @default true
@@ -95,9 +95,9 @@ export type Rule = {
    * The name of the event that triggered the validation
    */
   trigger?: "onChange" | "onBlur" | string;
-};
+}
 
-export type InitOption = {
+export interface InitOption {
   /**
    * The name of the field
    */
@@ -118,9 +118,9 @@ export type InitOption = {
    * Component custom events can be written here, others will be transparently transmitted (small package version ^0.3.0 support, large package ^0.7.0 support)
    */
   props?: any;
-};
+}
 
-export type FieldInstance<T extends object = any> = {
+export interface FieldInstance<T extends object = any> {
   /**
    * Initialize each component
    */
@@ -202,7 +202,7 @@ export type FieldInstance<T extends object = any> = {
    * Get difference between originalValues & currentValues
    */
   computeDifference(): number;
-};
+}
 
 export type ValidateFunction = (
   rule: Rule & { field: string; aliasName?: string },

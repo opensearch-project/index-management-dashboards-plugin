@@ -53,6 +53,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             value={rollover.min_index_age || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minIndexAge = e.target.value;
+              // eslint-disable-next-line no-shadow
               const rollover = { ...action.action.rollover };
               if (minIndexAge) rollover.min_index_age = minIndexAge;
               else delete rollover.min_index_age;
@@ -73,6 +74,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             value={typeof rollover.min_doc_count === "undefined" ? "" : rollover.min_doc_count}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minDocCount = e.target.valueAsNumber;
+              // eslint-disable-next-line no-shadow
               const rollover = { ...action.action.rollover };
               if (!isNaN(minDocCount)) rollover.min_doc_count = minDocCount;
               else delete rollover.min_doc_count;
@@ -93,6 +95,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             value={rollover.min_size || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minSize = e.target.value;
+              // eslint-disable-next-line no-shadow
               const rollover = { ...action.action.rollover };
               if (minSize) rollover.min_size = minSize;
               else delete rollover.min_size;
@@ -113,6 +116,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             value={rollover.min_primary_shard_size || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const minPrimaryShardSize = e.target.value;
+              // eslint-disable-next-line no-shadow
               const rollover = { ...action.action.rollover };
               if (minPrimaryShardSize) rollover.min_primary_shard_size = minPrimaryShardSize;
               else delete rollover.min_primary_shard_size;

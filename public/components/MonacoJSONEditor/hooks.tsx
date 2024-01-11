@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { monaco } from "@osd/monaco";
 import { euiThemeVars } from "@osd/ui-shared-deps/theme";
 import { useEffect, useRef } from "react";
@@ -25,6 +30,7 @@ export function useDiagnosticsOptions(props: { monaco?: typeof monaco; diagnosti
       });
     }
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       props.monaco?.languages.json.jsonDefaults.setDiagnosticsOptions(oldOptionsSettingsRef.current || {});
     };
   }, [props.monaco, props.diagnosticsOptions]);
@@ -54,5 +60,6 @@ export function useModel(props: { editor?: monaco.editor.IStandaloneCodeEditor; 
     return () => {
       props.editor?.getModel()?.dispose();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }

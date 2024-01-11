@@ -5,13 +5,13 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
+import { HashRouter, Route } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import DataStreamDetail, { DataStreamDetailProps } from "./DataStreamDetail";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { HashRouter, Route } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
-import userEvent from "@testing-library/user-event";
 
 function renderCreateDataStream(props: Omit<DataStreamDetailProps, "history">) {
   return {

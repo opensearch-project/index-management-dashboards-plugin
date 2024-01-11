@@ -50,11 +50,11 @@ export const getConditionContent = (transition: Transition): string => {
       cron = undefined,
     } = {},
   } = transition;
-  if (minSize != undefined) return `Minimum index size is ${minSize}`;
-  if (minDocCount != undefined) return `Minimum index doc count is ${minDocCount}`;
-  if (minIndexAge != undefined) return `Minimum index age is ${minIndexAge}`;
-  if (minRolloverAge != undefined) return `Minimum rollover age is ${minRolloverAge}`;
-  if (cron != undefined) return `After cron expression "${cron.cron.expression}" in ${cron.cron.timezone}`;
+  if (minSize !== undefined) return `Minimum index size is ${minSize}`;
+  if (minDocCount !== undefined) return `Minimum index doc count is ${minDocCount}`;
+  if (minIndexAge !== undefined) return `Minimum index age is ${minIndexAge}`;
+  if (minRolloverAge !== undefined) return `Minimum rollover age is ${minRolloverAge}`;
+  if (cron !== undefined) return `After cron expression "${cron.cron.expression}" in ${cron.cron.timezone}`;
   return "No condition";
 };
 
@@ -114,10 +114,11 @@ export const getActionOptions = (actionRepoSingleton: ActionRepository) => {
     try {
       uiAction = getUIAction(key)?.customDisplayText;
       if (uiAction !== undefined) text = uiAction;
+      // eslint-disable-next-line no-empty
     } catch (e) {}
     return {
       value: key,
-      text: text,
+      text,
     };
   });
 };

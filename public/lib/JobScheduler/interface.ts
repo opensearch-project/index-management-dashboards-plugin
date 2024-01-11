@@ -26,12 +26,12 @@ export interface IJobItemMetadata {
 export type JobItemMetadata = IJobItemMetadata & Required<Pick<IJobItemMetadata, "id" | "createTime" | "timeout">>;
 
 export interface IJobSchedulerOptions {
-  callbacks: {
+  callbacks: Array<{
     listenType?: IJobItemMetadata["type"];
     callback: (params: IJobItemMetadata) => Promise<boolean>;
     timeoutCallback: (params: IJobItemMetadata) => void;
     callbackName: string;
-  }[];
+  }>;
   storage?: IStorage;
 }
 

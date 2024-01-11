@@ -98,6 +98,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
               value={typeof conditions?.min_doc_count === "undefined" ? "" : conditions?.min_doc_count}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const minDocCount = e.target.valueAsNumber;
+                // eslint-disable-next-line no-shadow
                 const conditions = { min_doc_count: minDocCount };
                 // TODO: clean this up..
                 // set it to undefined instead of deleting... as we use the presence of the key itself for the type of transition

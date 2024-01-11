@@ -22,17 +22,17 @@ interface SetUpIndicesStepProps extends RouteComponentProps {
   isSubmitting: boolean;
   hasSubmitted: boolean;
   description: string;
-  sourceIndex: { label: string; value?: IndexItem }[];
+  sourceIndex: Array<{ label: string; value?: IndexItem }>;
   sourceIndexFilter: string;
   sourceIndexFilterError: string;
   sourceIndexError: string;
-  targetIndex: { label: string; value?: IndexItem }[];
+  targetIndex: Array<{ label: string; value?: IndexItem }>;
   targetIndexError: string;
   onChangeName: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeDescription: (value: ChangeEvent<HTMLTextAreaElement>) => void;
-  onChangeSourceIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  onChangeSourceIndex: (options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   onChangeSourceIndexFilter: (sourceIndexFilter: string) => void;
-  onChangeTargetIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  onChangeTargetIndex: (options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   currentStep: number;
   hasAggregation: boolean;
   fields: FieldItem[];
@@ -40,6 +40,7 @@ interface SetUpIndicesStepProps extends RouteComponentProps {
   beenWarned: boolean;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
   render() {
     if (this.props.currentStep !== 1) {

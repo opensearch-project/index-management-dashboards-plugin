@@ -121,7 +121,7 @@ export default function DefineTemplate(props: SubDetailProps) {
               },
               {
                 validator(rule, value) {
-                  if (Number(value) !== parseInt(value)) {
+                  if (Number(value) !== parseInt(value, 10)) {
                     return Promise.reject("Priority must be an integer.");
                   }
 

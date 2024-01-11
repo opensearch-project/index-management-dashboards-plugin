@@ -42,9 +42,10 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
       subTitleText={
         <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
           <p style={{ fontWeight: 200 }}>
-            You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
+            You can think of policies as state machines. &quot;Actions&quot; are the operations ISM performs when an index is in a certain
+            state.
             <br />
-            "Transitions" define when to move from one state to another.{" "}
+            &quot;Transitions&quot; define when to move from one state to another.{" "}
             <EuiLink href={STATES_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
               Learn more
             </EuiLink>

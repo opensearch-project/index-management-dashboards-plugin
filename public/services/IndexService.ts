@@ -27,7 +27,7 @@ export default class IndexService {
   }
 
   getIndices = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetIndicesResponse>> => {
-    let url = `..${NODE_API._INDICES}`;
+    const url = `..${NODE_API._INDICES}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetIndicesResponse>;
     return response;
   };

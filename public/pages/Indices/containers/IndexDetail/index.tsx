@@ -19,7 +19,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
   return (
     <>
       <EuiCopy textToCopy={index}>
-        {(copy) => <EuiButtonEmpty size="xs" flush="right" iconType="copyClipboard" onClick={copy} color="text"></EuiButtonEmpty>}
+        {(copy) => <EuiButtonEmpty size="xs" flush="right" iconType="copyClipboard" onClick={copy} color="text" />}
       </EuiCopy>
       <EuiLink onClick={() => history.push(`${ROUTES.INDEX_DETAIL}/${index}`)} data-test-subj={`viewIndexDetailButton-${index}`}>
         {index}

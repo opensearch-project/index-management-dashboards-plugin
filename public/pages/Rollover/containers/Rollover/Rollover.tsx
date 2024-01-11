@@ -6,12 +6,12 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { merge } from "lodash";
+import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink } from "@elastic/eui";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import IndexFormWrapper, { IndexForm } from "../../../../containers/IndexForm";
-import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -22,12 +22,12 @@ import { IRolloverRequestBody } from "../../interface";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS } from "../../../../../utils/constants";
 
-export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
+export type RolloverProps = RouteComponentProps<{ source?: string }>;
 
 export default function Rollover(props: RolloverProps) {
   const [options, setOptions] = useState<{
-    alias: { label: string; aliases: Alias[] }[];
-    dataStreams: { label: string }[];
+    alias: Array<{ label: string; aliases: Alias[] }>;
+    dataStreams: Array<{ label: string }>;
   }>({
     alias: [],
     dataStreams: [],
@@ -74,16 +74,20 @@ export default function Rollover(props: RolloverProps) {
     }
   };
 
-  useEffect(() => {
-    coreService?.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      {
-        ...BREADCRUMBS.ROLLOVER,
-        href: `#${props.location.pathname}`,
-      },
-    ]);
-    refreshOptions();
-  }, []);
+  useEffect(
+    () => {
+      coreService?.chrome.setBreadcrumbs([
+        BREADCRUMBS.INDEX_MANAGEMENT,
+        {
+          ...BREADCRUMBS.ROLLOVER,
+          href: `#${props.location.pathname}`,
+        },
+      ]);
+      refreshOptions();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const sourceOptions = useMemo(() => {
     return [
@@ -104,18 +108,22 @@ export default function Rollover(props: RolloverProps) {
     };
   }, [props.match.params.source]);
 
-  const sourceType: "dataStreams" | "alias" | undefined = useMemo(() => {
-    const sourceValue = sourceRef.current?.getValue("source");
-    if (options.alias.find((item) => item.label === sourceValue)) {
-      return "alias";
-    }
+  const sourceType: "dataStreams" | "alias" | undefined = useMemo(
+    () => {
+      const sourceValue = sourceRef.current?.getValue("source");
+      if (options.alias.find((item) => item.label === sourceValue)) {
+        return "alias";
+      }
 
-    if (options.dataStreams.find((item) => item.label === sourceValue)) {
-      return "dataStreams";
-    }
+      if (options.dataStreams.find((item) => item.label === sourceValue)) {
+        return "dataStreams";
+      }
 
-    return;
-  }, [sourceRef.current?.getValue("source")]);
+      return;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [sourceRef.current?.getValue("source")]
+  );
 
   const writingIndex = (() => {
     const findItem = options.alias.find((item) => item.label === sourceRef.current?.getValue("source"));
@@ -135,73 +143,81 @@ export default function Rollover(props: RolloverProps) {
     return writeIndex;
   })();
 
-  useEffect(() => {
-    if (writingIndex && tempValue.source) {
-      // do a dry run to get the rollovered writing index
-      getRolloveredIndex({
-        alias: tempValue.source,
-        services,
-      }).then((result) => {
-        if (result && result.ok) {
-          field.setValue(["targetIndex", "index"], result.response);
-        } else {
-          field.setValue(["targetIndex", "index"], "");
-        }
-      });
-      indexFormRef.current?.simulateFromTemplate();
-    }
-  }, [writingIndex]);
-
-  const reasons = useMemo(() => {
-    let result: React.ReactChild[] = [];
-    if (sourceType === "alias") {
-      const findItem = options.alias.find((item) => item.label === sourceRef.current?.getValue("source"));
-      if (!writingIndex) {
-        result.push(
-          <>
-            <EuiFlexGroup alignItems="flexEnd">
-              <EuiFlexItem grow={false}>
-                Select a write index from this alias before performing rollover.
-                <EuiSpacer size="s" />
-                <CustomFormRow label="Select an index from this alias">
-                  <AllBuiltInComponents.ComboBoxSingle
-                    placeholder="Select an index"
-                    value={writeIndexValue ? writeIndexValue : undefined}
-                    onChange={(val) => setWriteIndexValue(val)}
-                    options={findItem?.aliases?.map((item) => ({ label: item.index }))}
-                  />
-                </CustomFormRow>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiButton
-                  disabled={!writeIndexValue}
-                  fill
-                  color="primary"
-                  onClick={async () => {
-                    const result = await submitWriteIndex({
-                      services,
-                      writeIndexValue: writeIndexValue,
-                      sourceRef,
-                    });
-                    if (result.ok) {
-                      coreService?.notifications.toasts.addSuccess(`Set ${writeIndexValue} as write index successfully.`);
-                      refreshOptions();
-                    } else {
-                      coreService?.notifications.toasts.addDanger(result.error);
-                    }
-                  }}
-                >
-                  Assign as write index
-                </EuiButton>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </>
-        );
+  useEffect(
+    () => {
+      if (writingIndex && tempValue.source) {
+        // do a dry run to get the rollovered writing index
+        getRolloveredIndex({
+          alias: tempValue.source,
+          services,
+        }).then((result) => {
+          if (result && result.ok) {
+            field.setValue(["targetIndex", "index"], result.response);
+          } else {
+            field.setValue(["targetIndex", "index"], "");
+          }
+        });
+        indexFormRef.current?.simulateFromTemplate();
       }
-    }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [writingIndex]
+  );
 
-    return result;
-  }, [sourceType, options, writeIndexValue]);
+  const reasons = useMemo(
+    () => {
+      const result: React.ReactChild[] = [];
+      if (sourceType === "alias") {
+        const findItem = options.alias.find((item) => item.label === sourceRef.current?.getValue("source"));
+        if (!writingIndex) {
+          result.push(
+            <>
+              <EuiFlexGroup alignItems="flexEnd">
+                <EuiFlexItem grow={false}>
+                  Select a write index from this alias before performing rollover.
+                  <EuiSpacer size="s" />
+                  <CustomFormRow label="Select an index from this alias">
+                    <AllBuiltInComponents.ComboBoxSingle
+                      placeholder="Select an index"
+                      value={writeIndexValue ? writeIndexValue : undefined}
+                      onChange={(val) => setWriteIndexValue(val)}
+                      options={findItem?.aliases?.map((item) => ({ label: item.index }))}
+                    />
+                  </CustomFormRow>
+                </EuiFlexItem>
+                <EuiFlexItem grow={false}>
+                  <EuiButton
+                    disabled={!writeIndexValue}
+                    fill
+                    color="primary"
+                    onClick={async () => {
+                      const res = await submitWriteIndex({
+                        services,
+                        writeIndexValue,
+                        sourceRef,
+                      });
+                      if (res.ok) {
+                        coreService?.notifications.toasts.addSuccess(`Set ${writeIndexValue} as write index successfully.`);
+                        refreshOptions();
+                      } else {
+                        coreService?.notifications.toasts.addDanger(res.error);
+                      }
+                    }}
+                  >
+                    Assign as write index
+                  </EuiButton>
+                </EuiFlexItem>
+              </EuiFlexGroup>
+            </>
+          );
+        }
+      }
+
+      return result;
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [sourceType, options, writeIndexValue]
+  );
 
   return (
     <div style={{ padding: "0 50px" }}>

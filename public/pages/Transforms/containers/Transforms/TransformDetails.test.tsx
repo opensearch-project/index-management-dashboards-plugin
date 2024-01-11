@@ -6,7 +6,7 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter as Router } from "react-router";
+import { MemoryRouter as Router } from "react-router-dom";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -195,7 +195,7 @@ describe("<TransformDetails /> spec", () => {
   }, 30000);
 
   it("can show a started transform job", async () => {
-    let startedJob = testTransform2;
+    const startedJob = testTransform2;
     startedJob.metadata.test1.transform_metadata.status = "init";
 
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({
@@ -211,7 +211,7 @@ describe("<TransformDetails /> spec", () => {
   });
 
   it("can show a stopped transform job", async () => {
-    let stoppedJob = testTransform2;
+    const stoppedJob = testTransform2;
     stoppedJob.metadata.test1.transform_metadata.status = "stopped";
 
     browserServicesMock.transformService.getTransform = jest.fn().mockResolvedValue({

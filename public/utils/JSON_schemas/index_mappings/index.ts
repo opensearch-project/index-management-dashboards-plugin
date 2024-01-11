@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { JSONSchema4 } from "@types/json-schema";
 import { INDEX_MAPPING_TYPES } from "../../constants";
 import { propertiesSchema, typeSchema, schemaId } from "./property_item";
@@ -84,7 +89,7 @@ export const IndexMappingsJSONEditorSchema: JSONSchema4 = {
                   {}
                 ),
               },
-              required: ["type", ...(item.options?.fields?.map((item) => item.name) || [])],
+              required: ["type", ...(item.options?.fields?.map((newItem) => newItem.name) || [])],
               additionalProperties: false,
               errorMessage: "Property is not supported in the visual editor.",
             },

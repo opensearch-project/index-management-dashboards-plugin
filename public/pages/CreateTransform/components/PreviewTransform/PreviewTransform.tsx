@@ -32,7 +32,7 @@ export default function PreviewTransform({
     if (previewTransform.hasOwnProperty(rowIndex)) {
       if (previewTransform[rowIndex][columnId]) {
         // Case for date histogram type
-        //TODO: Check if there's a better way to check for date histogram types
+        // TODO: Check if there's a better way to check for date histogram types
         if (columnId.includes("date_histogram")) {
           return renderTime(previewTransform[rowIndex][columnId]);
         }
@@ -49,7 +49,7 @@ export default function PreviewTransform({
   const updatePreviewColumns = (): void => {
     if (isReadOnly) {
       if (previewTransform.length) {
-        let tempCol: EuiDataGridColumn[] = [];
+        const tempCol: EuiDataGridColumn[] = [];
         for (const [key, value] of Object.entries(previewTransform[0])) {
           tempCol.push({
             id: key,
@@ -76,7 +76,7 @@ export default function PreviewTransform({
       }
     } else {
       if (aggList.length) {
-        let tempCol: EuiDataGridColumn[] = [];
+        const tempCol: EuiDataGridColumn[] = [];
         aggList.map((aggItem) => {
           tempCol.push({
             id: aggItem.name,
@@ -104,9 +104,13 @@ export default function PreviewTransform({
     }
   };
 
-  React.useEffect(() => {
-    updatePreviewColumns();
-  }, [previewTransform, aggList]);
+  React.useEffect(
+    () => {
+      updatePreviewColumns();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [previewTransform, aggList]
+  );
 
   return (!isReadOnly && aggList.length) || (isReadOnly && previewTransform.length) ? (
     <EuiDataGrid

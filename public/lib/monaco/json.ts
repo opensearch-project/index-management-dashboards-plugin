@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { monaco } from "@osd/monaco";
 // @ts-ignore
 import * as mode from "monaco-editor/esm/vs/language/json/jsonMode.js"; // eslint-disable-line

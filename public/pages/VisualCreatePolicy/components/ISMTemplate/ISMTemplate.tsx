@@ -56,7 +56,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
                 setInvalid(true);
                 return;
               }
-              //TODO
+              // TODO
               setInvalid(false);
             }}
             isInvalid={isInvalid}

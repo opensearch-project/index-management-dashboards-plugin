@@ -6,12 +6,12 @@
 import { EuiInMemoryTable, EuiIcon, EuiFlyoutHeader, EuiTitle } from "@elastic/eui";
 import React from "react";
 import { Column } from "../../../../models/interfaces";
-import { IndexItem } from "../../../../models/interfaces"
+import { IndexItem } from "../../../../models/interfaces";
 
 interface IndexListProps {
   indices: IndexItem[];
   snapshot: string;
-  title: string
+  title: string;
   columns: Column[];
   onClick: (e: React.MouseEvent) => void;
 }

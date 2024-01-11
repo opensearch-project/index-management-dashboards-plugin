@@ -19,6 +19,7 @@ interface GeneralInformationProps {
   onEdit: () => void;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class GeneralInformation extends Component<GeneralInformationProps> {
   constructor(props: GeneralInformationProps) {
     super(props);

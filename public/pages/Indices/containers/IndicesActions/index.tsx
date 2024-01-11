@@ -5,6 +5,8 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { EuiButton, EuiContextMenu } from "@elastic/eui";
 
+import { CoreStart } from "opensearch-dashboards/public";
+import { RouteComponentProps } from "react-router-dom";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import ApplyPolicyModal from "../../components/ApplyPolicyModal";
 import SimplePopover from "../../../../components/SimplePopover";
@@ -13,14 +15,12 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import DeleteIndexModal from "../../components/DeleteIndexModal";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
-import { CoreStart } from "opensearch-dashboards/public";
 import CloseIndexModal from "../../components/CloseIndexModal";
 import OpenIndexModal from "../../components/OpenIndexModal";
 import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
-import { RouteComponentProps } from "react-router-dom";
 import { openIndices } from "../../utils/helpers";
 import RefreshActionModal from "../../../../containers/RefreshAction";
 
@@ -42,6 +42,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const services = useContext(ServicesContext) as BrowserServices;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onDeleteIndexModalClose = () => {
     setDeleteIndexModalVisible(false);
   };
@@ -78,43 +79,51 @@ export default function IndicesActions(props: IndicesActionsProps) {
       indices,
     });
     if (result.ok) {
-      callback && callback();
+      if (callback) callback();
     }
   };
 
-  const onOpenIndexModalConfirm = useCallback(async () => {
-    await openIndicesHandler(
-      selectedItems.map((item) => item.index),
-      () => {
-        onOpenIndexModalClose();
-      }
-    );
-  }, [services, coreServices, props.onClose, onOpenIndexModalClose]);
+  const onOpenIndexModalConfirm = useCallback(
+    async () => {
+      await openIndicesHandler(
+        selectedItems.map((item) => item.index),
+        () => {
+          onOpenIndexModalClose();
+        }
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [services, coreServices, props.onClose, onOpenIndexModalClose]
+  );
 
   const onCloseIndexModalClose = () => {
     setCloseIndexModalVisible(false);
   };
 
-  const onCloseIndexModalConfirm = useCallback(async () => {
-    try {
-      const indexPayload = selectedItems.map((item) => item.index).join(",");
-      const result = await services.commonService.apiCaller({
-        endpoint: "indices.close",
-        data: {
-          index: indexPayload,
-        },
-      });
-      if (result && result.ok) {
-        onCloseIndexModalClose();
-        coreServices.notifications.toasts.addSuccess(`Close [${indexPayload}] successfully`);
-        onClose();
-      } else {
-        coreServices.notifications.toasts.addDanger(result.error);
+  const onCloseIndexModalConfirm = useCallback(
+    async () => {
+      try {
+        const indexPayload = selectedItems.map((item) => item.index).join(",");
+        const result = await services.commonService.apiCaller({
+          endpoint: "indices.close",
+          data: {
+            index: indexPayload,
+          },
+        });
+        if (result && result.ok) {
+          onCloseIndexModalClose();
+          coreServices.notifications.toasts.addSuccess(`Close [${indexPayload}] successfully`);
+          onClose();
+        } else {
+          coreServices.notifications.toasts.addDanger(result.error);
+        }
+      } catch (err) {
+        coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem closing index."));
       }
-    } catch (err) {
-      coreServices.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem closing index."));
-    }
-  }, [services, coreServices, props.onClose, onCloseIndexModalClose]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [services, coreServices, props.onClose, onCloseIndexModalClose]
+  );
 
   const onFlushIndexModalClose = () => {
     setFlushIndexModalVisible(false);
@@ -124,6 +133,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
     setRefreshModalVisible(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
   return (

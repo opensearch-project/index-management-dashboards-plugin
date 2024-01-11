@@ -7,11 +7,11 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
 import { EuiDragDropContext, EuiDroppable } from "@elastic/eui";
+import { fireEvent } from "@testing-library/dom";
 import DraggableItem from "./DraggableItem";
 import { DEFAULT_ROLLOVER } from "../../utils/constants";
 import { RolloverUIAction } from "../UIActions";
 import { UIAction } from "../../../../../models/interfaces";
-import { fireEvent } from "@testing-library/dom";
 
 describe("<DraggableItem /> spec", () => {
   it("renders the component", () => {

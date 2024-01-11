@@ -51,11 +51,11 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
           confirmButtonText={`Delete ${type}`}
           buttonColor="danger"
           defaultFocusedButton="confirm"
-          confirmButtonDisabled={confirmDeleteText != "delete"}
+          confirmButtonDisabled={confirmDeleteText !== "delete"}
         >
           <EuiForm>
             <p>
-              Delete "<strong>{ids}</strong>" permanently? {addtionalWarning}
+              Delete &quot;<strong>{ids}</strong>&quot; permanently? {addtionalWarning}
             </p>
             <EuiSpacer size="s" />
             {!!confirmation && (

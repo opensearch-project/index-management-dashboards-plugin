@@ -20,7 +20,7 @@ export default class AliasUIAction implements UIAction<AliasAction> {
   action: AliasAction;
   type = ActionType.Alias;
   errors: { [key in AliasActions]: string | undefined } = {};
-  selectedItems: { [key in AliasActions]: EuiComboBoxOptionOption<AliasActionItem>[] } = {};
+  selectedItems: { [key in AliasActions]: Array<EuiComboBoxOptionOption<AliasActionItem>> } = {};
 
   constructor(action: AliasAction, id: string = makeId()) {
     this.action = action;
@@ -41,7 +41,7 @@ export default class AliasUIAction implements UIAction<AliasAction> {
     return !Object.entries(this.errors).some(([_, error]) => error);
   };
 
-  getAliasActionErrorText = (selectedItems: { [key in AliasActions]: EuiComboBoxOptionOption<AliasActionItem>[] }) => {
+  getAliasActionErrorText = (selectedItems: { [key in AliasActions]: Array<EuiComboBoxOptionOption<AliasActionItem>> }) => {
     const errors: { [key in AliasActions]: string | undefined } = {};
 
     // Each alias is valid
@@ -56,7 +56,7 @@ export default class AliasUIAction implements UIAction<AliasAction> {
 
   getAliasErrorText = (
     action: AliasActionItem,
-    selectedItems: { [key in AliasActions]: EuiComboBoxOptionOption<AliasActionItem>[] }
+    selectedItems: { [key in AliasActions]: Array<EuiComboBoxOptionOption<AliasActionItem>> }
   ): string | undefined => {
     const aliasActionType = Object.keys(action)[0] as AliasActions;
 
@@ -76,7 +76,7 @@ export default class AliasUIAction implements UIAction<AliasAction> {
   };
 
   parseToComboBoxOptions = (aliasAction: AliasAction) => {
-    const allOptions: { [key in AliasActions]: EuiComboBoxOptionOption<AliasActionItem>[] } = {};
+    const allOptions: { [key in AliasActions]: Array<EuiComboBoxOptionOption<AliasActionItem>> } = {};
     aliasAction.alias.actions?.forEach((action) => {
       const aliasActionType = Object.keys(action)[0] as AliasActions;
       if (!allOptions[aliasActionType]) allOptions[aliasActionType] = [];

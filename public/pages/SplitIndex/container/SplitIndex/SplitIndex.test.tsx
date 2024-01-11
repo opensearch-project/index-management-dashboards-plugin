@@ -5,18 +5,18 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import { SplitIndex } from "./SplitIndex";
 import userEvent from "@testing-library/user-event";
-import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { MemoryRouter as Router } from "react-router-dom";
+import { CoreStart } from "opensearch-dashboards/public";
+import { SplitIndex } from "./SplitIndex";
+import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { IAlias } from "../../../Aliases/interface";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ModalProvider, ModalRoot } from "../../../../components/Modal";
-import { CoreStart } from "opensearch-dashboards/public";
 
 function renderWithRouter(initialEntries = [ROUTES.SPLIT_INDEX] as string[]) {
   return {

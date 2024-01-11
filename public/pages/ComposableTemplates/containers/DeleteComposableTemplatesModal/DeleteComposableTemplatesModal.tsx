@@ -5,8 +5,6 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
-import { ServicesContext } from "../../../../services";
-import { CoreServicesContext } from "../../../../components/core_services";
 import {
   EuiButton,
   EuiButtonEmpty,
@@ -18,8 +16,10 @@ import {
   EuiModalHeaderTitle,
   EuiSpacer,
 } from "@elastic/eui";
-import { submitTemplateChange, useComponentMapTemplate } from "../../utils/hooks";
 import { Link } from "react-router-dom";
+import { ServicesContext } from "../../../../services";
+import { CoreServicesContext } from "../../../../components/core_services";
+import { submitTemplateChange, useComponentMapTemplate } from "../../utils/hooks";
 import { ROUTES } from "../../../../utils/constants";
 import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import { ServerResponse } from "../../../../../server/models/types";
@@ -55,15 +55,15 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
               transformTemplate(currentTemplate) {
                 return {
                   ...currentTemplate,
-                  composed_of: currentTemplate.composed_of?.filter((item) => item !== selectedItems[0]) || [],
+                  composed_of: currentTemplate.composed_of?.filter((itm) => itm !== selectedItems[0]) || [],
                 };
               },
             })
           )
-        ).then((result) => ({
+        ).then((res) => ({
           response: {},
-          ok: result.every((item) => item.ok),
-          error: result
+          ok: res.every((item) => item.ok),
+          error: res
             .filter((item) => !item.ok)
             .map((item) => item.error)
             .join(", "),
@@ -137,7 +137,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
                   data-test-subj="UnlinkConfirmCheckBox"
                   label={`Unlink index templates and delete ${selectedItems.join(", ")}`}
                   value={checked}
-                  onChange={(checked) => setChecked(checked)}
+                  onChange={(c) => setChecked(c)}
                 />
               </>
             ) : null}

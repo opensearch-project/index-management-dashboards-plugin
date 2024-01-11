@@ -26,7 +26,7 @@ interface ConfirmationModalProps {
   onAction: () => void;
 }
 
-const ConfirmationModal: React.SFC<ConfirmationModalProps> = ({
+const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   title,
   bodyMessage,
   actionMessage,

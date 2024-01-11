@@ -4,9 +4,9 @@
  */
 import React from "react";
 import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { DetailLink } from "./DetailLink";
 import { ErrorToastContentForJob } from "./ErrorToastContentForJob";
-import userEvent from "@testing-library/user-event";
 import { FormatResourceWithClusterInfo, FormatResourcesWithClusterInfo } from "./FormatResourceWithClusterInfo";
 
 describe("<DetailLink /> spec", () => {

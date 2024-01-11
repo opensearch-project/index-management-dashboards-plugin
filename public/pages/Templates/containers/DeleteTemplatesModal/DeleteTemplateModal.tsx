@@ -4,9 +4,9 @@
  */
 
 import React, { useCallback, useContext } from "react";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 import DeleteModal from "../../../../components/DeleteModal";
 
 interface DeleteTemplateModalProps {

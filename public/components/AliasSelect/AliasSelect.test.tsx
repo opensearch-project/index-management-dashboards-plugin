@@ -5,8 +5,8 @@
 
 import React, { useState } from "react";
 import { render, waitFor } from "@testing-library/react";
-import AliasSelect, { AliasSelectProps } from "./index";
 import userEvent from "@testing-library/user-event";
+import AliasSelect, { AliasSelectProps } from "./index";
 
 const onChangeMock = jest.fn();
 

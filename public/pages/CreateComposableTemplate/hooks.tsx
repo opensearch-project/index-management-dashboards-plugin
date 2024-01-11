@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { EuiFormRowProps } from "@elastic/eui";
 import { get, set } from "lodash";
 import { flatten } from "flat";
@@ -104,7 +109,7 @@ export const submitTemplate = async (props: { value: Partial<TemplateItem>; isEd
 
 export const getTemplate = async (props: { templateName: string; commonService: CommonService }): Promise<ComponentTemplateEdit> => {
   const response = await props.commonService.apiCaller<{
-    component_templates: { name: string; component_template: IComposableTemplateRemote }[];
+    component_templates: Array<{ name: string; component_template: IComposableTemplateRemote }>;
   }>({
     endpoint: "transport.request",
     data: {

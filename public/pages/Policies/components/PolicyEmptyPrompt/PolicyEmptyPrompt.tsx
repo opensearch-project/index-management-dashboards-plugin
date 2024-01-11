@@ -21,7 +21,7 @@ const getMessagePrompt = ({ filterIsApplied, loading }: PolicyEmptyPromptProps) 
   return TEXT.NO_POLICIES;
 };
 
-const getActions: React.SFC<PolicyEmptyPromptProps> = ({ history, filterIsApplied, loading, resetFilters }) => {
+const getActions: React.FC<PolicyEmptyPromptProps> = ({ history, filterIsApplied, loading, resetFilters }) => {
   if (loading) {
     return null;
   }
@@ -55,7 +55,7 @@ interface PolicyEmptyPromptProps {
   history: any;
 }
 
-const PolicyEmptyPrompt: React.SFC<PolicyEmptyPromptProps> = (props) => (
+const PolicyEmptyPrompt: React.FC<PolicyEmptyPromptProps> = (props) => (
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={

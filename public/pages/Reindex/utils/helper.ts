@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { DATA_STREAM_REGEX } from "./constants";
-import { IndexSelectItem } from "../models/interfaces";
 import { EuiComboBoxOptionOption } from "@elastic/eui";
 import _ from "lodash";
+import { DATA_STREAM_REGEX } from "./constants";
+import { IndexSelectItem } from "../models/interfaces";
 
 /**
  * parse index names to extract data stream name if the index is a backing index of data stream,
@@ -17,12 +17,12 @@ import _ from "lodash";
  * @param indices
  */
 export const parseIndexNames = (indices: string): string[] => {
-  let indexArray: string[] = [];
-  indices &&
+  const indexArray: string[] = [];
+  if (indices)
     indices.split(",").forEach((index) => {
       // need extract data stream name first
       if (DATA_STREAM_REGEX.test(index)) {
-        let match = index.match(DATA_STREAM_REGEX);
+        const match = index.match(DATA_STREAM_REGEX);
         indexArray.push(match ? match[1] : index);
       } else {
         indexArray.push(index);
@@ -32,21 +32,21 @@ export const parseIndexNames = (indices: string): string[] => {
 };
 
 export const checkDuplicate = (
-  sources: EuiComboBoxOptionOption<IndexSelectItem>[],
-  destination: EuiComboBoxOptionOption<IndexSelectItem>[]
+  sources: Array<EuiComboBoxOptionOption<IndexSelectItem>>,
+  destination: Array<EuiComboBoxOptionOption<IndexSelectItem>>
 ) => {
-  let expandedSource: string[] = [],
-    expandedDestination: string[] = [];
+  const expandedSource: string[] = [];
+  const expandedDestination: string[] = [];
   sources.forEach((item) => {
     expandedSource.push(item.label);
-    item.value?.isAlias && item.value.indices && expandedSource.push(...item.value.indices);
-    item.value?.isDataStream && item.value.indices && expandedSource.push(...item.value.indices);
+    if (item.value?.isAlias && item.value.indices) expandedSource.push(...item.value.indices);
+    if (item.value?.isDataStream && item.value.indices) expandedSource.push(...item.value.indices);
   });
 
   destination.forEach((item) => {
     expandedDestination.push(item.label);
-    item.value?.isAlias && item.value.writingIndex && expandedDestination.push(item.value.writingIndex);
-    item.value?.isDataStream && item.value.writingIndex && expandedDestination.push(item.value.writingIndex);
+    if (item.value?.isAlias && item.value.writingIndex) expandedDestination.push(item.value.writingIndex);
+    if (item.value?.isDataStream && item.value.writingIndex) expandedDestination.push(item.value.writingIndex);
   });
 
   const duplicate = _.intersection(expandedSource, expandedDestination);
@@ -57,8 +57,8 @@ export const checkDuplicate = (
 };
 
 export const filterOverlaps = (
-  list: EuiComboBoxOptionOption<IndexSelectItem>[],
-  excludeList?: EuiComboBoxOptionOption<IndexSelectItem>[]
+  list: Array<EuiComboBoxOptionOption<IndexSelectItem>>,
+  excludeList?: Array<EuiComboBoxOptionOption<IndexSelectItem>>
 ) => {
   if (excludeList) {
     list.map((it) => {

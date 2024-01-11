@@ -84,6 +84,7 @@ export default function useField<T extends object>(options?: FieldOption<T>): Fi
 
         let errorInfo = null;
         try {
+          // eslint-disable-next-line no-shadow
           const result = validateFunction(
             {
               ...item,
@@ -171,7 +172,7 @@ export default function useField<T extends object>(options?: FieldOption<T>): Fi
           });
         })
       );
-      const resultArray = result.filter((item) => item) as Record<string, string[]>[];
+      const resultArray = result.filter((item) => item) as Array<Record<string, string[]>>;
       const resultPayload = resultArray.reduce((total, current) => ({ ...total, ...current }), {} as Record<string, string[]>);
       setErrors(resultPayload);
       return {

@@ -4,10 +4,10 @@
  */
 
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
-import CustomFormRow, { OptionalLabel } from "../../../../components/CustomFormRow";
 import { EuiCheckbox, EuiComboBox, EuiComboBoxOptionOption, EuiFieldNumber, EuiLink, EuiRadioGroup, EuiSpacer } from "@elastic/eui";
-import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
+import CustomFormRow, { OptionalLabel } from "../../../../components/CustomFormRow";
+import { CoreServicesContext } from "../../../../components/core_services";
 
 interface ReindexOptionsProps {
   slices?: string;
@@ -23,7 +23,7 @@ interface ReindexOptionsProps {
 }
 
 const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
-  let pipelinesInit: EuiComboBoxOptionOption[] = [];
+  const pipelinesInit: EuiComboBoxOptionOption[] = [];
   const [pipelines, SetPipelines] = useState(pipelinesInit);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
 
@@ -46,8 +46,8 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
 
   useEffect(() => {
     getAllPipelines()
-      .then((pipelines) => {
-        SetPipelines(pipelines);
+      .then((newPipelines) => {
+        SetPipelines(newPipelines);
       })
       .catch((err) => {
         coreServices.notifications.toasts.addDanger(`fetch pipelines error ${err}`);

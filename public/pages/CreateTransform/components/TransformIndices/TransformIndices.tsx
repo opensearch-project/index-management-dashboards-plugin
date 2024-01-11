@@ -29,15 +29,15 @@ import { wildcardOption } from "../../../../utils/helpers";
 
 interface TransformIndicesProps {
   indexService: IndexService;
-  sourceIndex: { label: string; value?: IndexItem }[];
+  sourceIndex: Array<{ label: string; value?: IndexItem }>;
   sourceIndexFilter: string;
   sourceIndexFilterError: string;
   sourceIndexError: string;
-  targetIndex: { label: string; value?: IndexItem }[];
+  targetIndex: Array<{ label: string; value?: IndexItem }>;
   targetIndexError: string;
-  onChangeSourceIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  onChangeSourceIndex: (options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   onChangeSourceIndexFilter: (sourceIndexFilter: string) => void;
-  onChangeTargetIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  onChangeTargetIndex: (options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   hasAggregation: boolean;
   fields: FieldItem[];
   beenWarned: boolean;
@@ -45,8 +45,8 @@ interface TransformIndicesProps {
 
 interface TransformIndicesState {
   isLoading: boolean;
-  indexOptions: { label: string; value?: IndexItem }[];
-  targetIndexOptions: { label: string; value?: IndexItem }[];
+  indexOptions: Array<{ label: string; value?: IndexItem }>;
+  targetIndexOptions: Array<{ label: string; value?: IndexItem }>;
   isPopoverOpen: boolean;
   selectFieldValue: string;
 }
@@ -108,7 +108,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
     this.setState({ isLoading: false });
   };
 
-  onCreateOption = (searchValue: string, flattenedOptions: { label: string; value?: IndexItem }[]): void => {
+  onCreateOption = (searchValue: string, flattenedOptions: Array<{ label: string; value?: IndexItem }>): void => {
     const { targetIndexOptions } = this.state;
     const { onChangeTargetIndex } = this.props;
     const normalizedSearchValue = searchValue.trim();
@@ -124,7 +124,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
     // Create the option if it doesn't exist.
     if (flattenedOptions.findIndex((option) => option.label.trim() === normalizedSearchValue) === -1) {
       targetIndexOptions.concat(newOption);
-      this.setState({ targetIndexOptions: targetIndexOptions });
+      this.setState({ targetIndexOptions });
     }
     onChangeTargetIndex([newOption]);
   };
@@ -175,7 +175,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             <EuiFormRow
               label="Source index"
               error={sourceIndexError}
-              isInvalid={sourceIndexError != ""}
+              isInvalid={sourceIndexError !== ""}
               helpText="The index where this transform job is performed on. Type in * as wildcard for index pattern. Indices cannot be changed once the job is created. Please ensure that you select the right source index."
             >
               <EuiComboBox
@@ -186,7 +186,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
                 singleSelection={{ asPlainText: true }}
                 onSearchChange={this.onIndexSearchChange}
                 isLoading={isLoading}
-                isInvalid={sourceIndexError != ""}
+                isInvalid={sourceIndexError !== ""}
                 data-test-subj="sourceIndexCombobox"
               />
             </EuiFormRow>
@@ -255,7 +255,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             <EuiFormRow
               label="Target index"
               error={targetIndexError}
-              isInvalid={targetIndexError != ""}
+              isInvalid={targetIndexError !== ""}
               helpText="The index stores transform results. You can look up an existing index to reuse or type to create a new index."
             >
               <EuiComboBox
@@ -267,7 +267,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
                 singleSelection={{ asPlainText: true }}
                 onSearchChange={this.onIndexSearchChange}
                 isLoading={isLoading}
-                isInvalid={targetIndexError != ""}
+                isInvalid={targetIndexError !== ""}
                 data-test-subj="targetIndexCombobox"
               />
             </EuiFormRow>
@@ -276,7 +276,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
         <Fragment>
           <EuiSpacer />
           <EuiCallOut color="warning">
-            <p>You can't change indices after creating a job. Double-check the source and target index names before proceeding.</p>
+            <p>You can&apos;t change indices after creating a job. Double-check the source and target index names before proceeding.</p>
           </EuiCallOut>
         </Fragment>
       </div>

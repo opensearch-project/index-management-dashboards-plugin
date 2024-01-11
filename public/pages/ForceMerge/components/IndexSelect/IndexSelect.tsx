@@ -7,15 +7,15 @@ import { EuiComboBoxOptionOption } from "@elastic/eui";
 import { _EuiComboBoxProps } from "@elastic/eui/src/components/combo_box/combo_box";
 import { CoreStart } from "opensearch-dashboards/public";
 import { debounce } from "lodash";
-import ComboBoxWithoutWarning from "../../../../components/ComboBoxWithoutWarning";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import ComboBoxWithoutWarning from "../../../../components/ComboBoxWithoutWarning";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexSelectItem } from "../../models/interfaces";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS, SYSTEM_INDEX } from "../../../../../utils/constants";
 
 interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "data-test-subj" | "placeholder"> {
-  getIndexOptions: (searchValue: string) => Promise<EuiComboBoxOptionOption<IndexSelectItem>[]>;
+  getIndexOptions: (searchValue: string) => Promise<Array<EuiComboBoxOptionOption<IndexSelectItem>>>;
   onChange: (options: string[]) => void;
   singleSelect: boolean;
   value?: string[];
@@ -23,7 +23,7 @@ interface IndexSelectProps extends Pick<_EuiComboBoxProps<IndexSelectItem>, "dat
 }
 
 export default function IndexSelect(props: IndexSelectProps) {
-  const [indexOptions, setIndexOptions] = useState([] as EuiComboBoxOptionOption<IndexSelectItem>[]);
+  const [indexOptions, setIndexOptions] = useState([] as Array<EuiComboBoxOptionOption<IndexSelectItem>>);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const destroyRef = useRef(false);
 
@@ -31,7 +31,7 @@ export default function IndexSelect(props: IndexSelectProps) {
     props
       .getIndexOptions(searchValue ? searchValue : "")
       .then((options) => {
-        props.excludeSystemIndex && filterSystemIndices(options);
+        if (props.excludeSystemIndex) filterSystemIndices(options);
         if (!destroyRef.current) {
           setIndexOptions(options);
         }
@@ -41,9 +41,13 @@ export default function IndexSelect(props: IndexSelectProps) {
       });
   };
 
-  useEffect(() => {
-    searchIndex();
-  }, [props.getIndexOptions, props.excludeSystemIndex]);
+  useEffect(
+    () => {
+      searchIndex();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.getIndexOptions, props.excludeSystemIndex]
+  );
 
   useEffect(() => {
     return () => {
@@ -63,7 +67,7 @@ export default function IndexSelect(props: IndexSelectProps) {
     )
   );
 
-  const filterSystemIndices = (list: EuiComboBoxOptionOption<IndexSelectItem>[]) => {
+  const filterSystemIndices = (list: Array<EuiComboBoxOptionOption<IndexSelectItem>>) => {
     list.map((it) => {
       it.options = it.options?.filter((item) => !filterByMinimatch(item.label, SYSTEM_ALIAS));
       it.options = it.options?.filter((item) => !filterByMinimatch(item.label, SYSTEM_INDEX));
@@ -71,11 +75,15 @@ export default function IndexSelect(props: IndexSelectProps) {
   };
 
   const flattenedOptions = useMemo(
-    () => indexOptions.reduce((total, current) => [...total, ...(current.options || [])], [] as EuiComboBoxOptionOption<IndexSelectItem>[]),
+    () =>
+      indexOptions.reduce(
+        (total, current) => [...total, ...(current.options || [])],
+        [] as Array<EuiComboBoxOptionOption<IndexSelectItem>>
+      ),
     [indexOptions]
   );
 
-  const finalSelectedOptions: EuiComboBoxOptionOption<IndexSelectItem>[] =
+  const finalSelectedOptions: Array<EuiComboBoxOptionOption<IndexSelectItem>> =
     props.value
       ?.map((item) => flattenedOptions.find((option) => option.label === item) as EuiComboBoxOptionOption<IndexSelectItem>)
       .filter((item) => item) || [];

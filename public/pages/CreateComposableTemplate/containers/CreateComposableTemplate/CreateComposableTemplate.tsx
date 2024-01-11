@@ -5,21 +5,21 @@
 
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
+import { isEqual } from "lodash";
 import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { isEqual } from "lodash";
 
-interface CreateComposableTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {}
+type CreateComposableTemplateProps = RouteComponentProps<{ template?: string; mode?: string }>;
 
 export default class CreateComposableTemplate extends Component<CreateComposableTemplateProps> {
   static contextType = CoreServicesContext;
 
-  get template() {
+  public get template() {
     return this.props.match.params.template;
   }
 
-  get readonly() {
+  public get readonly() {
     return this.props.match.params.mode === "readonly";
   }
 

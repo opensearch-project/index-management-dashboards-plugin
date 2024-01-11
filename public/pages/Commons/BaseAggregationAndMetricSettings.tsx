@@ -7,6 +7,9 @@ import React, { Fragment } from "react";
 
 import { EuiFlexItem, EuiText, EuiBasicTable, EuiTableFieldDataColumnType, EuiPanel, EuiFlexGroup, EuiIcon } from "@elastic/eui";
 
+import { EuiBasicTableColumn, EuiTableSortingType } from "@opensearch-project/oui";
+import { Criteria, CriteriaWithPagination } from "@opensearch-project/oui/src/eui_components/basic_table/basic_table";
+import { Pagination } from "@opensearch-project/oui/src/eui_components/basic_table/pagination_bar";
 import { DimensionItem, MetricItem } from "../../../models/interfaces";
 
 export const AGGREGATION_AND_METRIC_SETTINGS = "Aggregation and metrics settings";
@@ -22,7 +25,7 @@ export interface BaseAggregationAndMetricsState {
   dimensionSortDirection: string;
 }
 
-export const BaseAggregationColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = [
+export const BaseAggregationColumns: Array<Readonly<EuiTableFieldDataColumnType<DimensionItem>>> = [
   {
     field: "sequence",
     name: "Sequence",
@@ -52,7 +55,7 @@ export const BaseAggregationColumns: Readonly<EuiTableFieldDataColumnType<Dimens
   },
 ];
 
-export const BaseMetricsColumns: Readonly<EuiTableFieldDataColumnType<MetricItem>>[] = [
+export const BaseMetricsColumns: Array<Readonly<EuiTableFieldDataColumnType<MetricItem>>> = [
   {
     field: "source_field",
     name: "Field Name",
@@ -89,8 +92,15 @@ export const BaseMetricsColumns: Readonly<EuiTableFieldDataColumnType<MetricItem
   },
 ];
 
-export function sequenceTableComponents(selectedDimensionField, items, columns, pagination, sorting, onChange) {
-  if (selectedDimensionField.length == 0) {
+export function sequenceTableComponents(
+  selectedDimensionField: string | any[],
+  items: any[],
+  columns: Array<Readonly<EuiTableFieldDataColumnType<DimensionItem>>> | Array<EuiBasicTableColumn<any>>,
+  pagination: Pagination | undefined,
+  sorting: EuiTableSortingType<DimensionItem> | undefined,
+  onChange: ((criteria: Criteria<any>) => void) | ((criteria: CriteriaWithPagination<any>) => void) | undefined
+) {
+  if (selectedDimensionField.length === 0) {
     return (
       <EuiText>
         <dd>No fields added for aggregation</dd>
@@ -116,7 +126,7 @@ export function sequenceTableComponents(selectedDimensionField, items, columns, 
   );
 }
 
-export function additionalMetricsComponent(selectedMetrics) {
+export function additionalMetricsComponent(selectedMetrics: string | any[]) {
   return (
     <EuiFlexGroup gutterSize="xs">
       <EuiFlexItem grow={false}>
@@ -133,8 +143,15 @@ export function additionalMetricsComponent(selectedMetrics) {
   );
 }
 
-export function sourceFieldComponents(selectedMetrics, items, columns, pagination, sorting, onChange) {
-  if (selectedMetrics.length == 0) {
+export function sourceFieldComponents(
+  selectedMetrics: string | any[],
+  items: any[],
+  columns: Array<Readonly<EuiTableFieldDataColumnType<MetricItem>>> | Array<EuiBasicTableColumn<any>>,
+  pagination: Pagination | undefined,
+  sorting: EuiTableSortingType<MetricItem> | undefined,
+  onChange: ((criteria: Criteria<any>) => void) | ((criteria: CriteriaWithPagination<any>) => void) | undefined
+) {
+  if (selectedMetrics.length === 0) {
     return (
       <EuiText>
         <dd>No fields added for metrics</dd>

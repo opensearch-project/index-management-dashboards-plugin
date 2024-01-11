@@ -31,7 +31,7 @@ import { IFinalDetail } from "./interface";
 import { OVERVIEW_DISPLAY_INFO } from "./constants";
 import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
 
-export interface IndexDetailModalProps extends RouteComponentProps<{ index: string }> {}
+export type IndexDetailModalProps = RouteComponentProps<{ index: string }>;
 
 export default function IndexDetail(props: IndexDetailModalProps) {
   const { index } = props.match.params;
@@ -105,6 +105,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const refreshDetails = async () => {
     const result = await fetchIndicesDetail();
     if (result.ok) {
@@ -208,22 +209,27 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         ),
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
   const [selectedTab, setSelectedTab] = useState<EuiTabbedContentTab & { mode: IndicesUpdateMode }>(tabs[0]);
 
-  useEffect(() => {
-    refreshDetails();
-    coreService?.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      {
-        text: index,
-        href: `#${props.location.pathname}`,
-      },
-    ]);
-  }, []);
+  useEffect(
+    () => {
+      refreshDetails();
+      coreService?.chrome.setBreadcrumbs([
+        BREADCRUMBS.INDEX_MANAGEMENT,
+        BREADCRUMBS.INDICES,
+        {
+          text: index,
+          href: `#${props.location.pathname}`,
+        },
+      ]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   useEffect(() => {
     listenEvent(EVENT_MAP.OPEN_COMPLETE, refreshDetails);

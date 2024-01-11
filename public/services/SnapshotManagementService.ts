@@ -28,25 +28,25 @@ export default class SnapshotManagementService {
   }
 
   getAllSnapshotsWithPolicy = async (): Promise<ServerResponse<GetSnapshotsResponse>> => {
-    let url = `..${NODE_API._SNAPSHOTS}`;
+    const url = `..${NODE_API._SNAPSHOTS}`;
     const response = (await this.httpClient.get(url)) as ServerResponse<GetSnapshotsResponse>;
     return response;
   };
 
   getSnapshot = async (snapshotId: string, repository: string): Promise<ServerResponse<GetSnapshot>> => {
-    let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
+    const url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
     const response = (await this.httpClient.get(url, { query: { repository } })) as ServerResponse<GetSnapshot>;
     return response;
   };
 
   deleteSnapshot = async (snapshotId: string, repository: string): Promise<ServerResponse<AcknowledgedResponse>> => {
-    let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
+    const url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
     const response = (await this.httpClient.delete(url, { query: { repository } })) as ServerResponse<AcknowledgedResponse>;
     return response;
   };
 
   createSnapshot = async (snapshotId: string, repository: string, snapshot: Snapshot): Promise<ServerResponse<CreateSnapshotResponse>> => {
-    let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
+    const url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
     const response = (await this.httpClient.put(url, {
       query: { repository },
       body: JSON.stringify(snapshot),
@@ -55,7 +55,7 @@ export default class SnapshotManagementService {
   };
 
   restoreSnapshot = async (snapshotId: string, repository: string, options: object): Promise<ServerResponse<RestoreSnapshotResponse>> => {
-    let url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
+    const url = `..${NODE_API._SNAPSHOTS}/${snapshotId}`;
     const response = (await this.httpClient.post(url, {
       query: { repository },
       body: JSON.stringify(options),
@@ -70,7 +70,7 @@ export default class SnapshotManagementService {
   };
 
   createPolicy = async (policyId: string, policy: SMPolicy): Promise<ServerResponse<DocumentSMPolicy>> => {
-    let url = `..${NODE_API.SMPolicies}/${policyId}`;
+    const url = `..${NODE_API.SMPolicies}/${policyId}`;
     const response = (await this.httpClient.post(url, { body: JSON.stringify(policy) })) as ServerResponse<DocumentSMPolicy>;
     return response;
   };
@@ -81,7 +81,7 @@ export default class SnapshotManagementService {
     seqNo: number,
     primaryTerm: number
   ): Promise<ServerResponse<DocumentSMPolicy>> => {
-    let url = `..${NODE_API.SMPolicies}/${policyId}`;
+    const url = `..${NODE_API.SMPolicies}/${policyId}`;
     const response = (await this.httpClient.put(url, {
       query: { seqNo, primaryTerm },
       body: JSON.stringify(policy),
@@ -90,7 +90,7 @@ export default class SnapshotManagementService {
   };
 
   getPolicies = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetSMPoliciesResponse>> => {
-    let url = `..${NODE_API.SMPolicies}`;
+    const url = `..${NODE_API.SMPolicies}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetSMPoliciesResponse>;
     return response;
   };

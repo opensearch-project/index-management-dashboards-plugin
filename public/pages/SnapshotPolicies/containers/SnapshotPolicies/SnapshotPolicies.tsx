@@ -7,7 +7,6 @@ import React, { Component } from "react";
 import _ from "lodash";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
-import { CoreServicesContext } from "../../../../components/core_services";
 import {
   Criteria,
   Direction,
@@ -28,6 +27,7 @@ import {
   Pagination,
   Query,
 } from "@elastic/eui";
+import { CoreServicesContext } from "../../../../components/core_services";
 import { BREADCRUMBS, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { getMessagePrompt, getSMPoliciesQueryParamsFromURL, renderTimestampMillis } from "../../helpers";
 import { SMPolicy } from "../../../../../models/interfaces";
@@ -68,7 +68,7 @@ interface SnapshotPoliciesState {
 
 export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, SnapshotPoliciesState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<SMPolicy>[];
+  columns: Array<EuiTableFieldDataColumnType<SMPolicy>>;
 
   constructor(props: SnapshotPoliciesProps) {
     super(props);
@@ -80,10 +80,10 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       loadingPolicies: false,
       query: null,
       queryString: "",
-      from: from,
-      size: size,
-      sortField: sortField,
-      sortOrder: sortOrder,
+      from,
+      size,
+      sortField,
+      sortOrder,
       selectedItems: [],
       showFlyout: false,
       policyClicked: null,
@@ -196,6 +196,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     this.setState({ loadingPolicies: false });
   };
 
+  // eslint-disable-next-line no-shadow
   static getQueryObjectFromState({ from, size, sortField, sortOrder, queryString }: SnapshotPoliciesState) {
     return { from, size, sortField, sortOrder, queryString };
   }
@@ -211,7 +212,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     // index could be 0, so need to explicitly check if it's undefined
     const from = index !== undefined ? (size ? index * size : prevFrom) : prevFrom;
     this.setState({
-      from: from,
+      from,
       size: size ?? prevSize,
       sortField: field ?? sortField,
       sortOrder: direction ?? sortOrder,
@@ -256,7 +257,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   onClickDelete = async () => {
     const { snapshotManagementService } = this.props;
     const { selectedItems } = this.state;
-    for (let item of selectedItems) {
+    for (const item of selectedItems) {
       const policyId = item.name;
       try {
         const response = await snapshotManagementService.deletePolicy(policyId);
@@ -276,7 +277,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   onClickStart = async () => {
     const { snapshotManagementService } = this.props;
     const { selectedItems } = this.state;
-    for (let item of selectedItems) {
+    for (const item of selectedItems) {
       const policyId = item.name;
       try {
         const response = await snapshotManagementService.startPolicy(policyId);
@@ -295,7 +296,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
   onClickStop = async () => {
     const { snapshotManagementService } = this.props;
     const { selectedItems } = this.state;
-    for (let item of selectedItems) {
+    for (const item of selectedItems) {
       const policyId = item.name;
       try {
         const response = await snapshotManagementService.stopPolicy(policyId);
@@ -356,7 +357,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       <EuiContextMenuItem
         key="Edit"
         icon="empty"
-        disabled={selectedItems.length != 1}
+        disabled={selectedItems.length !== 1}
         data-test-subj="editButton"
         onClick={() => {
           this.closePopover();

@@ -32,11 +32,12 @@ interface RetryModalProps {
 interface RetryModalState {
   radioIdSelected: string;
   stateSelected: string;
-  stateOptions: { value: string; text: string }[];
+  stateOptions: Array<{ value: string; text: string }>;
 }
 
 enum Radio {
   Current = "current",
+  // eslint-disable-next-line no-shadow
   State = "state",
 }
 
@@ -90,7 +91,7 @@ export default class RetryModal extends Component<RetryModalProps, RetryModalSta
     } = this.props;
     try {
       const indices = retryItems.map((item) => item.index);
-      const state = radioIdSelected == Radio.State ? stateSelected : null;
+      const state = radioIdSelected === Radio.State ? stateSelected : null;
       const response = await managedIndexService.retryManagedIndexPolicy(indices, state);
       if (response.ok) {
         const {

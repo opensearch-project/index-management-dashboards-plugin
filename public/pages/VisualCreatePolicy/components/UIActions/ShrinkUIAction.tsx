@@ -53,7 +53,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
     const numSet = [shrink.num_new_shards != null, shrink.percentage_of_source_shards != null, shrink.max_shard_size != null].filter(
       (it) => it
     ).length;
-    return numSet == 1;
+    return numSet === 1;
   };
 
   isValidAliasesJson = () => {

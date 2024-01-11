@@ -19,7 +19,7 @@ import {
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
 
 interface IndexFilterPopoverProps {
-  sourceIndex: { label: string; value?: IndexItem }[];
+  sourceIndex: Array<{ label: string; value?: IndexItem }>;
   fields: FieldItem[];
   sourceIndexFilter: string;
   onChangeSourceIndexFilter: (sourceIndexFilter: string) => void;
@@ -108,8 +108,8 @@ export default function IndexFilterPopover({
         </EuiFlexGroup>
       </EuiPopoverTitle>
       <EuiForm>
-        {/*TODO: implement paramsEditor and uncomment the line below*/}
-        {/*{isCustomEditorOpen ? customEditor() : paramsEditor()}*/}
+        {/* TODO: implement paramsEditor and uncomment the line below*/}
+        {/* {isCustomEditorOpen ? customEditor() : paramsEditor()}*/}
         {customEditor()}
         <EuiSpacer />
         <EuiFlexGroup direction="rowReverse" alignItems="center" responsive={false}>

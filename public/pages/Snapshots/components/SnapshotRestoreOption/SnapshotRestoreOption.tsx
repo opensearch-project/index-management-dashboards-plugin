@@ -26,7 +26,7 @@ const SnapshotRestoreOption = ({
   const { restore_all_indices, restore_specific_indices } = RESTORE_OPTIONS;
 
   return (
-    <div style={{ width: width }}>
+    <div style={{ width }}>
       <h5>Specify restore option</h5>
 
       <EuiSpacer size="m" />

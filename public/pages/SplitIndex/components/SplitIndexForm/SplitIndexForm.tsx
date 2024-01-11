@@ -29,7 +29,7 @@ interface SplitIndexComponentProps {
   sourceIndex: string;
   reasons: React.ReactChild[];
   sourceShards: string;
-  shardsSelectOptions: { label: string }[];
+  shardsSelectOptions: Array<{ label: string }>;
   onSplitIndex: (targetIndex: string, settingsPayload: Required<IndexItem>["settings"]) => Promise<ServerResponse<{ task: string }>>;
   onCancel: () => void;
   getAlias: AliasSelectProps["refreshOptions"];

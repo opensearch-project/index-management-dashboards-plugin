@@ -21,27 +21,31 @@ export default function IndexDetail(props: IIndexDetailProps) {
   const [items, setItems] = useState([] as CatIndex[]);
   const services = useContext(ServicesContext);
   const coreServices = useContext(CoreServicesContext);
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const result = await services?.commonService.apiCaller<CatIndex[]>({
-        endpoint: "cat.indices",
-        data: {
-          index: props.indices,
-          format: "json",
-        },
-      });
-      let finalResponse: CatIndex[] = [];
-      if (result?.ok) {
-        finalResponse = result.response;
-      } else {
-        coreServices?.notifications.toasts.addDanger(result?.error || "");
-      }
-      setItems(finalResponse);
-      props.onGetIndicesDetail && props.onGetIndicesDetail(finalResponse);
-      setLoading(false);
-    })();
-  }, [props.indices.join(","), setLoading, setItems, coreServices]);
+  useEffect(
+    () => {
+      (async () => {
+        setLoading(true);
+        const result = await services?.commonService.apiCaller<CatIndex[]>({
+          endpoint: "cat.indices",
+          data: {
+            index: props.indices,
+            format: "json",
+          },
+        });
+        let finalResponse: CatIndex[] = [];
+        if (result?.ok) {
+          finalResponse = result.response;
+        } else {
+          coreServices?.notifications.toasts.addDanger(result?.error || "");
+        }
+        setItems(finalResponse);
+        if (props.onGetIndicesDetail) props.onGetIndicesDetail(finalResponse);
+        setLoading(false);
+      })();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.indices.join(","), setLoading, setItems, coreServices]
+  );
   return (
     <ContentPanel title="Source index details" titleSize="s">
       <EuiSpacer />

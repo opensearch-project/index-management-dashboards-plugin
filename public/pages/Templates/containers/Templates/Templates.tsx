@@ -24,6 +24,7 @@ import {
   EuiToolTip,
   EuiButtonIcon,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
@@ -33,7 +34,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import TemplatesActions from "../TemplatesActions";
-import { CoreStart } from "opensearch-dashboards/public";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import { TemplateConvert } from "../../../CreateIndexTemplate/components/TemplateType";
 import AssociatedComponentsModal from "../AssociatedComponentsModal";
@@ -125,10 +125,10 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
     let allTemplatesDetail: TemplateItemRemote[] = [];
 
     const allTemplatesResponse = await commonService.apiCaller<{
-      index_templates?: {
+      index_templates?: Array<{
         name: string;
         index_template: TemplateItemRemote;
-      }[];
+      }>;
     }>({
       endpoint: "transport.request",
       data: {
@@ -161,14 +161,14 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
           templateDetail: allTemplatesDetail.find((detailItem) => detailItem.name === item.name),
         }));
       const totalTemplates = response.length;
-      const payload = {
+      const newPayload = {
         templates: response.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
         totalTemplates,
         selectedItems: this.state.selectedItems
           .map((item) => response.find((remoteItem) => remoteItem.name === item.name))
           .filter((item) => item),
       } as TemplatesState;
-      this.setState(payload);
+      this.setState(newPayload);
     } else {
       this.context.notifications.toasts.addDanger(getTemplatesResponse.error);
     }

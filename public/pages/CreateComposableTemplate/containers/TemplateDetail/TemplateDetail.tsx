@@ -6,13 +6,14 @@
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import { EuiButton, EuiButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
+import { CoreStart } from "opensearch-dashboards/public";
+import { useCallback } from "react";
 import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 import { submitTemplate, getTemplate, formatRemoteTemplateToEditTemplate, filterTemplateByIncludes } from "../../hooks";
 import { Modal } from "../../../../components/Modal";
 import { ROUTES } from "../../../../utils/constants";
@@ -26,7 +27,6 @@ import { diffJson } from "../../../../utils/helpers";
 import { ComponentTemplateEdit } from "../../interface";
 import { formatTemplate } from "../../hooks";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
-import { useCallback } from "react";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -83,17 +83,21 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
       };
     }
   };
-  const onClickSubmit = useCallback(async () => {
-    const result = await onSubmit();
-    if (result) {
-      if (result.ok) {
-        coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully created.`);
-        onSubmitSuccess && onSubmitSuccess(values.name);
-      } else {
-        coreServices.notifications.toasts.addDanger(result.error);
+  const onClickSubmit = useCallback(
+    async () => {
+      const result = await onSubmit();
+      if (result) {
+        if (result.ok) {
+          coreServices.notifications.toasts.addSuccess(`${values.name} has been successfully created.`);
+          if (onSubmitSuccess) onSubmitSuccess(values.name);
+        } else {
+          coreServices.notifications.toasts.addDanger(result.error);
+        }
       }
-    }
-  }, [onSubmit]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [onSubmit]
+  );
   useImperativeHandle(ref, () => ({
     submit: onClickSubmit,
   }));
@@ -111,14 +115,18 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
         props.history.replace(ROUTES.COMPOSABLE_TEMPLATES);
       });
   };
-  useEffect(() => {
-    if (isEdit) {
-      refreshTemplate();
-    }
-    return () => {
-      destroyRef.current = true;
-    };
-  }, []);
+  useEffect(
+    () => {
+      if (isEdit) {
+        refreshTemplate();
+      }
+      return () => {
+        destroyRef.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const values: ComponentTemplateEdit = field.getValues();
   const subCompontentProps = {
     ...props,

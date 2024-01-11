@@ -8,12 +8,12 @@ import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { HashRouter as Router } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import DataStreams from "./index";
 import { ServicesContext } from "../../../../services";
 import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import userEvent from "@testing-library/user-event";
 import { DataStreamStats, DataStreamWithStats } from "../../interface";
 import { DataStream } from "../../../../../server/models/interfaces";
 

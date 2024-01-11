@@ -41,13 +41,13 @@ export type DiffableMappingsPropertiesObject = Record<
   }
 >;
 
-export type MappingsProperties = {
+export type MappingsProperties = Array<{
   fieldName: string;
   type: string;
   path?: string;
   analyzer?: string;
   properties?: MappingsProperties;
-}[];
+}>;
 
 export interface IndexItem {
   index: string;
@@ -525,14 +525,14 @@ export interface Transform {
   enabled_at: number | null;
   updated_at: number;
   metadata_id: string | null;
-  aggregations: Map<String, any>;
+  aggregations: Map<string, any>;
   page_size: number;
   schedule: IntervalSchedule | CronSchedule;
   schema_version: number;
   source_index: string;
   target_index: string;
-  roles: String[];
-  data_selection_query: Map<String, any>;
+  roles: string[];
+  data_selection_query: Map<string, any>;
 }
 
 export interface TransformMetadata {
@@ -571,7 +571,7 @@ export interface CronSchedule {
   };
 }
 
-//Frontend dimension data model
+// Frontend dimension data model
 export interface DimensionItem {
   sequence: number;
   field: FieldItem;
@@ -579,7 +579,7 @@ export interface DimensionItem {
   interval?: number;
 }
 
-//Frontend metric data model
+// Frontend metric data model
 export interface MetricItem {
   source_field: FieldItem;
   all: boolean;
@@ -620,18 +620,23 @@ interface HistogramItem {
   };
 }
 
-//Backend dimension data model
+// Backend dimension data model
 export type RollupDimensionItem = DateHistogramItem | TermsItem | HistogramItem;
 
-//Backend metric data model
+// Backend metric data model
 export interface RollupMetricItem {
   source_field: string;
   metrics: [
     {
+      // eslint-disable-next-line @typescript-eslint/ban-types
       min?: Object;
+      // eslint-disable-next-line @typescript-eslint/ban-types
       max?: Object;
+      // eslint-disable-next-line @typescript-eslint/ban-types
       sum?: Object;
+      // eslint-disable-next-line @typescript-eslint/ban-types
       avg?: Object;
+      // eslint-disable-next-line @typescript-eslint/ban-types
       value_count?: Object;
     }
   ];

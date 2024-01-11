@@ -28,9 +28,9 @@ export default function SwitchNumber(props: SwitchNumberProps) {
           },
         ]}
         idSelected={id}
-        onChange={(id) => {
-          setId(id);
-          if (id === "0") {
+        onChange={(newId) => {
+          setId(newId);
+          if (newId === "0") {
             props.onChange(undefined);
           } else {
             props.onChange(1);

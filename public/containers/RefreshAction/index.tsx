@@ -76,72 +76,77 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps) {
     toastWording = `All open indexes have been successfully refreshed.`;
   }
 
-  useEffect(() => {
-    if (!!services && visible) {
-      const filterRedStatus = true;
-      filterBlockedItems(services, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, type, filterRedStatus)
-        .then((filteredStreamsResult) => {
-          const { blockedItems, unBlockedItems } = filteredStreamsResult;
-          setBlockedItems(blockedItems);
-          setUnBlockedItems(unBlockedItems);
+  useEffect(
+    () => {
+      if (!!services && visible) {
+        const filterRedStatus = true;
+        filterBlockedItems(services, selectedItems, INDEX_OP_BLOCKS_TYPE.CLOSED, type, filterRedStatus)
+          .then((filteredStreamsResult) => {
+            // eslint-disable-next-line no-shadow
+            const { blockedItems, unBlockedItems } = filteredStreamsResult;
+            setBlockedItems(blockedItems);
+            setUnBlockedItems(unBlockedItems);
 
-          if (!selectedItems.length) {
-            if (!blockedItems.length) {
-              setLoading(false);
-            } else if (blockedItems.length === 1) {
+            if (!selectedItems.length) {
+              if (!blockedItems.length) {
+                setLoading(false);
+              } else if (blockedItems.length === 1) {
+                coreServices.notifications.toasts.addDanger({
+                  title: `Unable to refresh indexes.`,
+                  text: `Cannot refresh all open indexes because [${blockedItems.join(", ")}] is in red status.`,
+                });
+                onClose();
+              } else {
+                coreServices.notifications.toasts.addDanger({
+                  title: `Unable to refresh indexes.`,
+                  text: `Cannot refresh all open indexes because [${blockedItems.join(", ")}] are in red status.`,
+                });
+                onClose();
+              }
+            } else if (selectedItems.length !== 0 && unBlockedItems.length === 0) {
               coreServices.notifications.toasts.addDanger({
-                title: `Unable to refresh indexes.`,
-                text: `Cannot refresh all open indexes because [${blockedItems.join(", ")}] is in red status.`,
+                title: `Unable to refresh ${type}.`,
+                text: `All selected ${type} cannot be refreshed because ${getClosedTypeWording({
+                  type,
+                })} are either closed or in red status.`,
               });
               onClose();
             } else {
-              coreServices.notifications.toasts.addDanger({
-                title: `Unable to refresh indexes.`,
-                text: `Cannot refresh all open indexes because [${blockedItems.join(", ")}] are in red status.`,
-              });
-              onClose();
+              setLoading(false);
             }
-          } else if (selectedItems.length != 0 && unBlockedItems.length == 0) {
-            coreServices.notifications.toasts.addDanger({
-              title: `Unable to refresh ${type}.`,
-              text: `All selected ${type} cannot be refreshed because ${getClosedTypeWording({
-                type,
-              })} are either closed or in red status.`,
-            });
-            onClose();
-          } else {
+          })
+          .catch(() => {
+            /**
+             * It's not a critical error although if it fails unlikely other call will succeed,
+             * set unblocked items to all, so we won't filter any of the selected items.
+             * */
+            if (selectedItems.length > 0) {
+              let unBlocked;
+              switch (type) {
+                case INDEX_OP_TARGET_TYPE.ALIAS:
+                  unBlocked = (selectedItems as IAlias[]).map((item) => item.alias);
+                  break;
+                case INDEX_OP_TARGET_TYPE.DATA_STREAM:
+                  unBlocked = (selectedItems as DataStream[]).map((item) => item.name);
+                  break;
+                default:
+                  unBlocked = (selectedItems as CatIndex[]).map((item) => item.index);
+                  break;
+              }
+              setBlockedItems([]);
+              setUnBlockedItems(unBlocked);
+            }
             setLoading(false);
-          }
-        })
-        .catch(() => {
-          /**
-           * It's not a critical error although if it fails unlikely other call will succeed,
-           * set unblocked items to all, so we won't filter any of the selected items.
-           * */
-          if (selectedItems.length > 0) {
-            let unBlocked;
-            switch (type) {
-              case INDEX_OP_TARGET_TYPE.ALIAS:
-                unBlocked = (selectedItems as IAlias[]).map((item) => item.alias);
-                break;
-              case INDEX_OP_TARGET_TYPE.DATA_STREAM:
-                unBlocked = (selectedItems as DataStream[]).map((item) => item.name);
-                break;
-              default:
-                unBlocked = (selectedItems as CatIndex[]).map((item) => item.index);
-                break;
-            }
-            setBlockedItems([]);
-            setUnBlockedItems(unBlocked);
-          }
-          setLoading(false);
-        });
-    } else {
-      setUnBlockedItems([]);
-      setBlockedItems([]);
-      setLoading(true);
-    }
-  }, [visible, services, type, selectedItems, onClose]);
+          });
+      } else {
+        setUnBlockedItems([]);
+        setBlockedItems([]);
+        setLoading(true);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [visible, services, type, selectedItems, onClose]
+  );
 
   const onConfirm = useCallback(async () => {
     if (!!services) {

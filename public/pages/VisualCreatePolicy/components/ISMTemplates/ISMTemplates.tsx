@@ -82,12 +82,12 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
             key={makeId()}
             isFirst={!idx}
             template={template}
-            onUpdateTemplate={(template: ISMTemplateData) => {
+            onUpdateTemplate={(newTemplate: ISMTemplateData) => {
               onChangePolicy({
                 ...policy,
                 ism_template: templates
                   .slice(0, idx)
-                  .concat(template)
+                  .concat(newTemplate)
                   .concat(templates.slice(idx + 1)),
               });
             }}

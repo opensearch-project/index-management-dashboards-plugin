@@ -5,8 +5,8 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
-import SimplePopover, { loopToGetPath } from "./SimplePopover";
 import userEvent from "@testing-library/user-event";
+import SimplePopover, { loopToGetPath } from "./SimplePopover";
 
 describe("<SimplePopover /> spec", () => {
   it("renders the component", () => {

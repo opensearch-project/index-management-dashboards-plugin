@@ -18,6 +18,7 @@ interface ReviewScheduleProps {
   onChangeStep: (step: number) => void;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class ReviewSchedule extends Component<ReviewScheduleProps> {
   constructor(props: ReviewScheduleProps) {
     super(props);

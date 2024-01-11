@@ -34,7 +34,7 @@ export default function DefineDataStream(
   const matchedList = allDataStreamTemplates.filter((item) => {
     if (!searchValue) {
       return true;
-    } else if (item.index_template.index_patterns.some((item) => item.match(new RegExp(searchValue, "i")))) {
+    } else if (item.index_template.index_patterns.some((itm) => itm.match(new RegExp(searchValue, "i")))) {
       return true;
     }
 

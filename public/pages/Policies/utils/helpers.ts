@@ -12,6 +12,7 @@ import { PoliciesQueryParams } from "../models/interfaces";
 export function getURLQueryParams(location: { search: string }): PoliciesQueryParams {
   const { from, size, search, sortField, sortDirection } = queryString.parse(location.search);
 
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return <PoliciesQueryParams>{
     // @ts-ignore
     from: isNaN(parseInt(from, 10)) ? DEFAULT_QUERY_PARAMS.from : parseInt(from, 10),

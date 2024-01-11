@@ -10,8 +10,8 @@ import { AllBuiltInComponents } from "../../components/FormGenerator";
 import "./index.scss";
 
 export interface ChannelSelectProps {
-  value?: { id: string }[];
-  onChange: (val: { id: string }[]) => void;
+  value?: Array<{ id: string }>;
+  onChange: (val: Array<{ id: string }>) => void;
   "data-test-subj"?: string;
 }
 
@@ -26,7 +26,7 @@ const ChannelSelect = (props: ChannelSelectProps) => {
           placeholder="Select channel"
           isLoading={loading}
           options={channels.map((channel) => ({ value: channel.config_id, label: channel.name, className: "valid-option" }))}
-          onChange={(val, options: EuiComboBoxOptionOption<string>[]) => {
+          onChange={(val, options: Array<EuiComboBoxOptionOption<string>>) => {
             onChange(
               options.map((item) => ({
                 id: item.value || "",

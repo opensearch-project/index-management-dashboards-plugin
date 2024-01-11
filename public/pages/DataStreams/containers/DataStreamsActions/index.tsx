@@ -42,6 +42,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
     setRefreshModalVisible(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
   const selectedItemsInString = selectedItems.map((item) => item.name);
 

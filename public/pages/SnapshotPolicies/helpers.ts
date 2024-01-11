@@ -4,12 +4,13 @@
  */
 
 import queryString from "query-string";
+import moment from "moment";
 import { SMPoliciesQueryParams } from "../../models/interfaces";
 import { DEFAULT_QUERY_PARAMS, PROMPT_TEXT } from "./constants";
-import moment from "moment";
 
 export function getSMPoliciesQueryParamsFromURL(location: { search: string }): SMPoliciesQueryParams {
   const { from, size, sortField, sortOrder, search } = queryString.parse(location.search);
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return <SMPoliciesQueryParams>{
     // @ts-ignore
     from: isNaN(parseInt(from, 10)) ? DEFAULT_QUERY_PARAMS.from : parseInt(from, 10),

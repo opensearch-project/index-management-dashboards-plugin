@@ -15,11 +15,11 @@ type ForceMergeTaskResult = TaskResult<{
     successful: number;
     total: number;
     failed: number;
-    failures?: {
+    failures?: Array<{
       index: string;
       status: string;
       shard: number;
-    }[];
+    }>;
   };
 }>;
 

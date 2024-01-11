@@ -5,8 +5,6 @@
 
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
 import { CoreStart } from "opensearch-dashboards/public";
-import { ServicesContext } from "../../../../services";
-import { CoreServicesContext } from "../../../../components/core_services";
 import {
   EuiButtonEmpty,
   EuiButtonIcon,
@@ -18,8 +16,10 @@ import {
   EuiTitle,
   EuiToolTip,
 } from "@elastic/eui";
-import { ROUTES } from "../../../../utils/constants";
 import { ReactChild } from "react";
+import { ServicesContext } from "../../../../services";
+import { CoreServicesContext } from "../../../../components/core_services";
+import { ROUTES } from "../../../../utils/constants";
 import { Modal } from "../../../../components/Modal";
 import { submitTemplateChange, useComponentMapTemplate } from "../../utils/hooks";
 import { BrowserServices } from "../../../../models/interfaces";

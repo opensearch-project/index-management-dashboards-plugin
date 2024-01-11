@@ -48,6 +48,7 @@ export interface IndexFormProps extends Omit<IndexDetailProps, "refreshOptions" 
   refreshOptions?: IndexDetailProps["refreshOptions"];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface CreateIndexState {}
 
 export class IndexForm extends Component<IndexFormProps & { services: BrowserServices }, CreateIndexState> {
@@ -89,6 +90,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
 
   indexDetailRef: IIndexDetailRef | null = null;
 
+  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
   get commonService() {
     return this.props.services.commonService;
   }

@@ -6,9 +6,9 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
-import ISMTemplate from "./ISMTemplate";
 import { fireEvent } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event/dist";
+import ISMTemplate from "./ISMTemplate";
 
 describe("<ISMTemplate /> spec", () => {
   it("renders the component", () => {

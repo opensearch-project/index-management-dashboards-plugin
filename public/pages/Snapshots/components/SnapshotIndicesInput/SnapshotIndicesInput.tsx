@@ -8,9 +8,9 @@ import React from "react";
 import { IndexItem } from "../../../../../models/interfaces";
 
 interface SnapshotIndicesInputProps {
-  indexOptions: EuiComboBoxOptionOption<IndexItem>[];
-  selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
-  onIndicesSelectionChange: (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  indexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
+  selectedIndexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
+  onIndicesSelectionChange: (selectedOptions: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   getIndexOptions: (searchValue: string) => void;
   onCreateOption: (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   selectedRepoValue: string;
@@ -24,7 +24,7 @@ const SnapshotIndicesInput = ({
   onIndicesSelectionChange,
   getIndexOptions,
   onCreateOption,
-  showError
+  showError,
 }: SnapshotIndicesInputProps) => {
   const selectionError = "You must select at least one index to restore.";
 

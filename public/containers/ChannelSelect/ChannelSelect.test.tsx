@@ -6,11 +6,11 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ChannelSelect, { ChannelSelectProps } from "./ChannelSelect";
 import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
 import { ServicesContext } from "../../services";
 import { CoreServicesContext } from "../../components/core_services";
-import userEvent from "@testing-library/user-event";
 
 function renderWithServiceAndCore(props: ChannelSelectProps) {
   return {

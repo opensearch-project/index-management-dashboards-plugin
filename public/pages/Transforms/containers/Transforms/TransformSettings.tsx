@@ -69,9 +69,9 @@ export default class TransformSettings extends Component<TransformSettingsProps,
 
     const aggItems = () => {
       return Object.keys(aggregationsShown).map((key, index) => {
-        let aggregationType = Object.keys(aggregationsShown[key])[0];
+        const aggregationType = Object.keys(aggregationsShown[key])[0];
         let sourceField = "";
-        if (aggregationType != TRANSFORM_AGG_TYPE.scripted_metric) {
+        if (aggregationType !== TRANSFORM_AGG_TYPE.scripted_metric) {
           sourceField = aggregationsShown[key][aggregationType].field;
         } else {
           sourceField = key;
@@ -103,7 +103,7 @@ export default class TransformSettings extends Component<TransformSettingsProps,
             <div style={{ padding: "10px" }}>
               <EuiSpacer size={"m"} />
 
-              {/*// TODO: Use the source data preview table from create workflow */}
+              {/* // TODO: Use the source data preview table from create workflow */}
               <EuiText>
                 <h5>Preview result based on sample data</h5>
               </EuiText>

@@ -251,7 +251,7 @@ describe("<Reindex /> spec", () => {
 
     await waitFor(() => {});
 
-    let sourceName = getByTestId("sourceSelector").querySelector(".euiBadge__text") as Element;
+    const sourceName = getByTestId("sourceSelector").querySelector(".euiBadge__text") as Element;
     expect(sourceName.textContent).toBe("index-source");
   });
 

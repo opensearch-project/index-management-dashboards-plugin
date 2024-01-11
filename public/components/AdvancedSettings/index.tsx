@@ -40,8 +40,11 @@ function AdvancedSettings<T>(props: IAdvancedSettingsProps<T>, ref: React.Ref<IA
         parsedValue = editorProps.formatValue(parsedValue);
       }
       editorRef.current?.setValue(JSON.stringify(parsedValue, null, 2));
-      propsRef.current.onChange && propsRef.current.onChange(parsedValue);
+      if (propsRef.current.onChange) {
+        propsRef.current.onChange(parsedValue);
+      }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [props.onChange]
   );
 

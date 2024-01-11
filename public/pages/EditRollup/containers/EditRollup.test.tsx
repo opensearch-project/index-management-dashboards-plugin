@@ -6,7 +6,7 @@
 import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter as Router } from "react-router";
+import { MemoryRouter as Router } from "react-router-dom";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import EditRollup from "./EditRollup";
 import { browserServicesMock, coreServicesMock } from "../../../../test/mocks";
@@ -117,11 +117,11 @@ describe("<EditRollup /> spec", () => {
     await userEvent.type(getByTestId("description"), "some description");
     fireEvent.blur(getByTestId("description"));
 
-    //TODO: Verify changes are saved.
+    // TODO: Verify changes are saved.
   });
 
   it("shows rollup job delay", async () => {
-    let rollupJob = testRollup;
+    const rollupJob = testRollup;
     rollupJob.rollup.delay = 90000;
 
     browserServicesMock.rollupService.getRollup = jest.fn().mockResolvedValue({

@@ -6,8 +6,8 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import AssociatedTemplatesModal from "./AssociatedTemplatesModal";
 import userEvent from "@testing-library/user-event";
+import AssociatedTemplatesModal from "./AssociatedTemplatesModal";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -56,6 +56,7 @@ describe("<AssociatedTemplatesModal /> spec", () => {
           <AssociatedTemplatesModal
             componentTemplate="test_component_template"
             renderProps={({ setVisible }) => (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events
               <div data-test-subj="test" onClick={() => setVisible(true)}>
                 123
               </div>

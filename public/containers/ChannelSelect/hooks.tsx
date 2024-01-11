@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { useContext, useState, useEffect, useRef, useCallback } from "react";
 import { ServicesContext } from "../../services";
 import { BrowserServices } from "../../models/interfaces";
@@ -5,7 +10,7 @@ import { FeatureChannelList, GetChannelsResponse } from "../../../server/models/
 import { ServerResponse } from "../../../server/models/types";
 
 let listenCount = 0;
-let promise: Promise<ServerResponse<GetChannelsResponse>> | undefined = undefined;
+let promise: Promise<ServerResponse<GetChannelsResponse>> | undefined;
 const LISTEN_KEY = "GET_CHANNELS_LISTEN";
 
 const getChannels = async (props: { services: BrowserServices; force?: boolean }): Promise<ServerResponse<GetChannelsResponse>> => {
@@ -27,36 +32,44 @@ export const useChannels = () => {
   const [channels, setChannels] = useState<FeatureChannelList[]>([]);
   const [loading, setLoading] = useState(true);
   const destroyRef = useRef<boolean>(false);
-  const refresh = useCallback((force?: boolean) => {
-    setLoading(true);
-    getChannels({
-      services,
-      force,
-    })
-      .then((res) => {
-        if (destroyRef.current) {
-          return;
-        }
-        if (res && res.ok) {
-          setChannels(res.response.channel_list);
-        }
+  const refresh = useCallback(
+    (force?: boolean) => {
+      setLoading(true);
+      getChannels({
+        services,
+        force,
       })
-      .finally(() => {
-        if (destroyRef.current) {
-          return;
-        }
-        setLoading(false);
-      });
-  }, []);
+        .then((res) => {
+          if (destroyRef.current) {
+            return;
+          }
+          if (res && res.ok) {
+            setChannels(res.response.channel_list);
+          }
+        })
+        .finally(() => {
+          if (destroyRef.current) {
+            return;
+          }
+          setLoading(false);
+        });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const listenHandler = useCallback(() => {
     refresh();
   }, [refresh]);
-  useEffect(() => {
-    refresh();
-    return () => {
-      destroyRef.current = true;
-    };
-  }, []);
+  useEffect(
+    () => {
+      refresh();
+      return () => {
+        destroyRef.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   useEffect(() => {
     window.addEventListener(LISTEN_KEY, listenHandler);

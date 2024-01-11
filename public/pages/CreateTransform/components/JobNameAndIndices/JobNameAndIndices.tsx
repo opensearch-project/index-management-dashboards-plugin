@@ -12,12 +12,13 @@ import { IndexItem } from "../../../../../models/interfaces";
 interface JobNameAndIndicesProps {
   transformId: string;
   description: string;
-  sourceIndex: { label: string; value?: IndexItem }[];
-  targetIndex: { label: string; value?: IndexItem }[];
+  sourceIndex: Array<{ label: string; value?: IndexItem }>;
+  targetIndex: Array<{ label: string; value?: IndexItem }>;
   sourceIndexFilter: string;
   onChangeStep: (step: number) => void;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class JobNameAndIndices extends Component<JobNameAndIndicesProps> {
   constructor(props: JobNameAndIndicesProps) {
     super(props);
@@ -72,13 +73,13 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
             <EuiFlexItem>
               <EuiText size="xs">
                 <dt>Description</dt>
-                <dd>{description == "" ? "-" : description}</dd>
+                <dd>{description === "" ? "-" : description}</dd>
               </EuiText>
             </EuiFlexItem>
             <EuiFlexItem>
               <EuiText size="xs">
                 <dt>Source index filter</dt>
-                <dd>{sourceIndexFilter == "" ? "-" : sourceIndexFilter}</dd>
+                <dd>{sourceIndexFilter === "" ? "-" : sourceIndexFilter}</dd>
               </EuiText>
             </EuiFlexItem>
           </EuiFlexGrid>

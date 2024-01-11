@@ -53,7 +53,7 @@ interface MetricsCalculationProps {
 interface MetricsCalculationState {
   isModalVisible: boolean;
   searchText: string;
-  selectedFieldType: EuiComboBoxOptionOption<String>[];
+  selectedFieldType: Array<EuiComboBoxOptionOption<string>>;
   selectedFields: FieldItem[];
   allSelectedFields: FieldItem[];
   from: number;
@@ -97,7 +97,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
 
   showEnable = () => this.setState({ isEnableOpen: true });
 
-  onChangeFieldType = (options: EuiComboBoxOptionOption<String>[]): void => {
+  onChangeFieldType = (options: Array<EuiComboBoxOptionOption<string>>): void => {
     this.setState({ selectedFieldType: options });
   };
 
@@ -109,7 +109,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
     const { onMetricSelectionChange, selectedMetrics } = this.props;
     const { selectedFields, allSelectedFields, from, size } = this.state;
     // Clone selectedMetrics
-    let updatedMetrics = Array.from(selectedMetrics);
+    const updatedMetrics = Array.from(selectedMetrics);
     const toAddFields = Array.from(selectedFields);
     // Loop through selectedFields to see if existing Metrics are removed
 
@@ -155,7 +155,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
     const { selectedMetrics, onMetricSelectionChange } = this.props;
     const index = selectedMetrics.indexOf(item);
     const newItem: MetricItem = item;
-    //There should be a smarter way to do this
+    // There should be a smarter way to do this
     switch (method) {
       case "all": {
         if (!item.all) {
@@ -384,7 +384,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="disable-min"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeDisable();
           this.onClickDisable("min");
@@ -396,7 +396,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="disable-max"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeDisable();
           this.onClickDisable("max");
@@ -408,7 +408,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="disable-sum"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeDisable();
           this.onClickDisable("sum");
@@ -420,7 +420,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="disable-avg"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeDisable();
           this.onClickDisable("avg");
@@ -432,7 +432,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="disable-vc"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeDisable();
           this.onClickDisable("value_count");
@@ -447,7 +447,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="enable-min"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeEnable();
           this.onClickEnable("min");
@@ -459,7 +459,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="enable-max"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeEnable();
           this.onClickEnable("max");
@@ -471,7 +471,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="enable-sum"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeEnable();
           this.onClickEnable("sum");
@@ -483,7 +483,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="enable-avg"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeEnable();
           this.onClickEnable("avg");
@@ -495,7 +495,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
       <EuiContextMenuItem
         key="enable-vc"
         icon="empty"
-        disabled={selectedMetrics.length == 0}
+        disabled={selectedMetrics.length === 0}
         onClick={() => {
           this.closeEnable();
           this.onClickEnable("value_count");
@@ -534,7 +534,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
               <EuiFlexItem grow={false}>
                 <EuiPopover
                   button={
-                    <EuiButton iconType="arrowDown" iconSide="right" onClick={this.showDisable} disabled={selectedMetrics.length == 0}>
+                    <EuiButton iconType="arrowDown" iconSide="right" onClick={this.showDisable} disabled={selectedMetrics.length === 0}>
                       Disable all
                     </EuiButton>
                   }
@@ -549,7 +549,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
               <EuiFlexItem grow={false}>
                 <EuiPopover
                   button={
-                    <EuiButton iconType="arrowDown" iconSide="right" onClick={this.showEnable} disabled={selectedMetrics.length == 0}>
+                    <EuiButton iconType="arrowDown" iconSide="right" onClick={this.showEnable} disabled={selectedMetrics.length === 0}>
                       Enable all
                     </EuiButton>
                   }
@@ -581,7 +581,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         </EuiFlexGroup>
         <EuiHorizontalRule margin="xs" />
         <div style={{ paddingLeft: "10px" }}>
-          {metricError != "" && (
+          {metricError !== "" && (
             <Fragment>
               <EuiCallOut color="danger">
                 <p>{metricError}</p>

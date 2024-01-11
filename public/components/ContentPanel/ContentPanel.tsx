@@ -43,7 +43,7 @@ const renderSubTitleText = (subTitleText: string | JSX.Element): JSX.Element | n
   return subTitleText;
 };
 
-const ContentPanel: React.SFC<ContentPanelProps> = ({
+const ContentPanel: React.FC<ContentPanelProps> = ({
   title = "",
   titleSize = "l",
   subTitleText = "",

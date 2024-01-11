@@ -12,7 +12,7 @@ export type CallbackType = (
   }
 ) => Promise<boolean>;
 
-export type TaskResult<T = {}> = {
+export interface TaskResult<T = {}> {
   found: boolean;
   _source: {
     completed: boolean;
@@ -22,7 +22,7 @@ export type TaskResult<T = {}> = {
       reason: string;
     };
   };
-};
+}
 
 export type RecoveryTaskResult = TaskResult<{
   acknowledged: boolean;

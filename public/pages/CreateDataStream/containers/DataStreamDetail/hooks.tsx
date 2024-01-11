@@ -47,17 +47,17 @@ export const getDataStream = async (props: { dataStream: string; commonService: 
 export const getAllDataStreamTemplate = (props: {
   commonService: CommonService;
 }): Promise<
-  {
+  Array<{
     name: string;
     index_template: TemplateItemRemote;
-  }[]
+  }>
 > => {
   return props.commonService
     .apiCaller<{
-      index_templates?: {
+      index_templates?: Array<{
         name: string;
         index_template: TemplateItemRemote;
-      }[];
+      }>;
     }>({
       data: {
         method: "GET",

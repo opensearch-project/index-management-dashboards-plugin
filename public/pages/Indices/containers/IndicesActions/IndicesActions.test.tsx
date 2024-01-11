@@ -9,12 +9,12 @@ import { render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
 import { Route, Switch, HashRouter as Router, RouteComponentProps } from "react-router-dom";
+import { createMemoryHistory } from "history";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import IndicesActions, { IndicesActionsProps } from "./index";
 import { ModalProvider } from "../../../../components/Modal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { createMemoryHistory } from "history";
 import { ROUTES } from "../../../../utils/constants";
 import { buildMockApiCallerForFlush, selectedIndices } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
 
@@ -56,10 +56,10 @@ describe("<IndicesActions /> spec", () => {
     const { container, getByTestId } = renderWithRouter({
       selectedItems: [],
       onDelete: () => null,
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -469,13 +469,13 @@ describe("<IndicesActions /> spec", () => {
           data_stream: "",
         },
       ],
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -526,10 +526,10 @@ describe("<IndicesActions /> spec", () => {
         },
       ],
       onClose,
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -598,10 +598,10 @@ describe("<IndicesActions /> spec", () => {
         },
       ],
       onDelete,
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -642,7 +642,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -682,7 +682,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -735,7 +735,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { container, getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -773,7 +773,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -809,7 +809,7 @@ describe("<IndicesActions /> spec", () => {
     const history = createMemoryHistory();
 
     const { getByTestId } = renderWithRouter({
-      history: history,
+      history,
       location: history.location,
       onClose(): void {},
       onDelete(): void {},
@@ -828,7 +828,7 @@ describe("<IndicesActions /> spec", () => {
   it("Split index by calling commonService", async () => {
     const history = createMemoryHistory();
     const { container, getByTestId } = renderWithRouter({
-      history: history,
+      history,
       selectedItems: [
         {
           health: "green",
@@ -846,13 +846,13 @@ describe("<IndicesActions /> spec", () => {
           "store.size": "100KB",
         },
       ],
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -900,13 +900,13 @@ describe("<IndicesActions /> spec", () => {
           "store.size": "100KB",
         },
       ],
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -938,13 +938,13 @@ describe("<IndicesActions /> spec", () => {
           "store.size": "100KB",
         },
       ],
-      onDelete: function (): void {
+      onDelete(): void {
         throw new Error("Function not implemented.");
       },
-      onClose: function (): void {
+      onClose(): void {
         throw new Error("Function not implemented.");
       },
-      onShrink: function (): void {
+      onShrink(): void {
         throw new Error("Function not implemented.");
       },
     });
@@ -1270,6 +1270,7 @@ describe("<IndicesActions /> spec", () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         if (payload.endpoint === "cluster.state") {
+          // eslint-disable-next-line no-throw-literal
           throw "failed to call cluster.state";
         } else if (payload.endpoint === "indices.refresh") {
           return {
@@ -1314,6 +1315,7 @@ describe("<IndicesActions /> spec", () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         if (payload.endpoint === "cluster.state") {
+          // eslint-disable-next-line no-throw-literal
           throw "failed to call cluster.state";
         } else if (payload.endpoint === "indices.refresh") {
           return {

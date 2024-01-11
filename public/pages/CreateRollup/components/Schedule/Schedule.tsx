@@ -69,8 +69,8 @@ const selectInterval = (
   <React.Fragment>
     <EuiFlexGroup style={{ maxWidth: 400 }}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
-        <EuiFormRow label="Rollup interval" error={intervalError} isInvalid={intervalError != ""}>
-          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
+        <EuiFormRow label="Rollup interval" error={intervalError} isInvalid={intervalError !== ""}>
+          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError !== ""} />
         </EuiFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
@@ -80,7 +80,7 @@ const selectInterval = (
             options={ScheduleIntervalTimeunitOptions}
             value={intervalTimeunit}
             onChange={onChangeTimeunit}
-            isInvalid={interval == undefined || interval <= 0}
+            isInvalid={interval === undefined || interval <= 0}
           />
         </EuiFormRow>
       </EuiFlexItem>
@@ -99,6 +99,7 @@ const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: s
 
 const timezones = moment.tz.names().map((tz) => ({ label: tz, text: tz }));
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Schedule extends Component<ScheduleProps> {
   constructor(props: ScheduleProps) {
     super(props);
@@ -157,7 +158,7 @@ export default class Schedule extends Component<ScheduleProps> {
           </EuiFormRow>
           <EuiSpacer size="m" />
 
-          {continuousDefinition == "fixed" ? (
+          {continuousDefinition === "fixed" ? (
             selectInterval(interval, intervalTimeunit, intervalError, onChangeIntervalTime, onChangeIntervalTimeunit)
           ) : (
             <React.Fragment>

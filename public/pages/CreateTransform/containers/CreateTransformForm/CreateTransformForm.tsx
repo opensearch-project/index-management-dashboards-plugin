@@ -49,11 +49,11 @@ interface CreateTransformFormState {
   previewTransform: any[];
 
   description: string;
-  sourceIndex: { label: string; value?: IndexItem }[];
+  sourceIndex: Array<{ label: string; value?: IndexItem }>;
   sourceIndexError: string;
   sourceIndexFilter: string;
   sourceIndexFilterError: string;
-  targetIndex: { label: string; value?: IndexItem }[];
+  targetIndex: Array<{ label: string; value?: IndexItem }>;
   targetIndexError: string;
 
   mappings: any;
@@ -147,13 +147,15 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       const { rollupService } = this.props;
       const response = await rollupService.getMappings(srcIndex);
       if (response.ok) {
-        let allMappings: FieldItem[][] = [];
+        const allMappings: FieldItem[][] = [];
         const mappings = response.response;
-        //Push mappings array to allMappings 2D array first
-        for (let index in mappings) {
-          allMappings.push(parseFieldOptions("", mappings[index].mappings.properties));
+        // Push mappings array to allMappings 2D array first
+        for (const index in mappings) {
+          if (mappings.hasOwnProperty(index)) {
+            allMappings.push(parseFieldOptions("", mappings[index].mappings.properties));
+          }
         }
-        //Find intersect from all mappings
+        // Find intersect from all mappings
         const fields = allMappings.reduce((mappingA, mappingB) =>
           mappingA.filter((itemA) => mappingB.some((itemB) => compareFieldItem(itemA, itemB)))
         );
@@ -214,7 +216,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     let warned = this.state.beenWarned;
     let error = false;
     // Verification here
-    if (currentStep == 1) {
+    if (currentStep === 1) {
       const { transformId, sourceIndex, targetIndex, sourceIndexFilterError } = this.state;
       if (!transformId) {
         this.setState({ submitError: "Job name is required.", transformIdError: "Job name is required." });
@@ -222,7 +224,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       } else {
         // Check if transform job name is duplicated
         const response = await this.props.transformService.getTransform(transformId);
-        if (response.ok && response.response._id == transformId) {
+        if (response.ok && response.response._id === transformId) {
           this.setState({
             submitError: `There is already a job named "${transformId}". Please provide a different name.`,
             transformIdError: `There is already a job named "${transformId}". Please provide a different name.`,
@@ -230,11 +232,11 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           error = true;
         }
       }
-      if (sourceIndex.length == 0) {
+      if (sourceIndex.length === 0) {
         this.setState({ submitError: "Source index is required.", sourceIndexError: "Source index is required." });
         error = true;
       }
-      if (targetIndex.length == 0) {
+      if (targetIndex.length === 0) {
         this.setState({ submitError: "Target index is required.", targetIndexError: "Target index is required." });
         error = true;
       }
@@ -247,8 +249,8 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
         const searchDataOk = await this.searchData();
         error = !searchDataOk;
       }
-    } else if (currentStep == 2) {
-      //TODO: Add checking to see if grouping is defined
+    } else if (currentStep === 2) {
+      // TODO: Add checking to see if grouping is defined
     }
     if (error) return;
     currentStep = currentStep >= 3 ? 4 : currentStep + 1;
@@ -256,7 +258,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
 
     this.setState({
       submitError: "",
-      currentStep: currentStep,
+      currentStep,
       beenWarned: warned,
     });
   };
@@ -266,7 +268,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     // If the current step is 2 or 3, then subtract one on "previous" button click
     currentStep = currentStep <= 1 ? 1 : currentStep - 1;
     this.setState({
-      currentStep: currentStep,
+      currentStep,
     });
   }
 
@@ -279,9 +281,9 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
 
   onChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const description = e.target.value;
-    let newJSON = this.state.transformJSON;
+    const newJSON = this.state.transformJSON;
     newJSON.transform.description = description;
-    this.setState({ description: description, transformJSON: newJSON });
+    this.setState({ description, transformJSON: newJSON });
   };
 
   onChangeName = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -289,15 +291,15 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     this.setState({ transformId, transformIdError: transformId ? "" : "Name is required" });
   };
 
-  onChangeSourceIndex = async (options: EuiComboBoxOptionOption<IndexItem>[]): Promise<void> => {
-    let newJSON = this.state.transformJSON;
-    let sourceIndex = options.map(function (option) {
+  onChangeSourceIndex = async (options: Array<EuiComboBoxOptionOption<IndexItem>>): Promise<void> => {
+    const newJSON = this.state.transformJSON;
+    const sourceIndex = options.map(function (option) {
       return option.label;
     });
     const sourceIndexError = sourceIndex.length ? "" : "Source index is required";
     const srcIndexText = sourceIndex.length ? sourceIndex[0] : "";
     newJSON.transform.source_index = srcIndexText;
-    this.setState({ sourceIndex: options, transformJSON: newJSON, sourceIndexError: sourceIndexError });
+    this.setState({ sourceIndex: options, transformJSON: newJSON, sourceIndexError });
     this.setState({
       selectedGroupField: [],
       selectedAggregations: {},
@@ -306,11 +308,13 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     await this.getMappings(srcIndexText);
   };
 
-  //TODO: Change type from string to string[] or something else  when multiple data filter is supported
+  // TODO: Change type from string to string[] or something else  when multiple data filter is supported
   onChangeSourceIndexFilter = (newFilter: string): void => {
-    let newJSON = this.state.transformJSON;
-    if (newFilter == "") {
-      newJSON.transform.hasOwnProperty("data_selection_query") && delete newJSON.transform.data_selection_query;
+    const newJSON = this.state.transformJSON;
+    if (newFilter === "") {
+      if (newJSON.transform.hasOwnProperty("data_selection_query")) {
+        delete newJSON.transform.data_selection_query;
+      }
       this.setState({ sourceIndexFilterError: "" });
     } else {
       try {
@@ -323,17 +327,17 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     this.setState({ sourceIndexFilter: newFilter, transformJSON: newJSON });
   };
 
-  onChangeTargetIndex = (options: EuiComboBoxOptionOption<IndexItem>[]): void => {
-    //Try to get label text from option from the only array element in options, if exists
-    let newJSON = this.state.transformJSON;
-    let targetIndex = options.map(function (option) {
+  onChangeTargetIndex = (options: Array<EuiComboBoxOptionOption<IndexItem>>): void => {
+    // Try to get label text from option from the only array element in options, if exists
+    const newJSON = this.state.transformJSON;
+    const targetIndex = options.map(function (option) {
       return option.label;
     });
 
     const targetIndexError = targetIndex.length ? "" : "Target index is required";
 
     newJSON.transform.target_index = targetIndex[0];
-    this.setState({ targetIndex: options, transformJSON: newJSON, targetIndexError: targetIndexError });
+    this.setState({ targetIndex: options, transformJSON: newJSON, targetIndexError });
   };
 
   onGroupSelectionChange = async (selectedGroupField: TransformGroupItem[], aggItem: TransformAggItem): Promise<void> => {
@@ -354,7 +358,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     const previewSuccess = await this.previewTransform(this.state.transformJSON);
 
     // If preview successfully update aggregations, else remove from list of transformation
-    if (previewSuccess) this.setState({ selectedAggregations: selectedAggregations });
+    if (previewSuccess) this.setState({ selectedAggregations });
     else await this.onRemoveTransformation(aggItem.name);
   };
 
@@ -365,7 +369,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       return item.name === oldName;
     });
 
-    let newAggItem = aggList[toEditIndex];
+    const newAggItem = aggList[toEditIndex];
     const type = aggList[toEditIndex].type;
 
     // Modify the name of transform
@@ -396,20 +400,20 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
 
   onChangeJobEnabledByDefault = (): void => {
     const checked = this.state.jobEnabledByDefault;
-    let newJSON = this.state.transformJSON;
+    const newJSON = this.state.transformJSON;
     newJSON.transform.enabled = !checked;
     this.setState({ jobEnabledByDefault: !checked, transformJSON: newJSON });
   };
 
   onChangeContinuousJob = (optionId: string): void => {
-    let newJSON = this.state.transformJSON;
-    newJSON.transform.continuous = optionId == "yes";
+    const newJSON = this.state.transformJSON;
+    newJSON.transform.continuous = optionId === "yes";
     this.setState({ continuousJob: optionId, transformJSON: newJSON });
   };
 
   onChangeIntervalTime = (e: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ interval: e.target.valueAsNumber });
-    if (e.target.value == "") {
+    if (e.target.value === "") {
       const intervalErrorMsg = "Interval value is required.";
       this.setState({ submitError: intervalErrorMsg, intervalError: intervalErrorMsg });
     } else {
@@ -418,21 +422,21 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
   };
 
   onChangePage = (e: ChangeEvent<HTMLInputElement>): void => {
-    let newJSON = this.state.transformJSON;
+    const newJSON = this.state.transformJSON;
     newJSON.transform.page_size = e.target.valueAsNumber;
     this.setState({ pageSize: e.target.valueAsNumber, transformJSON: newJSON });
   };
 
   updateSchedule = (): void => {
     const { interval, intervalTimeunit } = this.state;
-    let newJSON = this.state.transformJSON;
+    const newJSON = this.state.transformJSON;
 
     newJSON.transform.schedule.interval = {
       start_time: moment().unix(),
       unit: `${intervalTimeunit}`,
       period: `${interval}`,
     };
-    delete newJSON.transform.schedule["cron"];
+    delete newJSON.transform.schedule.cron;
 
     this.setState({ transformJSON: newJSON });
   };
@@ -443,13 +447,13 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
 
   updateGroup = (): void => {
     const { transformJSON, aggList } = this.state;
-    let newJSON = transformJSON;
-    let tempGroupSelect: TransformGroupItem[] = [];
+    const newJSON = transformJSON;
+    const tempGroupSelect: TransformGroupItem[] = [];
     aggList.map((aggItem) => {
       if (
-        aggItem.type == TRANSFORM_AGG_TYPE.histogram ||
-        aggItem.type == TRANSFORM_AGG_TYPE.terms ||
-        aggItem.type == TRANSFORM_AGG_TYPE.date_histogram
+        aggItem.type === TRANSFORM_AGG_TYPE.histogram ||
+        aggItem.type === TRANSFORM_AGG_TYPE.terms ||
+        aggItem.type === TRANSFORM_AGG_TYPE.date_histogram
       )
         tempGroupSelect.push(aggItem.item);
     });
@@ -459,8 +463,8 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
 
   updateAggregation = (): void => {
     const { transformJSON, aggList } = this.state;
-    let newJSON = transformJSON;
-    let aggJSON: any = {};
+    const newJSON = transformJSON;
+    const aggJSON: any = {};
     aggList.map((aggItem) => {
       // Form the final aggregation object with items with correct types from aggList
       if (
@@ -573,7 +577,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
           onChangeSourceIndexFilter={this.onChangeSourceIndexFilter}
           onChangeTargetIndex={this.onChangeTargetIndex}
           currentStep={this.state.currentStep}
-          hasAggregation={selectedGroupField.length != 0 || Object.keys(selectedAggregations).length != 0 || aggList.length != 0}
+          hasAggregation={selectedGroupField.length !== 0 || Object.keys(selectedAggregations).length !== 0 || aggList.length !== 0}
           fields={fields}
           fieldSelectedOption={fieldSelectedOption}
           beenWarned={beenWarned}
@@ -638,7 +642,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
               Cancel
             </EuiButtonEmpty>
           </EuiFlexItem>
-          {currentStep != 1 && (
+          {currentStep !== 1 && (
             <EuiFlexItem grow={false}>
               <EuiButton onClick={this._prev} data-test-subj="createTransformPreviousButton">
                 Previous
@@ -646,7 +650,7 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
             </EuiFlexItem>
           )}
 
-          {currentStep == 4 ? (
+          {currentStep === 4 ? (
             <EuiFlexItem grow={false}>
               <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createTransformSubmitButton">
                 Create

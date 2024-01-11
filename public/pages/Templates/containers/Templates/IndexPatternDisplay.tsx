@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import React, { useState } from "react";
 import { Criteria, EuiBasicTable, EuiFlyout, EuiFlyoutBody, EuiFlyoutHeader, EuiLink, EuiText } from "@elastic/eui";
 

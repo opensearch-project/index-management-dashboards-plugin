@@ -30,6 +30,7 @@ interface ScheduleProps {
   onIntervalTimeUnitChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Schedule extends Component<ScheduleProps> {
   constructor(props: ScheduleProps) {
     super(props);
@@ -61,7 +62,7 @@ export default class Schedule extends Component<ScheduleProps> {
 
           {/* TODO: Replace with switch block when define by cron expressions is supported. */}
           {selectInterval(interval, intervalTimeUnit, intervalError, onIntervalChange, onIntervalTimeUnitChange)}
-          {/*{schedule == "fixed"*/}
+          {/* {schedule == "fixed"*/}
           {/*  ? selectInterval(interval, intervalTimeUnit, intervalError, onIntervalChange, onIntervalTimeUnitChange)*/}
           {/*  : selectCronExpression(cronExpression, onCronExpressionChange, cronTimeZone, onCronTimeZoneChange)}*/}
 

@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import { CoreStart } from "opensearch-dashboards/public";
+import { useState, useCallback, useContext, useEffect, useRef } from "react";
 import { CommonService, ServicesContext } from "../../../services";
 import { TemplateItemRemote } from "../../../../models/interfaces";
 import { getAllUsedComponents } from "./services";
-import { useState, useCallback, useContext, useEffect, useRef } from "react";
 import { BrowserServices } from "../../../models/interfaces";
 
 export const getTemplate = async (props: {
@@ -15,7 +15,7 @@ export const getTemplate = async (props: {
   coreService: CoreStart;
 }): Promise<TemplateItemRemote> => {
   const response = await props.commonService.apiCaller<{
-    index_templates: { name: string; index_template: TemplateItemRemote }[];
+    index_templates: Array<{ name: string; index_template: TemplateItemRemote }>;
   }>({
     endpoint: "transport.request",
     data: {
@@ -108,45 +108,53 @@ export const useComponentMapTemplate = () => {
   const services = useContext(ServicesContext) as BrowserServices;
   const destroyRef = useRef<boolean>(false);
 
-  const reload = useCallback((force?: boolean) => {
-    setLoading(true);
-    getComponentMapTemplateWithCache({
-      force,
-      commonService: services.commonService,
-    }).then((res) => {
-      if (force) {
-        window.dispatchEvent(new CustomEvent(CACHE_REFRESH_EVENT));
-      }
-      if (destroyRef.current) {
-        return;
-      }
-      setComponentMapTemplate(res);
-      setLoading(false);
-    });
-  }, []);
+  const reload = useCallback(
+    (force?: boolean) => {
+      setLoading(true);
+      getComponentMapTemplateWithCache({
+        force,
+        commonService: services.commonService,
+      }).then((res) => {
+        if (force) {
+          window.dispatchEvent(new CustomEvent(CACHE_REFRESH_EVENT));
+        }
+        if (destroyRef.current) {
+          return;
+        }
+        setComponentMapTemplate(res);
+        setLoading(false);
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const eventHandler = useCallback(() => {
     reload();
   }, [reload]);
 
-  useEffect(() => {
-    reload();
-    window.addEventListener(CACHE_REFRESH_EVENT, eventHandler);
-    listenerNumber++;
-    return () => {
-      window.removeEventListener(CACHE_REFRESH_EVENT, eventHandler);
-      listenerNumber--;
-      if (listenerNumber === 0) {
-        /**
-         * when all the listeners are gone
-         * we should clear the usedRequest
-         * so that the componentTemplates page
-         * will re-fetch the index templates data
-         */
-        cache.usedRequest = undefined;
-      }
-    };
-  }, [eventHandler]);
+  useEffect(
+    () => {
+      reload();
+      window.addEventListener(CACHE_REFRESH_EVENT, eventHandler);
+      listenerNumber++;
+      return () => {
+        window.removeEventListener(CACHE_REFRESH_EVENT, eventHandler);
+        listenerNumber--;
+        if (listenerNumber === 0) {
+          /**
+           * when all the listeners are gone
+           * we should clear the usedRequest
+           * so that the componentTemplates page
+           * will re-fetch the index templates data
+           */
+          cache.usedRequest = undefined;
+        }
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [eventHandler]
+  );
 
   useEffect(() => {
     return () => {

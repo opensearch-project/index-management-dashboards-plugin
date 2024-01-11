@@ -13,12 +13,12 @@ import { ErrorToastContentForJob } from "../components/ErrorToastContentForJob";
 
 type ReindexTaskResult = TaskResult<{
   canceled?: string;
-  failures: {
+  failures: Array<{
     cause?: {
       reason: string;
     };
     id?: string;
-  }[];
+  }>;
 }>;
 
 export const callbackForReindex: CallbackType = async (job: ReindexJobMetaData, { core }) => {

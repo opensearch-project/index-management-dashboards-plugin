@@ -3,11 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* eslint-disable no-shadow */
+
 import React, { Component } from "react";
 import { Switch, Route, Redirect, RouteComponentProps } from "react-router-dom";
 // @ts-ignore
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
+import queryString from "query-string";
 import Policies from "../Policies";
 import ManagedIndices from "../ManagedIndices";
 import Indices from "../Indices";
@@ -27,7 +30,6 @@ import EditRollup from "../EditRollup/containers";
 import RollupDetails from "../RollupDetails/containers/RollupDetails";
 import { EditTransform, Transforms } from "../Transforms";
 import TransformDetails from "../Transforms/containers/Transforms/TransformDetails";
-import queryString from "query-string";
 import CreateSnapshotPolicy from "../CreateSnapshotPolicy";
 import Repositories from "../Repositories";
 import SnapshotPolicies from "../SnapshotPolicies";
@@ -115,6 +117,7 @@ interface MainProps extends RouteComponentProps {
   landingPage: string;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Main extends Component<MainProps, object> {
   render() {
     const {
@@ -231,7 +234,7 @@ export default class Main extends Component<MainProps, object> {
                   <ModalProvider>
                     <ModalRoot services={services} />
                     <EuiPage restrictWidth="100%">
-                      {/*Hide side navigation bar when creating or editing rollup job*/}
+                      {/* Hide side navigation bar when creating or editing rollup job*/}
                       {!HIDDEN_NAV_ROUTES.includes(pathname) && !HIDDEN_NAV_STARTS_WITH_ROUTE.some((item) => pathname.startsWith(item)) ? (
                         <EuiPageSideBar style={{ minWidth: 200 }}>
                           <EuiSideNav style={{ width: 200 }} items={sideNav} />
@@ -314,7 +317,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.CREATE_POLICY}
                             render={(props: RouteComponentProps) =>
-                              queryString.parse(this.props.location.search).type == "visual" ? (
+                              queryString.parse(this.props.location.search).type === "visual" ? (
                                 <VisualCreatePolicy
                                   {...props}
                                   isEdit={false}
@@ -329,7 +332,7 @@ export default class Main extends Component<MainProps, object> {
                           <Route
                             path={ROUTES.EDIT_POLICY}
                             render={(props: RouteComponentProps) =>
-                              queryString.parse(this.props.location.search).type == "visual" ? (
+                              queryString.parse(this.props.location.search).type === "visual" ? (
                                 <VisualCreatePolicy
                                   {...props}
                                   isEdit={true}

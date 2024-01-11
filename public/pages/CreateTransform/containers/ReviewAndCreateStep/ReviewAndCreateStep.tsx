@@ -22,8 +22,8 @@ interface ReviewAndCreateStepProps extends RouteComponentProps {
   onChangeStep: (step: number) => void;
   transformId: string;
   description: string;
-  sourceIndex: { label: string; value?: IndexItem }[];
-  targetIndex: { label: string; value?: IndexItem }[];
+  sourceIndex: Array<{ label: string; value?: IndexItem }>;
+  targetIndex: Array<{ label: string; value?: IndexItem }>;
   sourceIndexFilter: string;
 
   jobEnabledByDefault: boolean;
@@ -57,7 +57,7 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
   };
 
   render() {
-    if (this.props.currentStep != 4) return null;
+    if (this.props.currentStep !== 4) return null;
 
     return (
       <div style={{ padding: "5px 50px" }}>

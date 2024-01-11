@@ -20,8 +20,10 @@ interface PolicySettingsProps {
   ismTemplates: ISMTemplate[] | ISMTemplate | null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PolicySettingsState {}
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class PolicySettings extends Component<PolicySettingsProps, PolicySettingsState> {
   render() {
     const { policyId, errorNotification, primaryTerm, lastUpdated, description, sequenceNumber } = this.props;

@@ -193,9 +193,9 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
           iconType="questionInCircle"
         >
           <p>
-            This ensures that any update to a policy doesn't harm indices that are running under an older version of the policy. To carry
-            over your edits to these indices, please use the "Change Policy" under "Managed Indices" to reapply the policy after submitting
-            your edits.{" "}
+            This ensures that any update to a policy doesn&apos;t harm indices that are running under an older version of the policy. To
+            carry over your edits to these indices, please use the &quot;Change Policy&quot; under &quot;Managed Indices&quot; to reapply
+            the policy after submitting your edits.{" "}
             <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
               Learn more
             </EuiLink>

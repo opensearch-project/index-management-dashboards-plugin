@@ -21,7 +21,8 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
   const [dateHistogramInterval, setDateHistogramInterval] = useState(1);
   const [dateHistogramTimeunit, setDateHistogramTimeunit] = useState("m");
 
-  let timeunitOptions, intervalDefinition;
+  let timeunitOptions;
+  let intervalDefinition;
   if (intervalType === IntervalType.FIXED) {
     intervalDefinition = (
       <EuiFieldNumber
@@ -87,7 +88,7 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
             onClick={() => {
               const targetFieldName = `${name} _${GROUP_TYPES.dateHistogram}_${dateHistogramInterval}_${dateHistogramTimeunit}_${intervalType}`;
 
-              //Switch between fixed interval and calendar interval by checking timeunit
+              // Switch between fixed interval and calendar interval by checking timeunit
               const dateHistogramGroupItem = getDateHistogramGroupItem(
                 name,
                 targetFieldName,

@@ -88,8 +88,8 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
   onClickAdd() {
     const { onDimensionSelectionChange, selectedDimensionField } = this.props;
     const { selectedFields, allSelectedFields, dimensionFrom, dimensionSize } = this.state;
-    //Clone selectedDimensionField
-    let updatedDimensions = Array.from(selectedDimensionField);
+    // Clone selectedDimensionField
+    const updatedDimensions = Array.from(selectedDimensionField);
     const toAddFields = Array.from(selectedFields);
 
     selectedDimensionField.map((dimension) => {
@@ -98,21 +98,21 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
         toAddFields.splice(index, 1);
       }
     });
-    //Update sequence number
+    // Update sequence number
     this.updateSequence(updatedDimensions);
-    //Parse selectedFields to an array of DimensionItem if any of the field does not exist
+    // Parse selectedFields to an array of DimensionItem if any of the field does not exist
     let i = updatedDimensions.length + 1;
     const toAdd: DimensionItem[] = toAddFields.map((field) => {
       return isNumericMapping(field.type)
         ? {
             sequence: i++,
-            field: field,
+            field,
             aggregationMethod: "histogram",
             interval: 5,
           }
         : {
             sequence: i++,
-            field: field,
+            field,
             aggregationMethod: "terms",
           };
     });
@@ -123,9 +123,9 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
     this.forceUpdate();
   }
 
-  //Check the dimension num
+  // Check the dimension num
   updateSequence(items: DimensionItem[]) {
-    if (items.length == 0) {
+    if (items.length === 0) {
       this.setState({ dimensionsShown: [] });
       return;
     }
@@ -143,8 +143,8 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
   moveUp(item: DimensionItem) {
     const { selectedDimensionField } = this.props;
     const toMoveindex = selectedDimensionField.indexOf(item);
-    if (toMoveindex == 0) return;
-    let toSwap = selectedDimensionField[toMoveindex - 1];
+    if (toMoveindex === 0) return;
+    const toSwap = selectedDimensionField[toMoveindex - 1];
     selectedDimensionField[toMoveindex] = toSwap;
     selectedDimensionField[toMoveindex - 1] = item;
     this.updateSequence(selectedDimensionField);
@@ -153,8 +153,8 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
   moveDown(item: DimensionItem) {
     const { selectedDimensionField } = this.props;
     const toMoveindex = selectedDimensionField.indexOf(item);
-    if (toMoveindex == selectedDimensionField.length - 1) return;
-    let toSwap = selectedDimensionField[toMoveindex + 1];
+    if (toMoveindex === selectedDimensionField.length - 1) return;
+    const toSwap = selectedDimensionField[toMoveindex + 1];
     selectedDimensionField[toMoveindex] = toSwap;
     selectedDimensionField[toMoveindex + 1] = item;
     this.updateSequence(selectedDimensionField);
@@ -164,7 +164,7 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
     const { selectedDimensionField } = this.props;
     const { selectedFields, allSelectedFields } = this.state;
 
-    //Remove the dimension item and then update sequence.
+    // Remove the dimension item and then update sequence.
     selectedDimensionField.splice(selectedDimensionField.indexOf(item), 1);
     selectedFields.splice(selectedFields.indexOf(item.field), 1);
     allSelectedFields.splice(allSelectedFields.indexOf(item.field), 1);
@@ -194,7 +194,7 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
       field: item.field,
       aggregationMethod: e.target.value,
     };
-    if (e.target.value == "histogram") {
+    if (e.target.value === "histogram") {
       newItem.interval = 5;
     }
     selectedDimensionField[index] = newItem;
@@ -247,7 +247,7 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
       initialSelected: allSelectedFields,
     };
 
-    const aggregationColumns: EuiTableFieldDataColumnType<DimensionItem>[] = [
+    const aggregationColumns: Array<EuiTableFieldDataColumnType<DimensionItem>> = [
       {
         field: "sequence",
         name: "Sequence",
@@ -317,14 +317,14 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
           return (
             <EuiFlexGroup justifyContent="spaceBetween">
               <EuiFlexItem grow={false}>
-                {item.sequence != 1 && (
+                {item.sequence !== 1 && (
                   <EuiLink color="primary" onClick={() => this.moveUp(item)} data-test-subj={`moveUp-${item.field.label}`}>
                     Move up
                   </EuiLink>
                 )}
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                {item.sequence != selectedDimensionField.length && (
+                {item.sequence !== selectedDimensionField.length && (
                   <EuiLink color="primary" onClick={() => this.moveDown(item)} data-test-subj={`moveDown-${item.field.label}`}>
                     Move down
                   </EuiLink>
@@ -379,7 +379,7 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
                   </EuiLink>
                 </EuiFormHelpText>
               </EuiFlexItem>
-              {selectedDimensionField.length != 0 && (
+              {selectedDimensionField.length !== 0 && (
                 <Fragment>
                   <EuiFlexItem>
                     <EuiCallOut>

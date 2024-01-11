@@ -24,6 +24,7 @@ import {
   EuiHealth,
   EuiToolTip,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
@@ -33,7 +34,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import DataStreamsActions from "../DataStreamsActions";
-import { CoreStart } from "opensearch-dashboards/public";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 interface DataStreamsProps extends RouteComponentProps {

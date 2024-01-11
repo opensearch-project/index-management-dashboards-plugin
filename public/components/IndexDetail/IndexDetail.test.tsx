@@ -6,8 +6,8 @@
 import React, { useRef, forwardRef, useState } from "react";
 import { render, waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
-import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
 import userEvent from "@testing-library/user-event";
+import IndexDetail, { IIndexDetailRef, IndexDetailProps } from "./IndexDetail";
 
 const IndexDetailOnChangeWrapper = forwardRef((props: Omit<IndexDetailProps, "onChange">, ref: any) => {
   const [value, setValue] = useState(props.value as any);

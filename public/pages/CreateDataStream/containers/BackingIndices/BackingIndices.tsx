@@ -32,25 +32,29 @@ export default function BackingIndices(props: SubDetailProps) {
   const values: DataStreamInEdit = field.getValues();
   const services = useContext(ServicesContext) as BrowserServices;
   const [indexes, setIndexes] = useState<ManagedCatIndex[]>([]);
-  useEffect(() => {
-    if (values.name) {
-      services.indexService
-        .getIndices({
-          from: 0,
-          size: 999,
-          search: values.name,
-          terms: values.name,
-          sortField: "index",
-          sortDirection: "desc",
-          showDataStreams: true,
-        })
-        .then((result) => {
-          if (result && result.ok) {
-            setIndexes(result.response.indices.filter((item) => item.data_stream === values.name));
-          }
-        });
-    }
-  }, [values.name]);
+  useEffect(
+    () => {
+      if (values.name) {
+        services.indexService
+          .getIndices({
+            from: 0,
+            size: 999,
+            search: values.name,
+            terms: values.name,
+            sortField: "index",
+            sortDirection: "desc",
+            showDataStreams: true,
+          })
+          .then((result) => {
+            if (result && result.ok) {
+              setIndexes(result.response.indices.filter((item) => item.data_stream === values.name));
+            }
+          });
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [values.name]
+  );
   const writingIndex = (values.indices || [])[(values.indices?.length || 0) - 1]?.index_name;
   return (
     <ContentPanel

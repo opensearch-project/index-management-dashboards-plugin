@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* eslint-disable max-classes-per-file */
+
 import React, { ChangeEvent } from "react";
 import { UIAction, NotificationAction } from "../../../../../models/interfaces";
 import { NotificationService, ServicesConsumer } from "../../../../services";

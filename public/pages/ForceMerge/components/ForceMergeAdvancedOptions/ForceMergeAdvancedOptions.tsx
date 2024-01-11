@@ -30,7 +30,7 @@ const ForceMergeAdvancedOptions = (props: ForceMergeOptionsProps) => {
             rules: [
               {
                 validator(rule, value) {
-                  const formatValue = new Number(value);
+                  const formatValue = Number(value);
                   if (Number.isNaN(formatValue.valueOf())) {
                     return Promise.resolve("");
                   } else if (formatValue.valueOf() % 1 !== 0 || formatValue.valueOf() < 1) {

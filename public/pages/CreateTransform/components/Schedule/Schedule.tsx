@@ -45,6 +45,7 @@ const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: s
   </React.Fragment>
 );
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Schedule extends Component<ScheduleProps> {
   constructor(props: ScheduleProps) {
     super(props);

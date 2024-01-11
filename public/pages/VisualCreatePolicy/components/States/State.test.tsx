@@ -6,12 +6,12 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { screen, render } from "@testing-library/react";
+import { fireEvent, waitFor } from "@testing-library/dom";
 import State from "./State";
 import { State as StateData } from "../../../../../models/interfaces";
 import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { browserServicesMock } from "../../../../../test/mocks";
-import { fireEvent, waitFor } from "@testing-library/dom";
 
 describe("<State /> spec", () => {
   it("renders the component", () => {

@@ -65,7 +65,7 @@ class ErrorNotification extends Component<ErrorNotificationProps, ErrorNotificat
   onChangeChannelId = (e: ChangeEvent<HTMLSelectElement>) => {
     const { onChange, value, onChangeChannelId } = this.props;
     const id = e.target.value;
-    onChangeChannelId && onChangeChannelId(id);
+    if (onChangeChannelId) onChangeChannelId(id);
     onChange({
       ...value,
       channel: {
@@ -77,7 +77,7 @@ class ErrorNotification extends Component<ErrorNotificationProps, ErrorNotificat
   onChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { onChange, value, onChangeMessage } = this.props;
     const message = e.target.value;
-    onChangeMessage && onChangeMessage(message);
+    if (onChangeMessage) onChangeMessage(message);
     onChange({
       ...value,
       message_template: {

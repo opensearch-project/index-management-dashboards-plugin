@@ -9,7 +9,6 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AddPrefixInput from "./AddPrefixInput";
 
-
 const testProps = { getPrefix: jest.fn() };
 
 beforeEach(() => {

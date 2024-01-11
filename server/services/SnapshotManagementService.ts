@@ -86,7 +86,7 @@ export default class SnapshotManagementService {
         body: {
           ok: true,
           response: {
-            snapshots: snapshots,
+            snapshots,
             totalSnapshots: snapshots.length,
           },
         },
@@ -111,7 +111,7 @@ export default class SnapshotManagementService {
       };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const res: GetSnapshotResponse = await callWithRequest("snapshot.get", {
-        repository: repository,
+        repository,
         snapshot: `${id}`,
         ignore_unavailable: true,
       });
@@ -142,7 +142,7 @@ export default class SnapshotManagementService {
       };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const resp: AcknowledgedResponse = await callWithRequest("snapshot.delete", {
-        repository: repository,
+        repository,
         snapshot: `${id}`,
       });
 
@@ -171,7 +171,7 @@ export default class SnapshotManagementService {
         repository: string;
       };
       const params = {
-        repository: repository,
+        repository,
         snapshot: id,
         body: JSON.stringify(request.body),
       };
@@ -203,7 +203,7 @@ export default class SnapshotManagementService {
         repository: string;
       };
       const params = {
-        repository: repository,
+        repository,
         snapshot: id,
         body: JSON.stringify(request.body),
       };
@@ -306,7 +306,7 @@ export default class SnapshotManagementService {
       };
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      let params = {
+      const params = {
         from,
         size,
         sortField: `sm_policy.${sortField}`,
@@ -350,12 +350,12 @@ export default class SnapshotManagementService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<DocumentSMPolicyWithMetadata | null>>> => {
     try {
       const { id } = request.params as { id: string };
-      const params = { id: id };
+      const params = { id };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const getResponse = await callWithRequest("ism.getSMPolicy", params);
       const metadata = await callWithRequest("ism.explainSnapshotPolicy", params);
       const documentPolicy = {
-        id: id,
+        id,
         seqNo: getResponse._seq_no,
         primaryTerm: getResponse._primary_term,
         policy: getResponse.sm_policy,
@@ -420,7 +420,7 @@ export default class SnapshotManagementService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
     try {
       const { id } = request.params as { id: string };
-      const params = { id: id };
+      const params = { id };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const resp: AcknowledgedResponse = await callWithRequest("ism.startSnapshotPolicy", params);
       if (resp.acknowledged) {
@@ -446,7 +446,7 @@ export default class SnapshotManagementService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<boolean>>> => {
     try {
       const { id } = request.params as { id: string };
-      const params = { id: id };
+      const params = { id };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const resp: AcknowledgedResponse = await callWithRequest("ism.stopSnapshotPolicy", params);
       if (resp.acknowledged) {

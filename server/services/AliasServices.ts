@@ -49,7 +49,7 @@ export default class AliasServices {
         body: {
           ok: true,
           response: {
-            aliases: aliases,
+            aliases,
             totalAliases: aliases.length,
           },
         },

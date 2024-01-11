@@ -5,9 +5,9 @@
 import React, { useEffect, useRef } from "react";
 import { EuiBottomBar } from "@elastic/eui";
 
-export type CustomFormRowProps = {
+export interface CustomFormRowProps {
   children?: React.ReactChild;
-};
+}
 
 export default function BottomBar(props: CustomFormRowProps) {
   const bottomBarRef = useRef(null);

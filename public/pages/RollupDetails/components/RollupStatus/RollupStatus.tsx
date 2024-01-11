@@ -49,8 +49,8 @@ const RollupStatus = ({ metadata }: RollupStatusProps) => (
             <dd>{metadata == null || metadata.rollup_metadata == null ? "-" : metadata.rollup_metadata.stats.index_time_in_millis}</dd>
           </EuiText>
         </EuiFlexItem>
-        <EuiFlexItem></EuiFlexItem>
-        <EuiFlexItem></EuiFlexItem>
+        <EuiFlexItem />
+        <EuiFlexItem />
         <EuiFlexItem>
           <EuiText size="xs">
             <dt>Document processed</dt>
@@ -63,8 +63,8 @@ const RollupStatus = ({ metadata }: RollupStatusProps) => (
             <dd>{metadata == null || metadata.rollup_metadata == null ? "-" : metadata.rollup_metadata.stats.search_time_in_millis}</dd>
           </EuiText>
         </EuiFlexItem>
-        <EuiFlexItem></EuiFlexItem>
-        <EuiFlexItem></EuiFlexItem>
+        <EuiFlexItem />
+        <EuiFlexItem />
         <EuiFlexItem>
           <EuiText size="xs">
             <dt>Page processed</dt>

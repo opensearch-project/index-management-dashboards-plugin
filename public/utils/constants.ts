@@ -203,13 +203,15 @@ export const INDEX_DYNAMIC_SETTINGS = [
   "index.hidden",
 ];
 
-export const INDEX_MAPPING_TYPES: {
+export const INDEX_MAPPING_TYPES: Array<{
   label: string;
   hasChildren?: boolean;
   options?: {
-    fields?: (InitOption & { name: string; label: string; type: ComponentMapEnum; initValue?: any; validateType: JSONSchema4TypeName })[];
+    fields?: Array<
+      InitOption & { name: string; label: string; type: ComponentMapEnum; initValue?: any; validateType: JSONSchema4TypeName }
+    >;
   };
-}[] = [
+}> = [
   {
     label: "alias",
     options: {

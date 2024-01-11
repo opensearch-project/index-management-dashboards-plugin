@@ -4,15 +4,15 @@
  */
 import { MappingsProperties, MappingsPropertiesObject } from "../../../models/interfaces";
 
-export type IndexMappingsAll = {
+export interface IndexMappingsAll {
   properties?: MappingsProperties;
   [key: string]: any;
-};
+}
 
-export type IndexMappingsObjectAll = {
+export interface IndexMappingsObjectAll {
   properties?: MappingsPropertiesObject;
   [key: string]: any;
-};
+}
 
 export interface IndexMappingProps {
   value?: IndexMappingsAll;

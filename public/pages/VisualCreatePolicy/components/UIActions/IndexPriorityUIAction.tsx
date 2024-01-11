@@ -43,6 +43,7 @@ export default class IndexPriorityUIAction implements UIAction<IndexPriorityActi
             fullWidth
             value={typeof priority === "undefined" ? "" : priority}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              // eslint-disable-next-line no-shadow
               const priority = e.target.valueAsNumber;
               const indexPriority = { priority };
               if (isNaN(priority)) delete indexPriority.priority;

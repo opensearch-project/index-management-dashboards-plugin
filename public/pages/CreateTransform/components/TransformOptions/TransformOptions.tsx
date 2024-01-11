@@ -42,8 +42,8 @@ export default function TransformOptions({
   onAggregationSelectionChange,
 }: TransformOptionsProps) {
   const isNumeric = isNumericMapping(type);
-  const isDate = type == "date";
-  const isText = type == "text";
+  const isDate = type === "date";
+  const isText = type === "text";
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [groupSelection] = useState<TransformGroupItem[]>(selectedGroupField);
@@ -53,6 +53,7 @@ export default function TransformOptions({
     setIsPopoverOpen(false);
   };
 
+  // eslint-disable-next-line no-shadow
   const handleGroupSelectionChange = (newAggItem: any, type: TRANSFORM_AGG_TYPE, name: string): void => {
     groupSelection.push(newAggItem);
     onGroupSelectionChange(groupSelection, {

@@ -18,7 +18,7 @@ const getMessagePrompt = ({ filterIsApplied, loading }: IndexEmptyPromptProps): 
   return TEXT.NO_INDICES;
 };
 
-const getActions: React.SFC<IndexEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters }) => {
+const getActions: React.FC<IndexEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters }) => {
   if (loading) {
     return null;
   }
@@ -40,7 +40,7 @@ interface IndexEmptyPromptProps {
   resetFilters: () => void;
 }
 
-const IndexEmptyPrompt: React.SFC<IndexEmptyPromptProps> = props => (
+const IndexEmptyPrompt: React.FC<IndexEmptyPromptProps> = (props) => (
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={

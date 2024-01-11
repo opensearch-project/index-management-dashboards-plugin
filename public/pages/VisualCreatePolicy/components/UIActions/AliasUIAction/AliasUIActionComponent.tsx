@@ -14,7 +14,7 @@ export interface AliasUIActionComponentProps {
   clone: (action: AliasAction) => AliasUIAction;
   errors: { [key in AliasActions]: string | undefined };
   onChangeAction: (uiAction: UIAction<AliasAction>) => void;
-  selectedItems: { [key in AliasActions]: EuiComboBoxOptionOption<AliasActionItem>[] };
+  selectedItems: { [key in AliasActions]: Array<EuiComboBoxOptionOption<AliasActionItem>> };
 }
 
 export interface AliasUIActionComponentState {
@@ -37,14 +37,14 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
     // TODO: Implement functionality to retrieve, and populate the combo boxes with any pre-existing aliases.
   }
 
-  onCreateOption = (value: string, options: EuiComboBoxOptionOption<AliasActionItem>[], aliasAction: AliasActions) => {
+  onCreateOption = (value: string, options: Array<EuiComboBoxOptionOption<AliasActionItem>>, aliasAction: AliasActions) => {
     const { action, clone, onChangeAction } = this.props;
     options.push({ label: value });
     const aliasActions = action.alias.actions.concat(this.parseToAliasActionItems(options, aliasAction));
     onChangeAction(clone({ ...action, alias: { actions: aliasActions } }));
   };
 
-  parseToAliasActionItems = (options: EuiComboBoxOptionOption<AliasActionItem>[], aliasActionType = AliasActions.ADD) => {
+  parseToAliasActionItems = (options: Array<EuiComboBoxOptionOption<AliasActionItem>>, aliasActionType = AliasActions.ADD) => {
     return options.map((option) => ({ [aliasActionType]: { alias: option.label } })) as AliasActionItem[];
   };
 

@@ -23,13 +23,13 @@ interface CreateRollupStep2Props extends RouteComponentProps {
   selectedDimensionField: DimensionItem[];
   selectedMetrics: MetricItem[];
   metricError: string;
-  timestamp: EuiComboBoxOptionOption<String>[];
+  timestamp: Array<EuiComboBoxOptionOption<string>>;
   timestampError: string;
   intervalValue: number;
   intervalType: string;
   timezone: string;
   timeunit: string;
-  onChangeTimestamp: (selectedOptions: EuiComboBoxOptionOption<String>[]) => void;
+  onChangeTimestamp: (selectedOptions: Array<EuiComboBoxOptionOption<string>>) => void;
   onChangeIntervalType: (optionId: string) => void;
   onChangeIntervalValue: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -76,7 +76,7 @@ export default class CreateRollupStep2 extends Component<CreateRollupStep2Props>
             <MetricsCalculation {...this.props} fieldsOption={fields} />
             <EuiSpacer />
             <EuiCallOut color="warning">
-              <p>You can't change aggregations or metrics after creating a job. Double-check your choices before proceeding.</p>
+              <p>You can&apos;t change aggregations or metrics after creating a job. Double-check your choices before proceeding.</p>
             </EuiCallOut>
           </EuiFlexItem>
         </EuiFlexGroup>

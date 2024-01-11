@@ -50,7 +50,7 @@ export function IndexSelect({ value, onChange }: { value?: string[]; onChange: (
         }
         const [aliasResult, dataStreamList] = await Promise.all([
           services.commonService
-            .apiCaller<{ index: string }[]>({
+            .apiCaller<Array<{ index: string }>>({
               endpoint: "cat.indices",
               data: payload,
             })
@@ -107,11 +107,15 @@ export default function CreateAlias(props: ICreateAliasProps) {
   const coreServices = useContext(CoreServicesContext);
   const isEdit = !!props.alias;
 
-  useEffect(() => {
-    if (props.visible) {
-      formGenerateRef.current?.setValues(props.alias);
-    }
-  }, [props.visible]);
+  useEffect(
+    () => {
+      if (props.visible) {
+        formGenerateRef.current?.setValues(props.alias);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.visible]
+  );
 
   if (!props.visible) {
     return null;

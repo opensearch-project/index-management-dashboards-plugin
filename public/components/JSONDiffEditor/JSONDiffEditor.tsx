@@ -24,12 +24,12 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         return;
       }
       try {
-        const value = editorRef.current?.getModifiedEditor().getValue();
-        if (!value) {
+        const v = editorRef.current?.getModifiedEditor().getValue();
+        if (!v) {
           throw new Error("Value cannot be empty");
         }
-        JSON.parse(value);
-        onChange && onChange(value);
+        JSON.parse(v);
+        if (onChange) onChange(v);
       } catch (e) {
         setConfirmModalVisible(true);
       }
@@ -50,6 +50,7 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setEditorValue, isReady, inputRef.current]
   );
   const valueRef = useRef(editorValue);
@@ -64,7 +65,9 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
     editorRef.current?.getDomNode().addEventListener("click", onClickContainer.current);
     editorRef.current?.getModifiedEditor().getDomNode()?.setAttribute("data-test-subj", "codeEditorContainer");
     return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       document.body.removeEventListener("click", onClickOutsideHandler.current);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       editorRef.current?.getDomNode().removeEventListener("click", onClickContainer.current);
     };
   }, [isReady]);
@@ -92,8 +95,8 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         onChange={(e) => {
           try {
             JSON.parse(e.target.value);
-            onChange && onChange(e.target.value);
-          } catch (e) {
+            if (onChange) onChange(e.target.value);
+          } catch (err) {
             // do nothing
           }
         }}

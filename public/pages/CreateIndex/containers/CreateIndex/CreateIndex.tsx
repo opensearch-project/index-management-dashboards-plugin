@@ -19,11 +19,11 @@ interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: 
 export default class CreateIndex extends Component<CreateIndexProps> {
   static contextType = CoreServicesContext;
 
-  get index() {
+  public get index() {
     return this.props.match.params.index;
   }
 
-  get isEdit() {
+  public get isEdit() {
     return this.props.match.params.index !== undefined;
   }
 

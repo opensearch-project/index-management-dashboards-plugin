@@ -36,10 +36,15 @@ window.URL = {
 // https://github.com/elastic/eui/issues/2530
 jest.mock("@elastic/eui/lib/eui_components/icon", () => ({
   EuiIcon: () => "EuiIconMock",
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   __esModule: true,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   IconPropType: require("@elastic/eui/lib/eui_components/icon/icon").IconPropType,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   ICON_TYPES: require("@elastic/eui/lib/eui_components/icon/icon").TYPES,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   ICON_SIZES: require("@elastic/eui/lib/eui_components/icon/icon").SIZES,
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   ICON_COLORS: require("@elastic/eui/lib/eui_components/icon/icon").COLORS,
 }));
 

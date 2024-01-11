@@ -9,11 +9,10 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import SnapshotRestoreOption from "./SnapshotRestoreOption";
 
-
 const testProps = {
   onRestoreAllIndicesToggle: jest.fn(),
   onRestoreSpecificIndicesToggle: jest.fn(),
-  width: "200"
+  width: "200",
 };
 
 afterEach(() => {
@@ -22,13 +21,7 @@ afterEach(() => {
 
 describe("SnapshotRestoreOption component", () => {
   it("renders without error", () => {
-    const { container } = render(
-      <SnapshotRestoreOption
-        {...testProps}
-        restoreAllIndices={true}
-        restoreSpecificIndices={false}
-      />
-    );
+    const { container } = render(<SnapshotRestoreOption {...testProps} restoreAllIndices={true} restoreSpecificIndices={false} />);
 
     expect(screen.getByText("Restore all indices in snapshot")).toBeInTheDocument();
     expect(screen.getByText("Restore specific indices")).toBeInTheDocument();
@@ -37,13 +30,7 @@ describe("SnapshotRestoreOption component", () => {
   });
 
   it("accepts user input", () => {
-    render(
-      <SnapshotRestoreOption
-        {...testProps}
-        restoreAllIndices={true}
-        restoreSpecificIndices={false}
-      />
-    );
+    render(<SnapshotRestoreOption {...testProps} restoreAllIndices={true} restoreSpecificIndices={false} />);
 
     userEvent.click(screen.getByLabelText("Restore specific indices"));
 
@@ -51,13 +38,7 @@ describe("SnapshotRestoreOption component", () => {
 
     cleanup();
 
-    render(
-      <SnapshotRestoreOption
-        {...testProps}
-        restoreAllIndices={false}
-        restoreSpecificIndices={true}
-      />
-    );
+    render(<SnapshotRestoreOption {...testProps} restoreAllIndices={false} restoreSpecificIndices={true} />);
 
     userEvent.click(screen.getByLabelText("Restore all indices in snapshot"));
 

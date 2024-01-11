@@ -10,16 +10,16 @@ import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 
-interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {}
+type CreateIndexTemplateProps = RouteComponentProps<{ template?: string; mode?: string }>;
 
 export default class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   static contextType = CoreServicesContext;
 
-  get template() {
+  public get template() {
     return this.props.match.params.template;
   }
 
-  get readonly() {
+  public get readonly() {
     return this.props.match.params.mode === "readonly";
   }
 

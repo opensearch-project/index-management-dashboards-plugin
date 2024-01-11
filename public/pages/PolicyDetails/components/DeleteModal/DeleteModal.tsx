@@ -37,11 +37,11 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
           confirmButtonText="Delete policy"
           buttonColor="danger"
           defaultFocusedButton="confirm"
-          confirmButtonDisabled={confirmDeleteText != "delete"}
+          confirmButtonDisabled={confirmDeleteText !== "delete"}
         >
           <EuiForm>
             <Fragment>
-              Delete "<strong>{policyId}</strong>" permanently? Indices will no longer be managed using this policy.
+              Delete &quot;<strong>{policyId}</strong>&quot; permanently? Indices will no longer be managed using this policy.
             </Fragment>
             <EuiSpacer size="s" />
             <EuiFormRow helpText={`To confirm deletion, type "delete".`}>

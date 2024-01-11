@@ -8,7 +8,7 @@ import { EuiButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { ModalConsumer } from "../Modal";
 
 interface ContentPanelActionsProps {
-  actions: {
+  actions: Array<{
     text: string;
     buttonProps?: object;
     flexItemProps?: object;
@@ -16,10 +16,10 @@ interface ContentPanelActionsProps {
     modal?: {
       onClickModal: (onShow: (component: any, props: object) => void) => () => void;
     };
-  }[];
+  }>;
 }
 
-const ContentPanelActions: React.SFC<ContentPanelActionsProps> = ({ actions }) => (
+const ContentPanelActions: React.FC<ContentPanelActionsProps> = ({ actions }) => (
   <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
     {actions.map(({ text, buttonProps = {}, flexItemProps = {}, modal = null, children }, index) => {
       let button = children ? (

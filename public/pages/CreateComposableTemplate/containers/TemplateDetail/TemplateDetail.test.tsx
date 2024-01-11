@@ -5,13 +5,13 @@
 
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
+import { HashRouter, Route } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import TemplateDetail, { TemplateDetailProps } from "./TemplateDetail";
 import { ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { HashRouter, Route } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
-import userEvent from "@testing-library/user-event";
 
 function renderCreateComposableTemplate(props: Omit<TemplateDetailProps, "history">) {
   return {

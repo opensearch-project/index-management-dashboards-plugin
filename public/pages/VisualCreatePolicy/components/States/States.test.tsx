@@ -6,9 +6,9 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
+import { waitFor, screen, fireEvent } from "@testing-library/dom";
 import States from "./States";
 import { DEFAULT_POLICY } from "../../utils/constants";
-import { waitFor, screen, fireEvent } from "@testing-library/dom";
 
 describe("<States /> spec", () => {
   it("renders the component", () => {

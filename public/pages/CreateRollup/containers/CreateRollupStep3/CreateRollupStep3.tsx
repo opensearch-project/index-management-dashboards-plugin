@@ -117,7 +117,7 @@ export default class CreateRollupStep3 extends Component<CreateRollupProps, Crea
   };
 
   render() {
-    if (this.props.currentStep != 3) return null;
+    if (this.props.currentStep !== 3) return null;
     const {
       jobEnabledByDefault,
       continuousJob,

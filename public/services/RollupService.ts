@@ -17,7 +17,7 @@ export default class RollupService {
   }
 
   getRollups = async (queryObject: object): Promise<ServerResponse<GetRollupsResponse>> => {
-    let url = `..${NODE_API.ROLLUPS}`;
+    const url = `..${NODE_API.ROLLUPS}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetRollupsResponse>;
     return response;
   };
@@ -28,7 +28,7 @@ export default class RollupService {
     seqNo?: number,
     primaryTerm?: number
   ): Promise<ServerResponse<PutRollupResponse>> => {
-    let url = `..${NODE_API.ROLLUPS}/${rollupId}`;
+    const url = `..${NODE_API.ROLLUPS}/${rollupId}`;
     const response = (await this.httpClient.put(url, { query: { seqNo, primaryTerm }, body: JSON.stringify(rollup) })) as ServerResponse<
       PutRollupResponse
     >;
@@ -59,10 +59,10 @@ export default class RollupService {
     return response;
   };
 
-  //Function to search for fields from a source index using GET /${source_index}/_mapping
+  // Function to search for fields from a source index using GET /${source_index}/_mapping
   getMappings = async (index: string): Promise<ServerResponse<any>> => {
     const url = `..${NODE_API._MAPPINGS}`;
-    const body = { index: index };
+    const body = { index };
     const response = (await this.httpClient.post(url, { body: JSON.stringify(body) })) as ServerResponse<GetFieldsResponse>;
     return response;
   };

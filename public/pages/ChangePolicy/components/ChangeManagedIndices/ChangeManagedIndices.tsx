@@ -12,16 +12,16 @@ import { CoreServicesContext } from "../../../../components/core_services";
 
 interface ChangeManagedIndicesProps {
   managedIndexService: ManagedIndexService;
-  selectedManagedIndices: { label: string; value?: ManagedIndexItem }[];
-  selectedStateFilters: { label: string }[];
-  onChangeManagedIndices: (selectedManagedIndices: { label: string; value?: ManagedIndexItem }[]) => void;
-  onChangeStateFilters: (stateFilter: { label: string }[]) => void;
+  selectedManagedIndices: Array<{ label: string; value?: ManagedIndexItem }>;
+  selectedStateFilters: Array<{ label: string }>;
+  onChangeManagedIndices: (selectedManagedIndices: Array<{ label: string; value?: ManagedIndexItem }>) => void;
+  onChangeStateFilters: (stateFilter: Array<{ label: string }>) => void;
   managedIndicesError: string;
 }
 
 interface ChangeManagedIndicesState {
   managedIndicesIsLoading: boolean;
-  managedIndices: { label: string; value?: ManagedIndexItem }[];
+  managedIndices: Array<{ label: string; value?: ManagedIndexItem }>;
   stateFilterSearchValue: string;
 }
 

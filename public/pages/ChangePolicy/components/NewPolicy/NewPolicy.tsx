@@ -27,7 +27,7 @@ interface NewPolicyProps {
 }
 
 interface NewPolicyState {
-  stateOptions: { value: string; text: string }[];
+  stateOptions: Array<{ value: string; text: string }>;
   policiesIsLoading: boolean;
   policies: PolicyOption[];
 }

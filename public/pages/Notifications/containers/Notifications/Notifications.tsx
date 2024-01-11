@@ -44,6 +44,7 @@ import {
 import { checkPermissionForSubmitLRONConfig } from "../../../../containers/NotificationConfig";
 import "./index.scss";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface NotificationsProps {}
 
 const Notifications = (props: NotificationsProps) => {
@@ -57,7 +58,7 @@ const Notifications = (props: NotificationsProps) => {
     values: {} as Partial<FieldState>,
     onBeforeChange(name) {
       const previousValue = field.getValues();
-      if (Array.isArray(name) && name.length === 3 && parseInt(name[1]) > 0) {
+      if (Array.isArray(name) && name.length === 3 && parseInt(name[1], 10) > 0) {
         const [dataSourceStr, index] = name;
         const newProperty = [dataSourceStr, index, FieldEnum.channels];
         if (
@@ -66,7 +67,7 @@ const Notifications = (props: NotificationsProps) => {
           !get(previousValue, [dataSourceStr, index, FieldEnum.failure]) &&
           (!get(previousValue, newProperty) || !get(previousValue, newProperty).length)
         ) {
-          field.setValue(newProperty, field.getValue([dataSourceStr, `${(parseInt(index) as number) - 1}`, FieldEnum.channels]));
+          field.setValue(newProperty, field.getValue([dataSourceStr, `${(parseInt(index, 10) as number) - 1}`, FieldEnum.channels]));
         }
       }
     },
@@ -151,16 +152,20 @@ const Notifications = (props: NotificationsProps) => {
   const onCancel = () => {
     field.resetValues(field.getOriginalValues());
   };
-  useEffect(() => {
-    coreServices.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.NOTIFICATION_SETTINGS]);
-    reloadNotifications();
-    checkPermissionForSubmitLRONConfig({
-      services,
-    }).then((result) => setPermissionForUpdate(result));
-    return () => {
-      destroyRef.current = true;
-    };
-  }, []);
+  useEffect(
+    () => {
+      coreServices.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.NOTIFICATION_SETTINGS]);
+      reloadNotifications();
+      checkPermissionForSubmitLRONConfig({
+        services,
+      }).then((result) => setPermissionForUpdate(result));
+      return () => {
+        destroyRef.current = true;
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const values = field.getValues();
   const allErrors = Object.entries(field.getErrors());
 
@@ -237,11 +242,11 @@ const Notifications = (props: NotificationsProps) => {
               name: ["dataSource", `${record.index}`, FieldEnum.channels],
               rules: [
                 {
-                  validator(rule, value) {
-                    const values = field.getValues();
-                    const item = values.dataSource?.[record.index];
+                  validator(rule, v) {
+                    const newValues = field.getValues();
+                    const item = newValues.dataSource?.[record.index];
                     if (item?.[FieldEnum.failure] || item?.[FieldEnum.success]) {
-                      if (!value || !value.length) {
+                      if (!v || !v.length) {
                         return Promise.reject(VALIDATE_ERROR_FOR_CHANNELS);
                       }
                     }

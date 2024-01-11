@@ -5,13 +5,13 @@
 
 import { EuiFormRow, EuiFieldText, EuiSpacer, EuiText, EuiLink } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
-import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants"
-import { BAD_RENAME_PATTERN_TEXT, BAD_RENAME_REPLACEMENT_TEXT, RENAME_HELP_TEXT, PATTERN_HELP_TEXT } from "../../constants"
+import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants";
+import { BAD_RENAME_PATTERN_TEXT, BAD_RENAME_REPLACEMENT_TEXT, RENAME_HELP_TEXT, PATTERN_HELP_TEXT } from "../../constants";
 interface RenameInputProps {
   getRenamePattern: (prefix: string) => void;
   getRenameReplacement: (prefix: string) => void;
   showPatternError: boolean;
-  showRenameError: boolean
+  showRenameError: boolean;
 }
 
 const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError, showRenameError }: RenameInputProps) => {
@@ -66,7 +66,12 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError,
       <EuiSpacer size="m" />
 
       <EuiFormRow error={BAD_RENAME_REPLACEMENT_TEXT} isInvalid={showRenameError} label={renameLabel} id="rename_replacement">
-        <EuiFieldText value={renameReplacement} onChange={onReplacementChange} isInvalid={showRenameError} data-test-subj="renameReplacementInput" />
+        <EuiFieldText
+          value={renameReplacement}
+          onChange={onReplacementChange}
+          isInvalid={showRenameError}
+          data-test-subj="renameReplacementInput"
+        />
       </EuiFormRow>
     </>
   );

@@ -5,12 +5,12 @@
 
 import React, { Component } from "react";
 import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText, EuiAccordion } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
 import { TransformGroupItem, FieldItem, TransformAggItem, TRANSFORM_AGG_TYPE } from "../../../../../models/interfaces";
 import DefineTransforms from "../DefineTransforms";
 import { TransformService } from "../../../../services";
-import { CoreStart } from "opensearch-dashboards/public";
 
 interface ReviewDefinitionProps {
   transformService: TransformService;
@@ -56,14 +56,14 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
       let title = "";
       let field = "";
       if (
-        item.type == TRANSFORM_AGG_TYPE.histogram ||
-        item.type == TRANSFORM_AGG_TYPE.terms ||
-        item.type == TRANSFORM_AGG_TYPE.date_histogram
+        item.type === TRANSFORM_AGG_TYPE.histogram ||
+        item.type === TRANSFORM_AGG_TYPE.terms ||
+        item.type === TRANSFORM_AGG_TYPE.date_histogram
       ) {
         // is a group
         title = "Group by " + item.type;
         field = item.item[item.type].source_field;
-      } else if (item.type == TRANSFORM_AGG_TYPE.scripted_metric) {
+      } else if (item.type === TRANSFORM_AGG_TYPE.scripted_metric) {
         title = item.type + "()";
         field = item.name;
       } else {

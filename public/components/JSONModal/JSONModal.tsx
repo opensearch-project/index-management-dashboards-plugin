@@ -21,7 +21,7 @@ interface JSONModalProps {
   onClose: () => void;
 }
 
-const JSONModal: React.SFC<JSONModalProps> = ({ title, json, onClose }) => {
+const JSONModal: React.FC<JSONModalProps> = ({ title, json, onClose }) => {
   return (
     <EuiOverlayMask>
       <EuiModal onClose={onClose}>

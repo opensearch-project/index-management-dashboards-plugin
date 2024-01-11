@@ -7,11 +7,11 @@ import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import DataStreamsActions, { DataStreamsActionsProps } from "./index";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { Route, HashRouter as Router, Switch, Redirect } from "react-router-dom";
 import { ROUTES } from "../../../../utils/constants";
 import { buildMockApiCallerForFlush, selectedDataStreams } from "../../../../containers/FlushIndexModal/FlushIndexModalTestHelper";
 const historyPushMock = jest.fn();
@@ -688,6 +688,7 @@ describe("<DataStreamsActions /> spec", () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         if (payload.endpoint === "cluster.state") {
+          // eslint-disable-next-line no-throw-literal
           throw "failed to call cluster.state";
         } else if (payload.endpoint === "indices.refresh") {
           return {
@@ -736,6 +737,7 @@ describe("<DataStreamsActions /> spec", () => {
     browserServicesMock.commonService.apiCaller = jest.fn(
       async (payload): Promise<any> => {
         if (payload.endpoint === "cluster.state") {
+          // eslint-disable-next-line no-throw-literal
           throw "failed to call cluster.state";
         } else if (payload.endpoint === "indices.refresh") {
           return {

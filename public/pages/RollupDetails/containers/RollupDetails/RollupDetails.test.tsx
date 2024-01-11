@@ -6,7 +6,7 @@
 import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter as Router } from "react-router";
+import { MemoryRouter as Router } from "react-router-dom";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -185,7 +185,7 @@ describe("<RollupDetails /> spec", () => {
   }, 10000);
 
   it("can show a started rollup job", async () => {
-    let startedJob = testRollup;
+    const startedJob = testRollup;
     startedJob.metadata.test1.rollup_metadata.status = "started";
 
     browserServicesMock.rollupService.getRollup = jest.fn().mockResolvedValue({
@@ -201,7 +201,7 @@ describe("<RollupDetails /> spec", () => {
   });
 
   it("can show a stopped rollup job", async () => {
-    let stoppedJob = testRollup;
+    const stoppedJob = testRollup;
     stoppedJob.metadata.test1.rollup_metadata.status = "stopped";
 
     browserServicesMock.rollupService.getRollup = jest.fn().mockResolvedValue({

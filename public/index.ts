@@ -13,6 +13,7 @@ export { Action, UIAction } from "../models/interfaces";
 export interface IndexManagementPluginSetup {
   registerAction: (actionType: string, uiActionCtor: new (action: Action) => UIAction<any>, defaultAction: Action) => void;
 }
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IndexManagementPluginStart {}
 
 export function plugin(initializerContext: PluginInitializerContext) {

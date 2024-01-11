@@ -6,7 +6,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
-import { MemoryRouter as Router } from "react-router";
+import { MemoryRouter as Router } from "react-router-dom";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 import { browserServicesMock, coreServicesMock, apiCallerMock } from "../../../../../test/mocks";
 import Rollover, { RolloverProps } from "./Rollover";

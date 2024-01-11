@@ -14,17 +14,17 @@ import {
   EuiSelectOption,
   EuiSpacer,
 } from "@elastic/eui";
-import { CreateRepositorySettings } from "../../../../../server/models/interfaces";
 import React from "react";
+import { CreateRepositorySettings } from "../../../../../server/models/interfaces";
 import { IndexItem } from "../../../../../models/interfaces";
 import CustomLabel from "../../../../components/CustomLabel";
 import { SnapshotManagementService } from "../../../../services";
 import CreateRepositoryFlyout from "../../../Repositories/components/CreateRepositoryFlyout/CreateRepositoryFlyout";
 
 interface SnapshotIndicesProps {
-  indexOptions: EuiComboBoxOptionOption<IndexItem>[];
-  selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
-  onIndicesSelectionChange: (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => void;
+  indexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
+  selectedIndexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
+  onIndicesSelectionChange: (selectedOptions: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   getIndexOptions: (searchValue: string) => void;
   onCreateOption: (searchValue: string, options: Array<EuiComboBoxOptionOption<IndexItem>>) => void;
   repoOptions: EuiSelectOption[];

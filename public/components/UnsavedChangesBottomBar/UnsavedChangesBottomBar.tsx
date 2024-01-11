@@ -8,7 +8,7 @@ import classNames from "classnames";
 import BottomBar from "../BottomBar";
 import "./index.scss";
 
-export type CustomFormRowProps = {
+export interface CustomFormRowProps {
   unsavedCount: number;
   formErrorsCount?: number;
   onClickCancel?: () => void;
@@ -22,7 +22,7 @@ export type CustomFormRowProps = {
   }) => React.ReactChild;
   confirmButtonProps?: EuiButtonProps;
   cancelButtonprops?: EuiButtonEmptyProps;
-};
+}
 
 export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
   const { unsavedCount, onClickCancel, onClickSubmit, submitButtonDataTestSubj, formErrorsCount } = props;
@@ -32,9 +32,11 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
     setLoading(true);
     try {
       await onClickSubmit();
+      // eslint-disable-next-line no-empty
     } catch (e) {
     } finally {
       if (destroyRef.current) {
+        // eslint-disable-next-line no-unsafe-finally
         return;
       }
       setLoading(false);
@@ -53,6 +55,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
         <EuiButtonEmpty onClick={onClickCancel} color="ghost" iconType="cross" children="Cancel" {...props.cancelButtonprops} />
       </EuiFlexItem>
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onClickCancel]
   );
 
@@ -73,6 +76,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
         />
       </EuiFlexItem>
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onClick, submitButtonDataTestSubj, loading]
   );
 

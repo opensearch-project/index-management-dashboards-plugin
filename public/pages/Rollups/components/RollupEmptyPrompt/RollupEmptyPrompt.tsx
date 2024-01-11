@@ -20,7 +20,7 @@ const getMessagePrompt = ({ filterIsApplied, loading }: RollupEmptyPromptProps) 
   return TEXT.NO_ROLLUPS;
 };
 
-const getActions: React.SFC<RollupEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters }) => {
+const getActions: React.FC<RollupEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters }) => {
   if (loading) {
     return null;
   }
@@ -45,7 +45,7 @@ interface RollupEmptyPromptProps {
   resetFilters: () => void;
 }
 
-const RollupEmptyPrompt: React.SFC<RollupEmptyPromptProps> = (props) => (
+const RollupEmptyPrompt: React.FC<RollupEmptyPromptProps> = (props) => (
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={

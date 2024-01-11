@@ -5,17 +5,17 @@
 
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
+import { isEqual } from "lodash";
 import DataStreamDetail from "../DataStreamDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { isEqual } from "lodash";
 
-interface CreateDataStreamProps extends RouteComponentProps<{ dataStream?: string }> {}
+type CreateDataStreamProps = RouteComponentProps<{ dataStream?: string }>;
 
 export default class CreateDataStream extends Component<CreateDataStreamProps> {
   static contextType = CoreServicesContext;
 
-  get dataStream() {
+  public get dataStream() {
     return this.props.match.params.dataStream;
   }
 

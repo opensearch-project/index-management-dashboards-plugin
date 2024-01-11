@@ -13,6 +13,7 @@ interface IndicesProps {
   sourceIndexFilter: string;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class Indices extends Component<IndicesProps> {
   constructor(props: IndicesProps) {
     super(props);

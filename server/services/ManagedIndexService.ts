@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* eslint-disable prefer-const */
+
 import _ from "lodash";
 import { RequestParams } from "@elastic/elasticsearch";
 import {
@@ -90,8 +92,8 @@ export default class ManagedIndexService {
         sortField: sortField ? managedIndexSorts[sortField] : null,
         sortOrder: sortDirection,
         queryString: getSearchString(terms, indices, dataStreams, showDataStreams),
-        from: from,
-        size: size
+        from,
+        size,
       };
 
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
@@ -101,13 +103,16 @@ export default class ManagedIndexService {
       ]);
       const managedIndices: ManagedIndexItem[] = [];
       for (const indexName in explainAllResponse) {
-        if (indexName == "total_managed_indices") continue;
+        if (indexName === "total_managed_indices") continue;
         const metadata = explainAllResponse[indexName] as ExplainAPIManagedIndexMetaData;
 
         // If showDataStreams is not true, then skip the managed index if it belongs to a data stream.
         const parentDataStream = indexToDataStreamMapping[metadata.index] || null;
         if (!showDataStreams && parentDataStream !== null) continue;
-        let policy, seqNo, primaryTerm, getResponse;
+        let policy;
+        let seqNo;
+        let primaryTerm;
+        let getResponse;
         try {
           getResponse = await callWithRequest("ism.getPolicy", { policyId: metadata.policy_id });
         } catch (err) {
@@ -127,18 +132,18 @@ export default class ManagedIndexService {
           policyId: metadata.policy_id,
           policySeqNo: seqNo,
           policyPrimaryTerm: primaryTerm,
-          policy: policy,
+          policy,
           enabled: metadata.enabled,
           managedIndexMetaData: transformManagedIndexMetaData(metadata),
         });
       }
 
-      let totalManagedIndices = explainAllResponse.total_managed_indices;
+      const totalManagedIndices = explainAllResponse.total_managed_indices;
       return response.custom({
         statusCode: 200,
         body: {
           ok: true,
-          response: { managedIndices: managedIndices, totalManagedIndices: totalManagedIndices},
+          response: { managedIndices, totalManagedIndices },
         },
       });
     } catch (err) {
@@ -213,7 +218,7 @@ export default class ManagedIndexService {
         indices: string[];
         policyId: string;
         state: string | null;
-        include: { state: string }[];
+        include: Array<{ state: string }>;
       };
       const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const params = { index: indices.join(","), body: { policy_id: policyId, include, state } };

@@ -4,8 +4,8 @@
  */
 
 import { EuiCheckbox, EuiSpacer } from "@elastic/eui";
-import CustomLabel from "../../../../components/CustomLabel";
 import React, { ChangeEvent } from "react";
+import CustomLabel from "../../../../components/CustomLabel";
 
 interface SnapshotAdvancedSettingsProps {
   includeGlobalState: boolean;
@@ -26,7 +26,7 @@ const SnapshotAdvancedSettings = ({
   onPartialToggle,
   width,
 }: SnapshotAdvancedSettingsProps) => (
-  <div style={{ padding: "10px 10px", width: width }}>
+  <div style={{ padding: "10px 10px", width }}>
     <EuiCheckbox
       id="include_global_state"
       label={<CustomLabel title="Include cluster state in snapshots" />}

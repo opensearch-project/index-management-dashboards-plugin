@@ -5,6 +5,7 @@
 
 import React, { useRef, forwardRef, useMemo, useImperativeHandle, useContext, useEffect, useState } from "react";
 import { EuiBadge, EuiButton, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import ChannelSelect, { useChannels } from "../ChannelSelect";
 import { AllBuiltInComponents } from "../../components/FormGenerator";
 import {
@@ -23,7 +24,6 @@ import useField, { FieldInstance } from "../../lib/field";
 import { FeatureChannelList } from "../../../server/models/interfaces";
 import CustomFormRow from "../../components/CustomFormRow";
 import { CoreServicesContext } from "../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 import NotificationCallout from "./NotificationCallout";
 import { ContentPanel, ContentPanelProps } from "../../components/ContentPanel";
 
@@ -73,26 +73,30 @@ const NotificationConfig = (
     permissionForCreateLRON,
   });
   stateRef.current.permissionForCreateLRON = permissionForCreateLRON;
-  useEffect(() => {
-    GetLronConfig({
-      actionType,
-      services: context,
-    }).then((res) => {
-      if (res && res.ok) {
-        setPermissionForViewLRON(true);
-        const lronConfig = res.response?.lron_configs?.[0]?.lron_config;
-        setLronConfig(lronConfig);
-        if (!ifSetDefaultNotification(lronConfig)) {
+  useEffect(
+    () => {
+      GetLronConfig({
+        actionType,
+        services: context,
+      }).then((res) => {
+        if (res && res.ok) {
+          setPermissionForViewLRON(true);
+          const lronConfig = res.response?.lron_configs?.[0]?.lron_config;
+          setLronConfig(lronConfig);
+          if (!ifSetDefaultNotification(lronConfig)) {
+            field.setValue("customize", true);
+          }
+        } else {
           field.setValue("customize", true);
         }
-      } else {
-        field.setValue("customize", true);
-      }
-    });
-    checkPermissionForSubmitLRONConfig({
-      services: context,
-    }).then((result) => setPermissionForCreateLRON(result));
-  }, []);
+      });
+      checkPermissionForSubmitLRONConfig({
+        services: context,
+      }).then((result) => setPermissionForCreateLRON(result));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const selectedChannels: FeatureChannelList[] = useMemo(() => {
     return (LronConfig?.channels || [])
       .map((item) => channels.find((channel) => channel.config_id === item.id))
@@ -208,9 +212,9 @@ const NotificationConfig = (
                         rules: [
                           {
                             validator(rule, value) {
-                              const values = field.getValues();
-                              const item = values.lron_condition;
-                              if (values.customize && (item?.failure || item?.success)) {
+                              const fieldValues = field.getValues();
+                              const item = fieldValues.lron_condition;
+                              if (fieldValues.customize && (item?.failure || item?.success)) {
                                 if (!value || !value.length) {
                                   return Promise.reject(VALIDATE_ERROR_FOR_CHANNELS);
                                 }

@@ -1,3 +1,8 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import React, { useCallback, useContext } from "react";
 import { EuiSpacer } from "@elastic/eui";
 import { SubDetailProps } from "../../interface";
@@ -28,6 +33,7 @@ export default function DefineTemplate(props: SubDetailProps) {
   const { field, isEdit, noPanel } = props;
   const services = useContext(ServicesContext) as BrowserServices;
   const Component = isEdit ? AllBuiltInComponents.Text : AllBuiltInComponents.Input;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const validateRemoteComponentName = useCallback(
     debouncePromise(async (rule, value): Promise<string> => {
       if (!value || isEdit) {

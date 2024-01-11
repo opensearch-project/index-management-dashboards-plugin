@@ -49,7 +49,7 @@ export default class DataStreamService {
         body: {
           ok: true,
           response: {
-            dataStreams: dataStreams,
+            dataStreams,
             totalDataStreams: dataStreams.length,
           },
         },
@@ -87,7 +87,7 @@ export async function getDataStreams(
     throw e;
   });
 
-  return [dataStreamsResponse["data_streams"], accessible, errMsg];
+  return [dataStreamsResponse.data_streams, accessible, errMsg];
 }
 
 export async function getIndexToDataStreamMapping({

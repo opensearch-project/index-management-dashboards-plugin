@@ -13,6 +13,7 @@ interface TransformStatusProps {
   metadata: TransformMetadata | undefined;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class TransformStatus extends Component<TransformStatusProps> {
   constructor(props: TransformStatusProps) {
     super(props);

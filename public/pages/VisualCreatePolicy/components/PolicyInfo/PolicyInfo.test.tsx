@@ -6,9 +6,9 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
-import PolicyInfo from "./PolicyInfo";
 import { fireEvent } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event/dist";
+import PolicyInfo from "./PolicyInfo";
 
 describe("<PolicyInfo /> spec", () => {
   it("renders the component", () => {

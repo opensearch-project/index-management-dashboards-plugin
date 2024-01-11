@@ -6,11 +6,11 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import AssociatedComponentsModal, { AssociatedComponentsModalProps } from "./AssociatedComponentsModal";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
-import userEvent from "@testing-library/user-event";
 
 function renderWithServices(props: AssociatedComponentsModalProps) {
   return {

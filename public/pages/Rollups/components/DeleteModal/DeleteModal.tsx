@@ -37,12 +37,12 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
           confirmButtonText="Delete"
           buttonColor="danger"
           defaultFocusedButton="confirm"
-          confirmButtonDisabled={confirmDeleteText != "delete"}
+          confirmButtonDisabled={confirmDeleteText !== "delete"}
         >
           <EuiForm>
             <Fragment>
-              By deleting "<strong>{rollupId}</strong>", all future scheduled rollup execution will be canceled. However, your target index
-              will remain as it is.
+              By deleting &quot;<strong>{rollupId}</strong>&quot;, all future scheduled rollup execution will be canceled. However, your
+              target index will remain as it is.
             </Fragment>
             <EuiSpacer size="s" />
             <EuiFormRow helpText="To confirm deletion, enter delete in the text field">

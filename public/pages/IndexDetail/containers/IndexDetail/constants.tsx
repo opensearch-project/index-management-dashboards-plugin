@@ -9,10 +9,10 @@ import { ROUTES } from "../../../../utils/constants";
 import { HEALTH_TO_COLOR } from "../../../Indices/utils/constants";
 import { IFinalDetail } from "./interface";
 
-export const OVERVIEW_DISPLAY_INFO: {
+export const OVERVIEW_DISPLAY_INFO: Array<{
   label: string;
   value: string | React.FunctionComponent<{ detail: IFinalDetail }>;
-}[] = [
+}> = [
   {
     label: "Index name",
     value: "index",
@@ -40,7 +40,7 @@ export const OVERVIEW_DISPLAY_INFO: {
     label: "Creation date",
     value: ({ detail }) => (
       <span>
-        {detail.settings?.index?.creation_date ? new Date(parseInt(detail.settings?.index?.creation_date)).toLocaleString() : "-"}
+        {detail.settings?.index?.creation_date ? new Date(parseInt(detail.settings?.index?.creation_date, 10)).toLocaleString() : "-"}
       </span>
     ),
   },

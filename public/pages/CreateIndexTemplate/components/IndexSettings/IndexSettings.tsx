@@ -62,7 +62,7 @@ export default function IndexSettings(props: SubDetailProps) {
                       if (!value) {
                         return Promise.resolve("");
                       }
-                      if (Number(value) !== parseInt(value)) {
+                      if (Number(value) !== parseInt(value, 10)) {
                         return Promise.reject("Number of primary shards must be an integer.");
                       }
 
@@ -95,7 +95,7 @@ export default function IndexSettings(props: SubDetailProps) {
                       if (!value) {
                         return Promise.resolve("");
                       }
-                      if (Number(value) !== parseInt(value)) {
+                      if (Number(value) !== parseInt(value, 10)) {
                         return Promise.reject("Number of replicas must be an integer");
                       }
 

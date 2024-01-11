@@ -133,7 +133,7 @@ export const getOptions = async (props: { services: BrowserServices }) => {
     services.indexService.getDataStreams({}),
   ]).then(([aliases, dataStreams]) => {
     if (aliases.ok && dataStreams.ok) {
-      const allAlias: { label: string; aliases: Alias[] }[] = [];
+      const allAlias: Array<{ label: string; aliases: Alias[] }> = [];
       aliases.response.forEach((item) => {
         let findIndex;
         if (allAlias.find((alias) => alias.label === item.alias)) {

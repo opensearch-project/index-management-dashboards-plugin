@@ -22,7 +22,7 @@ const getMessagePrompt = ({ filterIsApplied, loading }: ManagedIndexEmptyPromptP
   return TEXT.NO_MANAGED_INDICES;
 };
 
-const getActions: React.SFC<ManagedIndexEmptyPromptProps> = ({ history, filterIsApplied, loading, resetFilters }) => {
+const getActions: React.FC<ManagedIndexEmptyPromptProps> = ({ history, filterIsApplied, loading, resetFilters }) => {
   if (loading) return null;
 
   if (filterIsApplied) {
@@ -55,7 +55,7 @@ interface ManagedIndexEmptyPromptProps {
   history: H.History;
 }
 
-const ManagedIndexEmptyPrompt: React.SFC<ManagedIndexEmptyPromptProps> = (props) => (
+const ManagedIndexEmptyPrompt: React.FC<ManagedIndexEmptyPromptProps> = (props) => (
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={

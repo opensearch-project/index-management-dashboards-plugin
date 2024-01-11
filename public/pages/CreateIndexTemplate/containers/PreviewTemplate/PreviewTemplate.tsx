@@ -23,8 +23,8 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   const { value, history } = props;
   const field = useField({
     values: JSON.parse(JSON.stringify(value)),
-    onChange(name, value) {
-      if (name === "data_stream" && value === undefined) {
+    onChange(name, v) {
+      if (name === "data_stream" && v === undefined) {
         field.deleteValue(name);
       }
     },

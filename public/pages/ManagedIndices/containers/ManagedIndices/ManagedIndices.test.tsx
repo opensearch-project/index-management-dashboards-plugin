@@ -257,7 +257,7 @@ describe("<ManagedIndices /> spec", () => {
     ];
     browserServicesMock.managedIndexService.getManagedIndices = jest
       .fn()
-      .mockResolvedValueOnce({ ok: true, response: { managedIndices: managedIndices, totalManagedIndices: 2 } });
+      .mockResolvedValueOnce({ ok: true, response: { managedIndices, totalManagedIndices: 2 } });
 
     const { getByText, getByTestId } = renderWithRouter(ManagedIndices);
 

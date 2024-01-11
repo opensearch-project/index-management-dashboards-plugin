@@ -15,10 +15,10 @@ interface PercentilePanelProps {
 }
 
 export default function PercentilePanel({ name, aggSelection, handleAggSelectionChange, closePopover }: PercentilePanelProps) {
-  const [percents, setPercents] = useState<{ label: string }[]>([]);
+  const [percents, setPercents] = useState<Array<{ label: string }>>([]);
   const [isInvalid, setInvalid] = useState(false);
 
-  const onChangePercents = (selectedPercent: { label: string }[]): void => {
+  const onChangePercents = (selectedPercent: Array<{ label: string }>): void => {
     setPercents(selectedPercent);
     setInvalid(false);
   };
@@ -76,7 +76,7 @@ export default function PercentilePanel({ name, aggSelection, handleAggSelection
           </EuiFormRow>
           <EuiSpacer size="m" />
         </EuiFlexItem>
-        <EuiFlexItem grow={false}></EuiFlexItem>
+        <EuiFlexItem grow={false} />
       </EuiFlexGroup>
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>

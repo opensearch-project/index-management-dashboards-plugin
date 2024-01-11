@@ -52,8 +52,8 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         onBlur={(e) => {
           try {
             JSON.parse(e.target.value);
-            onChange && onChange(e.target.value);
-          } catch (e) {
+            if (onChange) onChange(e.target.value);
+          } catch (err) {
             // do nothing
             setConfirmModalVisible(true);
           }

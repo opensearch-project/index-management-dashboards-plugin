@@ -5,11 +5,7 @@
 
 import React, { Component } from "react";
 import _ from "lodash";
-import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import queryString from "query-string";
-import { getErrorMessage } from "../../../../utils/helpers";
-import { ManagedCatIndex } from "../../../../../server/models/interfaces";
-import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../../Indices/utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 import {
   EuiBasicTable,
@@ -35,6 +31,10 @@ import {
   EuiLink,
   EuiTableFieldDataColumnType,
 } from "@elastic/eui";
+import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { getErrorMessage } from "../../../../utils/helpers";
+import { ManagedCatIndex } from "../../../../../server/models/interfaces";
+import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../../Indices/utils/constants";
 import { RollupService } from "../../../../services";
 import RollupEmptyPrompt from "../../components/RollupEmptyPrompt";
 import { RollupQueryParams } from "../../models/interfaces";
@@ -139,14 +139,14 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
   onClickDelete = async (): Promise<void> => {
     const { rollupService } = this.props;
     const { selectedItems } = this.state;
-    for (let item of selectedItems) {
+    for (const item of selectedItems) {
       const rollupId = item._id;
       try {
         const response = await rollupService.deleteRollup(rollupId);
 
         if (response.ok) {
           this.closeDeleteModal();
-          //Show success message
+          // Show success message
           this.context.notifications.toasts.addSuccess(`"${rollupId}" successfully deleted!`);
         } else {
           this.context.notifications.toasts.addDanger(`Could not delete the rollup job "${rollupId}" : ${response.error}`);
@@ -161,13 +161,13 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
   onDisable = async (): Promise<void> => {
     const { rollupService } = this.props;
     const { selectedItems } = this.state;
-    for (let item of selectedItems) {
+    for (const item of selectedItems) {
       const rollupId = item._id;
       try {
         const response = await rollupService.stopRollup(rollupId);
 
         if (response.ok) {
-          //Show success message
+          // Show success message
           this.context.notifications.toasts.addSuccess(`${rollupId} is disabled`);
         } else {
           this.context.notifications.toasts.addDanger(`Could not stop the rollup job "${rollupId}" : ${response.error}`);
@@ -182,13 +182,13 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
   onEnable = async (): Promise<void> => {
     const { rollupService } = this.props;
     const { selectedItems } = this.state;
-    for (let item of selectedItems) {
+    for (const item of selectedItems) {
       const rollupId = item._id;
       try {
         const response = await rollupService.startRollup(rollupId);
 
         if (response.ok) {
-          //Show success message
+          // Show success message
           this.context.notifications.toasts.addSuccess(`${rollupId} is enabled`);
         } else {
           this.context.notifications.toasts.addDanger(`Could not start the rollup job "${rollupId}" : ${response.error}`);
@@ -299,7 +299,7 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
       <EuiContextMenuItem
         key="Edit"
         icon="empty"
-        disabled={selectedItems.length != 1}
+        disabled={selectedItems.length !== 1}
         data-test-subj="editButton"
         onClick={() => {
           this.closePopover();
@@ -322,7 +322,7 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
       </EuiContextMenuItem>,
     ];
 
-    const rollupsColumns: EuiTableFieldDataColumnType<DocumentRollup>[] = [
+    const rollupsColumns: Array<EuiTableFieldDataColumnType<DocumentRollup>> = [
       {
         field: "_id",
         name: "Name",

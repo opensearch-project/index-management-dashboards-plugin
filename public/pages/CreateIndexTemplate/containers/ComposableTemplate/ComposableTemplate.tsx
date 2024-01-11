@@ -21,6 +21,7 @@ import {
   EuiTitle,
   euiDragDropReorder,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ServicesContext } from "../../../../services";
@@ -33,7 +34,6 @@ import { IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 import ComponentTemplateDetail, { IComponentTemplateDetailInstance } from "../../../CreateComposableTemplate/containers/TemplateDetail";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CoreStart } from "opensearch-dashboards/public";
 import FilterGroup from "../../../../components/FilterGroup";
 
 export default function ComposableTemplate(props: SubDetailProps) {
@@ -64,9 +64,13 @@ export default function ComposableTemplate(props: SubDetailProps) {
           setAllComposableTemplates(res.response.component_templates || []);
         }
       });
-  useEffect(() => {
-    reloadAllComposableTemplates();
-  }, []);
+  useEffect(
+    () => {
+      reloadAllComposableTemplates();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
   const finalOptions = useMemo(
     () =>
       allComposableTemplates.filter((item) => {

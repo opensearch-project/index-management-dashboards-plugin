@@ -67,7 +67,7 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
           }
           try {
             JSON.parse(tempEditorValue);
-            onChange && onChange(tempEditorValue);
+            if (onChange) onChange(tempEditorValue);
             setConfirmModalVisible(false);
           } catch (e) {
             setConfirmModalVisible(true);

@@ -24,7 +24,7 @@ export interface DataStreamInEdit extends DataStream {
   matchedTemplate?: string;
 }
 
-export type TemplateItem = {
+export interface TemplateItem {
   name: string;
   index_template: TemplateItemRemote;
-};
+}

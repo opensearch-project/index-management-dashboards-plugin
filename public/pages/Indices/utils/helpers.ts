@@ -4,12 +4,12 @@
  */
 
 import queryString from "query-string";
+import { CoreStart } from "opensearch-dashboards/public";
 import { DEFAULT_QUERY_PARAMS } from "./constants";
 import { IndicesQueryParams } from "../models/interfaces";
 import { IndexItem } from "../../../../models/interfaces";
 import { ServerResponse } from "../../../../server/models/types";
 import { CommonService } from "../../../services";
-import { CoreStart } from "opensearch-dashboards/public";
 import { CatIndex } from "../../../../server/models/interfaces";
 import { jobSchedulerInstance } from "../../../context/JobSchedulerContext";
 import { OpenJobMetaData, RecoveryJobMetaData } from "../../../models/interfaces";
@@ -18,6 +18,7 @@ import { getClusterInfo } from "../../../utils/helpers";
 
 export function getURLQueryParams(location: { search: string }): IndicesQueryParams {
   const { from, size, search, sortField, sortDirection, showDataStreams } = queryString.parse(location.search);
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   return <IndicesQueryParams>{
     // @ts-ignore
     from: isNaN(parseInt(from, 10)) ? DEFAULT_QUERY_PARAMS.from : parseInt(from, 10),
@@ -110,7 +111,7 @@ export async function getSingleIndice(props: {
     },
   });
 
-  if (result && result.ok && result.response.length == 1) {
+  if (result && result.ok && result.response.length === 1) {
     return result.response[0];
   } else {
     const errorMessage = `There is a problem getting index for ${props.indexName}, please check with Admin`;
@@ -149,7 +150,7 @@ export async function setIndexSettings(props: {
 }
 
 export async function getAlias(props: { aliasName?: string; commonService: CommonService }) {
-  return await props.commonService.apiCaller<{ alias: string }[]>({
+  return await props.commonService.apiCaller<Array<{ alias: string }>>({
     endpoint: "cat.aliases",
     method: "GET",
     data: {
@@ -225,7 +226,7 @@ export async function splitIndex(props: {
 export function getSplitShardOptions(sourceShards: number) {
   const MAX_SHARDS_NUMBER = 1024;
   const shardsSelectOptions = [];
-  if (sourceShards == 1) {
+  if (sourceShards === 1) {
     for (let i = 2; i <= MAX_SHARDS_NUMBER; i++) {
       shardsSelectOptions.push({
         label: i.toString(),

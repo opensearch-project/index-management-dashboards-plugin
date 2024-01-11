@@ -41,7 +41,7 @@ export interface NodeServices {
 export interface SearchResponse<T> {
   hits: {
     total: { value: number };
-    hits: { _source: T; _id: string; _seq_no?: number; _primary_term?: number }[];
+    hits: Array<{ _source: T; _id: string; _seq_no?: number; _primary_term?: number }>;
   };
 }
 
@@ -174,13 +174,13 @@ export interface IndexUpdateResponse {
   failedIndices: FailedIndex[];
 }
 
-export interface ApplyPolicyResponse extends IndexUpdateResponse {}
+export type ApplyPolicyResponse = IndexUpdateResponse;
 
-export interface RemovePolicyResponse extends IndexUpdateResponse {}
+export type RemovePolicyResponse = IndexUpdateResponse;
 
-export interface ChangePolicyResponse extends IndexUpdateResponse {}
+export type ChangePolicyResponse = IndexUpdateResponse;
 
-export interface RetryManagedIndexResponse extends IndexUpdateResponse {}
+export type RetryManagedIndexResponse = IndexUpdateResponse;
 
 export interface RetryParams {
   index: string;
@@ -284,13 +284,13 @@ export interface ExplainAPIManagedIndexMetaData {
 
 export interface SearchSampleDataResponse {
   total: number;
-  data: {
+  data: Array<{
     _index: string;
     _type: string;
     _id: string;
     _score: number;
     _source: object;
-  }[];
+  }>;
 }
 
 export interface IndexManagementApi {

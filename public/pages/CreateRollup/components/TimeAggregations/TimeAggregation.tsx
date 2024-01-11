@@ -29,7 +29,7 @@ interface TimeAggregationProps {
   rollupService: RollupService;
   intervalValue: number;
   intervalType: string;
-  selectedTimestamp: EuiComboBoxOptionOption<String>[];
+  selectedTimestamp: Array<EuiComboBoxOptionOption<string>>;
   timestampError: string;
   timeunit: string;
   timezone: string;
@@ -37,11 +37,12 @@ interface TimeAggregationProps {
 
   onChangeIntervalType: (optionId: string) => void;
   onChangeIntervalValue: (e: ChangeEvent<HTMLInputElement>) => void;
-  onChangeTimestamp: (options: EuiComboBoxOptionOption<String>[]) => void;
+  onChangeTimestamp: (options: Array<EuiComboBoxOptionOption<string>>) => void;
   onChangeTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
   onChangeTimezone: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface TimeAggregationState {}
 
 const radios = [
@@ -57,6 +58,7 @@ const radios = [
 
 const timezones = moment.tz.names().map((tz) => ({ label: tz, text: tz }));
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class TimeAggregation extends Component<TimeAggregationProps, TimeAggregationState> {
   constructor(props: TimeAggregationProps) {
     super(props);
@@ -79,7 +81,7 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
     } = this.props;
 
     // Filter options for date histogram
-    const dateFields = fieldsOption.filter((item) => item.type == "date");
+    const dateFields = fieldsOption.filter((item) => item.type === "date");
 
     return (
       <EuiPanel>
@@ -87,7 +89,8 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
           <h3>Time aggregation </h3>
         </EuiTitle>
         <EuiFormHelpText>
-          Your source indices must include a timestamp field. The rollup job creates a date histogram for the field you specify." "
+          Your source indices must include a timestamp field. The rollup job creates a date histogram for the field you specify.&quot;
+          &quot;
         </EuiFormHelpText>
         <EuiHorizontalRule margin="xs" />
         <div style={{ paddingLeft: "10px" }}>
@@ -107,19 +110,19 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
             <EuiRadioGroup options={radios} idSelected={intervalType} onChange={(id) => onChangeIntervalType(id)} name="intervalType" />
           </EuiFormRow>
           <EuiFlexGroup style={{ maxWidth: 300 }}>
-            {intervalType == "fixed" ? (
+            {intervalType === "fixed" ? (
               <Fragment>
                 <EuiSpacer size="m" />
                 <EuiFlexItem grow={false} style={{ width: 100 }}>
                   <EuiFormRow label="Interval">
-                    <EuiFieldNumber min={1} value={intervalType == "fixed" ? intervalValue : 1} onChange={onChangeIntervalValue} />
+                    <EuiFieldNumber min={1} value={intervalType === "fixed" ? intervalValue : 1} onChange={onChangeIntervalValue} />
                   </EuiFormRow>
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <EuiFormRow hasEmptyLabelSpace={true}>
                     <EuiSelect
                       id="selectTimeunit"
-                      options={intervalType == "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
+                      options={intervalType === "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
                       value={timeunit}
                       onChange={onChangeTimeunit}
                     />
@@ -139,7 +142,7 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
                   <EuiFormRow hasEmptyLabelSpace={true}>
                     <EuiSelect
                       id="selectTimeunit"
-                      options={intervalType == "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
+                      options={intervalType === "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
                       value={timeunit}
                       onChange={onChangeTimeunit}
                     />

@@ -121,7 +121,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
   };
 
   onChangePolicy = (policy: Policy): void => {
-    this.setState({ policy: policy });
+    this.setState({ policy });
   };
 
   onChangeChannelId = (e: ChangeEvent<HTMLSelectElement>): void => {
@@ -183,9 +183,9 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
     if (policy.default_state === state?.name) {
       defaultState = states[0]?.name || "";
     }
-    this.setState((state) => ({
+    this.setState((newState) => ({
       policy: {
-        ...state.policy,
+        ...newState.policy,
         states,
         default_state: defaultState,
       },
@@ -205,7 +205,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
   onCreate = async (policyId: string, policy: Policy): Promise<void> => {
     const { policyService } = this.props;
     try {
-      const response = await policyService.putPolicy({ policy: policy }, policyId);
+      const response = await policyService.putPolicy({ policy }, policyId);
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Created policy: ${response.response._id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);
@@ -228,7 +228,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         this.context.notifications.toasts.addDanger("Could not update policy without seqNo and primaryTerm");
         return;
       }
-      const response = await policyService.putPolicy({ policy: policy }, policyId, policySeqNo, policyPrimaryTerm);
+      const response = await policyService.putPolicy({ policy }, policyId, policySeqNo, policyPrimaryTerm);
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Updated policy: ${response.response._id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);

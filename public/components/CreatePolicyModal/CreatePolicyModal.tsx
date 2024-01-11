@@ -27,7 +27,7 @@ interface CreatePolicyModalProps {
   onClickContinue: (visual: boolean) => void;
 }
 
-const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, onClose, onClickContinue }) => {
+const CreatePolicyModal: React.FC<CreatePolicyModalProps> = ({ isEdit = false, onClose, onClickContinue }) => {
   const [visual, setVisual] = useState(true);
   return (
     <EuiOverlayMask>

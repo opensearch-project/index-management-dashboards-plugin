@@ -6,15 +6,15 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { fireEvent, render, waitFor } from "@testing-library/react";
+import { CoreStart } from "opensearch-dashboards/public";
+import { act } from "react-dom/test-utils";
 import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
 import { CoreServicesContext } from "../../components/core_services";
 import { ServicesContext } from "../../services";
 import { BrowserServices } from "../../models/interfaces";
 import { ModalProvider } from "../../components/Modal";
-import { CoreStart } from "opensearch-dashboards/public";
 import FlushIndexModal, { FlushIndexModalProps } from "./FlushIndexModal";
 import { buildMockApiCallerForFlush, selectedAliases, selectedDataStreams, selectedIndices } from "./FlushIndexModalTestHelper";
-import { act } from "react-dom/test-utils";
 import { INDEX_OP_TARGET_TYPE } from "../../utils/constants";
 
 function renderWithRouter(
@@ -116,7 +116,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: selectedIndices,
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: onClose,
+      onClose,
     });
 
     await act(async () => {});
@@ -142,7 +142,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: selectedAliases,
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.ALIAS,
-      onClose: onClose,
+      onClose,
     });
 
     await act(async () => {});
@@ -168,7 +168,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: selectedDataStreams,
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.DATA_STREAM,
-      onClose: onClose,
+      onClose,
     });
 
     await act(async () => {});
@@ -195,7 +195,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: selectedIndices,
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: onClose,
+      onClose,
     });
 
     await act(async () => {});
@@ -222,7 +222,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: selectedIndices,
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: onClose,
+      onClose,
     });
 
     await act(async () => {});
@@ -251,7 +251,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: selectedIndices,
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: onClose,
+      onClose,
     });
     await act(async () => {});
     expect(queryByText("flushConfirmButton")).toBeNull();
@@ -264,7 +264,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: [],
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: onClose,
+      onClose,
     });
     await act(async () => {});
     fireEvent.click(getByTestId("flushConfirmButton"));
@@ -288,7 +288,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: [],
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: onClose,
+      onClose,
     });
     await act(async () => {});
 
@@ -308,7 +308,7 @@ describe("<FlushIndexModal /> spec", () => {
       selectedItems: [{ index: "test_index1" }, { index: "test_index4" }],
       visible: true,
       flushTarget: INDEX_OP_TARGET_TYPE.INDEX,
-      onClose: onClose,
+      onClose,
     });
     await act(async () => {});
 

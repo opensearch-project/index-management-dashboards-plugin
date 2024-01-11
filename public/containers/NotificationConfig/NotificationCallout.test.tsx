@@ -5,8 +5,8 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import NotificationCallout, { INotificationCalloutProps } from "./NotificationCallout";
 import { render, waitFor } from "@testing-library/react";
+import NotificationCallout, { INotificationCalloutProps } from "./NotificationCallout";
 import { browserServicesMock } from "../../../test/mocks";
 import { ActionType, OperationType } from "../../pages/Notifications/constant";
 import { IAPICaller } from "../../../models/interfaces";

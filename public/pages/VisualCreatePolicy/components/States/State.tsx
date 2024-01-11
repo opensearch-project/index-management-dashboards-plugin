@@ -74,7 +74,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
                         bodyMessage: (
                           <EuiText>
                             <span>
-                              Delete "<strong>{state.name}</strong>" permanently? Deleting the state will result in deleting all
+                              Delete &quot;<strong>{state.name}</strong>&quot; permanently? Deleting the state will result in deleting all
                               transitions.
                             </span>
                           </EuiText>

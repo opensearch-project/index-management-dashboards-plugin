@@ -16,7 +16,7 @@ export default class CommonService {
   }
 
   apiCaller = async <T>(params: IAPICaller): Promise<ServerResponse<T>> => {
-    let url = `${NODE_API.API_CALLER}`;
+    const url = `${NODE_API.API_CALLER}`;
     const payload: HttpFetchOptions = {};
     payload.method = "POST";
     payload.body = JSON.stringify({

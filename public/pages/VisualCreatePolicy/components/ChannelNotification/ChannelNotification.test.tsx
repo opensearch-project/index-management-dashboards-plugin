@@ -6,8 +6,8 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
-import ChannelNotification from "./ChannelNotification";
 import { fireEvent, queryByTestId } from "@testing-library/dom";
+import ChannelNotification from "./ChannelNotification";
 
 describe("<ChannelNotification /> spec", () => {
   it("renders the component", () => {

@@ -41,7 +41,7 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
     this.state = { uiTransition };
   }
 
-  onChange = (selectedOptions: { label: string }[]) => {
+  onChange = (selectedOptions: Array<{ label: string }>) => {
     // We should only get back either 0 or 1 options.
     const destinationState = selectedOptions.pop()?.label || "";
     const { uiTransition } = this.state;

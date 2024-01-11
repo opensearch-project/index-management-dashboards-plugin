@@ -25,7 +25,7 @@ const getMessagePrompt = ({ filterIsApplied, loading }: TransformEmptyPromptProp
   return TEXT.NO_TRANSFORMS;
 };
 
-const getActions: React.SFC<TransformEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters }) => {
+const getActions: React.FC<TransformEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters }) => {
   if (loading) {
     return null;
   }
@@ -45,7 +45,7 @@ const getActions: React.SFC<TransformEmptyPromptProps> = ({ filterIsApplied, loa
   );
 };
 
-const TransformEmptyPrompt: React.SFC<TransformEmptyPromptProps> = (props) => (
+const TransformEmptyPrompt: React.FC<TransformEmptyPromptProps> = (props) => (
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={

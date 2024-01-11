@@ -44,15 +44,20 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
     };
   }
 
-  const outsideClick = useCallback(() => {
-    setTimeout(() => {
-      if (destroyRef.current) {
-        return;
-      }
-      setPopVisible(false);
-    }, 0);
-  }, [popVisible, setPopVisible]);
+  const outsideClick = useCallback(
+    () => {
+      setTimeout(() => {
+        if (destroyRef.current) {
+          return;
+        }
+        setPopVisible(false);
+      }, 0);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [popVisible, setPopVisible]
+  );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const outsideHover = useCallback(
     throttle((e: MouseEvent) => {
       if (popVisible && popoverRef.current && panelRef.current) {
@@ -65,14 +70,18 @@ const SimplePopover: React.FC<SimplePopoverProps> = (props) => {
     [popVisible, setPopVisible]
   );
 
-  useEffect(() => {
-    if (popVisible && triggerType === "click") {
-      window.addEventListener("click", outsideClick);
-    }
-    return () => {
-      window.removeEventListener("click", outsideClick);
-    };
-  }, [outsideClick, triggerType]);
+  useEffect(
+    () => {
+      if (popVisible && triggerType === "click") {
+        window.addEventListener("click", outsideClick);
+      }
+      return () => {
+        window.removeEventListener("click", outsideClick);
+      };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [outsideClick, triggerType]
+  );
 
   useEffect(() => {
     if (popVisible && triggerType === "hover") {

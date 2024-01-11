@@ -1,4 +1,4 @@
-  /*
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -42,7 +42,7 @@ function renderPoliciesWithRouter() {
                       />
                       <Route path={ROUTES.CREATE_POLICY} render={(props) => <div>Testing create policy</div>} />
                       <Route path={ROUTES.EDIT_POLICY} render={(props) => <div>Testing edit policy: {props.location.search}</div>} />
-                      <Route path={ROUTES.POLICY_DETAILS} render={(props) =><div>Testing policy details: {props.location.search}</div>} />
+                      <Route path={ROUTES.POLICY_DETAILS} render={(props) => <div>Testing policy details: {props.location.search}</div>} />
                       <Redirect from="/" to={ROUTES.INDEX_POLICIES} />
                     </Switch>
                   </ModalProvider>

@@ -11,9 +11,9 @@ import {
   EuiText,
   EuiFlexGroup,
   EuiTableFieldDataColumnType,
-  //@ts-ignore
+  // @ts-ignore
   Criteria,
-  //@ts-ignore
+  // @ts-ignore
   Pagination,
   EuiTableSortingType,
 } from "@elastic/eui";
@@ -26,7 +26,9 @@ import {
   AGGREGATION_AND_METRIC_SETTINGS,
   BaseAggregationAndMetricsState,
   BaseAggregationColumns,
-  BaseMetricsColumns, sequenceTableComponents, sourceFieldComponents
+  BaseMetricsColumns,
+  sequenceTableComponents,
+  sourceFieldComponents,
 } from "../../../Commons/BaseAggregationAndMetricSettings";
 
 interface AggregationAndMetricsSettingsProps {
@@ -41,10 +43,9 @@ interface AggregationAndMetricsSettingsProps {
   onChangeMetricsShown: (from: number, size: number) => void;
 }
 
-interface AggregationAndMetricsSettingsState extends BaseAggregationAndMetricsState {
-}
+type AggregationAndMetricsSettingsState = BaseAggregationAndMetricsState;
 
-const aggregationColumns: Readonly<EuiTableFieldDataColumnType<DimensionItem>>[] = BaseAggregationColumns;
+const aggregationColumns: Array<Readonly<EuiTableFieldDataColumnType<DimensionItem>>> = BaseAggregationColumns;
 
 const metricsColumns = BaseMetricsColumns;
 
@@ -130,11 +131,7 @@ export default class AggregationAndMetricsSettings extends Component<
       interval = intervalValue[0] + " " + parseTimeunit(intervalUnit[0]);
     }
     return (
-      <ContentPanel
-        bodyStyles={{ padding: "initial" }}
-        title={AGGREGATION_AND_METRIC_SETTINGS}
-        titleSize="m"
-      >
+      <ContentPanel bodyStyles={{ padding: "initial" }} title={AGGREGATION_AND_METRIC_SETTINGS} titleSize="m">
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />
           <EuiText>
@@ -174,23 +171,22 @@ export default class AggregationAndMetricsSettings extends Component<
             </EuiFlexItem>
           </EuiFlexGroup>
 
-          {
-            sequenceTableComponents(selectedDimensionField, dimensionsShown, aggregationColumns,
-              dimensionPagination, dimensionSorting, this.onDimensionTableChange)
-          }
+          {sequenceTableComponents(
+            selectedDimensionField,
+            dimensionsShown,
+            aggregationColumns,
+            dimensionPagination,
+            dimensionSorting,
+            this.onDimensionTableChange
+          )}
 
           <EuiSpacer size="m" />
 
           <EuiSpacer />
 
-          {
-            additionalMetricsComponent(selectedMetrics)
-          }
+          {additionalMetricsComponent(selectedMetrics)}
 
-          {
-            sourceFieldComponents(selectedMetrics, metricsShown, metricsColumns, pagination,
-              sorting, this.onTableChange)
-          }
+          {sourceFieldComponents(selectedMetrics, metricsShown, metricsColumns, pagination, sorting, this.onTableChange)}
           <EuiSpacer size="s" />
         </div>
       </ContentPanel>

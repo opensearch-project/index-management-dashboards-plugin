@@ -28,7 +28,7 @@ interface PolicyModalProps {
   onEdit: (visual: boolean) => void;
 }
 
-const PolicyModal: React.SFC<PolicyModalProps> = ({ policyId, policy, errorMessage, onClose, onEdit }) => {
+const PolicyModal: React.FC<PolicyModalProps> = ({ policyId, policy, errorMessage, onClose, onEdit }) => {
   const policyString = JSON.stringify(policy, null, 4);
   return (
     <EuiOverlayMask>

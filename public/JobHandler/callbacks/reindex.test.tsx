@@ -2,10 +2,10 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
+import { CoreSetup } from "opensearch-dashboards/public";
 import { callbackForReindex, callbackForReindexTimeout } from "./reindex";
 import { coreServicesMock, httpClientMock } from "../../../test/mocks";
 import { ListenType } from "../../lib/JobScheduler";
-import { CoreSetup } from "opensearch-dashboards/public";
 
 const getMockFn = (response = {}, ok = true) => {
   return jest.fn().mockResolvedValue({
@@ -35,7 +35,7 @@ const core = ({
 describe("callbackForOpen spec", () => {
   it("callback when error", async () => {
     httpClientMock.fetch = getMockFn({}, false);
-    let result = await callbackForReindex(reindexMetaData, {
+    const result = await callbackForReindex(reindexMetaData, {
       core,
     });
     expect(result).toBe(false);

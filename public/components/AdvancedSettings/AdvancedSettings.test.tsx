@@ -5,8 +5,8 @@
 
 import React from "react";
 import { fireEvent, render } from "@testing-library/react";
-import AdvancedSettings from "./index";
 import userEvent from "@testing-library/user-event";
+import AdvancedSettings from "./index";
 
 describe("<FormGenerator /> spec", () => {
   it("render the component", () => {

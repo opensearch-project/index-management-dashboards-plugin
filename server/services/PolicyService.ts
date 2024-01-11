@@ -194,7 +194,7 @@ export default class PolicyService {
         statusCode: 200,
         body: {
           ok: true,
-          response: { policies: policies, totalPolicies },
+          response: { policies, totalPolicies },
         },
       });
     } catch (err) {

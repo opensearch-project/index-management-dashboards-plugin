@@ -14,7 +14,7 @@ export interface SwitchableEditorProps extends JSONDiffEditorProps, Pick<MonacoJ
   mode: "json" | "diff";
 }
 
-export interface ISwitchableEditorRef extends IJSONEditorRef {}
+export type ISwitchableEditorRef = IJSONEditorRef;
 
 const SwitchableEditor = forwardRef(
   ({ mode, diagnosticsOptions, path, ...others }: SwitchableEditorProps, ref: React.Ref<ISwitchableEditorRef>) => {

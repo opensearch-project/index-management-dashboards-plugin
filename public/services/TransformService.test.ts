@@ -95,7 +95,7 @@ describe("transformService spec", () => {
     await transformService.searchSampleData(indexName, queryObject, body);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API._SEARCH_SAMPLE_DATA}/${indexName}`, { query: queryObject, body: body });
+    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API._SEARCH_SAMPLE_DATA}/${indexName}`, { query: queryObject, body });
   });
 
   it("calls search sample data nodejs route when calling searchSampleData with data filter", async () => {
@@ -110,6 +110,6 @@ describe("transformService spec", () => {
     await transformService.searchSampleData(indexName, queryObject, body);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API._SEARCH_SAMPLE_DATA}/${indexName}`, { query: queryObject, body: body });
+    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API._SEARCH_SAMPLE_DATA}/${indexName}`, { query: queryObject, body });
   });
 });

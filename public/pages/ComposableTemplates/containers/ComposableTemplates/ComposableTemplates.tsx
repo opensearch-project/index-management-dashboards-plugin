@@ -24,6 +24,7 @@ import {
   EuiButtonIcon,
   EuiToolTip,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
@@ -33,7 +34,6 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import ComposableTemplatesActions, { ComposableTemplatesDeleteAction } from "../ComposableTemplatesActions";
-import { CoreStart } from "opensearch-dashboards/public";
 import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadge";
 import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
 import { useComponentMapTemplate } from "../../utils/hooks";
@@ -213,7 +213,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       return selectedTypes.every((type) => !!item.component_template.template[type as IndicesUpdateMode]);
     });
 
-    //pagination
+    // pagination
     return listResponse.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber);
   };
 

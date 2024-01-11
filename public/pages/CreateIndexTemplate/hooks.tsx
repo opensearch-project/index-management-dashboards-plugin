@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import { EuiFormRowProps } from "@elastic/eui";
+import { get, set } from "lodash";
+import { flatten } from "flat";
+import { CoreStart } from "opensearch-dashboards/public";
 import { FieldInstance, transformNameToString } from "../../lib/field";
 import { IndexForm } from "../../containers/IndexForm";
 import { TemplateItem, TemplateItemRemote } from "../../../models/interfaces";
 import { TemplateItemEdit, FLOW_ENUM } from "./interface";
-import { get, set } from "lodash";
-import { flatten } from "flat";
-import { CoreStart } from "opensearch-dashboards/public";
 import { transformArrayToObject, transformObjectToArray } from "../../components/IndexMapping";
 import { CommonService } from "../../services";
 
@@ -91,7 +91,7 @@ export const getTemplate = async (props: {
   coreService: CoreStart;
 }): Promise<TemplateItemEdit> => {
   const response = await props.commonService.apiCaller<{
-    index_templates: { name: string; index_template: TemplateItemRemote }[];
+    index_templates: Array<{ name: string; index_template: TemplateItemRemote }>;
   }>({
     endpoint: "transport.request",
     data: {

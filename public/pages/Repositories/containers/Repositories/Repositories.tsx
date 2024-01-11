@@ -12,15 +12,15 @@ import {
   EuiText,
   EuiTextColor,
 } from "@elastic/eui";
-import { getErrorMessage } from "../../../../utils/helpers";
 import React, { Component } from "react";
 import { RouteComponentProps } from "react-router-dom";
+import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
+import { getErrorMessage } from "../../../../utils/helpers";
 import { CatRepository, CreateRepositoryBody, CreateRepositorySettings } from "../../../../../server/models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService } from "../../../../services";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import CreateRepositoryFlyout from "../../components/CreateRepositoryFlyout";
-import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { BREADCRUMBS } from "../../../../utils/constants";
 import DeleteModal from "../../components/DeleteModal";
 import { truncateSpan } from "../../../Snapshots/helper";
@@ -45,7 +45,7 @@ interface RepositoriesState {
 
 export default class Repositories extends Component<RepositoriesProps, RepositoriesState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<CatRepository>[];
+  columns: Array<EuiTableFieldDataColumnType<CatRepository>>;
 
   constructor(props: RepositoriesProps) {
     super(props);
@@ -118,7 +118,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
 
       const createRepoBody: CreateRepositoryBody = {
         type: repoType,
-        settings: settings,
+        settings,
       };
       const response = await snapshotManagementService.createRepository(repoName, createRepoBody);
       if (response.ok) {
@@ -153,7 +153,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
 
   onClickDelete = async () => {
     const { selectedItems } = this.state;
-    for (let item of selectedItems) {
+    for (const item of selectedItems) {
       const repoName = item.id;
       await this.deleteRepo(repoName);
     }
@@ -182,7 +182,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
       <EuiContextMenuItem
         key="Edit"
         icon="empty"
-        disabled={selectedItems.length != 1}
+        disabled={selectedItems.length !== 1}
         data-test-subj="editButton"
         onClick={() => {
           this.closePopover();
@@ -265,6 +265,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
             columns={this.columns}
             pagination={true}
             isSelectable={true}
+            // eslint-disable-next-line no-shadow
             selection={{ onSelectionChange: (selectedItems) => this.setState({ selectedItems }) }}
             search={search}
             loading={loading}

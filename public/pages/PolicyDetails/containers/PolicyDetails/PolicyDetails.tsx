@@ -153,7 +153,7 @@ export default class PolicyDetails extends Component<PolicyDetailsProps, PolicyD
 
     const convertedISMTemplates = convertTemplatesToArray(policy.policy.ism_template);
 
-    const columns: EuiTableFieldDataColumnType<ISMTemplate>[] = [
+    const columns: Array<EuiTableFieldDataColumnType<ISMTemplate>> = [
       {
         field: "index_patterns",
         name: "Index patterns",
@@ -167,7 +167,7 @@ export default class PolicyDetails extends Component<PolicyDetailsProps, PolicyD
     ];
 
     const pagination: Pagination = {
-      pageIndex: pageIndex,
+      pageIndex,
       pageSize,
       totalItemCount: convertedISMTemplates.length || 0,
       pageSizeOptions: [10, 20, 50],

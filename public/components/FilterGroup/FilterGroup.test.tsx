@@ -5,8 +5,8 @@
 
 import React, { useState } from "react";
 import { act, render, waitFor } from "@testing-library/react";
-import FilterGroup, { IFilterGroupProps } from "./index";
 import userEvent from "@testing-library/user-event";
+import FilterGroup, { IFilterGroupProps } from "./index";
 
 const WrappedComponent = (props: IFilterGroupProps) => {
   const [value, onChange] = useState<string[] | undefined>();

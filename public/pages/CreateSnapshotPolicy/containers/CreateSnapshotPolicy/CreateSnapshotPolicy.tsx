@@ -71,8 +71,8 @@ interface CreateSMPolicyState {
   channels: FeatureChannelList[];
   loadingChannels: boolean;
 
-  indexOptions: EuiComboBoxOptionOption<IndexItem>[];
-  selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
+  indexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
+  selectedIndexOptions: Array<EuiComboBoxOptionOption<IndexItem>>;
 
   repositories: CatRepository[];
   selectedRepoValue: string;
@@ -196,7 +196,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
         let maxAgeNum = 1;
         let maxAgeUnit = "d";
         if (maxAge) {
-          maxAgeNum = parseInt(maxAge.substring(0, maxAge.length - 1));
+          maxAgeNum = parseInt(maxAge.substring(0, maxAge.length - 1), 10);
           maxAgeUnit = maxAge[maxAge.length - 1];
         }
 
@@ -274,8 +274,8 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
       const { snapshotManagementService } = this.props;
 
       const createRepoBody: CreateRepositoryBody = {
-        type: type,
-        settings: settings,
+        type,
+        settings,
       };
       const response = await snapshotManagementService.createRepository(repoName, createRepoBody);
       if (response.ok) {
@@ -380,7 +380,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
     return policy;
   };
 
-  onIndicesSelectionChange = (selectedOptions: EuiComboBoxOptionOption<IndexItem>[]) => {
+  onIndicesSelectionChange = (selectedOptions: Array<EuiComboBoxOptionOption<IndexItem>>) => {
     const selectedIndexOptions = selectedOptions.map((o) => o.label);
     this.setState({
       policy: this.setPolicyHelper("snapshot_config.indices", selectedIndexOptions.toString()),
@@ -412,7 +412,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
     const selectedIndexOptions = [...this.state.selectedIndexOptions, newOption];
     this.setState({
-      selectedIndexOptions: selectedIndexOptions,
+      selectedIndexOptions,
       policy: this.setPolicyHelper("snapshot_config.indices", selectedIndexOptions.toString()),
     });
   };
@@ -554,7 +554,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
             onChangeFrequencyType={(e) => {
               const frequencyType = e.target.value;
               let maxAgeUnitToChange = maxAgeUnit;
-              if (frequencyType == "hourly" && !deleteConditionEnabled) {
+              if (frequencyType === "hourly" && !deleteConditionEnabled) {
                 maxAgeUnitToChange = "h";
               }
               this.setState({ creationScheduleFrequencyType: e.target.value, maxAgeUnit: maxAgeUnitToChange });
@@ -593,7 +593,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
                     value={maxAgeNum}
                     min={1}
                     onChange={(e) => {
-                      this.setState({ maxAgeNum: parseInt(e.target.value) });
+                      this.setState({ maxAgeNum: parseInt(e.target.value, 10) });
                     }}
                   />
                 </EuiFlexItem>
@@ -816,12 +816,12 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
   onChangeMaxCount = (e: ChangeEvent<HTMLInputElement>) => {
     // Received NaN for the `value` attribute. If this is expected, cast the value to a string.
-    const maxCount = isNaN(parseInt(e.target.value)) ? undefined : parseInt(e.target.value);
+    const maxCount = isNaN(parseInt(e.target.value, 10)) ? undefined : parseInt(e.target.value, 10);
     this.setState({ policy: this.setPolicyHelper("deletion.condition.max_count", maxCount) });
   };
 
   onChangeMinCount = (e: ChangeEvent<HTMLInputElement>) => {
-    const minCount = isNaN(parseInt(e.target.value)) ? undefined : parseInt(e.target.value);
+    const minCount = isNaN(parseInt(e.target.value, 10)) ? undefined : parseInt(e.target.value, 10);
     let isMinCountValid = "";
     if (!minCount || minCount < 1) {
       isMinCountValid = "Min count should be bigger than 0.";

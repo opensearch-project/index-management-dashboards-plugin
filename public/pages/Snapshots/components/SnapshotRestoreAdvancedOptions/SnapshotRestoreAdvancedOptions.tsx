@@ -5,7 +5,7 @@
 
 import React, { ChangeEvent } from "react";
 import { EuiCheckbox, EuiSpacer, EuiText } from "@elastic/eui";
-import { CheckBoxLabel } from "../../helper"
+import { CheckBoxLabel } from "../../helper";
 import IndexSettingsInput from "../../components/IndexSettingsInput";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 
@@ -40,20 +40,14 @@ const SnapshotRestoreAdvancedOptions = ({
   onIgnoreIndexSettingsToggle,
   width,
   badJSONInput,
-  badIgnoreInput
+  badIgnoreInput,
 }: SnapshotAdvancedOptionsProps) => {
-  const {
-    restore_aliases,
-    include_global_state,
-    ignore_unavailable,
-    customize_index_settings,
-    ignore_index_settings,
-  } = RESTORE_OPTIONS;
-  const JSONerror = "Please enter valid JSON between curly brackets."
-  const ignoreListError = "Please enter a comma separated list of valid settings to ignore."
+  const { restore_aliases, include_global_state, ignore_unavailable, customize_index_settings, ignore_index_settings } = RESTORE_OPTIONS;
+  const JSONerror = "Please enter valid JSON between curly brackets.";
+  const ignoreListError = "Please enter a comma separated list of valid settings to ignore.";
 
   return (
-    <div style={{ padding: "10px 10px", width: width }}>
+    <div style={{ padding: "10px 10px", width }}>
       <EuiCheckbox
         id={restore_aliases}
         label={<CheckBoxLabel title="Restore aliases" helpText="Restore index aliases alongside their associated indices." />}
@@ -104,23 +98,24 @@ const SnapshotRestoreAdvancedOptions = ({
         onChange={onCustomizeIndexSettingsToggle}
       />
 
-      {customizeIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={false} showError={badJSONInput} inputError={JSONerror} />}
+      {customizeIndexSettings && (
+        <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={false} showError={badJSONInput} inputError={JSONerror} />
+      )}
 
       <EuiSpacer size="s" />
 
       <EuiCheckbox
         id={ignore_index_settings}
         label={
-          <CheckBoxLabel
-            title="Ignore index settings"
-            helpText="Exclude index settings that you don't want to restore from a snapshot."
-          />
+          <CheckBoxLabel title="Ignore index settings" helpText="Exclude index settings that you don't want to restore from a snapshot." />
         }
         checked={ignoreIndexSettings}
         onChange={onIgnoreIndexSettingsToggle}
       />
 
-      {ignoreIndexSettings && <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={true} showError={badIgnoreInput} inputError={ignoreListError} />}
+      {ignoreIndexSettings && (
+        <IndexSettingsInput getIndexSettings={getIndexSettings} ignore={true} showError={badIgnoreInput} inputError={ignoreListError} />
+      )}
     </div>
   );
 };

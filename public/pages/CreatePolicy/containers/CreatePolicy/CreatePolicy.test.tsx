@@ -98,6 +98,7 @@ describe("<CreatePolicy /> spec", () => {
     expect(coreServicesMock.notifications.toasts.addDanger).toHaveBeenCalledWith("Could not load the policy: some error");
   });
 
+  // eslint-disable-next-line jest/no-identical-title
   it("routes back to policies if getPolicy gracefully fails", async () => {
     browserServicesMock.policyService.getPolicy = jest.fn().mockRejectedValue(new Error("another error"));
     const { getByText } = renderCreatePolicyWithRouter([`${ROUTES.EDIT_POLICY}?id=some_id`]);
@@ -203,6 +204,7 @@ describe("<CreatePolicy /> spec", () => {
     await waitFor(() => getByText("bad policy"));
   });
 
+  // eslint-disable-next-line jest/no-identical-title
   it("shows a danger toaster when getting error from create policy", async () => {
     browserServicesMock.policyService.putPolicy = jest.fn().mockRejectedValue(new Error("this is an error"));
     browserServicesMock.policyService.getPolicy = jest

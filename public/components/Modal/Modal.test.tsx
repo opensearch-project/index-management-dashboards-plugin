@@ -16,7 +16,7 @@ describe("<ModalRoot /> spec", () => {
     const { container } = render(
       <ServicesContext.Provider value={browserServicesMock}>
         <ModalProvider>
-          <ServicesConsumer>{services => services && <ModalRoot services={services} />}</ServicesConsumer>
+          <ServicesConsumer>{(services) => services && <ModalRoot services={services} />}</ServicesConsumer>
         </ModalProvider>
       </ServicesContext.Provider>
     );
@@ -34,7 +34,7 @@ describe("<ModalRoot /> spec", () => {
       <div>
         <ServicesContext.Provider value={browserServicesMock}>
           <ModalProvider>
-            <ServicesConsumer>{services => services && <ModalRoot services={services} />}</ServicesConsumer>
+            <ServicesConsumer>{(services) => services && <ModalRoot services={services} />}</ServicesConsumer>
             <ModalConsumer>
               {({ onShow }) => (
                 <EuiButton data-test-subj="showModal" onClick={() => onShow(Modal, { text: "interesting text" })}>

@@ -46,7 +46,7 @@ interface CreateStateState {
   editAction: UIAction<Action> | null;
   createTransition: boolean;
   editTransition: UITransition | null;
-  actions: UIAction<Action>[];
+  actions: Array<UIAction<Action>>;
   transitions: UITransition[];
   afterBeforeState: string;
   order: string;
@@ -81,7 +81,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
     // If we are not editing a state or if we are editing and have changed the name
     if (!isEditing || (isEditing && name !== state?.name)) {
       // then check to make sure a state doesn't already exist in the policy with that name
-      if (!!policy.states.find((state) => state.name === name)) {
+      if (!!policy.states.find((newState) => newState.name === name)) {
         nameError = "A state with this name already exists.";
       }
     }
@@ -193,7 +193,9 @@ export default class CreateState extends Component<CreateStateProps, CreateState
     const { policy, state } = this.props;
     const { actions, name, nameError, afterBeforeState, order, disableOrderSelections } = this.state;
     // If we are editing a state filter it out from the selectable options
-    const stateOptions = policy.states.map((state) => ({ value: state.name, text: state.name })).filter((s) => s.value !== state?.name);
+    const stateOptions = policy.states
+      .map((newState) => ({ value: newState.name, text: newState.name }))
+      .filter((s) => s.value !== state?.name);
     return (
       <>
         <EuiText>

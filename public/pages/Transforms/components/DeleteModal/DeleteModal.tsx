@@ -38,7 +38,7 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
           confirmButtonText="Delete"
           buttonColor="danger"
           defaultFocusedButton="confirm"
-          confirmButtonDisabled={confirmDeleteText != "delete"}
+          confirmButtonDisabled={confirmDeleteText !== "delete"}
         >
           <EuiForm>
             <Fragment>

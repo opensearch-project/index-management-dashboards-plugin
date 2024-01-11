@@ -35,9 +35,9 @@ export const HEALTH_TO_COLOR: {
   red: "danger",
 };
 
-interface IColumnOptions extends Omit<IndexDetailModalProps, "index"> {}
+type IColumnOptions = Omit<IndexDetailModalProps, "index">;
 
-const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
+const getColumns = (props: IColumnOptions): Array<EuiTableFieldDataColumnType<ManagedCatIndex>> => {
   return [
     {
       field: "index",
@@ -151,8 +151,8 @@ const getColumns = (props: IColumnOptions): EuiTableFieldDataColumnType<ManagedC
 export const indicesColumns = (
   isDataStreamColumnVisible: boolean,
   options: IColumnOptions
-): EuiTableFieldDataColumnType<ManagedCatIndex>[] => {
-  return isDataStreamColumnVisible ? getColumns(options) : getColumns(options).filter((col) => col["field"] !== "data_stream");
+): Array<EuiTableFieldDataColumnType<ManagedCatIndex>> => {
+  return isDataStreamColumnVisible ? getColumns(options) : getColumns(options).filter((col) => col.field !== "data_stream");
 };
 
 export const DEFAULT_QUERY = JSON.stringify(

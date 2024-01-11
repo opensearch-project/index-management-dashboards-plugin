@@ -24,6 +24,7 @@ interface ScheduleRolesAndNotificationsProps {
   delayTimeunit: string;
 }
 
+// eslint-disable-next-line react/prefer-stateless-function
 export default class ScheduleRolesAndNotifications extends Component<ScheduleRolesAndNotificationsProps> {
   render() {
     const {
@@ -39,7 +40,7 @@ export default class ScheduleRolesAndNotifications extends Component<ScheduleRol
       delayTimeunit,
     } = this.props;
 
-    let scheduleText =
+    const scheduleText =
       continuousDefinition === "fixed"
         ? buildIntervalScheduleText(continuousJob === "yes", interval, intervalTimeunit)
         : buildCronScheduleText(continuousJob === "yes", cronExpression);
@@ -91,7 +92,7 @@ export default class ScheduleRolesAndNotifications extends Component<ScheduleRol
               <EuiText size="xs">
                 <dt>Execution delay</dt>
                 <dd>
-                  {isNaN(delayTime) || delayTime == undefined || delayTime == 0 ? "-" : delayTime + " " + parseTimeunit(delayTimeunit)}
+                  {isNaN(delayTime) || delayTime === undefined || delayTime === 0 ? "-" : delayTime + " " + parseTimeunit(delayTimeunit)}
                 </dd>
               </EuiText>
             </EuiFlexItem>

@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { NodeServices } from "../models/interfaces";
 import { IRouter } from "opensearch-dashboards/server";
-import { NODE_API } from "../../utils/constants";
 import { schema } from "@osd/config-schema";
+import { NodeServices } from "../models/interfaces";
+import { NODE_API } from "../../utils/constants";
 
 export default function (services: NodeServices, router: IRouter) {
   const { transformService } = services;

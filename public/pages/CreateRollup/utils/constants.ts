@@ -55,7 +55,7 @@ export const AddFieldsColumns = [
     field: "type",
     name: "Field type",
     sortable: true,
-    render: (type: string | undefined) => (type == null || type == undefined ? "-" : type),
+    render: (type: string | undefined) => (type == null || type === undefined ? "-" : type),
   },
 ];
 

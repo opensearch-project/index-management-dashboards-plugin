@@ -10,7 +10,7 @@ import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
 import { Action, UIAction } from "../../../../../models/interfaces";
 
 interface ActionsProps {
-  actions: UIAction<Action>[];
+  actions: Array<UIAction<Action>>;
   onClickDeleteAction: (idx: number) => void;
   onClickEditAction: (action: UIAction<Action>) => void;
   onDragEndActions: (dropResult: DropResult) => void;

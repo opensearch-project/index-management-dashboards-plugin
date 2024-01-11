@@ -4,9 +4,9 @@
  */
 
 import React from "react";
+import { EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiTitle } from "@elastic/eui";
 import CreateIndex, { IndexFormProps, IndexForm } from "../../../CreateIndex/containers/IndexForm";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { EuiFlyout, EuiFlyoutBody, EuiFlyoutFooter, EuiFlyoutHeader, EuiTitle } from "@elastic/eui";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 
 interface CreateIndexFlyoutProps extends IndexFormProps {

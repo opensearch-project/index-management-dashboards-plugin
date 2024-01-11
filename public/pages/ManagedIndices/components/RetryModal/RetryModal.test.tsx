@@ -50,6 +50,7 @@ describe("<RetryModal /> spec", () => {
   });
 
   it("disables select from state when no common states", () => {
+    // eslint-disable-next-line no-shadow
     const retryItems: ManagedIndexItem[] = [
       {
         index: "some_index_1",
@@ -109,6 +110,7 @@ describe("<RetryModal /> spec", () => {
   });
 
   it("disables select from state when item has no policy", () => {
+    // eslint-disable-next-line no-shadow
     const retryItems: ManagedIndexItem[] = [
       {
         index: "some_index_1",

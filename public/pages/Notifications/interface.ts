@@ -12,9 +12,9 @@ export interface ILronConfig {
   };
   task_id?: string;
   action_name?: ValueOf<typeof ActionTypeMapName>;
-  channels: {
+  channels: Array<{
     id: string;
-  }[];
+  }>;
 }
 
 export type ILronPlainConfig = ILronConfig["lron_condition"] &
@@ -23,7 +23,7 @@ export type ILronPlainConfig = ILronConfig["lron_condition"] &
     index: number;
   };
 
-export type FieldState = {
+export interface FieldState {
   dataSource: ILronPlainConfig[];
   allConfig: ILronPlainConfig;
-};
+}

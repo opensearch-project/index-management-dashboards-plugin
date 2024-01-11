@@ -25,6 +25,7 @@ import {
   EuiEmptyPrompt,
   EuiButton,
 } from "@elastic/eui";
+import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
@@ -35,7 +36,6 @@ import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
 import CreateAlias from "../CreateAlias";
 import AliasesActions from "../AliasActions";
-import { CoreStart } from "opensearch-dashboards/public";
 
 interface AliasesProps extends RouteComponentProps {
   commonService: CommonService;
@@ -91,6 +91,7 @@ function IndexNameDisplay(props: { indices: string[]; alias: string }) {
                   field: "index",
                 },
               ]}
+              // eslint-disable-next-line no-shadow
               items={props.indices.slice(index * size, (index + 1) * size).map((index) => ({ index }))}
               onChange={setTableParams}
               pagination={{
@@ -222,6 +223,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       // group by alias name
       const responseGroupByAliasName: IAlias[] = this.groupResponse(getAliasesResponse.response);
       const totalAliases = responseGroupByAliasName.length;
+      // eslint-disable-next-line no-shadow
       const payload = {
         aliases: responseGroupByAliasName.slice(fromNumber * sizeNumber, (fromNumber + 1) * sizeNumber),
         totalAliases,

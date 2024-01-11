@@ -255,8 +255,8 @@ export const testTransform2 = {
       interval: {
         period: 1,
         unit: "Minutes",
-        start_time: 1602100553
-      }
+        start_time: 1602100553,
+      },
     },
     metadata_id: null,
     updated_at: 1619725487957,
@@ -265,31 +265,31 @@ export const testTransform2 = {
     source_index: "opensearch_dashboards_sample_data_ecommerce",
     target_index: "test_transform",
     data_selection_query: {
-      match_all: {}
+      match_all: {},
     },
     page_size: 1000,
-    roles: [ ],
+    roles: [],
     groups: [
       {
         terms: {
           source_field: "customer_gender",
-          target_field: "gender"
-        }
+          target_field: "gender",
+        },
       },
       {
         terms: {
           source_field: "day_of_week",
-          target_field: "day"
-        }
-      }
+          target_field: "day",
+        },
+      },
     ],
     aggregations: {
       quantity: {
         sum: {
-          field: "total_quantity"
-        }
-      }
-    }
+          field: "total_quantity",
+        },
+      },
+    },
   },
   metadata: {
     test1: {
@@ -307,9 +307,9 @@ export const testTransform2 = {
           search_time_in_millis: 1168,
         },
       },
-    }
-  }
-}
+    },
+  },
+};
 
 export const testTransformDisabled = {
   _id: "test1",
@@ -323,8 +323,8 @@ export const testTransformDisabled = {
       interval: {
         period: 1,
         unit: "Minutes",
-        start_time: 1602100553
-      }
+        start_time: 1602100553,
+      },
     },
     metadata_id: null,
     updated_at: 1619725487957,
@@ -333,31 +333,31 @@ export const testTransformDisabled = {
     source_index: "opensearch_dashboards_sample_data_ecommerce",
     target_index: "test_transform",
     data_selection_query: {
-      match_all: {}
+      match_all: {},
     },
     page_size: 1000,
-    roles: [ ],
+    roles: [],
     groups: [
       {
         terms: {
           source_field: "customer_gender",
-          target_field: "gender"
-        }
+          target_field: "gender",
+        },
       },
       {
         terms: {
           source_field: "day_of_week",
-          target_field: "day"
-        }
-      }
+          target_field: "day",
+        },
+      },
     ],
     aggregations: {
       quantity: {
         sum: {
-          field: "total_quantity"
-        }
-      }
-    }
+          field: "total_quantity",
+        },
+      },
+    },
   },
   metadata: {
     test1: {
@@ -375,6 +375,6 @@ export const testTransformDisabled = {
           search_time_in_millis: 1168,
         },
       },
-    }
-  }
-}
+    },
+  },
+};

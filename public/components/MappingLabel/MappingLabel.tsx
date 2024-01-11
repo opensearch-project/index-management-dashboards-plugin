@@ -2,6 +2,9 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
+
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import React, { forwardRef, useCallback, useRef, useImperativeHandle } from "react";
 import {
   EuiIcon,
@@ -15,12 +18,12 @@ import {
   EuiFormRowProps,
 } from "@elastic/eui";
 import { set, pick, isEqual } from "lodash";
+import { useEffect } from "react";
 import { MappingsProperties } from "../../../models/interfaces";
 import { AllBuiltInComponents } from "../FormGenerator";
 import useField, { transformNameToString } from "../../lib/field";
 import { INDEX_MAPPING_TYPES, INDEX_MAPPING_TYPES_WITH_CHILDREN } from "../../utils/constants";
 import SimplePopover from "../SimplePopover";
-import { useEffect } from "react";
 
 interface IMappingLabel {
   value: MappingsProperties[number];
@@ -72,6 +75,7 @@ export const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: Reac
       }
       return propsRef.current.onChange(newValue, k, v);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [propsRef.current.value, propsRef.current.onChange]
   );
   const field = useField({
@@ -82,11 +86,15 @@ export const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: Reac
     onChange: onFieldChange,
     unmountComponent: true,
   });
-  useEffect(() => {
-    if (!isEqual(propsRef.current.value, field.getValues())) {
-      field.resetValues(propsRef.current.value);
-    }
-  }, [propsRef.current.value]);
+  useEffect(
+    () => {
+      if (!isEqual(propsRef.current.value, field.getValues())) {
+        field.resetValues(propsRef.current.value);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [propsRef.current.value]
+  );
   const value = field.getValues();
   const type = value.type;
   useImperativeHandle(forwardedRef, () => ({
@@ -143,8 +151,8 @@ export const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: Reac
                   message: "Field name is required, please input",
                 },
                 {
-                  validator: (rule, value) => {
-                    const checkResult = onFieldNameCheck(value);
+                  validator: (rule, v) => {
+                    const checkResult = onFieldNameCheck(v);
                     if (checkResult) {
                       return Promise.reject(checkResult);
                     }
@@ -182,6 +190,7 @@ export const MappingLabel = forwardRef((props: IMappingLabel, forwardedRef: Reac
         </FormRow>
       </EuiFlexItem>
       {moreFields.map((item) => {
+        // eslint-disable-next-line no-shadow
         const { label, type, ...others } = item;
         const RenderComponent = AllBuiltInComponents[type];
         return (

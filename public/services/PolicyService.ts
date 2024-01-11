@@ -17,7 +17,7 @@ export default class PolicyService {
   }
 
   getPolicies = async (queryObject: object): Promise<ServerResponse<GetPoliciesResponse>> => {
-    let url = `..${NODE_API.POLICIES}`;
+    const url = `..${NODE_API.POLICIES}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetPoliciesResponse>;
     return response;
   };
@@ -28,7 +28,7 @@ export default class PolicyService {
     seqNo?: number,
     primaryTerm?: number
   ): Promise<ServerResponse<PutPolicyResponse>> => {
-    let url = `..${NODE_API.POLICIES}/${policyId}`;
+    const url = `..${NODE_API.POLICIES}/${policyId}`;
     const response = (await this.httpClient.put(url, { query: { seqNo, primaryTerm }, body: JSON.stringify(policy) })) as ServerResponse<
       PutPolicyResponse
     >;

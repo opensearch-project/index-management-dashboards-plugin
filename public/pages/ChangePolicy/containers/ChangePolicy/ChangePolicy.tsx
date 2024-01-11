@@ -22,8 +22,8 @@ interface ChangePolicyProps extends RouteComponentProps {
 
 interface ChangePolicyState {
   selectedPolicies: PolicyOption[];
-  selectedManagedIndices: { label: string; value?: ManagedIndexItem }[];
-  selectedStateFilters: { label: string }[];
+  selectedManagedIndices: Array<{ label: string; value?: ManagedIndexItem }>;
+  selectedStateFilters: Array<{ label: string }>;
   stateSelected: string;
   stateRadioIdSelected: string;
   managedIndicesError: string;
@@ -59,7 +59,7 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
     this.setState({ selectedPolicies, selectedPoliciesError, stateSelected: "", stateRadioIdSelected: Radio.Current });
   };
 
-  onChangeManagedIndices = (selectedManagedIndices: { label: string; value?: ManagedIndexItem }[]): void => {
+  onChangeManagedIndices = (selectedManagedIndices: Array<{ label: string; value?: ManagedIndexItem }>): void => {
     const managedIndicesError = selectedManagedIndices.length ? "" : "Required";
     if (!selectedManagedIndices.length) {
       this.onChangeStateFilters([]);
@@ -67,7 +67,7 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
     this.setState({ selectedManagedIndices, managedIndicesError });
   };
 
-  onChangeStateFilters = (selectedStateFilters: { label: string }[]): void => {
+  onChangeStateFilters = (selectedStateFilters: Array<{ label: string }>): void => {
     this.setState({ selectedStateFilters });
   };
 

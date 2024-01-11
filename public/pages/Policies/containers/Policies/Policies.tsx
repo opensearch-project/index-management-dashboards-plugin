@@ -53,7 +53,7 @@ interface PoliciesState {
 
 export default class Policies extends Component<PoliciesProps, PoliciesState> {
   static contextType = CoreServicesContext;
-  columns: EuiTableFieldDataColumnType<PolicyItem>[];
+  columns: Array<EuiTableFieldDataColumnType<PolicyItem>>;
 
   constructor(props: PoliciesProps) {
     super(props);
@@ -202,7 +202,7 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
 
     const deletePromises = policyIds.map((policyId) => this.deletePolicy(policyId));
 
-    const deleted = (await Promise.all(deletePromises)).reduce((deleted: boolean, result: boolean) => deleted && result);
+    const deleted = (await Promise.all(deletePromises)).reduce((del: boolean, result: boolean) => del && result);
     if (deleted) await this.getPolicies();
   };
 

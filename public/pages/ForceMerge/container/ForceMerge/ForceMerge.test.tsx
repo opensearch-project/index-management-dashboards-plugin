@@ -195,6 +195,7 @@ describe("<ForceMerge /> spec", () => {
   });
 
   it("source is required", async () => {
+    // eslint-disable-next-line no-shadow
     const { getByText, getByTestId, findByText } = renderWithRouter();
 
     await waitFor(() => {

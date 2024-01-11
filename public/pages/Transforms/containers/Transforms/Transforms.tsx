@@ -29,9 +29,10 @@ import {
 } from "@elastic/eui";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
+import React, { Component } from "react";
+import _ from "lodash";
 import TransformService from "../../../../services/TransformService";
 import { DocumentTransform } from "../../../../../models/interfaces";
-import React, { Component } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getURLQueryParams, renderTime } from "../../utils/helpers";
 import { TransformQueryParams } from "../../models/interfaces";
@@ -41,7 +42,6 @@ import DeleteModal from "../../components/DeleteModal";
 import TransformEmptyPrompt from "../../components/TransformEmptyPrompt";
 import { renderEnabled, renderStatus } from "../../utils/metadataHelper";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../../Indices/utils/constants";
-import _ from "lodash";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { renderContinuous } from "../../../Rollups/utils/helpers";
 
@@ -127,7 +127,7 @@ export default class Transforms extends Component<TransformProps, TransformState
       totalItemCount: totalTransforms,
     };
 
-    const columns: EuiTableFieldDataColumnType<DocumentTransform>[] = [
+    const columns: Array<EuiTableFieldDataColumnType<DocumentTransform>> = [
       {
         field: "_id",
         name: "Name",
@@ -202,7 +202,7 @@ export default class Transforms extends Component<TransformProps, TransformState
       <EuiContextMenuItem
         key="Edit"
         icon="empty"
-        disabled={selectedItems.length != 1}
+        disabled={selectedItems.length !== 1}
         data-test-subj="editButton"
         onClick={() => {
           this.closePopover();
@@ -388,7 +388,7 @@ export default class Transforms extends Component<TransformProps, TransformState
   onClickDelete = async () => {
     const { transformService } = this.props;
     const { selectedItems } = this.state;
-    for (let item of selectedItems) {
+    for (const item of selectedItems) {
       const transformId = item._id;
       try {
         const response = await transformService.deleteTransform(transformId);

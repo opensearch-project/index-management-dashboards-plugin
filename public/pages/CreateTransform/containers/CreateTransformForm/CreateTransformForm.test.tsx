@@ -6,7 +6,7 @@
 import React from "react";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
-import { MemoryRouter as Router } from "react-router";
+import { MemoryRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
@@ -314,7 +314,7 @@ describe("<CreateTransformForm /> creation", () => {
 
     await waitFor(() => {}, { timeout: 4000 });
 
-    //Check that it routes to step 2
+    // Check that it routes to step 2
     expect(queryByText("Job name and description")).toBeNull();
     expect(queryByText("Select fields to transform")).not.toBeNull();
   });
@@ -395,7 +395,7 @@ describe("<CreateTransformForm /> creation", () => {
       queryByText("You can only change the description and schedule after creating a job. Double-check your choices before proceeding.")
     ).not.toBeNull();
 
-    //Test create
+    // Test create
     userEvent.click(getByTestId("createTransformSubmitButton"));
     await waitFor(() => {});
 

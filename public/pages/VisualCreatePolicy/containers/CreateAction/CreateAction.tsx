@@ -14,7 +14,7 @@ import { ACTIONS_DOCUMENTATION_URL } from "../../../../utils/constants";
 
 interface CreateActionProps {
   stateName: string;
-  actions: UIAction<Action>[];
+  actions: Array<UIAction<Action>>;
   editAction: UIAction<Action> | null;
   onClickCancelAction: () => void;
   onClickSaveAction: (action: UIAction<Action>) => void;
@@ -94,7 +94,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
 
           <EuiSpacer />
 
-          {/*Below is for when the specific action renders have updated their config and want to update the UIAction*/}
+          {/* Below is for when the specific action renders have updated their config and want to update the UIAction*/}
           {/* So we should not be changing the id because it'll break the UI */}
           {action?.render(action, this.onChangeAction)}
 

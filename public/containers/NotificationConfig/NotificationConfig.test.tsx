@@ -5,15 +5,15 @@
 
 import React, { useRef } from "react";
 import "@testing-library/jest-dom/extend-expect";
-import NotificationConfig, { NotificationConfigProps, NotificationConfigRef } from "./NotificationConfig";
 import { render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { EuiButton } from "@elastic/eui";
+import NotificationConfig, { NotificationConfigProps, NotificationConfigRef } from "./NotificationConfig";
 import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
 import { ServicesContext } from "../../services";
 import { CoreServicesContext } from "../../components/core_services";
 import { ActionType, OperationType, VALIDATE_ERROR_FOR_CHANNELS } from "../../pages/Notifications/constant";
 import { IAPICaller } from "../../../models/interfaces";
-import userEvent from "@testing-library/user-event";
-import { EuiButton } from "@elastic/eui";
 
 const WrappedComponent = (
   props: NotificationConfigProps & {
@@ -60,7 +60,7 @@ function renderWithServiceAndCore(
   };
 }
 
-const chainRules = (args: any[], ...funs: ((...args: any[]) => void | any)[]) => {
+const chainRules = (args: any[], ...funs: Array<(...args: any[]) => void | any>) => {
   const findItem = funs.find((item) => item(...args) !== undefined);
   return findItem?.(...args);
 };

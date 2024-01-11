@@ -15,7 +15,7 @@ export const transformConfigListToPlainList = (config: ILronConfig[]): ILronPlai
           failure: false,
           success: false,
         },
-        action_name: action_name,
+        action_name,
         channels: [],
       } as ILronConfig);
     const { lron_condition, ...rest } = findItem;
@@ -35,7 +35,7 @@ export const transformPlainListToConfigList = (config: ILronPlainConfig[]): ILro
       ({
         failure: false,
         success: false,
-        action_name: action_name,
+        action_name,
         title: ActionTypeMapTitle[actionType as ActionType],
         channels: [],
         index: currentIndex,
@@ -104,9 +104,9 @@ export const submitNotifications = async (props: { commonService: CommonService;
 export const getNotifications = async (props: { commonService: CommonService }) => {
   return props.commonService
     .apiCaller<{
-      lron_configs: {
+      lron_configs: Array<{
         lron_config: ILronConfig;
-      }[];
+      }>;
       total_number: number;
     }>({
       endpoint: "transport.request",

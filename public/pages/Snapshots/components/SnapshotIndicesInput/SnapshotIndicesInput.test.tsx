@@ -9,12 +9,11 @@ import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import SnapshotIndicesInput from "./SnapshotIndicesInput";
 
-
 const testProps = {
   onIndicesSelectionChange: jest.fn(),
   getIndexOptions: jest.fn(),
   onCreateOption: jest.fn(),
-  isClearable: true
+  isClearable: true,
 };
 
 afterEach(() => {
@@ -24,13 +23,8 @@ afterEach(() => {
 describe("SnapshotIndicesInput component", () => {
   it("renders without error", () => {
     const { container } = render(
-      <SnapshotIndicesInput
-        {...testProps}
-        indexOptions={[]}
-        selectedIndexOptions={[]}
-        selectedRepoValue="test_repo"
-      />
-    )
+      <SnapshotIndicesInput {...testProps} indexOptions={[]} selectedIndexOptions={[]} selectedRepoValue="test_repo" />
+    );
     expect(screen.getByRole("textbox")).toBeInTheDocument();
     expect(container).toMatchSnapshot();
   });

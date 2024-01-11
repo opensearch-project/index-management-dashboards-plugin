@@ -1,8 +1,13 @@
+/*
+ * Copyright OpenSearch Contributors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 import { EuiFilterButton, EuiFilterButtonProps, EuiFilterGroup, EuiFilterSelectItem, EuiPopover } from "@elastic/eui";
 import React, { useState } from "react";
 
 export interface IFilterGroupProps {
-  options: { label: string }[];
+  options: Array<{ label: string }>;
   value?: string[];
   filterButtonProps?: EuiFilterButtonProps;
   onChange?: (val: IFilterGroupProps["value"]) => void;

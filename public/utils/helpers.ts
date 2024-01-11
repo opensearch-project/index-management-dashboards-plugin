@@ -71,7 +71,7 @@ export const getClusterInfo = (props: { commonService: CommonService }): Promise
 };
 
 interface BlockedIndices {
-  [indexName: string]: String[];
+  [indexName: string]: string[];
 }
 
 interface ClusterBlocksStateResponse {
@@ -165,11 +165,11 @@ export function indexBlockedPredicate(item: Pick<CatIndex, "index">, blockedItem
   return blockedItemsSet.has(item.index);
 }
 
-export function aliasBlockedPredicate(item: Pick<IAlias, "indexArray">, blockedItemsSet: Set<String>): boolean {
+export function aliasBlockedPredicate(item: Pick<IAlias, "indexArray">, blockedItemsSet: Set<string>): boolean {
   return !!item.indexArray.find((indexName) => blockedItemsSet.has(indexName));
 }
 
-export function dataStreamBlockedPredicate(item: Pick<DataStream, "indices">, blockedItemsSet: Set<String>): boolean {
+export function dataStreamBlockedPredicate(item: Pick<DataStream, "indices">, blockedItemsSet: Set<string>): boolean {
   return !!item.indices.find((dataStreamIndex) => blockedItemsSet.has(dataStreamIndex.index_name));
 }
 
@@ -184,7 +184,7 @@ export async function filterBlockedItems(
     unBlockedItems: [],
     blockedItems: [],
   };
-  var redIndices: string[] = [];
+  let redIndices: string[] = [];
   if (filterRedIndices) {
     if (!originInputItems.length && indexOpTargetType !== INDEX_OP_TARGET_TYPE.INDEX) {
       throw new Error("Can only filter red indexes for type index.");
@@ -197,10 +197,10 @@ export async function filterBlockedItems(
     result.blockedItems = redIndices;
     return result;
   }
-  var filteredBlockedIndicesSet = await getBlockedIndicesSetWithBlocksType(browserServices, blocksTypes);
+  let filteredBlockedIndicesSet = await getBlockedIndicesSetWithBlocksType(browserServices, blocksTypes);
   filteredBlockedIndicesSet = new Set([...filteredBlockedIndicesSet, ...redIndices]);
 
-  var inputItems: IAlias[] | DataStream[] | CatIndex[];
+  let inputItems: IAlias[] | DataStream[] | CatIndex[];
   switch (indexOpTargetType) {
     case INDEX_OP_TARGET_TYPE.ALIAS:
       inputItems = (originInputItems as unknown) as IAlias[];

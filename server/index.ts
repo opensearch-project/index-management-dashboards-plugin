@@ -20,7 +20,9 @@ export const config: PluginConfigDescriptor<IndexManagementPluginConfigType> = {
   schema: configSchema,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IndexManagementPluginSetup {}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IndexManagementPluginStart {}
 
 export function plugin(initializerContext: PluginInitializerContext) {

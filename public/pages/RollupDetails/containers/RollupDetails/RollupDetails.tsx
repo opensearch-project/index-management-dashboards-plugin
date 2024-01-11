@@ -171,7 +171,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
 
   parseDimension = (dimensions: RollupDimensionItem[]): DimensionItem[] => {
     const sourceArray = dimensions.slice(1, dimensions.length);
-    if (sourceArray.length == 0) return [];
+    if (sourceArray.length === 0) return [];
     const result = sourceArray.map((dimension: RollupDimensionItem) => ({
       sequence: dimensions.indexOf(dimension),
       aggregationMethod: dimension.histogram == null ? "terms" : "histogram",
@@ -182,7 +182,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
   };
 
   parseMetric = (metrics: RollupMetricItem[]): MetricItem[] => {
-    if (metrics.length == 0) return [];
+    if (metrics.length === 0) return [];
     const result = metrics.map((metric) => ({
       source_field: metric.source_field,
       all: false,
@@ -203,7 +203,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
 
       if (response.ok) {
         this.setState({ enabled: false });
-        //Show success message
+        // Show success message
         await this.getRollup(rollupId);
         this.forceUpdate();
         this.context.notifications.toasts.addSuccess(`${rollupId} is disabled`);
@@ -224,7 +224,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
 
       if (response.ok) {
         this.setState({ enabled: true });
-        //Show success message
+        // Show success message
         await this.getRollup(rollupId);
         this.forceUpdate();
         this.context.notifications.toasts.addSuccess(`${rollupId} is enabled`);
@@ -262,7 +262,7 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
 
       if (response.ok) {
         this.closeDeleteModal();
-        //Show success message
+        // Show success message
         this.context.notifications.toasts.addSuccess(`"${rollupId}" successfully deleted!`);
         this.props.history.push(ROUTES.ROLLUPS);
       } else {

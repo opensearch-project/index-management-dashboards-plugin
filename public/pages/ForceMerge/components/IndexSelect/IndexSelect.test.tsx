@@ -5,10 +5,10 @@
 
 import { render, waitFor } from "@testing-library/react";
 import React from "react";
+import { act } from "react-dom/test-utils";
 import { coreServicesMock } from "../../../../../test/mocks";
 import { CoreServicesContext } from "../../../../components/core_services";
 import IndexSelect from "./IndexSelect";
-import { act } from "react-dom/test-utils";
 
 describe("<IndexSelect /> spec", () => {
   it("renders the component", async () => {
