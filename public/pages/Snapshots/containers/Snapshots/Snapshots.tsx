@@ -22,7 +22,7 @@ import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService, IndexService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { Toast, RestoreError } from "../../../../models/interfaces"
+import { Toast, RestoreError } from "../../../../models/interfaces";
 import { CatSnapshotWithRepoAndPolicy as SnapshotsWithRepoAndPolicy } from "../../../../../server/models/interfaces";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import SnapshotFlyout from "../../components/SnapshotFlyout/SnapshotFlyout";
@@ -32,9 +32,9 @@ import RestoreActivitiesPanel from "../../components/RestoreActivitiesPanel";
 import { Snapshot } from "../../../../../models/interfaces";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { renderTimestampMillis } from "../../../SnapshotPolicies/helpers";
-import ErrorModal from "../../../Snapshots/components/ErrorModal/ErrorModal"
+import ErrorModal from "../../../Snapshots/components/ErrorModal/ErrorModal";
 import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
-import { getToasts } from "../../helper"
+import { getToasts } from "../../helper";
 import { snapshotStatusRender, truncateSpan } from "../../helper";
 
 interface SnapshotsProps extends RouteComponentProps {
@@ -174,11 +174,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         ] as string[];
         this.setState({ snapshots, existingPolicyNames });
       } else {
-        const message = JSON.parse(response.error).error.root_cause[0].reason
+        const message = JSON.parse(response.error).error.root_cause[0].reason;
         const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
         this.context.notifications.toasts.addError(response.error, {
           title: `There was a problem getting the snapshots.`,
-          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`,
         });
       }
     } catch (err) {
@@ -212,11 +212,11 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       if (response.ok) {
         this.context.notifications.toasts.addSuccess(`Deleted snapshot ${snapshotId} from repository ${repository}.`);
       } else {
-        const message = JSON.parse(response.error).error.root_cause[0].reason
+        const message = JSON.parse(response.error).error.root_cause[0].reason;
         const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
         this.context.notifications.toasts.addError(response.error, {
           title: `There was a problem deleting the snapshot.`,
-          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`,
         });
       }
     } catch (err) {
@@ -241,12 +241,12 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
         this.context.notifications.toasts.addSuccess(`Created snapshot ${snapshotId} in repository ${repository}.`);
         await this.getSnapshots();
       } else {
-        const message = JSON.parse(response.error).error.root_cause[0].reason
+        const message = JSON.parse(response.error).error.root_cause[0].reason;
         const trimmedMessage = message.slice(message.indexOf("]") + 1, message.indexOf(".") + 1);
 
         this.context.notifications.toasts.addError(response.error, {
           title: `There was a problem creating the snapshot.`,
-          toastMessage: `${trimmedMessage} Open browser console & click below for details.`
+          toastMessage: `${trimmedMessage} Open browser console & click below for details.`,
         });
       }
     } catch (err) {
@@ -256,7 +256,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   restoreSnapshot = async (snapshotId: string, repository: string, options: object) => {
     try {
-      await this.setState({ toasts: [], indicesToRestore: options.indices })
+      await this.setState({ toasts: [], indicesToRestore: options.indices });
       const { snapshotManagementService } = this.props;
       const response = await snapshotManagementService.restoreSnapshot(snapshotId, repository, options);
 
@@ -277,43 +277,43 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       let optionalMessage = "";
 
       if (error.reason.indexOf("open index with same name") >= 0) {
-        optionalMessage = "You have an index with the same name. Try a different prefix."
+        optionalMessage = "You have an index with the same name. Try a different prefix.";
       }
-      errorMessage = `${optionalMessage}`
+      errorMessage = `${optionalMessage}`;
     }
 
-    const toasts = success ?
-      getToasts("success_restore_toast", errorMessage, selectedItems[0].id, this.onClickTab) :
-      getToasts("error_restore_toast", errorMessage, selectedItems[0].id, this.onOpenError);
+    const toasts = success
+      ? getToasts("success_restore_toast", errorMessage, selectedItems[0].id, this.onClickTab)
+      : getToasts("error_restore_toast", errorMessage, selectedItems[0].id, this.onOpenError);
     this.setState({ toasts, error: error });
-  }
+  };
 
   onOpenError = () => {
     this.setState({ viewError: true });
-  }
+  };
 
   collectError = (error: object) => {
     this.setState(error);
-  }
+  };
 
   collectToast = (toasts: Toast[]) => {
-    this.setState({ toasts: toasts })
-  }
+    this.setState({ toasts: toasts });
+  };
 
   onCloseModal = () => {
     this.setState({ viewError: false, error: {} });
-  }
+  };
 
   getRestoreTime = (time: number) => {
-    this.setState({ restoreStart: time })
-  }
+    this.setState({ restoreStart: time });
+  };
 
   onClickRestore = async () => {
     const { selectedItems } = this.state;
     const snapshot = selectedItems[0];
     const errorMessage = `${snapshot.id} is not available for restore`;
-    const failedText = "This shapshot is incomplete. Pick another snapshot to restore."
-    const inProgressText = "This snapshot is still being created. Try again once the snapshot has been completed."
+    const failedText = "This shapshot is incomplete. Pick another snapshot to restore.";
+    const inProgressText = "This snapshot is still being created. Try again once the snapshot has been completed.";
 
     if (snapshot.status === "FAILED" || snapshot.status === "IN_PROGRESS") {
       const errorText = snapshot.status === "IN_PROGRESS" ? inProgressText : failedText;
@@ -325,7 +325,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
   onToastEnd = () => {
     this.setState({ toasts: [] });
-  }
+  };
 
   onCloseRestoreFlyout = () => {
     this.setState({ showRestoreFlyout: false });
@@ -366,7 +366,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       secondTab!.ariaSelected = "true";
       secondTab!.classList.add("euiTab-isSelected");
     }
-    let newState = { snapshotPanel: snapshotPanel, selectedItems }
+    let newState = { snapshotPanel: snapshotPanel, selectedItems };
 
     if (snapshotPanel) newState.selectedItems = [];
 
@@ -434,7 +434,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <EuiButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="primary" data-test-subj="restoreButton">
         Restore
       </EuiButton>,
-      <EuiButton onClick={this.onClickCreate} fill={true}>
+      <EuiButton onClick={this.onClickCreate} fill={true} data-test-subj="takeSnapshotButton">
         Take snapshot
       </EuiButton>,
     ];
@@ -442,7 +442,9 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     const subTitleText = (
       <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
         <p style={{ fontWeight: 200 }}>
-          Snapshots of indices are taken automatically from snapshot policies, <br />or you can initiate manual snapshots to save to a repository.<br />
+          Snapshots of indices are taken automatically from snapshot policies, <br />
+          or you can initiate manual snapshots to save to a repository.
+          <br />
           You can restore indices by selecting a snapshot.
         </p>
       </EuiText>
@@ -452,8 +454,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       <>
         <EuiPageHeader>
           <EuiTabs size="m" ref={this.tabsRef}>
-            <EuiTab isSelected={true} onClick={this.onClickTab} >Snapshots</EuiTab>
-            <EuiTab onClick={this.onClickTab} >Restore activities in progress</EuiTab>
+            <EuiTab isSelected={true} onClick={this.onClickTab}>
+              Snapshots
+            </EuiTab>
+            <EuiTab onClick={this.onClickTab}>Restore activities in progress</EuiTab>
           </EuiTabs>
         </EuiPageHeader>
         {snapshotPanel || (
@@ -525,13 +529,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
 
         <EuiGlobalToastList toasts={toasts} dismissToast={this.onToastEnd} toastLifeTimeMs={6000} />
 
-        {viewError && (
-          <ErrorModal
-            onClick={this.onCloseModal}
-            onClose={this.onCloseModal}
-            snapshotId={selectedItems[0].id}
-            error={error} />
-        )}
+        {viewError && <ErrorModal onClick={this.onCloseModal} onClose={this.onCloseModal} snapshotId={selectedItems[0].id} error={error} />}
 
         {isDeleteModalVisible && (
           <DeleteModal
