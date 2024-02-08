@@ -19,6 +19,7 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Subhobrata DEY        | [sbcd90](https://github.com/sbcd90)                   | Amazon      |
 | Surya Sashank Nistala | [eirsep](https://github.com/eirsep)                   | Amazon      |
 | Rohit Ashiwal         | [r1walz](https://github.com/r1walz)                   | Amazon      |
+| Vikas Bansal          | [vikasvb90](https://github.com/vikasvb90)             | Amazon      |
 
 ## Emeritus
 
