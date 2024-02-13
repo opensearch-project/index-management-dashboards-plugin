@@ -616,7 +616,7 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
 
                 <EuiFlexGroup alignItems="flexStart">
                   <EuiFlexItem grow={false}>
-                    <CustomLabel title="Minumum" />
+                    <CustomLabel title="Minimum" />
                     <EuiFormRow isInvalid={!!minCountError} error={minCountError}>
                       <EuiFieldNumber
                         min={1}
