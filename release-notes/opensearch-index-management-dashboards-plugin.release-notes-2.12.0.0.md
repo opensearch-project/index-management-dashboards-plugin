@@ -7,6 +7,7 @@ Compatible with OpenSearch-Dashboards 2.12.0
 * Remove unused integtest.sh file ([#954](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/954))
 * Increment version to 2.12.0.0 ([#928](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/928))
 * Update the babel require ([#935](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/935))
+* Update browserify-sign to fix cve-2023-46234 ([#978](https://github.com/opensearch-project/index-management-dashboards-plugin/pull/978))
 
 ### Enhancements
 
