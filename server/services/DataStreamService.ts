@@ -4,26 +4,30 @@
  */
 
 import {
-  RequestHandlerContext,
-  OpenSearchDashboardsRequest,
-  OpenSearchDashboardsResponseFactory,
-  IOpenSearchDashboardsResponse,
   ILegacyCustomClusterClient,
   ILegacyScopedClusterClient,
+  IOpenSearchDashboardsResponse,
+  OpenSearchDashboardsRequest,
+  OpenSearchDashboardsResponseFactory,
+  RequestHandlerContext,
 } from "opensearch-dashboards/server";
 import { ServerResponse } from "../models/types";
 import { DataStream, GetDataStreamsResponse, IndexToDataStream } from "../models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../utils/constants";
+import { IAPICaller } from "../../models/interfaces";
+import { getClientBasedOnDataSource } from "../utils/helpers";
 
 export default class DataStreamService {
   osDriver: ILegacyCustomClusterClient;
+  dataSourceEnabled: boolean;
 
-  constructor(osDriver: ILegacyCustomClusterClient) {
+  constructor(osDriver: ILegacyCustomClusterClient, dataSourceEnabled: boolean = false) {
     this.osDriver = osDriver;
+    this.dataSourceEnabled = dataSourceEnabled;
   }
 
   getDataStreams = async (
-    context: RequestHandlerContext,
+    context: any,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetDataStreamsResponse>>> => {
@@ -32,8 +36,11 @@ export default class DataStreamService {
         search?: string;
       };
 
-      const client = this.osDriver.asScoped(request);
-      const [dataStreams, apiAccessible, errMsg] = await getDataStreams(client, search);
+      const useQuery = !request.body;
+      const usedParam = useQuery ? request.query : request.body;
+      const { dataSourceId = "" } = usedParam || {};
+      const callWithRequest = getClientBasedOnDataSource(context, this.dataSourceEnabled, request, dataSourceId, this.osDriver);
+      const [dataStreams, apiAccessible, errMsg] = await getDataStreams(callWithRequest, search);
 
       if (!apiAccessible)
         return response.custom({
@@ -67,10 +74,7 @@ export default class DataStreamService {
   };
 }
 
-export async function getDataStreams(
-  { callAsCurrentUser: callWithRequest }: ILegacyScopedClusterClient,
-  search?: string
-): Promise<[DataStream[], boolean, string]> {
+export async function getDataStreams(callWithRequest: any, search?: string): Promise<[DataStream[], boolean, string]> {
   const searchPattern = search ? `*${search}*` : "*";
 
   let accessible = true;
@@ -93,7 +97,7 @@ export async function getDataStreams(
 export async function getIndexToDataStreamMapping({
   callAsCurrentUser: callWithRequest,
 }: ILegacyScopedClusterClient): Promise<IndexToDataStream> {
-  const [dataStreams] = await getDataStreams({ callAsCurrentUser: callWithRequest });
+  const [dataStreams] = await getDataStreams(callWithRequest);
 
   const mapping: { [indexName: string]: string } = {};
   dataStreams.forEach((dataStream) => {

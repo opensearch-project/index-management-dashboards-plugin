@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import { debounce, isEqual } from "lodash";
+import _, { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -35,9 +35,13 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import DataStreamsActions from "../DataStreamsActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import { DataStream } from "../../../../../server/models/interfaces";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
 
 interface DataStreamsProps extends RouteComponentProps {
   commonService: CommonService;
+  dataSourceId: string;
+  dataSourceLabel: string;
+  multiDataSourceEnabled: boolean;
 }
 
 type DataStreamsState = {
@@ -49,6 +53,8 @@ type DataStreamsState = {
   selectedItems: DataStreamWithStats[];
   dataStreams: DataStreamWithStats[];
   loading: boolean;
+  dataSourceId: string;
+  dataSourceLabel: string;
 } & SearchControlsProps["value"];
 
 const defaultFilter = {
@@ -89,9 +95,29 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
       selectedItems: [],
       dataStreams: [],
       loading: false,
+      dataSourceId: props.dataSourceId,
+      dataSourceLabel: props.dataSourceLabel,
     };
 
     this.getDataStreams = debounce(this.getDataStreams, 500, { leading: true });
+  }
+
+  static getDerivedStateFromProps(nextProps: DataStreamsProps, prevState: DataStreamsState) {
+    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
+      return {
+        dataSourceId: nextProps.dataSourceId,
+        dataSourceLabel: nextProps.dataSourceLabel,
+      };
+    }
+    return null;
+  }
+
+  async componentDidUpdate(prevProps: DataStreamsProps, prevState: DataStreamsState) {
+    const prevQuery = this.getQueryState(prevState);
+    const currQuery = this.getQueryState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getDataStreams();
+    }
   }
 
   componentDidMount() {
@@ -420,5 +446,14 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
 
 export default function DataStreamsContainer(props: Omit<DataStreamsProps, "commonService">) {
   const context = useContext(ServicesContext);
-  return <DataStreams {...props} commonService={context?.commonService as CommonService} />;
+  const { dataSourceId, dataSourceLabel, multiDataSourceEnabled } = useContext(DataSourceMenuContext);
+  return (
+    <DataStreams
+      {...props}
+      commonService={context?.commonService as CommonService}
+      dataSourceId={dataSourceId}
+      dataSourceLabel={dataSourceLabel}
+      multiDataSourceEnabled={multiDataSourceEnabled}
+    />
+  );
 }

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -37,10 +37,14 @@ import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants
 import IndicesActions from "../IndicesActions";
 import { destroyListener, EVENT_MAP, listenEvent } from "../../../../JobHandler";
 import "./index.scss";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
 
 interface IndicesProps extends RouteComponentProps {
   indexService: IndexService;
   commonService: CommonService;
+  dataSourceId: string;
+  dataSourceLabel: string;
+  multiDataSourceEnabled: boolean;
 }
 
 interface IndicesState {
@@ -58,8 +62,26 @@ interface IndicesState {
   isDataStreamColumnVisible: boolean;
 }
 
-export default class Indices extends Component<IndicesProps, IndicesState> {
+interface IndicesState {
+  totalIndices: number;
+  from: number;
+  size: number;
+  search: string;
+  query: Query;
+  sortField: keyof ManagedCatIndex;
+  sortDirection: Direction;
+  selectedItems: ManagedCatIndex[];
+  indices: ManagedCatIndex[];
+  loadingIndices: boolean;
+  showDataStreams: boolean;
+  isDataStreamColumnVisible: boolean;
+  dataSourceId: string;
+  dataSourceLabel: string;
+}
+
+export class Indices extends Component<IndicesProps, IndicesState> {
   static contextType = CoreServicesContext;
+
   constructor(props: IndicesProps) {
     super(props);
     const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
@@ -76,9 +98,21 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       loadingIndices: true,
       showDataStreams,
       isDataStreamColumnVisible: showDataStreams,
+      dataSourceId: props.dataSourceId,
+      dataSourceLabel: props.dataSourceLabel,
     };
 
     this.getIndices = _.debounce(this.getIndices, 500, { leading: true });
+  }
+
+  static getDerivedStateFromProps(nextProps: IndicesProps, prevState: IndicesState) {
+    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
+      return {
+        dataSourceId: nextProps.dataSourceId,
+        dataSourceLabel: nextProps.dataSourceLabel,
+      };
+    }
+    return null;
   }
 
   async componentDidMount() {
@@ -105,8 +139,16 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     }
   }
 
-  static getQueryObjectFromState({ from, size, search, sortField, sortDirection, showDataStreams }: IndicesState): IndicesQueryParams {
-    return { from, size, search, sortField, sortDirection, showDataStreams };
+  static getQueryObjectFromState({
+    from,
+    size,
+    search,
+    sortField,
+    sortDirection,
+    showDataStreams,
+    dataSourceId,
+  }: IndicesState): IndicesQueryParams {
+    return { from, size, search, sortField, sortDirection, showDataStreams, dataSourceId };
   }
 
   getIndices = async (): Promise<void> => {
@@ -114,7 +156,7 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
     try {
       const { indexService, history } = this.props;
       const queryObject = Indices.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(queryObject);
+      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
       history.replace({ ...this.props.location, search: queryParamsString });
 
       const getIndicesResponse = await indexService.getIndices({
@@ -261,7 +303,11 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
                 buttonProps: {
                   fill: true,
                   onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_INDEX);
+                    this.props.multiDataSourceEnabled
+                      ? this.props.history.push(
+                          `${ROUTES.CREATE_INDEX}?dataSourceId=${this.state.dataSourceId}&dataSourceLabel=${this.state.dataSourceLabel}`
+                        )
+                      : this.props.history.push(`${ROUTES.CREATE_INDEX}`);
                   },
                 },
               },
@@ -300,4 +346,16 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       </ContentPanel>
     );
   }
+}
+
+export default function IndicesHOC(props: IndicesProps) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return (
+    <Indices
+      {...props}
+      dataSourceId={dataSourceMenuProps.dataSourceId}
+      dataSourceLabel={dataSourceMenuProps.dataSourceLabel}
+      multiDataSourceEnabled={dataSourceMenuProps.multiDataSourceEnabled}
+    />
+  );
 }

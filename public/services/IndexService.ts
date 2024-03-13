@@ -21,24 +21,34 @@ import { SECURITY_EXCEPTION_PREFIX } from "../../server/utils/constants";
 
 export default class IndexService {
   httpClient: HttpSetup;
+  dataSourceId: string;
 
-  constructor(httpClient: HttpSetup) {
+  constructor(httpClient: HttpSetup, dataSourceId: string = "") {
     this.httpClient = httpClient;
+    this.dataSourceId = dataSourceId;
+  }
+
+  patchQueryObjectWithObjectId(queryObject: HttpFetchQuery) {
+    queryObject.dataSourceId = this.dataSourceId;
+    return queryObject;
   }
 
   getIndices = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetIndicesResponse>> => {
     let url = `..${NODE_API._INDICES}`;
+    this.patchQueryObjectWithObjectId(queryObject);
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetIndicesResponse>;
     return response;
   };
 
   getDataStreams = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetDataStreamsResponse>> => {
     const url = `..${NODE_API._DATA_STREAMS}`;
+    this.patchQueryObjectWithObjectId(queryObject);
     return await this.httpClient.get(url, { query: queryObject });
   };
 
   getAliases = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetAliasesResponse>> => {
     const url = `..${NODE_API._ALIASES}`;
+    this.patchQueryObjectWithObjectId(queryObject);
     return await this.httpClient.get(url, { query: queryObject });
   };
 
@@ -91,6 +101,7 @@ export default class IndexService {
 
   applyPolicy = async (indices: string[], policyId: string): Promise<ServerResponse<ApplyPolicyResponse>> => {
     const body = { indices, policyId };
+    this.patchQueryObjectWithObjectId(body);
     const url = `..${NODE_API.APPLY_POLICY}`;
     const response = (await this.httpClient.post(url, { body: JSON.stringify(body) })) as ServerResponse<ApplyPolicyResponse>;
     return response;
@@ -98,6 +109,7 @@ export default class IndexService {
 
   editRolloverAlias = async (index: string, alias: string): Promise<ServerResponse<AcknowledgedResponse>> => {
     const body = { index, alias };
+    this.patchQueryObjectWithObjectId(body);
     const url = `..${NODE_API.EDIT_ROLLOVER_ALIAS}`;
     const response = (await this.httpClient.post(url, { body: JSON.stringify(body) })) as ServerResponse<AcknowledgedResponse>;
     return response;
@@ -106,6 +118,7 @@ export default class IndexService {
   searchPolicies = async (searchValue: string, source: boolean = false): Promise<ServerResponse<GetPoliciesResponse>> => {
     const str = searchValue.trim();
     const queryObject = { from: 0, size: 10, search: str, sortDirection: "desc", sortField: "id" };
+    this.patchQueryObjectWithObjectId(queryObject);
     const url = `..${NODE_API.POLICIES}`;
     const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetPoliciesResponse>;
     return response;

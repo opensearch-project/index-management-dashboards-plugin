@@ -52,6 +52,7 @@ export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sou
   onCancel?: () => void;
   onSubmitSuccess?: (indexName: string) => void;
   hideButtons?: boolean;
+  dataSourceId?: string;
 }
 
 interface CreateIndexState {

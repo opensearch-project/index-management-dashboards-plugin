@@ -24,6 +24,8 @@ import { ListenType } from "../../../../lib/JobScheduler";
 import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
 import { ActionType } from "../../../Notifications/constant";
 import { getClusterInfo } from "../../../../utils/helpers";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { useHistory } from "react-router";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -58,9 +60,24 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       context,
     })
   );
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  const { dataSourceId, dataSourceLabel, multiDataSourceEnabled } = dataSourceMenuProps;
+  if (multiDataSourceEnabled) {
+    // mds flag can't change while the app is loaded
+    const history = useHistory();
+    useEffect(() => {
+      history.replace({
+        search: `?dataSourceId=${dataSourceId}&dataSourceLabel=${dataSourceLabel}`,
+      });
+    }, [dataSourceId, dataSourceLabel]);
+  }
 
   const onCancel = () => {
-    props.history.push(ROUTES.INDICES);
+    if (multiDataSourceEnabled) {
+      props.history.push(`${ROUTES.INDICES}?dataSourceId=${dataSourceId}&dataSourceLabel=${dataSourceLabel}`);
+    } else {
+      props.history.push(ROUTES.INDICES);
+    }
   };
   const onClickAction = async () => {
     const { errors, values } = await field.validatePromise();

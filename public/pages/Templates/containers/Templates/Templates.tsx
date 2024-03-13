@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import { debounce, isEqual } from "lodash";
+import _, { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -39,9 +39,13 @@ import { TemplateConvert } from "../../../CreateIndexTemplate/components/Templat
 import AssociatedComponentsModal from "../AssociatedComponentsModal";
 import DeleteTemplate from "../../components/DeleteTemplate";
 import IndexPatternDisplay from "./IndexPatternDisplay";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
 
 interface TemplatesProps extends RouteComponentProps {
   commonService: CommonService;
+  dataSourceId: string;
+  dataSourceLabel: string;
+  multiDataSourceEnabled: boolean;
 }
 
 type TemplatesState = {
@@ -53,6 +57,8 @@ type TemplatesState = {
   selectedItems: ITemplate[];
   templates: ITemplate[];
   loading: boolean;
+  dataSourceId: string;
+  dataSourceLabel: string;
 } & SearchControlsProps["value"];
 
 const defaultFilter = {
@@ -87,11 +93,30 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       selectedItems: [],
       templates: [],
       loading: false,
+      dataSourceId: props.dataSourceId,
+      dataSourceLabel: props.dataSourceLabel,
     };
 
     this.getTemplates = debounce(this.getTemplates, 500, { leading: true });
   }
 
+  static getDerivedStateFromProps(nextProps: TemplatesProps, prevState: TemplatesState) {
+    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
+      return {
+        dataSourceId: nextProps.dataSourceId,
+        dataSourceLabel: nextProps.dataSourceLabel,
+      };
+    }
+    return null;
+  }
+
+  async componentDidUpdate(prevProps: TemplatesProps, prevState: TemplatesState) {
+    const prevQuery = this.getQueryState(prevState);
+    const currQuery = this.getQueryState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getTemplates();
+    }
+  }
   componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
     this.getTemplates();
@@ -408,5 +433,14 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
 
 export default function TemplatesContainer(props: Omit<TemplatesProps, "commonService">) {
   const context = useContext(ServicesContext);
-  return <Templates {...props} commonService={context?.commonService as CommonService} />;
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return (
+    <Templates
+      {...props}
+      commonService={context?.commonService as CommonService}
+      dataSourceId={dataSourceMenuProps.dataSourceId}
+      dataSourceLabel={dataSourceMenuProps.dataSourceLabel}
+      multiDataSourceEnabled={dataSourceMenuProps.multiDataSourceEnabled}
+    />
+  );
 }

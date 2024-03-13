@@ -3,16 +3,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { isEqual } from "lodash";
 import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import queryString from "query-string";
 
-interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {}
+interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {
+  dataSourceId: string;
+  dataSourceLabel: string;
+  multiDataSourceEnabled: boolean;
+}
 
-export default class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
+class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   static contextType = CoreServicesContext;
 
   get template() {
@@ -42,14 +48,28 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES, lastBread]);
   }
 
+  updateDataSourcePropsInUrl() {
+    if (this.props.multiDataSourceEnabled) {
+      this.props.history.replace({
+        ...this.props.location,
+        search: queryString.stringify({
+          dataSourceId: this.props.dataSourceId,
+          dataSourceLabel: this.props.dataSourceLabel,
+        }),
+      });
+    }
+  }
+
   componentDidUpdate(prevProps: Readonly<CreateIndexTemplateProps>): void {
     if (!isEqual(prevProps, this.props)) {
       this.setBreadCrumb();
+      this.updateDataSourcePropsInUrl();
     }
   }
 
   componentDidMount = async (): Promise<void> => {
     this.setBreadCrumb();
+    this.updateDataSourcePropsInUrl();
   };
 
   onCancel = (): void => {
@@ -69,4 +89,9 @@ export default class CreateIndexTemplate extends Component<CreateIndexTemplatePr
       </div>
     );
   }
+}
+
+export default function (props: CreateIndexTemplateProps) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <CreateIndexTemplate {...props} {...dataSourceMenuProps} />;
 }

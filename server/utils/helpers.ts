@@ -7,6 +7,7 @@ import _ from "lodash";
 import { ExplainAPIManagedIndexMetaData, QueryStringQuery } from "../models/interfaces";
 import { MatchAllQuery } from "../models/types";
 import { ManagedIndexMetaData } from "../../models/interfaces";
+import { ILegacyCustomClusterClient, LegacyCallAPIOptions, OpenSearchDashboardsRequest } from "opensearch-dashboards/server";
 
 export function transformManagedIndexMetaData(metaData: ExplainAPIManagedIndexMetaData | undefined): ManagedIndexMetaData | null {
   if (!metaData) return null;
@@ -68,4 +69,20 @@ export function getSearchString(terms?: string[], indices?: string[], dataStream
   const resolved = [searchTerms, searchIndices, searchDataStreams].filter((value) => value !== "").join(",") || "*";
   // We don't want to fetch managed datastream indices if there are not selected by caller.
   return showDataStreams ? resolved : resolved + " -.ds*";
+}
+
+export function getClientBasedOnDataSource(
+  context: any,
+  dataSourceEnabled: boolean,
+  request: OpenSearchDashboardsRequest,
+  dataSourceId: string,
+  osDriver: ILegacyCustomClusterClient
+): (endpoint: string, clientParams?: Record<string, any>, options?: LegacyCallAPIOptions) => any {
+  if (dataSourceEnabled && dataSourceId && dataSourceId.trim().length != 0) {
+    // non-zero data source id
+    return context.dataSource.opensearch.legacy.getClient(dataSourceId).callAPI;
+  } else {
+    // fall back to default local cluster
+    return osDriver.asScoped(request).callAsCurrentUser;
+  }
 }

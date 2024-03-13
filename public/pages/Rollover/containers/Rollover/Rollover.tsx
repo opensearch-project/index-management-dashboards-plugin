@@ -21,6 +21,9 @@ import { getIndexDetail, getOptions, getRolloveredIndex, onSubmit, submitWriteIn
 import { IRolloverRequestBody } from "../../interface";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS } from "../../../../../utils/constants";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { useHistory } from "react-router";
+import { CoreStart } from "opensearch-dashboards/public";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
 
@@ -52,6 +55,17 @@ export default function Rollover(props: RolloverProps) {
       },
     },
   });
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  const { dataSourceId, dataSourceLabel, multiDataSourceEnabled } = dataSourceMenuProps;
+  if (multiDataSourceEnabled) {
+    // mds flag can't change while the app is loaded
+    const history = useHistory();
+    useEffect(() => {
+      history.replace({
+        search: `?dataSourceId=${dataSourceId}&dataSourceLabel=${dataSourceLabel}`,
+      });
+    }, [dataSourceId, dataSourceLabel]);
+  }
 
   const onChange = (val?: Record<string, any>) => {
     const finalResult = merge({}, tempValue, val);

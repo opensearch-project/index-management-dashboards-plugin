@@ -10,34 +10,37 @@ import {
   OpenSearchDashboardsResponseFactory,
   ILegacyCustomClusterClient,
   IOpenSearchDashboardsResponse,
-  RequestHandlerContext,
 } from "../../../../src/core/server";
 import { IAPICaller } from "../../models/interfaces";
+import { getClientBasedOnDataSource } from "../utils/helpers";
 
 const VALID_METHODS = ["HEAD", "GET", "POST", "PUT", "DELETE"];
 
-export interface ICommonCaller {
-  <T>(arg: any): T;
-}
+export type ICommonCaller = <T>(arg: any) => T;
 
 export default class CommonService {
   osDriver: ILegacyCustomClusterClient;
+  dataSourceEnabled: boolean;
 
-  constructor(osDriver: ILegacyCustomClusterClient) {
+  constructor(osDriver: ILegacyCustomClusterClient, dataSourceEnabled: boolean = false) {
     this.osDriver = osDriver;
+    this.dataSourceEnabled = dataSourceEnabled;
   }
 
   apiCaller = async (
-    context: RequestHandlerContext,
+    context: any,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
     const useQuery = !request.body;
     const usedParam = (useQuery ? request.query : request.body) as IAPICaller;
     const { endpoint, data, hideLog } = usedParam || {};
+
     try {
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const finalData = data;
+      const { dataSourceId = "" } = data;
+      const callWithRequest = getClientBasedOnDataSource(context, this.dataSourceEnabled, request, dataSourceId, this.osDriver);
+      delete finalData.dataSourceId;
 
       /**
        * The endpoint must not be an empty string, reference from proxy caller

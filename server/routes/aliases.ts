@@ -8,16 +8,23 @@ import { NodeServices } from "../models/interfaces";
 import { NODE_API } from "../../utils/constants";
 import { IRouter } from "../../../../src/core/server";
 
-export default function (services: NodeServices, router: IRouter) {
+export default function (services: NodeServices, router: IRouter, dataSourceEnabled: boolean = false) {
   const { aliasService } = services;
 
+  let getAliasesQueryParam: any = {
+    search: schema.maybe(schema.string()),
+  };
+  if (dataSourceEnabled) {
+    getAliasesQueryParam = {
+      ...getAliasesQueryParam,
+      dataSourceId: schema.string(),
+    };
+  }
   router.get(
     {
       path: NODE_API._ALIASES,
       validate: {
-        query: schema.object({
-          search: schema.maybe(schema.string()),
-        }),
+        query: schema.object(getAliasesQueryParam),
       },
     },
     aliasService.getAliases

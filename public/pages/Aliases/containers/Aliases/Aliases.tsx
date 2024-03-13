@@ -36,9 +36,13 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import CreateAlias from "../CreateAlias";
 import AliasesActions from "../AliasActions";
 import { CoreStart } from "opensearch-dashboards/public";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
 
 interface AliasesProps extends RouteComponentProps {
   commonService: CommonService;
+  dataSourceId: string;
+  dataSourceLabel: string;
+  multiDataSourceEnabled: boolean;
 }
 
 interface AliasesState {
@@ -55,6 +59,8 @@ interface AliasesState {
   loading: boolean;
   aliasCreateFlyoutVisible: boolean;
   aliasEditFlyoutVisible: boolean;
+  dataSourceId: string;
+  dataSourceLabel: string;
 }
 
 function IndexNameDisplay(props: { indices: string[]; alias: string }) {
@@ -113,6 +119,7 @@ const defaultFilter = {
 
 class Aliases extends Component<AliasesProps, AliasesState> {
   static contextType = CoreServicesContext;
+
   constructor(props: AliasesProps) {
     super(props);
     const {
@@ -145,6 +152,8 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       aliasCreateFlyoutVisible: false,
       aliasEditFlyoutVisible: false,
       editingItem: null,
+      dataSourceId: this.props.dataSourceId,
+      dataSourceLabel: this.props.dataSourceLabel,
     };
 
     this.getAliases = _.debounce(this.getAliases, 500, { leading: true });
@@ -163,6 +172,24 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       };
     }, {} as AliasesState);
   };
+
+  static getDerivedStateFromProps(nextProps: AliasesProps, prevState: AliasesState) {
+    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
+      return {
+        dataSourceId: nextProps.dataSourceId,
+        dataSourceLabel: nextProps.dataSourceLabel,
+      };
+    }
+    return null;
+  }
+
+  async componentDidUpdate(prevProps: AliasesProps, prevState: AliasesState) {
+    const prevQuery = this.getQueryState(prevState);
+    const currQuery = this.getQueryState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getAliases();
+    }
+  }
 
   groupResponse = (array: IAlias[]) => {
     const groupedMap: Record<string, IAlias & { order: number; writeIndex: string }> = {};
@@ -473,5 +500,14 @@ class Aliases extends Component<AliasesProps, AliasesState> {
 
 export default function AliasContainer(props: Omit<AliasesProps, "commonService">) {
   const context = useContext(ServicesContext);
-  return <Aliases {...props} commonService={context?.commonService as CommonService} />;
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return (
+    <Aliases
+      {...props}
+      commonService={context?.commonService as CommonService}
+      dataSourceId={dataSourceMenuProps.dataSourceId}
+      dataSourceLabel={dataSourceMenuProps.dataSourceLabel}
+      multiDataSourceEnabled={dataSourceMenuProps.multiDataSourceEnabled}
+    />
+  );
 }

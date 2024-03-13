@@ -3,16 +3,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { isEqual } from "lodash";
+import queryString from "query-string";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
 
-interface CreateComposableTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {}
+interface CreateComposableTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {
+  dataSourceId: string;
+  dataSourceLabel: string;
+  multiDataSourceEnabled: boolean;
+}
 
-export default class CreateComposableTemplate extends Component<CreateComposableTemplateProps> {
+class CreateComposableTemplate extends Component<CreateComposableTemplateProps> {
   static contextType = CoreServicesContext;
 
   get template() {
@@ -43,14 +49,28 @@ export default class CreateComposableTemplate extends Component<CreateComposable
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.COMPOSABLE_TEMPLATES, lastBread]);
   }
 
+  updateDataSourcePropsInUrl() {
+    if (this.props.multiDataSourceEnabled) {
+      this.props.history.replace({
+        ...this.props.location,
+        search: queryString.stringify({
+          dataSourceId: this.props.dataSourceId,
+          dataSourceLabel: this.props.dataSourceLabel,
+        }),
+      });
+    }
+  }
+
   componentDidUpdate(prevProps: Readonly<CreateComposableTemplateProps>): void {
     if (!isEqual(prevProps, this.props)) {
       this.setBreadCrumb();
+      this.updateDataSourcePropsInUrl();
     }
   }
 
   componentDidMount = async (): Promise<void> => {
     this.setBreadCrumb();
+    this.updateDataSourcePropsInUrl();
   };
 
   onCancel = (): void => {
@@ -70,4 +90,9 @@ export default class CreateComposableTemplate extends Component<CreateComposable
       </div>
     );
   }
+}
+
+export default function (props: CreateComposableTemplateProps) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <CreateComposableTemplate {...props} {...dataSourceMenuProps} />;
 }

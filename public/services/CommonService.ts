@@ -10,15 +10,18 @@ import { IAPICaller } from "../../models/interfaces";
 
 export default class CommonService {
   httpClient: HttpSetup;
+  dataSourceId: string;
 
-  constructor(httpClient: HttpSetup) {
+  constructor(httpClient: HttpSetup, dataSourceId: string = "") {
     this.httpClient = httpClient;
+    this.dataSourceId = dataSourceId;
   }
 
   apiCaller = async <T>(params: IAPICaller): Promise<ServerResponse<T>> => {
     let url = `${NODE_API.API_CALLER}`;
     const payload: HttpFetchOptions = {};
     payload.method = "POST";
+    params.data.dataSourceId = this.dataSourceId;
     payload.body = JSON.stringify({
       data: params.data,
       endpoint: params.endpoint,

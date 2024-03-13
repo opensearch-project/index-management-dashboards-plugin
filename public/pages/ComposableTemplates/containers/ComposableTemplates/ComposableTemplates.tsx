@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import { debounce, isEqual, get } from "lodash";
+import _, { debounce, isEqual, get } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -38,11 +38,15 @@ import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadg
 import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
 import { useComponentMapTemplate } from "../../utils/hooks";
 import "./index.scss";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
 
 interface ComposableTemplatesProps extends RouteComponentProps {
   commonService: CommonService;
   componentMapTemplate: Record<string, string[]>;
   loading: boolean;
+  dataSourceId: string;
+  dataSourceLabel: string;
+  multiDataSourceEnabled: boolean;
 }
 
 type ComposableTemplatesState = {
@@ -54,6 +58,8 @@ type ComposableTemplatesState = {
   selectedItems: ICatComposableTemplate[];
   composableTemplates: ICatComposableTemplate[];
   loading: boolean;
+  dataSourceId: string;
+  dataSourceLabel: string;
 } & SearchControlsProps["value"];
 
 const defaultFilter = {
@@ -89,12 +95,32 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
       composableTemplates: [],
       loading: false,
       selectedTypes: [],
+      dataSourceId: props.dataSourceId,
+      dataSourceLabel: props.dataSourceLabel,
     };
 
     this.getComposableTemplates = debounce(this.getComposableTemplatesOriginal, 500, { leading: true });
   }
 
   getComposableTemplates: () => Promise<void> | undefined;
+
+  static getDerivedStateFromProps(nextProps: ComposableTemplatesProps, prevState: ComposableTemplatesState) {
+    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
+      return {
+        dataSourceId: nextProps.dataSourceId,
+        dataSourceLabel: nextProps.dataSourceLabel,
+      };
+    }
+    return null;
+  }
+
+  async componentDidUpdate(prevProps: ComposableTemplatesProps, prevState: ComposableTemplatesState) {
+    const prevQuery = this.getQueryState(prevState);
+    const currQuery = this.getQueryState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getComposableTemplates();
+    }
+  }
 
   componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
@@ -452,6 +478,7 @@ export default function ComposableTemplatesContainer(
   props: Omit<ComposableTemplatesProps, "commonService" | "loading" | "componentMapTemplate">
 ) {
   const context = useContext(ServicesContext);
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
   const { componentMapTemplate, loading } = useComponentMapTemplate();
   return (
     <ComposableTemplates
@@ -459,6 +486,9 @@ export default function ComposableTemplatesContainer(
       loading={loading}
       componentMapTemplate={componentMapTemplate}
       commonService={context?.commonService as CommonService}
+      dataSourceId={dataSourceMenuProps.dataSourceId}
+      dataSourceLabel={dataSourceMenuProps.dataSourceLabel}
+      multiDataSourceEnabled={dataSourceMenuProps.multiDataSourceEnabled}
     />
   );
 }

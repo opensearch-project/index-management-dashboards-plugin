@@ -58,7 +58,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       mount: async (params: AppMountParameters) => {
         const { renderApp } = await import("./index_management_app");
         const [coreStart, depsStart] = await core.getStartServices();
-        return renderApp(coreStart, params, ROUTES.INDEX_POLICIES);
+        return renderApp(coreStart, depsStart, params, ROUTES.INDEX_POLICIES);
       },
     });
 
@@ -70,7 +70,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       mount: async (params: AppMountParameters) => {
         const { renderApp } = await import("./index_management_app");
         const [coreStart, depsStart] = await core.getStartServices();
-        return renderApp(coreStart, params, ROUTES.SNAPSHOT_POLICIES);
+        return renderApp(coreStart, depsStart, params, ROUTES.SNAPSHOT_POLICIES);
       },
     });
 
