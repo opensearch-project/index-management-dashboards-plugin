@@ -73,12 +73,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   }
 
   const onCancel = () => {
-    if (multiDataSourceEnabled) {
-      props.history.push(`${ROUTES.INDICES}?dataSourceId=${dataSourceId}&dataSourceLabel=${dataSourceLabel}`);
-    } else {
-      props.history.push(ROUTES.INDICES);
-    }
+    props.history.push(ROUTES.INDICES);
   };
+
   const onClickAction = async () => {
     const { errors, values } = await field.validatePromise();
     if (advancedSettingsOpen) {
