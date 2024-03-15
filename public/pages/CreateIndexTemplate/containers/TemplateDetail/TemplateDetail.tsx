@@ -50,6 +50,7 @@ export interface TemplateDetailProps {
   onSubmitSuccess?: (templateName: string) => void;
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
+  dataSourceId: string;
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => {
@@ -316,7 +317,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         titleSize="s"
       >
         <EuiSpacer size="s" />
-        <IndexAlias {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
+        <IndexAlias key={props.dataSourceId} {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
         <EuiSpacer />
         <IndexSettings {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
         <EuiSpacer />

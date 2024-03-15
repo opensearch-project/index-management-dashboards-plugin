@@ -86,6 +86,7 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
           templateName={this.template}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.COMPOSABLE_TEMPLATES)}
+          dataSourceId={this.props.dataSourceId}
         />
       </div>
     );

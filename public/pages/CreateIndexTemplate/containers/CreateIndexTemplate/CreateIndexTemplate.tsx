@@ -85,6 +85,7 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
           templateName={this.template}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}
+          dataSourceId={this.props.dataSourceId}
         />
       </div>
     );

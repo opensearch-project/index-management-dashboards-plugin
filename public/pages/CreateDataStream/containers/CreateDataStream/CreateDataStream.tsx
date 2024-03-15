@@ -75,6 +75,7 @@ class CreateDataStream extends Component<CreateDataStreamProps> {
           dataStream={this.dataStream}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.DATA_STREAMS)}
+          key={this.props.dataSourceId}
         />
       </div>
     );
