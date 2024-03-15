@@ -81,12 +81,5 @@ export class CreateIndex extends Component<CreateIndexProps> {
 
 export default function (props: CreateIndexProps) {
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
-  return (
-    <CreateIndex
-      {...props}
-      dataSourceId={dataSourceMenuProperties.dataSourceId}
-      dataSourceLabel={dataSourceMenuProperties.dataSourceLabel}
-      multiDataSourceEnabled={dataSourceMenuProperties.multiDataSourceEnabled}
-    />
-  );
+  return <CreateIndex {...props} {...dataSourceMenuProperties} />;
 }

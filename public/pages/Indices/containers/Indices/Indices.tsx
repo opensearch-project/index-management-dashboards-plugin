@@ -348,14 +348,7 @@ export class Indices extends Component<IndicesProps, IndicesState> {
   }
 }
 
-export default function IndicesHOC(props: IndicesProps) {
+export default function (props: IndicesProps) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return (
-    <Indices
-      {...props}
-      dataSourceId={dataSourceMenuProps.dataSourceId}
-      dataSourceLabel={dataSourceMenuProps.dataSourceLabel}
-      multiDataSourceEnabled={dataSourceMenuProps.multiDataSourceEnabled}
-    />
-  );
+  return <Indices {...props} {...dataSourceMenuProps} />;
 }

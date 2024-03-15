@@ -486,9 +486,7 @@ export default function ComposableTemplatesContainer(
       loading={loading}
       componentMapTemplate={componentMapTemplate}
       commonService={context?.commonService as CommonService}
-      dataSourceId={dataSourceMenuProps.dataSourceId}
-      dataSourceLabel={dataSourceMenuProps.dataSourceLabel}
-      multiDataSourceEnabled={dataSourceMenuProps.multiDataSourceEnabled}
+      {...dataSourceMenuProps}
     />
   );
 }

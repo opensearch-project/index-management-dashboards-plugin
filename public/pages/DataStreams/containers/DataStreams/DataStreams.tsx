@@ -446,14 +446,6 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
 
 export default function DataStreamsContainer(props: Omit<DataStreamsProps, "commonService">) {
   const context = useContext(ServicesContext);
-  const { dataSourceId, dataSourceLabel, multiDataSourceEnabled } = useContext(DataSourceMenuContext);
-  return (
-    <DataStreams
-      {...props}
-      commonService={context?.commonService as CommonService}
-      dataSourceId={dataSourceId}
-      dataSourceLabel={dataSourceLabel}
-      multiDataSourceEnabled={multiDataSourceEnabled}
-    />
-  );
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  return <DataStreams {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProperties} />;
 }

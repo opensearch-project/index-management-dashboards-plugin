@@ -434,13 +434,5 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
 export default function TemplatesContainer(props: Omit<TemplatesProps, "commonService">) {
   const context = useContext(ServicesContext);
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return (
-    <Templates
-      {...props}
-      commonService={context?.commonService as CommonService}
-      dataSourceId={dataSourceMenuProps.dataSourceId}
-      dataSourceLabel={dataSourceMenuProps.dataSourceLabel}
-      multiDataSourceEnabled={dataSourceMenuProps.multiDataSourceEnabled}
-    />
-  );
+  return <Templates {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProps} />;
 }

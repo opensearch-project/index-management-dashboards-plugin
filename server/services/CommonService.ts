@@ -6,29 +6,19 @@
 import { AcknowledgedResponse } from "../models/interfaces";
 import { ServerResponse } from "../models/types";
 import {
+  IOpenSearchDashboardsResponse,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
-  ILegacyCustomClusterClient,
-  IOpenSearchDashboardsResponse,
+  RequestHandlerContext,
 } from "../../../../src/core/server";
 import { IAPICaller } from "../../models/interfaces";
-import { getClientBasedOnDataSource } from "../utils/helpers";
+import { OpenSearchISMService } from "./OpenSearchISMService";
 
 const VALID_METHODS = ["HEAD", "GET", "POST", "PUT", "DELETE"];
 
-export type ICommonCaller = <T>(arg: any) => T;
-
-export default class CommonService {
-  osDriver: ILegacyCustomClusterClient;
-  dataSourceEnabled: boolean;
-
-  constructor(osDriver: ILegacyCustomClusterClient, dataSourceEnabled: boolean = false) {
-    this.osDriver = osDriver;
-    this.dataSourceEnabled = dataSourceEnabled;
-  }
-
+export default class CommonService extends OpenSearchISMService {
   apiCaller = async (
-    context: any,
+    context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
@@ -39,7 +29,7 @@ export default class CommonService {
     try {
       const finalData = data;
       const { dataSourceId = "" } = data;
-      const callWithRequest = getClientBasedOnDataSource(context, this.dataSourceEnabled, request, dataSourceId, this.osDriver);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request, dataSourceId);
       delete finalData.dataSourceId;
 
       /**

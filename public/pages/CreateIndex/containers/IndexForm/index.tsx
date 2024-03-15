@@ -5,7 +5,7 @@
 
 import React, { Component, forwardRef, useContext } from "react";
 import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiLoadingSpinner } from "@elastic/eui";
-import { get, set, differenceWith, isEqual, merge } from "lodash";
+import _, { get, set, differenceWith, isEqual, merge } from "lodash";
 import { diffArrays } from "diff";
 import flattern from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -52,7 +52,7 @@ export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sou
   onCancel?: () => void;
   onSubmitSuccess?: (indexName: string) => void;
   hideButtons?: boolean;
-  dataSourceId?: string;
+  dataSourceId: string;
 }
 
 interface CreateIndexState {
@@ -421,6 +421,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     return (
       <>
         <IndexDetail
+          key={this.props.dataSourceId}
           readonly={readonly}
           mode={this.mode}
           ref={(ref) => (this.indexDetailRef = ref)}

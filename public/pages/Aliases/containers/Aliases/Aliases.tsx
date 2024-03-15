@@ -501,13 +501,5 @@ class Aliases extends Component<AliasesProps, AliasesState> {
 export default function AliasContainer(props: Omit<AliasesProps, "commonService">) {
   const context = useContext(ServicesContext);
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return (
-    <Aliases
-      {...props}
-      commonService={context?.commonService as CommonService}
-      dataSourceId={dataSourceMenuProps.dataSourceId}
-      dataSourceLabel={dataSourceMenuProps.dataSourceLabel}
-      multiDataSourceEnabled={dataSourceMenuProps.multiDataSourceEnabled}
-    />
-  );
+  return <Aliases {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProps} />;
 }

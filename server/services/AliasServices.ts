@@ -4,29 +4,19 @@
  */
 
 import {
-  RequestHandlerContext,
+  IOpenSearchDashboardsResponse,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
-  IOpenSearchDashboardsResponse,
-  ILegacyCustomClusterClient,
-  ILegacyScopedClusterClient,
+  RequestHandlerContext,
 } from "opensearch-dashboards/server";
 import { ServerResponse } from "../models/types";
 import { Alias, GetAliasesResponse } from "../models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../utils/constants";
-import { getClientBasedOnDataSource } from "../utils/helpers";
+import { OpenSearchISMService } from "./OpenSearchISMService";
 
-export default class AliasServices {
-  osDriver: ILegacyCustomClusterClient;
-  dataSourceEnabled: boolean;
-
-  constructor(osDriver: ILegacyCustomClusterClient, dataSourceEnabled: boolean = false) {
-    this.osDriver = osDriver;
-    this.dataSourceEnabled = dataSourceEnabled;
-  }
-
+export default class AliasServices extends OpenSearchISMService {
   getAliases = async (
-    context: any,
+    context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetAliasesResponse>>> => {
@@ -38,7 +28,7 @@ export default class AliasServices {
       const useQuery = !request.body;
       const usedParam = useQuery ? request.query : request.body;
       const { dataSourceId = "" } = usedParam || {};
-      const callWithRequest = getClientBasedOnDataSource(context, this.dataSourceEnabled, request, dataSourceId, this.osDriver);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request, dataSourceId);
       const [aliases, apiAccessible, errMsg] = await getAliases(callWithRequest, search);
 
       if (!apiAccessible)

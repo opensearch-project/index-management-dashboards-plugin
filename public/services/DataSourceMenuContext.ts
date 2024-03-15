@@ -12,4 +12,6 @@ const DataSourceMenuContext = createContext<DataSourceMenuProperties>({
   multiDataSourceEnabled: false,
 });
 
-export { DataSourceMenuContext };
+const DataSourceMenuConsumer = DataSourceMenuContext.Consumer;
+
+export { DataSourceMenuContext, DataSourceMenuConsumer };

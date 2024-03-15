@@ -6,38 +6,30 @@
 import { Setting } from "../utils/constants";
 import {
   AcknowledgedResponse,
-  ApplyPolicyResponse,
   AddResponse,
+  ApplyPolicyResponse,
   CatIndex,
-  GetIndicesResponse,
-  ExplainResponse,
   ExplainAPIManagedIndexMetaData,
+  ExplainResponse,
+  GetIndicesResponse,
   IndexToDataStream,
 } from "../models/interfaces";
 import { ServerResponse } from "../models/types";
 import {
+  IOpenSearchDashboardsResponse,
+  LegacyCallAPIOptions,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
-  ILegacyCustomClusterClient,
-  IOpenSearchDashboardsResponse,
   RequestHandlerContext,
-  LegacyCallAPIOptions,
 } from "../../../../src/core/server";
-import { getClientBasedOnDataSource, getSearchString } from "../utils/helpers";
+import { getSearchString } from "../utils/helpers";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
 import { IRecoveryItem, IReindexItem, ITaskItem } from "../../models/interfaces";
+import { OpenSearchISMService } from "./OpenSearchISMService";
 
-export default class IndexService {
-  osDriver: ILegacyCustomClusterClient;
-  dataSourceEnabled: boolean;
-
-  constructor(osDriver: ILegacyCustomClusterClient, dataSourceEnabled: boolean = false) {
-    this.osDriver = osDriver;
-    this.dataSourceEnabled = dataSourceEnabled;
-  }
-
+export default class IndexService extends OpenSearchISMService {
   getIndices = async (
-    context: any,
+    context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndicesResponse>>> => {
@@ -91,7 +83,7 @@ export default class IndexService {
         params.index = exactSearch;
       }
 
-      const callWithRequest = getClientBasedOnDataSource(context, this.dataSourceEnabled, request, dataSourceId, this.osDriver);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request, dataSourceId);
 
       const [recoverys, tasks, indicesResponse, indexToDataStreamMapping]: [
         IRecoveryItem[],
