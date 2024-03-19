@@ -278,7 +278,11 @@ export default class Main extends Component<MainProps, MainState> {
                         {this.props.multiDataSourceEnabled && (
                           <Switch>
                             <Route
-                              path={[`${ROUTES.CREATE_DATA_STREAM}/:dataStream`, `${ROUTES.CREATE_TEMPLATE}/:template`]}
+                              path={[
+                                `${ROUTES.CREATE_DATA_STREAM}/:dataStream`,
+                                `${ROUTES.CREATE_TEMPLATE}/:template`,
+                                `${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/:composableTemplate`,
+                              ]}
                               render={(props) => (
                                 <DataSourceMenu
                                   appName={"Index State Management"}
@@ -288,7 +292,9 @@ export default class Main extends Component<MainProps, MainState> {
                                     this.setState({ dataSourceId, dataSourceLabel });
                                   }}
                                   disableDataSourceSelectable={(() => {
-                                    return props.match.params.dataStream || props.match.params.template;
+                                    return (
+                                      props.match.params.dataStream || props.match.params.template || props.match.params.composableTemplate
+                                    );
                                   })()}
                                   notifications={services.notificationService}
                                   savedObjects={core.savedObjects.client}
