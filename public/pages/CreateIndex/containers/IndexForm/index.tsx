@@ -60,6 +60,7 @@ interface CreateIndexState {
   oldIndexDetail?: IndexItem;
   isSubmitting: boolean;
   loading: boolean;
+  dataSourceId: string;
 }
 
 const findLineNumber = (regexp: RegExp, str: string): number => {
@@ -97,6 +98,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       indexDetail: merge({}, defaultIndexSettings, IndexForm.transformIndexDetailToLocal(props.value)),
       oldIndexDetail: undefined,
       loading: isEdit,
+      dataSourceId: props.dataSourceId,
     };
   }
 
@@ -105,6 +107,18 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     if (isEdit) {
       this.refreshIndex();
     }
+  }
+
+  static getDerivedStateFromProps(nextProps: IndexFormProps, prevState: CreateIndexState) {
+    if (nextProps.dataSourceId != prevState.dataSourceId) {
+      return {
+        isSubmitting: false,
+        indexDetail: merge({}, defaultIndexSettings, IndexForm.transformIndexDetailToLocal(nextProps.value)),
+        oldIndexDetail: undefined,
+        dataSourceId: nextProps.dataSourceId,
+      };
+    }
+    return null;
   }
 
   indexDetailRef: IIndexDetailRef | null = null;
