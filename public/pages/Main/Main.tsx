@@ -7,7 +7,7 @@ import React, { Component, createContext } from "react";
 import { Switch, Route, Redirect, RouteComponentProps } from "react-router-dom";
 // @ts-ignore
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar, Query, Direction } from "@elastic/eui";
-import { CoreStart, MountPoint } from "opensearch-dashboards/public";
+import { CoreStart, HttpSetup, MountPoint } from "opensearch-dashboards/public";
 import queryString from "query-string";
 import Policies from "../Policies";
 import ManagedIndices from "../ManagedIndices";
@@ -18,7 +18,16 @@ import ChangePolicy from "../ChangePolicy";
 import PolicyDetails from "../PolicyDetails/containers/PolicyDetails";
 import Rollups from "../Rollups";
 import { ModalProvider, ModalRoot } from "../../components/Modal";
-import { ServicesConsumer, ServicesContext } from "../../services";
+import {
+  ManagedIndexService,
+  NotificationService,
+  PolicyService,
+  RollupService,
+  ServicesConsumer,
+  ServicesContext,
+  SnapshotManagementService,
+  TransformService,
+} from "../../services";
 import { BrowserServices } from "../../models/interfaces";
 import { ROUTES } from "../../utils/constants";
 import { CoreServicesConsumer } from "../../components/core_services";
@@ -125,6 +134,25 @@ interface MainState {
   dataSourceLabel: string;
 }
 
+const dataSourceEnabledPaths: string[] = [
+  ROUTES.CREATE_DATA_STREAM,
+  ROUTES.CREATE_TEMPLATE,
+  ROUTES.CREATE_COMPOSABLE_TEMPLATE,
+  ROUTES.FORCE_MERGE,
+  ROUTES.SPLIT_INDEX,
+  ROUTES.ROLLOVER,
+  ROUTES.INDEX_DETAIL,
+  ROUTES.INDICES,
+  ROUTES.CREATE_INDEX,
+  ROUTES.ALIASES,
+  ROUTES.DATA_STREAMS,
+  ROUTES.TEMPLATES,
+  ROUTES.CREATE_DATA_STREAM,
+  ROUTES.CREATE_TEMPLATE,
+  ROUTES.COMPOSABLE_TEMPLATES,
+  ROUTES.CREATE_COMPOSABLE_TEMPLATE,
+];
+
 export default class Main extends Component<MainProps, MainState> {
   constructor(props: MainProps) {
     super(props);
@@ -143,6 +171,40 @@ export default class Main extends Component<MainProps, MainState> {
         dataSourceLabel: "",
       };
     }
+  }
+
+  isDataSourceEnabledForPath(path: string): boolean {
+    return dataSourceEnabledPaths.some((dataSourceEnabledPath: string) => path.startsWith(dataSourceEnabledPath));
+  }
+
+  getServices(http: HttpSetup) {
+    const {
+      location: { pathname },
+    } = this.props;
+    const indexService = new IndexService(http);
+    const managedIndexService = new ManagedIndexService(http);
+    const policyService = new PolicyService(http);
+    const rollupService = new RollupService(http);
+    const transformService = new TransformService(http);
+    const notificationService = new NotificationService(http);
+    const snapshotManagementService = new SnapshotManagementService(http);
+    const commonService = new CommonService(http);
+    const services = {
+      indexService,
+      managedIndexService,
+      policyService,
+      rollupService,
+      transformService,
+      notificationService,
+      snapshotManagementService,
+      commonService,
+    };
+
+    if (this.props.multiDataSourceEnabled && this.isDataSourceEnabledForPath(pathname)) {
+      services.indexService = new IndexService(http, this.state.dataSourceId);
+      services.commonService = new CommonService(http, this.state.dataSourceId);
+    }
+    return services;
   }
 
   render() {
@@ -254,19 +316,10 @@ export default class Main extends Component<MainProps, MainState> {
       <CoreServicesConsumer>
         {(core: CoreStart | null) =>
           core && (
-            <ServicesConsumer>
-              {(services: BrowserServices | null) =>
-                services && (
-                  <ServicesContext.Provider
-                    value={(() => {
-                      if (!this.props.multiDataSourceEnabled) {
-                        return services;
-                      }
-                      services.indexService = new IndexService(core.http, this.state.dataSourceId);
-                      services.commonService = new CommonService(core.http, this.state.dataSourceId);
-                      return services;
-                    })()}
-                  >
+            <ServicesContext.Provider value={this.getServices(core.http)}>
+              <ServicesConsumer>
+                {(services: BrowserServices | null) =>
+                  services && (
                     <ModalProvider>
                       <DataSourceMenuContext.Provider
                         value={{
@@ -765,10 +818,10 @@ export default class Main extends Component<MainProps, MainState> {
                         </EuiPage>
                       </DataSourceMenuContext.Provider>
                     </ModalProvider>
-                  </ServicesContext.Provider>
-                )
-              }
-            </ServicesConsumer>
+                  )
+                }
+              </ServicesConsumer>
+            </ServicesContext.Provider>
           )
         }
       </CoreServicesConsumer>
