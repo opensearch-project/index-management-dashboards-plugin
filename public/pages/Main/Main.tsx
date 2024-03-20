@@ -282,22 +282,16 @@ export default class Main extends Component<MainProps, MainState> {
                                 `${ROUTES.CREATE_DATA_STREAM}/:dataStream`,
                                 `${ROUTES.CREATE_TEMPLATE}/:template`,
                                 `${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/:composableTemplate`,
+                                ROUTES.FORCE_MERGE,
+                                ROUTES.SPLIT_INDEX,
+                                ROUTES.ROLLOVER,
+                                ROUTES.INDEX_DETAIL,
                               ]}
                               render={(props) => (
                                 <DataSourceMenu
                                   appName={"Index State Management"}
                                   setMenuMountPoint={this.props.setActionMenu}
-                                  showDataSourceSelectable={true}
-                                  dataSourceCallBackFunc={({ id: dataSourceId, label: dataSourceLabel }) => {
-                                    this.setState({ dataSourceId, dataSourceLabel });
-                                  }}
-                                  disableDataSourceSelectable={(() => {
-                                    return (
-                                      props.match.params.dataStream || props.match.params.template || props.match.params.composableTemplate
-                                    );
-                                  })()}
-                                  notifications={services.notificationService}
-                                  savedObjects={core.savedObjects.client}
+                                  showDataSourceView={true}
                                   selectedOption={(() => {
                                     if (this.state.dataSourceId && this.state.dataSourceId !== "") {
                                       return [
@@ -335,35 +329,6 @@ export default class Main extends Component<MainProps, MainState> {
                                     this.setState({ dataSourceId, dataSourceLabel });
                                   }}
                                   disableDataSourceSelectable={false}
-                                  notifications={services.notificationService}
-                                  savedObjects={core.savedObjects.client}
-                                  selectedOption={(() => {
-                                    if (this.state.dataSourceId && this.state.dataSourceId !== "") {
-                                      return [
-                                        {
-                                          id: this.state.dataSourceId,
-                                          label: this.state.dataSourceLabel,
-                                        },
-                                      ];
-                                    }
-                                    return undefined;
-                                  })()}
-                                  fullWidth={false}
-                                  hideLocalCluster={false}
-                                />
-                              )}
-                            />
-                            <Route
-                              path={[ROUTES.FORCE_MERGE, ROUTES.SPLIT_INDEX, ROUTES.ROLLOVER, ROUTES.INDEX_DETAIL]}
-                              render={(props) => (
-                                <DataSourceMenu
-                                  appName={"Index State Management"}
-                                  setMenuMountPoint={this.props.setActionMenu}
-                                  showDataSourceSelectable={true}
-                                  dataSourceCallBackFunc={({ id: dataSourceId, label: dataSourceLabel }) => {
-                                    this.setState({ dataSourceId, dataSourceLabel });
-                                  }}
-                                  disableDataSourceSelectable={true}
                                   notifications={services.notificationService}
                                   savedObjects={core.savedObjects.client}
                                   selectedOption={(() => {
