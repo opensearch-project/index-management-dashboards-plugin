@@ -9,14 +9,10 @@ import { isEqual } from "lodash";
 import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
-import queryString from "query-string";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {
-  dataSourceId: string;
-  dataSourceLabel: string;
-  multiDataSourceEnabled: boolean;
-}
+interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }>, DataSourceMenuProperties {}
 
 class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   static contextType = CoreServicesContext;
@@ -48,28 +44,14 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES, lastBread]);
   }
 
-  updateDataSourcePropsInUrl() {
-    if (this.props.multiDataSourceEnabled) {
-      this.props.history.replace({
-        ...this.props.location,
-        search: queryString.stringify({
-          dataSourceId: this.props.dataSourceId,
-          dataSourceLabel: this.props.dataSourceLabel,
-        }),
-      });
-    }
-  }
-
   componentDidUpdate(prevProps: Readonly<CreateIndexTemplateProps>): void {
     if (!isEqual(prevProps, this.props)) {
       this.setBreadCrumb();
-      this.updateDataSourcePropsInUrl();
     }
   }
 
   componentDidMount = async (): Promise<void> => {
     this.setBreadCrumb();
-    this.updateDataSourcePropsInUrl();
   };
 
   onCancel = (): void => {
@@ -94,5 +76,6 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
 
 export default function (props: CreateIndexTemplateProps) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
   return <CreateIndexTemplate {...props} {...dataSourceMenuProps} />;
 }

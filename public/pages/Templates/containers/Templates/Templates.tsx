@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import _, { debounce, isEqual } from "lodash";
+import { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -39,13 +39,11 @@ import { TemplateConvert } from "../../../CreateIndexTemplate/components/Templat
 import AssociatedComponentsModal from "../AssociatedComponentsModal";
 import DeleteTemplate from "../../components/DeleteTemplate";
 import IndexPatternDisplay from "./IndexPatternDisplay";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface TemplatesProps extends RouteComponentProps {
+interface TemplatesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
-  dataSourceId: string;
-  dataSourceLabel: string;
-  multiDataSourceEnabled: boolean;
 }
 
 type TemplatesState = {
@@ -57,15 +55,14 @@ type TemplatesState = {
   selectedItems: ITemplate[];
   templates: ITemplate[];
   loading: boolean;
-  dataSourceId: string;
-  dataSourceLabel: string;
-} & SearchControlsProps["value"];
+} & SearchControlsProps["value"] &
+  DataSourceMenuProperties;
 
 const defaultFilter = {
   search: DEFAULT_QUERY_PARAMS.search,
 };
 
-class Templates extends Component<TemplatesProps, TemplatesState> {
+class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
   static contextType = CoreServicesContext;
   constructor(props: TemplatesProps) {
     super(props);
@@ -84,6 +81,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
     };
     this.state = {
       ...defaultFilter,
+      ...this.state,
       totalTemplates: 0,
       from,
       size,
@@ -93,21 +91,9 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
       selectedItems: [],
       templates: [],
       loading: false,
-      dataSourceId: props.dataSourceId,
-      dataSourceLabel: props.dataSourceLabel,
     };
 
     this.getTemplates = debounce(this.getTemplates, 500, { leading: true });
-  }
-
-  static getDerivedStateFromProps(nextProps: TemplatesProps, prevState: TemplatesState) {
-    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
-      return {
-        dataSourceId: nextProps.dataSourceId,
-        dataSourceLabel: nextProps.dataSourceLabel,
-      };
-    }
-    return null;
   }
 
   async componentDidUpdate(prevProps: TemplatesProps, prevState: TemplatesState) {

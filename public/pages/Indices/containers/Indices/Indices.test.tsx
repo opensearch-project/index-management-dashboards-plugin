@@ -5,11 +5,10 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { HashRouter as Router } from "react-router-dom";
+import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import Indices from "./Indices";
@@ -18,16 +17,16 @@ import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 
 function renderWithRouter(
   Component: React.ComponentType<any>,
-  data: any = {
+  data: DataSourceMenuProperties = {
     dataSourceId: "",
     dataSourceLabel: "",
     multiDataSourceEnabled: false,
   },
-  renderFn: any = render
+  renderFn = render
 ) {
   return {
     ...renderFn(

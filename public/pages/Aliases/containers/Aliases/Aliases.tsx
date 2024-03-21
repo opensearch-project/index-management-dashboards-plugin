@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import _, { isEqual } from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -36,16 +36,14 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import CreateAlias from "../CreateAlias";
 import AliasesActions from "../AliasActions";
 import { CoreStart } from "opensearch-dashboards/public";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface AliasesProps extends RouteComponentProps {
+interface AliasesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
-  dataSourceId: string;
-  dataSourceLabel: string;
-  multiDataSourceEnabled: boolean;
 }
 
-interface AliasesState {
+interface AliasesState extends DataSourceMenuProperties {
   totalAliases: number;
   from: string;
   size: string;
@@ -59,8 +57,6 @@ interface AliasesState {
   loading: boolean;
   aliasCreateFlyoutVisible: boolean;
   aliasEditFlyoutVisible: boolean;
-  dataSourceId: string;
-  dataSourceLabel: string;
 }
 
 function IndexNameDisplay(props: { indices: string[]; alias: string }) {
@@ -117,9 +113,8 @@ const defaultFilter = {
   status: DEFAULT_QUERY_PARAMS.status,
 };
 
-class Aliases extends Component<AliasesProps, AliasesState> {
+class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
   static contextType = CoreServicesContext;
-
   constructor(props: AliasesProps) {
     super(props);
     const {
@@ -139,6 +134,7 @@ class Aliases extends Component<AliasesProps, AliasesState> {
     };
     this.state = {
       ...defaultFilter,
+      ...this.state,
       totalAliases: 0,
       from,
       size,
@@ -152,8 +148,6 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       aliasCreateFlyoutVisible: false,
       aliasEditFlyoutVisible: false,
       editingItem: null,
-      dataSourceId: this.props.dataSourceId,
-      dataSourceLabel: this.props.dataSourceLabel,
     };
 
     this.getAliases = _.debounce(this.getAliases, 500, { leading: true });
@@ -172,16 +166,6 @@ class Aliases extends Component<AliasesProps, AliasesState> {
       };
     }, {} as AliasesState);
   };
-
-  static getDerivedStateFromProps(nextProps: AliasesProps, prevState: AliasesState) {
-    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
-      return {
-        dataSourceId: nextProps.dataSourceId,
-        dataSourceLabel: nextProps.dataSourceLabel,
-      };
-    }
-    return null;
-  }
 
   async componentDidUpdate(prevProps: AliasesProps, prevState: AliasesState) {
     const prevQuery = this.getQueryState(prevState);

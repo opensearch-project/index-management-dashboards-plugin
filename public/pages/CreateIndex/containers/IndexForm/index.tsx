@@ -5,7 +5,7 @@
 
 import React, { Component, forwardRef, useContext } from "react";
 import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiLoadingSpinner } from "@elastic/eui";
-import _, { get, set, differenceWith, isEqual, merge } from "lodash";
+import { get, set, differenceWith, isEqual, merge } from "lodash";
 import { diffArrays } from "diff";
 import flattern from "flat";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -17,6 +17,7 @@ import { transformArrayToObject, transformObjectToArray } from "../../../../comp
 import { ServerResponse } from "../../../../../server/models/types";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
+import { DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 
 export const getAliasActionsByDiffArray = (
   oldAliases: string[],
@@ -45,14 +46,13 @@ export const getAliasActionsByDiffArray = (
   }, [] as IAliasAction[]);
 };
 
-export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices"> {
+export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices">, DataSourceMenuProperties {
   index?: string;
   value?: Partial<IndexItemRemote>;
   mode?: IndicesUpdateMode;
   onCancel?: () => void;
   onSubmitSuccess?: (indexName: string) => void;
   hideButtons?: boolean;
-  dataSourceId: string;
 }
 
 interface CreateIndexState {
@@ -60,7 +60,6 @@ interface CreateIndexState {
   oldIndexDetail?: IndexItem;
   isSubmitting: boolean;
   loading: boolean;
-  dataSourceId: string;
 }
 
 const findLineNumber = (regexp: RegExp, str: string): number => {
@@ -98,7 +97,6 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       indexDetail: merge({}, defaultIndexSettings, IndexForm.transformIndexDetailToLocal(props.value)),
       oldIndexDetail: undefined,
       loading: isEdit,
-      dataSourceId: props.dataSourceId,
     };
   }
 
@@ -108,17 +106,15 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       this.refreshIndex();
     }
   }
-
-  static getDerivedStateFromProps(nextProps: IndexFormProps, prevState: CreateIndexState) {
-    if (nextProps.dataSourceId != prevState.dataSourceId) {
-      return {
+  componentDidUpdate(prevProps: IndexFormProps, prevState: CreateIndexState) {
+    if (prevProps.dataSourceId != this.props.dataSourceId) {
+      // reset the state, if dataSourceId changes, i.e., clear state
+      this.setState({
         isSubmitting: false,
-        indexDetail: merge({}, defaultIndexSettings, IndexForm.transformIndexDetailToLocal(nextProps.value)),
+        indexDetail: merge({}, defaultIndexSettings, IndexForm.transformIndexDetailToLocal(this.props.value)),
         oldIndexDetail: undefined,
-        dataSourceId: nextProps.dataSourceId,
-      };
+      });
     }
-    return null;
   }
 
   indexDetailRef: IIndexDetailRef | null = null;
@@ -436,6 +432,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
       <>
         <IndexDetail
           key={this.props.dataSourceId}
+          // ^ remounting IndexDetail through change in key
           readonly={readonly}
           mode={this.mode}
           ref={(ref) => (this.indexDetailRef = ref)}

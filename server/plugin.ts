@@ -4,7 +4,7 @@
  */
 
 import { IndexManagementPluginSetup, IndexManagementPluginStart } from ".";
-import { Plugin, CoreSetup, CoreStart, ILegacyCustomClusterClient, LegacyAPICaller } from "../../../src/core/server";
+import { Plugin, CoreSetup, CoreStart, ILegacyCustomClusterClient } from "../../../src/core/server";
 import ismPlugin from "./clusters/ism/ismPlugin";
 import {
   PolicyService,

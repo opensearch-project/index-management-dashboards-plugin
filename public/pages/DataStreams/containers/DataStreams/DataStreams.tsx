@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import _, { debounce, isEqual } from "lodash";
+import { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -35,13 +35,11 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import DataStreamsActions from "../DataStreamsActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import { DataStream } from "../../../../../server/models/interfaces";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface DataStreamsProps extends RouteComponentProps {
+interface DataStreamsProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
-  dataSourceId: string;
-  dataSourceLabel: string;
-  multiDataSourceEnabled: boolean;
 }
 
 type DataStreamsState = {
@@ -53,9 +51,8 @@ type DataStreamsState = {
   selectedItems: DataStreamWithStats[];
   dataStreams: DataStreamWithStats[];
   loading: boolean;
-  dataSourceId: string;
-  dataSourceLabel: string;
-} & SearchControlsProps["value"];
+} & SearchControlsProps["value"] &
+  DataSourceMenuProperties;
 
 const defaultFilter = {
   search: DEFAULT_QUERY_PARAMS.search,
@@ -67,7 +64,7 @@ export const healthExplanation = {
   red: "One or more primary shards are unassigned, so some data is unavailable.",
 };
 
-class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
+class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState> {
   static contextType = CoreServicesContext;
   constructor(props: DataStreamsProps) {
     super(props);
@@ -86,6 +83,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
     };
     this.state = {
       ...defaultFilter,
+      ...this.state,
       totalDataStreams: 0,
       from,
       size,
@@ -95,23 +93,10 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
       selectedItems: [],
       dataStreams: [],
       loading: false,
-      dataSourceId: props.dataSourceId,
-      dataSourceLabel: props.dataSourceLabel,
     };
 
     this.getDataStreams = debounce(this.getDataStreams, 500, { leading: true });
   }
-
-  static getDerivedStateFromProps(nextProps: DataStreamsProps, prevState: DataStreamsState) {
-    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
-      return {
-        dataSourceId: nextProps.dataSourceId,
-        dataSourceLabel: nextProps.dataSourceLabel,
-      };
-    }
-    return null;
-  }
-
   async componentDidUpdate(prevProps: DataStreamsProps, prevState: DataStreamsState) {
     const prevQuery = this.getQueryState(prevState);
     const currQuery = this.getQueryState(this.state);
@@ -119,7 +104,6 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
       await this.getDataStreams();
     }
   }
-
   componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.DATA_STREAMS]);
     this.getDataStreams();

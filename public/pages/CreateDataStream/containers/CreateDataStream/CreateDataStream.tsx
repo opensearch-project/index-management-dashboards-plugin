@@ -9,14 +9,10 @@ import DataStreamDetail from "../DataStreamDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { isEqual } from "lodash";
-import queryString from "query-string";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateDataStreamProps extends RouteComponentProps<{ dataStream?: string }> {
-  dataSourceId: string;
-  dataSourceLabel: string;
-  multiDataSourceEnabled: boolean;
-}
+interface CreateDataStreamProps extends RouteComponentProps<{ dataStream?: string }>, DataSourceMenuProperties {}
 
 class CreateDataStream extends Component<CreateDataStreamProps> {
   static contextType = CoreServicesContext;
@@ -39,28 +35,14 @@ class CreateDataStream extends Component<CreateDataStreamProps> {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.DATA_STREAMS, lastBread]);
   }
 
-  updateDataSourcePropsInUrl() {
-    if (this.props.multiDataSourceEnabled) {
-      this.props.history.replace({
-        ...this.props.location,
-        search: queryString.stringify({
-          dataSourceId: this.props.dataSourceId,
-          dataSourceLabel: this.props.dataSourceLabel,
-        }),
-      });
-    }
-  }
-
   componentDidUpdate(prevProps: Readonly<CreateDataStreamProps>): void {
     if (!isEqual(prevProps, this.props)) {
       this.setBreadCrumb();
-      this.updateDataSourcePropsInUrl();
     }
   }
 
   componentDidMount = async (): Promise<void> => {
     this.setBreadCrumb();
-    this.updateDataSourcePropsInUrl();
   };
 
   onCancel = (): void => {
@@ -84,5 +66,6 @@ class CreateDataStream extends Component<CreateDataStreamProps> {
 
 export default function (props: CreateDataStreamProps) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
   return <CreateDataStream {...props} {...dataSourceMenuProps} />;
 }

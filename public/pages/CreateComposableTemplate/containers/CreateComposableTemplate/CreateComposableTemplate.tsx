@@ -9,14 +9,10 @@ import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { isEqual } from "lodash";
-import queryString from "query-string";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateComposableTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {
-  dataSourceId: string;
-  dataSourceLabel: string;
-  multiDataSourceEnabled: boolean;
-}
+interface CreateComposableTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }>, DataSourceMenuProperties {}
 
 class CreateComposableTemplate extends Component<CreateComposableTemplateProps> {
   static contextType = CoreServicesContext;
@@ -49,28 +45,14 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.COMPOSABLE_TEMPLATES, lastBread]);
   }
 
-  updateDataSourcePropsInUrl() {
-    if (this.props.multiDataSourceEnabled) {
-      this.props.history.replace({
-        ...this.props.location,
-        search: queryString.stringify({
-          dataSourceId: this.props.dataSourceId,
-          dataSourceLabel: this.props.dataSourceLabel,
-        }),
-      });
-    }
-  }
-
   componentDidUpdate(prevProps: Readonly<CreateComposableTemplateProps>): void {
     if (!isEqual(prevProps, this.props)) {
       this.setBreadCrumb();
-      this.updateDataSourcePropsInUrl();
     }
   }
 
   componentDidMount = async (): Promise<void> => {
     this.setBreadCrumb();
-    this.updateDataSourcePropsInUrl();
   };
 
   onCancel = (): void => {
@@ -95,5 +77,6 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
 
 export default function (props: CreateComposableTemplateProps) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
   return <CreateComposableTemplate {...props} {...dataSourceMenuProps} />;
 }

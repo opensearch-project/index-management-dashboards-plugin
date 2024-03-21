@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CoreStart, AppMountParameters } from "opensearch-dashboards/public";
+import { AppMountParameters, CoreStart } from "opensearch-dashboards/public";
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter as Router, Route } from "react-router-dom";

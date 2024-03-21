@@ -41,6 +41,7 @@ import { ReindexJobMetaData } from "../../../../models/interfaces";
 import { ListenType } from "../../../../lib/JobScheduler";
 import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
 import { ActionType } from "../../../Notifications/constant";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
@@ -67,7 +68,7 @@ interface ReindexState {
   showCreateIndexFlyout: boolean;
 }
 
-export default class Reindex extends Component<ReindexProps, ReindexState> {
+class Reindex extends Component<ReindexProps, ReindexState> {
   static contextType = CoreServicesContext;
   notificationRef: NotificationConfigRef | null = null;
   constructor(props: ReindexProps) {
@@ -709,4 +710,10 @@ export default class Reindex extends Component<ReindexProps, ReindexState> {
       </div>
     );
   }
+}
+
+export default function (props: ReindexProps) {
+  // in re-index we don't change the data source picker
+  useUpdateUrlWithDataSourceProperties();
+  return <Reindex {...props} />;
 }

@@ -318,6 +318,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       >
         <EuiSpacer size="s" />
         <IndexAlias key={props.dataSourceId} {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
+        {/*{^ Passing dataSourceId as the key to force unmount and remount IndexAlias so as to refresh aliases in case of datasource changes }*/}
         <EuiSpacer />
         <IndexSettings {...subCompontentProps} field={subCompontentProps.readonly ? simulateField : field} />
         <EuiSpacer />

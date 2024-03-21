@@ -10,15 +10,12 @@ import IndexForm from "../IndexForm";
 import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CommonService } from "../../../../services/index";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
-import queryString from "query-string";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
+interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }>, DataSourceMenuProperties {
   isEdit?: boolean;
   commonService: CommonService;
-  dataSourceId: string;
-  dataSourceLabel: string;
-  multiDataSourceEnabled: boolean;
 }
 
 export class CreateIndex extends Component<CreateIndexProps> {
@@ -45,19 +42,6 @@ export class CreateIndex extends Component<CreateIndexProps> {
     this.props.history.push(ROUTES.INDICES);
   };
 
-  componentDidUpdate(prevProps: Readonly<CreateIndexProps>) {
-    if (this.props.multiDataSourceEnabled) {
-      if (prevProps.dataSourceId !== this.props.dataSourceId || prevProps.dataSourceLabel !== this.props.dataSourceLabel) {
-        this.props.history.replace({
-          search: queryString.stringify({
-            dataSourceId: this.props.dataSourceId,
-            dataSourceLabel: this.props.dataSourceLabel,
-          }),
-        });
-      }
-    }
-  }
-
   render() {
     const isEdit = this.isEdit;
 
@@ -81,5 +65,6 @@ export class CreateIndex extends Component<CreateIndexProps> {
 
 export default function (props: CreateIndexProps) {
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
   return <CreateIndex {...props} {...dataSourceMenuProperties} />;
 }

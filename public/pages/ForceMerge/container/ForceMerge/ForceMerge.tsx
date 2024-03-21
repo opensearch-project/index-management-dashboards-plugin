@@ -4,7 +4,6 @@
  */
 
 import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
-import _ from "lodash";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -24,8 +23,7 @@ import { ListenType } from "../../../../lib/JobScheduler";
 import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
 import { ActionType } from "../../../Notifications/constant";
 import { getClusterInfo } from "../../../../utils/helpers";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
-import { useHistory } from "react-router";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -60,22 +58,11 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
       context,
     })
   );
-  const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  const { dataSourceId, dataSourceLabel, multiDataSourceEnabled } = dataSourceMenuProps;
-  if (multiDataSourceEnabled) {
-    // mds flag can't change while the app is loaded
-    const history = useHistory();
-    useEffect(() => {
-      history.replace({
-        search: `?dataSourceId=${dataSourceId}&dataSourceLabel=${dataSourceLabel}`,
-      });
-    }, [dataSourceId, dataSourceLabel]);
-  }
 
+  useUpdateUrlWithDataSourceProperties();
   const onCancel = () => {
     props.history.push(ROUTES.INDICES);
   };
-
   const onClickAction = async () => {
     const { errors, values } = await field.validatePromise();
     if (advancedSettingsOpen) {

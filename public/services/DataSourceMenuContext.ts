@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-interface DataSourceMenuProperties {
+export interface DataSourceMenuProperties {
   dataSourceId: string;
   dataSourceLabel: string;
   multiDataSourceEnabled: boolean;

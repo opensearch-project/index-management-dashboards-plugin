@@ -3,12 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, createContext } from "react";
+import React, { Component } from "react";
 import { Switch, Route, Redirect, RouteComponentProps } from "react-router-dom";
 // @ts-ignore
-import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar, Query, Direction } from "@elastic/eui";
+import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from "@elastic/eui";
 import { CoreStart, HttpSetup, MountPoint } from "opensearch-dashboards/public";
-import queryString from "query-string";
 import Policies from "../Policies";
 import ManagedIndices from "../ManagedIndices";
 import Indices from "../Indices";
@@ -19,6 +18,8 @@ import PolicyDetails from "../PolicyDetails/containers/PolicyDetails";
 import Rollups from "../Rollups";
 import { ModalProvider, ModalRoot } from "../../components/Modal";
 import {
+  CommonService,
+  IndexService,
   ManagedIndexService,
   NotificationService,
   PolicyService,
@@ -58,8 +59,8 @@ import Notifications from "../Notifications";
 import ComposableTemplates from "../ComposableTemplates";
 import CreateComposableTemplate from "../CreateComposableTemplate";
 import { DataSourceMenu } from "../../../../../src/plugins/data_source_management/public";
-import { DataSourceMenuContext } from "../../services/DataSourceMenuContext";
-import { CommonService, IndexService } from "../../services";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../services/DataSourceMenuContext";
+import queryString from "query-string";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -129,10 +130,7 @@ interface MainProps extends RouteComponentProps {
   multiDataSourceEnabled: boolean;
 }
 
-interface MainState {
-  dataSourceId: string;
-  dataSourceLabel: string;
-}
+interface MainState extends Pick<DataSourceMenuProperties, "dataSourceId" | "dataSourceLabel"> {}
 
 const dataSourceEnabledPaths: string[] = [
   ROUTES.CREATE_DATA_STREAM,
@@ -151,6 +149,7 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.CREATE_TEMPLATE,
   ROUTES.COMPOSABLE_TEMPLATES,
   ROUTES.CREATE_COMPOSABLE_TEMPLATE,
+  ROUTES.REINDEX,
 ];
 
 export default class Main extends Component<MainProps, MainState> {
@@ -339,6 +338,7 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.SPLIT_INDEX,
                                 ROUTES.ROLLOVER,
                                 ROUTES.INDEX_DETAIL,
+                                ROUTES.REINDEX,
                               ]}
                               render={(props) => (
                                 <DataSourceMenu

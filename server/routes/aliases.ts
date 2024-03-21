@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { schema } from "@osd/config-schema";
+import { schema, Type } from "@osd/config-schema";
 import { NodeServices } from "../models/interfaces";
 import { NODE_API } from "../../utils/constants";
 import { IRouter } from "../../../../src/core/server";
@@ -11,7 +11,7 @@ import { IRouter } from "../../../../src/core/server";
 export default function (services: NodeServices, router: IRouter, dataSourceEnabled: boolean = false) {
   const { aliasService } = services;
 
-  let getAliasesQueryParam: any = {
+  let getAliasesQueryParam: { search: Type<string | undefined>; dataSourceId?: Type<string> } = {
     search: schema.maybe(schema.string()),
   };
   if (dataSourceEnabled) {

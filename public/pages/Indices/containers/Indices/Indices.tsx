@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -37,17 +37,15 @@ import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants
 import IndicesActions from "../IndicesActions";
 import { destroyListener, EVENT_MAP, listenEvent } from "../../../../JobHandler";
 import "./index.scss";
-import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface IndicesProps extends RouteComponentProps {
+interface IndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   indexService: IndexService;
   commonService: CommonService;
-  dataSourceId: string;
-  dataSourceLabel: string;
-  multiDataSourceEnabled: boolean;
 }
 
-interface IndicesState {
+interface IndicesState extends DataSourceMenuProperties {
   totalIndices: number;
   from: number;
   size: number;
@@ -62,30 +60,13 @@ interface IndicesState {
   isDataStreamColumnVisible: boolean;
 }
 
-interface IndicesState {
-  totalIndices: number;
-  from: number;
-  size: number;
-  search: string;
-  query: Query;
-  sortField: keyof ManagedCatIndex;
-  sortDirection: Direction;
-  selectedItems: ManagedCatIndex[];
-  indices: ManagedCatIndex[];
-  loadingIndices: boolean;
-  showDataStreams: boolean;
-  isDataStreamColumnVisible: boolean;
-  dataSourceId: string;
-  dataSourceLabel: string;
-}
-
-export class Indices extends Component<IndicesProps, IndicesState> {
+export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
   static contextType = CoreServicesContext;
-
   constructor(props: IndicesProps) {
     super(props);
     const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
     this.state = {
+      ...this.state,
       totalIndices: 0,
       from,
       size,
@@ -98,21 +79,9 @@ export class Indices extends Component<IndicesProps, IndicesState> {
       loadingIndices: true,
       showDataStreams,
       isDataStreamColumnVisible: showDataStreams,
-      dataSourceId: props.dataSourceId,
-      dataSourceLabel: props.dataSourceLabel,
     };
 
     this.getIndices = _.debounce(this.getIndices, 500, { leading: true });
-  }
-
-  static getDerivedStateFromProps(nextProps: IndicesProps, prevState: IndicesState) {
-    if (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel) {
-      return {
-        dataSourceId: nextProps.dataSourceId,
-        dataSourceLabel: nextProps.dataSourceLabel,
-      };
-    }
-    return null;
   }
 
   async componentDidMount() {
@@ -303,11 +272,7 @@ export class Indices extends Component<IndicesProps, IndicesState> {
                 buttonProps: {
                   fill: true,
                   onClick: () => {
-                    this.props.multiDataSourceEnabled
-                      ? this.props.history.push(
-                          `${ROUTES.CREATE_INDEX}?dataSourceId=${this.state.dataSourceId}&dataSourceLabel=${this.state.dataSourceLabel}`
-                        )
-                      : this.props.history.push(`${ROUTES.CREATE_INDEX}`);
+                    this.props.history.push(ROUTES.CREATE_INDEX);
                   },
                 },
               },
