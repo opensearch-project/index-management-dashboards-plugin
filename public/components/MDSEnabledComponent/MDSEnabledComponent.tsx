@@ -37,16 +37,15 @@ export default class MDSEnabledComponent<
 export function useUpdateUrlWithDataSourceProperties() {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   const { dataSourceId, dataSourceLabel, multiDataSourceEnabled } = dataSourceMenuProps;
-  if (multiDataSourceEnabled) {
-    // mds flag can't change while the app is loaded
-    const history = useHistory();
-    useEffect(() => {
+  const history = useHistory();
+  useEffect(() => {
+    if (multiDataSourceEnabled) {
       history.replace({
         search: queryString.stringify({
           dataSourceId,
           dataSourceLabel,
         }),
       });
-    }, [dataSourceId, dataSourceLabel]);
-  }
+    }
+  }, [dataSourceId, dataSourceLabel, multiDataSourceEnabled]);
 }
