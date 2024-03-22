@@ -25,9 +25,9 @@ import {
 import { getSearchString } from "../utils/helpers";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
 import { IRecoveryItem, IReindexItem, ITaskItem } from "../../models/interfaces";
-import { OpenSearchISMService } from "./OpenSearchISMService";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class IndexService extends OpenSearchISMService {
+export default class IndexService extends MDSEnabledClientService {
   getIndices = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -46,7 +46,6 @@ export default class IndexService extends OpenSearchISMService {
         showDataStreams,
         expandWildcards,
         exactSearch,
-        dataSourceId = "",
       } = request.query as {
         from: string;
         size: string;
@@ -59,7 +58,6 @@ export default class IndexService extends OpenSearchISMService {
         showDataStreams: boolean;
         expandWildcards?: string;
         exactSearch?: string;
-        dataSourceId?: string;
       };
       const params: {
         index: string;
@@ -83,7 +81,7 @@ export default class IndexService extends OpenSearchISMService {
         params.index = exactSearch;
       }
 
-      const callWithRequest = this.getClientBasedOnDataSource(context, request, dataSourceId);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
 
       const [recoverys, tasks, indicesResponse, indexToDataStreamMapping]: [
         IRecoveryItem[],

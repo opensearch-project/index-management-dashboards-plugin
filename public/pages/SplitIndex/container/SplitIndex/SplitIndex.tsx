@@ -270,7 +270,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
 export default function SplitIndexWrapper(props: Omit<SplitIndexProps, "commonService" | "coreService">) {
   const services = useContext(ServicesContext) as BrowserServices;
   const coreService = useContext(CoreServicesContext) as CoreStart;
-  // in split-index we don't change the data source picker
+  // in split-index page, user can't change the data source i.e., its in read-only
   useUpdateUrlWithDataSourceProperties();
   return <SplitIndex {...props} commonService={services.commonService} coreService={coreService} />;
 }

@@ -58,9 +58,9 @@ import ForceMerge from "../ForceMerge";
 import Notifications from "../Notifications";
 import ComposableTemplates from "../ComposableTemplates";
 import CreateComposableTemplate from "../CreateComposableTemplate";
-import { DataSourceMenu } from "../../../../../src/plugins/data_source_management/public";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../services/DataSourceMenuContext";
 import queryString from "query-string";
+import { DataSourceManagementPluginSetup } from "../../../../../src/plugins/data_source_management/public";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -128,6 +128,7 @@ interface MainProps extends RouteComponentProps {
   landingPage: string;
   setActionMenu: (menuMount: MountPoint | undefined) => void;
   multiDataSourceEnabled: boolean;
+  dataSourceManagement: DataSourceManagementPluginSetup;
 }
 
 interface MainState extends Pick<DataSourceMenuProperties, "dataSourceId" | "dataSourceLabel"> {}
@@ -310,6 +311,7 @@ export default class Main extends Component<MainProps, MainState> {
     const { landingPage } = this.props;
 
     const ROUTE_STYLE = { padding: "25px 25px" };
+    const DataSourceMenu = this.props.dataSourceManagement.ui.DataSourceMenu;
 
     return (
       <CoreServicesConsumer>

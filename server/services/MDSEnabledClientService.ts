@@ -5,7 +5,7 @@ import {
   RequestHandlerContext,
 } from "opensearch-dashboards/server";
 
-export abstract class OpenSearchISMService {
+export abstract class MDSEnabledClientService {
   osDriver: ILegacyCustomClusterClient;
   dataSourceEnabled: boolean;
 
@@ -13,11 +13,12 @@ export abstract class OpenSearchISMService {
     this.osDriver = osDriver;
     this.dataSourceEnabled = dataSourceEnabled;
   }
+
   getClientBasedOnDataSource(
     context: RequestHandlerContext,
-    request: OpenSearchDashboardsRequest,
-    dataSourceId: string
+    request: OpenSearchDashboardsRequest
   ): (endpoint: string, clientParams: Record<string, any>, options?: LegacyCallAPIOptions | undefined) => Promise<unknown> {
+    const { dataSourceId = "" } = request.query as { dataSourceId?: string };
     if (this.dataSourceEnabled && dataSourceId && dataSourceId.trim().length != 0) {
       // non-zero data source id
       return context.dataSource.opensearch.legacy.getClient(dataSourceId).callAPI;

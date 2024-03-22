@@ -713,7 +713,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
 }
 
 export default function (props: ReindexProps) {
-  // in re-index we don't change the data source picker
+  // in re-index page, user can't change the data source i.e., its in read-only
   useUpdateUrlWithDataSourceProperties();
   return <Reindex {...props} />;
 }

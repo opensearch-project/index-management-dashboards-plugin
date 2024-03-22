@@ -13,9 +13,9 @@ import {
 import { ServerResponse } from "../models/types";
 import { DataStream, GetDataStreamsResponse, IndexToDataStream } from "../models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../utils/constants";
-import { OpenSearchISMService } from "./OpenSearchISMService";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class DataStreamService extends OpenSearchISMService {
+export default class DataStreamService extends MDSEnabledClientService {
   getDataStreams = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -26,10 +26,7 @@ export default class DataStreamService extends OpenSearchISMService {
         search?: string;
       };
 
-      const useQuery = !request.body;
-      const usedParam = useQuery ? request.query : request.body;
-      const { dataSourceId = "" } = usedParam || {};
-      const callWithRequest = this.getClientBasedOnDataSource(context, request, dataSourceId);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const [dataStreams, apiAccessible, errMsg] = await getDataStreams(callWithRequest, search);
 
       if (!apiAccessible)

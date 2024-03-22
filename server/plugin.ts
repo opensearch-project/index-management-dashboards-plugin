@@ -70,7 +70,9 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
       aliasService,
     };
 
-    dataSource.registerCustomApiSchema(ismPlugin);
+    if (dataSourceEnabled) {
+      dataSource.registerCustomApiSchema(ismPlugin);
+    }
 
     // create router
     const router = core.http.createRouter();
@@ -84,7 +86,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     transforms(services, router);
     notifications(services, router);
     snapshotManagement(services, router);
-    common(services, router);
+    common(services, router, dataSourceEnabled);
     aliases(services, router, dataSourceEnabled);
 
     return {};

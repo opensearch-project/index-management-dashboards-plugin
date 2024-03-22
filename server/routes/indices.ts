@@ -7,6 +7,7 @@ import { schema } from "@osd/config-schema";
 import { NodeServices } from "../models/interfaces";
 import { NODE_API } from "../../utils/constants";
 import { IRouter } from "../../../../src/core/server";
+import { ObjectType, AnyType } from "@osd/config-schema/target/out";
 
 export default function (services: NodeServices, router: IRouter, dataSourceEnabled: boolean = false) {
   const { indexService } = services;
@@ -40,12 +41,21 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
     indexService.getIndices
   );
 
+  let genericBodyAndDataSourceIdQuery: { body: AnyType; query?: ObjectType } = {
+    body: schema.any(),
+  };
+  if (dataSourceEnabled) {
+    genericBodyAndDataSourceIdQuery = {
+      ...genericBodyAndDataSourceIdQuery,
+      query: schema.object({
+        dataSourceId: schema.string(),
+      }),
+    };
+  }
   router.post(
     {
       path: NODE_API.APPLY_POLICY,
-      validate: {
-        body: schema.any(),
-      },
+      validate: genericBodyAndDataSourceIdQuery,
     },
     indexService.applyPolicy
   );
@@ -53,9 +63,7 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
   router.post(
     {
       path: NODE_API.EDIT_ROLLOVER_ALIAS,
-      validate: {
-        body: schema.any(),
-      },
+      validate: genericBodyAndDataSourceIdQuery,
     },
     indexService.editRolloverAlias
   );

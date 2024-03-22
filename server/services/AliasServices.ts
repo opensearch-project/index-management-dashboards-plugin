@@ -12,9 +12,9 @@ import {
 import { ServerResponse } from "../models/types";
 import { Alias, GetAliasesResponse } from "../models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../utils/constants";
-import { OpenSearchISMService } from "./OpenSearchISMService";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class AliasServices extends OpenSearchISMService {
+export default class AliasServices extends MDSEnabledClientService {
   getAliases = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -25,10 +25,7 @@ export default class AliasServices extends OpenSearchISMService {
         search?: string;
       };
 
-      const useQuery = !request.body;
-      const usedParam = useQuery ? request.query : request.body;
-      const { dataSourceId = "" } = usedParam || {};
-      const callWithRequest = this.getClientBasedOnDataSource(context, request, dataSourceId);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const [aliases, apiAccessible, errMsg] = await getAliases(callWithRequest, search);
 
       if (!apiAccessible)

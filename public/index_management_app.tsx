@@ -12,12 +12,14 @@ import Main from "./pages/Main";
 import { CoreServicesContext } from "./components/core_services";
 import "./app.scss";
 import { AppPluginStartDependencies } from "./types";
+import { DataSourceManagementPluginSetup } from "../../../src/plugins/data_source_management/public";
 
 export function renderApp(
   coreStart: CoreStart,
   pluginStartDependencies: AppPluginStartDependencies,
   params: AppMountParameters,
-  landingPage: string
+  landingPage: string,
+  dataSourceManagement: DataSourceManagementPluginSetup
 ) {
   const isDarkMode = coreStart.uiSettings.get("theme:darkMode") || false;
 
@@ -32,6 +34,7 @@ export function renderApp(
                 landingPage={landingPage}
                 setActionMenu={params.setHeaderActionMenu}
                 multiDataSourceEnabled={!!pluginStartDependencies.dataSource}
+                dataSourceManagement={dataSourceManagement}
               />
             </CoreServicesContext.Provider>
           </DarkModeContext.Provider>

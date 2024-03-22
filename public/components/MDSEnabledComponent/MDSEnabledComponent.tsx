@@ -23,7 +23,7 @@ export default class MDSEnabledComponent<
     // static members cannot reference class type parameters
     if (
       nextProps.multiDataSourceEnabled &&
-      (nextProps.dataSourceId != prevState.dataSourceId || nextProps.dataSourceLabel != prevState.dataSourceLabel)
+      (nextProps.dataSourceId !== prevState.dataSourceId || nextProps.dataSourceLabel !== prevState.dataSourceLabel)
     ) {
       return {
         dataSourceId: nextProps.dataSourceId,
@@ -38,10 +38,13 @@ export function useUpdateUrlWithDataSourceProperties() {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   const { dataSourceId, dataSourceLabel, multiDataSourceEnabled } = dataSourceMenuProps;
   const history = useHistory();
+  const currentSearch = history.location.search;
+  const currentQuery = queryString.parse(currentSearch);
   useEffect(() => {
     if (multiDataSourceEnabled) {
       history.replace({
         search: queryString.stringify({
+          ...currentQuery,
           dataSourceId,
           dataSourceLabel,
         }),

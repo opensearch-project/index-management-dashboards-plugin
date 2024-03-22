@@ -12,11 +12,11 @@ import {
   RequestHandlerContext,
 } from "../../../../src/core/server";
 import { IAPICaller } from "../../models/interfaces";
-import { OpenSearchISMService } from "./OpenSearchISMService";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
 const VALID_METHODS = ["HEAD", "GET", "POST", "PUT", "DELETE"];
 
-export default class CommonService extends OpenSearchISMService {
+export default class CommonService extends MDSEnabledClientService {
   apiCaller = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -28,9 +28,7 @@ export default class CommonService extends OpenSearchISMService {
 
     try {
       const finalData = data;
-      const { dataSourceId = "" } = data;
-      const callWithRequest = this.getClientBasedOnDataSource(context, request, dataSourceId);
-      delete finalData.dataSourceId;
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
 
       /**
        * The endpoint must not be an empty string, reference from proxy caller
