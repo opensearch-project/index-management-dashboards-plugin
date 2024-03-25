@@ -46,7 +46,9 @@ export const getAliasActionsByDiffArray = (
   }, [] as IAliasAction[]);
 };
 
-export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices">, DataSourceMenuProperties {
+export interface IndexFormProps
+  extends Pick<IndexDetailProps, "readonly" | "sourceIndices">,
+    Pick<DataSourceMenuProperties, "dataSourceId"> {
   index?: string;
   value?: Partial<IndexItemRemote>;
   mode?: IndicesUpdateMode;

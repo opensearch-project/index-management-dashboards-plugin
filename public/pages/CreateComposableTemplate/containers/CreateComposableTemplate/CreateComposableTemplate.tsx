@@ -75,7 +75,7 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
   }
 }
 
-export default function (props: CreateComposableTemplateProps) {
+export default function (props: Omit<CreateComposableTemplateProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
   return <CreateComposableTemplate {...props} {...dataSourceMenuProps} />;

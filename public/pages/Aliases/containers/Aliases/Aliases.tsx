@@ -115,6 +115,7 @@ const defaultFilter = {
 
 class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
   static contextType = CoreServicesContext;
+
   constructor(props: AliasesProps) {
     super(props);
     const {
@@ -482,7 +483,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
   }
 }
 
-export default function AliasContainer(props: Omit<AliasesProps, "commonService">) {
+export default function AliasContainer(props: Omit<AliasesProps, "commonService" | keyof DataSourceMenuProperties>) {
   const context = useContext(ServicesContext);
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   return <Aliases {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProps} />;

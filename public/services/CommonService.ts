@@ -13,7 +13,7 @@ export default class CommonService extends MDSEnabledClientService {
   apiCaller = async <T>(params: IAPICaller, queryObject?: HttpFetchQuery): Promise<ServerResponse<T>> => {
     let url = `${NODE_API.API_CALLER}`;
     const payload: HttpFetchOptions = {};
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject || {});
+    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
     payload.method = "POST";
     payload.body = JSON.stringify({
       data: params.data,

@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import { debounce, isEqual } from "lodash";
+import _, { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -428,7 +428,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
   }
 }
 
-export default function DataStreamsContainer(props: Omit<DataStreamsProps, "commonService">) {
+export default function DataStreamsContainer(props: Omit<DataStreamsProps, "commonService" | keyof DataSourceMenuProperties>) {
   const context = useContext(ServicesContext);
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
   return <DataStreams {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProperties} />;

@@ -9,14 +9,14 @@ import { RouteComponentProps } from "react-router-dom";
 import IndexForm from "../IndexForm";
 import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CommonService } from "../../../../services/index";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }>, DataSourceMenuProperties {
+interface CreateIndexPropsBase extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
   isEdit?: boolean;
-  commonService: CommonService;
 }
+
+interface CreateIndexProps extends CreateIndexPropsBase, DataSourceMenuProperties {}
 
 export class CreateIndex extends Component<CreateIndexProps> {
   static contextType = CoreServicesContext;
@@ -63,7 +63,7 @@ export class CreateIndex extends Component<CreateIndexProps> {
   }
 }
 
-export default function (props: CreateIndexProps) {
+export default function (props: CreateIndexPropsBase) {
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
   return <CreateIndex {...props} {...dataSourceMenuProperties} />;

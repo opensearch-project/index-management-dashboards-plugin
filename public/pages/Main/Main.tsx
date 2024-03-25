@@ -201,8 +201,8 @@ export default class Main extends Component<MainProps, MainState> {
     };
 
     if (this.props.multiDataSourceEnabled && this.isDataSourceEnabledForPath(pathname)) {
-      services.indexService = new IndexService(http, this.state.dataSourceId);
-      services.commonService = new CommonService(http, this.state.dataSourceId);
+      services.indexService = new IndexService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.commonService = new CommonService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
     }
     return services;
   }
@@ -311,7 +311,7 @@ export default class Main extends Component<MainProps, MainState> {
     const { landingPage } = this.props;
 
     const ROUTE_STYLE = { padding: "25px 25px" };
-    const DataSourceMenu = this.props.dataSourceManagement.ui.DataSourceMenu;
+    const DataSourceMenu = this.props.dataSourceManagement?.ui?.DataSourceMenu;
 
     return (
       <CoreServicesConsumer>
@@ -626,7 +626,7 @@ export default class Main extends Component<MainProps, MainState> {
                                 path={`${ROUTES.CREATE_INDEX}/:index/:mode`}
                                 render={(props: RouteComponentProps) => (
                                   <div style={ROUTE_STYLE}>
-                                    <CreateIndex {...props} commonService={services.commonService} />
+                                    <CreateIndex {...props} />
                                   </div>
                                 )}
                               />
@@ -642,7 +642,7 @@ export default class Main extends Component<MainProps, MainState> {
                                 path={ROUTES.CREATE_INDEX}
                                 render={(props: RouteComponentProps) => (
                                   <div style={ROUTE_STYLE}>
-                                    <CreateIndex {...props} commonService={services.commonService} />
+                                    <CreateIndex {...props} />
                                   </div>
                                 )}
                               />

@@ -62,6 +62,7 @@ interface IndicesState extends DataSourceMenuProperties {
 
 export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
   static contextType = CoreServicesContext;
+
   constructor(props: IndicesProps) {
     super(props);
     const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
@@ -101,14 +102,14 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
   }
 
   async componentDidUpdate(prevProps: IndicesProps, prevState: IndicesState) {
-    const prevQuery = Indices.getQueryObjectFromState(prevState);
-    const currQuery = Indices.getQueryObjectFromState(this.state);
+    const prevQuery = this.getQueryObjectFromState(prevState);
+    const currQuery = this.getQueryObjectFromState(this.state);
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getIndices();
     }
   }
 
-  static getQueryObjectFromState({
+  getQueryObjectFromState({
     from,
     size,
     search,
@@ -117,14 +118,19 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
     showDataStreams,
     dataSourceId,
   }: IndicesState): IndicesQueryParams {
-    return { from, size, search, sortField, sortDirection, showDataStreams, dataSourceId };
+    const queryObj = { from, size, search, sortField, sortDirection, showDataStreams };
+    if (!this.props.multiDataSourceEnabled) {
+      // don't send dataSourceId, if MDS is not enabled
+      return queryObj;
+    }
+    return { ...queryObj, dataSourceId };
   }
 
   getIndices = async (): Promise<void> => {
     this.setState({ loadingIndices: true });
     try {
       const { indexService, history } = this.props;
-      const queryObject = Indices.getQueryObjectFromState(this.state);
+      const queryObject = this.getQueryObjectFromState(this.state);
       const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
       history.replace({ ...this.props.location, search: queryParamsString });
 
@@ -313,7 +319,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
   }
 }
 
-export default function (props: IndicesProps) {
+export default function (props: Omit<IndicesProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   return <Indices {...props} {...dataSourceMenuProps} />;
 }

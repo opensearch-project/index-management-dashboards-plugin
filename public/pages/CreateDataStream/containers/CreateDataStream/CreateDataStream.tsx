@@ -64,7 +64,7 @@ class CreateDataStream extends Component<CreateDataStreamProps> {
   }
 }
 
-export default function (props: CreateDataStreamProps) {
+export default function (props: Omit<CreateDataStreamProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
   return <CreateDataStream {...props} {...dataSourceMenuProps} />;

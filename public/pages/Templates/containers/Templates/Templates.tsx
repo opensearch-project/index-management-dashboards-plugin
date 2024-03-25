@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
-import { debounce, isEqual } from "lodash";
+import React, { useContext } from "react";
+import _, { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -417,7 +417,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
   }
 }
 
-export default function TemplatesContainer(props: Omit<TemplatesProps, "commonService">) {
+export default function TemplatesContainer(props: Omit<TemplatesProps, "commonService" | keyof DataSourceMenuProperties>) {
   const context = useContext(ServicesContext);
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   return <Templates {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProps} />;

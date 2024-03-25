@@ -12,7 +12,12 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateIndexTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }>, DataSourceMenuProperties {}
+interface CreateIndexTemplateProps
+  extends RouteComponentProps<{
+      template?: string;
+      mode?: string;
+    }>,
+    DataSourceMenuProperties {}
 
 class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   static contextType = CoreServicesContext;
@@ -74,7 +79,7 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   }
 }
 
-export default function (props: CreateIndexTemplateProps) {
+export default function (props: Omit<CreateIndexTemplateProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
   return <CreateIndexTemplate {...props} {...dataSourceMenuProps} />;

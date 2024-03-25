@@ -4,7 +4,7 @@
  */
 
 import React, { useContext } from "react";
-import { debounce, isEqual, get } from "lodash";
+import _, { debounce, isEqual, get } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -461,7 +461,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
 }
 
 export default function ComposableTemplatesContainer(
-  props: Omit<ComposableTemplatesProps, "commonService" | "loading" | "componentMapTemplate">
+  props: Omit<ComposableTemplatesProps, "commonService" | "loading" | "componentMapTemplate" | keyof DataSourceMenuProperties>
 ) {
   const context = useContext(ServicesContext);
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
