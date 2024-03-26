@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
-import { debounce, isEqual, get } from "lodash";
+import React, { useContext } from "react";
+import _, { debounce, isEqual, get } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -38,8 +38,10 @@ import ComponentTemplateBadge from "../../../../components/ComponentTemplateBadg
 import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
 import { useComponentMapTemplate } from "../../utils/hooks";
 import "./index.scss";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface ComposableTemplatesProps extends RouteComponentProps {
+interface ComposableTemplatesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
   componentMapTemplate: Record<string, string[]>;
   loading: boolean;
@@ -54,13 +56,14 @@ type ComposableTemplatesState = {
   selectedItems: ICatComposableTemplate[];
   composableTemplates: ICatComposableTemplate[];
   loading: boolean;
-} & SearchControlsProps["value"];
+} & SearchControlsProps["value"] &
+  DataSourceMenuProperties;
 
 const defaultFilter = {
   search: DEFAULT_QUERY_PARAMS.search,
 };
 
-class ComposableTemplates extends Component<ComposableTemplatesProps, ComposableTemplatesState> {
+class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, ComposableTemplatesState> {
   static contextType = CoreServicesContext;
   constructor(props: ComposableTemplatesProps) {
     super(props);
@@ -79,6 +82,7 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
     };
     this.state = {
       ...defaultFilter,
+      ...this.state,
       totalComposableTemplates: 0,
       from,
       size,
@@ -95,6 +99,14 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
   }
 
   getComposableTemplates: () => Promise<void> | undefined;
+
+  async componentDidUpdate(prevProps: ComposableTemplatesProps, prevState: ComposableTemplatesState) {
+    const prevQuery = this.getQueryState(prevState);
+    const currQuery = this.getQueryState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getComposableTemplates();
+    }
+  }
 
   componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
@@ -449,9 +461,10 @@ class ComposableTemplates extends Component<ComposableTemplatesProps, Composable
 }
 
 export default function ComposableTemplatesContainer(
-  props: Omit<ComposableTemplatesProps, "commonService" | "loading" | "componentMapTemplate">
+  props: Omit<ComposableTemplatesProps, "commonService" | "loading" | "componentMapTemplate" | keyof DataSourceMenuProperties>
 ) {
   const context = useContext(ServicesContext);
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
   const { componentMapTemplate, loading } = useComponentMapTemplate();
   return (
     <ComposableTemplates
@@ -459,6 +472,7 @@ export default function ComposableTemplatesContainer(
       loading={loading}
       componentMapTemplate={componentMapTemplate}
       commonService={context?.commonService as CommonService}
+      {...dataSourceMenuProps}
     />
   );
 }

@@ -13,4 +13,6 @@ export const DEFAULT_QUERY_PARAMS = {
   search: "",
   sortField: "name" as keyof ITemplate,
   sortDirection: SortDirection.DESC,
+  dataSourceId: "",
+  dataSourceLabel: "",
 };

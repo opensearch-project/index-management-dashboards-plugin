@@ -6,27 +6,17 @@
 import { AcknowledgedResponse } from "../models/interfaces";
 import { ServerResponse } from "../models/types";
 import {
+  IOpenSearchDashboardsResponse,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
-  ILegacyCustomClusterClient,
-  IOpenSearchDashboardsResponse,
   RequestHandlerContext,
 } from "../../../../src/core/server";
 import { IAPICaller } from "../../models/interfaces";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
 const VALID_METHODS = ["HEAD", "GET", "POST", "PUT", "DELETE"];
 
-export interface ICommonCaller {
-  <T>(arg: any): T;
-}
-
-export default class CommonService {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class CommonService extends MDSEnabledClientService {
   apiCaller = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -35,9 +25,10 @@ export default class CommonService {
     const useQuery = !request.body;
     const usedParam = (useQuery ? request.query : request.body) as IAPICaller;
     const { endpoint, data, hideLog } = usedParam || {};
+
     try {
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const finalData = data;
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
 
       /**
        * The endpoint must not be an empty string, reference from proxy caller

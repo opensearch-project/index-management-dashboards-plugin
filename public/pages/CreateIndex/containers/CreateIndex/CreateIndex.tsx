@@ -3,20 +3,22 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { EuiSpacer, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import IndexForm from "../IndexForm";
 import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { CommonService } from "../../../../services/index";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateIndexProps extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
+interface CreateIndexPropsBase extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
   isEdit?: boolean;
-  commonService: CommonService;
 }
 
-export default class CreateIndex extends Component<CreateIndexProps> {
+interface CreateIndexProps extends CreateIndexPropsBase, DataSourceMenuProperties {}
+
+export class CreateIndex extends Component<CreateIndexProps> {
   static contextType = CoreServicesContext;
 
   get index() {
@@ -54,8 +56,15 @@ export default class CreateIndex extends Component<CreateIndexProps> {
           mode={this.props.match.params.mode}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.INDICES)}
+          dataSourceId={this.props.dataSourceId}
         />
       </div>
     );
   }
+}
+
+export default function (props: CreateIndexPropsBase) {
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <CreateIndex {...props} {...dataSourceMenuProperties} />;
 }

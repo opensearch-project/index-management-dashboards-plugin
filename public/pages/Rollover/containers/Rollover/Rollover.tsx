@@ -21,6 +21,7 @@ import { getIndexDetail, getOptions, getRolloveredIndex, onSubmit, submitWriteIn
 import { IRolloverRequestBody } from "../../interface";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS } from "../../../../../utils/constants";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
 
@@ -52,6 +53,8 @@ export default function Rollover(props: RolloverProps) {
       },
     },
   });
+
+  useUpdateUrlWithDataSourceProperties();
 
   const onChange = (val?: Record<string, any>) => {
     const finalResult = merge({}, tempValue, val);

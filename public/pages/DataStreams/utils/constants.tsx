@@ -13,6 +13,8 @@ export const DEFAULT_QUERY_PARAMS = {
   search: "",
   sortField: "name" as keyof DataStream,
   sortDirection: SortDirection.DESC,
+  dataSourceId: "",
+  dataSourceLabel: "",
 };
 
 export const HEALTH_TO_COLOR: {

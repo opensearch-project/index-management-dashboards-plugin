@@ -6,33 +6,28 @@
 import { Setting } from "../utils/constants";
 import {
   AcknowledgedResponse,
-  ApplyPolicyResponse,
   AddResponse,
+  ApplyPolicyResponse,
   CatIndex,
-  GetIndicesResponse,
-  ExplainResponse,
   ExplainAPIManagedIndexMetaData,
+  ExplainResponse,
+  GetIndicesResponse,
   IndexToDataStream,
 } from "../models/interfaces";
 import { ServerResponse } from "../models/types";
 import {
+  IOpenSearchDashboardsResponse,
+  LegacyCallAPIOptions,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
-  ILegacyCustomClusterClient,
-  IOpenSearchDashboardsResponse,
   RequestHandlerContext,
 } from "../../../../src/core/server";
 import { getSearchString } from "../utils/helpers";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
 import { IRecoveryItem, IReindexItem, ITaskItem } from "../../models/interfaces";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class IndexService {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class IndexService extends MDSEnabledClientService {
   getIndices = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -61,6 +56,7 @@ export default class IndexService {
         indices?: string[];
         dataStreams?: string[];
         showDataStreams: boolean;
+        expandWildcards?: string;
         exactSearch?: string;
       };
       const params: {
@@ -85,7 +81,7 @@ export default class IndexService {
         params.index = exactSearch;
       }
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
 
       const [recoverys, tasks, indicesResponse, indexToDataStreamMapping]: [
         IRecoveryItem[],
@@ -175,7 +171,7 @@ export default class IndexService {
       const paginatedIndices = filteredIndices.slice(fromNumber, fromNumber + sizeNumber);
       const indexNames = paginatedIndices.map((value: CatIndex) => value.index);
 
-      const managedStatus = await this._getManagedStatus(request, indexNames);
+      const managedStatus = await this._getManagedStatus(callWithRequest, indexNames);
 
       const allIndices = paginatedIndices.map((catIndex: CatIndex) => ({
         ...catIndex,
@@ -219,12 +215,13 @@ export default class IndexService {
     }
   };
 
-  _getManagedStatus = async (request: OpenSearchDashboardsRequest, indexNames: string[]): Promise<{ [indexName: string]: string }> => {
+  _getManagedStatus = async (
+    callWithRequest: (endpoint: string, clientParams?: Record<string, any>, options?: LegacyCallAPIOptions) => any,
+    indexNames: string[]
+  ): Promise<{ [p: string]: string }> => {
     try {
       const explainParamas = { index: indexNames.toString() };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
       const explainResponse: ExplainResponse = await callWithRequest("ism.explain", explainParamas);
-
       const managed: { [indexName: string]: string } = {};
       for (const indexName in explainResponse) {
         if (indexName === "total_managed_indices") continue;

@@ -39,6 +39,7 @@ export interface TemplateDetailProps {
   hideTitle?: boolean;
   hideButton?: boolean;
   noPanel?: boolean;
+  dataSourceId: string;
 }
 
 export interface IComponentTemplateDetailInstance {
@@ -209,7 +210,8 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
       )}
       <DefineTemplate {...subCompontentProps} />
       <EuiSpacer />
-      <IndexAlias {...subCompontentProps} />
+      <IndexAlias key={props.dataSourceId} {...subCompontentProps} />
+      {/*{^ Passing dataSourceId as the key to force unmount and remount IndexAlias so as to refresh aliases in case of datasource changes }*/}
       <EuiSpacer />
       <IndexSettings {...subCompontentProps} />
       <EuiSpacer />

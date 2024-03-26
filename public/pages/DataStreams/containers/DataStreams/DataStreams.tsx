@@ -4,7 +4,7 @@
  */
 
 import React, { Component, useContext } from "react";
-import { debounce, isEqual } from "lodash";
+import _, { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -35,8 +35,10 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import DataStreamsActions from "../DataStreamsActions";
 import { CoreStart } from "opensearch-dashboards/public";
 import { DataStream } from "../../../../../server/models/interfaces";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface DataStreamsProps extends RouteComponentProps {
+interface DataStreamsProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
 }
 
@@ -49,7 +51,8 @@ type DataStreamsState = {
   selectedItems: DataStreamWithStats[];
   dataStreams: DataStreamWithStats[];
   loading: boolean;
-} & SearchControlsProps["value"];
+} & SearchControlsProps["value"] &
+  DataSourceMenuProperties;
 
 const defaultFilter = {
   search: DEFAULT_QUERY_PARAMS.search,
@@ -61,7 +64,7 @@ export const healthExplanation = {
   red: "One or more primary shards are unassigned, so some data is unavailable.",
 };
 
-class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
+class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState> {
   static contextType = CoreServicesContext;
   constructor(props: DataStreamsProps) {
     super(props);
@@ -80,6 +83,7 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
     };
     this.state = {
       ...defaultFilter,
+      ...this.state,
       totalDataStreams: 0,
       from,
       size,
@@ -93,7 +97,13 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
 
     this.getDataStreams = debounce(this.getDataStreams, 500, { leading: true });
   }
-
+  async componentDidUpdate(prevProps: DataStreamsProps, prevState: DataStreamsState) {
+    const prevQuery = this.getQueryState(prevState);
+    const currQuery = this.getQueryState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getDataStreams();
+    }
+  }
   componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.DATA_STREAMS]);
     this.getDataStreams();
@@ -418,7 +428,8 @@ class DataStreams extends Component<DataStreamsProps, DataStreamsState> {
   }
 }
 
-export default function DataStreamsContainer(props: Omit<DataStreamsProps, "commonService">) {
+export default function DataStreamsContainer(props: Omit<DataStreamsProps, "commonService" | keyof DataSourceMenuProperties>) {
   const context = useContext(ServicesContext);
-  return <DataStreams {...props} commonService={context?.commonService as CommonService} />;
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  return <DataStreams {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProperties} />;
 }

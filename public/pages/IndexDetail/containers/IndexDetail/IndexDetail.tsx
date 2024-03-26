@@ -30,6 +30,7 @@ import { Modal } from "../../../../components/Modal";
 import { IFinalDetail } from "./interface";
 import { OVERVIEW_DISPLAY_INFO } from "./constants";
 import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 export interface IndexDetailModalProps extends RouteComponentProps<{ index: string }> {}
 
@@ -50,6 +51,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     };
   }, [record, detail]);
   const services = useContext(ServicesContext) as BrowserServices;
+  useUpdateUrlWithDataSourceProperties();
 
   const fetchIndicesDetail = () =>
     services.commonService

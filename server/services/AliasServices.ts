@@ -4,24 +4,17 @@
  */
 
 import {
-  RequestHandlerContext,
+  IOpenSearchDashboardsResponse,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
-  IOpenSearchDashboardsResponse,
-  ILegacyCustomClusterClient,
-  ILegacyScopedClusterClient,
+  RequestHandlerContext,
 } from "opensearch-dashboards/server";
 import { ServerResponse } from "../models/types";
 import { Alias, GetAliasesResponse } from "../models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../utils/constants";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class AliasServices {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class AliasServices extends MDSEnabledClientService {
   getAliases = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -32,8 +25,8 @@ export default class AliasServices {
         search?: string;
       };
 
-      const client = this.osDriver.asScoped(request);
-      const [aliases, apiAccessible, errMsg] = await getAliases(client, search);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const [aliases, apiAccessible, errMsg] = await getAliases(callWithRequest, search);
 
       if (!apiAccessible)
         return response.custom({
@@ -67,10 +60,7 @@ export default class AliasServices {
   };
 }
 
-export async function getAliases(
-  { callAsCurrentUser: callWithRequest }: ILegacyScopedClusterClient,
-  search?: string
-): Promise<[Alias[], boolean, string]> {
+export async function getAliases(callWithRequest: any, search?: string): Promise<[Alias[], boolean, string]> {
   const searchPattern = search ? `*${search}*` : "*";
 
   let accessible = true;
