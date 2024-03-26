@@ -17,9 +17,11 @@ import { actionRepoSingleton } from "./pages/VisualCreatePolicy/utils/helpers";
 import { ROUTES } from "./utils/constants";
 import { JobHandlerRegister } from "./JobHandler";
 import { ManagementOverViewPluginSetup } from "../../../src/plugins/management_overview/public";
+import { DataSourceManagementPluginSetup } from "../../../src/plugins/data_source_management/public";
 
 interface IndexManagementSetupDeps {
   managementOverview?: ManagementOverViewPluginSetup;
+  dataSourceManagement?: DataSourceManagementPluginSetup;
 }
 
 export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart, IndexManagementSetupDeps> {
@@ -27,7 +29,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
     // can retrieve config from initializerContext
   }
 
-  public setup(core: CoreSetup, { managementOverview }: IndexManagementSetupDeps): IndexManagementPluginSetup {
+  public setup(core: CoreSetup, { managementOverview, dataSourceManagement }: IndexManagementSetupDeps): IndexManagementPluginSetup {
     JobHandlerRegister(core);
 
     if (managementOverview) {
@@ -58,7 +60,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       mount: async (params: AppMountParameters) => {
         const { renderApp } = await import("./index_management_app");
         const [coreStart, depsStart] = await core.getStartServices();
-        return renderApp(coreStart, params, ROUTES.INDEX_POLICIES);
+        return renderApp(coreStart, depsStart, params, ROUTES.INDEX_POLICIES, dataSourceManagement);
       },
     });
 
@@ -70,7 +72,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       mount: async (params: AppMountParameters) => {
         const { renderApp } = await import("./index_management_app");
         const [coreStart, depsStart] = await core.getStartServices();
-        return renderApp(coreStart, params, ROUTES.SNAPSHOT_POLICIES);
+        return renderApp(coreStart, depsStart, params, ROUTES.SNAPSHOT_POLICIES, dataSourceManagement);
       },
     });
 

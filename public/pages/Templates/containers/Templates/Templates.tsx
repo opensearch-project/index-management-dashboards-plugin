@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
-import { debounce, isEqual } from "lodash";
+import React, { useContext } from "react";
+import _, { debounce, isEqual } from "lodash";
 import { Link, RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -39,8 +39,10 @@ import { TemplateConvert } from "../../../CreateIndexTemplate/components/Templat
 import AssociatedComponentsModal from "../AssociatedComponentsModal";
 import DeleteTemplate from "../../components/DeleteTemplate";
 import IndexPatternDisplay from "./IndexPatternDisplay";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface TemplatesProps extends RouteComponentProps {
+interface TemplatesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
 }
 
@@ -53,13 +55,14 @@ type TemplatesState = {
   selectedItems: ITemplate[];
   templates: ITemplate[];
   loading: boolean;
-} & SearchControlsProps["value"];
+} & SearchControlsProps["value"] &
+  DataSourceMenuProperties;
 
 const defaultFilter = {
   search: DEFAULT_QUERY_PARAMS.search,
 };
 
-class Templates extends Component<TemplatesProps, TemplatesState> {
+class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
   static contextType = CoreServicesContext;
   constructor(props: TemplatesProps) {
     super(props);
@@ -78,6 +81,7 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
     };
     this.state = {
       ...defaultFilter,
+      ...this.state,
       totalTemplates: 0,
       from,
       size,
@@ -92,6 +96,13 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
     this.getTemplates = debounce(this.getTemplates, 500, { leading: true });
   }
 
+  async componentDidUpdate(prevProps: TemplatesProps, prevState: TemplatesState) {
+    const prevQuery = this.getQueryState(prevState);
+    const currQuery = this.getQueryState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getTemplates();
+    }
+  }
   componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
     this.getTemplates();
@@ -406,7 +417,8 @@ class Templates extends Component<TemplatesProps, TemplatesState> {
   }
 }
 
-export default function TemplatesContainer(props: Omit<TemplatesProps, "commonService">) {
+export default function TemplatesContainer(props: Omit<TemplatesProps, "commonService" | keyof DataSourceMenuProperties>) {
   const context = useContext(ServicesContext);
-  return <Templates {...props} commonService={context?.commonService as CommonService} />;
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <Templates {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProps} />;
 }

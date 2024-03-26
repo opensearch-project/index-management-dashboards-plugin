@@ -14,4 +14,6 @@ export const DEFAULT_QUERY_PARAMS = {
   sortField: "alias" as keyof IAlias,
   sortDirection: SortDirection.DESC,
   status: "",
+  dataSourceId: "",
+  dataSourceLabel: "",
 };

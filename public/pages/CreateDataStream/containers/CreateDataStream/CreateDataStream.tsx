@@ -3,16 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import DataStreamDetail from "../DataStreamDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { isEqual } from "lodash";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateDataStreamProps extends RouteComponentProps<{ dataStream?: string }> {}
+interface CreateDataStreamProps extends RouteComponentProps<{ dataStream?: string }>, DataSourceMenuProperties {}
 
-export default class CreateDataStream extends Component<CreateDataStreamProps> {
+class CreateDataStream extends Component<CreateDataStreamProps> {
   static contextType = CoreServicesContext;
 
   get dataStream() {
@@ -55,8 +57,15 @@ export default class CreateDataStream extends Component<CreateDataStreamProps> {
           dataStream={this.dataStream}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.DATA_STREAMS)}
+          key={this.props.dataSourceId}
         />
       </div>
     );
   }
+}
+
+export default function (props: Omit<CreateDataStreamProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <CreateDataStream {...props} {...dataSourceMenuProps} />;
 }

@@ -19,6 +19,7 @@ describe("CommonService spec", () => {
     expect(httpClientMock.fetch).toHaveBeenCalledWith(`${NODE_API.API_CALLER}`, {
       method: "POST",
       body: JSON.stringify(queryObject),
+      queryObject: undefined,
     });
   });
 });
