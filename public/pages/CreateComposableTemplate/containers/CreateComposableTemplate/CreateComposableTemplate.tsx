@@ -3,16 +3,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import TemplateDetail from "../TemplateDetail";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { isEqual } from "lodash";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateComposableTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }> {}
+interface CreateComposableTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }>, DataSourceMenuProperties {}
 
-export default class CreateComposableTemplate extends Component<CreateComposableTemplateProps> {
+class CreateComposableTemplate extends Component<CreateComposableTemplateProps> {
   static contextType = CoreServicesContext;
 
   get template() {
@@ -66,8 +68,15 @@ export default class CreateComposableTemplate extends Component<CreateComposable
           templateName={this.template}
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.COMPOSABLE_TEMPLATES)}
+          dataSourceId={this.props.dataSourceId}
         />
       </div>
     );
   }
+}
+
+export default function (props: Omit<CreateComposableTemplateProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <CreateComposableTemplate {...props} {...dataSourceMenuProps} />;
 }

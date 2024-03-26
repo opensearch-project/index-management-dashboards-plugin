@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -37,13 +37,15 @@ import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants
 import IndicesActions from "../IndicesActions";
 import { destroyListener, EVENT_MAP, listenEvent } from "../../../../JobHandler";
 import "./index.scss";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface IndicesProps extends RouteComponentProps {
+interface IndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   indexService: IndexService;
   commonService: CommonService;
 }
 
-interface IndicesState {
+interface IndicesState extends DataSourceMenuProperties {
   totalIndices: number;
   from: number;
   size: number;
@@ -58,12 +60,14 @@ interface IndicesState {
   isDataStreamColumnVisible: boolean;
 }
 
-export default class Indices extends Component<IndicesProps, IndicesState> {
+export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
   static contextType = CoreServicesContext;
+
   constructor(props: IndicesProps) {
     super(props);
     const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
     this.state = {
+      ...this.state,
       totalIndices: 0,
       from,
       size,
@@ -98,23 +102,36 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
   }
 
   async componentDidUpdate(prevProps: IndicesProps, prevState: IndicesState) {
-    const prevQuery = Indices.getQueryObjectFromState(prevState);
-    const currQuery = Indices.getQueryObjectFromState(this.state);
+    const prevQuery = this.getQueryObjectFromState(prevState);
+    const currQuery = this.getQueryObjectFromState(this.state);
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getIndices();
     }
   }
 
-  static getQueryObjectFromState({ from, size, search, sortField, sortDirection, showDataStreams }: IndicesState): IndicesQueryParams {
-    return { from, size, search, sortField, sortDirection, showDataStreams };
+  getQueryObjectFromState({
+    from,
+    size,
+    search,
+    sortField,
+    sortDirection,
+    showDataStreams,
+    dataSourceId,
+  }: IndicesState): IndicesQueryParams {
+    const queryObj = { from, size, search, sortField, sortDirection, showDataStreams };
+    if (!this.props.multiDataSourceEnabled) {
+      // don't send dataSourceId, if MDS is not enabled
+      return queryObj;
+    }
+    return { ...queryObj, dataSourceId };
   }
 
   getIndices = async (): Promise<void> => {
     this.setState({ loadingIndices: true });
     try {
       const { indexService, history } = this.props;
-      const queryObject = Indices.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(queryObject);
+      const queryObject = this.getQueryObjectFromState(this.state);
+      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
       history.replace({ ...this.props.location, search: queryParamsString });
 
       const getIndicesResponse = await indexService.getIndices({
@@ -300,4 +317,9 @@ export default class Indices extends Component<IndicesProps, IndicesState> {
       </ContentPanel>
     );
   }
+}
+
+export default function (props: Omit<IndicesProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <Indices {...props} {...dataSourceMenuProps} />;
 }

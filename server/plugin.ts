@@ -31,25 +31,32 @@ import {
 } from "../server/routes";
 import dataStreams from "./routes/dataStreams";
 import { NodeServices } from "./models/interfaces";
+import { DataSourcePluginSetup } from "../../../src/plugins/data_source/server";
+
+export interface IndexManagementPluginDependencies {
+  dataSource: DataSourcePluginSetup;
+}
 
 export class IndexPatternManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart> {
-  public async setup(core: CoreSetup) {
+  public async setup(core: CoreSetup, { dataSource }: IndexManagementPluginDependencies) {
     // create OpenSearch client that aware of ISM API endpoints
     const osDriver: ILegacyCustomClusterClient = core.opensearch.legacy.createClient("index_management", {
       plugins: [ismPlugin],
     });
 
+    const dataSourceEnabled = !!dataSource;
+
     // Initialize services
-    const indexService = new IndexService(osDriver);
-    const dataStreamService = new DataStreamService(osDriver);
+    const indexService = new IndexService(osDriver, dataSourceEnabled);
+    const dataStreamService = new DataStreamService(osDriver, dataSourceEnabled);
     const policyService = new PolicyService(osDriver);
     const managedIndexService = new ManagedIndexService(osDriver);
     const rollupService = new RollupService(osDriver);
     const transformService = new TransformService(osDriver);
     const notificationService = new NotificationService(osDriver);
     const snapshotManagementService = new SnapshotManagementService(osDriver);
-    const commonService = new CommonService(osDriver);
-    const aliasService = new AliasServices(osDriver);
+    const commonService = new CommonService(osDriver, dataSourceEnabled);
+    const aliasService = new AliasServices(osDriver, dataSourceEnabled);
     const services: NodeServices = {
       indexService,
       dataStreamService,
@@ -63,19 +70,24 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
       aliasService,
     };
 
+    if (dataSourceEnabled) {
+      dataSource.registerCustomApiSchema(ismPlugin);
+    }
+
     // create router
     const router = core.http.createRouter();
+
     // Add server routes
-    indices(services, router);
-    dataStreams(services, router);
+    indices(services, router, dataSourceEnabled);
+    dataStreams(services, router, dataSourceEnabled);
     policies(services, router);
     managedIndices(services, router);
     rollups(services, router);
     transforms(services, router);
     notifications(services, router);
     snapshotManagement(services, router);
-    common(services, router);
-    aliases(services, router);
+    common(services, router, dataSourceEnabled);
+    aliases(services, router, dataSourceEnabled);
 
     return {};
   }

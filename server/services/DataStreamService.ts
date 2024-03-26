@@ -4,24 +4,18 @@
  */
 
 import {
-  RequestHandlerContext,
+  ILegacyScopedClusterClient,
+  IOpenSearchDashboardsResponse,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
-  IOpenSearchDashboardsResponse,
-  ILegacyCustomClusterClient,
-  ILegacyScopedClusterClient,
+  RequestHandlerContext,
 } from "opensearch-dashboards/server";
 import { ServerResponse } from "../models/types";
 import { DataStream, GetDataStreamsResponse, IndexToDataStream } from "../models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../utils/constants";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class DataStreamService {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class DataStreamService extends MDSEnabledClientService {
   getDataStreams = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -32,8 +26,8 @@ export default class DataStreamService {
         search?: string;
       };
 
-      const client = this.osDriver.asScoped(request);
-      const [dataStreams, apiAccessible, errMsg] = await getDataStreams(client, search);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const [dataStreams, apiAccessible, errMsg] = await getDataStreams(callWithRequest, search);
 
       if (!apiAccessible)
         return response.custom({
@@ -67,10 +61,7 @@ export default class DataStreamService {
   };
 }
 
-export async function getDataStreams(
-  { callAsCurrentUser: callWithRequest }: ILegacyScopedClusterClient,
-  search?: string
-): Promise<[DataStream[], boolean, string]> {
+export async function getDataStreams(callWithRequest: any, search?: string): Promise<[DataStream[], boolean, string]> {
   const searchPattern = search ? `*${search}*` : "*";
 
   let accessible = true;
@@ -93,7 +84,7 @@ export async function getDataStreams(
 export async function getIndexToDataStreamMapping({
   callAsCurrentUser: callWithRequest,
 }: ILegacyScopedClusterClient): Promise<IndexToDataStream> {
-  const [dataStreams] = await getDataStreams({ callAsCurrentUser: callWithRequest });
+  const [dataStreams] = await getDataStreams(callWithRequest);
 
   const mapping: { [indexName: string]: string } = {};
   dataStreams.forEach((dataStream) => {

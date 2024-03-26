@@ -5,11 +5,10 @@
 
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 // @ts-ignore
 import userEvent from "@testing-library/user-event";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { HashRouter as Router } from "react-router-dom";
+import { HashRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
 import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks";
 import Indices from "./Indices";
@@ -18,10 +17,19 @@ import { ModalProvider, ModalRoot } from "../../../../components/Modal";
 import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesConsumer, CoreServicesContext } from "../../../../components/core_services";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 
-function renderWithRouter(Component: React.ComponentType<any>) {
+function renderWithRouter(
+  Component: React.ComponentType<any>,
+  data: DataSourceMenuProperties = {
+    dataSourceId: "",
+    dataSourceLabel: "",
+    multiDataSourceEnabled: false,
+  },
+  renderFn = render
+) {
   return {
-    ...render(
+    ...renderFn(
       <Router>
         <Switch>
           <Route
@@ -35,7 +43,9 @@ function renderWithRouter(Component: React.ComponentType<any>) {
                       {(core: CoreStart | null) => (
                         <ServicesConsumer>
                           {({ indexService, commonService }: any) => (
-                            <Component indexService={indexService} commonService={commonService} core={core} {...props} />
+                            <DataSourceMenuContext.Provider value={data}>
+                              <Component indexService={indexService} commonService={commonService} core={core} {...props} />
+                            </DataSourceMenuContext.Provider>
                           )}
                         </ServicesConsumer>
                       )}
@@ -52,7 +62,7 @@ function renderWithRouter(Component: React.ComponentType<any>) {
   };
 }
 
-describe("<Indices /> spec", () => {
+describe(`<Indices /> spec`, () => {
   it("renders the component", async () => {
     browserServicesMock.indexService.getIndices = jest.fn().mockResolvedValue({ ok: true, response: { indices: [], totalIndices: 0 } });
     const { container } = renderWithRouter(Indices);
@@ -218,5 +228,60 @@ describe("<Indices /> spec", () => {
     // should load indices 0-19 after clicking sort (defaults to asc) on docs.count
     await waitFor(() => getByText("index_0"));
     expect(queryByText("index_39")).toBeNull();
+  });
+});
+
+describe("re-render on data-source-id prop change", () => {
+  it("should re-render based on change in the data_source_id", async () => {
+    const indices_data_source_id1 = new Array(10).fill(null).map((_, index) => ({
+      "docs.count": index,
+      "docs.deleted": 2,
+      health: "green",
+      index: `index_${index}`,
+      pri: "1",
+      "pri.store.size": "100KB",
+      rep: "0",
+      status: "open",
+      "store.size": "100KB",
+      uuid: "some_uuid",
+    }));
+    const indices_data_source_id2 = new Array(10).fill(null).map((_, index) => ({
+      "docs.count": index,
+      "docs.deleted": 2,
+      health: "green",
+      index: `index_ds2_${index}`,
+      pri: "1",
+      "pri.store.size": "100KB",
+      rep: "0",
+      status: "open",
+      "store.size": "100KB",
+      uuid: "some_uuid",
+    }));
+    browserServicesMock.indexService.getIndices = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, response: { indices: indices_data_source_id1, totalIndices: 10 } })
+      .mockResolvedValueOnce({ ok: true, response: { indices: indices_data_source_id2, totalIndices: 10 } });
+
+    const { getByText, queryByText, rerender } = renderWithRouter(Indices, {
+      dataSourceId: "test_data_source_id",
+      dataSourceLabel: "test_data_source_label",
+      multiDataSourceEnabled: true,
+    });
+
+    await waitFor(() => getByText("index_0"));
+    expect(queryByText("index_11")).toBeNull();
+
+    // prop change, should re-trigger
+    renderWithRouter(
+      Indices,
+      {
+        dataSourceId: "test_data_source_id_2",
+        dataSourceLabel: "test_data_source_label_2",
+        multiDataSourceEnabled: true,
+      },
+      rerender
+    );
+    await waitFor(() => getByText("index_ds2_0"));
+    expect(queryByText("index_0")).toBeNull();
   });
 });

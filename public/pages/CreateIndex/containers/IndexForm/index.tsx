@@ -17,6 +17,7 @@ import { transformArrayToObject, transformObjectToArray } from "../../../../comp
 import { ServerResponse } from "../../../../../server/models/types";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
+import { DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 
 export const getAliasActionsByDiffArray = (
   oldAliases: string[],
@@ -45,7 +46,9 @@ export const getAliasActionsByDiffArray = (
   }, [] as IAliasAction[]);
 };
 
-export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices"> {
+export interface IndexFormProps
+  extends Pick<IndexDetailProps, "readonly" | "sourceIndices">,
+    Pick<DataSourceMenuProperties, "dataSourceId"> {
   index?: string;
   value?: Partial<IndexItemRemote>;
   mode?: IndicesUpdateMode;
@@ -103,6 +106,16 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     const isEdit = this.isEdit;
     if (isEdit) {
       this.refreshIndex();
+    }
+  }
+  componentDidUpdate(prevProps: IndexFormProps, prevState: CreateIndexState) {
+    if (prevProps.dataSourceId != this.props.dataSourceId) {
+      // reset the state, if dataSourceId changes, i.e., clear state
+      this.setState({
+        isSubmitting: false,
+        indexDetail: merge({}, defaultIndexSettings, IndexForm.transformIndexDetailToLocal(this.props.value)),
+        oldIndexDetail: undefined,
+      });
     }
   }
 
@@ -420,6 +433,8 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
     return (
       <>
         <IndexDetail
+          key={this.props.dataSourceId}
+          // ^ remounting IndexDetail through change in key
           readonly={readonly}
           mode={this.mode}
           ref={(ref) => (this.indexDetailRef = ref)}
