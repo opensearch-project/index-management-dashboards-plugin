@@ -113,7 +113,7 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
         const result = await services.commonService.apiCaller({
           endpoint: "indices.clearCache",
           data: {
-            index: unBlockedItems.join(","),
+            index: unBlockedItems.join(",") || "_all",
           },
         });
         if (result && result.ok) {

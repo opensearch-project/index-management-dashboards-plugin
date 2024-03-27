@@ -185,7 +185,7 @@ describe("<IndicesActions /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.clearCache",
         data: {
-          index: "",
+          index: "_all",
         },
       });
       expect(coreServicesMock.notifications.toasts.addSuccess).toHaveBeenCalledTimes(1);
@@ -238,7 +238,7 @@ describe("<IndicesActions /> spec", () => {
       expect(browserServicesMock.commonService.apiCaller).toHaveBeenCalledWith({
         endpoint: "indices.clearCache",
         data: {
-          index: "",
+          index: "_all",
         },
       });
       expect(coreServicesMock.notifications.toasts.addError).toHaveBeenCalledTimes(1);
