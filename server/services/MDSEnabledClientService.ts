@@ -28,3 +28,5 @@ export abstract class MDSEnabledClientService {
     }
   }
 }
+
+export type DataSourceClient = ReturnType<MDSEnabledClientService["getClientBasedOnDataSource"]>;

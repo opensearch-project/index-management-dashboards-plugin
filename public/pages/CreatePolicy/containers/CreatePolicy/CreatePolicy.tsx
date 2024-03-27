@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { ChangeEvent, Component, Fragment } from "react";
+import React, { ChangeEvent, Component, Fragment, useContext } from "react";
 import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiCallOut, EuiLink, EuiIcon } from "@elastic/eui";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
@@ -15,8 +15,10 @@ import { PolicyService } from "../../../../services";
 import { BREADCRUMBS, DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreatePolicyProps extends RouteComponentProps {
+interface CreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   isEdit: boolean;
   policyService: PolicyService;
 }
@@ -32,7 +34,7 @@ interface CreatePolicyState {
   hasSubmitted: boolean;
 }
 
-export default class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState> {
+export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState> {
   static contextType = CoreServicesContext;
   _isMount: boolean;
   constructor(props: CreatePolicyProps) {
@@ -76,6 +78,22 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
 
   componentWillUnmount() {
     this._isMount = false;
+  }
+
+  componentDidUpdate(prevProps: CreatePolicyProps, prevState: Readonly<CreatePolicyState>) {
+    if (prevProps.dataSourceId != this.props.dataSourceId) {
+      // reset the state, if dataSourceId changes, i.e., clear state
+      this.setState({
+        policySeqNo: null,
+        policyPrimaryTerm: null,
+        policyId: "",
+        policyIdError: "",
+        submitError: "",
+        jsonString: DEFAULT_POLICY,
+        isSubmitting: false,
+        hasSubmitted: false,
+      });
+    }
   }
 
   getPolicyToEdit = async (policyId: string): Promise<void> => {
@@ -249,4 +267,10 @@ export default class CreatePolicy extends Component<CreatePolicyProps, CreatePol
       </div>
     );
   }
+}
+
+export default function (props: Omit<CreatePolicyProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <CreatePolicy {...props} {...dataSourceMenuProperties} />;
 }

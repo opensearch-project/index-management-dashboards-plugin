@@ -8,7 +8,7 @@ import { schema } from "@osd/config-schema";
 import { NodeServices } from "../models/interfaces";
 import { NODE_API } from "../../utils/constants";
 
-export default function (services: NodeServices, router: IRouter) {
+export default function (services: NodeServices, router: IRouter, dataSourceEnabled: boolean) {
   const { rollupService, transformService } = services;
 
   router.get(
@@ -21,6 +21,7 @@ export default function (services: NodeServices, router: IRouter) {
           search: schema.string(),
           sortField: schema.string(),
           sortDirection: schema.string(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -37,6 +38,7 @@ export default function (services: NodeServices, router: IRouter) {
         query: schema.object({
           seqNo: schema.maybe(schema.number()),
           primaryTerm: schema.maybe(schema.number()),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
         body: schema.any(),
       },
@@ -51,6 +53,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     rollupService.getRollup
@@ -62,6 +67,9 @@ export default function (services: NodeServices, router: IRouter) {
       validate: {
         params: schema.object({
           id: schema.string(),
+        }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -75,6 +83,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     rollupService.startRollup
@@ -87,6 +98,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     rollupService.stopRollup
@@ -97,6 +111,9 @@ export default function (services: NodeServices, router: IRouter) {
       path: NODE_API._MAPPINGS,
       validate: {
         body: schema.any(),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     rollupService.getMappings

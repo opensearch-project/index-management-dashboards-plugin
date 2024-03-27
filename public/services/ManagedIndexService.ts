@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { HttpSetup } from "opensearch-dashboards/public";
+import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
 import {
   ChangePolicyResponse,
   GetDataStreamsResponse,
@@ -13,43 +13,56 @@ import {
 } from "../../server/models/interfaces";
 import { ServerResponse } from "../../server/models/types";
 import { NODE_API } from "../../utils/constants";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class ManagedIndexService {
-  httpClient: HttpSetup;
-
-  constructor(httpClient: HttpSetup) {
-    this.httpClient = httpClient;
-  }
-
-  getManagedIndex = async (managedIndexUuid: string): Promise<ServerResponse<any>> => {
-    const response = (await this.httpClient.get(`..${NODE_API.MANAGED_INDICES}/${managedIndexUuid}`)) as ServerResponse<any>;
+export default class ManagedIndexService extends MDSEnabledClientService {
+  getManagedIndex = async (managedIndexUuid: string, queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<any>> => {
+    let url = `..${NODE_API.MANAGED_INDICES}/${managedIndexUuid}`;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<any>;
     return response;
   };
 
-  getManagedIndices = async (queryObject: object): Promise<ServerResponse<GetManagedIndicesResponse>> => {
+  getManagedIndices = async (queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<GetManagedIndicesResponse>> => {
     let url = `..${NODE_API.MANAGED_INDICES}`;
-    const response = (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetManagedIndicesResponse>;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<GetManagedIndicesResponse>;
     return response;
   };
 
-  getDataStreams = async (): Promise<ServerResponse<GetDataStreamsResponse>> => {
-    const url = `..${NODE_API._DATA_STREAMS}`;
-    return await this.httpClient.get(url);
+  getDataStreams = async (queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<GetDataStreamsResponse>> => {
+    let url = `..${NODE_API._DATA_STREAMS}`;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.get(url, params)) as ServerResponse<GetDataStreamsResponse>;
+    return response;
   };
 
-  retryManagedIndexPolicy = async (index: string[], state: string | null): Promise<ServerResponse<RetryManagedIndexResponse>> => {
+  retryManagedIndexPolicy = async (
+    index: string[],
+    state: string | null,
+    queryObject: HttpFetchQuery | undefined
+  ): Promise<ServerResponse<RetryManagedIndexResponse>> => {
     const body = { index, state };
-    const response = (await this.httpClient.post(`..${NODE_API.RETRY}`, { body: JSON.stringify(body) })) as ServerResponse<
-      RetryManagedIndexResponse
-    >;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.post(`..${NODE_API.RETRY}`, {
+      body: JSON.stringify(body),
+      ...params,
+    })) as ServerResponse<RetryManagedIndexResponse>;
     return response;
   };
 
-  removePolicy = async (indices: string[]): Promise<ServerResponse<RemovePolicyResponse>> => {
+  removePolicy = async (indices: string[], queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<RemovePolicyResponse>> => {
     const body = { indices };
-    const response = (await this.httpClient.post(`..${NODE_API.REMOVE_POLICY}`, { body: JSON.stringify(body) })) as ServerResponse<
-      RemovePolicyResponse
-    >;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.post(`..${NODE_API.REMOVE_POLICY}`, {
+      body: JSON.stringify(body),
+      ...params,
+    })) as ServerResponse<RemovePolicyResponse>;
     return response;
   };
 
@@ -57,12 +70,16 @@ export default class ManagedIndexService {
     indices: string[],
     policyId: string,
     state: string | null,
-    include: object[]
+    include: object[],
+    queryObject?: HttpFetchQuery | undefined
   ): Promise<ServerResponse<ChangePolicyResponse>> => {
     const body = { indices, policyId, state, include };
-    const response = (await this.httpClient.post(`..${NODE_API.CHANGE_POLICY}`, { body: JSON.stringify(body) })) as ServerResponse<
-      ChangePolicyResponse
-    >;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    const response = (await this.httpClient.post(`..${NODE_API.CHANGE_POLICY}`, {
+      body: JSON.stringify(body),
+      ...params,
+    })) as ServerResponse<ChangePolicyResponse>;
     return response;
   };
 }

@@ -27,6 +27,7 @@ export const NODE_API = Object.freeze({
   _REPOSITORIES: `${BASE_API_PATH}/_repositores`,
   PUT_INDEX: `${BASE_API_PATH}/putIndex`,
   API_CALLER: `${BASE_API_PATH}/apiCaller`,
+  ACCOUNT_INFO: `${BASE_API_PATH}/accountInfo`,
 });
 
 export const REQUEST = Object.freeze({

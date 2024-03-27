@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { ChangeEvent, Component } from "react";
+import React, { ChangeEvent, Component, useContext } from "react";
 import { EuiButton, EuiButtonEmpty, EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import moment from "moment";
@@ -27,8 +27,15 @@ import SpecifyScheduleStep from "../SpecifyScheduleStep";
 import ReviewAndCreateStep from "../ReviewAndCreateStep";
 import { compareFieldItem, createdTransformToastMessage, isGroupBy, parseFieldOptions } from "../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
+import {
+  DataSourceMenuContext,
+  DataSourceMenuProperties,
+  DataSourceMenuReadOnlyContext,
+  DataSourceMenuReadOnlyProperties,
+} from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateTransformFormProps extends RouteComponentProps {
+interface CreateTransformFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
   transformService: TransformService;
   indexService: IndexService;
@@ -78,7 +85,7 @@ interface CreateTransformFormState {
   isLoading: boolean;
 }
 
-export default class CreateTransformForm extends Component<CreateTransformFormProps, CreateTransformFormState> {
+export class CreateTransformForm extends Component<CreateTransformFormProps, CreateTransformFormState> {
   static contextType = CoreServicesContext;
   _isMount: boolean;
 
@@ -188,11 +195,10 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     const { sourceIndex, sourceIndexFilter } = this.state;
     this.setState({ isLoading: true });
     try {
-      const response = await transformService.searchSampleData(
-        sourceIndex[0].label,
-        { from: 0, size: DefaultSampleDataSize },
-        sourceIndexFilter
-      );
+      const response = await transformService.searchSampleData(sourceIndex[0].label, sourceIndexFilter, {
+        from: 0,
+        size: DefaultSampleDataSize,
+      });
 
       if (!response.ok) {
         const errMsg = response.error ? response.error : "There was a problem searching data from source index.";
@@ -213,6 +219,13 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     let currentStep = this.state.currentStep;
     let warned = this.state.beenWarned;
     let error = false;
+
+    const dataSourceReadOnly = this.props.dataSourceReadOnly;
+    const setDataSourceReadOnly = this.props.setDataSourceReadOnly;
+    if (!dataSourceReadOnly) {
+      setDataSourceReadOnly(true);
+    }
+
     // Verification here
     if (currentStep == 1) {
       const { transformId, sourceIndex, targetIndex, sourceIndexFilterError } = this.state;
@@ -265,6 +278,14 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
     let currentStep = this.state.currentStep;
     // If the current step is 2 or 3, then subtract one on "previous" button click
     currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+    if (currentStep == 1) {
+      const dataSourceReadOnly = this.props.dataSourceReadOnly;
+      const setDataSourceReadOnly = this.props.setDataSourceReadOnly;
+
+      if (dataSourceReadOnly) {
+        setDataSourceReadOnly(false);
+      }
+    }
     this.setState({
       currentStep: currentStep,
     });
@@ -663,4 +684,11 @@ export default class CreateTransformForm extends Component<CreateTransformFormPr
       </div>
     );
   }
+}
+
+export default function (props: Omit<CreateTransformFormProps, keyof DataSourceMenuProperties>) {
+  const dataSourceReadOnlyProperties = useContext(DataSourceMenuReadOnlyContext);
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <CreateTransformForm {...props} {...dataSourceMenuProperties} {...dataSourceReadOnlyProperties} />;
 }

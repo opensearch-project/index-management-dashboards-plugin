@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import {
   EuiBasicTable,
@@ -46,12 +46,14 @@ import RolloverAliasModal from "../../components/RolloverAliasModal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataStream } from "../../../../../server/models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface ManagedIndicesProps extends RouteComponentProps {
+interface ManagedIndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
 }
 
-interface ManagedIndicesState {
+interface ManagedIndicesState extends DataSourceMenuProperties {
   totalManagedIndices: number;
   from: number;
   size: number;
@@ -66,7 +68,7 @@ interface ManagedIndicesState {
   isDataStreamColumnVisible: boolean;
 }
 
-export default class ManagedIndices extends Component<ManagedIndicesProps, ManagedIndicesState> {
+export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, ManagedIndicesState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<ManagedIndexItem>[];
 
@@ -76,6 +78,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
 
     this.state = {
+      ...this.state,
       totalManagedIndices: 0,
       from,
       size,
@@ -193,8 +196,25 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     }
   }
 
-  static getQueryObjectFromState({ from, size, search, sortField, sortDirection, showDataStreams }: ManagedIndicesState) {
-    return { from, size, search, sortField, sortDirection, showDataStreams };
+  static getQueryObjectFromState({
+    from,
+    size,
+    search,
+    sortField,
+    sortDirection,
+    showDataStreams,
+    dataSourceId,
+    multiDataSourceEnabled,
+  }: ManagedIndicesState) {
+    return {
+      from,
+      size,
+      search,
+      sortField,
+      sortDirection,
+      showDataStreams,
+      ...(multiDataSourceEnabled ? { dataSourceId } : {}),
+    };
   }
 
   renderPolicyId = (policyId: string, item: ManagedIndexItem) => {
@@ -227,7 +247,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     try {
       const { managedIndexService, history } = this.props;
       const queryObject = ManagedIndices.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(queryObject);
+      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
       history.replace({ ...this.props.location, search: queryParamsString });
 
       const getManagedIndicesResponse = await managedIndexService.getManagedIndices({
@@ -256,7 +276,7 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
 
   getDataStreams = async (): Promise<DataStream[]> => {
     const { managedIndexService } = this.props;
-    const serverResponse = await managedIndexService.getDataStreams();
+    const serverResponse = await managedIndexService.getDataStreams(undefined);
     if (!serverResponse.ok) {
       if (serverResponse.error.startsWith(SECURITY_EXCEPTION_PREFIX)) {
         this.context.notifications.toasts.addWarning(serverResponse.error);
@@ -284,11 +304,12 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
     try {
       if (!indices.length) return;
       const { managedIndexService } = this.props;
-      const removePolicyResponse = await managedIndexService.removePolicy(indices);
+      const removePolicyResponse = await managedIndexService.removePolicy(indices, undefined);
       if (removePolicyResponse.ok) {
         const { updatedIndices, failedIndices, failures } = removePolicyResponse.response;
         if (updatedIndices) {
           this.context.notifications.toasts.addSuccess(`Removed policy from ${updatedIndices} managed indexes`);
+          await this.getManagedIndices();
         }
         if (failures) {
           this.context.notifications.toasts.addDanger(
@@ -478,4 +499,9 @@ export default class ManagedIndices extends Component<ManagedIndicesProps, Manag
       </div>
     );
   }
+}
+
+export default function (props: Omit<ManagedIndicesProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <ManagedIndices {...props} {...dataSourceMenuProps} />;
 }

@@ -11,7 +11,7 @@ export abstract class MDSEnabledClientService {
     this.mdsEnabled = mdsEnabled;
   }
 
-  patchQueryObjectWithDataSourceId(queryObject?: HttpFetchQuery) {
+  patchQueryObjectWithDataSourceId(queryObject?: HttpFetchQuery): HttpFetchQuery | undefined {
     if (this.mdsEnabled) {
       queryObject = queryObject || {};
       queryObject.dataSourceId = this.dataSourceId;

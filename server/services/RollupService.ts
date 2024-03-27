@@ -5,7 +5,6 @@
 
 import _ from "lodash";
 import {
-  ILegacyCustomClusterClient,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
   IOpenSearchDashboardsResponse,
@@ -15,14 +14,9 @@ import {
 import { DeleteRollupParams, DeleteRollupResponse, GetRollupsResponse, PutRollupParams, PutRollupResponse } from "../models/interfaces";
 import { ServerResponse } from "../models/types";
 import { DocumentRollup, Rollup } from "../../models/interfaces";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class RollupService {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class RollupService extends MDSEnabledClientService {
   /**
    * Calls backend Put Rollup API
    */
@@ -45,8 +39,8 @@ export default class RollupService {
         method = "ism.createRollup";
         params = { rollupId: id, body: JSON.stringify(request.body) };
       }
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const putRollupResponse: PutRollupResponse = await callWithRequest(method, params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const putRollupResponse: PutRollupResponse = (await callWithRequest(method, params)) as PutRollupResponse;
       return response.custom({
         statusCode: 200,
         body: {
@@ -77,8 +71,8 @@ export default class RollupService {
     try {
       const { id } = request.params as { id: string };
       const params: DeleteRollupParams = { rollupId: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const deleteRollupResponse: DeleteRollupResponse = await callWithRequest("ism.deleteRollup", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const deleteRollupResponse: DeleteRollupResponse = (await callWithRequest("ism.deleteRollup", params)) as DeleteRollupResponse;
       if (deleteRollupResponse.result !== "deleted") {
         return response.custom({
           statusCode: 200,
@@ -115,7 +109,7 @@ export default class RollupService {
     try {
       const { id } = request.params as { id: string };
       const params = { rollupId: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const startResponse = await callWithRequest("ism.startRollup", params);
       const acknowledged = _.get(startResponse, "acknowledged");
       if (acknowledged) {
@@ -146,7 +140,7 @@ export default class RollupService {
     try {
       const { id } = request.params as { id: string };
       const params = { rollupId: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const stopResponse = await callWithRequest("ism.stopRollup", params);
       const acknowledged = _.get(stopResponse, "acknowledged");
       if (acknowledged) {
@@ -180,7 +174,7 @@ export default class RollupService {
     try {
       const { id } = request.params as { id: string };
       const params = { rollupId: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const getResponse = await callWithRequest("ism.getRollup", params);
       const metadata = await callWithRequest("ism.explainRollup", params);
       const rollup = _.get(getResponse, "rollup", null);
@@ -240,7 +234,7 @@ export default class RollupService {
     try {
       const { index } = request.body as { index: string };
       const params = { index: index };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const mappings = await callWithRequest("indices.getMapping", params);
       return response.custom({
         statusCode: 200,
@@ -292,8 +286,8 @@ export default class RollupService {
         sortDirection,
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const getRollupResponse = await callWithRequest("ism.getRollups", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const getRollupResponse: any = await callWithRequest("ism.getRollups", params);
       const totalRollups = getRollupResponse.total_rollups;
       const rollups = getRollupResponse.rollups.map((rollup: DocumentRollup) => ({
         _seqNo: rollup._seqNo as number,
@@ -307,7 +301,7 @@ export default class RollupService {
       if (totalRollups) {
         // Concat rollup job ids
         const ids = rollups.map((rollup: DocumentRollup) => rollup._id).join(",");
-        const explainResponse = await callWithRequest("ism.explainRollup", { rollupId: ids });
+        const explainResponse: any = await callWithRequest("ism.explainRollup", { rollupId: ids });
         if (!explainResponse.error) {
           rollups.map((rollup: DocumentRollup) => {
             rollup.metadata = explainResponse[rollup._id];

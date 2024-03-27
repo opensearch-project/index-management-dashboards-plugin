@@ -96,7 +96,7 @@ export default function DefineTransforms({
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await transformService.searchSampleData(sourceIndex, { from: 0, size: DefaultSampleDataSize }, sourceIndexFilter);
+      const response = await transformService.searchSampleData(sourceIndex, sourceIndexFilter, { from: 0, size: DefaultSampleDataSize });
 
       if (response.ok) {
         setData(response.response.data);
@@ -162,7 +162,7 @@ export default function DefineTransforms({
     }
     const val = data[rowIndex]._source[columnId];
     return val !== undefined ? JSON.stringify(val) : "-";
-  }
+  };
 
   //TODO: remove duplicate code here after extracting the first table as separate component
   if (isReadOnly)

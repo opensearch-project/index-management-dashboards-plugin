@@ -1,9 +1,15 @@
+import { create } from "lodash";
 import { createContext } from "react";
 
 export interface DataSourceMenuProperties {
   dataSourceId: string;
   dataSourceLabel: string;
   multiDataSourceEnabled: boolean;
+}
+
+export interface DataSourceMenuReadOnlyProperties {
+  dataSourceReadOnly: boolean;
+  setDataSourceReadOnly: (dataSourceMenuReadOnly: boolean) => void;
 }
 
 const DataSourceMenuContext = createContext<DataSourceMenuProperties>({
@@ -14,4 +20,9 @@ const DataSourceMenuContext = createContext<DataSourceMenuProperties>({
 
 const DataSourceMenuConsumer = DataSourceMenuContext.Consumer;
 
-export { DataSourceMenuContext, DataSourceMenuConsumer };
+const DataSourceMenuReadOnlyContext = createContext<DataSourceMenuReadOnlyProperties>({
+  dataSourceReadOnly: false,
+  setDataSourceReadOnly: () => {},
+});
+
+export { DataSourceMenuContext, DataSourceMenuReadOnlyContext, DataSourceMenuConsumer };

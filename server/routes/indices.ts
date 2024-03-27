@@ -41,21 +41,15 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
     indexService.getIndices
   );
 
-  let genericBodyAndDataSourceIdQuery: { body: AnyType; query?: ObjectType } = {
-    body: schema.any(),
-  };
-  if (dataSourceEnabled) {
-    genericBodyAndDataSourceIdQuery = {
-      ...genericBodyAndDataSourceIdQuery,
-      query: schema.object({
-        dataSourceId: schema.string(),
-      }),
-    };
-  }
   router.post(
     {
       path: NODE_API.APPLY_POLICY,
-      validate: genericBodyAndDataSourceIdQuery,
+      validate: {
+        body: schema.any(),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
+      },
     },
     indexService.applyPolicy
   );
@@ -63,7 +57,12 @@ export default function (services: NodeServices, router: IRouter, dataSourceEnab
   router.post(
     {
       path: NODE_API.EDIT_ROLLOVER_ALIAS,
-      validate: genericBodyAndDataSourceIdQuery,
+      validate: {
+        body: schema.any(),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
+      },
     },
     indexService.editRolloverAlias
   );

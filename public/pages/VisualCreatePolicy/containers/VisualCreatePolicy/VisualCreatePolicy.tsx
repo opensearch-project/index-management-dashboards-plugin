@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { ChangeEvent, Component } from "react";
+import React, { ChangeEvent, Component, useContext } from "react";
 import { EuiText, EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiLink, EuiIcon } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -19,8 +19,11 @@ import CreateState from "../CreateState";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { getUpdatedPolicy, getUpdatedStates } from "../../utils/helpers";
 import ErrorNotification from "../ErrorNotification";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { Data } from "vega";
 
-interface VisualCreatePolicyProps extends RouteComponentProps {
+interface VisualCreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   isEdit: boolean;
   policyService: PolicyService;
   notificationService: NotificationService;
@@ -40,7 +43,7 @@ interface VisualCreatePolicyState {
   errorNotificationJsonString: string;
 }
 
-export default class VisualCreatePolicy extends Component<VisualCreatePolicyProps, VisualCreatePolicyState> {
+export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, VisualCreatePolicyState> {
   static contextType = CoreServicesContext;
   constructor(props: VisualCreatePolicyProps) {
     super(props);
@@ -301,6 +304,7 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
         />
         <EuiSpacer size="m" />
         <ErrorNotification
+          key={this.props.dataSourceId}
           errorNotification={policy.error_notification}
           errorNotificationJsonString={errorNotificationJsonString}
           onChangeChannelId={this.onChangeChannelId}
@@ -338,4 +342,10 @@ export default class VisualCreatePolicy extends Component<VisualCreatePolicyProp
       </div>
     );
   }
+}
+
+export default function (props: Omit<VisualCreatePolicyProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <VisualCreatePolicy {...props} {...dataSourceMenuProperties} />;
 }
