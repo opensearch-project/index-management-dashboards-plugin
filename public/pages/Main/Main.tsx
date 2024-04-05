@@ -61,7 +61,6 @@ import CreateComposableTemplate from "../CreateComposableTemplate";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../services/DataSourceMenuContext";
 import queryString from "query-string";
 import { DataSourceManagementPluginSetup } from "../../../../../src/plugins/data_source_management/public";
-import { bool } from "aws-sdk/clients/signer";
 
 enum Navigation {
   IndexManagement = "Index Management",
