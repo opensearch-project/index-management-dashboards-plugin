@@ -195,7 +195,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
     const dataSourceReadOnly = this.props.dataSourceReadOnly;
     const setDataSourceReadOnly = this.props.setDataSourceReadOnly;
 
-    if (!dataSourceReadOnly) {
+    if (this.props.multiDataSourceEnabled && !dataSourceReadOnly) {
       setDataSourceReadOnly(true);
     }
 
@@ -266,7 +266,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
       const dataSourceReadOnly = this.props.dataSourceReadOnly;
       const setDataSourceReadOnly = this.props.setDataSourceReadOnly;
 
-      if (dataSourceReadOnly) {
+      if (this.props.multiDataSourceEnabled && dataSourceReadOnly) {
         setDataSourceReadOnly(false);
       }
     }
