@@ -20,7 +20,7 @@ export default class ManagedIndexService extends MDSEnabledClientService {
     let url = `..${NODE_API.MANAGED_INDICES}/${managedIndexUuid}`;
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
-    const response = (await this.httpClient.get(url, params)) as ServerResponse<any>;
+    const response = await this.httpClient.get(url, params);
     return response;
   };
 
@@ -55,7 +55,7 @@ export default class ManagedIndexService extends MDSEnabledClientService {
     return response;
   };
 
-  removePolicy = async (indices: string[], queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<RemovePolicyResponse>> => {
+  removePolicy = async (indices: string[], queryObject?: HttpFetchQuery | undefined): Promise<ServerResponse<RemovePolicyResponse>> => {
     const body = { indices };
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};

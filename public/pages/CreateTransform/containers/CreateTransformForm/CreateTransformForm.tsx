@@ -687,8 +687,7 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
 }
 
 export default function (props: Omit<CreateTransformFormProps, keyof DataSourceMenuProperties>) {
-  const dataSourceReadOnlyProperties = useContext(DataSourceMenuReadOnlyContext);
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
-  return <CreateTransformForm {...props} {...dataSourceMenuProperties} {...dataSourceReadOnlyProperties} />;
+  return <CreateTransformForm {...props} {...dataSourceMenuProperties} />;
 }
