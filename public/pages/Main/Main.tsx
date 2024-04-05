@@ -165,6 +165,8 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.ROLLUP_DETAILS,
   ROUTES.TRANSFORMS,
   ROUTES.CREATE_TRANSFORM,
+  ROUTES.EDIT_TRANSFORM,
+  ROUTES.TRANSFORM_DETAILS,
 ];
 
 export default class Main extends Component<MainProps, MainState> {
