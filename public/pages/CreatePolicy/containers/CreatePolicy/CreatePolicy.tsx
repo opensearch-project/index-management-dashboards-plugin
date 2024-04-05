@@ -86,10 +86,8 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
       this.setState({
         policySeqNo: null,
         policyPrimaryTerm: null,
-        policyId: "",
         policyIdError: "",
         submitError: "",
-        jsonString: DEFAULT_POLICY,
         isSubmitting: false,
         hasSubmitted: false,
       });

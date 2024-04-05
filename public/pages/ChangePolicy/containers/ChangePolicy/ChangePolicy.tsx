@@ -56,7 +56,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
   }
 
   componentDidUpdate(prevProps: ChangePolicyProps, prevState: Readonly<ChangePolicyState>) {
-    if (prevProps.dataSourceId != this.props.dataSourceId) {
+    if (prevProps.dataSourceId !== this.props.dataSourceId) {
       // reset the state, if dataSourceId changes, i.e., clear state
       this.setState({
         selectedPolicies: [],
@@ -169,7 +169,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
         <EuiSpacer />
 
         <ChangeManagedIndices
-          key={`changeManagedIndices-${this.props.dataSourceId}`}
+          key={`changeManagedIndices-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
           {...this.props}
           managedIndexService={managedIndexService}
           selectedManagedIndices={selectedManagedIndices}
@@ -182,7 +182,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
         <EuiSpacer />
 
         <NewPolicy
-          key={`newPolicy-${this.props.dataSourceId}`}
+          key={`newPolicy-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
           {...this.props}
           indexService={indexService}
           selectedPolicies={selectedPolicies}

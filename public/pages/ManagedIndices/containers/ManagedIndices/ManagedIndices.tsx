@@ -304,7 +304,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     try {
       if (!indices.length) return;
       const { managedIndexService } = this.props;
-      const removePolicyResponse = await managedIndexService.removePolicy(indices, undefined);
+      const removePolicyResponse = await managedIndexService.removePolicy(indices);
       if (removePolicyResponse.ok) {
         const { updatedIndices, failedIndices, failures } = removePolicyResponse.response;
         if (updatedIndices) {

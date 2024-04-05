@@ -20,9 +20,4 @@ const DataSourceMenuContext = createContext<DataSourceMenuProperties>({
 
 const DataSourceMenuConsumer = DataSourceMenuContext.Consumer;
 
-const DataSourceMenuReadOnlyContext = createContext<DataSourceMenuReadOnlyProperties>({
-  dataSourceReadOnly: false,
-  setDataSourceReadOnly: () => {},
-});
-
-export { DataSourceMenuContext, DataSourceMenuReadOnlyContext, DataSourceMenuConsumer };
+export { DataSourceMenuContext, DataSourceMenuConsumer };
