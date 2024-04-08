@@ -31,7 +31,7 @@ import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
 import TransformService from "../../../../services/TransformService";
 import { DocumentTransform } from "../../../../../models/interfaces";
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getURLQueryParams, renderTime } from "../../utils/helpers";
 import { TransformQueryParams } from "../../models/interfaces";
@@ -44,12 +44,14 @@ import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../../Indice
 import _ from "lodash";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { renderContinuous } from "../../../Rollups/utils/helpers";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface TransformProps extends RouteComponentProps {
+interface TransformProps extends RouteComponentProps, DataSourceMenuProperties {
   transformService: TransformService;
 }
 
-interface TransformState {
+interface TransformState extends DataSourceMenuProperties {
   totalTransforms: number;
   from: number;
   size: number;
@@ -64,7 +66,7 @@ interface TransformState {
   isDeleteModalVisible: boolean;
 }
 
-export default class Transforms extends Component<TransformProps, TransformState> {
+export class Transforms extends MDSEnabledComponent<TransformProps, TransformState> {
   static contextType = CoreServicesContext;
   constructor(props: TransformProps) {
     super(props);
@@ -72,6 +74,7 @@ export default class Transforms extends Component<TransformProps, TransformState
     const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
 
     this.state = {
+      ...this.state,
       totalTransforms: 0,
       from,
       size,
@@ -339,7 +342,10 @@ export default class Transforms extends Component<TransformProps, TransformState
     try {
       const { transformService, history } = this.props;
       const queryObject = Transforms.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(Transforms.getQueryObjectFromState(this.state));
+      const queryParamsString = queryString.stringify({
+        ...Transforms.getQueryObjectFromState(this.state),
+        dataSourceLabel: this.state.dataSourceLabel,
+      });
       history.replace({ ...this.props.location, search: queryParamsString });
       const response = await transformService.getTransforms(queryObject);
       if (response.ok) {
@@ -477,7 +483,20 @@ export default class Transforms extends Component<TransformProps, TransformState
     this.setState({ isPopOverOpen: !this.state.isPopOverOpen });
   };
 
-  static getQueryObjectFromState({ from, size, search, sortField, sortDirection }: TransformState): TransformQueryParams {
-    return { from, size, search, sortField, sortDirection };
+  static getQueryObjectFromState({
+    from,
+    size,
+    search,
+    sortField,
+    sortDirection,
+    dataSourceId,
+    multiDataSourceEnabled,
+  }: TransformState): TransformQueryParams {
+    return { from, size, search, sortField, sortDirection, ...(multiDataSourceEnabled ? { dataSourceId } : {}) };
   }
+}
+
+export default function (props: Omit<TransformProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <Transforms {...props} {...dataSourceMenuProps} />;
 }

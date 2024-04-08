@@ -32,6 +32,7 @@ import {
 import dataStreams from "./routes/dataStreams";
 import { NodeServices } from "./models/interfaces";
 import { DataSourcePluginSetup } from "../../../src/plugins/data_source/server";
+import { data } from "jquery";
 
 export interface IndexManagementPluginDependencies {
   dataSource: DataSourcePluginSetup;
@@ -49,11 +50,11 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     // Initialize services
     const indexService = new IndexService(osDriver, dataSourceEnabled);
     const dataStreamService = new DataStreamService(osDriver, dataSourceEnabled);
-    const policyService = new PolicyService(osDriver);
-    const managedIndexService = new ManagedIndexService(osDriver);
-    const rollupService = new RollupService(osDriver);
-    const transformService = new TransformService(osDriver);
-    const notificationService = new NotificationService(osDriver);
+    const policyService = new PolicyService(osDriver, dataSourceEnabled);
+    const managedIndexService = new ManagedIndexService(osDriver, dataSourceEnabled);
+    const rollupService = new RollupService(osDriver, dataSourceEnabled);
+    const transformService = new TransformService(osDriver, dataSourceEnabled);
+    const notificationService = new NotificationService(osDriver, dataSourceEnabled);
     const snapshotManagementService = new SnapshotManagementService(osDriver);
     const commonService = new CommonService(osDriver, dataSourceEnabled);
     const aliasService = new AliasServices(osDriver, dataSourceEnabled);
@@ -80,11 +81,11 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     // Add server routes
     indices(services, router, dataSourceEnabled);
     dataStreams(services, router, dataSourceEnabled);
-    policies(services, router);
-    managedIndices(services, router);
-    rollups(services, router);
-    transforms(services, router);
-    notifications(services, router);
+    policies(services, router, dataSourceEnabled);
+    managedIndices(services, router, dataSourceEnabled);
+    rollups(services, router, dataSourceEnabled);
+    transforms(services, router, dataSourceEnabled);
+    notifications(services, router, dataSourceEnabled);
     snapshotManagement(services, router);
     common(services, router, dataSourceEnabled);
     aliases(services, router, dataSourceEnabled);

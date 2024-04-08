@@ -17,7 +17,7 @@ describe("transformService spec", () => {
     await transformService.getTransform(transformId);
 
     expect(httpClientMock.get).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.TRANSFORMS}/${transformId}`);
+    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.TRANSFORMS}/${transformId}`, expect.anything());
   });
 
   it("calls get transforms nodejs route when calling getTransforms", async () => {
@@ -47,7 +47,7 @@ describe("transformService spec", () => {
     await transformService.deleteTransform(transformId);
 
     expect(httpClientMock.delete).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.delete).toHaveBeenCalledWith(`..${NODE_API.TRANSFORMS}/${transformId}`);
+    expect(httpClientMock.delete).toHaveBeenCalledWith(`..${NODE_API.TRANSFORMS}/${transformId}`, expect.anything());
   });
 
   it("calls start transform nodejs route when calling startTransform", async () => {
@@ -56,7 +56,7 @@ describe("transformService spec", () => {
     await transformService.startTransform(transformId);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API.TRANSFORMS}/${transformId}/_start`);
+    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API.TRANSFORMS}/${transformId}/_start`, expect.anything());
   });
 
   it("calls stop transform nodejs route when calling stopTransform", async () => {
@@ -65,7 +65,7 @@ describe("transformService spec", () => {
     await transformService.stopTransform(transformId);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API.TRANSFORMS}/${transformId}/_stop`);
+    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API.TRANSFORMS}/${transformId}/_stop`, expect.anything());
   });
 
   it("calls preview transform nodejs route when calling previewTransform", async () => {
@@ -92,7 +92,7 @@ describe("transformService spec", () => {
     const indexName = "index_1";
     const queryObject = {};
     const body = "";
-    await transformService.searchSampleData(indexName, queryObject, body);
+    await transformService.searchSampleData(indexName, body, queryObject);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
     expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API._SEARCH_SAMPLE_DATA}/${indexName}`, { query: queryObject, body: body });
@@ -107,7 +107,7 @@ describe("transformService spec", () => {
         customer_gender: "FEMALE",
       },
     });
-    await transformService.searchSampleData(indexName, queryObject, body);
+    await transformService.searchSampleData(indexName, body, queryObject);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
     expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API._SEARCH_SAMPLE_DATA}/${indexName}`, { query: queryObject, body: body });

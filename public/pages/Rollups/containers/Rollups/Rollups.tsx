@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import _ from "lodash";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import queryString from "query-string";
@@ -43,12 +43,15 @@ import DeleteModal from "../../components/DeleteModal";
 import { renderStatus } from "../../../RollupDetails/utils/helpers";
 import { DocumentRollup } from "../../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { HttpFetchQuery } from "opensearch-dashboards/public";
 
-interface RollupsProps extends RouteComponentProps {
+interface RollupsProps extends RouteComponentProps, DataSourceMenuProperties {
   rollupService: RollupService;
 }
 
-interface RollupsState {
+interface RollupsState extends DataSourceMenuProperties {
   totalRollups: number;
   from: number;
   size: number;
@@ -63,7 +66,7 @@ interface RollupsState {
   isDeleteModalVisible: boolean;
 }
 
-export default class Rollups extends Component<RollupsProps, RollupsState> {
+export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
   static contextType = CoreServicesContext;
   constructor(props: RollupsProps) {
     super(props);
@@ -71,6 +74,7 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
     const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
 
     this.state = {
+      ...this.state,
       totalRollups: 0,
       from,
       size,
@@ -101,8 +105,16 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
     }
   }
 
-  static getQueryObjectFromState({ from, size, search, sortField, sortDirection }: RollupsState): RollupQueryParams {
-    return { from, size, search, sortField, sortDirection };
+  static getQueryObjectFromState({
+    from,
+    size,
+    search,
+    sortField,
+    sortDirection,
+    dataSourceId,
+    multiDataSourceEnabled,
+  }: RollupsState): RollupQueryParams {
+    return { from, size, search, sortField, sortDirection, ...(multiDataSourceEnabled ? { dataSourceId } : {}) };
   }
 
   getRollups = async (): Promise<void> => {
@@ -110,9 +122,9 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
     try {
       const { rollupService, history } = this.props;
       const queryObject = Rollups.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(Rollups.getQueryObjectFromState(this.state));
+      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
       history.replace({ ...this.props.location, search: queryParamsString });
-      const rollupJobsResponse = await rollupService.getRollups(queryObject);
+      const rollupJobsResponse = await rollupService.getRollups(queryObject); // Add type assertion
       if (rollupJobsResponse.ok) {
         const { rollups, totalRollups, metadata } = rollupJobsResponse.response;
         this.setState({ rollups, totalRollups, rollupExplain: metadata });
@@ -479,4 +491,9 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
       </EuiPanel>
     );
   }
+}
+
+export default function (props: Omit<RollupsProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <Rollups {...props} {...dataSourceMenuProps} />;
 }

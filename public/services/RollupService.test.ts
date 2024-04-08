@@ -17,7 +17,7 @@ describe("rollupService spec", () => {
     await rollupService.getRollup(rollupId);
 
     expect(httpClientMock.get).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.ROLLUPS}/${rollupId}`);
+    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.ROLLUPS}/${rollupId}`, expect.anything());
   });
 
   it("calls get rollups nodejs route when calling getRollups", async () => {
@@ -47,7 +47,7 @@ describe("rollupService spec", () => {
     await rollupService.deleteRollup(rollupId);
 
     expect(httpClientMock.delete).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.delete).toHaveBeenCalledWith(`..${NODE_API.ROLLUPS}/${rollupId}`);
+    expect(httpClientMock.delete).toHaveBeenCalledWith(`..${NODE_API.ROLLUPS}/${rollupId}`, expect.anything());
   });
 
   it("calls start rollup nodejs route when calling startRollup", async () => {
@@ -56,7 +56,7 @@ describe("rollupService spec", () => {
     await rollupService.startRollup(rollupId);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API.ROLLUPS}/${rollupId}/_start`);
+    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API.ROLLUPS}/${rollupId}/_start`, expect.anything());
   });
 
   it("calls stop rollup nodejs route when calling stopRollup", async () => {
@@ -65,7 +65,7 @@ describe("rollupService spec", () => {
     await rollupService.stopRollup(rollupId);
 
     expect(httpClientMock.post).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API.ROLLUPS}/${rollupId}/_stop`);
+    expect(httpClientMock.post).toHaveBeenCalledWith(`..${NODE_API.ROLLUPS}/${rollupId}/_stop`, expect.anything());
   });
 
   it("calls get mappings nodejs route when calling getMappings", async () => {

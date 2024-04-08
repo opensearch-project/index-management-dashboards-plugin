@@ -13,22 +13,17 @@ import {
 } from "opensearch-dashboards/server";
 import { ServerResponse } from "../models/types";
 import { GetChannelsResponse, GetNotificationConfigsResponse } from "../models/interfaces";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class NotificationService {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class NotificationService extends MDSEnabledClientService {
   getChannels = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetChannelsResponse> | ResponseError>> => {
     try {
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const getChannelsResponse: GetChannelsResponse = await callWithRequest("ism.getChannels");
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const getChannelsResponse: GetChannelsResponse = (await callWithRequest("ism.getChannels", {})) as GetChannelsResponse;
 
       return response.custom({
         statusCode: 200,
@@ -59,10 +54,10 @@ export default class NotificationService {
         id: string;
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const getResponse: GetNotificationConfigsResponse = await callWithRequest("ism.getChannel", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const getResponse: GetNotificationConfigsResponse = (await callWithRequest("ism.getChannel", {
         id,
-      });
+      })) as GetNotificationConfigsResponse;
 
       return response.custom({
         statusCode: 200,

@@ -10,7 +10,6 @@ import {
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
   IOpenSearchDashboardsResponse,
-  ILegacyCustomClusterClient,
 } from "opensearch-dashboards/server";
 import { INDEX } from "../utils/constants";
 import { getSearchString, transformManagedIndexMetaData } from "../utils/helpers";
@@ -29,14 +28,9 @@ import {
 import { ManagedIndicesSort, ServerResponse } from "../models/types";
 import { ManagedIndexItem } from "../../models/interfaces";
 import { getIndexToDataStreamMapping } from "./DataStreamService";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class ManagedIndexService {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class ManagedIndexService extends MDSEnabledClientService {
   // TODO: Not finished, need UI page that uses this first
   getManagedIndex = async (
     context: RequestHandlerContext,
@@ -46,8 +40,8 @@ export default class ManagedIndexService {
     try {
       const { id } = request.params as { id: string };
       const params: RequestParams.Get = { id, index: INDEX.OPENDISTRO_ISM_CONFIG };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const results: SearchResponse<any> = await callWithRequest("search", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const results: SearchResponse<any> = (await callWithRequest("search", params)) as SearchResponse<any>;
       return response.custom({
         statusCode: 200,
         body: {
@@ -91,13 +85,13 @@ export default class ManagedIndexService {
         sortOrder: sortDirection,
         queryString: getSearchString(terms, indices, dataStreams, showDataStreams),
         from: from,
-        size: size
+        size: size,
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const [explainAllResponse, indexToDataStreamMapping] = await Promise.all([
         callWithRequest("ism.explainAll", explainParams) as Promise<ExplainAllResponse>,
-        getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
+        getIndexToDataStreamMapping(callWithRequest),
       ]);
       const managedIndices: ManagedIndexItem[] = [];
       for (const indexName in explainAllResponse) {
@@ -138,7 +132,7 @@ export default class ManagedIndexService {
         statusCode: 200,
         body: {
           ok: true,
-          response: { managedIndices: managedIndices, totalManagedIndices: totalManagedIndices},
+          response: { managedIndices: managedIndices, totalManagedIndices: totalManagedIndices },
         },
       });
     } catch (err) {
@@ -215,9 +209,9 @@ export default class ManagedIndexService {
         state: string | null;
         include: { state: string }[];
       };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const params = { index: indices.join(","), body: { policy_id: policyId, include, state } };
-      const changeResponse: RemoveResponse = await callWithRequest("ism.change", params);
+      const changeResponse: RemoveResponse = (await callWithRequest("ism.change", params)) as RemoveResponse;
       return response.custom({
         statusCode: 200,
         body: {
@@ -252,9 +246,9 @@ export default class ManagedIndexService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<RemovePolicyResponse>>> => {
     try {
       const { indices } = request.body as { indices: string[] };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const params = { index: indices.join(",") };
-      const addResponse: RemoveResponse = await callWithRequest("ism.remove", params);
+      const addResponse: RemoveResponse = (await callWithRequest("ism.remove", params)) as RemoveResponse;
       return response.custom({
         statusCode: 200,
         body: {

@@ -36,6 +36,7 @@ import { EMPTY_TRANSFORM } from "../../utils/constants";
 import TransformSettings from "./TransformSettings";
 import GeneralInformation from "../../components/GeneralInformation";
 import { buildIntervalScheduleText } from "../../../CreateRollup/utils/helpers";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 interface TransformDetailsProps extends RouteComponentProps {
   transformService: TransformService;
@@ -64,7 +65,7 @@ interface TransformDetailsState {
   isPopOverOpen: boolean;
 }
 
-export default class TransformDetails extends Component<TransformDetailsProps, TransformDetailsState> {
+export class TransformDetails extends Component<TransformDetailsProps, TransformDetailsState> {
   static contextType = CoreServicesContext;
   constructor(props: TransformDetailsProps) {
     super(props);
@@ -439,4 +440,9 @@ export default class TransformDetails extends Component<TransformDetailsProps, T
   closePopover = () => {
     this.setState({ isPopOverOpen: false });
   };
+}
+
+export default function (props: TransformDetailsProps) {
+  useUpdateUrlWithDataSourceProperties();
+  return <TransformDetails {...props} />;
 }

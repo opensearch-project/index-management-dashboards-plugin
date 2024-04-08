@@ -16,7 +16,7 @@ describe("ManagedIndexService spec", () => {
     await managedIndexService.getManagedIndex(managedIndexUuid);
 
     expect(httpClientMock.get).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.MANAGED_INDICES}/${managedIndexUuid}`);
+    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.MANAGED_INDICES}/${managedIndexUuid}`, expect.anything());
   });
 
   it("calls get managed indices nodejs route when calling getManagedIndices", async () => {
@@ -33,7 +33,7 @@ describe("ManagedIndexService spec", () => {
     await managedIndexService.getDataStreams();
 
     expect(httpClientMock.get).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API._DATA_STREAMS}`);
+    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API._DATA_STREAMS}`, expect.anything());
   });
 
   it("calls retry policy nodejs route when calling retryManagedIndexPolicy", async () => {

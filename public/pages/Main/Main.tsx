@@ -131,7 +131,9 @@ interface MainProps extends RouteComponentProps {
   dataSourceManagement: DataSourceManagementPluginSetup;
 }
 
-interface MainState extends Pick<DataSourceMenuProperties, "dataSourceId" | "dataSourceLabel"> {}
+interface MainState extends Pick<DataSourceMenuProperties, "dataSourceId" | "dataSourceLabel"> {
+  dataSourceReadOnly: boolean;
+}
 
 const dataSourceEnabledPaths: string[] = [
   ROUTES.CREATE_DATA_STREAM,
@@ -141,6 +143,12 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.SPLIT_INDEX,
   ROUTES.ROLLOVER,
   ROUTES.INDEX_DETAIL,
+  ROUTES.INDEX_POLICIES,
+  ROUTES.MANAGED_INDICES,
+  ROUTES.CREATE_POLICY,
+  ROUTES.EDIT_POLICY,
+  ROUTES.CHANGE_POLICY,
+  ROUTES.POLICY_DETAILS,
   ROUTES.INDICES,
   ROUTES.CREATE_INDEX,
   ROUTES.ALIASES,
@@ -151,27 +159,41 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.COMPOSABLE_TEMPLATES,
   ROUTES.CREATE_COMPOSABLE_TEMPLATE,
   ROUTES.REINDEX,
+  ROUTES.ROLLUPS,
+  ROUTES.CREATE_ROLLUP,
+  ROUTES.EDIT_ROLLUP,
+  ROUTES.ROLLUP_DETAILS,
+  ROUTES.TRANSFORMS,
+  ROUTES.CREATE_TRANSFORM,
+  ROUTES.EDIT_TRANSFORM,
+  ROUTES.TRANSFORM_DETAILS,
 ];
 
 export default class Main extends Component<MainProps, MainState> {
   constructor(props: MainProps) {
     super(props);
+    let dataSourceId = "";
+    let dataSourceLabel = "";
     if (props.multiDataSourceEnabled) {
-      const { dataSourceId = "", dataSourceLabel = "" } = queryString.parse(this.props.location.search) as {
+      const { dataSourceId: parsedDataSourceId, dataSourceLabel: parsedDataSourceLabel } = queryString.parse(
+        this.props.location.search
+      ) as {
         dataSourceId: string;
         dataSourceLabel: string;
       };
-      this.state = {
-        dataSourceId: dataSourceId,
-        dataSourceLabel: dataSourceLabel,
-      };
-    } else {
-      this.state = {
-        dataSourceId: "",
-        dataSourceLabel: "",
-      };
+      dataSourceId = parsedDataSourceId || "";
+      dataSourceLabel = parsedDataSourceLabel || "";
     }
+    this.state = {
+      dataSourceId: dataSourceId,
+      dataSourceLabel: dataSourceLabel,
+      dataSourceReadOnly: false,
+    };
   }
+
+  setDataSourceReadOnly = (readonly: boolean) => {
+    this.setState({ dataSourceReadOnly: readonly });
+  };
 
   isDataSourceEnabledForPath(path: string): boolean {
     return dataSourceEnabledPaths.some((dataSourceEnabledPath: string) => path.startsWith(dataSourceEnabledPath));
@@ -203,6 +225,11 @@ export default class Main extends Component<MainProps, MainState> {
     if (this.props.multiDataSourceEnabled && this.isDataSourceEnabledForPath(pathname)) {
       services.indexService = new IndexService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
       services.commonService = new CommonService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.managedIndexService = new ManagedIndexService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.policyService = new PolicyService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.notificationService = new NotificationService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.rollupService = new RollupService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.transformService = new TransformService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
     }
     return services;
   }
@@ -340,7 +367,13 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.SPLIT_INDEX,
                                 ROUTES.ROLLOVER,
                                 ROUTES.INDEX_DETAIL,
+                                ROUTES.EDIT_POLICY,
+                                ROUTES.POLICY_DETAILS,
                                 ROUTES.REINDEX,
+                                ROUTES.EDIT_ROLLUP,
+                                ROUTES.ROLLUP_DETAILS,
+                                ROUTES.TRANSFORM_DETAILS,
+                                ROUTES.EDIT_TRANSFORM,
                               ]}
                               render={(props) => (
                                 <DataSourceMenu
@@ -374,6 +407,12 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.CREATE_TEMPLATE,
                                 ROUTES.COMPOSABLE_TEMPLATES,
                                 ROUTES.CREATE_COMPOSABLE_TEMPLATE,
+                                ROUTES.MANAGED_INDICES,
+                                ROUTES.INDEX_POLICIES,
+                                ROUTES.CREATE_POLICY,
+                                ROUTES.CHANGE_POLICY,
+                                ROUTES.ROLLUPS,
+                                ROUTES.TRANSFORMS,
                               ]}
                               render={() => (
                                 <DataSourceMenu
@@ -386,6 +425,40 @@ export default class Main extends Component<MainProps, MainState> {
                                   disableDataSourceSelectable={false}
                                   notifications={services.notificationService}
                                   savedObjects={core.savedObjects.client}
+                                  selectedOption={(() => {
+                                    if (this.state.dataSourceId && this.state.dataSourceId !== "") {
+                                      return [
+                                        {
+                                          id: this.state.dataSourceId,
+                                          label: this.state.dataSourceLabel,
+                                        },
+                                      ];
+                                    }
+                                    return undefined;
+                                  })()}
+                                  fullWidth={false}
+                                  hideLocalCluster={false}
+                                />
+                              )}
+                            />
+                            <Route
+                              path={[ROUTES.CREATE_ROLLUP, ROUTES.CREATE_TRANSFORM]}
+                              render={() => (
+                                <DataSourceMenu
+                                  appName={"Index State Management"}
+                                  setMenuMountPoint={this.props.setActionMenu}
+                                  showDataSourceView={this.state.dataSourceReadOnly}
+                                  showDataSourceSelectable={!this.state.dataSourceReadOnly}
+                                  disableDataSourceSelectable={this.state.dataSourceReadOnly}
+                                  dataSourceCallBackFunc={
+                                    this.state.dataSourceReadOnly
+                                      ? undefined
+                                      : ({ id: dataSourceId, label: dataSourceLabel }) => {
+                                          this.setState({ dataSourceId, dataSourceLabel });
+                                        }
+                                  }
+                                  notifications={this.state.dataSourceReadOnly ? undefined : services.notificationService}
+                                  savedObjects={this.state.dataSourceReadOnly ? undefined : core.savedObjects.client}
                                   selectedOption={(() => {
                                     if (this.state.dataSourceId && this.state.dataSourceId !== "") {
                                       return [
@@ -565,6 +638,8 @@ export default class Main extends Component<MainProps, MainState> {
                                       {...props}
                                       rollupService={services.rollupService}
                                       indexService={services.indexService}
+                                      dataSourceReadOnly={this.state.dataSourceReadOnly}
+                                      setDataSourceReadOnly={this.setDataSourceReadOnly}
                                     />
                                   </div>
                                 )}
@@ -602,6 +677,8 @@ export default class Main extends Component<MainProps, MainState> {
                                       rollupService={services.rollupService}
                                       transformService={services.transformService}
                                       indexService={services.indexService}
+                                      dataSourceReadOnly={this.state.dataSourceReadOnly}
+                                      setDataSourceReadOnly={this.setDataSourceReadOnly}
                                     />
                                   </div>
                                 )}

@@ -33,6 +33,7 @@ import { DimensionItem, MetricItem, RollupDimensionItem, RollupMetadata, RollupM
 import { renderTime } from "../../../Rollups/utils/helpers";
 import DeleteModal from "../../../Rollups/components/DeleteModal";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 interface RollupDetailsProps extends RouteComponentProps {
   rollupService: RollupService;
@@ -69,7 +70,7 @@ interface RollupDetailsState {
   isDeleteModalVisible: boolean;
 }
 
-export default class RollupDetails extends Component<RollupDetailsProps, RollupDetailsState> {
+export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsState> {
   static contextType = CoreServicesContext;
   constructor(props: RollupDetailsProps) {
     super(props);
@@ -411,4 +412,9 @@ export default class RollupDetails extends Component<RollupDetailsProps, RollupD
       </div>
     );
   }
+}
+
+export default function (props: RollupDetailsProps) {
+  useUpdateUrlWithDataSourceProperties();
+  return <RollupDetails {...props} />;
 }

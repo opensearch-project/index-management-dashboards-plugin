@@ -23,20 +23,23 @@ import { MDSEnabledClientService } from "./MDSEnabledClientService";
 export default class IndexService extends MDSEnabledClientService {
   getIndices = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetIndicesResponse>> => {
     let url = `..${NODE_API._INDICES}`;
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
-    return (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetIndicesResponse>;
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    return (await this.httpClient.get(url, params)) as ServerResponse<GetIndicesResponse>;
   };
 
   getDataStreams = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetDataStreamsResponse>> => {
     const url = `..${NODE_API._DATA_STREAMS}`;
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
-    return await this.httpClient.get(url, { query: queryObject });
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    return await this.httpClient.get(url, params);
   };
 
   getAliases = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetAliasesResponse>> => {
     const url = `..${NODE_API._ALIASES}`;
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
-    return await this.httpClient.get(url, { query: queryObject });
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
+    return await this.httpClient.get(url, params);
   };
 
   getDataStreamsAndIndicesNames = async (searchValue: string): Promise<ServerResponse<GetDataStreamsAndIndicesNamesResponse>> => {
@@ -86,30 +89,33 @@ export default class IndexService extends MDSEnabledClientService {
     };
   };
 
-  applyPolicy = async (indices: string[], policyId: string, queryObject: HttpFetchQuery): Promise<ServerResponse<ApplyPolicyResponse>> => {
+  applyPolicy = async (indices: string[], policyId: string, queryObject?: HttpFetchQuery): Promise<ServerResponse<ApplyPolicyResponse>> => {
     const body = { indices, policyId };
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
     const url = `..${NODE_API.APPLY_POLICY}`;
     return (await this.httpClient.post(url, {
       body: JSON.stringify(body),
-      query: queryObject,
+      ...params,
     })) as ServerResponse<ApplyPolicyResponse>;
   };
 
-  editRolloverAlias = async (index: string, alias: string, queryObject: HttpFetchQuery): Promise<ServerResponse<AcknowledgedResponse>> => {
+  editRolloverAlias = async (index: string, alias: string, queryObject?: HttpFetchQuery): Promise<ServerResponse<AcknowledgedResponse>> => {
     const body = { index, alias };
-    queryObject = this.patchQueryObjectWithDataSourceId(queryObject);
+    const query = this.patchQueryObjectWithDataSourceId(queryObject);
+    const params = query ? { query } : {};
     const url = `..${NODE_API.EDIT_ROLLOVER_ALIAS}`;
     return (await this.httpClient.post(url, {
       body: JSON.stringify(body),
-      query: queryObject,
+      ...params,
     })) as ServerResponse<AcknowledgedResponse>;
   };
 
   searchPolicies = async (searchValue: string, source: boolean = false): Promise<ServerResponse<GetPoliciesResponse>> => {
     const str = searchValue.trim();
-    const queryObject = this.patchQueryObjectWithDataSourceId({ from: 0, size: 10, search: str, sortDirection: "desc", sortField: "id" });
+    const query = this.patchQueryObjectWithDataSourceId({ from: 0, size: 10, search: str, sortDirection: "desc", sortField: "id" });
+    const params = query ? { query } : {};
     const url = `..${NODE_API.POLICIES}`;
-    return (await this.httpClient.get(url, { query: queryObject })) as ServerResponse<GetPoliciesResponse>;
+    return (await this.httpClient.get(url, params)) as ServerResponse<GetPoliciesResponse>;
   };
 }

@@ -23,4 +23,18 @@ export default class CommonService extends MDSEnabledClientService {
     payload.query = queryObject;
     return (await this.httpClient.fetch(url, payload)) as ServerResponse<T>;
   };
+
+  accountInfo = async <T>(params: IAPICaller): Promise<ServerResponse<T>> => {
+    let url = `${NODE_API.ACCOUNT_INFO}`;
+    const payload: HttpFetchOptions = {};
+    payload.method = "POST";
+    payload.body = JSON.stringify({
+      data: params.data,
+      endpoint: params.endpoint,
+      hideLog: params.hideLog,
+    });
+    // we are not sending dataSourceId in query object, as for securityInfo,
+    // it will always contact local cluster
+    return (await this.httpClient.fetch(url, payload)) as ServerResponse<T>;
+  };
 }

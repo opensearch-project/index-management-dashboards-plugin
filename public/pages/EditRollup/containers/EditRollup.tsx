@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { ChangeEvent, Component } from "react";
+import React, { ChangeEvent, Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import queryString from "query-string";
@@ -17,6 +17,7 @@ import { RollupService } from "../../../services";
 import { EMPTY_ROLLUP } from "../../CreateRollup/utils/constants";
 import { CoreServicesContext } from "../../../components/core_services";
 import { delayTimeUnitToMS, msToDelayTimeUnit } from "../../CreateRollup/utils/helpers";
+import { useUpdateUrlWithDataSourceProperties } from "../../../components/MDSEnabledComponent";
 
 interface EditRollupProps extends RouteComponentProps {
   rollupService: RollupService;
@@ -45,7 +46,7 @@ interface EditRollupState {
   rollupJSON: any;
 }
 
-export default class EditRollup extends Component<EditRollupProps, EditRollupState> {
+export class EditRollup extends Component<EditRollupProps, EditRollupState> {
   static contextType = CoreServicesContext;
   constructor(props: EditRollupProps) {
     super(props);
@@ -342,4 +343,9 @@ export default class EditRollup extends Component<EditRollupProps, EditRollupSta
       </div>
     );
   }
+}
+
+export default function (props: EditRollupProps) {
+  useUpdateUrlWithDataSourceProperties();
+  return <EditRollup {...props} />;
 }
