@@ -9,14 +9,14 @@ import { RouteComponentProps } from "react-router-dom";
 import IndexForm from "../IndexForm";
 import { BREADCRUMBS, IndicesUpdateMode, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 interface CreateIndexPropsBase extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
   isEdit?: boolean;
 }
 
-interface CreateIndexProps extends CreateIndexPropsBase, DataSourceMenuProperties {}
+interface CreateIndexProps extends CreateIndexPropsBase, DataSourceProperties {}
 
 export class CreateIndex extends Component<CreateIndexProps> {
   static contextType = CoreServicesContext;
@@ -64,7 +64,7 @@ export class CreateIndex extends Component<CreateIndexProps> {
 }
 
 export default function (props: CreateIndexPropsBase) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  const dataSourceProperties = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
   useUpdateUrlWithDataSourceProperties();
-  return <CreateIndex {...props} {...dataSourceMenuProperties} />;
+  return <CreateIndex {...props} {...dataSourceProperties} />;
 }

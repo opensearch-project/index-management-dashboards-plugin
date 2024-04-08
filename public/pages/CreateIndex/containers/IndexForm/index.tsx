@@ -17,7 +17,7 @@ import { transformArrayToObject, transformObjectToArray } from "../../../../comp
 import { ServerResponse } from "../../../../../server/models/types";
 import { BrowserServices } from "../../../../models/interfaces";
 import { ServicesContext } from "../../../../services";
-import { DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { DataSourceProperties } from "../../../../services/DataSourceMenuContext";
 
 export const getAliasActionsByDiffArray = (
   oldAliases: string[],
@@ -46,9 +46,7 @@ export const getAliasActionsByDiffArray = (
   }, [] as IAliasAction[]);
 };
 
-export interface IndexFormProps
-  extends Pick<IndexDetailProps, "readonly" | "sourceIndices">,
-    Pick<DataSourceMenuProperties, "dataSourceId"> {
+export interface IndexFormProps extends Pick<IndexDetailProps, "readonly" | "sourceIndices">, Pick<DataSourceProperties, "dataSourceId"> {
   index?: string;
   value?: Partial<IndexItemRemote>;
   mode?: IndicesUpdateMode;

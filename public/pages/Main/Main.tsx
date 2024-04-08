@@ -60,7 +60,12 @@ import ComposableTemplates from "../ComposableTemplates";
 import CreateComposableTemplate from "../CreateComposableTemplate";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../services/DataSourceMenuContext";
 import queryString from "query-string";
-import { DataSourceManagementPluginSetup } from "../../../../../src/plugins/data_source_management/public";
+import {
+  DataSourceManagementPluginSetup,
+  DataSourceSelectableConfig,
+  DataSourceViewConfig,
+} from "../../../../../src/plugins/data_source_management/public";
+import _ from "lodash";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -131,7 +136,7 @@ interface MainProps extends RouteComponentProps {
   dataSourceManagement: DataSourceManagementPluginSetup;
 }
 
-interface MainState extends Pick<DataSourceMenuProperties, "dataSourceId" | "dataSourceLabel"> {
+interface MainState extends Pick<DataSourceMenuProperties, "dataSource"> {
   dataSourceReadOnly: boolean;
 }
 
@@ -173,20 +178,19 @@ export default class Main extends Component<MainProps, MainState> {
   constructor(props: MainProps) {
     super(props);
     let dataSourceId = "";
-    let dataSourceLabel = "";
     if (props.multiDataSourceEnabled) {
-      const { dataSourceId: parsedDataSourceId, dataSourceLabel: parsedDataSourceLabel } = queryString.parse(
-        this.props.location.search
-      ) as {
+      const { dataSourceId: parsedDataSourceId } = queryString.parse(this.props.location.search) as {
         dataSourceId: string;
-        dataSourceLabel: string;
       };
       dataSourceId = parsedDataSourceId || "";
-      dataSourceLabel = parsedDataSourceLabel || "";
     }
     this.state = {
-      dataSourceId: dataSourceId,
-      dataSourceLabel: dataSourceLabel,
+      dataSource: [
+        {
+          label: "",
+          id: dataSourceId,
+        },
+      ],
       dataSourceReadOnly: false,
     };
   }
@@ -223,13 +227,15 @@ export default class Main extends Component<MainProps, MainState> {
     };
 
     if (this.props.multiDataSourceEnabled && this.isDataSourceEnabledForPath(pathname)) {
-      services.indexService = new IndexService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
-      services.commonService = new CommonService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
-      services.managedIndexService = new ManagedIndexService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
-      services.policyService = new PolicyService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
-      services.notificationService = new NotificationService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
-      services.rollupService = new RollupService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
-      services.transformService = new TransformService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      const dataSourceId = this.state.dataSource[0] ? this.state.dataSource[0].id : undefined;
+      const mdsEnabled = this.props.multiDataSourceEnabled;
+      services.indexService = new IndexService(http, dataSourceId, mdsEnabled);
+      services.commonService = new CommonService(http, dataSourceId, mdsEnabled);
+      services.managedIndexService = new ManagedIndexService(http, dataSourceId, mdsEnabled);
+      services.policyService = new PolicyService(http, dataSourceId, mdsEnabled);
+      services.notificationService = new NotificationService(http, dataSourceId, mdsEnabled);
+      services.rollupService = new RollupService(http, dataSourceId, mdsEnabled);
+      services.transformService = new TransformService(http, dataSourceId, mdsEnabled);
     }
     return services;
   }
@@ -338,7 +344,8 @@ export default class Main extends Component<MainProps, MainState> {
     const { landingPage } = this.props;
 
     const ROUTE_STYLE = { padding: "25px 25px" };
-    const DataSourceMenu = this.props.dataSourceManagement?.ui?.DataSourceMenu;
+    const DataSourceMenuSelectable = this.props.dataSourceManagement?.ui?.getDataSourceMenu<DataSourceSelectableConfig>();
+    const DataSourceMenuView = this.props.dataSourceManagement.ui.getDataSourceMenu<DataSourceViewConfig>();
 
     return (
       <CoreServicesConsumer>
@@ -351,8 +358,7 @@ export default class Main extends Component<MainProps, MainState> {
                     <ModalProvider>
                       <DataSourceMenuContext.Provider
                         value={{
-                          dataSourceId: this.state.dataSourceId,
-                          dataSourceLabel: this.state.dataSourceLabel,
+                          dataSource: this.state.dataSource,
                           multiDataSourceEnabled: this.props.multiDataSourceEnabled,
                         }}
                       >
@@ -375,24 +381,18 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.TRANSFORM_DETAILS,
                                 ROUTES.EDIT_TRANSFORM,
                               ]}
-                              render={(props) => (
-                                <DataSourceMenu
-                                  appName={"Index State Management"}
+                              render={() => (
+                                <DataSourceMenuView
                                   setMenuMountPoint={this.props.setActionMenu}
-                                  showDataSourceView={true}
-                                  selectedOption={(() => {
-                                    if (this.state.dataSourceId && this.state.dataSourceId !== "") {
-                                      return [
-                                        {
-                                          id: this.state.dataSourceId,
-                                          label: this.state.dataSourceLabel,
-                                        },
-                                      ];
-                                    }
-                                    return undefined;
-                                  })()}
-                                  fullWidth={false}
-                                  hideLocalCluster={false}
+                                  componentType={"DataSourceView"}
+                                  componentConfig={{
+                                    fullWidth: false,
+                                    savedObjects: core.savedObjects.client,
+                                    notifications: core.notifications,
+                                    activeOption: this.state.dataSource[0]?.id
+                                      ? [{ id: this.state.dataSource[0].id, label: this.state.dataSource[0].label }]
+                                      : [{ id: "", label: "" }],
+                                  }}
                                 />
                               )}
                             />
@@ -414,66 +414,68 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.ROLLUPS,
                                 ROUTES.TRANSFORMS,
                               ]}
-                              render={() => (
-                                <DataSourceMenu
-                                  appName={"Index State Management"}
+                              render={(props) => (
+                                <DataSourceMenuSelectable
                                   setMenuMountPoint={this.props.setActionMenu}
-                                  showDataSourceSelectable={true}
-                                  dataSourceCallBackFunc={({ id: dataSourceId, label: dataSourceLabel }) => {
-                                    this.setState({ dataSourceId, dataSourceLabel });
+                                  componentType={"DataSourceSelectable"}
+                                  componentConfig={{
+                                    fullWidth: false,
+                                    onSelectedDataSources: (dataSources) => {
+                                      if (
+                                        this.props.multiDataSourceEnabled &&
+                                        dataSources.length > 0 &&
+                                        !_.isEqual(dataSources[0], this.state.dataSource[0])
+                                      ) {
+                                        this.setState({ dataSource: dataSources });
+                                      }
+                                    },
+                                    savedObjects: core.savedObjects.client,
+                                    notifications: core.notifications,
+                                    activeOption:
+                                      this.state.dataSource[0].id !== undefined ? [{ id: this.state.dataSource[0].id }] : undefined,
                                   }}
-                                  disableDataSourceSelectable={false}
-                                  notifications={services.notificationService}
-                                  savedObjects={core.savedObjects.client}
-                                  selectedOption={(() => {
-                                    if (this.state.dataSourceId && this.state.dataSourceId !== "") {
-                                      return [
-                                        {
-                                          id: this.state.dataSourceId,
-                                          label: this.state.dataSourceLabel,
-                                        },
-                                      ];
-                                    }
-                                    return undefined;
-                                  })()}
-                                  fullWidth={false}
-                                  hideLocalCluster={false}
                                 />
                               )}
                             />
                             <Route
                               path={[ROUTES.CREATE_ROLLUP, ROUTES.CREATE_TRANSFORM]}
-                              render={() => (
-                                <DataSourceMenu
-                                  appName={"Index State Management"}
-                                  setMenuMountPoint={this.props.setActionMenu}
-                                  showDataSourceView={this.state.dataSourceReadOnly}
-                                  showDataSourceSelectable={!this.state.dataSourceReadOnly}
-                                  disableDataSourceSelectable={this.state.dataSourceReadOnly}
-                                  dataSourceCallBackFunc={
-                                    this.state.dataSourceReadOnly
-                                      ? undefined
-                                      : ({ id: dataSourceId, label: dataSourceLabel }) => {
-                                          this.setState({ dataSourceId, dataSourceLabel });
+                              render={() =>
+                                this.state.dataSourceReadOnly ? (
+                                  <DataSourceMenuView
+                                    setMenuMountPoint={this.props.setActionMenu}
+                                    componentType={"DataSourceView"}
+                                    componentConfig={{
+                                      fullWidth: false,
+                                      savedObjects: core.savedObjects.client,
+                                      notifications: core.notifications,
+                                      activeOption: this.state.dataSource[0]?.id
+                                        ? [{ id: this.state.dataSource[0].id, label: this.state.dataSource[0].label }]
+                                        : [{ id: "", label: "" }],
+                                    }}
+                                  />
+                                ) : (
+                                  <DataSourceMenuSelectable
+                                    setMenuMountPoint={this.props.setActionMenu}
+                                    componentType={"DataSourceSelectable"}
+                                    componentConfig={{
+                                      fullWidth: false,
+                                      onSelectedDataSources: (dataSources) => {
+                                        if (
+                                          this.props.multiDataSourceEnabled &&
+                                          dataSources.length > 0 &&
+                                          !_.isEqual(dataSources[0], this.state.dataSource[0])
+                                        ) {
+                                          this.setState({ dataSource: dataSources });
                                         }
-                                  }
-                                  notifications={this.state.dataSourceReadOnly ? undefined : services.notificationService}
-                                  savedObjects={this.state.dataSourceReadOnly ? undefined : core.savedObjects.client}
-                                  selectedOption={(() => {
-                                    if (this.state.dataSourceId && this.state.dataSourceId !== "") {
-                                      return [
-                                        {
-                                          id: this.state.dataSourceId,
-                                          label: this.state.dataSourceLabel,
-                                        },
-                                      ];
-                                    }
-                                    return undefined;
-                                  })()}
-                                  fullWidth={false}
-                                  hideLocalCluster={false}
-                                />
-                              )}
+                                      },
+                                      savedObjects: core.savedObjects.client,
+                                      notifications: core.notifications,
+                                      activeOption:
+                                        this.state.dataSource[0].id !== undefined ? [{ id: this.state.dataSource[0].id }] : undefined,
+                                    }}
+                                  />
+                                )
+                              }
                             />
                           </Switch>
                         )}

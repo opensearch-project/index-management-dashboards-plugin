@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 import _ from "lodash";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import queryString from "query-string";
@@ -43,15 +43,14 @@ import DeleteModal from "../../components/DeleteModal";
 import { renderStatus } from "../../../RollupDetails/utils/helpers";
 import { DocumentRollup } from "../../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
-import { HttpFetchQuery } from "opensearch-dashboards/public";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent, { getDataSourcePropsFromContext } from "../../../../components/MDSEnabledComponent";
 
-interface RollupsProps extends RouteComponentProps, DataSourceMenuProperties {
+interface RollupsProps extends RouteComponentProps, DataSourceProperties {
   rollupService: RollupService;
 }
 
-interface RollupsState extends DataSourceMenuProperties {
+interface RollupsState extends DataSourceProperties {
   totalRollups: number;
   from: number;
   size: number;
@@ -122,7 +121,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
     try {
       const { rollupService, history } = this.props;
       const queryObject = Rollups.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
+      const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
       const rollupJobsResponse = await rollupService.getRollups(queryObject); // Add type assertion
       if (rollupJobsResponse.ok) {
@@ -493,7 +492,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
   }
 }
 
-export default function (props: Omit<RollupsProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return <Rollups {...props} {...dataSourceMenuProps} />;
+export default function (props: Omit<RollupsProps, keyof DataSourceProperties>) {
+  const dataSourceProps = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
+  return <Rollups {...props} {...dataSourceProps} />;
 }

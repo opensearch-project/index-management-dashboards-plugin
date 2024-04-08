@@ -1,9 +1,13 @@
-import { create } from "lodash";
 import { createContext } from "react";
+import { DataSourceOption } from "../../../../src/plugins/data_source_management/public/components/data_source_menu/types";
 
 export interface DataSourceMenuProperties {
+  dataSource: DataSourceOption[];
+  multiDataSourceEnabled: boolean;
+}
+
+export interface DataSourceProperties {
   dataSourceId: string;
-  dataSourceLabel: string;
   multiDataSourceEnabled: boolean;
 }
 
@@ -13,8 +17,7 @@ export interface DataSourceMenuReadOnlyProperties {
 }
 
 const DataSourceMenuContext = createContext<DataSourceMenuProperties>({
-  dataSourceId: "",
-  dataSourceLabel: "",
+  dataSource: [],
   multiDataSourceEnabled: false,
 });
 

@@ -19,11 +19,10 @@ import CreateState from "../CreateState";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { getUpdatedPolicy, getUpdatedStates } from "../../utils/helpers";
 import ErrorNotification from "../ErrorNotification";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
-import { Data } from "vega";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface VisualCreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
+interface VisualCreatePolicyProps extends RouteComponentProps, DataSourceProperties {
   isEdit: boolean;
   policyService: PolicyService;
   notificationService: NotificationService;
@@ -344,8 +343,8 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
   }
 }
 
-export default function (props: Omit<VisualCreatePolicyProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+export default function (props: Omit<VisualCreatePolicyProps, keyof DataSourceProperties>) {
+  const dataSourceProperties = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
   useUpdateUrlWithDataSourceProperties();
-  return <VisualCreatePolicy {...props} {...dataSourceMenuProperties} />;
+  return <VisualCreatePolicy {...props} {...dataSourceProperties} />;
 }

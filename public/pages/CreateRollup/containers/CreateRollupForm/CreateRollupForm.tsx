@@ -21,15 +21,10 @@ import CreateRollupStep3 from "../CreateRollupStep3";
 import CreateRollupStep4 from "../CreateRollupStep4";
 import { compareFieldItem, parseFieldOptions } from "../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
-import {
-  DataSourceMenuContext,
-  DataSourceMenuProperties,
-  DataSourceMenuReadOnlyContext,
-  DataSourceMenuReadOnlyProperties,
-} from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceMenuReadOnlyProperties, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateRollupFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
+interface CreateRollupFormProps extends RouteComponentProps, DataSourceProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
   indexService: IndexService;
 }
@@ -717,8 +712,8 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
   }
 }
 
-export default function (props: Omit<CreateRollupFormProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+export default function (props: Omit<CreateRollupFormProps, keyof DataSourceProperties>) {
+  const dataSourceProperties = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
   useUpdateUrlWithDataSourceProperties();
-  return <CreateRollupForm {...props} {...dataSourceMenuProperties} />;
+  return <CreateRollupForm {...props} {...dataSourceProperties} />;
 }

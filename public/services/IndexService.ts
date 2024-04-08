@@ -22,6 +22,10 @@ import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
 export default class IndexService extends MDSEnabledClientService {
   getIndices = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetIndicesResponse>> => {
+    const invalidStateResponse = this.ensureValidState();
+    if (invalidStateResponse) {
+      return invalidStateResponse;
+    }
     let url = `..${NODE_API._INDICES}`;
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
@@ -29,6 +33,10 @@ export default class IndexService extends MDSEnabledClientService {
   };
 
   getDataStreams = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetDataStreamsResponse>> => {
+    const invalidStateResponse = this.ensureValidState();
+    if (invalidStateResponse) {
+      return invalidStateResponse;
+    }
     const url = `..${NODE_API._DATA_STREAMS}`;
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
@@ -36,6 +44,10 @@ export default class IndexService extends MDSEnabledClientService {
   };
 
   getAliases = async (queryObject: HttpFetchQuery): Promise<ServerResponse<GetAliasesResponse>> => {
+    const invalidStateResponse = this.ensureValidState();
+    if (invalidStateResponse) {
+      return invalidStateResponse;
+    }
     const url = `..${NODE_API._ALIASES}`;
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
@@ -90,6 +102,10 @@ export default class IndexService extends MDSEnabledClientService {
   };
 
   applyPolicy = async (indices: string[], policyId: string, queryObject?: HttpFetchQuery): Promise<ServerResponse<ApplyPolicyResponse>> => {
+    const invalidStateResponse = this.ensureValidState();
+    if (invalidStateResponse) {
+      return invalidStateResponse;
+    }
     const body = { indices, policyId };
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
@@ -101,6 +117,10 @@ export default class IndexService extends MDSEnabledClientService {
   };
 
   editRolloverAlias = async (index: string, alias: string, queryObject?: HttpFetchQuery): Promise<ServerResponse<AcknowledgedResponse>> => {
+    const invalidStateResponse = this.ensureValidState();
+    if (invalidStateResponse) {
+      return invalidStateResponse;
+    }
     const body = { index, alias };
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
@@ -112,6 +132,10 @@ export default class IndexService extends MDSEnabledClientService {
   };
 
   searchPolicies = async (searchValue: string, source: boolean = false): Promise<ServerResponse<GetPoliciesResponse>> => {
+    const invalidStateResponse = this.ensureValidState();
+    if (invalidStateResponse) {
+      return invalidStateResponse;
+    }
     const str = searchValue.trim();
     const query = this.patchQueryObjectWithDataSourceId({ from: 0, size: 10, search: str, sortDirection: "desc", sortField: "id" });
     const params = query ? { query } : {};

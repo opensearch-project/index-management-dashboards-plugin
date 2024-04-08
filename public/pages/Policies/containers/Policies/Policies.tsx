@@ -34,15 +34,14 @@ import { PolicyService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import ConfirmationModal from "../../../../components/ConfirmationModal";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
-import { DataSource } from "src/plugins/data/public";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent, { getDataSourcePropsFromContext } from "../../../../components/MDSEnabledComponent";
 
-interface PoliciesProps extends RouteComponentProps, DataSourceMenuProperties {
+interface PoliciesProps extends RouteComponentProps, DataSourceProperties {
   policyService: PolicyService;
 }
 
-interface PoliciesState extends DataSourceMenuProperties {
+interface PoliciesState extends DataSourceProperties {
   totalPolicies: number;
   from: number;
   size: number;
@@ -142,7 +141,7 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
     try {
       const { policyService, history } = this.props;
       const queryObject = Policies.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
+      const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
       const getPoliciesResponse = await policyService.getPolicies(queryObject);
       if (getPoliciesResponse.ok) {
@@ -325,7 +324,7 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
   }
 }
 
-export default function (props: Omit<PoliciesProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return <Policies {...props} {...dataSourceMenuProps} />;
+export default function (props: Omit<PoliciesProps, keyof DataSourceProperties>) {
+  const dataSourceProps = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
+  return <Policies {...props} {...dataSourceProps} />;
 }

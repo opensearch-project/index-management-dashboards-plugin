@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import {
   EuiBasicTable,
@@ -46,14 +46,14 @@ import RolloverAliasModal from "../../components/RolloverAliasModal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataStream } from "../../../../../server/models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent, { getDataSourcePropsFromContext } from "../../../../components/MDSEnabledComponent";
 
-interface ManagedIndicesProps extends RouteComponentProps, DataSourceMenuProperties {
+interface ManagedIndicesProps extends RouteComponentProps, DataSourceProperties {
   managedIndexService: ManagedIndexService;
 }
 
-interface ManagedIndicesState extends DataSourceMenuProperties {
+interface ManagedIndicesState extends DataSourceProperties {
   totalManagedIndices: number;
   from: number;
   size: number;
@@ -247,10 +247,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     try {
       const { managedIndexService, history } = this.props;
       const queryObject = ManagedIndices.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify({
-        ...queryObject,
-        ...(this.state.multiDataSourceEnabled ? { dataSourceLabel: this.state.dataSourceLabel } : {}),
-      });
+      const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
 
       const getManagedIndicesResponse = await managedIndexService.getManagedIndices({
@@ -504,7 +501,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
   }
 }
 
-export default function (props: Omit<ManagedIndicesProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return <ManagedIndices {...props} {...dataSourceMenuProps} />;
+export default function (props: Omit<ManagedIndicesProps, keyof DataSourceProperties>) {
+  const dataSourceProps = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
+  return <ManagedIndices {...props} {...dataSourceProps} />;
 }

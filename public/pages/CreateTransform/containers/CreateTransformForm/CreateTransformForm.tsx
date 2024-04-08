@@ -27,15 +27,10 @@ import SpecifyScheduleStep from "../SpecifyScheduleStep";
 import ReviewAndCreateStep from "../ReviewAndCreateStep";
 import { compareFieldItem, createdTransformToastMessage, isGroupBy, parseFieldOptions } from "../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
-import {
-  DataSourceMenuContext,
-  DataSourceMenuProperties,
-  DataSourceMenuReadOnlyContext,
-  DataSourceMenuReadOnlyProperties,
-} from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceMenuReadOnlyProperties, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateTransformFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
+interface CreateTransformFormProps extends RouteComponentProps, DataSourceProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
   transformService: TransformService;
   indexService: IndexService;
@@ -686,8 +681,8 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
   }
 }
 
-export default function (props: Omit<CreateTransformFormProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+export default function (props: Omit<CreateTransformFormProps, keyof DataSourceProperties>) {
+  const dataSourceProperties = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
   useUpdateUrlWithDataSourceProperties();
-  return <CreateTransformForm {...props} {...dataSourceMenuProperties} />;
+  return <CreateTransformForm {...props} {...dataSourceProperties} />;
 }

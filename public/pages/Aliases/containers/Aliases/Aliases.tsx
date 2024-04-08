@@ -36,14 +36,14 @@ import IndexControls, { SearchControlsProps } from "../../components/IndexContro
 import CreateAlias from "../CreateAlias";
 import AliasesActions from "../AliasActions";
 import { CoreStart } from "opensearch-dashboards/public";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent, { getDataSourcePropsFromContext } from "../../../../components/MDSEnabledComponent";
 
-interface AliasesProps extends RouteComponentProps, DataSourceMenuProperties {
+interface AliasesProps extends RouteComponentProps, DataSourceProperties {
   commonService: CommonService;
 }
 
-interface AliasesState extends DataSourceMenuProperties {
+interface AliasesState extends DataSourceProperties {
   totalAliases: number;
   from: string;
   size: string;
@@ -483,8 +483,8 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
   }
 }
 
-export default function AliasContainer(props: Omit<AliasesProps, "commonService" | keyof DataSourceMenuProperties>) {
+export default function AliasContainer(props: Omit<AliasesProps, "commonService" | keyof DataSourceProperties>) {
   const context = useContext(ServicesContext);
-  const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return <Aliases {...props} commonService={context?.commonService as CommonService} {...dataSourceMenuProps} />;
+  const dataSourceProps = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
+  return <Aliases {...props} commonService={context?.commonService as CommonService} {...dataSourceProps} />;
 }

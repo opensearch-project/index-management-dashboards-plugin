@@ -33,10 +33,10 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import { convertTemplatesToArray } from "../../../VisualCreatePolicy/utils/helpers";
 import CreatePolicyModal from "../../../../components/CreatePolicyModal";
 import { ModalConsumer } from "../../../../components/Modal";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface PolicyDetailsProps extends RouteComponentProps, DataSourceMenuProperties {
+interface PolicyDetailsProps extends RouteComponentProps, DataSourceProperties {
   policyService: PolicyService;
 }
 
@@ -260,8 +260,8 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
   }
 }
 
-export default function (props: Omit<PolicyDetailsProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+export default function (props: Omit<PolicyDetailsProps, keyof DataSourceProperties>) {
+  const dataSourceProperties = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
   useUpdateUrlWithDataSourceProperties();
-  return <PolicyDetails {...props} {...dataSourceMenuProperties} />;
+  return <PolicyDetails {...props} {...dataSourceProperties} />;
 }
