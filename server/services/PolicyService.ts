@@ -5,24 +5,18 @@
 
 import _ from "lodash";
 import {
-  ILegacyCustomClusterClient,
+  IOpenSearchDashboardsResponse,
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
-  IOpenSearchDashboardsResponse,
-  ResponseError,
   RequestHandlerContext,
-} from "opensearch-dashboards/server";
+  ResponseError,
+} from "../../../../src/core/server";
 import { DeletePolicyParams, DeletePolicyResponse, GetPoliciesResponse, PutPolicyParams, PutPolicyResponse } from "../models/interfaces";
 import { PoliciesSort, ServerResponse } from "../models/types";
 import { DocumentPolicy, Policy } from "../../models/interfaces";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class PolicyService {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class PolicyService extends MDSEnabledClientService {
   /**
    * Calls backend Put Policy API
    */
@@ -40,8 +34,8 @@ export default class PolicyService {
         method = "ism.createPolicy";
         params = { policyId: id, body: JSON.stringify(request.body) };
       }
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const putPolicyResponse: PutPolicyResponse = await callWithRequest(method, params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const putPolicyResponse: PutPolicyResponse = (await callWithRequest(method, params)) as PutPolicyResponse;
       return response.custom({
         statusCode: 200,
         body: {
@@ -72,8 +66,8 @@ export default class PolicyService {
     try {
       const { id } = request.params as { id: string };
       const params: DeletePolicyParams = { policyId: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const deletePolicyResponse: DeletePolicyResponse = await callWithRequest("ism.deletePolicy", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const deletePolicyResponse: DeletePolicyResponse = (await callWithRequest("ism.deletePolicy", params)) as DeletePolicyResponse;
       if (deletePolicyResponse.result !== "deleted") {
         return response.custom({
           statusCode: 200,
@@ -113,7 +107,7 @@ export default class PolicyService {
     try {
       const { id } = request.params as { id: string };
       const params = { policyId: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const getResponse = await callWithRequest("ism.getPolicy", params);
       const policy = _.get(getResponse, "policy", null);
       const seqNo = _.get(getResponse, "_seq_no");
@@ -147,9 +141,6 @@ export default class PolicyService {
     }
   };
 
-  /**
-   * Calls backend Get Policy API
-   */
   getPolicies = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -178,10 +169,10 @@ export default class PolicyService {
         queryString: search.trim() ? `*${search.trim().split(" ").join("* *")}*` : "*",
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const getResponse = await callWithRequest("ism.getPolicies", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const getResponse: any = await callWithRequest("ism.getPolicies", params);
 
-      const policies: DocumentPolicy[] = getResponse.policies.map((p) => ({
+      const policies: DocumentPolicy[] = getResponse.policies.map((p: any) => ({
         seqNo: p._seq_no,
         primaryTerm: p._primary_term,
         id: p._id,

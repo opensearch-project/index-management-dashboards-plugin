@@ -13,7 +13,7 @@ import {
 import { ServerResponse } from "../models/types";
 import { DataStream, GetDataStreamsResponse, IndexToDataStream } from "../models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../utils/constants";
-import { MDSEnabledClientService } from "./MDSEnabledClientService";
+import { DataSourceClient, MDSEnabledClientService } from "./MDSEnabledClientService";
 
 export default class DataStreamService extends MDSEnabledClientService {
   getDataStreams = async (
@@ -81,9 +81,7 @@ export async function getDataStreams(callWithRequest: any, search?: string): Pro
   return [dataStreamsResponse["data_streams"], accessible, errMsg];
 }
 
-export async function getIndexToDataStreamMapping({
-  callAsCurrentUser: callWithRequest,
-}: ILegacyScopedClusterClient): Promise<IndexToDataStream> {
+export async function getIndexToDataStreamMapping(callWithRequest: DataSourceClient): Promise<IndexToDataStream> {
   const [dataStreams] = await getDataStreams(callWithRequest);
 
   const mapping: { [indexName: string]: string } = {};

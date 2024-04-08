@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { EuiSpacer, EuiTitle, EuiButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from "@elastic/eui";
 import { IndexService, ManagedIndexService } from "../../../../services";
@@ -14,8 +14,10 @@ import { ManagedIndexItem } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { PolicyOption } from "../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface ChangePolicyProps extends RouteComponentProps {
+interface ChangePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
   indexService: IndexService;
 }
@@ -36,9 +38,9 @@ export enum Radio {
   State = "state",
 }
 
-export default class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState> {
+export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState> {
   static contextType = CoreServicesContext;
-  state: ChangePolicyState = {
+  static emptyState = {
     selectedPolicies: [],
     selectedManagedIndices: [],
     selectedStateFilters: [],
@@ -48,9 +50,19 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
     selectedPoliciesError: "",
     hasSubmitted: false,
   };
+  state: ChangePolicyState = ChangePolicy.emptyState;
 
   async componentDidMount(): Promise<void> {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY]);
+  }
+
+  componentDidUpdate(prevProps: ChangePolicyProps, prevState: Readonly<ChangePolicyState>) {
+    if (prevProps.dataSourceId !== this.props.dataSourceId) {
+      // reset the state, if dataSourceId changes, i.e., clear state
+      this.setState({
+        ...ChangePolicy.emptyState,
+      });
+    }
   }
 
   onChangeSelectedPolicy = (selectedPolicies: PolicyOption[]): void => {
@@ -151,6 +163,7 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
         <EuiSpacer />
 
         <ChangeManagedIndices
+          key={`changeManagedIndices-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
           {...this.props}
           managedIndexService={managedIndexService}
           selectedManagedIndices={selectedManagedIndices}
@@ -163,6 +176,7 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
         <EuiSpacer />
 
         <NewPolicy
+          key={`newPolicy-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
           {...this.props}
           indexService={indexService}
           selectedPolicies={selectedPolicies}
@@ -191,4 +205,10 @@ export default class ChangePolicy extends Component<ChangePolicyProps, ChangePol
       </div>
     );
   }
+}
+
+export default function (props: Omit<ChangePolicyProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <ChangePolicy {...props} {...dataSourceMenuProperties} />;
 }

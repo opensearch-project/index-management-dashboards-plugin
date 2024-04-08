@@ -8,7 +8,7 @@ import { schema } from "@osd/config-schema";
 import { NodeServices } from "../models/interfaces";
 import { NODE_API } from "../../utils/constants";
 
-export default function (services: NodeServices, router: IRouter) {
+export default function (services: NodeServices, router: IRouter, dataSourceEnabled: boolean) {
   const { managedIndexService } = services;
 
   router.get(
@@ -25,6 +25,7 @@ export default function (services: NodeServices, router: IRouter) {
           indices: schema.maybe(schema.any()),
           dataStreams: schema.maybe(schema.any()),
           showDataStreams: schema.boolean(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -38,6 +39,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     managedIndexService.getManagedIndex
@@ -48,6 +52,9 @@ export default function (services: NodeServices, router: IRouter) {
       path: NODE_API.RETRY,
       validate: {
         body: schema.any(),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     managedIndexService.retryManagedIndexPolicy
@@ -58,6 +65,9 @@ export default function (services: NodeServices, router: IRouter) {
       path: NODE_API.CHANGE_POLICY,
       validate: {
         body: schema.any(),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     managedIndexService.changePolicy
@@ -68,6 +78,9 @@ export default function (services: NodeServices, router: IRouter) {
       path: NODE_API.REMOVE_POLICY,
       validate: {
         body: schema.any(),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     managedIndexService.removePolicy

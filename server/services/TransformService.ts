@@ -20,14 +20,9 @@ import {
 } from "../models/interfaces";
 import { DocumentTransform, Transform } from "../../models/interfaces";
 import _ from "lodash";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class TransformService {
-  esDriver: IClusterClient;
-
-  constructor(esDriver: IClusterClient) {
-    this.esDriver = esDriver;
-  }
-
+export default class TransformService extends MDSEnabledClientService {
   getTransforms = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -57,8 +52,8 @@ export default class TransformService {
         sortDirection,
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
-      const getTransformsResponse = await callWithRequest("ism.getTransforms", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const getTransformsResponse = (await callWithRequest("ism.getTransforms", params)) as any;
       const totalTransforms = getTransformsResponse.total_transforms;
       const transforms = getTransformsResponse.transforms.map((transform: DocumentTransform) => ({
         _seqNo: transform._seqNo as number,
@@ -69,7 +64,9 @@ export default class TransformService {
       }));
       if (totalTransforms) {
         const ids = transforms.map((transform: DocumentTransform) => transform._id).join(",");
-        const explainResponse = await callWithRequest("ism.explainTransform", { transformId: ids });
+        const callWithRequest = this.getClientBasedOnDataSource(context, request);
+
+        const explainResponse = (await callWithRequest("ism.explainTransform", { transformId: ids })) as any;
         if (!explainResponse.error) {
           transforms.map((transform: DocumentTransform) => {
             transform.metadata = explainResponse[transform._id];
@@ -123,7 +120,7 @@ export default class TransformService {
     try {
       const { id } = request.params as { id: string };
       const params = { transformId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const getResponse = await callWithRequest("ism.getTransform", params);
       const metadata = await callWithRequest("ism.explainTransform", params);
       const transform = _.get(getResponse, "transform", null);
@@ -183,7 +180,7 @@ export default class TransformService {
     try {
       const { id } = request.params as { id: string };
       const params = { transformId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const startResponse = await callWithRequest("ism.startTransform", params);
       const acknowledged = _.get(startResponse, "acknowledged");
       if (acknowledged) {
@@ -214,7 +211,7 @@ export default class TransformService {
     try {
       const { id } = request.params as { id: string };
       const params = { transformId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const stopResponse = await callWithRequest("ism.stopTransform", params);
       const acknowledged = _.get(stopResponse, "acknowledged");
       if (acknowledged) {
@@ -245,8 +242,8 @@ export default class TransformService {
     try {
       const { id } = request.params as { id: string };
       const params = { transformId: id };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
-      const deleteResponse = await callWithRequest("ism.deleteTransform", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const deleteResponse = (await callWithRequest("ism.deleteTransform", params)) as any;
       if (!deleteResponse.errors) {
         return response.custom({
           statusCode: 200,
@@ -286,8 +283,8 @@ export default class TransformService {
         method = "ism.putTransform";
         params = { transformId: id, body: JSON.stringify(request.body) };
       }
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
-      const putTransformResponse: PutTransformResponse = await callWithRequest(method, params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const putTransformResponse: PutTransformResponse = (await callWithRequest(method, params)) as PutTransformResponse;
       return response.custom({
         statusCode: 200,
         body: {
@@ -324,8 +321,8 @@ export default class TransformService {
         size: size,
         body: request.body ? JSON.stringify({ query: request.body }) : {},
       };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
-      const searchResponse: SearchResponse<any> = await callWithRequest("search", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const searchResponse: SearchResponse<any> = (await callWithRequest("search", params)) as SearchResponse<any>;
       return response.custom({
         statusCode: 200,
         body: {
@@ -369,8 +366,8 @@ export default class TransformService {
       let params = {
         body: JSON.stringify(request.body),
       };
-      const { callAsCurrentUser: callWithRequest } = this.esDriver.asScoped(request);
-      const previewResponse: PreviewTransformResponse = await callWithRequest("ism.previewTransform", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const previewResponse: PreviewTransformResponse = (await callWithRequest("ism.previewTransform", params)) as PreviewTransformResponse;
       return response.custom({
         statusCode: 200,
         body: {

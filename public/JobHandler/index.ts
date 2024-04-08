@@ -17,7 +17,7 @@ export { listenEvent, destroyListener, EVENT_MAP } from "./utils";
 
 export async function JobHandlerRegister(core: CoreSetup) {
   const commonService = new CommonService(core.http);
-  const accountResult = await commonService.apiCaller<{
+  const accountResult = await commonService.accountInfo<{
     user_name: string;
   }>({
     endpoint: "transport.request",

@@ -17,6 +17,7 @@ import Schedule from "../../components/Schedule";
 import Indices from "../../components/Indices";
 import moment from "moment";
 import { Transform } from "../../../../../models/interfaces";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 interface EditTransformProps extends RouteComponentProps {
   transformService: TransformService;
@@ -45,7 +46,7 @@ interface EditTransformState {
   schedule: string;
 }
 
-export default class EditTransform extends Component<EditTransformProps, EditTransformState> {
+export class EditTransform extends Component<EditTransformProps, EditTransformState> {
   static contextType = CoreServicesContext;
 
   constructor(props: EditTransformProps) {
@@ -296,4 +297,9 @@ export default class EditTransform extends Component<EditTransformProps, EditTra
   onIntervalTimeUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
     this.setState({ intervalTimeUnit: e.target.value });
   };
+}
+
+export default function (props: EditTransformProps) {
+  useUpdateUrlWithDataSourceProperties();
+  return <EditTransform {...props} />;
 }

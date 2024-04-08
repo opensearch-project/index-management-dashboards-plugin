@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import {
   EuiSpacer,
   EuiTitle,
@@ -33,8 +33,10 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import { convertTemplatesToArray } from "../../../VisualCreatePolicy/utils/helpers";
 import CreatePolicyModal from "../../../../components/CreatePolicyModal";
 import { ModalConsumer } from "../../../../components/Modal";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface PolicyDetailsProps extends RouteComponentProps {
+interface PolicyDetailsProps extends RouteComponentProps, DataSourceMenuProperties {
   policyService: PolicyService;
 }
 
@@ -48,7 +50,7 @@ interface PolicyDetailsState {
   showPerPageOptions: boolean;
 }
 
-export default class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsState> {
+export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsState> {
   static contextType = CoreServicesContext;
   constructor(props: PolicyDetailsProps) {
     super(props);
@@ -76,6 +78,19 @@ export default class PolicyDetails extends Component<PolicyDetailsProps, PolicyD
     }
   };
 
+  componentDidUpdate(prevProps: Readonly<PolicyDetailsProps>, prevState: Readonly<PolicyDetailsState>, snapshot?: any): void {
+    if (prevProps.dataSourceId !== this.props.dataSourceId) {
+      this.setState({
+        policyId: "",
+        policy: null,
+        isJSONModalOpen: false,
+        isDeleteModalVisible: false,
+        pageIndex: 0,
+        pageSize: 10,
+        showPerPageOptions: true,
+      });
+    }
+  }
   getPolicy = async (policyId: string): Promise<void> => {
     try {
       const { policyService } = this.props;
@@ -243,4 +258,10 @@ export default class PolicyDetails extends Component<PolicyDetailsProps, PolicyD
       </div>
     );
   }
+}
+
+export default function (props: Omit<PolicyDetailsProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <PolicyDetails {...props} {...dataSourceMenuProperties} />;
 }

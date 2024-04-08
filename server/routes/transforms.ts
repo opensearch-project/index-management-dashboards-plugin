@@ -8,7 +8,7 @@ import { IRouter } from "opensearch-dashboards/server";
 import { NODE_API } from "../../utils/constants";
 import { schema } from "@osd/config-schema";
 
-export default function (services: NodeServices, router: IRouter) {
+export default function (services: NodeServices, router: IRouter, dataSourceEnabled: boolean) {
   const { transformService } = services;
 
   router.get(
@@ -21,6 +21,7 @@ export default function (services: NodeServices, router: IRouter) {
           search: schema.string(),
           sortField: schema.string(),
           sortDirection: schema.string(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -34,6 +35,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     transformService.getTransform
@@ -45,6 +49,9 @@ export default function (services: NodeServices, router: IRouter) {
       validate: {
         params: schema.object({
           id: schema.string(),
+        }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -58,6 +65,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     transformService.startTransform
@@ -69,6 +79,9 @@ export default function (services: NodeServices, router: IRouter) {
       validate: {
         params: schema.object({
           id: schema.string(),
+        }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -85,6 +98,7 @@ export default function (services: NodeServices, router: IRouter) {
         query: schema.object({
           seqNo: schema.maybe(schema.number()),
           primaryTerm: schema.maybe(schema.number()),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
         body: schema.any(),
       },
@@ -102,6 +116,7 @@ export default function (services: NodeServices, router: IRouter) {
         query: schema.object({
           from: schema.number(),
           size: schema.number(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
         body: schema.any(),
       },
@@ -115,6 +130,9 @@ export default function (services: NodeServices, router: IRouter) {
       validate: {
         body: schema.object({
           transform: schema.any(),
+        }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },

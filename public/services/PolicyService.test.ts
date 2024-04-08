@@ -16,7 +16,7 @@ describe("PolicyService spec", () => {
     await policyService.getPolicy(policyId);
 
     expect(httpClientMock.get).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.POLICIES}/${policyId}`);
+    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.POLICIES}/${policyId}`, expect.anything());
   });
 
   it("calls get policies nodejs route when calling getPolicies", async () => {
@@ -44,6 +44,6 @@ describe("PolicyService spec", () => {
     await policyService.deletePolicy(policyId);
 
     expect(httpClientMock.delete).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.delete).toHaveBeenCalledWith(`..${NODE_API.POLICIES}/${policyId}`);
+    expect(httpClientMock.delete).toHaveBeenCalledWith(`..${NODE_API.POLICIES}/${policyId}`, expect.anything());
   });
 });
