@@ -40,7 +40,7 @@ export enum Radio {
 
 export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState> {
   static contextType = CoreServicesContext;
-  state: ChangePolicyState = {
+  static emptyState = {
     selectedPolicies: [],
     selectedManagedIndices: [],
     selectedStateFilters: [],
@@ -50,6 +50,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
     selectedPoliciesError: "",
     hasSubmitted: false,
   };
+  state: ChangePolicyState = ChangePolicy.emptyState;
 
   async componentDidMount(): Promise<void> {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY]);
@@ -59,14 +60,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
     if (prevProps.dataSourceId !== this.props.dataSourceId) {
       // reset the state, if dataSourceId changes, i.e., clear state
       this.setState({
-        selectedPolicies: [],
-        selectedManagedIndices: [],
-        selectedStateFilters: [],
-        stateRadioIdSelected: Radio.Current,
-        stateSelected: "",
-        managedIndicesError: "",
-        selectedPoliciesError: "",
-        hasSubmitted: false,
+        ...ChangePolicy.emptyState,
       });
     }
   }
