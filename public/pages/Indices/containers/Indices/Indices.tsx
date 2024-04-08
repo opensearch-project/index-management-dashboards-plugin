@@ -37,15 +37,15 @@ import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants
 import IndicesActions from "../IndicesActions";
 import { destroyListener, EVENT_MAP, listenEvent } from "../../../../JobHandler";
 import "./index.scss";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent, { getDataSourcePropsFromContext } from "../../../../components/MDSEnabledComponent";
 
-interface IndicesProps extends RouteComponentProps, DataSourceMenuProperties {
+interface IndicesProps extends RouteComponentProps, DataSourceProperties {
   indexService: IndexService;
   commonService: CommonService;
 }
 
-interface IndicesState extends DataSourceMenuProperties {
+interface IndicesState extends DataSourceProperties {
   totalIndices: number;
   from: number;
   size: number;
@@ -131,10 +131,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
     try {
       const { indexService, history } = this.props;
       const queryObject = this.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify({
-        ...queryObject,
-        ...(this.state.multiDataSourceEnabled ? { dataSourceLabel: this.state.dataSourceLabel } : {}),
-      });
+      const queryParamsString = queryString.stringify({ queryObject });
       history.replace({ ...this.props.location, search: queryParamsString });
 
       const getIndicesResponse = await indexService.getIndices({
@@ -322,7 +319,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
   }
 }
 
-export default function (props: Omit<IndicesProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return <Indices {...props} {...dataSourceMenuProps} />;
+export default function (props: Omit<IndicesProps, keyof DataSourceProperties>) {
+  const dataSourceProps = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
+  return <Indices {...props} {...dataSourceProps} />;
 }

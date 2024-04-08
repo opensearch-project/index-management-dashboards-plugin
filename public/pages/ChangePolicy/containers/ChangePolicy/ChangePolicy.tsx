@@ -14,10 +14,11 @@ import { ManagedIndexItem } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { PolicyOption } from "../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { dataSource } from "src/plugins/data_source/server/saved_objects";
 
-interface ChangePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
+interface ChangePolicyProps extends RouteComponentProps, DataSourceProperties {
   managedIndexService: ManagedIndexService;
   indexService: IndexService;
 }
@@ -213,8 +214,8 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
   }
 }
 
-export default function (props: Omit<ChangePolicyProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+export default function (props: Omit<ChangePolicyProps, keyof DataSourceProperties>) {
+  const dataSourceProperties = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
   useUpdateUrlWithDataSourceProperties();
-  return <ChangePolicy {...props} {...dataSourceMenuProperties} />;
+  return <ChangePolicy {...props} {...dataSourceProperties} />;
 }

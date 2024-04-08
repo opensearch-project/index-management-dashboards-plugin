@@ -12,10 +12,9 @@ import RollupIndices from "../../components/RollupIndices";
 import CreateRollupSteps from "../../components/CreateRollupSteps";
 import IndexService from "../../../../services/IndexService";
 import { IndexItem } from "../../../../../models/interfaces";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { DataSourceProperties } from "../../../../services/DataSourceMenuContext";
 
-interface CreateRollupProps extends RouteComponentProps, DataSourceMenuProperties {
+interface CreateRollupProps extends RouteComponentProps, DataSourceProperties {
   rollupService: RollupService;
   indexService: IndexService;
   rollupId: string;

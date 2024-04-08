@@ -15,10 +15,10 @@ import { PolicyService } from "../../../../services";
 import { BREADCRUMBS, DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
+interface CreatePolicyProps extends RouteComponentProps, DataSourceProperties {
   isEdit: boolean;
   policyService: PolicyService;
 }
@@ -267,8 +267,8 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
   }
 }
 
-export default function (props: Omit<CreatePolicyProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+export default function (props: Omit<CreatePolicyProps, keyof DataSourceProperties>) {
+  const dataSourceProperties = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
   useUpdateUrlWithDataSourceProperties();
-  return <CreatePolicy {...props} {...dataSourceMenuProperties} />;
+  return <CreatePolicy {...props} {...dataSourceProperties} />;
 }

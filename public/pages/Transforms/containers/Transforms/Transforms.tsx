@@ -31,7 +31,7 @@ import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
 import TransformService from "../../../../services/TransformService";
 import { DocumentTransform } from "../../../../../models/interfaces";
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getURLQueryParams, renderTime } from "../../utils/helpers";
 import { TransformQueryParams } from "../../models/interfaces";
@@ -44,14 +44,14 @@ import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../../Indice
 import _ from "lodash";
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { renderContinuous } from "../../../Rollups/utils/helpers";
-import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { DataSourceMenuContext, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent, { getDataSourcePropsFromContext } from "../../../../components/MDSEnabledComponent";
 
-interface TransformProps extends RouteComponentProps, DataSourceMenuProperties {
+interface TransformProps extends RouteComponentProps, DataSourceProperties {
   transformService: TransformService;
 }
 
-interface TransformState extends DataSourceMenuProperties {
+interface TransformState extends DataSourceProperties {
   totalTransforms: number;
   from: number;
   size: number;
@@ -344,7 +344,6 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
       const queryObject = Transforms.getQueryObjectFromState(this.state);
       const queryParamsString = queryString.stringify({
         ...Transforms.getQueryObjectFromState(this.state),
-        dataSourceLabel: this.state.dataSourceLabel,
       });
       history.replace({ ...this.props.location, search: queryParamsString });
       const response = await transformService.getTransforms(queryObject);
@@ -496,7 +495,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
   }
 }
 
-export default function (props: Omit<TransformProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  return <Transforms {...props} {...dataSourceMenuProps} />;
+export default function (props: Omit<TransformProps, keyof DataSourceProperties>) {
+  const dataSourceProps = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
+  return <Transforms {...props} {...dataSourceProps} />;
 }

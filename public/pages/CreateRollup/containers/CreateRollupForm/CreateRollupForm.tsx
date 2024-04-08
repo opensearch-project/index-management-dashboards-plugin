@@ -26,8 +26,9 @@ import {
   DataSourceMenuProperties,
   DataSourceMenuReadOnlyContext,
   DataSourceMenuReadOnlyProperties,
+  DataSourceProperties,
 } from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 interface CreateRollupFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
@@ -717,8 +718,8 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
   }
 }
 
-export default function (props: Omit<CreateRollupFormProps, keyof DataSourceMenuProperties>) {
-  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+export default function (props: Omit<CreateRollupFormProps, keyof DataSourceProperties>) {
+  const dataSourceProperties = getDataSourcePropsFromContext(useContext(DataSourceMenuContext));
   useUpdateUrlWithDataSourceProperties();
-  return <CreateRollupForm {...props} {...dataSourceMenuProperties} />;
+  return <CreateRollupForm {...props} {...dataSourceProperties} />;
 }

@@ -16,7 +16,7 @@ import { NODE_API } from "../../utils/constants";
 import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
 export default class ManagedIndexService extends MDSEnabledClientService {
-  getManagedIndex = async (managedIndexUuid: string, queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<any>> => {
+  getManagedIndex = async (managedIndexUuid: string, queryObject?: HttpFetchQuery): Promise<ServerResponse<any>> => {
     let url = `..${NODE_API.MANAGED_INDICES}/${managedIndexUuid}`;
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
@@ -24,7 +24,7 @@ export default class ManagedIndexService extends MDSEnabledClientService {
     return response;
   };
 
-  getManagedIndices = async (queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<GetManagedIndicesResponse>> => {
+  getManagedIndices = async (queryObject?: HttpFetchQuery): Promise<ServerResponse<GetManagedIndicesResponse>> => {
     let url = `..${NODE_API.MANAGED_INDICES}`;
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
@@ -32,7 +32,7 @@ export default class ManagedIndexService extends MDSEnabledClientService {
     return response;
   };
 
-  getDataStreams = async (queryObject: HttpFetchQuery | undefined): Promise<ServerResponse<GetDataStreamsResponse>> => {
+  getDataStreams = async (queryObject?: HttpFetchQuery): Promise<ServerResponse<GetDataStreamsResponse>> => {
     let url = `..${NODE_API._DATA_STREAMS}`;
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};
@@ -43,7 +43,7 @@ export default class ManagedIndexService extends MDSEnabledClientService {
   retryManagedIndexPolicy = async (
     index: string[],
     state: string | null,
-    queryObject: HttpFetchQuery | undefined
+    queryObject?: HttpFetchQuery
   ): Promise<ServerResponse<RetryManagedIndexResponse>> => {
     const body = { index, state };
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
@@ -55,7 +55,7 @@ export default class ManagedIndexService extends MDSEnabledClientService {
     return response;
   };
 
-  removePolicy = async (indices: string[], queryObject?: HttpFetchQuery | undefined): Promise<ServerResponse<RemovePolicyResponse>> => {
+  removePolicy = async (indices: string[], queryObject?: HttpFetchQuery): Promise<ServerResponse<RemovePolicyResponse>> => {
     const body = { indices };
     const query = this.patchQueryObjectWithDataSourceId(queryObject);
     const params = query ? { query } : {};

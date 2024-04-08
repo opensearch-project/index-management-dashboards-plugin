@@ -1,4 +1,5 @@
 import { HttpFetchQuery, HttpSetup } from "opensearch-dashboards/public";
+import { ServerResponse } from "../../../../plugins/index-management-dashboards-plugin/server/models/types";
 
 export abstract class MDSEnabledClientService {
   httpClient: HttpSetup;
@@ -17,5 +18,12 @@ export abstract class MDSEnabledClientService {
       queryObject.dataSourceId = this.dataSourceId;
     }
     return queryObject;
+  }
+
+  ensureValidState(): ServerResponse<any> | null {
+    if (this.mdsEnabled && this.dataSourceId === undefined) {
+      return { ok: false, error: "Invalid DataSource" };
+    }
+    return null;
   }
 }
