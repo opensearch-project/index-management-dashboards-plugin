@@ -131,7 +131,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
     try {
       const { indexService, history } = this.props;
       const queryObject = this.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify({ queryObject });
+      const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
 
       const getIndicesResponse = await indexService.getIndices({

@@ -65,6 +65,7 @@ import {
   DataSourceSelectableConfig,
   DataSourceViewConfig,
 } from "../../../../../src/plugins/data_source_management/public";
+import _ from "lodash";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -380,27 +381,20 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.TRANSFORM_DETAILS,
                                 ROUTES.EDIT_TRANSFORM,
                               ]}
-                              render={(props) =>
-                                React.useMemo(
-                                  () => (
-                                    <DataSourceMenuSelectable
-                                      setMenuMountPoint={this.props.setActionMenu}
-                                      componentType={"DataSourceSelectable"}
-                                      componentConfig={{
-                                        fullWidth: false,
-                                        onSelectedDataSources: (dataSources) => {
-                                          this.setState({ dataSource: dataSources });
-                                        },
-                                        savedObjects: core.savedObjects.client,
-                                        notifications: core.notifications,
-                                        activeOption:
-                                          this.state.dataSource[0].id !== undefined ? [{ id: this.state.dataSource[0].id }] : undefined,
-                                      }}
-                                    />
-                                  ),
-                                  [core.savedObjects.client, core.notifications, this.props.setActionMenu]
-                                )
-                              }
+                              render={() => (
+                                <DataSourceMenuView
+                                  setMenuMountPoint={this.props.setActionMenu}
+                                  componentType={"DataSourceView"}
+                                  componentConfig={{
+                                    fullWidth: false,
+                                    savedObjects: core.savedObjects.client,
+                                    notifications: core.notifications,
+                                    activeOption: this.state.dataSource[0]?.id
+                                      ? [{ id: this.state.dataSource[0].id, label: this.state.dataSource[0].label }]
+                                      : [{ id: "", label: "" }],
+                                  }}
+                                />
+                              )}
                             />
                             <Route
                               path={[
@@ -420,17 +414,25 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.ROLLUPS,
                                 ROUTES.TRANSFORMS,
                               ]}
-                              render={() => (
-                                <DataSourceMenuView
+                              render={(props) => (
+                                <DataSourceMenuSelectable
                                   setMenuMountPoint={this.props.setActionMenu}
-                                  componentType={"DataSourceView"}
+                                  componentType={"DataSourceSelectable"}
                                   componentConfig={{
                                     fullWidth: false,
+                                    onSelectedDataSources: (dataSources) => {
+                                      if (
+                                        this.props.multiDataSourceEnabled &&
+                                        dataSources.length > 0 &&
+                                        !_.isEqual(dataSources[0], this.state.dataSource[0])
+                                      ) {
+                                        this.setState({ dataSource: dataSources });
+                                      }
+                                    },
                                     savedObjects: core.savedObjects.client,
                                     notifications: core.notifications,
-                                    activeOption: this.state.dataSource[0]?.id
-                                      ? [{ id: this.state.dataSource[0].id, label: this.state.dataSource[0].label }]
-                                      : [{ id: "", label: "" }],
+                                    activeOption:
+                                      this.state.dataSource[0].id !== undefined ? [{ id: this.state.dataSource[0].id }] : undefined,
                                   }}
                                 />
                               )}
@@ -458,7 +460,13 @@ export default class Main extends Component<MainProps, MainState> {
                                     componentConfig={{
                                       fullWidth: false,
                                       onSelectedDataSources: (dataSources) => {
-                                        this.setState({ dataSource: dataSources });
+                                        if (
+                                          this.props.multiDataSourceEnabled &&
+                                          dataSources.length > 0 &&
+                                          !_.isEqual(dataSources[0], this.state.dataSource[0])
+                                        ) {
+                                          this.setState({ dataSource: dataSources });
+                                        }
                                       },
                                       savedObjects: core.savedObjects.client,
                                       notifications: core.notifications,

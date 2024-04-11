@@ -21,16 +21,10 @@ import CreateRollupStep3 from "../CreateRollupStep3";
 import CreateRollupStep4 from "../CreateRollupStep4";
 import { compareFieldItem, parseFieldOptions } from "../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
-import {
-  DataSourceMenuContext,
-  DataSourceMenuProperties,
-  DataSourceMenuReadOnlyContext,
-  DataSourceMenuReadOnlyProperties,
-  DataSourceProperties,
-} from "../../../../services/DataSourceMenuContext";
+import { DataSourceMenuContext, DataSourceMenuReadOnlyProperties, DataSourceProperties } from "../../../../services/DataSourceMenuContext";
 import { getDataSourcePropsFromContext, useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateRollupFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
+interface CreateRollupFormProps extends RouteComponentProps, DataSourceProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
   indexService: IndexService;
 }
