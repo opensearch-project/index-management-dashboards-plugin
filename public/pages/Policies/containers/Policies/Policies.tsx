@@ -141,7 +141,7 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
     try {
       const { policyService, history } = this.props;
       const queryObject = Policies.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(queryObject);
+      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
       history.replace({ ...this.props.location, search: queryParamsString });
       const getPoliciesResponse = await policyService.getPolicies(queryObject);
       if (getPoliciesResponse.ok) {
