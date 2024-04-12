@@ -3,7 +3,6 @@ import { createContext } from "react";
 
 export interface DataSourceMenuProperties {
   dataSourceId: string;
-  dataSourceLabel: string;
   multiDataSourceEnabled: boolean;
 }
 
@@ -14,7 +13,6 @@ export interface DataSourceMenuReadOnlyProperties {
 
 const DataSourceMenuContext = createContext<DataSourceMenuProperties>({
   dataSourceId: "",
-  dataSourceLabel: "",
   multiDataSourceEnabled: false,
 });
 

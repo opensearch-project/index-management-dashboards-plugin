@@ -15,5 +15,4 @@ export const DEFAULT_QUERY_PARAMS = {
   sortDirection: SortDirection.DESC,
   status: "",
   dataSourceId: "",
-  dataSourceLabel: "",
 };
