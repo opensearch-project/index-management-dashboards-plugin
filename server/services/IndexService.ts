@@ -99,7 +99,7 @@ export default class IndexService extends MDSEnabledClientService {
           actions: "indices:data/write/reindex",
         }).catch(() => []),
         callWithRequest("cat.indices", params),
-        getIndexToDataStreamMapping({ callAsCurrentUser: callWithRequest }),
+        getIndexToDataStreamMapping(callWithRequest),
       ]);
 
       const formattedTasks: IReindexItem[] = tasks.map(
@@ -248,10 +248,10 @@ export default class IndexService extends MDSEnabledClientService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<ApplyPolicyResponse>>> => {
     try {
       const { indices, policyId } = request.body as { indices: string[]; policyId: string };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const params = { index: indices.join(","), body: { policy_id: policyId } };
 
-      const addResponse: AddResponse = await callWithRequest("ism.add", params);
+      const addResponse: AddResponse = (await callWithRequest("ism.add", params)) as AddResponse;
       return response.custom({
         statusCode: 200,
         body: {
@@ -287,9 +287,9 @@ export default class IndexService extends MDSEnabledClientService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
     try {
       const { alias, index } = request.body as { alias: string; index: string };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const params = { index, body: { [Setting.RolloverAlias]: alias } };
-      const rollOverResponse = await callWithRequest("indices.putSettings", params);
+      const rollOverResponse: AcknowledgedResponse = (await callWithRequest("indices.putSettings", params)) as AcknowledgedResponse;
       return response.custom({
         statusCode: 200,
         body: {

@@ -15,6 +15,6 @@ describe("NotificationService spec", () => {
     await notificationService.getChannels();
 
     expect(httpClientMock.get).toHaveBeenCalledTimes(1);
-    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.CHANNELS}`);
+    expect(httpClientMock.get).toHaveBeenCalledWith(`..${NODE_API.CHANNELS}`, expect.anything());
   });
 });

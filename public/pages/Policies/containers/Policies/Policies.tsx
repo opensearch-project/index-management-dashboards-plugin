@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
 import {
@@ -34,12 +34,15 @@ import { PolicyService } from "../../../../services";
 import { getErrorMessage } from "../../../../utils/helpers";
 import ConfirmationModal from "../../../../components/ConfirmationModal";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { DataSource } from "src/plugins/data/public";
 
-interface PoliciesProps extends RouteComponentProps {
+interface PoliciesProps extends RouteComponentProps, DataSourceMenuProperties {
   policyService: PolicyService;
 }
 
-interface PoliciesState {
+interface PoliciesState extends DataSourceMenuProperties {
   totalPolicies: number;
   from: number;
   size: number;
@@ -51,7 +54,7 @@ interface PoliciesState {
   loadingPolicies: boolean;
 }
 
-export default class Policies extends Component<PoliciesProps, PoliciesState> {
+export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<PolicyItem>[];
 
@@ -61,6 +64,7 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
     const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
 
     this.state = {
+      ...this.state,
       totalPolicies: 0,
       from,
       size,
@@ -121,8 +125,16 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
     }
   }
 
-  static getQueryObjectFromState({ from, size, search, sortField, sortDirection }: PoliciesState): PoliciesQueryParams {
-    return { from, size, search, sortField, sortDirection };
+  static getQueryObjectFromState({
+    from,
+    size,
+    search,
+    sortField,
+    sortDirection,
+    dataSourceId,
+    multiDataSourceEnabled,
+  }: PoliciesState): PoliciesQueryParams {
+    return { from, size, search, sortField, sortDirection, ...(multiDataSourceEnabled ? { dataSourceId } : {}) };
   }
 
   getPolicies = async (): Promise<void> => {
@@ -130,7 +142,7 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
     try {
       const { policyService, history } = this.props;
       const queryObject = Policies.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(queryObject);
+      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
       history.replace({ ...this.props.location, search: queryParamsString });
       const getPoliciesResponse = await policyService.getPolicies(queryObject);
       if (getPoliciesResponse.ok) {
@@ -311,4 +323,9 @@ export default class Policies extends Component<PoliciesProps, PoliciesState> {
       </ContentPanel>
     );
   }
+}
+
+export default function (props: Omit<PoliciesProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <Policies {...props} {...dataSourceMenuProps} />;
 }

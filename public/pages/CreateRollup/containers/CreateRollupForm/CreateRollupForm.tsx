@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { ChangeEvent, Component } from "react";
+import React, { ChangeEvent, Component, useContext } from "react";
 import { EuiButton, EuiButtonEmpty, EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useHistory } from "react-router-dom";
 import moment from "moment";
 import { RollupService } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
@@ -21,8 +21,15 @@ import CreateRollupStep3 from "../CreateRollupStep3";
 import CreateRollupStep4 from "../CreateRollupStep4";
 import { compareFieldItem, parseFieldOptions } from "../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
+import {
+  DataSourceMenuContext,
+  DataSourceMenuProperties,
+  DataSourceMenuReadOnlyContext,
+  DataSourceMenuReadOnlyProperties,
+} from "../../../../services/DataSourceMenuContext";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateRollupFormProps extends RouteComponentProps {
+interface CreateRollupFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
   indexService: IndexService;
 }
@@ -75,61 +82,63 @@ interface CreateRollupFormState {
   rollupJSON: any;
 }
 
-export default class CreateRollupForm extends Component<CreateRollupFormProps, CreateRollupFormState> {
+export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRollupFormState> {
   static contextType = CoreServicesContext;
   _isMount: boolean;
+
+  static baseState = {
+    currentStep: 1,
+    rollupSeqNo: null,
+    rollupPrimaryTerm: null,
+    rollupId: "",
+    rollupIdError: "",
+    submitError: "",
+    isSubmitting: false,
+    hasSubmitted: false,
+    loadingIndices: true,
+    indices: [],
+    totalIndices: 0,
+
+    mappings: "",
+    allMappings: [],
+    fields: [],
+    selectedFields: [],
+    selectedTerms: [],
+    selectedDimensionField: [],
+    selectedMetrics: [],
+    metricError: "",
+    description: "",
+
+    sourceIndex: [],
+    sourceIndexError: "",
+    targetIndex: [],
+    targetIndexError: "",
+
+    timestamp: [],
+    timestampError: "",
+    intervalType: "fixed",
+    intervalValue: 1,
+    intervalError: "",
+    timezone: "UTC",
+    timeunit: "h",
+
+    jobEnabledByDefault: true,
+    continuousJob: "no",
+    continuousDefinition: "fixed",
+    interval: 1,
+    intervalTimeunit: "MINUTES",
+    cronExpression: "",
+    cronTimezone: "UTC",
+    pageSize: 1000,
+    delayTime: undefined,
+    delayTimeunit: "MINUTES",
+    rollupJSON: JSON.parse(EMPTY_ROLLUP),
+  };
 
   constructor(props: CreateRollupFormProps) {
     super(props);
 
-    this.state = {
-      currentStep: 1,
-      rollupSeqNo: null,
-      rollupPrimaryTerm: null,
-      rollupId: "",
-      rollupIdError: "",
-      submitError: "",
-      isSubmitting: false,
-      hasSubmitted: false,
-      loadingIndices: true,
-      indices: [],
-      totalIndices: 0,
-
-      mappings: "",
-      allMappings: [],
-      fields: [],
-      selectedFields: [],
-      selectedTerms: [],
-      selectedDimensionField: [],
-      selectedMetrics: [],
-      metricError: "",
-      description: "",
-
-      sourceIndex: [],
-      sourceIndexError: "",
-      targetIndex: [],
-      targetIndexError: "",
-
-      timestamp: [],
-      timestampError: "",
-      intervalType: "fixed",
-      intervalValue: 1,
-      intervalError: "",
-      timezone: "UTC",
-      timeunit: "h",
-
-      jobEnabledByDefault: true,
-      continuousJob: "no",
-      continuousDefinition: "fixed",
-      interval: 1,
-      intervalTimeunit: "MINUTES",
-      cronExpression: "",
-      cronTimezone: "UTC",
-      pageSize: 1000,
-      delayTime: undefined,
-      delayTimeunit: "MINUTES",
-      rollupJSON: JSON.parse(EMPTY_ROLLUP),
-    };
+    this.state = CreateRollupForm.baseState;
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
     this._isMount = true;
@@ -141,6 +150,17 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
 
   componentWillUnmount() {
     this._isMount = false;
+  }
+
+  componentDidUpdate(prevProps: CreateRollupFormProps, prevState: Readonly<CreateRollupFormState>) {
+    if (prevProps.dataSourceId !== this.props.dataSourceId) {
+      // reset the state, if dataSourceId changes, i.e., clear state
+      this.setState({
+        ...CreateRollupForm.baseState,
+        rollupId: this.state.rollupId,
+        description: this.state.description,
+      });
+    }
   }
 
   getMappings = async (srcIndex: string): Promise<void> => {
@@ -171,6 +191,14 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
   _next() {
     let currentStep = this.state.currentStep;
     let error = false;
+
+    const dataSourceReadOnly = this.props.dataSourceReadOnly;
+    const setDataSourceReadOnly = this.props.setDataSourceReadOnly;
+
+    if (this.props.multiDataSourceEnabled && !dataSourceReadOnly) {
+      setDataSourceReadOnly(true);
+    }
+
     //Verification here
     if (currentStep == 1) {
       const { rollupId, sourceIndex, targetIndex } = this.state;
@@ -234,6 +262,14 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
     let currentStep = this.state.currentStep;
     // If the current step is 2 or 3, then subtract one on "previous" button click
     currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+    if (currentStep === 1) {
+      const dataSourceReadOnly = this.props.dataSourceReadOnly;
+      const setDataSourceReadOnly = this.props.setDataSourceReadOnly;
+
+      if (this.props.multiDataSourceEnabled && dataSourceReadOnly) {
+        setDataSourceReadOnly(false);
+      }
+    }
     this.setState({
       currentStep: currentStep,
     });
@@ -679,4 +715,10 @@ export default class CreateRollupForm extends Component<CreateRollupFormProps, C
       </form>
     );
   }
+}
+
+export default function (props: Omit<CreateRollupFormProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProperties = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <CreateRollupForm {...props} {...dataSourceMenuProperties} />;
 }
