@@ -14,5 +14,4 @@ export const DEFAULT_QUERY_PARAMS = {
   sortField: "name" as keyof ICatComposableTemplate,
   sortDirection: SortDirection.DESC,
   dataSourceId: "",
-  dataSourceLabel: "",
 };

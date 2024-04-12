@@ -133,7 +133,6 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
       const queryObject = this.getQueryObjectFromState(this.state);
       const queryParamsString = queryString.stringify({
         ...queryObject,
-        ...(this.state.multiDataSourceEnabled ? { dataSourceLabel: this.state.dataSourceLabel } : {}),
       });
       history.replace({ ...this.props.location, search: queryParamsString });
 

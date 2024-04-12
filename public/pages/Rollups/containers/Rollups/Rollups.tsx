@@ -122,9 +122,9 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
     try {
       const { rollupService, history } = this.props;
       const queryObject = Rollups.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify({ ...queryObject, dataSourceLabel: this.state.dataSourceLabel });
+      const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
-      const rollupJobsResponse = await rollupService.getRollups(queryObject); // Add type assertion
+      const rollupJobsResponse = await rollupService.getRollups(queryObject);
       if (rollupJobsResponse.ok) {
         const { rollups, totalRollups, metadata } = rollupJobsResponse.response;
         this.setState({ rollups, totalRollups, rollupExplain: metadata });
