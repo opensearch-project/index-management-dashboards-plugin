@@ -247,10 +247,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     try {
       const { managedIndexService, history } = this.props;
       const queryObject = ManagedIndices.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify({
-        ...queryObject,
-        ...(this.state.multiDataSourceEnabled ? { dataSourceLabel: this.state.dataSourceLabel } : {}),
-      });
+      const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
 
       const getManagedIndicesResponse = await managedIndexService.getManagedIndices({

@@ -342,10 +342,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
     try {
       const { transformService, history } = this.props;
       const queryObject = Transforms.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify({
-        ...Transforms.getQueryObjectFromState(this.state),
-        dataSourceLabel: this.state.dataSourceLabel,
-      });
+      const queryParamsString = queryString.stringify(Transforms.getQueryObjectFromState(this.state));
       history.replace({ ...this.props.location, search: queryParamsString });
       const response = await transformService.getTransforms(queryObject);
       if (response.ok) {
