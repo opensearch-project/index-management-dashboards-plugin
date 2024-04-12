@@ -11,7 +11,6 @@ export default class MDSEnabledComponent<
     super(props);
     this.state = {
       dataSourceId: props.dataSourceId,
-      dataSourceLabel: props.dataSourceLabel,
       multiDataSourceEnabled: props.multiDataSourceEnabled,
     } as State;
   }
@@ -21,13 +20,9 @@ export default class MDSEnabledComponent<
     prevState: State
   ) {
     // static members cannot reference class type parameters
-    if (
-      nextProps.multiDataSourceEnabled &&
-      (nextProps.dataSourceId !== prevState.dataSourceId || nextProps.dataSourceLabel !== prevState.dataSourceLabel)
-    ) {
+    if (nextProps.multiDataSourceEnabled && nextProps.dataSourceId !== prevState.dataSourceId) {
       return {
         dataSourceId: nextProps.dataSourceId,
-        dataSourceLabel: nextProps.dataSourceLabel,
       };
     }
     return null;
@@ -36,7 +31,7 @@ export default class MDSEnabledComponent<
 
 export function useUpdateUrlWithDataSourceProperties() {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
-  const { dataSourceId, dataSourceLabel, multiDataSourceEnabled } = dataSourceMenuProps;
+  const { dataSourceId, multiDataSourceEnabled } = dataSourceMenuProps;
   const history = useHistory();
   const currentSearch = history.location.search;
   const currentQuery = queryString.parse(currentSearch);
@@ -46,9 +41,8 @@ export function useUpdateUrlWithDataSourceProperties() {
         search: queryString.stringify({
           ...currentQuery,
           dataSourceId,
-          dataSourceLabel,
         }),
       });
     }
-  }, [dataSourceId, dataSourceLabel, multiDataSourceEnabled]);
+  }, [dataSourceId, multiDataSourceEnabled]);
 }

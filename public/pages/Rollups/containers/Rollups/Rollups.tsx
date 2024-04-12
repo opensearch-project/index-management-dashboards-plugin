@@ -110,7 +110,7 @@ export default class Rollups extends Component<RollupsProps, RollupsState> {
     try {
       const { rollupService, history } = this.props;
       const queryObject = Rollups.getQueryObjectFromState(this.state);
-      const queryParamsString = queryString.stringify(Rollups.getQueryObjectFromState(this.state));
+      const queryParamsString = queryString.stringify(queryObject);
       history.replace({ ...this.props.location, search: queryParamsString });
       const rollupJobsResponse = await rollupService.getRollups(queryObject);
       if (rollupJobsResponse.ok) {

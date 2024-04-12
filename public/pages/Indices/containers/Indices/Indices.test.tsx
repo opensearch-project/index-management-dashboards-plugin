@@ -23,7 +23,6 @@ function renderWithRouter(
   Component: React.ComponentType<any>,
   data: DataSourceMenuProperties = {
     dataSourceId: "",
-    dataSourceLabel: "",
     multiDataSourceEnabled: false,
   },
   renderFn = render
@@ -264,7 +263,6 @@ describe("re-render on data-source-id prop change", () => {
 
     const { getByText, queryByText, rerender } = renderWithRouter(Indices, {
       dataSourceId: "test_data_source_id",
-      dataSourceLabel: "test_data_source_label",
       multiDataSourceEnabled: true,
     });
 
@@ -276,7 +274,6 @@ describe("re-render on data-source-id prop change", () => {
       Indices,
       {
         dataSourceId: "test_data_source_id_2",
-        dataSourceLabel: "test_data_source_label_2",
         multiDataSourceEnabled: true,
       },
       rerender
