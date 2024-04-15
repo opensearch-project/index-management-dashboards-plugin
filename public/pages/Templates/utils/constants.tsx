@@ -14,5 +14,4 @@ export const DEFAULT_QUERY_PARAMS = {
   sortField: "name" as keyof ITemplate,
   sortDirection: SortDirection.DESC,
   dataSourceId: "",
-  dataSourceLabel: "",
 };
