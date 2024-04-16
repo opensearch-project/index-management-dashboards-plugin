@@ -413,6 +413,7 @@ export default class Main extends Component<MainProps, MainState> {
                             />
                             <Route
                               path={[
+                                "/",
                                 ROUTES.INDICES,
                                 ROUTES.CREATE_INDEX,
                                 ROUTES.ALIASES,
