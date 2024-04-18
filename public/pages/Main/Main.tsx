@@ -66,7 +66,6 @@ import {
   DataSourceViewConfig,
 } from "../../../../../src/plugins/data_source_management/public";
 import { DataSourceOption } from "../../../../../src/plugins/data_source_management/public/components/data_source_menu/types";
-import { ImageType } from "../../../../../src/core/common";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -245,7 +244,7 @@ export default class Main extends Component<MainProps, MainState> {
 
   onSelectedDataSources = (dataSources: DataSourceOption[]) => {
     const { id = "", label = "" } = dataSources[0] || {};
-    if (this.state.dataSourceId != id || this.state.dataSourceLabel != label) {
+    if (this.state.dataSourceId !== id || this.state.dataSourceLabel !== label) {
       this.setState({
         dataSourceId: id,
         dataSourceLabel: label,
@@ -365,6 +364,14 @@ export default class Main extends Component<MainProps, MainState> {
 
     const DataSourceMenu = this.props.dataSourceManagement?.ui?.getDataSourceMenu<DataSourceSelectableConfig>();
     const DataSourceViewer = this.props.dataSourceManagement?.ui?.getDataSourceMenu<DataSourceViewConfig>();
+    const activeOption: DataSourceOption[] | undefined = this.state.dataSourceLoading
+      ? undefined
+      : [
+          {
+            label: this.state.dataSourceLabel,
+            id: this.state.dataSourceId,
+          },
+        ];
 
     return (
       <CoreServicesConsumer>
@@ -405,7 +412,7 @@ export default class Main extends Component<MainProps, MainState> {
                                   setMenuMountPoint={this.props.setActionMenu}
                                   componentType={"DataSourceView"}
                                   componentConfig={{
-                                    activeOption: [{ label: this.state.dataSourceLabel, id: this.state.dataSourceId }],
+                                    activeOption,
                                     fullWidth: false,
                                   }}
                                 />
@@ -438,7 +445,7 @@ export default class Main extends Component<MainProps, MainState> {
                                     savedObjects: core?.savedObjects.client,
                                     notifications: core?.notifications,
                                     fullWidth: false,
-                                    activeOption: [{ label: this.state.dataSourceLabel, id: this.state.dataSourceId }],
+                                    activeOption,
                                     onSelectedDataSources: this.onSelectedDataSources,
                                   }}
                                 />
@@ -452,7 +459,7 @@ export default class Main extends Component<MainProps, MainState> {
                                     setMenuMountPoint={this.props.setActionMenu}
                                     componentType={"DataSourceView"}
                                     componentConfig={{
-                                      activeOption: [{ label: this.state.dataSourceLabel, id: this.state.dataSourceId }],
+                                      activeOption,
                                       fullWidth: false,
                                     }}
                                   />
@@ -464,7 +471,7 @@ export default class Main extends Component<MainProps, MainState> {
                                       savedObjects: core?.savedObjects.client,
                                       notifications: core?.notifications,
                                       fullWidth: false,
-                                      activeOption: [{ label: this.state.dataSourceLabel, id: this.state.dataSourceId }],
+                                      activeOption,
                                       onSelectedDataSources: this.onSelectedDataSources,
                                     }}
                                   />
