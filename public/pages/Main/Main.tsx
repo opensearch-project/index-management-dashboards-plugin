@@ -391,6 +391,33 @@ export default class Main extends Component<MainProps, MainState> {
                         {this.props.multiDataSourceEnabled && DataSourceMenu && DataSourceViewer && (
                           <Switch>
                             <Route
+                              path={[ROUTES.CREATE_ROLLUP, ROUTES.CREATE_TRANSFORM]}
+                              render={() =>
+                                this.state.dataSourceReadOnly ? (
+                                  <DataSourceViewer
+                                    setMenuMountPoint={this.props.setActionMenu}
+                                    componentType={"DataSourceView"}
+                                    componentConfig={{
+                                      activeOption,
+                                      fullWidth: false,
+                                    }}
+                                  />
+                                ) : (
+                                  <DataSourceMenu
+                                    setMenuMountPoint={this.props.setActionMenu}
+                                    componentType={"DataSourceSelectable"}
+                                    componentConfig={{
+                                      savedObjects: core?.savedObjects.client,
+                                      notifications: core?.notifications,
+                                      fullWidth: false,
+                                      activeOption,
+                                      onSelectedDataSources: this.onSelectedDataSources,
+                                    }}
+                                  />
+                                )
+                              }
+                            />
+                            <Route
                               path={[
                                 `${ROUTES.CREATE_DATA_STREAM}/:dataStream`,
                                 `${ROUTES.CREATE_TEMPLATE}/:template`,
@@ -450,33 +477,6 @@ export default class Main extends Component<MainProps, MainState> {
                                   }}
                                 />
                               )}
-                            />
-                            <Route
-                              path={[ROUTES.CREATE_ROLLUP, ROUTES.CREATE_TRANSFORM]}
-                              render={() =>
-                                this.state.dataSourceReadOnly ? (
-                                  <DataSourceViewer
-                                    setMenuMountPoint={this.props.setActionMenu}
-                                    componentType={"DataSourceView"}
-                                    componentConfig={{
-                                      activeOption,
-                                      fullWidth: false,
-                                    }}
-                                  />
-                                ) : (
-                                  <DataSourceMenu
-                                    setMenuMountPoint={this.props.setActionMenu}
-                                    componentType={"DataSourceSelectable"}
-                                    componentConfig={{
-                                      savedObjects: core?.savedObjects.client,
-                                      notifications: core?.notifications,
-                                      fullWidth: false,
-                                      activeOption,
-                                      onSelectedDataSources: this.onSelectedDataSources,
-                                    }}
-                                  />
-                                )
-                              }
                             />
                           </Switch>
                         )}
