@@ -12,8 +12,9 @@ import TransformIndices from "../../components/TransformIndices";
 import CreateTransformSteps from "../../components/CreateTransformSteps";
 import IndexService from "../../../../services/IndexService";
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 
-interface SetUpIndicesStepProps extends RouteComponentProps {
+interface SetUpIndicesStepProps extends RouteComponentProps, DataSourceMenuProperties {
   transformService: TransformService;
   indexService: IndexService;
   transformId: string;
@@ -59,7 +60,7 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
             <EuiSpacer />
             <ConfigureTransform isEdit={false} {...this.props} />
             <EuiSpacer />
-            <TransformIndices {...this.props} />
+            <TransformIndices key={this.props.dataSourceId} {...this.props} />
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiSpacer />

@@ -89,52 +89,54 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
   static contextType = CoreServicesContext;
   _isMount: boolean;
 
+  static baseState = {
+    currentStep: 1,
+    transformSeqNo: null,
+    transformPrimaryTerm: null,
+    transformId: "",
+    transformIdError: "",
+    submitError: "",
+    isSubmitting: false,
+    hasSubmitted: false,
+    loadingIndices: true,
+    indices: [],
+    totalIndices: 0,
+    previewTransform: [],
+
+    mappings: "",
+    allMappings: [],
+    fields: [],
+    fieldSelectedOption: "",
+    selectedFields: [],
+    selectedGroupField: [],
+    selectedAggregations: {},
+    aggList: [],
+    description: "",
+
+    sourceIndex: [],
+    sourceIndexError: "",
+    sourceIndexFilter: "",
+    sourceIndexFilterError: "",
+    targetIndex: [],
+    targetIndexError: "",
+
+    intervalError: "",
+
+    jobEnabledByDefault: true,
+    continuousJob: "no",
+    interval: 1,
+    intervalTimeunit: "MINUTES",
+    pageSize: 1000,
+    transformJSON: JSON.parse(EMPTY_TRANSFORM),
+
+    beenWarned: false,
+    isLoading: false,
+  };
+
   constructor(props: CreateTransformFormProps) {
     super(props);
 
-    this.state = {
-      currentStep: 1,
-      transformSeqNo: null,
-      transformPrimaryTerm: null,
-      transformId: "",
-      transformIdError: "",
-      submitError: "",
-      isSubmitting: false,
-      hasSubmitted: false,
-      loadingIndices: true,
-      indices: [],
-      totalIndices: 0,
-      previewTransform: [],
-
-      mappings: "",
-      allMappings: [],
-      fields: [],
-      fieldSelectedOption: "",
-      selectedFields: [],
-      selectedGroupField: [],
-      selectedAggregations: {},
-      aggList: [],
-      description: "",
-
-      sourceIndex: [],
-      sourceIndexError: "",
-      sourceIndexFilter: "",
-      sourceIndexFilterError: "",
-      targetIndex: [],
-      targetIndexError: "",
-
-      intervalError: "",
-
-      jobEnabledByDefault: true,
-      continuousJob: "no",
-      interval: 1,
-      intervalTimeunit: "MINUTES",
-      pageSize: 1000,
-      transformJSON: JSON.parse(EMPTY_TRANSFORM),
-
-      beenWarned: false,
-      isLoading: false,
-    };
+    this.state = CreateTransformForm.baseState;
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
     this._isMount = true;
@@ -143,6 +145,17 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
   componentDidMount = async (): Promise<void> => {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS, BREADCRUMBS.CREATE_TRANSFORM]);
   };
+
+  componentDidUpdate(prevProps: CreateTransformFormProps, prevState: Readonly<CreateTransformFormState>) {
+    if (prevProps.dataSourceId !== this.props.dataSourceId) {
+      // reset the state, if dataSourceId changes, i.e., clear state
+      this.setState({
+        ...CreateTransformForm.baseState,
+        transformId: this.state.transformId,
+        description: this.state.description,
+      });
+    }
+  }
 
   componentWillUnmount() {
     this._isMount = false;
