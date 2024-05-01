@@ -13,7 +13,6 @@ import CreateRollupSteps from "../../components/CreateRollupSteps";
 import IndexService from "../../../../services/IndexService";
 import { IndexItem } from "../../../../../models/interfaces";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
 interface CreateRollupProps extends RouteComponentProps, DataSourceMenuProperties {
   rollupService: RollupService;
