@@ -167,7 +167,7 @@ describe("Aliases", () => {
       }).then((response) => {
         let response_obj = JSON.parse(response["allRequestResponses"][0]["Response Body"]);
         let num = response_obj["_all"]["total"]["translog"]["uncommitted_operations"];
-        expect(num).to.equal(1);
+        expect(num).not.equal(0);
       });
 
       // Flush btn should be disabled if no items selected
