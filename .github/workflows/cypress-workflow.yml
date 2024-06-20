@@ -70,16 +70,13 @@ jobs:
         run: |
           cd OpenSearch-Dashboards
           yarn start --no-base-path --no-watch --server.host="0.0.0.0" &
-          sleep 420
-        # in main branch, OSD server requires more time to bundle and bootstrap
-        # timeout 300 bash -c 'while [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" != "green" ]]; do sleep 5; done'
-      # for now just chrome, use matrix to do all browsers later
+          timeout 600 bash -c 'until [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:5601/api/status)" == "200" ]] && [[ "$(curl -s localhost:5601/api/status | jq -r '.status.overall.state')" == "green" ]]; do echo "Waiting for OpenSearch-Dashboards server to be ready..."; sleep 5; done'
       - name: Cypress tests
         uses: cypress-io/github-action@v2
         with:
           working-directory: OpenSearch-Dashboards/plugins/index-management-dashboards-plugin
           command: yarn run cypress run
-          wait-on: 'http://localhost:5601'
+          wait-on: 'http://localhost:9200, http://localhost:5601'
           browser: chrome
       # Screenshots are only captured on failure, will change this once we do visual regression tests
       - uses: actions/upload-artifact@v1
