@@ -159,6 +159,9 @@ describe("Transforms", () => {
         force: true,
       });
 
+      // Extra wait required for page data to load, otherwise "Enable" button will be disabled
+      cy.wait(2000);
+
       // Confirm we get toaster saying changes saved
       cy.contains(`Changes to transform saved`);
 
