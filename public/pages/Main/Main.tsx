@@ -7,7 +7,9 @@ import React, { Component } from "react";
 import { Switch, Route, Redirect, RouteComponentProps } from "react-router-dom";
 // @ts-ignore
 import { EuiSideNav, EuiPage, EuiPageBody, EuiPageSideBar } from "@elastic/eui";
-import { CoreStart, HttpSetup, MountPoint } from "opensearch-dashboards/public";
+import { CoreStart, HttpSetup, MountPoint, SavedObject } from "opensearch-dashboards/public";
+import queryString from "query-string";
+import semver from "semver";
 import Policies from "../Policies";
 import ManagedIndices from "../ManagedIndices";
 import Indices from "../Indices";
@@ -59,13 +61,14 @@ import Notifications from "../Notifications";
 import ComposableTemplates from "../ComposableTemplates";
 import CreateComposableTemplate from "../CreateComposableTemplate";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../services/DataSourceMenuContext";
-import queryString from "query-string";
 import {
   DataSourceManagementPluginSetup,
   DataSourceSelectableConfig,
   DataSourceViewConfig,
 } from "../../../../../src/plugins/data_source_management/public";
 import { DataSourceOption } from "../../../../../src/plugins/data_source_management/public/components/data_source_menu/types";
+import * as pluginManifest from "../../../opensearch_dashboards.json";
+import { DataSourceAttributes } from "../../../../../src/plugins/data_source/common/data_sources";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -192,8 +195,8 @@ export default class Main extends Component<MainProps, MainState> {
       dataSourceLabel = parsedDataSourceLabel || "";
     }
     this.state = {
-      dataSourceId: dataSourceId,
-      dataSourceLabel: dataSourceLabel,
+      dataSourceId,
+      dataSourceLabel,
       dataSourceReadOnly: false,
       dataSourceLoading: props.multiDataSourceEnabled,
     };
@@ -255,6 +258,11 @@ export default class Main extends Component<MainProps, MainState> {
         dataSourceLoading: false,
       });
     }
+  };
+
+  dataSourceFilterFn = (dataSource: SavedObject<DataSourceAttributes>) => {
+    const engineVersion = dataSource?.attributes?.dataSourceVersion || "";
+    return semver.satisfies(engineVersion, pluginManifest.supportedOSDataSourceVersions);
   };
 
   render() {
@@ -400,6 +408,7 @@ export default class Main extends Component<MainProps, MainState> {
                                     componentConfig={{
                                       activeOption,
                                       fullWidth: false,
+                                      dataSourceFilter: this.dataSourceFilterFn,
                                     }}
                                   />
                                 ) : (
@@ -412,6 +421,7 @@ export default class Main extends Component<MainProps, MainState> {
                                       fullWidth: false,
                                       activeOption,
                                       onSelectedDataSources: this.onSelectedDataSources,
+                                      dataSourceFilter: this.dataSourceFilterFn,
                                     }}
                                   />
                                 )
@@ -441,13 +451,13 @@ export default class Main extends Component<MainProps, MainState> {
                                   componentConfig={{
                                     activeOption,
                                     fullWidth: false,
+                                    dataSourceFilter: this.dataSourceFilterFn,
                                   }}
                                 />
                               )}
                             />
                             <Route
                               path={[
-                                "/",
                                 ROUTES.INDICES,
                                 ROUTES.CREATE_INDEX,
                                 ROUTES.ALIASES,
@@ -474,10 +484,12 @@ export default class Main extends Component<MainProps, MainState> {
                                     fullWidth: false,
                                     activeOption,
                                     onSelectedDataSources: this.onSelectedDataSources,
+                                    dataSourceFilter: this.dataSourceFilterFn,
                                   }}
                                 />
                               )}
                             />
+                            <Redirect from="/" to={landingPage} />
                           </Switch>
                         )}
                         {!this.state.dataSourceLoading && (
