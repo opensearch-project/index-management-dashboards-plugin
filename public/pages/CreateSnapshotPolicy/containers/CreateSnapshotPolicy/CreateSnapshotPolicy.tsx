@@ -27,7 +27,7 @@ import {
   EuiButtonIcon,
   EuiLink,
 } from "@elastic/eui";
-import React, { ChangeEvent, Component } from "react";
+import React, { ChangeEvent, Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CatRepository, CreateRepositoryBody, CreateRepositorySettings, FeatureChannelList } from "../../../../../server/models/interfaces";
@@ -52,15 +52,18 @@ import SnapshotIndicesRepoInput from "../../components/SnapshotIndicesRepoInput"
 import CronSchedule from "../../components/CronSchedule";
 import SnapshotAdvancedSettings from "../../components/SnapshotAdvancedSettings";
 import Notification from "../../components/Notification";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface CreateSMPolicyProps extends RouteComponentProps {
+interface CreateSMPolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
   isEdit: boolean;
   notificationService: NotificationService;
   indexService: IndexService;
 }
 
-interface CreateSMPolicyState {
+interface CreateSMPolicyState extends DataSourceMenuProperties {
   policy: SMPolicy;
   policyId: string;
   policySeqNo: number | undefined;
@@ -96,13 +99,14 @@ interface CreateSMPolicyState {
   timezoneError: string;
 }
 
-export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps, CreateSMPolicyState> {
+export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProps, CreateSMPolicyState> {
   static contextType = CoreServicesContext;
 
   constructor(props: CreateSMPolicyProps) {
     super(props);
 
     this.state = {
+      ...this.state,
       policy: getDefaultSMPolicy(),
       policyId: "",
       policySeqNo: undefined,
@@ -160,9 +164,65 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
         BREADCRUMBS.CREATE_SNAPSHOT_POLICY,
       ]);
     }
+    this.updateOptions();
+  }
+
+  async updateOptions() {
     await this.getIndexOptions("");
     await this.getRepos();
     await this.getChannels();
+  }
+
+  static getQueryObjectFromState({ dataSourceId, multiDataSourceEnabled }: CreateSMPolicyState) {
+    return {
+      ...(multiDataSourceEnabled ? { dataSourceId } : {}),
+    };
+  }
+
+  resetState() {
+    this.setState({
+      policy: getDefaultSMPolicy(),
+      policyId: "",
+      policySeqNo: undefined,
+      policyPrimaryTerm: undefined,
+
+      isSubmitting: false,
+
+      channels: [],
+      loadingChannels: false,
+
+      indexOptions: DEFAULT_INDEX_OPTIONS,
+      selectedIndexOptions: [],
+
+      repositories: [],
+      selectedRepoValue: "",
+
+      maxAgeNum: 1,
+      maxAgeUnit: "d",
+
+      creationScheduleFrequencyType: "daily",
+      deletionScheduleFrequencyType: "daily",
+
+      deleteConditionEnabled: false,
+      deletionScheduleEnabled: false,
+
+      advancedSettingsOpen: false,
+      showCreateRepoFlyout: false,
+
+      policyIdError: "",
+      repoError: "",
+      minCountError: "",
+      timezoneError: "",
+    });
+  }
+
+  async componentDidUpdate(prevProps: CreateSMPolicyProps, prevState: CreateSMPolicyState) {
+    const prevQuery = CreateSnapshotPolicy.getQueryObjectFromState(prevState);
+    const currQuery = CreateSnapshotPolicy.getQueryObjectFromState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      this.resetState();
+      this.updateOptions();
+    }
   }
 
   getPolicy = async (policyId: string): Promise<void> => {
@@ -876,4 +936,10 @@ export default class CreateSnapshotPolicy extends Component<CreateSMPolicyProps,
   setPolicyHelper = (path: string, newValue: any) => {
     return _.set(this.state.policy, path, newValue);
   };
+}
+
+export default function (props: Omit<CreateSMPolicyProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <CreateSnapshotPolicy {...props} {...dataSourceMenuProps} />;
 }

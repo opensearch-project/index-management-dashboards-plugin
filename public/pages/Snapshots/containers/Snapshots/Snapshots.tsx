@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import {
@@ -36,13 +36,16 @@ import ErrorModal from "../../../Snapshots/components/ErrorModal/ErrorModal";
 import DeleteModal from "../../../Repositories/components/DeleteModal/DeleteModal";
 import { getToasts } from "../../helper";
 import { snapshotStatusRender, truncateSpan } from "../../helper";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface SnapshotsProps extends RouteComponentProps {
+interface SnapshotsProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
   indexService: IndexService;
 }
 
-interface SnapshotsState {
+interface SnapshotsState extends DataSourceMenuProperties {
   snapshots: SnapshotsWithRepoAndPolicy[];
   existingPolicyNames: string[];
   loadingSnapshots: boolean;
@@ -67,7 +70,7 @@ interface SnapshotsState {
   isDeleteModalVisible: boolean;
 }
 
-export default class Snapshots extends Component<SnapshotsProps, SnapshotsState> {
+export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<SnapshotsWithRepoAndPolicy>[];
   private tabsRef;
@@ -76,6 +79,7 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     super(props);
 
     this.state = {
+      ...this.state,
       snapshots: [],
       existingPolicyNames: [],
       loadingSnapshots: false,
@@ -159,6 +163,20 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
 
     await this.getSnapshots();
+  }
+
+  async componentDidUpdate(prevProps: SnapshotsProps, prevState: SnapshotsState) {
+    const prevQuery = Snapshots.getQueryObjectFromState(prevState);
+    const currQuery = Snapshots.getQueryObjectFromState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getSnapshots();
+    }
+  }
+
+  static getQueryObjectFromState({ dataSourceId, multiDataSourceEnabled }: SnapshotsState) {
+    return {
+      ...(multiDataSourceEnabled ? { dataSourceId } : {}),
+    };
   }
 
   getSnapshots = async () => {
@@ -557,4 +575,10 @@ export default class Snapshots extends Component<SnapshotsProps, SnapshotsState>
       })
       .join(", ");
   };
+}
+
+export default function (props: Omit<SnapshotsProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <Snapshots {...props} {...dataSourceMenuProps} />;
 }

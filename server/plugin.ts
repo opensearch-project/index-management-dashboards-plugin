@@ -55,7 +55,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     const rollupService = new RollupService(osDriver, dataSourceEnabled);
     const transformService = new TransformService(osDriver, dataSourceEnabled);
     const notificationService = new NotificationService(osDriver, dataSourceEnabled);
-    const snapshotManagementService = new SnapshotManagementService(osDriver);
+    const snapshotManagementService = new SnapshotManagementService(osDriver, dataSourceEnabled);
     const commonService = new CommonService(osDriver, dataSourceEnabled);
     const aliasService = new AliasServices(osDriver, dataSourceEnabled);
     const services: NodeServices = {
@@ -86,7 +86,7 @@ export class IndexPatternManagementPlugin implements Plugin<IndexManagementPlugi
     rollups(services, router, dataSourceEnabled);
     transforms(services, router, dataSourceEnabled);
     notifications(services, router, dataSourceEnabled);
-    snapshotManagement(services, router);
+    snapshotManagement(services, router, dataSourceEnabled);
     common(services, router, dataSourceEnabled);
     aliases(services, router, dataSourceEnabled);
 
