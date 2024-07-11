@@ -6,7 +6,7 @@
 import {
   EuiSmallButton,
   EuiButtonEmpty,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiComboBoxOptionOption,
   EuiFlexGroup,
   EuiFlexItem,
@@ -515,7 +515,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
     const advanceTitle = (
       <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
         <EuiFlexItem grow={false}>
-          <EuiButtonIcon
+          <EuiSmallButtonIcon
             iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
             color="text"
             data-test-subj="advanceOptionToggle"

@@ -6,7 +6,7 @@
 import {
   EuiSmallButton,
   EuiButtonEmpty,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiCallOut,
   EuiFlexGroup,
   EuiFlexItem,
@@ -140,7 +140,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const advanceTitle = (
     <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
       <EuiFlexItem grow={false}>
-        <EuiButtonIcon
+        <EuiSmallButtonIcon
           iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
           color="text"
           data-test-subj="advanceOptionToggle"

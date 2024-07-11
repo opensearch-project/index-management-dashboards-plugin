@@ -9,7 +9,7 @@ import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import {
   EuiButtonEmpty,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiFlyout,
   EuiFlyoutBody,
   EuiFlyoutHeader,
@@ -71,7 +71,7 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
                   render: (value: string, record) => {
                     return (
                       <EuiToolTip content="Unlink">
-                        <EuiButtonIcon
+                        <EuiSmallButtonIcon
                           aria-label={`Unlink from ${record.name}?`}
                           iconType="unlink"
                           onClick={() => {

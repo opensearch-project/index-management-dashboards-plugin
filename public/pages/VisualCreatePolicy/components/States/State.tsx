@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiAccordion, EuiText, EuiPanel, EuiFlexGroup, EuiFlexItem, EuiButtonIcon, EuiToolTip } from "@elastic/eui";
+import { EuiAccordion, EuiText, EuiPanel, EuiFlexGroup, EuiFlexItem, EuiSmallButtonIcon, EuiToolTip } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { State as StateData } from "../../../../../models/interfaces";
@@ -64,7 +64,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
             <ModalConsumer>
               {({ onShow, onClose }) => (
                 <EuiToolTip position="top" content={<p>Delete state</p>}>
-                  <EuiButtonIcon
+                  <EuiSmallButtonIcon
                     iconType="trash"
                     aria-label="Delete"
                     color="danger"
@@ -94,7 +94,7 @@ const State = ({ state, isInitialState, idx, onClickEditState, onClickDeleteStat
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiToolTip position="top" content={<p>Edit state</p>}>
-              <EuiButtonIcon iconType="pencil" aria-label="Edit" color="primary" onClick={() => onClickEditState(state)} />
+              <EuiSmallButtonIcon iconType="pencil" aria-label="Edit" color="primary" onClick={() => onClickEditState(state)} />
             </EuiToolTip>
           </EuiFlexItem>
         </EuiFlexGroup>
