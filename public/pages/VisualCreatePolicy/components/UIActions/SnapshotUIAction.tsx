@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiFieldText, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiFieldText, EuiSpacer } from "@elastic/eui";
 import { SnapshotAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -36,7 +36,7 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
           helpText="The repository name that you register through the native snapshot API operations."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldText
             fullWidth
             value={(action.action as SnapshotAction).snapshot.repository}
@@ -53,10 +53,10 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
             }}
             data-test-subj="action-render-snapshot-repository"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel title="Snapshot" helpText="The name of the snapshot." isInvalid={!this.isValid()} />
-        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldText
             fullWidth
             value={(action.action as SnapshotAction).snapshot.snapshot}
@@ -73,7 +73,7 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
             }}
             data-test-subj="action-render-snapshot-snapshot"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </>
     );
   };

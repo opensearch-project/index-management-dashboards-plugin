@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiSpacer, EuiComboBox, EuiFormRow } from "@elastic/eui";
+import { EuiSpacer, EuiComboBox, EuiCompressedFormRow } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { ManagedIndexService } from "../../../../services";
 import { ManagedIndexItem, State } from "../../../../../models/interfaces";
@@ -93,7 +93,7 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
       <ContentPanel bodyStyles={{ padding: "initial" }} title="Choose managed indices" titleSize="s">
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="m" />
-          <EuiFormRow
+          <EuiCompressedFormRow
             label="Managed indices"
             helpText="You can use * as wildcards to form index patterns."
             isInvalid={!!managedIndicesError}
@@ -110,9 +110,9 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
               onChange={this.props.onChangeManagedIndices}
               onSearchChange={this.onManagedIndexSearchChange}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
-          <EuiFormRow label="State filters" helpText="Apply new policy only on managed indices in these states.">
+          <EuiCompressedFormRow label="State filters" helpText="Apply new policy only on managed indices in these states.">
             <EuiComboBox
               isDisabled={!selectedManagedIndices.length}
               placeholder="Choose state filters"
@@ -122,7 +122,7 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
               onChange={this.props.onChangeStateFilters}
               onSearchChange={this.onStateFilterSearchChange}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </div>
       </ContentPanel>
     );

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiFormRow, EuiFieldText, EuiText } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiFieldText, EuiText } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface ConfigurePolicyProps {
@@ -21,14 +21,14 @@ const ConfigurePolicy = ({ isEdit, policyId, policyIdError, onChange }: Configur
         <p>Policies let you automatically perform administrative operations on indices.</p>
       </EuiText>
       <EuiSpacer size="s" />
-      <EuiFormRow
+      <EuiCompressedFormRow
         label="Policy ID"
         helpText="Specify a unique ID that is easy to recognize and remember."
         isInvalid={!!policyIdError}
         error={policyIdError}
       >
         <EuiFieldText isInvalid={!!policyIdError} placeholder="example_policy" readOnly={isEdit} value={policyId} onChange={onChange} />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     </div>
   </ContentPanel>
 );

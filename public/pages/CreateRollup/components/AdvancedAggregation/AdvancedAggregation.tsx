@@ -24,7 +24,7 @@ import {
   Criteria,
   EuiTableSelectionType,
   EuiTableFieldDataColumnType,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiSelect,
   EuiText,
   EuiLink,
@@ -272,7 +272,7 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
         align: "left",
         render: (aggregationMethod, item) => (
           <EuiForm>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiSelect
                 compressed={true}
                 value={aggregationMethod}
@@ -284,7 +284,7 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
                 onChange={(e) => this.onChangeAggregationMethod(e, item)}
                 data-test-subj={`aggregationMethodSelect-${item.field.label}`}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiForm>
         ),
       },
@@ -298,14 +298,14 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
             "-"
           ) : (
             <EuiForm>
-              <EuiFormRow>
+              <EuiCompressedFormRow>
                 <EuiFieldNumber
                   min={1}
                   value={interval}
                   onChange={(e) => this.onChangeInterval(e, item)}
                   data-test-subj={`interval-${item.field.label}`}
                 />
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             </EuiForm>
           ),
       },

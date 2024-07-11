@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, Fragment } from "react";
-import { EuiConfirmModal, EuiForm, EuiFormRow, EuiFieldText, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
+import { EuiConfirmModal, EuiForm, EuiCompressedFormRow, EuiFieldText, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
 
 interface DeleteModalProps {
   policyId: string;
@@ -44,9 +44,9 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
               Delete "<strong>{policyId}</strong>" permanently? Indices will no longer be managed using this policy.
             </Fragment>
             <EuiSpacer size="s" />
-            <EuiFormRow helpText={`To confirm deletion, type "delete".`}>
+            <EuiCompressedFormRow helpText={`To confirm deletion, type "delete".`}>
               <EuiFieldText value={confirmDeleteText} placeholder="delete" onChange={this.onChange} data-test-subj="deleteTextField" />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiForm>
         </EuiConfirmModal>
       </EuiOverlayMask>

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiLink, EuiIcon, EuiFormRow, EuiSelect, EuiSpacer, EuiFieldText, EuiFieldNumber } from "@elastic/eui";
+import { EuiLink, EuiIcon, EuiCompressedFormRow, EuiSelect, EuiSpacer, EuiFieldText, EuiFieldNumber } from "@elastic/eui";
 import moment from "moment-timezone";
 import EuiFormCustomLabel from "../EuiFormCustomLabel";
 import { UITransition } from "../../../../../models/interfaces";
@@ -33,7 +33,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
   return (
     <>
       <EuiFormCustomLabel title="Condition" helpText="Specify the condition needed to be met to transition to the destination state." />
-      <EuiFormRow fullWidth isInvalid={false} error={null}>
+      <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
         <EuiSelect
           fullWidth
           id="condition-type"
@@ -57,14 +57,14 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
           }}
           data-test-subj="create-state-action-type"
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
 
       <EuiSpacer />
 
       {conditionType === "min_index_age" && (
         <>
           <EuiFormCustomLabel title="Minimum index age" helpText="The minimum age required to transition to the next state." />
-          <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
               fullWidth
               value={conditions?.min_index_age}
@@ -82,7 +82,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
               }}
               data-test-subj="transition-render-conditions-min-index-age"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </>
       )}
 
@@ -92,7 +92,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             title="Minimum doc count"
             helpText="The minimum number of documents required to transition to the next state."
           />
-          <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldNumber
               fullWidth
               value={typeof conditions?.min_doc_count === "undefined" ? "" : conditions?.min_doc_count}
@@ -112,7 +112,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
               }}
               data-test-subj="transition-render-conditions-min-doc-count"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </>
       )}
 
@@ -122,7 +122,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             title="Minimum index size"
             helpText="The minimum size of the total primary shard storage required to transition to the next state."
           />
-          <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
               fullWidth
               value={conditions?.min_size}
@@ -140,7 +140,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
               }}
               data-test-subj="transition-render-conditions-min-size"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </>
       )}
 
@@ -150,7 +150,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
             title="Minimum rollover age"
             helpText="The minimum age after a rollover has occurred that is required to transition to the next state."
           />
-          <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
               fullWidth
               value={conditions?.min_rollover_age}
@@ -168,7 +168,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
               }}
               data-test-subj="transition-render-conditions-min-rollover-age"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </>
       )}
 
@@ -183,7 +183,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
               </EuiLink>
             }
           />
-          <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
             <EuiFieldText
               fullWidth
               value={conditions?.cron?.cron.expression}
@@ -206,12 +206,12 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
               }}
               data-test-subj="transition-render-conditions-min-size"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer />
 
           <EuiFormCustomLabel title="Timezone" helpText="A day starts from 00:00:00 in the specified timezone." />
-          <EuiFormRow fullWidth isInvalid={false} error={null}>
+          <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
             <EuiSelect
               fullWidth
               id="timezone"
@@ -235,7 +235,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
                 });
               }}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </>
       )}
     </>

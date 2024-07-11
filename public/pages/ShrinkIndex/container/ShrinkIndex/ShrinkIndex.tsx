@@ -12,7 +12,7 @@ import {
   EuiLink,
   EuiSpacer,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLoadingSpinner,
 } from "@elastic/eui";
 import React, { Component } from "react";
@@ -626,7 +626,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
     );
 
     const subTitleText = (
-      <EuiFormRow
+      <EuiCompressedFormRow
         fullWidth
         helpText={
           <div>
@@ -638,7 +638,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         }
       >
         <></>
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     );
 
     return (

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiCheckbox, EuiAccordion, EuiFormRow, EuiFieldNumber } from "@elastic/eui";
+import { EuiSpacer, EuiCheckbox, EuiAccordion, EuiCompressedFormRow, EuiFieldNumber } from "@elastic/eui";
 // @ts-ignore
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -69,14 +69,14 @@ export default class Schedule extends Component<ScheduleProps> {
 
           <EuiAccordion id={htmlIdGenerator()()} buttonContent="Advanced">
             <EuiSpacer size="m" />
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={"Pages per execution"}
               helpText={
                 "Determines the number of transformed buckets that are computed and indexed at a time. A larger number means faster execution, but costs more memory. An exception occurs when memory limits are exceeded. We recommend you to start with default value and adjust based on your use case."
               }
             >
               <EuiFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onPageChange} />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiAccordion>
         </div>
       </ContentPanel>

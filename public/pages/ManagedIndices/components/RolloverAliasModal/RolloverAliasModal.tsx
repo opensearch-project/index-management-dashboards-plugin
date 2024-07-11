@@ -13,7 +13,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiOverlayMask,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiFieldText,
 } from "@elastic/eui";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -77,9 +77,9 @@ export default class RolloverAliasModal extends Component<RolloverAliasModalProp
           </EuiModalHeader>
 
           <EuiModalBody>
-            <EuiFormRow label="Rollover alias" helpText="A rollover alias is required when using the rollover action.">
+            <EuiCompressedFormRow label="Rollover alias" helpText="A rollover alias is required when using the rollover action.">
               <EuiFieldText placeholder="Rollover alias" value={rolloverAlias} onChange={this.onChange} />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiModalBody>
 
           <EuiModalFooter>

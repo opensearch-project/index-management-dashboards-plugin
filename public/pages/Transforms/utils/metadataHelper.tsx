@@ -6,7 +6,17 @@
 import { TransformMetadata } from "../../../../models/interfaces";
 import React, { ChangeEvent } from "react";
 import moment from "moment-timezone";
-import { EuiFieldNumber, EuiFlexGroup, EuiFlexItem, EuiIcon, EuiFormRow, EuiLink, EuiSelect, EuiTextArea, EuiText } from "@elastic/eui";
+import {
+  EuiFieldNumber,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiIcon,
+  EuiCompressedFormRow,
+  EuiLink,
+  EuiSelect,
+  EuiTextArea,
+  EuiText,
+} from "@elastic/eui";
 import { ScheduleIntervalTimeunitOptions } from "../../CreateTransform/utils/constants";
 import ErrorModal from "../components/ErrorModal";
 import { ModalConsumer } from "../../../components/Modal";
@@ -85,12 +95,12 @@ export const selectInterval = (
   <React.Fragment>
     <EuiFlexGroup style={{ maxWidth: 400 }}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
-        <EuiFormRow label="Transform execution interval" error={intervalError} isInvalid={intervalError != ""}>
+        <EuiCompressedFormRow label="Transform execution interval" error={intervalError} isInvalid={intervalError != ""}>
           <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
-        <EuiFormRow hasEmptyLabelSpace={true}>
+        <EuiCompressedFormRow hasEmptyLabelSpace={true}>
           <EuiSelect
             id="selectIntervalTimeunit"
             options={ScheduleIntervalTimeunitOptions}
@@ -98,7 +108,7 @@ export const selectInterval = (
             onChange={onChangeTimeunit}
             isInvalid={interval == undefined || interval <= 0}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
     </EuiFlexGroup>
   </React.Fragment>
@@ -111,12 +121,12 @@ export const selectCronExpression = (
   onCronTimeZoneChange: (e: ChangeEvent<HTMLSelectElement>) => void
 ) => (
   <React.Fragment>
-    <EuiFormRow label="Define by cron expression">
+    <EuiCompressedFormRow label="Define by cron expression">
       <EuiTextArea value={cronExpression} onChange={onCronExpressionChange} compressed={true} />
-    </EuiFormRow>
-    <EuiFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
+    </EuiCompressedFormRow>
+    <EuiCompressedFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
       <EuiSelect id="timezone" options={timezones} value={cronTimeZone} onChange={onCronTimeZoneChange} />
-    </EuiFormRow>
+    </EuiCompressedFormRow>
   </React.Fragment>
 );
 

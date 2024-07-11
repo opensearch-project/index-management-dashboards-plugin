@@ -4,7 +4,7 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { EuiSpacer, EuiFormRow, EuiCallOut, EuiText, EuiLink } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiCallOut, EuiText, EuiLink } from "@elastic/eui";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import _ from "lodash";
 import EuiComboBox from "../../../../components/ComboBoxWithoutWarning";
@@ -136,7 +136,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
             </Fragment>
           )}
           <EuiSpacer size="m" />
-          <EuiFormRow
+          <EuiCompressedFormRow
             label="Source index"
             error={sourceIndexError}
             isInvalid={sourceIndexError != ""}
@@ -153,9 +153,9 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
               isInvalid={sourceIndexError != ""}
               data-test-subj="sourceIndexCombobox"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
-          <EuiFormRow
+          <EuiCompressedFormRow
             label="Target index"
             error={targetIndexError}
             isInvalid={targetIndexError != ""}
@@ -184,7 +184,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
               isInvalid={targetIndexError != ""}
               data-test-subj="targetIndexCombobox"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </div>
       </ContentPanel>
     );

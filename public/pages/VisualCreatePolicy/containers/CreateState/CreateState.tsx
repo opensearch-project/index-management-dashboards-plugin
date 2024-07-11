@@ -14,7 +14,7 @@ import {
   EuiFlexItem,
   EuiSmallButtonEmpty,
   EuiSmallButton,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiFieldText,
   EuiHorizontalRule,
   euiDragDropReorder,
@@ -201,7 +201,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           <span /> {/* Dummy span to get rid of last child styling on h5 */}
         </EuiText>
 
-        <EuiFormRow fullWidth isInvalid={!!nameError} error={nameError}>
+        <EuiCompressedFormRow fullWidth isInvalid={!!nameError} error={nameError}>
           <EuiFieldText
             fullWidth
             isInvalid={!!nameError}
@@ -211,7 +211,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
             onChange={this.onChangeStateName}
             data-test-subj="create-state-state-name"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
 
         <EuiSpacer />
 
@@ -222,7 +222,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
 
         <EuiFlexGroup>
           <EuiFlexItem>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiSelect
                 disabled={disableOrderSelections}
                 options={[
@@ -233,10 +233,10 @@ export default class CreateState extends Component<CreateStateProps, CreateState
                 onChange={(e) => this.setState({ order: e.target.value })}
                 aria-label="Retry failed policy from"
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiSelect
                 disabled={disableOrderSelections}
                 options={stateOptions}
@@ -244,7 +244,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
                 onChange={(e) => this.setState({ afterBeforeState: e.target.value })}
                 aria-label="Retry failed policy from"
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         </EuiFlexGroup>
 

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiSmallButton, EuiFormRow, EuiDragDropContext, EuiDroppable, EuiSpacer, EuiText, DropResult } from "@elastic/eui";
+import { EuiSmallButton, EuiCompressedFormRow, EuiDragDropContext, EuiDroppable, EuiSpacer, EuiText, DropResult } from "@elastic/eui";
 import DraggableItem from "../../components/DraggableItem";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
 import { Action, UIAction } from "../../../../../models/interfaces";
@@ -23,7 +23,7 @@ const Actions = ({ actions, onClickDeleteAction, onClickEditAction, onDragEndAct
       <EuiFormCustomLabel title="Actions" helpText="Actions are the operations ISM performs when an index is in a certain state." />
 
       {!!actions.length && (
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiDragDropContext onDragEnd={onDragEndActions}>
             <EuiDroppable droppableId="STATE_ACTIONS_DROPPABLE_AREA">
               {actions.map((action, idx) => (
@@ -40,7 +40,7 @@ const Actions = ({ actions, onClickDeleteAction, onClickEditAction, onDragEndAct
               ))}
             </EuiDroppable>
           </EuiDragDropContext>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       )}
 
       <EuiSpacer size="s" />

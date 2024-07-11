@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiFormRow, EuiCodeEditor } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCodeEditor } from "@elastic/eui";
 import { AllocationAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -45,7 +45,7 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
 
   render = (action: UIAction<AllocationAction>, onChangeAction: (action: UIAction<AllocationAction>) => void) => {
     return (
-      <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
+      <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor
@@ -66,7 +66,7 @@ export default class AllocationUIAction implements UIAction<AllocationAction> {
             />
           )}
         </DarkModeConsumer>
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     );
   };
 

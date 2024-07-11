@@ -14,7 +14,7 @@ import {
   EuiLink,
   EuiIcon,
   EuiEmptyPrompt,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiSelect,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -55,7 +55,7 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
       <div style={{ padding: "0px 10px" }}>
         {!isReadOnly && (
           <>
-            <EuiFormRow style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
+            <EuiCompressedFormRow style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
               <EuiSelect
                 compressed
                 prepend="Initial state"
@@ -63,7 +63,7 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
                 value={policy.default_state}
                 onChange={onChangeDefaultState}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
             <EuiSpacer size="s" />
             <EuiHorizontalRule margin="none" />
           </>

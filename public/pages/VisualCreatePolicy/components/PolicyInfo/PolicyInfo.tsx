@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiFormRow, EuiFieldText, EuiTextArea } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiFieldText, EuiTextArea } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
 import "brace/mode/json";
@@ -24,7 +24,7 @@ const PolicyInfo = ({ isEdit, policyId, policyIdError, description, onChangePoli
     <div style={{ padding: "10px 0px 0px 10px" }}>
       <EuiFormCustomLabel title="Policy ID" helpText="Specify a unique and descriptive ID that is easy to recognize and remember." />
 
-      <EuiFormRow isInvalid={!!policyIdError} error={policyIdError}>
+      <EuiCompressedFormRow isInvalid={!!policyIdError} error={policyIdError}>
         <EuiFieldText
           disabled={isEdit}
           isInvalid={!!policyIdError}
@@ -34,13 +34,13 @@ const PolicyInfo = ({ isEdit, policyId, policyIdError, description, onChangePoli
           onChange={onChangePolicyId}
           data-test-subj="create-policy-policy-id"
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
 
       <EuiSpacer size="m" />
 
       <EuiFormCustomLabel title="Description" helpText="Describe the policy." />
 
-      <EuiFormRow isInvalid={false} error={null}>
+      <EuiCompressedFormRow isInvalid={false} error={null}>
         <EuiTextArea
           style={{ minHeight: "150px" }}
           compressed={true}
@@ -48,7 +48,7 @@ const PolicyInfo = ({ isEdit, policyId, policyIdError, description, onChangePoli
           onChange={onChangeDescription}
           data-test-subj="create-policy-description"
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     </div>
   </ContentPanel>
 );

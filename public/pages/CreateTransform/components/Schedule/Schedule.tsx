@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiCheckbox, EuiRadioGroup, EuiFormRow, EuiFieldNumber, EuiAccordion, EuiHorizontalRule } from "@elastic/eui";
+import { EuiSpacer, EuiCheckbox, EuiRadioGroup, EuiCompressedFormRow, EuiFieldNumber, EuiAccordion, EuiHorizontalRule } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { selectInterval } from "../../../Transforms/utils/metadataHelper";
 
@@ -38,9 +38,9 @@ const radios = [
 
 const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: string) => void) => (
   <React.Fragment>
-    <EuiFormRow label="Continuous">
+    <EuiCompressedFormRow label="Continuous">
       <EuiRadioGroup options={radios} idSelected={continuousJob} onChange={(id) => onChangeContinuousJob(id)} name="continuousJob" />
-    </EuiFormRow>
+    </EuiCompressedFormRow>
     <EuiSpacer size="m" />
   </React.Fragment>
 );
@@ -88,7 +88,7 @@ export default class Schedule extends Component<ScheduleProps> {
           <EuiSpacer size="m" />
           <EuiAccordion id="pagePerExecution" buttonContent="Advanced">
             <EuiSpacer size="m" />
-            <EuiFormRow
+            <EuiCompressedFormRow
               label="Pages per execution"
               helpText={`Determines the number of transformed buckets that are
                         computed and indexed at a time. A larger number means
@@ -99,7 +99,7 @@ export default class Schedule extends Component<ScheduleProps> {
                         on your use case and shard size.`}
             >
               <EuiFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiAccordion>
         </div>
       </ContentPanel>

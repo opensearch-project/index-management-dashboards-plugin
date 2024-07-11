@@ -21,7 +21,7 @@ import {
   EuiText,
   EuiLink,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiEmptyPrompt,
   EuiSmallButton,
 } from "@elastic/eui";
@@ -330,7 +330,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
             <EuiTitle>
               <span>Aliases</span>
             </EuiTitle>
-            <EuiFormRow
+            <EuiCompressedFormRow
               fullWidth
               helpText={
                 <div style={{ width: "50%" }}>
@@ -343,7 +343,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
               }
             >
               <></>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         }
       >

@@ -14,7 +14,7 @@ import {
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLink,
   EuiSelect,
   EuiSpacer,
@@ -191,14 +191,14 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
       configuration = (
         <>
           <CustomLabel title="Location" />
-          <EuiFormRow isInvalid={!!locationError} error={locationError}>
+          <EuiCompressedFormRow isInvalid={!!locationError} error={locationError}>
             <EuiFieldText
               disabled={!!editRepo}
               placeholder="e.g., /mnt/snapshots"
               value={location}
               onChange={(e) => this.setState({ location: e.target.value })}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="l" />
 
@@ -279,25 +279,25 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
 
         <EuiFlyoutBody>
           <CustomLabel title="Repository name" />
-          <EuiFormRow isInvalid={!!repoNameError} error={repoNameError}>
+          <EuiCompressedFormRow isInvalid={!!repoNameError} error={repoNameError}>
             <EuiFieldText
               disabled={!!editRepo}
               value={repoName}
               data-test-subj="repoNameInput"
               onChange={(e) => this.setState({ repoName: e.target.value })}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="m" />
 
           <CustomLabel title="Repository type" helpText={repoTypeHelpText} />
-          <EuiFormRow isInvalid={!!repoTypeError} error={repoTypeError}>
+          <EuiCompressedFormRow isInvalid={!!repoTypeError} error={repoTypeError}>
             <EuiSelect
               options={REPO_SELECT_OPTIONS}
               value={selectedRepoTypeOption}
               onChange={(e) => this.setState({ selectedRepoTypeOption: e.target.value })}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="m" />
 

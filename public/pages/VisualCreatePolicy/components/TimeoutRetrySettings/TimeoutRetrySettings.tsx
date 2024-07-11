@@ -4,7 +4,16 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiAccordion, EuiText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiFieldNumber, EuiFieldText, EuiSelect } from "@elastic/eui";
+import {
+  EuiAccordion,
+  EuiText,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiCompressedFormRow,
+  EuiFieldNumber,
+  EuiFieldText,
+  EuiSelect,
+} from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { Action, UIAction } from "../../../../../models/interfaces";
@@ -36,7 +45,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiFormCustomLabel title="Timeout" helpText={`The timeout period for the action. Accepts time units, e.g. "5h" or "1d".`} />
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFlexGroup>
             <EuiFlexItem>
               <EuiFieldText
@@ -50,14 +59,14 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
               />
             </EuiFlexItem>
           </EuiFlexGroup>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiFormCustomLabel
           title="Retry count"
           helpText="The number of times the action should be retried if it fails. Must be greater than 0."
         />
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFlexGroup>
             <EuiFlexItem>
               <EuiFieldNumber
@@ -74,11 +83,11 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
               />
             </EuiFlexItem>
           </EuiFlexGroup>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiFormCustomLabel title="Retry backoff" helpText="The backoff policy type to use when retrying." />
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiSelect
             id="retry-backoff-type"
             fullWidth
@@ -89,11 +98,11 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
               onChangeAction(action.clone({ ...action.action, retry: { ...action.action.retry, backoff } }));
             }}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiFormCustomLabel title="Retry delay" helpText={`The time to wait between retries. Accepts time units, e.g. "2h" or "1d"`} />
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFlexGroup>
             <EuiFlexItem>
               <EuiFieldText
@@ -107,7 +116,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
               />
             </EuiFlexItem>
           </EuiFlexGroup>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
     </EuiFlexGroup>
   </EuiAccordion>

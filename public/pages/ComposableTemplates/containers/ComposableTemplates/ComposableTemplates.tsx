@@ -17,7 +17,7 @@ import {
   EuiSmallButton,
   EuiLink,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiEmptyPrompt,
   EuiText,
   EuiTableSortingType,
@@ -281,7 +281,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
             <EuiTitle>
               <span>Component templates</span>
             </EuiTitle>
-            <EuiFormRow
+            <EuiCompressedFormRow
               fullWidth
               helpText={
                 <div>
@@ -294,7 +294,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
               }
             >
               <></>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         }
       >

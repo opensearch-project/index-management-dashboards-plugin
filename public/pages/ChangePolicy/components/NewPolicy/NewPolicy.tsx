@@ -5,7 +5,7 @@
 
 import React from "react";
 import _ from "lodash";
-import { EuiSpacer, EuiText, EuiRadioGroup, EuiFormRow, EuiSelect, EuiComboBox, EuiLink, EuiIcon } from "@elastic/eui";
+import { EuiSpacer, EuiText, EuiRadioGroup, EuiCompressedFormRow, EuiSelect, EuiComboBox, EuiLink, EuiIcon } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexService } from "../../../../services";
 import { Radio } from "../../containers/ChangePolicy/ChangePolicy";
@@ -101,7 +101,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
 
           <EuiSpacer size="s" />
 
-          <EuiFormRow label="New policy" isInvalid={!!selectedPoliciesError} error={selectedPoliciesError}>
+          <EuiCompressedFormRow label="New policy" isInvalid={!!selectedPoliciesError} error={selectedPoliciesError}>
             <EuiComboBox
               placeholder=""
               async
@@ -114,7 +114,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
               onChange={this.props.onChangePolicy}
               onSearchChange={this.onPolicySearchChange}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="m" />
 
@@ -122,7 +122,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
 
           <EuiSpacer size="s" />
 
-          <EuiFormRow>
+          <EuiCompressedFormRow>
             <EuiSelect
               disabled={stateRadioIdSelected !== Radio.State}
               options={stateOptions}
@@ -130,7 +130,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
               onChange={this.props.onStateSelectChange}
               aria-label="Start state for new policy"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </div>
       </ContentPanel>
     );

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiSmallButton, EuiFormRow, EuiDragDropContext, EuiDroppable, EuiSpacer, EuiText, DropResult } from "@elastic/eui";
+import { EuiSmallButton, EuiCompressedFormRow, EuiDragDropContext, EuiDroppable, EuiSpacer, EuiText, DropResult } from "@elastic/eui";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
 import DraggableItem from "../../components/DraggableItem";
 import { UITransition } from "../../../../../models/interfaces";
@@ -32,7 +32,7 @@ const Transitions = ({
         helpText="Transitions define the conditions that need to be met for a state to change. After all actions in the current state are completed, the policy starts checking the conditions for transitions."
       />
       {!!transitions.length && (
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiDragDropContext onDragEnd={onDragEndTransitions}>
             <EuiDroppable droppableId="STATE_TRANSITIONS_DROPPABLE_AREA">
               {transitions.map((transition, idx) => (
@@ -49,7 +49,7 @@ const Transitions = ({
               ))}
             </EuiDroppable>
           </EuiDragDropContext>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       )}
 
       <EuiSpacer size="s" />

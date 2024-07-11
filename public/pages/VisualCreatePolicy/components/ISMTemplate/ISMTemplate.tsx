@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, useState } from "react";
-import { EuiSmallButton, EuiFormRow, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFieldNumber } from "@elastic/eui";
+import { EuiSmallButton, EuiCompressedFormRow, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFieldNumber } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { ISMTemplate as ISMTemplateData } from "../../../../../models/interfaces";
@@ -23,7 +23,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
   return (
     <EuiFlexGroup gutterSize="l" alignItems="center">
       <EuiFlexItem style={{ maxWidth: ISM_TEMPLATE_INPUT_MAX_WIDTH }}>
-        <EuiFormRow isInvalid={false} error={null}>
+        <EuiCompressedFormRow isInvalid={false} error={null}>
           <EuiComboBox
             isClearable={false}
             placeholder="Add index patterns"
@@ -62,10 +62,10 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
             isInvalid={isInvalid}
             data-test-subj="ism-template-index-pattern-input"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiFormRow error={null} isInvalid={false}>
+        <EuiCompressedFormRow error={null} isInvalid={false}>
           <EuiFieldNumber
             value={template.priority}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +75,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
             isInvalid={false}
             data-test-subj="ism-template-priority-input"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
         <EuiSmallButton color="danger" onClick={onRemoveTemplate} data-test-subj="ism-template-remove-button">

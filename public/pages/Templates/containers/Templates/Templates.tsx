@@ -18,7 +18,7 @@ import {
   EuiSmallButton,
   EuiLink,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiEmptyPrompt,
   EuiText,
   EuiToolTip,
@@ -259,7 +259,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             <EuiTitle>
               <span>Templates</span>
             </EuiTitle>
-            <EuiFormRow
+            <EuiCompressedFormRow
               fullWidth
               helpText={
                 <div>
@@ -271,7 +271,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
               }
             >
               <></>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         }
       >

@@ -15,7 +15,7 @@ import {
   EuiModalHeaderTitle,
   EuiOverlayMask,
   EuiComboBox,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiFieldText,
   EuiCallOut,
   EuiText,
@@ -200,7 +200,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
 
     if (hasSingleIndexSelected) {
       return (
-        <EuiFormRow
+        <EuiCompressedFormRow
           label="Rollover alias"
           helpText={
             <EuiText size="xs" grow={false}>
@@ -223,7 +223,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
             onChange={this.onChangeRolloverAlias}
             fullWidth
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       );
     }
 
@@ -293,7 +293,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
               </p>
             </EuiText>
             <EuiSpacer size="m" />
-            <EuiFormRow label="Policy ID" isInvalid={hasSubmitted && !!selectedPolicyError} error={selectedPolicyError} fullWidth>
+            <EuiCompressedFormRow label="Policy ID" isInvalid={hasSubmitted && !!selectedPolicyError} error={selectedPolicyError} fullWidth>
               <EuiComboBox
                 placeholder="Search policies"
                 async
@@ -306,7 +306,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
                 onSearchChange={this.onPolicySearchChange}
                 fullWidth
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
             {this.renderPreview()}
             {this.renderRollover()}
           </EuiModalBody>
