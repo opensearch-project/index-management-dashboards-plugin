@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiRadio, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedRadio, EuiSpacer } from "@elastic/eui";
 import CustomLabel from "../../../../components/CustomLabel";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 interface SnapshotRenameOptionsProps {
@@ -34,7 +34,7 @@ const SnapshotRenameOptions = ({
 
       <EuiSpacer size="m" />
 
-      <EuiRadio
+      <EuiCompressedRadio
         id={do_not_rename}
         name="rename_option"
         label="Do not rename"
@@ -44,7 +44,7 @@ const SnapshotRenameOptions = ({
 
       <EuiSpacer size="s" />
 
-      <EuiRadio
+      <EuiCompressedRadio
         id={add_prefix}
         name="rename_option"
         label="Add prefix to restored index names"
@@ -54,7 +54,7 @@ const SnapshotRenameOptions = ({
 
       <EuiSpacer size="s" />
 
-      <EuiRadio
+      <EuiCompressedRadio
         id={rename_indices}
         name="rename_option"
         label="Rename using regular expression (Advanced)"

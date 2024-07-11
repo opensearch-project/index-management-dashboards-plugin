@@ -8,7 +8,7 @@ import moment from "moment-timezone";
 import {
   EuiSpacer,
   EuiCompressedCheckbox,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiCompressedFormRow,
   EuiCompressedSelect,
   EuiCompressedFieldNumber,
@@ -91,7 +91,12 @@ const selectInterval = (
 const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: string) => void) => (
   <React.Fragment>
     <EuiCompressedFormRow label="Continuous">
-      <EuiRadioGroup options={radios} idSelected={continuousJob} onChange={(id) => onChangeContinuousJob(id)} name="continuousJob" />
+      <EuiCompressedRadioGroup
+        options={radios}
+        idSelected={continuousJob}
+        onChange={(id) => onChangeContinuousJob(id)}
+        name="continuousJob"
+      />
     </EuiCompressedFormRow>
     <EuiSpacer size="m" />
   </React.Fragment>

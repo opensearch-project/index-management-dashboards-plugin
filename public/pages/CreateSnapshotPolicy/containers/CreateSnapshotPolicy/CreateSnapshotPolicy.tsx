@@ -19,7 +19,7 @@ import {
   EuiComboBoxOptionOption,
   EuiCompressedFieldNumber,
   EuiAccordion,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiText,
   EuiCompressedCheckbox,
   EuiPanel,
@@ -640,7 +640,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
         <EuiSpacer />
 
         <ContentPanel title="Retention period" titleSize="m">
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={rententionEnableRadios}
             idSelected={deleteConditionEnabled ? "retention_enabled" : "retention_disabled"}
             onChange={(id) => {
