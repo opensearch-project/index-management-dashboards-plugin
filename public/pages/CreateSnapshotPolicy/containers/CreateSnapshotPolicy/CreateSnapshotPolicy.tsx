@@ -21,7 +21,7 @@ import {
   EuiAccordion,
   EuiRadioGroup,
   EuiText,
-  EuiCheckbox,
+  EuiCompressedCheckbox,
   EuiPanel,
   EuiHorizontalRule,
   EuiSmallButtonIcon,
@@ -733,7 +733,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                 </span>
                 <EuiSpacer size="s" />
 
-                <EuiCheckbox
+                <EuiCompressedCheckbox
                   id="delete_schedule_checkbox"
                   label="Same as snapshot frequency"
                   checked={!deletionScheduleEnabled}
@@ -769,7 +769,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
             <EuiText>Notify on snapshot activities</EuiText>
 
             <EuiSpacer size="s" />
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="notification-creation"
               label="When a snapshot has been created."
               checked={getNotifyCreation(policy)}
@@ -780,7 +780,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
             <EuiSpacer size="s" />
 
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="notification-deletion"
               label="When a snapshots has been deleted."
               checked={getNotifyDeletion(policy)}
@@ -791,7 +791,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
             <EuiSpacer size="s" />
 
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="notification-failure"
               label="When a snapshot has failed."
               checked={getNotifyFailure(policy)}

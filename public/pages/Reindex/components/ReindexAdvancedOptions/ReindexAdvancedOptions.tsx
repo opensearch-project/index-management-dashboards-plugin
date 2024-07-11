@@ -6,7 +6,7 @@
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import CustomFormRow, { OptionalLabel } from "../../../../components/CustomFormRow";
 import {
-  EuiCheckbox,
+  EuiCompressedCheckbox,
   EuiComboBox,
   EuiComboBoxOptionOption,
   EuiCompressedFieldNumber,
@@ -76,7 +76,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           </>
         }
       >
-        <EuiCheckbox
+        <EuiCompressedCheckbox
           id="uniqueCheckbox"
           label="Reindex only unique documents"
           checked={reindexUniqueDocuments}
@@ -96,7 +96,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           </>
         }
       >
-        <EuiCheckbox
+        <EuiCompressedCheckbox
           id="ConflictsOptionCheckbox"
           label="Ignore conflicts during reindexing"
           checked={ignoreConflicts}
@@ -110,7 +110,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
         helpText="Divide this reindexing operation into smaller subtasks to run in parallel."
       >
         <>
-          <EuiCheckbox
+          <EuiCompressedCheckbox
             id="sliceEnabledCheckBox"
             data-test-subj="sliceEnabled"
             label="Slice this reindexing operation"

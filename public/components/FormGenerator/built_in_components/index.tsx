@@ -9,7 +9,7 @@ import {
   EuiSwitch,
   EuiCompressedSelect,
   EuiText,
-  EuiCheckbox,
+  EuiCompressedCheckbox,
   EuiComboBoxOptionOption,
 } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
@@ -67,7 +67,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => {
       const idRef = useRef(globalId++);
       return (
-        <EuiCheckbox
+        <EuiCompressedCheckbox
           ref={ref}
           id={`builtInCheckBoxId-${idRef.current}`}
           checked={value === undefined ? false : value}

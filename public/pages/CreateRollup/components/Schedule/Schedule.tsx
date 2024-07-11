@@ -7,7 +7,7 @@ import React, { ChangeEvent, Component } from "react";
 import moment from "moment-timezone";
 import {
   EuiSpacer,
-  EuiCheckbox,
+  EuiCompressedCheckbox,
   EuiRadioGroup,
   EuiCompressedFormRow,
   EuiCompressedSelect,
@@ -133,7 +133,7 @@ export default class Schedule extends Component<ScheduleProps> {
       <ContentPanel bodyStyles={{ padding: "initial" }} title="Schedule" titleSize="s">
         <div style={{ paddingLeft: "10px" }}>
           {!isEdit && (
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="jobEnabledByDefault"
               label="Enable job by default"
               checked={jobEnabledByDefault}
@@ -199,7 +199,12 @@ export default class Schedule extends Component<ScheduleProps> {
             </EuiFlexItem>
             <EuiFlexItem>
               <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-                <EuiCompressedSelect id="selectTimeunit" options={DelayTimeunitOptions} value={delayTimeunit} onChange={onChangeDelayTimeunit} />
+                <EuiCompressedSelect
+                  id="selectTimeunit"
+                  options={DelayTimeunitOptions}
+                  value={delayTimeunit}
+                  onChange={onChangeDelayTimeunit}
+                />
               </EuiCompressedFormRow>
             </EuiFlexItem>
           </EuiFlexGroup>
