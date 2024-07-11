@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, useState } from "react";
-import { EuiButton, EuiFormRow, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFieldNumber } from "@elastic/eui";
+import { EuiSmallButton, EuiFormRow, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFieldNumber } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { ISMTemplate as ISMTemplateData } from "../../../../../models/interfaces";
@@ -78,9 +78,9 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
         </EuiFormRow>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiButton color="danger" onClick={onRemoveTemplate} data-test-subj="ism-template-remove-button">
+        <EuiSmallButton color="danger" onClick={onRemoveTemplate} data-test-subj="ism-template-remove-button">
           Remove
-        </EuiButton>
+        </EuiSmallButton>
       </EuiFlexItem>
     </EuiFlexGroup>
   );

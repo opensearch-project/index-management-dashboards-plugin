@@ -7,7 +7,7 @@ import React, { ChangeEvent, Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import queryString from "query-string";
-import { EuiFlexItem, EuiFlexGroup, EuiButton, EuiTitle, EuiSpacer, EuiButtonEmpty } from "@elastic/eui";
+import { EuiFlexItem, EuiFlexGroup, EuiSmallButton, EuiTitle, EuiSpacer, EuiButtonEmpty } from "@elastic/eui";
 import ConfigureRollup from "../../CreateRollup/components/ConfigureRollup";
 import Schedule from "../../CreateRollup/components/Schedule";
 import { getErrorMessage } from "../../../utils/helpers";
@@ -335,9 +335,9 @@ export class EditRollup extends Component<EditRollupProps, EditRollupState> {
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="editRollupSaveChangesButton">
+            <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="editRollupSaveChangesButton">
               Save changes
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </div>

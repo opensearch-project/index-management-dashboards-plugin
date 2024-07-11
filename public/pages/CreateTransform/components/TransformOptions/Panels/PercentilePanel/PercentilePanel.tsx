@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { EuiButton, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
+import { EuiSmallButton, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
 import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../models/interfaces";
 
 interface PercentilePanelProps {
@@ -80,12 +80,12 @@ export default function PercentilePanel({ name, aggSelection, handleAggSelection
       </EuiFlexGroup>
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>
-          <EuiButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
+          <EuiSmallButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
             Cancel
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton
+          <EuiSmallButton
             fill
             fullWidth={false}
             onClick={() => {
@@ -110,7 +110,7 @@ export default function PercentilePanel({ name, aggSelection, handleAggSelection
             style={{ minWidth: 55 }}
           >
             OK
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPanel>

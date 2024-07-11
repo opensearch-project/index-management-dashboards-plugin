@@ -9,7 +9,7 @@ import {
   EuiTitle,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiLoadingSpinner,
   EuiBasicTable,
   EuiTableFieldDataColumnType,
@@ -203,24 +203,24 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
               <EuiFlexItem grow={false}>
                 <ModalConsumer>
                   {({ onShow }) => (
-                    <EuiButton
+                    <EuiSmallButton
                       onClick={() => onShow(CreatePolicyModal, { isEdit: true, onClickContinue: this.onEdit })}
                       data-test-subj="policy-details-edit-button"
                     >
                       Edit
-                    </EuiButton>
+                    </EuiSmallButton>
                   )}
                 </ModalConsumer>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
+                <EuiSmallButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
                   Delete
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem>
-                <EuiButton onClick={this.showJSONModal} data-test-subj="viewButton">
+                <EuiSmallButton onClick={this.showJSONModal} data-test-subj="viewButton">
                   View JSON
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>

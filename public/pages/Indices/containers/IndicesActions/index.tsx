@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useCallback, useContext, useMemo, useState } from "react";
-import { EuiButton, EuiContextMenu } from "@elastic/eui";
+import { EuiSmallButton, EuiContextMenu } from "@elastic/eui";
 
 import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import ApplyPolicyModal from "../../components/ApplyPolicyModal";
@@ -134,9 +134,9 @@ export default function IndicesActions(props: IndicesActionsProps) {
             data-test-subj="moreAction"
             panelPaddingSize="none"
             button={
-              <EuiButton iconType="arrowDown" iconSide="right">
+              <EuiSmallButton iconType="arrowDown" iconSide="right">
                 Actions
-              </EuiButton>
+              </EuiSmallButton>
             }
           >
             <EuiContextMenu

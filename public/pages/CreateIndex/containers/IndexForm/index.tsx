@@ -4,7 +4,7 @@
  */
 
 import React, { Component, forwardRef, useContext } from "react";
-import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiLoadingSpinner } from "@elastic/eui";
+import { EuiSpacer, EuiFlexGroup, EuiFlexItem, EuiSmallButton, EuiButtonEmpty, EuiLoadingSpinner } from "@elastic/eui";
 import { get, set, differenceWith, isEqual, merge } from "lodash";
 import { diffArrays } from "diff";
 import flattern from "flat";
@@ -471,9 +471,9 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
                 </EuiButtonEmpty>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createIndexCreateButton">
+                <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createIndexCreateButton">
                   {isEdit ? "Update" : "Create"}
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </>

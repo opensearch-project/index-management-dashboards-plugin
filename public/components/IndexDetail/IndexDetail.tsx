@@ -11,7 +11,7 @@ import {
   EuiOverlayMask,
   EuiLoadingSpinner,
   EuiContextMenu,
-  EuiButton,
+  EuiSmallButton,
   EuiCallOut,
   EuiTitle,
 } from "@elastic/eui";
@@ -445,9 +445,9 @@ const IndexDetail = (
             data-test-subj="moreAction"
             panelPaddingSize="none"
             button={
-              <EuiButton iconType="arrowDown" iconSide="right" data-test-subj="importSettingMappingBtn">
+              <EuiSmallButton iconType="arrowDown" iconSide="right" data-test-subj="importSettingMappingBtn">
                 Import settings and mappings
-              </EuiButton>
+              </EuiSmallButton>
             }
           >
             <EuiContextMenu

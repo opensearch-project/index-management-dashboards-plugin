@@ -9,7 +9,7 @@ import {
   EuiTitle,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiOverlayMask,
   EuiButtonEmpty,
   EuiModalFooter,
@@ -338,22 +338,22 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
           <EuiFlexItem grow={false}>
             <EuiFlexGroup alignItems="center" gutterSize="s">
               <EuiFlexItem grow={false}>
-                <EuiButton disabled={!enabled} onClick={this.onDisable} data-test-subj="disableButton">
+                <EuiSmallButton disabled={!enabled} onClick={this.onDisable} data-test-subj="disableButton">
                   Disable
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton disabled={enabled} onClick={this.onEnable} data-test-subj="enableButton">
+                <EuiSmallButton disabled={enabled} onClick={this.onEnable} data-test-subj="enableButton">
                   Enable
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.showModal}>View JSON</EuiButton>
+                <EuiSmallButton onClick={this.showModal}>View JSON</EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
+                <EuiSmallButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
                   Delete
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>

@@ -14,7 +14,7 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButton,
+  EuiSmallButton,
   EuiLink,
   EuiTitle,
   EuiFormRow,
@@ -421,7 +421,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                   </EuiText>
                 }
                 actions={[
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
@@ -429,7 +429,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                     data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
                   >
                     Create component template
-                  </EuiButton>,
+                  </EuiSmallButton>,
                 ]}
               />
             ) : (
@@ -440,7 +440,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                   </EuiText>
                 }
                 actions={[
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.setState(defaultFilter, () => {
@@ -449,7 +449,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                     }}
                   >
                     Reset filters
-                  </EuiButton>,
+                  </EuiSmallButton>,
                 ]}
               />
             )

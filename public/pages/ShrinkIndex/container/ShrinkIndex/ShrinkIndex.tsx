@@ -4,7 +4,7 @@
  */
 
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiCallOut,
   EuiFlexGroup,
@@ -375,7 +375,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             <EuiCallOut title="The source index must block write operations before shrinking." color="danger" iconType="alert">
               <p>In order to shrink an existing index, you must first set the index to block write operations.</p>
               <EuiSpacer />
-              <EuiButton
+              <EuiSmallButton
                 onClick={() => {
                   const indexWriteBlockSettings = {
                     "index.blocks.write": true,
@@ -386,7 +386,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 data-test-subj="onSetIndexWriteBlockButton"
               >
                 Block write operations
-              </EuiButton>
+              </EuiSmallButton>
             </EuiCallOut>
             <EuiSpacer />
           </>
@@ -403,7 +403,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 to complete. The index will be in red health status while the index is opening.
               </p>
               <EuiSpacer />
-              <EuiButton
+              <EuiSmallButton
                 onClick={() => {
                   this.onOpenIndex();
                 }}
@@ -413,7 +413,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 data-test-subj="onOpenIndexButton"
               >
                 Open index
-              </EuiButton>
+              </EuiSmallButton>
             </EuiCallOut>
             <EuiSpacer />
           </>
@@ -669,7 +669,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               isLoading={this.state.loading}
               isDisabled={this.state.loading}
               onClick={this.onClickAction}
@@ -678,7 +678,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
               disabled={disableShrinkButton}
             >
               Shrink
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </div>

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, useContext } from "react";
-import { EuiButton, EuiButtonEmpty, EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSmallButton, EuiButtonEmpty, EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { RouteComponentProps, useHistory } from "react-router-dom";
 import moment from "moment";
 import { RollupService } from "../../../../services";
@@ -692,23 +692,23 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
           </EuiFlexItem>
           {currentStep != 1 && (
             <EuiFlexItem grow={false}>
-              <EuiButton onClick={this._prev} data-test-subj="createRollupPreviousButton">
+              <EuiSmallButton onClick={this._prev} data-test-subj="createRollupPreviousButton">
                 Previous
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           )}
 
           {currentStep == 4 ? (
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createRollupSubmitButton">
+              <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createRollupSubmitButton">
                 Create
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           ) : (
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={this._next} data-test-subj="createRollupNextButton">
+              <EuiSmallButton fill onClick={this._next} data-test-subj="createRollupNextButton">
                 Next
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           )}
         </EuiFlexGroup>

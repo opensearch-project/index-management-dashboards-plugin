@@ -4,7 +4,7 @@
  */
 
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiComboBox,
   EuiComboBoxOptionOption,
   EuiFlexGroup,
@@ -94,7 +94,7 @@ const SnapshotIndicesRepoInput = ({
 
         {showFlyout != null && (
           <EuiFlexItem grow={false}>
-            <EuiButton onClick={openFlyout}>Create repository</EuiButton>
+            <EuiSmallButton onClick={openFlyout}>Create repository</EuiSmallButton>
           </EuiFlexItem>
         )}
       </EuiFlexGroup>

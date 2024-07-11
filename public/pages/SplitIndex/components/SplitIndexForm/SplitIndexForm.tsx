@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component } from "react";
-import { EuiSpacer, EuiLink, EuiFlexItem, EuiFlexGroup, EuiButton, EuiButtonEmpty } from "@elastic/eui";
+import { EuiSpacer, EuiLink, EuiFlexItem, EuiFlexGroup, EuiSmallButton, EuiButtonEmpty } from "@elastic/eui";
 import FormGenerator, { IField, IFormGeneratorRef, IFieldComponentProps } from "../../../../components/FormGenerator";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexDetail from "../../../../containers/IndexDetail";
@@ -245,7 +245,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill
               onClick={this.onSubmit}
               isLoading={this.props.loading}
@@ -254,7 +254,7 @@ export default class SplitIndexForm extends Component<SplitIndexComponentProps> 
               isDisabled={!readyForSplit}
             >
               Split
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </div>

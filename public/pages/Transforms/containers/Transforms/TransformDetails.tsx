@@ -8,7 +8,7 @@ import {
   EuiTitle,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiOverlayMask,
   EuiButtonEmpty,
   EuiModalFooter,
@@ -223,9 +223,15 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
       scheduleText = buildIntervalScheduleText(transformJson.transform.continuous, interval, intervalTimeUnit);
     }
     const actionButton = (
-      <EuiButton iconType="arrowDown" iconSide="right" disabled={false} onClick={this.onActionButtonClick} data-test-subj="actionButton">
+      <EuiSmallButton
+        iconType="arrowDown"
+        iconSide="right"
+        disabled={false}
+        onClick={this.onActionButtonClick}
+        data-test-subj="actionButton"
+      >
         Actions
-      </EuiButton>
+      </EuiSmallButton>
     );
 
     const actionItems = [

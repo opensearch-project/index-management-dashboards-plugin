@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiButton, EuiSpacer, EuiFlexGroup, EuiEmptyPrompt, EuiFlexItem, EuiText, EuiLink, EuiIcon } from "@elastic/eui";
+import { EuiSmallButton, EuiSpacer, EuiFlexGroup, EuiEmptyPrompt, EuiFlexItem, EuiText, EuiLink, EuiIcon } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
 import "brace/mode/json";
@@ -23,14 +23,14 @@ interface ISMTemplatesProps {
 const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
   const templates = convertTemplatesToArray(policy.ism_template);
   const addTemplateButton = (
-    <EuiButton
+    <EuiSmallButton
       onClick={() => {
         onChangePolicy({ ...policy, ism_template: [...templates, { index_patterns: [], priority: 1 }] });
       }}
       data-test-subj="ism-templates-add-template-button"
     >
       Add template
-    </EuiButton>
+    </EuiSmallButton>
   );
   return (
     <ContentPanel

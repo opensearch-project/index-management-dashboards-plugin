@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiButton, EuiFormRow, EuiDragDropContext, EuiDroppable, EuiSpacer, EuiText, DropResult } from "@elastic/eui";
+import { EuiSmallButton, EuiFormRow, EuiDragDropContext, EuiDroppable, EuiSpacer, EuiText, DropResult } from "@elastic/eui";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
 import DraggableItem from "../../components/DraggableItem";
 import { UITransition } from "../../../../../models/interfaces";
@@ -64,7 +64,7 @@ const Transitions = ({
 
       <EuiSpacer />
 
-      <EuiButton onClick={onClickAddTransition}>+ Add Transition</EuiButton>
+      <EuiSmallButton onClick={onClickAddTransition}>+ Add Transition</EuiSmallButton>
     </>
   );
 };

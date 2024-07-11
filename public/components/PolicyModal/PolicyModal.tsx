@@ -5,7 +5,7 @@
 
 import React from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -62,14 +62,14 @@ const PolicyModal: React.SFC<PolicyModalProps> = ({ policyId, policy, errorMessa
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton onClick={() => onEdit(false)} fill disabled={!policyId || !policy} data-test-subj="policyModalEditJsonButton">
+              <EuiSmallButton onClick={() => onEdit(false)} fill disabled={!policyId || !policy} data-test-subj="policyModalEditJsonButton">
                 Edit as JSON
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton onClick={() => onEdit(true)} fill disabled={!policyId || !policy} data-test-subj="policyModalEditButton">
+              <EuiSmallButton onClick={() => onEdit(true)} fill disabled={!policyId || !policy} data-test-subj="policyModalEditButton">
                 Edit
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiModalFooter>

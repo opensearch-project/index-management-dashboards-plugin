@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { Component, useContext } from "react";
-import { EuiCallOut, EuiSpacer, EuiTitle, EuiButton, EuiLink, EuiFormRow } from "@elastic/eui";
+import { EuiCallOut, EuiSpacer, EuiTitle, EuiSmallButton, EuiLink, EuiFormRow } from "@elastic/eui";
 import { get } from "lodash";
 
 import { CatIndex } from "../../../../../server/models/interfaces";
@@ -124,7 +124,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
               complete. The index will be in the Red state while the index is opening.
             </p>
             <p>
-              <EuiButton
+              <EuiSmallButton
                 fill
                 isLoading={this.state.loading}
                 isDisabled={this.state.loading}
@@ -144,7 +144,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
                 data-test-subj={"open-index-button"}
               >
                 Open index
-              </EuiButton>
+              </EuiSmallButton>
             </p>
           </EuiCallOut>
           <EuiSpacer />
@@ -159,7 +159,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
         <>
           <EuiCallOut color="danger" iconType="alert" title="The source index must block write operations before splitting.">
             <p>In order to split an existing index, you must first set the index to block write operations.</p>
-            <EuiButton
+            <EuiSmallButton
               fill
               onClick={async () => {
                 try {
@@ -178,7 +178,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
               data-test-subj={"set-indexsetting-button"}
             >
               Block write operations
-            </EuiButton>
+            </EuiSmallButton>
           </EuiCallOut>
           <EuiSpacer />
         </>

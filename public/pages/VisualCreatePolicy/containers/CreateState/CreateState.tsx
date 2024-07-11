@@ -13,7 +13,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiButtonEmpty,
-  EuiButton,
+  EuiSmallButton,
   EuiFormRow,
   EuiFieldText,
   EuiHorizontalRule,
@@ -283,9 +283,9 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           </EuiButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton fill disabled={!name.trim().length || !!nameError} onClick={this.onClickSaveState}>
+          <EuiSmallButton fill disabled={!name.trim().length || !!nameError} onClick={this.onClickSaveState}>
             {isEditing ? "Update state" : "Save state"}
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     );

@@ -7,7 +7,7 @@ import {
   EuiModal,
   EuiModalHeader,
   EuiModalHeaderTitle,
-  EuiButton,
+  EuiSmallButton,
   EuiModalBody,
   EuiModalFooter,
   EuiModalProps,
@@ -72,7 +72,7 @@ interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth" | "class
   footer?: footerEnum[];
   bodyProps?: EuiModalBodyProps;
   confirmButtonProps?: EuiButtonProps;
-  CancelButtonComponent?: typeof EuiButton | typeof EuiButtonEmpty;
+  CancelButtonComponent?: typeof EuiSmallButton | typeof EuiButtonEmpty;
 }
 
 const blank = () => null;
@@ -127,7 +127,7 @@ const SimpleModal = (props: IShowOptions) => {
             {footer.map((item) => {
               if (item === "confirm") {
                 return (
-                  <EuiButton
+                  <EuiSmallButton
                     key={item}
                     fill
                     color="primary"
@@ -143,7 +143,7 @@ const SimpleModal = (props: IShowOptions) => {
                     {...confirmButtonProps}
                   >
                     {finalLocale.confirm}
-                  </EuiButton>
+                  </EuiSmallButton>
                 );
               } else if (item === "cancel") {
                 return (
@@ -163,7 +163,7 @@ const SimpleModal = (props: IShowOptions) => {
           </>
         ) : (
           <>
-            <EuiButton
+            <EuiSmallButton
               fill
               color="primary"
               data-test-subj={`${testSubj}-ok`}
@@ -177,7 +177,7 @@ const SimpleModal = (props: IShowOptions) => {
               }}
             >
               {finalLocale.ok}
-            </EuiButton>
+            </EuiSmallButton>
           </>
         )}
       </EuiModalFooter>
