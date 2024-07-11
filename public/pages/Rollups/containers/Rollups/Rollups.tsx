@@ -27,7 +27,7 @@ import {
   EuiFlexGroup,
   EuiPanel,
   EuiTitle,
-  EuiButton,
+  EuiSmallButton,
   EuiPopover,
   EuiContextMenuItem,
   EuiContextMenuPanel,
@@ -303,7 +303,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
     };
 
     const actionButton = (
-      <EuiButton
+      <EuiSmallButton
         iconType="arrowDown"
         iconSide="right"
         disabled={!selectedItems.length}
@@ -312,7 +312,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
         size={useNewUX ? "s" : undefined}
       >
         Actions
-      </EuiButton>
+      </EuiSmallButton>
     );
 
     const selection: EuiTableSelectionType<DocumentRollup> = {
@@ -538,17 +538,17 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
           <EuiFlexItem grow={false}>
             <EuiFlexGroup alignItems="center" gutterSize="s">
               <EuiFlexItem grow={false}>
-                <EuiButton iconType="refresh" onClick={this.getRollups} data-test-subj="refreshButton">
+                <EuiSmallButton iconType="refresh" onClick={this.getRollups} data-test-subj="refreshButton">
                   Refresh
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton disabled={!selectedItems.length} onClick={this.onDisable} data-test-subj="disableButton">
+                <EuiSmallButton disabled={!selectedItems.length} onClick={this.onDisable} data-test-subj="disableButton">
                   Disable
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton
+                <EuiSmallButton
                   disabled={!selectedItems.length}
                   onClick={() => {
                     this.onEnable();
@@ -556,7 +556,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
                   data-test-subj="enableButton"
                 >
                   Enable
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
                 <EuiPopover
@@ -572,9 +572,9 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
                 </EuiPopover>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.onClickCreate} fill={true} data-test-subj="createRollupButton">
+                <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="createRollupButton">
                   Create rollup job
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>

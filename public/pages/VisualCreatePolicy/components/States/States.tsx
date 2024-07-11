@@ -5,7 +5,7 @@
 
 import React, { ChangeEvent } from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiText,
   EuiHorizontalRule,
   EuiFlexGroup,
@@ -99,9 +99,9 @@ const States = ({
           (!!policy.states.length ? (
             <>
               <EuiSpacer />
-              <EuiButton onClick={onOpenFlyout} data-test-subj="states-add-state-button" size={useNewUx ? "s" : undefined}>
+              <EuiSmallButton onClick={onOpenFlyout} data-test-subj="states-add-state-button">
                 Add state
-              </EuiButton>
+              </EuiSmallButton>
             </>
           ) : (
             <EuiEmptyPrompt
@@ -109,14 +109,9 @@ const States = ({
               titleSize="s"
               body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
               actions={
-                <EuiButton
-                  color="primary"
-                  onClick={onOpenFlyout}
-                  data-test-subj="states-add-state-button"
-                  size={useNewUx ? "s" : undefined}
-                >
+                <EuiSmallButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
                   Add state
-                </EuiButton>
+                </EuiSmallButton>
               }
             />
           ))}

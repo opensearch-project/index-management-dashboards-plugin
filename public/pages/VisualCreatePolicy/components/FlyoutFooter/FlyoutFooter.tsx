@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiButtonEmpty, EuiButton } from "@elastic/eui";
+import { EuiFlexGroup, EuiFlexItem, EuiButtonEmpty, EuiSmallButton } from "@elastic/eui";
 
 interface FlyoutFooterProps {
   edit: boolean;
@@ -36,15 +36,9 @@ const FlyoutFooter = ({
       </EuiButtonEmpty>
     </EuiFlexItem>
     <EuiFlexItem grow={false}>
-      <EuiButton
-        size={useNewUx ? "s" : undefined}
-        disabled={disabledAction}
-        onClick={onClickAction}
-        fill
-        data-test-subj="flyout-footer-action-button"
-      >
+      <EuiSmallButton disabled={disabledAction} onClick={onClickAction} fill data-test-subj="flyout-footer-action-button">
         {text ? text : restore ? "Restore snapshot" : !save ? `${edit ? "Edit" : "Add"} ${action}` : save ? "Save" : "Create"}
-      </EuiButton>
+      </EuiSmallButton>
     </EuiFlexItem>
   </EuiFlexGroup>
 );

@@ -4,7 +4,7 @@
  */
 import React, { useContext, useEffect, useRef } from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiCallOut,
   EuiModal,
   EuiModalHeader,
@@ -188,10 +188,10 @@ export default function CreateAlias(props: ICreateAliasProps) {
       </EuiModalBody>
       <EuiModalFooter>
         <div>
-          <EuiButton data-test-subj="cancelCreateAliasButton" style={{ marginRight: 20 }} onClick={props.onClose}>
+          <EuiSmallButton data-test-subj="cancelCreateAliasButton" style={{ marginRight: 20 }} onClick={props.onClose}>
             Cancel
-          </EuiButton>
-          <EuiButton
+          </EuiSmallButton>
+          <EuiSmallButton
             fill
             color="primary"
             data-test-subj="createAliasButton"
@@ -241,7 +241,7 @@ export default function CreateAlias(props: ICreateAliasProps) {
             }}
           >
             {isEdit ? "Save changes" : "Create alias"}
-          </EuiButton>
+          </EuiSmallButton>
         </div>
       </EuiModalFooter>
     </EuiModal>

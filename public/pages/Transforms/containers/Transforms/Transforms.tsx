@@ -11,7 +11,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiTitle,
-  EuiButton,
+  EuiSmallButton,
   EuiBasicTable,
   EuiPopover,
   EuiContextMenuPanel,
@@ -200,7 +200,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
     const Actionsize = this.state.useUpdatedUX ? "s" : "m";
 
     const actionButton = (
-      <EuiButton
+      <EuiSmallButton
         iconType="arrowDown"
         iconSide="right"
         disabled={!selectedItems.length}
@@ -209,7 +209,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
         size={Actionsize}
       >
         Actions
-      </EuiButton>
+      </EuiSmallButton>
     );
 
     const actionItems = [
@@ -336,17 +336,17 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
           <EuiFlexItem grow={false}>
             <EuiFlexGroup alignItems="center" gutterSize="s">
               <EuiFlexItem grow={false}>
-                <EuiButton iconType="refresh" onClick={this.getTransforms} data-test-subj="refreshButton">
+                <EuiSmallButton iconType="refresh" onClick={this.getTransforms} data-test-subj="refreshButton">
                   Refresh
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton disabled={!selectedItems.length} onClick={this.onDisable} data-test-subj="disableButton">
+                <EuiSmallButton disabled={!selectedItems.length} onClick={this.onDisable} data-test-subj="disableButton">
                   Disable
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton
+                <EuiSmallButton
                   disabled={!selectedItems.length}
                   onClick={() => {
                     this.onEnable();
@@ -354,7 +354,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                   data-test-subj="enableButton"
                 >
                   Enable
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
                 <EuiPopover
@@ -370,9 +370,9 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                 </EuiPopover>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.onClickCreate} fill={true} data-test-subj="createTransformButton">
+                <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="createTransformButton">
                   Create transform job
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>

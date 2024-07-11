@@ -14,7 +14,7 @@ import {
   EuiFlexGroup,
   EuiButtonEmpty,
   EuiCodeEditor,
-  EuiButton,
+  EuiSmallButton,
 } from "@elastic/eui";
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
 
@@ -114,7 +114,7 @@ export default function IndexFilterPopover({
         <EuiSpacer />
         <EuiFlexGroup direction="rowReverse" alignItems="center" responsive={false}>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill
               onClick={() => {
                 onChangeSourceIndexFilter(queryDsl);
@@ -123,7 +123,7 @@ export default function IndexFilterPopover({
               data-test-subj="saveFilter"
             >
               Save
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiButtonEmpty flush="right" onClick={closePopover} data-test-subj="cancelSaveFilter">

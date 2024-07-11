@@ -11,7 +11,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import IndexFormWrapper, { IndexForm } from "../../../../containers/IndexForm";
-import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink, EuiText } from "@elastic/eui";
+import { EuiSmallButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink, EuiText } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -189,7 +189,7 @@ export default function Rollover(props: RolloverProps) {
                 </CustomFormRow>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton
+                <EuiSmallButton
                   disabled={!writeIndexValue}
                   fill
                   color="primary"
@@ -208,7 +208,7 @@ export default function Rollover(props: RolloverProps) {
                   }}
                 >
                   Assign as write index
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </>
@@ -320,7 +320,7 @@ export default function Rollover(props: RolloverProps) {
             title="Configure new rollover index"
             titleSize="s"
             actions={
-              <EuiButton
+              <EuiSmallButton
                 onClick={() => {
                   indexFormRef.current?.importSettings({
                     index: writingIndex,
@@ -328,7 +328,7 @@ export default function Rollover(props: RolloverProps) {
                 }}
               >
                 Import from old write index
-              </EuiButton>
+              </EuiSmallButton>
             }
           >
             <IndexFormWrapper
@@ -370,7 +370,7 @@ export default function Rollover(props: RolloverProps) {
           </EuiButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton
+          <EuiSmallButton
             disabled={loading || (sourceType === "alias" && !writingIndex)}
             fill
             onClick={async () => {
@@ -407,7 +407,7 @@ export default function Rollover(props: RolloverProps) {
             data-test-subj="rolloverSubmitButton"
           >
             Roll over
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </div>

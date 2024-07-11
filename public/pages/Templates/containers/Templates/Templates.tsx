@@ -15,7 +15,7 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButton,
+  EuiSmallButton,
   EuiLink,
   EuiTitle,
   EuiFormRow,
@@ -339,14 +339,14 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                   </EuiText>
                 }
                 actions={[
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.props.history.push(ROUTES.CREATE_TEMPLATE);
                     }}
                   >
                     Create template
-                  </EuiButton>,
+                  </EuiSmallButton>,
                 ]}
               />
             ) : (
@@ -357,7 +357,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                   </EuiText>
                 }
                 actions={[
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.setState(defaultFilter, () => {
@@ -366,7 +366,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                     }}
                   >
                     Reset filters
-                  </EuiButton>,
+                  </EuiSmallButton>,
                 ]}
               />
             )

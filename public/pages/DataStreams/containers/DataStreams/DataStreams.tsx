@@ -15,7 +15,7 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButton,
+  EuiSmallButton,
   EuiLink,
   EuiTitle,
   EuiFormRow,
@@ -578,14 +578,14 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                     </EuiText>
                   }
                   actions={[
-                    <EuiButton
+                    <EuiSmallButton
                       fill
                       onClick={() => {
                         this.props.history.push(ROUTES.CREATE_DATA_STREAM);
                       }}
                     >
                       Create data stream
-                    </EuiButton>,
+                    </EuiSmallButton>,
                   ]}
                 />
               ) : (
@@ -596,7 +596,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                     </EuiText>
                   }
                   actions={[
-                    <EuiButton
+                    <EuiSmallButton
                       fill
                       onClick={() => {
                         this.setState(defaultFilter, () => {
@@ -605,7 +605,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                       }}
                     >
                       Reset filters
-                    </EuiButton>,
+                    </EuiSmallButton>,
                   ]}
                 />
               )

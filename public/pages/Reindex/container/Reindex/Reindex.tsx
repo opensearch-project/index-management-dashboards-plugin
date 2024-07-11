@@ -4,7 +4,7 @@
  */
 
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiButtonIcon,
   EuiComboBoxOptionOption,
@@ -654,9 +654,9 @@ class Reindex extends Component<ReindexProps, ReindexState> {
               </CustomFormRow>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
+              <EuiSmallButton data-test-subj="createIndexButton" onClick={() => this.setState({ showCreateIndexFlyout: true })}>
                 Create index
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </ContentPanel>
@@ -694,9 +694,9 @@ class Reindex extends Component<ReindexProps, ReindexState> {
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
+            <EuiSmallButton fill onClick={this.onClickAction} isLoading={executing} data-test-subj="reindexConfirmButton">
               Reindex
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
 

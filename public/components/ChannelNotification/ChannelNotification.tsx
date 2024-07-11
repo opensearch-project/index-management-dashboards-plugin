@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiFormRow, EuiTextArea, EuiSelect, EuiButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiFormRow, EuiTextArea, EuiSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { FeatureChannelList } from "../../../server/models/interfaces";
@@ -48,7 +48,7 @@ const ChannelNotification = ({
             />
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               iconType="refresh"
               onClick={getChannels}
               disabled={loadingChannels}
@@ -57,9 +57,9 @@ const ChannelNotification = ({
             />
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+            <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
               Manage channels
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </CustomFormRow>

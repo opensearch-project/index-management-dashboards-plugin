@@ -6,7 +6,7 @@
 import React, { ChangeEvent, Component, Fragment } from "react";
 import {
   EuiBasicTable,
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiComboBoxOptionOption,
   EuiFlexGroup,
@@ -529,9 +529,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
               <EuiFlexItem grow={false}>
                 <EuiPopover
                   button={
-                    <EuiButton iconType="arrowDown" iconSide="right" onClick={this.showDisable} disabled={selectedMetrics.length == 0}>
+                    <EuiSmallButton iconType="arrowDown" iconSide="right" onClick={this.showDisable} disabled={selectedMetrics.length == 0}>
                       Disable all
-                    </EuiButton>
+                    </EuiSmallButton>
                   }
                   isOpen={isDisableOpen}
                   closePopover={this.closeDisable}
@@ -544,9 +544,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
               <EuiFlexItem grow={false}>
                 <EuiPopover
                   button={
-                    <EuiButton iconType="arrowDown" iconSide="right" onClick={this.showEnable} disabled={selectedMetrics.length == 0}>
+                    <EuiSmallButton iconType="arrowDown" iconSide="right" onClick={this.showEnable} disabled={selectedMetrics.length == 0}>
                       Enable all
-                    </EuiButton>
+                    </EuiSmallButton>
                   }
                   isOpen={isEnableOpen}
                   closePopover={this.closeEnable}
@@ -557,9 +557,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                 </EuiPopover>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.showModal} data-test-subj="addFieldsMetric">
+                <EuiSmallButton onClick={this.showModal} data-test-subj="addFieldsMetric">
                   Add fields
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </EuiFlexItem>
@@ -601,9 +601,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                     <EuiSpacer />
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
-                    <EuiButton onClick={this.showModal} data-test-subj="addFieldsMetricEmpty">
+                    <EuiSmallButton onClick={this.showModal} data-test-subj="addFieldsMetricEmpty">
                       Add fields
-                    </EuiButton>
+                    </EuiSmallButton>
                   </EuiFlexItem>
                   <EuiFlexItem>
                     <EuiSpacer />
@@ -642,7 +642,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                   <EuiButtonEmpty onClick={this.closeModal} data-test-subj="addFieldsMetricCancel">
                     Cancel
                   </EuiButtonEmpty>
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.closeModal();
@@ -651,7 +651,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                     data-test-subj="addFieldsMetricAdd"
                   >
                     Add
-                  </EuiButton>
+                  </EuiSmallButton>
                 </EuiModalFooter>
               </EuiModal>
             </EuiOverlayMask>

@@ -9,7 +9,7 @@ import {
   EuiTitle,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiCallOut,
   EuiLink,
@@ -307,15 +307,9 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
-              fill
-              onClick={this.onSubmit}
-              isLoading={isSubmitting}
-              data-test-subj="createPolicyCreateButton"
-              size={useNewUX ? "s" : undefined}
-            >
+            <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createPolicyCreateButton">
               {isEdit ? "Update" : "Create"}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </div>

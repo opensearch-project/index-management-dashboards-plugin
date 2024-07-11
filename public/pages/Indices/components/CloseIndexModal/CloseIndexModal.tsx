@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiFieldText,
   EuiModal,
@@ -73,9 +73,9 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
         <EuiButtonEmpty data-test-subj="Close Cancel button" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
-        <EuiButton data-test-subj="Close Confirm button" onClick={onConfirm} fill disabled={value !== "close"}>
+        <EuiSmallButton data-test-subj="Close Confirm button" onClick={onConfirm} fill disabled={value !== "close"}>
           Close
-        </EuiButton>
+        </EuiSmallButton>
       </EuiModalFooter>
     </EuiModal>
   );

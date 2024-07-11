@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiButton, EuiFormRow, EuiDragDropContext, EuiDroppable, EuiSpacer, EuiText, DropResult } from "@elastic/eui";
+import { EuiSmallButton, EuiFormRow, EuiDragDropContext, EuiDroppable, EuiSpacer, EuiText, DropResult } from "@elastic/eui";
 import DraggableItem from "../../components/DraggableItem";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
 import { Action, UIAction } from "../../../../../models/interfaces";
@@ -56,9 +56,7 @@ const Actions = ({ actions, onClickDeleteAction, onClickEditAction, onDragEndAct
 
       <EuiSpacer />
 
-      <EuiButton onClick={onClickAddAction} size={useNewUx ? "s" : undefined}>
-        + Add action
-      </EuiButton>
+      <EuiSmallButton onClick={onClickAddAction}>+ Add action</EuiSmallButton>
     </>
   );
 };

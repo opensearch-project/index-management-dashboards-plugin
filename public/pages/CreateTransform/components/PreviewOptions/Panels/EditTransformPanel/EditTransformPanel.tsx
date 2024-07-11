@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { EuiButton, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
+import { EuiSmallButton, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
 import { TransformAggItem } from "../../../../../../../models/interfaces";
 
 interface EditTransformPanelProps {
@@ -43,12 +43,12 @@ export default function EditTransformPanel({ name, aggList, onEditTransformation
       <EuiSpacer size="s" />
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>
-          <EuiButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
+          <EuiSmallButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
             Cancel
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton
+          <EuiSmallButton
             fill
             fullWidth={false}
             disabled={transformNameError !== ""}
@@ -60,7 +60,7 @@ export default function EditTransformPanel({ name, aggList, onEditTransformation
             style={{ minWidth: 55 }}
           >
             OK
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPanel>

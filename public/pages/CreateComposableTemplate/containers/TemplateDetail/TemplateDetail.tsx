@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
+import { EuiSmallButton, EuiButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField from "../../../../lib/field";
@@ -278,9 +278,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
                   </>
                 ) : (
                   <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-                    <EuiButton style={{ marginRight: 20 }} onClick={onClickViewJson}>
+                    <EuiSmallButton style={{ marginRight: 20 }} onClick={onClickViewJson}>
                       View JSON
-                    </EuiButton>
+                    </EuiSmallButton>
                     <ComposableTemplatesActions selectedItems={[templateName || ""]} history={props.history} onDelete={onDelete} />
                   </EuiFlexItem>
                 )}
@@ -309,15 +309,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton
-                fill
-                onClick={onClickSubmit}
-                isLoading={isSubmitting}
-                data-test-subj="CreateComposableTemplateCreateButton"
-                size={useNewUX ? "s" : undefined}
-              >
+              <EuiSmallButton fill onClick={onClickSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
                 Create component template
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </>

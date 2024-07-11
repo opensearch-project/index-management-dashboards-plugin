@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle, EuiText } from "@elastic/eui";
+import { EuiSmallButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle, EuiText } from "@elastic/eui";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -184,7 +184,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
 
             {isEdit ? (
               <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-                <EuiButton
+                <EuiSmallButton
                   style={{ marginRight: 20 }}
                   onClick={() => {
                     Modal.show({
@@ -195,7 +195,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
                   }}
                 >
                   View JSON
-                </EuiButton>
+                </EuiSmallButton>
                 <DataStreamsActions
                   selectedItems={values ? ([values] as DataStreamInEdit[]) : []}
                   history={props.history}
@@ -213,9 +213,9 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
             To create a data stream, you must first define its mappings and settings by creating a data stream template.
             <EuiSpacer size="s" />
             <div>
-              <EuiButton onClick={() => props.history.push(`${ROUTES.CREATE_TEMPLATE}?values=${JSON.stringify({ data_stream: {} })}`)}>
+              <EuiSmallButton onClick={() => props.history.push(`${ROUTES.CREATE_TEMPLATE}?values=${JSON.stringify({ data_stream: {} })}`)}>
                 Create template
-              </EuiButton>
+              </EuiSmallButton>
             </div>
           </EuiCallOut>
           <EuiSpacer />
@@ -252,9 +252,9 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={onSubmit} isLoading={isLoading} data-test-subj="CreateDataStreamCreateButton">
+              <EuiSmallButton fill onClick={onSubmit} isLoading={isLoading} data-test-subj="CreateDataStreamCreateButton">
                 {isEdit ? "Save changes" : "Create data stream"}
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </>

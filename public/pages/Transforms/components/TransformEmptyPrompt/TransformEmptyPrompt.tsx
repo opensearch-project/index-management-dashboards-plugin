@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiButton, EuiEmptyPrompt, EuiText } from "@elastic/eui";
+import { EuiSmallButton, EuiEmptyPrompt, EuiText } from "@elastic/eui";
 import { PLUGIN_NAME, ROUTES } from "../../../../utils/constants";
 import { getUISettings } from "../../../../services/Services";
 
@@ -36,20 +36,16 @@ const getActions: React.SFC<TransformEmptyPromptProps> = ({ filterIsApplied, loa
 
   if (filterIsApplied) {
     return (
-      <EuiButton size={useUpdatedUX ? "s" : undefined} fill onClick={resetFilters} data-test-subj="transformEmptyPromptRestFilters">
+      <EuiSmallButton fill onClick={resetFilters} data-test-subj="transformEmptyPromptRestFilters">
         Reset Filters
-      </EuiButton>
+      </EuiSmallButton>
     );
   }
 
   return (
-    <EuiButton
-      size={useUpdatedUX ? "s" : undefined}
-      href={`${PLUGIN_NAME}#${ROUTES.CREATE_TRANSFORM}`}
-      data-test-subj="emptyPromptCreateTransformButton"
-    >
+    <EuiSmallButton href={`${PLUGIN_NAME}#${ROUTES.CREATE_TRANSFORM}`} data-test-subj="emptyPromptCreateTransformButton">
       Create transform
-    </EuiButton>
+    </EuiSmallButton>
   );
 };
 

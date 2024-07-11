@@ -5,7 +5,7 @@
 
 import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiSpacer, EuiTitle, EuiButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from "@elastic/eui";
+import { EuiSpacer, EuiTitle, EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty } from "@elastic/eui";
 import { IndexService, ManagedIndexService } from "../../../../services";
 import ChangeManagedIndices from "../../components/ChangeManagedIndices";
 import NewPolicy from "../../components/NewPolicy";
@@ -194,14 +194,14 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
 
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty size={useUpdatedUX ? "s" : undefined} onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
+              <EuiButtonEmpty onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
                 Cancel
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton size={useUpdatedUX ? "s" : undefined} fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
+              <EuiSmallButton fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
                 Change
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </>

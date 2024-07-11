@@ -7,6 +7,7 @@ import React, { Component, useContext } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import {
+  EuiSmallButton,
   EuiInMemoryTable,
   EuiLink,
   EuiTableFieldDataColumnType,
@@ -524,18 +525,18 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
     };
 
     const actions = [
-      <EuiButton iconType="refresh" onClick={this.getSnapshots} data-test-subj="refreshButton">
+      <EuiSmallButton iconType="refresh" onClick={this.getSnapshots} data-test-subj="refreshButton">
         Refresh
-      </EuiButton>,
-      <EuiButton disabled={!selectedItems.length} onClick={this.showDeleteModal} data-test-subj="deleteButton" color="danger">
+      </EuiSmallButton>,
+      <EuiSmallButton disabled={!selectedItems.length} onClick={this.showDeleteModal} data-test-subj="deleteButton" color="danger">
         Delete
-      </EuiButton>,
-      <EuiButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="primary" data-test-subj="restoreButton">
+      </EuiSmallButton>,
+      <EuiSmallButton disabled={selectedItems.length !== 1} onClick={this.onClickRestore} color="primary" data-test-subj="restoreButton">
         Restore
-      </EuiButton>,
-      <EuiButton onClick={this.onClickCreate} fill={true} data-test-subj="takeSnapshotButton">
+      </EuiSmallButton>,
+      <EuiSmallButton onClick={this.onClickCreate} fill={true} data-test-subj="takeSnapshotButton">
         Take snapshot
-      </EuiButton>,
+      </EuiSmallButton>,
     ];
 
     const subTitleText = (

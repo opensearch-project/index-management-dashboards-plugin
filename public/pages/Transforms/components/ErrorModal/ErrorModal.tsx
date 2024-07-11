@@ -5,7 +5,7 @@
 
 import React from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -37,9 +37,9 @@ const ErrorModal = ({ metadata, onClose }: ErrorModalProps) => (
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButton fill onClick={onClose} data-test-subj="errorModalCloseButton">
+        <EuiSmallButton fill onClick={onClose} data-test-subj="errorModalCloseButton">
           Close
-        </EuiButton>
+        </EuiSmallButton>
       </EuiModalFooter>
     </EuiModal>
   </EuiOverlayMask>

@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiFieldText,
   EuiModal,
@@ -71,9 +71,9 @@ export default function DeleteTemplateModal(props: DeleteModalProps) {
         <EuiButtonEmpty data-test-subj="deletaCancelButton" onClick={onClose}>
           Cancel
         </EuiButtonEmpty>
-        <EuiButton data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger" disabled={value !== "delete"}>
+        <EuiSmallButton data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger" disabled={value !== "delete"}>
           Delete
-        </EuiButton>
+        </EuiSmallButton>
       </EuiModalFooter>
     </EuiModal>
   );

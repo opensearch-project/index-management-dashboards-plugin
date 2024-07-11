@@ -5,7 +5,7 @@
 
 import React, { Component } from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiModal,
   EuiModalBody,
@@ -87,9 +87,14 @@ export default class RolloverAliasModal extends Component<RolloverAliasModalProp
               Close
             </EuiButtonEmpty>
 
-            <EuiButton onClick={this.onEditRolloverAlias} disabled={!rolloverAlias} fill data-test-subj="editRolloverAliasModalAddButton">
+            <EuiSmallButton
+              onClick={this.onEditRolloverAlias}
+              disabled={!rolloverAlias}
+              fill
+              data-test-subj="editRolloverAliasModalAddButton"
+            >
               Edit
-            </EuiButton>
+            </EuiSmallButton>
           </EuiModalFooter>
         </EuiModal>
       </EuiOverlayMask>

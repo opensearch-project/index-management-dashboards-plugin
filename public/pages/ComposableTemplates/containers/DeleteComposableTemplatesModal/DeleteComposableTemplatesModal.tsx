@@ -8,7 +8,7 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiLoadingSpinner,
   EuiModal,
@@ -150,12 +150,19 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
           Cancel
         </EuiButtonEmpty>
         {!linkedIndexItemCount ? (
-          <EuiButton disabled={loading} isLoading={loading} data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger">
+          <EuiSmallButton
+            disabled={loading}
+            isLoading={loading}
+            data-test-subj="deleteConfirmButton"
+            onClick={onConfirm}
+            fill
+            color="danger"
+          >
             Delete
-          </EuiButton>
+          </EuiSmallButton>
         ) : null}
         {linkedIndexItemCount ? (
-          <EuiButton
+          <EuiSmallButton
             data-test-subj="deleteConfirmUnlinkButton"
             onClick={onConfirm}
             disabled={!checked || loading}
@@ -164,7 +171,7 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
             color="danger"
           >
             Apply changes
-          </EuiButton>
+          </EuiSmallButton>
         ) : null}
       </EuiModalFooter>
     </EuiModal>

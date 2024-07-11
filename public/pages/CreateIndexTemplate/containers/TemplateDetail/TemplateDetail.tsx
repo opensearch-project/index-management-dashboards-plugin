@@ -5,7 +5,7 @@
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiButtonEmpty,
   EuiButtonIcon,
   EuiCodeBlock,
@@ -175,7 +175,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
 
   const PreviewTemplateButton = () => (
     <EuiFlexItem grow={false}>
-      <EuiButton
+      <EuiSmallButton
         onClick={async () => {
           const result = await simulateTemplate({
             template: field.getValues(),
@@ -192,7 +192,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         color="ghost"
       >
         Preview template
-      </EuiButton>
+      </EuiSmallButton>
     </EuiFlexItem>
   );
   const { HeaderControl } = getNavigationUI();
@@ -292,7 +292,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           {isEdit ? (
             <>
               <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-                <EuiButton
+                <EuiSmallButton
                   style={{ marginRight: 20 }}
                   onClick={() => {
                     const showValue: TemplateItemRemote = {
@@ -317,10 +317,10 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   }}
                 >
                   View JSON
-                </EuiButton>
-                <EuiButton color="danger" onClick={() => setVisible(true)}>
+                </EuiSmallButton>
+                <EuiSmallButton color="danger" onClick={() => setVisible(true)}>
                   Delete
-                </EuiButton>
+                </EuiSmallButton>
                 <DeleteTemplateModal
                   visible={visible}
                   selectedItems={[templateName]}
@@ -440,7 +440,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
               </EuiFlexItem>
               <PreviewTemplateButton />
               <EuiFlexItem grow={false}>
-                <EuiButton
+                <EuiSmallButton
                   fill
                   onClick={async () => {
                     const result = await onSubmit();
@@ -457,7 +457,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   data-test-subj="CreateIndexTemplateCreateButton"
                 >
                   Create template
-                </EuiButton>
+                </EuiSmallButton>
               </EuiFlexItem>
             </EuiFlexGroup>
           </BottomBar>

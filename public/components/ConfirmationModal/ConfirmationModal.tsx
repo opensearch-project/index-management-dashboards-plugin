@@ -5,7 +5,7 @@
 
 import React from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -50,7 +50,7 @@ const ConfirmationModal: React.SFC<ConfirmationModalProps> = ({
           <EuiButtonEmpty onClick={onClose} data-test-subj="confirmationModalCloseButton">
             Cancel
           </EuiButtonEmpty>
-          <EuiButton
+          <EuiSmallButton
             onClick={() => {
               onAction();
               onClose();
@@ -60,7 +60,7 @@ const ConfirmationModal: React.SFC<ConfirmationModalProps> = ({
             {...actionProps}
           >
             {actionMessage}
-          </EuiButton>
+          </EuiSmallButton>
         </EuiModalFooter>
       </EuiModal>
     </EuiOverlayMask>
