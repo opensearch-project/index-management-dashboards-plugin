@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiCompressedFormRow, EuiCodeEditor, EuiCompressedFieldText, EuiSpacer, EuiRadioGroup, EuiCallOut } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCodeEditor, EuiCompressedFieldText, EuiSpacer, EuiCompressedRadioGroup, EuiCallOut } from "@elastic/eui";
 import { ShrinkAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -214,7 +214,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           isInvalid={false}
         />
         <EuiCompressedFormRow fullWidth isInvalid={false} error={null} style={{ maxWidth: "100%" }}>
-          <EuiRadioGroup
+          <EuiCompressedRadioGroup
             options={radios}
             idSelected={this.action.force_unsafe_input}
             onChange={(id) => {

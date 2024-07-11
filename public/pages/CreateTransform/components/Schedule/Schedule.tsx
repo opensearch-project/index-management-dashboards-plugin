@@ -7,7 +7,7 @@ import React, { ChangeEvent, Component } from "react";
 import {
   EuiSpacer,
   EuiCompressedCheckbox,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiCompressedFormRow,
   EuiCompressedFieldNumber,
   EuiAccordion,
@@ -47,7 +47,12 @@ const radios = [
 const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: string) => void) => (
   <React.Fragment>
     <EuiCompressedFormRow label="Continuous">
-      <EuiRadioGroup options={radios} idSelected={continuousJob} onChange={(id) => onChangeContinuousJob(id)} name="continuousJob" />
+      <EuiCompressedRadioGroup
+        options={radios}
+        idSelected={continuousJob}
+        onChange={(id) => onChangeContinuousJob(id)}
+        name="continuousJob"
+      />
     </EuiCompressedFormRow>
     <EuiSpacer size="m" />
   </React.Fragment>

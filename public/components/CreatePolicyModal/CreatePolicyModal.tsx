@@ -17,7 +17,7 @@ import {
   EuiFlexItem,
   EuiText,
   EuiCompressedFormRow,
-  EuiRadio,
+  EuiCompressedRadio,
   EuiPanel,
 } from "@elastic/eui";
 
@@ -54,7 +54,7 @@ const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, 
                         isEdit ? "" : " using pre-defined options."
                       }`}
                     >
-                      <EuiRadio
+                      <EuiCompressedRadio
                         id="create-policy-visual"
                         label="Visual editor"
                         checked={visual}
@@ -69,7 +69,7 @@ const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, 
                     <EuiCompressedFormRow
                       helpText={`Use the JSON editor to ${isEdit ? "update" : "create or import"} your policy using JSON.`}
                     >
-                      <EuiRadio
+                      <EuiCompressedRadio
                         id="create-policy-json"
                         label="JSON editor"
                         checked={!visual}

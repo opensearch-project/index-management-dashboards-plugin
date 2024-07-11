@@ -11,7 +11,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiCompressedFieldNumber,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiComboBoxOptionOption,
   EuiPanel,
   EuiTitle,
@@ -104,7 +104,12 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
           </EuiCompressedFormRow>
           <EuiSpacer size="m" />
           <EuiCompressedFormRow label="Interval type">
-            <EuiRadioGroup options={radios} idSelected={intervalType} onChange={(id) => onChangeIntervalType(id)} name="intervalType" />
+            <EuiCompressedRadioGroup
+              options={radios}
+              idSelected={intervalType}
+              onChange={(id) => onChangeIntervalType(id)}
+              name="intervalType"
+            />
           </EuiCompressedFormRow>
           <EuiFlexGroup style={{ maxWidth: 300 }}>
             {intervalType == "fixed" ? (

@@ -13,7 +13,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiOverlayMask,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiCompressedSelect,
   EuiSpacer,
   EuiCompressedFormRow,
@@ -139,7 +139,7 @@ export default class RetryModal extends Component<RetryModalProps, RetryModalSta
           </EuiModalHeader>
 
           <EuiModalBody>
-            <EuiRadioGroup options={radioOptions} idSelected={radioIdSelected} onChange={this.onChange} />
+            <EuiCompressedRadioGroup options={radioOptions} idSelected={radioIdSelected} onChange={this.onChange} />
 
             <EuiSpacer size="s" />
             <EuiCompressedFormRow label="Start state" helpText="Only common states shared across all selected indexes are available">

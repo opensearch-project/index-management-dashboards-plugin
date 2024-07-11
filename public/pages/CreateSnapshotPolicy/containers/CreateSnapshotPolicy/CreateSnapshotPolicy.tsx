@@ -19,7 +19,7 @@ import {
   EuiComboBoxOptionOption,
   EuiCompressedFieldNumber,
   EuiAccordion,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiText,
   EuiCompressedCheckbox,
   EuiPanel,

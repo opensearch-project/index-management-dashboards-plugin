@@ -11,7 +11,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiLink,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiSpacer,
   EuiSwitchEvent,
   EuiText,
@@ -583,7 +583,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
 
           <EuiSpacer />
           <CustomFormRow>
-            <EuiRadioGroup
+            <EuiCompressedRadioGroup
               options={[
                 {
                   id: "all",

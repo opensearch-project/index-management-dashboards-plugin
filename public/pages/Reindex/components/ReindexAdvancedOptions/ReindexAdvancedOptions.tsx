@@ -11,7 +11,7 @@ import {
   EuiComboBoxOptionOption,
   EuiCompressedFieldNumber,
   EuiLink,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiSpacer,
 } from "@elastic/eui";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -123,7 +123,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           {sliceEnabled ? (
             <>
               <EuiSpacer />
-              <EuiRadioGroup
+              <EuiCompressedRadioGroup
                 options={[
                   {
                     id: "auto",
