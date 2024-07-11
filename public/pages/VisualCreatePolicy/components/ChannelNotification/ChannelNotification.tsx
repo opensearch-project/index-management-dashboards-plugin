@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiFormRow, EuiTextArea, EuiSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiTextArea, EuiSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { FeatureChannelList } from "../../../../../server/models/interfaces";
@@ -38,7 +38,7 @@ const ChannelNotification = ({
       <EuiFormCustomLabel title="Channel ID" />
       <EuiFlexGroup gutterSize="s" style={{ maxWidth: 600 }}>
         <EuiFlexItem>
-          <EuiFormRow>
+          <EuiCompressedFormRow>
             <EuiSelect
               compressed={useNewUx}
               id={actionNotification ? "action-channel-id" : "channel-id"}
@@ -50,7 +50,7 @@ const ChannelNotification = ({
               onChange={onChangeChannelId}
               data-test-subj={actionNotification ? "create-policy-notification-action-channel-id" : "create-policy-notification-channel-id"}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiSmallButton
@@ -75,7 +75,7 @@ const ChannelNotification = ({
 
           <EuiFormCustomLabel title="Notification message" helpText="Embed variables in your message using Mustache template." />
 
-          <EuiFormRow>
+          <EuiCompressedFormRow>
             <EuiTextArea
               placeholder="The index {{ctx.index}} failed during policy execution."
               style={{ minHeight: "150px" }}
@@ -84,7 +84,7 @@ const ChannelNotification = ({
               onChange={onChangeMessage}
               data-test-subj={actionNotification ? "create-policy-notification-action-message" : "create-policy-notification-message"}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </>
       )}
     </>

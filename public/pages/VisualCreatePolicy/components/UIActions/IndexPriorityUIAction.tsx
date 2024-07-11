@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiFieldNumber } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiFieldNumber } from "@elastic/eui";
 import EuiFormCustomLabel from "../EuiFormCustomLabel";
 import { IndexPriorityAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
@@ -38,7 +38,7 @@ export default class IndexPriorityUIAction implements UIAction<IndexPriorityActi
           helpText="Higher priority indices are recovered first when possible."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldNumber
             fullWidth
             value={typeof priority === "undefined" ? "" : priority}
@@ -50,7 +50,7 @@ export default class IndexPriorityUIAction implements UIAction<IndexPriorityActi
             }}
             data-test-subj="action-render-index-priority"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </>
     );
   };

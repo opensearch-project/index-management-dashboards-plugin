@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiFieldNumber } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiFieldNumber } from "@elastic/eui";
 import { ReplicaCountAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -38,7 +38,7 @@ export default class ReplicaCountUIAction implements UIAction<ReplicaCountAction
           helpText="The number of replicas to set for the index."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldNumber
             fullWidth
             value={typeof replicas === "undefined" ? "" : replicas}
@@ -50,7 +50,7 @@ export default class ReplicaCountUIAction implements UIAction<ReplicaCountAction
             }}
             data-test-subj="action-render-replica-count"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </>
     );
   };

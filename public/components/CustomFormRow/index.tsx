@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React from "react";
-import { EuiDescribedFormGroup, EuiFormRow, EuiFormRowProps } from "@elastic/eui";
+import { EuiDescribedFormGroup, EuiCompressedFormRow, EuiFormRowProps } from "@elastic/eui";
 
 export type CustomFormRowProps = {
   position?: "top" | "bottom";
@@ -30,13 +30,13 @@ export default function CustomFormRow(props: CustomFormRowProps) {
         }
         description={helpText}
       >
-        {children ? <EuiFormRow {...others}>{children}</EuiFormRow> : null}
+        {children ? <EuiCompressedFormRow {...others}>{children}</EuiCompressedFormRow> : null}
       </EuiDescribedFormGroup>
     );
   }
 
   return (
-    <EuiFormRow
+    <EuiCompressedFormRow
       {...others}
       label={
         isOptional ? (
@@ -58,6 +58,6 @@ export default function CustomFormRow(props: CustomFormRowProps) {
         ) : null}
         {children}
       </>
-    </EuiFormRow>
+    </EuiCompressedFormRow>
   );
 }

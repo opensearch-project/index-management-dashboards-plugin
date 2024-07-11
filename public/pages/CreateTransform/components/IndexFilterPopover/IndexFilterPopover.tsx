@@ -7,7 +7,7 @@ import React, { ChangeEvent, useState } from "react";
 import {
   EuiForm,
   EuiFlexItem,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiSelect,
   EuiPopoverTitle,
   EuiSpacer,
@@ -52,7 +52,7 @@ export default function IndexFilterPopover({
       <div>
         <EuiFlexGroup>
           <EuiFlexItem grow={false}>
-            <EuiFormRow label="Field">
+            <EuiCompressedFormRow label="Field">
               <EuiSelect
                 id="selectField"
                 options={fields.map((item) => {
@@ -64,10 +64,10 @@ export default function IndexFilterPopover({
                 value={selectedField}
                 onChange={onChangeSelectedField}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiFormRow label="Operator">
+            <EuiCompressedFormRow label="Operator">
               <EuiSelect
                 id="selectOperator"
                 options={[]}
@@ -75,13 +75,13 @@ export default function IndexFilterPopover({
                 value={selectedOperator}
                 onChange={onChangeSelectedOperator}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiFlexItem>
-          <EuiFormRow label="Value">
+          <EuiCompressedFormRow label="Value">
             <EuiSelect id="selectValue" options={[]} value={selectedValue} onChange={onChangeSelectedValue} />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </EuiFlexItem>
       </div>
     );
@@ -89,14 +89,14 @@ export default function IndexFilterPopover({
 
   function customEditor() {
     return (
-      <EuiFormRow label="Custom query DSL">
+      <EuiCompressedFormRow label="Custom query DSL">
         <EuiCodeEditor
           style={{ width: 0.38 * window.innerWidth, height: 0.4 * window.innerHeight }}
           value={queryDsl}
           onChange={(string) => setQueryDsl(string)}
           mode="json"
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     );
   }
 

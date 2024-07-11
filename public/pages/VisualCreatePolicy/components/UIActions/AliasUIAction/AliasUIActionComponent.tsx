@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiComboBox, EuiComboBoxOptionOption, EuiFormRow, EuiSpacer, EuiSwitch } from "@elastic/eui";
+import { EuiComboBox, EuiComboBoxOptionOption, EuiCompressedFormRow, EuiSpacer, EuiSwitch } from "@elastic/eui";
 import { AliasAction, AliasActionItem, AliasActions, UIAction } from "../../../../../../models/interfaces";
 import AliasUIAction, { MAX_ALIAS_ACTIONS } from "./AliasUIAction";
 import { inputLimitText } from "../../../../CreatePolicy/utils/helpers";
@@ -96,7 +96,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
         {addAliasToggle && (
           <>
             <EuiSpacer size={"m"} />
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={"Select aliases to add to indexes"}
               fullWidth
               style={{ maxWidth: "100%" }}
@@ -120,7 +120,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
                 />
                 {inputLimitText(selectedItems.add?.length, MAX_ALIAS_ACTIONS, "alias", "aliases")}
               </>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         )}
 
@@ -139,7 +139,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
         {removeAliasToggle && (
           <>
             <EuiSpacer size={"m"} />
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={"Select aliases to remove from indexes"}
               fullWidth
               style={{ maxWidth: "100%" }}
@@ -163,7 +163,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
                 />
                 {inputLimitText(selectedItems.remove?.length, MAX_ALIAS_ACTIONS, "alias", "aliases")}
               </>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         )}
       </>

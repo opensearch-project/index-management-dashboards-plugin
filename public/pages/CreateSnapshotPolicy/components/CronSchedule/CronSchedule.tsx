@@ -13,7 +13,7 @@ import {
   EuiFieldText,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLink,
   EuiSelect,
   EuiSpacer,
@@ -183,14 +183,14 @@ const CronSchedule = ({
           {frequencyType === "custom" ? (
             <>
               <CustomLabel title="Cron expression" />
-              <EuiFormRow helpText={cronExpressionHelpText}>
+              <EuiCompressedFormRow helpText={cronExpressionHelpText}>
                 <EuiFieldText
                   value={cronExpression}
                   onChange={(e) => {
                     onCronExpressionChange(e.target.value);
                   }}
                 />
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             </>
           ) : (
             <>
@@ -207,7 +207,7 @@ const CronSchedule = ({
         {showTimezone ? (
           <EuiFlexItem style={{ maxWidth: 250 }}>
             <CustomLabel title="Time zone" />
-            <EuiFormRow isInvalid={!!timezoneError} error={timezoneError}>
+            <EuiCompressedFormRow isInvalid={!!timezoneError} error={timezoneError}>
               <EuiComboBox
                 placeholder="Select a time zone"
                 singleSelection={{ asPlainText: true }}
@@ -220,7 +220,7 @@ const CronSchedule = ({
                   }
                 }}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         ) : null}
       </EuiFlexGroup>

@@ -16,7 +16,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiRadio,
   EuiPanel,
 } from "@elastic/eui";
@@ -49,7 +49,7 @@ const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, 
               <EuiFlexGroup>
                 <EuiFlexItem>
                   <EuiPanel className={visual ? "selected-radio-panel" : ""}>
-                    <EuiFormRow
+                    <EuiCompressedFormRow
                       helpText={`Use the visual editor to ${isEdit ? "update" : "create"} your policy${
                         isEdit ? "" : " using pre-defined options."
                       }`}
@@ -61,12 +61,14 @@ const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, 
                         onChange={(e) => setVisual(e.target.checked)}
                         data-test-subj="createPolicyModalVisualRadio"
                       />
-                    </EuiFormRow>
+                    </EuiCompressedFormRow>
                   </EuiPanel>
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <EuiPanel className={visual ? "" : "selected-radio-panel"}>
-                    <EuiFormRow helpText={`Use the JSON editor to ${isEdit ? "update" : "create or import"} your policy using JSON.`}>
+                    <EuiCompressedFormRow
+                      helpText={`Use the JSON editor to ${isEdit ? "update" : "create or import"} your policy using JSON.`}
+                    >
                       <EuiRadio
                         id="create-policy-json"
                         label="JSON editor"
@@ -74,7 +76,7 @@ const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, 
                         onChange={(e) => setVisual(!e.target.checked)}
                         data-test-subj="createPolicyModalJsonRadio"
                       />
-                    </EuiFormRow>
+                    </EuiCompressedFormRow>
                   </EuiPanel>
                 </EuiFlexItem>
               </EuiFlexGroup>

@@ -18,7 +18,7 @@ import {
   EuiSmallButton,
   EuiLink,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiEmptyPrompt,
   EuiText,
   EuiHealth,
@@ -471,7 +471,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
               <EuiTitle size="s">
                 <span>Data streams</span>
               </EuiTitle>
-              <EuiFormRow
+              <EuiCompressedFormRow
                 fullWidth
                 helpText={
                   <div>
@@ -484,7 +484,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                 }
               >
                 <></>
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             </>
           }
         >

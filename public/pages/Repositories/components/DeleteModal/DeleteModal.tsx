@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiConfirmModal, EuiFieldText, EuiForm, EuiFormRow, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
+import { EuiConfirmModal, EuiFieldText, EuiForm, EuiCompressedFormRow, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
 
 interface DeleteModalProps {
   closeDeleteModal: (event?: any) => void;
@@ -59,9 +59,9 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
             </p>
             <EuiSpacer size="s" />
             {!!confirmation && (
-              <EuiFormRow helpText={`To confirm deletion, type "delete".`}>
+              <EuiCompressedFormRow helpText={`To confirm deletion, type "delete".`}>
                 <EuiFieldText value={confirmDeleteText} placeholder="delete" onChange={this.onChange} data-test-subj="deleteTextField" />
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             )}
           </EuiForm>
         </EuiConfirmModal>

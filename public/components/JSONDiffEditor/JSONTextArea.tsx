@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useState, useEffect, useImperativeHandle, useRef } from "react";
-import { EuiFormRow } from "@elastic/eui";
+import { EuiCompressedFormRow } from "@elastic/eui";
 import type { MonacoDiffEditorProps } from "react-monaco-editor";
 import { IJSONEditorRef } from "../JSONEditor";
 import CustomFormRow from "../CustomFormRow";
@@ -74,13 +74,13 @@ const JSONDiffEditor = forwardRef(({ value, onChange, ...others }: JSONDiffEdito
         </div>
       </div>
       {confirmModalVisible && (
-        <EuiFormRow
+        <EuiCompressedFormRow
           fullWidth
           isInvalid={confirmModalVisible}
           error="Your input does not match the validation of json format, please fix the error line with error aside."
         >
           <></>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       )}
     </div>
   );

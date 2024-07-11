@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiFieldNumber, EuiFieldText, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiFieldNumber, EuiFieldText, EuiSpacer } from "@elastic/eui";
 import { RolloverAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -47,7 +47,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
           helpText={`The minimum age required to roll over the index. Accepts time units, e.g. "5h" or "1d".`}
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
           <EuiFieldText
             fullWidth
             value={rollover.min_index_age || ""}
@@ -60,14 +60,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             }}
             data-test-subj="action-render-rollover-min-index-age"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Minimum doc count"
           helpText="The minimum number of documents required to roll over the index."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFieldNumber
             fullWidth
             value={typeof rollover.min_doc_count === "undefined" ? "" : rollover.min_doc_count}
@@ -80,14 +80,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             }}
             data-test-subj="action-render-rollover-min-doc-count"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Minimum index size"
           helpText={`The minimum size of the total primary shard storage required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".`}
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFieldText
             fullWidth
             value={rollover.min_size || ""}
@@ -100,14 +100,14 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             }}
             data-test-subj="action-render-rollover-min-size"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Minimum primary shard size"
           helpText={`The minimum size of a single primary shard required to roll over the index. Accepts byte units, e.g. "500mb" or "50gb".`}
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow fullWidth isInvalid={false} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFieldText
             fullWidth
             value={rollover.min_primary_shard_size || ""}
@@ -120,7 +120,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
             }}
             data-test-subj="action-render-rollover-min-primary-shard-size"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </>
     );
   };

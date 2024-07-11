@@ -9,7 +9,7 @@ import {
   EuiComboBoxOptionOption,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiSelect,
   EuiSelectOption,
   EuiSpacer,
@@ -81,7 +81,7 @@ const SnapshotIndicesRepoInput = ({
       <EuiFlexGroup alignItems="flexEnd">
         <EuiFlexItem style={{ maxWidth: "400px" }}>
           <CustomLabel title="Select a repository for snapshots" />
-          <EuiFormRow isInvalid={!!repoError} error={repoError}>
+          <EuiCompressedFormRow isInvalid={!!repoError} error={repoError}>
             <EuiSelect
               placeholder="Select a repository"
               disabled={repoOptions.length === 0}
@@ -89,7 +89,7 @@ const SnapshotIndicesRepoInput = ({
               value={selectedRepoValue}
               onChange={onRepoSelectionChange}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </EuiFlexItem>
 
         {showFlyout != null && (

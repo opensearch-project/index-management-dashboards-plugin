@@ -5,7 +5,7 @@
 
 import { GROUP_TYPES, TRANSFORM_AGG_TYPE, TransformAggItem, TransformGroupItem } from "../../../../../../../models/interfaces";
 import React, { useState } from "react";
-import { EuiSmallButton, EuiFieldNumber, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
+import { EuiSmallButton, EuiFieldNumber, EuiFlexGroup, EuiFlexItem, EuiCompressedFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
 
 interface HistogramPanelProps {
   name: string;
@@ -21,9 +21,9 @@ export default function HistogramPanel({ name, handleGroupSelectionChange, close
     <EuiPanel>
       <EuiFlexGroup>
         <EuiFlexItem grow={false} style={{ width: 109 }}>
-          <EuiFormRow label="Histogram interval">
+          <EuiCompressedFormRow label="Histogram interval">
             <EuiFieldNumber value={histogramInterval} onChange={(e) => setHistogramInterval(e.target.valueAsNumber)} />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
           <EuiSpacer size="s" />
         </EuiFlexItem>
         <EuiFlexItem grow={false} />

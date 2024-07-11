@@ -22,7 +22,7 @@ import {
   EuiTableSelectionType,
   EuiCheckbox,
   EuiText,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiPanel,
   EuiTitle,
   EuiFormHelpText,
@@ -260,7 +260,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         truncateText: true,
         render: (all: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiCheckbox
                 compressed
                 id={`all-${item.source_field.label}`}
@@ -268,7 +268,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                 onChange={(e) => this.setChecked(e, "all", item)}
                 data-test-subj={`all-${item.source_field.label}`}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiForm>
         ),
       },
@@ -278,7 +278,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (min: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiCheckbox
                 compressed
                 id={`min-${item.source_field.label}`}
@@ -286,7 +286,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                 onChange={(e) => this.setChecked(e, "min", item)}
                 data-test-subj={`min-${item.source_field.label}`}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiForm>
         ),
       },
@@ -296,7 +296,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (max: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiCheckbox
                 compressed
                 id={`max-${item.source_field.label}`}
@@ -304,7 +304,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                 onChange={(e) => this.setChecked(e, "max", item)}
                 data-test-subj={`max-${item.source_field.label}`}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiForm>
         ),
       },
@@ -314,7 +314,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (sum: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiCheckbox
                 compressed
                 id={`sum-${item.source_field.label}`}
@@ -322,7 +322,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                 onChange={(e) => this.setChecked(e, "sum", item)}
                 data-test-subj={`sum-${item.source_field.label}`}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiForm>
         ),
       },
@@ -332,7 +332,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (avg: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiCheckbox
                 compressed
                 id={`avg-${item.source_field.label}`}
@@ -340,7 +340,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                 onChange={(e) => this.setChecked(e, "avg", item)}
                 data-test-subj={`avg-${item.source_field.label}`}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiForm>
         ),
       },
@@ -350,7 +350,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
         align: "center",
         render: (value_count: boolean, item: MetricItem) => (
           <EuiForm>
-            <EuiFormRow>
+            <EuiCompressedFormRow>
               <EuiCheckbox
                 compressed
                 id={`value_count-${item.source_field.label}`}
@@ -358,7 +358,7 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                 onChange={(e) => this.setChecked(e, "value_count", item)}
                 data-test-subj={`valueCount-${item.source_field.label}`}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiForm>
         ),
       },

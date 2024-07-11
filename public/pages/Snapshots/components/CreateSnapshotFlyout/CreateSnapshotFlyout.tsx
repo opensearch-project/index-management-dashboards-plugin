@@ -11,7 +11,7 @@ import {
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiSpacer,
   EuiTitle,
   EuiText,
@@ -226,7 +226,7 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
 
         <EuiFlyoutBody>
           <CustomLabel title="Snapshot name" />
-          <EuiFormRow isInvalid={!!snapshotIdError} error={snapshotIdError}>
+          <EuiCompressedFormRow isInvalid={!!snapshotIdError} error={snapshotIdError}>
             <EuiFieldText
               value={snapshotId}
               onChange={(e) => {
@@ -235,7 +235,7 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
               data-test-subj="snapshotNameInput"
               placeholder="Enter snapshot name"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
           <EuiFormHelpText>A valid snapshot name can not contain upper case characters. </EuiFormHelpText>
 
           <EuiSpacer size="m" />

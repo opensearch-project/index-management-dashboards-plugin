@@ -6,7 +6,7 @@
 import React, { Component, Fragment } from "react";
 import {
   EuiSpacer,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiCallOut,
   EuiPopover,
   EuiFlexGroup,
@@ -172,7 +172,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
                 </EuiCallOut>
               </Fragment>
             )}
-            <EuiFormRow
+            <EuiCompressedFormRow
               label="Source index"
               error={sourceIndexError}
               isInvalid={sourceIndexError != ""}
@@ -189,7 +189,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
                 isInvalid={sourceIndexError != ""}
                 data-test-subj="sourceIndexCombobox"
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
             <EuiSpacer size="s" />
             <EuiFlexGroup gutterSize="xs">
               <EuiFlexItem grow={false}>
@@ -252,7 +252,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
             </EuiText>
             <EuiSpacer size="s" />
             <EuiHorizontalRule margin="xs" />
-            <EuiFormRow
+            <EuiCompressedFormRow
               label="Target index"
               error={targetIndexError}
               isInvalid={targetIndexError != ""}
@@ -270,7 +270,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
                 isInvalid={targetIndexError != ""}
                 data-test-subj="targetIndexCombobox"
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </div>
         </ContentPanel>
         <Fragment>

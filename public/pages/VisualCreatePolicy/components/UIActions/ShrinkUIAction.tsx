@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiCodeEditor, EuiFieldText, EuiSpacer, EuiRadioGroup, EuiCallOut } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCodeEditor, EuiFieldText, EuiSpacer, EuiRadioGroup, EuiCallOut } from "@elastic/eui";
 import { ShrinkAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -109,7 +109,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           }
           isInvalid={!this.isValidNumShards()}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
           <EuiFieldText
             fullWidth
             value={typeof shrink.num_new_shards === "undefined" ? "" : shrink.num_new_shards}
@@ -122,7 +122,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
             }}
             data-test-subj="action-render-shrink-num-new-shards"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Maximum shard size"
@@ -133,7 +133,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           }
           isInvalid={!this.isValidNumShards()}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
           <EuiFieldText
             fullWidth
             value={shrink.max_shard_size || ""}
@@ -146,7 +146,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
             }}
             data-test-subj="action-render-shrink-max-shard-size"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Percentage of source shards"
@@ -157,7 +157,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           }
           isInvalid={!this.isValidNumShards()}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
           <EuiFieldText
             fullWidth
             value={typeof shrink.percentage_of_source_shards === "undefined" ? "" : shrink.percentage_of_source_shards}
@@ -170,7 +170,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
             }}
             data-test-subj="action-render-shrink-percentage-of-source-shards"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Target Index Name Template"
@@ -179,7 +179,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           isInvalid={!this.isValidIndexNameTemplateJson()}
           isOptional={true}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValidIndexNameTemplateJson()} error={null} style={{ maxWidth: "100%" }}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValidIndexNameTemplateJson()} error={null} style={{ maxWidth: "100%" }}>
           <DarkModeConsumer>
             {(isDarkMode) => (
               <EuiCodeEditor
@@ -200,7 +200,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
               />
             )}
           </DarkModeConsumer>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiCallOut color="warning" hidden={!this.action.shrink.force_unsafe}>
           <p>
@@ -213,7 +213,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           helpText={`If this is set to 'No' then the shrink action will fail for indices which do not have replica shards.`}
           isInvalid={false}
         />
-        <EuiFormRow fullWidth isInvalid={false} error={null} style={{ maxWidth: "100%" }}>
+        <EuiCompressedFormRow fullWidth isInvalid={false} error={null} style={{ maxWidth: "100%" }}>
           <EuiRadioGroup
             options={radios}
             idSelected={this.action.force_unsafe_input}
@@ -231,7 +231,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
             }}
             name="forceUnsafe"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel
           title="Aliases"
@@ -239,7 +239,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           isInvalid={!this.isValidAliasesJson()}
           isOptional={true}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValidAliasesJson()} error={null} style={{ maxWidth: "100%" }}>
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValidAliasesJson()} error={null} style={{ maxWidth: "100%" }}>
           <DarkModeConsumer>
             {(isDarkMode) => (
               <EuiCodeEditor
@@ -261,7 +261,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
               />
             )}
           </DarkModeConsumer>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </>
     );
   };

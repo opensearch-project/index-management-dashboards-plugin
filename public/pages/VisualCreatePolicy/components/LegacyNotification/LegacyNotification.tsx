@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiFormRow, EuiCodeEditor, EuiCallOut, EuiSmallButton, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCodeEditor, EuiCallOut, EuiSmallButton, EuiSpacer } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { DarkModeConsumer } from "../../../../components/DarkMode";
@@ -34,7 +34,7 @@ const LegacyNotification = ({
         <EuiSmallButton onClick={onSwitchToChannels}>Switch to using Channel ID</EuiSmallButton>
       </EuiCallOut>
       <EuiSpacer size="m" />
-      <EuiFormRow fullWidth isInvalid={isInvalid} error={null} style={{ maxWidth: "100%" }}>
+      <EuiCompressedFormRow fullWidth isInvalid={isInvalid} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor
@@ -50,7 +50,7 @@ const LegacyNotification = ({
             />
           )}
         </DarkModeConsumer>
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     </>
   );
 };

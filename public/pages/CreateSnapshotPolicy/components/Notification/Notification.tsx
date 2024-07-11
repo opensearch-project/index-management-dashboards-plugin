@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { FeatureChannelList } from "../../../../../server/models/interfaces";
@@ -24,7 +24,7 @@ const Notification = ({ channelId, channels, loadingChannels, onChangeChannelId,
       <CustomLabel title="Select notification channels" />
       <EuiFlexGroup gutterSize="s" style={{ maxWidth: 600 }}>
         <EuiFlexItem>
-          <EuiFormRow>
+          <EuiCompressedFormRow>
             <EuiSelect
               id="channel-id"
               placeholder="Select channel ID"
@@ -35,7 +35,7 @@ const Notification = ({ channelId, channels, loadingChannels, onChangeChannelId,
               onChange={onChangeChannelId}
               data-test-subj="create-policy-notification-channel-id"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiSmallButton

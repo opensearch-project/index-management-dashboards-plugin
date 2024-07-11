@@ -6,7 +6,7 @@
 import React, { Ref, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 import {
   EuiSpacer,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLink,
   EuiOverlayMask,
   EuiLoadingSpinner,
@@ -561,7 +561,7 @@ const IndexDetail = (
         ? null
         : (() => {
             const content = (
-              <EuiFormRow fullWidth>
+              <EuiCompressedFormRow fullWidth>
                 <IndexMapping
                   isEdit={isEdit}
                   value={finalValue?.mappings}
@@ -571,7 +571,7 @@ const IndexDetail = (
                   readonly={readonly}
                   docVersion={docVersion}
                 />
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             );
 
             if (mode && mode === IndicesUpdateMode.mappings) {
@@ -601,7 +601,7 @@ const IndexDetail = (
                         <OptionalLabel />
                       </div>
                     </EuiTitle>
-                    <EuiFormRow
+                    <EuiCompressedFormRow
                       fullWidth
                       helpText={
                         <>
@@ -616,7 +616,7 @@ const IndexDetail = (
                       }
                     >
                       <></>
-                    </EuiFormRow>
+                    </EuiCompressedFormRow>
                   </>
                 }
                 titleSize="s"

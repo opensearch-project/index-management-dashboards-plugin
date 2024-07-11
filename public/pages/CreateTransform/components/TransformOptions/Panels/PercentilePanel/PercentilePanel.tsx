@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { EuiSmallButton, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
+import { EuiSmallButton, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiCompressedFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
 import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../models/interfaces";
 
 interface PercentilePanelProps {
@@ -57,7 +57,7 @@ export default function PercentilePanel({ name, aggSelection, handleAggSelection
     <EuiPanel>
       <EuiFlexGroup gutterSize={"none"}>
         <EuiFlexItem grow={false} style={{ width: 230 }}>
-          <EuiFormRow
+          <EuiCompressedFormRow
             fullWidth={true}
             label="Percents"
             helpText="Only numbers between 0-100 allowed."
@@ -73,7 +73,7 @@ export default function PercentilePanel({ name, aggSelection, handleAggSelection
               isInvalid={isInvalid}
               onSearchChange={onSearchChange}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
           <EuiSpacer size="m" />
         </EuiFlexItem>
         <EuiFlexItem grow={false}></EuiFlexItem>

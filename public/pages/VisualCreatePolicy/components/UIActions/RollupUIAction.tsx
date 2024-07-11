@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiFormRow, EuiCodeEditor } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCodeEditor } from "@elastic/eui";
 import { RollupAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { DarkModeConsumer } from "../../../../components/DarkMode";
@@ -46,7 +46,7 @@ export default class RollupUIAction implements UIAction<RollupAction> {
   render = (action: UIAction<RollupAction>, onChangeAction: (action: UIAction<RollupAction>) => void) => {
     // If we don't have a JSON string yet it just means we haven't converted the rollup to it yet
     return (
-      <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
+      <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null} style={{ maxWidth: "100%" }}>
         <DarkModeConsumer>
           {(isDarkMode) => (
             <EuiCodeEditor
@@ -67,7 +67,7 @@ export default class RollupUIAction implements UIAction<RollupAction> {
             />
           )}
         </DarkModeConsumer>
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     );
   };
 

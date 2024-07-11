@@ -6,7 +6,7 @@
 import _ from "lodash";
 import queryString from "query-string";
 import {
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiTextArea,
   EuiSelect,
   EuiFieldText,
@@ -585,14 +585,14 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <ContentPanel title="Policy settings" titleSize="s">
           <CustomLabel title="Policy name" />
-          <EuiFormRow isInvalid={!!policyIdError} error={policyIdError}>
+          <EuiCompressedFormRow isInvalid={!!policyIdError} error={policyIdError}>
             <EuiFieldText placeholder="e.g. daily-snapshot" value={policyId} onChange={this.onChangePolicyName} disabled={isEdit} />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer />
 
           <CustomLabel title="Description" isOptional={true} />
-          <EuiFormRow>
+          <EuiCompressedFormRow>
             <EuiTextArea
               compressed={true}
               value={_.get(policy, "description", "")}
@@ -600,7 +600,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
               placeholder="Snapshot management daily policy."
               data-test-subj="description"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </ContentPanel>
 
         <EuiSpacer />
@@ -700,19 +700,19 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                 <EuiFlexGroup alignItems="flexStart">
                   <EuiFlexItem grow={false}>
                     <CustomLabel title="Minimum" />
-                    <EuiFormRow isInvalid={!!minCountError} error={minCountError}>
+                    <EuiCompressedFormRow isInvalid={!!minCountError} error={minCountError}>
                       <EuiFieldNumber
                         min={1}
                         value={_.get(policy, "deletion.condition.min_count") ?? "1"}
                         onChange={this.onChangeMinCount}
                       />
-                    </EuiFormRow>
+                    </EuiCompressedFormRow>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
                     <CustomLabel title="Maximum" isOptional={true} />
-                    <EuiFormRow>
+                    <EuiCompressedFormRow>
                       <EuiFieldNumber min={1} value={_.get(policy, "deletion.condition.max_count", "")} onChange={this.onChangeMaxCount} />
-                    </EuiFormRow>
+                    </EuiCompressedFormRow>
                   </EuiFlexItem>
                 </EuiFlexGroup>
 

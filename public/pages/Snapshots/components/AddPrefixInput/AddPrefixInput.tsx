@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiFormRow, EuiFieldText, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiFieldText, EuiSpacer } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
 import CustomLabel from "../../../../components/CustomLabel";
 
@@ -24,9 +24,9 @@ const AddPrefixesInput = ({ getPrefix }: AddPrefixesInputProps) => {
       <EuiSpacer size="l" />
 
       <CustomLabel title="Specify prefix for restored index names" helpText="A prefix will be added to any restored index names." />
-      <EuiFormRow>
+      <EuiCompressedFormRow>
         <EuiFieldText value={prefix} onChange={onPrefixChange} data-test-subj="prefixInput" />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
 
       <EuiSpacer size="m" />
     </>
