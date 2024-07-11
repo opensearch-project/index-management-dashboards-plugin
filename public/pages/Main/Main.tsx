@@ -262,7 +262,11 @@ export default class Main extends Component<MainProps, MainState> {
 
   dataSourceFilterFn = (dataSource: SavedObject<DataSourceAttributes>) => {
     const engineVersion = dataSource?.attributes?.dataSourceVersion || "";
-    return semver.satisfies(engineVersion, pluginManifest.supportedOSDataSourceVersions);
+    const availablePlugins = dataSource?.attributes?.installedPlugins || [];
+    return (
+      semver.satisfies(engineVersion, pluginManifest.supportedOSDataSourceVersions) &&
+      pluginManifest.requiredOSDataSourcePlugins.every((plugin) => availablePlugins.includes(plugin))
+    );
   };
 
   render() {
