@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiCompressedFormRow, EuiText, EuiTextArea, EuiSpacer, EuiLink } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiText, EuiCompressedTextArea, EuiSpacer, EuiLink } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
 import { INDEX_SETTINGS_URL } from "../../../../utils/constants";
 
@@ -56,7 +56,7 @@ const IndexSettingsInput = ({ getIndexSettings, ignore, showError, inputError }:
         label={indexSettingsLabel}
         id={ignore ? "ignore_index_settings" : "customize_index_settings"}
       >
-        <EuiTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} isInvalid={showError} />
+        <EuiCompressedTextArea value={indexSettings} onChange={onSettingsChange} placeholder={placeholderText} isInvalid={showError} />
       </EuiCompressedFormRow>
 
       <EuiSpacer size="m" />

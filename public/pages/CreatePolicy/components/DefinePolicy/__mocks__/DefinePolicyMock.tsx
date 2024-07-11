@@ -7,7 +7,7 @@ import React, { ChangeEvent } from "react";
 import {
   EuiSpacer,
   EuiSmallButton,
-  EuiTextArea,
+  EuiCompressedTextArea,
   EuiText,
   // @ts-ignore
   EuiCopy,
@@ -23,7 +23,7 @@ interface DefinePolicyProps {
 
 /*
  * Attempting to test EuiCodeEditor which uses react-ace was a lot more effort than seemed worthwhile
- * at the moment, so in the meantime we will mock DefinePolicy as a EuiTextArea so that we can still test
+ * at the moment, so in the meantime we will mock DefinePolicy as a EuiCompressedTextArea so that we can still test
  * the functionality of CreatePolicy (minus the JSON code editor).
  * */
 const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError }: DefinePolicyProps) => (
@@ -50,7 +50,11 @@ const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError }: Defi
       </EuiText>
     </div>
     <EuiSpacer size="s" />
-    <EuiTextArea value={jsonString} onChange={(e: ChangeEvent<HTMLTextAreaElement>) => onChange(e.target.value)} aria-label="Code Editor" />
+    <EuiCompressedTextArea
+      value={jsonString}
+      onChange={(e: ChangeEvent<HTMLTextAreaElement>) => onChange(e.target.value)}
+      aria-label="Code Editor"
+    />
   </ContentPanel>
 );
 
