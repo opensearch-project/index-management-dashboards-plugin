@@ -5,7 +5,7 @@
 
 import React from "react";
 import _ from "lodash";
-import { EuiSpacer, EuiText, EuiRadioGroup, EuiCompressedFormRow, EuiSelect, EuiComboBox, EuiLink, EuiIcon } from "@elastic/eui";
+import { EuiSpacer, EuiText, EuiRadioGroup, EuiCompressedFormRow, EuiCompressedSelect, EuiComboBox, EuiLink, EuiIcon } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexService } from "../../../../services";
 import { Radio } from "../../containers/ChangePolicy/ChangePolicy";
@@ -123,7 +123,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
           <EuiSpacer size="s" />
 
           <EuiCompressedFormRow>
-            <EuiSelect
+            <EuiCompressedSelect
               disabled={stateRadioIdSelected !== Radio.State}
               options={stateOptions}
               value={stateSelected}

@@ -8,7 +8,7 @@ import {
   EuiLink,
   EuiIcon,
   EuiCompressedFormRow,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSpacer,
   EuiCompressedFieldText,
   EuiCompressedFieldNumber,
@@ -42,7 +42,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
     <>
       <EuiFormCustomLabel title="Condition" helpText="Specify the condition needed to be met to transition to the destination state." />
       <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-        <EuiSelect
+        <EuiCompressedSelect
           fullWidth
           id="condition-type"
           options={conditionTypeOptions}
@@ -220,7 +220,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
 
           <EuiFormCustomLabel title="Timezone" helpText="A day starts from 00:00:00 in the specified timezone." />
           <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-            <EuiSelect
+            <EuiCompressedSelect
               fullWidth
               id="timezone"
               options={timezones}

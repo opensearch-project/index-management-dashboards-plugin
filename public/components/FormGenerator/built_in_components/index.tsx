@@ -7,7 +7,7 @@ import {
   EuiCompressedFieldNumber,
   EuiCompressedFieldText,
   EuiSwitch,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiText,
   EuiCheckbox,
   EuiComboBoxOptionOption,
@@ -60,7 +60,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   )) as React.ComponentType<IFieldComponentProps>,
   Select: EuiToolTipWrapper(
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
-      <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
+      <EuiCompressedSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
     )) as React.ComponentType<IFieldComponentProps>
   ),
   CheckBox: EuiToolTipWrapper(

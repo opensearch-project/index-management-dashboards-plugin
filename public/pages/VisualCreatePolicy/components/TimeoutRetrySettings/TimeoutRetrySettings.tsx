@@ -12,7 +12,7 @@ import {
   EuiCompressedFormRow,
   EuiCompressedFieldNumber,
   EuiCompressedFieldText,
-  EuiSelect,
+  EuiCompressedSelect,
 } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
@@ -88,7 +88,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
       <EuiFlexItem>
         <EuiFormCustomLabel title="Retry backoff" helpText="The backoff policy type to use when retrying." />
         <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-          <EuiSelect
+          <EuiCompressedSelect
             id="retry-backoff-type"
             fullWidth
             options={options}

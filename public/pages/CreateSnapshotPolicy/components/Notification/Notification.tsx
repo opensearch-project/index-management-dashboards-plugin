@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiCompressedFormRow, EuiSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCompressedSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { FeatureChannelList } from "../../../../../server/models/interfaces";
@@ -25,7 +25,7 @@ const Notification = ({ channelId, channels, loadingChannels, onChangeChannelId,
       <EuiFlexGroup gutterSize="s" style={{ maxWidth: 600 }}>
         <EuiFlexItem>
           <EuiCompressedFormRow>
-            <EuiSelect
+            <EuiCompressedSelect
               id="channel-id"
               placeholder="Select channel ID"
               hasNoInitialSelection

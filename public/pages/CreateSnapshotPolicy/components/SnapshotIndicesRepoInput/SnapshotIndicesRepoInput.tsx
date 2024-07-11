@@ -10,7 +10,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiCompressedFormRow,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSelectOption,
   EuiSpacer,
 } from "@elastic/eui";
@@ -82,7 +82,7 @@ const SnapshotIndicesRepoInput = ({
         <EuiFlexItem style={{ maxWidth: "400px" }}>
           <CustomLabel title="Select a repository for snapshots" />
           <EuiCompressedFormRow isInvalid={!!repoError} error={repoError}>
-            <EuiSelect
+            <EuiCompressedSelect
               placeholder="Select a repository"
               disabled={repoOptions.length === 0}
               options={repoOptions}

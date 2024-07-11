@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiTextArea, EuiSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiTextArea, EuiCompressedSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { FeatureChannelList } from "../../../../../server/models/interfaces";
@@ -37,7 +37,7 @@ const ChannelNotification = ({
       <EuiFlexGroup gutterSize="s" style={{ maxWidth: 600 }}>
         <EuiFlexItem>
           <EuiCompressedFormRow>
-            <EuiSelect
+            <EuiCompressedSelect
               id={actionNotification ? "action-channel-id" : "channel-id"}
               placeholder="Select channel ID"
               hasNoInitialSelection
