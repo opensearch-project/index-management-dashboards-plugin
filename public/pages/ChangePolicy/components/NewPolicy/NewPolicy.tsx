@@ -11,7 +11,7 @@ import {
   EuiCompressedRadioGroup,
   EuiCompressedFormRow,
   EuiCompressedSelect,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiLink,
   EuiIcon,
 } from "@elastic/eui";
@@ -111,7 +111,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
           <EuiSpacer size="s" />
 
           <EuiCompressedFormRow label="New policy" isInvalid={!!selectedPoliciesError} error={selectedPoliciesError}>
-            <EuiComboBox
+            <EuiCompressedComboBox
               placeholder=""
               async
               options={policies}

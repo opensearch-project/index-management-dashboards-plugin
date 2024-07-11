@@ -14,7 +14,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiOverlayMask,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiCompressedFormRow,
   EuiCompressedFieldText,
   EuiCallOut,
@@ -294,7 +294,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
             </EuiText>
             <EuiSpacer size="m" />
             <EuiCompressedFormRow label="Policy ID" isInvalid={hasSubmitted && !!selectedPolicyError} error={selectedPolicyError} fullWidth>
-              <EuiComboBox
+              <EuiCompressedComboBox
                 placeholder="Search policies"
                 async
                 options={policyOptions}

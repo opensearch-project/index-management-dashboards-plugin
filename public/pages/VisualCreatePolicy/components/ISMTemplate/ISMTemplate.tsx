@@ -4,7 +4,14 @@
  */
 
 import React, { ChangeEvent, useState } from "react";
-import { EuiSmallButton, EuiCompressedFormRow, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiCompressedFieldNumber } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiCompressedFormRow,
+  EuiCompressedComboBox,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiCompressedFieldNumber,
+} from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { ISMTemplate as ISMTemplateData } from "../../../../../models/interfaces";
@@ -24,7 +31,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
     <EuiFlexGroup gutterSize="l" alignItems="center">
       <EuiFlexItem style={{ maxWidth: ISM_TEMPLATE_INPUT_MAX_WIDTH }}>
         <EuiCompressedFormRow isInvalid={false} error={null}>
-          <EuiComboBox
+          <EuiCompressedComboBox
             isClearable={false}
             placeholder="Add index patterns"
             noSuggestions

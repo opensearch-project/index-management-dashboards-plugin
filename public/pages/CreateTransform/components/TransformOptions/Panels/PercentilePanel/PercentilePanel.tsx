@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { EuiSmallButton, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiCompressedFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
+import { EuiSmallButton, EuiCompressedComboBox, EuiFlexGroup, EuiFlexItem, EuiCompressedFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
 import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../models/interfaces";
 
 interface PercentilePanelProps {
@@ -64,7 +64,7 @@ export default function PercentilePanel({ name, aggSelection, handleAggSelection
             isInvalid={isInvalid}
             error={isInvalid ? "Invalid input" : undefined}
           >
-            <EuiComboBox
+            <EuiCompressedComboBox
               fullWidth={true}
               noSuggestions
               selectedOptions={percents}

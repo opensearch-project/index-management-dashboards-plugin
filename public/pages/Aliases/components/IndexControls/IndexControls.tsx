@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { EuiComboBox, EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedComboBox, EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { ALIAS_STATUS_OPTIONS } from "../../../../utils/constants";
 
 export interface SearchControlsProps {
@@ -39,7 +39,7 @@ export default function SearchControls(props: SearchControlsProps) {
         />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiComboBox
+        <EuiCompressedComboBox
           style={{
             width: 300,
           }}

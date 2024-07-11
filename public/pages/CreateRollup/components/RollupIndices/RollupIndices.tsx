@@ -7,7 +7,7 @@ import React, { Component, Fragment } from "react";
 import { EuiSpacer, EuiCompressedFormRow, EuiCallOut, EuiText, EuiLink } from "@elastic/eui";
 import { EuiComboBoxOptionOption } from "@elastic/eui/src/components/combo_box/types";
 import _ from "lodash";
-import EuiComboBox from "../../../../components/ComboBoxWithoutWarning";
+import EuiCompressedComboBox from "../../../../components/ComboBoxWithoutWarning";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexItem } from "../../../../../models/interfaces";
 import IndexService from "../../../../services/IndexService";
@@ -142,7 +142,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
             isInvalid={sourceIndexError != ""}
             helpText="The index pattern on which to performed the rollup job. You can use * as a wildcard."
           >
-            <EuiComboBox
+            <EuiCompressedComboBox
               placeholder="Select source index"
               options={indexOptions}
               selectedOptions={sourceIndex}
@@ -172,7 +172,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
               </EuiText>
             }
           >
-            <EuiComboBox
+            <EuiCompressedComboBox
               placeholder="Select or create target index"
               options={targetIndexOptions}
               selectedOptions={targetIndex}

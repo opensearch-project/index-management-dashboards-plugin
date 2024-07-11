@@ -7,7 +7,7 @@ import {
   EuiAccordion,
   EuiCallOut,
   EuiCodeEditor,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiComboBoxOptionOption,
   EuiCompressedFieldText,
   EuiFlyout,

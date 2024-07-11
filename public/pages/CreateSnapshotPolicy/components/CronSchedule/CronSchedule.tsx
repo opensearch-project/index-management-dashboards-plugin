@@ -7,7 +7,7 @@ import _ from "lodash";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   EuiCheckbox,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiDatePicker,
   EuiCompressedFieldNumber,
   EuiCompressedFieldText,
@@ -174,7 +174,12 @@ const CronSchedule = ({
   return (
     <>
       <CustomLabel title={frequencyTitle} />
-      <EuiCompressedSelect id="creationCronScheduleType" options={CRON_SCHEDULE_FREQUENCY_TYPE} value={frequencyType} onChange={onTypeChange} />
+      <EuiCompressedSelect
+        id="creationCronScheduleType"
+        options={CRON_SCHEDULE_FREQUENCY_TYPE}
+        value={frequencyType}
+        onChange={onTypeChange}
+      />
 
       <EuiSpacer size="m" />
 
@@ -208,7 +213,7 @@ const CronSchedule = ({
           <EuiFlexItem style={{ maxWidth: 250 }}>
             <CustomLabel title="Time zone" />
             <EuiCompressedFormRow isInvalid={!!timezoneError} error={timezoneError}>
-              <EuiComboBox
+              <EuiCompressedComboBox
                 placeholder="Select a time zone"
                 singleSelection={{ asPlainText: true }}
                 options={TIMEZONES}

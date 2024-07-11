@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiSpacer, EuiComboBox, EuiCompressedFormRow } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedComboBox, EuiCompressedFormRow } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { ManagedIndexService } from "../../../../services";
 import { ManagedIndexItem, State } from "../../../../../models/interfaces";
@@ -99,7 +99,7 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
             isInvalid={!!managedIndicesError}
             error={managedIndicesError}
           >
-            <EuiComboBox
+            <EuiCompressedComboBox
               placeholder=""
               async
               options={managedIndices}
@@ -113,7 +113,7 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
           </EuiCompressedFormRow>
 
           <EuiCompressedFormRow label="State filters" helpText="Apply new policy only on managed indices in these states.">
-            <EuiComboBox
+            <EuiCompressedComboBox
               isDisabled={!selectedManagedIndices.length}
               placeholder="Choose state filters"
               options={stateOptions}

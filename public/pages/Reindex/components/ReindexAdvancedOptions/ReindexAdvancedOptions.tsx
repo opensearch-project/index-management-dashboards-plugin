@@ -7,7 +7,7 @@ import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import CustomFormRow, { OptionalLabel } from "../../../../components/CustomFormRow";
 import {
   EuiCompressedCheckbox,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiComboBoxOptionOption,
   EuiCompressedFieldNumber,
   EuiLink,
@@ -184,7 +184,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           </>
         }
       >
-        <EuiComboBox
+        <EuiCompressedComboBox
           aria-label="Ingest Pipeline"
           placeholder="Select an ingest pipeline"
           data-test-subj="pipelineCombobox"
