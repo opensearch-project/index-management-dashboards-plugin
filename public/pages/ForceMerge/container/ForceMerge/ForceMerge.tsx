@@ -3,7 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiSmallButton, EuiButtonEmpty, EuiButtonIcon, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiButtonEmpty,
+  EuiSmallButtonIcon,
+  EuiCallOut,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSpacer,
+  EuiTitle,
+} from "@elastic/eui";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -126,7 +135,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const advanceTitle = (
     <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
       <EuiFlexItem grow={false}>
-        <EuiButtonIcon
+        <EuiSmallButtonIcon
           iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
           color="text"
           data-test-subj="advanceOptionToggle"

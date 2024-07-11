@@ -24,7 +24,7 @@ import {
   EuiCheckbox,
   EuiPanel,
   EuiHorizontalRule,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiLink,
 } from "@elastic/eui";
 import React, { ChangeEvent, Component, useContext } from "react";
@@ -785,7 +785,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
         <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
           <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="flexStart" alignItems="center" gutterSize="none">
             <EuiFlexItem grow={false}>
-              <EuiButtonIcon
+              <EuiSmallButtonIcon
                 iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
                 color="text"
                 onClick={() => {

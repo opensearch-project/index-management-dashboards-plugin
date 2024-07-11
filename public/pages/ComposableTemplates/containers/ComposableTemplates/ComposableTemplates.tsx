@@ -21,7 +21,7 @@ import {
   EuiEmptyPrompt,
   EuiText,
   EuiTableSortingType,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiToolTip,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
@@ -360,7 +360,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                         onUnlink={/* istanbul ignore next */ () => this.getComposableTemplates()}
                         renderProps={({ setVisible }) => (
                           <EuiToolTip content="View associated index templates">
-                            <EuiButtonIcon
+                            <EuiSmallButtonIcon
                               aria-label="View associated index templates"
                               iconType="kqlSelector"
                               data-test-subj={`ViewAssociatedIndexTemplates-${record.name}`}
@@ -383,7 +383,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                         }}
                         renderDeleteButton={({ triggerDelete }) => (
                           <EuiToolTip content="Delete component template">
-                            <EuiButtonIcon
+                            <EuiSmallButtonIcon
                               aria-label="Delete component template"
                               color="danger"
                               iconType="trash"

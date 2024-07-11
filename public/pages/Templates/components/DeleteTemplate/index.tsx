@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useState } from "react";
-import { EuiButtonIcon, EuiToolTip } from "@elastic/eui";
+import { EuiSmallButtonIcon, EuiToolTip } from "@elastic/eui";
 import DeleteIndexModal from "../../containers/DeleteTemplatesModal";
 import { ITemplate } from "../../interface";
 
@@ -23,7 +23,7 @@ export default function DeleteTemplate(props: DeleteTemplateProps) {
   return (
     <>
       <EuiToolTip content="Delete template">
-        <EuiButtonIcon
+        <EuiSmallButtonIcon
           aria-label="Delete template"
           color="danger"
           iconType="trash"

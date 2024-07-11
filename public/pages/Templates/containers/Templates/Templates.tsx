@@ -22,7 +22,7 @@ import {
   EuiEmptyPrompt,
   EuiText,
   EuiToolTip,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -341,7 +341,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                       onUnlink={() => this.getTemplates()}
                       renderProps={({ setVisible }) => (
                         <EuiToolTip content="View associated index templates">
-                          <EuiButtonIcon
+                          <EuiSmallButtonIcon
                             aria-label="View associated index templates"
                             iconType="kqlSelector"
                             onClick={() => setVisible(true)}

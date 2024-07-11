@@ -5,7 +5,7 @@
 import React, { useContext, useRef, useState, useEffect, useMemo } from "react";
 import {
   EuiSmallButton,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiDragDropContext,
   EuiDraggable,
   EuiDroppable,
@@ -153,7 +153,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
                             </div>
                             <div>
                               {readonly ? null : (
-                                <EuiButtonIcon
+                                <EuiSmallButtonIcon
                                   onClick={() => {
                                     const newValue = [...(values.composed_of || [])];
                                     newValue.splice(index, 1);
@@ -164,7 +164,7 @@ export default function ComposableTemplate(props: SubDetailProps) {
                                   aria-label="delete"
                                 />
                               )}
-                              <EuiButtonIcon
+                              <EuiSmallButtonIcon
                                 onClick={() => window.open(`#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${item}`)}
                                 style={{ marginLeft: 12 }}
                                 iconType="inspect"
