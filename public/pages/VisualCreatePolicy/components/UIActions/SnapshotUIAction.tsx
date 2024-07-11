@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiCompressedFormRow, EuiFieldText, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCompressedFieldText, EuiSpacer } from "@elastic/eui";
 import { SnapshotAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -37,7 +37,7 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
           isInvalid={!this.isValid()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             value={(action.action as SnapshotAction).snapshot.repository}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +57,7 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
         <EuiSpacer size="s" />
         <EuiFormCustomLabel title="Snapshot" helpText="The name of the snapshot." isInvalid={!this.isValid()} />
         <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             value={(action.action as SnapshotAction).snapshot.snapshot}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {

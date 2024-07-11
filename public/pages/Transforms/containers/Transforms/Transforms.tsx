@@ -15,7 +15,7 @@ import {
   EuiBasicTable,
   EuiPopover,
   EuiContextMenuPanel,
-  EuiFieldSearch,
+  EuiCompressedFieldSearch,
   EuiHorizontalRule,
   EuiPagination,
   EuiLink,
@@ -295,7 +295,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
         <div style={{ padding: "initial" }}>
           <EuiFlexGroup style={{ padding: "0px 5px" }}>
             <EuiFlexItem>
-              <EuiFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
+              <EuiCompressedFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
             </EuiFlexItem>
             {pageCount > 1 && (
               <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>

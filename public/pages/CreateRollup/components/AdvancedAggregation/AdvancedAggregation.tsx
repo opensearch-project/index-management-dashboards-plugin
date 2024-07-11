@@ -34,7 +34,7 @@ import {
   EuiFormHelpText,
   EuiHorizontalRule,
   EuiCallOut,
-  EuiFieldNumber,
+  EuiCompressedFieldNumber,
   EuiTableSortingType,
 } from "@elastic/eui";
 import { AddFieldsColumns } from "../../utils/constants";
@@ -299,7 +299,7 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
           ) : (
             <EuiForm>
               <EuiCompressedFormRow>
-                <EuiFieldNumber
+                <EuiCompressedFieldNumber
                   min={1}
                   value={interval}
                   onChange={(e) => this.onChangeInterval(e, item)}

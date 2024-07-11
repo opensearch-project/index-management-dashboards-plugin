@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiCompressedFormRow, EuiFieldNumber, EuiFieldText, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCompressedFieldNumber, EuiCompressedFieldText, EuiSpacer } from "@elastic/eui";
 import { RolloverAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -48,7 +48,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
           isInvalid={!this.isValid()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             value={rollover.min_index_age || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +68,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
           isInvalid={!this.isValid()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-          <EuiFieldNumber
+          <EuiCompressedFieldNumber
             fullWidth
             value={typeof rollover.min_doc_count === "undefined" ? "" : rollover.min_doc_count}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +88,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
           isInvalid={!this.isValid()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             value={rollover.min_size || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -108,7 +108,7 @@ export default class RolloverUIAction implements UIAction<RolloverAction> {
           isInvalid={!this.isValid()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             value={rollover.min_primary_shard_size || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {

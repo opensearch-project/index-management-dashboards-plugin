@@ -15,7 +15,7 @@ import {
   EuiSmallButtonEmpty,
   EuiSmallButton,
   EuiCompressedFormRow,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiHorizontalRule,
   euiDragDropReorder,
   DropResult,
@@ -202,7 +202,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
         </EuiText>
 
         <EuiCompressedFormRow fullWidth isInvalid={!!nameError} error={nameError}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             isInvalid={!!nameError}
             placeholder="sample_hot_state"

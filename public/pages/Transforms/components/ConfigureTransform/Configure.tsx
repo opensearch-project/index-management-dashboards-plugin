@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface ConfigureTransformProps {
@@ -21,7 +21,13 @@ const ConfigureTransform = ({ inEdit, transformId, error, onChangeName, onChange
     <div style={{ paddingLeft: "10px" }}>
       <EuiSpacer size="s" />
       <EuiCompressedFormRow label="Name" helpText="Specify a unique, descriptive name." isInvalid={!!error} error={error}>
-        <EuiFieldText isInvalid={!!error} placeholder="transform-id" value={transformId} onChange={onChangeName} disabled={inEdit} />
+        <EuiCompressedFieldText
+          isInvalid={!!error}
+          placeholder="transform-id"
+          value={transformId}
+          onChange={onChangeName}
+          disabled={inEdit}
+        />
       </EuiCompressedFormRow>
       <EuiSpacer />
       <EuiFlexGroup gutterSize="xs">

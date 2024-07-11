@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiCompressedFormRow, EuiCodeEditor, EuiFieldText, EuiSpacer, EuiRadioGroup, EuiCallOut } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCodeEditor, EuiCompressedFieldText, EuiSpacer, EuiRadioGroup, EuiCallOut } from "@elastic/eui";
 import { ShrinkAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -110,7 +110,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           isInvalid={!this.isValidNumShards()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             value={typeof shrink.num_new_shards === "undefined" ? "" : shrink.num_new_shards}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +134,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           isInvalid={!this.isValidNumShards()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             value={shrink.max_shard_size || ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -158,7 +158,7 @@ export default class ShrinkUIAction implements UIAction<ShrinkAction> {
           isInvalid={!this.isValidNumShards()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={!this.isValidNumShards()} error={null}>
-          <EuiFieldText
+          <EuiCompressedFieldText
             fullWidth
             value={typeof shrink.percentage_of_source_shards === "undefined" ? "" : shrink.percentage_of_source_shards}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {

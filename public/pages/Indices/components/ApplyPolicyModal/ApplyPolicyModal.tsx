@@ -16,7 +16,7 @@ import {
   EuiOverlayMask,
   EuiComboBox,
   EuiCompressedFormRow,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiCallOut,
   EuiText,
   EuiSpacer,
@@ -216,7 +216,7 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
           error={rolloverAliasError}
           fullWidth
         >
-          <EuiFieldText
+          <EuiCompressedFieldText
             isInvalid={hasSubmitted && !!rolloverAliasError}
             placeholder="Rollover alias"
             value={rolloverAlias}

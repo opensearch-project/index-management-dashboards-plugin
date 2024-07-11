@@ -11,7 +11,7 @@ import {
   EuiRadioGroup,
   EuiCompressedFormRow,
   EuiSelect,
-  EuiFieldNumber,
+  EuiCompressedFieldNumber,
   EuiFlexGroup,
   EuiFlexItem,
   EuiTextArea,
@@ -70,7 +70,7 @@ const selectInterval = (
     <EuiFlexGroup style={{ maxWidth: 400 }}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
         <EuiCompressedFormRow label="Rollup interval" error={intervalError} isInvalid={intervalError != ""}>
-          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
+          <EuiCompressedFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
         </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
@@ -176,7 +176,7 @@ export default class Schedule extends Component<ScheduleProps> {
             label="Page per execution"
             helpText="The number of pages every execution processes. A larger number means faster execution and higher costs on memory."
           >
-            <EuiFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
+            <EuiCompressedFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
           </EuiCompressedFormRow>
           <EuiSpacer size="m" />
           <EuiFlexGroup style={{ maxWidth: 400 }}>
@@ -194,7 +194,7 @@ export default class Schedule extends Component<ScheduleProps> {
                 </EuiFlexItem>
               </EuiFlexGroup>
               <EuiCompressedFormRow>
-                <EuiFieldNumber value={delayTime} onChange={onChangeDelayTime} />
+                <EuiCompressedFieldNumber value={delayTime} onChange={onChangeDelayTime} />
               </EuiCompressedFormRow>
             </EuiFlexItem>
             <EuiFlexItem>

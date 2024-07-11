@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import {
   EuiSmallButton,
   EuiSmallButtonEmpty,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -65,7 +65,7 @@ export default function CloseIndexModal(props: CloseIndexModalProps) {
           <EuiText color="subdued">
             To confirm your action, type <b style={{ color: "#000" }}>close</b>.
           </EuiText>
-          <EuiFieldText placeholder="close" fullWidth value={value} onChange={(e) => setValue(e.target.value)} />
+          <EuiCompressedFieldText placeholder="close" fullWidth value={value} onChange={(e) => setValue(e.target.value)} />
         </div>
       </EuiModalBody>
 

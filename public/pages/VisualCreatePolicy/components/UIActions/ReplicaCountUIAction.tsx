@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiCompressedFormRow, EuiFieldNumber } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCompressedFieldNumber } from "@elastic/eui";
 import { ReplicaCountAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -39,7 +39,7 @@ export default class ReplicaCountUIAction implements UIAction<ReplicaCountAction
           isInvalid={!this.isValid()}
         />
         <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
-          <EuiFieldNumber
+          <EuiCompressedFieldNumber
             fullWidth
             value={typeof replicas === "undefined" ? "" : replicas}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {

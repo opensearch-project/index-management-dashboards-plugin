@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, useState } from "react";
-import { EuiSmallButton, EuiCompressedFormRow, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFieldNumber } from "@elastic/eui";
+import { EuiSmallButton, EuiCompressedFormRow, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiCompressedFieldNumber } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { ISMTemplate as ISMTemplateData } from "../../../../../models/interfaces";
@@ -66,7 +66,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
         <EuiCompressedFormRow error={null} isInvalid={false}>
-          <EuiFieldNumber
+          <EuiCompressedFieldNumber
             value={template.priority}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const priority = e.target.valueAsNumber;

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiFieldText, EuiTextArea } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiTextArea } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
 import "brace/mode/json";
@@ -25,7 +25,7 @@ const PolicyInfo = ({ isEdit, policyId, policyIdError, description, onChangePoli
       <EuiFormCustomLabel title="Policy ID" helpText="Specify a unique and descriptive ID that is easy to recognize and remember." />
 
       <EuiCompressedFormRow isInvalid={!!policyIdError} error={policyIdError}>
-        <EuiFieldText
+        <EuiCompressedFieldText
           disabled={isEdit}
           isInvalid={!!policyIdError}
           placeholder="hot_cold_workflow"

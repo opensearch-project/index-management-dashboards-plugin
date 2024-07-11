@@ -9,8 +9,8 @@ import {
   EuiCheckbox,
   EuiComboBox,
   EuiDatePicker,
-  EuiFieldNumber,
-  EuiFieldText,
+  EuiCompressedFieldNumber,
+  EuiCompressedFieldText,
   EuiFlexGroup,
   EuiFlexItem,
   EuiCompressedFormRow,
@@ -146,7 +146,7 @@ const CronSchedule = ({
             <EuiSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiFieldNumber
+            <EuiCompressedFieldNumber
               value={dayOfMonth}
               onChange={(e) => {
                 onDayOfMonthChange(parseInt(e.target.value));
@@ -184,7 +184,7 @@ const CronSchedule = ({
             <>
               <CustomLabel title="Cron expression" />
               <EuiCompressedFormRow helpText={cronExpressionHelpText}>
-                <EuiFieldText
+                <EuiCompressedFieldText
                   value={cronExpression}
                   onChange={(e) => {
                     onCronExpressionChange(e.target.value);

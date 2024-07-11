@@ -5,7 +5,15 @@
 
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import CustomFormRow, { OptionalLabel } from "../../../../components/CustomFormRow";
-import { EuiCheckbox, EuiComboBox, EuiComboBoxOptionOption, EuiFieldNumber, EuiLink, EuiRadioGroup, EuiSpacer } from "@elastic/eui";
+import {
+  EuiCheckbox,
+  EuiComboBox,
+  EuiComboBoxOptionOption,
+  EuiCompressedFieldNumber,
+  EuiLink,
+  EuiRadioGroup,
+  EuiSpacer,
+} from "@elastic/eui";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
 
@@ -147,7 +155,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
             label="Number of subtasks"
             helpText="Specify the number of subtasks to divide this operation into."
           >
-            <EuiFieldNumber
+            <EuiCompressedFieldNumber
               data-test-subj="slices"
               value={slices}
               placeholder="Specify a number"

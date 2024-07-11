@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface ConfigureRollupProps {
@@ -21,7 +21,13 @@ const ConfigureRollup = ({ isEdit, rollupId, rollupIdError, onChangeName, onChan
     <div style={{ paddingLeft: "10px" }}>
       <EuiSpacer size="s" />
       <EuiCompressedFormRow label="Name" helpText="Specify a unique, descriptive name." isInvalid={!!rollupIdError} error={rollupIdError}>
-        <EuiFieldText isInvalid={!!rollupIdError} placeholder="my-rollupjob1" value={rollupId} onChange={onChangeName} disabled={isEdit} />
+        <EuiCompressedFieldText
+          isInvalid={!!rollupIdError}
+          placeholder="my-rollupjob1"
+          value={rollupId}
+          onChange={onChangeName}
+          disabled={isEdit}
+        />
       </EuiCompressedFormRow>
       <EuiSpacer />
       <EuiFlexGroup gutterSize="xs">

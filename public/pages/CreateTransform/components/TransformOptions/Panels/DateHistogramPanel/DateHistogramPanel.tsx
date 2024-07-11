@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { EuiSmallButton, EuiFieldNumber, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSelect, EuiSpacer, EuiText } from "@elastic/eui";
+import { EuiSmallButton, EuiCompressedFieldNumber, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSelect, EuiSpacer, EuiText } from "@elastic/eui";
 import { getDateHistogramGroupItem } from "../../../../utils/helpers";
 import { CalendarTimeunitOptions, FixedTimeunitOptions, IntervalType } from "../../../../../../utils/constants";
 import { GROUP_TYPES, TRANSFORM_AGG_TYPE, TransformAggItem, TransformGroupItem } from "../../../../../../../models/interfaces";
@@ -24,7 +24,7 @@ export default function DateHistogramPanel({ name, handleGroupSelectionChange, c
   let timeunitOptions, intervalDefinition;
   if (intervalType === IntervalType.FIXED) {
     intervalDefinition = (
-      <EuiFieldNumber
+      <EuiCompressedFieldNumber
         value={dateHistogramInterval}
         onChange={(e) => setDateHistogramInterval(e.target.valueAsNumber)}
         data-test-subj="dateHistogramValueInput"

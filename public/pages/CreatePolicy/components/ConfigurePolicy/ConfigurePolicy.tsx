@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiFieldText, EuiText } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiText } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface ConfigurePolicyProps {
@@ -27,7 +27,13 @@ const ConfigurePolicy = ({ isEdit, policyId, policyIdError, onChange }: Configur
         isInvalid={!!policyIdError}
         error={policyIdError}
       >
-        <EuiFieldText isInvalid={!!policyIdError} placeholder="example_policy" readOnly={isEdit} value={policyId} onChange={onChange} />
+        <EuiCompressedFieldText
+          isInvalid={!!policyIdError}
+          placeholder="example_policy"
+          readOnly={isEdit}
+          value={policyId}
+          onChange={onChange}
+        />
       </EuiCompressedFormRow>
     </div>
   </ContentPanel>

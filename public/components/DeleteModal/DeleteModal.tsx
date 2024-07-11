@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import {
   EuiSmallButton,
   EuiSmallButtonEmpty,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -57,7 +57,7 @@ export default function DeleteTemplateModal(props: DeleteModalProps) {
           <EuiText color="subdued">
             To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
           </EuiText>
-          <EuiFieldText
+          <EuiCompressedFieldText
             data-test-subj="deleteInput"
             placeholder="delete"
             fullWidth

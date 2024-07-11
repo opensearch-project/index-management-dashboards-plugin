@@ -4,7 +4,15 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiCheckbox, EuiRadioGroup, EuiCompressedFormRow, EuiFieldNumber, EuiAccordion, EuiHorizontalRule } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiCheckbox,
+  EuiRadioGroup,
+  EuiCompressedFormRow,
+  EuiCompressedFieldNumber,
+  EuiAccordion,
+  EuiHorizontalRule,
+} from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { selectInterval } from "../../../Transforms/utils/metadataHelper";
 
@@ -98,7 +106,7 @@ export default class Schedule extends Component<ScheduleProps> {
                         you to start with the default value, and adjust based
                         on your use case and shard size.`}
             >
-              <EuiFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
+              <EuiCompressedFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
             </EuiCompressedFormRow>
           </EuiAccordion>
         </div>
