@@ -7,7 +7,7 @@ import React, { ChangeEvent, Component, Fragment } from "react";
 import {
   EuiSpacer,
   EuiCompressedFormRow,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiFlexGroup,
   EuiFlexItem,
   EuiCompressedFieldNumber,
@@ -121,7 +121,7 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-                    <EuiSelect
+                    <EuiCompressedSelect
                       id="selectTimeunit"
                       options={intervalType == "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
                       value={timeunit}
@@ -141,7 +141,7 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
                 </EuiFlexItem>
                 <EuiFlexItem>
                   <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-                    <EuiSelect
+                    <EuiCompressedSelect
                       id="selectTimeunit"
                       options={intervalType == "fixed" ? FixedTimeunitOptions : CalendarTimeunitOptions}
                       value={timeunit}
@@ -154,7 +154,7 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
           </EuiFlexGroup>
           <EuiSpacer size="m" />
           <EuiCompressedFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
-            <EuiSelect id="timezone" options={timezones} value={timezone} onChange={onChangeTimezone} />
+            <EuiCompressedSelect id="timezone" options={timezones} value={timezone} onChange={onChangeTimezone} />
           </EuiCompressedFormRow>
         </div>
       </EuiPanel>

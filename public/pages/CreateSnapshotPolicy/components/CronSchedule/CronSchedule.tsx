@@ -15,7 +15,7 @@ import {
   EuiFlexItem,
   EuiCompressedFormRow,
   EuiLink,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
@@ -143,7 +143,7 @@ const CronSchedule = ({
         <CustomLabel title="On the" />
         <EuiFlexGroup gutterSize="m">
           <EuiFlexItem>
-            <EuiSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" />
+            <EuiCompressedSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" />
           </EuiFlexItem>
           <EuiFlexItem>
             <EuiCompressedFieldNumber
@@ -174,7 +174,7 @@ const CronSchedule = ({
   return (
     <>
       <CustomLabel title={frequencyTitle} />
-      <EuiSelect id="creationCronScheduleType" options={CRON_SCHEDULE_FREQUENCY_TYPE} value={frequencyType} onChange={onTypeChange} />
+      <EuiCompressedSelect id="creationCronScheduleType" options={CRON_SCHEDULE_FREQUENCY_TYPE} value={frequencyType} onChange={onTypeChange} />
 
       <EuiSpacer size="m" />
 

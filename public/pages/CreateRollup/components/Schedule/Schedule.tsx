@@ -10,7 +10,7 @@ import {
   EuiCheckbox,
   EuiRadioGroup,
   EuiCompressedFormRow,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiCompressedFieldNumber,
   EuiFlexGroup,
   EuiFlexItem,
@@ -75,7 +75,7 @@ const selectInterval = (
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-          <EuiSelect
+          <EuiCompressedSelect
             id="selectIntervalTimeunit"
             options={ScheduleIntervalTimeunitOptions}
             value={intervalTimeunit}
@@ -145,7 +145,7 @@ export default class Schedule extends Component<ScheduleProps> {
           {!isEdit && isContinuous(continuousJob, onChangeContinuousJob)}
 
           <EuiCompressedFormRow label="Rollup execution frequency">
-            <EuiSelect
+            <EuiCompressedSelect
               id="continuousDefinition"
               options={[
                 { value: "fixed", text: "Define by fixed interval" },
@@ -165,7 +165,7 @@ export default class Schedule extends Component<ScheduleProps> {
                 <EuiTextArea value={cronExpression} onChange={onChangeCron} compressed={true} />
               </EuiCompressedFormRow>
               <EuiCompressedFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
-                <EuiSelect id="timezone" options={timezones} value={cronTimezone} onChange={onChangeCronTimezone} />
+                <EuiCompressedSelect id="timezone" options={timezones} value={cronTimezone} onChange={onChangeCronTimezone} />
               </EuiCompressedFormRow>
             </React.Fragment>
           )}
@@ -199,7 +199,7 @@ export default class Schedule extends Component<ScheduleProps> {
             </EuiFlexItem>
             <EuiFlexItem>
               <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-                <EuiSelect id="selectTimeunit" options={DelayTimeunitOptions} value={delayTimeunit} onChange={onChangeDelayTimeunit} />
+                <EuiCompressedSelect id="selectTimeunit" options={DelayTimeunitOptions} value={delayTimeunit} onChange={onChangeDelayTimeunit} />
               </EuiCompressedFormRow>
             </EuiFlexItem>
           </EuiFlexGroup>

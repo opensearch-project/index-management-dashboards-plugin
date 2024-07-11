@@ -19,7 +19,7 @@ import {
   EuiHorizontalRule,
   euiDragDropReorder,
   DropResult,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSpacer,
   EuiText,
   EuiPortal,
@@ -224,8 +224,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
         <EuiFlexGroup>
           <EuiFlexItem>
             <EuiCompressedFormRow>
-              <EuiSelect
-                compressed={useNewUx}
+              <EuiCompressedSelect
                 disabled={disableOrderSelections}
                 options={[
                   { value: "after", text: "Add after" },
@@ -239,8 +238,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           </EuiFlexItem>
           <EuiFlexItem>
             <EuiCompressedFormRow>
-              <EuiSelect
-                compressed={useNewUx}
+              <EuiCompressedSelect
                 disabled={disableOrderSelections}
                 options={stateOptions}
                 value={afterBeforeState}

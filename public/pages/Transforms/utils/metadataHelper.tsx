@@ -13,7 +13,7 @@ import {
   EuiIcon,
   EuiCompressedFormRow,
   EuiLink,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiTextArea,
   EuiText,
 } from "@elastic/eui";
@@ -101,7 +101,7 @@ export const selectInterval = (
       </EuiFlexItem>
       <EuiFlexItem>
         <EuiCompressedFormRow hasEmptyLabelSpace={true}>
-          <EuiSelect
+          <EuiCompressedSelect
             id="selectIntervalTimeunit"
             options={ScheduleIntervalTimeunitOptions}
             value={intervalTimeunit}
@@ -125,7 +125,7 @@ export const selectCronExpression = (
       <EuiTextArea value={cronExpression} onChange={onCronExpressionChange} compressed={true} />
     </EuiCompressedFormRow>
     <EuiCompressedFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
-      <EuiSelect id="timezone" options={timezones} value={cronTimeZone} onChange={onCronTimeZoneChange} />
+      <EuiCompressedSelect id="timezone" options={timezones} value={cronTimeZone} onChange={onCronTimeZoneChange} />
     </EuiCompressedFormRow>
   </React.Fragment>
 );

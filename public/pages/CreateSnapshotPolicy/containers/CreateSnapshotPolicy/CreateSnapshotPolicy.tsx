@@ -8,7 +8,7 @@ import queryString from "query-string";
 import {
   EuiCompressedFormRow,
   EuiTextArea,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiCompressedFieldText,
   EuiFlexGroup,
   EuiFlexItem,
@@ -686,7 +686,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                   />
                 </EuiFlexItem>
                 <EuiFlexItem style={{ maxWidth: 100 }}>
-                  <EuiSelect
+                  <EuiCompressedSelect
                     options={MAX_AGE_UNIT_OPTIONS}
                     value={maxAgeUnit}
                     onChange={(e) => {

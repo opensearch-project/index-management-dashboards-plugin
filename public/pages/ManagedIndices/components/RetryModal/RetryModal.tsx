@@ -14,7 +14,7 @@ import {
   EuiModalHeaderTitle,
   EuiOverlayMask,
   EuiRadioGroup,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSpacer,
   EuiCompressedFormRow,
 } from "@elastic/eui";
@@ -143,7 +143,7 @@ export default class RetryModal extends Component<RetryModalProps, RetryModalSta
 
             <EuiSpacer size="s" />
             <EuiCompressedFormRow label="Start state" helpText="Only common states shared across all selected indexes are available">
-              <EuiSelect
+              <EuiCompressedSelect
                 disabled={radioIdSelected !== Radio.State}
                 options={stateOptions}
                 value={stateSelected}

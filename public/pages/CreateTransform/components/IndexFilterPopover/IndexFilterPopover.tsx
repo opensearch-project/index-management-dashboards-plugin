@@ -8,7 +8,7 @@ import {
   EuiForm,
   EuiFlexItem,
   EuiCompressedFormRow,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiPopoverTitle,
   EuiSpacer,
   EuiFlexGroup,
@@ -53,7 +53,7 @@ export default function IndexFilterPopover({
         <EuiFlexGroup>
           <EuiFlexItem grow={false}>
             <EuiCompressedFormRow label="Field">
-              <EuiSelect
+              <EuiCompressedSelect
                 id="selectField"
                 options={fields.map((item) => {
                   return {
@@ -68,7 +68,7 @@ export default function IndexFilterPopover({
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiCompressedFormRow label="Operator">
-              <EuiSelect
+              <EuiCompressedSelect
                 id="selectOperator"
                 options={[]}
                 // {getOperators(selectedField?.type)}
@@ -80,7 +80,7 @@ export default function IndexFilterPopover({
         </EuiFlexGroup>
         <EuiFlexItem>
           <EuiCompressedFormRow label="Value">
-            <EuiSelect id="selectValue" options={[]} value={selectedValue} onChange={onChangeSelectedValue} />
+            <EuiCompressedSelect id="selectValue" options={[]} value={selectedValue} onChange={onChangeSelectedValue} />
           </EuiCompressedFormRow>
         </EuiFlexItem>
       </div>
