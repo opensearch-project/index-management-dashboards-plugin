@@ -11,7 +11,7 @@ import { EMPTY_TRANSFORM } from "../../utils/constants";
 import queryString from "query-string";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { EuiFlexItem, EuiFlexGroup, EuiSmallButton, EuiTitle, EuiSpacer, EuiButtonEmpty } from "@elastic/eui";
+import { EuiFlexItem, EuiFlexGroup, EuiSmallButton, EuiTitle, EuiSpacer, EuiSmallButtonEmpty } from "@elastic/eui";
 import ConfigureTransform from "../../components/ConfigureTransform";
 import Schedule from "../../components/Schedule";
 import Indices from "../../components/Indices";
@@ -178,9 +178,9 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="editTransformCancelButton">
+            <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="editTransformCancelButton">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="editTransformSaveButton">

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiButtonEmpty, EuiButtonProps, EuiButtonEmptyProps } from "@elastic/eui";
+import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiSmallButtonEmpty, EuiButtonProps, EuiButtonEmptyProps } from "@elastic/eui";
 import classNames from "classnames";
 import BottomBar from "../BottomBar";
 import "./index.scss";
@@ -50,7 +50,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
   const renderCancel = useCallback(
     () => (
       <EuiFlexItem grow={false}>
-        <EuiButtonEmpty onClick={onClickCancel} color="ghost" iconType="cross" children="Cancel" {...props.cancelButtonprops} />
+        <EuiSmallButtonEmpty onClick={onClickCancel} color="ghost" iconType="cross" children="Cancel" {...props.cancelButtonprops} />
       </EuiFlexItem>
     ),
     [onClickCancel]
@@ -59,7 +59,7 @@ export default function UnsavedChangesBottomBar(props: CustomFormRowProps) {
   const renderConfirm = useCallback(
     () => (
       <EuiFlexItem grow={false}>
-        <EuiSmallButton
+        <EuiButton
           data-test-subj={submitButtonDataTestSubj}
           onClick={onClick}
           isLoading={loading}

@@ -6,7 +6,7 @@
 import React, { Component } from "react";
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -83,9 +83,9 @@ export default class RolloverAliasModal extends Component<RolloverAliasModalProp
           </EuiModalBody>
 
           <EuiModalFooter>
-            <EuiButtonEmpty onClick={onClose} data-test-subj="editRolloverAliasModalCloseButton">
+            <EuiSmallButtonEmpty onClick={onClose} data-test-subj="editRolloverAliasModalCloseButton">
               Close
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
 
             <EuiSmallButton
               onClick={this.onEditRolloverAlias}

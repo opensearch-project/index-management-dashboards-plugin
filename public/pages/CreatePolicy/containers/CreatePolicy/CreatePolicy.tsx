@@ -4,7 +4,17 @@
  */
 
 import React, { ChangeEvent, Component, Fragment, useContext } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiSmallButton, EuiButtonEmpty, EuiCallOut, EuiLink, EuiIcon } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiTitle,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
+  EuiCallOut,
+  EuiLink,
+  EuiIcon,
+} from "@elastic/eui";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
 import { DEFAULT_POLICY } from "../../utils/constants";
@@ -252,9 +262,9 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
         <EuiSpacer />
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="createPolicyCancelButton">
+            <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createPolicyCancelButton">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createPolicyCreateButton">

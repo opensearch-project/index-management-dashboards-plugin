@@ -11,7 +11,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import IndexFormWrapper, { IndexForm } from "../../../../containers/IndexForm";
-import { EuiSmallButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink } from "@elastic/eui";
+import { EuiSmallButton, EuiSmallButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -323,7 +323,7 @@ export default function Rollover(props: RolloverProps) {
       ) : null}
       <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
         <EuiFlexItem grow={false}>
-          <EuiButtonEmpty
+          <EuiSmallButtonEmpty
             onClick={() => {
               if (sourceType === "alias") {
                 props.history.push(ROUTES.ALIASES);
@@ -334,7 +334,7 @@ export default function Rollover(props: RolloverProps) {
             data-test-subj="rolloverCancelButton"
           >
             Cancel
-          </EuiButtonEmpty>
+          </EuiSmallButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiSmallButton

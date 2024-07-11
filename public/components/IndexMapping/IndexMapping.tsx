@@ -4,7 +4,17 @@
  */
 
 import React, { forwardRef, useCallback, useState, Ref, useRef, useMemo, useImperativeHandle } from "react";
-import { EuiTreeView, EuiIcon, EuiTreeViewProps, EuiSmallButton, EuiSpacer, EuiButtonGroup, EuiLink, EuiCallOut } from "@elastic/eui";
+import {
+  EuiTreeView,
+  EuiIcon,
+  EuiTreeViewProps,
+  EuiSmallButton,
+  EuiButton,
+  EuiSpacer,
+  EuiButtonGroup,
+  EuiLink,
+  EuiCallOut,
+} from "@elastic/eui";
 import { set, get, isEmpty } from "lodash";
 import MonacoJSONEditor, { IJSONEditorRef } from "../MonacoJSONEditor";
 import { Modal } from "../Modal";
@@ -214,7 +224,7 @@ const IndexMapping = (
         <>
           {isEdit && !readonly && !isEmpty(oldValue) ? (
             <>
-              <EuiSmallButton
+              <EuiButton
                 size="s"
                 data-test-subj="previousMappingsJsonButton"
                 onClick={() => {
@@ -242,7 +252,7 @@ const IndexMapping = (
                 }}
               >
                 See previous mappings
-              </EuiSmallButton>
+              </EuiButton>
               <EuiSpacer />
             </>
           ) : null}

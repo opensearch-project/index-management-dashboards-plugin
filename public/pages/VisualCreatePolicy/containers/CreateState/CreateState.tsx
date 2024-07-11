@@ -12,7 +12,7 @@ import {
   EuiTitle,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiSmallButton,
   EuiFormRow,
   EuiFieldText,
@@ -278,9 +278,9 @@ export default class CreateState extends Component<CreateStateProps, CreateState
     return (
       <EuiFlexGroup justifyContent="spaceBetween">
         <EuiFlexItem grow={false}>
-          <EuiButtonEmpty iconType="cross" onClick={onCloseFlyout} flush="left">
+          <EuiSmallButtonEmpty iconType="cross" onClick={onCloseFlyout} flush="left">
             Cancel
-          </EuiButtonEmpty>
+          </EuiSmallButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiSmallButton fill disabled={!name.trim().length || !!nameError} onClick={this.onClickSaveState}>

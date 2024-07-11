@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiSmallButton, EuiButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiSmallButton, EuiSmallButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField from "../../../../lib/field";
@@ -222,9 +222,9 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
           <EuiSpacer />
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateComposableTemplateCancelButton">
+              <EuiSmallButtonEmpty onClick={onCancel} data-test-subj="CreateComposableTemplateCancelButton">
                 Cancel
-              </EuiButtonEmpty>
+              </EuiSmallButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiSmallButton fill onClick={onClickSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">

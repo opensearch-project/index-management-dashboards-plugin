@@ -13,7 +13,7 @@ import {
   EuiModalProps,
   EuiModalBodyProps,
   EuiButtonProps,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
 } from "@elastic/eui";
 import React, { Component, createContext, useEffect, useState } from "react";
 import { render } from "react-dom";
@@ -72,7 +72,7 @@ interface IShowOptions extends Pick<EuiModalProps, "style" | "maxWidth" | "class
   footer?: footerEnum[];
   bodyProps?: EuiModalBodyProps;
   confirmButtonProps?: EuiButtonProps;
-  CancelButtonComponent?: typeof EuiSmallButton | typeof EuiButtonEmpty;
+  CancelButtonComponent?: typeof EuiSmallButton | typeof EuiSmallButtonEmpty;
 }
 
 const blank = () => null;
@@ -89,7 +89,7 @@ const SimpleModal = (props: IShowOptions) => {
     visible,
     footer = ["confirm", "cancel"],
     confirmButtonProps,
-    CancelButtonComponent = EuiButtonEmpty,
+    CancelButtonComponent = EuiSmallButtonEmpty,
     ...others
   } = props;
   const testSubj = props["data-test-subj"] || title || Date.now();

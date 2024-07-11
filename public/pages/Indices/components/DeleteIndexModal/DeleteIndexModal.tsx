@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from "react";
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiCallOut,
   EuiFieldText,
   EuiModal,
@@ -72,7 +72,7 @@ export default function DeleteIndexModal(props: DeleteIndexModalProps) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty onClick={onClose}>Cancel</EuiButtonEmpty>
+        <EuiSmallButtonEmpty onClick={onClose}>Cancel</EuiSmallButtonEmpty>
         <EuiSmallButton data-test-subj="Delete Confirm button" onClick={onConfirm} fill color="danger" disabled={value !== "delete"}>
           Delete
         </EuiSmallButton>

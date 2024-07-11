@@ -12,7 +12,7 @@ import {
   EuiPopoverTitle,
   EuiSpacer,
   EuiFlexGroup,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiCodeEditor,
   EuiSmallButton,
 } from "@elastic/eui";
@@ -126,9 +126,9 @@ export default function IndexFilterPopover({
             </EuiSmallButton>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty flush="right" onClick={closePopover} data-test-subj="cancelSaveFilter">
+            <EuiSmallButtonEmpty flush="right" onClick={closePopover} data-test-subj="cancelSaveFilter">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem />
         </EuiFlexGroup>

@@ -5,7 +5,7 @@
 
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiSmallButtonIcon,
   EuiCallOut,
   EuiFlexGroup,
@@ -243,9 +243,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
 
       <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
         <EuiFlexItem grow={false}>
-          <EuiButtonEmpty onClick={onCancel} data-test-subj="reindexCancelButton">
+          <EuiSmallButtonEmpty onClick={onCancel} data-test-subj="reindexCancelButton">
             Cancel
-          </EuiButtonEmpty>
+          </EuiSmallButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiSmallButton fill onClick={onClickAction} isLoading={executing} data-test-subj="forceMergeConfirmButton">

@@ -12,7 +12,7 @@ import {
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiOverlayMask,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
   EuiText,
@@ -85,9 +85,9 @@ const CreatePolicyModal: React.SFC<CreatePolicyModalProps> = ({ isEdit = false, 
         <EuiModalFooter>
           <EuiFlexGroup justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onClose} data-test-subj="createPolicyModalCancelButton">
+              <EuiSmallButtonEmpty onClick={onClose} data-test-subj="createPolicyModalCancelButton">
                 Cancel
-              </EuiButtonEmpty>
+              </EuiSmallButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiSmallButton

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, useContext } from "react";
-import { EuiSmallButton, EuiButtonEmpty, EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSmallButton, EuiSmallButtonEmpty, EuiComboBoxOptionOption, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import moment from "moment";
 import { RollupService, TransformService } from "../../../../services";
@@ -668,9 +668,9 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
         />
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd" style={{ padding: "5px 50px" }}>
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="createTransformCancelButton">
+            <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createTransformCancelButton">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           {currentStep != 1 && (
             <EuiFlexItem grow={false}>

@@ -7,7 +7,7 @@ import React, { ChangeEvent, Component, Fragment } from "react";
 import {
   EuiBasicTable,
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiComboBoxOptionOption,
   EuiFlexGroup,
   EuiFlexItem,
@@ -644,9 +644,9 @@ export default class MetricsCalculation extends Component<MetricsCalculationProp
                 </EuiModalBody>
 
                 <EuiModalFooter>
-                  <EuiButtonEmpty onClick={this.closeModal} data-test-subj="addFieldsMetricCancel">
+                  <EuiSmallButtonEmpty onClick={this.closeModal} data-test-subj="addFieldsMetricCancel">
                     Cancel
-                  </EuiButtonEmpty>
+                  </EuiSmallButtonEmpty>
                   <EuiSmallButton
                     fill
                     onClick={() => {

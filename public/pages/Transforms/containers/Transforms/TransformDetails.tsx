@@ -10,7 +10,7 @@ import {
   EuiFlexItem,
   EuiSmallButton,
   EuiOverlayMask,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiModalFooter,
   EuiModal,
   EuiModalHeader,
@@ -354,7 +354,7 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
               </EuiModalBody>
 
               <EuiModalFooter>
-                <EuiButtonEmpty onClick={this.closeModal}>Close</EuiButtonEmpty>
+                <EuiSmallButtonEmpty onClick={this.closeModal}>Close</EuiSmallButtonEmpty>
               </EuiModalFooter>
             </EuiModal>
           </EuiOverlayMask>

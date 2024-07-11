@@ -5,7 +5,7 @@
 
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiCallOut,
   EuiFlexGroup,
   EuiFlexItem,
@@ -664,9 +664,9 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} flush="left" data-test-subj="shrinkIndexCancelButton">
+            <EuiSmallButtonEmpty onClick={this.onCancel} flush="left" data-test-subj="shrinkIndexCancelButton">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiSmallButton

@@ -7,7 +7,7 @@ import React, { Component, Fragment } from "react";
 import _ from "lodash";
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -312,9 +312,9 @@ export default class ApplyPolicyModal extends Component<ApplyPolicyModalProps, A
           </EuiModalBody>
 
           <EuiModalFooter>
-            <EuiButtonEmpty onClick={onClose} data-test-subj="applyPolicyModalCloseButton">
+            <EuiSmallButtonEmpty onClick={onClose} data-test-subj="applyPolicyModalCloseButton">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
 
             <EuiSmallButton onClick={this.onSubmit} fill data-test-subj="applyPolicyModalEditButton">
               Apply

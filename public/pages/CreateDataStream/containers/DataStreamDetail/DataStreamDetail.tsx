@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiSmallButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiSmallButton, EuiSmallButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -193,9 +193,9 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
           <EuiSpacer />
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateDataStreamCancelButton">
+              <EuiSmallButtonEmpty onClick={onCancel} data-test-subj="CreateDataStreamCancelButton">
                 Cancel
-              </EuiButtonEmpty>
+              </EuiSmallButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiSmallButton fill onClick={onSubmit} isLoading={isLoading} data-test-subj="CreateDataStreamCreateButton">

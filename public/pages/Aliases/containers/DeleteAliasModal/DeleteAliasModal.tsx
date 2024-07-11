@@ -6,7 +6,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiCallOut,
   EuiFieldText,
   EuiModal,
@@ -103,7 +103,7 @@ export default function DeleteAliasModal(props: DeleteAliasModalProps) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty onClick={onClose}>Cancel</EuiButtonEmpty>
+        <EuiSmallButtonEmpty onClick={onClose}>Cancel</EuiSmallButtonEmpty>
         <EuiSmallButton data-test-subj="deleteConfirmButton" onClick={onConfirm} fill color="danger" disabled={value !== "delete"}>
           Delete
         </EuiSmallButton>
