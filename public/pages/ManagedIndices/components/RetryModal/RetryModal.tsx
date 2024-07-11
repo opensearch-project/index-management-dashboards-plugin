@@ -6,7 +6,7 @@
 import React, { Component } from "react";
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -154,9 +154,9 @@ export default class RetryModal extends Component<RetryModalProps, RetryModalSta
           </EuiModalBody>
 
           <EuiModalFooter>
-            <EuiButtonEmpty onClick={onClose} data-test-subj="retryModalCloseButton">
+            <EuiSmallButtonEmpty onClick={onClose} data-test-subj="retryModalCloseButton">
               Close
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
 
             <EuiSmallButton onClick={this.onRetry} disabled={!retryItems.length} fill data-test-subj="retryModalRetryButton">
               Retry

@@ -14,7 +14,7 @@ import {
   EuiModalHeaderTitle,
   EuiModalBody,
   EuiModalFooter,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiFlexGroup,
   EuiFlexItem,
   EuiForm,
@@ -459,9 +459,9 @@ export default class AdvancedAggregation extends Component<AdvancedAggregationPr
                 </EuiModalBody>
 
                 <EuiModalFooter>
-                  <EuiButtonEmpty onClick={this.closeModal} data-test-subj="addFieldsAggregationCancel">
+                  <EuiSmallButtonEmpty onClick={this.closeModal} data-test-subj="addFieldsAggregationCancel">
                     Cancel
-                  </EuiButtonEmpty>
+                  </EuiSmallButtonEmpty>
                   <EuiSmallButton
                     fill
                     onClick={() => {

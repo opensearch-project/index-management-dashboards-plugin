@@ -9,7 +9,7 @@ import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiLoadingSpinner,
   EuiModal,
   EuiModalBody,
@@ -146,9 +146,9 @@ export default function DeleteTemplateModal(props: DeleteTemplateModalProps) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty disabled={loading} isLoading={loading} data-test-subj="deletaCancelButton" onClick={onClose}>
+        <EuiSmallButtonEmpty disabled={loading} isLoading={loading} data-test-subj="deletaCancelButton" onClick={onClose}>
           Cancel
-        </EuiButtonEmpty>
+        </EuiSmallButtonEmpty>
         {!linkedIndexItemCount ? (
           <EuiSmallButton
             disabled={loading}

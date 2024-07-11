@@ -5,7 +5,7 @@
 
 import React, { Component, useContext } from "react";
 import {
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiFlexGrid,
   EuiFlexItem,
   EuiFlyout,
@@ -157,7 +157,7 @@ export class SnapshotFlyout extends MDSEnabledComponent<SnapshotFlyoutProps, Sna
         </EuiFlyoutBody>
 
         <EuiFlyoutFooter>
-          <EuiButtonEmpty onClick={onCloseFlyout}>Close</EuiButtonEmpty>
+          <EuiSmallButtonEmpty onClick={onCloseFlyout}>Close</EuiSmallButtonEmpty>
         </EuiFlyoutFooter>
       </EuiFlyout>
     );

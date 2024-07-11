@@ -14,7 +14,7 @@ import {
   EuiFlexItem,
   EuiSpacer,
   EuiTitle,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiSmallButton,
   EuiComboBoxOptionOption,
   EuiFieldNumber,
@@ -884,7 +884,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <EuiFlexGroup justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onClickCancel}>Cancel</EuiButtonEmpty>
+            <EuiSmallButtonEmpty onClick={this.onClickCancel}>Cancel</EuiSmallButtonEmpty>
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>

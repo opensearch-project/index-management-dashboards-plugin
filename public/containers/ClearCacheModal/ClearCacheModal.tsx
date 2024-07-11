@@ -13,7 +13,7 @@ import { INDEX_OP_BLOCKS_TYPE, INDEX_OP_TARGET_TYPE } from "../../utils/constant
 import { getErrorMessage, filterBlockedItems } from "../../utils/helpers";
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiCallOut,
   EuiModal,
   EuiModalBody,
@@ -215,9 +215,9 @@ export default function ClearCacheModal(props: ClearCacheModalProps) {
       <EuiModalBody>{!!selectedItems && selectedItems.length > 0 ? specificIndexesChildren : noSpecificIndexesChildren}</EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty data-test-subj="ClearCacheCancelButton" onClick={onClose}>
+        <EuiSmallButtonEmpty data-test-subj="ClearCacheCancelButton" onClick={onClose}>
           Cancel
-        </EuiButtonEmpty>
+        </EuiSmallButtonEmpty>
         <EuiSmallButton
           data-test-subj="ClearCacheConfirmButton"
           onClick={onConfirm}

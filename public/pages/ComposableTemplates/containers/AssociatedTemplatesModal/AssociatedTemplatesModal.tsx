@@ -8,7 +8,7 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { ServicesContext } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
 import {
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiSmallButtonIcon,
   EuiFlyout,
   EuiFlyoutBody,
@@ -91,7 +91,7 @@ export default function AssociatedTemplatesModal(props: AssociatedTemplatesModal
                               confirmButtonProps: {
                                 color: "danger",
                               },
-                              CancelButtonComponent: EuiButtonEmpty,
+                              CancelButtonComponent: EuiSmallButtonEmpty,
                               async onOk() {
                                 const updateResult = await submitTemplateChange({
                                   templateName: record.name,

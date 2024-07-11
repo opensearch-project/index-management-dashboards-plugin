@@ -6,7 +6,7 @@
 import React from "react";
 import {
   EuiSmallButton,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -47,9 +47,9 @@ export default function OpenIndexModal(props: OpenIndexModalProps) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty data-test-subj="Open Cancel button" onClick={onClose}>
+        <EuiSmallButtonEmpty data-test-subj="Open Cancel button" onClick={onClose}>
           Cancel
-        </EuiButtonEmpty>
+        </EuiSmallButtonEmpty>
         <EuiSmallButton data-test-subj="Open Confirm button" onClick={onConfirm} fill>
           Open
         </EuiSmallButton>

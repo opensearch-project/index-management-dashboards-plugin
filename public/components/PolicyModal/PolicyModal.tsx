@@ -13,7 +13,7 @@ import {
   EuiModalHeaderTitle,
   EuiOverlayMask,
   EuiCodeBlock,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   // @ts-ignore
   EuiCopy,
   EuiFlexGroup,
@@ -50,16 +50,16 @@ const PolicyModal: React.SFC<PolicyModalProps> = ({ policyId, policy, errorMessa
             <EuiFlexItem grow={false} style={{ marginRight: "auto" }}>
               <EuiCopy textToCopy={policyString}>
                 {(copy: () => void) => (
-                  <EuiButtonEmpty iconType="copyClipboard" onClick={copy} disabled={!policy} data-test-subj="policyModalCopyButton">
+                  <EuiSmallButtonEmpty iconType="copyClipboard" onClick={copy} disabled={!policy} data-test-subj="policyModalCopyButton">
                     Copy
-                  </EuiButtonEmpty>
+                  </EuiSmallButtonEmpty>
                 )}
               </EuiCopy>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onClose} data-test-subj="policyModalCloseButton">
+              <EuiSmallButtonEmpty onClick={onClose} data-test-subj="policyModalCloseButton">
                 Close
-              </EuiButtonEmpty>
+              </EuiSmallButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
               <EuiSmallButton onClick={() => onEdit(false)} fill disabled={!policyId || !policy} data-test-subj="policyModalEditJsonButton">
