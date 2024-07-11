@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component } from "react";
-import { EuiSpacer, EuiCheckbox, EuiAccordion, EuiCompressedFormRow, EuiCompressedFieldNumber } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedCheckbox, EuiAccordion, EuiCompressedFormRow, EuiCompressedFieldNumber } from "@elastic/eui";
 // @ts-ignore
 import { htmlIdGenerator } from "@elastic/eui/lib/services";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -50,7 +50,7 @@ export default class Schedule extends Component<ScheduleProps> {
     return (
       <ContentPanel bodyStyles={{ padding: "initial" }} title="Schedule" titleSize="m">
         <div style={{ paddingLeft: "10px" }}>
-          <EuiCheckbox
+          <EuiCompressedCheckbox
             id="jobEnabled"
             label="Job enabled by default"
             checked={enabled}

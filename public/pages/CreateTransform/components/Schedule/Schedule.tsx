@@ -6,7 +6,7 @@
 import React, { ChangeEvent, Component } from "react";
 import {
   EuiSpacer,
-  EuiCheckbox,
+  EuiCompressedCheckbox,
   EuiRadioGroup,
   EuiCompressedFormRow,
   EuiCompressedFieldNumber,
@@ -77,7 +77,7 @@ export default class Schedule extends Component<ScheduleProps> {
       <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Schedule" titleSize="m">
         <div>
           {!isEdit && (
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="jobEnabledByDefault"
               label="Job enabled by default"
               checked={jobEnabledByDefault}
