@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { ArgsWithQuery, ArgsWithError, EuiFlexGroup, EuiFlexItem, EuiPagination, EuiSearchBar, EuiSwitch } from "@elastic/eui";
+import { ArgsWithQuery, ArgsWithError, EuiFlexGroup, EuiFlexItem, EuiPagination, EuiSearchBar, EuiCompressedSwitch } from "@elastic/eui";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 interface ManagedIndexControlsProps {
@@ -70,7 +70,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiSwitch
+          <EuiCompressedSwitch
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}

@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { ArgsWithError, ArgsWithQuery, EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiSwitch } from "@elastic/eui";
+import { ArgsWithError, ArgsWithQuery, EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiCompressedSwitch } from "@elastic/eui";
 import { DataStream } from "../../../../../server/models/interfaces";
 
 interface IndexControlsProps {
@@ -75,7 +75,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiSwitch
+          <EuiCompressedSwitch
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}

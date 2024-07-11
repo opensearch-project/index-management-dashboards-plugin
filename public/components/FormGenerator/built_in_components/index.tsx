@@ -6,7 +6,7 @@ import React, { forwardRef, useRef } from "react";
 import {
   EuiCompressedFieldNumber,
   EuiCompressedFieldText,
-  EuiSwitch,
+  EuiCompressedSwitch,
   EuiCompressedSelect,
   EuiText,
   EuiCompressedCheckbox,
@@ -49,7 +49,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   Switch: EuiToolTipWrapper(
     forwardRef(({ value, onChange, ...others }, ref: React.Ref<any>) => (
       <div ref={ref}>
-        <EuiSwitch showLabel={false} label="" checked={value || false} onChange={(e) => onChange(e.target.checked)} {...others} />
+        <EuiCompressedSwitch showLabel={false} label="" checked={value || false} onChange={(e) => onChange(e.target.checked)} {...others} />
       </div>
     )) as React.ComponentType<IFieldComponentProps>
   ),
