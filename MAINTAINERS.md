@@ -5,7 +5,7 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 ## Current Maintainers
 
 | Maintainer            | GitHub ID                                             | Affiliation |
-| --------------------- | ----------------------------------------------------- | ----------- |
+|-----------------------| ----------------------------------------------------- | ----------- |
 | Bowen Lan             | [bowenlan-amzn](https://github.com/bowenlan-amzn)     | Amazon      |
 | Saurabh Singh         | [getsaurabh02](https://github.com/getsaurabh02)       | Amazon      |
 | Praveen Sameneni      | [praveensameneni](https://github.com/praveensameneni) | Amazon      |
@@ -20,6 +20,7 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | Surya Sashank Nistala | [eirsep](https://github.com/eirsep)                   | Amazon      |
 | Rohit Ashiwal         | [r1walz](https://github.com/r1walz)                   | Amazon      |
 | Vikas Bansal          | [vikasvb90](https://github.com/vikasvb90)             | Amazon      |
+| Ramakrishna Chilaka   | [RamakrishnaChilaka](https://github.com/RamakrishnaChilaka)             | Amazon      |
 
 ## Emeritus
 
