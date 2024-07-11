@@ -5,7 +5,7 @@
 
 import {
   EuiSmallButton,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiComboBoxOptionOption,
   EuiFlexGroup,
   EuiFlexItem,
@@ -65,7 +65,7 @@ const SnapshotIndicesRepoInput = ({
   return (
     <>
       <CustomLabel title="Select or input source indexes or index patterns" />
-      <EuiComboBox
+      <EuiCompressedComboBox
         placeholder="Select or input indexes or index patterns"
         options={indexOptions}
         selectedOptions={selectedIndexOptions}

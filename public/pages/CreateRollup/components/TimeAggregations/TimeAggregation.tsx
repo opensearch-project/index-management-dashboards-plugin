@@ -20,7 +20,7 @@ import {
   EuiText,
 } from "@elastic/eui";
 import moment from "moment-timezone";
-import EuiComboBox from "../../../../components/ComboBoxWithoutWarning";
+import EuiCompressedComboBox from "../../../../components/ComboBoxWithoutWarning";
 import { RollupService } from "../../../../services";
 import { FieldItem } from "../../../../../models/interfaces";
 import { CalendarTimeunitOptions, FixedTimeunitOptions } from "../../../../utils/constants";
@@ -93,7 +93,7 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />
           <EuiCompressedFormRow label="Timestamp field" error={timestampError} isInvalid={!!timestampError}>
-            <EuiComboBox
+            <EuiCompressedComboBox
               placeholder="Select timestamp"
               options={dateFields}
               selectedOptions={selectedTimestamp}

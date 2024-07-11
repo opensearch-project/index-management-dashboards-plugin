@@ -13,7 +13,7 @@ import {
   EuiTitle,
   EuiCompressedFormRow,
   EuiSpacer,
-  EuiComboBox,
+  EuiCompressedComboBox,
 } from "@elastic/eui";
 import { Transition as ITransition, UITransition } from "../../../../../models/interfaces";
 import FlyoutFooter from "../../components/FlyoutFooter";
@@ -114,8 +114,7 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
           />
 
           <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-            <EuiComboBox
-              compressed={useNewUx}
+            <EuiCompressedComboBox
               fullWidth
               isClearable={false}
               placeholder="Select a single option"

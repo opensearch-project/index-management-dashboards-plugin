@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiComboBox, EuiComboBoxOptionOption, EuiSpacer, EuiCompressedFormRow } from "@elastic/eui";
+import { EuiCompressedComboBox, EuiComboBoxOptionOption, EuiSpacer, EuiCompressedFormRow } from "@elastic/eui";
 import React from "react";
 import { IndexItem } from "../../../../../models/interfaces";
 
@@ -31,7 +31,7 @@ const SnapshotIndicesInput = ({
   return (
     <>
       <EuiCompressedFormRow label="Select indices or input index patterns you want to restore" error={selectionError} isInvalid={showError}>
-        <EuiComboBox
+        <EuiCompressedComboBox
           isInvalid={showError}
           placeholder="Select indices or input index patterns."
           options={indexOptions}

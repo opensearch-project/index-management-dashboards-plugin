@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiComboBox, EuiComboBoxOptionOption, EuiCompressedFormRow, EuiSpacer, EuiCompressedSwitch } from "@elastic/eui";
+import { EuiCompressedComboBox, EuiComboBoxOptionOption, EuiCompressedFormRow, EuiSpacer, EuiCompressedSwitch } from "@elastic/eui";
 import { AliasAction, AliasActionItem, AliasActions, UIAction } from "../../../../../../models/interfaces";
 import AliasUIAction, { MAX_ALIAS_ACTIONS } from "./AliasUIAction";
 import { inputLimitText } from "../../../../CreatePolicy/utils/helpers";
@@ -105,7 +105,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
               data-test-subj={"add-alias-row"}
             >
               <>
-                <EuiComboBox
+                <EuiCompressedComboBox
                   placeholder={"Enter aliases to add"}
                   noSuggestions={true}
                   selectedOptions={selectedItems.add || []}
@@ -148,7 +148,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
               data-test-subj={"remove-alias-row"}
             >
               <>
-                <EuiComboBox
+                <EuiCompressedComboBox
                   placeholder={"Enter aliases to remove"}
                   noSuggestions={true}
                   selectedOptions={selectedItems.remove || []}

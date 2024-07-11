@@ -13,7 +13,7 @@ import {
   EuiComboBoxOptionOption,
 } from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
-import EuiComboBox from "../../ComboBoxWithoutWarning";
+import EuiCompressedComboBox from "../../ComboBoxWithoutWarning";
 
 export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle" | "CheckBox" | "ComboBoxMultiple";
 
@@ -80,7 +80,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   ComboBoxSingle: EuiToolTipWrapper(
     forwardRef(({ onChange, value, options, ...others }, ref: React.Ref<any>) => {
       return (
-        <EuiComboBox
+        <EuiCompressedComboBox
           onCreateOption={(searchValue) => {
             const allOptions = (options as { label: string; options?: { label: string }[] }[]).reduce((total, current) => {
               if (current.options) {
@@ -125,7 +125,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
         ref: React.Ref<any>
       ) => {
         return (
-          <EuiComboBox
+          <EuiCompressedComboBox
             onCreateOption={(searchValue) => {
               const allOptions = others.options.reduce((total, current) => {
                 if (current.options) {
