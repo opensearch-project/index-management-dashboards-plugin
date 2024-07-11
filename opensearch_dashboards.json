@@ -6,5 +6,7 @@
   "requiredPlugins": ["navigation", "opensearchDashboardsReact"],
   "optionalPlugins": ["managementOverview", "dataSource", "dataSourceManagement"],
   "server": true,
-  "ui": true
+  "ui": true,
+  "supportedOSDataSourceVersions": ">=2.0.0",
+  "requiredOSDataSourcePlugins": ["opensearch-index-management"]
 }
