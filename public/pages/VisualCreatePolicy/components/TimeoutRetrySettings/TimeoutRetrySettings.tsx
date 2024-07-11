@@ -10,8 +10,8 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiCompressedFormRow,
-  EuiFieldNumber,
-  EuiFieldText,
+  EuiCompressedFieldNumber,
+  EuiCompressedFieldText,
   EuiSelect,
 } from "@elastic/eui";
 import "brace/theme/github";
@@ -48,7 +48,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
         <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFlexGroup>
             <EuiFlexItem>
-              <EuiFieldText
+              <EuiCompressedFieldText
                 isInvalid={false}
                 fullWidth
                 value={action.action.timeout || ""}
@@ -69,7 +69,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
         <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFlexGroup>
             <EuiFlexItem>
-              <EuiFieldNumber
+              <EuiCompressedFieldNumber
                 isInvalid={false}
                 fullWidth
                 min={0}
@@ -105,7 +105,7 @@ const TimeoutRetrySettings = ({ action, editAction, onChangeAction }: TimeoutRet
         <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
           <EuiFlexGroup>
             <EuiFlexItem>
-              <EuiFieldText
+              <EuiCompressedFieldText
                 isInvalid={false}
                 fullWidth
                 value={action.action.retry?.delay || ""}

@@ -4,7 +4,15 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiLink, EuiIcon, EuiCompressedFormRow, EuiSelect, EuiSpacer, EuiFieldText, EuiFieldNumber } from "@elastic/eui";
+import {
+  EuiLink,
+  EuiIcon,
+  EuiCompressedFormRow,
+  EuiSelect,
+  EuiSpacer,
+  EuiCompressedFieldText,
+  EuiCompressedFieldNumber,
+} from "@elastic/eui";
 import moment from "moment-timezone";
 import EuiFormCustomLabel from "../EuiFormCustomLabel";
 import { UITransition } from "../../../../../models/interfaces";
@@ -67,7 +75,7 @@ const Transition = ({ uiTransition, onChangeTransition, useNewUx }: TransitionPr
         <>
           <EuiFormCustomLabel title="Minimum index age" helpText="The minimum age required to transition to the next state." />
           <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-            <EuiFieldText
+            <EuiCompressedFieldText
               fullWidth
               value={conditions?.min_index_age}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -95,7 +103,7 @@ const Transition = ({ uiTransition, onChangeTransition, useNewUx }: TransitionPr
             helpText="The minimum number of documents required to transition to the next state."
           />
           <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-            <EuiFieldNumber
+            <EuiCompressedFieldNumber
               fullWidth
               value={typeof conditions?.min_doc_count === "undefined" ? "" : conditions?.min_doc_count}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -125,7 +133,7 @@ const Transition = ({ uiTransition, onChangeTransition, useNewUx }: TransitionPr
             helpText="The minimum size of the total primary shard storage required to transition to the next state."
           />
           <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-            <EuiFieldText
+            <EuiCompressedFieldText
               fullWidth
               value={conditions?.min_size}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -153,7 +161,7 @@ const Transition = ({ uiTransition, onChangeTransition, useNewUx }: TransitionPr
             helpText="The minimum age after a rollover has occurred that is required to transition to the next state."
           />
           <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-            <EuiFieldText
+            <EuiCompressedFieldText
               fullWidth
               value={conditions?.min_rollover_age}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -186,7 +194,7 @@ const Transition = ({ uiTransition, onChangeTransition, useNewUx }: TransitionPr
             }
           />
           <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
-            <EuiFieldText
+            <EuiCompressedFieldText
               fullWidth
               value={conditions?.cron?.cron.expression}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {

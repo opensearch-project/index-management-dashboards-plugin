@@ -6,7 +6,7 @@
 import {
   EuiAccordion,
   EuiComboBoxOptionOption,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiFlyout,
   EuiFlyoutBody,
   EuiFlyoutFooter,
@@ -227,7 +227,7 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
         <EuiFlyoutBody>
           <CustomLabel title="Snapshot name" />
           <EuiCompressedFormRow isInvalid={!!snapshotIdError} error={snapshotIdError}>
-            <EuiFieldText
+            <EuiCompressedFieldText
               value={snapshotId}
               onChange={(e) => {
                 this.setState({ snapshotId: e.target.value });

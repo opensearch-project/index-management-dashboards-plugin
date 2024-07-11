@@ -7,7 +7,7 @@ import { TransformMetadata } from "../../../../models/interfaces";
 import React, { ChangeEvent } from "react";
 import moment from "moment-timezone";
 import {
-  EuiFieldNumber,
+  EuiCompressedFieldNumber,
   EuiFlexGroup,
   EuiFlexItem,
   EuiIcon,
@@ -96,7 +96,7 @@ export const selectInterval = (
     <EuiFlexGroup style={{ maxWidth: 400 }}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
         <EuiCompressedFormRow label="Transform execution interval" error={intervalError} isInvalid={intervalError != ""}>
-          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
+          <EuiCompressedFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
         </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem>

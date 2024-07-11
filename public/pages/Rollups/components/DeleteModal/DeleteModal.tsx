@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, Fragment } from "react";
-import { EuiConfirmModal, EuiForm, EuiCompressedFormRow, EuiFieldText, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
+import { EuiConfirmModal, EuiForm, EuiCompressedFormRow, EuiCompressedFieldText, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
 
 interface DeleteModalProps {
   rollupId: string;
@@ -46,7 +46,12 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
             </Fragment>
             <EuiSpacer size="s" />
             <EuiCompressedFormRow helpText="To confirm deletion, enter delete in the text field">
-              <EuiFieldText value={confirmDeleteText} placeholder="delete" onChange={this.onChange} data-test-subj="deleteTextField" />
+              <EuiCompressedFieldText
+                value={confirmDeleteText}
+                placeholder="delete"
+                onChange={this.onChange}
+                data-test-subj="deleteTextField"
+              />
             </EuiCompressedFormRow>
           </EuiForm>
         </EuiConfirmModal>

@@ -9,7 +9,7 @@ import {
   EuiCodeEditor,
   EuiComboBox,
   EuiComboBoxOptionOption,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiFlyout,
   EuiFlyoutBody,
   EuiFlyoutFooter,
@@ -192,7 +192,7 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
         <>
           <CustomLabel title="Location" />
           <EuiCompressedFormRow isInvalid={!!locationError} error={locationError}>
-            <EuiFieldText
+            <EuiCompressedFieldText
               disabled={!!editRepo}
               placeholder="e.g., /mnt/snapshots"
               value={location}
@@ -280,7 +280,7 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
         <EuiFlyoutBody>
           <CustomLabel title="Repository name" />
           <EuiCompressedFormRow isInvalid={!!repoNameError} error={repoNameError}>
-            <EuiFieldText
+            <EuiCompressedFieldText
               disabled={!!editRepo}
               value={repoName}
               data-test-subj="repoNameInput"

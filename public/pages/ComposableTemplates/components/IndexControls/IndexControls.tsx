@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { EuiButton, EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import FilterGroup from "../../../../components/FilterGroup";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 
@@ -33,8 +33,7 @@ export default function SearchControls(props: SearchControlsProps) {
   return (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch
-          compressed={props.useNewUX}
+        <EuiCompressedFieldSearch
           fullWidth
           placeholder="Search..."
           value={state.search}

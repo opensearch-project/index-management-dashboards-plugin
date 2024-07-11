@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiCompressedFormRow, EuiFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface ConfigureTransformProps {
@@ -32,7 +32,7 @@ const ConfigureTransform = ({
         isInvalid={!!transformIdError}
         error={transformIdError}
       >
-        <EuiFieldText
+        <EuiCompressedFieldText
           isInvalid={!!transformIdError}
           placeholder="my-transformjob1"
           value={transformId}

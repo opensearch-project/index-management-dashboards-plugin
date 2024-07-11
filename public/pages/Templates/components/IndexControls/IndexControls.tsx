@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { getUISettings } from "../../../../services/Services";
 import TemplatesActions from "../../containers/TemplatesActions";
 import { ITemplate } from "../../interface";
@@ -40,8 +40,7 @@ export default function SearchControls(props: SearchControlsProps) {
   return useUpdatedUX ? (
     <EuiFlexGroup style={{ padding: "0px 5px 16px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch
-          compressed
+        <EuiCompressedFieldSearch
           fullWidth
           placeholder="Search"
           value={state.search}
@@ -55,7 +54,12 @@ export default function SearchControls(props: SearchControlsProps) {
   ) : (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch fullWidth placeholder="Search..." value={state.search} onChange={(e) => onChange("search", e.target.value)} />
+        <EuiCompressedFieldSearch
+          fullWidth
+          placeholder="Search..."
+          value={state.search}
+          onChange={(e) => onChange("search", e.target.value)}
+        />
       </EuiFlexItem>
     </EuiFlexGroup>
   );

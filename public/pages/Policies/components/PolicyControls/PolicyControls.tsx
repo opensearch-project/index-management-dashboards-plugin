@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem, EuiPagination } from "@elastic/eui";
+import { EuiCompressedFieldSearch, EuiFlexGroup, EuiFlexItem, EuiPagination } from "@elastic/eui";
 
 interface PolicyControlsProps {
   activePage: number;
@@ -35,7 +35,7 @@ export default class PolicyControls extends Component<PolicyControlsProps, Polic
     return (
       <EuiFlexGroup style={{ padding: "0px 5px" }}>
         <EuiFlexItem>
-          <EuiFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={onSearchChange} />
+          <EuiCompressedFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={onSearchChange} />
         </EuiFlexItem>
         {pageCount > 1 && (
           <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>

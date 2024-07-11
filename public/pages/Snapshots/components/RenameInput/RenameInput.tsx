@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiCompressedFormRow, EuiFieldText, EuiSpacer, EuiText, EuiLink } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCompressedFieldText, EuiSpacer, EuiText, EuiLink } from "@elastic/eui";
 import React, { useState, ChangeEvent } from "react";
 import { RESTORE_SNAPSHOT_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { BAD_RENAME_PATTERN_TEXT, BAD_RENAME_REPLACEMENT_TEXT, RENAME_HELP_TEXT, PATTERN_HELP_TEXT } from "../../constants";
@@ -60,13 +60,18 @@ const RenameInput = ({ getRenamePattern, getRenameReplacement, showPatternError,
     <>
       <EuiSpacer size="l" />
       <EuiCompressedFormRow error={BAD_RENAME_PATTERN_TEXT} isInvalid={showPatternError} label={patternLabel} id="rename_pattern">
-        <EuiFieldText value={renamePattern} onChange={onPatternChange} isInvalid={showPatternError} data-test-subj="renamePatternInput" />
+        <EuiCompressedFieldText
+          value={renamePattern}
+          onChange={onPatternChange}
+          isInvalid={showPatternError}
+          data-test-subj="renamePatternInput"
+        />
       </EuiCompressedFormRow>
 
       <EuiSpacer size="m" />
 
       <EuiCompressedFormRow error={BAD_RENAME_REPLACEMENT_TEXT} isInvalid={showRenameError} label={renameLabel} id="rename_replacement">
-        <EuiFieldText
+        <EuiCompressedFieldText
           value={renameReplacement}
           onChange={onReplacementChange}
           isInvalid={showRenameError}

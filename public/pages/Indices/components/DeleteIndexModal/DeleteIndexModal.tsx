@@ -8,7 +8,7 @@ import {
   EuiSmallButton,
   EuiSmallButtonEmpty,
   EuiCallOut,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -67,7 +67,7 @@ export default function DeleteIndexModal(props: DeleteIndexModalProps) {
           <EuiText color="subdued">
             To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
           </EuiText>
-          <EuiFieldText placeholder="delete" fullWidth value={value} onChange={(e) => setValue(e.target.value)} />
+          <EuiCompressedFieldText placeholder="delete" fullWidth value={value} onChange={(e) => setValue(e.target.value)} />
         </div>
       </EuiModalBody>
 

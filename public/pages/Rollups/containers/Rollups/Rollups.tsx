@@ -22,7 +22,7 @@ import {
   Pagination,
   EuiTableSelectionType,
   EuiFlexItem,
-  EuiFieldSearch,
+  EuiCompressedFieldSearch,
   EuiPagination,
   EuiFlexGroup,
   EuiPanel,
@@ -583,7 +583,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
         <div style={{ padding: "initial" }}>
           <EuiFlexGroup style={{ padding: "0px 5px" }}>
             <EuiFlexItem>
-              <EuiFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
+              <EuiCompressedFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
             </EuiFlexItem>
           </EuiFlexGroup>
 

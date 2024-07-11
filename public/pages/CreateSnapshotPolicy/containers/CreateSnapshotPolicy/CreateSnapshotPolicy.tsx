@@ -9,7 +9,7 @@ import {
   EuiCompressedFormRow,
   EuiTextArea,
   EuiSelect,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiFlexGroup,
   EuiFlexItem,
   EuiSpacer,
@@ -17,7 +17,7 @@ import {
   EuiSmallButtonEmpty,
   EuiSmallButton,
   EuiComboBoxOptionOption,
-  EuiFieldNumber,
+  EuiCompressedFieldNumber,
   EuiAccordion,
   EuiRadioGroup,
   EuiText,
@@ -586,7 +586,12 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
         <ContentPanel title="Policy settings" titleSize="s">
           <CustomLabel title="Policy name" />
           <EuiCompressedFormRow isInvalid={!!policyIdError} error={policyIdError}>
-            <EuiFieldText placeholder="e.g. daily-snapshot" value={policyId} onChange={this.onChangePolicyName} disabled={isEdit} />
+            <EuiCompressedFieldText
+              placeholder="e.g. daily-snapshot"
+              value={policyId}
+              onChange={this.onChangePolicyName}
+              disabled={isEdit}
+            />
           </EuiCompressedFormRow>
 
           <EuiSpacer />
@@ -672,7 +677,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
               <CustomLabel title="Maximum age of snapshots retained" />
               <EuiFlexGroup>
                 <EuiFlexItem grow={false}>
-                  <EuiFieldNumber
+                  <EuiCompressedFieldNumber
                     value={maxAgeNum}
                     min={1}
                     onChange={(e) => {
@@ -701,7 +706,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                   <EuiFlexItem grow={false}>
                     <CustomLabel title="Minimum" />
                     <EuiCompressedFormRow isInvalid={!!minCountError} error={minCountError}>
-                      <EuiFieldNumber
+                      <EuiCompressedFieldNumber
                         min={1}
                         value={_.get(policy, "deletion.condition.min_count") ?? "1"}
                         onChange={this.onChangeMinCount}
@@ -711,7 +716,11 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                   <EuiFlexItem grow={false}>
                     <CustomLabel title="Maximum" isOptional={true} />
                     <EuiCompressedFormRow>
-                      <EuiFieldNumber min={1} value={_.get(policy, "deletion.condition.max_count", "")} onChange={this.onChangeMaxCount} />
+                      <EuiCompressedFieldNumber
+                        min={1}
+                        value={_.get(policy, "deletion.condition.max_count", "")}
+                        onChange={this.onChangeMaxCount}
+                      />
                     </EuiCompressedFormRow>
                   </EuiFlexItem>
                 </EuiFlexGroup>
@@ -849,7 +858,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                 <EuiSpacer size="s" />
 
                 <CustomLabel title="Timestamp format" />
-                <EuiFieldText
+                <EuiCompressedFieldText
                   value={dateFormat}
                   onChange={(e) => {
                     let dateFormat = e.target.value;
