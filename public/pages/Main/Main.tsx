@@ -485,7 +485,8 @@ export default class Main extends Component<MainProps, MainState> {
                             <ModalRoot services={services} />
                             <EuiPage restrictWidth="100%">
                               {/* Hide side navigation bar when creating or editing rollup job*/}
-                              {!HIDDEN_NAV_ROUTES.includes(pathname) &&
+                              {!core.chrome.navGroup.getNavGroupEnabled() &&
+                              !HIDDEN_NAV_ROUTES.includes(pathname) &&
                               !HIDDEN_NAV_STARTS_WITH_ROUTE.some((item) => pathname.startsWith(item)) ? (
                                 <EuiPageSideBar style={{ minWidth: 200 }}>
                                   <EuiSideNav style={{ width: 200 }} items={sideNav} />
