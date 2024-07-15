@@ -13,7 +13,7 @@ import {
   EuiTextColor,
 } from "@elastic/eui";
 import { getErrorMessage } from "../../../../utils/helpers";
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CatRepository, CreateRepositoryBody, CreateRepositorySettings } from "../../../../../server/models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -24,12 +24,15 @@ import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components
 import { BREADCRUMBS } from "../../../../utils/constants";
 import DeleteModal from "../../components/DeleteModal";
 import { truncateSpan } from "../../../Snapshots/helper";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface RepositoriesProps extends RouteComponentProps {
+interface RepositoriesProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
 }
 
-interface RepositoriesState {
+interface RepositoriesState extends DataSourceMenuProperties {
   repositories: CatRepository[];
   loading: boolean;
   selectedItems: CatRepository[];
@@ -43,7 +46,7 @@ interface RepositoriesState {
   isDeleteModalVisible: boolean;
 }
 
-export default class Repositories extends Component<RepositoriesProps, RepositoriesState> {
+export class Repositories extends MDSEnabledComponent<RepositoriesProps, RepositoriesState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<CatRepository>[];
 
@@ -51,6 +54,7 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
     super(props);
 
     this.state = {
+      ...this.state,
       repositories: [],
       loading: false,
       selectedItems: [],
@@ -91,6 +95,20 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
   async componentDidMount() {
     this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.REPOSITORIES]);
     await this.getRepos();
+  }
+
+  async componentDidUpdate(prevProps: RepositoriesProps, prevState: RepositoriesState) {
+    const prevQuery = Repositories.getQueryObjectFromState(prevState);
+    const currQuery = Repositories.getQueryObjectFromState(this.state);
+    if (!_.isEqual(prevQuery, currQuery)) {
+      await this.getRepos();
+    }
+  }
+
+  static getQueryObjectFromState({ dataSourceId, multiDataSourceEnabled }: RepositoriesState) {
+    return {
+      ...(multiDataSourceEnabled ? { dataSourceId } : {}),
+    };
   }
 
   getRepos = async () => {
@@ -177,7 +195,6 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
 
   render() {
     const { repositories, loading, selectedItems, showFlyout, isPopoverOpen, editRepo, isDeleteModalVisible } = this.state;
-
     const popoverActionItems = [
       <EuiContextMenuItem
         key="Edit"
@@ -318,4 +335,10 @@ export default class Repositories extends Component<RepositoriesProps, Repositor
       })
       .join(", ");
   };
+}
+
+export default function (props: Omit<RepositoriesProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <Repositories {...props} {...dataSourceMenuProps} />;
 }

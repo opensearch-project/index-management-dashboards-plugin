@@ -5,7 +5,7 @@
 
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import queryString from "query-string";
 import {
   EuiAccordion,
@@ -36,13 +36,16 @@ import InfoModal from "../../components/InfoModal";
 import { getAllowPartial, getIgnoreUnavailabel, getIncludeGlobalState } from "../../../CreateSnapshotPolicy/containers/helper";
 import { truncateSpan } from "../../../Snapshots/helper";
 import { NotificationConfig } from "../../../../../server/models/interfaces";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface SnapshotPolicyDetailsProps extends RouteComponentProps {
+interface SnapshotPolicyDetailsProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
   notificationService: NotificationService;
 }
 
-interface SnapshotPolicyDetailsState {
+interface SnapshotPolicyDetailsState extends DataSourceMenuProperties {
   policyId: string;
   policy: SMPolicy | null;
 
@@ -53,7 +56,7 @@ interface SnapshotPolicyDetailsState {
   channel: NotificationConfig | null;
 }
 
-export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetailsProps, SnapshotPolicyDetailsState> {
+export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDetailsProps, SnapshotPolicyDetailsState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<LatestActivities>[];
 
@@ -61,6 +64,7 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
     super(props);
 
     this.state = {
+      ...this.state,
       policyId: "",
       policy: null,
       metadata: null,
@@ -447,4 +451,10 @@ export default class SnapshotPolicyDetails extends Component<SnapshotPolicyDetai
       </div>
     );
   }
+}
+
+export default function (props: Omit<SnapshotPolicyDetailsProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <SnapshotPolicyDetails {...props} {...dataSourceMenuProps} />;
 }

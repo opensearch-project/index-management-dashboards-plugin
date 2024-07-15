@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import _ from "lodash";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
@@ -39,12 +39,15 @@ import DeleteModal from "../../../PolicyDetails/components/DeleteModal";
 import { OnSearchChangeArgs } from "../../../../models/interfaces";
 import { humanCronExpression, parseCronExpression } from "../../../CreateSnapshotPolicy/components/CronSchedule/helper";
 import { truncateSpan } from "../../../Snapshots/helper";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 
-interface SnapshotPoliciesProps extends RouteComponentProps {
+interface SnapshotPoliciesProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
 }
 
-interface SnapshotPoliciesState {
+interface SnapshotPoliciesState extends DataSourceMenuProperties {
   policies: SMPolicy[];
   totalPolicies: number;
   loadingPolicies: boolean;
@@ -66,7 +69,7 @@ interface SnapshotPoliciesState {
   isDeleteModalVisible: boolean;
 }
 
-export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, SnapshotPoliciesState> {
+export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps, SnapshotPoliciesState> {
   static contextType = CoreServicesContext;
   columns: EuiTableFieldDataColumnType<SMPolicy>[];
 
@@ -75,6 +78,7 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
 
     const { from, size, sortField, sortOrder } = getSMPoliciesQueryParamsFromURL(this.props.location);
     this.state = {
+      ...this.state,
       policies: [],
       totalPolicies: 0,
       loadingPolicies: false,
@@ -196,8 +200,23 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
     this.setState({ loadingPolicies: false });
   };
 
-  static getQueryObjectFromState({ from, size, sortField, sortOrder, queryString }: SnapshotPoliciesState) {
-    return { from, size, sortField, sortOrder, queryString };
+  static getQueryObjectFromState({
+    from,
+    size,
+    sortField,
+    sortOrder,
+    queryString,
+    multiDataSourceEnabled,
+    dataSourceId,
+  }: SnapshotPoliciesState) {
+    return {
+      from,
+      size,
+      sortField,
+      sortOrder,
+      queryString,
+      ...(multiDataSourceEnabled ? { dataSourceId } : {}),
+    };
   }
 
   onSelectionChange = (selectedItems: SMPolicy[]): void => {
@@ -471,4 +490,10 @@ export default class SnapshotPolicies extends Component<SnapshotPoliciesProps, S
       </>
     );
   }
+}
+
+export default function (props: Omit<SnapshotPoliciesProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  useUpdateUrlWithDataSourceProperties();
+  return <SnapshotPolicies {...props} {...dataSourceMenuProps} />;
 }
