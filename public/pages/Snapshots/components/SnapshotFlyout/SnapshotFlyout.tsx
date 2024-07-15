@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import {
   EuiButtonEmpty,
   EuiFlexGrid,
@@ -25,8 +25,10 @@ import * as H from "history";
 import { ROUTES } from "../../../../utils/constants";
 import InfoModal from "../../../SnapshotPolicyDetails/components/InfoModal";
 import { ModalConsumer } from "../../../../components/Modal";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface SnapshotFlyoutProps {
+interface SnapshotFlyoutProps extends DataSourceMenuProperties {
   snapshotId: string;
   repository: string;
   snapshotManagementService: SnapshotManagementService;
@@ -34,17 +36,18 @@ interface SnapshotFlyoutProps {
   history: H.History;
 }
 
-interface SnapshotFlyoutState {
+interface SnapshotFlyoutState extends DataSourceMenuProperties {
   snapshot: GetSnapshot | null;
 }
 
-export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, SnapshotFlyoutState> {
+export class SnapshotFlyout extends MDSEnabledComponent<SnapshotFlyoutProps, SnapshotFlyoutState> {
   static contextType = CoreServicesContext;
 
   constructor(props: SnapshotFlyoutProps) {
     super(props);
 
     this.state = {
+      ...this.state,
       snapshot: null,
     };
   }
@@ -52,6 +55,13 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
   async componentDidMount() {
     const { snapshotId, repository } = this.props;
     await this.getSnapshot(snapshotId, repository);
+  }
+
+  async componentDidUpdate(prevProps: SnapshotFlyoutProps, prevState: SnapshotFlyoutState) {
+    if (prevState.dataSourceId != this.state.dataSourceId) {
+      const { snapshotId, repository } = this.props;
+      await this.getSnapshot(snapshotId, repository);
+    }
   }
 
   getSnapshot = async (snapshotId: string, repository: string) => {
@@ -152,4 +162,9 @@ export default class SnapshotFlyout extends Component<SnapshotFlyoutProps, Snaps
       </EuiFlyout>
     );
   }
+}
+
+export default function (props: Omit<SnapshotFlyoutProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <SnapshotFlyout {...props} {...dataSourceMenuProps} />;
 }

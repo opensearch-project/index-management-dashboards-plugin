@@ -8,13 +8,17 @@ import { IRouter } from "../../../../src/core/server";
 import { NODE_API } from "../../utils/constants";
 import { schema } from "@osd/config-schema";
 
-export default function (services: NodeServices, router: IRouter) {
+export default function (services: NodeServices, router: IRouter, dataSourceEnabled: boolean) {
   const { snapshotManagementService } = services;
 
   router.get(
     {
       path: NODE_API._SNAPSHOTS,
-      validate: {},
+      validate: {
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
+      },
     },
     snapshotManagementService.getAllSnapshotsWithPolicy
   );
@@ -28,6 +32,7 @@ export default function (services: NodeServices, router: IRouter) {
         }),
         query: schema.object({
           repository: schema.string(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -43,6 +48,7 @@ export default function (services: NodeServices, router: IRouter) {
         }),
         query: schema.object({
           repository: schema.string(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -58,6 +64,7 @@ export default function (services: NodeServices, router: IRouter) {
         }),
         query: schema.object({
           repository: schema.string(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
         body: schema.any(),
       },
@@ -74,6 +81,7 @@ export default function (services: NodeServices, router: IRouter) {
         }),
         query: schema.object({
           repository: schema.string(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
         body: schema.any(),
       },
@@ -89,6 +97,9 @@ export default function (services: NodeServices, router: IRouter) {
           id: schema.string(),
         }),
         body: schema.any(),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     snapshotManagementService.createPolicy
@@ -104,6 +115,7 @@ export default function (services: NodeServices, router: IRouter) {
         query: schema.object({
           seqNo: schema.maybe(schema.number()),
           primaryTerm: schema.maybe(schema.number()),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
         body: schema.any(),
       },
@@ -122,6 +134,7 @@ export default function (services: NodeServices, router: IRouter) {
           sortField: schema.string(),
           sortOrder: schema.string(),
           queryString: schema.string(),
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -135,6 +148,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     snapshotManagementService.getPolicy
@@ -146,6 +162,9 @@ export default function (services: NodeServices, router: IRouter) {
       validate: {
         params: schema.object({
           id: schema.string(),
+        }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -159,6 +178,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     snapshotManagementService.startPolicy
@@ -171,6 +193,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           id: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     snapshotManagementService.stopPolicy
@@ -179,7 +204,11 @@ export default function (services: NodeServices, router: IRouter) {
   router.get(
     {
       path: NODE_API._REPOSITORIES,
-      validate: {},
+      validate: {
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
+      },
     },
     snapshotManagementService.catRepositoriesWithSnapshotCount
   );
@@ -191,6 +220,9 @@ export default function (services: NodeServices, router: IRouter) {
         params: schema.object({
           indices: schema.string(),
         }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     snapshotManagementService.catSnapshotIndices
@@ -199,7 +231,11 @@ export default function (services: NodeServices, router: IRouter) {
   router.get(
     {
       path: NODE_API._RECOVERY,
-      validate: {},
+      validate: {
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
+      },
     },
     snapshotManagementService.getIndexRecovery
   );
@@ -210,6 +246,9 @@ export default function (services: NodeServices, router: IRouter) {
       validate: {
         params: schema.object({
           id: schema.string(),
+        }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -222,6 +261,9 @@ export default function (services: NodeServices, router: IRouter) {
       validate: {
         params: schema.object({
           id: schema.string(),
+        }),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
         }),
       },
     },
@@ -236,6 +278,9 @@ export default function (services: NodeServices, router: IRouter) {
           id: schema.string(),
         }),
         body: schema.any(),
+        query: schema.object({
+          ...(dataSourceEnabled ? { dataSourceId: schema.string() } : {}),
+        }),
       },
     },
     snapshotManagementService.createRepository

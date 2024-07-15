@@ -17,7 +17,7 @@ import {
 } from "@elastic/eui";
 import _ from "lodash";
 
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { IndexService, SnapshotManagementService } from "../../../../services";
@@ -30,15 +30,17 @@ import SnapshotIndicesRepoInput from "../../../CreateSnapshotPolicy/components/S
 import { ChangeEvent } from "react";
 import { getEmptySnapshot } from "./constants";
 import { ERROR_PROMPT } from "../../../CreateSnapshotPolicy/constants";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface CreateSnapshotProps {
+interface CreateSnapshotProps extends DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
   indexService: IndexService;
   onCloseFlyout: () => void;
   createSnapshot: (snapshotId: string, repository: string, snapshot: Snapshot) => void;
 }
 
-interface CreateSnapshotState {
+interface CreateSnapshotState extends DataSourceMenuProperties {
   indexOptions: EuiComboBoxOptionOption<IndexItem>[];
   selectedIndexOptions: EuiComboBoxOptionOption<IndexItem>[];
 
@@ -52,12 +54,13 @@ interface CreateSnapshotState {
   snapshotIdError: string;
 }
 
-export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps, CreateSnapshotState> {
+export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProps, CreateSnapshotState> {
   static contextType = CoreServicesContext;
   constructor(props: CreateSnapshotProps) {
     super(props);
 
     this.state = {
+      ...this.state,
       indexOptions: [],
       selectedIndexOptions: [],
       repositories: [],
@@ -72,6 +75,23 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
   async componentDidMount() {
     await this.getIndexOptions("");
     await this.getRepos();
+  }
+
+  async componentDidUpdate(prevProps: CreateSnapshotProps, prevState: CreateSnapshotState) {
+    if (prevState.dataSourceId != this.state.dataSourceId) {
+      this.setState({
+        indexOptions: [],
+        selectedIndexOptions: [],
+        repositories: [],
+        selectedRepoValue: "",
+        snapshot: getEmptySnapshot(),
+        snapshotId: "",
+        repoError: "",
+        snapshotIdError: "",
+      });
+      await this.getIndexOptions("");
+      await this.getRepos();
+    }
   }
 
   onClickAction = () => {
@@ -249,4 +269,9 @@ export default class CreateSnapshotFlyout extends Component<CreateSnapshotProps,
       </EuiFlyout>
     );
   }
+}
+
+export default function (props: Omit<CreateSnapshotProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <CreateSnapshotFlyout {...props} {...dataSourceMenuProps} />;
 }

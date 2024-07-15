@@ -174,6 +174,16 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.CREATE_TRANSFORM,
   ROUTES.EDIT_TRANSFORM,
   ROUTES.TRANSFORM_DETAILS,
+  ROUTES.SNAPSHOT_POLICIES,
+  ROUTES.SNAPSHOT_POLICY_DETAILS,
+  ROUTES.CREATE_SNAPSHOT_POLICY,
+  ROUTES.EDIT_SNAPSHOT_POLICY,
+  ROUTES.SNAPSHOTS,
+  ROUTES.CREATE_SNAPSHOT,
+  ROUTES.EDIT_SNAPSHOT,
+  ROUTES.REPOSITORIES,
+  ROUTES.CREATE_REPOSITORY,
+  ROUTES.EDIT_REPOSITORY,
 ];
 
 export default class Main extends Component<MainProps, MainState> {
@@ -238,6 +248,7 @@ export default class Main extends Component<MainProps, MainState> {
       services.notificationService = new NotificationService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
       services.rollupService = new RollupService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
       services.transformService = new TransformService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
+      services.snapshotManagementService = new SnapshotManagementService(http, this.state.dataSourceId, this.props.multiDataSourceEnabled);
     }
     return services;
   }
@@ -433,6 +444,8 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.ROLLUP_DETAILS,
                                 ROUTES.TRANSFORM_DETAILS,
                                 ROUTES.EDIT_TRANSFORM,
+                                ROUTES.EDIT_SNAPSHOT_POLICY,
+                                ROUTES.SNAPSHOT_POLICY_DETAILS,
                               ]}
                               render={() => (
                                 <DataSourceViewer
@@ -463,6 +476,16 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.CHANGE_POLICY,
                                 ROUTES.ROLLUPS,
                                 ROUTES.TRANSFORMS,
+                                ROUTES.SNAPSHOT_POLICIES,
+                                ROUTES.SNAPSHOT_POLICY_DETAILS,
+                                ROUTES.CREATE_SNAPSHOT_POLICY,
+                                ROUTES.EDIT_SNAPSHOT_POLICY,
+                                ROUTES.SNAPSHOTS,
+                                ROUTES.CREATE_SNAPSHOT,
+                                ROUTES.EDIT_SNAPSHOT,
+                                ROUTES.REPOSITORIES,
+                                ROUTES.CREATE_REPOSITORY,
+                                ROUTES.EDIT_REPOSITORY,
                               ]}
                               render={() => (
                                 <DataSourceMenu
