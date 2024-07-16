@@ -23,7 +23,7 @@ import {
 } from "@elastic/eui";
 import _ from "lodash";
 import { CreateRepositorySettings } from "../../../../../server/models/interfaces";
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import FlyoutFooter from "../../../VisualCreatePolicy/components/FlyoutFooter";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SnapshotManagementService } from "../../../../services";
@@ -36,15 +36,17 @@ import {
   S3_REPOSITORY_DOCUMENTATION_URL,
   SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL,
 } from "../../../../utils/constants";
+import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 
-interface CreateRepositoryProps {
+interface CreateRepositoryProps extends DataSourceMenuProperties {
   service: SnapshotManagementService;
   editRepo: string | null;
   onCloseFlyout: () => void;
   createRepo: (repoName: string, repoType: string, settings: CreateRepositorySettings) => void;
 }
 
-interface CreateRepositoryState {
+interface CreateRepositoryState extends DataSourceMenuProperties {
   repoName: string;
   location: string;
   // repoTypeOptions: EuiComboBoxOptionOption<string>[];
@@ -59,13 +61,14 @@ interface CreateRepositoryState {
   locationError: string;
 }
 
-export default class CreateRepositoryFlyout extends Component<CreateRepositoryProps, CreateRepositoryState> {
+export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepositoryProps, CreateRepositoryState> {
   static contextType = CoreServicesContext;
 
   constructor(props: CreateRepositoryProps) {
     super(props);
 
     this.state = {
+      ...this.state,
       repoName: "",
       location: "",
       // repoTypeOptions: [],
@@ -82,6 +85,25 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
     const { editRepo } = this.props;
     if (!!editRepo) {
       await this.getRepo(editRepo);
+    }
+  }
+
+  async componentDidUpdate(prevProps: CreateRepositoryProps, prevState: CreateRepositoryState) {
+    if (prevState.dataSourceId != this.state.dataSourceId) {
+      const { editRepo } = this.props;
+      this.setState({
+        repoName: "",
+        location: "",
+        selectedRepoTypeOption: REPO_SELECT_OPTIONS[0].value as string,
+        fsSettingsJsonString: JSON.stringify(FS_ADVANCED_SETTINGS, null, 4),
+        customSettingsJsonString: JSON.stringify(CUSTOM_CONFIGURATION, null, 4),
+        repoNameError: "",
+        repoTypeError: "",
+        locationError: "",
+      });
+      if (!!editRepo) {
+        await this.getRepo(editRepo);
+      }
     }
   }
 
@@ -290,4 +312,9 @@ export default class CreateRepositoryFlyout extends Component<CreateRepositoryPr
       </EuiFlyout>
     );
   }
+}
+
+export default function (props: Omit<CreateRepositoryProps, keyof DataSourceMenuProperties>) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <CreateRepositoryFlyout {...props} {...dataSourceMenuProps} />;
 }

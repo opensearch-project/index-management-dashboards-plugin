@@ -28,14 +28,9 @@ import {
   RestoreSnapshotResponse,
 } from "../models/interfaces";
 import { FailedServerResponse, ServerResponse } from "../models/types";
+import { MDSEnabledClientService } from "./MDSEnabledClientService";
 
-export default class SnapshotManagementService {
-  osDriver: ILegacyCustomClusterClient;
-
-  constructor(osDriver: ILegacyCustomClusterClient) {
-    this.osDriver = osDriver;
-  }
-
+export default class SnapshotManagementService extends MDSEnabledClientService {
   getAllSnapshotsWithPolicy = async (
     context: RequestHandlerContext,
     request: OpenSearchDashboardsRequest,
@@ -57,7 +52,7 @@ export default class SnapshotManagementService {
         });
       }
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       let snapshots: CatSnapshotWithRepoAndPolicy[] = [];
       for (let i = 0; i < repositories.length; i++) {
         const res: GetSnapshotResponse = await callWithRequest("snapshot.get", {
@@ -109,12 +104,12 @@ export default class SnapshotManagementService {
       const { repository } = request.query as {
         repository: string;
       };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: GetSnapshotResponse = await callWithRequest("snapshot.get", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const res: GetSnapshotResponse = (await callWithRequest("snapshot.get", {
         repository: repository,
         snapshot: `${id}`,
         ignore_unavailable: true,
-      });
+      })) as GetSnapshotResponse;
 
       return response.custom({
         statusCode: 200,
@@ -140,11 +135,11 @@ export default class SnapshotManagementService {
       const { repository } = request.query as {
         repository: string;
       };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const resp: AcknowledgedResponse = await callWithRequest("snapshot.delete", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const resp: AcknowledgedResponse = (await callWithRequest("snapshot.delete", {
         repository: repository,
         snapshot: `${id}`,
-      });
+      })) as AcknowledgedResponse;
 
       return response.custom({
         statusCode: 200,
@@ -175,8 +170,8 @@ export default class SnapshotManagementService {
         snapshot: id,
         body: JSON.stringify(request.body),
       };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const resp: CreateSnapshotResponse = await callWithRequest("snapshot.create", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const resp: CreateSnapshotResponse = (await callWithRequest("snapshot.create", params)) as CreateSnapshotResponse;
 
       return response.custom({
         statusCode: 200,
@@ -207,8 +202,8 @@ export default class SnapshotManagementService {
         snapshot: id,
         body: JSON.stringify(request.body),
       };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const resp: RestoreSnapshotResponse = await callWithRequest("snapshot.restore", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const resp: RestoreSnapshotResponse = (await callWithRequest("snapshot.restore", params)) as RestoreSnapshotResponse;
 
       return response.custom({
         statusCode: 200,
@@ -234,7 +229,7 @@ export default class SnapshotManagementService {
         body: JSON.stringify(request.body),
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const rawRes = await callWithRequest("ism.createSMPolicy", params);
       const res: DocumentSMPolicy = {
         seqNo: rawRes._seq_no,
@@ -270,7 +265,7 @@ export default class SnapshotManagementService {
         body: JSON.stringify(request.body),
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const rawRes = await callWithRequest("ism.updateSMPolicy", params);
       const res: DocumentSMPolicy = {
         seqNo: rawRes._seq_no,
@@ -305,7 +300,7 @@ export default class SnapshotManagementService {
         queryString: string;
       };
 
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       let params = {
         from,
         size,
@@ -351,7 +346,7 @@ export default class SnapshotManagementService {
     try {
       const { id } = request.params as { id: string };
       const params = { id: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
       const getResponse = await callWithRequest("ism.getSMPolicy", params);
       const metadata = await callWithRequest("ism.explainSnapshotPolicy", params);
       const documentPolicy = {
@@ -390,8 +385,8 @@ export default class SnapshotManagementService {
     try {
       const { id } = request.params as { id: string };
       const params = { policyId: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const deletePolicyResponse: DeletePolicyResponse = await callWithRequest("ism.deleteSMPolicy", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const deletePolicyResponse: DeletePolicyResponse = (await callWithRequest("ism.deleteSMPolicy", params)) as DeletePolicyResponse;
       if (deletePolicyResponse.result !== "deleted") {
         return response.custom({
           statusCode: 200,
@@ -421,8 +416,8 @@ export default class SnapshotManagementService {
     try {
       const { id } = request.params as { id: string };
       const params = { id: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const resp: AcknowledgedResponse = await callWithRequest("ism.startSnapshotPolicy", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const resp: AcknowledgedResponse = (await callWithRequest("ism.startSnapshotPolicy", params)) as AcknowledgedResponse;
       if (resp.acknowledged) {
         return response.custom({
           statusCode: 200,
@@ -447,8 +442,8 @@ export default class SnapshotManagementService {
     try {
       const { id } = request.params as { id: string };
       const params = { id: id };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const resp: AcknowledgedResponse = await callWithRequest("ism.stopSnapshotPolicy", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const resp: AcknowledgedResponse = (await callWithRequest("ism.stopSnapshotPolicy", params)) as AcknowledgedResponse;
       if (resp.acknowledged) {
         return response.custom({
           statusCode: 200,
@@ -471,10 +466,10 @@ export default class SnapshotManagementService {
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatRepository[]>>> => {
     try {
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: CatRepository[] = await callWithRequest("cat.repositories", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const res: CatRepository[] = (await callWithRequest("cat.repositories", {
         format: "json",
-      });
+      })) as CatRepository[];
       return response.custom({
         statusCode: 200,
         body: {
@@ -493,10 +488,10 @@ export default class SnapshotManagementService {
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetIndexRecoveryResponse>>> => {
     try {
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: GetIndexRecoveryResponse = await callWithRequest("indices.recovery", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const res: GetIndexRecoveryResponse = (await callWithRequest("indices.recovery", {
         format: "json",
-      });
+      })) as GetIndexRecoveryResponse;
       return response.custom({
         statusCode: 200,
         body: {
@@ -515,10 +510,10 @@ export default class SnapshotManagementService {
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatSnapshotIndex[]>>> => {
     try {
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: CatSnapshotIndex[] = await callWithRequest("cat.indices", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const res: CatSnapshotIndex[] = (await callWithRequest("cat.indices", {
         format: "json",
-      });
+      })) as CatSnapshotIndex[];
 
       return response.custom({
         statusCode: 200,
@@ -538,17 +533,17 @@ export default class SnapshotManagementService {
     response: OpenSearchDashboardsResponseFactory
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<CatRepository[]>>> => {
     try {
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: CatRepository[] = await callWithRequest("cat.repositories", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const res: CatRepository[] = (await callWithRequest("cat.repositories", {
         format: "json",
-      });
+      })) as CatRepository[];
 
       for (let i = 0; i < res.length; i++) {
-        const getSnapshotRes: GetSnapshotResponse = await callWithRequest("snapshot.get", {
+        const getSnapshotRes: GetSnapshotResponse = (await callWithRequest("snapshot.get", {
           repository: res[i].id,
           snapshot: "_all",
           ignore_unavailable: true,
-        });
+        })) as GetSnapshotResponse;
         res[i].snapshotCount = getSnapshotRes.snapshots.length;
       }
 
@@ -571,10 +566,10 @@ export default class SnapshotManagementService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<AcknowledgedResponse>>> => {
     try {
       const { id } = request.params as { id: string };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: AcknowledgedResponse = await callWithRequest("snapshot.deleteRepository", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const res: AcknowledgedResponse = (await callWithRequest("snapshot.deleteRepository", {
         repository: id,
-      });
+      })) as AcknowledgedResponse;
       return response.custom({
         statusCode: 200,
         body: {
@@ -594,10 +589,10 @@ export default class SnapshotManagementService {
   ): Promise<IOpenSearchDashboardsResponse<ServerResponse<GetRepositoryResponse>>> => {
     try {
       const { id } = request.params as { id: string };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: GetRepositoryResponse = await callWithRequest("snapshot.getRepository", {
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const res: GetRepositoryResponse = (await callWithRequest("snapshot.getRepository", {
         repository: id,
-      });
+      })) as GetRepositoryResponse;
       return response.custom({
         statusCode: 200,
         body: {
@@ -621,8 +616,8 @@ export default class SnapshotManagementService {
         repository: id,
         body: JSON.stringify(request.body),
       };
-      const { callAsCurrentUser: callWithRequest } = this.osDriver.asScoped(request);
-      const res: AcknowledgedResponse = await callWithRequest("snapshot.createRepository", params);
+      const callWithRequest = this.getClientBasedOnDataSource(context, request);
+      const res: AcknowledgedResponse = (await callWithRequest("snapshot.createRepository", params)) as AcknowledgedResponse;
       return response.custom({
         statusCode: 200,
         body: {
