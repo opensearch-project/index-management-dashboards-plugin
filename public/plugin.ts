@@ -8,6 +8,7 @@ import { IndexManagementPluginStart, IndexManagementPluginSetup } from ".";
 import {
   AppCategory,
   AppMountParameters,
+  AppUpdater,
   CoreSetup,
   CoreStart,
   DEFAULT_APP_CATEGORIES,
@@ -21,6 +22,10 @@ import { ROUTES } from "./utils/constants";
 import { JobHandlerRegister } from "./JobHandler";
 import { ManagementOverViewPluginSetup } from "../../../src/plugins/management_overview/public";
 import { DataSourceManagementPluginSetup } from "../../../src/plugins/data_source_management/public";
+import { dataSourceObservable } from "./pages/Main/Main";
+import { BehaviorSubject } from "rxjs";
+import { useLocation } from "react-router-dom";
+import { DataSourceOption } from "src/plugins/data/public";
 
 interface IndexManagementSetupDeps {
   managementOverview?: ManagementOverViewPluginSetup;
@@ -46,6 +51,27 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
   constructor(private readonly initializerContext: PluginInitializerContext) {
     // can retrieve config from initializerContext
   }
+
+  private updateDefaultRouteOfManagementApplications: AppUpdater = () => {
+    // let url = new URL(window.location.hash);
+    // console.log("current url", url);
+    // let params = new URLSearchParams(window.location.search);
+    // // replace dataSourceId with the selected data source
+    // // let dataSourceId = params.get("dataSourceId");
+    let dataSourceId = dataSourceObservable.value?.id;
+    console.log("updating dataSourceId", dataSourceId);
+    let hash = "";
+    if (dataSourceId) {
+      hash = `#/?dataSourceId=${dataSourceId}`;
+      // url.searchParams.set("dataSourceId", dataSourceId);
+    }
+    console.log("updated url", `${hash}`);
+    return {
+      defaultPath: hash,
+    };
+  };
+
+  private appStateUpdater = new BehaviorSubject<AppUpdater>(this.updateDefaultRouteOfManagementApplications);
 
   public setup(core: CoreSetup, { managementOverview, dataSourceManagement }: IndexManagementSetupDeps): IndexManagementPluginSetup {
     JobHandlerRegister(core);
@@ -130,6 +156,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.INDICES);
         },
@@ -142,6 +169,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.MANAGED_INDICES);
         },
@@ -154,6 +182,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.DATA_STREAMS);
         },
@@ -166,6 +195,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.ALIASES);
         },
@@ -178,6 +208,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.INDEX_POLICIES);
         },
@@ -190,6 +221,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.TEMPLATES);
         },
@@ -202,6 +234,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.NOTIFICATIONS);
         },
@@ -214,6 +247,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.ROLLUPS);
         },
@@ -226,6 +260,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.TRANSFORMS);
         },
@@ -238,6 +273,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.index_backup_and_recovery,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.SNAPSHOTS);
         },
@@ -250,6 +286,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.index_backup_and_recovery,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.SNAPSHOT_POLICIES);
         },
@@ -262,11 +299,19 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.index_backup_and_recovery,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.REPOSITORIES);
         },
       });
     }
+
+    dataSourceObservable.subscribe((dataSourceOption) => {
+      if (dataSourceOption) {
+        console.log("dataSourceOption", dataSourceOption);
+        this.appStateUpdater.next(this.updateDefaultRouteOfManagementApplications);
+      }
+    });
 
     core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.dataAdministration, [
       {
