@@ -24,8 +24,6 @@ import { ManagementOverViewPluginSetup } from "../../../src/plugins/management_o
 import { DataSourceManagementPluginSetup } from "../../../src/plugins/data_source_management/public";
 import { dataSourceObservable } from "./pages/Main/Main";
 import { BehaviorSubject } from "rxjs";
-import { useLocation } from "react-router-dom";
-import { DataSourceOption } from "src/plugins/data/public";
 
 interface IndexManagementSetupDeps {
   managementOverview?: ManagementOverViewPluginSetup;
@@ -53,19 +51,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
   }
 
   private updateDefaultRouteOfManagementApplications: AppUpdater = () => {
-    // let url = new URL(window.location.hash);
-    // console.log("current url", url);
-    // let params = new URLSearchParams(window.location.search);
-    // // replace dataSourceId with the selected data source
-    // // let dataSourceId = params.get("dataSourceId");
-    let dataSourceId = dataSourceObservable.value?.id;
-    console.log("updating dataSourceId", dataSourceId);
-    let hash = "";
-    if (dataSourceId) {
-      hash = `#/?dataSourceId=${dataSourceId}`;
-      // url.searchParams.set("dataSourceId", dataSourceId);
-    }
-    console.log("updated url", `${hash}`);
+    const hash = `#/?dataSourceId=${dataSourceObservable.value?.id || ""}`;
     return {
       defaultPath: hash,
     };

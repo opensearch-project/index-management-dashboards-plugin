@@ -212,7 +212,7 @@ export default class Main extends Component<MainProps, MainState> {
         dataSourceId: string;
         dataSourceLabel: string;
       };
-      dataSourceId = parsedDataSourceId || "";
+      dataSourceId = parsedDataSourceId;
       dataSourceLabel = parsedDataSourceLabel || "";
 
       if (dataSourceId) {
@@ -223,7 +223,12 @@ export default class Main extends Component<MainProps, MainState> {
       dataSourceId,
       dataSourceLabel,
       dataSourceReadOnly: false,
-      dataSourceLoading: props.multiDataSourceEnabled,
+      /**
+       * undefined: need data source picker to help to determine which data source to use.
+       * empty string: using the local cluster.
+       * string: using the selected data source.
+       */
+      dataSourceLoading: dataSourceId === undefined ? props.multiDataSourceEnabled : false,
     };
   }
 
