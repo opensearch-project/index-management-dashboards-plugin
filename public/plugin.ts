@@ -117,21 +117,6 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       },
     });
 
-    // Register with category and use case information
-    core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.dataAdministration, [
-      {
-        id: imApplicationID,
-        category: DEFAULT_APP_CATEGORIES.management,
-      },
-    ]);
-
-    core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.dataAdministration, [
-      {
-        id: smApplicationID,
-        category: DEFAULT_APP_CATEGORIES.management,
-      },
-    ]);
-
     // In-app navigation registration
 
     if (core.chrome.navGroup.getNavGroupEnabled()) {
@@ -294,7 +279,6 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
 
     dataSourceObservable.subscribe((dataSourceOption) => {
       if (dataSourceOption) {
-        console.log("dataSourceOption", dataSourceOption);
         this.appStateUpdater.next(this.updateDefaultRouteOfManagementApplications);
       }
     });
