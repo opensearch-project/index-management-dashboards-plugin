@@ -45,6 +45,51 @@ const ISM_CATEGORIES: Record<string, AppCategory> = Object.freeze({
   },
 });
 
+const ISM_FEATURE_DESCRIPTION: Record<string, string> = Object.freeze({
+  index_management: i18n.translate("indexManagement.description", {
+    defaultMessage: "Manage your indexes with state polices, templates and aliases. You can also roll up or transform your indexes.",
+  }),
+  snapshot_management: i18n.translate("snapshotManagement.description", {
+    defaultMessage: "Back up and restore your cluster's indexes and state. Setup a policy to automate snapshot creation and deletion.",
+  }),
+  indexes: i18n.translate("indexes.description", {
+    defaultMessage: "Manage your indexes",
+  }),
+  policy_managed_indexes: i18n.translate("policyManagedIndexes.description", {
+    defaultMessage: "Manage your policy managed indexes",
+  }),
+  data_streams: i18n.translate("dataStreams.description", {
+    defaultMessage: "Manage your data streams",
+  }),
+  aliases: i18n.translate("aliases.description", {
+    defaultMessage: "Manage your index aliases",
+  }),
+  index_state_management_policies: i18n.translate("indexStateManagementPolicies.description", {
+    defaultMessage: "Manage your index state management policies",
+  }),
+  index_templates: i18n.translate("indexTemplates.description", {
+    defaultMessage: "Manage your index templates",
+  }),
+  notification_settings: i18n.translate("notificationSettings.description", {
+    defaultMessage: "Manage your notification settings",
+  }),
+  rollup_jobs: i18n.translate("rollupJobs.description", {
+    defaultMessage: "Manage your rollup jobs",
+  }),
+  transform_jobs: i18n.translate("transformJobs.description", {
+    defaultMessage: "Manage your transform jobs",
+  }),
+  index_snapshots: i18n.translate("indexSnapshots.description", {
+    defaultMessage: "Manage your index snapshots",
+  }),
+  snapshot_policies: i18n.translate("snapshotPolicies.description", {
+    defaultMessage: "Manage your snapshot policies",
+  }),
+  snapshot_repositories: i18n.translate("snapshotRepositories.description", {
+    defaultMessage: "Manage your snapshot repositories",
+  }),
+});
+
 export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup, IndexManagementPluginStart, IndexManagementSetupDeps> {
   constructor(private readonly initializerContext: PluginInitializerContext) {
     // can retrieve config from initializerContext
@@ -97,6 +142,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       order: 9010,
       category: DEFAULT_APP_CATEGORIES.management,
       workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+      description: ISM_FEATURE_DESCRIPTION.index_management,
       mount: async (params: AppMountParameters) => {
         const { renderApp } = await import("./index_management_app");
         const [coreStart, depsStart] = await core.getStartServices();
@@ -110,6 +156,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       order: 9020,
       category: DEFAULT_APP_CATEGORIES.management,
       workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+      description: ISM_FEATURE_DESCRIPTION.snapshot_management,
       mount: async (params: AppMountParameters) => {
         const { renderApp } = await import("./index_management_app");
         const [coreStart, depsStart] = await core.getStartServices();
@@ -127,6 +174,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.indexes,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.INDICES);
@@ -140,6 +188,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.policy_managed_indexes,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.MANAGED_INDICES);
@@ -153,6 +202,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.data_streams,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.DATA_STREAMS);
@@ -166,6 +216,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.aliases,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.ALIASES);
@@ -179,6 +230,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.index_state_management_policies,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.INDEX_POLICIES);
@@ -192,6 +244,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.index_templates,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.TEMPLATES);
@@ -205,6 +258,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.notification_settings,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.NOTIFICATIONS);
@@ -218,6 +272,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.rollup_jobs,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.ROLLUPS);
@@ -231,6 +286,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.transform_jobs,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.TRANSFORMS);
@@ -244,6 +300,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.index_backup_and_recovery,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.index_snapshots,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.SNAPSHOTS);
@@ -257,6 +314,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.index_backup_and_recovery,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.snapshot_policies,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.SNAPSHOT_POLICIES);
@@ -270,6 +328,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         order: 8040,
         category: ISM_CATEGORIES.index_backup_and_recovery,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.snapshot_repositories,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.REPOSITORIES);
