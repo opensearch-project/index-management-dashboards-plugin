@@ -58,7 +58,8 @@
     "**/async": "^3.2.3",
     "**/nth-check": "^2.0.1",
     "**/typescript": "4.0.2",
-    "**/terser": "^4.8.1"
+    "**/terser": "^4.8.1",
+    "braces": "^3.0.3"
   },
   "devDependencies": {
     "@elastic/elastic-eslint-config-kibana": "link:../../packages/opensearch-eslint-config-opensearch-dashboards",
