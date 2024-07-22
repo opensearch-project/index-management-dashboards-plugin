@@ -7,7 +7,7 @@
 // Used under the Apache-2.0 license.
 
 import React, { Component } from "react";
-import { EuiSuperDatePicker } from "@elastic/eui";
+import { EuiCompressedSuperDatePicker } from "@elastic/eui";
 import AsyncInterval from "./AsyncInterval";
 
 interface EuiRefreshPickerProps {
@@ -63,7 +63,7 @@ export default class EuiRefreshPicker extends Component<EuiRefreshPickerProps> {
 
   render() {
     return (
-      <EuiSuperDatePicker
+      <EuiCompressedSuperDatePicker
         isAutoRefreshOnly
         isPaused={this.props.isPaused}
         refreshInterval={this.props.refreshInterval}
