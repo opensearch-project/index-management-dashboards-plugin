@@ -171,18 +171,6 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         },
       });
 
-      // index state management policies route
-      core.application.register({
-        id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.INDEX_POLICIES)}`,
-        title: "Index State Management Policies",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
-        workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
-        mount: async (params: AppMountParameters) => {
-          return mountWrapper(params, ROUTES.INDEX_POLICIES);
-        },
-      });
-
       // index templates route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.TEMPLATES)}`,
@@ -243,18 +231,6 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         },
       });
 
-      // snapshot policies route
-      core.application.register({
-        id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.SNAPSHOT_POLICIES)}`,
-        title: "Snapshot Policies",
-        order: 8040,
-        category: ISM_CATEGORIES.index_backup_and_recovery,
-        workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
-        mount: async (params: AppMountParameters) => {
-          return mountWrapper(params, ROUTES.SNAPSHOT_POLICIES);
-        },
-      });
-
       // snapshot repositories route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.REPOSITORIES)}`,
@@ -286,8 +262,10 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         category: ISM_CATEGORIES.indexes,
       },
       {
-        id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.INDEX_POLICIES)}`,
+        id: imApplicationID,
         category: ISM_CATEGORIES.indexes,
+        title: "Index State Management Policies",
+        order: 8040,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.TEMPLATES)}`,
@@ -310,8 +288,10 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         category: ISM_CATEGORIES.index_backup_and_recovery,
       },
       {
-        id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.SNAPSHOT_POLICIES)}`,
+        id: smApplicationID,
         category: ISM_CATEGORIES.index_backup_and_recovery,
+        title: "Snapshot Policies",
+        order: 8040,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.REPOSITORIES)}`,
