@@ -69,6 +69,8 @@ import {
 import { DataSourceOption } from "../../../../../src/plugins/data_source_management/public/components/data_source_menu/types";
 import * as pluginManifest from "../../../opensearch_dashboards.json";
 import { DataSourceAttributes } from "../../../../../src/plugins/data_source/common/data_sources";
+import { BehaviorSubject } from "rxjs";
+import { i18n } from "@osd/i18n";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -189,6 +191,15 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.EDIT_REPOSITORY,
 ];
 
+const LocalCluster: DataSourceOption = {
+  label: i18n.translate("dataSource.localCluster", {
+    defaultMessage: "Local cluster",
+  }),
+  id: "",
+};
+
+export const dataSourceObservable = new BehaviorSubject<DataSourceOption>(LocalCluster);
+
 export default class Main extends Component<MainProps, MainState> {
   constructor(props: MainProps) {
     super(props);
@@ -201,14 +212,23 @@ export default class Main extends Component<MainProps, MainState> {
         dataSourceId: string;
         dataSourceLabel: string;
       };
-      dataSourceId = parsedDataSourceId || "";
+      dataSourceId = parsedDataSourceId;
       dataSourceLabel = parsedDataSourceLabel || "";
+
+      if (dataSourceId) {
+        dataSourceObservable.next({ id: dataSourceId, label: dataSourceLabel });
+      }
     }
     this.state = {
       dataSourceId,
       dataSourceLabel,
       dataSourceReadOnly: false,
-      dataSourceLoading: props.multiDataSourceEnabled,
+      /**
+       * undefined: need data source picker to help to determine which data source to use.
+       * empty string: using the local cluster.
+       * string: using the selected data source.
+       */
+      dataSourceLoading: dataSourceId === undefined ? props.multiDataSourceEnabled : false,
     };
   }
 
@@ -263,6 +283,7 @@ export default class Main extends Component<MainProps, MainState> {
         dataSourceId: id,
         dataSourceLabel: label,
       });
+      dataSourceObservable.next({ id, label });
     }
     if (this.state.dataSourceLoading) {
       this.setState({
