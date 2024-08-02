@@ -3,9 +3,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { forwardRef, useRef } from "react";
-import { EuiFieldNumber, EuiFieldText, EuiSwitch, EuiSelect, EuiText, EuiCheckbox, EuiComboBoxOptionOption } from "@elastic/eui";
+import {
+  EuiCompressedFieldNumber,
+  EuiCompressedFieldText,
+  EuiCompressedSwitch,
+  EuiCompressedSelect,
+  EuiText,
+  EuiCompressedCheckbox,
+  EuiComboBoxOptionOption,
+} from "@elastic/eui";
 import EuiToolTipWrapper, { IEuiToolTipWrapperProps } from "../../EuiToolTipWrapper";
-import EuiComboBox from "../../ComboBoxWithoutWarning";
+import EuiCompressedComboBox from "../../ComboBoxWithoutWarning";
 
 export type ComponentMapEnum = "Input" | "Number" | "Switch" | "Select" | "Text" | "ComboBoxSingle" | "CheckBox" | "ComboBoxMultiple";
 
@@ -20,7 +28,7 @@ let globalId = 0;
 const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponentProps>> = {
   Input: EuiToolTipWrapper(
     forwardRef(({ onChange, value, removeWhenEmpty, ...others }, ref: React.Ref<HTMLInputElement>) => (
-      <EuiFieldText
+      <EuiCompressedFieldText
         inputRef={ref}
         value={value || ""}
         onChange={(e) => onChange(e.target.value ? e.target.value : removeWhenEmpty ? undefined : e.target.value)}
@@ -30,7 +38,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   ),
   Number: EuiToolTipWrapper(
     forwardRef(({ onChange, value, removeWhenEmpty, ...others }, ref: React.Ref<HTMLInputElement>) => (
-      <EuiFieldNumber
+      <EuiCompressedFieldNumber
         inputRef={ref}
         onChange={(e) => onChange(e.target.value ? e.target.value : removeWhenEmpty ? undefined : e.target.value)}
         value={value === undefined ? "" : value}
@@ -41,7 +49,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   Switch: EuiToolTipWrapper(
     forwardRef(({ value, onChange, ...others }, ref: React.Ref<any>) => (
       <div ref={ref}>
-        <EuiSwitch showLabel={false} label="" checked={value || false} onChange={(e) => onChange(e.target.checked)} {...others} />
+        <EuiCompressedSwitch showLabel={false} label="" checked={value || false} onChange={(e) => onChange(e.target.checked)} {...others} />
       </div>
     )) as React.ComponentType<IFieldComponentProps>
   ),
@@ -52,14 +60,14 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   )) as React.ComponentType<IFieldComponentProps>,
   Select: EuiToolTipWrapper(
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => (
-      <EuiSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
+      <EuiCompressedSelect inputRef={ref} onChange={(e) => onChange(e.target.value)} value={value || ""} {...others} />
     )) as React.ComponentType<IFieldComponentProps>
   ),
   CheckBox: EuiToolTipWrapper(
     forwardRef(({ onChange, value, ...others }, ref: React.Ref<any>) => {
       const idRef = useRef(globalId++);
       return (
-        <EuiCheckbox
+        <EuiCompressedCheckbox
           ref={ref}
           id={`builtInCheckBoxId-${idRef.current}`}
           checked={value === undefined ? false : value}
@@ -72,7 +80,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
   ComboBoxSingle: EuiToolTipWrapper(
     forwardRef(({ onChange, value, options, ...others }, ref: React.Ref<any>) => {
       return (
-        <EuiComboBox
+        <EuiCompressedComboBox
           onCreateOption={(searchValue) => {
             const allOptions = (options as { label: string; options?: { label: string }[] }[]).reduce((total, current) => {
               if (current.options) {
@@ -117,7 +125,7 @@ const componentMap: Record<ComponentMapEnum, React.ComponentType<IFieldComponent
         ref: React.Ref<any>
       ) => {
         return (
-          <EuiComboBox
+          <EuiCompressedComboBox
             onCreateOption={(searchValue) => {
               const allOptions = others.options.reduce((total, current) => {
                 if (current.options) {

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useState } from "react";
-import { EuiButton } from "@elastic/eui";
+import { EuiSmallButton } from "@elastic/eui";
 import DeleteIndexModal from "../DeleteComposableTemplatesModal";
 import AssociatedTemplatesModal from "../AssociatedTemplatesModal";
 
@@ -36,9 +36,14 @@ export function ComposableTemplatesDeleteAction(props: ComposableTemplatesAction
     }
 
     return (
-      <EuiButton data-test-subj="deleteAction" color="danger" disabled={renderProps.selectedItems.length !== 1} onClick={triggerDelete}>
+      <EuiSmallButton
+        data-test-subj="deleteAction"
+        color="danger"
+        disabled={renderProps.selectedItems.length !== 1}
+        onClick={triggerDelete}
+      >
         Delete
-      </EuiButton>
+      </EuiSmallButton>
     );
   };
 

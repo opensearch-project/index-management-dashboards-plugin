@@ -14,14 +14,14 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButton,
+  EuiSmallButton,
   EuiLink,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiEmptyPrompt,
   EuiText,
   EuiTableSortingType,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiToolTip,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
@@ -281,7 +281,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
             <EuiTitle>
               <span>Component templates</span>
             </EuiTitle>
-            <EuiFormRow
+            <EuiCompressedFormRow
               fullWidth
               helpText={
                 <div>
@@ -294,7 +294,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
               }
             >
               <></>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         }
       >
@@ -360,7 +360,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                         onUnlink={/* istanbul ignore next */ () => this.getComposableTemplates()}
                         renderProps={({ setVisible }) => (
                           <EuiToolTip content="View associated index templates">
-                            <EuiButtonIcon
+                            <EuiSmallButtonIcon
                               aria-label="View associated index templates"
                               iconType="kqlSelector"
                               data-test-subj={`ViewAssociatedIndexTemplates-${record.name}`}
@@ -383,7 +383,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                         }}
                         renderDeleteButton={({ triggerDelete }) => (
                           <EuiToolTip content="Delete component template">
-                            <EuiButtonIcon
+                            <EuiSmallButtonIcon
                               aria-label="Delete component template"
                               color="danger"
                               iconType="trash"
@@ -421,7 +421,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                   </EuiText>
                 }
                 actions={[
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
@@ -429,7 +429,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                     data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
                   >
                     Create component template
-                  </EuiButton>,
+                  </EuiSmallButton>,
                 ]}
               />
             ) : (
@@ -440,7 +440,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                   </EuiText>
                 }
                 actions={[
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.setState(defaultFilter, () => {
@@ -449,7 +449,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                     }}
                   >
                     Reset filters
-                  </EuiButton>,
+                  </EuiSmallButton>,
                 ]}
               />
             )

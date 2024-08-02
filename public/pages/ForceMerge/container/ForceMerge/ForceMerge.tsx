@@ -3,7 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
+  EuiSmallButtonIcon,
+  EuiCallOut,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSpacer,
+  EuiTitle,
+} from "@elastic/eui";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -126,7 +135,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const advanceTitle = (
     <EuiFlexGroup gutterSize="none" justifyContent="flexStart" alignItems="center">
       <EuiFlexItem grow={false}>
-        <EuiButtonIcon
+        <EuiSmallButtonIcon
           iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
           color="text"
           data-test-subj="advanceOptionToggle"
@@ -234,14 +243,14 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
 
       <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
         <EuiFlexItem grow={false}>
-          <EuiButtonEmpty onClick={onCancel} data-test-subj="reindexCancelButton">
+          <EuiSmallButtonEmpty onClick={onCancel} data-test-subj="reindexCancelButton">
             Cancel
-          </EuiButtonEmpty>
+          </EuiSmallButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton fill onClick={onClickAction} isLoading={executing} data-test-subj="forceMergeConfirmButton">
+          <EuiSmallButton fill onClick={onClickAction} isLoading={executing} data-test-subj="forceMergeConfirmButton">
             Force merge
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </div>

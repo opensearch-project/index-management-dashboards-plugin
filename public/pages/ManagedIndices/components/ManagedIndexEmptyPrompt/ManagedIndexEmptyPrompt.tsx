@@ -5,7 +5,7 @@
 
 import React from "react";
 import * as H from "history";
-import { EuiButton, EuiEmptyPrompt, EuiText } from "@elastic/eui";
+import { EuiSmallButton, EuiEmptyPrompt, EuiText } from "@elastic/eui";
 import { ModalConsumer } from "../../../../components/Modal";
 import CreatePolicyModal from "../../../../components/CreatePolicyModal";
 import { ROUTES } from "../../../../utils/constants";
@@ -27,9 +27,9 @@ const getActions: React.SFC<ManagedIndexEmptyPromptProps> = ({ history, filterIs
 
   if (filterIsApplied) {
     return (
-      <EuiButton fill onClick={resetFilters} data-test-subj="managedIndexEmptyPromptResetFilters">
+      <EuiSmallButton fill onClick={resetFilters} data-test-subj="managedIndexEmptyPromptResetFilters">
         Reset Filters
-      </EuiButton>
+      </EuiSmallButton>
     );
   }
 
@@ -40,9 +40,9 @@ const getActions: React.SFC<ManagedIndexEmptyPromptProps> = ({ history, filterIs
   return (
     <ModalConsumer>
       {({ onShow }) => (
-        <EuiButton fill onClick={() => onShow(CreatePolicyModal, { history, onClickContinue: onClickCreate })}>
+        <EuiSmallButton fill onClick={() => onShow(CreatePolicyModal, { history, onClickContinue: onClickCreate })}>
           Create policy
-        </EuiButton>
+        </EuiSmallButton>
       )}
     </ModalConsumer>
   );

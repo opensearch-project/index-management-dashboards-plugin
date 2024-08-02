@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiSelect, EuiButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCompressedSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { FeatureChannelList } from "../../../../../server/models/interfaces";
@@ -24,8 +24,8 @@ const Notification = ({ channelId, channels, loadingChannels, onChangeChannelId,
       <CustomLabel title="Select notification channels" />
       <EuiFlexGroup gutterSize="s" style={{ maxWidth: 600 }}>
         <EuiFlexItem>
-          <EuiFormRow>
-            <EuiSelect
+          <EuiCompressedFormRow>
+            <EuiCompressedSelect
               id="channel-id"
               placeholder="Select channel ID"
               hasNoInitialSelection
@@ -35,10 +35,10 @@ const Notification = ({ channelId, channels, loadingChannels, onChangeChannelId,
               onChange={onChangeChannelId}
               data-test-subj="create-policy-notification-channel-id"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton
+          <EuiSmallButton
             iconType="refresh"
             onClick={getChannels}
             disabled={loadingChannels}
@@ -47,9 +47,9 @@ const Notification = ({ channelId, channels, loadingChannels, onChangeChannelId,
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+          <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
             Manage channels
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </>

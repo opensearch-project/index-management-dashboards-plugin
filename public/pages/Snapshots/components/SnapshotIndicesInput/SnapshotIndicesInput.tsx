@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiComboBox, EuiComboBoxOptionOption, EuiSpacer, EuiFormRow } from "@elastic/eui";
+import { EuiCompressedComboBox, EuiComboBoxOptionOption, EuiSpacer, EuiCompressedFormRow } from "@elastic/eui";
 import React from "react";
 import { IndexItem } from "../../../../../models/interfaces";
 
@@ -24,14 +24,14 @@ const SnapshotIndicesInput = ({
   onIndicesSelectionChange,
   getIndexOptions,
   onCreateOption,
-  showError
+  showError,
 }: SnapshotIndicesInputProps) => {
   const selectionError = "You must select at least one index to restore.";
 
   return (
     <>
-      <EuiFormRow label="Select indices or input index patterns you want to restore" error={selectionError} isInvalid={showError}>
-        <EuiComboBox
+      <EuiCompressedFormRow label="Select indices or input index patterns you want to restore" error={selectionError} isInvalid={showError}>
+        <EuiCompressedComboBox
           isInvalid={showError}
           placeholder="Select indices or input index patterns."
           options={indexOptions}
@@ -41,7 +41,7 @@ const SnapshotIndicesInput = ({
           onCreateOption={onCreateOption}
           isClearable={true}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
 
       <EuiSpacer size="m" />
     </>

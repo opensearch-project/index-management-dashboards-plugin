@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiButton, EuiEmptyPrompt, EuiHealth } from "@elastic/eui";
+import { EuiInMemoryTable, EuiSpacer, EuiLink, EuiFlyout, EuiSmallButton, EuiEmptyPrompt, EuiHealth } from "@elastic/eui";
 import _ from "lodash";
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import { SnapshotManagementService } from "../../../../services";
 import { CoreServicesContext } from "../../../../components/core_services";
-import { getToasts } from "../../helper"
-import { Toast, ModifiedStages, IndexItem } from "../../../../models/interfaces"
+import { getToasts } from "../../helper";
+import { Toast, ModifiedStages, IndexItem } from "../../../../models/interfaces";
 import { GetIndexRecoveryResponse } from "../../../../../server/models/interfaces";
 import { BREADCRUMBS, restoreIndicesCols } from "../../../../utils/constants";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -27,23 +27,22 @@ interface RestoreActivitiesPanelProps {
 
 const intervalIds: ReturnType<typeof setInterval>[] = [];
 
-export const RestoreActivitiesPanel = (
-  {
-    onOpenError,
-    sendError,
-    sendToasts,
-    snapshotManagementService,
-    snapshotId,
-    restoreStartRef,
-    indicesToRestore
-  }: RestoreActivitiesPanelProps) => {
+export const RestoreActivitiesPanel = ({
+  onOpenError,
+  sendError,
+  sendToasts,
+  snapshotManagementService,
+  snapshotId,
+  restoreStartRef,
+  indicesToRestore,
+}: RestoreActivitiesPanelProps) => {
   const context = useContext(CoreServicesContext);
   const [startTime, setStartTime] = useState("");
   const [stopTime, setStopTime] = useState("");
   const [stage, setStage] = useState("");
   const [indices, setIndices] = useState<IndexItem[]>([]);
   const [flyout, setFlyout] = useState(false);
-  const [statusOk, setStatusOk] = useState(true)
+  const [statusOk, setStatusOk] = useState(true);
 
   const restoreCount = indicesToRestore.length;
 
@@ -51,21 +50,23 @@ export const RestoreActivitiesPanel = (
     context?.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS, BREADCRUMBS.SNAPSHOT_RESTORE]);
 
     if (statusOk && stage !== "Completed (100%)") {
-      intervalIds.push(setInterval(() => {
-        getRestoreStatus();
-      }, 2000))
+      intervalIds.push(
+        setInterval(() => {
+          getRestoreStatus();
+        }, 2000)
+      );
 
       return () => {
         intervalIds.forEach((id) => {
           clearInterval(id);
         });
-      }
+      };
     }
   }, [stage]);
 
   const getRestoreStatus = async () => {
     const percent = stage.slice(stage.indexOf("("));
-    const failedStage = `Failed ${percent}`
+    const failedStage = `Failed ${percent}`;
 
     if (!restoreStartRef) {
       return;
@@ -79,35 +80,25 @@ export const RestoreActivitiesPanel = (
 
         setRestoreStatus(response);
       } else {
-        const toasts = getToasts(
-          "error_restore_toast",
-          "",
-          snapshotId,
-          onOpenError
-        );
+        const toasts = getToasts("error_restore_toast", "", snapshotId, onOpenError);
 
         res.error = res.error.concat(`, please check your connection`);
 
         setStage(failedStage);
         sendError(res);
-        sendToasts(toasts)
+        sendToasts(toasts);
         intervalIds.forEach((id) => {
           clearInterval(id);
         });
         return;
       }
     } catch (err) {
-      const toasts = getToasts(
-        "error_restore_toast",
-        "",
-        snapshotId,
-        onOpenError
-      );
+      const toasts = getToasts("error_restore_toast", "", snapshotId, onOpenError);
 
       setStage(failedStage);
       setStatusOk(false);
       sendError(err);
-      sendToasts(toasts)
+      sendToasts(toasts);
     }
   };
 
@@ -135,11 +126,11 @@ export const RestoreActivitiesPanel = (
       VERIFY_INDEX: "Verifying",
       TRANSLOG: "Replaying translog",
       FINALIZE: "Cleaning up",
-      DONE: "Completed"
-    }
+      DONE: "Completed",
+    };
     const lastStage = stages.length - 1;
 
-    // Loop through indices in response, filter out kibana index, 
+    // Loop through indices in response, filter out kibana index,
     // gather progress info then use it to create progress field values.
     for (let item in response) {
       const responseItem = item as keyof GetIndexRecoveryResponse;
@@ -152,7 +143,7 @@ export const RestoreActivitiesPanel = (
         const stage = stages.indexOf(info.stage);
         const time = {
           start_time: info.start_time_in_millis,
-          stop_time: info.stop_time_in_millis ? info.stop_time_in_millis : Date.now()
+          stop_time: info.stop_time_in_millis ? info.stop_time_in_millis : Date.now(),
         };
 
         doneCount = stage === lastStage ? doneCount + 1 : doneCount;
@@ -164,7 +155,7 @@ export const RestoreActivitiesPanel = (
 
         if (info.source.index && info.source.snapshot === snapshotId) {
           minStartTime = minStartTime && minStartTime < time.start_time ? minStartTime : time.start_time;
-          indexes.push({ index: info.source.index, "restore_status": indexStatus });
+          indexes.push({ index: info.source.index, restore_status: indexStatus });
         }
       }
     }
@@ -174,7 +165,7 @@ export const RestoreActivitiesPanel = (
 
     for (let index of indicesToRestore) {
       if (indicesStarted.indexOf(index) < 0) {
-        updatedIndices.push({ index, restore_status: "Pending" })
+        updatedIndices.push({ index, restore_status: "Pending" });
       }
     }
 
@@ -185,25 +176,30 @@ export const RestoreActivitiesPanel = (
 
     setIndices(sortedUpdatedIndices);
     setStopTime(new Date(maxStopTime).toLocaleString().replace(",", "  "));
-    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "))
+    setStartTime(new Date(minStartTime).toLocaleString().replace(",", "  "));
 
     if (stages[stageIndex]) {
-      stageIndex = (stageIndex === lastStage && doneCount < restoreCount) ? 2 : stageIndex;
+      stageIndex = stageIndex === lastStage && doneCount < restoreCount ? 2 : stageIndex;
       setStage(`${modifiedStages[stages[stageIndex] as keyof ModifiedStages]} (${percent}%)`);
     }
-
   };
 
-  const actions = useMemo(() => (
-    [
-      <EuiButton iconType="refresh" onClick={getRestoreStatus} data-test-subj="refreshStatusButton" isDisabled={restoreStartRef ? false : true}>
+  const actions = useMemo(
+    () => [
+      <EuiSmallButton
+        iconType="refresh"
+        onClick={getRestoreStatus}
+        data-test-subj="refreshStatusButton"
+        isDisabled={restoreStartRef ? false : true}
+      >
         Refresh
-      </EuiButton>,
-    ]
-  ), []);
-  const currentStage = stage.slice(0, stage.indexOf(" "))
+      </EuiSmallButton>,
+    ],
+    []
+  );
+  const currentStage = stage.slice(0, stage.indexOf(" "));
   const color = currentStage === "Completed" ? "success" : currentStage === "Failed" ? "failure" : "warning";
-  const indexText = `${restoreCount === 1 ? "1 Index" : `${restoreCount} Indices`}`
+  const indexText = `${restoreCount === 1 ? "1 Index" : `${restoreCount} Indices`}`;
 
   const restoreStatus = [
     {
@@ -230,7 +226,7 @@ export const RestoreActivitiesPanel = (
     {
       field: "status",
       name: "Status",
-      render: (text: string) => <EuiHealth color={color}>{text}</EuiHealth>
+      render: (text: string) => <EuiHealth color={color}>{text}</EuiHealth>,
     },
     {
       field: "indexes",
@@ -239,21 +235,21 @@ export const RestoreActivitiesPanel = (
     },
   ];
 
-  const message = (<EuiEmptyPrompt body={<p>There are no restore activities.</p>} titleSize="s"></EuiEmptyPrompt>)
+  const message = <EuiEmptyPrompt body={<p>There are no restore activities.</p>} titleSize="s"></EuiEmptyPrompt>;
 
   return (
     <>
-      {flyout &&
-        <EuiFlyout
-          ownFocus={false}
-          maxWidth={600}
-          onClose={onCloseFlyout}
-          size="m"
-          hideCloseButton
-        >
-          <IndexList indices={indices} snapshot={snapshotId} onClick={onCloseFlyout} title="Indices being restored" columns={restoreIndicesCols} />
+      {flyout && (
+        <EuiFlyout ownFocus={false} maxWidth={600} onClose={onCloseFlyout} size="m" hideCloseButton>
+          <IndexList
+            indices={indices}
+            snapshot={snapshotId}
+            onClick={onCloseFlyout}
+            title="Indices being restored"
+            columns={restoreIndicesCols}
+          />
         </EuiFlyout>
-      }
+      )}
       <ContentPanel title="Restore activities in progress" actions={actions}>
         <EuiInMemoryTable items={snapshotId && restoreCount ? restoreStatus : []} columns={columns} pagination={false} message={message} />
         <EuiSpacer size="xxl" />

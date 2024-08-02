@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiSmallButton, EuiSmallButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField from "../../../../lib/field";
@@ -168,7 +168,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
             </EuiFlexItem>
             {isEdit ? (
               <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-                <EuiButton
+                <EuiSmallButton
                   style={{ marginRight: 20 }}
                   onClick={() => {
                     const showValue: ComponentTemplateEdit = JSON.parse(
@@ -196,7 +196,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
                   }}
                 >
                   View JSON
-                </EuiButton>
+                </EuiSmallButton>
                 <ComposableTemplatesActions
                   selectedItems={[templateName || ""]}
                   history={props.history}
@@ -222,14 +222,14 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
           <EuiSpacer />
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateComposableTemplateCancelButton">
+              <EuiSmallButtonEmpty onClick={onCancel} data-test-subj="CreateComposableTemplateCancelButton">
                 Cancel
-              </EuiButtonEmpty>
+              </EuiSmallButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={onClickSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
+              <EuiSmallButton fill onClick={onClickSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
                 Create component template
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           </EuiFlexGroup>
         </>

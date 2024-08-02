@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from "react";
-import { EuiButton, EuiFlexGroup, EuiFlexItem, EuiForm, EuiFormRow, EuiPanel, EuiCodeEditor, EuiSpacer } from "@elastic/eui";
+import { EuiSmallButton, EuiFlexGroup, EuiFlexItem, EuiForm, EuiCompressedFormRow, EuiPanel, EuiCodeEditor, EuiSpacer } from "@elastic/eui";
 import { TRANSFORM_AGG_TYPE, TransformAggItem } from "../../../../../../../models/interfaces";
 
 interface ScriptedMetricsPanelProps {
@@ -20,23 +20,23 @@ export default function ScriptedMetricsPanel({ name, aggSelection, handleAggSele
   return (
     <EuiPanel>
       <EuiForm>
-        <EuiFormRow label="Scripted metrics">
+        <EuiCompressedFormRow label="Scripted metrics">
           <EuiCodeEditor
             style={{ width: 0.38 * window.innerWidth, height: 0.4 * window.innerHeight }}
             value={script}
             onChange={(value: string) => setScript(value)}
             mode="json"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd" gutterSize="m">
           <EuiFlexItem grow={false}>
-            <EuiButton fullWidth={false} onClick={() => closePopover()}>
+            <EuiSmallButton fullWidth={false} onClick={() => closePopover()}>
               Cancel
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               fill
               fullWidth={false}
               onClick={() => {
@@ -55,7 +55,7 @@ export default function ScriptedMetricsPanel({ name, aggSelection, handleAggSele
               style={{ minWidth: 55 }}
             >
               OK
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </EuiForm>

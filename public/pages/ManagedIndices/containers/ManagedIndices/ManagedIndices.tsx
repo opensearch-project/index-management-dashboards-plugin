@@ -11,7 +11,7 @@ import {
   EuiLink,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiTitle,
   EuiSpacer,
   EuiTableFieldDataColumnType,
@@ -447,14 +447,14 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         <EuiFlexGroup alignItems="center">
           <EuiFlexItem></EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton iconType="refresh" onClick={this.getManagedIndices} data-test-subj="refreshButton">
+            <EuiSmallButton iconType="refresh" onClick={this.getManagedIndices} data-test-subj="refreshButton">
               Refresh
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton href={`${PLUGIN_NAME}#/change-policy`} data-test-subj="changePolicyButton">
+            <EuiSmallButton href={`${PLUGIN_NAME}#/change-policy`} data-test-subj="changePolicyButton">
               Change policy
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
 

@@ -4,7 +4,16 @@
  */
 
 import React, { useState } from "react";
-import { EuiButton, EuiFieldText, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer, EuiText } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiCompressedFieldText,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiCompressedFormRow,
+  EuiPanel,
+  EuiSpacer,
+  EuiText,
+} from "@elastic/eui";
 import { TransformAggItem } from "../../../../../../../models/interfaces";
 
 interface EditTransformPanelProps {
@@ -30,8 +39,8 @@ export default function EditTransformPanel({ name, aggList, onEditTransformation
 
   return (
     <EuiPanel>
-      <EuiFormRow label="Transformation name" isInvalid={transformNameError !== ""} error={transformNameError}>
-        <EuiFieldText
+      <EuiCompressedFormRow label="Transformation name" isInvalid={transformNameError !== ""} error={transformNameError}>
+        <EuiCompressedFieldText
           value={transformName}
           isInvalid={transformNameError !== ""}
           onChange={(e) => {
@@ -39,16 +48,16 @@ export default function EditTransformPanel({ name, aggList, onEditTransformation
             setTransformName(e.target.value);
           }}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer size="s" />
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>
-          <EuiButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
+          <EuiSmallButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
             Cancel
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton
+          <EuiSmallButton
             fill
             fullWidth={false}
             disabled={transformNameError !== ""}
@@ -60,7 +69,7 @@ export default function EditTransformPanel({ name, aggList, onEditTransformation
             style={{ minWidth: 55 }}
           >
             OK
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPanel>

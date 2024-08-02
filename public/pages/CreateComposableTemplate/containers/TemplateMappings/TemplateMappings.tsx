@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from "react";
-import { EuiFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { SubDetailProps } from "../../interface";
 import IndexMapping, { IIndexMappingsRef } from "../../../../components/IndexMapping";
@@ -22,7 +22,7 @@ export default function TemplateMappings(props: SubDetailProps) {
           <EuiTitle size="s">
             <div>Index mapping</div>
           </EuiTitle>
-          <EuiFormRow
+          <EuiCompressedFormRow
             fullWidth
             helpText={
               <div>
@@ -38,7 +38,7 @@ export default function TemplateMappings(props: SubDetailProps) {
             }
           >
             <></>
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </>
       }
       actions={
@@ -55,7 +55,7 @@ export default function TemplateMappings(props: SubDetailProps) {
       {values.includes?.[IndicesUpdateMode.mappings] ? (
         <>
           <EuiSpacer />
-          <EuiFormRow fullWidth>
+          <EuiCompressedFormRow fullWidth>
             <IndexMapping
               {...field.registerField({
                 name: ["template", "mappings"],
@@ -81,7 +81,7 @@ export default function TemplateMappings(props: SubDetailProps) {
               oldMappingsEditable
               docVersion={coreServices.docLinks.DOC_LINK_VERSION}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
           <EuiSpacer />
         </>
       ) : null}

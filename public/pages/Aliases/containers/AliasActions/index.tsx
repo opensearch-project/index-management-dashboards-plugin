@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useMemo, useState } from "react";
-import { EuiButton, EuiContextMenu } from "@elastic/eui";
+import { EuiSmallButton, EuiContextMenu } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteAliasModal";
@@ -51,9 +51,9 @@ export default function AliasesActions(props: AliasesActionsProps) {
         data-test-subj="moreAction"
         panelPaddingSize="none"
         button={
-          <EuiButton iconType="arrowDown" iconSide="right">
+          <EuiSmallButton iconType="arrowDown" iconSide="right">
             Actions
-          </EuiButton>
+          </EuiSmallButton>
         }
       >
         <EuiContextMenu

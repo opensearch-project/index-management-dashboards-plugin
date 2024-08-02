@@ -6,12 +6,12 @@
 import {
   EuiAccordion,
   EuiComboBoxOptionOption,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiFlyout,
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiSpacer,
   EuiTitle,
 } from "@elastic/eui";
@@ -222,15 +222,15 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
 
         <EuiFlyoutBody>
           <CustomLabel title="Snapshot name" />
-          <EuiFormRow isInvalid={!!snapshotIdError} error={snapshotIdError}>
-            <EuiFieldText
+          <EuiCompressedFormRow isInvalid={!!snapshotIdError} error={snapshotIdError}>
+            <EuiCompressedFieldText
               value={snapshotId}
               onChange={(e) => {
                 this.setState({ snapshotId: e.target.value });
               }}
               data-test-subj="snapshotNameInput"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="m" />
 

@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiFieldText, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCompressedFieldText, EuiSpacer } from "@elastic/eui";
 import { SnapshotAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
 import { ActionType } from "../../utils/constants";
@@ -36,8 +36,8 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
           helpText="The repository name that you register through the native snapshot API operations."
           isInvalid={!this.isValid()}
         />
-        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
-          <EuiFieldText
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+          <EuiCompressedFieldText
             fullWidth
             value={(action.action as SnapshotAction).snapshot.repository}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -53,11 +53,11 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
             }}
             data-test-subj="action-render-snapshot-repository"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
         <EuiSpacer size="s" />
         <EuiFormCustomLabel title="Snapshot" helpText="The name of the snapshot." isInvalid={!this.isValid()} />
-        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
-          <EuiFieldText
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+          <EuiCompressedFieldText
             fullWidth
             value={(action.action as SnapshotAction).snapshot.snapshot}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +73,7 @@ export default class SnapshotUIAction implements UIAction<SnapshotAction> {
             }}
             data-test-subj="action-render-snapshot-snapshot"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </>
     );
   };

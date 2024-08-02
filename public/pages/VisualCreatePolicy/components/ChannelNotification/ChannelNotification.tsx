@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiFormRow, EuiTextArea, EuiSelect, EuiButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiTextArea, EuiCompressedSelect, EuiSmallButton, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { FeatureChannelList } from "../../../../../server/models/interfaces";
@@ -36,8 +36,8 @@ const ChannelNotification = ({
       <EuiFormCustomLabel title="Channel ID" />
       <EuiFlexGroup gutterSize="s" style={{ maxWidth: 600 }}>
         <EuiFlexItem>
-          <EuiFormRow>
-            <EuiSelect
+          <EuiCompressedFormRow>
+            <EuiCompressedSelect
               id={actionNotification ? "action-channel-id" : "channel-id"}
               placeholder="Select channel ID"
               hasNoInitialSelection
@@ -47,10 +47,10 @@ const ChannelNotification = ({
               onChange={onChangeChannelId}
               data-test-subj={actionNotification ? "create-policy-notification-action-channel-id" : "create-policy-notification-channel-id"}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton
+          <EuiSmallButton
             iconType="refresh"
             onClick={getChannels}
             disabled={loadingChannels}
@@ -59,9 +59,9 @@ const ChannelNotification = ({
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+          <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
             Manage channels
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
 
@@ -71,7 +71,7 @@ const ChannelNotification = ({
 
           <EuiFormCustomLabel title="Notification message" helpText="Embed variables in your message using Mustache template." />
 
-          <EuiFormRow>
+          <EuiCompressedFormRow>
             <EuiTextArea
               placeholder="The index {{ctx.index}} failed during policy execution."
               style={{ minHeight: "150px" }}
@@ -80,7 +80,7 @@ const ChannelNotification = ({
               onChange={onChangeMessage}
               data-test-subj={actionNotification ? "create-policy-notification-action-message" : "create-policy-notification-message"}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </>
       )}
     </>

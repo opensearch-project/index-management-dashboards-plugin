@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiButton, EuiEmptyPrompt, EuiText } from "@elastic/eui";
+import { EuiSmallButton, EuiEmptyPrompt, EuiText } from "@elastic/eui";
 
 export const TEXT = {
   RESET_FILTERS: "There are no indices matching your applied filters. Reset your filters to view your indices.",
@@ -25,9 +25,9 @@ const getActions: React.SFC<IndexEmptyPromptProps> = ({ filterIsApplied, loading
 
   if (filterIsApplied) {
     return (
-      <EuiButton fill onClick={resetFilters} data-test-subj="indexEmptyPromptResetFilters">
+      <EuiSmallButton fill onClick={resetFilters} data-test-subj="indexEmptyPromptResetFilters">
         Reset Filters
-      </EuiButton>
+      </EuiSmallButton>
     );
   }
 
@@ -40,7 +40,7 @@ interface IndexEmptyPromptProps {
   resetFilters: () => void;
 }
 
-const IndexEmptyPrompt: React.SFC<IndexEmptyPromptProps> = props => (
+const IndexEmptyPrompt: React.SFC<IndexEmptyPromptProps> = (props) => (
   <EuiEmptyPrompt
     style={{ maxWidth: "45em" }}
     body={

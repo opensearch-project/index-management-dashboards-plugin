@@ -7,11 +7,11 @@ import React, { ChangeEvent, Component } from "react";
 import moment from "moment-timezone";
 import {
   EuiSpacer,
-  EuiCheckbox,
-  EuiRadioGroup,
-  EuiFormRow,
-  EuiSelect,
-  EuiFieldNumber,
+  EuiCompressedCheckbox,
+  EuiCompressedRadioGroup,
+  EuiCompressedFormRow,
+  EuiCompressedSelect,
+  EuiCompressedFieldNumber,
   EuiFlexGroup,
   EuiFlexItem,
   EuiTextArea,
@@ -69,20 +69,20 @@ const selectInterval = (
   <React.Fragment>
     <EuiFlexGroup style={{ maxWidth: 400 }}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
-        <EuiFormRow label="Rollup interval" error={intervalError} isInvalid={intervalError != ""}>
-          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
-        </EuiFormRow>
+        <EuiCompressedFormRow label="Rollup interval" error={intervalError} isInvalid={intervalError != ""}>
+          <EuiCompressedFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
-        <EuiFormRow hasEmptyLabelSpace={true}>
-          <EuiSelect
+        <EuiCompressedFormRow hasEmptyLabelSpace={true}>
+          <EuiCompressedSelect
             id="selectIntervalTimeunit"
             options={ScheduleIntervalTimeunitOptions}
             value={intervalTimeunit}
             onChange={onChangeTimeunit}
             isInvalid={interval == undefined || interval <= 0}
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
     </EuiFlexGroup>
   </React.Fragment>
@@ -90,9 +90,14 @@ const selectInterval = (
 
 const isContinuous = (continuousJob: string, onChangeContinuousJob: (optionId: string) => void) => (
   <React.Fragment>
-    <EuiFormRow label="Continuous">
-      <EuiRadioGroup options={radios} idSelected={continuousJob} onChange={(id) => onChangeContinuousJob(id)} name="continuousJob" />
-    </EuiFormRow>
+    <EuiCompressedFormRow label="Continuous">
+      <EuiCompressedRadioGroup
+        options={radios}
+        idSelected={continuousJob}
+        onChange={(id) => onChangeContinuousJob(id)}
+        name="continuousJob"
+      />
+    </EuiCompressedFormRow>
     <EuiSpacer size="m" />
   </React.Fragment>
 );
@@ -133,7 +138,7 @@ export default class Schedule extends Component<ScheduleProps> {
       <ContentPanel bodyStyles={{ padding: "initial" }} title="Schedule" titleSize="s">
         <div style={{ paddingLeft: "10px" }}>
           {!isEdit && (
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="jobEnabledByDefault"
               label="Enable job by default"
               checked={jobEnabledByDefault}
@@ -144,8 +149,8 @@ export default class Schedule extends Component<ScheduleProps> {
           <EuiSpacer size="m" />
           {!isEdit && isContinuous(continuousJob, onChangeContinuousJob)}
 
-          <EuiFormRow label="Rollup execution frequency">
-            <EuiSelect
+          <EuiCompressedFormRow label="Rollup execution frequency">
+            <EuiCompressedSelect
               id="continuousDefinition"
               options={[
                 { value: "fixed", text: "Define by fixed interval" },
@@ -154,30 +159,30 @@ export default class Schedule extends Component<ScheduleProps> {
               value={continuousDefinition}
               onChange={onChangeContinuousDefinition}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
           <EuiSpacer size="m" />
 
           {continuousDefinition == "fixed" ? (
             selectInterval(interval, intervalTimeunit, intervalError, onChangeIntervalTime, onChangeIntervalTimeunit)
           ) : (
             <React.Fragment>
-              <EuiFormRow label="Define by cron expression">
+              <EuiCompressedFormRow label="Define by cron expression">
                 <EuiTextArea value={cronExpression} onChange={onChangeCron} compressed={true} />
-              </EuiFormRow>
-              <EuiFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
-                <EuiSelect id="timezone" options={timezones} value={cronTimezone} onChange={onChangeCronTimezone} />
-              </EuiFormRow>
+              </EuiCompressedFormRow>
+              <EuiCompressedFormRow label="Timezone" helpText="A day starts from 00:00:00 in the specified timezone.">
+                <EuiCompressedSelect id="timezone" options={timezones} value={cronTimezone} onChange={onChangeCronTimezone} />
+              </EuiCompressedFormRow>
             </React.Fragment>
           )}
 
           <EuiSpacer size="m" />
 
-          <EuiFormRow
+          <EuiCompressedFormRow
             label="Page per execution"
             helpText="The number of pages every execution processes. A larger number means faster execution and higher costs on memory."
           >
-            <EuiFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
-          </EuiFormRow>
+            <EuiCompressedFieldNumber min={1} placeholder="1000" value={pageSize} onChange={onChangePage} />
+          </EuiCompressedFormRow>
           <EuiSpacer size="m" />
           <EuiFlexGroup style={{ maxWidth: 400 }}>
             <EuiFlexItem grow={false} style={{ width: 200 }}>
@@ -193,14 +198,19 @@ export default class Schedule extends Component<ScheduleProps> {
                   </EuiText>
                 </EuiFlexItem>
               </EuiFlexGroup>
-              <EuiFormRow>
-                <EuiFieldNumber value={delayTime} onChange={onChangeDelayTime} />
-              </EuiFormRow>
+              <EuiCompressedFormRow>
+                <EuiCompressedFieldNumber value={delayTime} onChange={onChangeDelayTime} />
+              </EuiCompressedFormRow>
             </EuiFlexItem>
             <EuiFlexItem>
-              <EuiFormRow hasEmptyLabelSpace={true}>
-                <EuiSelect id="selectTimeunit" options={DelayTimeunitOptions} value={delayTimeunit} onChange={onChangeDelayTimeunit} />
-              </EuiFormRow>
+              <EuiCompressedFormRow hasEmptyLabelSpace={true}>
+                <EuiCompressedSelect
+                  id="selectTimeunit"
+                  options={DelayTimeunitOptions}
+                  value={delayTimeunit}
+                  onChange={onChangeDelayTimeunit}
+                />
+              </EuiCompressedFormRow>
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiFormHelpText style={{ maxWidth: 400 }}>

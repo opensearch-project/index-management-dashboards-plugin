@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiFlexGroup, EuiFlexItem, EuiDraggable, EuiPanel, EuiIcon, EuiButtonIcon, EuiToolTip } from "@elastic/eui";
+import { EuiFlexGroup, EuiFlexItem, EuiDraggable, EuiPanel, EuiIcon, EuiSmallButtonIcon, EuiToolTip } from "@elastic/eui";
 
 interface DraggableItemProps {
   content: string | JSX.Element | null;
@@ -29,7 +29,7 @@ const DraggableItem = ({ content, id, idx, isLast, onClickDelete, onClickEdit, d
           <EuiFlexItem>{content}</EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiToolTip position="top" content={<p>Delete {draggableType}</p>}>
-              <EuiButtonIcon
+              <EuiSmallButtonIcon
                 iconType="trash"
                 aria-label="Delete"
                 color="danger"
@@ -40,7 +40,7 @@ const DraggableItem = ({ content, id, idx, isLast, onClickDelete, onClickEdit, d
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiToolTip position="top" content={<p>Edit {draggableType}</p>}>
-              <EuiButtonIcon
+              <EuiSmallButtonIcon
                 iconType="pencil"
                 aria-label="Edit"
                 color="primary"

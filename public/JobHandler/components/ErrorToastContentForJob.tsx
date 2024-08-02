@@ -2,7 +2,7 @@
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
-import { EuiButton, EuiSpacer, EuiText } from "@elastic/eui";
+import { EuiSmallButton, EuiSpacer, EuiText } from "@elastic/eui";
 import React from "react";
 import { Modal } from "../../components/Modal";
 
@@ -14,7 +14,7 @@ export const ErrorToastContentForJob = (props: { shortError?: React.ReactChild; 
       {fullError ? (
         <>
           <EuiSpacer />
-          <EuiButton
+          <EuiSmallButton
             onClick={
               /* istanbul ignore next */ () => {
                 Modal.show({
@@ -34,7 +34,7 @@ export const ErrorToastContentForJob = (props: { shortError?: React.ReactChild; 
             color="danger"
           >
             See full error
-          </EuiButton>
+          </EuiSmallButton>
         </>
       ) : null}
     </div>

@@ -5,8 +5,8 @@
 
 import React, { useCallback, useContext, useState, useEffect } from "react";
 import {
-  EuiButton,
-  EuiButtonEmpty,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
   EuiCallOut,
   EuiModal,
   EuiModalBody,
@@ -188,12 +188,12 @@ export default function FlushIndexModal(props: FlushIndexModalProps) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty data-test-subj="flushCancelButton" onClick={onClose}>
+        <EuiSmallButtonEmpty data-test-subj="flushCancelButton" onClick={onClose}>
           Cancel
-        </EuiButtonEmpty>
-        <EuiButton data-test-subj="flushConfirmButton" onClick={onFlushConfirm} fill>
+        </EuiSmallButtonEmpty>
+        <EuiSmallButton data-test-subj="flushConfirmButton" onClick={onFlushConfirm} fill>
           Flush
-        </EuiButton>
+        </EuiSmallButton>
       </EuiModalFooter>
     </EuiModal>
   );

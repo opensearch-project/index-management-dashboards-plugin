@@ -6,7 +6,7 @@
 import React, { ReactChild, useContext, useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiCallOut,
   EuiCard,
   EuiEmptyPrompt,
@@ -184,9 +184,9 @@ const Notifications = (props: NotificationsProps) => {
           </CustomFormRow>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+          <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
             Manage channels
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer />

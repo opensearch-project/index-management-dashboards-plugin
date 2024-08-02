@@ -4,15 +4,15 @@
  */
 
 import {
-  EuiButton,
-  EuiButtonEmpty,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
   EuiCallOut,
   EuiFlexGroup,
   EuiFlexItem,
   EuiLink,
   EuiSpacer,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLoadingSpinner,
 } from "@elastic/eui";
 import React, { Component } from "react";
@@ -375,7 +375,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
             <EuiCallOut title="The source index must block write operations before shrinking." color="danger" iconType="alert">
               <p>In order to shrink an existing index, you must first set the index to block write operations.</p>
               <EuiSpacer />
-              <EuiButton
+              <EuiSmallButton
                 onClick={() => {
                   const indexWriteBlockSettings = {
                     "index.blocks.write": true,
@@ -386,7 +386,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 data-test-subj="onSetIndexWriteBlockButton"
               >
                 Block write operations
-              </EuiButton>
+              </EuiSmallButton>
             </EuiCallOut>
             <EuiSpacer />
           </>
@@ -403,7 +403,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 to complete. The index will be in red health status while the index is opening.
               </p>
               <EuiSpacer />
-              <EuiButton
+              <EuiSmallButton
                 onClick={() => {
                   this.onOpenIndex();
                 }}
@@ -413,7 +413,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
                 data-test-subj="onOpenIndexButton"
               >
                 Open index
-              </EuiButton>
+              </EuiSmallButton>
             </EuiCallOut>
             <EuiSpacer />
           </>
@@ -626,7 +626,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
     );
 
     const subTitleText = (
-      <EuiFormRow
+      <EuiCompressedFormRow
         fullWidth
         helpText={
           <div>
@@ -638,7 +638,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         }
       >
         <></>
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     );
 
     return (
@@ -664,12 +664,12 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
         <EuiSpacer />
         <EuiFlexGroup justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} flush="left" data-test-subj="shrinkIndexCancelButton">
+            <EuiSmallButtonEmpty onClick={this.onCancel} flush="left" data-test-subj="shrinkIndexCancelButton">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
+            <EuiSmallButton
               isLoading={this.state.loading}
               isDisabled={this.state.loading}
               onClick={this.onClickAction}
@@ -678,7 +678,7 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
               disabled={disableShrinkButton}
             >
               Shrink
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </div>

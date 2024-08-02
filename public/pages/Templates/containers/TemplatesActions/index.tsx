@@ -4,7 +4,7 @@
  */
 import React, { useMemo, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiContextMenu } from "@elastic/eui";
+import { EuiSmallButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteTemplatesModal";
 import { ITemplate } from "../../interface";
@@ -32,9 +32,9 @@ export default function TemplatesActions(props: TemplatesActionsProps) {
         data-test-subj="moreAction"
         panelPaddingSize="none"
         button={
-          <EuiButton iconType="arrowDown" iconSide="right">
+          <EuiSmallButton iconType="arrowDown" iconSide="right">
             Actions
-          </EuiButton>
+          </EuiSmallButton>
         }
       >
         <EuiContextMenu

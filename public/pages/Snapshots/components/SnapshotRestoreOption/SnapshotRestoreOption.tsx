@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiRadio, EuiSpacer } from "@elastic/eui";
+import { EuiCompressedRadio, EuiSpacer } from "@elastic/eui";
 import CustomLabel from "../../../../components/CustomLabel";
 import { RESTORE_OPTIONS } from "../../../../models/interfaces";
 
@@ -31,7 +31,7 @@ const SnapshotRestoreOption = ({
 
       <EuiSpacer size="m" />
 
-      <EuiRadio
+      <EuiCompressedRadio
         id={restore_all_indices}
         name="restore_option"
         label="Restore all indices in snapshot"
@@ -41,7 +41,7 @@ const SnapshotRestoreOption = ({
 
       <EuiSpacer size="s" />
 
-      <EuiRadio
+      <EuiCompressedRadio
         id={restore_specific_indices}
         name="restore_option"
         label="Restore specific indices"

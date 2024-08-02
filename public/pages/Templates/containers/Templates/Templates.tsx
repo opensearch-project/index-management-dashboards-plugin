@@ -15,14 +15,14 @@ import {
   Direction,
   Pagination,
   EuiTableSelectionType,
-  EuiButton,
+  EuiSmallButton,
   EuiLink,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiEmptyPrompt,
   EuiText,
   EuiToolTip,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -259,7 +259,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             <EuiTitle>
               <span>Templates</span>
             </EuiTitle>
-            <EuiFormRow
+            <EuiCompressedFormRow
               fullWidth
               helpText={
                 <div>
@@ -271,7 +271,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
               }
             >
               <></>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         }
       >
@@ -341,7 +341,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                       onUnlink={() => this.getTemplates()}
                       renderProps={({ setVisible }) => (
                         <EuiToolTip content="View associated index templates">
-                          <EuiButtonIcon
+                          <EuiSmallButtonIcon
                             aria-label="View associated index templates"
                             iconType="kqlSelector"
                             onClick={() => setVisible(true)}
@@ -379,14 +379,14 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                   </EuiText>
                 }
                 actions={[
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.props.history.push(ROUTES.CREATE_TEMPLATE);
                     }}
                   >
                     Create template
-                  </EuiButton>,
+                  </EuiSmallButton>,
                 ]}
               />
             ) : (
@@ -397,7 +397,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                   </EuiText>
                 }
                 actions={[
-                  <EuiButton
+                  <EuiSmallButton
                     fill
                     onClick={() => {
                       this.setState(defaultFilter, () => {
@@ -406,7 +406,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
                     }}
                   >
                     Reset filters
-                  </EuiButton>,
+                  </EuiSmallButton>,
                 ]}
               />
             )

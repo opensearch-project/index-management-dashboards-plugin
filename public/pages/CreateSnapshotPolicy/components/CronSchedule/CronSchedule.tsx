@@ -7,15 +7,15 @@ import _ from "lodash";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   EuiCheckbox,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiDatePicker,
-  EuiFieldNumber,
-  EuiFieldText,
+  EuiCompressedFieldNumber,
+  EuiCompressedFieldText,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLink,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSpacer,
   EuiText,
 } from "@elastic/eui";
@@ -143,10 +143,10 @@ const CronSchedule = ({
         <CustomLabel title="On the" />
         <EuiFlexGroup gutterSize="m">
           <EuiFlexItem>
-            <EuiSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" />
+            <EuiCompressedSelect options={[{ value: "day", text: "Day" }]} defaultValue="Day" />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiFieldNumber
+            <EuiCompressedFieldNumber
               value={dayOfMonth}
               onChange={(e) => {
                 onDayOfMonthChange(parseInt(e.target.value));
@@ -174,7 +174,12 @@ const CronSchedule = ({
   return (
     <>
       <CustomLabel title={frequencyTitle} />
-      <EuiSelect id="creationCronScheduleType" options={CRON_SCHEDULE_FREQUENCY_TYPE} value={frequencyType} onChange={onTypeChange} />
+      <EuiCompressedSelect
+        id="creationCronScheduleType"
+        options={CRON_SCHEDULE_FREQUENCY_TYPE}
+        value={frequencyType}
+        onChange={onTypeChange}
+      />
 
       <EuiSpacer size="m" />
 
@@ -183,14 +188,14 @@ const CronSchedule = ({
           {frequencyType === "custom" ? (
             <>
               <CustomLabel title="Cron expression" />
-              <EuiFormRow helpText={cronExpressionHelpText}>
-                <EuiFieldText
+              <EuiCompressedFormRow helpText={cronExpressionHelpText}>
+                <EuiCompressedFieldText
                   value={cronExpression}
                   onChange={(e) => {
                     onCronExpressionChange(e.target.value);
                   }}
                 />
-              </EuiFormRow>
+              </EuiCompressedFormRow>
             </>
           ) : (
             <>
@@ -207,8 +212,8 @@ const CronSchedule = ({
         {showTimezone ? (
           <EuiFlexItem style={{ maxWidth: 250 }}>
             <CustomLabel title="Time zone" />
-            <EuiFormRow isInvalid={!!timezoneError} error={timezoneError}>
-              <EuiComboBox
+            <EuiCompressedFormRow isInvalid={!!timezoneError} error={timezoneError}>
+              <EuiCompressedComboBox
                 placeholder="Select a time zone"
                 singleSelection={{ asPlainText: true }}
                 options={TIMEZONES}
@@ -220,7 +225,7 @@ const CronSchedule = ({
                   }
                 }}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiFlexItem>
         ) : null}
       </EuiFlexGroup>

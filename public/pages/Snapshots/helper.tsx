@@ -5,8 +5,8 @@
 
 import React from "react";
 import _ from "lodash";
-import { Toast } from "../../models/interfaces"
-import { EuiHealth, EuiButton, EuiFlexGroup, EuiSpacer, EuiText } from "@elastic/eui";
+import { Toast } from "../../models/interfaces";
+import { EuiHealth, EuiSmallButton, EuiFlexGroup, EuiSpacer, EuiText } from "@elastic/eui";
 
 export function truncateLongText(text: string, truncateLen: number = 20): string {
   if (text.length > truncateLen) {
@@ -30,7 +30,6 @@ export function snapshotStatusRender(value: string): React.ReactElement {
   return <EuiHealth color={color}>{capital}</EuiHealth>;
 }
 
-
 export const getToasts = (id: string, message: string | undefined, snapshotId: string, onClick: (e: React.MouseEvent) => void): Toast[] => {
   const toasts = [
     {
@@ -42,10 +41,10 @@ export const getToasts = (id: string, message: string | undefined, snapshotId: s
         <>
           <EuiSpacer size="xl" />
           <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
-            <EuiButton onClick={onClick}>View restore activities</EuiButton>
+            <EuiSmallButton onClick={onClick}>View restore activities</EuiSmallButton>
           </EuiFlexGroup>
         </>
-      )
+      ),
     },
     {
       id: "error_restore_toast",
@@ -53,20 +52,22 @@ export const getToasts = (id: string, message: string | undefined, snapshotId: s
       color: "danger",
       text: (
         <>
-          <EuiText size="s" >{message}</EuiText>
+          <EuiText size="s">{message}</EuiText>
           <EuiSpacer size="xl" />
           <EuiFlexGroup justifyContent="flexEnd" style={{ paddingRight: "1rem" }}>
-            <EuiButton onClick={onClick} color="danger">View full error</EuiButton>
+            <EuiSmallButton onClick={onClick} color="danger">
+              View full error
+            </EuiSmallButton>
           </EuiFlexGroup>
         </>
-      )
-    }
-  ]
+      ),
+    },
+  ];
   if (id === "success_restore_toast") {
-    return [toasts[0]]
+    return [toasts[0]];
   }
   return [toasts[1]];
-}
+};
 
 interface CheckboxLabelProps {
   title: string;
@@ -76,9 +77,7 @@ interface CheckboxLabelProps {
 export const CheckBoxLabel = ({ title, helpText }: CheckboxLabelProps) => (
   <>
     <EuiText size="s">{title}</EuiText>
-    <EuiText
-      size="xs"
-      style={{ fontWeight: "200" }}>
+    <EuiText size="xs" style={{ fontWeight: "200" }}>
       {helpText}
     </EuiText>
   </>
@@ -91,7 +90,7 @@ export const checkBadJSON = (testString: string) => {
   } catch (err) {
     return true;
   }
-}
+};
 
 export const checkNoSelectedIndices = (indices: string, restoreSpecific: boolean): boolean => {
   let notSelected = false;
@@ -101,7 +100,7 @@ export const checkNoSelectedIndices = (indices: string, restoreSpecific: boolean
   }
 
   return notSelected;
-}
+};
 
 export const checkBadRegex = (regex: string): boolean => {
   try {
@@ -109,10 +108,9 @@ export const checkBadRegex = (regex: string): boolean => {
 
     return false;
   } catch (err) {
-
     return true;
   }
-}
+};
 
 export const checkBadReplacement = (regexString: string): boolean => {
   const isNotValid = regexString.indexOf("$") >= 0;
@@ -120,7 +118,7 @@ export const checkBadReplacement = (regexString: string): boolean => {
   if (isNotValid) return false;
 
   return true;
-}
+};
 
 export const checkCustomIgnoreConflict = (customIndexSettings?: string, ignoreIndexSettings?: string) => {
   if (customIndexSettings && customIndexSettings.length > 0) {
@@ -139,4 +137,4 @@ export const checkCustomIgnoreConflict = (customIndexSettings?: string, ignoreIn
     }
   }
   return false;
-}
+};

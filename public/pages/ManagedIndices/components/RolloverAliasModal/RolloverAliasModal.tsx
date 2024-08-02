@@ -5,16 +5,16 @@
 
 import React, { Component } from "react";
 import {
-  EuiButton,
-  EuiButtonEmpty,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiOverlayMask,
-  EuiFormRow,
-  EuiFieldText,
+  EuiCompressedFormRow,
+  EuiCompressedFieldText,
 } from "@elastic/eui";
 import { BrowserServices } from "../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
@@ -77,19 +77,24 @@ export default class RolloverAliasModal extends Component<RolloverAliasModalProp
           </EuiModalHeader>
 
           <EuiModalBody>
-            <EuiFormRow label="Rollover alias" helpText="A rollover alias is required when using the rollover action.">
-              <EuiFieldText placeholder="Rollover alias" value={rolloverAlias} onChange={this.onChange} />
-            </EuiFormRow>
+            <EuiCompressedFormRow label="Rollover alias" helpText="A rollover alias is required when using the rollover action.">
+              <EuiCompressedFieldText placeholder="Rollover alias" value={rolloverAlias} onChange={this.onChange} />
+            </EuiCompressedFormRow>
           </EuiModalBody>
 
           <EuiModalFooter>
-            <EuiButtonEmpty onClick={onClose} data-test-subj="editRolloverAliasModalCloseButton">
+            <EuiSmallButtonEmpty onClick={onClose} data-test-subj="editRolloverAliasModalCloseButton">
               Close
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
 
-            <EuiButton onClick={this.onEditRolloverAlias} disabled={!rolloverAlias} fill data-test-subj="editRolloverAliasModalAddButton">
+            <EuiSmallButton
+              onClick={this.onEditRolloverAlias}
+              disabled={!rolloverAlias}
+              fill
+              data-test-subj="editRolloverAliasModalAddButton"
+            >
               Edit
-            </EuiButton>
+            </EuiSmallButton>
           </EuiModalFooter>
         </EuiModal>
       </EuiOverlayMask>

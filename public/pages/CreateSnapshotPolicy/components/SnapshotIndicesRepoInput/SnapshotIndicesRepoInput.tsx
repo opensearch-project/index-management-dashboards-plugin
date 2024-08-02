@@ -4,13 +4,13 @@
  */
 
 import {
-  EuiButton,
-  EuiComboBox,
+  EuiSmallButton,
+  EuiCompressedComboBox,
   EuiComboBoxOptionOption,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiFormRow,
-  EuiSelect,
+  EuiCompressedFormRow,
+  EuiCompressedSelect,
   EuiSelectOption,
   EuiSpacer,
 } from "@elastic/eui";
@@ -65,7 +65,7 @@ const SnapshotIndicesRepoInput = ({
   return (
     <>
       <CustomLabel title="Select or input source indexes or index patterns" />
-      <EuiComboBox
+      <EuiCompressedComboBox
         placeholder="Select or input indexes or index patterns"
         options={indexOptions}
         selectedOptions={selectedIndexOptions}
@@ -81,20 +81,20 @@ const SnapshotIndicesRepoInput = ({
       <EuiFlexGroup alignItems="flexEnd">
         <EuiFlexItem style={{ maxWidth: "400px" }}>
           <CustomLabel title="Select a repository for snapshots" />
-          <EuiFormRow isInvalid={!!repoError} error={repoError}>
-            <EuiSelect
+          <EuiCompressedFormRow isInvalid={!!repoError} error={repoError}>
+            <EuiCompressedSelect
               placeholder="Select a repository"
               disabled={repoOptions.length === 0}
               options={repoOptions}
               value={selectedRepoValue}
               onChange={onRepoSelectionChange}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </EuiFlexItem>
 
         {showFlyout != null && (
           <EuiFlexItem grow={false}>
-            <EuiButton onClick={openFlyout}>Create repository</EuiButton>
+            <EuiSmallButton onClick={openFlyout}>Create repository</EuiSmallButton>
           </EuiFlexItem>
         )}
       </EuiFlexGroup>

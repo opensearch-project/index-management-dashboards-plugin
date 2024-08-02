@@ -5,7 +5,15 @@
 
 import { GROUP_TYPES, TRANSFORM_AGG_TYPE, TransformAggItem, TransformGroupItem } from "../../../../../../../models/interfaces";
 import React, { useState } from "react";
-import { EuiButton, EuiFieldNumber, EuiFlexGroup, EuiFlexItem, EuiFormRow, EuiPanel, EuiSpacer } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiCompressedFieldNumber,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiCompressedFormRow,
+  EuiPanel,
+  EuiSpacer,
+} from "@elastic/eui";
 
 interface HistogramPanelProps {
   name: string;
@@ -21,21 +29,21 @@ export default function HistogramPanel({ name, handleGroupSelectionChange, close
     <EuiPanel>
       <EuiFlexGroup>
         <EuiFlexItem grow={false} style={{ width: 109 }}>
-          <EuiFormRow label="Histogram interval">
-            <EuiFieldNumber value={histogramInterval} onChange={(e) => setHistogramInterval(e.target.valueAsNumber)} />
-          </EuiFormRow>
+          <EuiCompressedFormRow label="Histogram interval">
+            <EuiCompressedFieldNumber value={histogramInterval} onChange={(e) => setHistogramInterval(e.target.valueAsNumber)} />
+          </EuiCompressedFormRow>
           <EuiSpacer size="s" />
         </EuiFlexItem>
         <EuiFlexItem grow={false} />
       </EuiFlexGroup>
       <EuiFlexGroup justifyContent={"flexEnd"} gutterSize={"m"}>
         <EuiFlexItem grow={false}>
-          <EuiButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
+          <EuiSmallButton fullWidth={false} onClick={() => closePopover()} style={{ minWidth: 84 }}>
             Cancel
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton
+          <EuiSmallButton
             fill
             fullWidth={false}
             onClick={() => {
@@ -55,7 +63,7 @@ export default function HistogramPanel({ name, handleGroupSelectionChange, close
             style={{ minWidth: 55 }}
           >
             OK
-          </EuiButton>
+          </EuiSmallButton>
         </EuiFlexItem>
       </EuiFlexGroup>
     </EuiPanel>

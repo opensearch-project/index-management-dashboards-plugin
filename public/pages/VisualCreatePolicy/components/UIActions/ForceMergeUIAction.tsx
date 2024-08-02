@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiFormRow, EuiFieldNumber } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiCompressedFieldNumber } from "@elastic/eui";
 import EuiFormCustomLabel from "../EuiFormCustomLabel";
 import { ForceMergeAction, UIAction } from "../../../../../models/interfaces";
 import { makeId } from "../../../../utils/helpers";
@@ -34,8 +34,8 @@ export default class ForceMergeUIAction implements UIAction<ForceMergeAction> {
     return (
       <>
         <EuiFormCustomLabel title="Max num segments" helpText="The number of segments to merge to." isInvalid={!this.isValid()} />
-        <EuiFormRow fullWidth isInvalid={!this.isValid()} error={null}>
-          <EuiFieldNumber
+        <EuiCompressedFormRow fullWidth isInvalid={!this.isValid()} error={null}>
+          <EuiCompressedFieldNumber
             fullWidth
             value={typeof segments === "undefined" ? "" : segments}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +46,7 @@ export default class ForceMergeUIAction implements UIAction<ForceMergeAction> {
             }}
             data-test-subj="action-render-force-merge"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </>
     );
   };

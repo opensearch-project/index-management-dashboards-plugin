@@ -5,7 +5,7 @@
 
 import React, { ChangeEvent } from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiText,
   EuiHorizontalRule,
   EuiFlexGroup,
@@ -14,7 +14,7 @@ import {
   EuiLink,
   EuiIcon,
   EuiEmptyPrompt,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiSelect,
 } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
@@ -55,7 +55,7 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
       <div style={{ padding: "0px 10px" }}>
         {!isReadOnly && (
           <>
-            <EuiFormRow style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
+            <EuiCompressedFormRow style={{ maxWidth: "300px", padding: "15px" }} isInvalid={false} error={null}>
               <EuiSelect
                 compressed
                 prepend="Initial state"
@@ -63,7 +63,7 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
                 value={policy.default_state}
                 onChange={onChangeDefaultState}
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
             <EuiSpacer size="s" />
             <EuiHorizontalRule margin="none" />
           </>
@@ -89,9 +89,9 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
           (!!policy.states.length ? (
             <>
               <EuiSpacer />
-              <EuiButton onClick={onOpenFlyout} data-test-subj="states-add-state-button">
+              <EuiSmallButton onClick={onOpenFlyout} data-test-subj="states-add-state-button">
                 Add state
-              </EuiButton>
+              </EuiSmallButton>
             </>
           ) : (
             <EuiEmptyPrompt
@@ -99,9 +99,9 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
               titleSize="s"
               body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
               actions={
-                <EuiButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
+                <EuiSmallButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
                   Add state
-                </EuiButton>
+                </EuiSmallButton>
               }
             />
           ))}

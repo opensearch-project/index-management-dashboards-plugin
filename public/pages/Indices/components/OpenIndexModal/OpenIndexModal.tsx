@@ -5,8 +5,8 @@
 
 import React from "react";
 import {
-  EuiButton,
-  EuiButtonEmpty,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -47,12 +47,12 @@ export default function OpenIndexModal(props: OpenIndexModalProps) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty data-test-subj="Open Cancel button" onClick={onClose}>
+        <EuiSmallButtonEmpty data-test-subj="Open Cancel button" onClick={onClose}>
           Cancel
-        </EuiButtonEmpty>
-        <EuiButton data-test-subj="Open Confirm button" onClick={onConfirm} fill>
+        </EuiSmallButtonEmpty>
+        <EuiSmallButton data-test-subj="Open Confirm button" onClick={onConfirm} fill>
           Open
-        </EuiButton>
+        </EuiSmallButton>
       </EuiModalFooter>
     </EuiModal>
   );
