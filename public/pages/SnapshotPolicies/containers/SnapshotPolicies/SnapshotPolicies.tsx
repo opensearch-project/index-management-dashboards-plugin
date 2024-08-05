@@ -42,6 +42,8 @@ import { truncateSpan } from "../../../Snapshots/helper";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import NewSnapshotPolicy from "./NewSnapshotPolicy";
 
 interface SnapshotPoliciesProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
@@ -167,7 +169,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES]);
+    this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_POLICIES]);
     await this.getPolicies();
   }
 
@@ -373,8 +375,25 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 
     const popoverActionItems = [
       <EuiContextMenuItem
+        disabled={!selectedItems.length}
+        onClick={() => {
+          this.closePopover();
+          this.onClickStart();
+        }}
+      >
+        Enable
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        disabled={!selectedItems.length}
+        onClick={() => {
+          this.closePopover();
+          this.onClickStop();
+        }}
+      >
+        Disable
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
         key="Edit"
-        icon="empty"
         disabled={selectedItems.length != 1}
         data-test-subj="editButton"
         onClick={() => {
@@ -386,7 +405,6 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       </EuiContextMenuItem>,
       <EuiContextMenuItem
         key="Delete"
-        icon="empty"
         disabled={!selectedItems.length}
         data-test-subj="deleteButton"
         onClick={() => {
@@ -432,6 +450,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       <EuiButton onClick={this.onClickCreate} fill={true}>
         Create policy
       </EuiButton>,
+      <NewSnapshotPolicy />,
     ];
 
     const subTitleText = (
@@ -463,7 +482,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 
     return (
       <>
-        <ContentPanel title="Snapshot policies" actions={actions} subTitleText={subTitleText}>
+        <ContentPanel actions={actions}>
           <EuiSearchBar
             box={{
               placeholder: "Search snapshot policies",
@@ -495,5 +514,6 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 export default function (props: Omit<SnapshotPoliciesProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
+  // get the flag from context
   return <SnapshotPolicies {...props} {...dataSourceMenuProps} />;
 }
