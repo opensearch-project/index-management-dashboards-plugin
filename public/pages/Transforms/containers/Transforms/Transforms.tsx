@@ -36,7 +36,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { getURLQueryParams, renderTime } from "../../utils/helpers";
 import { TransformQueryParams } from "../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
-import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, PLUGIN_NAME, ROUTES } from "../../../../utils/constants";
 import DeleteModal from "../../components/DeleteModal";
 import TransformEmptyPrompt from "../../components/TransformEmptyPrompt";
 import { renderEnabled, renderStatus } from "../../utils/metadataHelper";
@@ -46,6 +46,8 @@ import { ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { renderContinuous } from "../../../Rollups/utils/helpers";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData } from "src/plugins/navigation/public";
 
 interface TransformProps extends RouteComponentProps, DataSourceMenuProperties {
   transformService: TransformService;
@@ -239,7 +241,137 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
       },
     };
 
-    return (
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls } = getApplication();
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    return useUpdatedUX ? (
+      <div style={{ padding: "10px 0px 0px 0px" }}>
+        <HeaderControl
+          setMountPoint={setAppRightControls}
+          controls={[
+            {
+              id: "Create transform job",
+              label: "Create transform job",
+              fill: true,
+              iconType: "plus",
+              href: `${PLUGIN_NAME}#/create-transform`,
+              testId: "createTransformButton",
+              controlType: "button",
+              color: "primary",
+            } as TopNavControlButtonData,
+          ]}
+        />
+        <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+          {/* <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
+          <EuiFlexItem>
+            <EuiTitle size="m">
+              <h3>{"Transform jobs (" + `${transforms.length}` + ")"}</h3>
+            </EuiTitle>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiFlexGroup alignItems="center" gutterSize="s">
+              <EuiFlexItem grow={false}>
+                <EuiButton iconType="refresh" onClick={this.getTransforms} data-test-subj="refreshButton">
+                  Refresh
+                </EuiButton>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiButton disabled={!selectedItems.length} onClick={this.onDisable} data-test-subj="disableButton">
+                  Disable
+                </EuiButton>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiButton
+                  disabled={!selectedItems.length}
+                  onClick={() => {
+                    this.onEnable();
+                  }}
+                  data-test-subj="enableButton"
+                >
+                  Enable
+                </EuiButton>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiPopover
+                  id="action"
+                  button={actionButton}
+                  isOpen={isPopOverOpen}
+                  closePopover={this.closePopover}
+                  panelPaddingSize="none"
+                  anchorPosition="downLeft"
+                  data-test-subj="actionPopover"
+                >
+                  <EuiContextMenuPanel items={actionItems} />
+                </EuiPopover>
+              </EuiFlexItem>
+              <EuiFlexItem grow={false}>
+                <EuiButton onClick={this.onClickCreate} fill={true} data-test-subj="createTransformButton">
+                  Create transform job
+                </EuiButton>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+          </EuiFlexItem>
+        </EuiFlexGroup> */}
+
+          <div style={{ padding: "initial" }}>
+            <EuiFlexGroup style={{ padding: "0px 5px" }}>
+              <EuiFlexItem>
+                <EuiFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
+              </EuiFlexItem>
+              {pageCount > 1 && (
+                <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>
+                  <EuiPagination
+                    pageCount={pageCount}
+                    activePage={page}
+                    onPageClick={this.onPageClick}
+                    data-test-subj="indexControlsPagination"
+                  />
+                </EuiFlexItem>
+              )}
+              <EuiFlexItem grow={false}>
+                <EuiPopover
+                  id="action"
+                  button={actionButton}
+                  isOpen={isPopOverOpen}
+                  closePopover={this.closePopover}
+                  panelPaddingSize="none"
+                  anchorPosition="downLeft"
+                  data-test-subj="actionPopover"
+                >
+                  <EuiContextMenuPanel items={actionItems} />
+                </EuiPopover>
+              </EuiFlexItem>
+            </EuiFlexGroup>
+
+            {/* <EuiHorizontalRule margin="xs" /> */}
+
+            <EuiBasicTable
+              columns={columns}
+              isSelectable={true}
+              itemId="_id"
+              items={transforms}
+              noItemsMessage={
+                <TransformEmptyPrompt filterIsApplied={filterIsApplied} loading={fetchingTransforms} resetFilters={this.resetFilters} />
+              }
+              onChange={this.onTableChange}
+              pagination={pagination}
+              selection={selection}
+              sorting={sorting}
+              tableLayout="auto"
+            />
+            {isDeleteModalVisible && (
+              <DeleteModal
+                item={this.getSelectedTransformIds()}
+                closeDeleteModal={this.closeDeleteModal}
+                onClickDelete={this.onClickDelete}
+              />
+            )}
+          </div>
+        </EuiPanel>
+      </div>
+    ) : (
       <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
         <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem>

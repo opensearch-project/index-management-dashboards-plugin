@@ -107,7 +107,7 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
       ) : (
         titleContent
       )}
-      {isGhost ? null : <EuiHorizontalRule margin={noExtraPadding ? "none" : "xs"} className={horizontalRuleClassName} />}
+      {/* {isGhost ? null : <EuiHorizontalRule margin={noExtraPadding ? "none" : "xs"} className={horizontalRuleClassName} />} */}
       {children ? (
         <div
           style={{
