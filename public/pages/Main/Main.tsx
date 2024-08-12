@@ -404,7 +404,7 @@ export default class Main extends Component<MainProps, MainState> {
 
     const { landingPage } = this.props;
 
-    const ROUTE_STYLE = { padding: "25px 25px" };
+    const ROUTE_STYLE = { padding: "0px 0px" };
 
     const DataSourceMenu = this.props.dataSourceManagement?.ui?.getDataSourceMenu<DataSourceSelectableConfig>();
     const DataSourceViewer = this.props.dataSourceManagement?.ui?.getDataSourceMenu<DataSourceViewConfig>();

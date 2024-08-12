@@ -30,7 +30,7 @@ import CommonService from "../../../../services/CommonService";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import { getURLQueryParams } from "../../utils/helpers";
 import { IndicesQueryParams } from "../../models/interfaces";
-import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, PLUGIN_NAME, ROUTES } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
@@ -39,6 +39,8 @@ import { destroyListener, EVENT_MAP, listenEvent } from "../../../../JobHandler"
 import "./index.scss";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData } from "src/plugins/navigation/public";
 
 interface IndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   indexService: IndexService;
@@ -250,7 +252,110 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
 
     const { history } = this.props;
 
-    return (
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls } = getApplication();
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    return useUpdatedUX ? (
+      <>
+        <HeaderControl
+          setMountPoint={setAppRightControls}
+          controls={[
+            {
+              id: "Notification settings",
+              label: "Notification Settings",
+              fill: false,
+              // href: `${PLUGIN_NAME}#/create-index`,
+              testId: "notificationSettingsButton",
+              controlType: "button",
+              color: "secondary",
+            } as TopNavControlButtonData,
+            {
+              id: "Create index",
+              label: "Create Index",
+              fill: true,
+              iconType: "plus",
+              href: `${PLUGIN_NAME}#/create-index`,
+              testId: "createIndexButton",
+              controlType: "button",
+              color: "primary",
+            } as TopNavControlButtonData,
+          ]}
+        />
+        <div id="test" style={{ padding: "10px 0px 0px 0px" }}>
+          <ContentPanel
+          // actions={
+          //   <ContentPanelActions
+          //     actions={[
+          //       {
+          //         text: "Refresh",
+          //         buttonProps: {
+          //           iconType: "refresh",
+          //           onClick: this.getIndices,
+          //         },
+          //       },
+          //       {
+          //         children: (
+          //           <IndicesActions
+          //             {...this.props}
+          //             onDelete={this.getIndices}
+          //             onClose={this.getIndices}
+          //             onShrink={this.getIndices}
+          //             selectedItems={this.state.selectedItems}
+          //             getIndices={this.getIndices}
+          //           />
+          //         ),
+          //         text: "",
+          //       },
+          //       {
+          //         text: "Create Index",
+          //         buttonProps: {
+          //           fill: true,
+          //           onClick: () => {
+          //             this.props.history.push(ROUTES.CREATE_INDEX);
+          //           },
+          //         },
+          //       },
+          //     ]}
+          //   />
+          // }
+          // bodyStyles={{ padding: "initial" }}
+          // title="Indexes"
+          //itemCount={totalIndices}
+          >
+            <IndexControls
+              search={search}
+              onSearchChange={this.onSearchChange}
+              onRefresh={this.getIndices}
+              showDataStreams={showDataStreams}
+              getDataStreams={this.getDataStreams}
+              toggleShowDataStreams={this.toggleShowDataStreams}
+              selectedItems={this.state.selectedItems}
+            />
+
+            {/* <EuiHorizontalRule margin="xs" /> */}
+
+            <EuiBasicTable
+              columns={indicesColumns(isDataStreamColumnVisible, {
+                history,
+              })}
+              loading={this.state.loadingIndices}
+              isSelectable={true}
+              itemId="index"
+              items={indices}
+              noItemsMessage={
+                <IndexEmptyPrompt filterIsApplied={filterIsApplied} loading={loadingIndices} resetFilters={this.resetFilters} />
+              }
+              onChange={this.onTableChange}
+              pagination={pagination}
+              selection={selection}
+              sorting={sorting}
+            />
+          </ContentPanel>
+        </div>
+      </>
+    ) : (
       <ContentPanel
         actions={
           <ContentPanelActions
@@ -298,6 +403,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
           showDataStreams={showDataStreams}
           getDataStreams={this.getDataStreams}
           toggleShowDataStreams={this.toggleShowDataStreams}
+          selectedItems={this.state.selectedItems}
         />
 
         <EuiHorizontalRule margin="xs" />
