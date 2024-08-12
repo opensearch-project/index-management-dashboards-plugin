@@ -48,6 +48,8 @@ import { DataStream } from "../../../../../server/models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData } from "src/plugins/navigation/public";
 
 interface ManagedIndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
@@ -184,13 +186,19 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
   };
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES]);
+    this.context.chrome.setBreadcrumbs([BREADCRUMBS.MANAGED_INDICES]);
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+    console.log(console.log("showActionsinHeaderFlag Value is -> " + useUpdatedUX));
     await this.getManagedIndices();
   }
 
   async componentDidUpdate(prevProps: ManagedIndicesProps, prevState: ManagedIndicesState) {
     const prevQuery = ManagedIndices.getQueryObjectFromState(prevState);
     const currQuery = ManagedIndices.getQueryObjectFromState(this.state);
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+    console.log(console.log("showActionsinHeaderFlag Value is -> " + useUpdatedUX));
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getManagedIndices();
     }
@@ -442,8 +450,72 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       },
     ];
 
-    return (
-      <div style={{ padding: "0px 25px" }}>
+    const newActions = [
+      <EuiButton iconType="refresh" data-test-subj="refreshButton">
+        Refresh
+      </EuiButton>,
+    ];
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls } = getApplication();
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    return useUpdatedUX ? (
+      <div style={{ padding: "10px 0px 0px 0px" }}>
+        <HeaderControl
+          setMountPoint={setAppRightControls}
+          controls={[
+            {
+              id: "Change policy",
+              label: "Change Policy",
+              fill: true,
+              href: `${PLUGIN_NAME}#/change-policy`,
+              testId: "changePolicyButton",
+              controlType: "button",
+              color: "primary",
+            } as TopNavControlButtonData,
+          ]}
+        />
+        <ContentPanel
+          // actions={newActions}
+          // bodyStyles={{ padding: "initial" }}
+          // title="Policy managed indexes"
+          itemCount={totalManagedIndices}
+        >
+          <ManagedIndexControls
+            search={search}
+            onSearchChange={this.onSearchChange}
+            onRefresh={this.getManagedIndices}
+            showDataStreams={showDataStreams}
+            getDataStreams={this.getDataStreams}
+            toggleShowDataStreams={this.toggleShowDataStreams}
+          />
+
+          {/* <EuiHorizontalRule margin="xs" /> */}
+
+          <EuiBasicTable
+            columns={this.managedIndicesColumns(isDataStreamColumnVisible)}
+            isSelectable={true}
+            itemId="index"
+            items={managedIndices}
+            noItemsMessage={
+              <ManagedIndexEmptyPrompt
+                history={this.props.history}
+                filterIsApplied={filterIsApplied}
+                loading={loadingManagedIndices}
+                resetFilters={this.resetFilters}
+              />
+            }
+            onChange={this.onTableChange}
+            pagination={pagination}
+            selection={selection}
+            sorting={sorting}
+          />
+        </ContentPanel>
+      </div>
+    ) : (
+      <div style={{ padding: "0px 0px" }}>
         <EuiFlexGroup alignItems="center">
           <EuiFlexItem></EuiFlexItem>
           <EuiFlexItem grow={false}>
@@ -459,7 +531,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         </EuiFlexGroup>
 
         <EuiSpacer />
-
         <ContentPanel
           actions={<ContentPanelActions actions={actions} />}
           bodyStyles={{ padding: "initial" }}
@@ -473,6 +544,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
             showDataStreams={showDataStreams}
             getDataStreams={this.getDataStreams}
             toggleShowDataStreams={this.toggleShowDataStreams}
+            selectedItems={this.state.selectedItems}
           />
 
           <EuiHorizontalRule margin="xs" />
