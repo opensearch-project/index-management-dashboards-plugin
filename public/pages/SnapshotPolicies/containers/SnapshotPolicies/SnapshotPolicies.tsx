@@ -27,8 +27,12 @@ import {
   EuiTextColor,
   Pagination,
   Query,
+  EuiFlexItem,
+  EuiFlexGroup,
+  EuiButtonIcon,
+  EuiCompressedFieldSearch,
 } from "@elastic/eui";
-import { BREADCRUMBS, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
+import { BREADCRUMBS, PLUGIN_NAME, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { getMessagePrompt, getSMPoliciesQueryParamsFromURL, renderTimestampMillis } from "../../helpers";
 import { SMPolicy } from "../../../../../models/interfaces";
 import { SnapshotManagementService } from "../../../../services";
@@ -43,7 +47,7 @@ import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../ser
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import NewSnapshotPolicy from "./NewSnapshotPolicy";
+import { ExternalLink } from "../../../utils/display-utils";
 
 interface SnapshotPoliciesProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
@@ -69,6 +73,7 @@ interface SnapshotPoliciesState extends DataSourceMenuProperties {
 
   isPopoverOpen: boolean;
   isDeleteModalVisible: boolean;
+  useNewUx: boolean;
 }
 
 export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps, SnapshotPoliciesState> {
@@ -79,6 +84,8 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
     super(props);
 
     const { from, size, sortField, sortOrder } = getSMPoliciesQueryParamsFromURL(this.props.location);
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
     this.state = {
       ...this.state,
       policies: [],
@@ -95,6 +102,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       policyClicked: null,
       isPopoverOpen: false,
       isDeleteModalVisible: false,
+      useNewUx: useNewUx,
     };
 
     this.columns = [
@@ -169,7 +177,10 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_POLICIES]);
+    const breadCrumbs = this.state.useNewUx
+      ? [BREADCRUMBS.SNAPSHOT_POLICIES]
+      : [BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getPolicies();
   }
 
@@ -375,6 +386,33 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 
     const popoverActionItems = [
       <EuiContextMenuItem
+        key="Edit"
+        icon="empty"
+        disabled={selectedItems.length != 1}
+        data-test-subj="editButton"
+        onClick={() => {
+          this.closePopover();
+          this.onClickEdit();
+        }}
+      >
+        Edit
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        key="Delete"
+        icon="empty"
+        disabled={!selectedItems.length}
+        data-test-subj="deleteButton"
+        onClick={() => {
+          this.closePopover();
+          this.showDeleteModal();
+        }}
+      >
+        <EuiTextColor color="danger">Delete</EuiTextColor>
+      </EuiContextMenuItem>,
+    ];
+
+    const popoverActionItemsNew = [
+      <EuiContextMenuItem
         disabled={!selectedItems.length}
         onClick={() => {
           this.closePopover();
@@ -422,6 +460,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
         disabled={!selectedItems.length}
         onClick={this.onActionButtonClick}
         data-test-subj="actionButton"
+        size="s"
       >
         Actions
       </EuiButton>
@@ -450,7 +489,6 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       <EuiButton onClick={this.onClickCreate} fill={true}>
         Create policy
       </EuiButton>,
-      <NewSnapshotPolicy />,
     ];
 
     const subTitleText = (
@@ -480,9 +518,59 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       />
     );
 
-    return (
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls, setAppDescriptionControls } = getApplication();
+
+    const descriptionData = [
+      {
+        renderComponent: (
+          <EuiText size="s" color="subdued">
+            Define an automated snapshot schedule and retention period with a snapshot policy.{" "}
+            <ExternalLink href={SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL} />
+          </EuiText>
+        ),
+      },
+    ];
+
+    const controlControlsData = [
+      {
+        id: "Create policy",
+        label: "Create policy",
+        iconType: "plus",
+        fill: true,
+        href: `${PLUGIN_NAME}#${ROUTES.CREATE_SNAPSHOT_POLICY}`,
+        testId: "createButton",
+        controlType: "button",
+      },
+    ];
+
+    const CommonTable = () => {
+      return (
+        <EuiBasicTable
+          items={policies}
+          itemId="name"
+          columns={this.columns}
+          pagination={pagination}
+          sorting={sorting}
+          isSelectable={true}
+          selection={selection}
+          onChange={this.onTableChange}
+          noItemsMessage={promptMessage}
+        />
+      );
+    };
+
+    const CommonModal = () => {
+      return (
+        isDeleteModalVisible && (
+          <DeleteModal policyId={this.getSelectedPolicyIds()} closeDeleteModal={this.closeDeleteModal} onClickDelete={this.onClickDelete} />
+        )
+      );
+    };
+
+    return !this.state.useNewUx ? (
       <>
-        <ContentPanel actions={actions}>
+        <ContentPanel title="Snapshot policies" actions={actions} subTitleText={subTitleText}>
           <EuiSearchBar
             box={{
               placeholder: "Search snapshot policies",
@@ -490,22 +578,44 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
             }}
             onChange={this.onSearchChange}
           />
-          <EuiBasicTable
-            items={policies}
-            itemId="name"
-            columns={this.columns}
-            pagination={pagination}
-            sorting={sorting}
-            isSelectable={true}
-            selection={selection}
-            onChange={this.onTableChange}
-            noItemsMessage={promptMessage}
-          />
+          {CommonTable()}
         </ContentPanel>
-
-        {isDeleteModalVisible && (
-          <DeleteModal policyId={this.getSelectedPolicyIds()} closeDeleteModal={this.closeDeleteModal} onClickDelete={this.onClickDelete} />
-        )}
+        {CommonModal()}
+      </>
+    ) : (
+      <>
+        <HeaderControl setMountPoint={setAppRightControls} controls={controlControlsData} />
+        <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+        <ContentPanel>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
+            <EuiFlexItem grow={true}>
+              <EuiCompressedFieldSearch
+                autoFocus
+                placeholder="Search snapshot policies"
+                incremental={false}
+                onChange={this.onSearchChange}
+                aria-label="Search snapshot policies"
+                fullWidth
+              />
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButtonIcon iconType="refresh" onClick={this.getPolicies} aria-label="refresh" size="s" display="base" />
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiPopover
+                id="action"
+                button={actionsButton}
+                isOpen={isPopoverOpen}
+                closePopover={this.closePopover}
+                anchorPosition="downRight"
+              >
+                <EuiContextMenuPanel items={popoverActionItemsNew} />
+              </EuiPopover>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          {CommonTable()}
+        </ContentPanel>
+        {CommonModal()}
       </>
     );
   }

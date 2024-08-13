@@ -15,10 +15,6 @@ const ServicesConsumer = ServicesContext.Consumer;
 
 export { ServicesContext, ServicesConsumer };
 
-const [getUISettings1, setUISettings1] = createGetterSetter<IUiSettingsClient>("UISettings");
-
-// console.log(' ->  ' + getUISettings1());
-
 export const [getUISettings, setUISettings] = createGetterSetter<IUiSettingsClient>("UISettings");
 
 export const [getNavigationUI, setNavigationUI] = createGetterSetter<NavigationPublicPluginStart["ui"]>("navigation");

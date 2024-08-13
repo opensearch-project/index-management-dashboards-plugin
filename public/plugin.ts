@@ -25,7 +25,7 @@ import { DataSourceManagementPluginSetup } from "../../../src/plugins/data_sourc
 import { dataSourceObservable } from "./pages/Main/Main";
 import { BehaviorSubject } from "rxjs";
 import { NavigationPublicPluginStart } from "../../../src/plugins/navigation/public";
-import { setApplication, setNavigationUI } from "./services/Services";
+import { setApplication, setNavigationUI, setUISettings } from "./services/Services";
 
 interface IndexManagementSetupDeps {
   managementOverview?: ManagementOverViewPluginSetup;
@@ -398,11 +398,11 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
   }
 
   public start(core: CoreStart, { navigation }: ISMPluginStartDeps): IndexManagementPluginStart {
-    //Object.freeze(actionRepoSingleton.repository);
+    Object.freeze(actionRepoSingleton.repository);
     // After this point, calling registerAction will throw error because "Object is not extensible"
-    console.log("are we good? .. ");
     setNavigationUI(navigation.ui);
     setApplication(core.application);
+    setUISettings(core.uiSettings);
     return {};
   }
 }
