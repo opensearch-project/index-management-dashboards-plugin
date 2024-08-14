@@ -74,25 +74,29 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
       <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
         <EuiFlexItem>
           <EuiSearchBar
+            compressed
             query={search}
-            box={{ placeholder: "Search", schema, incremental: true }}
+            box={{ placeholder: "Search", schema, incremental: true, compressed: true }}
             onChange={onSearchChange}
             filters={filters}
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="m" />
+          <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
         </EuiFlexItem>
-        <IndicesActions
-          {...this.props}
-          onDelete={onRefresh}
-          onClose={onRefresh}
-          onShrink={onRefresh}
-          selectedItems={selectedItems}
-          getIndices={onRefresh}
-        />
+        <EuiFlexItem grow={false}>
+          <IndicesActions
+            {...this.props}
+            onDelete={onRefresh}
+            onClose={onRefresh}
+            onShrink={onRefresh}
+            selectedItems={selectedItems}
+            getIndices={onRefresh}
+          />
+        </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiSwitch
+            compressed
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}

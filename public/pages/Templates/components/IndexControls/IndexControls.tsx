@@ -40,9 +40,17 @@ export default function SearchControls(props: SearchControlsProps) {
   return useUpdatedUX ? (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch fullWidth placeholder="Search..." value={state.search} onChange={(e) => onChange("search", e.target.value)} />
+        <EuiFieldSearch
+          compressed
+          fullWidth
+          placeholder="Search"
+          value={state.search}
+          onChange={(e) => onChange("search", e.target.value)}
+        />
       </EuiFlexItem>
-      <TemplatesActions selectedItems={props.selectedItems} onDelete={props.getTemplates} history={props.history} />
+      <EuiFlexItem grow={false}>
+        <TemplatesActions selectedItems={props.selectedItems} onDelete={props.getTemplates} history={props.history} />
+      </EuiFlexItem>
     </EuiFlexGroup>
   ) : (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
