@@ -7,7 +7,7 @@ HTMLCollection [
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiSwitch"
+      class="euiSwitch euiSwitch--primary"
     >
       <button
         aria-checked="false"
@@ -169,7 +169,7 @@ HTMLCollection [
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiSwitch"
+      class="euiSwitch euiSwitch--primary"
     >
       <button
         aria-checked="true"
