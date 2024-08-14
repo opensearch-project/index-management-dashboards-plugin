@@ -12,6 +12,7 @@ import CreateTransformSteps from "../../components/CreateTransformSteps";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DefineTransforms from "../../components/DefineTransforms";
 import { FieldItem, TransformAggItem, TransformGroupItem } from "../../../../../models/interfaces";
+import { getUISettings } from "../../../../services/Services";
 
 interface DefineTransformsStepProps extends RouteComponentProps {
   transformService: TransformService;
@@ -57,6 +58,22 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
     } = this.props;
     if (currentStep !== 2) return null;
 
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    const Title = !useUpdatedUX
+      ? () => {
+          return (
+            <EuiFlexItem>
+              <EuiTitle size="l">
+                <h1>Define transform</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </EuiFlexItem>
+          );
+        }
+      : () => {};
+
     return (
       <div style={{ padding: "5px 50px" }}>
         <EuiFlexGroup>
@@ -64,10 +81,7 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
             <CreateTransformSteps step={2} />
           </EuiFlexItem>
           <EuiFlexItem style={{ overflow: "auto", flex: 1 }} grow={false}>
-            <EuiTitle size="l">
-              <h1>Define transform</h1>
-            </EuiTitle>
-            <EuiSpacer />
+            {Title()}
             <DefineTransforms
               {...this.props}
               transformService={transformService}

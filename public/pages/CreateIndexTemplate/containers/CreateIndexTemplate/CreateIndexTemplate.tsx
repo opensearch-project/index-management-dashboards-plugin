@@ -11,6 +11,7 @@ import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface CreateIndexTemplateProps
   extends RouteComponentProps<{
@@ -46,7 +47,12 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
     } else {
       lastBread = BREADCRUMBS.CREATE_TEMPLATE;
     }
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES, lastBread]);
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+    const breadCrumbs = useUpdatedUX
+      ? [BREADCRUMBS.TEMPLATES, lastBread]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES, lastBread];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
   }
 
   componentDidUpdate(prevProps: Readonly<CreateIndexTemplateProps>): void {
@@ -64,8 +70,22 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   };
 
   render() {
-    return (
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    return !useUpdatedUX ? (
       <div style={{ padding: "0px 50px" }}>
+        <TemplateDetail
+          history={this.props.history}
+          location={this.props.location}
+          templateName={this.template}
+          onCancel={this.onCancel}
+          onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}
+          dataSourceId={this.props.dataSourceId}
+        />
+      </div>
+    ) : (
+      <div style={{ padding: "0px 0px" }}>
         <TemplateDetail
           history={this.props.history}
           location={this.props.location}

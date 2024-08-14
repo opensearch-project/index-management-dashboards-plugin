@@ -43,25 +43,34 @@ export default function SearchControls(props: SearchControlsProps) {
   return useUpdatedUX ? (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch fullWidth placeholder="Search..." value={state.search} onChange={(e) => onChange("search", e.target.value)} />
+        <EuiFieldSearch
+          compressed
+          fullWidth
+          placeholder="Search"
+          value={state.search}
+          onChange={(e) => onChange("search", e.target.value)}
+        />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
         <EuiComboBox
           style={{
             width: 300,
           }}
+          compressed
           placeholder="Status"
           options={ALIAS_STATUS_OPTIONS}
           selectedOptions={state.status ? state.status.split(",").map((label) => ({ label })) : []}
           onChange={(val) => onChange("status", (val || []).map((item) => item.label).join(","))}
         />
       </EuiFlexItem>
-      <AliasesActions
-        onUpdateAlias={props.onUpdateAlias}
-        selectedItems={props.value.selectedItems}
-        onDelete={props.onDelete}
-        history={props.history}
-      />
+      <EuiFlexItem grow={false}>
+        <AliasesActions
+          onUpdateAlias={props.onUpdateAlias}
+          selectedItems={props.value.selectedItems}
+          onDelete={props.onDelete}
+          history={props.history}
+        />
+      </EuiFlexItem>
     </EuiFlexGroup>
   ) : (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">

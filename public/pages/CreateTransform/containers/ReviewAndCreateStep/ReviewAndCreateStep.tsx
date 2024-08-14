@@ -14,6 +14,7 @@ import JobNameAndIndices from "../../components/JobNameAndIndices";
 import ReviewDefinition from "../../components/ReviewDefinition";
 import ReviewSchedule from "../../components/ReviewSchedule";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { getUISettings } from "../../../../services/Services";
 
 interface ReviewAndCreateStepProps extends RouteComponentProps {
   transformService: TransformService;
@@ -59,6 +60,22 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
   render() {
     if (this.props.currentStep != 4) return null;
 
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    const Title = !useUpdatedUX
+      ? () => {
+          return (
+            <EuiFlexItem>
+              <EuiTitle size="l">
+                <h1>Specify Schedule</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </EuiFlexItem>
+          );
+        }
+      : () => {};
+
     return (
       <div style={{ padding: "5px 50px" }}>
         <EuiFlexGroup>
@@ -66,10 +83,7 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
             <CreateTransformSteps step={4} />
           </EuiFlexItem>
           <EuiFlexItem style={{ overflow: "auto", flex: 1 }} grow={false}>
-            <EuiTitle size="l">
-              <h1>Review and create</h1>
-            </EuiTitle>
-            <EuiSpacer />
+            {Title}
             <JobNameAndIndices {...this.props} />
             <EuiSpacer />
             <ReviewDefinition {...this.props} notifications={this.context.notifications} sourceIndex={this.props.sourceIndex[0].label} />

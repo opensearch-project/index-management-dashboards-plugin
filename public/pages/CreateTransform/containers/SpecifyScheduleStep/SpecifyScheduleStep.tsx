@@ -14,6 +14,7 @@ import CreateTransformSteps from "../../components/CreateTransformSteps";
 import Schedule from "../../components/Schedule";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { createdTransformToastMessage } from "../../utils/helpers";
+import { getUISettings } from "../../../../services/Services";
 
 interface SpecifyScheduleStepProps extends RouteComponentProps {
   transformService: TransformService;
@@ -122,6 +123,23 @@ export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepPr
       onChangeIntervalTimeunit,
     } = this.props;
     const { transformId, transformIdError } = this.state;
+
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    const Title = !useUpdatedUX
+      ? () => {
+          return (
+            <EuiFlexItem>
+              <EuiTitle size="l">
+                <h1>Specify Schedule</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </EuiFlexItem>
+          );
+        }
+      : () => {};
+
     return (
       <div style={{ padding: "5px 50px" }}>
         <EuiFlexGroup>
@@ -129,10 +147,7 @@ export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepPr
             <CreateTransformSteps step={3} />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiTitle size="l">
-              <h1>Specify Schedule</h1>
-            </EuiTitle>
-            <EuiSpacer />
+            {Title}
             <Schedule
               {...this.props}
               isEdit={false}

@@ -34,6 +34,7 @@ import {
   DataSourceMenuReadOnlyProperties,
 } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface CreateTransformFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
@@ -143,7 +144,12 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
   }
 
   componentDidMount = async (): Promise<void> => {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS, BREADCRUMBS.CREATE_TRANSFORM]);
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+    const breadCrumbs = useUpdatedUX
+      ? [BREADCRUMBS.TRANSFORMS, BREADCRUMBS.CREATE_TRANSFORM]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS, BREADCRUMBS.CREATE_TRANSFORM];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
   };
 
   componentDidUpdate(prevProps: CreateTransformFormProps, prevState: Readonly<CreateTransformFormState>) {

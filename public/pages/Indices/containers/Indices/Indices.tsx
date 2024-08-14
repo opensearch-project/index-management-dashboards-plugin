@@ -40,7 +40,7 @@ import "./index.scss";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlButtonData } from "src/plugins/navigation/public";
+import { TopNavControlButtonData, TopNavControlIconData, TopNavControlTextData } from "src/plugins/navigation/public";
 
 interface IndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   indexService: IndexService;
@@ -60,6 +60,7 @@ interface IndicesState extends DataSourceMenuProperties {
   loadingIndices: boolean;
   showDataStreams: boolean;
   isDataStreamColumnVisible: boolean;
+  useUpdatedUX: boolean;
 }
 
 export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
@@ -68,6 +69,8 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
   constructor(props: IndicesProps) {
     super(props);
     const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
     this.state = {
       ...this.state,
       totalIndices: 0,
@@ -82,13 +85,15 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
       loadingIndices: true,
       showDataStreams,
       isDataStreamColumnVisible: showDataStreams,
+      useUpdatedUX: useUpdatedUX,
     };
 
     this.getIndices = _.debounce(this.getIndices, 500, { leading: true });
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES]);
+    const breadCrumbs = this.state.useUpdatedUX ? [BREADCRUMBS.INDICES] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     listenEvent(EVENT_MAP.REINDEX_COMPLETE, this.getIndices);
     listenEvent(EVENT_MAP.SHRINK_COMPLETE, this.getIndices);
     listenEvent(EVENT_MAP.SPLIT_COMPLETE, this.getIndices);
@@ -250,15 +255,24 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
       onSelectionChange: this.onSelectionChange,
     };
 
-    const { history } = this.props;
-
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls } = getApplication();
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+    const { setAppBadgeControls } = getApplication();
 
-    return useUpdatedUX ? (
+    const { history } = this.props;
+    const numberIndices = "(" + totalIndices.toString() + ")";
+
+    return this.state.useUpdatedUX ? (
       <>
+        <HeaderControl
+          setMountPoint={setAppBadgeControls}
+          controls={[
+            {
+              text: numberIndices,
+              textAlign: "left",
+            } as TopNavControlTextData,
+          ]}
+        />
         <HeaderControl
           setMountPoint={setAppRightControls}
           controls={[
@@ -283,47 +297,8 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
             } as TopNavControlButtonData,
           ]}
         />
-        <div id="test" style={{ padding: "10px 0px 0px 0px" }}>
-          <ContentPanel
-          // actions={
-          //   <ContentPanelActions
-          //     actions={[
-          //       {
-          //         text: "Refresh",
-          //         buttonProps: {
-          //           iconType: "refresh",
-          //           onClick: this.getIndices,
-          //         },
-          //       },
-          //       {
-          //         children: (
-          //           <IndicesActions
-          //             {...this.props}
-          //             onDelete={this.getIndices}
-          //             onClose={this.getIndices}
-          //             onShrink={this.getIndices}
-          //             selectedItems={this.state.selectedItems}
-          //             getIndices={this.getIndices}
-          //           />
-          //         ),
-          //         text: "",
-          //       },
-          //       {
-          //         text: "Create Index",
-          //         buttonProps: {
-          //           fill: true,
-          //           onClick: () => {
-          //             this.props.history.push(ROUTES.CREATE_INDEX);
-          //           },
-          //         },
-          //       },
-          //     ]}
-          //   />
-          // }
-          // bodyStyles={{ padding: "initial" }}
-          // title="Indexes"
-          //itemCount={totalIndices}
-          >
+        <div id="test" style={{ padding: "0px" }}>
+          <ContentPanel>
             <IndexControls
               search={search}
               onSearchChange={this.onSearchChange}
@@ -333,8 +308,6 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
               toggleShowDataStreams={this.toggleShowDataStreams}
               selectedItems={this.state.selectedItems}
             />
-
-            {/* <EuiHorizontalRule margin="xs" /> */}
 
             <EuiBasicTable
               columns={indicesColumns(isDataStreamColumnVisible, {

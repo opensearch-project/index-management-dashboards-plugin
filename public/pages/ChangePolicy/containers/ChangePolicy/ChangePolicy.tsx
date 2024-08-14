@@ -16,6 +16,7 @@ import { PolicyOption } from "../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface ChangePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
@@ -53,7 +54,12 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
   state: ChangePolicyState = ChangePolicy.emptyState;
 
   async componentDidMount(): Promise<void> {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY]);
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+    const breadCrumbs = useUpdatedUX
+      ? [BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
   }
 
   componentDidUpdate(prevProps: ChangePolicyProps, prevState: Readonly<ChangePolicyState>) {
@@ -154,13 +160,25 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
       hasSubmitted,
     } = this.state;
 
-    return (
-      <div style={{ padding: "0px 25px" }}>
-        <EuiTitle size="l">
-          <h1>Change policy</h1>
-        </EuiTitle>
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
-        <EuiSpacer />
+    const Title = !useUpdatedUX
+      ? () => {
+          return (
+            <EuiFlexItem>
+              <EuiTitle size="l">
+                <h1>Change Policy</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </EuiFlexItem>
+          );
+        }
+      : () => {};
+
+    return (
+      <div style={{ padding: "0px 0px" }}>
+        {Title}
 
         <ChangeManagedIndices
           key={`changeManagedIndices-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
