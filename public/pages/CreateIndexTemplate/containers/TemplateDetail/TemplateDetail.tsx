@@ -14,6 +14,7 @@ import {
   EuiSpacer,
   EuiTab,
   EuiTabs,
+  EuiText,
   EuiTitle,
 } from "@elastic/eui";
 import queryString from "query-string";
@@ -43,6 +44,8 @@ import { diffJson } from "../../../../utils/helpers";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import { IndexForm } from "../../../../containers/IndexForm";
 import { TABS_ENUM, tabs } from "../../constant";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlDescriptionData } from "src/plugins/navigation/public";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -192,8 +195,84 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     </EuiFlexItem>
   );
 
-  return (
-    <>
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+  const { HeaderControl } = getNavigationUI();
+  const { setAppDescriptionControls, setAppRightControls } = getApplication();
+
+  const descriptionData = [
+    {
+      renderComponent: (
+        <EuiText size="s" color="subdued">
+          Define an automated snapshot schedule and retention period with a snapshot policy.{" "}
+          <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
+            Learn more
+          </EuiLink>
+        </EuiText>
+      ),
+    },
+  ];
+
+  const viewJSON = [
+    {
+      renderComponent: (
+        <EuiButton
+          fill
+          size="s"
+          style={{ marginRight: 20 }}
+          onClick={() => {
+            const showValue: TemplateItemRemote = {
+              ...values,
+              template: IndexForm.transformIndexDetailToRemote(values.template),
+            };
+            Modal.show({
+              locale: {
+                ok: "Close",
+              },
+              style: {
+                width: 800,
+              },
+              "data-test-subj": "templateJSONDetailModal",
+              title: values.name,
+              content: (
+                <EuiCodeBlock language="json" isCopyable>
+                  {JSON.stringify(showValue, null, 2)}
+                </EuiCodeBlock>
+              ),
+            });
+          }}
+        >
+          View JSON
+        </EuiButton>
+      ),
+    },
+  ];
+
+  const deleteIcon = [
+    {
+      renderComponent: (
+        <>
+          <EuiButton color="danger" onClick={() => setVisible(true)}>
+            Delete
+          </EuiButton>
+          {/* <DeleteTemplateModal
+              visible={visible}
+              selectedItems={[templateName]}
+              onClose={() => {
+                setVisible(false);
+              }}
+              onDelete={() => {
+                setVisible(false);
+                history.replace(ROUTES.TEMPLATES);
+              }}
+            /> */}
+        </>
+      ),
+    },
+  ];
+
+  const Title = () => {
+    return !useUpdatedUX ? (
       <EuiFlexGroup alignItems="center">
         <EuiFlexItem>
           <EuiTitle size="l">
@@ -261,6 +340,22 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           </EuiFlexItem>
         ) : null}
       </EuiFlexGroup>
+    ) : (
+      <>
+        {!isEdit ? <HeaderControl controls={descriptionData} setMountPoint={setAppDescriptionControls} /> : null}
+        {isEdit ? (
+          <>
+            <HeaderControl controls={deleteIcon} setMountPoint={setAppRightControls} />
+            <HeaderControl controls={viewJSON} setMountPoint={setAppRightControls} />
+          </>
+        ) : null}
+      </>
+    );
+  };
+
+  return (
+    <>
+      {Title()}
       <EuiSpacer />
       {isEdit ? (
         <>

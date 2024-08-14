@@ -13,6 +13,7 @@ import CreateTransformSteps from "../../components/CreateTransformSteps";
 import IndexService from "../../../../services/IndexService";
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
+import { getUISettings } from "../../../../services/Services";
 
 interface SetUpIndicesStepProps extends RouteComponentProps, DataSourceMenuProperties {
   transformService: TransformService;
@@ -47,6 +48,22 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
       return null;
     }
 
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    const Title = !useUpdatedUX
+      ? () => {
+          return (
+            <EuiFlexItem>
+              <EuiTitle size="l">
+                <h1>Set up indices</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </EuiFlexItem>
+          );
+        }
+      : () => {};
+
     return (
       <div style={{ padding: "5px 50px" }}>
         <EuiFlexGroup>
@@ -54,13 +71,12 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
             <CreateTransformSteps step={1} />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiTitle size="l">
-              <h1>Set up indices</h1>
-            </EuiTitle>
-            <EuiSpacer />
-            <ConfigureTransform isEdit={false} {...this.props} />
-            <EuiSpacer />
-            <TransformIndices key={this.props.dataSourceId} {...this.props} />
+            {Title()}
+            <EuiFlexItem>
+              <ConfigureTransform isEdit={false} {...this.props} />
+              <EuiSpacer />
+              <TransformIndices key={this.props.dataSourceId} {...this.props} />
+            </EuiFlexItem>
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiSpacer />

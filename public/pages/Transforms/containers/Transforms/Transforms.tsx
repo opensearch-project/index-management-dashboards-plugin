@@ -66,6 +66,7 @@ interface TransformState extends DataSourceMenuProperties {
   transformMetadata: {};
   isPopOverOpen: boolean;
   isDeleteModalVisible: boolean;
+  useUpdatedUX: boolean;
 }
 
 export class Transforms extends MDSEnabledComponent<TransformProps, TransformState> {
@@ -74,6 +75,9 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
     super(props);
 
     const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
+
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     this.state = {
       ...this.state,
@@ -89,13 +93,15 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
       transformMetadata: {},
       isPopOverOpen: false,
       isDeleteModalVisible: false,
+      useUpdatedUX: useUpdatedUX,
     };
 
     this.getTransforms = _.debounce(this.getTransforms, 500, { leading: true });
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS]);
+    const breadCrumbs = this.state.useUpdatedUX ? [BREADCRUMBS.TRANSFORMS] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getTransforms();
   }
 
@@ -198,6 +204,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
         disabled={!selectedItems.length}
         onClick={this.onActionButtonClick}
         data-test-subj="actionButton"
+        size="s"
       >
         Actions
       </EuiButton>
@@ -243,11 +250,9 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls } = getApplication();
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
-    return useUpdatedUX ? (
-      <div style={{ padding: "10px 0px 0px 0px" }}>
+    return this.state.useUpdatedUX ? (
+      <div style={{ padding: "0px" }}>
         <HeaderControl
           setMountPoint={setAppRightControls}
           controls={[
@@ -264,61 +269,10 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
           ]}
         />
         <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
-          {/* <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
-          <EuiFlexItem>
-            <EuiTitle size="m">
-              <h3>{"Transform jobs (" + `${transforms.length}` + ")"}</h3>
-            </EuiTitle>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiFlexGroup alignItems="center" gutterSize="s">
-              <EuiFlexItem grow={false}>
-                <EuiButton iconType="refresh" onClick={this.getTransforms} data-test-subj="refreshButton">
-                  Refresh
-                </EuiButton>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiButton disabled={!selectedItems.length} onClick={this.onDisable} data-test-subj="disableButton">
-                  Disable
-                </EuiButton>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiButton
-                  disabled={!selectedItems.length}
-                  onClick={() => {
-                    this.onEnable();
-                  }}
-                  data-test-subj="enableButton"
-                >
-                  Enable
-                </EuiButton>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiPopover
-                  id="action"
-                  button={actionButton}
-                  isOpen={isPopOverOpen}
-                  closePopover={this.closePopover}
-                  panelPaddingSize="none"
-                  anchorPosition="downLeft"
-                  data-test-subj="actionPopover"
-                >
-                  <EuiContextMenuPanel items={actionItems} />
-                </EuiPopover>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.onClickCreate} fill={true} data-test-subj="createTransformButton">
-                  Create transform job
-                </EuiButton>
-              </EuiFlexItem>
-            </EuiFlexGroup>
-          </EuiFlexItem>
-        </EuiFlexGroup> */}
-
           <div style={{ padding: "initial" }}>
-            <EuiFlexGroup style={{ padding: "0px 5px" }}>
+            <EuiFlexGroup style={{ padding: "0px 10px" }}>
               <EuiFlexItem>
-                <EuiFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
+                <EuiFieldSearch compressed fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
               </EuiFlexItem>
               {pageCount > 1 && (
                 <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>
@@ -344,8 +298,6 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
                 </EuiPopover>
               </EuiFlexItem>
             </EuiFlexGroup>
-
-            {/* <EuiHorizontalRule margin="xs" /> */}
 
             <EuiBasicTable
               columns={columns}
