@@ -22,6 +22,7 @@ import ErrorNotification from "../ErrorNotification";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { Data } from "vega";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 interface VisualCreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   isEdit: boolean;
@@ -41,12 +42,15 @@ interface VisualCreatePolicyState {
   showFlyout: boolean;
   editingState: State | null;
   errorNotificationJsonString: string;
+  useNewUX: boolean;
 }
 
 export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, VisualCreatePolicyState> {
   static contextType = CoreServicesContext;
   constructor(props: VisualCreatePolicyProps) {
     super(props);
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
 
     this.state = {
       policyId: "",
@@ -61,27 +65,30 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
       isSubmitting: false,
       hasSubmitted: false,
       errorNotificationJsonString: "",
+      useNewUX: useNewUx,
     };
   }
 
   componentDidMount = async (): Promise<void> => {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES]);
+    const breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.INDEX_POLICIES_NEW] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     if (this.props.isEdit) {
       const { id } = queryString.parse(this.props.location.search);
       if (typeof id === "string" && !!id) {
-        this.context.chrome.setBreadcrumbs([
-          BREADCRUMBS.INDEX_MANAGEMENT,
-          BREADCRUMBS.INDEX_POLICIES,
-          BREADCRUMBS.EDIT_POLICY,
-          { text: id },
-        ]);
+        const editBreadCrumbs = this.state.useNewUX
+          ? [BREADCRUMBS.INDEX_POLICIES_NEW, BREADCRUMBS.EDIT_POLICY, { text: id }]
+          : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.EDIT_POLICY, { text: id }];
+        this.context.chrome.setBreadcrumbs(editBreadCrumbs);
         await this.getPolicyToEdit(id);
       } else {
         this.context.notifications.toasts.addDanger(`Invalid policy id: ${id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);
       }
     } else {
-      this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.CREATE_POLICY]);
+      const createBreadCrumbs = this.state.useNewUX
+        ? [BREADCRUMBS.INDEX_POLICIES_NEW, BREADCRUMBS.CREATE_POLICY]
+        : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.CREATE_POLICY];
+      this.context.chrome.setBreadcrumbs(createBreadCrumbs);
     }
   };
 
@@ -278,22 +285,48 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
 
   render() {
     const { isEdit, notificationService } = this.props;
-    const { policyId, policyIdError, policy, showFlyout, editingState, errorNotificationJsonString } = this.state;
-    return (
-      <div style={{ padding: "25px 50px" }}>
-        <EuiTitle size="l">
-          <h1>{isEdit ? "Edit" : "Create"} policy</h1>
-        </EuiTitle>
-        <EuiSpacer size="s" />
-        <EuiText size="s">
-          <p>
+    const { policyId, policyIdError, policy, showFlyout, editingState, errorNotificationJsonString, useNewUX } = this.state;
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppDescriptionControls } = getApplication();
+
+    const descriptionData = [
+      {
+        renderComponent: (
+          <EuiText size="s" color="subdued">
             Policies let you automatically perform administrative operations on indices.{" "}
             <EuiLink href={POLICY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
               Learn more
             </EuiLink>
-          </p>
-        </EuiText>
-        <EuiSpacer size="m" />
+          </EuiText>
+        ),
+      },
+    ];
+    const padding_style = useNewUX ? { padding: "0px 0px" } : { padding: "25px 50px" };
+    return (
+      <div style={padding_style}>
+        {!useNewUX ? (
+          <>
+            <EuiTitle size="l">
+              <h1>{isEdit ? "Edit" : "Create"} policy</h1>
+            </EuiTitle>
+            <EuiSpacer />
+            <EuiText size="s">
+              <p>
+                Policies let you automatically perform administrative operations on indices.{" "}
+                <EuiLink href={POLICY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+                  Learn more
+                </EuiLink>
+              </p>
+            </EuiText>
+            <EuiSpacer size="m" />
+          </>
+        ) : (
+          <>
+            <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+          </>
+        )}
+
         <PolicyInfo
           isEdit={isEdit}
           policyId={policyId}

@@ -17,6 +17,7 @@ import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface CreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   isEdit: boolean;
@@ -32,6 +33,7 @@ interface CreatePolicyState {
   submitError: string;
   isSubmitting: boolean;
   hasSubmitted: boolean;
+  useNewUX: boolean;
 }
 
 export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState> {
@@ -39,6 +41,8 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
   _isMount: boolean;
   constructor(props: CreatePolicyProps) {
     super(props);
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
 
     this.state = {
       policySeqNo: null,
@@ -49,29 +53,32 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
       jsonString: "",
       isSubmitting: false,
       hasSubmitted: false,
+      useNewUX: useNewUx,
     };
 
     this._isMount = true;
   }
 
   componentDidMount = async (): Promise<void> => {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES]);
+    const breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.INDEX_POLICIES_NEW] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     if (this.props.isEdit) {
       const { id } = queryString.parse(this.props.location.search);
       if (typeof id === "string" && !!id) {
-        this.context.chrome.setBreadcrumbs([
-          BREADCRUMBS.INDEX_MANAGEMENT,
-          BREADCRUMBS.INDEX_POLICIES,
-          BREADCRUMBS.EDIT_POLICY,
-          { text: id },
-        ]);
+        const editBreadCrumbs = this.state.useNewUX
+          ? [BREADCRUMBS.INDEX_POLICIES_NEW, BREADCRUMBS.EDIT_POLICY, { text: id }]
+          : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.EDIT_POLICY, { text: id }];
+        this.context.chrome.setBreadcrumbs(editBreadCrumbs);
         await this.getPolicyToEdit(id);
       } else {
         this.context.notifications.toasts.addDanger(`Invalid policy id: ${id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);
       }
     } else {
-      this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.CREATE_POLICY]);
+      const createBreadCrumbs = this.state.useNewUX
+        ? [BREADCRUMBS.INDEX_POLICIES_NEW, BREADCRUMBS.CREATE_POLICY]
+        : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.CREATE_POLICY];
+      this.context.chrome.setBreadcrumbs(createBreadCrumbs);
       this.setState({ jsonString: DEFAULT_POLICY });
     }
   };
@@ -224,7 +231,7 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
 
   render() {
     const { isEdit } = this.props;
-    const { policyId, policyIdError, jsonString, submitError, isSubmitting } = this.state;
+    const { policyId, policyIdError, jsonString, submitError, isSubmitting, useNewUX } = this.state;
 
     let hasJSONError = false;
     try {
@@ -233,12 +240,19 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
       hasJSONError = true;
     }
 
+    const padding_style = useNewUX ? { padding: "0px 0px" } : { padding: "25px 50px" };
     return (
-      <div style={{ padding: "25px 50px" }}>
-        <EuiTitle size="l">
-          <h1>{isEdit ? "Edit" : "Create"} policy</h1>
-        </EuiTitle>
-        <EuiSpacer />
+      <div style={padding_style}>
+        {!useNewUX ? (
+          <>
+            <EuiTitle size="l">
+              <h1>{isEdit ? "Edit" : "Create"} policy</h1>
+            </EuiTitle>
+            <EuiSpacer />
+          </>
+        ) : (
+          <></>
+        )}
         {this.renderEditCallOut()}
         <ConfigurePolicy policyId={policyId} policyIdError={policyIdError} isEdit={isEdit} onChange={this.onChange} />
         <EuiSpacer />

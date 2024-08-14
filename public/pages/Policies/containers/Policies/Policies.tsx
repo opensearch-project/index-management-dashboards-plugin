@@ -18,6 +18,14 @@ import {
   // @ts-ignore
   Pagination,
   EuiTableSelectionType,
+  EuiButton,
+  EuiContextMenuItem,
+  EuiTextColor,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiCompressedFieldSearch,
+  EuiPopover,
+  EuiContextMenuPanel,
 } from "@elastic/eui";
 import _ from "lodash";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
@@ -37,6 +45,8 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { DataSource } from "src/plugins/data/public";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData, TopNavControlTextData } from "src/plugins/navigation/public";
 
 interface PoliciesProps extends RouteComponentProps, DataSourceMenuProperties {
   policyService: PolicyService;
@@ -52,6 +62,11 @@ interface PoliciesState extends DataSourceMenuProperties {
   selectedItems: PolicyItem[];
   policies: PolicyItem[];
   loadingPolicies: boolean;
+  useNewUX: boolean;
+  showCreatePolicyModal: boolean;
+  showDeleteModal: boolean;
+  showEditModal: boolean;
+  isPopoverOpen: boolean;
 }
 
 export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> {
@@ -60,8 +75,10 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
 
   constructor(props: PoliciesProps) {
     super(props);
-
     const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
+
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
 
     this.state = {
       ...this.state,
@@ -74,6 +91,11 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
       selectedItems: [],
       policies: [],
       loadingPolicies: true,
+      useNewUX: useNewUx,
+      showCreatePolicyModal: false,
+      showDeleteModal: false,
+      showEditModal: false,
+      isPopoverOpen: false,
     };
 
     this.getPolicies = _.debounce(this.getPolicies, 500, { leading: true });
@@ -113,8 +135,14 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES]);
+    const breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.INDEX_POLICIES_NEW] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getPolicies();
+    if (this.state.useNewUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.INDEX_POLICIES_NEW.text.concat(` (${this.state.totalPolicies})`), href: BREADCRUMBS.INDEX_POLICIES_NEW.href },
+      ]);
+    }
   }
 
   async componentDidUpdate(prevProps: PoliciesProps, prevState: PoliciesState) {
@@ -122,6 +150,11 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
     const currQuery = Policies.getQueryObjectFromState(this.state);
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getPolicies();
+      if (this.state.useNewUX) {
+        this.context.chrome.setBreadcrumbs([
+          { text: BREADCRUMBS.INDEX_POLICIES_NEW.text.concat(` (${this.state.totalPolicies})`), href: BREADCRUMBS.INDEX_POLICIES_NEW.href },
+        ]);
+      }
     }
   }
 
@@ -157,6 +190,11 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "There was a problem loading the policies"));
     }
     this.setState({ loadingPolicies: false });
+    if (this.state.useNewUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.INDEX_POLICIES_NEW.text.concat(` (${this.state.totalPolicies})`), href: BREADCRUMBS.INDEX_POLICIES_NEW.href },
+      ]);
+    }
   };
 
   deletePolicy = async (policyId: string): Promise<boolean> => {
@@ -215,7 +253,14 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
     const deletePromises = policyIds.map((policyId) => this.deletePolicy(policyId));
 
     const deleted = (await Promise.all(deletePromises)).reduce((deleted: boolean, result: boolean) => deleted && result);
-    if (deleted) await this.getPolicies();
+    if (deleted) {
+      await this.getPolicies();
+      if (this.state.useNewUX) {
+        this.context.chrome.setBreadcrumbs([
+          { text: BREADCRUMBS.INDEX_POLICIES_NEW.text.concat(` (${this.state.totalPolicies})`), href: BREADCRUMBS.INDEX_POLICIES_NEW.href },
+        ]);
+      }
+    }
   };
 
   onClickModalEdit = (item: PolicyItem, onClose: () => void, visual: boolean = false): void => {
@@ -224,11 +269,60 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
     this.props.history.push(`${ROUTES.EDIT_POLICY}?id=${item.id}${visual ? "&type=visual" : ""}`);
   };
 
+  onShowCreatePolicyModal = (): void => {
+    this.setState({ showCreatePolicyModal: true });
+  };
+
+  onCloseCreatePolicyModal = (): void => {
+    this.setState({ showCreatePolicyModal: false });
+  };
+
+  onShowDeleteModal = () => {
+    this.setState({ showDeleteModal: true });
+  };
+
+  onCloseDeleteModal = () => {
+    this.setState({ showDeleteModal: false });
+  };
+
+  onShowEditModal = () => {
+    this.setState({ showEditModal: true });
+  };
+
+  onCloseEditModal = () => {
+    this.setState({ showEditModal: false });
+  };
+
+  closePopover = () => {
+    this.setState({ isPopoverOpen: false });
+  };
+
+  onActionButtonClick = () => {
+    this.setState({ isPopoverOpen: !this.state.isPopoverOpen });
+  };
+
   render() {
-    const { totalPolicies, from, size, search, sortField, sortDirection, selectedItems, policies, loadingPolicies } = this.state;
+    const {
+      totalPolicies,
+      from,
+      size,
+      search,
+      sortField,
+      sortDirection,
+      selectedItems,
+      policies,
+      loadingPolicies,
+      useNewUX,
+      showCreatePolicyModal,
+      showDeleteModal,
+      showEditModal,
+      isPopoverOpen,
+    } = this.state;
 
     const filterIsApplied = !!search;
     const page = Math.floor(from / size);
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls, setAppBadgeControls } = getApplication();
 
     const pagination: Pagination = {
       pageIndex: page,
@@ -284,7 +378,98 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
       },
     ];
 
-    return (
+    const CommonTable = () => {
+      return (
+        <EuiBasicTable
+          items={policies}
+          itemId="id"
+          columns={this.columns}
+          pagination={pagination}
+          sorting={sorting}
+          isSelectable={true}
+          selection={selection}
+          onChange={this.onTableChange}
+          noItemsMessage={
+            <PolicyEmptyPrompt
+              history={this.props.history}
+              filterIsApplied={filterIsApplied}
+              loading={loadingPolicies}
+              resetFilters={this.resetFilters}
+            />
+          }
+        />
+      );
+    };
+
+    const CreateModal = () => {
+      return (
+        showCreatePolicyModal && (
+          <CreatePolicyModal isEdit={false} onClose={this.onCloseCreatePolicyModal} onClickContinue={this.onClickCreate} />
+        )
+      );
+    };
+
+    const EditModal = () => {
+      return showEditModal && <CreatePolicyModal isEdit={true} onClose={this.onCloseEditModal} onClickContinue={this.onClickEdit} />;
+    };
+
+    const DeleteModal = () => {
+      return (
+        showDeleteModal && (
+          <ConfirmationModal
+            title={`Delete ${selectedItems.length === 1 ? selectedItems[0].id : `${selectedItems.length} policies`}`}
+            bodyMessage={`Delete ${
+              selectedItems.length === 1 ? selectedItems[0].id : `${selectedItems.length} policies`
+            } permanently? This action cannot be undone.`}
+            actionMessage={"Delete"}
+            onAction={() => this.onClickDelete(selectedItems.map((item) => item.id))}
+            onClose={this.onCloseDeleteModal}
+          />
+        )
+      );
+    };
+
+    const actionsButton = (
+      <EuiButton
+        iconType="arrowDown"
+        iconSide="right"
+        disabled={!selectedItems.length}
+        onClick={this.onActionButtonClick}
+        data-test-subj="actionButton"
+        size="s"
+      >
+        Actions
+      </EuiButton>
+    );
+
+    const popoverActionItems = [
+      <EuiContextMenuItem
+        key="Edit"
+        icon="empty"
+        disabled={selectedItems.length != 1}
+        data-test-subj="editButton"
+        onClick={() => {
+          this.closePopover();
+          this.onShowEditModal();
+        }}
+      >
+        Edit
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        key="Delete"
+        icon="empty"
+        disabled={!selectedItems.length}
+        data-test-subj="deleteButton"
+        onClick={() => {
+          this.closePopover();
+          this.onShowDeleteModal();
+        }}
+      >
+        <EuiTextColor color="danger">Delete</EuiTextColor>
+      </EuiContextMenuItem>,
+    ];
+
+    return !useNewUX ? (
       <ContentPanel
         actions={<ContentPanelActions actions={actions} />}
         bodyStyles={{ padding: "initial" }}
@@ -321,6 +506,55 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
           sorting={sorting}
         />
       </ContentPanel>
+    ) : (
+      <>
+        <HeaderControl
+          setMountPoint={setAppRightControls}
+          controls={[
+            {
+              id: "Create policy",
+              label: "Create policy",
+              iconType: "plus",
+              fill: true,
+              testId: "createButton",
+              controlType: "button",
+              run: this.onShowCreatePolicyModal,
+            } as TopNavControlButtonData,
+          ]}
+        />
+        <ContentPanel>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
+            <EuiFlexItem grow={true}>
+              <EuiCompressedFieldSearch
+                autoFocus
+                placeholder={search}
+                incremental={false}
+                onChange={this.onSearchChange}
+                aria-label={search}
+                fullWidth
+              />
+            </EuiFlexItem>
+            {/* <EuiFlexItem grow={false}>
+              <EuiButtonIcon iconType="refresh" onClick={this.getPolicies} aria-label="refresh" size="s" display="base" />
+            </EuiFlexItem> */}
+            <EuiFlexItem grow={false}>
+              <EuiPopover
+                id="action"
+                button={actionsButton}
+                isOpen={isPopoverOpen}
+                closePopover={this.closePopover}
+                anchorPosition="downRight"
+              >
+                <EuiContextMenuPanel items={popoverActionItems} />
+              </EuiPopover>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          {CommonTable()}
+        </ContentPanel>
+        {CreateModal()}
+        {DeleteModal()}
+        {EditModal()}
+      </>
     );
   }
 }
