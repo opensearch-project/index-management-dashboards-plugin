@@ -96,11 +96,14 @@ export const BREADCRUMBS = Object.freeze({
   EDIT_SNAPSHOT_POLICY: { text: "Edit snapshot policy" },
 
   SNAPSHOTS: { text: "Snapshots", href: `#${ROUTES.SNAPSHOTS}` },
+  INDEX_SNAPSHOTS: { text: "Index snapshots", href: `#${ROUTES.SNAPSHOTS}` },
   SNAPSHOT_RESTORE: { text: "Restore activities in progress" },
+  INDEX_SNAPSHOT_RESTORE: { text: "Index snapshots" },
   CREATE_SNAPSHOT: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
   EDIT_SNAPSHOT: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
 
   REPOSITORIES: { text: "Repositories", href: `#${ROUTES.REPOSITORIES}` },
+  SNAPSHOT_REPOSITORIES: { text: "Snapshot repositories", href: `#${ROUTES.REPOSITORIES}` },
   CREATE_REPOSITORY: { text: "Create repository", href: `#${ROUTES.CREATE_REPOSITORY}` },
   EDIT_REPOSITORY: { text: "Edit repository", href: `#${ROUTES.EDIT_REPOSITORY}` },
   CREATE_INDEX: { text: "Create Index", href: `#${ROUTES.CREATE_INDEX}` },

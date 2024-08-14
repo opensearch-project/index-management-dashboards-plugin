@@ -442,10 +442,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
                 </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
+            <EuiSpacer />
           </>
         )}
-
-        <EuiSpacer />
 
         <ContentPanel title="Policy settings" titleSize="m">
           <EuiFlexGrid columns={3}>

@@ -578,10 +578,9 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
               <h1>{isEdit ? "Edit" : "Create"} policy</h1>
             </EuiTitle>
             {subTitleText}
+            <EuiSpacer />
           </>
         )}
-
-        <EuiSpacer />
 
         <ContentPanel title="Policy settings" titleSize="m">
           <CustomLabel title="Policy name" />
