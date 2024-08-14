@@ -624,6 +624,5 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
 export default function (props: Omit<SnapshotPoliciesProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
-  // get the flag from context
   return <SnapshotPolicies {...props} {...dataSourceMenuProps} />;
 }
