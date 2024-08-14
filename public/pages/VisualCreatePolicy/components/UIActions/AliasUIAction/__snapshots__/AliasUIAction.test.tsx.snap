@@ -3,7 +3,7 @@
 exports[`AliasUIAction component renders with blank action 1`] = `
 <div>
   <div
-    class="euiSwitch"
+    class="euiSwitch euiSwitch--primary"
   >
     <button
       aria-checked="true"
@@ -115,7 +115,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiSwitch"
+    class="euiSwitch euiSwitch--primary"
   >
     <button
       aria-checked="true"
@@ -229,7 +229,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
 exports[`AliasUIAction component renders with pre-defined actions 1`] = `
 <div>
   <div
-    class="euiSwitch"
+    class="euiSwitch euiSwitch--primary"
   >
     <button
       aria-checked="true"
@@ -458,7 +458,7 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiSwitch"
+    class="euiSwitch euiSwitch--primary"
   >
     <button
       aria-checked="true"
