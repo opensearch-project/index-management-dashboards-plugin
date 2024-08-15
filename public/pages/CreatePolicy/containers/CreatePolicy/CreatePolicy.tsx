@@ -76,7 +76,7 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
       }
     } else {
       const createBreadCrumbs = this.state.useNewUX
-        ? [BREADCRUMBS.INDEX_POLICIES_NEW, BREADCRUMBS.CREATE_POLICY]
+        ? [BREADCRUMBS.INDEX_POLICIES_NEW, BREADCRUMBS.CREATE_POLICY_NEW]
         : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.CREATE_POLICY];
       this.context.chrome.setBreadcrumbs(createBreadCrumbs);
       this.setState({ jsonString: DEFAULT_POLICY });

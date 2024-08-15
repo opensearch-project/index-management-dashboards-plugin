@@ -78,6 +78,7 @@ export const BREADCRUMBS = Object.freeze({
   MANAGED_INDICES: { text: "Policy managed indexes", href: `#${ROUTES.MANAGED_INDICES}` },
   EDIT_POLICY: { text: "Edit policy" },
   CREATE_POLICY: { text: "Create policy" },
+  CREATE_POLICY_NEW: { text: "Create index state management policy" },
   CHANGE_POLICY: { text: "Change policy" },
   POLICY_DETAILS: { text: "Policy details" },
   ROLLUPS: { text: "Rollup jobs", href: `#${ROUTES.ROLLUPS}` },
