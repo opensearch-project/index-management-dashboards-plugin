@@ -68,19 +68,21 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
       justifyContent="spaceBetween"
       alignItems="flexStart"
     >
-      <EuiFlexItem>
-        {typeof title === "string" ? (
-          <EuiTitle size={titleSize}>
-            <h3>
-              {title}
-              <span className="panel-header-count"> {itemCount > 0 ? `(${itemCount})` : null} </span>
-            </h3>
-          </EuiTitle>
-        ) : (
-          title
-        )}
-        {renderSubTitleText(subTitleText)}
-      </EuiFlexItem>
+      {title ? (
+        <EuiFlexItem>
+          {typeof title === "string" ? (
+            <EuiTitle size={titleSize}>
+              <h3>
+                {title}
+                <span className="panel-header-count"> {itemCount > 0 ? `(${itemCount})` : null} </span>
+              </h3>
+            </EuiTitle>
+          ) : (
+            title
+          )}
+          {renderSubTitleText(subTitleText)}
+        </EuiFlexItem>
+      ) : null}
       {actions ? (
         <EuiFlexItem grow={false}>
           <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
