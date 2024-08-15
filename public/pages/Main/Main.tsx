@@ -71,6 +71,7 @@ import * as pluginManifest from "../../../opensearch_dashboards.json";
 import { DataSourceAttributes } from "../../../../../src/plugins/data_source/common/data_sources";
 import { BehaviorSubject } from "rxjs";
 import { i18n } from "@osd/i18n";
+import { getUISettings } from "../../services/Services";
 
 enum Navigation {
   IndexManagement = "Index Management",
@@ -404,7 +405,9 @@ export default class Main extends Component<MainProps, MainState> {
 
     const { landingPage } = this.props;
 
-    const ROUTE_STYLE = { padding: "25px 25px" };
+    const uiSettings = getUISettings();
+    const showActionsInHeader = uiSettings.get("home:useNewHomePage");
+    const ROUTE_STYLE = showActionsInHeader ? { padding: "0px 0px" } : { padding: "25px 25px" };
 
     const DataSourceMenu = this.props.dataSourceManagement?.ui?.getDataSourceMenu<DataSourceSelectableConfig>();
     const DataSourceViewer = this.props.dataSourceManagement?.ui?.getDataSourceMenu<DataSourceViewConfig>();
