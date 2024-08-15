@@ -11,6 +11,7 @@ import {
   EuiTableFieldDataColumnType,
   EuiText,
   EuiTextColor,
+  EuiButtonIcon,
 } from "@elastic/eui";
 import { getErrorMessage } from "../../../../utils/helpers";
 import React, { Component, useContext } from "react";
@@ -27,6 +28,7 @@ import { truncateSpan } from "../../../Snapshots/helper";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 interface RepositoriesProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
@@ -44,6 +46,7 @@ interface RepositoriesState extends DataSourceMenuProperties {
   editRepo: string | null;
 
   isDeleteModalVisible: boolean;
+  useNewUX: boolean;
 }
 
 export class Repositories extends MDSEnabledComponent<RepositoriesProps, RepositoriesState> {
@@ -53,6 +56,8 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
   constructor(props: RepositoriesProps) {
     super(props);
 
+    const uiSettings = getUISettings();
+    const useNewUX = uiSettings.get("home:useNewHomePage");
     this.state = {
       ...this.state,
       repositories: [],
@@ -62,6 +67,7 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
       isPopoverOpen: false,
       editRepo: null,
       isDeleteModalVisible: false,
+      useNewUX: useNewUX,
     };
 
     this.columns = [
@@ -93,7 +99,10 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.REPOSITORIES]);
+    const breadCrumbs = this.state.useNewUX
+      ? [BREADCRUMBS.SNAPSHOT_REPOSITORIES]
+      : [BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.REPOSITORIES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getRepos();
   }
 
@@ -194,7 +203,7 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
   };
 
   render() {
-    const { repositories, loading, selectedItems, showFlyout, isPopoverOpen, editRepo, isDeleteModalVisible } = this.state;
+    const { repositories, loading, selectedItems, showFlyout, isPopoverOpen, editRepo, isDeleteModalVisible, useNewUX } = this.state;
     const popoverActionItems = [
       <EuiContextMenuItem
         key="Edit"
@@ -246,9 +255,45 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
       </EuiButton>,
     ];
 
+    const renderToolsRight = () => {
+      return [
+        <EuiButtonIcon
+          iconType="refresh"
+          onClick={this.getRepos}
+          data-test-subj="refreshButton"
+          aria-label="refresh"
+          size="s"
+          display="base"
+        />,
+      ];
+    };
+
+    const renderToolsLeft = () => {
+      return [
+        <EuiButton
+          iconType="trash"
+          iconSide="left"
+          iconSize="s"
+          disabled={!selectedItems.length}
+          onClick={this.showDeleteModal}
+          data-test-subj="deleteButton"
+          aria-label="delete"
+          color="danger"
+          size="s"
+          minWidth={75}
+        >
+          Delete
+        </EuiButton>,
+      ];
+    };
+
     const search = {
+      toolsRight: useNewUX ? renderToolsRight() : undefined,
+      toolsLeft: useNewUX ? renderToolsLeft() : undefined,
       box: {
         placeholder: "Search repository",
+        compressed: useNewUX ? true : false,
+        increamental: true,
       },
       filters: [
         {
@@ -273,9 +318,44 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
     } else {
       additionalWarning += " in the repository.";
     }
+
+    const descriptionData = [
+      {
+        renderComponent: (
+          <EuiText size="s" color="subdued">
+            Repositories are remote storage locations used to store snapshots.
+          </EuiText>
+        ),
+      },
+    ];
+
+    const controlControlsData = [
+      {
+        id: "Create repository",
+        label: "Create repository",
+        iconType: "plus",
+        fill: true,
+        run: this.onClickCreate,
+        testId: "createRepo",
+        controlType: "button",
+      },
+    ];
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls, setAppDescriptionControls } = getApplication();
+    const useTitle = useNewUX ? undefined : "Repositories";
+    const useActions = useNewUX ? undefined : actions;
+    const useSubTitleText = useNewUX ? undefined : subTitleText;
+
     return (
       <>
-        <ContentPanel title="Repositories" actions={actions} subTitleText={subTitleText}>
+        {useNewUX ? (
+          <>
+            <HeaderControl setMountPoint={setAppRightControls} controls={controlControlsData} />
+            <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+          </>
+        ) : null}
+        <ContentPanel title={useTitle} actions={useActions} subTitleText={useSubTitleText}>
           <EuiInMemoryTable
             items={repositories}
             itemId="id"

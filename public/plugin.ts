@@ -33,62 +33,68 @@ interface IndexManagementSetupDeps {
 }
 
 const ISM_CATEGORIES: Record<string, AppCategory> = Object.freeze({
-  indexes: {
-    id: "indexes",
-    label: "Indexes",
+  automation_policies: {
+    id: "automation_policies",
+    label: "Automation policies",
     order: 2000,
-    euiIconType: "managementApp",
+  },
+  templates: {
+    id: "templates",
+    label: "Templates",
+    order: 3000,
   },
   index_backup_and_recovery: {
     id: "index_backup_and_recovery",
-    label: "Index Backup and Recovery",
-    order: 3000,
-    euiIconType: "managementApp",
+    label: "Index backup and recovery",
+    order: 4000,
   },
 });
 
 const ISM_FEATURE_DESCRIPTION: Record<string, string> = Object.freeze({
-  index_management: i18n.translate("indexManagement.description", {
+  index_management: i18n.translate("index-management-dashboards-plugin.indexManagement.description", {
     defaultMessage: "Manage your indexes with state polices, templates and aliases. You can also roll up or transform your indexes.",
   }),
-  snapshot_management: i18n.translate("snapshotManagement.description", {
+  snapshot_management: i18n.translate("index-management-dashboards-plugin.snapshotManagement.description", {
     defaultMessage: "Back up and restore your cluster's indexes and state. Setup a policy to automate snapshot creation and deletion.",
   }),
-  indexes: i18n.translate("indexes.description", {
-    defaultMessage: "Manage your indexes",
+  indexes: i18n.translate("index-management-dashboards-plugin.indexes.description", {
+    defaultMessage: "Configure and manage indexes.",
   }),
-  policy_managed_indexes: i18n.translate("policyManagedIndexes.description", {
-    defaultMessage: "Manage your policy managed indexes",
+  policy_managed_indexes: i18n.translate("index-management-dashboards-plugin.policyManagedIndexes.description", {
+    defaultMessage: "View indexes managed by Index State Management (ISM) policies.",
   }),
-  data_streams: i18n.translate("dataStreams.description", {
-    defaultMessage: "Manage your data streams",
+  data_streams: i18n.translate("index-management-dashboards-plugin.dataStreams.description", {
+    defaultMessage: "Simplify time-series data management.",
   }),
-  aliases: i18n.translate("aliases.description", {
-    defaultMessage: "Manage your index aliases",
+  aliases: i18n.translate("index-management-dashboards-plugin.aliases.description", {
+    defaultMessage: "Organize multiple indexes under virtual index names.",
   }),
-  index_state_management_policies: i18n.translate("indexStateManagementPolicies.description", {
-    defaultMessage: "Manage your index state management policies",
+  index_state_management_policies: i18n.translate("index-management-dashboards-plugin.indexStateManagementPolicies.description", {
+    defaultMessage: "Automate periodic administrative tasks.",
   }),
-  index_templates: i18n.translate("indexTemplates.description", {
-    defaultMessage: "Manage your index templates",
+  index_templates: i18n.translate("index-management-dashboards-plugin.indexTemplates.description", {
+    defaultMessage: "Create predefined mappings and settings for new indexes.",
   }),
-  notification_settings: i18n.translate("notificationSettings.description", {
-    defaultMessage: "Manage your notification settings",
+  notification_settings: i18n.translate("index-management-dashboards-plugin.notificationSettings.description", {
+    defaultMessage: "Set default notifications on index operation statuses.",
   }),
-  rollup_jobs: i18n.translate("rollupJobs.description", {
-    defaultMessage: "Manage your rollup jobs",
+  rollup_jobs: i18n.translate("index-management-dashboards-plugin.rollupJobs.description", {
+    defaultMessage: "Reduce data granularity by rolling up old data into summarized indexes.",
   }),
-  transform_jobs: i18n.translate("transformJobs.description", {
-    defaultMessage: "Manage your transform jobs",
+  transform_jobs: i18n.translate("index-management-dashboards-plugin.transformJobs.description", {
+    defaultMessage: "Create  summarized views of your data organized by specific fields.",
   }),
-  index_snapshots: i18n.translate("indexSnapshots.description", {
-    defaultMessage: "Manage your index snapshots",
+  index_snapshots: i18n.translate("index-management-dashboards-plugin.indexSnapshots.description", {
+    defaultMessage: "Back up your indexes.",
   }),
-  snapshot_policies: i18n.translate("snapshotPolicies.description", {
-    defaultMessage: "Manage your snapshot policies",
+  snapshot_policies: i18n.translate("index-management-dashboards-plugin.snapshotPolicies.description", {
+    defaultMessage: "Set up automatic data snapshots.",
   }),
-  snapshot_repositories: i18n.translate("snapshotRepositories.description", {
-    defaultMessage: "Manage your snapshot repositories",
+  snapshot_repositories: i18n.translate("index-management-dashboards-plugin.snapshotRepositories.description", {
+    defaultMessage: "Configure remote storage for snapshots.",
+  }),
+  component_templates: i18n.translate("index-management-dashboards-plugin.componentTemplates.description", {
+    defaultMessage: "Define components for your index templates.",
   }),
 });
 
@@ -177,8 +183,6 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.INDICES)}`,
         title: "Indexes",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.indexes,
         updater$: this.appStateUpdater,
@@ -190,9 +194,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // policy managed index route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.MANAGED_INDICES)}`,
-        title: "Policy Managed Indexes",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
+        title: "Policy-managed indexes",
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.policy_managed_indexes,
         updater$: this.appStateUpdater,
@@ -204,9 +206,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // data streams route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.DATA_STREAMS)}`,
-        title: "Data Streams",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
+        title: "Data streams",
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.data_streams,
         updater$: this.appStateUpdater,
@@ -218,9 +218,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // index alias route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.ALIASES)}`,
-        title: "Index Aliases",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
+        title: "Index aliases",
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.aliases,
         updater$: this.appStateUpdater,
@@ -232,11 +230,21 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // index templates route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.TEMPLATES)}`,
-        title: "Index Templates",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
+        title: "Index templates",
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.index_templates,
+        updater$: this.appStateUpdater,
+        mount: async (params: AppMountParameters) => {
+          return mountWrapper(params, ROUTES.TEMPLATES);
+        },
+      });
+
+      // component templates route
+      core.application.register({
+        id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.COMPOSABLE_TEMPLATES)}`,
+        title: "Component templates",
+        workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
+        description: ISM_FEATURE_DESCRIPTION.component_templates,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
           return mountWrapper(params, ROUTES.TEMPLATES);
@@ -246,9 +254,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // notification settings route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.NOTIFICATIONS)}`,
-        title: "Notification Settings",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
+        title: "Index operation notifications",
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.notification_settings,
         updater$: this.appStateUpdater,
@@ -260,9 +266,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // rollup jobs route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.ROLLUPS)}`,
-        title: "Rollup Jobs",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
+        title: "Rollup jobs",
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.rollup_jobs,
         updater$: this.appStateUpdater,
@@ -274,9 +278,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // transform jobs route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.TRANSFORMS)}`,
-        title: "Transform Jobs",
-        order: 8040,
-        category: ISM_CATEGORIES.indexes,
+        title: "Transform jobs",
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.transform_jobs,
         updater$: this.appStateUpdater,
@@ -288,8 +290,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // index snapshots route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.SNAPSHOTS)}`,
-        title: "Index Snapshots",
-        order: 8040,
+        title: "Index snapshots",
         category: ISM_CATEGORIES.index_backup_and_recovery,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.index_snapshots,
@@ -302,8 +303,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
       // snapshot repositories route
       core.application.register({
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.REPOSITORIES)}`,
-        title: "Snapshot Repositories",
-        order: 8040,
+        title: "Snapshot repositories",
         category: ISM_CATEGORIES.index_backup_and_recovery,
         workspaceAvailability: WorkspaceAvailability.outsideWorkspace,
         description: ISM_FEATURE_DESCRIPTION.snapshot_repositories,
@@ -323,55 +323,70 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
     core.chrome.navGroup.addNavLinksToGroup(DEFAULT_NAV_GROUPS.dataAdministration, [
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.INDICES)}`,
-        category: ISM_CATEGORIES.indexes,
+        category: DEFAULT_APP_CATEGORIES.manageData,
+        order: 200,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.MANAGED_INDICES)}`,
-        category: ISM_CATEGORIES.indexes,
+        category: ISM_CATEGORIES.automation_policies,
+        order: 100,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.DATA_STREAMS)}`,
-        category: ISM_CATEGORIES.indexes,
+        category: DEFAULT_APP_CATEGORIES.manageData,
+        order: 400,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.ALIASES)}`,
-        category: ISM_CATEGORIES.indexes,
+        category: DEFAULT_APP_CATEGORIES.manageData,
+        order: 300,
       },
       {
         id: imApplicationID,
-        category: ISM_CATEGORIES.indexes,
-        title: "Index State Management Policies",
-        order: 8040,
+        category: ISM_CATEGORIES.automation_policies,
+        title: "Index State Management policies",
+        order: 200,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.TEMPLATES)}`,
-        category: ISM_CATEGORIES.indexes,
+        category: ISM_CATEGORIES.templates,
+        order: 100,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.NOTIFICATIONS)}`,
-        category: ISM_CATEGORIES.indexes,
+        category: DEFAULT_APP_CATEGORIES.manageData,
+        order: 500,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.ROLLUPS)}`,
-        category: ISM_CATEGORIES.indexes,
+        category: ISM_CATEGORIES.automation_policies,
+        order: 300,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.TRANSFORMS)}`,
-        category: ISM_CATEGORIES.indexes,
+        category: ISM_CATEGORIES.automation_policies,
+        order: 400,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.SNAPSHOTS)}`,
         category: ISM_CATEGORIES.index_backup_and_recovery,
+        order: 100,
       },
       {
         id: smApplicationID,
         category: ISM_CATEGORIES.index_backup_and_recovery,
-        title: "Snapshot Policies",
-        order: 8040,
+        title: "Snapshot policies",
+        order: 200,
       },
       {
         id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.REPOSITORIES)}`,
         category: ISM_CATEGORIES.index_backup_and_recovery,
+        order: 300,
+      },
+      {
+        id: `opensearch_index_management_dashboards_${encodeURIComponent(ROUTES.COMPOSABLE_TEMPLATES)}`,
+        category: ISM_CATEGORIES.templates,
+        order: 200,
       },
     ]);
 

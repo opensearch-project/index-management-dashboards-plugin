@@ -20,6 +20,7 @@ import {
   EuiTableFieldDataColumnType,
   EuiText,
   EuiTitle,
+  EuiHealth,
 } from "@elastic/eui";
 import { NotificationService, SnapshotManagementService } from "../../../../services";
 import { SMMetadata, SMPolicy } from "../../../../../models/interfaces";
@@ -39,6 +40,8 @@ import { NotificationConfig } from "../../../../../server/models/interfaces";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData, TopNavControlTextData, TopNavControlIconData } from "../../../../../../../src/plugins/navigation/public";
 
 interface SnapshotPolicyDetailsProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
@@ -54,6 +57,7 @@ interface SnapshotPolicyDetailsState extends DataSourceMenuProperties {
   isDeleteModalVisible: boolean;
 
   channel: NotificationConfig | null;
+  useNewUX: boolean;
 }
 
 export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDetailsProps, SnapshotPolicyDetailsState> {
@@ -63,6 +67,9 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
   constructor(props: SnapshotPolicyDetailsProps) {
     super(props);
 
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
+
     this.state = {
       ...this.state,
       policyId: "",
@@ -70,6 +77,7 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
       metadata: null,
       isDeleteModalVisible: false,
       channel: null,
+      useNewUX: useNewUx,
     };
 
     this.columns = [
@@ -116,10 +124,16 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES]);
+    let breadCrumbs = this.state.useNewUX
+      ? [BREADCRUMBS.SNAPSHOT_POLICIES]
+      : [BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     const { id } = queryString.parse(this.props.location.search);
     if (typeof id === "string") {
-      this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES, { text: id }]);
+      const breadCrumbs = this.state.useNewUX
+        ? [BREADCRUMBS.SNAPSHOT_POLICIES, { text: id }]
+        : [BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES, { text: id }];
+      this.context.chrome.setBreadcrumbs(breadCrumbs);
       await this.getPolicy(id);
 
       const channelId = _.get(this.state.policy, "notification.channel.id");
@@ -176,6 +190,42 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
     } catch (err) {
       this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not load the notification channel"));
     }
+  };
+
+  onClickStop = async () => {
+    const { snapshotManagementService } = this.props;
+    const policyId = this.state.policyId;
+    try {
+      const response = await snapshotManagementService.stopPolicy(policyId);
+      if (response.ok) {
+        this.context.notifications.toasts.addSuccess(`"${policyId}" successfully stopped!`);
+      } else {
+        this.context.notifications.toasts.addDanger(`Could not stop policy "${policyId}" :  ${response.error}`);
+      }
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not stop the policy"));
+    }
+    this.componentDidMount();
+  };
+
+  onClickStart = async () => {
+    const { snapshotManagementService } = this.props;
+    const policyId = this.state.policyId;
+    try {
+      const response = await snapshotManagementService.startPolicy(policyId);
+      if (response.ok) {
+        this.context.notifications.toasts.addSuccess(`"${policyId}" successfully started!`);
+      } else {
+        this.context.notifications.toasts.addDanger(`Could not start policy "${policyId}" :  ${response.error}`);
+      }
+    } catch (err) {
+      this.context.notifications.toasts.addDanger(getErrorMessage(err, "Could not start the policy"));
+    }
+    this.componentDidMount();
+  };
+
+  onClickPolicyStatusChange = async () => {
+    return this.state.policy?.enabled ? this.onClickStop() : this.onClickStart();
   };
 
   onEdit = () => {
@@ -319,30 +369,82 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
       latestActivities = [...latestActivities, deletionLatestActivity];
     }
 
-    return (
-      <div style={{ padding: "5px 50px" }}>
-        <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
-          <EuiFlexItem grow={false}>
-            <EuiTitle size="m">
-              <span title={policyId}>{_.truncate(policyId)}</span>
-            </EuiTitle>
-          </EuiFlexItem>
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls, setAppBadgeControls } = getApplication();
 
-          <EuiFlexItem grow={false}>
-            <EuiFlexGroup alignItems="center" gutterSize="s">
+    const badgeControlData = [
+      {
+        renderComponent: (
+          <>
+            <EuiHealth color={policy.enabled ? "success" : "danger"} />
+            <EuiText size="s">{_.truncate(this.renderEnabledField(policy.enabled))}</EuiText>
+          </>
+        ),
+      },
+    ];
+
+    const padding_style = this.state.useNewUX ? { padding: "0px 0px" } : { padding: "5px 50px" };
+    return (
+      <div style={padding_style}>
+        {this.state.useNewUX ? (
+          <>
+            <HeaderControl
+              setMountPoint={setAppRightControls}
+              controls={[
+                {
+                  iconType: "trash",
+                  testId: "deleteButton",
+                  color: "danger",
+                  ariaLabel: "delete",
+                  run: this.showDeleteModal,
+                  controlType: "icon",
+                  display: "base",
+                } as TopNavControlIconData,
+                {
+                  id: "Status",
+                  label: policy.enabled ? "Disable" : "Enable",
+                  testId: "editButton",
+                  run: this.onClickPolicyStatusChange,
+                  controlType: "button",
+                } as TopNavControlButtonData,
+                {
+                  id: "Edit",
+                  label: "Edit policy",
+                  testId: "editButton",
+                  run: this.onEdit,
+                  fill: true,
+                  controlType: "button",
+                } as TopNavControlButtonData,
+              ]}
+            />
+
+            <HeaderControl setMountPoint={setAppBadgeControls} controls={badgeControlData} />
+          </>
+        ) : (
+          <>
+            <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.onEdit}>Edit</EuiButton>
+                <EuiTitle size="m">
+                  <span title={policyId}>{_.truncate(policyId)}</span>
+                </EuiTitle>
               </EuiFlexItem>
+
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
-                  Delete
-                </EuiButton>
+                <EuiFlexGroup alignItems="center" gutterSize="s">
+                  <EuiFlexItem grow={false}>
+                    <EuiButton onClick={this.onEdit}>Edit</EuiButton>
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}>
+                    <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
+                      Delete
+                    </EuiButton>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
-          </EuiFlexItem>
-        </EuiFlexGroup>
-
-        <EuiSpacer />
+            <EuiSpacer />
+          </>
+        )}
 
         <ContentPanel title="Policy settings" titleSize="m">
           <EuiFlexGrid columns={3}>

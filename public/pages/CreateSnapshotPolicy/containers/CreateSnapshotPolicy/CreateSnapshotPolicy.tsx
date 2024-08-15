@@ -55,6 +55,8 @@ import Notification from "../../components/Notification";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { ExternalLink } from "../../../utils/display-utils";
 
 interface CreateSMPolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
@@ -97,6 +99,7 @@ interface CreateSMPolicyState extends DataSourceMenuProperties {
   minCountError: string;
   repoError: string;
   timezoneError: string;
+  useNewUX: boolean;
 }
 
 export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProps, CreateSMPolicyState> {
@@ -105,6 +108,8 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
   constructor(props: CreateSMPolicyProps) {
     super(props);
 
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
     this.state = {
       ...this.state,
       policy: getDefaultSMPolicy(),
@@ -139,6 +144,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
       repoError: "",
       minCountError: "",
       timezoneError: "",
+      useNewUX: useNewUx,
     };
   }
 
@@ -146,23 +152,20 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
     if (this.props.isEdit) {
       const { id } = queryString.parse(this.props.location.search);
       if (typeof id === "string" && !!id) {
-        this.context.chrome.setBreadcrumbs([
-          BREADCRUMBS.SNAPSHOT_MANAGEMENT,
-          BREADCRUMBS.SNAPSHOT_POLICIES,
-          BREADCRUMBS.EDIT_SNAPSHOT_POLICY,
-          { text: id },
-        ]);
+        const breadCrumbs = this.state.useNewUX
+          ? [BREADCRUMBS.SNAPSHOT_POLICIES, { text: id }]
+          : [BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES, BREADCRUMBS.EDIT_SNAPSHOT_POLICY, { text: id }];
+        this.context.chrome.setBreadcrumbs(breadCrumbs);
         await this.getPolicy(id);
       } else {
         this.context.notifications.toasts.addDanger(`Invalid policy id: ${id}`);
         this.props.history.push(ROUTES.SNAPSHOT_POLICIES);
       }
     } else {
-      this.context.chrome.setBreadcrumbs([
-        BREADCRUMBS.SNAPSHOT_MANAGEMENT,
-        BREADCRUMBS.SNAPSHOT_POLICIES,
-        BREADCRUMBS.CREATE_SNAPSHOT_POLICY,
-      ]);
+      const breadCrumbs = this.state.useNewUX
+        ? [BREADCRUMBS.SNAPSHOT_POLICIES, BREADCRUMBS.CREATE_SNAPSHOT_POLICY]
+        : [BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOT_POLICIES, BREADCRUMBS.CREATE_SNAPSHOT_POLICY];
+      this.context.chrome.setBreadcrumbs(breadCrumbs);
     }
     this.updateOptions();
   }
@@ -551,14 +554,33 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
     const showNotificationChannel = showNotification(policy);
 
-    return (
-      <div style={{ padding: "5px 50px" }}>
-        <EuiTitle size="l">
-          <h1>{isEdit ? "Edit" : "Create"} policy</h1>
-        </EuiTitle>
-        {subTitleText}
+    const { HeaderControl } = getNavigationUI();
+    const { setAppDescriptionControls } = getApplication();
 
-        <EuiSpacer />
+    const descriptionData = [
+      {
+        renderComponent: (
+          <EuiText size="s" color="subdued">
+            Snapshot policies allow you to define an automated snapshot schedule and retention period.{" "}
+            <ExternalLink href={SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL} />
+          </EuiText>
+        ),
+      },
+    ];
+    const padding_style = this.state.useNewUX ? { padding: "0px 0px" } : { padding: "5px 50px" };
+    return (
+      <div style={padding_style}>
+        {this.state.useNewUX ? (
+          <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+        ) : (
+          <>
+            <EuiTitle size="l">
+              <h1>{isEdit ? "Edit" : "Create"} policy</h1>
+            </EuiTitle>
+            {subTitleText}
+            <EuiSpacer />
+          </>
+        )}
 
         <ContentPanel title="Policy settings" titleSize="m">
           <CustomLabel title="Policy name" />

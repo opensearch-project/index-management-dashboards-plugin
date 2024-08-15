@@ -17,6 +17,10 @@ import {
   EuiTab,
   EuiOverlayMask,
   EuiGlobalToastList,
+  EuiPopover,
+  EuiContextMenuPanel,
+  EuiContextMenuItem,
+  EuiButtonIcon,
 } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -39,6 +43,7 @@ import { snapshotStatusRender, truncateSpan } from "../../helper";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 interface SnapshotsProps extends RouteComponentProps, DataSourceMenuProperties {
   snapshotManagementService: SnapshotManagementService;
@@ -68,6 +73,8 @@ interface SnapshotsState extends DataSourceMenuProperties {
   message?: React.ReactNode;
 
   isDeleteModalVisible: boolean;
+  isPopoverOpen: boolean;
+  useNewUX: boolean;
 }
 
 export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsState> {
@@ -77,7 +84,8 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
 
   constructor(props: SnapshotsProps) {
     super(props);
-
+    const uiSettings = getUISettings();
+    const useNewUX = uiSettings.get("home:useNewHomePage");
     this.state = {
       ...this.state,
       snapshots: [],
@@ -97,6 +105,8 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
       showRestoreFlyout: false,
       message: null,
       isDeleteModalVisible: false,
+      isPopoverOpen: false,
+      useNewUX: useNewUX,
     };
 
     this.columns = [
@@ -160,7 +170,8 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
+    const breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.INDEX_SNAPSHOTS] : [BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
 
     await this.getSnapshots();
   }
@@ -353,12 +364,14 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
     e.stopPropagation();
     const { selectedItems } = this.state;
     const target = e.currentTarget;
-    const snapshotPanel = target.textContent === "Snapshots" ? true : false;
+    const titleName = this.state.useNewUX ? "Index snapshots" : "Snapshots";
+    const snapshotPanel = target.textContent === titleName ? true : false;
     const prev = target.previousElementSibling;
     const next = target.nextElementSibling;
 
     if (snapshotPanel) {
-      this.context.chrome.setBreadcrumbs([BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS]);
+      const breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.INDEX_SNAPSHOTS] : [BREADCRUMBS.SNAPSHOT_MANAGEMENT, BREADCRUMBS.SNAPSHOTS];
+      this.context.chrome.setBreadcrumbs(breadCrumbs);
     }
 
     if (target.textContent !== "View restore activities") {
@@ -391,6 +404,14 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
     this.setState(newState);
   };
 
+  onActionButtonClick = () => {
+    this.setState({ isPopoverOpen: !this.state.isPopoverOpen });
+  };
+
+  closePopover = () => {
+    this.setState({ isPopoverOpen: false });
+  };
+
   render() {
     const {
       snapshots,
@@ -409,13 +430,66 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
       showCreateFlyout,
       showRestoreFlyout,
       isDeleteModalVisible,
+      isPopoverOpen,
+      useNewUX,
     } = this.state;
     const { snapshotManagementService } = this.props;
     const repos = [...new Set(snapshots.map((snapshot) => snapshot.repository))];
     const status = [...new Set(snapshots.map((snapshot) => snapshot.status))];
+
+    const popoverActionItems = [
+      <EuiContextMenuItem
+        key="Delete"
+        icon="empty"
+        disabled={!selectedItems.length}
+        onClick={() => {
+          this.closePopover();
+          this.showDeleteModal();
+        }}
+        data-test-subj="deleteButton"
+      >
+        Delete
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        disabled={selectedItems.length !== 1}
+        onClick={() => {
+          this.closePopover();
+          this.onClickRestore();
+        }}
+        data-test-subj="restoreButton"
+      >
+        Restore
+      </EuiContextMenuItem>,
+    ];
+
+    const renderToolsRight = () => {
+      return [
+        <EuiButtonIcon iconType="refresh" onClick={this.getSnapshots} aria-label="refresh" size="s" display="base" />,
+        <EuiPopover id="action" button={actionsButton} isOpen={isPopoverOpen} closePopover={this.closePopover} anchorPosition="downRight">
+          <EuiContextMenuPanel items={popoverActionItems} />
+        </EuiPopover>,
+      ];
+    };
+
+    const actionsButton = (
+      <EuiButton
+        iconType="arrowDown"
+        iconSide="right"
+        disabled={!selectedItems.length}
+        onClick={this.onActionButtonClick}
+        data-test-subj="actionButton"
+        size="s"
+      >
+        Actions
+      </EuiButton>
+    );
+
     const search = {
+      toolsRight: useNewUX ? renderToolsRight() : undefined,
       box: {
         placeholder: "Search snapshot",
+        incremental: true,
+        compressed: useNewUX ? true : false,
       },
       filters: [
         {
@@ -468,12 +542,48 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
       </EuiText>
     );
 
+    const controlControlsData = [
+      {
+        id: "Take snapshot",
+        label: "Take snapshot",
+        fill: true,
+        run: this.onClickCreate,
+        testId: "takeSnapshot",
+        controlType: "button",
+      },
+    ];
+
+    const descriptionData = [
+      {
+        renderComponent: (
+          <EuiText size="s" color="subdued">
+            Index snapshots are taken automatically from snapshot policies, or you can initiate manual snapshots to save to a repository.{" "}
+            <br></br>
+            You can restore indices by selecting a snapshot.
+          </EuiText>
+        ),
+      },
+    ];
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls, setAppDescriptionControls } = getApplication();
+    const showTitle = useNewUX ? undefined : "Snapshots";
+    const SnapshotTabName = useNewUX ? "Index snapshots" : "Snapshots";
+    const useActions = useNewUX ? undefined : actions;
+    const useSubTitle = useNewUX ? undefined : subTitleText;
+
     return (
       <>
+        {useNewUX ? (
+          <>
+            <HeaderControl setMountPoint={setAppRightControls} controls={controlControlsData} />
+            <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+          </>
+        ) : null}
         <EuiPageHeader>
           <EuiTabs size="m" ref={this.tabsRef}>
             <EuiTab isSelected={true} onClick={this.onClickTab}>
-              Snapshots
+              {SnapshotTabName}
             </EuiTab>
             <EuiTab onClick={this.onClickTab}>Restore activities in progress</EuiTab>
           </EuiTabs>
@@ -487,11 +597,12 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
             snapshotId={selectedItems[0]?.id || ""}
             restoreStartRef={restoreStart || 0}
             indicesToRestore={indicesToRestore.split(",")}
+            useNewUX={useNewUX}
           />
         )}
 
         {snapshotPanel && (
-          <ContentPanel title="Snapshots" actions={actions} subTitleText={subTitleText}>
+          <ContentPanel title={showTitle} actions={useActions} subTitleText={useSubTitle}>
             <EuiInMemoryTable
               items={snapshots}
               itemId={(item) => `${item.repository}:${item.id}`}
