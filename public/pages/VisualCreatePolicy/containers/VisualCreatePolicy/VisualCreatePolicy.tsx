@@ -76,7 +76,7 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
       const { id } = queryString.parse(this.props.location.search);
       if (typeof id === "string" && !!id) {
         const editBreadCrumbs = this.state.useNewUX
-          ? [BREADCRUMBS.INDEX_POLICIES_NEW, BREADCRUMBS.EDIT_POLICY, { text: id }]
+          ? [BREADCRUMBS.INDEX_POLICIES_NEW, { text: id }]
           : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.EDIT_POLICY, { text: id }];
         this.context.chrome.setBreadcrumbs(editBreadCrumbs);
         await this.getPolicyToEdit(id);
