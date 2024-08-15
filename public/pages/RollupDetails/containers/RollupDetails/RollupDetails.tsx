@@ -19,6 +19,7 @@ import {
   EuiModalBody,
   EuiCodeBlock,
   EuiHealth,
+  EuiText,
 } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import queryString from "query-string";
@@ -34,6 +35,9 @@ import { renderTime } from "../../../Rollups/utils/helpers";
 import DeleteModal from "../../../Rollups/components/DeleteModal";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData, TopNavControlTextData, TopNavControlIconData } from "../../../../../../../src/plugins/navigation/public";
+import _ from "lodash";
 
 interface RollupDetailsProps extends RouteComponentProps {
   rollupService: RollupService;
@@ -68,12 +72,16 @@ interface RollupDetailsState {
   isModalOpen: boolean;
   enabled: boolean;
   isDeleteModalVisible: boolean;
+  useNewUX: boolean;
 }
 
 export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsState> {
   static contextType = CoreServicesContext;
   constructor(props: RollupDetailsProps) {
     super(props);
+
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
 
     this.state = {
       rollupId: "",
@@ -103,14 +111,20 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
       isModalOpen: false,
       enabled: false,
       isDeleteModalVisible: false,
+      useNewUX: useNewUx,
     };
   }
 
   componentDidMount = async (): Promise<void> => {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS]);
+    let breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.ROLLUPS] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS];
+
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     const { id } = queryString.parse(this.props.location.search);
     if (typeof id === "string") {
-      this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS, { text: id }]);
+      let newBreadCrumbs = this.state.useNewUX
+        ? [BREADCRUMBS.ROLLUPS, { text: id }]
+        : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS, { text: id }];
+      this.context.chrome.setBreadcrumbs(newBreadCrumbs);
       this.props.history.push(`${ROUTES.ROLLUP_DETAILS}?id=${id}`);
       await this.getRollup(id);
       this.forceUpdate();
@@ -216,6 +230,14 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
     }
   };
 
+  onClickRollupStatusChange = async (): Promise<void> => {
+    if (this.state.enabled) {
+      return this.onDisable();
+    } else {
+      return this.onEnable();
+    }
+  };
+
   onEnable = async (): Promise<void> => {
     const { rollupService } = this.props;
     const { rollupId } = this.state;
@@ -283,6 +305,13 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
     this.setState({ metricsShown: selectedMetrics.slice(from, from + size) });
   };
 
+  renderEnabledField = (enabled: boolean) => {
+    if (enabled) {
+      return "Enabled";
+    }
+    return "Disabled";
+  };
+
   render() {
     const {
       rollupId,
@@ -309,6 +338,7 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
       rollupJSON,
       enabled,
       isDeleteModalVisible,
+      useNewUX,
     } = this.state;
 
     let scheduleText = "";
@@ -319,47 +349,108 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
           : buildCronScheduleText(rollupJSON.rollup.continuous, rollupJSON.rollup.schedule.cron.expression);
     }
 
-    return (
-      <div style={{ padding: "5px 50px" }}>
-        <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
-          <EuiFlexItem grow={false}>
-            <EuiTitle size="m">
-              <h2>{rollupId}</h2>
-            </EuiTitle>
-          </EuiFlexItem>
-          <EuiFlexItem>
-            {enabled ? (
-              <EuiHealth color="success">{"Enabled on " + lastUpdated}</EuiHealth>
-            ) : (
-              <EuiHealth color="danger">Disabled</EuiHealth>
-            )}
-          </EuiFlexItem>
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls, setAppBadgeControls } = getApplication();
 
-          <EuiFlexItem grow={false}>
-            <EuiFlexGroup alignItems="center" gutterSize="s">
+    const padding_style = this.state.useNewUX ? { padding: "0px 0px" } : { padding: "5px 50px" };
+
+    const controlsData = [
+      {
+        iconType: "trash",
+        testId: "deleteButton",
+        color: "danger",
+        ariaLabel: "delete",
+        run: this.showDeleteModal,
+        controlType: "icon",
+        display: "base",
+      } as TopNavControlIconData,
+      {
+        id: "Edit",
+        label: "Edit",
+        testId: "editButton",
+        run: this.onEdit,
+        controlType: "button",
+      } as TopNavControlButtonData,
+      {
+        id: "viewJson",
+        label: "View JSON",
+        testId: "viewJsonButton",
+        run: this.showModal,
+        controlType: "button",
+        display: "base",
+      } as TopNavControlButtonData,
+      {
+        id: "Status",
+        label: enabled ? "Disable" : "Enable",
+        testId: "enableButton",
+        run: this.onClickRollupStatusChange,
+        controlType: "button",
+        display: "base",
+        fill: true,
+      } as TopNavControlButtonData,
+    ];
+
+    const badgeControlData = [
+      {
+        renderComponent: (
+          <>
+            <EuiHealth color={enabled ? "success" : "danger"} />
+            <EuiText size="s">{_.truncate(this.renderEnabledField(enabled))}</EuiText>
+          </>
+        ),
+      },
+    ];
+
+    return (
+      <div style={padding_style}>
+        {useNewUX ? (
+          <>
+            <HeaderControl setMountPoint={setAppRightControls} controls={controlsData} />
+            <HeaderControl setMountPoint={setAppBadgeControls} controls={badgeControlData} />
+          </>
+        ) : (
+          <>
+            <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
               <EuiFlexItem grow={false}>
-                <EuiButton disabled={!enabled} onClick={this.onDisable} data-test-subj="disableButton">
-                  Disable
-                </EuiButton>
+                <EuiTitle size="m">
+                  <h2>{rollupId}</h2>
+                </EuiTitle>
               </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiButton disabled={enabled} onClick={this.onEnable} data-test-subj="enableButton">
-                  Enable
-                </EuiButton>
+              <EuiFlexItem>
+                {enabled ? (
+                  <EuiHealth color="success">{"Enabled on " + lastUpdated}</EuiHealth>
+                ) : (
+                  <EuiHealth color="danger">Disabled</EuiHealth>
+                )}
               </EuiFlexItem>
+
               <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.showModal}>View JSON</EuiButton>
-              </EuiFlexItem>
-              <EuiFlexItem grow={false}>
-                <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
-                  Delete
-                </EuiButton>
+                <EuiFlexGroup alignItems="center" gutterSize="s">
+                  <EuiFlexItem grow={false}>
+                    <EuiButton disabled={!enabled} onClick={this.onDisable} data-test-subj="disableButton">
+                      Disable
+                    </EuiButton>
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}>
+                    <EuiButton disabled={enabled} onClick={this.onEnable} data-test-subj="enableButton">
+                      Enable
+                    </EuiButton>
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}>
+                    <EuiButton onClick={this.showModal}>View JSON</EuiButton>
+                  </EuiFlexItem>
+                  <EuiFlexItem grow={false}>
+                    <EuiButton onClick={this.showDeleteModal} color="danger" data-test-subj="deleteButton">
+                      Delete
+                    </EuiButton>
+                  </EuiFlexItem>
+                </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
-          </EuiFlexItem>
-        </EuiFlexGroup>
+            <EuiSpacer />
+          </>
+        )}
 
-        <EuiSpacer />
         <GeneralInformation
           rollupId={rollupId}
           description={description}
@@ -369,6 +460,7 @@ export class RollupDetails extends Component<RollupDetailsProps, RollupDetailsSt
           pageSize={pageSize}
           lastUpdated={lastUpdated}
           onEdit={this.onEdit}
+          useNewUX={useNewUX}
         />
         <EuiSpacer />
         <RollupStatus metadata={metadata} />
