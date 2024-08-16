@@ -14,6 +14,23 @@ import { browserServicesMock, coreServicesMock } from "../../../../../test/mocks
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ROUTES } from "../../../../utils/constants";
 import { FieldInstance } from "../../../../lib/field";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+
+jest.mock("../../../../services/Services", () => ({
+  ...jest.requireActual("../../../../services/Services"),
+  getUISettings: jest.fn(),
+  getApplication: jest.fn(),
+  getNavigationUI: jest.fn(),
+}));
+
+beforeEach(() => {
+  (getUISettings as jest.Mock).mockReturnValue({
+    get: jest.fn().mockReturnValue(false), // or false, depending on your test case
+  });
+  (getApplication as jest.Mock).mockReturnValue({});
+
+  (getNavigationUI as jest.Mock).mockReturnValue({});
+});
 
 function renderCreateIndexTemplate(props: Omit<TemplateDetailProps, "history" | "location">) {
   return renderHook(() => {
