@@ -7,6 +7,7 @@ import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, 
 import {
   EuiButton,
   EuiButtonEmpty,
+  EuiButtonIcon,
   EuiCodeBlock,
   EuiFlexGroup,
   EuiFlexItem,
@@ -45,7 +46,7 @@ import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottom
 import { IndexForm } from "../../../../containers/IndexForm";
 import { TABS_ENUM, tabs } from "../../constant";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
-import { TopNavControlDescriptionData } from "src/plugins/navigation/public";
+import { TopNavControlDescriptionData, TopNavControlIconData } from "src/plugins/navigation/public";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -213,7 +214,25 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     },
   ];
 
-  const viewJSON = [
+  const HeaderRight = [
+    {
+      renderComponent: (
+        <>
+          <EuiButtonIcon display="base" iconType="trash" aria-label="Delete" color="danger" onClick={() => setVisible(true)} size="s" />
+          <DeleteTemplateModal
+            visible={visible}
+            selectedItems={[templateName]}
+            onClose={() => {
+              setVisible(false);
+            }}
+            onDelete={() => {
+              setVisible(false);
+              history.replace(ROUTES.TEMPLATES);
+            }}
+          />
+        </>
+      ),
+    },
     {
       renderComponent: (
         <EuiButton
@@ -248,29 +267,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     },
   ];
 
-  const deleteIcon = [
-    {
-      renderComponent: (
-        <>
-          <EuiButton color="danger" onClick={() => setVisible(true)}>
-            Delete
-          </EuiButton>
-          {/* <DeleteTemplateModal
-              visible={visible}
-              selectedItems={[templateName]}
-              onClose={() => {
-                setVisible(false);
-              }}
-              onDelete={() => {
-                setVisible(false);
-                history.replace(ROUTES.TEMPLATES);
-              }}
-            /> */}
-        </>
-      ),
-    },
-  ];
-
   const Title = () => {
     return !useUpdatedUX ? (
       <EuiFlexGroup alignItems="center">
@@ -296,48 +292,51 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           )}
         </EuiFlexItem>
         {isEdit ? (
-          <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-            <EuiButton
-              style={{ marginRight: 20 }}
-              onClick={() => {
-                const showValue: TemplateItemRemote = {
-                  ...values,
-                  template: IndexForm.transformIndexDetailToRemote(values.template),
-                };
-                Modal.show({
-                  locale: {
-                    ok: "Close",
-                  },
-                  style: {
-                    width: 800,
-                  },
-                  "data-test-subj": "templateJSONDetailModal",
-                  title: values.name,
-                  content: (
-                    <EuiCodeBlock language="json" isCopyable>
-                      {JSON.stringify(showValue, null, 2)}
-                    </EuiCodeBlock>
-                  ),
-                });
-              }}
-            >
-              View JSON
-            </EuiButton>
-            <EuiButton color="danger" onClick={() => setVisible(true)}>
-              Delete
-            </EuiButton>
-            <DeleteTemplateModal
-              visible={visible}
-              selectedItems={[templateName]}
-              onClose={() => {
-                setVisible(false);
-              }}
-              onDelete={() => {
-                setVisible(false);
-                history.replace(ROUTES.TEMPLATES);
-              }}
-            />
-          </EuiFlexItem>
+          <>
+            <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
+              <EuiButton
+                style={{ marginRight: 20 }}
+                onClick={() => {
+                  const showValue: TemplateItemRemote = {
+                    ...values,
+                    template: IndexForm.transformIndexDetailToRemote(values.template),
+                  };
+                  Modal.show({
+                    locale: {
+                      ok: "Close",
+                    },
+                    style: {
+                      width: 800,
+                    },
+                    "data-test-subj": "templateJSONDetailModal",
+                    title: values.name,
+                    content: (
+                      <EuiCodeBlock language="json" isCopyable>
+                        {JSON.stringify(showValue, null, 2)}
+                      </EuiCodeBlock>
+                    ),
+                  });
+                }}
+              >
+                View JSON
+              </EuiButton>
+              <EuiButton color="danger" onClick={() => setVisible(true)}>
+                Delete
+              </EuiButton>
+              <DeleteTemplateModal
+                visible={visible}
+                selectedItems={[templateName]}
+                onClose={() => {
+                  setVisible(false);
+                }}
+                onDelete={() => {
+                  setVisible(false);
+                  history.replace(ROUTES.TEMPLATES);
+                }}
+              />
+            </EuiFlexItem>
+            <EuiSpacer />
+          </>
         ) : null}
       </EuiFlexGroup>
     ) : (
@@ -345,8 +344,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
         {!isEdit ? <HeaderControl controls={descriptionData} setMountPoint={setAppDescriptionControls} /> : null}
         {isEdit ? (
           <>
-            <HeaderControl controls={deleteIcon} setMountPoint={setAppRightControls} />
-            <HeaderControl controls={viewJSON} setMountPoint={setAppRightControls} />
+            <HeaderControl controls={HeaderRight} setMountPoint={setAppRightControls} />
           </>
         ) : null}
       </>
@@ -356,7 +354,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
   return (
     <>
       {Title()}
-      <EuiSpacer />
       {isEdit ? (
         <>
           <OverviewTemplate {...subCompontentProps} />

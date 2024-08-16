@@ -20,6 +20,7 @@ import {
   ArgsWithError,
   ArgsWithQuery,
   Query,
+  EuiTitle,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import IndexControls from "../../components/IndexControls";
@@ -41,6 +42,7 @@ import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../ser
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 import { TopNavControlButtonData, TopNavControlIconData, TopNavControlTextData } from "src/plugins/navigation/public";
+import { EuiSpacer } from "@opensearch-project/oui";
 
 interface IndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   indexService: IndexService;
@@ -262,17 +264,21 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
     const { history } = this.props;
     const numberIndices = "(" + totalIndices.toString() + ")";
 
+    const title = [
+      {
+        renderComponent: (
+          <EuiTitle size="m">
+            <h3>
+              <span className="panel-header-count"> {totalIndices > 0 ? `(${totalIndices})` : null} </span>
+            </h3>
+          </EuiTitle>
+        ),
+      },
+    ];
+
     return this.state.useUpdatedUX ? (
       <>
-        <HeaderControl
-          setMountPoint={setAppBadgeControls}
-          controls={[
-            {
-              text: numberIndices,
-              textAlign: "left",
-            } as TopNavControlTextData,
-          ]}
-        />
+        <HeaderControl setMountPoint={setAppBadgeControls} controls={title} />
         <HeaderControl
           setMountPoint={setAppRightControls}
           controls={[

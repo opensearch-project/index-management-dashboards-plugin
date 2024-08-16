@@ -197,6 +197,8 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
       },
     ];
 
+    const Actionsize = this.state.useUpdatedUX ? "s" : "m";
+
     const actionButton = (
       <EuiButton
         iconType="arrowDown"
@@ -204,7 +206,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
         disabled={!selectedItems.length}
         onClick={this.onActionButtonClick}
         data-test-subj="actionButton"
-        size="s"
+        size={Actionsize}
       >
         Actions
       </EuiButton>
@@ -268,9 +270,9 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
             } as TopNavControlButtonData,
           ]}
         />
-        <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+        <EuiPanel style={{ paddingLeft: "10px", paddingRight: "10px" }}>
           <div style={{ padding: "initial" }}>
-            <EuiFlexGroup style={{ padding: "0px 10px" }}>
+            <EuiFlexGroup style={{ padding: "0px 0px 16px 0px" }}>
               <EuiFlexItem>
                 <EuiFieldSearch compressed fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
               </EuiFlexItem>
