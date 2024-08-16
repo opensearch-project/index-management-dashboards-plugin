@@ -251,7 +251,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               >
                 <div>
                   <div
-                    class="euiSwitch"
+                    class="euiSwitch euiSwitch--primary"
                   >
                     <button
                       aria-checked="false"
@@ -334,7 +334,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               >
                 <div>
                   <div
-                    class="euiSwitch"
+                    class="euiSwitch euiSwitch--primary"
                   >
                     <button
                       aria-checked="false"
@@ -442,7 +442,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             >
               <div>
                 <div
-                  class="euiSwitch"
+                  class="euiSwitch euiSwitch--primary"
                 >
                   <button
                     aria-checked="false"

@@ -158,7 +158,7 @@ exports[`<Indices /> spec renders the component 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <div
-          class="euiSwitch"
+          class="euiSwitch euiSwitch--primary"
         >
           <button
             aria-checked="false"
