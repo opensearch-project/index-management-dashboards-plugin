@@ -100,6 +100,7 @@ describe("<AssociatedComponentsModal /> spec", () => {
     await findByTestId("TestBtn");
     await userEvent.click(getByTestId("TestBtn"));
     await findByText("Associated component templates");
+    await findByText("This table contains 1 rows out of 1 rows; Page 1 of 1.");
     expect(document.body.children).toMatchSnapshot();
     await userEvent.click(document.querySelector(`[aria-label="Unlink test_component_template?"]`) as Element);
     await findByText("Unlink from test_template?");
