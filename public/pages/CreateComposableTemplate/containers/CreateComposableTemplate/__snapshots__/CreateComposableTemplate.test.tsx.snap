@@ -216,7 +216,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                 >
                   <div>
                     <div
-                      class="euiSwitch"
+                      class="euiSwitch euiSwitch--primary"
                     >
                       <button
                         aria-checked="false"
@@ -299,7 +299,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                 >
                   <div>
                     <div
-                      class="euiSwitch"
+                      class="euiSwitch euiSwitch--primary"
                     >
                       <button
                         aria-checked="false"
@@ -407,7 +407,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
               >
                 <div>
                   <div
-                    class="euiSwitch"
+                    class="euiSwitch euiSwitch--primary"
                   >
                     <button
                       aria-checked="false"
