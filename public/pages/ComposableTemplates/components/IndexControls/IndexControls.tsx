@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiButton, EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import FilterGroup from "../../../../components/FilterGroup";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 
@@ -13,6 +13,7 @@ export interface SearchControlsProps {
     search: string;
     selectedTypes: string[];
   };
+  useNewUX?: boolean;
   onSearchChange: (args: SearchControlsProps["value"]) => void;
 }
 
@@ -32,7 +33,13 @@ export default function SearchControls(props: SearchControlsProps) {
   return (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch fullWidth placeholder="Search..." value={state.search} onChange={(e) => onChange("search", e.target.value)} />
+        <EuiFieldSearch
+          compressed={props.useNewUX}
+          fullWidth
+          placeholder="Search..."
+          value={state.search}
+          onChange={(e) => onChange("search", e.target.value)}
+        />
       </EuiFlexItem>
       <EuiFlexItem style={{ flexBasis: "100px" }} grow={false}>
         <FilterGroup
@@ -41,6 +48,7 @@ export default function SearchControls(props: SearchControlsProps) {
           }}
           onChange={(val) => onChange("selectedTypes", val || [])}
           value={state.selectedTypes}
+          useNewUx={props.useNewUX}
           options={[
             {
               label: IndicesUpdateMode.alias,
