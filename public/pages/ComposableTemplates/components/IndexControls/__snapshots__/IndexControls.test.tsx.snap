@@ -57,7 +57,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
           class="euiPopover__anchor"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton-hasNotification euiFilterButton--hasIcon"
+            class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--large euiFilterButton euiFilterButton-hasNotification euiFilterButton--hasIcon"
             type="button"
           >
             <span

@@ -13,7 +13,7 @@ HTMLCollection [
           class="euiPopover__anchor"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton-hasNotification euiFilterButton--hasIcon"
+            class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--large euiFilterButton euiFilterButton-hasNotification euiFilterButton--hasIcon"
             data-test-subj="test"
             placeholder="test"
             type="button"
@@ -63,7 +63,7 @@ HTMLCollection [
           class="euiPopover__anchor"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton-isSelected euiFilterButton-hasNotification euiFilterButton--hasIcon"
+            class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--large euiFilterButton euiFilterButton-isSelected euiFilterButton-hasNotification euiFilterButton--hasIcon"
             data-test-subj="test"
             placeholder="test"
             type="button"
@@ -181,7 +181,7 @@ HTMLCollection [
           class="euiPopover__anchor"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton-isSelected euiFilterButton-hasActiveFilters euiFilterButton-hasNotification euiFilterButton--hasIcon"
+            class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--large euiFilterButton euiFilterButton-isSelected euiFilterButton-hasActiveFilters euiFilterButton-hasNotification euiFilterButton--hasIcon"
             data-test-subj="test"
             placeholder="test"
             type="button"
@@ -299,7 +299,7 @@ HTMLCollection [
           class="euiPopover__anchor"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--text euiFilterButton euiFilterButton-isSelected euiFilterButton-hasNotification euiFilterButton--hasIcon"
+            class="euiButtonEmpty euiButtonEmpty--text euiButtonEmpty--large euiFilterButton euiFilterButton-isSelected euiFilterButton-hasNotification euiFilterButton--hasIcon"
             data-test-subj="test"
             placeholder="test"
             type="button"

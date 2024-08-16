@@ -17,6 +17,23 @@ import Transforms from "./Transforms";
 import { TEXT } from "../../components/TransformEmptyPrompt/TransformEmptyPrompt";
 import { testTransform2 } from "../../../../../test/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+
+jest.mock("../../../../services/Services", () => ({
+  ...jest.requireActual("../../../../services/Services"),
+  getUISettings: jest.fn(),
+  getApplication: jest.fn(),
+  getNavigationUI: jest.fn(),
+}));
+
+beforeEach(() => {
+  (getUISettings as jest.Mock).mockReturnValue({
+    get: jest.fn().mockReturnValue(false), // or false, depending on your test case
+  });
+  (getApplication as jest.Mock).mockReturnValue({});
+
+  (getNavigationUI as jest.Mock).mockReturnValue({});
+});
 
 function renderTransformsWithRouter() {
   return {
