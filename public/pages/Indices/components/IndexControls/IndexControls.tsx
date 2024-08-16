@@ -4,7 +4,17 @@
  */
 
 import React, { Component } from "react";
-import { ArgsWithError, ArgsWithQuery, EuiButton, EuiButtonIcon, EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiSwitch } from "@elastic/eui";
+import {
+  ArgsWithError,
+  ArgsWithQuery,
+  EuiButton,
+  EuiButtonIcon,
+  EuiFlexGroup,
+  EuiSpacer,
+  EuiFlexItem,
+  EuiSearchBar,
+  EuiSwitch,
+} from "@elastic/eui";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import IndicesActions from "../../containers/IndicesActions";
 import { getUISettings } from "../../../../services/Services";
@@ -71,7 +81,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
     const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     return useUpdatedUX ? (
-      <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
+      <EuiFlexGroup style={{ padding: "0px 5px 16px 5px" }} alignItems="center">
         <EuiFlexItem>
           <EuiSearchBar
             compressed

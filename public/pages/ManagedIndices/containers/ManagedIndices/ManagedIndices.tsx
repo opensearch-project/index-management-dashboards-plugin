@@ -53,6 +53,7 @@ import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../ser
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 import { TopNavControlButtonData } from "src/plugins/navigation/public";
+import { browserServicesMock } from "plugins/index-management-dashboards-plugin/test/mocks";
 
 interface ManagedIndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
@@ -506,7 +507,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     ];
 
     const RetryPolicyModal = () => {
-      return showRetryModal && <RetryModal retryItems={_.cloneDeep(selectedItems)} onClose={this.onCloseRetryModal} />;
+      return showRetryModal && <RetryModal services={undefined} retryItems={_.cloneDeep(selectedItems)} onClose={this.onCloseRetryModal} />;
     };
 
     const EditRolloverAliasModal = () => {
