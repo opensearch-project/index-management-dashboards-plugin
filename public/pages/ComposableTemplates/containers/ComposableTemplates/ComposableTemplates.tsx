@@ -23,6 +23,7 @@ import {
   EuiTableSortingType,
   EuiButtonIcon,
   EuiToolTip,
+  EuiBasicTableColumn,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
@@ -40,6 +41,8 @@ import { useComponentMapTemplate } from "../../utils/hooks";
 import "./index.scss";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData, TopNavControlTextData } from "src/plugins/navigation/public";
 
 interface ComposableTemplatesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
@@ -56,6 +59,7 @@ type ComposableTemplatesState = {
   selectedItems: ICatComposableTemplate[];
   composableTemplates: ICatComposableTemplate[];
   loading: boolean;
+  useNewUX: boolean;
 } & SearchControlsProps["value"] &
   DataSourceMenuProperties;
 
@@ -67,6 +71,8 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
   static contextType = CoreServicesContext;
   constructor(props: ComposableTemplatesProps) {
     super(props);
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
     const {
       from = DEFAULT_QUERY_PARAMS.from,
       size = DEFAULT_QUERY_PARAMS.size,
@@ -93,6 +99,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
       composableTemplates: [],
       loading: false,
       selectedTypes: [],
+      useNewUX: useNewUx,
     };
 
     this.getComposableTemplates = debounce(this.getComposableTemplatesOriginal, 500, { leading: true });
@@ -109,7 +116,9 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
   }
 
   componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
+    this.state.useNewUX
+      ? this.context.chrome.setBreadcrumbs([BREADCRUMBS.COMPOSABLE_TEMPLATES])
+      : this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
     this.getComposableTemplates();
   }
 
@@ -187,6 +196,10 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
     this.setState({ from: "0", ...params }, () => this.getComposableTemplates());
   };
 
+  onClickCreate = (): void => {
+    this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
+  };
+
   getFinalItems = (allTemplates: ICatComposableTemplate[]) => {
     const { from, size, sortDirection, sortField, selectedTypes } = this.state;
     const fromNumber = Number(from);
@@ -230,7 +243,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
   };
 
   render() {
-    const { totalComposableTemplates, from, size, sortField, sortDirection, composableTemplates, loading } = this.state;
+    const { totalComposableTemplates, from, size, sortField, sortDirection, composableTemplates, loading, useNewUX } = this.state;
 
     const pagination: Pagination = {
       pageIndex: Number(from),
@@ -249,213 +262,326 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
     const selection: EuiTableSelectionType<ICatComposableTemplate> = {
       onSelectionChange: this.onSelectionChange,
     };
-    return (
-      <ContentPanel
-        actions={
-          <ContentPanelActions
-            actions={[
-              {
-                text: "",
-                children: (
-                  <ComposableTemplatesActions
-                    selectedItems={this.state.selectedItems.map((item) => item.name)}
-                    onDelete={this.getComposableTemplates}
-                  />
-                ),
-              },
-              {
-                text: "Create component template",
-                buttonProps: {
-                  fill: true,
-                  onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
-                  },
-                },
-              },
-            ]}
-          />
-        }
-        bodyStyles={{ padding: "initial" }}
-        title={
-          <>
-            <EuiTitle>
-              <span>Component templates</span>
-            </EuiTitle>
-            <EuiFormRow
-              fullWidth
-              helpText={
-                <div>
-                  Component templates are reusable building blocks for composing index or data stream templates. You can define component
-                  templates with common index configurations and associate them to an index template.{" "}
-                  <EuiLink external target="_blank" href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.composable}>
-                    Learn more
-                  </EuiLink>
-                </div>
-              }
-            >
-              <></>
-            </EuiFormRow>
-          </>
-        }
-      >
-        <IndexControls
-          value={{
-            search: this.state.search,
-            selectedTypes: this.state.selectedTypes,
-          }}
-          onSearchChange={this.onSearchChange}
-        />
-        <EuiHorizontalRule margin="xs" />
 
-        <EuiBasicTable
-          className="ISM-component-templates-table"
-          data-test-subj="templatesTable"
-          loading={this.state.loading || this.props.loading}
-          columns={[
-            {
-              field: "name",
-              name: "Name",
-              sortable: true,
-              render: (value: string) => {
-                return (
-                  <Link to={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${value}`}>
-                    <EuiLink data-test-subj={`templateDetail-${value}`}>{value}</EuiLink>
-                  </Link>
-                );
-              },
-            },
-            {
-              field: "templateTypes",
-              name: "Type",
-              truncateText: true,
-              textOnly: false,
-              render: (value: string, record: ICatComposableTemplate) => {
-                return <ComponentTemplateBadge template={record.component_template.template} />;
-              },
-            },
-            {
-              field: "component_template._meta.description",
-              name: "Description",
-              sortable: true,
-              render: (value: string, record: ICatComposableTemplate) => {
-                return record.component_template._meta?.description || "-";
-              },
-            },
-            {
-              field: "associatedCount",
-              name: "Associated index templates",
-              sortable: true,
-              align: "right",
-            },
-            {
-              field: "actions",
-              name: "Actions",
-              align: "right",
-              actions: [
-                {
-                  render: (record: ICatComposableTemplate) => {
-                    return (
-                      <AssociatedTemplatesModal
-                        componentTemplate={record.name}
-                        onUnlink={/* istanbul ignore next */ () => this.getComposableTemplates()}
-                        renderProps={({ setVisible }) => (
-                          <EuiToolTip content="View associated index templates">
-                            <EuiButtonIcon
-                              aria-label="View associated index templates"
-                              iconType="kqlSelector"
-                              data-test-subj={`ViewAssociatedIndexTemplates-${record.name}`}
-                              onClick={() => setVisible(true)}
-                              className="icon-hover-info"
-                            />
-                          </EuiToolTip>
-                        )}
-                      />
-                    );
-                  },
-                },
-                {
-                  render: (record: ICatComposableTemplate) => {
-                    return (
-                      <ComposableTemplatesDeleteAction
-                        selectedItems={[record.name]}
-                        onDelete={() => {
-                          this.getComposableTemplates();
-                        }}
-                        renderDeleteButton={({ triggerDelete }) => (
-                          <EuiToolTip content="Delete component template">
-                            <EuiButtonIcon
-                              aria-label="Delete component template"
-                              color="danger"
-                              iconType="trash"
-                              onClick={triggerDelete}
-                              className="icon-hover-danger"
-                              data-test-subj={`DeleteComponentTemplate-${record.name}`}
-                            />
-                          </EuiToolTip>
-                        )}
-                      />
-                    );
-                  },
-                },
-              ],
-            },
-          ]}
-          isSelectable={true}
-          itemId="name"
-          items={this.getFinalItems(composableTemplates)}
-          onChange={this.onTableChange}
-          pagination={pagination}
-          selection={selection}
-          sorting={sorting}
-          noItemsMessage={
-            loading ? undefined : isEqual(
-                {
-                  search: this.state.search,
-                },
-                defaultFilter
-              ) ? (
-              <EuiEmptyPrompt
-                body={
-                  <EuiText>
-                    <p>You have no templates.</p>
-                  </EuiText>
-                }
-                actions={[
-                  <EuiButton
-                    fill
-                    onClick={() => {
-                      this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
-                    }}
-                    data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
-                  >
-                    Create component template
-                  </EuiButton>,
-                ]}
-              />
-            ) : (
-              <EuiEmptyPrompt
-                body={
-                  <EuiText>
-                    <p>There are no templates matching your applied filters. Reset your filters to view your templates.</p>
-                  </EuiText>
-                }
-                actions={[
-                  <EuiButton
-                    fill
-                    onClick={() => {
-                      this.setState(defaultFilter, () => {
-                        this.getComposableTemplates();
-                      });
-                    }}
-                  >
-                    Reset filters
-                  </EuiButton>,
-                ]}
-              />
-            )
+    const contentPanelActions = [
+      {
+        text: "",
+        children: (
+          <ComposableTemplatesActions
+            selectedItems={this.state.selectedItems.map((item) => item.name)}
+            onDelete={this.getComposableTemplates}
+          />
+        ),
+      },
+      {
+        text: "Create component template",
+        buttonProps: {
+          fill: true,
+          onClick: () => {
+            this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
+          },
+        },
+      },
+    ];
+
+    const contentPanelTitle = (
+      <>
+        <EuiTitle>
+          <span>Component templates</span>
+        </EuiTitle>
+        <EuiFormRow
+          fullWidth
+          helpText={
+            <div>
+              Component templates are reusable building blocks for composing index or data stream templates. You can define component
+              templates with common index configurations and associate them to an index template.{" "}
+              <EuiLink external target="_blank" href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.composable}>
+                Learn more
+              </EuiLink>
+            </div>
           }
+        >
+          <></>
+        </EuiFormRow>
+      </>
+    );
+
+    const tableColums: EuiBasicTableColumn<ICatComposableTemplate>[] = [
+      {
+        field: "name",
+        name: "Name",
+        sortable: true,
+        render: (value: string) => {
+          return (
+            <Link to={`${ROUTES.CREATE_COMPOSABLE_TEMPLATE}/${value}`}>
+              <EuiLink data-test-subj={`templateDetail-${value}`}>{value}</EuiLink>
+            </Link>
+          );
+        },
+      },
+      {
+        field: "templateTypes",
+        name: "Type",
+        truncateText: true,
+        textOnly: false,
+        render: (value: string, record: ICatComposableTemplate) => {
+          return <ComponentTemplateBadge template={record.component_template.template} />;
+        },
+      },
+      {
+        field: "component_template._meta.description",
+        name: "Description",
+        sortable: true,
+        render: (value: string, record: ICatComposableTemplate) => {
+          return record.component_template._meta?.description || "-";
+        },
+      },
+      {
+        field: "associatedCount",
+        name: "Associated index templates",
+        sortable: true,
+        align: "right",
+      },
+      {
+        field: "actions",
+        name: "Actions",
+        align: "right",
+        actions: [
+          {
+            render: (record: ICatComposableTemplate) => {
+              return (
+                <AssociatedTemplatesModal
+                  componentTemplate={record.name}
+                  onUnlink={/* istanbul ignore next */ () => this.getComposableTemplates()}
+                  renderProps={({ setVisible }) => (
+                    <EuiToolTip content="View associated index templates">
+                      <EuiButtonIcon
+                        aria-label="View associated index templates"
+                        iconType="kqlSelector"
+                        data-test-subj={`ViewAssociatedIndexTemplates-${record.name}`}
+                        onClick={() => setVisible(true)}
+                        className="icon-hover-info"
+                      />
+                    </EuiToolTip>
+                  )}
+                />
+              );
+            },
+          },
+          {
+            render: (record: ICatComposableTemplate) => {
+              return (
+                <ComposableTemplatesDeleteAction
+                  selectedItems={[record.name]}
+                  onDelete={() => {
+                    this.getComposableTemplates();
+                  }}
+                  renderDeleteButton={({ triggerDelete }) => (
+                    <EuiToolTip content="Delete component template">
+                      <EuiButtonIcon
+                        aria-label="Delete component template"
+                        color="danger"
+                        iconType="trash"
+                        onClick={triggerDelete}
+                        className="icon-hover-danger"
+                        data-test-subj={`DeleteComponentTemplate-${record.name}`}
+                      />
+                    </EuiToolTip>
+                  )}
+                />
+              );
+            },
+          },
+        ],
+      },
+    ];
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls, setAppDescriptionControls } = getApplication();
+
+    const descriptionData = [
+      {
+        renderComponent: (
+          <EuiText size="s" color="subdued">
+            Component templates are reusable building blocks for composing index or data stream templates.
+            <br /> You can define component templates with common index configurations and associate them to an index template.{" "}
+            <EuiLink external target="_blank" href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.composable}>
+              Learn more
+            </EuiLink>
+          </EuiText>
+        ),
+      },
+    ];
+
+    return useNewUX ? (
+      <>
+        <HeaderControl
+          setMountPoint={setAppRightControls}
+          controls={[
+            {
+              id: "Create component template",
+              label: "Create component template",
+              iconType: "plus",
+              fill: true,
+              testId: "createButton",
+              controlType: "button",
+              run: this.onClickCreate,
+            } as TopNavControlButtonData,
+          ]}
         />
-      </ContentPanel>
+        <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+        <ContentPanel>
+          <IndexControls
+            value={{
+              search: this.state.search,
+              selectedTypes: this.state.selectedTypes,
+            }}
+            useNewUX={useNewUX}
+            onSearchChange={this.onSearchChange}
+          />
+          <EuiHorizontalRule margin="xs" />
+
+          <EuiBasicTable
+            className="ISM-component-templates-table"
+            data-test-subj="templatesTable"
+            loading={this.state.loading || this.props.loading}
+            columns={tableColums}
+            isSelectable={!useNewUX}
+            itemId="name"
+            items={this.getFinalItems(composableTemplates)}
+            onChange={this.onTableChange}
+            pagination={pagination}
+            selection={useNewUX ? undefined : selection}
+            sorting={sorting}
+            noItemsMessage={
+              loading ? undefined : isEqual(
+                  {
+                    search: this.state.search,
+                  },
+                  defaultFilter
+                ) ? (
+                <EuiEmptyPrompt
+                  body={
+                    <EuiText>
+                      <p>You have no templates.</p>
+                    </EuiText>
+                  }
+                  actions={[
+                    <EuiButton
+                      fill
+                      onClick={() => {
+                        this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
+                      }}
+                      data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
+                    >
+                      Create component template
+                    </EuiButton>,
+                  ]}
+                />
+              ) : (
+                <EuiEmptyPrompt
+                  body={
+                    <EuiText>
+                      <p>There are no templates matching your applied filters. Reset your filters to view your templates.</p>
+                    </EuiText>
+                  }
+                  actions={[
+                    <EuiButton
+                      fill
+                      onClick={() => {
+                        this.setState(defaultFilter, () => {
+                          this.getComposableTemplates();
+                        });
+                      }}
+                    >
+                      Reset filters
+                    </EuiButton>,
+                  ]}
+                />
+              )
+            }
+          />
+        </ContentPanel>
+      </>
+    ) : (
+      <>
+        <ContentPanel
+          actions={<ContentPanelActions actions={contentPanelActions} />}
+          bodyStyles={useNewUX ? {} : { padding: "initial" }}
+          title={contentPanelTitle}
+        >
+          <IndexControls
+            value={{
+              search: this.state.search,
+              selectedTypes: this.state.selectedTypes,
+            }}
+            useNewUX={useNewUX}
+            onSearchChange={this.onSearchChange}
+          />
+          <EuiHorizontalRule margin="xs" />
+
+          <EuiBasicTable
+            className="ISM-component-templates-table"
+            data-test-subj="templatesTable"
+            loading={this.state.loading || this.props.loading}
+            columns={tableColums}
+            isSelectable={!useNewUX}
+            itemId="name"
+            items={this.getFinalItems(composableTemplates)}
+            onChange={this.onTableChange}
+            pagination={pagination}
+            selection={useNewUX ? undefined : selection}
+            sorting={sorting}
+            noItemsMessage={
+              loading ? undefined : isEqual(
+                  {
+                    search: this.state.search,
+                  },
+                  defaultFilter
+                ) ? (
+                <EuiEmptyPrompt
+                  body={
+                    <EuiText>
+                      <p>You have no templates.</p>
+                    </EuiText>
+                  }
+                  actions={[
+                    <EuiButton
+                      fill
+                      onClick={() => {
+                        this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
+                      }}
+                      data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
+                    >
+                      Create component template
+                    </EuiButton>,
+                  ]}
+                />
+              ) : (
+                <EuiEmptyPrompt
+                  body={
+                    <EuiText>
+                      <p>There are no templates matching your applied filters. Reset your filters to view your templates.</p>
+                    </EuiText>
+                  }
+                  actions={[
+                    <EuiButton
+                      fill
+                      onClick={() => {
+                        this.setState(defaultFilter, () => {
+                          this.getComposableTemplates();
+                        });
+                      }}
+                    >
+                      Reset filters
+                    </EuiButton>,
+                  ]}
+                />
+              )
+            }
+          />
+        </ContentPanel>
+      </>
     );
   }
 }
