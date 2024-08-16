@@ -52,10 +52,10 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
           </span>
         </button>
       </div>
+      <div
+        class="euiSpacer euiSpacer--l"
+      />
     </div>
-    <div
-      class="euiSpacer euiSpacer--l"
-    />
     <div
       class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
       style="padding-left: 0px; padding-right: 0px;"

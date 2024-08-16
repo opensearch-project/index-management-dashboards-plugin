@@ -110,7 +110,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}
-            data-testE-subj="toggleShowDataStreams"
+            data-test-subj="toggleShowDataStreams"
           />
         </EuiFlexItem>
       </EuiFlexGroup>
@@ -129,7 +129,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}
-            data-testE-subj="toggleShowDataStreams"
+            data-test-subj="toggleShowDataStreams"
           />
         </EuiFlexItem>
       </EuiFlexGroup>

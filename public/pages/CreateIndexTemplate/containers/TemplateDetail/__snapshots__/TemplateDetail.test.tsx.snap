@@ -49,9 +49,6 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
     </div>
   </div>
   <div
-    class="euiSpacer euiSpacer--l"
-  />
-  <div
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
     style="padding-left: 0px; padding-right: 0px;"
   >

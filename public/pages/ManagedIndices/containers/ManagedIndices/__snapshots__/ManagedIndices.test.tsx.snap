@@ -2,7 +2,7 @@
 
 exports[`<ManagedIndices /> spec renders the component 1`] = `
 <div
-  style="padding: 0px 25px;"
+  style="padding: 0px 0px;"
 >
   <div
     class="euiFlexGroup euiFlexGroup--gutterLarge euiFlexGroup--alignItemsCenter euiFlexGroup--directionRow euiFlexGroup--responsive"

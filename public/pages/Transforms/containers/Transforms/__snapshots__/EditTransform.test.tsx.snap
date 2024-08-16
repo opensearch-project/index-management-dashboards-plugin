@@ -578,7 +578,7 @@ exports[`<EditTransform /> spec renders the component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButtonEmpty euiButtonEmpty--primary"
+        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--large"
         data-test-subj="editTransformCancelButton"
         type="button"
       >
