@@ -107,7 +107,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
         <EuiFlexItem>
           <EuiSearchBar
             query={search}
-            box={{ placeholder: "Search", schema, incremental: true }}
+            box={{ placeholder: "Search index name", schema, incremental: true }}
             onChange={onSearchChange}
             filters={filters}
           />

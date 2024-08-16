@@ -10,10 +10,10 @@ import { browserServicesMock, coreServicesMock } from "../../../test/mocks";
 import { ServicesContext } from "../../services";
 import { CoreServicesContext } from "../../components/core_services";
 import { CatIndex } from "../../../server/models/interfaces";
-import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { getApplication, getNavigationUI, getUISettings } from "../../services/Services";
 
-jest.mock("../../../../services/Services", () => ({
-  ...jest.requireActual("../../../../services/Services"),
+jest.mock("../../services/Services", () => ({
+  ...jest.requireActual("../../services/Services"),
   getUISettings: jest.fn(),
   getApplication: jest.fn(),
   getNavigationUI: jest.fn(),

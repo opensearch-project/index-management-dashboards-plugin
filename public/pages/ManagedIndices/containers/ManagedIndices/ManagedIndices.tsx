@@ -53,7 +53,6 @@ import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../ser
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 import { TopNavControlButtonData } from "src/plugins/navigation/public";
-import { browserServicesMock } from "plugins/index-management-dashboards-plugin/test/mocks";
 
 interface ManagedIndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
@@ -670,7 +669,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         </div>
       </>
     ) : (
-      <div style={{ padding: "0px 0px" }}>
+      <div style={{ padding: "0px 25px" }}>
         <EuiFlexGroup alignItems="center">
           <EuiFlexItem></EuiFlexItem>
           <EuiFlexItem grow={false}>
@@ -699,7 +698,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
             showDataStreams={showDataStreams}
             getDataStreams={this.getDataStreams}
             toggleShowDataStreams={this.toggleShowDataStreams}
-            Actions={Action}
           />
 
           <EuiHorizontalRule margin="xs" />
