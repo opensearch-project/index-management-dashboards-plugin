@@ -5,11 +5,12 @@
 
 import React, { useEffect, useState } from "react";
 import { EuiComboBox, EuiFieldSearch, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
-import { ALIAS_STATUS_OPTIONS } from "../../../../utils/constants";
+import { ALIAS_STATUS_OPTIONS, IndicesUpdateMode } from "../../../../utils/constants";
 import { getUISettings } from "../../../../services/Services";
 import AliasesActions from "../../containers/AliasActions";
 import { IAlias } from "../../interface";
 import { RouteComponentProps } from "react-router-dom";
+import FilterGroup from "../../../../components/FilterGroup";
 
 export interface SearchControlsProps {
   value: {
@@ -51,16 +52,15 @@ export default function SearchControls(props: SearchControlsProps) {
           onChange={(e) => onChange("search", e.target.value)}
         />
       </EuiFlexItem>
-      <EuiFlexItem grow={false}>
-        <EuiComboBox
-          style={{
-            width: 300,
+      <EuiFlexItem style={{ flexBasis: "100px" }} grow={false}>
+        <FilterGroup
+          filterButtonProps={{
+            children: "Status",
           }}
-          compressed
-          placeholder="Status"
+          onChange={(val) => onChange("status", (val || []).map((item) => item).join(","))}
+          value={state.status ? state.status.split(",").map((label) => label) : []}
           options={ALIAS_STATUS_OPTIONS}
-          selectedOptions={state.status ? state.status.split(",").map((label) => ({ label })) : []}
-          onChange={(val) => onChange("status", (val || []).map((item) => item.label).join(","))}
+          useNewUX={useUpdatedUX}
         />
       </EuiFlexItem>
       <EuiFlexItem grow={false}>

@@ -11,6 +11,7 @@ interface IndicesProps {
   sourceIndex: string;
   targetIndex: string;
   sourceIndexFilter: string;
+  size: "s" | "m";
 }
 
 export default class Indices extends Component<IndicesProps> {
@@ -19,10 +20,10 @@ export default class Indices extends Component<IndicesProps> {
   }
 
   render() {
-    const { sourceIndex, targetIndex, sourceIndexFilter } = this.props;
+    const { sourceIndex, targetIndex, sourceIndexFilter, size } = this.props;
 
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Indices" titleSize="m">
+      <ContentPanel bodyStyles={{ padding: "initial" }} title="Indices" titleSize={size}>
         <div style={{ paddingLeft: "10px" }}>
           <EuiText size="xs">
             <dt>Source index</dt>

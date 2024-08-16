@@ -210,12 +210,12 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
+            <EuiButtonEmpty size={useUpdatedUX ? "s" : "l"} onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
               Cancel
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
+            <EuiButton size={useUpdatedUX ? "s" : "m"} fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
               Change
             </EuiButton>
           </EuiFlexItem>

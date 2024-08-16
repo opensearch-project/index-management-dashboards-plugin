@@ -23,6 +23,7 @@ import {
   EuiPopover,
   EuiHealth,
   EuiText,
+  EuiButtonIcon,
 } from "@elastic/eui";
 import { TransformService } from "../../../../services";
 import { RouteComponentProps } from "react-router-dom";
@@ -40,6 +41,8 @@ import GeneralInformation from "../../components/GeneralInformation";
 import { buildIntervalScheduleText } from "../../../CreateRollup/utils/helpers";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { ModalConsumer } from "../../../../components/Modal";
+import { ContentPanelActions } from "../../../../components/ContentPanel";
 
 interface TransformDetailsProps extends RouteComponentProps {
   transformService: TransformService;
@@ -292,7 +295,80 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
     ];
 
     const { HeaderControl } = getNavigationUI();
-    const { setAppBadgeControls } = getApplication();
+    const { setAppBadgeControls, setAppRightControls } = getApplication();
+
+    const onClickEnable = () => {
+      this.closePopover();
+      this.onEnable();
+    };
+
+    const onClickDisable = () => {
+      this.closePopover();
+      this.onDisable();
+    };
+
+    const HeaderRight = [
+      {
+        renderComponent: (
+          <>
+            <EuiButtonIcon
+              display="base"
+              iconType="trash"
+              aria-label="Delete"
+              color="danger"
+              onClick={() => {
+                this.closePopover();
+                this.showDeleteModal();
+              }}
+              size="s"
+            />
+          </>
+        ),
+      },
+      {
+        renderComponent: (
+          <EuiButton size="s" onClick={() => (!this.state.enabled ? onClickEnable() : onClickDisable())}>
+            {this.state.enabled ? "Disable" : "Enable"}
+          </EuiButton>
+        ),
+      },
+      {
+        renderComponent: (
+          <EuiButton
+            size="s"
+            onClick={() => {
+              this.closePopover();
+              this.showJsonModal();
+            }}
+          >
+            View JSON
+          </EuiButton>
+        ),
+      },
+      {
+        renderComponent: (
+          <EuiFlexItem>
+            <ModalConsumer>
+              {() => (
+                <ContentPanelActions
+                  size="s"
+                  actions={[
+                    {
+                      text: "Edit",
+                      buttonProps: {
+                        onClick: () => this.onEdit(),
+                        fill: true,
+                        style: { marginRight: 20 },
+                      },
+                    },
+                  ]}
+                />
+              )}
+            </ModalConsumer>
+          </EuiFlexItem>
+        ),
+      },
+    ];
 
     const badgeControlData = [
       {
@@ -385,6 +461,7 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
     ) : (
       <div style={{ padding: "0px 0px" }}>
         <HeaderControl setMountPoint={setAppBadgeControls} controls={badgeControlData} />
+        <HeaderControl controls={HeaderRight} setMountPoint={setAppRightControls} />
         <GeneralInformation
           id={id}
           description={description}

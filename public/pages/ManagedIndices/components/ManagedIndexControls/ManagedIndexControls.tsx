@@ -29,7 +29,7 @@ interface ManagedIndexControlsProps {
   onRefresh: () => void;
   getDataStreams: () => Promise<DataStream[]>;
   toggleShowDataStreams: () => void;
-  Actions: { renderComponent: React.JSX.Element }[];
+  Actions?: React.JSX.Element;
 }
 
 export default class ManagedIndexControls extends Component<ManagedIndexControlsProps, object> {
@@ -91,7 +91,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
         <EuiFlexItem grow={false}>
           <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
         </EuiFlexItem>
-        {Actions}
+        <EuiFlexItem grow={false}>{Actions}</EuiFlexItem>
         <EuiFlexItem grow={false}>
           <EuiSwitch
             compressed

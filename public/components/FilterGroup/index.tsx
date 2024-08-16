@@ -5,10 +5,11 @@ export interface IFilterGroupProps {
   options: { label: string }[];
   value?: string[];
   filterButtonProps?: EuiFilterButtonProps;
+  useNewUX?: boolean;
   onChange?: (val: IFilterGroupProps["value"]) => void;
 }
 
-export default function FilterGroup({ options, value, filterButtonProps, onChange }: IFilterGroupProps) {
+export default function FilterGroup({ options, value, filterButtonProps, onChange, useNewUX }: IFilterGroupProps) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const onButtonClick = () => {
@@ -31,6 +32,7 @@ export default function FilterGroup({ options, value, filterButtonProps, onChang
             hasActiveFilters={!!value?.length}
             numActiveFilters={value?.length}
             {...filterButtonProps}
+            size={useNewUX ? "s" : "l"}
           />
         }
         isOpen={isPopoverOpen}
