@@ -207,18 +207,12 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       ? [BREADCRUMBS.MANAGED_INDICES]
       : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
-    console.log(console.log("showActionsinHeaderFlag Value is -> " + useUpdatedUX));
     await this.getManagedIndices();
   }
 
   async componentDidUpdate(prevProps: ManagedIndicesProps, prevState: ManagedIndicesState) {
     const prevQuery = ManagedIndices.getQueryObjectFromState(prevState);
     const currQuery = ManagedIndices.getQueryObjectFromState(this.state);
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
-    console.log(console.log("showActionsinHeaderFlag Value is -> " + useUpdatedUX));
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getManagedIndices();
     }
@@ -507,11 +501,23 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     ];
 
     const RetryPolicyModal = () => {
-      return showRetryModal && <RetryModal services={undefined} retryItems={_.cloneDeep(selectedItems)} onClose={this.onCloseRetryModal} />;
+      return (
+        showRetryModal && (
+          <RetryModal
+            services={this.context.managedIndexService}
+            retryItems={_.cloneDeep(selectedItems)}
+            onClose={this.onCloseRetryModal}
+          />
+        )
+      );
     };
 
     const EditRolloverAliasModal = () => {
-      return showEditModal && <RolloverAliasModal index={selectedItems[0].index} core={this.context} onClose={this.onCloseEditModal} />;
+      return (
+        showEditModal && (
+          <RolloverAliasModal index={selectedItems[0].index} services={this.context.managedIndexService} onClose={this.onCloseEditModal} />
+        )
+      );
     };
 
     const RemovePolicyModal = () => {
@@ -548,7 +554,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     const popoverActionItems = [
       <EuiContextMenuItem
         key="Edit"
-        icon="empty"
+        toolTipPosition="left"
         disabled={selectedItems.length !== 1 || isDataStreamIndexSelected}
         data-test-subj="editOption"
         onClick={() => {
@@ -560,7 +566,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       </EuiContextMenuItem>,
       <EuiContextMenuItem
         key="Remove"
-        icon="empty"
+        toolTipPosition="left"
         disabled={!selectedItems.length}
         data-test-subj="removeOption"
         onClick={() => {
@@ -572,7 +578,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       </EuiContextMenuItem>,
       <EuiContextMenuItem
         key="Retry"
-        icon="empty"
+        toolTipPosition="left"
         disabled={isRetryDisabled}
         data-test-subj="RetryOption"
         onClick={() => {
@@ -584,23 +590,22 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       </EuiContextMenuItem>,
     ];
 
-    const Action = [
-      {
-        renderComponent: (
-          <EuiFlexItem grow={false}>
-            <EuiPopover
-              id="action"
-              button={actionsButton}
-              isOpen={isPopoverOpen}
-              closePopover={this.closePopover}
-              anchorPosition="downRight"
-            >
-              <EuiContextMenuPanel items={popoverActionItems} />
-            </EuiPopover>
-          </EuiFlexItem>
-        ),
-      },
-    ];
+    const Action = () => {
+      return (
+        <EuiFlexItem grow={false}>
+          <EuiPopover
+            id="action"
+            button={actionsButton}
+            isOpen={isPopoverOpen}
+            closePopover={this.closePopover}
+            anchorPosition="downLeft"
+            panelPaddingSize="none"
+          >
+            <EuiContextMenuPanel items={popoverActionItems} />
+          </EuiPopover>
+        </EuiFlexItem>
+      );
+    };
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls } = getApplication();
@@ -654,9 +659,9 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
               showDataStreams={showDataStreams}
               getDataStreams={this.getDataStreams}
               toggleShowDataStreams={this.toggleShowDataStreams}
-              Actions={Action}
+              Actions={Action()}
             />
-
+            {/* {Action()} */}
             {CommonTable()}
           </ContentPanel>
           {RetryPolicyModal()}

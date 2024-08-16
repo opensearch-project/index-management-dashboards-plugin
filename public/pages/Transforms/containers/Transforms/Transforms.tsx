@@ -215,9 +215,9 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
     const actionItems = [
       <EuiContextMenuItem
         key="Edit"
-        icon="empty"
         disabled={selectedItems.length != 1}
         data-test-subj="editButton"
+        toolTipPosition="left"
         onClick={() => {
           this.closePopover();
           this.onClickEdit();
@@ -227,9 +227,9 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
       </EuiContextMenuItem>,
       <EuiContextMenuItem
         key="Delete"
-        icon="empty"
         disabled={!selectedItems.length}
         data-test-subj="deleteButton"
+        toolTipPosition="left"
         onClick={() => {
           this.closePopover();
           this.showDeleteModal();
@@ -252,6 +252,8 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls } = getApplication();
+
+    const Bsize = this.state.useUpdatedUX ? "s" : "m";
 
     return this.state.useUpdatedUX ? (
       <div style={{ padding: "0px" }}>

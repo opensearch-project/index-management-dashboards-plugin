@@ -146,6 +146,8 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
       schedule,
     } = this.state;
 
+    const size = this.state.useUpdatedUX ? "s" : "m";
+
     const Common = () => {
       return (
         <>
@@ -156,9 +158,10 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
             onChangeName={this.onNameChange}
             onChangeDescription={this.onDescriptionChange}
             description={description}
+            size={size}
           />
           <EuiSpacer />
-          <Indices sourceIndex={sourceIndex} targetIndex={targetIndex} sourceIndexFilter={sourceIndexFilter} />
+          <Indices sourceIndex={sourceIndex} targetIndex={targetIndex} sourceIndexFilter={sourceIndexFilter} size={size} />
           <EuiSpacer />
           <Schedule
             transformId={id}
@@ -178,18 +181,19 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
             onScheduleChange={this.onScheduleChange}
             onCronTimeZoneChange={this.onCronTimeZoneChange}
             onIntervalTimeUnitChange={this.onIntervalTimeUnitChange}
+            size={size}
           />
 
           <EuiSpacer />
 
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={this.onCancel} data-test-subj="editTransformCancelButton">
+              <EuiButtonEmpty size={this.state.useUpdatedUX ? "s" : "l"} onClick={this.onCancel} data-test-subj="editTransformCancelButton">
                 Cancel
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="editTransformSaveButton">
+              <EuiButton size={size} fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="editTransformSaveButton">
                 Save changes
               </EuiButton>
             </EuiFlexItem>
@@ -198,13 +202,7 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
       );
     };
     return this.state.useUpdatedUX ? (
-      <div style={{ padding: "0px 0px" }}>
-        {/* <EuiTitle size="l">
-          <h1>Edit transform job</h1>
-        </EuiTitle> */}
-        {/* <EuiSpacer /> */}
-        {Common()}
-      </div>
+      <div style={{ padding: "0px 0px" }}>{Common()}</div>
     ) : (
       <div style={{ padding: "25px 50px" }}>
         <EuiTitle size="l">

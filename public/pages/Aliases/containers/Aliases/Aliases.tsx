@@ -325,6 +325,8 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
       },
     ];
 
+    const Buttonsize = this.state.useUpdatedUX ? "s" : "m";
+
     const commonRender = () => {
       return (
         <>
@@ -394,6 +396,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
                   }
                   actions={[
                     <EuiButton
+                      size={Buttonsize}
                       fill
                       onClick={() => {
                         this.setState({
@@ -414,6 +417,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
                   }
                   actions={[
                     <EuiButton
+                      size={Buttonsize}
                       fill
                       onClick={() => {
                         this.setState(defaultFilter, () => {

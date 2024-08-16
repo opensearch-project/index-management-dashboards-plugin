@@ -14,10 +14,19 @@ interface ConfigureTransformProps {
   onChangeName: (value: ChangeEvent<HTMLInputElement>) => void;
   onChangeDescription: (value: ChangeEvent<HTMLTextAreaElement>) => void;
   description: string;
+  size: "s" | "m";
 }
 
-const ConfigureTransform = ({ inEdit, transformId, error, onChangeName, onChangeDescription, description }: ConfigureTransformProps) => (
-  <ContentPanel bodyStyles={{ padding: "initial" }} title="Job name and description" titleSize="m">
+const ConfigureTransform = ({
+  inEdit,
+  transformId,
+  error,
+  onChangeName,
+  onChangeDescription,
+  description,
+  size,
+}: ConfigureTransformProps) => (
+  <ContentPanel bodyStyles={{ padding: "initial" }} title="Job name and description" titleSize={size}>
     <div style={{ paddingLeft: "10px" }}>
       <EuiSpacer size="s" />
       <EuiFormRow label="Name" helpText="Specify a unique, descriptive name." isInvalid={!!error} error={error}>
