@@ -445,9 +445,10 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
     const popoverActionItems = [
       <EuiContextMenuItem
         key="Edit"
-        icon="empty"
+        icon="pencil"
         disabled={selectedItems.length != 1}
         data-test-subj="editButton"
+        size="s"
         onClick={() => {
           this.closePopover();
           this.onShowEditModal();
@@ -457,9 +458,10 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
       </EuiContextMenuItem>,
       <EuiContextMenuItem
         key="Delete"
-        icon="empty"
+        icon="trash"
         disabled={!selectedItems.length}
         data-test-subj="deleteButton"
+        size="s"
         onClick={() => {
           this.closePopover();
           this.onShowDeleteModal();
@@ -523,7 +525,7 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
           ]}
         />
         <ContentPanel>
-          <EuiFlexGroup gutterSize="s" alignItems="center">
+          <EuiFlexGroup gutterSize="s" alignItems="center" style={{ padding: "0px 0px 16px 0px" }}>
             <EuiFlexItem grow={true}>
               <EuiCompressedFieldSearch
                 autoFocus
@@ -534,9 +536,6 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
                 fullWidth
               />
             </EuiFlexItem>
-            {/* <EuiFlexItem grow={false}>
-              <EuiButtonIcon iconType="refresh" onClick={this.getPolicies} aria-label="refresh" size="s" display="base" />
-            </EuiFlexItem> */}
             <EuiFlexItem grow={false}>
               <EuiPopover
                 id="action"

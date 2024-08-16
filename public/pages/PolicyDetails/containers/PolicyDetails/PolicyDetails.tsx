@@ -236,7 +236,7 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
     };
 
     const { HeaderControl } = getNavigationUI();
-    const { setAppRightControls, setAppBadgeControls } = getApplication();
+    const { setAppRightControls } = getApplication();
 
     const padding_style = useNewUX ? { padding: "0px 0px" } : { padding: "5px 50px" };
     return (
@@ -256,18 +256,17 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
                   display: "base",
                 } as TopNavControlIconData,
                 {
-                  id: "View JSON",
-                  label: "View JSON",
-                  testId: "viewJSONButton",
-                  run: this.showJSONModal,
-                  fill: true,
-                  controlType: "button",
-                } as TopNavControlButtonData,
-                {
                   id: "Edit",
                   label: "Edit policy",
                   testId: "editButton",
                   run: this.showEditModal,
+                  controlType: "button",
+                } as TopNavControlButtonData,
+                {
+                  id: "View JSON",
+                  label: "View JSON",
+                  testId: "viewJSONButton",
+                  run: this.showJSONModal,
                   fill: true,
                   controlType: "button",
                 } as TopNavControlButtonData,
@@ -311,10 +310,10 @@ export class PolicyDetails extends Component<PolicyDetailsProps, PolicyDetailsSt
                 </EuiFlexGroup>
               </EuiFlexItem>
             </EuiFlexGroup>
+            <EuiSpacer />
           </>
         )}
 
-        <EuiSpacer />
         <PolicySettings
           policyId={policyId}
           errorNotification={policy.policy.error_notification}
