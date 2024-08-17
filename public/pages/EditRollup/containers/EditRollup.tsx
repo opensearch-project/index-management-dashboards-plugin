@@ -18,6 +18,7 @@ import { EMPTY_ROLLUP } from "../../CreateRollup/utils/constants";
 import { CoreServicesContext } from "../../../components/core_services";
 import { delayTimeUnitToMS, msToDelayTimeUnit } from "../../CreateRollup/utils/helpers";
 import { useUpdateUrlWithDataSourceProperties } from "../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../services/Services";
 
 interface EditRollupProps extends RouteComponentProps {
   rollupService: RollupService;
@@ -44,12 +45,15 @@ interface EditRollupState {
   delayTime: number | string;
   delayTimeunit: string;
   rollupJSON: any;
+  useNewUX: boolean;
 }
 
 export class EditRollup extends Component<EditRollupProps, EditRollupState> {
   static contextType = CoreServicesContext;
   constructor(props: EditRollupProps) {
     super(props);
+    const uiSettings = getUISettings();
+    const useNewUX = uiSettings.get("home:useNewHomePage");
     this.state = {
       rollupId: "",
       rollupIdError: "",
@@ -71,13 +75,17 @@ export class EditRollup extends Component<EditRollupProps, EditRollupState> {
       delayTime: "",
       delayTimeunit: "MINUTES",
       rollupJSON: EMPTY_ROLLUP,
+      useNewUX: useNewUX,
     };
   }
 
   componentDidMount = async (): Promise<void> => {
     const { id } = queryString.parse(this.props.location.search);
+    const breadCrumbs = this.state.useNewUX
+      ? [BREADCRUMBS.ROLLUPS, BREADCRUMBS.EDIT_ROLLUP]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS, BREADCRUMBS.EDIT_ROLLUP, { text: id }];
     if (typeof id === "string" && !!id) {
-      this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS, BREADCRUMBS.EDIT_ROLLUP, { text: id }]);
+      this.context.chrome.setBreadcrumbs(breadCrumbs);
       await this.getRollupToEdit(id);
     } else {
       this.context.notifications.toasts.addDanger(`Invalid rollup id: ${id}`);
@@ -283,13 +291,26 @@ export class EditRollup extends Component<EditRollupProps, EditRollupState> {
       pageSize,
       delayTime,
       delayTimeunit,
+      useNewUX,
     } = this.state;
+
+    const getTitle = !useNewUX
+      ? () => {
+          return (
+            <>
+              <EuiTitle size="l">
+                <h1>Edit rollup job</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </>
+          );
+        }
+      : () => {};
+    const padding_style = useNewUX ? { padding: "0px 0px" } : { padding: "25px 50px" };
+
     return (
-      <div style={{ padding: "25px 50px" }}>
-        <EuiTitle size="l">
-          <h1>Edit rollup job</h1>
-        </EuiTitle>
-        <EuiSpacer />
+      <div style={padding_style}>
+        {getTitle()}
         <ConfigureRollup
           isEdit={true}
           rollupId={rollupId}

@@ -43,6 +43,7 @@ interface CreateRollupProps extends RouteComponentProps {
   pageSize: number;
   delayTime: number | undefined;
   delayTimeunit: string;
+  useNewUX: boolean;
 }
 
 export default class CreateRollupStep4 extends Component<CreateRollupProps> {
@@ -62,17 +63,28 @@ export default class CreateRollupStep4 extends Component<CreateRollupProps> {
   render() {
     if (this.props.currentStep != 4) return null;
 
+    const getTitle = !this.props.useNewUX
+      ? () => {
+          return (
+            <>
+              <EuiTitle size="l">
+                <h1>Review and create</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </>
+          );
+        }
+      : () => {};
+    const padding_style = this.props.useNewUX ? { padding: "0px 0px" } : { padding: "5px 50px" };
+
     return (
-      <div style={{ padding: "5px 50px" }}>
+      <div style={padding_style}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateRollupSteps step={4} />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiTitle size="l">
-              <h1>Review and create</h1>
-            </EuiTitle>
-            <EuiSpacer />
+            {getTitle()}
             <JobNameAndIndices {...this.props} />
             <EuiSpacer />
             <HistogramAndMetrics {...this.props} />

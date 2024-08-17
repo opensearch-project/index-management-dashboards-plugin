@@ -16,6 +16,23 @@ import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import CreateRollupForm from "./CreateRollupForm";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataStream } from "../../../../../server/models/interfaces";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+
+jest.mock("../../../../services/Services", () => ({
+  ...jest.requireActual("../../../../services/Services"),
+  getUISettings: jest.fn(),
+  getApplication: jest.fn(),
+  getNavigationUI: jest.fn(),
+}));
+
+beforeEach(() => {
+  (getUISettings as jest.Mock).mockReturnValue({
+    get: jest.fn().mockReturnValue(false), // or false, depending on your test case
+  });
+  (getApplication as jest.Mock).mockReturnValue({});
+
+  (getNavigationUI as jest.Mock).mockReturnValue({});
+});
 
 const sampleMapping = {
   index_1: {

@@ -11,7 +11,7 @@ import { ServicesContext } from "../../../../services";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import IndexFormWrapper, { IndexForm } from "../../../../containers/IndexForm";
-import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink } from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle, EuiLink, EuiText } from "@elastic/eui";
 import CustomFormRow from "../../../../components/CustomFormRow";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import FormGenerator, { AllBuiltInComponents, IFormGeneratorRef } from "../../../../components/FormGenerator";
@@ -22,6 +22,7 @@ import { IRolloverRequestBody } from "../../interface";
 import { filterByMinimatch } from "../../../../../utils/helper";
 import { SYSTEM_ALIAS } from "../../../../../utils/constants";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 export interface RolloverProps extends RouteComponentProps<{ source?: string }> {}
 
@@ -41,6 +42,9 @@ export default function Rollover(props: RolloverProps) {
     source: props.match.params.source,
   });
   const [loading, setIsLoading] = useState(false);
+  const uiSettings = getUISettings();
+  const useNewUx = uiSettings.get("home:useNewHomePage");
+  const [useNewUX, setUseNewUX] = useState(useNewUx);
   const [writeIndexValue, setWriteIndexValue] = useState<string>("");
   const field = useField({
     values: {
@@ -78,13 +82,22 @@ export default function Rollover(props: RolloverProps) {
   };
 
   useEffect(() => {
-    coreService?.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      {
-        ...BREADCRUMBS.ROLLOVER,
-        href: `#${props.location.pathname}`,
-      },
-    ]);
+    let breadCrumbs = useNewUX
+      ? [
+          BREADCRUMBS.INDICES,
+          {
+            ...BREADCRUMBS.ROLLOVER,
+            href: `#${props.location.pathname}`,
+          },
+        ]
+      : [
+          BREADCRUMBS.INDEX_MANAGEMENT,
+          {
+            ...BREADCRUMBS.ROLLOVER,
+            href: `#${props.location.pathname}`,
+          },
+        ];
+    coreService?.chrome.setBreadcrumbs(breadCrumbs);
     refreshOptions();
   }, []);
 
@@ -206,19 +219,40 @@ export default function Rollover(props: RolloverProps) {
     return result;
   }, [sourceType, options, writeIndexValue]);
 
+  const { HeaderControl } = getNavigationUI();
+  const { setAppDescriptionControls } = getApplication();
+
+  const padding_style = useNewUX ? { padding: "0px 0px" } : { padding: "0px 50px" };
+
+  const descriptionData = [
+    {
+      renderComponent: (
+        <EuiText size="s" color="subdued">
+          Manually merge shards of indexes or backing indexes of data streams. You can also use force merge to clear up deleted documents
+          within indexes.
+        </EuiText>
+      ),
+    },
+  ];
+
   return (
-    <div style={{ padding: "0 50px" }}>
-      <EuiTitle>
-        <h1>Roll over</h1>
-      </EuiTitle>
-      <CustomFormRow
-        helpText="Rollover creates a new writing index for a data stream or index alias."
-        style={{
-          marginBottom: 20,
-        }}
-      >
-        <></>
-      </CustomFormRow>
+    <div style={padding_style}>
+      {useNewUX && <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />}
+      {!useNewUX && (
+        <>
+          <EuiTitle>
+            <h1>Roll over</h1>
+          </EuiTitle>
+          <CustomFormRow
+            helpText="Rollover creates a new writing index for a data stream or index alias."
+            style={{
+              marginBottom: 20,
+            }}
+          >
+            <></>
+          </CustomFormRow>
+        </>
+      )}
       <ContentPanel title="Configure source" titleSize="s">
         {sourceType === "alias" && filterByMinimatch(tempValue.source || "", SYSTEM_ALIAS) ? (
           <>
