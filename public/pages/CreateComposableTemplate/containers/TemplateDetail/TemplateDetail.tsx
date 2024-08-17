@@ -131,6 +131,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
     isEdit,
     field,
     noPanel,
+    useNewUX,
   };
 
   const diffedNumber = isEdit
@@ -296,19 +297,25 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
       <EuiSpacer />
       <IndexSettings {...subCompontentProps} />
       <EuiSpacer />
-      <TemplateMappings {...subCompontentProps} />
+      <TemplateMappings useNewUx={useNewUX} {...subCompontentProps} />
       <EuiSpacer />
       {isEdit || hideButton ? null : (
         <>
           <EuiSpacer />
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateComposableTemplateCancelButton">
+              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateComposableTemplateCancelButton" size={useNewUX ? "s" : undefined}>
                 Cancel
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={onClickSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
+              <EuiButton
+                fill
+                onClick={onClickSubmit}
+                isLoading={isSubmitting}
+                data-test-subj="CreateComposableTemplateCreateButton"
+                size={useNewUX ? "s" : undefined}
+              >
                 Create component template
               </EuiButton>
             </EuiFlexItem>

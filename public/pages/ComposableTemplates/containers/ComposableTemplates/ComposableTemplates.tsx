@@ -473,6 +473,7 @@ class ComposableTemplates extends MDSEnabledComponent<ComposableTemplatesProps, 
                         this.props.history.push(ROUTES.CREATE_COMPOSABLE_TEMPLATE);
                       }}
                       data-test-subj="CreateComponentTemplateWhenNoTemplateFound"
+                      size={useNewUX ? "s" : undefined}
                     >
                       Create component template
                     </EuiButton>,

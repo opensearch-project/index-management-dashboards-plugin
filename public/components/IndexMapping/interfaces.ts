@@ -23,6 +23,7 @@ export interface IndexMappingProps {
   oldMappingsEditable?: boolean; // in template edit case, existing mappings is editable
   readonly?: boolean;
   docVersion: string;
+  useNewUx?: boolean;
 }
 
 export enum EDITOR_MODE {

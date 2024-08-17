@@ -20,7 +20,7 @@ export * from "./helper";
 export * from "./interfaces";
 
 const IndexMapping = (
-  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, docVersion }: IndexMappingProps,
+  { value: propsValue, onChange: propsOnChange, isEdit, oldValue, readonly, docVersion, useNewUx }: IndexMappingProps,
   ref: Ref<IIndexMappingsRef>
 ) => {
   const value = propsValue?.properties || [];
@@ -194,10 +194,16 @@ const IndexMapping = (
           {readonly ? null : (
             <>
               <EuiSpacer />
-              <EuiButton style={{ marginRight: 8 }} data-test-subj="createIndexAddFieldButton" onClick={() => addField("")}>
+              <EuiButton
+                size={useNewUx ? "s" : undefined}
+                style={{ marginRight: 8 }}
+                data-test-subj="createIndexAddFieldButton"
+                onClick={() => addField("")}
+              >
                 Add new field
               </EuiButton>
               <EuiButton
+                size={useNewUx ? "s" : undefined}
                 data-test-subj="createIndexAddObjectFieldButton"
                 onClick={() =>
                   addField("", {
