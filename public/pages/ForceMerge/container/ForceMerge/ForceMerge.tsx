@@ -3,7 +3,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiButton, EuiButtonEmpty, EuiButtonIcon, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiSpacer, EuiTitle } from "@elastic/eui";
+import {
+  EuiButton,
+  EuiButtonEmpty,
+  EuiButtonIcon,
+  EuiCallOut,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiSpacer,
+  EuiTitle,
+  EuiText,
+} from "@elastic/eui";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { CoreStart } from "opensearch-dashboards/public";
@@ -24,6 +34,7 @@ import NotificationConfig, { NotificationConfigRef } from "../../../../container
 import { ActionType } from "../../../Notifications/constant";
 import { getClusterInfo } from "../../../../utils/helpers";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 interface ForceMergeProps extends RouteComponentProps<{ indexes?: string }> {
   services: BrowserServices;
@@ -34,6 +45,9 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   const context = useContext(CoreServicesContext) as CoreStart;
   const [advancedSettingsOpen, setAdvancedSettingsOpen] = useState(false);
   const [executing, setExecuting] = useState(false);
+  const uiSettings = getUISettings();
+  const useNewUx = uiSettings.get("home:useNewHomePage");
+  const [useNewUX, setUseNewUX] = useState(useNewUx);
   const [notReadOnlyIndexes, setNotReadOnlyIndexes] = useState<
     [
       string,
@@ -145,11 +159,10 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
   );
 
   useEffect(() => {
-    context.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      { ...BREADCRUMBS.FORCE_MERGE, href: `#${props.location.pathname}` },
-    ]);
+    let breadCrumbs = useNewUX
+      ? [BREADCRUMBS.INDICES, { ...BREADCRUMBS.FORCE_MERGE, href: `#${props.location.pathname}` }]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES, { ...BREADCRUMBS.FORCE_MERGE, href: `#${props.location.pathname}` }];
+    context.chrome.setBreadcrumbs(breadCrumbs);
     return () => {
       destroyedRef.current = true;
     };
@@ -164,18 +177,39 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
     });
   }, [field.getValue("indexes")]);
 
+  const { HeaderControl } = getNavigationUI();
+  const { setAppDescriptionControls } = getApplication();
+
+  const descriptionData = [
+    {
+      renderComponent: (
+        <EuiText size="s" color="subdued">
+          Manually merge shards of indexes or backing indexes of data streams. You can also use force merge to clear up deleted documents
+          within indexes.
+        </EuiText>
+      ),
+    },
+  ];
+
+  const padding_style = useNewUX ? { padding: "0px 0px" } : { padding: "0px 50px" };
+
   return (
-    <div style={{ padding: "0px 50px" }}>
-      <EuiTitle size="l">
-        <h1>Force merge</h1>
-      </EuiTitle>
-      <CustomFormRow
-        fullWidth
-        helpText="Manually merge shards of indexes or backing indexes of data streams. You can also use force merge to clear up deleted documents within indexes."
-      >
-        <></>
-      </CustomFormRow>
-      <EuiSpacer />
+    <div style={padding_style}>
+      {useNewUX && <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />}
+      {!useNewUX && (
+        <>
+          <EuiTitle size="l">
+            <h1>Force merge</h1>
+          </EuiTitle>
+          <CustomFormRow
+            fullWidth
+            helpText="Manually merge shards of indexes or backing indexes of data streams. You can also use force merge to clear up deleted documents within indexes."
+          >
+            <></>
+          </CustomFormRow>
+          <EuiSpacer />
+        </>
+      )}
 
       <ContentPanel title="Configure source index" titleSize="s">
         <EuiSpacer />

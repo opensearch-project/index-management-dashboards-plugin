@@ -11,6 +11,7 @@ export interface SearchControlsProps {
     search: string;
   };
   onSearchChange: (args: SearchControlsProps["value"]) => void;
+  useNewUX?: boolean;
 }
 
 export default function SearchControls(props: SearchControlsProps) {
@@ -29,7 +30,13 @@ export default function SearchControls(props: SearchControlsProps) {
   return (
     <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
       <EuiFlexItem>
-        <EuiFieldSearch fullWidth placeholder="Search..." value={state.search} onChange={(e) => onChange("search", e.target.value)} />
+        <EuiFieldSearch
+          fullWidth
+          placeholder="Search..."
+          value={state.search}
+          onChange={(e) => onChange("search", e.target.value)}
+          compressed={props.useNewUX}
+        />
       </EuiFlexItem>
     </EuiFlexGroup>
   );

@@ -34,6 +34,9 @@ import {
   EuiTextColor,
   EuiLink,
   EuiTableFieldDataColumnType,
+  EuiInMemoryTable,
+  EuiButtonIcon,
+  EuiCompressedFieldSearch,
 } from "@elastic/eui";
 import { RollupService } from "../../../../services";
 import RollupEmptyPrompt from "../../components/RollupEmptyPrompt";
@@ -46,6 +49,8 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { HttpFetchQuery } from "opensearch-dashboards/public";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface RollupsProps extends RouteComponentProps, DataSourceMenuProperties {
   rollupService: RollupService;
@@ -64,6 +69,7 @@ interface RollupsState extends DataSourceMenuProperties {
   loadingRollups: boolean;
   isPopoverOpen: boolean;
   isDeleteModalVisible: boolean;
+  useNewUX: boolean;
 }
 
 export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
@@ -71,6 +77,8 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
   constructor(props: RollupsProps) {
     super(props);
 
+    const uiSettings = getUISettings();
+    const useNewUX = uiSettings.get("home:useNewHomePage");
     const { from, size, search, sortField, sortDirection } = getURLQueryParams(this.props.location);
 
     this.state = {
@@ -87,13 +95,15 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
       isPopoverOpen: false,
       isDeleteModalVisible: false,
       rollupExplain: {},
+      useNewUX: useNewUX,
     };
 
     this.getRollups = _.debounce(this.getRollups, 500, { leading: true });
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS]);
+    const breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.ROLLUPS] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getRollups();
   }
 
@@ -271,6 +281,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
       loadingRollups,
       isPopoverOpen,
       isDeleteModalVisible,
+      useNewUX,
     } = this.state;
 
     const filterIsApplied = !!search;
@@ -298,6 +309,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
         disabled={!selectedItems.length}
         onClick={this.onActionButtonClick}
         data-test-subj="actionButton"
+        size={useNewUX ? "s" : undefined}
       >
         Actions
       </EuiButton>
@@ -323,6 +335,43 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
       <EuiContextMenuItem
         key="Delete"
         icon="empty"
+        disabled={!selectedItems.length}
+        data-test-subj="deleteButton"
+        onClick={() => {
+          this.closePopover();
+          this.showDeleteModal();
+        }}
+      >
+        <EuiTextColor color="danger">Delete</EuiTextColor>
+      </EuiContextMenuItem>,
+    ];
+
+    const newActionItems = [
+      <EuiContextMenuItem
+        disabled={!selectedItems.length}
+        onClick={() => {
+          this.onEnable();
+        }}
+        data-test-subj="enableButton"
+      >
+        Enable
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem disabled={!selectedItems.length} onClick={this.onDisable} data-test-subj="disableButton">
+        Disable
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        key="Edit"
+        disabled={selectedItems.length != 1}
+        data-test-subj="editButton"
+        onClick={() => {
+          this.closePopover();
+          this.onClickEdit();
+        }}
+      >
+        Edit
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        key="Delete"
         disabled={!selectedItems.length}
         data-test-subj="deleteButton"
         onClick={() => {
@@ -394,7 +443,89 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
       },
     ];
 
-    return (
+    const commonTable = () => {
+      return (
+        <EuiBasicTable
+          columns={rollupsColumns}
+          isSelectable={true}
+          itemId="_id"
+          items={rollups}
+          noItemsMessage={<RollupEmptyPrompt filterIsApplied={filterIsApplied} loading={loadingRollups} resetFilters={this.resetFilters} />}
+          onChange={this.onTableChange}
+          pagination={pagination}
+          selection={selection}
+          sorting={sorting}
+          tableLayout="auto"
+        />
+      );
+    };
+
+    const commonDeleteModal = () => {
+      return (
+        isDeleteModalVisible && (
+          <DeleteModal rollupId={this.getSelectedRollupIds()} closeDeleteModal={this.closeDeleteModal} onClickDelete={this.onClickDelete} />
+        )
+      );
+    };
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls } = getApplication();
+    const controlControlsData = [
+      {
+        id: "Create rollup job",
+        label: "Create rollup job",
+        fill: true,
+        run: this.onClickCreate,
+        testId: "createRollupButton",
+        controlType: "button",
+      },
+    ];
+
+    return useNewUX ? (
+      <>
+        <HeaderControl setMountPoint={setAppRightControls} controls={controlControlsData} />
+        <ContentPanel>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
+            <EuiFlexItem grow={true}>
+              <EuiCompressedFieldSearch
+                autoFocus
+                incremental={true}
+                fullWidth={true}
+                value={search}
+                placeholder="Search"
+                aria-label="Search"
+                onChange={this.onSearchChange}
+              />
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButtonIcon
+                iconType="refresh"
+                onClick={this.getRollups}
+                aria-label="refresh"
+                size="s"
+                display="base"
+                data-test-subj="refreshButton"
+              />
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiPopover
+                id="action"
+                button={actionButton}
+                isOpen={isPopoverOpen}
+                closePopover={this.closePopover}
+                panelPaddingSize="none"
+                anchorPosition="downLeft"
+                data-test-subj="actionPopover"
+              >
+                <EuiContextMenuPanel items={newActionItems} />
+              </EuiPopover>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          {commonTable()}
+          {commonDeleteModal()}
+        </ContentPanel>
+      </>
+    ) : (
       <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
         <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="spaceBetween" alignItems="center">
           <EuiFlexItem>
@@ -452,41 +583,12 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
             <EuiFlexItem>
               <EuiFieldSearch fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
             </EuiFlexItem>
-            {pageCount > 1 && (
-              <EuiFlexItem grow={false} style={{ justifyContent: "center" }}>
-                <EuiPagination
-                  pageCount={pageCount}
-                  activePage={page}
-                  onPageClick={this.onPageClick}
-                  data-test-subj="indexControlsPagination"
-                />
-              </EuiFlexItem>
-            )}
           </EuiFlexGroup>
 
           <EuiHorizontalRule margin="xs" />
 
-          <EuiBasicTable
-            columns={rollupsColumns}
-            isSelectable={true}
-            itemId="_id"
-            items={rollups}
-            noItemsMessage={
-              <RollupEmptyPrompt filterIsApplied={filterIsApplied} loading={loadingRollups} resetFilters={this.resetFilters} />
-            }
-            onChange={this.onTableChange}
-            pagination={pagination}
-            selection={selection}
-            sorting={sorting}
-            tableLayout="auto"
-          />
-          {isDeleteModalVisible && (
-            <DeleteModal
-              rollupId={this.getSelectedRollupIds()}
-              closeDeleteModal={this.closeDeleteModal}
-              onClickDelete={this.onClickDelete}
-            />
-          )}
+          {commonTable()}
+          {commonDeleteModal()}
         </div>
       </EuiPanel>
     );

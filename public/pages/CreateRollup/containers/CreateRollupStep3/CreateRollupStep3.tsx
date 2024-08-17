@@ -38,6 +38,7 @@ interface CreateRollupProps extends RouteComponentProps {
   onChangeContinuousJob: (optionId: string) => void;
   onChangeDelayTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
   onChangeIntervalTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
+  useNewUX: boolean;
 }
 
 interface CreateRollupState {
@@ -139,16 +140,29 @@ export default class CreateRollupStep3 extends Component<CreateRollupProps, Crea
       onChangeIntervalTimeunit,
     } = this.props;
     const { rollupId, rollupIdError } = this.state;
+
+    const getTitle = !this.props.useNewUX
+      ? () => {
+          return (
+            <>
+              <EuiTitle size="l">
+                <h1>Specify schedule</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </>
+          );
+        }
+      : () => {};
+    const padding_style = this.props.useNewUX ? { padding: "0px 0px" } : { padding: "5px 50px" };
+
     return (
-      <div style={{ padding: "5px 50px" }}>
+      <div style={padding_style}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateRollupSteps step={3} />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiTitle size="l">
-              <h1>Specify schedule</h1>
-            </EuiTitle>
+            {getTitle()}
             <EuiSpacer />
             <Schedule
               {...this.props}

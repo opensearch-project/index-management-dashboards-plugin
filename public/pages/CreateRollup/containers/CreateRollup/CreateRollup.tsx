@@ -33,6 +33,7 @@ interface CreateRollupProps extends RouteComponentProps, DataSourceMenuPropertie
   onChangeTargetIndex: (options: EuiComboBoxOptionOption<IndexItem>[]) => void;
   currentStep: number;
   hasAggregation: boolean;
+  useNewUX: boolean;
 }
 
 export default class CreateRollup extends Component<CreateRollupProps> {
@@ -41,17 +42,28 @@ export default class CreateRollup extends Component<CreateRollupProps> {
       return null;
     }
 
+    const getTitle = !this.props.useNewUX
+      ? () => {
+          return (
+            <>
+              <EuiTitle size="l">
+                <h1>Set up indices</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </>
+          );
+        }
+      : () => {};
+    const padding_style = this.props.useNewUX ? { padding: "0px 0px" } : { padding: "5px 50px" };
+
     return (
-      <div style={{ padding: "5px 50px" }}>
+      <div style={padding_style}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateRollupSteps step={1} />
           </EuiFlexItem>
           <EuiFlexItem>
-            <EuiTitle size="l">
-              <h1>Set up indices</h1>
-            </EuiTitle>
-            <EuiSpacer />
+            {getTitle()}
             <ConfigureRollup isEdit={false} {...this.props} />
             <EuiSpacer />
             <RollupIndices key={this.props.dataSourceId} {...this.props} />
