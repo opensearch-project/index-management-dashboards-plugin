@@ -12,14 +12,19 @@ interface ConfigurePolicyProps {
   policyIdError: string;
   isEdit: boolean;
   onChange: (value: ChangeEvent<HTMLInputElement>) => void;
+  useNewUx?: boolean;
 }
 
-const ConfigurePolicy = ({ isEdit, policyId, policyIdError, onChange }: ConfigurePolicyProps) => (
-  <ContentPanel bodyStyles={{ padding: "initial" }} title="Name policy" titleSize="s">
+const ConfigurePolicy = ({ isEdit, policyId, policyIdError, onChange, useNewUx }: ConfigurePolicyProps) => (
+  <ContentPanel bodyStyles={useNewUx ? { padding: "0px 0px" } : { padding: "initial" }} title="Name policy" titleSize="s">
     <div style={{ paddingLeft: "10px" }}>
-      <EuiText size="xs">
-        <p>Policies let you automatically perform administrative operations on indices.</p>
-      </EuiText>
+      {!useNewUx ? (
+        <EuiText size="xs">
+          <p>Policies let you automatically perform administrative operations on indices.</p>
+        </EuiText>
+      ) : (
+        <></>
+      )}
       <EuiSpacer size="s" />
       <EuiFormRow
         label="Policy ID"
