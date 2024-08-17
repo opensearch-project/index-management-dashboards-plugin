@@ -28,6 +28,7 @@ import {
   DataSourceMenuReadOnlyProperties,
 } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface CreateRollupFormProps extends RouteComponentProps, DataSourceMenuProperties, DataSourceMenuReadOnlyProperties {
   rollupService: RollupService;
@@ -80,6 +81,7 @@ interface CreateRollupFormState {
   delayTime: number | undefined;
   delayTimeunit: string;
   rollupJSON: any;
+  useNewUX: boolean;
 }
 
 export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRollupFormState> {
@@ -138,14 +140,22 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
   constructor(props: CreateRollupFormProps) {
     super(props);
 
-    this.state = CreateRollupForm.baseState;
+    const uiSettings = getUISettings();
+    const useNewUX = uiSettings.get("home:useNewHomePage");
+    this.state = {
+      ...CreateRollupForm.baseState,
+      useNewUX: useNewUX,
+    };
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
     this._isMount = true;
   }
 
   componentDidMount = async (): Promise<void> => {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS, BREADCRUMBS.CREATE_ROLLUP]);
+    const breadCrumbs = this.state.useNewUX
+      ? [BREADCRUMBS.ROLLUPS, BREADCRUMBS.CREATE_ROLLUP]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ROLLUPS, BREADCRUMBS.CREATE_ROLLUP];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
   };
 
   componentWillUnmount() {
@@ -588,6 +598,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
       pageSize,
       delayTime,
       delayTimeunit,
+      useNewUX,
     } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
@@ -609,6 +620,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
           onChangeTargetIndex={this.onChangeTargetIndex}
           currentStep={this.state.currentStep}
           hasAggregation={selectedDimensionField.length != 0 || selectedMetrics.length != 0}
+          useNewUX={useNewUX}
         />
         <CreateRollupStep2
           {...this.props}
@@ -631,6 +643,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
           onChangeTimezone={this.onChangeTimezone}
           onDimensionSelectionChange={this.onDimensionSelectionChange}
           onMetricSelectionChange={this.onMetricSelectionChange}
+          useNewUX={useNewUX}
         />
         <CreateRollupStep3
           {...this.props}
@@ -656,6 +669,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
           onChangeContinuousJob={this.onChangeContinuousJob}
           onChangeDelayTimeunit={this.onChangeDelayTimeunit}
           onChangeIntervalTimeunit={this.onChangeIntervalTimeunit}
+          useNewUX={useNewUX}
         />
         <CreateRollupStep4
           {...this.props}
@@ -683,6 +697,7 @@ export class CreateRollupForm extends Component<CreateRollupFormProps, CreateRol
           currentStep={this.state.currentStep}
           onChangeStep={this.onChangeStep}
           submitError={submitError}
+          useNewUX={useNewUX}
         />
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd" style={{ padding: "5px 50px" }}>
           <EuiFlexItem grow={false}>

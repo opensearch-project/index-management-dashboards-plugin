@@ -36,6 +36,7 @@ interface CreateRollupStep2Props extends RouteComponentProps {
   onChangeTimezone: (e: ChangeEvent<HTMLSelectElement>) => void;
   onDimensionSelectionChange: (selectedFields: DimensionItem[]) => void;
   onMetricSelectionChange: (selectedFields: MetricItem[]) => void;
+  useNewUX: boolean;
 }
 
 export default class CreateRollupStep2 extends Component<CreateRollupStep2Props> {
@@ -56,18 +57,29 @@ export default class CreateRollupStep2 extends Component<CreateRollupStep2Props>
     if (this.props.currentStep !== 2) return null;
     const { fields, timestamp } = this.props;
 
+    const getTitle = !this.props.useNewUX
+      ? () => {
+          return (
+            <>
+              <EuiTitle size="l">
+                <h1>Define aggregations and metrics</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </>
+          );
+        }
+      : () => {};
+    const padding_style = this.props.useNewUX ? { padding: "0px 0px" } : { padding: "5px 50px" };
+
     return (
-      <div style={{ padding: "5px 50px" }}>
+      <div style={padding_style}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateRollupSteps step={2} />
           </EuiFlexItem>
 
           <EuiFlexItem>
-            <EuiTitle size="l">
-              <h1>Define aggregations and metrics</h1>
-            </EuiTitle>
-            <EuiSpacer />
+            {getTitle()}
 
             <TimeAggregation {...this.props} selectedTimestamp={timestamp} fieldsOption={fields} />
             <EuiSpacer />
