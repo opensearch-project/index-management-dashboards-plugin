@@ -18,12 +18,14 @@ import { makeId } from "../../../../utils/helpers";
 interface ISMTemplatesProps {
   policy: Policy;
   onChangePolicy: (policy: Policy) => void;
+  useNewUx?: boolean;
 }
 
-const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
+const ISMTemplates = ({ policy, onChangePolicy, useNewUx }: ISMTemplatesProps) => {
   const templates = convertTemplatesToArray(policy.ism_template);
   const addTemplateButton = (
     <EuiButton
+      size={useNewUx ? "s" : undefined}
       onClick={() => {
         onChangePolicy({ ...policy, ism_template: [...templates, { index_patterns: [], priority: 1 }] });
       }}
@@ -32,6 +34,7 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
       Add template
     </EuiButton>
   );
+  const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
   return (
     <ContentPanel
       bodyStyles={{ padding: "initial" }}
@@ -51,7 +54,7 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
       }
       titleSize="s"
       subTitleText={
-        <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+        <EuiText color="subdued" size="s" style={paddingStyle}>
           <p style={{ fontWeight: 200 }}>
             Specify ISM template patterns that match the index to apply the policy.{" "}
             <EuiLink href={DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
@@ -97,6 +100,7 @@ const ISMTemplates = ({ policy, onChangePolicy }: ISMTemplatesProps) => {
                 ism_template: templates.slice(0, idx).concat(templates.slice(idx + 1)),
               });
             }}
+            useNewUx={useNewUx}
           />
         ))}
 

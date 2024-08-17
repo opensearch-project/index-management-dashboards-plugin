@@ -286,7 +286,13 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
         {this.renderEditCallOut()}
         <ConfigurePolicy policyId={policyId} policyIdError={policyIdError} isEdit={isEdit} onChange={this.onChange} useNewUx={useNewUX} />
         <EuiSpacer />
-        <DefinePolicy jsonString={jsonString} onChange={this.onChangeJSON} onAutoIndent={this.onAutoIndent} hasJSONError={hasJSONError} />
+        <DefinePolicy
+          jsonString={jsonString}
+          onChange={this.onChangeJSON}
+          onAutoIndent={this.onAutoIndent}
+          hasJSONError={hasJSONError}
+          useNewUx={useNewUX}
+        />
         <EuiSpacer />
         {submitError && (
           <EuiCallOut title="Sorry, there was an error" color="danger" iconType="alert">
@@ -296,12 +302,18 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
         <EuiSpacer />
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="createPolicyCancelButton">
+            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="createPolicyCancelButton" size={useNewUX ? "s" : undefined}>
               Cancel
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createPolicyCreateButton">
+            <EuiButton
+              fill
+              onClick={this.onSubmit}
+              isLoading={isSubmitting}
+              data-test-subj="createPolicyCreateButton"
+              size={useNewUX ? "s" : undefined}
+            >
               {isEdit ? "Update" : "Create"}
             </EuiButton>
           </EuiFlexItem>
