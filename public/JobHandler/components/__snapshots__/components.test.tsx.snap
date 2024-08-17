@@ -48,7 +48,7 @@ exports[`<ErrorToastContentForJob /> spec render with action 1`] = `
       class="euiSpacer euiSpacer--l"
     />
     <button
-      class="euiButton euiButton--danger"
+      class="euiButton euiButton--danger euiButton--small"
       style="float: right;"
       type="button"
     >

@@ -14,7 +14,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         Create component template
       </h1>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -76,7 +76,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-name"
         id="some_html_id-row"
       >
@@ -106,13 +106,13 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   type="text"
                   value=""
                 />
@@ -122,7 +122,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         </div>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -142,7 +142,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-_meta.description"
         id="some_html_id-row"
       >
@@ -175,13 +175,13 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   type="text"
                   value=""
                 />
@@ -207,7 +207,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
         class="euiFlexItem"
       >
         <div
-          class="euiFormRow euiFormRow--fullWidth"
+          class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -251,7 +251,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               >
                 <div>
                   <div
-                    class="euiSwitch euiSwitch--primary"
+                    class="euiSwitch euiSwitch--primary euiSwitch--compressed"
                   >
                     <button
                       aria-checked="false"
@@ -269,10 +269,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                         />
                         <span
                           class="euiSwitch__track"
-                        >
-                          EuiIconMock
-                          EuiIconMock
-                        </span>
+                        />
                       </span>
                     </button>
                     <span
@@ -334,7 +331,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
               >
                 <div>
                   <div
-                    class="euiSwitch euiSwitch--primary"
+                    class="euiSwitch euiSwitch--primary euiSwitch--compressed"
                   >
                     <button
                       aria-checked="false"
@@ -352,10 +349,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                         />
                         <span
                           class="euiSwitch__track"
-                        >
-                          EuiIconMock
-                          EuiIconMock
-                        </span>
+                        />
                       </span>
                     </button>
                     <span
@@ -396,7 +390,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
           Index mapping
         </div>
         <div
-          class="euiFormRow euiFormRow--fullWidth"
+          class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -442,7 +436,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
             >
               <div>
                 <div
-                  class="euiSwitch euiSwitch--primary"
+                  class="euiSwitch euiSwitch--primary euiSwitch--compressed"
                 >
                   <button
                     aria-checked="false"
@@ -460,10 +454,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
                       />
                       <span
                         class="euiSwitch__track"
-                      >
-                        EuiIconMock
-                        EuiIconMock
-                      </span>
+                      />
                     </span>
                   </button>
                   <span
@@ -496,7 +487,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButtonEmpty euiButtonEmpty--primary"
+        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
         data-test-subj="CreateComposableTemplateCancelButton"
         type="button"
       >
@@ -515,7 +506,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButton euiButton--primary euiButton--fill"
+        class="euiButton euiButton--primary euiButton--small euiButton--fill"
         data-test-subj="CreateComposableTemplateCreateButton"
         type="button"
       >

@@ -49,7 +49,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
           class="euiSpacer euiSpacer--s"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -67,14 +67,14 @@ exports[`<EditRollup /> spec renders the component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
                   aria-describedby="some_html_id-help-0"
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   disabled=""
                   id="some_html_id"
                   placeholder="my-rollupjob1"
@@ -128,7 +128,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
           class="euiSpacer euiSpacer--xs"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -185,7 +185,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
           class="euiSpacer euiSpacer--m"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -202,13 +202,13 @@ exports[`<EditRollup /> spec renders the component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <select
-                  class="euiSelect"
+                  class="euiSelect euiSelect--compressed"
                   id="some_html_id"
                 >
                   <option
@@ -247,7 +247,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
             style="width: 200px;"
           >
             <div
-              class="euiFormRow"
+              class="euiFormRow euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
@@ -265,13 +265,13 @@ exports[`<EditRollup /> spec renders the component 1`] = `
                 class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <input
-                      class="euiFieldNumber"
+                      class="euiFieldNumber euiFieldNumber--compressed"
                       id="some_html_id"
                       type="number"
                       value="2"
@@ -285,20 +285,20 @@ exports[`<EditRollup /> spec renders the component 1`] = `
             class="euiFlexItem"
           >
             <div
-              class="euiFormRow euiFormRow--hasEmptyLabelSpace"
+              class="euiFormRow euiFormRow--hasEmptyLabelSpace euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
                 class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <select
-                      class="euiSelect"
+                      class="euiSelect euiSelect--compressed"
                       id="some_html_id"
                     >
                       <option
@@ -336,7 +336,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
           class="euiSpacer euiSpacer--m"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -353,14 +353,14 @@ exports[`<EditRollup /> spec renders the component 1`] = `
             class="euiFormRow__fieldWrapper"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
                   aria-describedby="some_html_id-help-0"
-                  class="euiFieldNumber"
+                  class="euiFieldNumber euiFieldNumber--compressed"
                   id="some_html_id"
                   min="1"
                   placeholder="1000"
@@ -419,20 +419,20 @@ exports[`<EditRollup /> spec renders the component 1`] = `
               </div>
             </div>
             <div
-              class="euiFormRow"
+              class="euiFormRow euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
                 class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <input
-                      class="euiFieldNumber"
+                      class="euiFieldNumber euiFieldNumber--compressed"
                       id="some_html_id"
                       type="number"
                       value=""
@@ -446,20 +446,20 @@ exports[`<EditRollup /> spec renders the component 1`] = `
             class="euiFlexItem"
           >
             <div
-              class="euiFormRow euiFormRow--hasEmptyLabelSpace"
+              class="euiFormRow euiFormRow--hasEmptyLabelSpace euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
                 class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <select
-                      class="euiSelect"
+                      class="euiSelect euiSelect--compressed"
                       id="some_html_id"
                     >
                       <option
@@ -517,7 +517,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButtonEmpty euiButtonEmpty--primary"
+        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
         data-test-subj="editRollupCancelButton"
         type="button"
       >
@@ -536,7 +536,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButton euiButton--primary euiButton--fill"
+        class="euiButton euiButton--primary euiButton--small euiButton--fill"
         data-test-subj="editRollupSaveChangesButton"
         type="button"
       >

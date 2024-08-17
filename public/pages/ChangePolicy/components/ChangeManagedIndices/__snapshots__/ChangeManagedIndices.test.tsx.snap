@@ -38,7 +38,7 @@ exports[`<ChangeManagedIndices /> spec renders the component 1`] = `
         class="euiSpacer euiSpacer--m"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -59,17 +59,17 @@ exports[`<ChangeManagedIndices /> spec renders the component 1`] = `
             aria-describedby="some_html_id-help-0"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox--compressed"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >
@@ -114,7 +114,7 @@ exports[`<ChangeManagedIndices /> spec renders the component 1`] = `
         </div>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -134,17 +134,17 @@ exports[`<ChangeManagedIndices /> spec renders the component 1`] = `
             aria-describedby="some_html_id-help-0"
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox euiComboBox-isDisabled"
+            class="euiComboBox euiComboBox--compressed euiComboBox-isDisabled"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >

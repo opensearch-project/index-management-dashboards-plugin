@@ -102,7 +102,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="flushCancelButton"
               type="button"
             >
@@ -117,7 +117,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="flushConfirmButton"
               type="button"
             >
@@ -248,7 +248,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="flushCancelButton"
               type="button"
             >
@@ -263,7 +263,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="flushConfirmButton"
               type="button"
             >
@@ -397,7 +397,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="flushCancelButton"
               type="button"
             >
@@ -412,7 +412,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="flushConfirmButton"
               type="button"
             >
@@ -530,7 +530,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="flushCancelButton"
               type="button"
             >
@@ -545,7 +545,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="flushConfirmButton"
               type="button"
             >
@@ -673,7 +673,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="flushCancelButton"
               type="button"
             >
@@ -688,7 +688,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="flushConfirmButton"
               type="button"
             >

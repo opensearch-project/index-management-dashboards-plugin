@@ -48,7 +48,7 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
           >
             <button
               aria-label="Delete"
-              class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--xSmall"
+              class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--small"
               data-test-subj="draggable-item-delete-button-some_html_id"
               type="button"
             >
@@ -64,7 +64,7 @@ exports[`<DraggableItem /> spec renders the component 1`] = `
           >
             <button
               aria-label="Edit"
-              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
+              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--small"
               data-test-subj="draggable-item-edit-button-some_html_id"
               type="button"
             >

@@ -9,7 +9,7 @@ exports[`<IndicesActions /> spec Split index by calling commonService 1`] = `
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -36,7 +36,7 @@ exports[`<IndicesActions /> spec clear cache for all indexes failed if some inde
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -63,7 +63,7 @@ exports[`<IndicesActions /> spec clear cache for all indexes successfully by cal
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -90,7 +90,7 @@ exports[`<IndicesActions /> spec clear cache for mulitple indexes by calling com
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -117,7 +117,7 @@ exports[`<IndicesActions /> spec close index by calling commonService 1`] = `
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -144,7 +144,7 @@ exports[`<IndicesActions /> spec delete index by calling commonService 1`] = `
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -171,7 +171,7 @@ exports[`<IndicesActions /> spec filter indices failed when clearing caches for 
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -198,7 +198,7 @@ exports[`<IndicesActions /> spec filter some closed or blocked indices when clea
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -225,7 +225,7 @@ exports[`<IndicesActions /> spec open index by calling commonService 1`] = `
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -259,7 +259,7 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
         class="euiPopover__anchor"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -377,7 +377,7 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               type="button"
             >
               <span
@@ -391,7 +391,7 @@ exports[`<IndicesActions /> spec refresh selected indexes by calling commonServi
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="refreshConfirmButton"
               type="button"
             >
@@ -434,7 +434,7 @@ HTMLCollection [
         class="euiPopover__anchor"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           type="button"
         >
           <span
@@ -550,7 +550,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="flushCancelButton"
               type="button"
             >
@@ -565,7 +565,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="flushConfirmButton"
               type="button"
             >
@@ -603,7 +603,7 @@ exports[`<IndicesActions /> spec renders the component and all the actions shoul
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -630,7 +630,7 @@ exports[`<IndicesActions /> spec shrink action is disabled if multiple indices a
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -657,7 +657,7 @@ exports[`<IndicesActions /> spec shrink action is disabled if the selected index
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -684,7 +684,7 @@ exports[`<IndicesActions /> spec shrink index by calling commonService 1`] = `
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -711,7 +711,7 @@ exports[`<IndicesActions /> spec split action is disabled if multiple indices ar
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -738,7 +738,7 @@ exports[`<IndicesActions /> spec split action is disabled if the selected index 
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span
@@ -765,7 +765,7 @@ exports[`<IndicesActions /> spec unable to clear cache when clearing cache for a
     class="euiPopover__anchor"
   >
     <button
-      class="euiButton euiButton--primary"
+      class="euiButton euiButton--primary euiButton--small"
       type="button"
     >
       <span

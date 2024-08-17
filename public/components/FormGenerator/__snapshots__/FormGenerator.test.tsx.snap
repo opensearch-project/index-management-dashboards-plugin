@@ -7,7 +7,7 @@ HTMLCollection [
       class="euiForm"
     >
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-name-test"
         id="some_html_id-row"
       >
@@ -29,13 +29,13 @@ HTMLCollection [
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   type="text"
                   value=""
                 />
@@ -45,7 +45,7 @@ HTMLCollection [
         </div>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-name-test_component"
         id="some_html_id-row"
       >
@@ -69,7 +69,7 @@ HTMLCollection [
         </div>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-name-test_component_2"
         id="some_html_id-row"
       >
@@ -91,13 +91,13 @@ HTMLCollection [
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   type="text"
                   value=""
                 />
@@ -107,7 +107,7 @@ HTMLCollection [
         </div>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-name-test_component_3"
         id="some_html_id-row"
       >

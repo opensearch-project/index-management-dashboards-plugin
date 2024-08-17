@@ -9,13 +9,13 @@ exports[`<IndexControls /> spec renders the component 1`] = `
     class="euiFlexItem"
   >
     <div
-      class="euiFormControlLayout euiFormControlLayout--fullWidth"
+      class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
     >
       <div
         class="euiFormControlLayout__childrenWrapper"
       >
         <input
-          class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch-isClearable"
+          class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed euiFieldSearch-isClearable"
           placeholder="Search..."
           type="search"
           value="testing"
@@ -34,7 +34,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
         >
           <button
             aria-label="Clear input"
-            class="euiFormControlLayoutClearButton"
+            class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
             type="button"
           >
             EuiIconMock

@@ -60,7 +60,7 @@ exports[`<NewPolicy /> spec renders the component 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -80,17 +80,17 @@ exports[`<NewPolicy /> spec renders the component 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox--compressed"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >
@@ -133,7 +133,7 @@ exports[`<NewPolicy /> spec renders the component 1`] = `
       />
       <div>
         <div
-          class="euiRadio euiRadioGroup__item"
+          class="euiRadio euiRadio--compressed euiRadioGroup__item"
         >
           <input
             checked=""
@@ -153,7 +153,7 @@ exports[`<NewPolicy /> spec renders the component 1`] = `
           </label>
         </div>
         <div
-          class="euiRadio euiRadioGroup__item"
+          class="euiRadio euiRadio--compressed euiRadioGroup__item"
         >
           <input
             class="euiRadio__input"
@@ -177,21 +177,21 @@ exports[`<NewPolicy /> spec renders the component 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <select
                 aria-label="Start state for new policy"
-                class="euiSelect"
+                class="euiSelect euiSelect--compressed"
                 disabled=""
                 id="some_html_id"
               />
