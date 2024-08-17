@@ -4,7 +4,18 @@
  */
 
 import React, { ChangeEvent, Component, Fragment, useContext } from "react";
-import { EuiSpacer, EuiTitle, EuiFlexGroup, EuiFlexItem, EuiButton, EuiButtonEmpty, EuiCallOut, EuiLink, EuiIcon } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiTitle,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiButton,
+  EuiButtonEmpty,
+  EuiCallOut,
+  EuiLink,
+  EuiIcon,
+  EuiText,
+} from "@elastic/eui";
 import queryString from "query-string";
 import { RouteComponentProps } from "react-router-dom";
 import { DEFAULT_POLICY } from "../../utils/constants";
@@ -12,11 +23,12 @@ import DefinePolicy from "../../components/DefinePolicy";
 import ConfigurePolicy from "../../components/ConfigurePolicy";
 import { Policy } from "../../../../../models/interfaces";
 import { PolicyService } from "../../../../services";
-import { BREADCRUMBS, DOCUMENTATION_URL, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, DOCUMENTATION_URL, ROUTES, POLICY_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { getErrorMessage } from "../../../../utils/helpers";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 interface CreatePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   isEdit: boolean;
@@ -32,6 +44,7 @@ interface CreatePolicyState {
   submitError: string;
   isSubmitting: boolean;
   hasSubmitted: boolean;
+  useNewUX: boolean;
 }
 
 export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState> {
@@ -39,6 +52,8 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
   _isMount: boolean;
   constructor(props: CreatePolicyProps) {
     super(props);
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
 
     this.state = {
       policySeqNo: null,
@@ -49,29 +64,32 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
       jsonString: "",
       isSubmitting: false,
       hasSubmitted: false,
+      useNewUX: useNewUx,
     };
 
     this._isMount = true;
   }
 
   componentDidMount = async (): Promise<void> => {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES]);
+    const breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.INDEX_POLICIES_NEW] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     if (this.props.isEdit) {
       const { id } = queryString.parse(this.props.location.search);
       if (typeof id === "string" && !!id) {
-        this.context.chrome.setBreadcrumbs([
-          BREADCRUMBS.INDEX_MANAGEMENT,
-          BREADCRUMBS.INDEX_POLICIES,
-          BREADCRUMBS.EDIT_POLICY,
-          { text: id },
-        ]);
+        const editBreadCrumbs = this.state.useNewUX
+          ? [BREADCRUMBS.INDEX_POLICIES_NEW, { text: id }, BREADCRUMBS.EDIT_POLICY]
+          : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.EDIT_POLICY, { text: id }];
+        this.context.chrome.setBreadcrumbs(editBreadCrumbs);
         await this.getPolicyToEdit(id);
       } else {
         this.context.notifications.toasts.addDanger(`Invalid policy id: ${id}`);
         this.props.history.push(ROUTES.INDEX_POLICIES);
       }
     } else {
-      this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.CREATE_POLICY]);
+      const createBreadCrumbs = this.state.useNewUX
+        ? [BREADCRUMBS.INDEX_POLICIES_NEW, BREADCRUMBS.CREATE_POLICY_NEW]
+        : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDEX_POLICIES, BREADCRUMBS.CREATE_POLICY];
+      this.context.chrome.setBreadcrumbs(createBreadCrumbs);
       this.setState({ jsonString: DEFAULT_POLICY });
     }
   };
@@ -201,12 +219,13 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
   renderEditCallOut = (): React.ReactNode | null => {
     const { isEdit } = this.props;
     if (!isEdit) return null;
-
+    const titleSize = this.state.useNewUX ? "s" : undefined;
     return (
       <Fragment>
         <EuiCallOut
           title="Edits to the policy are not automatically applied to indices that are already being managed by this policy."
           iconType="questionInCircle"
+          size={titleSize}
         >
           <p>
             This ensures that any update to a policy doesn't harm indices that are running under an older version of the policy. To carry
@@ -224,7 +243,23 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
 
   render() {
     const { isEdit } = this.props;
-    const { policyId, policyIdError, jsonString, submitError, isSubmitting } = this.state;
+    const { policyId, policyIdError, jsonString, submitError, isSubmitting, useNewUX } = this.state;
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppDescriptionControls } = getApplication();
+
+    const descriptionData = [
+      {
+        renderComponent: (
+          <EuiText size="s" color="subdued">
+            Policies let you automatically perform administrative operations on indices.{" "}
+            <EuiLink href={POLICY_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+              Learn more
+            </EuiLink>
+          </EuiText>
+        ),
+      },
+    ];
 
     let hasJSONError = false;
     try {
@@ -233,14 +268,23 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
       hasJSONError = true;
     }
 
+    const padding_style = useNewUX ? { padding: "0px 0px" } : { padding: "25px 50px" };
     return (
-      <div style={{ padding: "25px 50px" }}>
-        <EuiTitle size="l">
-          <h1>{isEdit ? "Edit" : "Create"} policy</h1>
-        </EuiTitle>
-        <EuiSpacer />
+      <div style={padding_style}>
+        {!useNewUX ? (
+          <>
+            <EuiTitle size="l">
+              <h1>{isEdit ? "Edit" : "Create"} policy</h1>
+            </EuiTitle>
+            <EuiSpacer />
+          </>
+        ) : (
+          <>
+            <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+          </>
+        )}
         {this.renderEditCallOut()}
-        <ConfigurePolicy policyId={policyId} policyIdError={policyIdError} isEdit={isEdit} onChange={this.onChange} />
+        <ConfigurePolicy policyId={policyId} policyIdError={policyIdError} isEdit={isEdit} onChange={this.onChange} useNewUx={useNewUX} />
         <EuiSpacer />
         <DefinePolicy jsonString={jsonString} onChange={this.onChangeJSON} onAutoIndent={this.onAutoIndent} hasJSONError={hasJSONError} />
         <EuiSpacer />
