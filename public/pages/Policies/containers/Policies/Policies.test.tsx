@@ -1,4 +1,4 @@
-  /*
+/*
  * Copyright OpenSearch Contributors
  * SPDX-License-Identifier: Apache-2.0
  */
@@ -18,6 +18,23 @@ import { ServicesConsumer, ServicesContext } from "../../../../services";
 import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { BrowserServices } from "../../../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+
+jest.mock("../../../../services/Services", () => ({
+  ...jest.requireActual("../../../../services/Services"),
+  getUISettings: jest.fn(),
+  getApplication: jest.fn(),
+  getNavigationUI: jest.fn(),
+}));
+
+beforeEach(() => {
+  (getUISettings as jest.Mock).mockReturnValue({
+    get: jest.fn().mockReturnValue(false), // or false, depending on your test case
+  });
+  (getApplication as jest.Mock).mockReturnValue({});
+
+  (getNavigationUI as jest.Mock).mockReturnValue({});
+});
 
 // TODO: Move common renderWith or with___ helpers into top level tests directory
 function renderPoliciesWithRouter() {
@@ -42,7 +59,7 @@ function renderPoliciesWithRouter() {
                       />
                       <Route path={ROUTES.CREATE_POLICY} render={(props) => <div>Testing create policy</div>} />
                       <Route path={ROUTES.EDIT_POLICY} render={(props) => <div>Testing edit policy: {props.location.search}</div>} />
-                      <Route path={ROUTES.POLICY_DETAILS} render={(props) =><div>Testing policy details: {props.location.search}</div>} />
+                      <Route path={ROUTES.POLICY_DETAILS} render={(props) => <div>Testing policy details: {props.location.search}</div>} />
                       <Redirect from="/" to={ROUTES.INDEX_POLICIES} />
                     </Switch>
                   </ModalProvider>
