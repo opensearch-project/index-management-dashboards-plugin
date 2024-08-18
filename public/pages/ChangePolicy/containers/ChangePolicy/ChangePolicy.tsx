@@ -178,7 +178,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
 
     return (
       <div style={{ padding: "0px 0px" }}>
-        {Title}
+        {Title()}
 
         <ChangeManagedIndices
           key={`changeManagedIndices-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
