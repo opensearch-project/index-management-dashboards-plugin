@@ -469,7 +469,11 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
               label: "Create Alias",
               fill: true,
               iconType: "plus",
-              href: `${PLUGIN_NAME}#/create-alias`,
+              run: () => {
+                this.setState({
+                  aliasCreateFlyoutVisible: true,
+                });
+              },
               testId: "createAliasButton",
               controlType: "button",
               color: "primary",
