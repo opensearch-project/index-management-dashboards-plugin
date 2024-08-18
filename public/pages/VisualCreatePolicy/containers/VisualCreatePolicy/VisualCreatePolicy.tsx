@@ -361,7 +361,13 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
         <EuiSpacer size="m" />
 
         {showFlyout && (
-          <CreateState state={editingState} policy={policy} onSaveState={this.onSaveState} onCloseFlyout={this.onCloseFlyout} />
+          <CreateState
+            state={editingState}
+            policy={policy}
+            onSaveState={this.onSaveState}
+            onCloseFlyout={this.onCloseFlyout}
+            useNewUx={useNewUX}
+          />
         )}
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
