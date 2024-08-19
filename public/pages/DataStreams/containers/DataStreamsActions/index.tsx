@@ -21,7 +21,7 @@ export interface DataStreamsActionsProps {
 }
 
 export default function DataStreamsActions(props: DataStreamsActionsProps) {
-  const { selectedItems, onDelete, history, useNewUX } = props;
+  const { selectedItems, onDelete, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [flushDataStreamModalVisible, setFlushDataStreamModalVisible] = useState(false);
@@ -52,7 +52,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         data-test-subj="moreAction"
         panelPaddingSize="s"
         button={
-          <EuiButton iconType="arrowDown" iconSide="right" size={useNewUX ? "s" : undefined}>
+          <EuiButton iconType="arrowDown" iconSide="right">
             Actions
           </EuiButton>
         }

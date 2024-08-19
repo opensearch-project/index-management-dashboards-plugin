@@ -13,7 +13,6 @@ import {
   EuiSmallButtonEmpty,
   EuiCallOut,
   EuiLink,
-  EuiIcon,
   EuiText,
 } from "@elastic/eui";
 import queryString from "query-string";

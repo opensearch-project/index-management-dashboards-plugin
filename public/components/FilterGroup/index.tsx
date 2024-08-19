@@ -31,7 +31,6 @@ export default function FilterGroup({ options, value, filterButtonProps, onChang
             numFilters={options?.length}
             hasActiveFilters={!!value?.length}
             numActiveFilters={value?.length}
-            size={useNewUX ? "s" : undefined}
             {...filterButtonProps}
           />
         }
