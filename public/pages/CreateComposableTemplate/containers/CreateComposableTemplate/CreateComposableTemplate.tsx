@@ -11,6 +11,7 @@ import { CoreServicesContext } from "../../../../components/core_services";
 import { isEqual } from "lodash";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface CreateComposableTemplateProps extends RouteComponentProps<{ template?: string; mode?: string }>, DataSourceMenuProperties {}
 
@@ -23,6 +24,12 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
 
   get readonly() {
     return this.props.match.params.mode === "readonly";
+  }
+
+  get useNewUX(): boolean {
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
+    return useNewUx;
   }
 
   setBreadCrumb() {
@@ -42,7 +49,9 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
     } else {
       lastBread = BREADCRUMBS.CREATE_COMPOSABLE_TEMPLATE;
     }
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.COMPOSABLE_TEMPLATES, lastBread]);
+    this.useNewUX
+      ? this.context.chrome.setBreadcrumbs([BREADCRUMBS.COMPOSABLE_TEMPLATES, lastBread])
+      : this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.COMPOSABLE_TEMPLATES, lastBread]);
   }
 
   componentDidUpdate(prevProps: Readonly<CreateComposableTemplateProps>): void {
@@ -60,8 +69,9 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
   };
 
   render() {
+    const paddingStyle = this.useNewUX ? { padding: "0px 0px" } : { padding: "0px 50px" };
     return (
-      <div style={{ padding: "0px 50px" }}>
+      <div style={paddingStyle}>
         <TemplateDetail
           history={this.props.history}
           readonly={this.readonly}
@@ -69,6 +79,7 @@ class CreateComposableTemplate extends Component<CreateComposableTemplateProps> 
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.COMPOSABLE_TEMPLATES)}
           dataSourceId={this.props.dataSourceId}
+          useNewUX={this.useNewUX}
         />
       </div>
     );
