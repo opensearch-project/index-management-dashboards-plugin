@@ -14,8 +14,8 @@ import { ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
-jest.mock("../../../services/Services", () => ({
-  ...jest.requireActual("../../../services/Services"),
+jest.mock("../../../../services/Services", () => ({
+  ...jest.requireActual("../../../../services/Services"),
   getUISettings: jest.fn(),
   getApplication: jest.fn(),
   getNavigationUI: jest.fn(),
