@@ -18,6 +18,7 @@ interface ChannelNotificationProps {
   onChangeChannelId: (value: ChangeEvent<HTMLSelectElement>) => void;
   onChangeMessage?: (value: ChangeEvent<HTMLTextAreaElement>) => void;
   getChannels: () => void;
+  useNewUx?: boolean;
   actionNotification?: boolean; // to tell if this is rendering in actions or in error notification as they both show up on page together
 }
 
@@ -29,6 +30,7 @@ const ChannelNotification = ({
   onChangeChannelId,
   onChangeMessage,
   getChannels,
+  useNewUx,
   actionNotification = false,
 }: ChannelNotificationProps) => {
   return (
@@ -38,6 +40,7 @@ const ChannelNotification = ({
         <EuiFlexItem>
           <EuiFormRow>
             <EuiSelect
+              compressed={useNewUx}
               id={actionNotification ? "action-channel-id" : "channel-id"}
               placeholder="Select channel ID"
               hasNoInitialSelection
@@ -56,10 +59,11 @@ const ChannelNotification = ({
             disabled={loadingChannels}
             className="refresh-button"
             data-test-subj="channel-notification-refresh"
+            size={useNewUx ? "s" : undefined}
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+          <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank" size={useNewUx ? "s" : undefined}>
             Manage channels
           </EuiButton>
         </EuiFlexItem>

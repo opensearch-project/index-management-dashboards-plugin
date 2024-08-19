@@ -37,6 +37,7 @@ interface CreateStateProps {
   onSaveState: (state: State, states: State[], order: string, afterBeforeState: string) => void;
   onCloseFlyout: () => void;
   state: State | null;
+  useNewUx?: boolean;
 }
 
 interface CreateStateState {
@@ -190,7 +191,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
   };
 
   renderDefault = () => {
-    const { policy, state } = this.props;
+    const { policy, state, useNewUx } = this.props;
     const { actions, name, nameError, afterBeforeState, order, disableOrderSelections } = this.state;
     // If we are editing a state filter it out from the selectable options
     const stateOptions = policy.states.map((state) => ({ value: state.name, text: state.name })).filter((s) => s.value !== state?.name);
@@ -203,6 +204,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
 
         <EuiFormRow fullWidth isInvalid={!!nameError} error={nameError}>
           <EuiFieldText
+            compressed={useNewUx}
             fullWidth
             isInvalid={!!nameError}
             placeholder="sample_hot_state"
@@ -224,6 +226,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           <EuiFlexItem>
             <EuiFormRow>
               <EuiSelect
+                compressed={useNewUx}
                 disabled={disableOrderSelections}
                 options={[
                   { value: "after", text: "Add after" },
@@ -238,6 +241,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           <EuiFlexItem>
             <EuiFormRow>
               <EuiSelect
+                compressed={useNewUx}
                 disabled={disableOrderSelections}
                 options={stateOptions}
                 value={afterBeforeState}
@@ -256,6 +260,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           onClickEditAction={this.onClickEditAction}
           onDragEndActions={this.onDragEndActions}
           onClickAddAction={this.onClickAddAction}
+          useNewUx={useNewUx}
         />
 
         <EuiHorizontalRule />
@@ -266,24 +271,25 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           onClickDeleteTransition={this.onClickDeleteTransition}
           onClickEditTransition={this.onClickEditTransition}
           onClickAddTransition={this.onClickAddTransition}
+          useNewUx={useNewUx}
         />
       </>
     );
   };
 
   renderDefaultFooter = () => {
-    const { onCloseFlyout, state } = this.props;
+    const { onCloseFlyout, state, useNewUx } = this.props;
     const { name, nameError } = this.state;
     const isEditing = !!state;
     return (
       <EuiFlexGroup justifyContent="spaceBetween">
         <EuiFlexItem grow={false}>
-          <EuiButtonEmpty iconType="cross" onClick={onCloseFlyout} flush="left">
+          <EuiButtonEmpty size={useNewUx ? "s" : undefined} iconType="cross" onClick={onCloseFlyout} flush="left">
             Cancel
           </EuiButtonEmpty>
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiButton fill disabled={!name.trim().length || !!nameError} onClick={this.onClickSaveState}>
+          <EuiButton size={useNewUx ? "s" : undefined} fill disabled={!name.trim().length || !!nameError} onClick={this.onClickSaveState}>
             {isEditing ? "Update state" : "Save state"}
           </EuiButton>
         </EuiFlexItem>
@@ -292,7 +298,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
   };
 
   render() {
-    const { onCloseFlyout, policy, state } = this.props;
+    const { onCloseFlyout, policy, state, useNewUx } = this.props;
     const { name, createAction, editAction, createTransition, editTransition, actions } = this.state;
     const isEditing = !!state;
 
@@ -312,6 +318,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           stateName={name}
           onClickCancelAction={this.onClickCancelAction}
           onClickSaveAction={this.onClickSaveAction}
+          useNewUx={useNewUx}
         />
       );
     if (createTransition || editTransition)
@@ -321,6 +328,7 @@ export default class CreateState extends Component<CreateStateProps, CreateState
           editTransition={editTransition}
           onCloseCreateTransition={() => this.setState({ createTransition: false, editTransition: null })}
           onClickSaveTransition={this.onClickSaveTransition}
+          useNewUx={useNewUx}
         />
       );
     if (!flyoutContent)
