@@ -8,7 +8,6 @@ import {
   OpenSearchDashboardsRequest,
   OpenSearchDashboardsResponseFactory,
   IOpenSearchDashboardsResponse,
-  ILegacyCustomClusterClient,
   ResponseError,
 } from "opensearch-dashboards/server";
 import { ServerResponse } from "../models/types";

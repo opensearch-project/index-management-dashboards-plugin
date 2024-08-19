@@ -5,18 +5,7 @@
 
 import React, { ReactChild, useContext, useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import {
-  EuiButton,
-  EuiCallOut,
-  EuiCard,
-  EuiEmptyPrompt,
-  EuiFlexGroup,
-  EuiFlexItem,
-  EuiPanel,
-  EuiSpacer,
-  EuiText,
-  EuiTitle,
-} from "@elastic/eui";
+import { EuiButton, EuiCallOut, EuiEmptyPrompt, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { get } from "lodash";
 import { CoreStart } from "opensearch-dashboards/public";
 import useField from "../../../../lib/field";
@@ -43,6 +32,7 @@ import {
 } from "../../constant";
 import { checkPermissionForSubmitLRONConfig } from "../../../../containers/NotificationConfig";
 import "./index.scss";
+import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
 
 export interface NotificationsProps {}
 
@@ -320,5 +310,7 @@ const Notifications = (props: NotificationsProps) => {
   );
 };
 
-// @ts-ignore
-export default Notifications;
+export default function (props: NotificationsProps) {
+  const dataSourceMenuProps = useContext(DataSourceMenuContext);
+  return <Notifications {...props} key={dataSourceMenuProps.dataSourceId} />;
+}

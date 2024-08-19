@@ -189,6 +189,7 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.REPOSITORIES,
   ROUTES.CREATE_REPOSITORY,
   ROUTES.EDIT_REPOSITORY,
+  ROUTES.NOTIFICATIONS,
 ];
 
 const LocalCluster: DataSourceOption = {
@@ -521,6 +522,7 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.REPOSITORIES,
                                 ROUTES.CREATE_REPOSITORY,
                                 ROUTES.EDIT_REPOSITORY,
+                                ROUTES.NOTIFICATIONS,
                               ]}
                               render={() => (
                                 <DataSourceMenu
