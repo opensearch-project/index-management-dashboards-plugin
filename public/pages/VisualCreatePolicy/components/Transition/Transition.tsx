@@ -24,9 +24,10 @@ const conditionTypeOptions = [
 interface TransitionProps {
   uiTransition: UITransition;
   onChangeTransition: (transition: UITransition) => void;
+  useNewUx?: boolean;
 }
 
-const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
+const Transition = ({ uiTransition, onChangeTransition, useNewUx }: TransitionProps) => {
   // We currently only support one transition condition
   const conditionType = Object.keys(uiTransition.transition.conditions || []).pop() || "none";
   const conditions = uiTransition.transition.conditions;
@@ -35,6 +36,7 @@ const Transition = ({ uiTransition, onChangeTransition }: TransitionProps) => {
       <EuiFormCustomLabel title="Condition" helpText="Specify the condition needed to be met to transition to the destination state." />
       <EuiFormRow fullWidth isInvalid={false} error={null}>
         <EuiSelect
+          compressed={useNewUx}
           fullWidth
           id="condition-type"
           options={conditionTypeOptions}

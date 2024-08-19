@@ -345,9 +345,10 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
           onChangeErrorNotificationJsonString={this.onChangeErrorNotificationJsonString}
           onSwitchToChannels={this.onSwitchToChannels}
           notificationService={notificationService}
+          useNewUx={useNewUX}
         />
         <EuiSpacer size="m" />
-        <ISMTemplates policy={policy} onChangePolicy={this.onChangePolicy} />
+        <ISMTemplates policy={policy} onChangePolicy={this.onChangePolicy} useNewUx={useNewUX} />
         <EuiSpacer size="m" />
         <States
           policy={policy}
@@ -355,19 +356,28 @@ export class VisualCreatePolicy extends Component<VisualCreatePolicyProps, Visua
           onClickEditState={this.onClickEditState}
           onClickDeleteState={this.onClickDeleteState}
           onChangeDefaultState={this.onChangeDefaultState}
+          useNewUx={useNewUX}
         />
         <EuiSpacer size="m" />
 
         {showFlyout && (
-          <CreateState state={editingState} policy={policy} onSaveState={this.onSaveState} onCloseFlyout={this.onCloseFlyout} />
+          <CreateState
+            state={editingState}
+            policy={policy}
+            onSaveState={this.onSaveState}
+            onCloseFlyout={this.onCloseFlyout}
+            useNewUx={useNewUX}
+          />
         )}
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButton onClick={this.onCancel}>Cancel</EuiButton>
+            <EuiButton onClick={this.onCancel} size={useNewUX ? "s" : undefined}>
+              Cancel
+            </EuiButton>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit}>
+            <EuiButton fill onClick={this.onSubmit} size={useNewUX ? "s" : undefined}>
               {isEdit ? "Update" : "Create"}
             </EuiButton>
           </EuiFlexItem>

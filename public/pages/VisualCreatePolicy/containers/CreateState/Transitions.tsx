@@ -16,6 +16,7 @@ interface TransitionsProps {
   onClickEditTransition: (transition: UITransition) => void;
   onDragEndTransitions: (dropResult: DropResult) => void;
   onClickAddTransition: () => void;
+  useNewUx?: boolean;
 }
 
 const Transitions = ({
@@ -24,6 +25,7 @@ const Transitions = ({
   onClickEditTransition,
   onDragEndTransitions,
   onClickAddTransition,
+  useNewUx,
 }: TransitionsProps) => {
   return (
     <>
@@ -64,7 +66,9 @@ const Transitions = ({
 
       <EuiSpacer />
 
-      <EuiButton onClick={onClickAddTransition}>+ Add Transition</EuiButton>
+      <EuiButton onClick={onClickAddTransition} size={useNewUx ? "s" : undefined}>
+        + Add Transition
+      </EuiButton>
     </>
   );
 };

@@ -15,9 +15,10 @@ interface ISMTemplateProps {
   onUpdateTemplate: (template: ISMTemplateData) => void;
   onRemoveTemplate: () => void;
   isFirst: boolean;
+  useNewUx?: boolean;
 }
 
-const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: ISMTemplateProps) => {
+const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst, useNewUx }: ISMTemplateProps) => {
   // TODO: Move this top top of form submition
   const [isInvalid, setInvalid] = useState(false);
   return (
@@ -25,6 +26,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
       <EuiFlexItem style={{ maxWidth: ISM_TEMPLATE_INPUT_MAX_WIDTH }}>
         <EuiFormRow isInvalid={false} error={null}>
           <EuiComboBox
+            compressed={useNewUx}
             isClearable={false}
             placeholder="Add index patterns"
             noSuggestions
@@ -67,6 +69,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
       <EuiFlexItem grow={false}>
         <EuiFormRow error={null} isInvalid={false}>
           <EuiFieldNumber
+            compressed={useNewUx}
             value={template.priority}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const priority = e.target.valueAsNumber;
@@ -78,7 +81,7 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst }: 
         </EuiFormRow>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiButton color="danger" onClick={onRemoveTemplate} data-test-subj="ism-template-remove-button">
+        <EuiButton color="danger" onClick={onRemoveTemplate} data-test-subj="ism-template-remove-button" size={useNewUx ? "s" : undefined}>
           Remove
         </EuiButton>
       </EuiFlexItem>

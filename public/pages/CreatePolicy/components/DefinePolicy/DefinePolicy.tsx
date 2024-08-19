@@ -26,10 +26,11 @@ interface DefinePolicyProps {
   hasJSONError: boolean;
   onChange: (value: string) => void;
   onAutoIndent: () => void;
+  useNewUx?: boolean;
 }
 
 // TODO: Add custom autocomplete for Policy syntax
-const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError }: DefinePolicyProps) => (
+const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError, useNewUx }: DefinePolicyProps) => (
   <ContentPanel
     bodyStyles={{ padding: "initial" }}
     title="Define policy"
@@ -37,12 +38,12 @@ const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError }: Defi
     actions={[
       <EuiCopy textToCopy={jsonString}>
         {(copy: () => void) => (
-          <EuiButton iconType="copyClipboard" onClick={copy}>
+          <EuiButton iconType="copyClipboard" onClick={copy} size={useNewUx ? "s" : undefined}>
             Copy
           </EuiButton>
         )}
       </EuiCopy>,
-      <EuiButton iconType="editorAlignLeft" onClick={onAutoIndent} disabled={hasJSONError}>
+      <EuiButton iconType="editorAlignLeft" onClick={onAutoIndent} disabled={hasJSONError} size={useNewUx ? "s" : undefined}>
         Auto indent
       </EuiButton>,
     ]}
