@@ -9,7 +9,7 @@ import { AllBuiltInComponents } from "../../../../components/FormGenerator";
 import { IndicesUpdateMode } from "../../../../utils/constants";
 
 export default function TemplateMappings(props: SubDetailProps) {
-  const { field, noPanel } = props;
+  const { field, noPanel, useNewUx } = props;
   const values = field.getValues();
   const mappingsRef = useRef<IIndexMappingsRef>(null);
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -76,6 +76,7 @@ export default function TemplateMappings(props: SubDetailProps) {
                   },
                 ],
               })}
+              useNewUx={useNewUx}
               isEdit
               ref={mappingsRef}
               oldMappingsEditable

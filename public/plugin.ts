@@ -243,7 +243,7 @@ export class IndexManagementPlugin implements Plugin<IndexManagementPluginSetup,
         description: ISM_FEATURE_DESCRIPTION.component_templates,
         updater$: this.appStateUpdater,
         mount: async (params: AppMountParameters) => {
-          return mountWrapper(params, ROUTES.TEMPLATES);
+          return mountWrapper(params, ROUTES.COMPOSABLE_TEMPLATES);
         },
       });
 

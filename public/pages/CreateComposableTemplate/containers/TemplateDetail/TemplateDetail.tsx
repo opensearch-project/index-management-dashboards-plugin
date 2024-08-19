@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiCodeBlock, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { RouteComponentProps } from "react-router-dom";
 import { IComposableTemplate, IComposableTemplateRemote } from "../../../../../models/interfaces";
 import useField from "../../../../lib/field";
@@ -27,6 +27,9 @@ import { ComponentTemplateEdit } from "../../interface";
 import { formatTemplate } from "../../hooks";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import { useCallback } from "react";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData, TopNavControlIconData } from "src/plugins/navigation/public";
+import DeleteIndexModal from "../../../ComposableTemplates/containers/DeleteComposableTemplatesModal";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -40,6 +43,7 @@ export interface TemplateDetailProps {
   hideButton?: boolean;
   noPanel?: boolean;
   dataSourceId: string;
+  useNewUX?: boolean;
 }
 
 export interface IComponentTemplateDetailInstance {
@@ -47,11 +51,12 @@ export interface IComponentTemplateDetailInstance {
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateDetailInstance>) => {
-  const { templateName, onCancel, onSubmitSuccess, hideTitle, hideButton, noPanel } = props;
+  const { templateName, onCancel, onSubmitSuccess, hideTitle, hideButton, noPanel, useNewUX } = props;
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const oldValue = useRef<IComposableTemplate | undefined>(undefined);
   const field = useField({
     values: {
@@ -126,6 +131,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
     isEdit,
     field,
     noPanel,
+    useNewUX,
   };
 
   const diffedNumber = isEdit
@@ -141,14 +147,90 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
       )
     : 0;
 
+  const onClickViewJson = () => {
+    const showValue: ComponentTemplateEdit = JSON.parse(
+      JSON.stringify({
+        ...values,
+        template: IndexForm.transformIndexDetailToRemote(values.template),
+      } as IComposableTemplateRemote)
+    );
+    const { includes, ...others } = showValue;
+    Modal.show({
+      locale: {
+        ok: "Close",
+      },
+      style: {
+        width: 800,
+      },
+      "data-test-subj": "templateJSONDetailModal",
+      title: values.name,
+      content: (
+        <EuiCodeBlock language="json" isCopyable>
+          {JSON.stringify(others, null, 2)}
+        </EuiCodeBlock>
+      ),
+    });
+  };
+
+  const onDelete = () => {
+    props.history.replace(ROUTES.COMPOSABLE_TEMPLATES);
+  };
+
+  const onDeleteIndexModalClose = () => {
+    setDeleteIndexModalVisible(false);
+  };
+
+  const onDeleteIndexModalOpen = () => {
+    setDeleteIndexModalVisible(true);
+  };
+
+  const deleteModal = () => {
+    return (
+      deleteIndexModalVisible && (
+        <DeleteIndexModal
+          selectedItems={[templateName || ""]}
+          visible={deleteIndexModalVisible}
+          onClose={onDeleteIndexModalClose}
+          onDelete={() => {
+            onDeleteIndexModalClose();
+            onDelete();
+          }}
+        />
+      )
+    );
+  };
+
+  const { HeaderControl } = getNavigationUI();
+  const { setAppRightControls, setAppDescriptionControls } = getApplication();
+
+  const descriptionData = [
+    {
+      renderComponent: (
+        <EuiText size="s" color="subdued">
+          Component templates are reusable building blocks for composing index or data stream templates.
+          <br /> You can define component templates with common index configurations and associate them to an index template.{" "}
+          <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.composable}>
+            Learn more
+          </EuiLink>
+        </EuiText>
+      ),
+    },
+  ];
+
   return (
     <>
       {hideTitle ? null : (
         <>
           <EuiFlexGroup alignItems="center">
             <EuiFlexItem>
-              <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create component template</h1>}</EuiTitle>
-              {isEdit ? null : (
+              {useNewUX ? (
+                <></>
+              ) : (
+                <EuiTitle size="l">{isEdit ? <h1 title={templateName}>{templateName}</h1> : <h1>Create component template</h1>}</EuiTitle>
+              )}
+              {isEdit ? null : useNewUX ? (
+                <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+              ) : (
                 <CustomFormRow
                   fullWidth
                   label=""
@@ -167,45 +249,45 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
               )}
             </EuiFlexItem>
             {isEdit ? (
-              <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-                <EuiButton
-                  style={{ marginRight: 20 }}
-                  onClick={() => {
-                    const showValue: ComponentTemplateEdit = JSON.parse(
-                      JSON.stringify({
-                        ...values,
-                        template: IndexForm.transformIndexDetailToRemote(values.template),
-                      } as IComposableTemplateRemote)
-                    );
-                    const { includes, ...others } = showValue;
-                    Modal.show({
-                      locale: {
-                        ok: "Close",
-                      },
-                      style: {
-                        width: 800,
-                      },
-                      "data-test-subj": "templateJSONDetailModal",
-                      title: values.name,
-                      content: (
-                        <EuiCodeBlock language="json" isCopyable>
-                          {JSON.stringify(others, null, 2)}
-                        </EuiCodeBlock>
-                      ),
-                    });
-                  }}
-                >
-                  View JSON
-                </EuiButton>
-                <ComposableTemplatesActions
-                  selectedItems={[templateName || ""]}
-                  history={props.history}
-                  onDelete={() => props.history.replace(ROUTES.COMPOSABLE_TEMPLATES)}
-                />
-              </EuiFlexItem>
+              <>
+                {useNewUX ? (
+                  <>
+                    <HeaderControl
+                      setMountPoint={setAppRightControls}
+                      controls={[
+                        {
+                          iconType: "trash",
+                          testId: "deleteButton",
+                          color: "danger",
+                          ariaLabel: "delete",
+                          run: onDeleteIndexModalOpen,
+                          controlType: "icon",
+                          display: "base",
+                        } as TopNavControlIconData,
+                        {
+                          id: "View JSON",
+                          label: "View JSON",
+                          testId: "viewJSONButton",
+                          run: onClickViewJson,
+                          fill: false,
+                          controlType: "button",
+                        } as TopNavControlButtonData,
+                      ]}
+                    />
+                    {deleteModal()}
+                  </>
+                ) : (
+                  <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
+                    <EuiButton style={{ marginRight: 20 }} onClick={onClickViewJson}>
+                      View JSON
+                    </EuiButton>
+                    <ComposableTemplatesActions selectedItems={[templateName || ""]} history={props.history} onDelete={onDelete} />
+                  </EuiFlexItem>
+                )}
+              </>
             ) : null}
           </EuiFlexGroup>
-          <EuiSpacer />
+          {useNewUX ? <></> : <EuiSpacer />}
         </>
       )}
       <DefineTemplate {...subCompontentProps} />
@@ -215,19 +297,25 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<IComponentTemplateD
       <EuiSpacer />
       <IndexSettings {...subCompontentProps} />
       <EuiSpacer />
-      <TemplateMappings {...subCompontentProps} />
+      <TemplateMappings useNewUx={useNewUX} {...subCompontentProps} />
       <EuiSpacer />
       {isEdit || hideButton ? null : (
         <>
           <EuiSpacer />
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateComposableTemplateCancelButton">
+              <EuiButtonEmpty onClick={onCancel} data-test-subj="CreateComposableTemplateCancelButton" size={useNewUX ? "s" : undefined}>
                 Cancel
               </EuiButtonEmpty>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton fill onClick={onClickSubmit} isLoading={isSubmitting} data-test-subj="CreateComposableTemplateCreateButton">
+              <EuiButton
+                fill
+                onClick={onClickSubmit}
+                isLoading={isSubmitting}
+                data-test-subj="CreateComposableTemplateCreateButton"
+                size={useNewUX ? "s" : undefined}
+              >
                 Create component template
               </EuiButton>
             </EuiFlexItem>
