@@ -15,6 +15,7 @@ export interface SubDetailProps extends TemplateDetailProps {
   field: FieldInstance;
   isEdit: boolean;
   noPanel?: boolean;
+  useNewUx?: boolean;
 }
 
 export interface ComponentTemplateEdit extends IComposableTemplate {
