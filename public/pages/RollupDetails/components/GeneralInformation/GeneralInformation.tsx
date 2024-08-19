@@ -17,6 +17,7 @@ interface GeneralInformationProps {
   pageSize: number;
   lastUpdated: string;
   onEdit: () => void;
+  useNewUX: boolean;
 }
 
 export default class GeneralInformation extends Component<GeneralInformationProps> {
@@ -25,7 +26,7 @@ export default class GeneralInformation extends Component<GeneralInformationProp
   }
 
   render() {
-    const { rollupId, description, onEdit, sourceIndex, targetIndex, scheduleText, pageSize, lastUpdated } = this.props;
+    const { rollupId, description, onEdit, sourceIndex, targetIndex, scheduleText, pageSize, lastUpdated, useNewUX } = this.props;
     const infoItems = [
       { term: "Name", value: rollupId },
       { term: "Source index", value: sourceIndex },
@@ -35,24 +36,19 @@ export default class GeneralInformation extends Component<GeneralInformationProp
       { term: "Last updated", value: lastUpdated },
       { term: "Pages per execution", value: pageSize },
     ];
+    const useActions = useNewUX
+      ? []
+      : [
+          {
+            text: "Edit",
+            buttonProps: {
+              onClick: () => onEdit(),
+            },
+          },
+        ];
     return (
       <ContentPanel
-        actions={
-          <ModalConsumer>
-            {() => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Edit",
-                    buttonProps: {
-                      onClick: () => onEdit(),
-                    },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
-        }
+        actions={<ModalConsumer>{() => <ContentPanelActions actions={useActions} />}</ModalConsumer>}
         bodyStyles={{ padding: "initial" }}
         title="General information"
         titleSize="m"

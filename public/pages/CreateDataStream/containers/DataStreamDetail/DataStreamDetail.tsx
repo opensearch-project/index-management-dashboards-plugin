@@ -4,7 +4,7 @@
  */
 
 import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, Ref, useState } from "react";
-import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiButton, EuiButtonEmpty, EuiCallOut, EuiFlexGroup, EuiFlexItem, EuiLink, EuiSpacer, EuiTitle, EuiText } from "@elastic/eui";
 import { TemplateItemRemote } from "../../../../../models/interfaces";
 import useField, { FieldInstance } from "../../../../lib/field";
 import CustomFormRow from "../../../../components/CustomFormRow";
@@ -25,6 +25,9 @@ import { ContentPanel } from "../../../../components/ContentPanel";
 import { DataStreamInEdit } from "../../interface";
 import BackingIndices from "../BackingIndices";
 import DataStreamsActions from "../../../DataStreams/containers/DataStreamsActions";
+import { ExternalLink } from "../../../utils/display-utils";
+import { getApplication, getNavigationUI } from "../../../../services/Services";
+import { TopNavControlButtonData } from "../../../../../../../src/plugins/navigation/public";
 
 export interface DataStreamDetailProps {
   dataStream?: string;
@@ -32,6 +35,7 @@ export interface DataStreamDetailProps {
   onSubmitSuccess?: (templateName: string) => void;
   readonly?: boolean;
   history: RouteComponentProps["history"];
+  useNewUX: boolean;
 }
 
 const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>) => {
@@ -107,52 +111,103 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
     field,
   };
 
+  const descriptionData = [
+    {
+      renderComponent: (
+        <EuiText size="s" color="subdued">
+          A data stream is composed of multiple backing indexes. Search requests are routed to all the backing indexes, while indexing
+          requests <br></br>
+          are routed to the latest write index.
+          <ExternalLink href={coreServices.docLinks.links.opensearch.dataStreams} />
+        </EuiText>
+      ),
+    },
+  ];
+
+  const controlsData = [
+    {
+      renderComponent: (
+        <DataStreamsActions
+          selectedItems={values ? ([values] as DataStreamInEdit[]) : []}
+          history={props.history}
+          onDelete={() => props.history.replace(ROUTES.DATA_STREAMS)}
+          useNewUX={props.useNewUX}
+        />
+      ),
+    },
+    {
+      id: "viewJson",
+      label: "View JSON",
+      testId: "dataStreamJSONDetailModal",
+      run: () => {
+        Modal.show({
+          "data-test-subj": "dataStreamJSONDetailModal",
+          title: values.name,
+          content: <JSONEditor value={JSON.stringify(values, null, 2)} disabled />,
+        });
+      },
+      controlType: "button",
+      display: "base",
+      fill: true,
+    } as TopNavControlButtonData,
+  ];
+
+  const { HeaderControl } = getNavigationUI();
+  const { setAppRightControls, setAppDescriptionControls } = getApplication();
+
   return (
     <>
-      <EuiFlexGroup alignItems="center">
-        <EuiFlexItem>
-          <EuiTitle size="l">{isEdit ? <h1 title={values.name}>{values.name}</h1> : <h1>Create data stream</h1>}</EuiTitle>
-          {isEdit ? null : (
-            <CustomFormRow
-              fullWidth
-              label=""
-              helpText={
-                <div>
-                  A data stream is composed of multiple backing indexes. Search requests are routed to all the backing indexes, while
-                  indexing requests are routed to the latest write index.{" "}
-                  <EuiLink target="_blank" external href={coreServices.docLinks.links.opensearch.dataStreams}>
-                    Learn more
-                  </EuiLink>
-                </div>
-              }
-            >
-              <></>
-            </CustomFormRow>
-          )}
-        </EuiFlexItem>
-        {isEdit ? (
-          <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-            <EuiButton
-              style={{ marginRight: 20 }}
-              onClick={() => {
-                Modal.show({
-                  "data-test-subj": "dataStreamJSONDetailModal",
-                  title: values.name,
-                  content: <JSONEditor value={JSON.stringify(values, null, 2)} disabled />,
-                });
-              }}
-            >
-              View JSON
-            </EuiButton>
-            <DataStreamsActions
-              selectedItems={values ? ([values] as DataStreamInEdit[]) : []}
-              history={props.history}
-              onDelete={() => props.history.replace(ROUTES.DATA_STREAMS)}
-            />
-          </EuiFlexItem>
-        ) : null}
-      </EuiFlexGroup>
-      <EuiSpacer />
+      {!isEdit && props.useNewUX && <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />}
+      {isEdit && props.useNewUX && <HeaderControl setMountPoint={setAppRightControls} controls={controlsData} />}
+      {!props.useNewUX && (
+        <>
+          <EuiFlexGroup alignItems="center">
+            <EuiFlexItem>
+              <EuiTitle size="l">{isEdit ? <h1 title={values.name}>{values.name}</h1> : <h1>Create data stream</h1>}</EuiTitle>
+              {isEdit ? null : (
+                <CustomFormRow
+                  fullWidth
+                  label=""
+                  helpText={
+                    <div>
+                      A data stream is composed of multiple backing indexes. Search requests are routed to all the backing indexes, while
+                      indexing requests are routed to the latest write index.{" "}
+                      <EuiLink target="_blank" external href={coreServices.docLinks.links.opensearch.dataStreams}>
+                        Learn more
+                      </EuiLink>
+                    </div>
+                  }
+                >
+                  <></>
+                </CustomFormRow>
+              )}
+            </EuiFlexItem>
+
+            {isEdit ? (
+              <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
+                <EuiButton
+                  style={{ marginRight: 20 }}
+                  onClick={() => {
+                    Modal.show({
+                      "data-test-subj": "dataStreamJSONDetailModal",
+                      title: values.name,
+                      content: <JSONEditor value={JSON.stringify(values, null, 2)} disabled />,
+                    });
+                  }}
+                >
+                  View JSON
+                </EuiButton>
+                <DataStreamsActions
+                  selectedItems={values ? ([values] as DataStreamInEdit[]) : []}
+                  history={props.history}
+                  onDelete={() => props.history.replace(ROUTES.DATA_STREAMS)}
+                />
+              </EuiFlexItem>
+            ) : null}
+          </EuiFlexGroup>
+          <EuiSpacer />
+        </>
+      )}
       {!isLoading && !templates.length && !isEdit ? (
         <>
           <EuiCallOut title="No data stream templates created" color="warning">

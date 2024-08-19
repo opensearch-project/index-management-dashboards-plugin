@@ -23,6 +23,8 @@ import {
   EuiText,
   EuiHealth,
   EuiToolTip,
+  EuiFlexGroup,
+  EuiFlexItem,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR } from "../../utils/constants";
@@ -37,6 +39,9 @@ import { CoreStart } from "opensearch-dashboards/public";
 import { DataStream } from "../../../../../server/models/interfaces";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData } from "../../../../../../../src/plugins/navigation/public";
+import { ExternalLink } from "../../../utils/display-utils";
 
 interface DataStreamsProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
@@ -51,6 +56,7 @@ type DataStreamsState = {
   selectedItems: DataStreamWithStats[];
   dataStreams: DataStreamWithStats[];
   loading: boolean;
+  useNewUX: boolean;
 } & SearchControlsProps["value"] &
   DataSourceMenuProperties;
 
@@ -68,6 +74,8 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
   static contextType = CoreServicesContext;
   constructor(props: DataStreamsProps) {
     super(props);
+    const uiSettings = getUISettings();
+    const useNewUx = uiSettings.get("home:useNewHomePage");
     const {
       from = DEFAULT_QUERY_PARAMS.from,
       size = DEFAULT_QUERY_PARAMS.size,
@@ -93,6 +101,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
       selectedItems: [],
       dataStreams: [],
       loading: false,
+      useNewUX: useNewUx,
     };
 
     this.getDataStreams = debounce(this.getDataStreams, 500, { leading: true });
@@ -105,7 +114,8 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
     }
   }
   componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.DATA_STREAMS]);
+    let breadCrumbs = this.state.useNewUX ? [BREADCRUMBS.DATA_STREAMS] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.DATA_STREAMS];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     this.getDataStreams();
   }
 
@@ -230,8 +240,12 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
     this.setState({ from: "0", ...params }, () => this.getDataStreams());
   };
 
+  onClickDataStreamCreate = () => {
+    this.props.history.push(ROUTES.CREATE_DATA_STREAM);
+  };
+
   render() {
-    const { totalDataStreams, from, size, sortField, sortDirection, dataStreams } = this.state;
+    const { totalDataStreams, from, size, sortField, sortDirection, dataStreams, useNewUX } = this.state;
 
     const pagination: Pagination = {
       pageIndex: Number(from),
@@ -250,180 +264,353 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
     const selection: EuiTableSelectionType<DataStreamWithStats> = {
       onSelectionChange: this.onSelectionChange,
     };
-    return (
-      <ContentPanel
-        actions={
-          <ContentPanelActions
-            actions={[
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls, setAppDescriptionControls } = getApplication();
+
+    const constrolsData = [
+      {
+        id: "Create data stream",
+        label: "Create data stream",
+        testId: "createDataStreamButton",
+        run: this.onClickDataStreamCreate,
+        fill: true,
+        controlType: "button",
+      } as TopNavControlButtonData,
+    ];
+
+    const descriptionData = [
+      {
+        renderComponent: (
+          <EuiText size="s" color="subdued">
+            Data streams simplify the management of time-series data. Data streams are composed of multiple backing indexes. Search{" "}
+            <br></br>
+            requests are routed to all backing indexes, while indexing requests are routed to the latest write index.
+            <ExternalLink href={(this.context as CoreStart).docLinks.links.opensearch.dataStreams} />
+          </EuiText>
+        ),
+      },
+    ];
+
+    return useNewUX ? (
+      <>
+        <HeaderControl setMountPoint={setAppRightControls} controls={constrolsData} />
+        <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+        <ContentPanel>
+          <EuiFlexGroup gutterSize="s" alignItems="center">
+            <EuiFlexItem grow={true}>
+              <IndexControls
+                value={{
+                  search: this.state.search,
+                }}
+                onSearchChange={this.onSearchChange}
+                useNewUX={useNewUX}
+              />
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <DataStreamsActions
+                selectedItems={this.state.selectedItems}
+                onDelete={this.getDataStreams}
+                history={this.props.history}
+                useNewUX={useNewUX}
+              />
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          {/* <EuiHorizontalRule margin="xs" /> */}
+
+          <EuiBasicTable
+            data-test-subj="dataStreamsTable"
+            loading={this.state.loading}
+            columns={[
               {
-                text: "",
-                children: (
-                  <DataStreamsActions
-                    selectedItems={this.state.selectedItems}
-                    onDelete={this.getDataStreams}
-                    history={this.props.history}
-                  />
-                ),
+                field: "name",
+                name: "Data stream name",
+                sortable: true,
+                render: (value: unknown) => {
+                  return (
+                    <Link to={`${ROUTES.CREATE_DATA_STREAM}/${value}/readonly`}>
+                      <EuiLink>{value}</EuiLink>
+                    </Link>
+                  );
+                },
               },
               {
-                text: "Create data stream",
-                buttonProps: {
-                  fill: true,
-                  onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_DATA_STREAM);
-                  },
+                field: "status",
+                name: "Status",
+                sortable: true,
+                render: (health: string, item) => {
+                  const healthLowerCase = health?.toLowerCase() as "green" | "yellow" | "red";
+                  const color = health ? HEALTH_TO_COLOR[healthLowerCase] : "subdued";
+                  const text = (health || item.status || "").toLowerCase();
+                  return (
+                    <EuiToolTip content={healthExplanation[healthLowerCase] || ""}>
+                      <EuiHealth color={color} className="indices-health">
+                        {text}
+                      </EuiHealth>
+                    </EuiToolTip>
+                  );
+                },
+              },
+              {
+                field: "template",
+                name: "Template",
+                sortable: true,
+                render: (value: unknown) => {
+                  return (
+                    <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
+                      <EuiLink>{value}</EuiLink>
+                    </Link>
+                  );
+                },
+              },
+              {
+                field: "backing_indices",
+                name: "Backing indexes count",
+                sortable: true,
+                align: "right",
+              },
+              {
+                field: "store_size_bytes",
+                name: "Total size",
+                sortable: true,
+                align: "right",
+                render: (value, record) => {
+                  return <>{record.store_size || ""}</>;
                 },
               },
             ]}
+            isSelectable={true}
+            itemId="name"
+            items={dataStreams}
+            onChange={this.onTableChange}
+            pagination={pagination}
+            selection={selection}
+            sorting={sorting}
+            noItemsMessage={
+              isEqual(
+                {
+                  search: this.state.search,
+                },
+                defaultFilter
+              ) ? (
+                <EuiEmptyPrompt
+                  body={
+                    <EuiText>
+                      <p>You have no data streams.</p>
+                    </EuiText>
+                  }
+                  actions={[
+                    <EuiButton
+                      fill
+                      onClick={() => {
+                        this.props.history.push(ROUTES.CREATE_DATA_STREAM);
+                      }}
+                    >
+                      Create data stream
+                    </EuiButton>,
+                  ]}
+                />
+              ) : (
+                <EuiEmptyPrompt
+                  body={
+                    <EuiText>
+                      <p>There are no data streams matching your applied filters. Reset your filters to view your data streams.</p>
+                    </EuiText>
+                  }
+                  actions={[
+                    <EuiButton
+                      fill
+                      onClick={() => {
+                        this.setState(defaultFilter, () => {
+                          this.getDataStreams();
+                        });
+                      }}
+                    >
+                      Reset filters
+                    </EuiButton>,
+                  ]}
+                />
+              )
+            }
           />
-        }
-        bodyStyles={{ padding: "initial" }}
-        title={
-          <>
-            <EuiTitle>
-              <span>Data streams</span>
-            </EuiTitle>
-            <EuiFormRow
-              fullWidth
-              helpText={
-                <div>
-                  Data streams simplify the management of time-series data. Data streams are composed of multiple backing indexes. Search
-                  requests are routed to all backing indexes, while indexing requests are routed to the latest write index.{" "}
-                  <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.dataStreams}>
-                    Learn more
-                  </EuiLink>
-                </div>
-              }
-            >
-              <></>
-            </EuiFormRow>
-          </>
-        }
-      >
-        <IndexControls
-          value={{
-            search: this.state.search,
-          }}
-          onSearchChange={this.onSearchChange}
-        />
-        <EuiHorizontalRule margin="xs" />
-
-        <EuiBasicTable
-          data-test-subj="dataStreamsTable"
-          loading={this.state.loading}
-          columns={[
-            {
-              field: "name",
-              name: "Data stream name",
-              sortable: true,
-              render: (value: unknown) => {
-                return (
-                  <Link to={`${ROUTES.CREATE_DATA_STREAM}/${value}/readonly`}>
-                    <EuiLink>{value}</EuiLink>
-                  </Link>
-                );
-              },
-            },
-            {
-              field: "status",
-              name: "Status",
-              sortable: true,
-              render: (health: string, item) => {
-                const healthLowerCase = health?.toLowerCase() as "green" | "yellow" | "red";
-                const color = health ? HEALTH_TO_COLOR[healthLowerCase] : "subdued";
-                const text = (health || item.status || "").toLowerCase();
-                return (
-                  <EuiToolTip content={healthExplanation[healthLowerCase] || ""}>
-                    <EuiHealth color={color} className="indices-health">
-                      {text}
-                    </EuiHealth>
-                  </EuiToolTip>
-                );
-              },
-            },
-            {
-              field: "template",
-              name: "Template",
-              sortable: true,
-              render: (value: unknown) => {
-                return (
-                  <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
-                    <EuiLink>{value}</EuiLink>
-                  </Link>
-                );
-              },
-            },
-            {
-              field: "backing_indices",
-              name: "Backing indexes count",
-              sortable: true,
-              align: "right",
-            },
-            {
-              field: "store_size_bytes",
-              name: "Total size",
-              sortable: true,
-              align: "right",
-              render: (value, record) => {
-                return <>{record.store_size || ""}</>;
-              },
-            },
-          ]}
-          isSelectable={true}
-          itemId="name"
-          items={dataStreams}
-          onChange={this.onTableChange}
-          pagination={pagination}
-          selection={selection}
-          sorting={sorting}
-          noItemsMessage={
-            isEqual(
-              {
-                search: this.state.search,
-              },
-              defaultFilter
-            ) ? (
-              <EuiEmptyPrompt
-                body={
-                  <EuiText>
-                    <p>You have no data streams.</p>
-                  </EuiText>
-                }
-                actions={[
-                  <EuiButton
-                    fill
-                    onClick={() => {
+        </ContentPanel>
+      </>
+    ) : (
+      <>
+        <ContentPanel
+          actions={
+            <ContentPanelActions
+              actions={[
+                {
+                  text: "",
+                  children: (
+                    <DataStreamsActions
+                      selectedItems={this.state.selectedItems}
+                      onDelete={this.getDataStreams}
+                      history={this.props.history}
+                    />
+                  ),
+                },
+                {
+                  text: "Create data stream",
+                  buttonProps: {
+                    fill: true,
+                    onClick: () => {
                       this.props.history.push(ROUTES.CREATE_DATA_STREAM);
-                    }}
-                  >
-                    Create data stream
-                  </EuiButton>,
-                ]}
-              />
-            ) : (
-              <EuiEmptyPrompt
-                body={
-                  <EuiText>
-                    <p>There are no data streams matching your applied filters. Reset your filters to view your data streams.</p>
-                  </EuiText>
-                }
-                actions={[
-                  <EuiButton
-                    fill
-                    onClick={() => {
-                      this.setState(defaultFilter, () => {
-                        this.getDataStreams();
-                      });
-                    }}
-                  >
-                    Reset filters
-                  </EuiButton>,
-                ]}
-              />
-            )
+                    },
+                  },
+                },
+              ]}
+            />
           }
-        />
-      </ContentPanel>
+          bodyStyles={{ padding: "initial" }}
+          title={
+            <>
+              <EuiTitle>
+                <span>Data streams</span>
+              </EuiTitle>
+              <EuiFormRow
+                fullWidth
+                helpText={
+                  <div>
+                    Data streams simplify the management of time-series data. Data streams are composed of multiple backing indexes. Search
+                    requests are routed to all backing indexes, while indexing requests are routed to the latest write index.{" "}
+                    <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.dataStreams}>
+                      Learn more
+                    </EuiLink>
+                  </div>
+                }
+              >
+                <></>
+              </EuiFormRow>
+            </>
+          }
+        >
+          <IndexControls
+            value={{
+              search: this.state.search,
+            }}
+            onSearchChange={this.onSearchChange}
+          />
+          <EuiHorizontalRule margin="xs" />
+
+          <EuiBasicTable
+            data-test-subj="dataStreamsTable"
+            loading={this.state.loading}
+            columns={[
+              {
+                field: "name",
+                name: "Data stream name",
+                sortable: true,
+                render: (value: unknown) => {
+                  return (
+                    <Link to={`${ROUTES.CREATE_DATA_STREAM}/${value}/readonly`}>
+                      <EuiLink>{value}</EuiLink>
+                    </Link>
+                  );
+                },
+              },
+              {
+                field: "status",
+                name: "Status",
+                sortable: true,
+                render: (health: string, item) => {
+                  const healthLowerCase = health?.toLowerCase() as "green" | "yellow" | "red";
+                  const color = health ? HEALTH_TO_COLOR[healthLowerCase] : "subdued";
+                  const text = (health || item.status || "").toLowerCase();
+                  return (
+                    <EuiToolTip content={healthExplanation[healthLowerCase] || ""}>
+                      <EuiHealth color={color} className="indices-health">
+                        {text}
+                      </EuiHealth>
+                    </EuiToolTip>
+                  );
+                },
+              },
+              {
+                field: "template",
+                name: "Template",
+                sortable: true,
+                render: (value: unknown) => {
+                  return (
+                    <Link to={`${ROUTES.CREATE_TEMPLATE}/${value}`}>
+                      <EuiLink>{value}</EuiLink>
+                    </Link>
+                  );
+                },
+              },
+              {
+                field: "backing_indices",
+                name: "Backing indexes count",
+                sortable: true,
+                align: "right",
+              },
+              {
+                field: "store_size_bytes",
+                name: "Total size",
+                sortable: true,
+                align: "right",
+                render: (value, record) => {
+                  return <>{record.store_size || ""}</>;
+                },
+              },
+            ]}
+            isSelectable={true}
+            itemId="name"
+            items={dataStreams}
+            onChange={this.onTableChange}
+            pagination={pagination}
+            selection={selection}
+            sorting={sorting}
+            noItemsMessage={
+              isEqual(
+                {
+                  search: this.state.search,
+                },
+                defaultFilter
+              ) ? (
+                <EuiEmptyPrompt
+                  body={
+                    <EuiText>
+                      <p>You have no data streams.</p>
+                    </EuiText>
+                  }
+                  actions={[
+                    <EuiButton
+                      fill
+                      onClick={() => {
+                        this.props.history.push(ROUTES.CREATE_DATA_STREAM);
+                      }}
+                    >
+                      Create data stream
+                    </EuiButton>,
+                  ]}
+                />
+              ) : (
+                <EuiEmptyPrompt
+                  body={
+                    <EuiText>
+                      <p>There are no data streams matching your applied filters. Reset your filters to view your data streams.</p>
+                    </EuiText>
+                  }
+                  actions={[
+                    <EuiButton
+                      fill
+                      onClick={() => {
+                        this.setState(defaultFilter, () => {
+                          this.getDataStreams();
+                        });
+                      }}
+                    >
+                      Reset filters
+                    </EuiButton>,
+                  ]}
+                />
+              )
+            }
+          />
+        </ContentPanel>
+      </>
     );
   }
 }
