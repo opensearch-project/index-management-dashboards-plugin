@@ -33,6 +33,8 @@ import {
 import { checkPermissionForSubmitLRONConfig } from "../../../../containers/NotificationConfig";
 import "./index.scss";
 import { DataSourceMenuContext } from "../../../../services/DataSourceMenuContext";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData } from "../../../../../../../src/plugins/navigation/public";
 
 export interface NotificationsProps {}
 
@@ -43,6 +45,11 @@ const Notifications = (props: NotificationsProps) => {
   const [submitClicked, setSubmitClicked] = useState(false);
   const [noPermission, setNoPermission] = useState(false);
   const [permissionForUpdate, setPermissionForUpdate] = useState(false);
+  const uiSettings = getUISettings();
+  const useNewUX = uiSettings.get("home:useNewHomePage");
+  const { HeaderControl } = getNavigationUI();
+  const { setAppRightControls, setAppDescriptionControls } = getApplication();
+
   const field = useField({
     values: {} as Partial<FieldState>,
     onBeforeChange(name) {
@@ -142,7 +149,10 @@ const Notifications = (props: NotificationsProps) => {
     field.resetValues(field.getOriginalValues());
   };
   useEffect(() => {
-    coreServices.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.NOTIFICATION_SETTINGS]);
+    const breadCrumbs = useNewUX
+      ? [BREADCRUMBS.INDEX_NOTIFICATION_SETTINGS]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.NOTIFICATION_SETTINGS];
+    coreServices.chrome.setBreadcrumbs(breadCrumbs);
     reloadNotifications();
     checkPermissionForSubmitLRONConfig({
       services,
@@ -154,32 +164,66 @@ const Notifications = (props: NotificationsProps) => {
   const values = field.getValues();
   const allErrors = Object.entries(field.getErrors());
 
+  const descriptionData = [
+    {
+      renderComponent: (
+        <EuiText size="s" color="subdued">
+          Configure the default notification settings on index operation statuses, such as failed or completed. You can configure <br></br>
+          additional notification settings while performing an index operation.
+        </EuiText>
+      ),
+    },
+  ];
+
+  const controlsData = [
+    {
+      id: "Manage channels",
+      label: "Manage channels",
+      href: "notifications-dashboards#/channels",
+      target: "_blank",
+      controlType: "button",
+      display: "base",
+      iconType: "popout",
+      fill: true,
+    } as TopNavControlButtonData,
+  ];
+
   return (
     <>
-      <EuiFlexGroup justifyContent="spaceBetween">
-        <EuiFlexItem>
-          <EuiTitle size="l">
-            <h1>Notification settings</h1>
-          </EuiTitle>
-          <CustomFormRow
-            fullWidth
-            helpText={
-              <>
-                Configure the default notification settings on index operation statuses, such as failed or completed. You can configure
-                additional notification settings while performing an index operation.
-              </>
-            }
-          >
-            <></>
-          </CustomFormRow>
-        </EuiFlexItem>
-        <EuiFlexItem grow={false}>
-          <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
-            Manage channels
-          </EuiButton>
-        </EuiFlexItem>
-      </EuiFlexGroup>
-      <EuiSpacer />
+      {useNewUX && (
+        <>
+          <HeaderControl setMountPoint={setAppRightControls} controls={controlsData} />
+          <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
+        </>
+      )}
+      {!useNewUX && (
+        <>
+          <EuiFlexGroup justifyContent="spaceBetween">
+            <EuiFlexItem>
+              <EuiTitle size="l">
+                <h1>Notification settings</h1>
+              </EuiTitle>
+              <CustomFormRow
+                fullWidth
+                helpText={
+                  <>
+                    Configure the default notification settings on index operation statuses, such as failed or completed. You can configure
+                    additional notification settings while performing an index operation.
+                  </>
+                }
+              >
+                <></>
+              </CustomFormRow>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+                Manage channels
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+          <EuiSpacer />
+        </>
+      )}
       {noPermission ? (
         <EuiPanel>
           <EuiEmptyPrompt
