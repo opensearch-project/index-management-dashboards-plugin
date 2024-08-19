@@ -23,7 +23,6 @@ import {
   EuiTableSelectionType,
   EuiFlexItem,
   EuiCompressedFieldSearch,
-  EuiPagination,
   EuiFlexGroup,
   EuiPanel,
   EuiTitle,
@@ -34,9 +33,7 @@ import {
   EuiTextColor,
   EuiLink,
   EuiTableFieldDataColumnType,
-  EuiInMemoryTable,
   EuiButtonIcon,
-  EuiCompressedFieldSearch,
 } from "@elastic/eui";
 import { RollupService } from "../../../../services";
 import RollupEmptyPrompt from "../../components/RollupEmptyPrompt";
