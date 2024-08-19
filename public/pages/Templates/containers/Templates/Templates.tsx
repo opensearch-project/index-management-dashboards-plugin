@@ -113,7 +113,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
     }
   }
   componentDidMount() {
-    const breadCrumbs = this.state.useUpdatedUX ? [BREADCRUMBS.TEMPLATES] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES];
+    const breadCrumbs = this.state.useUpdatedUX ? [BREADCRUMBS.NEW_TEMPLATES] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
     this.getTemplates();
   }

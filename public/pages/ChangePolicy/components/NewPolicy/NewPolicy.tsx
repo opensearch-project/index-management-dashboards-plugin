@@ -24,6 +24,7 @@ interface NewPolicyProps {
   onChangePolicy: (selectedPolicies: PolicyOption[]) => void;
   onChangeStateRadio: (optionId: string) => void;
   onStateSelectChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  useUpdatedUX?: boolean;
 }
 
 interface NewPolicyState {
@@ -70,7 +71,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
   };
 
   render() {
-    const { selectedPolicies, stateRadioIdSelected, stateSelected, selectedPoliciesError } = this.props;
+    const { selectedPolicies, stateRadioIdSelected, stateSelected, selectedPoliciesError, useUpdatedUX } = this.props;
     const { policies, policiesIsLoading } = this.state;
 
     const hasSelectedPolicy = !!selectedPolicies.length;
@@ -113,6 +114,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
               // @ts-ignore
               onChange={this.props.onChangePolicy}
               onSearchChange={this.onPolicySearchChange}
+              compressed={useUpdatedUX ? true : false}
             />
           </EuiFormRow>
 
@@ -129,6 +131,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
               value={stateSelected}
               onChange={this.props.onStateSelectChange}
               aria-label="Start state for new policy"
+              compressed={useUpdatedUX ? true : false}
             />
           </EuiFormRow>
         </div>

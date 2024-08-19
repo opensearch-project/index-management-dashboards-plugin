@@ -253,8 +253,6 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls } = getApplication();
 
-    const Bsize = this.state.useUpdatedUX ? "s" : "m";
-
     return this.state.useUpdatedUX ? (
       <div style={{ padding: "0px" }}>
         <HeaderControl

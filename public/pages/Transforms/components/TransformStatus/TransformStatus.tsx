@@ -24,7 +24,7 @@ export default class TransformStatus extends Component<TransformStatusProps> {
     const uiSettings = getUISettings();
     const useUpdatedUX = uiSettings.get("home:useNewHomePage");
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform status" titleSize={useUpdatedUX ? "s" : "m"}>
+      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform status" titleSize={useUpdatedUX ? "s" : undefined}>
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />
           <EuiFlexGrid columns={4}>

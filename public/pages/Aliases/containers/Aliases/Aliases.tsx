@@ -161,7 +161,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
   }
 
   componentDidMount() {
-    const breadCrumbs = this.state.useUpdatedUX ? [BREADCRUMBS.ALIASES] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ALIASES];
+    const breadCrumbs = this.state.useUpdatedUX ? [BREADCRUMBS.NEW_ALIASES] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.ALIASES];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
     this.getAliases();
   }
@@ -310,7 +310,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
           <EuiFormRow
             fullWidth
             helpText={
-              <div style={{ width: "50%" }}>
+              <div style={{ width: "51%" }}>
                 An alias is a virtual index name that can point to one or more indexes. If your data is spread across multiple indexes, you
                 can create and query an alias instead of keeping track of which indexes to query.{" "}
                 <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexAlias.base}>
@@ -325,7 +325,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
       },
     ];
 
-    const Buttonsize = this.state.useUpdatedUX ? "s" : "m";
+    const Buttonsize = this.state.useUpdatedUX ? "s" : undefined;
 
     const commonRender = () => {
       return (

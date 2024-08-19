@@ -15,6 +15,7 @@ import { getUISettings } from "../../../../services/Services";
 
 interface CreateIndexPropsBase extends RouteComponentProps<{ index?: string; mode?: IndicesUpdateMode }> {
   isEdit?: boolean;
+  useUpdatedUX?: boolean;
 }
 
 interface CreateIndexProps extends CreateIndexPropsBase, DataSourceMenuProperties {}
@@ -32,9 +33,7 @@ export class CreateIndex extends Component<CreateIndexProps> {
 
   componentDidMount = async (): Promise<void> => {
     const isEdit = this.isEdit;
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
-    const breadCrumbs = useUpdatedUX
+    const breadCrumbs = this.props.useUpdatedUX
       ? [BREADCRUMBS.INDICES, isEdit ? BREADCRUMBS.EDIT_INDEX : BREADCRUMBS.CREATE_INDEX]
       : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.INDICES, isEdit ? BREADCRUMBS.EDIT_INDEX : BREADCRUMBS.CREATE_INDEX];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
@@ -47,10 +46,7 @@ export class CreateIndex extends Component<CreateIndexProps> {
   render() {
     const isEdit = this.isEdit;
 
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
-
-    return useUpdatedUX ? (
+    return this.props.useUpdatedUX ? (
       <div style={{ padding: "0px 0px" }}>
         <IndexForm
           index={this.index}
@@ -58,6 +54,7 @@ export class CreateIndex extends Component<CreateIndexProps> {
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.INDICES)}
           dataSourceId={this.props.dataSourceId}
+          useUpdatedUX={this.props.useUpdatedUX}
         />
       </div>
     ) : (
@@ -72,6 +69,7 @@ export class CreateIndex extends Component<CreateIndexProps> {
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.INDICES)}
           dataSourceId={this.props.dataSourceId}
+          useUpdatedUX={this.props.useUpdatedUX}
         />
       </div>
     );
@@ -81,5 +79,7 @@ export class CreateIndex extends Component<CreateIndexProps> {
 export default function (props: CreateIndexPropsBase) {
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
-  return <CreateIndex {...props} {...dataSourceMenuProperties} />;
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+  return <CreateIndex {...props} {...dataSourceMenuProperties} useUpdatedUX={useUpdatedUX} />;
 }

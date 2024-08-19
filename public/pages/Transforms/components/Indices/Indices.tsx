@@ -11,7 +11,7 @@ interface IndicesProps {
   sourceIndex: string;
   targetIndex: string;
   sourceIndexFilter: string;
-  size: "s" | "m";
+  size: "s" | undefined;
 }
 
 export default class Indices extends Component<IndicesProps> {

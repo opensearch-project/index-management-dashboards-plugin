@@ -92,7 +92,7 @@ export default class TransformSettings extends Component<TransformSettingsProps,
     const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform settings" titleSize={useUpdatedUX ? "s" : "m"}>
+      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform settings" titleSize={useUpdatedUX ? "s" : undefined}>
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="m" />
           <EuiFlexGrid columns={4}>

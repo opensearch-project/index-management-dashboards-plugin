@@ -16,11 +16,13 @@ import {
   EuiPopover,
   EuiContextMenuPanel,
   EuiButtonIcon,
+  EuiButtonEmpty,
 } from "@elastic/eui";
 import { DataStream } from "../../../../../server/models/interfaces";
 import { ManagedIndices } from "../../containers/ManagedIndices/ManagedIndices";
 import { ManagedIndexItem } from "plugins/index-management-dashboards-plugin/models/interfaces";
 import { getUISettings } from "../../../../services/Services";
+import { size } from "lodash";
 
 interface ManagedIndexControlsProps {
   search: string;
@@ -71,6 +73,13 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
             multiSelect: false,
             cache: 60000,
             options: () => this.getDataStreams(),
+            popoverProps: {
+              button: (
+                <EuiButtonEmpty size="s" iconType="arrowDown" iconSide="right" flush="right">
+                  Data streams2
+                </EuiButtonEmpty>
+              ),
+            },
           },
         ]
       : undefined;

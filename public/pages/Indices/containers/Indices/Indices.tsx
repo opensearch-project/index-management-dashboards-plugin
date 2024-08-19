@@ -101,6 +101,11 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
     listenEvent(EVENT_MAP.SPLIT_COMPLETE, this.getIndices);
     listenEvent(EVENT_MAP.OPEN_COMPLETE, this.getIndices);
     await this.getIndices();
+    if (this.state.useUpdatedUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.INDICES.text.concat(` (${this.state.totalIndices})`), href: BREADCRUMBS.INDICES.href },
+      ]);
+    }
   }
 
   componentWillUnmount(): void {
@@ -115,6 +120,11 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
     const currQuery = this.getQueryObjectFromState(this.state);
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getIndices();
+    }
+    if (this.state.useUpdatedUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.INDICES.text.concat(` (${this.state.totalIndices})`), href: BREADCRUMBS.INDICES.href },
+      ]);
     }
   }
 
@@ -259,26 +269,11 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
 
     const { HeaderControl } = getNavigationUI();
     const { setAppRightControls } = getApplication();
-    const { setAppBadgeControls } = getApplication();
 
     const { history } = this.props;
-    const numberIndices = "(" + totalIndices.toString() + ")";
-
-    const title = [
-      {
-        renderComponent: (
-          <EuiTitle size="m">
-            <h3>
-              <span className="panel-header-count"> {totalIndices > 0 ? `(${totalIndices})` : null} </span>
-            </h3>
-          </EuiTitle>
-        ),
-      },
-    ];
 
     return this.state.useUpdatedUX ? (
       <>
-        <HeaderControl setMountPoint={setAppBadgeControls} controls={title} />
         <HeaderControl
           setMountPoint={setAppRightControls}
           controls={[

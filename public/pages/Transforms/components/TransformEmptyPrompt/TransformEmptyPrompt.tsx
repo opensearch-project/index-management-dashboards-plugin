@@ -36,7 +36,7 @@ const getActions: React.SFC<TransformEmptyPromptProps> = ({ filterIsApplied, loa
 
   if (filterIsApplied) {
     return (
-      <EuiButton size={useUpdatedUX ? "s" : "m"} fill onClick={resetFilters} data-test-subj="transformEmptyPromptRestFilters">
+      <EuiButton size={useUpdatedUX ? "s" : undefined} fill onClick={resetFilters} data-test-subj="transformEmptyPromptRestFilters">
         Reset Filters
       </EuiButton>
     );
@@ -44,7 +44,7 @@ const getActions: React.SFC<TransformEmptyPromptProps> = ({ filterIsApplied, loa
 
   return (
     <EuiButton
-      size={useUpdatedUX ? "s" : "m"}
+      size={useUpdatedUX ? "s" : undefined}
       href={`${PLUGIN_NAME}#${ROUTES.CREATE_TRANSFORM}`}
       data-test-subj="emptyPromptCreateTransformButton"
     >

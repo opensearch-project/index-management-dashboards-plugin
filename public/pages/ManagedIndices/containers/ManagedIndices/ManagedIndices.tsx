@@ -207,6 +207,11 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getManagedIndices();
+    if (this.state.useUpdatedUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.MANAGED_INDICES.text.concat(` (${this.state.totalManagedIndices})`), href: BREADCRUMBS.MANAGED_INDICES.href },
+      ]);
+    }
   }
 
   async componentDidUpdate(prevProps: ManagedIndicesProps, prevState: ManagedIndicesState) {
@@ -214,6 +219,11 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     const currQuery = ManagedIndices.getQueryObjectFromState(this.state);
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getManagedIndices();
+    }
+    if (this.state.useUpdatedUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.MANAGED_INDICES.text.concat(` (${this.state.totalManagedIndices})`), href: BREADCRUMBS.MANAGED_INDICES.href },
+      ]);
     }
   }
 
@@ -660,7 +670,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
               toggleShowDataStreams={this.toggleShowDataStreams}
               Actions={Action()}
             />
-            {/* {Action()} */}
             {CommonTable()}
           </ContentPanel>
           {RetryPolicyModal()}

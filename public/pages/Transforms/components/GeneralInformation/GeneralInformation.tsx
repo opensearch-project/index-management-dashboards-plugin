@@ -47,7 +47,7 @@ export default class GeneralInformation extends Component<GeneralInformationProp
     ];
     const uiSettings = getUISettings();
     const useUpdatedUX = uiSettings.get("home:useNewHomePage");
-    const size = useUpdatedUX ? "s" : "m";
+    const size = useUpdatedUX ? "s" : undefined;
 
     return (
       <ContentPanel

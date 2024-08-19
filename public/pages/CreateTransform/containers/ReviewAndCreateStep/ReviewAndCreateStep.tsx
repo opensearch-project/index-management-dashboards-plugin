@@ -41,6 +41,7 @@ interface ReviewAndCreateStepProps extends RouteComponentProps {
 
   interval: number;
   intervalTimeunit: string;
+  useUpdatedUX: boolean;
 }
 
 export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepProps> {
@@ -60,15 +61,12 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
   render() {
     if (this.props.currentStep != 4) return null;
 
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
-
-    const Title = !useUpdatedUX
+    const Title = !this.props.useUpdatedUX
       ? () => {
           return (
             <EuiFlexItem>
               <EuiTitle size="l">
-                <h1>Specify Schedule</h1>
+                <h1>Review and Create</h1>
               </EuiTitle>
               <EuiSpacer />
             </EuiFlexItem>
@@ -77,13 +75,13 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
       : () => {};
 
     return (
-      <div style={{ padding: "5px 50px" }}>
+      <div style={this.props.useUpdatedUX ? { padding: "0px" } : { padding: "5px 50px" }}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateTransformSteps step={4} />
           </EuiFlexItem>
           <EuiFlexItem style={{ overflow: "auto", flex: 1 }} grow={false}>
-            {Title}
+            {Title()}
             <JobNameAndIndices {...this.props} />
             <EuiSpacer />
             <ReviewDefinition {...this.props} notifications={this.context.notifications} sourceIndex={this.props.sourceIndex[0].label} />

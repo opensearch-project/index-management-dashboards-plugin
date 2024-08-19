@@ -21,6 +21,7 @@ import { getUISettings } from "../../../../services/Services";
 interface ChangePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
   indexService: IndexService;
+  useUpdatedUX?: boolean;
 }
 
 interface ChangePolicyState {
@@ -54,9 +55,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
   state: ChangePolicyState = ChangePolicy.emptyState;
 
   async componentDidMount(): Promise<void> {
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
-    const breadCrumbs = useUpdatedUX
+    const breadCrumbs = this.props.useUpdatedUX
       ? [BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY]
       : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY];
     this.context.chrome.setBreadcrumbs(breadCrumbs);
@@ -148,7 +147,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
   };
 
   render() {
-    const { indexService, managedIndexService } = this.props;
+    const { indexService, managedIndexService, useUpdatedUX } = this.props;
     const {
       selectedPolicies,
       selectedManagedIndices,
@@ -159,9 +158,6 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
       selectedPoliciesError,
       hasSubmitted,
     } = this.state;
-
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     const Title = !useUpdatedUX
       ? () => {
@@ -189,6 +185,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
           onChangeManagedIndices={this.onChangeManagedIndices}
           onChangeStateFilters={this.onChangeStateFilters}
           managedIndicesError={hasSubmitted ? managedIndicesError : ""}
+          useUpdatedUX={useUpdatedUX}
         />
 
         <EuiSpacer />
@@ -204,18 +201,19 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
           onChangeStateRadio={this.onChangeStateRadio}
           onStateSelectChange={this.onStateSelectChange}
           selectedPoliciesError={hasSubmitted ? selectedPoliciesError : ""}
+          useUpdatedUX={useUpdatedUX}
         />
 
         <EuiSpacer />
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty size={useUpdatedUX ? "s" : "l"} onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
+            <EuiButtonEmpty size={useUpdatedUX ? "s" : undefined} onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
               Cancel
             </EuiButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton size={useUpdatedUX ? "s" : "m"} fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
+            <EuiButton size={useUpdatedUX ? "s" : undefined} fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
               Change
             </EuiButton>
           </EuiFlexItem>
@@ -228,5 +226,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
 export default function (props: Omit<ChangePolicyProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
-  return <ChangePolicy {...props} {...dataSourceMenuProperties} />;
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+  return <ChangePolicy {...props} {...dataSourceMenuProperties} useUpdatedUX={useUpdatedUX} />;
 }

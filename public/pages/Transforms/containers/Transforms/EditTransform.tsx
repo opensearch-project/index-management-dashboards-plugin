@@ -146,7 +146,7 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
       schedule,
     } = this.state;
 
-    const size = this.state.useUpdatedUX ? "s" : "m";
+    const size = this.state.useUpdatedUX ? "s" : undefined;
 
     const Common = () => {
       return (
@@ -188,7 +188,7 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
 
           <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
             <EuiFlexItem grow={false}>
-              <EuiButtonEmpty size={this.state.useUpdatedUX ? "s" : "l"} onClick={this.onCancel} data-test-subj="editTransformCancelButton">
+              <EuiButtonEmpty size={size} onClick={this.onCancel} data-test-subj="editTransformCancelButton">
                 Cancel
               </EuiButtonEmpty>
             </EuiFlexItem>

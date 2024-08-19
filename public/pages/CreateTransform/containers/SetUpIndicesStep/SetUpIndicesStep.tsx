@@ -13,7 +13,6 @@ import CreateTransformSteps from "../../components/CreateTransformSteps";
 import IndexService from "../../../../services/IndexService";
 import { FieldItem, IndexItem } from "../../../../../models/interfaces";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
-import { getUISettings } from "../../../../services/Services";
 
 interface SetUpIndicesStepProps extends RouteComponentProps, DataSourceMenuProperties {
   transformService: TransformService;
@@ -40,6 +39,7 @@ interface SetUpIndicesStepProps extends RouteComponentProps, DataSourceMenuPrope
   fields: FieldItem[];
   fieldSelectedOption: string;
   beenWarned: boolean;
+  useUpdatedUX: boolean;
 }
 
 export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
@@ -48,10 +48,7 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
       return null;
     }
 
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
-
-    const Title = !useUpdatedUX
+    const Title = !this.props.useUpdatedUX
       ? () => {
           return (
             <EuiFlexItem>
@@ -65,7 +62,7 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
       : () => {};
 
     return (
-      <div style={{ padding: "5px 50px" }}>
+      <div style={this.props.useUpdatedUX ? { padding: "0px" } : { padding: "5px 50px" }}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateTransformSteps step={1} />

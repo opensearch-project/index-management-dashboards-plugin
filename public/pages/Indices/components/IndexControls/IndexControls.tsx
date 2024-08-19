@@ -14,6 +14,7 @@ import {
   EuiFlexItem,
   EuiSearchBar,
   EuiSwitch,
+  EuiButtonEmpty,
 } from "@elastic/eui";
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import IndicesActions from "../../containers/IndicesActions";

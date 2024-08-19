@@ -136,7 +136,6 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
 
   constructor(props: CreateTransformFormProps) {
     super(props);
-
     this.state = CreateTransformForm.baseState;
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
@@ -591,6 +590,8 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
       beenWarned,
       isLoading,
     } = this.state;
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
     return (
       <div style={{ width: "100%" }}>
         <SetUpIndices
@@ -617,6 +618,7 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
           fields={fields}
           fieldSelectedOption={fieldSelectedOption}
           beenWarned={beenWarned}
+          useUpdatedUX={useUpdatedUX}
         />
         <DefineTransformsStep
           {...this.props}
@@ -632,6 +634,7 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
           onEditTransformation={this.onEditTransformation}
           onRemoveTransformation={this.onRemoveTransformation}
           previewTransform={previewTransform}
+          useUpdatedUX={useUpdatedUX}
         />
         <SpecifyScheduleStep
           {...this.props}
@@ -647,6 +650,7 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
           onChangeIntervalTime={this.onChangeIntervalTime}
           onChangePage={this.onChangePage}
           onChangeIntervalTimeunit={this.onChangeIntervalTimeunit}
+          useUpdatedUX={useUpdatedUX}
         />
         <ReviewAndCreateStep
           {...this.props}
@@ -671,6 +675,7 @@ export class CreateTransformForm extends Component<CreateTransformFormProps, Cre
           currentStep={this.state.currentStep}
           onChangeStep={this.onChangeStep}
           submitError={submitError}
+          useUpdatedUX={useUpdatedUX}
         />
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd" style={{ padding: "5px 50px" }}>
           <EuiFlexItem grow={false}>

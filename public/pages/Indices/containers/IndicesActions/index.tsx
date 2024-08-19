@@ -129,7 +129,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
   const uiSettings = getUISettings();
   const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
-  const size = useUpdatedUX ? "s" : "m";
+  const size = useUpdatedUX ? "s" : undefined;
 
   return (
     <>

@@ -12,7 +12,6 @@ import CreateTransformSteps from "../../components/CreateTransformSteps";
 import { CoreServicesContext } from "../../../../components/core_services";
 import DefineTransforms from "../../components/DefineTransforms";
 import { FieldItem, TransformAggItem, TransformGroupItem } from "../../../../../models/interfaces";
-import { getUISettings } from "../../../../services/Services";
 
 interface DefineTransformsStepProps extends RouteComponentProps {
   transformService: TransformService;
@@ -28,6 +27,7 @@ interface DefineTransformsStepProps extends RouteComponentProps {
   onEditTransformation: (oldName: string, newName: string) => void;
   onRemoveTransformation: (name: string) => void;
   previewTransform: any[];
+  useUpdatedUX: boolean;
 }
 
 export default class DefineTransformsStep extends Component<DefineTransformsStepProps> {
@@ -55,11 +55,9 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
       onAggregationSelectionChange,
       onEditTransformation,
       onRemoveTransformation,
+      useUpdatedUX,
     } = this.props;
     if (currentStep !== 2) return null;
-
-    const uiSettings = getUISettings();
-    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     const Title = !useUpdatedUX
       ? () => {
@@ -75,7 +73,7 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
       : () => {};
 
     return (
-      <div style={{ padding: "5px 50px" }}>
+      <div style={this.props.useUpdatedUX ? { padding: "0px" } : { padding: "5px 50px" }}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateTransformSteps step={2} />
