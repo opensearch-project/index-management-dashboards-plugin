@@ -125,6 +125,7 @@ export const BREADCRUMBS = Object.freeze({
   COMPOSABLE_TEMPLATES: { text: "Component templates", href: `#${ROUTES.COMPOSABLE_TEMPLATES}` },
   CREATE_COMPOSABLE_TEMPLATE: { text: "Create component template", href: `#${ROUTES.CREATE_COMPOSABLE_TEMPLATE}` },
   NOTIFICATION_SETTINGS: { text: "Notification settings", href: `#${ROUTES.NOTIFICATIONS}` },
+  INDEX_NOTIFICATION_SETTINGS: { text: "Index operations notifications", href: `#${ROUTES.NOTIFICATIONS}` },
 });
 
 // TODO: EUI has a SortDirection already
