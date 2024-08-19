@@ -51,12 +51,12 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
     const Title = !this.props.useUpdatedUX
       ? () => {
           return (
-            <EuiFlexItem>
+            <>
               <EuiTitle size="l">
                 <h1>Set up indices</h1>
               </EuiTitle>
               <EuiSpacer />
-            </EuiFlexItem>
+            </>
           );
         }
       : () => {};
@@ -69,11 +69,9 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
           </EuiFlexItem>
           <EuiFlexItem>
             {Title()}
-            <EuiFlexItem>
-              <ConfigureTransform isEdit={false} {...this.props} />
-              <EuiSpacer />
-              <TransformIndices key={this.props.dataSourceId} {...this.props} />
-            </EuiFlexItem>
+            <ConfigureTransform isEdit={false} {...this.props} />
+            <EuiSpacer />
+            <TransformIndices key={this.props.dataSourceId} {...this.props} />
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiSpacer />

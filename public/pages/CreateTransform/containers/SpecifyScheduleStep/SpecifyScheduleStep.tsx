@@ -128,12 +128,12 @@ export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepPr
     const Title = !useUpdatedUX
       ? () => {
           return (
-            <EuiFlexItem>
+            <>
               <EuiTitle size="l">
                 <h1>Specify Schedule</h1>
               </EuiTitle>
               <EuiSpacer />
-            </EuiFlexItem>
+            </>
           );
         }
       : () => {};

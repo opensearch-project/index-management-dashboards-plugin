@@ -159,66 +159,67 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
       hasSubmitted,
     } = this.state;
 
-    const Title = !useUpdatedUX
-      ? () => {
-          return (
-            <EuiFlexItem>
-              <EuiTitle size="l">
-                <h1>Change Policy</h1>
-              </EuiTitle>
-              <EuiSpacer />
+    const Common = () => {
+      return (
+        <>
+          <ChangeManagedIndices
+            key={`changeManagedIndices-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
+            {...this.props}
+            managedIndexService={managedIndexService}
+            selectedManagedIndices={selectedManagedIndices}
+            selectedStateFilters={selectedStateFilters}
+            onChangeManagedIndices={this.onChangeManagedIndices}
+            onChangeStateFilters={this.onChangeStateFilters}
+            managedIndicesError={hasSubmitted ? managedIndicesError : ""}
+            useUpdatedUX={useUpdatedUX}
+          />
+
+          <EuiSpacer />
+
+          <NewPolicy
+            key={`newPolicy-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
+            {...this.props}
+            indexService={indexService}
+            selectedPolicies={selectedPolicies}
+            stateRadioIdSelected={stateRadioIdSelected}
+            stateSelected={stateSelected}
+            onChangePolicy={this.onChangeSelectedPolicy}
+            onChangeStateRadio={this.onChangeStateRadio}
+            onStateSelectChange={this.onStateSelectChange}
+            selectedPoliciesError={hasSubmitted ? selectedPoliciesError : ""}
+            useUpdatedUX={useUpdatedUX}
+          />
+
+          <EuiSpacer />
+
+          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+            <EuiFlexItem grow={false}>
+              <EuiButtonEmpty size={useUpdatedUX ? "s" : undefined} onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
+                Cancel
+              </EuiButtonEmpty>
             </EuiFlexItem>
-          );
-        }
-      : () => {};
+            <EuiFlexItem grow={false}>
+              <EuiButton size={useUpdatedUX ? "s" : undefined} fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
+                Change
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </>
+      );
+    };
 
-    return (
-      <div style={{ padding: "0px 0px" }}>
-        {Title()}
-
-        <ChangeManagedIndices
-          key={`changeManagedIndices-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
-          {...this.props}
-          managedIndexService={managedIndexService}
-          selectedManagedIndices={selectedManagedIndices}
-          selectedStateFilters={selectedStateFilters}
-          onChangeManagedIndices={this.onChangeManagedIndices}
-          onChangeStateFilters={this.onChangeStateFilters}
-          managedIndicesError={hasSubmitted ? managedIndicesError : ""}
-          useUpdatedUX={useUpdatedUX}
-        />
+    return !useUpdatedUX ? (
+      <div style={{ padding: "0px 25px" }}>
+        <EuiTitle size="l">
+          <h1>Change policy</h1>
+        </EuiTitle>
 
         <EuiSpacer />
 
-        <NewPolicy
-          key={`newPolicy-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
-          {...this.props}
-          indexService={indexService}
-          selectedPolicies={selectedPolicies}
-          stateRadioIdSelected={stateRadioIdSelected}
-          stateSelected={stateSelected}
-          onChangePolicy={this.onChangeSelectedPolicy}
-          onChangeStateRadio={this.onChangeStateRadio}
-          onStateSelectChange={this.onStateSelectChange}
-          selectedPoliciesError={hasSubmitted ? selectedPoliciesError : ""}
-          useUpdatedUX={useUpdatedUX}
-        />
-
-        <EuiSpacer />
-
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-          <EuiFlexItem grow={false}>
-            <EuiButtonEmpty size={useUpdatedUX ? "s" : undefined} onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
-              Cancel
-            </EuiButtonEmpty>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiButton size={useUpdatedUX ? "s" : undefined} fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
-              Change
-            </EuiButton>
-          </EuiFlexItem>
-        </EuiFlexGroup>
+        {Common()}
       </div>
+    ) : (
+      <div style={{ padding: "0px 0px" }}>{Common()}</div>
     );
   }
 }

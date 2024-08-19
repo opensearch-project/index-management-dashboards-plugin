@@ -333,7 +333,6 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
                   }}
                 />
               </EuiFlexItem>
-              <EuiSpacer />
             </>
           ) : null}
         </EuiFlexGroup>

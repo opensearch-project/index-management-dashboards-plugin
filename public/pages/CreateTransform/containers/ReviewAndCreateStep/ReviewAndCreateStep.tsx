@@ -64,12 +64,12 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
     const Title = !this.props.useUpdatedUX
       ? () => {
           return (
-            <EuiFlexItem>
+            <>
               <EuiTitle size="l">
                 <h1>Review and Create</h1>
               </EuiTitle>
               <EuiSpacer />
-            </EuiFlexItem>
+            </>
           );
         }
       : () => {};

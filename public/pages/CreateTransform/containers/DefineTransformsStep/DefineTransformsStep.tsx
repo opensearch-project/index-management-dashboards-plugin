@@ -62,12 +62,12 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
     const Title = !useUpdatedUX
       ? () => {
           return (
-            <EuiFlexItem>
+            <>
               <EuiTitle size="l">
                 <h1>Define transform</h1>
               </EuiTitle>
               <EuiSpacer />
-            </EuiFlexItem>
+            </>
           );
         }
       : () => {};

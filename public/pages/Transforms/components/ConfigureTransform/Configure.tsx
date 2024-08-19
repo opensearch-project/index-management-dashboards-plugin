@@ -14,7 +14,7 @@ interface ConfigureTransformProps {
   onChangeName: (value: ChangeEvent<HTMLInputElement>) => void;
   onChangeDescription: (value: ChangeEvent<HTMLTextAreaElement>) => void;
   description: string;
-  size: "s" | undefined;
+  size: "s" | "m";
 }
 
 const ConfigureTransform = ({
