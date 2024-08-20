@@ -43,6 +43,7 @@ import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
 import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 import { TopNavControlButtonData, TopNavControlIconData, TopNavControlTextData } from "src/plugins/navigation/public";
 import { EuiSpacer } from "@opensearch-project/oui";
+import NotificationModal from "../../components/NotificationModal";
 
 interface IndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   indexService: IndexService;
@@ -63,6 +64,7 @@ interface IndicesState extends DataSourceMenuProperties {
   showDataStreams: boolean;
   isDataStreamColumnVisible: boolean;
   useUpdatedUX: boolean;
+  isNotificationModalVisible: boolean;
 }
 
 export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
@@ -88,6 +90,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
       showDataStreams,
       isDataStreamColumnVisible: showDataStreams,
       useUpdatedUX: useUpdatedUX,
+      isNotificationModalVisible: false,
     };
 
     this.getIndices = _.debounce(this.getIndices, 500, { leading: true });
@@ -232,6 +235,16 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
     this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
 
+  onCloseNotification = () => {
+    this.setState({ isNotificationModalVisible: false });
+  };
+
+  toggleNotificationModal = () => {
+    this.setState((prevState) => ({
+      isNotificationModalVisible: !prevState.isNotificationModalVisible,
+    }));
+  };
+
   render() {
     const {
       totalIndices,
@@ -285,7 +298,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
               id: "Notification settings",
               label: "Notification Settings",
               fill: false,
-              // href: `${PLUGIN_NAME}#/create-index`,
+              run: this.toggleNotificationModal,
               testId: "notificationSettingsButton",
               controlType: "button",
               color: "secondary",
@@ -333,6 +346,9 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
             />
           </ContentPanel>
         </div>
+        {this.state.isNotificationModalVisible && (
+          <NotificationModal onClose={this.onCloseNotification} visible={this.state.isNotificationModalVisible} />
+        )}
       </>
     ) : (
       <ContentPanel
