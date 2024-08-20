@@ -68,7 +68,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
         <div
           class="euiFlexItem"
         >
-          <h3
+          <h1
             class="euiTitle euiTitle--small"
           >
             Define component template
@@ -78,7 +78,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                
                
             </span>
-          </h3>
+          </h1>
         </div>
       </div>
       <hr
@@ -272,7 +272,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
         <div
           class="euiFlexItem"
         >
-          <h3
+          <h1
             class="euiTitle euiTitle--small"
           >
             Index settings
@@ -282,7 +282,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                
                
             </span>
-          </h3>
+          </h1>
         </div>
         <div
           class="euiFlexItem euiFlexItem--flexGrowZero"

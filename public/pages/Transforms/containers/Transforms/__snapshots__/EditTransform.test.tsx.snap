@@ -23,7 +23,7 @@ exports[`<EditTransform /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--medium"
         >
           Job name and description
@@ -33,7 +33,7 @@ exports[`<EditTransform /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
@@ -159,7 +159,7 @@ exports[`<EditTransform /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--medium"
         >
           Indices
@@ -169,7 +169,7 @@ exports[`<EditTransform /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
@@ -338,7 +338,7 @@ exports[`<EditTransform /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--medium"
         >
           Schedule
@@ -348,7 +348,7 @@ exports[`<EditTransform /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr

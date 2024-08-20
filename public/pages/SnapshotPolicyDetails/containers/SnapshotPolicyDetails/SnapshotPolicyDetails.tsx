@@ -446,11 +446,11 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
           </>
         )}
 
-        <ContentPanel title="Policy settings" titleSize="m">
+        <ContentPanel title="Policy settings" titleSize="s">
           <EuiFlexGrid columns={3}>
             {policySettingItems.map((item) => (
               <EuiFlexItem key={`${item.term}`}>
-                <EuiText size="xs">
+                <EuiText size="s">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>
                 </EuiText>
@@ -465,7 +465,7 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
             <EuiFlexGrid columns={3}>
               {advancedSettingItems.map((item) => (
                 <EuiFlexItem key={`${item.term}`}>
-                  <EuiText size="xs">
+                  <EuiText size="s">
                     <dt>{item.term}</dt>
                     <dd>{item.value}</dd>
                   </EuiText>
@@ -477,11 +477,11 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
 
         <EuiSpacer />
 
-        <ContentPanel title="Snapshot schedule" titleSize="m">
+        <ContentPanel title="Snapshot schedule" titleSize="s">
           <EuiFlexGrid columns={3}>
             {snapshotScheduleItems.map((item) => (
               <EuiFlexItem key={`${item.term}`}>
-                <EuiText size="xs">
+                <EuiText size="s">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>
                 </EuiText>
@@ -492,11 +492,11 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
 
         <EuiSpacer />
 
-        <ContentPanel title="Snapshot retention period" titleSize="m">
+        <ContentPanel title="Snapshot retention period" titleSize="s">
           <EuiFlexGrid columns={3}>
             {retentionItems.map((item) => (
               <EuiFlexItem key={`${item.term}`}>
-                <EuiText size="xs">
+                <EuiText size="s">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>
                 </EuiText>
@@ -508,7 +508,7 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
             <EuiFlexGrid columns={3}>
               {deletionScheduleItems.map((item) => (
                 <EuiFlexItem key={`${item.term}`}>
-                  <EuiText size="xs">
+                  <EuiText size="s">
                     <dt>{item.term}</dt>
                     <dd>{item.value}</dd>
                   </EuiText>
@@ -520,11 +520,11 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
 
         <EuiSpacer />
 
-        <ContentPanel title="Notifications" titleSize="m">
+        <ContentPanel title="Notifications" titleSize="s">
           <EuiFlexGrid columns={2}>
             {notificationItems.map((item) => (
               <EuiFlexItem key={`${item.term}`}>
-                <EuiText size="xs">
+                <EuiText size="s">
                   <dt>{item.term}</dt>
                   <dd>{item.value}</dd>
                 </EuiText>
@@ -537,7 +537,7 @@ export class SnapshotPolicyDetails extends MDSEnabledComponent<SnapshotPolicyDet
 
         <ContentPanel
           title="Last creation/deletion"
-          titleSize="m"
+          titleSize="s"
           actions={
             <EuiButton iconType="refresh" onClick={() => this.getPolicy(policyId)} data-test-subj="refreshButton">
               Refresh

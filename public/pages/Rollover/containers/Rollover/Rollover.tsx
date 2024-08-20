@@ -228,8 +228,7 @@ export default function Rollover(props: RolloverProps) {
     {
       renderComponent: (
         <EuiText size="s" color="subdued">
-          Manually merge shards of indexes or backing indexes of data streams. You can also use force merge to clear up deleted documents
-          within indexes.
+          Rollover creates a new writing index for a data stream or index alias.
         </EuiText>
       ),
     },

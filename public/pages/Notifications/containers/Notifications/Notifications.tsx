@@ -235,7 +235,7 @@ const Notifications = (props: NotificationsProps) => {
         </EuiPanel>
       ) : (
         <EuiPanel>
-          <EuiText>
+          <EuiText size="s">
             <h2>Defaults for index operations</h2>
           </EuiText>
           {submitClicked && allErrors.length ? (

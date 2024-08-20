@@ -15,7 +15,7 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--large"
         >
           State management policies
@@ -25,7 +25,7 @@ exports[`<IndexPolicies /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"

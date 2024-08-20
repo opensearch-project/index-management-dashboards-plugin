@@ -50,7 +50,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
     <>
       <SimplePopover
         data-test-subj="moreAction"
-        panelPaddingSize="none"
+        panelPaddingSize="s"
         button={
           <EuiButton iconType="arrowDown" iconSide="right" size={useNewUX ? "s" : undefined}>
             Actions
@@ -58,6 +58,7 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         }
       >
         <EuiContextMenu
+          size="s"
           initialPanelId={0}
           // The EuiContextMenu has bug when testing in jest
           // the props change won't make it rerender

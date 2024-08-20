@@ -83,8 +83,8 @@ export default class TimeAggregation extends Component<TimeAggregationProps, Tim
 
     return (
       <EuiPanel>
-        <EuiTitle size="m">
-          <h3>Time aggregation </h3>
+        <EuiTitle size="s">
+          <h1>Time aggregation </h1>
         </EuiTitle>
         <EuiFormHelpText>
           Your source indices must include a timestamp field. The rollup job creates a date histogram for the field you specify." "

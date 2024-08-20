@@ -146,7 +146,7 @@ exports[`<Notifications /> spec renders 1`] = `
     class="euiPanel euiPanel--paddingMedium euiPanel--borderRadiusMedium euiPanel--plain euiPanel--hasShadow"
   >
     <div
-      class="euiText euiText--medium"
+      class="euiText euiText--small"
     >
       <h2>
         Defaults for index operations
