@@ -31,6 +31,7 @@ import {
   EuiFlexGroup,
   EuiButtonIcon,
   EuiCompressedFieldSearch,
+  EuiSmallButton,
 } from "@elastic/eui";
 import { BREADCRUMBS, PLUGIN_NAME, ROUTES, SNAPSHOT_MANAGEMENT_DOCUMENTATION_URL } from "../../../../utils/constants";
 import { getMessagePrompt, getSMPoliciesQueryParamsFromURL, renderTimestampMillis } from "../../helpers";
@@ -452,7 +453,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       </EuiContextMenuItem>,
     ];
     const actionsButton = (
-      <EuiButton
+      <EuiSmallButton
         iconType="arrowDown"
         iconSide="right"
         disabled={!selectedItems.length}
@@ -460,7 +461,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
         data-test-subj="actionButton"
       >
         Actions
-      </EuiButton>
+      </EuiSmallButton>
     );
     const actions = [
       <EuiButton iconType="refresh" onClick={this.getPolicies} data-test-subj="refreshButton">
