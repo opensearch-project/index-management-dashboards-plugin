@@ -172,7 +172,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
               <div
                 class="euiFlexItem"
               >
-                <h3
+                <h1
                   class="euiTitle euiTitle--medium"
                 >
                   Job name and description
@@ -182,7 +182,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                      
                      
                   </span>
-                </h3>
+                </h1>
               </div>
             </div>
             <hr
@@ -303,7 +303,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <h3
+                  <h1
                     class="euiTitle euiTitle--medium"
                   >
                     Indices
@@ -313,7 +313,7 @@ exports[`<CreateTransformForm /> spec renders the component 1`] = `
                        
                        
                     </span>
-                  </h3>
+                  </h1>
                 </div>
               </div>
               <hr

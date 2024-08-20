@@ -285,19 +285,20 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
           <EuiText size="s" color="subdued">
             Data streams simplify the management of time-series data. Data streams are composed of multiple backing indexes. Search{" "}
             <br></br>
-            requests are routed to all backing indexes, while indexing requests are routed to the latest write index.
+            requests are routed to all backing indexes, while indexing requests are routed to the latest write index.{" "}
             <ExternalLink href={(this.context as CoreStart).docLinks.links.opensearch.dataStreams} />
           </EuiText>
         ),
       },
     ];
+    const searchbar_padding = { padding: "0px 0px 16px 0px" };
 
     return useNewUX ? (
       <>
         <HeaderControl setMountPoint={setAppRightControls} controls={constrolsData} />
         <HeaderControl setMountPoint={setAppDescriptionControls} controls={descriptionData} />
         <ContentPanel>
-          <EuiFlexGroup gutterSize="s" alignItems="center">
+          <EuiFlexGroup gutterSize="s" alignItems="center" style={searchbar_padding}>
             <EuiFlexItem grow={true}>
               <IndexControls
                 value={{
@@ -395,19 +396,19 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
               ) ? (
                 <EuiEmptyPrompt
                   body={
-                    <EuiText>
+                    <EuiText size="s">
                       <p>You have no data streams.</p>
                     </EuiText>
                   }
                   actions={[
-                    <EuiButton
+                    <EuiSmallButton
                       fill
                       onClick={() => {
                         this.props.history.push(ROUTES.CREATE_DATA_STREAM);
                       }}
                     >
                       Create data stream
-                    </EuiButton>,
+                    </EuiSmallButton>,
                   ]}
                 />
               ) : (
@@ -418,7 +419,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                     </EuiText>
                   }
                   actions={[
-                    <EuiButton
+                    <EuiSmallButton
                       fill
                       onClick={() => {
                         this.setState(defaultFilter, () => {
@@ -427,7 +428,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
                       }}
                     >
                       Reset filters
-                    </EuiButton>,
+                    </EuiSmallButton>,
                   ]}
                 />
               )
@@ -466,7 +467,7 @@ class DataStreams extends MDSEnabledComponent<DataStreamsProps, DataStreamsState
           bodyStyles={{ padding: "initial" }}
           title={
             <>
-              <EuiTitle>
+              <EuiTitle size="s">
                 <span>Data streams</span>
               </EuiTitle>
               <EuiFormRow

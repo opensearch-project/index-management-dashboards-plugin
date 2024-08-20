@@ -61,7 +61,7 @@ Object {
                     <div
                       class="euiFlexItem"
                     >
-                      <h3
+                      <h1
                         class="euiTitle euiTitle--small"
                       >
                         Define index
@@ -71,7 +71,7 @@ Object {
                            
                            
                         </span>
-                      </h3>
+                      </h1>
                     </div>
                   </div>
                   <hr
@@ -243,7 +243,7 @@ Object {
                     <div
                       class="euiFlexItem"
                     >
-                      <h3
+                      <h1
                         class="euiTitle euiTitle--small"
                       >
                         Index settings
@@ -253,7 +253,7 @@ Object {
                            
                            
                         </span>
-                      </h3>
+                      </h1>
                     </div>
                   </div>
                   <hr

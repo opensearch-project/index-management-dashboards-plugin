@@ -13,7 +13,7 @@ exports[`<IndexForm /> spec render page 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Define index
@@ -23,7 +23,7 @@ exports[`<IndexForm /> spec render page 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
@@ -195,7 +195,7 @@ exports[`<IndexForm /> spec render page 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Index settings
@@ -205,7 +205,7 @@ exports[`<IndexForm /> spec render page 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr

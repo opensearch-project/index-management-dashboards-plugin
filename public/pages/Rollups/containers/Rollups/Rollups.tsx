@@ -379,7 +379,7 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
           this.showDeleteModal();
         }}
       >
-        <EuiTextColor color="danger">Delete</EuiTextColor>
+        <EuiTextColor>Delete</EuiTextColor>
       </EuiContextMenuItem>,
     ];
 
@@ -481,11 +481,13 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
       },
     ];
 
+    const searchbar_padding = { padding: "0px 0px 16px 0px" };
+
     return useNewUX ? (
       <>
         <HeaderControl setMountPoint={setAppRightControls} controls={controlControlsData} />
         <ContentPanel>
-          <EuiFlexGroup gutterSize="s" alignItems="center">
+          <EuiFlexGroup gutterSize="s" alignItems="center" style={searchbar_padding}>
             <EuiFlexItem grow={true}>
               <EuiCompressedFieldSearch
                 autoFocus
@@ -513,11 +515,11 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
                 button={actionButton}
                 isOpen={isPopoverOpen}
                 closePopover={this.closePopover}
-                panelPaddingSize="none"
+                panelPaddingSize="s"
                 anchorPosition="downLeft"
                 data-test-subj="actionPopover"
               >
-                <EuiContextMenuPanel items={newActionItems} />
+                <EuiContextMenuPanel items={newActionItems} size="s" />
               </EuiPopover>
             </EuiFlexItem>
           </EuiFlexGroup>

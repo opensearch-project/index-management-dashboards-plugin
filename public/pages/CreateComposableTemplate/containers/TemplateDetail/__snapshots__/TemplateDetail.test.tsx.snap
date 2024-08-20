@@ -53,7 +53,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Define component template
@@ -63,7 +63,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
@@ -307,7 +307,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Index settings
@@ -317,7 +317,7 @@ exports[`<TemplateDetail /> spec render component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
       <div
         class="euiFlexItem euiFlexItem--flexGrowZero"

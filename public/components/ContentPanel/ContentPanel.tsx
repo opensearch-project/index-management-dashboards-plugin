@@ -72,10 +72,10 @@ const ContentPanel: React.SFC<ContentPanelProps> = ({
         <EuiFlexItem>
           {typeof title === "string" ? (
             <EuiTitle size={titleSize}>
-              <h3>
+              <h1>
                 {title}
                 <span className="panel-header-count"> {itemCount > 0 ? `(${itemCount})` : null} </span>
-              </h3>
+              </h1>
             </EuiTitle>
           ) : (
             title

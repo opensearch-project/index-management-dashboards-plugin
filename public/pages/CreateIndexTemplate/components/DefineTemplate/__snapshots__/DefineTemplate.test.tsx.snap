@@ -13,7 +13,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Template settings
@@ -23,7 +23,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
@@ -408,7 +408,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Template settings
@@ -418,7 +418,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr

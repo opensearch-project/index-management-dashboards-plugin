@@ -12,7 +12,7 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
     <div
       class="euiFlexItem"
     >
-      <h3
+      <h1
         class="euiTitle euiTitle--small"
       >
         Define policy
@@ -22,7 +22,7 @@ exports[`<DefinePolicy /> spec renders the component 1`] = `
            
            
         </span>
-      </h3>
+      </h1>
     </div>
     <div
       class="euiFlexItem euiFlexItem--flexGrowZero"

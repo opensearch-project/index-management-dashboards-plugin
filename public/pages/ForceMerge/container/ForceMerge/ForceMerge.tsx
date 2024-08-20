@@ -253,7 +253,7 @@ export default function ForceMergeWrapper(props: Omit<ForceMergeProps, "services
 
       <EuiSpacer />
 
-      <ContentPanel title={advanceTitle} noExtraPadding>
+      <ContentPanel title={advanceTitle} noExtraPadding titleSize="s">
         {advancedSettingsOpen && (
           <>
             <EuiSpacer size="s" />

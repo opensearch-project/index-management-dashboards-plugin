@@ -13,7 +13,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
       class="euiFlexItem"
     >
       <span
-        class="euiTitle euiTitle--medium"
+        class="euiTitle euiTitle--small"
       >
         Data streams
       </span>

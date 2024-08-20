@@ -207,7 +207,6 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
     const popoverActionItems = [
       <EuiContextMenuItem
         key="Edit"
-        icon="empty"
         disabled={selectedItems.length != 1}
         data-test-subj="editButton"
         onClick={() => {
@@ -219,7 +218,6 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
       </EuiContextMenuItem>,
       <EuiContextMenuItem
         key="Delete"
-        icon="empty"
         disabled={!selectedItems.length}
         data-test-subj="deleteButton"
         onClick={() => {
@@ -295,6 +293,7 @@ export class Repositories extends MDSEnabledComponent<RepositoriesProps, Reposit
         compressed: useNewUX ? true : false,
         increamental: true,
       },
+      compressed: true,
       filters: [
         {
           type: "field_value_selection",
