@@ -80,13 +80,19 @@ export const selectInterval = (
   intervalTimeunit: string,
   intervalError: string,
   onChangeInterval: (e: ChangeEvent<HTMLInputElement>) => void,
-  onChangeTimeunit: (value: ChangeEvent<HTMLSelectElement>) => void
+  onChangeTimeunit: (value: ChangeEvent<HTMLSelectElement>) => void,
+  useUpdatedUX?: boolean
 ) => (
   <React.Fragment>
-    <EuiFlexGroup style={{ maxWidth: 400 }}>
+    <EuiFlexGroup style={{ maxWidth: 400 }} alignItems={useUpdatedUX ? "center" : undefined}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
         <EuiFormRow label="Transform execution interval" error={intervalError} isInvalid={intervalError != ""}>
-          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
+          <EuiFieldNumber
+            value={interval}
+            onChange={onChangeInterval}
+            isInvalid={intervalError != ""}
+            compressed={useUpdatedUX ? true : undefined}
+          />
         </EuiFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
@@ -97,6 +103,7 @@ export const selectInterval = (
             value={intervalTimeunit}
             onChange={onChangeTimeunit}
             isInvalid={interval == undefined || interval <= 0}
+            compressed={useUpdatedUX ? true : undefined}
           />
         </EuiFormRow>
       </EuiFlexItem>

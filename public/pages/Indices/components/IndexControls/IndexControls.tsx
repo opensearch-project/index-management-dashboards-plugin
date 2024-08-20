@@ -82,7 +82,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
     const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     return useUpdatedUX ? (
-      <EuiFlexGroup style={{ padding: "0px 5px 16px 5px" }} alignItems="center">
+      <EuiFlexGroup style={{ paddingBottom: "16px" }} alignItems="center" gutterSize="s">
         <EuiFlexItem>
           <EuiSearchBar
             compressed

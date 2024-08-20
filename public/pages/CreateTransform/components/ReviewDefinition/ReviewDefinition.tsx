@@ -26,6 +26,7 @@ interface ReviewDefinitionProps {
   onRemoveTransformation: (name: string) => void;
   previewTransform: any[];
   onChangeStep: (step: number) => void;
+  useUpdatedUX: boolean;
 }
 
 export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
@@ -44,6 +45,7 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
       onRemoveTransformation,
       onChangeStep,
       aggList,
+      useUpdatedUX,
     } = this.props;
 
     const aggListItems = () => {
@@ -95,6 +97,7 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
                     },
                   },
                 ]}
+                size={useUpdatedUX ? "s" : undefined}
               />
             )}
           </ModalConsumer>
@@ -102,7 +105,7 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
         panelStyles={{ padding: "20px 20px" }}
         bodyStyles={{ padding: "10px" }}
         title="Define transforms"
-        titleSize="m"
+        titleSize={useUpdatedUX ? "s" : "m"}
       >
         <div>
           <EuiFlexGrid columns={4}>{aggListItems()}</EuiFlexGrid>
@@ -121,6 +124,7 @@ export default class ReviewDefinition extends Component<ReviewDefinitionProps> {
                 onAggregationSelectionChange={onAggregationSelectionChange}
                 onRemoveTransformation={onRemoveTransformation}
                 isReadOnly={true}
+                useUpdatedUX={useUpdatedUX}
               />
             </div>
           </EuiAccordion>

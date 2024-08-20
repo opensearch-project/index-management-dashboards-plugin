@@ -92,6 +92,7 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
               onEditTransformation={onEditTransformation}
               onRemoveTransformation={onRemoveTransformation}
               isReadOnly={false}
+              useUpdatedUX={this.props.useUpdatedUX}
             />
           </EuiFlexItem>
         </EuiFlexGroup>
