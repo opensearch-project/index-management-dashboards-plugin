@@ -19,7 +19,6 @@ import {
   EuiComboBoxOptionOption,
   EuiFieldNumber,
   EuiAccordion,
-  EuiRadioGroup,
   EuiText,
   EuiCheckbox,
   EuiPanel,

@@ -69,9 +69,9 @@ export default class SetUpIndicesStep extends Component<SetUpIndicesStepProps> {
           </EuiFlexItem>
           <EuiFlexItem>
             {Title()}
-            <ConfigureTransform isEdit={false} {...this.props} useUpdatedUX={this.props.useUpdatedUX} />
+            <ConfigureTransform isEdit={false} {...this.props} />
             <EuiSpacer />
-            <TransformIndices key={this.props.dataSourceId} {...this.props} useUpdatedUX={this.props.useUpdatedUX} />
+            <TransformIndices key={this.props.dataSourceId} {...this.props} />
           </EuiFlexItem>
         </EuiFlexGroup>
         <EuiSpacer />

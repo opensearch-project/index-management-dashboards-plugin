@@ -41,7 +41,6 @@ interface TransformIndicesProps {
   hasAggregation: boolean;
   fields: FieldItem[];
   beenWarned: boolean;
-  useUpdatedUX: boolean;
 }
 
 interface TransformIndicesState {
@@ -154,7 +153,6 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
       onChangeTargetIndex,
       hasAggregation,
       beenWarned,
-      useUpdatedUX,
     } = this.props;
 
     const { isLoading, indexOptions, targetIndexOptions, isPopoverOpen } = this.state;
@@ -165,12 +163,7 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
 
     return (
       <div>
-        <ContentPanel
-          panelStyles={{ padding: "20px 20px" }}
-          bodyStyles={{ padding: "10px" }}
-          title="Indices"
-          titleSize={useUpdatedUX ? "s" : "m"}
-        >
+        <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Indices" titleSize="m">
           <div>
             {hasAggregation && (
               <Fragment>
@@ -195,7 +188,6 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
                 isLoading={isLoading}
                 isInvalid={sourceIndexError != ""}
                 data-test-subj="sourceIndexCombobox"
-                compressed={useUpdatedUX}
               />
             </EuiFormRow>
             <EuiSpacer size="s" />
@@ -277,7 +269,6 @@ export default class TransformIndices extends Component<TransformIndicesProps, T
                 isLoading={isLoading}
                 isInvalid={targetIndexError != ""}
                 data-test-subj="targetIndexCombobox"
-                compressed={useUpdatedUX}
               />
             </EuiFormRow>
           </div>

@@ -16,7 +16,6 @@ interface ReviewScheduleProps {
   intervalTimeunit: string;
   pageSize: number;
   onChangeStep: (step: number) => void;
-  useUpdatedUX: boolean;
 }
 
 export default class ReviewSchedule extends Component<ReviewScheduleProps> {
@@ -25,7 +24,7 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
   }
 
   render() {
-    const { jobEnabledByDefault, continuousJob, interval, intervalTimeunit, pageSize, onChangeStep, useUpdatedUX } = this.props;
+    const { jobEnabledByDefault, continuousJob, interval, intervalTimeunit, pageSize, onChangeStep } = this.props;
 
     const enabled = jobEnabledByDefault ? "Yes" : "No";
 
@@ -45,7 +44,6 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
                     },
                   },
                 ]}
-                size={useUpdatedUX ? "s" : undefined}
               />
             )}
           </ModalConsumer>
@@ -53,7 +51,7 @@ export default class ReviewSchedule extends Component<ReviewScheduleProps> {
         panelStyles={{ padding: "20px 20px" }}
         bodyStyles={{ padding: "10px" }}
         title="Specify schedule"
-        titleSize={useUpdatedUX ? "s" : "m"}
+        titleSize="m"
       >
         <div>
           <EuiFlexGrid columns={4}>

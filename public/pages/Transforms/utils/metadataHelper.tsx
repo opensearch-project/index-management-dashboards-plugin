@@ -87,12 +87,7 @@ export const selectInterval = (
     <EuiFlexGroup style={{ maxWidth: 400 }} alignItems={useUpdatedUX ? "center" : undefined}>
       <EuiFlexItem grow={false} style={{ width: 200 }}>
         <EuiFormRow label="Transform execution interval" error={intervalError} isInvalid={intervalError != ""}>
-          <EuiFieldNumber
-            value={interval}
-            onChange={onChangeInterval}
-            isInvalid={intervalError != ""}
-            compressed={useUpdatedUX ? true : undefined}
-          />
+          <EuiFieldNumber value={interval} onChange={onChangeInterval} isInvalid={intervalError != ""} />
         </EuiFormRow>
       </EuiFlexItem>
       <EuiFlexItem>
@@ -103,7 +98,6 @@ export const selectInterval = (
             value={intervalTimeunit}
             onChange={onChangeTimeunit}
             isInvalid={interval == undefined || interval <= 0}
-            compressed={useUpdatedUX ? true : undefined}
           />
         </EuiFormRow>
       </EuiFlexItem>

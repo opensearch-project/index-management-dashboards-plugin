@@ -17,7 +17,7 @@ interface ContentPanelActionsProps {
       onClickModal: (onShow: (component: any, props: object) => void) => () => void;
     };
   }[];
-  size?: "s" | "m" | undefined;
+  size?: "s" | "m";
 }
 
 const ContentPanelActions: React.SFC<ContentPanelActionsProps> = ({ actions, size }) => (
@@ -26,7 +26,7 @@ const ContentPanelActions: React.SFC<ContentPanelActionsProps> = ({ actions, siz
       let button = children ? (
         children
       ) : (
-        <EuiButton {...buttonProps} data-test-subj={`${text}Button`} size={size}>
+        <EuiButton {...buttonProps} data-test-subj={`${text}Button`} size={size ? size : "m"}>
           {text}
         </EuiButton>
       );
