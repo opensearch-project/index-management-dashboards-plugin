@@ -17,15 +17,16 @@ interface ContentPanelActionsProps {
       onClickModal: (onShow: (component: any, props: object) => void) => () => void;
     };
   }[];
+  size?: "s" | "m";
 }
 
-const ContentPanelActions: React.SFC<ContentPanelActionsProps> = ({ actions }) => (
+const ContentPanelActions: React.SFC<ContentPanelActionsProps> = ({ actions, size }) => (
   <EuiFlexGroup justifyContent="spaceBetween" alignItems="center">
     {actions.map(({ text, buttonProps = {}, flexItemProps = {}, modal = null, children }, index) => {
       let button = children ? (
         children
       ) : (
-        <EuiButton {...buttonProps} data-test-subj={`${text}Button`}>
+        <EuiButton {...buttonProps} data-test-subj={`${text}Button`} size={size ? size : "m"}>
           {text}
         </EuiButton>
       );

@@ -11,13 +11,16 @@ import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface CreateIndexTemplateProps
   extends RouteComponentProps<{
       template?: string;
       mode?: string;
     }>,
-    DataSourceMenuProperties {}
+    DataSourceMenuProperties {
+  useUpdatedUX?: boolean;
+}
 
 class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   static contextType = CoreServicesContext;
@@ -46,7 +49,10 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
     } else {
       lastBread = BREADCRUMBS.CREATE_TEMPLATE;
     }
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES, lastBread]);
+    const breadCrumbs = this.props.useUpdatedUX
+      ? [BREADCRUMBS.NEW_TEMPLATES, lastBread]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES, lastBread];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
   }
 
   componentDidUpdate(prevProps: Readonly<CreateIndexTemplateProps>): void {
@@ -64,7 +70,7 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
   };
 
   render() {
-    return (
+    return !this.props.useUpdatedUX ? (
       <div style={{ padding: "0px 50px" }}>
         <TemplateDetail
           history={this.props.history}
@@ -73,6 +79,19 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
           onCancel={this.onCancel}
           onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}
           dataSourceId={this.props.dataSourceId}
+          useUpdatedUX={this.props.useUpdatedUX}
+        />
+      </div>
+    ) : (
+      <div style={{ padding: "0px 0px" }}>
+        <TemplateDetail
+          history={this.props.history}
+          location={this.props.location}
+          templateName={this.template}
+          onCancel={this.onCancel}
+          onSubmitSuccess={() => this.props.history.push(ROUTES.TEMPLATES)}
+          dataSourceId={this.props.dataSourceId}
+          useUpdatedUX={this.props.useUpdatedUX}
         />
       </div>
     );
@@ -82,5 +101,7 @@ class CreateIndexTemplate extends Component<CreateIndexTemplateProps> {
 export default function (props: Omit<CreateIndexTemplateProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProps = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
-  return <CreateIndexTemplate {...props} {...dataSourceMenuProps} />;
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+  return <CreateIndexTemplate {...props} {...dataSourceMenuProps} useUpdatedUX={useUpdatedUX} />;
 }

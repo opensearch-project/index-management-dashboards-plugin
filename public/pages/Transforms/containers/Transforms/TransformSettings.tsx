@@ -12,6 +12,7 @@ import { TransformService } from "../../../../services";
 import { DimensionItem, TRANSFORM_AGG_TYPE } from "../../../../../models/interfaces";
 import { getErrorMessage } from "../../../../utils/helpers";
 import PreviewTransforms from "../../../CreateTransform/components/PreviewTransform";
+import { getUISettings } from "../../../../services/Services";
 
 interface TransformSettingsProps {
   transformService: TransformService;
@@ -87,9 +88,11 @@ export default class TransformSettings extends Component<TransformSettingsProps,
         );
       });
     };
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform settings" titleSize="m">
+      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform settings" titleSize={useUpdatedUX ? "s" : undefined}>
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="m" />
           <EuiFlexGrid columns={4}>

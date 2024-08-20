@@ -25,6 +25,9 @@ import {
   ArgsWithQuery,
   ArgsWithError,
   Query,
+  EuiContextMenuItem,
+  EuiPopover,
+  EuiContextMenuPanel,
 } from "@elastic/eui";
 import queryString from "query-string";
 import _ from "lodash";
@@ -48,6 +51,8 @@ import { DataStream } from "../../../../../server/models/interfaces";
 import { SECURITY_EXCEPTION_PREFIX } from "../../../../../server/utils/constants";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData } from "src/plugins/navigation/public";
 
 interface ManagedIndicesProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
@@ -66,6 +71,11 @@ interface ManagedIndicesState extends DataSourceMenuProperties {
   loadingManagedIndices: boolean;
   showDataStreams: boolean;
   isDataStreamColumnVisible: boolean;
+  useUpdatedUX: boolean;
+  showRetryModal: boolean;
+  showRemoveModal: boolean;
+  showEditModal: boolean;
+  isPopoverOpen: boolean;
 }
 
 export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, ManagedIndicesState> {
@@ -76,6 +86,9 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     super(props);
 
     const { from, size, search, sortField, sortDirection, showDataStreams } = getURLQueryParams(this.props.location);
+
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
     this.state = {
       ...this.state,
@@ -91,6 +104,11 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       loadingManagedIndices: true,
       showDataStreams,
       isDataStreamColumnVisible: showDataStreams,
+      useUpdatedUX: useUpdatedUX,
+      showRetryModal: false,
+      showRemoveModal: false,
+      showEditModal: false,
+      isPopoverOpen: false,
     };
 
     this.getManagedIndices = _.debounce(this.getManagedIndices, 500, { leading: true });
@@ -184,8 +202,16 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
   };
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES]);
+    const breadCrumbs = this.state.useUpdatedUX
+      ? [BREADCRUMBS.MANAGED_INDICES]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     await this.getManagedIndices();
+    if (this.state.useUpdatedUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.MANAGED_INDICES.text.concat(` (${this.state.totalManagedIndices})`), href: BREADCRUMBS.MANAGED_INDICES.href },
+      ]);
+    }
   }
 
   async componentDidUpdate(prevProps: ManagedIndicesProps, prevState: ManagedIndicesState) {
@@ -193,6 +219,11 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     const currQuery = ManagedIndices.getQueryObjectFromState(this.state);
     if (!_.isEqual(prevQuery, currQuery)) {
       await this.getManagedIndices();
+    }
+    if (this.state.useUpdatedUX) {
+      this.context.chrome.setBreadcrumbs([
+        { text: BREADCRUMBS.MANAGED_INDICES.text.concat(` (${this.state.totalManagedIndices})`), href: BREADCRUMBS.MANAGED_INDICES.href },
+      ]);
     }
   }
 
@@ -354,6 +385,38 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     this.setState({ search: DEFAULT_QUERY_PARAMS.search, query: Query.parse(DEFAULT_QUERY_PARAMS.search) });
   };
 
+  onShowRetryModal = (): void => {
+    this.setState({ showRetryModal: true });
+  };
+
+  onCloseRetryModal = (): void => {
+    this.setState({ showRetryModal: false });
+  };
+
+  onShowRemoveModal = () => {
+    this.setState({ showRemoveModal: true });
+  };
+
+  onCloseRemoveModal = () => {
+    this.setState({ showRemoveModal: false });
+  };
+
+  onShowEditModal = () => {
+    this.setState({ showEditModal: true });
+  };
+
+  onCloseEditModal = () => {
+    this.setState({ showEditModal: false });
+  };
+
+  closePopover = () => {
+    this.setState({ isPopoverOpen: false });
+  };
+
+  onActionButtonClick = () => {
+    this.setState({ isPopoverOpen: !this.state.isPopoverOpen });
+  };
+
   render() {
     const {
       totalManagedIndices,
@@ -367,6 +430,10 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       loadingManagedIndices,
       showDataStreams,
       isDataStreamColumnVisible,
+      showRetryModal,
+      showRemoveModal,
+      showEditModal,
+      isPopoverOpen,
     } = this.state;
 
     const filterIsApplied = !!search;
@@ -442,7 +509,175 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       },
     ];
 
-    return (
+    const RetryPolicyModal = () => {
+      return (
+        showRetryModal && (
+          <RetryModal
+            services={this.context.managedIndexService}
+            retryItems={_.cloneDeep(selectedItems)}
+            onClose={this.onCloseRetryModal}
+          />
+        )
+      );
+    };
+
+    const EditRolloverAliasModal = () => {
+      return (
+        showEditModal && (
+          <RolloverAliasModal index={selectedItems[0].index} services={this.context.managedIndexService} onClose={this.onCloseEditModal} />
+        )
+      );
+    };
+
+    const RemovePolicyModal = () => {
+      return (
+        showRemoveModal && (
+          <ConfirmationModal
+            title={`Remove ${
+              selectedItems.length === 1 ? `policy from ${selectedItems[0].index}` : `policies from ${selectedItems.length} indexes`
+            }`}
+            bodyMessage={`Remove ${
+              selectedItems.length === 1 ? `policy from ${selectedItems[0].index}` : `policies from ${selectedItems.length} indexes`
+            } permanently? This action cannot be undone.`}
+            actionMessage={"Remove"}
+            onAction={() => this.onClickRemovePolicy(selectedItems.map((item) => item.index))}
+            onClose={this.onCloseRemoveModal}
+          />
+        )
+      );
+    };
+
+    const actionsButton = (
+      <EuiButton
+        iconType="arrowDown"
+        iconSide="right"
+        disabled={!selectedItems.length}
+        onClick={this.onActionButtonClick}
+        data-test-subj="actionButton"
+        size="s"
+      >
+        Actions
+      </EuiButton>
+    );
+
+    const popoverActionItems = [
+      <EuiContextMenuItem
+        key="Edit"
+        toolTipPosition="left"
+        disabled={selectedItems.length !== 1 || isDataStreamIndexSelected}
+        data-test-subj="editOption"
+        onClick={() => {
+          this.closePopover();
+          this.onShowEditModal();
+        }}
+      >
+        Edit rollover alias
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        key="Remove"
+        toolTipPosition="left"
+        disabled={!selectedItems.length}
+        data-test-subj="removeOption"
+        onClick={() => {
+          this.closePopover();
+          this.onShowRemoveModal();
+        }}
+      >
+        Remove Policy
+      </EuiContextMenuItem>,
+      <EuiContextMenuItem
+        key="Retry"
+        toolTipPosition="left"
+        disabled={isRetryDisabled}
+        data-test-subj="RetryOption"
+        onClick={() => {
+          this.closePopover();
+          this.onShowRetryModal();
+        }}
+      >
+        Retry Policy
+      </EuiContextMenuItem>,
+    ];
+
+    const Action = () => {
+      return (
+        <EuiFlexItem grow={false}>
+          <EuiPopover
+            id="action"
+            button={actionsButton}
+            isOpen={isPopoverOpen}
+            closePopover={this.closePopover}
+            anchorPosition="downLeft"
+            panelPaddingSize="none"
+          >
+            <EuiContextMenuPanel items={popoverActionItems} />
+          </EuiPopover>
+        </EuiFlexItem>
+      );
+    };
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls } = getApplication();
+
+    const CommonTable = () => {
+      return (
+        <EuiBasicTable
+          columns={this.managedIndicesColumns(isDataStreamColumnVisible)}
+          isSelectable={true}
+          itemId="index"
+          items={managedIndices}
+          noItemsMessage={
+            <ManagedIndexEmptyPrompt
+              history={this.props.history}
+              filterIsApplied={filterIsApplied}
+              loading={loadingManagedIndices}
+              resetFilters={this.resetFilters}
+            />
+          }
+          onChange={this.onTableChange}
+          pagination={pagination}
+          selection={selection}
+          sorting={sorting}
+        />
+      );
+    };
+
+    return this.state.useUpdatedUX ? (
+      <>
+        <HeaderControl
+          setMountPoint={setAppRightControls}
+          controls={[
+            {
+              id: "Change policy",
+              label: "Change Policy",
+              fill: true,
+              href: `${PLUGIN_NAME}#/change-policy`,
+              testId: "changePolicyButton",
+              controlType: "button",
+              color: "primary",
+            } as TopNavControlButtonData,
+          ]}
+        />
+
+        <div style={{ padding: "0px" }}>
+          <ContentPanel>
+            <ManagedIndexControls
+              search={search}
+              onSearchChange={this.onSearchChange}
+              onRefresh={this.getManagedIndices}
+              showDataStreams={showDataStreams}
+              getDataStreams={this.getDataStreams}
+              toggleShowDataStreams={this.toggleShowDataStreams}
+              Actions={Action()}
+            />
+            {CommonTable()}
+          </ContentPanel>
+          {RetryPolicyModal()}
+          {RemovePolicyModal()}
+          {EditRolloverAliasModal()}
+        </div>
+      </>
+    ) : (
       <div style={{ padding: "0px 25px" }}>
         <EuiFlexGroup alignItems="center">
           <EuiFlexItem></EuiFlexItem>
@@ -459,7 +694,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         </EuiFlexGroup>
 
         <EuiSpacer />
-
         <ContentPanel
           actions={<ContentPanelActions actions={actions} />}
           bodyStyles={{ padding: "initial" }}
@@ -477,24 +711,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
 
           <EuiHorizontalRule margin="xs" />
 
-          <EuiBasicTable
-            columns={this.managedIndicesColumns(isDataStreamColumnVisible)}
-            isSelectable={true}
-            itemId="index"
-            items={managedIndices}
-            noItemsMessage={
-              <ManagedIndexEmptyPrompt
-                history={this.props.history}
-                filterIsApplied={filterIsApplied}
-                loading={loadingManagedIndices}
-                resetFilters={this.resetFilters}
-              />
-            }
-            onChange={this.onTableChange}
-            pagination={pagination}
-            selection={selection}
-            sorting={sorting}
-          />
+          {CommonTable()}
         </ContentPanel>
       </div>
     );

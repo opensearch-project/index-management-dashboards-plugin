@@ -28,7 +28,7 @@ import { ContentPanel, ContentPanelActions } from "../../../../components/Conten
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS } from "../../utils/constants";
 import CommonService from "../../../../services/CommonService";
 import { ITemplate } from "../../interface";
-import { BREADCRUMBS, ROUTES } from "../../../../utils/constants";
+import { BREADCRUMBS, PLUGIN_NAME, ROUTES } from "../../../../utils/constants";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { ServicesContext } from "../../../../services";
 import IndexControls, { SearchControlsProps } from "../../components/IndexControls";
@@ -41,6 +41,9 @@ import DeleteTemplate from "../../components/DeleteTemplate";
 import IndexPatternDisplay from "./IndexPatternDisplay";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import MDSEnabledComponent from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData, TopNavControlDescriptionData } from "src/plugins/navigation/public";
+import { description } from "joi";
 
 interface TemplatesProps extends RouteComponentProps, DataSourceMenuProperties {
   commonService: CommonService;
@@ -55,6 +58,7 @@ type TemplatesState = {
   selectedItems: ITemplate[];
   templates: ITemplate[];
   loading: boolean;
+  useUpdatedUX: boolean;
 } & SearchControlsProps["value"] &
   DataSourceMenuProperties;
 
@@ -79,6 +83,10 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
       sortField: keyof ITemplate;
       sortDirection: Direction;
     };
+
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
     this.state = {
       ...defaultFilter,
       ...this.state,
@@ -91,6 +99,7 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
       selectedItems: [],
       templates: [],
       loading: false,
+      useUpdatedUX: useUpdatedUX,
     };
 
     this.getTemplates = debounce(this.getTemplates, 500, { leading: true });
@@ -104,7 +113,8 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
     }
   }
   componentDidMount() {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES]);
+    const breadCrumbs = this.state.useUpdatedUX ? [BREADCRUMBS.NEW_TEMPLATES] : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TEMPLATES];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
     this.getTemplates();
   }
 
@@ -230,59 +240,9 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
     const selection: EuiTableSelectionType<ITemplate> = {
       onSelectionChange: this.onSelectionChange,
     };
-    return (
-      <ContentPanel
-        actions={
-          <ContentPanelActions
-            actions={[
-              {
-                text: "",
-                children: (
-                  <TemplatesActions selectedItems={this.state.selectedItems} onDelete={this.getTemplates} history={this.props.history} />
-                ),
-              },
-              {
-                text: "Create template",
-                buttonProps: {
-                  fill: true,
-                  onClick: () => {
-                    this.props.history.push(ROUTES.CREATE_TEMPLATE);
-                  },
-                },
-              },
-            ]}
-          />
-        }
-        bodyStyles={{ padding: "initial" }}
-        title={
-          <>
-            <EuiTitle>
-              <span>Templates</span>
-            </EuiTitle>
-            <EuiFormRow
-              fullWidth
-              helpText={
-                <div>
-                  Index templates let you initialize new indexes or data streams with predefined mappings and settings.{" "}
-                  <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
-                    Learn more
-                  </EuiLink>
-                </div>
-              }
-            >
-              <></>
-            </EuiFormRow>
-          </>
-        }
-      >
-        <IndexControls
-          value={{
-            search: this.state.search,
-          }}
-          onSearchChange={this.onSearchChange}
-        />
-        <EuiHorizontalRule margin="xs" />
 
+    const commonTable = () => {
+      return (
         <EuiBasicTable
           className="ISM-templates-table"
           data-test-subj="templatesTable"
@@ -412,6 +372,122 @@ class Templates extends MDSEnabledComponent<TemplatesProps, TemplatesState> {
             )
           }
         />
+      );
+    };
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppRightControls } = getApplication();
+    const { setAppDescriptionControls } = getApplication();
+
+    const description = [
+      {
+        renderComponent: (
+          <EuiFormRow
+            fullWidth
+            helpText={
+              <div>
+                Index templates let you initialize new indexes or data streams with predefined mappings and settings.{" "}
+                <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
+                  Learn more
+                </EuiLink>
+              </div>
+            }
+          >
+            <></>
+          </EuiFormRow>
+        ),
+      },
+    ];
+
+    return this.state.useUpdatedUX ? (
+      <div style={{ padding: "0px" }}>
+        <HeaderControl controls={description} setMountPoint={setAppDescriptionControls} />
+        <HeaderControl
+          setMountPoint={setAppRightControls}
+          controls={[
+            {
+              id: "Create Index Template",
+              label: "Create Index Template",
+              fill: true,
+              iconType: "plus",
+              href: `${PLUGIN_NAME}#/create-template`,
+              testId: "createTemplateButton",
+              controlType: "button",
+              color: "primary",
+            } as TopNavControlButtonData,
+          ]}
+        />
+        <ContentPanel>
+          <IndexControls
+            value={{
+              search: this.state.search,
+            }}
+            onSearchChange={this.onSearchChange}
+            selectedItems={this.state.selectedItems}
+            getTemplates={this.getTemplates}
+            history={this.props.history}
+          />
+
+          {commonTable()}
+        </ContentPanel>
+      </div>
+    ) : (
+      <ContentPanel
+        actions={
+          <ContentPanelActions
+            actions={[
+              {
+                text: "",
+                children: (
+                  <TemplatesActions selectedItems={this.state.selectedItems} onDelete={this.getTemplates} history={this.props.history} />
+                ),
+              },
+              {
+                text: "Create template",
+                buttonProps: {
+                  fill: true,
+                  onClick: () => {
+                    this.props.history.push(ROUTES.CREATE_TEMPLATE);
+                  },
+                },
+              },
+            ]}
+          />
+        }
+        bodyStyles={{ padding: "initial" }}
+        title={
+          <>
+            <EuiTitle>
+              <span>Templates</span>
+            </EuiTitle>
+            <EuiFormRow
+              fullWidth
+              helpText={
+                <div>
+                  Index templates let you initialize new indexes or data streams with predefined mappings and settings.{" "}
+                  <EuiLink target="_blank" external href={(this.context as CoreStart).docLinks.links.opensearch.indexTemplates.base}>
+                    Learn more
+                  </EuiLink>
+                </div>
+              }
+            >
+              <></>
+            </EuiFormRow>
+          </>
+        }
+      >
+        <IndexControls
+          value={{
+            search: this.state.search,
+          }}
+          onSearchChange={this.onSearchChange}
+          selectedItems={this.state.selectedItems}
+          getTemplates={this.getTemplates}
+          history={this.props.history}
+        />
+        <EuiHorizontalRule margin="xs" />
+
+        {commonTable()}
       </ContentPanel>
     );
   }

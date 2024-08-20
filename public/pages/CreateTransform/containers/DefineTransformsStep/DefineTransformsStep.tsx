@@ -27,6 +27,7 @@ interface DefineTransformsStepProps extends RouteComponentProps {
   onEditTransformation: (oldName: string, newName: string) => void;
   onRemoveTransformation: (name: string) => void;
   previewTransform: any[];
+  useUpdatedUX: boolean;
 }
 
 export default class DefineTransformsStep extends Component<DefineTransformsStepProps> {
@@ -54,20 +55,31 @@ export default class DefineTransformsStep extends Component<DefineTransformsStep
       onAggregationSelectionChange,
       onEditTransformation,
       onRemoveTransformation,
+      useUpdatedUX,
     } = this.props;
     if (currentStep !== 2) return null;
 
+    const Title = !useUpdatedUX
+      ? () => {
+          return (
+            <>
+              <EuiTitle size="l">
+                <h1>Define transform</h1>
+              </EuiTitle>
+              <EuiSpacer />
+            </>
+          );
+        }
+      : () => {};
+
     return (
-      <div style={{ padding: "5px 50px" }}>
+      <div style={this.props.useUpdatedUX ? { padding: "0px" } : { padding: "5px 50px" }}>
         <EuiFlexGroup>
           <EuiFlexItem style={{ maxWidth: 300 }} grow={false}>
             <CreateTransformSteps step={2} />
           </EuiFlexItem>
           <EuiFlexItem style={{ overflow: "auto", flex: 1 }} grow={false}>
-            <EuiTitle size="l">
-              <h1>Define transform</h1>
-            </EuiTitle>
-            <EuiSpacer />
+            {Title()}
             <DefineTransforms
               {...this.props}
               transformService={transformService}
