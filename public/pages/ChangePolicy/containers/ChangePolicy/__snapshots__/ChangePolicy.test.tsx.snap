@@ -23,7 +23,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Choose managed indices
@@ -33,7 +33,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
@@ -223,7 +223,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Choose new policy
@@ -233,7 +233,7 @@ exports[`<ChangePolicy /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr

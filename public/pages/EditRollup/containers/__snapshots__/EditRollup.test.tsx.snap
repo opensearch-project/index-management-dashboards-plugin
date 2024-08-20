@@ -23,8 +23,8 @@ exports[`<EditRollup /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
-          class="euiTitle euiTitle--medium"
+        <h1
+          class="euiTitle euiTitle--small"
         >
           Job name and description
           <span
@@ -33,7 +33,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
@@ -159,7 +159,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Schedule
@@ -169,7 +169,7 @@ exports[`<EditRollup /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
