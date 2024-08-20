@@ -54,7 +54,7 @@ export default function DeleteTemplateModal(props: DeleteModalProps) {
             ))}
           </ul>
           <EuiSpacer />
-          <EuiText color="subdued">
+          <EuiText color="subdued" size="s">
             To confirm your action, type <b style={{ color: "#000" }}>delete</b>.
           </EuiText>
           <EuiFieldText

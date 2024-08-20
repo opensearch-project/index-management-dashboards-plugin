@@ -45,7 +45,7 @@ export default class JobNameAndIndices extends Component<JobNameAndIndicesProps>
         }
         bodyStyles={{ padding: "initial" }}
         title="Job name and indexes"
-        titleSize="m"
+        titleSize="s"
       >
         <div style={{ padding: "15px" }}>
           <EuiSpacer size="s" />

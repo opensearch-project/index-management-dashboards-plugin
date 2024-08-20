@@ -117,8 +117,7 @@ const DataStreamDetail = (props: DataStreamDetailProps, ref: Ref<FieldInstance>)
         <EuiText size="s" color="subdued">
           A data stream is composed of multiple backing indexes. Search requests are routed to all the backing indexes, while indexing
           requests <br></br>
-          are routed to the latest write index.
-          <ExternalLink href={coreServices.docLinks.links.opensearch.dataStreams} />
+          are routed to the latest write index. <ExternalLink href={coreServices.docLinks.links.opensearch.dataStreams} />
         </EuiText>
       ),
     },

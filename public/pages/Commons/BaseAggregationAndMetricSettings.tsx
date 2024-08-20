@@ -92,7 +92,7 @@ export const BaseMetricsColumns: Readonly<EuiTableFieldDataColumnType<MetricItem
 export function sequenceTableComponents(selectedDimensionField, items, columns, pagination, sorting, onChange) {
   if (selectedDimensionField.length == 0) {
     return (
-      <EuiText>
+      <EuiText size="xs">
         <dd>No fields added for aggregation</dd>
       </EuiText>
     );
@@ -120,12 +120,12 @@ export function additionalMetricsComponent(selectedMetrics) {
   return (
     <EuiFlexGroup gutterSize="xs">
       <EuiFlexItem grow={false}>
-        <EuiText>
+        <EuiText size="s">
           <h3>Additional metrics</h3>
         </EuiText>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiText color="subdued" textAlign="left">
+        <EuiText color="subdued" textAlign="left" size="s">
           <h3>{`(${selectedMetrics.length})`}</h3>
         </EuiText>
       </EuiFlexItem>
@@ -136,7 +136,7 @@ export function additionalMetricsComponent(selectedMetrics) {
 export function sourceFieldComponents(selectedMetrics, items, columns, pagination, sorting, onChange) {
   if (selectedMetrics.length == 0) {
     return (
-      <EuiText>
+      <EuiText size="xs">
         <dd>No fields added for metrics</dd>
       </EuiText>
     );

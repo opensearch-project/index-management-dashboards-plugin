@@ -15,7 +15,7 @@ interface RollupStatusProps {
 }
 
 const RollupStatus = ({ metadata }: RollupStatusProps) => (
-  <ContentPanel bodyStyles={{ padding: "initial" }} title="Rollup status" titleSize="m">
+  <ContentPanel bodyStyles={{ padding: "initial" }} title="Rollup status" titleSize="s">
     <div style={{ paddingLeft: "10px" }}>
       <EuiSpacer size="s" />
       <EuiFlexGrid columns={4}>
