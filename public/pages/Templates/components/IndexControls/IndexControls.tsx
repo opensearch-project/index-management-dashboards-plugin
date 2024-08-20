@@ -38,7 +38,7 @@ export default function SearchControls(props: SearchControlsProps) {
   const useUpdatedUX = uiSettings.get("home:useNewHomePage");
 
   return useUpdatedUX ? (
-    <EuiFlexGroup style={{ padding: "0px 5px 16px 5px" }} alignItems="center">
+    <EuiFlexGroup style={{ paddingBottom: "16px" }} alignItems="center" gutterSize="s">
       <EuiFlexItem>
         <EuiCompressedFieldSearch
           fullWidth

@@ -82,11 +82,16 @@ export default class ReviewAndCreateStep extends Component<ReviewAndCreateStepPr
           </EuiFlexItem>
           <EuiFlexItem style={{ overflow: "auto", flex: 1 }} grow={false}>
             {Title()}
-            <JobNameAndIndices {...this.props} />
+            <JobNameAndIndices {...this.props} useUpdatedUX={this.props.useUpdatedUX} />
             <EuiSpacer />
-            <ReviewDefinition {...this.props} notifications={this.context.notifications} sourceIndex={this.props.sourceIndex[0].label} />
+            <ReviewDefinition
+              {...this.props}
+              notifications={this.context.notifications}
+              sourceIndex={this.props.sourceIndex[0].label}
+              useUpdatedUX={this.props.useUpdatedUX}
+            />
             <EuiSpacer />
-            <ReviewSchedule {...this.props} />
+            <ReviewSchedule {...this.props} useUpdatedUX={this.props.useUpdatedUX} />
             <EuiSpacer />
             <EuiCallOut color="warning">
               <p>You can only change the description and schedule after creating a job. Double-check your choices before proceeding.</p>

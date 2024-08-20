@@ -272,7 +272,7 @@ export class Transforms extends MDSEnabledComponent<TransformProps, TransformSta
         />
         <EuiPanel style={{ paddingLeft: "10px", paddingRight: "10px" }}>
           <div style={{ padding: "initial" }}>
-            <EuiFlexGroup style={{ padding: "0px 0px 16px 0px" }}>
+            <EuiFlexGroup style={{ padding: "0px 0px 16px 0px" }} gutterSize="s">
               <EuiFlexItem>
                 <EuiFieldSearch compressed fullWidth={true} value={search} placeholder="Search" onChange={this.onSearchChange} />
               </EuiFlexItem>

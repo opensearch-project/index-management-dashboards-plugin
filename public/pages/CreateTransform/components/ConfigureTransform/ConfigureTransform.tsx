@@ -14,6 +14,7 @@ interface ConfigureTransformProps {
   onChangeName: (value: ChangeEvent<HTMLInputElement>) => void;
   onChangeDescription: (value: ChangeEvent<HTMLTextAreaElement>) => void;
   description: string;
+  useUpdatedUX: boolean;
 }
 
 const ConfigureTransform = ({
@@ -23,8 +24,14 @@ const ConfigureTransform = ({
   onChangeName,
   onChangeDescription,
   description,
+  useUpdatedUX,
 }: ConfigureTransformProps) => (
-  <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Job name and description" titleSize="m">
+  <ContentPanel
+    panelStyles={{ padding: "20px 20px" }}
+    bodyStyles={{ padding: "10px" }}
+    title="Job name and description"
+    titleSize={useUpdatedUX ? "s" : "m"}
+  >
     <div>
       <EuiCompressedFormRow
         label="Name"
@@ -38,6 +45,7 @@ const ConfigureTransform = ({
           value={transformId}
           onChange={onChangeName}
           disabled={isEdit}
+          compressed={useUpdatedUX}
         />
       </EuiCompressedFormRow>
       <EuiSpacer />

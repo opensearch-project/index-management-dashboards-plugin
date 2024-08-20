@@ -31,6 +31,7 @@ interface ScheduleProps {
   onChangeIntervalTime: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeIntervalTimeunit: (e: ChangeEvent<HTMLSelectElement>) => void;
   onChangePage: (e: ChangeEvent<HTMLInputElement>) => void;
+  useUpdatedUX: boolean;
 }
 
 const radios = [
@@ -77,9 +78,15 @@ export default class Schedule extends Component<ScheduleProps> {
       onChangeIntervalTime,
       onChangeIntervalTimeunit,
       onChangePage,
+      useUpdatedUX,
     } = this.props;
     return (
-      <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Schedule" titleSize="m">
+      <ContentPanel
+        panelStyles={{ padding: "20px 20px" }}
+        bodyStyles={{ padding: "10px" }}
+        title="Schedule"
+        titleSize={useUpdatedUX ? "s" : "m"}
+      >
         <div>
           {!isEdit && (
             <EuiCompressedCheckbox
@@ -95,7 +102,7 @@ export default class Schedule extends Component<ScheduleProps> {
           {!isEdit && isContinuous(continuousJob, onChangeContinuousJob)}
 
           {/* TODO: Replace with switch block when define by cron expressions is supported. */}
-          {selectInterval(interval, intervalTimeunit, intervalError, onChangeIntervalTime, onChangeIntervalTimeunit)}
+          {selectInterval(interval, intervalTimeunit, intervalError, onChangeIntervalTime, onChangeIntervalTimeunit, useUpdatedUX)}
           <EuiSpacer size="m" />
           <EuiHorizontalRule margin="xs" />
           <EuiSpacer size="m" />

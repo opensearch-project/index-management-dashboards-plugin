@@ -109,7 +109,7 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
               // @ts-ignore
               onChange={this.props.onChangeManagedIndices}
               onSearchChange={this.onManagedIndexSearchChange}
-              compressed={useUpdatedUX ? true : false}
+              compressed={useUpdatedUX ? true : undefined}
             />
           </EuiCompressedFormRow>
 
@@ -122,7 +122,7 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
               // @ts-ignore
               onChange={this.props.onChangeStateFilters}
               onSearchChange={this.onStateFilterSearchChange}
-              compressed={useUpdatedUX ? true : false}
+              compressed={useUpdatedUX ? true : undefined}
             />
           </EuiCompressedFormRow>
         </div>

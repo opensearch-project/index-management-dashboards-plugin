@@ -161,6 +161,7 @@ export default class SpecifyScheduleStep extends Component<SpecifyScheduleStepPr
               onChangeIntervalTime={onChangeIntervalTime}
               onChangeIntervalTimeunit={onChangeIntervalTimeunit}
               onChangePage={onChangePage}
+              useUpdatedUX={this.props.useUpdatedUX}
             />
           </EuiFlexItem>
         </EuiFlexGroup>

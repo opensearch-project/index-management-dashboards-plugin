@@ -30,6 +30,7 @@ interface DefineTransformsProps {
   onRemoveTransformation: (name: string) => void;
   previewTransform: any[];
   isReadOnly: boolean;
+  useUpdatedUX?: boolean;
 }
 
 export default function DefineTransforms({
@@ -47,6 +48,7 @@ export default function DefineTransforms({
   onRemoveTransformation,
   previewTransform,
   isReadOnly,
+  useUpdatedUX,
 }: DefineTransformsProps) {
   let columns: EuiDataGridColumn[] = [];
 
@@ -210,7 +212,12 @@ export default function DefineTransforms({
     );
 
   return (
-    <ContentPanel panelStyles={{ padding: "20px 20px" }} bodyStyles={{ padding: "10px" }} title="Select fields to transform" titleSize="m">
+    <ContentPanel
+      panelStyles={{ padding: "20px 20px" }}
+      bodyStyles={{ padding: "10px" }}
+      title="Select fields to transform"
+      titleSize={useUpdatedUX ? "s" : "m"}
+    >
       <EuiText>
         <h5>Original fields with sample data</h5>
       </EuiText>

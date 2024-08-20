@@ -28,7 +28,7 @@ interface ScheduleProps {
   onCronTimeZoneChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   onIntervalChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onIntervalTimeUnitChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-  size: "s" | "m";
+  size: "s" | "m" | undefined;
 }
 
 export default class Schedule extends Component<ScheduleProps> {
