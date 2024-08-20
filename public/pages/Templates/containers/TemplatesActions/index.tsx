@@ -9,6 +9,7 @@ import SimplePopover from "../../../../components/SimplePopover";
 import DeleteIndexModal from "../DeleteTemplatesModal";
 import { ITemplate } from "../../interface";
 import { ROUTES } from "../../../../utils/constants";
+import { getUISettings } from "../../../../services/Services";
 
 export interface TemplatesActionsProps {
   selectedItems: ITemplate[];
@@ -26,13 +27,18 @@ export default function TemplatesActions(props: TemplatesActionsProps) {
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
 
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+  const size = useUpdatedUX ? "s" : undefined;
+
   return (
     <>
       <SimplePopover
         data-test-subj="moreAction"
         panelPaddingSize="none"
         button={
-          <EuiButton iconType="arrowDown" iconSide="right">
+          <EuiButton iconType="arrowDown" iconSide="right" size={size}>
             Actions
           </EuiButton>
         }

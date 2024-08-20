@@ -18,6 +18,7 @@ import Indices from "../../components/Indices";
 import moment from "moment";
 import { Transform } from "../../../../../models/interfaces";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface EditTransformProps extends RouteComponentProps {
   transformService: TransformService;
@@ -44,6 +45,7 @@ interface EditTransformState {
   cronExpression: string;
   cronTimeZone: string;
   schedule: string;
+  useUpdatedUX: boolean;
 }
 
 export class EditTransform extends Component<EditTransformProps, EditTransformState> {
@@ -51,6 +53,8 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
 
   constructor(props: EditTransformProps) {
     super(props);
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
     this.state = {
       id: "",
       error: "",
@@ -72,13 +76,17 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
       schedule: "fixed",
       submitError: "",
       hasSubmitted: false,
+      useUpdatedUX: useUpdatedUX,
     };
   }
 
   componentDidMount = async () => {
     const { id } = queryString.parse(this.props.location.search);
+    const breadCrumbs = this.state.useUpdatedUX
+      ? [BREADCRUMBS.TRANSFORMS, { text: id }, BREADCRUMBS.EDIT_TRANSFORM]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS, BREADCRUMBS.EDIT_TRANSFORM, { text: id }];
     if (typeof id === "string" && !!id) {
-      this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.TRANSFORMS, BREADCRUMBS.EDIT_TRANSFORM, { text: id }]);
+      this.context.chrome.setBreadcrumbs(breadCrumbs);
       await this.getTransform(id);
     } else {
       this.context.notifications.toasts.addDanger(`Invalid transform id: ${id}`);
@@ -137,57 +145,81 @@ export class EditTransform extends Component<EditTransformProps, EditTransformSt
       cronTimeZone,
       schedule,
     } = this.state;
-    return (
+
+    const size = this.state.useUpdatedUX ? "s" : "m";
+
+    const Common = () => {
+      return (
+        <>
+          <ConfigureTransform
+            inEdit={true}
+            transformId={id}
+            error={error}
+            onChangeName={this.onNameChange}
+            onChangeDescription={this.onDescriptionChange}
+            description={description}
+            size={size}
+          />
+          <EuiSpacer />
+          <Indices sourceIndex={sourceIndex} targetIndex={targetIndex} sourceIndexFilter={sourceIndexFilter} size={size} />
+          <EuiSpacer />
+          <Schedule
+            transformId={id}
+            pageSize={pageSize}
+            schedule={schedule}
+            error={error}
+            enabled={enabled}
+            interval={interval}
+            intervalError={intervalError}
+            intervalTimeUnit={intervalTimeUnit}
+            cronExpression={cronExpression}
+            cronTimeZone={cronTimeZone}
+            onEnabledChange={this.onEnabledChange}
+            onCronExpressionChange={this.onCronExpressionChange}
+            onIntervalChange={this.onIntervalChange}
+            onPageChange={this.onPageChange}
+            onScheduleChange={this.onScheduleChange}
+            onCronTimeZoneChange={this.onCronTimeZoneChange}
+            onIntervalTimeUnitChange={this.onIntervalTimeUnitChange}
+            size={size}
+          />
+
+          <EuiSpacer />
+
+          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+            <EuiFlexItem grow={false}>
+              <EuiButtonEmpty
+                size={this.state.useUpdatedUX ? "s" : undefined}
+                onClick={this.onCancel}
+                data-test-subj="editTransformCancelButton"
+              >
+                Cancel
+              </EuiButtonEmpty>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButton
+                size={this.state.useUpdatedUX ? "s" : undefined}
+                fill
+                onClick={this.onSubmit}
+                isLoading={isSubmitting}
+                data-test-subj="editTransformSaveButton"
+              >
+                Save changes
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </>
+      );
+    };
+    return this.state.useUpdatedUX ? (
+      <div style={{ padding: "0px 0px" }}>{Common()}</div>
+    ) : (
       <div style={{ padding: "25px 50px" }}>
         <EuiTitle size="l">
           <h1>Edit transform job</h1>
         </EuiTitle>
         <EuiSpacer />
-        <ConfigureTransform
-          inEdit={true}
-          transformId={id}
-          error={error}
-          onChangeName={this.onNameChange}
-          onChangeDescription={this.onDescriptionChange}
-          description={description}
-        />
-        <EuiSpacer />
-        <Indices sourceIndex={sourceIndex} targetIndex={targetIndex} sourceIndexFilter={sourceIndexFilter} />
-        <EuiSpacer />
-        <Schedule
-          transformId={id}
-          pageSize={pageSize}
-          schedule={schedule}
-          error={error}
-          enabled={enabled}
-          interval={interval}
-          intervalError={intervalError}
-          intervalTimeUnit={intervalTimeUnit}
-          cronExpression={cronExpression}
-          cronTimeZone={cronTimeZone}
-          onEnabledChange={this.onEnabledChange}
-          onCronExpressionChange={this.onCronExpressionChange}
-          onIntervalChange={this.onIntervalChange}
-          onPageChange={this.onPageChange}
-          onScheduleChange={this.onScheduleChange}
-          onCronTimeZoneChange={this.onCronTimeZoneChange}
-          onIntervalTimeUnitChange={this.onIntervalTimeUnitChange}
-        />
-
-        <EuiSpacer />
-
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-          <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="editTransformCancelButton">
-              Cancel
-            </EuiButtonEmpty>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="editTransformSaveButton">
-              Save changes
-            </EuiButton>
-          </EuiFlexItem>
-        </EuiFlexGroup>
+        {Common()}
       </div>
     );
   }

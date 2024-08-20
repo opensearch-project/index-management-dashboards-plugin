@@ -6,6 +6,7 @@
 import React from "react";
 import { EuiButton, EuiEmptyPrompt, EuiText } from "@elastic/eui";
 import { PLUGIN_NAME, ROUTES } from "../../../../utils/constants";
+import { getUISettings } from "../../../../services/Services";
 
 interface TransformEmptyPromptProps {
   filterIsApplied: boolean;
@@ -25,21 +26,28 @@ const getMessagePrompt = ({ filterIsApplied, loading }: TransformEmptyPromptProp
   return TEXT.NO_TRANSFORMS;
 };
 
-const getActions: React.SFC<TransformEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters }) => {
+const getActions: React.SFC<TransformEmptyPromptProps> = ({ filterIsApplied, loading, resetFilters, size }) => {
   if (loading) {
     return null;
   }
 
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
   if (filterIsApplied) {
     return (
-      <EuiButton fill onClick={resetFilters} data-test-subj="transformEmptyPromptRestFilters">
+      <EuiButton size={useUpdatedUX ? "s" : undefined} fill onClick={resetFilters} data-test-subj="transformEmptyPromptRestFilters">
         Reset Filters
       </EuiButton>
     );
   }
 
   return (
-    <EuiButton href={`${PLUGIN_NAME}#${ROUTES.CREATE_TRANSFORM}`} data-test-subj="emptyPromptCreateTransformButton">
+    <EuiButton
+      size={useUpdatedUX ? "s" : undefined}
+      href={`${PLUGIN_NAME}#${ROUTES.CREATE_TRANSFORM}`}
+      data-test-subj="emptyPromptCreateTransformButton"
+    >
       Create transform
     </EuiButton>
   );

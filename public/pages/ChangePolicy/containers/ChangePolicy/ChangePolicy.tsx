@@ -16,10 +16,12 @@ import { PolicyOption } from "../../models/interfaces";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { DataSourceMenuContext, DataSourceMenuProperties } from "../../../../services/DataSourceMenuContext";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getUISettings } from "../../../../services/Services";
 
 interface ChangePolicyProps extends RouteComponentProps, DataSourceMenuProperties {
   managedIndexService: ManagedIndexService;
   indexService: IndexService;
+  useUpdatedUX?: boolean;
 }
 
 interface ChangePolicyState {
@@ -53,7 +55,10 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
   state: ChangePolicyState = ChangePolicy.emptyState;
 
   async componentDidMount(): Promise<void> {
-    this.context.chrome.setBreadcrumbs([BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY]);
+    const breadCrumbs = this.props.useUpdatedUX
+      ? [BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY]
+      : [BREADCRUMBS.INDEX_MANAGEMENT, BREADCRUMBS.MANAGED_INDICES, BREADCRUMBS.CHANGE_POLICY];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
   }
 
   componentDidUpdate(prevProps: ChangePolicyProps, prevState: Readonly<ChangePolicyState>) {
@@ -142,7 +147,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
   };
 
   render() {
-    const { indexService, managedIndexService } = this.props;
+    const { indexService, managedIndexService, useUpdatedUX } = this.props;
     const {
       selectedPolicies,
       selectedManagedIndices,
@@ -154,7 +159,56 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
       hasSubmitted,
     } = this.state;
 
-    return (
+    const Common = () => {
+      return (
+        <>
+          <ChangeManagedIndices
+            key={`changeManagedIndices-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
+            {...this.props}
+            managedIndexService={managedIndexService}
+            selectedManagedIndices={selectedManagedIndices}
+            selectedStateFilters={selectedStateFilters}
+            onChangeManagedIndices={this.onChangeManagedIndices}
+            onChangeStateFilters={this.onChangeStateFilters}
+            managedIndicesError={hasSubmitted ? managedIndicesError : ""}
+            useUpdatedUX={useUpdatedUX}
+          />
+
+          <EuiSpacer />
+
+          <NewPolicy
+            key={`newPolicy-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
+            {...this.props}
+            indexService={indexService}
+            selectedPolicies={selectedPolicies}
+            stateRadioIdSelected={stateRadioIdSelected}
+            stateSelected={stateSelected}
+            onChangePolicy={this.onChangeSelectedPolicy}
+            onChangeStateRadio={this.onChangeStateRadio}
+            onStateSelectChange={this.onStateSelectChange}
+            selectedPoliciesError={hasSubmitted ? selectedPoliciesError : ""}
+            useUpdatedUX={useUpdatedUX}
+          />
+
+          <EuiSpacer />
+
+          <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
+            <EuiFlexItem grow={false}>
+              <EuiButtonEmpty size={useUpdatedUX ? "s" : undefined} onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
+                Cancel
+              </EuiButtonEmpty>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiButton size={useUpdatedUX ? "s" : undefined} fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
+                Change
+              </EuiButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </>
+      );
+    };
+
+    return !useUpdatedUX ? (
       <div style={{ padding: "0px 25px" }}>
         <EuiTitle size="l">
           <h1>Change policy</h1>
@@ -162,47 +216,10 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
 
         <EuiSpacer />
 
-        <ChangeManagedIndices
-          key={`changeManagedIndices-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
-          {...this.props}
-          managedIndexService={managedIndexService}
-          selectedManagedIndices={selectedManagedIndices}
-          selectedStateFilters={selectedStateFilters}
-          onChangeManagedIndices={this.onChangeManagedIndices}
-          onChangeStateFilters={this.onChangeStateFilters}
-          managedIndicesError={hasSubmitted ? managedIndicesError : ""}
-        />
-
-        <EuiSpacer />
-
-        <NewPolicy
-          key={`newPolicy-${this.props.dataSourceId}`} // force re-mount on dataSourceId change
-          {...this.props}
-          indexService={indexService}
-          selectedPolicies={selectedPolicies}
-          stateRadioIdSelected={stateRadioIdSelected}
-          stateSelected={stateSelected}
-          onChangePolicy={this.onChangeSelectedPolicy}
-          onChangeStateRadio={this.onChangeStateRadio}
-          onStateSelectChange={this.onStateSelectChange}
-          selectedPoliciesError={hasSubmitted ? selectedPoliciesError : ""}
-        />
-
-        <EuiSpacer />
-
-        <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
-          <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="changePolicyCancelButton">
-              Cancel
-            </EuiButtonEmpty>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onSubmit} data-test-subj="changePolicyChangeButton">
-              Change
-            </EuiButton>
-          </EuiFlexItem>
-        </EuiFlexGroup>
+        {Common()}
       </div>
+    ) : (
+      <div style={{ padding: "0px 0px" }}>{Common()}</div>
     );
   }
 }
@@ -210,5 +227,7 @@ export class ChangePolicy extends Component<ChangePolicyProps, ChangePolicyState
 export default function (props: Omit<ChangePolicyProps, keyof DataSourceMenuProperties>) {
   const dataSourceMenuProperties = useContext(DataSourceMenuContext);
   useUpdateUrlWithDataSourceProperties();
-  return <ChangePolicy {...props} {...dataSourceMenuProperties} />;
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+  return <ChangePolicy {...props} {...dataSourceMenuProperties} useUpdatedUX={useUpdatedUX} />;
 }
