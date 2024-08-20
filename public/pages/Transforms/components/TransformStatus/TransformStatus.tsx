@@ -8,6 +8,7 @@ import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText } from "@elastic/eui";
 import { TransformMetadata } from "../../../../../models/interfaces";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { renderStatus } from "../../utils/metadataHelper";
+import { getUISettings } from "../../../../services/Services";
 
 interface TransformStatusProps {
   metadata: TransformMetadata | undefined;
@@ -20,8 +21,10 @@ export default class TransformStatus extends Component<TransformStatusProps> {
 
   render() {
     const { metadata } = this.props;
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform status" titleSize="m">
+      <ContentPanel bodyStyles={{ padding: "initial" }} title="Transform status" titleSize={useUpdatedUX ? "s" : undefined}>
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />
           <EuiFlexGrid columns={4}>

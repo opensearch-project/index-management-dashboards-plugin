@@ -23,6 +23,7 @@ import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
 import { RouteComponentProps } from "react-router-dom";
 import { openIndices } from "../../utils/helpers";
 import RefreshActionModal from "../../../../containers/RefreshAction";
+import { getUISettings } from "../../../../services/Services";
 
 export interface IndicesActionsProps extends Pick<RouteComponentProps, "history"> {
   selectedItems: ManagedCatIndex[];
@@ -125,6 +126,10 @@ export default function IndicesActions(props: IndicesActionsProps) {
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+  const size = useUpdatedUX ? "s" : undefined;
 
   return (
     <>
@@ -134,7 +139,7 @@ export default function IndicesActions(props: IndicesActionsProps) {
             data-test-subj="moreAction"
             panelPaddingSize="none"
             button={
-              <EuiButton iconType="arrowDown" iconSide="right">
+              <EuiButton iconType="arrowDown" iconSide="right" size={size}>
                 Actions
               </EuiButton>
             }

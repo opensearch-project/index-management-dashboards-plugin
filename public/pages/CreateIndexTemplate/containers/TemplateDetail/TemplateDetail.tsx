@@ -7,6 +7,7 @@ import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, 
 import {
   EuiButton,
   EuiButtonEmpty,
+  EuiButtonIcon,
   EuiCodeBlock,
   EuiFlexGroup,
   EuiFlexItem,
@@ -14,6 +15,7 @@ import {
   EuiSpacer,
   EuiTab,
   EuiTabs,
+  EuiText,
   EuiTitle,
 } from "@elastic/eui";
 import queryString from "query-string";
@@ -43,6 +45,7 @@ import { diffJson } from "../../../../utils/helpers";
 import UnsavedChangesBottomBar from "../../../../components/UnsavedChangesBottomBar";
 import { IndexForm } from "../../../../containers/IndexForm";
 import { TABS_ENUM, tabs } from "../../constant";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 export interface TemplateDetailProps {
   templateName?: string;
@@ -51,10 +54,11 @@ export interface TemplateDetailProps {
   history: RouteComponentProps["history"];
   location: RouteComponentProps["location"];
   dataSourceId: string;
+  useUpdatedUX?: boolean;
 }
 
 const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => {
-  const { templateName, onCancel, onSubmitSuccess, history } = props;
+  const { templateName, onCancel, onSubmitSuccess, history, useUpdatedUX } = props;
   const isEdit = !!templateName;
   const services = useContext(ServicesContext) as BrowserServices;
   const coreServices = useContext(CoreServicesContext) as CoreStart;
@@ -191,77 +195,163 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
       </EuiButton>
     </EuiFlexItem>
   );
+  const { HeaderControl } = getNavigationUI();
+  const { setAppDescriptionControls, setAppRightControls } = getApplication();
+
+  const descriptionData = [
+    {
+      renderComponent: (
+        <EuiText size="s" color="subdued">
+          Define an automated snapshot schedule and retention period with a snapshot policy.{" "}
+          <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
+            Learn more
+          </EuiLink>
+        </EuiText>
+      ),
+    },
+  ];
+
+  const HeaderRight = [
+    {
+      renderComponent: (
+        <>
+          <EuiButtonIcon display="base" iconType="trash" aria-label="Delete" color="danger" onClick={() => setVisible(true)} size="s" />
+          <DeleteTemplateModal
+            visible={visible}
+            selectedItems={[templateName]}
+            onClose={() => {
+              setVisible(false);
+            }}
+            onDelete={() => {
+              setVisible(false);
+              history.replace(ROUTES.TEMPLATES);
+            }}
+          />
+        </>
+      ),
+    },
+    {
+      renderComponent: (
+        <EuiButton
+          fill
+          size="s"
+          style={{ marginRight: 20 }}
+          onClick={() => {
+            const showValue: TemplateItemRemote = {
+              ...values,
+              template: IndexForm.transformIndexDetailToRemote(values.template),
+            };
+            Modal.show({
+              locale: {
+                ok: "Close",
+              },
+              style: {
+                width: 800,
+              },
+              "data-test-subj": "templateJSONDetailModal",
+              title: values.name,
+              content: (
+                <EuiCodeBlock language="json" isCopyable>
+                  {JSON.stringify(showValue, null, 2)}
+                </EuiCodeBlock>
+              ),
+            });
+          }}
+        >
+          View JSON
+        </EuiButton>
+      ),
+    },
+  ];
+
+  const Title = () => {
+    return !useUpdatedUX ? (
+      <>
+        <EuiFlexGroup alignItems="center">
+          <EuiFlexItem>
+            <EuiTitle size="l">
+              {isEdit ? <h1 title={values.name}>{templateName}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
+            </EuiTitle>
+            {isEdit ? null : (
+              <CustomFormRow
+                fullWidth
+                label=""
+                helpText={
+                  <div>
+                    Index templates let you initialize new indexes with predefined mappings and settings.{" "}
+                    <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
+                      Learn more
+                    </EuiLink>
+                  </div>
+                }
+              >
+                <></>
+              </CustomFormRow>
+            )}
+          </EuiFlexItem>
+          {isEdit ? (
+            <>
+              <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
+                <EuiButton
+                  style={{ marginRight: 20 }}
+                  onClick={() => {
+                    const showValue: TemplateItemRemote = {
+                      ...values,
+                      template: IndexForm.transformIndexDetailToRemote(values.template),
+                    };
+                    Modal.show({
+                      locale: {
+                        ok: "Close",
+                      },
+                      style: {
+                        width: 800,
+                      },
+                      "data-test-subj": "templateJSONDetailModal",
+                      title: values.name,
+                      content: (
+                        <EuiCodeBlock language="json" isCopyable>
+                          {JSON.stringify(showValue, null, 2)}
+                        </EuiCodeBlock>
+                      ),
+                    });
+                  }}
+                >
+                  View JSON
+                </EuiButton>
+                <EuiButton color="danger" onClick={() => setVisible(true)}>
+                  Delete
+                </EuiButton>
+                <DeleteTemplateModal
+                  visible={visible}
+                  selectedItems={[templateName]}
+                  onClose={() => {
+                    setVisible(false);
+                  }}
+                  onDelete={() => {
+                    setVisible(false);
+                    history.replace(ROUTES.TEMPLATES);
+                  }}
+                />
+              </EuiFlexItem>
+            </>
+          ) : null}
+        </EuiFlexGroup>
+        <EuiSpacer />
+      </>
+    ) : (
+      <>
+        {isEdit ? (
+          <HeaderControl controls={HeaderRight} setMountPoint={setAppRightControls} />
+        ) : (
+          <HeaderControl controls={descriptionData} setMountPoint={setAppDescriptionControls} />
+        )}
+      </>
+    );
+  };
 
   return (
     <>
-      <EuiFlexGroup alignItems="center">
-        <EuiFlexItem>
-          <EuiTitle size="l">
-            {isEdit ? <h1 title={values.name}>{templateName}</h1> : <h1>{isEdit ? "Edit" : "Create"} template</h1>}
-          </EuiTitle>
-          {isEdit ? null : (
-            <CustomFormRow
-              fullWidth
-              label=""
-              helpText={
-                <div>
-                  Index templates let you initialize new indexes with predefined mappings and settings.{" "}
-                  <EuiLink external target="_blank" href={coreServices.docLinks.links.opensearch.indexTemplates.base}>
-                    Learn more
-                  </EuiLink>
-                </div>
-              }
-            >
-              <></>
-            </CustomFormRow>
-          )}
-        </EuiFlexItem>
-        {isEdit ? (
-          <EuiFlexItem grow={false} style={{ flexDirection: "row" }}>
-            <EuiButton
-              style={{ marginRight: 20 }}
-              onClick={() => {
-                const showValue: TemplateItemRemote = {
-                  ...values,
-                  template: IndexForm.transformIndexDetailToRemote(values.template),
-                };
-                Modal.show({
-                  locale: {
-                    ok: "Close",
-                  },
-                  style: {
-                    width: 800,
-                  },
-                  "data-test-subj": "templateJSONDetailModal",
-                  title: values.name,
-                  content: (
-                    <EuiCodeBlock language="json" isCopyable>
-                      {JSON.stringify(showValue, null, 2)}
-                    </EuiCodeBlock>
-                  ),
-                });
-              }}
-            >
-              View JSON
-            </EuiButton>
-            <EuiButton color="danger" onClick={() => setVisible(true)}>
-              Delete
-            </EuiButton>
-            <DeleteTemplateModal
-              visible={visible}
-              selectedItems={[templateName]}
-              onClose={() => {
-                setVisible(false);
-              }}
-              onDelete={() => {
-                setVisible(false);
-                history.replace(ROUTES.TEMPLATES);
-              }}
-            />
-          </EuiFlexItem>
-        ) : null}
-      </EuiFlexGroup>
-      <EuiSpacer />
+      {Title()}
       {isEdit ? (
         <>
           <OverviewTemplate {...subCompontentProps} />

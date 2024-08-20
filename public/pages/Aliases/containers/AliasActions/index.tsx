@@ -12,6 +12,7 @@ import FlushIndexModal from "../../../../containers/FlushIndexModal";
 import RefreshActionModal from "../../../../containers/RefreshAction";
 import { IAlias } from "../../interface";
 import { ROUTES, INDEX_OP_TARGET_TYPE } from "../../../../utils/constants";
+import { getUISettings } from "../../../../services/Services";
 
 export interface AliasesActionsProps {
   selectedItems: IAlias[];
@@ -44,6 +45,10 @@ export default function AliasesActions(props: AliasesActionsProps) {
   };
 
   const renderKey = useMemo(() => Date.now(), [selectedItems]);
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+  const size = useUpdatedUX ? "s" : undefined;
 
   return (
     <>
@@ -51,7 +56,7 @@ export default function AliasesActions(props: AliasesActionsProps) {
         data-test-subj="moreAction"
         panelPaddingSize="none"
         button={
-          <EuiButton iconType="arrowDown" iconSide="right">
+          <EuiButton iconType="arrowDown" iconSide="right" size={size}>
             Actions
           </EuiButton>
         }

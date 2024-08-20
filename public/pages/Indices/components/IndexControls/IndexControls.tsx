@@ -4,8 +4,21 @@
  */
 
 import React, { Component } from "react";
-import { ArgsWithError, ArgsWithQuery, EuiFlexGroup, EuiFlexItem, EuiSearchBar, EuiSwitch } from "@elastic/eui";
-import { DataStream } from "../../../../../server/models/interfaces";
+import {
+  ArgsWithError,
+  ArgsWithQuery,
+  EuiButton,
+  EuiButtonIcon,
+  EuiFlexGroup,
+  EuiSpacer,
+  EuiFlexItem,
+  EuiSearchBar,
+  EuiSwitch,
+  EuiButtonEmpty,
+} from "@elastic/eui";
+import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
+import IndicesActions from "../../containers/IndicesActions";
+import { getUISettings } from "../../../../services/Services";
 
 interface IndexControlsProps {
   search: string;
@@ -14,6 +27,7 @@ interface IndexControlsProps {
   onRefresh: () => Promise<void>;
   getDataStreams: () => Promise<DataStream[]>;
   toggleShowDataStreams: () => void;
+  selectedItems: ManagedCatIndex[];
 }
 
 interface IndexControlsState {
@@ -36,7 +50,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
   };
 
   render() {
-    const { search, onSearchChange, showDataStreams, toggleShowDataStreams } = this.props;
+    const { search, onSearchChange, showDataStreams, toggleShowDataStreams, onRefresh, selectedItems } = this.props;
 
     const schema = {
       strict: true,
@@ -64,7 +78,44 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
         ]
       : undefined;
 
-    return (
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
+    return useUpdatedUX ? (
+      <EuiFlexGroup style={{ padding: "0px 5px 16px 5px" }} alignItems="center">
+        <EuiFlexItem>
+          <EuiSearchBar
+            compressed
+            query={search}
+            box={{ placeholder: "Search", schema, incremental: true, compressed: true }}
+            onChange={onSearchChange}
+            filters={filters}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiButtonIcon iconType="refresh" data-test-subj="refreshButton" display="base" size="s" />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <IndicesActions
+            {...this.props}
+            onDelete={onRefresh}
+            onClose={onRefresh}
+            onShrink={onRefresh}
+            selectedItems={selectedItems}
+            getIndices={onRefresh}
+          />
+        </EuiFlexItem>
+        <EuiFlexItem grow={false}>
+          <EuiSwitch
+            compressed
+            label="Show data stream indexes"
+            checked={showDataStreams}
+            onChange={toggleShowDataStreams}
+            data-test-subj="toggleShowDataStreams"
+          />
+        </EuiFlexItem>
+      </EuiFlexGroup>
+    ) : (
       <EuiFlexGroup style={{ padding: "0px 5px" }} alignItems="center">
         <EuiFlexItem>
           <EuiSearchBar

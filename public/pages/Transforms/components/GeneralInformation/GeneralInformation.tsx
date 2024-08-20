@@ -7,6 +7,7 @@ import React, { Component } from "react";
 import { EuiFlexGrid, EuiSpacer, EuiFlexItem, EuiText } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { ModalConsumer } from "../../../../components/Modal";
+import { getUISettings } from "../../../../services/Services";
 
 interface GeneralInformationProps {
   id: string;
@@ -44,28 +45,34 @@ export default class GeneralInformation extends Component<GeneralInformationProp
       {},
       { term: "Target index", value: targetIndex },
     ];
+    const uiSettings = getUISettings();
+    const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+    const size = useUpdatedUX ? "s" : undefined;
 
     return (
       <ContentPanel
         actions={
-          <ModalConsumer>
-            {() => (
-              <ContentPanelActions
-                actions={[
-                  {
-                    text: "Edit",
-                    buttonProps: {
-                      onClick: () => onEdit(),
+          !useUpdatedUX ? (
+            <ModalConsumer>
+              {() => (
+                <ContentPanelActions
+                  size={size}
+                  actions={[
+                    {
+                      text: "Edit",
+                      buttonProps: {
+                        onClick: () => onEdit(),
+                      },
                     },
-                  },
-                ]}
-              />
-            )}
-          </ModalConsumer>
+                  ]}
+                />
+              )}
+            </ModalConsumer>
+          ) : null
         }
         bodyStyles={{ padding: "initial" }}
         title="General information"
-        titleSize="m"
+        titleSize={size}
       >
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />

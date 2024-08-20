@@ -55,6 +55,7 @@ export interface IndexFormProps
   onCancel?: () => void;
   onSubmitSuccess?: (indexName: string) => void;
   hideButtons?: boolean;
+  useUpdatedUX?: boolean;
 }
 
 interface CreateIndexState {
@@ -423,7 +424,7 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
 
   render() {
     const isEdit = this.isEdit;
-    const { hideButtons, readonly } = this.props;
+    const { hideButtons, readonly, useUpdatedUX } = this.props;
     const { indexDetail, isSubmitting, oldIndexDetail, loading } = this.state;
 
     if (loading) {
@@ -466,12 +467,18 @@ export class IndexForm extends Component<IndexFormProps & { services: BrowserSer
             <EuiSpacer />
             <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
               <EuiFlexItem grow={false}>
-                <EuiButtonEmpty onClick={this.onCancel} data-test-subj="createIndexCancelButton">
+                <EuiButtonEmpty size={useUpdatedUX ? "s" : undefined} onClick={this.onCancel} data-test-subj="createIndexCancelButton">
                   Cancel
                 </EuiButtonEmpty>
               </EuiFlexItem>
               <EuiFlexItem grow={false}>
-                <EuiButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createIndexCreateButton">
+                <EuiButton
+                  fill
+                  size={useUpdatedUX ? "s" : undefined}
+                  onClick={this.onSubmit}
+                  isLoading={isSubmitting}
+                  data-test-subj="createIndexCreateButton"
+                >
                   {isEdit ? "Update" : "Create"}
                 </EuiButton>
               </EuiFlexItem>

@@ -31,6 +31,8 @@ import { IFinalDetail } from "./interface";
 import { OVERVIEW_DISPLAY_INFO } from "./constants";
 import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
+import { TopNavControlButtonData, TopNavControlComponentData } from "src/plugins/navigation/public";
 
 export interface IndexDetailModalProps extends RouteComponentProps<{ index: string }> {}
 
@@ -215,16 +217,30 @@ export default function IndexDetail(props: IndexDetailModalProps) {
 
   const [selectedTab, setSelectedTab] = useState<EuiTabbedContentTab & { mode: IndicesUpdateMode }>(tabs[0]);
 
+  const { HeaderControl } = getNavigationUI();
+  const { setAppRightControls } = getApplication();
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+
   useEffect(() => {
     refreshDetails();
-    coreService?.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      {
-        text: index,
-        href: `#${props.location.pathname}`,
-      },
-    ]);
+    const breadCrumbs = useUpdatedUX
+      ? [
+          BREADCRUMBS.INDICES,
+          {
+            text: index,
+            href: `#${props.location.pathname}`,
+          },
+        ]
+      : [
+          BREADCRUMBS.INDEX_MANAGEMENT,
+          BREADCRUMBS.INDICES,
+          {
+            text: index,
+            href: `#${props.location.pathname}`,
+          },
+        ];
+    coreService?.chrome.setBreadcrumbs(breadCrumbs);
   }, []);
 
   useEffect(() => {
@@ -238,7 +254,87 @@ export default function IndexDetail(props: IndexDetailModalProps) {
     return null;
   }
 
-  return (
+  const Common = () => {
+    return (
+      <>
+        <ContentPanel title="Overview" titleSize="s">
+          <EuiDescriptionList>
+            <EuiSpacer />
+            <div>
+              {OVERVIEW_DISPLAY_INFO.map((item) => {
+                let valueContent = null;
+                if (typeof item.value === "string") {
+                  valueContent = <span>{get(finalDetail, item.value)}</span>;
+                } else {
+                  const ValueComponent = item.value;
+                  valueContent = <ValueComponent detail={finalDetail} />;
+                }
+                return (
+                  <div
+                    style={{ display: "inline-block", width: "33%", verticalAlign: "top", marginBottom: "20px", padding: "0 1%" }}
+                    key={item.label}
+                    data-test-subj={`indexDetailOverviewItem-${item.label}`}
+                  >
+                    <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
+                    <EuiDescriptionListDescription style={{ wordBreak: item.label === "Index name" ? "break-word" : undefined }}>
+                      {valueContent}
+                    </EuiDescriptionListDescription>
+                  </div>
+                );
+              })}
+            </div>
+          </EuiDescriptionList>
+        </ContentPanel>
+        <EuiSpacer />
+        <EuiTabbedContent
+          selectedTab={selectedTab}
+          onTabClick={(tab) => {
+            if (ref.current?.hasUnsavedChanges?.(selectedTab.mode)) {
+              Modal.show({
+                title: "You have unsaved changes.",
+                content: "Are you sure you want to leave this tab?",
+                type: "confirm",
+                locale: {
+                  confirm: "Stay",
+                  cancel: "Leave without changes",
+                },
+                onCancel: () => {
+                  setSelectedTab(tab as any);
+                },
+                footer: ["cancel", "confirm"],
+              });
+            } else {
+              setSelectedTab(tab as any);
+            }
+          }}
+          tabs={tabs}
+        />
+      </>
+    );
+  };
+
+  return useUpdatedUX ? (
+    <>
+      <HeaderControl
+        setMountPoint={setAppRightControls}
+        controls={[
+          {
+            renderComponent: (
+              <IndicesActions
+                selectedItems={[record]}
+                history={props.history}
+                onDelete={() => props.history.replace(ROUTES.INDICES)}
+                onClose={refreshDetails}
+                onShrink={() => props.history.replace(ROUTES.INDICES)}
+                getIndices={async () => {}}
+              />
+            ),
+          } as TopNavControlComponentData,
+        ]}
+      />
+      {Common()}
+    </>
+  ) : (
     <>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <EuiTitle size="m">
@@ -254,58 +350,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
         />
       </div>
       <EuiSpacer />
-      <ContentPanel title="Overview" titleSize="s">
-        <EuiDescriptionList>
-          <EuiSpacer />
-          <div>
-            {OVERVIEW_DISPLAY_INFO.map((item) => {
-              let valueContent = null;
-              if (typeof item.value === "string") {
-                valueContent = <span>{get(finalDetail, item.value)}</span>;
-              } else {
-                const ValueComponent = item.value;
-                valueContent = <ValueComponent detail={finalDetail} />;
-              }
-              return (
-                <div
-                  style={{ display: "inline-block", width: "33%", verticalAlign: "top", marginBottom: "20px", padding: "0 1%" }}
-                  key={item.label}
-                  data-test-subj={`indexDetailOverviewItem-${item.label}`}
-                >
-                  <EuiDescriptionListTitle>{item.label}</EuiDescriptionListTitle>
-                  <EuiDescriptionListDescription style={{ wordBreak: item.label === "Index name" ? "break-word" : undefined }}>
-                    {valueContent}
-                  </EuiDescriptionListDescription>
-                </div>
-              );
-            })}
-          </div>
-        </EuiDescriptionList>
-      </ContentPanel>
-      <EuiSpacer />
-      <EuiTabbedContent
-        selectedTab={selectedTab}
-        onTabClick={(tab) => {
-          if (ref.current?.hasUnsavedChanges?.(selectedTab.mode)) {
-            Modal.show({
-              title: "You have unsaved changes.",
-              content: "Are you sure you want to leave this tab?",
-              type: "confirm",
-              locale: {
-                confirm: "Stay",
-                cancel: "Leave without changes",
-              },
-              onCancel: () => {
-                setSelectedTab(tab as any);
-              },
-              footer: ["cancel", "confirm"],
-            });
-          } else {
-            setSelectedTab(tab as any);
-          }
-        }}
-        tabs={tabs}
-      />
+      {Common()}
     </>
   );
 }

@@ -28,6 +28,7 @@ interface ScheduleProps {
   onCronTimeZoneChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   onIntervalChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onIntervalTimeUnitChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  size: "s" | "m";
 }
 
 export default class Schedule extends Component<ScheduleProps> {
@@ -46,9 +47,10 @@ export default class Schedule extends Component<ScheduleProps> {
       intervalTimeUnit,
       onIntervalChange,
       onIntervalTimeUnitChange,
+      size,
     } = this.props;
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Schedule" titleSize="m">
+      <ContentPanel bodyStyles={{ padding: "initial" }} title="Schedule" titleSize={size}>
         <div style={{ paddingLeft: "10px" }}>
           <EuiCheckbox
             id="jobEnabled"
