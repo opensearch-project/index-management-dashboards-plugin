@@ -64,7 +64,7 @@ export default class ScheduleRolesAndNotifications extends Component<ScheduleRol
         }
         bodyStyles={{ padding: "initial" }}
         title="Schedule"
-        titleSize="m"
+        titleSize="s"
       >
         <div style={{ padding: "15px" }}>
           <EuiSpacer size="s" />

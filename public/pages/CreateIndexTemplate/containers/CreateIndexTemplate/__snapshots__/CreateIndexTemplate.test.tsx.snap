@@ -67,7 +67,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h3
+          <h1
             class="euiTitle euiTitle--small"
           >
             Overview
@@ -77,7 +77,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
                
                
             </span>
-          </h3>
+          </h1>
         </div>
       </div>
       <hr
@@ -215,7 +215,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h3
+          <h1
             class="euiTitle euiTitle--small"
           >
             Preview template
@@ -225,7 +225,7 @@ exports[`<CreateIndexTemplate /> spec render template pages 1`] = `
                
                
             </span>
-          </h3>
+          </h1>
         </div>
       </div>
       <hr

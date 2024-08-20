@@ -55,7 +55,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h3
+          <h1
             class="euiTitle euiTitle--small"
           >
             Source index details
@@ -65,7 +65,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                
                
             </span>
-          </h3>
+          </h1>
         </div>
       </div>
       <hr
@@ -173,7 +173,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         <div
           class="euiFlexItem"
         >
-          <h3
+          <h1
             class="euiTitle euiTitle--small"
           >
             Configure target index
@@ -183,7 +183,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                
                
             </span>
-          </h3>
+          </h1>
         </div>
       </div>
       <hr
@@ -698,7 +698,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 <div
                   class="euiFlexItem"
                 >
-                  <h3
+                  <h1
                     class="euiTitle euiTitle--small"
                   >
                     Advanced settings
@@ -708,7 +708,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                        
                        
                     </span>
-                  </h3>
+                  </h1>
                 </div>
               </div>
             </span>

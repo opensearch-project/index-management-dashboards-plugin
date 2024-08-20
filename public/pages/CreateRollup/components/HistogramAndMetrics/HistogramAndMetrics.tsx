@@ -201,11 +201,11 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
         }
         bodyStyles={{ padding: "initial" }}
         title={AGGREGATION_AND_METRIC_SETTINGS}
-        titleSize="m"
+        titleSize="s"
       >
         <div style={{ padding: "15px" }}>
           <EuiSpacer size="xs" />
-          <EuiText>
+          <EuiText size="s">
             <h3>Time aggregation</h3>
           </EuiText>
           <EuiSpacer size="s" />
@@ -232,13 +232,8 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
           <EuiSpacer size="m" />
           <EuiFlexGroup gutterSize="xs">
             <EuiFlexItem grow={false}>
-              <EuiText>
-                <h3>Additional aggregations</h3>
-              </EuiText>
-            </EuiFlexItem>
-            <EuiFlexItem grow={false}>
-              <EuiText color="subdued" textAlign="left">
-                <h3>{`(${selectedDimensionField.length})`}</h3>
+              <EuiText size="s">
+                <h3>Additional aggregations {`(${selectedDimensionField.length})`}</h3>
               </EuiText>
             </EuiFlexItem>
           </EuiFlexGroup>
@@ -252,9 +247,8 @@ export default class HistogramAndMetrics extends Component<HistogramAndMetricsPr
             this.onDimensionTableChange
           )}
 
-          <EuiSpacer size="m" />
+          <EuiSpacer size="s" />
 
-          <EuiSpacer />
           {additionalMetricsComponent(selectedMetrics)}
 
           {sourceFieldComponents(selectedMetrics, this.parseMetric(metricsShown), metricsColumns, pagination, sorting, this.onTableChange)}

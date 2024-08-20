@@ -121,7 +121,7 @@ export default class RollupIndices extends Component<RollupIndicesProps, RollupI
     } = this.props;
     const { isLoading, indexOptions, targetIndexOptions } = this.state;
     return (
-      <ContentPanel bodyStyles={{ padding: "initial" }} title="Indices" titleSize="m">
+      <ContentPanel bodyStyles={{ padding: "initial" }} title="Indices" titleSize="s">
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />
           <EuiCallOut color="warning">

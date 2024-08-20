@@ -100,7 +100,7 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
         <div
           class="euiFlexItem"
         >
-          <h3
+          <h1
             class="euiTitle euiTitle--small"
           >
             Define data stream
@@ -110,7 +110,7 @@ exports[`<CreateDataStream /> spec it goes to data streams page when click cance
                
                
             </span>
-          </h3>
+          </h1>
         </div>
       </div>
       <hr

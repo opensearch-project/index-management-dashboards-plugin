@@ -14,6 +14,8 @@ import {
   EuiFormRow,
   EuiSpacer,
   EuiTitle,
+  EuiText,
+  EuiFormHelpText,
 } from "@elastic/eui";
 import _ from "lodash";
 
@@ -216,7 +218,9 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
       <EuiFlyout ownFocus={false} onClose={onCloseFlyout} maxWidth={600} size="m" hideCloseButton>
         <EuiFlyoutHeader hasBorder>
           <EuiTitle size="m">
-            <h2 id="flyoutTitle"> Create snapshot</h2>
+            <EuiText size="s">
+              <h2 id="flyoutTitle"> Create snapshot</h2>
+            </EuiText>
           </EuiTitle>
         </EuiFlyoutHeader>
 
@@ -229,8 +233,10 @@ export class CreateSnapshotFlyout extends MDSEnabledComponent<CreateSnapshotProp
                 this.setState({ snapshotId: e.target.value });
               }}
               data-test-subj="snapshotNameInput"
+              placeholder="Enter snapshot name"
             />
           </EuiFormRow>
+          <EuiFormHelpText>A valid snapshot name can not contain upper case characters. </EuiFormHelpText>
 
           <EuiSpacer size="m" />
 

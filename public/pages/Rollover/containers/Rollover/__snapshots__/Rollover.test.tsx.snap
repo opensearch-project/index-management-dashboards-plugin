@@ -36,7 +36,7 @@ exports[`container <Rollover /> spec render the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Configure source
@@ -46,7 +46,7 @@ exports[`container <Rollover /> spec render the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr

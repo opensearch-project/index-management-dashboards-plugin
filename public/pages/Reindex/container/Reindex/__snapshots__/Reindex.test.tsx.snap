@@ -55,7 +55,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Configure source index
@@ -65,7 +65,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr
@@ -242,7 +242,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
       <div
         class="euiFlexItem"
       >
-        <h3
+        <h1
           class="euiTitle euiTitle--small"
         >
           Configure destination index
@@ -252,7 +252,7 @@ exports[`<Reindex /> spec renders the component 1`] = `
              
              
           </span>
-        </h3>
+        </h1>
       </div>
     </div>
     <hr

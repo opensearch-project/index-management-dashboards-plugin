@@ -7,7 +7,6 @@ import React, { Component, useContext } from "react";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
 import {
-  EuiButton,
   EuiInMemoryTable,
   EuiLink,
   EuiTableFieldDataColumnType,
@@ -21,6 +20,7 @@ import {
   EuiContextMenuPanel,
   EuiContextMenuItem,
   EuiButtonIcon,
+  EuiButton,
 } from "@elastic/eui";
 import { FieldValueSelectionFilterConfigType } from "@elastic/eui/src/components/search_bar/filters/field_value_selection_filter";
 import { CoreServicesContext } from "../../../../components/core_services";
@@ -440,7 +440,6 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
     const popoverActionItems = [
       <EuiContextMenuItem
         key="Delete"
-        icon="empty"
         disabled={!selectedItems.length}
         onClick={() => {
           this.closePopover();
@@ -465,8 +464,15 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
     const renderToolsRight = () => {
       return [
         <EuiButtonIcon iconType="refresh" onClick={this.getSnapshots} aria-label="refresh" size="s" display="base" />,
-        <EuiPopover id="action" button={actionsButton} isOpen={isPopoverOpen} closePopover={this.closePopover} anchorPosition="downRight">
-          <EuiContextMenuPanel items={popoverActionItems} />
+        <EuiPopover
+          id="action"
+          button={actionsButton}
+          isOpen={isPopoverOpen}
+          closePopover={this.closePopover}
+          anchorPosition="downRight"
+          panelPaddingSize="s"
+        >
+          <EuiContextMenuPanel size="s" items={popoverActionItems} />
         </EuiPopover>,
       ];
     };
@@ -491,6 +497,7 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
         incremental: true,
         compressed: useNewUX ? true : false,
       },
+      compressed: true,
       filters: [
         {
           type: "field_value_selection",
@@ -581,7 +588,7 @@ export class Snapshots extends MDSEnabledComponent<SnapshotsProps, SnapshotsStat
           </>
         ) : null}
         <EuiPageHeader>
-          <EuiTabs size="m" ref={this.tabsRef}>
+          <EuiTabs size="s" ref={this.tabsRef}>
             <EuiTab isSelected={true} onClick={this.onClickTab}>
               {SnapshotTabName}
             </EuiTab>

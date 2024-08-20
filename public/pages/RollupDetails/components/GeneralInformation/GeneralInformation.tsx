@@ -51,7 +51,7 @@ export default class GeneralInformation extends Component<GeneralInformationProp
         actions={<ModalConsumer>{() => <ContentPanelActions actions={useActions} />}</ModalConsumer>}
         bodyStyles={{ padding: "initial" }}
         title="General information"
-        titleSize="m"
+        titleSize="s"
       >
         <div style={{ paddingLeft: "10px" }}>
           <EuiSpacer size="s" />
