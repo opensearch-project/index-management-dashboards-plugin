@@ -19,6 +19,7 @@ import {
 import { DataStream, ManagedCatIndex } from "../../../../../server/models/interfaces";
 import IndicesActions from "../../containers/IndicesActions";
 import { getUISettings } from "../../../../services/Services";
+import { RouteComponentProps } from "react-router-dom";
 
 interface IndexControlsProps {
   search: string;
@@ -28,6 +29,7 @@ interface IndexControlsProps {
   getDataStreams: () => Promise<DataStream[]>;
   toggleShowDataStreams: () => void;
   selectedItems: ManagedCatIndex[];
+  history?: RouteComponentProps["history"];
 }
 
 interface IndexControlsState {
@@ -50,7 +52,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
   };
 
   render() {
-    const { search, onSearchChange, showDataStreams, toggleShowDataStreams, onRefresh, selectedItems } = this.props;
+    const { search, onSearchChange, showDataStreams, toggleShowDataStreams, onRefresh, selectedItems, history } = this.props;
 
     const schema = {
       strict: true,
@@ -97,7 +99,7 @@ export default class IndexControls extends Component<IndexControlsProps, IndexCo
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
           <IndicesActions
-            {...this.props}
+            history={this.props.history}
             onDelete={onRefresh}
             onClose={onRefresh}
             onShrink={onRefresh}

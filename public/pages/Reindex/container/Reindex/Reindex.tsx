@@ -42,10 +42,12 @@ import { ListenType } from "../../../../lib/JobScheduler";
 import NotificationConfig, { NotificationConfigRef } from "../../../../containers/NotificationConfig";
 import { ActionType } from "../../../Notifications/constant";
 import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 interface ReindexProps extends RouteComponentProps {
   commonService: CommonService;
   indexService: IndexService;
+  useUpdatedUX: boolean;
 }
 
 interface ReindexState {
@@ -92,11 +94,14 @@ class Reindex extends Component<ReindexProps, ReindexState> {
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      { ...BREADCRUMBS.REINDEX, href: `#${this.props.location.pathname}${this.props.location.search}` },
-    ]);
+    const breadCrumbs = this.props.useUpdatedUX
+      ? [BREADCRUMBS.INDICES, { ...BREADCRUMBS.REINDEX, href: `#${this.props.location.pathname}${this.props.location.search}` }]
+      : [
+          BREADCRUMBS.INDEX_MANAGEMENT,
+          BREADCRUMBS.INDICES,
+          { ...BREADCRUMBS.REINDEX, href: `#${this.props.location.pathname}${this.props.location.search}` },
+        ];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
 
     const { source } = queryString.parse(this.props.location.search);
 
@@ -550,36 +555,52 @@ class Reindex extends Component<ReindexProps, ReindexState> {
       </CustomFormRow>
     );
 
+    const description = [
+      {
+        renderComponent: (
+          <CustomFormRow
+            fullWidth
+            label=""
+            helpText={
+              <div>
+                Use reindex to make extensive changes to your index. Reindex will copy data of the source index into another index.{" "}
+                <EuiLink href={this.context.docLinks.links.opensearch.reindexData.base} target="_blank" rel="noopener noreferrer">
+                  Learn more
+                </EuiLink>
+              </div>
+            }
+          >
+            <></>
+          </CustomFormRow>
+        ),
+      },
+    ];
+
     // expand data streams and aliases
     const allSelectedIndices = this.getAllSelectedIndices();
 
-    return (
-      <div style={{ padding: "0px 50px" }}>
-        <EuiTitle size="l">
-          <h1>Reindex</h1>
-        </EuiTitle>
-        {subTitleText}
-        <EuiSpacer />
-
-        <ContentPanel title="Configure source index" titleSize="s">
-          <EuiSpacer />
-          <CustomFormRow
-            label="Specify source indexes or data streams"
-            isInvalid={sourceErr.length > 0}
-            error={sourceErr}
-            fullWidth
-            helpText="Specify one or more indexes or data streams you want to reindex from."
-          >
-            <IndexSelect
-              data-test-subj="sourceSelector"
-              placeholder="Select indexes or data streams"
-              getIndexOptions={this.getIndexOptions}
-              onSelectedOptions={this.onSourceSelection}
-              singleSelect={false}
-              selectedOption={sources}
-              excludeList={destination}
-            />
-          </CustomFormRow>
+    const Common = () => {
+      return (
+        <>
+          <ContentPanel title="Configure source index" titleSize="s">
+            <EuiSpacer />
+            <CustomFormRow
+              label="Specify source indexes or data streams"
+              isInvalid={sourceErr.length > 0}
+              error={sourceErr}
+              fullWidth
+              helpText="Specify one or more indexes or data streams you want to reindex from."
+            >
+              <IndexSelect
+                data-test-subj="sourceSelector"
+                placeholder="Select indexes or data streams"
+                getIndexOptions={this.getIndexOptions}
+                onSelectedOptions={this.onSourceSelection}
+                singleSelect={false}
+                selectedOption={sources}
+                excludeList={destination}
+              />
+            </CustomFormRow>
 
           <EuiSpacer />
           <CustomFormRow>
@@ -633,7 +654,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
           ) : null}
         </ContentPanel>
 
-        <EuiSpacer />
+          <EuiSpacer />
 
         <ContentPanel title="Configure destination index" titleSize="s">
           <EuiSpacer />
@@ -661,31 +682,31 @@ class Reindex extends Component<ReindexProps, ReindexState> {
           </EuiFlexGroup>
         </ContentPanel>
 
-        <EuiSpacer />
+          <EuiSpacer />
 
-        <ContentPanel title={advanceTitle} noExtraPadding>
-          {advancedSettingsOpen && (
-            <>
-              <EuiSpacer size="s" />
-              <ReindexAdvancedOptions
-                slices={slices}
-                onSlicesChange={this.onSliceChange}
-                sliceErr={this.state.sliceError}
-                getAllPipelines={this.getAllPipelines}
-                selectedPipelines={this.state.selectedPipelines}
-                onSelectedPipelinesChange={this.onPipelineChange}
-                ignoreConflicts={ignoreConflicts}
-                onIgnoreConflictsChange={this.onIgnoreConflictsChange}
-                reindexUniqueDocuments={reindexUniqueDocuments}
-                onReindexUniqueDocumentsChange={this.onReindexUniqueDocuments}
-              />
-              <NotificationConfig ref={(ref) => (this.notificationRef = ref)} actionType={ActionType.REINDEX} />
-              <EuiSpacer size="s" />
-            </>
-          )}
-        </ContentPanel>
+          <ContentPanel title={advanceTitle} noExtraPadding>
+            {advancedSettingsOpen && (
+              <>
+                <EuiSpacer size="s" />
+                <ReindexAdvancedOptions
+                  slices={slices}
+                  onSlicesChange={this.onSliceChange}
+                  sliceErr={this.state.sliceError}
+                  getAllPipelines={this.getAllPipelines}
+                  selectedPipelines={this.state.selectedPipelines}
+                  onSelectedPipelinesChange={this.onPipelineChange}
+                  ignoreConflicts={ignoreConflicts}
+                  onIgnoreConflictsChange={this.onIgnoreConflictsChange}
+                  reindexUniqueDocuments={reindexUniqueDocuments}
+                  onReindexUniqueDocumentsChange={this.onReindexUniqueDocuments}
+                />
+                <NotificationConfig ref={(ref) => (this.notificationRef = ref)} actionType={ActionType.REINDEX} />
+                <EuiSpacer size="s" />
+              </>
+            )}
+          </ContentPanel>
 
-        <EuiSpacer />
+          <EuiSpacer />
 
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
@@ -700,13 +721,34 @@ class Reindex extends Component<ReindexProps, ReindexState> {
           </EuiFlexItem>
         </EuiFlexGroup>
 
-        {showCreateIndexFlyout ? (
-          <CreateIndexFlyout
-            onSubmitSuccess={this.onCreateIndexSuccess}
-            sourceIndices={allSelectedIndices}
-            onCloseFlyout={() => this.setState({ showCreateIndexFlyout: false })}
-          />
-        ) : null}
+          {showCreateIndexFlyout ? (
+            <CreateIndexFlyout
+              onSubmitSuccess={this.onCreateIndexSuccess}
+              sourceIndices={allSelectedIndices}
+              onCloseFlyout={() => this.setState({ showCreateIndexFlyout: false })}
+            />
+          ) : null}
+        </>
+      );
+    };
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppDescriptionControls } = getApplication();
+
+    return this.props.useUpdatedUX ? (
+      <div style={{ padding: "0px" }}>
+        <HeaderControl controls={description} setMountPoint={setAppDescriptionControls} />
+        {Common()}
+      </div>
+    ) : (
+      <div style={{ padding: "0px 50px" }}>
+        <EuiTitle size="l">
+          <h1>Reindex</h1>
+        </EuiTitle>
+        {subTitleText}
+        <EuiSpacer />
+
+        {Common()}
       </div>
     );
   }
@@ -715,5 +757,7 @@ class Reindex extends Component<ReindexProps, ReindexState> {
 export default function (props: ReindexProps) {
   // in re-index page, user can't change the data source i.e., its in read-only
   useUpdateUrlWithDataSourceProperties();
-  return <Reindex {...props} />;
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+  return <Reindex {...props} useUpdatedUX={useUpdatedUX} />;
 }

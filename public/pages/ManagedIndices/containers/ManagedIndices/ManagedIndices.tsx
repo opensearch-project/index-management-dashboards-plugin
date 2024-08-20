@@ -435,7 +435,6 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       showEditModal,
       isPopoverOpen,
     } = this.state;
-    console.log(this.context);
     const filterIsApplied = !!search;
     const page = Math.floor(from / size);
 

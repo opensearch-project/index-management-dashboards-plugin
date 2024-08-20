@@ -14,7 +14,6 @@ import {
   EuiOverlayMask,
   EuiCodeBlock,
 } from "@elastic/eui";
-import { size } from "lodash";
 
 interface InfoModalProps {
   info: object;
