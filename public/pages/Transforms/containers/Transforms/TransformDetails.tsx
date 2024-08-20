@@ -333,22 +333,21 @@ export class TransformDetails extends Component<TransformDetailsProps, Transform
       },
       {
         renderComponent: (
-          <EuiButton size="s" onClick={() => (!this.state.enabled ? onClickEnable() : onClickDisable())}>
+          <EuiSmallButton onClick={() => (!this.state.enabled ? onClickEnable() : onClickDisable())}>
             {this.state.enabled ? "Disable" : "Enable"}
-          </EuiButton>
+          </EuiSmallButton>
         ),
       },
       {
         renderComponent: (
-          <EuiButton
-            size="s"
+          <EuiSmallButton
             onClick={() => {
               this.closePopover();
               this.showJsonModal();
             }}
           >
             View JSON
-          </EuiButton>
+          </EuiSmallButton>
         ),
       },
       {

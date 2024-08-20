@@ -307,7 +307,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
     const description = [
       {
         renderComponent: (
-          <EuiFormRow
+          <EuiCompressedFormRow
             fullWidth
             helpText={
               <div style={{ width: "51%" }}>
@@ -320,7 +320,7 @@ class Aliases extends MDSEnabledComponent<AliasesProps, AliasesState> {
             }
           >
             <></>
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         ),
       },
     ];

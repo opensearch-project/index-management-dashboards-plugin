@@ -306,7 +306,6 @@ export class Rollups extends MDSEnabledComponent<RollupsProps, RollupsState> {
         disabled={!selectedItems.length}
         onClick={this.onActionButtonClick}
         data-test-subj="actionButton"
-        size={useNewUX ? "s" : undefined}
       >
         Actions
       </EuiSmallButton>
