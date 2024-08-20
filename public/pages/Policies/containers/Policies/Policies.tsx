@@ -18,7 +18,7 @@ import {
   // @ts-ignore
   Pagination,
   EuiTableSelectionType,
-  EuiButton,
+  EuiSmallButton,
   EuiContextMenuItem,
   EuiTextColor,
   EuiFlexGroup,
@@ -432,16 +432,15 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
     };
 
     const actionsButton = (
-      <EuiButton
+      <EuiSmallButton
         iconType="arrowDown"
         iconSide="right"
         disabled={!selectedItems.length}
         onClick={this.onActionButtonClick}
         data-test-subj="actionButton"
-        size="s"
       >
         Actions
-      </EuiButton>
+      </EuiSmallButton>
     );
 
     const popoverItems = [

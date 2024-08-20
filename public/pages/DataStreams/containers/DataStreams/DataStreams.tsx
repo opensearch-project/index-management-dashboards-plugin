@@ -25,7 +25,6 @@ import {
   EuiToolTip,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiSmallButton,
 } from "@elastic/eui";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
 import { DEFAULT_PAGE_SIZE_OPTIONS, DEFAULT_QUERY_PARAMS, HEALTH_TO_COLOR } from "../../utils/constants";

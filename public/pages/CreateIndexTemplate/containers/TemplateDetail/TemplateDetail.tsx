@@ -232,9 +232,8 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
     },
     {
       renderComponent: (
-        <EuiButton
+        <EuiSmallButton
           fill
-          size="s"
           style={{ marginRight: 20 }}
           onClick={() => {
             const showValue: TemplateItemRemote = {
@@ -259,7 +258,7 @@ const TemplateDetail = (props: TemplateDetailProps, ref: Ref<FieldInstance>) => 
           }}
         >
           View JSON
-        </EuiButton>
+        </EuiSmallButton>
       ),
     },
   ];
