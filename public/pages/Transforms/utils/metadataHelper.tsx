@@ -108,7 +108,6 @@ export const selectInterval = (
             value={intervalTimeunit}
             onChange={onChangeTimeunit}
             isInvalid={interval == undefined || interval <= 0}
-            compressed={useUpdatedUX ? true : undefined}
           />
         </EuiCompressedFormRow>
       </EuiFlexItem>

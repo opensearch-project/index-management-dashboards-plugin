@@ -17,7 +17,7 @@ interface ContentPanelActionsProps {
       onClickModal: (onShow: (component: any, props: object) => void) => () => void;
     };
   }[];
-  size?: "s" | "m" | undefined;
+  size?: "s" | "m";
 }
 
 const ContentPanelActions: React.SFC<ContentPanelActionsProps> = ({ actions, size }) => (
