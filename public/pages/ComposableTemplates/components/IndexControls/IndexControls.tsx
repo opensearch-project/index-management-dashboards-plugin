@@ -48,7 +48,7 @@ export default function SearchControls(props: SearchControlsProps) {
           }}
           onChange={(val) => onChange("selectedTypes", val || [])}
           value={state.selectedTypes}
-          useNewUx={props.useNewUX}
+          useNewUX={props.useNewUX}
           options={[
             {
               label: IndicesUpdateMode.alias,

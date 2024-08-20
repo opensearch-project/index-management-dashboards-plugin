@@ -308,6 +308,7 @@ export class Indices extends MDSEnabledComponent<IndicesProps, IndicesState> {
               getDataStreams={this.getDataStreams}
               toggleShowDataStreams={this.toggleShowDataStreams}
               selectedItems={this.state.selectedItems}
+              history={this.props.history}
             />
 
             <EuiBasicTable
