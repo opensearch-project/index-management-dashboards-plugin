@@ -26,6 +26,7 @@ import {
   EuiHorizontalRule,
   EuiSmallButtonIcon,
   EuiLink,
+  EuiCompressedRadioGroup,
 } from "@elastic/eui";
 import React, { ChangeEvent, Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
