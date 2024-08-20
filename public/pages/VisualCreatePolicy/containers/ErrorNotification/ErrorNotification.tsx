@@ -25,6 +25,7 @@ export interface ErrorNotificationProps {
   onChangeErrorNotificationJsonString: (str: string) => void;
   onSwitchToChannels: () => void;
   notificationService: NotificationService;
+  useNewUx?: boolean;
 }
 
 interface ErrorNotificationState {
@@ -71,6 +72,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
       onChangeMessage,
       onChangeErrorNotificationJsonString,
       onSwitchToChannels,
+      useNewUx,
     } = this.props;
     const { channels, loadingChannels } = this.state;
     const hasDestination = !!errorNotification?.destination;
@@ -84,6 +86,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
         onChangeChannelId={onChangeChannelId}
         onChangeMessage={onChangeMessage}
         getChannels={this.getChannels}
+        useNewUx={useNewUx}
       />
     );
 
@@ -97,7 +100,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
         />
       );
     }
-
+    const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
     return (
       <ContentPanel
         bodyStyles={{ padding: "initial" }}
@@ -117,7 +120,7 @@ export default class ErrorNotification extends Component<ErrorNotificationProps,
         }
         titleSize="s"
         subTitleText={
-          <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+          <EuiText color="subdued" size="s" style={paddingStyle}>
             <p style={{ fontWeight: 200 }}>
               You can set up an error notification for when a policy execution fails.{" "}
               <EuiLink href={ERROR_NOTIFICATION_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">

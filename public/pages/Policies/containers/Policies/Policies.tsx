@@ -26,6 +26,8 @@ import {
   EuiCompressedFieldSearch,
   EuiPopover,
   EuiContextMenuPanel,
+  EuiContextMenu,
+  EuiIcon,
 } from "@elastic/eui";
 import _ from "lodash";
 import { ContentPanel, ContentPanelActions } from "../../../../components/ContentPanel";
@@ -442,33 +444,31 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
       </EuiButton>
     );
 
-    const popoverActionItems = [
-      <EuiContextMenuItem
-        key="Edit"
-        icon="pencil"
-        disabled={selectedItems.length != 1}
-        data-test-subj="editButton"
-        size="s"
-        onClick={() => {
-          this.closePopover();
-          this.onShowEditModal();
-        }}
-      >
-        Edit
-      </EuiContextMenuItem>,
-      <EuiContextMenuItem
-        key="Delete"
-        icon="trash"
-        disabled={!selectedItems.length}
-        data-test-subj="deleteButton"
-        size="s"
-        onClick={() => {
-          this.closePopover();
-          this.onShowDeleteModal();
-        }}
-      >
-        <EuiTextColor color="danger">Delete</EuiTextColor>
-      </EuiContextMenuItem>,
+    const popoverItems = [
+      {
+        id: 0,
+        width: 159,
+        items: [
+          {
+            name: "Edit",
+            icon: "pencil",
+            disabled: selectedItems.length != 1,
+            onClick: () => {
+              this.closePopover();
+              this.onShowEditModal();
+            },
+          },
+          {
+            name: "Delete",
+            icon: <EuiIcon type="trash" size="m" color="danger" />,
+            disabled: !selectedItems.length,
+            onClick: () => {
+              this.closePopover();
+              this.onShowDeleteModal();
+            },
+          },
+        ],
+      },
     ];
 
     return !useNewUX ? (
@@ -543,8 +543,9 @@ export class Policies extends MDSEnabledComponent<PoliciesProps, PoliciesState> 
                 isOpen={isPopoverOpen}
                 closePopover={this.closePopover}
                 anchorPosition="downRight"
+                panelPaddingSize="none"
               >
-                <EuiContextMenuPanel items={popoverActionItems} />
+                <EuiContextMenu initialPanelId={0} panels={popoverItems} size="s" />
               </EuiPopover>
             </EuiFlexItem>
           </EuiFlexGroup>

@@ -18,6 +18,7 @@ interface CreateActionProps {
   editAction: UIAction<Action> | null;
   onClickCancelAction: () => void;
   onClickSaveAction: (action: UIAction<Action>) => void;
+  useNewUx?: boolean;
 }
 
 interface CreateActionState {
@@ -53,7 +54,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
 
   render() {
     const { action } = this.state;
-    const { editAction } = this.props;
+    const { editAction, useNewUx } = this.props;
 
     const actionOptions = getActionOptions(actionRepoSingleton);
 
@@ -79,6 +80,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
           <EuiFormCustomLabel title="Action type" helpText="Select the action you want to add to this state." />
           <EuiFormRow fullWidth isInvalid={false} error={null}>
             <EuiSelect
+              compressed={useNewUx}
               fullWidth
               placeholder="Select action type"
               id="action-type"
@@ -104,6 +106,7 @@ export default class CreateAction extends Component<CreateActionProps, CreateAct
         </EuiFlyoutBody>
         <EuiFlyoutFooter>
           <FlyoutFooter
+            useNewUx={useNewUx}
             edit={!!editAction}
             action="action"
             disabledAction={!action || !action.isValid()}

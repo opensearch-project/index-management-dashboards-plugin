@@ -31,16 +31,26 @@ interface StatesProps {
   onClickDeleteState: (idx: number) => void;
   onChangeDefaultState: (event: ChangeEvent<HTMLSelectElement>) => void;
   isReadOnly: boolean;
+  useNewUx?: boolean;
 }
 
-const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, onChangeDefaultState, isReadOnly = false }: StatesProps) => {
+const States = ({
+  onOpenFlyout,
+  policy,
+  onClickEditState,
+  onClickDeleteState,
+  onChangeDefaultState,
+  isReadOnly = false,
+  useNewUx,
+}: StatesProps) => {
+  const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
   return (
     <ContentPanel
       bodyStyles={{ padding: "initial" }}
       title={`States (${policy.states.length})`}
       titleSize="s"
       subTitleText={
-        <EuiText color="subdued" size="s" style={{ padding: "5px 0px" }}>
+        <EuiText color="subdued" size="s" style={paddingStyle}>
           <p style={{ fontWeight: 200 }}>
             You can think of policies as state machines. "Actions" are the operations ISM performs when an index is in a certain state.
             <br />
@@ -89,7 +99,7 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
           (!!policy.states.length ? (
             <>
               <EuiSpacer />
-              <EuiButton onClick={onOpenFlyout} data-test-subj="states-add-state-button">
+              <EuiButton onClick={onOpenFlyout} data-test-subj="states-add-state-button" size={useNewUx ? "s" : undefined}>
                 Add state
               </EuiButton>
             </>
@@ -99,7 +109,12 @@ const States = ({ onOpenFlyout, policy, onClickEditState, onClickDeleteState, on
               titleSize="s"
               body={<p>Your policy currently has no states defined. Add states to manage your index lifecycle.</p>}
               actions={
-                <EuiButton color="primary" onClick={onOpenFlyout} data-test-subj="states-add-state-button">
+                <EuiButton
+                  color="primary"
+                  onClick={onOpenFlyout}
+                  data-test-subj="states-add-state-button"
+                  size={useNewUx ? "s" : undefined}
+                >
                   Add state
                 </EuiButton>
               }
