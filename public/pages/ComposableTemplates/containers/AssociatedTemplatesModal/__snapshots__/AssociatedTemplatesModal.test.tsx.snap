@@ -169,7 +169,7 @@ HTMLCollection [
                             >
                               <button
                                 aria-label="Unlink from test_template?"
-                                class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
+                                class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--small"
                                 type="button"
                               >
                                 EuiIconMock

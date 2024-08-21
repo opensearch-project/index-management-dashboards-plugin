@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { EuiSpacer, EuiSwitch } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedSwitch } from "@elastic/eui";
 import React, { forwardRef, useRef, useState, useImperativeHandle } from "react";
 import JSONEditor, { IJSONEditorRef } from "../JSONEditor";
 import MonacoJSONEditor, { MonacoJSONEditorProps } from "../MonacoJSONEditor";
@@ -30,7 +30,7 @@ const SwitchableEditor = forwardRef(
         {mode === "diff" ? (
           <>
             <EuiSpacer />
-            <EuiSwitch
+            <EuiCompressedSwitch
               label="Compare previously saved settings"
               checked={checked}
               onChange={async (e) => {

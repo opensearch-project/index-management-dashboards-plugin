@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent } from "react";
-import { EuiSpacer, EuiFormRow, EuiFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
+import { EuiSpacer, EuiCompressedFormRow, EuiCompressedFieldText, EuiTextArea, EuiText, EuiFlexGroup, EuiFlexItem } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 
 interface ConfigureTransformProps {
@@ -29,9 +29,15 @@ const ConfigureTransform = ({
   <ContentPanel bodyStyles={{ padding: "initial" }} title="Job name and description" titleSize={size}>
     <div style={{ paddingLeft: "10px" }}>
       <EuiSpacer size="s" />
-      <EuiFormRow label="Name" helpText="Specify a unique, descriptive name." isInvalid={!!error} error={error}>
-        <EuiFieldText isInvalid={!!error} placeholder="transform-id" value={transformId} onChange={onChangeName} disabled={inEdit} />
-      </EuiFormRow>
+      <EuiCompressedFormRow label="Name" helpText="Specify a unique, descriptive name." isInvalid={!!error} error={error}>
+        <EuiCompressedFieldText
+          isInvalid={!!error}
+          placeholder="transform-id"
+          value={transformId}
+          onChange={onChangeName}
+          disabled={inEdit}
+        />
+      </EuiCompressedFormRow>
       <EuiSpacer />
       <EuiFlexGroup gutterSize="xs">
         <EuiFlexItem grow={false}>
@@ -46,9 +52,9 @@ const ConfigureTransform = ({
         </EuiFlexItem>
       </EuiFlexGroup>
       <EuiSpacer size="xs" />
-      <EuiFormRow>
+      <EuiCompressedFormRow>
         <EuiTextArea compressed={true} value={description} onChange={onChangeDescription} data-test-subj="description" />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     </div>
   </ContentPanel>
 );

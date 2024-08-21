@@ -64,7 +64,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="deletaCancelButton"
               type="button"
             >
@@ -79,7 +79,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--danger euiButton--fill"
+              class="euiButton euiButton--danger euiButton--small euiButton--fill"
               data-test-subj="deleteConfirmButton"
               type="button"
             >

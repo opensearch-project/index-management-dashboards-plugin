@@ -11,7 +11,7 @@ import {
   EuiFlexItem,
   EuiPagination,
   EuiSearchBar,
-  EuiSwitch,
+  EuiCompressedSwitch,
   EuiButton,
   EuiPopover,
   EuiContextMenuPanel,
@@ -102,8 +102,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
         </EuiFlexItem>
         <EuiFlexItem grow={false}>{Actions}</EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiSwitch
-            compressed
+          <EuiCompressedSwitch
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}
@@ -122,7 +121,7 @@ export default class ManagedIndexControls extends Component<ManagedIndexControls
           />
         </EuiFlexItem>
         <EuiFlexItem grow={false}>
-          <EuiSwitch
+          <EuiCompressedSwitch
             label="Show data stream indexes"
             checked={showDataStreams}
             onChange={toggleShowDataStreams}

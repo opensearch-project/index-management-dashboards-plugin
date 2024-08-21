@@ -60,7 +60,7 @@ describe("Aliases", () => {
   describe("can create a alias with wildcard and specific name", () => {
     it("successfully", () => {
       cy.get('[data-test-subj="Create aliasButton"]').click();
-      cy.get('[data-test-subj="form-name-alias"]').type(CREATE_ALIAS);
+      cy.get('[data-test-subj="form-name-alias"] input').type(CREATE_ALIAS);
       cy.get('[data-test-subj="form-name-indexArray"] [data-test-subj="comboBoxSearchInput"]').type(
         `${EDIT_INDEX}{enter}${SAMPLE_INDEX_PREFIX}-*{enter}`
       );

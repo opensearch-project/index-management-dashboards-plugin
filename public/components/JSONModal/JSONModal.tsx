@@ -12,7 +12,7 @@ import {
   EuiModalHeaderTitle,
   EuiOverlayMask,
   EuiCodeBlock,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
 } from "@elastic/eui";
 
 interface JSONModalProps {
@@ -36,9 +36,9 @@ const JSONModal: React.SFC<JSONModalProps> = ({ title, json, onClose }) => {
         </EuiModalBody>
 
         <EuiModalFooter>
-          <EuiButtonEmpty onClick={onClose} data-test-subj="jsonModalCloseButton">
+          <EuiSmallButtonEmpty onClick={onClose} data-test-subj="jsonModalCloseButton">
             Close
-          </EuiButtonEmpty>
+          </EuiSmallButtonEmpty>
         </EuiModalFooter>
       </EuiModal>
     </EuiOverlayMask>

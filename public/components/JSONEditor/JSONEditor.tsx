@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
-import { EuiCodeEditor, EuiCodeEditorProps, EuiFormRow } from "@elastic/eui";
+import { EuiCodeEditor, EuiCodeEditorProps, EuiCompressedFormRow } from "@elastic/eui";
 
 export interface JSONEditorProps extends Partial<EuiCodeEditorProps> {
   disabled?: boolean;
@@ -75,13 +75,13 @@ const JSONEditor = forwardRef(({ value, onChange, disabled, ...others }: JSONEdi
         }}
       />
       {confirmModalVisible && (
-        <EuiFormRow
+        <EuiCompressedFormRow
           fullWidth
           isInvalid={confirmModalVisible}
           error="Your input does not match the validation of json format, please fix the error line with error aside."
         >
           <></>
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       )}
     </>
   );

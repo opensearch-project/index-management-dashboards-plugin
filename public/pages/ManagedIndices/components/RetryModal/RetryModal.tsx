@@ -5,18 +5,18 @@
 
 import React, { Component } from "react";
 import {
-  EuiButton,
-  EuiButtonEmpty,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiOverlayMask,
-  EuiRadioGroup,
-  EuiSelect,
+  EuiCompressedRadioGroup,
+  EuiCompressedSelect,
   EuiSpacer,
-  EuiFormRow,
+  EuiCompressedFormRow,
 } from "@elastic/eui";
 import { ManagedIndexItem, State } from "../../../../../models/interfaces";
 import { BrowserServices } from "../../../../models/interfaces";
@@ -139,28 +139,28 @@ export default class RetryModal extends Component<RetryModalProps, RetryModalSta
           </EuiModalHeader>
 
           <EuiModalBody>
-            <EuiRadioGroup options={radioOptions} idSelected={radioIdSelected} onChange={this.onChange} />
+            <EuiCompressedRadioGroup options={radioOptions} idSelected={radioIdSelected} onChange={this.onChange} />
 
             <EuiSpacer size="s" />
-            <EuiFormRow label="Start state" helpText="Only common states shared across all selected indexes are available">
-              <EuiSelect
+            <EuiCompressedFormRow label="Start state" helpText="Only common states shared across all selected indexes are available">
+              <EuiCompressedSelect
                 disabled={radioIdSelected !== Radio.State}
                 options={stateOptions}
                 value={stateSelected}
                 onChange={this.onSelectChange}
                 aria-label="Retry failed policy from"
               />
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </EuiModalBody>
 
           <EuiModalFooter>
-            <EuiButtonEmpty onClick={onClose} data-test-subj="retryModalCloseButton">
+            <EuiSmallButtonEmpty onClick={onClose} data-test-subj="retryModalCloseButton">
               Close
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
 
-            <EuiButton onClick={this.onRetry} disabled={!retryItems.length} fill data-test-subj="retryModalRetryButton">
+            <EuiSmallButton onClick={this.onRetry} disabled={!retryItems.length} fill data-test-subj="retryModalRetryButton">
               Retry
-            </EuiButton>
+            </EuiSmallButton>
           </EuiModalFooter>
         </EuiModal>
       </EuiOverlayMask>

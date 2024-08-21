@@ -20,7 +20,7 @@ HTMLCollection [
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--ghost"
+            class="euiButtonEmpty euiButtonEmpty--ghost euiButtonEmpty--small"
             type="button"
           >
             <span

@@ -3,7 +3,7 @@
 exports[`AliasUIAction component renders with blank action 1`] = `
 <div>
   <div
-    class="euiSwitch euiSwitch--primary"
+    class="euiSwitch euiSwitch--primary euiSwitch--compressed"
   >
     <button
       aria-checked="true"
@@ -22,10 +22,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
         />
         <span
           class="euiSwitch__track"
-        >
-          EuiIconMock
-          EuiIconMock
-        </span>
+        />
       </span>
     </button>
     <span
@@ -39,7 +36,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
     class="euiSpacer euiSpacer--m"
   />
   <div
-    class="euiFormRow euiFormRow--fullWidth"
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
     data-test-subj="add-alias-row"
     id="some_html_id-row"
     style="max-width: 100%;"
@@ -61,18 +58,18 @@ exports[`AliasUIAction component renders with blank action 1`] = `
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
-        class="euiComboBox"
+        class="euiComboBox euiComboBox--compressed"
         data-test-subj="add-alias-combo-box"
         role="combobox"
       >
         <div
-          class="euiFormControlLayout"
+          class="euiFormControlLayout euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <div
-              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
               data-test-subj="comboBoxInput"
               tabindex="-1"
             >
@@ -115,7 +112,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiSwitch euiSwitch--primary"
+    class="euiSwitch euiSwitch--primary euiSwitch--compressed"
   >
     <button
       aria-checked="true"
@@ -134,10 +131,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
         />
         <span
           class="euiSwitch__track"
-        >
-          EuiIconMock
-          EuiIconMock
-        </span>
+        />
       </span>
     </button>
     <span
@@ -151,7 +145,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
     class="euiSpacer euiSpacer--m"
   />
   <div
-    class="euiFormRow euiFormRow--fullWidth"
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
     data-test-subj="remove-alias-row"
     id="some_html_id-row"
     style="max-width: 100%;"
@@ -173,18 +167,18 @@ exports[`AliasUIAction component renders with blank action 1`] = `
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
-        class="euiComboBox"
+        class="euiComboBox euiComboBox--compressed"
         data-test-subj="remove-alias-combo-box"
         role="combobox"
       >
         <div
-          class="euiFormControlLayout"
+          class="euiFormControlLayout euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <div
-              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
               data-test-subj="comboBoxInput"
               tabindex="-1"
             >
@@ -229,7 +223,7 @@ exports[`AliasUIAction component renders with blank action 1`] = `
 exports[`AliasUIAction component renders with pre-defined actions 1`] = `
 <div>
   <div
-    class="euiSwitch euiSwitch--primary"
+    class="euiSwitch euiSwitch--primary euiSwitch--compressed"
   >
     <button
       aria-checked="true"
@@ -248,10 +242,7 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
         />
         <span
           class="euiSwitch__track"
-        >
-          EuiIconMock
-          EuiIconMock
-        </span>
+        />
       </span>
     </button>
     <span
@@ -265,7 +256,7 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
     class="euiSpacer euiSpacer--m"
   />
   <div
-    class="euiFormRow euiFormRow--fullWidth"
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
     data-test-subj="add-alias-row"
     id="some_html_id-row"
     style="max-width: 100%;"
@@ -287,18 +278,18 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
-        class="euiComboBox"
+        class="euiComboBox euiComboBox--compressed"
         data-test-subj="add-alias-combo-box"
         role="combobox"
       >
         <div
-          class="euiFormControlLayout"
+          class="euiFormControlLayout euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <div
-              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
               data-test-subj="comboBoxInput"
               tabindex="-1"
             >
@@ -433,7 +424,7 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
             >
               <button
                 aria-label="Clear input"
-                class="euiFormControlLayoutClearButton"
+                class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
                 data-test-subj="comboBoxClearButton"
                 type="button"
               >
@@ -458,7 +449,7 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiSwitch euiSwitch--primary"
+    class="euiSwitch euiSwitch--primary euiSwitch--compressed"
   >
     <button
       aria-checked="true"
@@ -477,10 +468,7 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
         />
         <span
           class="euiSwitch__track"
-        >
-          EuiIconMock
-          EuiIconMock
-        </span>
+        />
       </span>
     </button>
     <span
@@ -494,7 +482,7 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
     class="euiSpacer euiSpacer--m"
   />
   <div
-    class="euiFormRow euiFormRow--fullWidth"
+    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
     data-test-subj="remove-alias-row"
     id="some_html_id-row"
     style="max-width: 100%;"
@@ -516,18 +504,18 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
-        class="euiComboBox"
+        class="euiComboBox euiComboBox--compressed"
         data-test-subj="remove-alias-combo-box"
         role="combobox"
       >
         <div
-          class="euiFormControlLayout"
+          class="euiFormControlLayout euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <div
-              class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+              class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
               data-test-subj="comboBoxInput"
               tabindex="-1"
             >
@@ -640,7 +628,7 @@ exports[`AliasUIAction component renders with pre-defined actions 1`] = `
             >
               <button
                 aria-label="Clear input"
-                class="euiFormControlLayoutClearButton"
+                class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
                 data-test-subj="comboBoxClearButton"
                 type="button"
               >

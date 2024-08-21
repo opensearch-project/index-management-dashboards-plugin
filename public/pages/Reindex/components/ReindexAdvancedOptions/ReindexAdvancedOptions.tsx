@@ -5,7 +5,15 @@
 
 import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import CustomFormRow, { OptionalLabel } from "../../../../components/CustomFormRow";
-import { EuiCheckbox, EuiComboBox, EuiComboBoxOptionOption, EuiFieldNumber, EuiLink, EuiRadioGroup, EuiSpacer } from "@elastic/eui";
+import {
+  EuiCompressedCheckbox,
+  EuiCompressedComboBox,
+  EuiComboBoxOptionOption,
+  EuiCompressedFieldNumber,
+  EuiLink,
+  EuiCompressedRadioGroup,
+  EuiSpacer,
+} from "@elastic/eui";
 import { CoreServicesContext } from "../../../../components/core_services";
 import { CoreStart } from "opensearch-dashboards/public";
 
@@ -68,7 +76,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           </>
         }
       >
-        <EuiCheckbox
+        <EuiCompressedCheckbox
           id="uniqueCheckbox"
           label="Reindex only unique documents"
           checked={reindexUniqueDocuments}
@@ -88,7 +96,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           </>
         }
       >
-        <EuiCheckbox
+        <EuiCompressedCheckbox
           id="ConflictsOptionCheckbox"
           label="Ignore conflicts during reindexing"
           checked={ignoreConflicts}
@@ -102,7 +110,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
         helpText="Divide this reindexing operation into smaller subtasks to run in parallel."
       >
         <>
-          <EuiCheckbox
+          <EuiCompressedCheckbox
             id="sliceEnabledCheckBox"
             data-test-subj="sliceEnabled"
             label="Slice this reindexing operation"
@@ -115,7 +123,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           {sliceEnabled ? (
             <>
               <EuiSpacer />
-              <EuiRadioGroup
+              <EuiCompressedRadioGroup
                 options={[
                   {
                     id: "auto",
@@ -147,7 +155,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
             label="Number of subtasks"
             helpText="Specify the number of subtasks to divide this operation into."
           >
-            <EuiFieldNumber
+            <EuiCompressedFieldNumber
               data-test-subj="slices"
               value={slices}
               placeholder="Specify a number"
@@ -176,7 +184,7 @@ const ReindexAdvancedOptions = (props: ReindexOptionsProps) => {
           </>
         }
       >
-        <EuiComboBox
+        <EuiCompressedComboBox
           aria-label="Ingest Pipeline"
           placeholder="Select an ingest pipeline"
           data-test-subj="pipelineCombobox"

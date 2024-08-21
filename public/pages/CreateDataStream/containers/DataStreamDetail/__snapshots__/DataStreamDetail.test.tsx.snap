@@ -14,7 +14,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
         Create data stream
       </h1>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -66,7 +66,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
         />
         <div>
           <button
-            class="euiButton euiButton--primary"
+            class="euiButton euiButton--primary euiButton--small"
             type="button"
           >
             <span
@@ -120,7 +120,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         data-test-subj="form-row-name"
         id="some_html_id-row"
       >
@@ -165,17 +165,17 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
             <div
               aria-expanded="false"
               aria-haspopup="listbox"
-              class="euiComboBox"
+              class="euiComboBox euiComboBox--compressed"
               role="combobox"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
@@ -222,7 +222,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -256,7 +256,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButtonEmpty euiButtonEmpty--primary"
+        class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
         data-test-subj="CreateDataStreamCancelButton"
         type="button"
       >
@@ -275,7 +275,7 @@ exports[`<DataStreamDetail /> spec render component 1`] = `
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButton euiButton--primary euiButton--fill"
+        class="euiButton euiButton--primary euiButton--small euiButton--fill"
         data-test-subj="CreateDataStreamCreateButton"
         type="button"
       >

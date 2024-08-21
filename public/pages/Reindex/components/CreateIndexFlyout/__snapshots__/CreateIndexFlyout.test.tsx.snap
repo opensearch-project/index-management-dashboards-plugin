@@ -84,7 +84,7 @@ Object {
                       class="euiForm"
                     >
                       <div
-                        class="euiFormRow"
+                        class="euiFormRow euiFormRow--compressed"
                         data-test-subj="form-name-index"
                         id="some_html_id-row"
                       >
@@ -106,13 +106,13 @@ Object {
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                           >
                             <div
-                              class="euiFormControlLayout"
+                              class="euiFormControlLayout euiFormControlLayout--compressed"
                             >
                               <div
                                 class="euiFormControlLayout__childrenWrapper"
                               >
                                 <input
-                                  class="euiFieldText"
+                                  class="euiFieldText euiFieldText--compressed"
                                   placeholder="Specify a name for the new index."
                                   type="text"
                                   value=""
@@ -131,7 +131,7 @@ Object {
                         </div>
                       </div>
                       <div
-                        class="euiFormRow euiFormRow--fullWidth"
+                        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                         data-test-subj="form-name-templateMessage"
                         id="some_html_id-row"
                       >
@@ -140,7 +140,7 @@ Object {
                         />
                       </div>
                       <div
-                        class="euiFormRow"
+                        class="euiFormRow euiFormRow--compressed"
                         data-test-subj="form-name-aliases"
                         id="some_html_id-row"
                       >
@@ -173,17 +173,17 @@ Object {
                             <div
                               aria-expanded="false"
                               aria-haspopup="listbox"
-                              class="euiComboBox"
+                              class="euiComboBox euiComboBox--compressed"
                               role="combobox"
                             >
                               <div
-                                class="euiFormControlLayout"
+                                class="euiFormControlLayout euiFormControlLayout--compressed"
                               >
                                 <div
                                   class="euiFormControlLayout__childrenWrapper"
                                 >
                                   <div
-                                    class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                                    class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                                     data-test-subj="comboBoxInput"
                                     tabindex="-1"
                                   >
@@ -266,7 +266,7 @@ Object {
                       class="euiForm"
                     >
                       <div
-                        class="euiFormRow"
+                        class="euiFormRow euiFormRow--compressed"
                         data-test-subj="form-name-index.number_of_shards"
                         id="some_html_id-row"
                       >
@@ -299,13 +299,13 @@ Object {
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                           >
                             <div
-                              class="euiFormControlLayout"
+                              class="euiFormControlLayout euiFormControlLayout--compressed"
                             >
                               <div
                                 class="euiFormControlLayout__childrenWrapper"
                               >
                                 <input
-                                  class="euiFieldNumber"
+                                  class="euiFieldNumber euiFieldNumber--compressed"
                                   placeholder="Specify primary shard count."
                                   type="number"
                                   value="1"
@@ -316,7 +316,7 @@ Object {
                         </div>
                       </div>
                       <div
-                        class="euiFormRow"
+                        class="euiFormRow euiFormRow--compressed"
                         data-test-subj="form-name-index.number_of_replicas"
                         id="some_html_id-row"
                       >
@@ -344,13 +344,13 @@ Object {
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                           >
                             <div
-                              class="euiFormControlLayout"
+                              class="euiFormControlLayout euiFormControlLayout--compressed"
                             >
                               <div
                                 class="euiFormControlLayout__childrenWrapper"
                               >
                                 <input
-                                  class="euiFieldNumber"
+                                  class="euiFieldNumber euiFieldNumber--compressed"
                                   placeholder="Specify number of replicas."
                                   type="number"
                                   value="1"
@@ -361,7 +361,7 @@ Object {
                         </div>
                       </div>
                       <div
-                        class="euiFormRow"
+                        class="euiFormRow euiFormRow--compressed"
                         data-test-subj="form-name-index.refresh_interval"
                         id="some_html_id-row"
                       >
@@ -389,13 +389,13 @@ Object {
                             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                           >
                             <div
-                              class="euiFormControlLayout"
+                              class="euiFormControlLayout euiFormControlLayout--compressed"
                             >
                               <div
                                 class="euiFormControlLayout__childrenWrapper"
                               >
                                 <input
-                                  class="euiFieldText"
+                                  class="euiFieldText euiFieldText--compressed"
                                   placeholder="Can be set to -1 to disable refreshing."
                                   type="text"
                                   value="1s"
@@ -451,7 +451,7 @@ Object {
                                 class="euiSpacer euiSpacer--s"
                               />
                               <div
-                                class="euiFormRow euiFormRow--fullWidth"
+                                class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                                 data-test-subj="formNameAdvancedSettings"
                                 id="some_html_id-row"
                               >
@@ -664,7 +664,7 @@ Object {
                         </i>
                       </div>
                       <div
-                        class="euiFormRow euiFormRow--fullWidth"
+                        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                         id="some_html_id-row"
                       >
                         <div
@@ -707,7 +707,7 @@ Object {
                     style="padding: 0px 10px;"
                   >
                     <div
-                      class="euiFormRow euiFormRow--fullWidth"
+                      class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                       id="some_html_id-row"
                     >
                       <div
@@ -787,7 +787,7 @@ Object {
                           class="euiSpacer euiSpacer--l"
                         />
                         <button
-                          class="euiButton euiButton--primary"
+                          class="euiButton euiButton--primary euiButton--small"
                           data-test-subj="createIndexAddFieldButton"
                           style="margin-right: 8px;"
                           type="button"
@@ -803,7 +803,7 @@ Object {
                           </span>
                         </button>
                         <button
-                          class="euiButton euiButton--primary"
+                          class="euiButton euiButton--primary euiButton--small"
                           data-test-subj="createIndexAddObjectFieldButton"
                           type="button"
                         >
@@ -834,7 +834,7 @@ Object {
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <button
-                  class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--flushLeft"
+                  class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small euiButtonEmpty--flushLeft"
                   data-test-subj="flyout-footer-cancel-button"
                   type="button"
                 >
@@ -853,7 +853,7 @@ Object {
                 class="euiFlexItem euiFlexItem--flexGrowZero"
               >
                 <button
-                  class="euiButton euiButton--primary euiButton--fill"
+                  class="euiButton euiButton--primary euiButton--small euiButton--fill"
                   data-test-subj="flyout-footer-action-button"
                   type="button"
                 >

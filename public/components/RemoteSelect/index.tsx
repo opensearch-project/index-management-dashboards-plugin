@@ -4,7 +4,7 @@
  */
 
 import React, { useCallback, useRef, useState, forwardRef } from "react";
-import { EuiComboBox, EuiComboBoxProps } from "@elastic/eui";
+import { EuiCompressedComboBox, EuiComboBoxProps } from "@elastic/eui";
 import { useEffect } from "react";
 import { debounce } from "lodash";
 import { ServerResponse } from "../../../server/models/types";
@@ -75,7 +75,7 @@ const RemoteSelect = forwardRef((props: RemoteSelectProps, ref: React.Ref<HTMLIn
     }
   };
   return (
-    <EuiComboBox
+    <EuiCompressedComboBox
       onCreateOption={onCreateOption}
       {...others}
       inputRef={ref as (instance: HTMLInputElement | null) => void}

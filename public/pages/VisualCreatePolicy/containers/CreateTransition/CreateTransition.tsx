@@ -4,7 +4,17 @@
  */
 
 import React, { Component } from "react";
-import { EuiText, EuiLink, EuiIcon, EuiFlyoutBody, EuiFlyoutFooter, EuiTitle, EuiFormRow, EuiSpacer, EuiComboBox } from "@elastic/eui";
+import {
+  EuiText,
+  EuiLink,
+  EuiIcon,
+  EuiFlyoutBody,
+  EuiFlyoutFooter,
+  EuiTitle,
+  EuiCompressedFormRow,
+  EuiSpacer,
+  EuiCompressedComboBox,
+} from "@elastic/eui";
 import { Transition as ITransition, UITransition } from "../../../../../models/interfaces";
 import FlyoutFooter from "../../components/FlyoutFooter";
 import EuiFormCustomLabel from "../../components/EuiFormCustomLabel";
@@ -103,9 +113,8 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
             helpText="If entering a state that does not exist yet then you must create it before creating the policy."
           />
 
-          <EuiFormRow fullWidth isInvalid={false} error={null}>
-            <EuiComboBox
-              compressed={useNewUx}
+          <EuiCompressedFormRow fullWidth isInvalid={false} error={null}>
+            <EuiCompressedComboBox
               fullWidth
               isClearable={false}
               placeholder="Select a single option"
@@ -116,7 +125,7 @@ export default class CreateTransition extends Component<CreateTransitionProps, C
               onCreateOption={this.onCreateOption}
               customOptionText="Add {searchValue} state"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer />
 

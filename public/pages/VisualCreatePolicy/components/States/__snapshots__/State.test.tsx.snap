@@ -118,7 +118,7 @@ exports[`<State /> spec renders the component 1`] = `
           >
             <button
               aria-label="Delete"
-              class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--xSmall"
+              class="euiButtonIcon euiButtonIcon--danger euiButtonIcon--empty euiButtonIcon--small"
               data-test-subj="state-delete-button"
               type="button"
             >
@@ -134,7 +134,7 @@ exports[`<State /> spec renders the component 1`] = `
           >
             <button
               aria-label="Edit"
-              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--xSmall"
+              class="euiButtonIcon euiButtonIcon--primary euiButtonIcon--empty euiButtonIcon--small"
               type="button"
             >
               EuiIconMock

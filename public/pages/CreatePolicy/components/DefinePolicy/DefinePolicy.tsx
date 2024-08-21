@@ -6,7 +6,7 @@
 import React from "react";
 import {
   EuiSpacer,
-  EuiButton,
+  EuiSmallButton,
   // @ts-ignore
   EuiCodeEditor,
   EuiText,
@@ -38,14 +38,14 @@ const DefinePolicy = ({ jsonString, onChange, onAutoIndent, hasJSONError, useNew
     actions={[
       <EuiCopy textToCopy={jsonString}>
         {(copy: () => void) => (
-          <EuiButton iconType="copyClipboard" onClick={copy} size={useNewUx ? "s" : undefined}>
+          <EuiSmallButton iconType="copyClipboard" onClick={copy}>
             Copy
-          </EuiButton>
+          </EuiSmallButton>
         )}
       </EuiCopy>,
-      <EuiButton iconType="editorAlignLeft" onClick={onAutoIndent} disabled={hasJSONError} size={useNewUx ? "s" : undefined}>
+      <EuiSmallButton iconType="editorAlignLeft" onClick={onAutoIndent} disabled={hasJSONError}>
         Auto indent
-      </EuiButton>,
+      </EuiSmallButton>,
     ]}
   >
     <div style={{ paddingLeft: "10px" }}>

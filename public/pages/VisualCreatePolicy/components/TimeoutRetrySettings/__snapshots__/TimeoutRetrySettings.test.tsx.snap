@@ -80,7 +80,7 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
               </p>
             </div>
             <div
-              class="euiFormRow euiFormRow--fullWidth"
+              class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
@@ -94,13 +94,13 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
                     class="euiFlexItem"
                   >
                     <div
-                      class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                      class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                     >
                       <div
                         class="euiFormControlLayout__childrenWrapper"
                       >
                         <input
-                          class="euiFieldText euiFieldText--fullWidth"
+                          class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                           type="text"
                           value=""
                         />
@@ -135,7 +135,7 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
               </p>
             </div>
             <div
-              class="euiFormRow euiFormRow--fullWidth"
+              class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
@@ -149,13 +149,13 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
                     class="euiFlexItem"
                   >
                     <div
-                      class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                      class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                     >
                       <div
                         class="euiFormControlLayout__childrenWrapper"
                       >
                         <input
-                          class="euiFieldNumber euiFieldNumber--fullWidth"
+                          class="euiFieldNumber euiFieldNumber--fullWidth euiFieldNumber--compressed"
                           min="0"
                           type="number"
                           value=""
@@ -191,20 +191,20 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
               </p>
             </div>
             <div
-              class="euiFormRow euiFormRow--fullWidth"
+              class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
                 class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <select
-                      class="euiSelect euiSelect--fullWidth"
+                      class="euiSelect euiSelect--fullWidth euiSelect--compressed"
                       id="some_html_id"
                     >
                       <option
@@ -261,7 +261,7 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
               </p>
             </div>
             <div
-              class="euiFormRow euiFormRow--fullWidth"
+              class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
@@ -275,13 +275,13 @@ exports[`<TimeoutRetrySettings /> spec renders the component 1`] = `
                     class="euiFlexItem"
                   >
                     <div
-                      class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                      class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                     >
                       <div
                         class="euiFormControlLayout__childrenWrapper"
                       >
                         <input
-                          class="euiFieldText euiFieldText--fullWidth"
+                          class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                           type="text"
                           value=""
                         />

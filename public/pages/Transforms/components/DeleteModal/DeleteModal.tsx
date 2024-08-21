@@ -4,7 +4,7 @@
  */
 
 import React, { ChangeEvent, Component, Fragment } from "react";
-import { EuiConfirmModal, EuiForm, EuiFormRow, EuiFieldText, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
+import { EuiConfirmModal, EuiForm, EuiCompressedFormRow, EuiCompressedFieldText, EuiOverlayMask, EuiSpacer } from "@elastic/eui";
 
 // TODO: Merge with Rollup to create generic component
 interface DeleteModalProps {
@@ -46,9 +46,14 @@ export default class DeleteModal extends Component<DeleteModalProps, DeleteModal
               it will remain intact.
             </Fragment>
             <EuiSpacer size="s" />
-            <EuiFormRow helpText="To confirm deletion, enter delete in the text field">
-              <EuiFieldText value={confirmDeleteText} placeholder="delete" onChange={this.onChange} data-test-subj="deleteTextField" />
-            </EuiFormRow>
+            <EuiCompressedFormRow helpText="To confirm deletion, enter delete in the text field">
+              <EuiCompressedFieldText
+                value={confirmDeleteText}
+                placeholder="delete"
+                onChange={this.onChange}
+                data-test-subj="deleteTextField"
+              />
+            </EuiCompressedFormRow>
           </EuiForm>
         </EuiConfirmModal>
       </EuiOverlayMask>

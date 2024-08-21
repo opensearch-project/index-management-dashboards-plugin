@@ -7,7 +7,7 @@ Object {
     <div>
       <div>
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -37,7 +37,7 @@ Object {
               </button>
             </div>
             <div
-              class="euiCheckbox"
+              class="euiCheckbox euiCheckbox--compressed"
             >
               <input
                 checked=""
@@ -61,7 +61,7 @@ Object {
           class="euiSpacer euiSpacer--l"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -91,7 +91,7 @@ Object {
               </button>
             </div>
             <div
-              class="euiCheckbox"
+              class="euiCheckbox euiCheckbox--compressed"
             >
               <input
                 checked=""
@@ -115,7 +115,7 @@ Object {
           class="euiSpacer euiSpacer--l"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -138,7 +138,7 @@ Object {
               Divide this reindexing operation into smaller subtasks to run in parallel.
             </div>
             <div
-              class="euiCheckbox"
+              class="euiCheckbox euiCheckbox--compressed"
             >
               <input
                 checked=""
@@ -164,7 +164,7 @@ Object {
               data-test-subj="sliceOption"
             >
               <div
-                class="euiRadio euiRadioGroup__item"
+                class="euiRadio euiRadio--compressed euiRadioGroup__item"
               >
                 <input
                   class="euiRadio__input"
@@ -184,7 +184,7 @@ Object {
                 </label>
               </div>
               <div
-                class="euiRadio euiRadioGroup__item"
+                class="euiRadio euiRadio--compressed euiRadioGroup__item"
               >
                 <input
                   checked=""
@@ -211,7 +211,7 @@ Object {
           class="euiSpacer euiSpacer--l"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -235,13 +235,13 @@ Object {
               Specify the number of subtasks to divide this operation into.
             </div>
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldNumber"
+                  class="euiFieldNumber euiFieldNumber--compressed"
                   data-test-subj="slices"
                   min="2"
                   placeholder="Specify a number"
@@ -256,7 +256,7 @@ Object {
           class="euiSpacer euiSpacer--l"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -300,18 +300,18 @@ Object {
               aria-expanded="false"
               aria-haspopup="listbox"
               aria-label="Ingest Pipeline"
-              class="euiComboBox"
+              class="euiComboBox euiComboBox--compressed"
               data-test-subj="pipelineCombobox"
               role="combobox"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <div
-                    class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                    class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                     data-test-subj="comboBoxInput"
                     tabindex="-1"
                   >
@@ -359,7 +359,7 @@ Object {
   "container": <div>
     <div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -389,7 +389,7 @@ Object {
             </button>
           </div>
           <div
-            class="euiCheckbox"
+            class="euiCheckbox euiCheckbox--compressed"
           >
             <input
               checked=""
@@ -413,7 +413,7 @@ Object {
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -443,7 +443,7 @@ Object {
             </button>
           </div>
           <div
-            class="euiCheckbox"
+            class="euiCheckbox euiCheckbox--compressed"
           >
             <input
               checked=""
@@ -467,7 +467,7 @@ Object {
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -490,7 +490,7 @@ Object {
             Divide this reindexing operation into smaller subtasks to run in parallel.
           </div>
           <div
-            class="euiCheckbox"
+            class="euiCheckbox euiCheckbox--compressed"
           >
             <input
               checked=""
@@ -516,7 +516,7 @@ Object {
             data-test-subj="sliceOption"
           >
             <div
-              class="euiRadio euiRadioGroup__item"
+              class="euiRadio euiRadio--compressed euiRadioGroup__item"
             >
               <input
                 class="euiRadio__input"
@@ -536,7 +536,7 @@ Object {
               </label>
             </div>
             <div
-              class="euiRadio euiRadioGroup__item"
+              class="euiRadio euiRadio--compressed euiRadioGroup__item"
             >
               <input
                 checked=""
@@ -563,7 +563,7 @@ Object {
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -587,13 +587,13 @@ Object {
             Specify the number of subtasks to divide this operation into.
           </div>
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldNumber"
+                class="euiFieldNumber euiFieldNumber--compressed"
                 data-test-subj="slices"
                 min="2"
                 placeholder="Specify a number"
@@ -608,7 +608,7 @@ Object {
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -652,18 +652,18 @@ Object {
             aria-expanded="false"
             aria-haspopup="listbox"
             aria-label="Ingest Pipeline"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox--compressed"
             data-test-subj="pipelineCombobox"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >

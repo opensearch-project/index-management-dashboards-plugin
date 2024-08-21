@@ -31,7 +31,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
             class="euiFlexItem euiFlexItem--flexGrowZero"
           >
             <button
-              class="euiButton euiButton--primary"
+              class="euiButton euiButton--primary euiButton--small"
               data-test-subj="refreshButton"
               type="button"
             >
@@ -51,7 +51,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
             class="euiFlexItem euiFlexItem--flexGrowZero"
           >
             <button
-              class="euiButton euiButton--primary euiButton-isDisabled"
+              class="euiButton euiButton--primary euiButton--small euiButton-isDisabled"
               data-test-subj="disableButton"
               disabled=""
               type="button"
@@ -71,7 +71,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
             class="euiFlexItem euiFlexItem--flexGrowZero"
           >
             <button
-              class="euiButton euiButton--primary euiButton-isDisabled"
+              class="euiButton euiButton--primary euiButton--small euiButton-isDisabled"
               data-test-subj="enableButton"
               disabled=""
               type="button"
@@ -99,7 +99,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
                 class="euiPopover__anchor"
               >
                 <button
-                  class="euiButton euiButton--primary euiButton-isDisabled"
+                  class="euiButton euiButton--primary euiButton--small euiButton-isDisabled"
                   data-test-subj="actionButton"
                   disabled=""
                   type="button"
@@ -122,7 +122,7 @@ exports[`<Rollups /> spec renders the component 1`] = `
             class="euiFlexItem euiFlexItem--flexGrowZero"
           >
             <button
-              class="euiButton euiButton--primary euiButton--fill"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill"
               data-test-subj="createRollupButton"
               type="button"
             >
@@ -151,13 +151,13 @@ exports[`<Rollups /> spec renders the component 1`] = `
           class="euiFlexItem"
         >
           <div
-            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldSearch euiFieldSearch--fullWidth"
+                class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed"
                 placeholder="Search"
                 type="search"
                 value=""

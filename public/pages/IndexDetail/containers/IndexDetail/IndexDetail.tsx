@@ -11,7 +11,7 @@ import {
   EuiDescriptionListDescription,
   EuiSpacer,
   EuiTitle,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLink,
   EuiTabbedContentTab,
 } from "@elastic/eui";
@@ -168,7 +168,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                   <EuiTitle size="s">
                     <span>Index mappings</span>
                   </EuiTitle>
-                  <EuiFormRow
+                  <EuiCompressedFormRow
                     fullWidth
                     helpText={
                       <>
@@ -187,7 +187,7 @@ export default function IndexDetail(props: IndexDetailModalProps) {
                     }
                   >
                     <></>
-                  </EuiFormRow>
+                  </EuiCompressedFormRow>
                 </>
               }
             >

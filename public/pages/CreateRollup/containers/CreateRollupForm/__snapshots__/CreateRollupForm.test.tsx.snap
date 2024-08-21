@@ -196,7 +196,7 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                   class="euiSpacer euiSpacer--s"
                 />
                 <div
-                  class="euiFormRow"
+                  class="euiFormRow euiFormRow--compressed"
                   id="some_html_id-row"
                 >
                   <div
@@ -214,14 +214,14 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                     class="euiFormRow__fieldWrapper"
                   >
                     <div
-                      class="euiFormControlLayout"
+                      class="euiFormControlLayout euiFormControlLayout--compressed"
                     >
                       <div
                         class="euiFormControlLayout__childrenWrapper"
                       >
                         <input
                           aria-describedby="some_html_id-help-0"
-                          class="euiFieldText"
+                          class="euiFieldText euiFieldText--compressed"
                           id="some_html_id"
                           placeholder="my-rollupjob1"
                           type="text"
@@ -274,7 +274,7 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                   class="euiSpacer euiSpacer--xs"
                 />
                 <div
-                  class="euiFormRow"
+                  class="euiFormRow euiFormRow--compressed"
                   id="some_html_id-row"
                 >
                   <div
@@ -349,7 +349,7 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                   class="euiSpacer euiSpacer--m"
                 />
                 <div
-                  class="euiFormRow"
+                  class="euiFormRow euiFormRow--compressed"
                   id="some_html_id-row"
                 >
                   <div
@@ -370,18 +370,18 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                       aria-describedby="some_html_id-help-0"
                       aria-expanded="false"
                       aria-haspopup="listbox"
-                      class="euiComboBox"
+                      class="euiComboBox euiComboBox--compressed"
                       data-test-subj="sourceIndexCombobox"
                       role="combobox"
                     >
                       <div
-                        class="euiFormControlLayout"
+                        class="euiFormControlLayout euiFormControlLayout--compressed"
                       >
                         <div
                           class="euiFormControlLayout__childrenWrapper"
                         >
                           <div
-                            class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                            class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
                             data-test-subj="comboBoxInput"
                             tabindex="-1"
                           >
@@ -434,7 +434,7 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                   </div>
                 </div>
                 <div
-                  class="euiFormRow"
+                  class="euiFormRow euiFormRow--compressed"
                   id="some_html_id-row"
                 >
                   <div
@@ -455,18 +455,18 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
                       aria-describedby="some_html_id-help-0"
                       aria-expanded="false"
                       aria-haspopup="listbox"
-                      class="euiComboBox"
+                      class="euiComboBox euiComboBox--compressed"
                       data-test-subj="targetIndexCombobox"
                       role="combobox"
                     >
                       <div
-                        class="euiFormControlLayout"
+                        class="euiFormControlLayout euiFormControlLayout--compressed"
                       >
                         <div
                           class="euiFormControlLayout__childrenWrapper"
                         >
                           <div
-                            class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
+                            class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isLoading euiComboBox__inputWrap-isClearable"
                             data-test-subj="comboBoxInput"
                             tabindex="-1"
                           >
@@ -553,7 +553,7 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButtonEmpty euiButtonEmpty--primary"
+          class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
           data-test-subj="createRollupCancelButton"
           type="button"
         >
@@ -572,7 +572,7 @@ exports[`<CreateRollupForm /> spec renders the component 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary euiButton--fill"
+          class="euiButton euiButton--primary euiButton--small euiButton--fill"
           data-test-subj="createRollupNextButton"
           type="button"
         >

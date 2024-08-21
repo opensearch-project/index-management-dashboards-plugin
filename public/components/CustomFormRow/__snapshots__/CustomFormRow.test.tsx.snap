@@ -4,7 +4,7 @@ exports[`<FormGenerator /> spec render the component 1`] = `
 HTMLCollection [
   <div>
     <div
-      class="euiFormRow"
+      class="euiFormRow euiFormRow--compressed"
       id="some_html_id-row"
     >
       <div

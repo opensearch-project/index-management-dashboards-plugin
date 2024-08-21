@@ -56,7 +56,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
             class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
           >
             <div
-              class="euiFormRow"
+              class="euiFormRow euiFormRow--compressed"
               data-test-subj="form-row-data_stream"
               id="some_html_id-row"
             >
@@ -64,7 +64,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
                 class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiRadio"
+                  class="euiRadio euiRadio--compressed"
                 >
                   <input
                     checked=""
@@ -84,7 +84,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
                   </label>
                 </div>
                 <div
-                  class="euiRadio"
+                  class="euiRadio euiRadio--compressed"
                 >
                   <input
                     class="euiRadio__input"
@@ -140,7 +140,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
             class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
           >
             <div
-              class="euiFormRow"
+              class="euiFormRow euiFormRow--compressed"
               data-test-subj="form-row-index_patterns"
               id="some_html_id-row"
             >
@@ -150,17 +150,17 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
                 <div
                   aria-expanded="false"
                   aria-haspopup="listbox"
-                  class="euiComboBox"
+                  class="euiComboBox euiComboBox--compressed"
                   role="combobox"
                 >
                   <div
-                    class="euiFormControlLayout"
+                    class="euiFormControlLayout euiFormControlLayout--compressed"
                   >
                     <div
                       class="euiFormControlLayout__childrenWrapper"
                     >
                       <div
-                        class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                         data-test-subj="comboBoxInput"
                         tabindex="-1"
                       >
@@ -227,7 +227,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
             class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
           >
             <div
-              class="euiFormRow"
+              class="euiFormRow euiFormRow--compressed"
               data-test-subj="form-row-priority"
               id="some_html_id-row"
             >
@@ -238,13 +238,13 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
                   class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                 >
                   <div
-                    class="euiFormControlLayout"
+                    class="euiFormControlLayout euiFormControlLayout--compressed"
                   >
                     <div
                       class="euiFormControlLayout__childrenWrapper"
                     >
                       <input
-                        class="euiFieldNumber"
+                        class="euiFieldNumber euiFieldNumber--compressed"
                         id="some_html_id"
                         type="number"
                         value=""
@@ -261,7 +261,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in edit mode 
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         data-test-subj="form-row-_meta.flow"
         id="some_html_id-row"
       >
@@ -431,7 +431,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-name"
         id="some_html_id-row"
       >
@@ -461,13 +461,13 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   type="text"
                   value=""
                 />
@@ -477,7 +477,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
         </div>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -497,7 +497,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-data_stream"
         id="some_html_id-row"
       >
@@ -516,7 +516,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiRadio"
+            class="euiRadio euiRadio--compressed"
           >
             <input
               checked=""
@@ -536,7 +536,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
             </label>
           </div>
           <div
-            class="euiRadio"
+            class="euiRadio euiRadio--compressed"
           >
             <input
               class="euiRadio__input"
@@ -560,7 +560,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-index_patterns"
         id="some_html_id-row"
       >
@@ -587,17 +587,17 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox--compressed"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >
@@ -631,7 +631,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-priority"
         id="some_html_id-row"
       >
@@ -659,13 +659,13 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldNumber"
+                  class="euiFieldNumber euiFieldNumber--compressed"
                   type="number"
                   value=""
                 />
@@ -678,7 +678,7 @@ exports[`<ComposableTemplatesActions /> spec renders the component in non-edit m
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         data-test-subj="form-row-_meta.flow"
         id="some_html_id-row"
       >

@@ -5,14 +5,14 @@
 
 import React from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
   EuiModalHeader,
   EuiModalHeaderTitle,
   EuiOverlayMask,
-  EuiButtonEmpty,
+  EuiSmallButtonEmpty,
   // @ts-ignore
 } from "@elastic/eui";
 
@@ -47,10 +47,10 @@ const ConfirmationModal: React.SFC<ConfirmationModalProps> = ({
         <EuiModalBody>{bodyMessage}</EuiModalBody>
 
         <EuiModalFooter>
-          <EuiButtonEmpty onClick={onClose} data-test-subj="confirmationModalCloseButton">
+          <EuiSmallButtonEmpty onClick={onClose} data-test-subj="confirmationModalCloseButton">
             Cancel
-          </EuiButtonEmpty>
-          <EuiButton
+          </EuiSmallButtonEmpty>
+          <EuiSmallButton
             onClick={() => {
               onAction();
               onClose();
@@ -60,7 +60,7 @@ const ConfirmationModal: React.SFC<ConfirmationModalProps> = ({
             {...actionProps}
           >
             {actionMessage}
-          </EuiButton>
+          </EuiSmallButton>
         </EuiModalFooter>
       </EuiModal>
     </EuiOverlayMask>

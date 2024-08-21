@@ -5,7 +5,7 @@
 
 import React, { ReactChild, useContext, useEffect, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
-import { EuiButton, EuiCallOut, EuiEmptyPrompt, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
+import { EuiSmallButton, EuiCallOut, EuiEmptyPrompt, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSpacer, EuiText, EuiTitle } from "@elastic/eui";
 import { get } from "lodash";
 import { CoreStart } from "opensearch-dashboards/public";
 import useField from "../../../../lib/field";
@@ -216,9 +216,9 @@ const Notifications = (props: NotificationsProps) => {
               </CustomFormRow>
             </EuiFlexItem>
             <EuiFlexItem grow={false}>
-              <EuiButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
+              <EuiSmallButton iconType="popout" href="notifications-dashboards#/channels" target="_blank">
                 Manage channels
-              </EuiButton>
+              </EuiSmallButton>
             </EuiFlexItem>
           </EuiFlexGroup>
           <EuiSpacer />

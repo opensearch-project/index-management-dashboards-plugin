@@ -55,20 +55,20 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldText"
+                class="euiFieldText euiFieldText--compressed"
                 data-test-subj="create-policy-policy-id"
                 id="some_html_id"
                 placeholder="hot_cold_workflow"
@@ -103,7 +103,7 @@ exports[`<PolicyInfo /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div

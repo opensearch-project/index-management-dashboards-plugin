@@ -104,20 +104,20 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
           class="euiFlexItem"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
               class="euiFormRow__fieldWrapper"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <select
-                    class="euiSelect euiSelect-isLoading"
+                    class="euiSelect euiSelect--compressed euiSelect-isLoading"
                     data-test-subj="create-policy-notification-channel-id"
                     id="some_html_id"
                     placeholder="Select channel ID"
@@ -152,7 +152,7 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
           <button
-            class="euiButton euiButton--primary euiButton-isDisabled refresh-button"
+            class="euiButton euiButton--primary euiButton--small euiButton-isDisabled refresh-button"
             data-test-subj="channel-notification-refresh"
             disabled=""
             type="button"
@@ -171,7 +171,7 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
           class="euiFlexItem euiFlexItem--flexGrowZero"
         >
           <a
-            class="euiButton euiButton--primary"
+            class="euiButton euiButton--primary euiButton--small"
             href="notifications-dashboards#/channels"
             rel="noopener noreferrer"
             target="_blank"
@@ -213,7 +213,7 @@ exports[`<ErrorNotification /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
