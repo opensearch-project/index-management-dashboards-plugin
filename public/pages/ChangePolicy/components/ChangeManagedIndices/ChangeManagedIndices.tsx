@@ -17,7 +17,6 @@ interface ChangeManagedIndicesProps {
   onChangeManagedIndices: (selectedManagedIndices: { label: string; value?: ManagedIndexItem }[]) => void;
   onChangeStateFilters: (stateFilter: { label: string }[]) => void;
   managedIndicesError: string;
-  useUpdatedUX?: boolean;
 }
 
 interface ChangeManagedIndicesState {
@@ -72,7 +71,7 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
 
   render() {
     const { managedIndices, managedIndicesIsLoading, stateFilterSearchValue } = this.state;
-    const { selectedManagedIndices, selectedStateFilters, managedIndicesError, useUpdatedUX } = this.props;
+    const { selectedManagedIndices, selectedStateFilters, managedIndicesError } = this.props;
     const uniqueStates = selectedManagedIndices.reduce(
       (accu: Set<any>, selectedManagedIndex: { label: string; value?: ManagedIndexItem }) => {
         if (!selectedManagedIndex.value) return accu;
@@ -109,7 +108,6 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
               // @ts-ignore
               onChange={this.props.onChangeManagedIndices}
               onSearchChange={this.onManagedIndexSearchChange}
-              compressed={useUpdatedUX ? true : undefined}
             />
           </EuiCompressedFormRow>
 
@@ -122,7 +120,6 @@ export default class ChangeManagedIndices extends Component<ChangeManagedIndices
               // @ts-ignore
               onChange={this.props.onChangeStateFilters}
               onSearchChange={this.onStateFilterSearchChange}
-              compressed={useUpdatedUX ? true : undefined}
             />
           </EuiCompressedFormRow>
         </div>
