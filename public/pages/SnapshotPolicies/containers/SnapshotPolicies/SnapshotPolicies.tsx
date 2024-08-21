@@ -452,7 +452,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
       </EuiContextMenuItem>,
     ];
     const actionsButton = (
-      <EuiButton
+      <EuiSmallButton
         iconType="arrowDown"
         iconSide="right"
         disabled={!selectedItems.length}
@@ -460,7 +460,7 @@ export class SnapshotPolicies extends MDSEnabledComponent<SnapshotPoliciesProps,
         data-test-subj="actionButton"
       >
         Actions
-      </EuiButton>
+      </EuiSmallButton>
     );
     const actions = [
       <EuiSmallButton iconType="refresh" onClick={this.getPolicies} data-test-subj="refreshButton">
