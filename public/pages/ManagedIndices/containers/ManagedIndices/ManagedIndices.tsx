@@ -631,6 +631,10 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
       );
     };
 
+    const onClickChange = () => {
+      this.props.history.push(ROUTES.CHANGE_POLICY);
+    };
+
     return this.state.useUpdatedUX ? (
       <>
         <HeaderControl
@@ -640,7 +644,7 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
               id: "Change policy",
               label: "Change Policy",
               fill: true,
-              href: `${PLUGIN_NAME}#/change-policy`,
+              run: onClickChange,
               testId: "changePolicyButton",
               controlType: "button",
               color: "primary",

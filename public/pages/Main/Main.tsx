@@ -191,6 +191,7 @@ const dataSourceEnabledPaths: string[] = [
   ROUTES.CREATE_REPOSITORY,
   ROUTES.EDIT_REPOSITORY,
   ROUTES.NOTIFICATIONS,
+  ROUTES.SHRINK_INDEX,
 ];
 
 const LocalCluster: DataSourceOption = {

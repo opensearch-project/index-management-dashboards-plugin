@@ -231,7 +231,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
     const description = [
       {
         renderComponent: (
-          <EuiFormRow
+          <EuiCompressedFormRow
             fullWidth
             helpText={
               <div style={{ width: "100%" }}>
@@ -247,7 +247,7 @@ export class SplitIndex extends Component<SplitIndexProps> {
             }
           >
             <></>
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         ),
       },
     ];
