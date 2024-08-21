@@ -4,7 +4,14 @@
  */
 
 import React, { ChangeEvent, useState } from "react";
-import { EuiButton, EuiFormRow, EuiComboBox, EuiFlexGroup, EuiFlexItem, EuiFieldNumber } from "@elastic/eui";
+import {
+  EuiSmallButton,
+  EuiCompressedFormRow,
+  EuiCompressedComboBox,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiCompressedFieldNumber,
+} from "@elastic/eui";
 import "brace/theme/github";
 import "brace/mode/json";
 import { ISMTemplate as ISMTemplateData } from "../../../../../models/interfaces";
@@ -24,9 +31,8 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst, us
   return (
     <EuiFlexGroup gutterSize="l" alignItems="center">
       <EuiFlexItem style={{ maxWidth: ISM_TEMPLATE_INPUT_MAX_WIDTH }}>
-        <EuiFormRow isInvalid={false} error={null}>
-          <EuiComboBox
-            compressed={useNewUx}
+        <EuiCompressedFormRow isInvalid={false} error={null}>
+          <EuiCompressedComboBox
             isClearable={false}
             placeholder="Add index patterns"
             noSuggestions
@@ -64,12 +70,11 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst, us
             isInvalid={isInvalid}
             data-test-subj="ism-template-index-pattern-input"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiFormRow error={null} isInvalid={false}>
-          <EuiFieldNumber
-            compressed={useNewUx}
+        <EuiCompressedFormRow error={null} isInvalid={false}>
+          <EuiCompressedFieldNumber
             value={template.priority}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const priority = e.target.valueAsNumber;
@@ -78,12 +83,12 @@ const ISMTemplate = ({ template, onUpdateTemplate, onRemoveTemplate, isFirst, us
             isInvalid={false}
             data-test-subj="ism-template-priority-input"
           />
-        </EuiFormRow>
+        </EuiCompressedFormRow>
       </EuiFlexItem>
       <EuiFlexItem grow={false}>
-        <EuiButton color="danger" onClick={onRemoveTemplate} data-test-subj="ism-template-remove-button" size={useNewUx ? "s" : undefined}>
+        <EuiSmallButton color="danger" onClick={onRemoveTemplate} data-test-subj="ism-template-remove-button">
           Remove
-        </EuiButton>
+        </EuiSmallButton>
       </EuiFlexItem>
     </EuiFlexGroup>
   );

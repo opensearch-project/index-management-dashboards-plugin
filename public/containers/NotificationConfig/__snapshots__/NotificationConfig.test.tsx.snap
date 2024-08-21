@@ -35,7 +35,7 @@ exports[`<ChannelNotification /> spec renders with create permission and no defa
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiFormRow"
+      class="euiFormRow euiFormRow--compressed"
       id="some_html_id-row"
     >
       <div
@@ -55,7 +55,7 @@ exports[`<ChannelNotification /> spec renders with create permission and no defa
           class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
         >
           <div
-            class="euiCheckbox"
+            class="euiCheckbox euiCheckbox--compressed"
           >
             <input
               class="euiCheckbox__input"
@@ -81,7 +81,7 @@ exports[`<ChannelNotification /> spec renders with create permission and no defa
           class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
         >
           <div
-            class="euiCheckbox"
+            class="euiCheckbox euiCheckbox--compressed"
           >
             <input
               class="euiCheckbox__input"
@@ -162,7 +162,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
         class="euiFlexItem"
       >
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -195,7 +195,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
         class="euiFlexItem"
       >
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -243,7 +243,7 @@ exports[`<ChannelNotification /> spec renders with full permission and default n
       class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
     >
       <div
-        class="euiCheckbox"
+        class="euiCheckbox euiCheckbox--compressed"
       >
         <input
           class="euiCheckbox__input"
@@ -316,7 +316,7 @@ exports[`<ChannelNotification /> spec renders with full permission and no defaul
       class="euiSpacer euiSpacer--l"
     />
     <div
-      class="euiFormRow"
+      class="euiFormRow euiFormRow--compressed"
       id="some_html_id-row"
     >
       <div
@@ -336,7 +336,7 @@ exports[`<ChannelNotification /> spec renders with full permission and no defaul
           class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
         >
           <div
-            class="euiCheckbox"
+            class="euiCheckbox euiCheckbox--compressed"
           >
             <input
               class="euiCheckbox__input"
@@ -362,7 +362,7 @@ exports[`<ChannelNotification /> spec renders with full permission and no defaul
           class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
         >
           <div
-            class="euiCheckbox"
+            class="euiCheckbox euiCheckbox--compressed"
           >
             <input
               class="euiCheckbox__input"
@@ -442,7 +442,7 @@ exports[`<ChannelNotification /> spec renders with view permission and default n
         class="euiFlexItem"
       >
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -475,7 +475,7 @@ exports[`<ChannelNotification /> spec renders with view permission and default n
         class="euiFlexItem"
       >
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div

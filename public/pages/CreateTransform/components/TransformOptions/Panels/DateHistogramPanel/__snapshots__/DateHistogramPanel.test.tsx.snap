@@ -53,13 +53,13 @@ exports[`<DateHistogramPanel /> spec renders the component with calendar interva
       class="euiFlexItem"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <select
-            class="euiSelect"
+            class="euiSelect euiSelect--compressed"
             data-test-subj="dateHistogramTimeunitSelect"
           >
             <option
@@ -121,7 +121,7 @@ exports[`<DateHistogramPanel /> spec renders the component with calendar interva
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButton euiButton--primary"
+        class="euiButton euiButton--primary euiButton--small"
         data-test-subj="dateHistogramPanelCancelButton"
         type="button"
       >
@@ -140,7 +140,7 @@ exports[`<DateHistogramPanel /> spec renders the component with calendar interva
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButton euiButton--primary euiButton--fill"
+        class="euiButton euiButton--primary euiButton--small euiButton--fill"
         data-test-subj="dateHistogramPanelOKButton"
         type="button"
       >
@@ -198,13 +198,13 @@ exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1
       style="width: 100px;"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <input
-            class="euiFieldNumber"
+            class="euiFieldNumber euiFieldNumber--compressed"
             data-test-subj="dateHistogramValueInput"
             type="number"
             value="1"
@@ -216,13 +216,13 @@ exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1
       class="euiFlexItem"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <select
-            class="euiSelect"
+            class="euiSelect euiSelect--compressed"
             data-test-subj="dateHistogramTimeunitSelect"
           >
             <option
@@ -274,7 +274,7 @@ exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButton euiButton--primary"
+        class="euiButton euiButton--primary euiButton--small"
         data-test-subj="dateHistogramPanelCancelButton"
         type="button"
       >
@@ -293,7 +293,7 @@ exports[`<DateHistogramPanel /> spec renders the component with fixed interval 1
       class="euiFlexItem euiFlexItem--flexGrowZero"
     >
       <button
-        class="euiButton euiButton--primary euiButton--fill"
+        class="euiButton euiButton--primary euiButton--small euiButton--fill"
         data-test-subj="dateHistogramPanelOKButton"
         type="button"
       >

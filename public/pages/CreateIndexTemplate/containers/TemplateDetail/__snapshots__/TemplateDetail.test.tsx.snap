@@ -15,7 +15,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
          template
       </h1>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -85,7 +85,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-name"
         id="some_html_id-row"
       >
@@ -115,13 +115,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   type="text"
                   value=""
                 />
@@ -131,7 +131,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         </div>
       </div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -151,7 +151,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-data_stream"
         id="some_html_id-row"
       >
@@ -170,7 +170,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiRadio"
+            class="euiRadio euiRadio--compressed"
           >
             <input
               checked=""
@@ -190,7 +190,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             </label>
           </div>
           <div
-            class="euiRadio"
+            class="euiRadio euiRadio--compressed"
           >
             <input
               class="euiRadio__input"
@@ -214,7 +214,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-index_patterns"
         id="some_html_id-row"
       >
@@ -241,17 +241,17 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox--compressed"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >
@@ -285,7 +285,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-priority"
         id="some_html_id-row"
       >
@@ -313,13 +313,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldNumber"
+                  class="euiFieldNumber euiFieldNumber--compressed"
                   type="number"
                   value="0"
                 />
@@ -332,7 +332,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         data-test-subj="form-row-_meta.flow"
         id="some_html_id-row"
       >
@@ -496,7 +496,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -528,7 +528,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         data-test-subj="form-row-template.aliases"
         id="some_html_id-row"
       >
@@ -555,17 +555,17 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox"
+            class="euiComboBox euiComboBox--compressed"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >
@@ -619,7 +619,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-template.settings.index.number_of_shards"
         id="some_html_id-row"
       >
@@ -647,13 +647,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldNumber"
+                  class="euiFieldNumber euiFieldNumber--compressed"
                   type="number"
                   value=""
                 />
@@ -666,7 +666,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         data-test-subj="form-row-template.settings.index.number_of_replicas"
         id="some_html_id-row"
       >
@@ -694,13 +694,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldNumber"
+                  class="euiFieldNumber euiFieldNumber--compressed"
                   type="number"
                   value=""
                 />
@@ -713,7 +713,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         data-test-subj="form-row-template.settings.index.refresh_interval"
         id="some_html_id-row"
       >
@@ -741,13 +741,13 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiFormControlLayout"
+              class="euiFormControlLayout euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <input
-                  class="euiFieldText"
+                  class="euiFieldText euiFieldText--compressed"
                   type="text"
                   value=""
                 />
@@ -802,7 +802,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
                 class="euiSpacer euiSpacer--s"
               />
               <div
-                class="euiFormRow euiFormRow--fullWidth"
+                class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                 id="some_html_id-row"
               >
                 <div
@@ -992,7 +992,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         Index mapping
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -1027,7 +1027,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
         class="euiSpacer euiSpacer--s"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -1107,7 +1107,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             class="euiSpacer euiSpacer--l"
           />
           <button
-            class="euiButton euiButton--primary"
+            class="euiButton euiButton--primary euiButton--small"
             data-test-subj="createIndexAddFieldButton"
             style="margin-right: 8px;"
             type="button"
@@ -1123,7 +1123,7 @@ exports[`<TemplateDetail /> spec render component in non-edit-mode 1`] = `
             </span>
           </button>
           <button
-            class="euiButton euiButton--primary"
+            class="euiButton euiButton--primary euiButton--small"
             data-test-subj="createIndexAddObjectFieldButton"
             type="button"
           >

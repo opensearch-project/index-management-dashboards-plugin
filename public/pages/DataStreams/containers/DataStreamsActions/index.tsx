@@ -4,7 +4,7 @@
  */
 import React, { useMemo, useState } from "react";
 import { RouteComponentProps } from "react-router-dom";
-import { EuiButton, EuiContextMenu } from "@elastic/eui";
+import { EuiSmallButton, EuiContextMenu } from "@elastic/eui";
 import SimplePopover from "../../../../components/SimplePopover";
 import ClearCacheModal from "../../../../containers/ClearCacheModal";
 import FlushIndexModal from "../../../../containers/FlushIndexModal";
@@ -21,7 +21,7 @@ export interface DataStreamsActionsProps {
 }
 
 export default function DataStreamsActions(props: DataStreamsActionsProps) {
-  const { selectedItems, onDelete, history, useNewUX } = props;
+  const { selectedItems, onDelete, history } = props;
   const [deleteIndexModalVisible, setDeleteIndexModalVisible] = useState(false);
   const [clearCacheModalVisible, setClearCacheModalVisible] = useState(false);
   const [flushDataStreamModalVisible, setFlushDataStreamModalVisible] = useState(false);
@@ -52,9 +52,9 @@ export default function DataStreamsActions(props: DataStreamsActionsProps) {
         data-test-subj="moreAction"
         panelPaddingSize="s"
         button={
-          <EuiButton iconType="arrowDown" iconSide="right" size={useNewUX ? "s" : undefined}>
+          <EuiSmallButton iconType="arrowDown" iconSide="right">
             Actions
-          </EuiButton>
+          </EuiSmallButton>
         }
       >
         <EuiContextMenu

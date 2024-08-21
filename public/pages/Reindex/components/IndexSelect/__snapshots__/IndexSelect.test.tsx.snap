@@ -9,17 +9,17 @@ Object {
         <div
           aria-expanded="false"
           aria-haspopup="listbox"
-          class="euiComboBox"
+          class="euiComboBox euiComboBox--compressed"
           role="combobox"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <div
-                class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+                class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
                 data-test-subj="comboBoxInput"
                 tabindex="-1"
               >
@@ -49,7 +49,7 @@ Object {
               >
                 <button
                   aria-label="Clear input"
-                  class="euiFormControlLayoutClearButton"
+                  class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
                   data-test-subj="comboBoxClearButton"
                   type="button"
                 >
@@ -75,17 +75,17 @@ Object {
       <div
         aria-expanded="false"
         aria-haspopup="listbox"
-        class="euiComboBox"
+        class="euiComboBox euiComboBox--compressed"
         role="combobox"
       >
         <div
-          class="euiFormControlLayout"
+          class="euiFormControlLayout euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <div
-              class="euiComboBox__inputWrap euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
+              class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--noWrap euiComboBox__inputWrap-isClearable"
               data-test-subj="comboBoxInput"
               tabindex="-1"
             >
@@ -115,7 +115,7 @@ Object {
             >
               <button
                 aria-label="Clear input"
-                class="euiFormControlLayoutClearButton"
+                class="euiFormControlLayoutClearButton euiFormControlLayoutClearButton--small"
                 data-test-subj="comboBoxClearButton"
                 type="button"
               >

@@ -5,8 +5,8 @@
 
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
-  EuiButton,
-  EuiButtonEmpty,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
   EuiCallOut,
   EuiModal,
   EuiModalBody,
@@ -208,10 +208,10 @@ export default function RefreshActionModal<T>(props: RefreshActionModalProps) {
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButtonEmpty onClick={onClose}>Cancel</EuiButtonEmpty>
-        <EuiButton data-test-subj="refreshConfirmButton" onClick={onConfirm} fill>
+        <EuiSmallButtonEmpty onClick={onClose}>Cancel</EuiSmallButtonEmpty>
+        <EuiSmallButton data-test-subj="refreshConfirmButton" onClick={onConfirm} fill>
           Refresh
-        </EuiButton>
+        </EuiSmallButton>
       </EuiModalFooter>
     </EuiModal>
   );

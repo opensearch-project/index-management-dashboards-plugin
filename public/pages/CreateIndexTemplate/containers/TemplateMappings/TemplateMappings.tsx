@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import React, { useContext, useRef } from "react";
-import { EuiFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
+import { EuiCompressedFormRow, EuiLink, EuiSpacer, EuiTitle } from "@elastic/eui";
 import { CoreStart } from "opensearch-dashboards/public";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { SubDetailProps } from "../../interface";
@@ -19,7 +19,7 @@ export default function TemplateMappings(props: SubDetailProps) {
       <EuiTitle size="s">
         <div>Index mapping</div>
       </EuiTitle>
-      <EuiFormRow
+      <EuiCompressedFormRow
         fullWidth
         helpText={
           <div>
@@ -35,9 +35,9 @@ export default function TemplateMappings(props: SubDetailProps) {
         }
       >
         <></>
-      </EuiFormRow>
+      </EuiCompressedFormRow>
       <EuiSpacer size="s" />
-      <EuiFormRow fullWidth>
+      <EuiCompressedFormRow fullWidth>
         <IndexMapping
           {...field.registerField({
             name: ["template", "mappings"],
@@ -61,7 +61,7 @@ export default function TemplateMappings(props: SubDetailProps) {
           oldMappingsEditable
           docVersion={coreServices.docLinks.DOC_LINK_VERSION}
         />
-      </EuiFormRow>
+      </EuiCompressedFormRow>
     </>
   );
 }

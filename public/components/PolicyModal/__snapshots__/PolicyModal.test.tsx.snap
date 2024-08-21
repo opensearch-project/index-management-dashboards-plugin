@@ -153,7 +153,7 @@ exports[`<PolicyModal /> spec renders the component 1`] = `
                 class="euiToolTipAnchor"
               >
                 <button
-                  class="euiButtonEmpty euiButtonEmpty--primary"
+                  class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
                   data-test-subj="policyModalCopyButton"
                   type="button"
                 >
@@ -174,7 +174,7 @@ exports[`<PolicyModal /> spec renders the component 1`] = `
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
               <button
-                class="euiButtonEmpty euiButtonEmpty--primary"
+                class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
                 data-test-subj="policyModalCloseButton"
                 type="button"
               >
@@ -193,7 +193,7 @@ exports[`<PolicyModal /> spec renders the component 1`] = `
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
               <button
-                class="euiButton euiButton--primary euiButton--fill"
+                class="euiButton euiButton--primary euiButton--small euiButton--fill"
                 data-test-subj="policyModalEditJsonButton"
                 type="button"
               >
@@ -212,7 +212,7 @@ exports[`<PolicyModal /> spec renders the component 1`] = `
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
               <button
-                class="euiButton euiButton--primary euiButton--fill"
+                class="euiButton euiButton--primary euiButton--small euiButton--fill"
                 data-test-subj="policyModalEditButton"
                 type="button"
               >

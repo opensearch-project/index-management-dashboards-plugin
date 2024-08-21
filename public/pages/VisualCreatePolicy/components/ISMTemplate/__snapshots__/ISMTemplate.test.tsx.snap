@@ -9,7 +9,7 @@ exports[`<ISMTemplate /> spec renders the component 1`] = `
     style="max-width: 400px;"
   >
     <div
-      class="euiFormRow"
+      class="euiFormRow euiFormRow--compressed"
       id="some_html_id-row"
     >
       <div
@@ -18,18 +18,18 @@ exports[`<ISMTemplate /> spec renders the component 1`] = `
         <div
           aria-expanded="false"
           aria-haspopup="listbox"
-          class="euiComboBox"
+          class="euiComboBox euiComboBox--compressed"
           data-test-subj="ism-template-index-pattern-input"
           role="combobox"
         >
           <div
-            class="euiFormControlLayout"
+            class="euiFormControlLayout euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <div
-                class="euiComboBox__inputWrap"
+                class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed"
                 data-test-subj="comboBoxInput"
                 tabindex="-1"
               >
@@ -82,20 +82,20 @@ exports[`<ISMTemplate /> spec renders the component 1`] = `
     class="euiFlexItem euiFlexItem--flexGrowZero"
   >
     <div
-      class="euiFormRow"
+      class="euiFormRow euiFormRow--compressed"
       id="some_html_id-row"
     >
       <div
         class="euiFormRow__fieldWrapper"
       >
         <div
-          class="euiFormControlLayout"
+          class="euiFormControlLayout euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <input
-              class="euiFieldNumber"
+              class="euiFieldNumber euiFieldNumber--compressed"
               data-test-subj="ism-template-priority-input"
               id="some_html_id"
               type="number"
@@ -110,7 +110,7 @@ exports[`<ISMTemplate /> spec renders the component 1`] = `
     class="euiFlexItem euiFlexItem--flexGrowZero"
   >
     <button
-      class="euiButton euiButton--danger"
+      class="euiButton euiButton--danger euiButton--small"
       data-test-subj="ism-template-remove-button"
       type="button"
     >

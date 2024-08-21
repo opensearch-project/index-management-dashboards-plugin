@@ -5,7 +5,7 @@
 
 import React, { useState } from "react";
 import {
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiContextMenu,
   EuiContextMenuPanelDescriptor,
   EuiFlexGroup,
@@ -368,7 +368,7 @@ export default function TransformOptions({
   ];
 
   const button = (
-    <EuiButtonIcon
+    <EuiSmallButtonIcon
       iconType="plusInCircleFilled"
       onClick={() => setIsPopoverOpen(!isPopoverOpen)}
       data-test-subj={`${name}OptionsPopover`}

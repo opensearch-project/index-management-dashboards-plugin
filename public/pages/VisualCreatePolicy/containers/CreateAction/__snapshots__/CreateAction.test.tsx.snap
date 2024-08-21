@@ -61,20 +61,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <select
-                class="euiSelect euiSelect--fullWidth"
+                class="euiSelect euiSelect--fullWidth euiSelect--compressed"
                 data-test-subj="create-state-action-type"
                 id="some_html_id"
                 placeholder="Select action type"
@@ -201,20 +201,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldText euiFieldText--fullWidth"
+                class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                 data-test-subj="action-render-rollover-min-index-age"
                 id="some_html_id"
                 type="text"
@@ -248,20 +248,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldNumber euiFieldNumber--fullWidth"
+                class="euiFieldNumber euiFieldNumber--fullWidth euiFieldNumber--compressed"
                 data-test-subj="action-render-rollover-min-doc-count"
                 id="some_html_id"
                 type="number"
@@ -295,20 +295,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldText euiFieldText--fullWidth"
+                class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                 data-test-subj="action-render-rollover-min-size"
                 id="some_html_id"
                 type="text"
@@ -342,20 +342,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldText euiFieldText--fullWidth"
+                class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                 data-test-subj="action-render-rollover-min-primary-shard-size"
                 id="some_html_id"
                 type="text"
@@ -447,7 +447,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     </p>
                   </div>
                   <div
-                    class="euiFormRow euiFormRow--fullWidth"
+                    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                     id="some_html_id-row"
                   >
                     <div
@@ -461,13 +461,13 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                           class="euiFlexItem"
                         >
                           <div
-                            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                           >
                             <div
                               class="euiFormControlLayout__childrenWrapper"
                             >
                               <input
-                                class="euiFieldText euiFieldText--fullWidth"
+                                class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                                 type="text"
                                 value=""
                               />
@@ -502,7 +502,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     </p>
                   </div>
                   <div
-                    class="euiFormRow euiFormRow--fullWidth"
+                    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                     id="some_html_id-row"
                   >
                     <div
@@ -516,13 +516,13 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                           class="euiFlexItem"
                         >
                           <div
-                            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                           >
                             <div
                               class="euiFormControlLayout__childrenWrapper"
                             >
                               <input
-                                class="euiFieldNumber euiFieldNumber--fullWidth"
+                                class="euiFieldNumber euiFieldNumber--fullWidth euiFieldNumber--compressed"
                                 min="0"
                                 type="number"
                                 value=""
@@ -558,20 +558,20 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     </p>
                   </div>
                   <div
-                    class="euiFormRow euiFormRow--fullWidth"
+                    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                     id="some_html_id-row"
                   >
                     <div
                       class="euiFormRow__fieldWrapper"
                     >
                       <div
-                        class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                        class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                       >
                         <div
                           class="euiFormControlLayout__childrenWrapper"
                         >
                           <select
-                            class="euiSelect euiSelect--fullWidth"
+                            class="euiSelect euiSelect--fullWidth euiSelect--compressed"
                             id="some_html_id"
                           >
                             <option
@@ -628,7 +628,7 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                     </p>
                   </div>
                   <div
-                    class="euiFormRow euiFormRow--fullWidth"
+                    class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                     id="some_html_id-row"
                   >
                     <div
@@ -642,13 +642,13 @@ exports[`<CreateAction /> spec renders the component 1`] = `
                           class="euiFlexItem"
                         >
                           <div
-                            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                           >
                             <div
                               class="euiFormControlLayout__childrenWrapper"
                             >
                               <input
-                                class="euiFieldText euiFieldText--fullWidth"
+                                class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                                 type="text"
                                 value=""
                               />

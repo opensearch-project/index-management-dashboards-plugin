@@ -6,7 +6,7 @@ exports[`RenameInput component renders without error 1`] = `
     class="euiSpacer euiSpacer--l"
   />
   <div
-    class="euiFormRow"
+    class="euiFormRow euiFormRow--compressed"
     id="rename_pattern-row"
   >
     <div
@@ -53,13 +53,13 @@ exports[`RenameInput component renders without error 1`] = `
       class="euiFormRow__fieldWrapper"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <input
-            class="euiFieldText"
+            class="euiFieldText euiFieldText--compressed"
             data-test-subj="renamePatternInput"
             id="rename_pattern"
             type="text"
@@ -73,7 +73,7 @@ exports[`RenameInput component renders without error 1`] = `
     class="euiSpacer euiSpacer--m"
   />
   <div
-    class="euiFormRow"
+    class="euiFormRow euiFormRow--compressed"
     id="rename_replacement-row"
   >
     <div
@@ -120,13 +120,13 @@ exports[`RenameInput component renders without error 1`] = `
       class="euiFormRow__fieldWrapper"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <input
-            class="euiFieldText"
+            class="euiFieldText euiFieldText--compressed"
             data-test-subj="renameReplacementInput"
             id="rename_replacement"
             type="text"

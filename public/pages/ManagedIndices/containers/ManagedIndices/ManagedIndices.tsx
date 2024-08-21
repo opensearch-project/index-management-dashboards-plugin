@@ -11,7 +11,7 @@ import {
   EuiLink,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
+  EuiSmallButton,
   EuiTitle,
   EuiSpacer,
   EuiTableFieldDataColumnType,
@@ -548,16 +548,15 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
     };
 
     const actionsButton = (
-      <EuiButton
+      <EuiSmallButton
         iconType="arrowDown"
         iconSide="right"
         disabled={!selectedItems.length}
         onClick={this.onActionButtonClick}
         data-test-subj="actionButton"
-        size="s"
       >
         Actions
-      </EuiButton>
+      </EuiSmallButton>
     );
 
     const popoverActionItems = [
@@ -682,14 +681,14 @@ export class ManagedIndices extends MDSEnabledComponent<ManagedIndicesProps, Man
         <EuiFlexGroup alignItems="center">
           <EuiFlexItem></EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton iconType="refresh" onClick={this.getManagedIndices} data-test-subj="refreshButton">
+            <EuiSmallButton iconType="refresh" onClick={this.getManagedIndices} data-test-subj="refreshButton">
               Refresh
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton href={`${PLUGIN_NAME}#/change-policy`} data-test-subj="changePolicyButton">
+            <EuiSmallButton href={`${PLUGIN_NAME}#/change-policy`} data-test-subj="changePolicyButton">
               Change policy
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
 

@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { EuiButton, EuiSpacer, EuiFlexGroup, EuiEmptyPrompt, EuiFlexItem, EuiText, EuiLink, EuiIcon } from "@elastic/eui";
+import { EuiSmallButton, EuiSpacer, EuiFlexGroup, EuiEmptyPrompt, EuiFlexItem, EuiText, EuiLink, EuiIcon } from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import "brace/theme/github";
 import "brace/mode/json";
@@ -24,15 +24,14 @@ interface ISMTemplatesProps {
 const ISMTemplates = ({ policy, onChangePolicy, useNewUx }: ISMTemplatesProps) => {
   const templates = convertTemplatesToArray(policy.ism_template);
   const addTemplateButton = (
-    <EuiButton
-      size={useNewUx ? "s" : undefined}
+    <EuiSmallButton
       onClick={() => {
         onChangePolicy({ ...policy, ism_template: [...templates, { index_patterns: [], priority: 1 }] });
       }}
       data-test-subj="ism-templates-add-template-button"
     >
       Add template
-    </EuiButton>
+    </EuiSmallButton>
   );
   const paddingStyle = useNewUx ? { padding: "0px 0px" } : { padding: "5px 0px" };
   return (

@@ -2,7 +2,7 @@
 
 exports[`<ComposableTemplatesActions /> spec delete templates by calling commonService 1`] = `
 <button
-  class="euiButton euiButton--danger"
+  class="euiButton euiButton--danger euiButton--small"
   data-test-subj="deleteAction"
   type="button"
 >
@@ -31,7 +31,7 @@ exports[`<ComposableTemplatesActions /> spec renders delete action by using rend
 
 exports[`<ComposableTemplatesActions /> spec renders the component and all the actions should be disabled when no items selected 1`] = `
 <button
-  class="euiButton euiButton--danger euiButton-isDisabled"
+  class="euiButton euiButton--danger euiButton--small euiButton-isDisabled"
   data-test-subj="deleteAction"
   disabled=""
   type="button"

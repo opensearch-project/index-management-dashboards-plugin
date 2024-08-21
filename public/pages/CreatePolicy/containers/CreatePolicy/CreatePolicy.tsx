@@ -9,11 +9,10 @@ import {
   EuiTitle,
   EuiFlexGroup,
   EuiFlexItem,
-  EuiButton,
-  EuiButtonEmpty,
+  EuiSmallButton,
+  EuiSmallButtonEmpty,
   EuiCallOut,
   EuiLink,
-  EuiIcon,
   EuiText,
 } from "@elastic/eui";
 import queryString from "query-string";
@@ -302,20 +301,14 @@ export class CreatePolicy extends Component<CreatePolicyProps, CreatePolicyState
         <EuiSpacer />
         <EuiFlexGroup alignItems="center" justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onCancel} data-test-subj="createPolicyCancelButton" size={useNewUX ? "s" : undefined}>
+            <EuiSmallButtonEmpty onClick={this.onCancel} data-test-subj="createPolicyCancelButton">
               Cancel
-            </EuiButtonEmpty>
+            </EuiSmallButtonEmpty>
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
-            <EuiButton
-              fill
-              onClick={this.onSubmit}
-              isLoading={isSubmitting}
-              data-test-subj="createPolicyCreateButton"
-              size={useNewUX ? "s" : undefined}
-            >
+            <EuiSmallButton fill onClick={this.onSubmit} isLoading={isSubmitting} data-test-subj="createPolicyCreateButton">
               {isEdit ? "Update" : "Create"}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </div>

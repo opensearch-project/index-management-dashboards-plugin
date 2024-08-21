@@ -44,7 +44,7 @@ exports[`<RolloverAliasModal /> spec renders the component 1`] = `
             class="euiModalBody__overflow"
           >
             <div
-              class="euiFormRow"
+              class="euiFormRow euiFormRow--compressed"
               id="some_html_id-row"
             >
               <div
@@ -61,14 +61,14 @@ exports[`<RolloverAliasModal /> spec renders the component 1`] = `
                 class="euiFormRow__fieldWrapper"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <input
                       aria-describedby="some_html_id-help-0"
-                      class="euiFieldText"
+                      class="euiFieldText euiFieldText--compressed"
                       id="some_html_id"
                       placeholder="Rollover alias"
                       type="text"
@@ -90,7 +90,7 @@ exports[`<RolloverAliasModal /> spec renders the component 1`] = `
           class="euiModalFooter"
         >
           <button
-            class="euiButtonEmpty euiButtonEmpty--primary"
+            class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
             data-test-subj="editRolloverAliasModalCloseButton"
             type="button"
           >
@@ -105,7 +105,7 @@ exports[`<RolloverAliasModal /> spec renders the component 1`] = `
             </span>
           </button>
           <button
-            class="euiButton euiButton--primary euiButton--fill euiButton-isDisabled"
+            class="euiButton euiButton--primary euiButton--small euiButton--fill euiButton-isDisabled"
             data-test-subj="editRolloverAliasModalAddButton"
             disabled=""
             type="button"

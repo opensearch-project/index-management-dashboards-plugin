@@ -11,7 +11,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
       Shrink index
     </h1>
     <div
-      class="euiFormRow euiFormRow--fullWidth"
+      class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
       id="some_html_id-row"
     >
       <div
@@ -199,7 +199,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
           class="euiForm"
         >
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             data-test-subj="form-name-targetIndex"
             id="some_html_id-row"
           >
@@ -221,13 +221,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <input
-                      class="euiFieldText"
+                      class="euiFieldText euiFieldText--compressed"
                       data-test-subj="targetIndexNameInput"
                       placeholder="Specify a name for the new shrunken index."
                       type="text"
@@ -247,7 +247,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             </div>
           </div>
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             data-test-subj="form-name-index.number_of_shards"
             id="some_html_id-row"
           >
@@ -280,13 +280,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <select
-                      class="euiSelect"
+                      class="euiSelect euiSelect--compressed"
                       data-test-subj="numberOfShardsInput"
                       placeholder="Select primary shard count"
                     >
@@ -316,7 +316,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             </div>
           </div>
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             data-test-subj="form-name-index.number_of_replicas"
             id="some_html_id-row"
           >
@@ -346,13 +346,13 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <input
-                      class="euiFieldNumber"
+                      class="euiFieldNumber euiFieldNumber--compressed"
                       data-test-subj="numberOfReplicasInput"
                       min="0"
                       type="number"
@@ -364,7 +364,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             </div>
           </div>
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             data-test-subj="form-name-aliases"
             id="some_html_id-row"
           >
@@ -397,18 +397,18 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 <div
                   aria-expanded="false"
                   aria-haspopup="listbox"
-                  class="euiComboBox"
+                  class="euiComboBox euiComboBox--compressed"
                   data-test-subj="aliasesInput"
                   role="combobox"
                 >
                   <div
-                    class="euiFormControlLayout"
+                    class="euiFormControlLayout euiFormControlLayout--compressed"
                   >
                     <div
                       class="euiFormControlLayout__childrenWrapper"
                     >
                       <div
-                        class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                        class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                         data-test-subj="comboBoxInput"
                         tabindex="-1"
                       >
@@ -497,7 +497,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                     class="euiSpacer euiSpacer--s"
                   />
                   <div
-                    class="euiFormRow"
+                    class="euiFormRow euiFormRow--compressed"
                     data-test-subj="formNameAdvancedSettings"
                     id="some_html_id-row"
                   >
@@ -748,7 +748,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
             class="euiSpacer euiSpacer--l"
           />
           <div
-            class="euiFormRow"
+            class="euiFormRow euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
@@ -768,7 +768,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
               >
                 <div
-                  class="euiCheckbox"
+                  class="euiCheckbox euiCheckbox--compressed"
                 >
                   <input
                     class="euiCheckbox__input"
@@ -794,7 +794,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
                 class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
               >
                 <div
-                  class="euiCheckbox"
+                  class="euiCheckbox euiCheckbox--compressed"
                 >
                   <input
                     class="euiCheckbox__input"
@@ -833,7 +833,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--flushLeft"
+          class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small euiButtonEmpty--flushLeft"
           data-test-subj="shrinkIndexCancelButton"
           type="button"
         >
@@ -852,7 +852,7 @@ exports[`<Shrink index /> spec renders the component 1`] = `
         class="euiFlexItem euiFlexItem--flexGrowZero"
       >
         <button
-          class="euiButton euiButton--primary euiButton--fill"
+          class="euiButton euiButton--primary euiButton--small euiButton--fill"
           data-test-subj="shrinkIndexConfirmButton"
           type="button"
         >

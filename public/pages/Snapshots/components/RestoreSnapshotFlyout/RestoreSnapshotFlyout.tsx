@@ -15,7 +15,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiAccordion,
-  EuiCheckbox,
+  EuiCompressedCheckbox,
   EuiCallOut,
   EuiText,
 } from "@elastic/eui";
@@ -493,7 +493,7 @@ export class RestoreSnapshotFlyout extends MDSEnabledComponent<RestoreSnapshotPr
                     snapshot. Do you want to continue?
                   </p>
                   <EuiSpacer size="s" />
-                  <EuiCheckbox
+                  <EuiCompressedCheckbox
                     id={partial}
                     label={<EuiText size="s">Allow restore partial snapshots</EuiText>}
                     checked={String(_.get(snapshot, partial, false)) == "true"}

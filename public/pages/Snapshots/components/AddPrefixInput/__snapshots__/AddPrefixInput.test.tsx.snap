@@ -29,20 +29,20 @@ exports[`AddPrefixInput component renders without error 1`] = `
     class="euiSpacer euiSpacer--s"
   />
   <div
-    class="euiFormRow"
+    class="euiFormRow euiFormRow--compressed"
     id="some_html_id-row"
   >
     <div
       class="euiFormRow__fieldWrapper"
     >
       <div
-        class="euiFormControlLayout"
+        class="euiFormControlLayout euiFormControlLayout--compressed"
       >
         <div
           class="euiFormControlLayout__childrenWrapper"
         >
           <input
-            class="euiFieldText"
+            class="euiFieldText euiFieldText--compressed"
             data-test-subj="prefixInput"
             id="some_html_id"
             type="text"

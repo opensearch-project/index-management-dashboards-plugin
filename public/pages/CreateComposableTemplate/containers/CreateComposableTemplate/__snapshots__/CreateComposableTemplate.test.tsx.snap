@@ -23,7 +23,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
         style="flex-direction: row;"
       >
         <button
-          class="euiButton euiButton--primary"
+          class="euiButton euiButton--primary euiButton--small"
           style="margin-right: 20px;"
           type="button"
         >
@@ -38,7 +38,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
           </span>
         </button>
         <button
-          class="euiButton euiButton--danger"
+          class="euiButton euiButton--danger euiButton--small"
           data-test-subj="deleteAction"
           type="button"
         >
@@ -125,7 +125,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
               class="euiFlexItem euiDescribedFormGroup__fields euiDescribedFormGroup__fieldPadding--xsmall"
             >
               <div
-                class="euiFormRow"
+                class="euiFormRow euiFormRow--compressed"
                 data-test-subj="form-row-_meta.description"
                 id="some_html_id-row"
               >
@@ -136,13 +136,13 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                     class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
                   >
                     <div
-                      class="euiFormControlLayout"
+                      class="euiFormControlLayout euiFormControlLayout--compressed"
                     >
                       <div
                         class="euiFormControlLayout__childrenWrapper"
                       >
                         <input
-                          class="euiFieldText"
+                          class="euiFieldText euiFieldText--compressed"
                           id="some_html_id"
                           type="text"
                           value=""
@@ -172,7 +172,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
           class="euiFlexItem"
         >
           <div
-            class="euiFormRow euiFormRow--fullWidth"
+            class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
@@ -216,7 +216,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                 >
                   <div>
                     <div
-                      class="euiSwitch euiSwitch--primary"
+                      class="euiSwitch euiSwitch--primary euiSwitch--compressed"
                     >
                       <button
                         aria-checked="false"
@@ -234,10 +234,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                           />
                           <span
                             class="euiSwitch__track"
-                          >
-                            EuiIconMock
-                            EuiIconMock
-                          </span>
+                          />
                         </span>
                       </button>
                       <span
@@ -299,7 +296,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                 >
                   <div>
                     <div
-                      class="euiSwitch euiSwitch--primary"
+                      class="euiSwitch euiSwitch--primary euiSwitch--compressed"
                     >
                       <button
                         aria-checked="false"
@@ -317,10 +314,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                           />
                           <span
                             class="euiSwitch__track"
-                          >
-                            EuiIconMock
-                            EuiIconMock
-                          </span>
+                          />
                         </span>
                       </button>
                       <span
@@ -361,7 +355,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
             Index mapping
           </div>
           <div
-            class="euiFormRow euiFormRow--fullWidth"
+            class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
             id="some_html_id-row"
           >
             <div
@@ -407,7 +401,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
               >
                 <div>
                   <div
-                    class="euiSwitch euiSwitch--primary"
+                    class="euiSwitch euiSwitch--primary euiSwitch--compressed"
                   >
                     <button
                       aria-checked="false"
@@ -425,10 +419,7 @@ exports[`<CreateComposableTemplate /> spec it goes to templates page when click 
                         />
                         <span
                           class="euiSwitch__track"
-                        >
-                          EuiIconMock
-                          EuiIconMock
-                        </span>
+                        />
                       </span>
                     </button>
                     <span

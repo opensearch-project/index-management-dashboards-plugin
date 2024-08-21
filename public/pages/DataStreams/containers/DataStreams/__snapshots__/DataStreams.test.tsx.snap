@@ -18,7 +18,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
         Data streams
       </span>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -65,7 +65,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                   class="euiPopover__anchor"
                 >
                   <button
-                    class="euiButton euiButton--primary"
+                    class="euiButton euiButton--primary euiButton--small"
                     type="button"
                   >
                     <span
@@ -86,7 +86,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
               class="euiFlexItem euiFlexItem--flexGrowZero"
             >
               <button
-                class="euiButton euiButton--primary euiButton--fill"
+                class="euiButton euiButton--primary euiButton--small euiButton--fill"
                 data-test-subj="Create data streamButton"
                 type="button"
               >
@@ -120,13 +120,13 @@ exports[`<DataStreams /> spec renders the component 1`] = `
         class="euiFlexItem"
       >
         <div
-          class="euiFormControlLayout euiFormControlLayout--fullWidth"
+          class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
         >
           <div
             class="euiFormControlLayout__childrenWrapper"
           >
             <input
-              class="euiFieldSearch euiFieldSearch--fullWidth"
+              class="euiFieldSearch euiFieldSearch--fullWidth euiFieldSearch--compressed"
               placeholder="Search..."
               type="search"
               value=""
@@ -419,7 +419,7 @@ exports[`<DataStreams /> spec renders the component 1`] = `
                           class="euiFlexItem euiFlexItem--flexGrowZero"
                         >
                           <button
-                            class="euiButton euiButton--primary euiButton--fill"
+                            class="euiButton euiButton--primary euiButton--small euiButton--fill"
                             type="button"
                           >
                             <span

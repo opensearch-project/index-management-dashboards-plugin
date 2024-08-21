@@ -5,7 +5,7 @@
 
 import React from "react";
 import {
-  EuiButton,
+  EuiSmallButton,
   EuiModal,
   EuiModalBody,
   EuiModalFooter,
@@ -36,9 +36,9 @@ const InfoModal = ({ info, onClose }: InfoModalProps) => (
       </EuiModalBody>
 
       <EuiModalFooter>
-        <EuiButton fill onClick={onClose} data-test-subj="infoModalCloseButton">
+        <EuiSmallButton fill onClick={onClose} data-test-subj="infoModalCloseButton">
           Close
-        </EuiButton>
+        </EuiSmallButton>
       </EuiModalFooter>
     </EuiModal>
   </EuiOverlayMask>

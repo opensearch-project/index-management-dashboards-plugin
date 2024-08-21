@@ -99,13 +99,13 @@ HTMLCollection [
                   </div>
                 </div>
                 <div
-                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <input
-                      class="euiFieldText euiFieldText--fullWidth"
+                      class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                       placeholder="delete"
                       type="text"
                       value=""
@@ -119,7 +119,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               type="button"
             >
               <span
@@ -133,7 +133,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--danger euiButton--fill euiButton-isDisabled"
+              class="euiButton euiButton--danger euiButton--small euiButton--fill euiButton-isDisabled"
               data-test-subj="Delete Confirm button"
               disabled=""
               type="button"

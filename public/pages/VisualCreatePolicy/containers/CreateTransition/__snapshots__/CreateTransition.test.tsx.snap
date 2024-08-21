@@ -61,7 +61,7 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -70,17 +70,17 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
           <div
             aria-expanded="false"
             aria-haspopup="listbox"
-            class="euiComboBox euiComboBox--fullWidth"
+            class="euiComboBox euiComboBox--compressed euiComboBox--fullWidth"
             role="combobox"
           >
             <div
-              class="euiFormControlLayout euiFormControlLayout--fullWidth"
+              class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
             >
               <div
                 class="euiFormControlLayout__childrenWrapper"
               >
                 <div
-                  class="euiComboBox__inputWrap euiComboBox__inputWrap--fullWidth euiComboBox__inputWrap--noWrap"
+                  class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap--fullWidth euiComboBox__inputWrap--noWrap"
                   data-test-subj="comboBoxInput"
                   tabindex="-1"
                 >
@@ -147,20 +147,20 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <select
-                class="euiSelect euiSelect--fullWidth"
+                class="euiSelect euiSelect--fullWidth euiSelect--compressed"
                 data-test-subj="create-state-action-type"
                 id="some_html_id"
                 style="text-transform: capitalize;"
@@ -233,20 +233,20 @@ exports[`<CreateTransition /> spec renders the component 1`] = `
         </p>
       </div>
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
           class="euiFormRow__fieldWrapper"
         >
           <div
-            class="euiFormControlLayout euiFormControlLayout--fullWidth"
+            class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
           >
             <div
               class="euiFormControlLayout__childrenWrapper"
             >
               <input
-                class="euiFieldText euiFieldText--fullWidth"
+                class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                 data-test-subj="transition-render-conditions-min-index-age"
                 id="some_html_id"
                 type="text"

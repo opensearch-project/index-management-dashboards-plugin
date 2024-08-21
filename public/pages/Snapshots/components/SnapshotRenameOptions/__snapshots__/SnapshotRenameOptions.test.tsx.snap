@@ -10,7 +10,7 @@ exports[`SnapshotRenameOptions component renders without error 1`] = `
       class="euiSpacer euiSpacer--m"
     />
     <div
-      class="euiRadio"
+      class="euiRadio euiRadio--compressed"
     >
       <input
         checked=""
@@ -34,7 +34,7 @@ exports[`SnapshotRenameOptions component renders without error 1`] = `
       class="euiSpacer euiSpacer--s"
     />
     <div
-      class="euiRadio"
+      class="euiRadio euiRadio--compressed"
     >
       <input
         class="euiRadio__input"
@@ -57,7 +57,7 @@ exports[`SnapshotRenameOptions component renders without error 1`] = `
       class="euiSpacer euiSpacer--s"
     />
     <div
-      class="euiRadio"
+      class="euiRadio euiRadio--compressed"
     >
       <input
         class="euiRadio__input"

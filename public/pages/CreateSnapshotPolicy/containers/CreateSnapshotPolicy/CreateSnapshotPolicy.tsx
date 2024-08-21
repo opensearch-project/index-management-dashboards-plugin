@@ -6,27 +6,26 @@
 import _ from "lodash";
 import queryString from "query-string";
 import {
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiTextArea,
-  EuiSelect,
-  EuiFieldText,
+  EuiCompressedSelect,
+  EuiCompressedFieldText,
   EuiFlexGroup,
   EuiFlexItem,
   EuiSpacer,
   EuiTitle,
-  EuiButtonEmpty,
-  EuiButton,
+  EuiSmallButtonEmpty,
+  EuiSmallButton,
   EuiComboBoxOptionOption,
-  EuiFieldNumber,
+  EuiCompressedFieldNumber,
   EuiAccordion,
-  EuiRadioGroup,
+  EuiCompressedRadioGroup,
   EuiText,
-  EuiCheckbox,
+  EuiCompressedCheckbox,
   EuiPanel,
   EuiHorizontalRule,
-  EuiButtonIcon,
+  EuiSmallButtonIcon,
   EuiLink,
-  EuiCompressedRadioGroup,
 } from "@elastic/eui";
 import React, { ChangeEvent, Component, useContext } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -585,14 +584,19 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <ContentPanel title="Policy settings" titleSize="s">
           <CustomLabel title="Policy name" />
-          <EuiFormRow isInvalid={!!policyIdError} error={policyIdError}>
-            <EuiFieldText placeholder="e.g. daily-snapshot" value={policyId} onChange={this.onChangePolicyName} disabled={isEdit} />
-          </EuiFormRow>
+          <EuiCompressedFormRow isInvalid={!!policyIdError} error={policyIdError}>
+            <EuiCompressedFieldText
+              placeholder="e.g. daily-snapshot"
+              value={policyId}
+              onChange={this.onChangePolicyName}
+              disabled={isEdit}
+            />
+          </EuiCompressedFormRow>
 
           <EuiSpacer />
 
           <CustomLabel title="Description" isOptional={true} />
-          <EuiFormRow>
+          <EuiCompressedFormRow>
             <EuiTextArea
               compressed={true}
               value={_.get(policy, "description", "")}
@@ -600,7 +604,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
               placeholder="Snapshot management daily policy."
               data-test-subj="description"
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </ContentPanel>
 
         <EuiSpacer />
@@ -672,7 +676,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
               <CustomLabel title="Maximum age of snapshots retained" />
               <EuiFlexGroup>
                 <EuiFlexItem grow={false}>
-                  <EuiFieldNumber
+                  <EuiCompressedFieldNumber
                     value={maxAgeNum}
                     min={1}
                     onChange={(e) => {
@@ -681,7 +685,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                   />
                 </EuiFlexItem>
                 <EuiFlexItem style={{ maxWidth: 100 }}>
-                  <EuiSelect
+                  <EuiCompressedSelect
                     options={MAX_AGE_UNIT_OPTIONS}
                     value={maxAgeUnit}
                     onChange={(e) => {
@@ -700,19 +704,23 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                 <EuiFlexGroup alignItems="flexStart">
                   <EuiFlexItem grow={false}>
                     <CustomLabel title="Minimum" />
-                    <EuiFormRow isInvalid={!!minCountError} error={minCountError}>
-                      <EuiFieldNumber
+                    <EuiCompressedFormRow isInvalid={!!minCountError} error={minCountError}>
+                      <EuiCompressedFieldNumber
                         min={1}
                         value={_.get(policy, "deletion.condition.min_count") ?? "1"}
                         onChange={this.onChangeMinCount}
                       />
-                    </EuiFormRow>
+                    </EuiCompressedFormRow>
                   </EuiFlexItem>
                   <EuiFlexItem grow={false}>
                     <CustomLabel title="Maximum" isOptional={true} />
-                    <EuiFormRow>
-                      <EuiFieldNumber min={1} value={_.get(policy, "deletion.condition.max_count", "")} onChange={this.onChangeMaxCount} />
-                    </EuiFormRow>
+                    <EuiCompressedFormRow>
+                      <EuiCompressedFieldNumber
+                        min={1}
+                        value={_.get(policy, "deletion.condition.max_count", "")}
+                        onChange={this.onChangeMaxCount}
+                      />
+                    </EuiCompressedFormRow>
                   </EuiFlexItem>
                 </EuiFlexGroup>
 
@@ -724,7 +732,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                 </span>
                 <EuiSpacer size="s" />
 
-                <EuiCheckbox
+                <EuiCompressedCheckbox
                   id="delete_schedule_checkbox"
                   label="Same as snapshot frequency"
                   checked={!deletionScheduleEnabled}
@@ -760,7 +768,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
             <EuiText>Notify on snapshot activities</EuiText>
 
             <EuiSpacer size="s" />
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="notification-creation"
               label="When a snapshot has been created."
               checked={getNotifyCreation(policy)}
@@ -771,7 +779,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
             <EuiSpacer size="s" />
 
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="notification-deletion"
               label="When a snapshots has been deleted."
               checked={getNotifyDeletion(policy)}
@@ -782,7 +790,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
             <EuiSpacer size="s" />
 
-            <EuiCheckbox
+            <EuiCompressedCheckbox
               id="notification-failure"
               label="When a snapshot has failed."
               checked={getNotifyFailure(policy)}
@@ -808,7 +816,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
         <EuiPanel style={{ paddingLeft: "0px", paddingRight: "0px" }}>
           <EuiFlexGroup style={{ padding: "0px 10px" }} justifyContent="flexStart" alignItems="center" gutterSize="none">
             <EuiFlexItem grow={false}>
-              <EuiButtonIcon
+              <EuiSmallButtonIcon
                 iconType={advancedSettingsOpen ? "arrowDown" : "arrowRight"}
                 color="text"
                 onClick={() => {
@@ -849,7 +857,7 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
                 <EuiSpacer size="s" />
 
                 <CustomLabel title="Timestamp format" />
-                <EuiFieldText
+                <EuiCompressedFieldText
                   value={dateFormat}
                   onChange={(e) => {
                     let dateFormat = e.target.value;
@@ -884,13 +892,13 @@ export class CreateSnapshotPolicy extends MDSEnabledComponent<CreateSMPolicyProp
 
         <EuiFlexGroup justifyContent="flexEnd">
           <EuiFlexItem grow={false}>
-            <EuiButtonEmpty onClick={this.onClickCancel}>Cancel</EuiButtonEmpty>
+            <EuiSmallButtonEmpty onClick={this.onClickCancel}>Cancel</EuiSmallButtonEmpty>
           </EuiFlexItem>
 
           <EuiFlexItem grow={false}>
-            <EuiButton fill onClick={this.onClickSubmit} isLoading={isSubmitting}>
+            <EuiSmallButton fill onClick={this.onClickSubmit} isLoading={isSubmitting}>
               {isEdit ? "Update" : "Create"}
-            </EuiButton>
+            </EuiSmallButton>
           </EuiFlexItem>
         </EuiFlexGroup>
       </div>

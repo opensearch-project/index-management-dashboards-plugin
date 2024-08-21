@@ -94,7 +94,7 @@ exports[`<IndexControls /> spec renders data streams selection field 1`] = `
     class="euiFlexItem euiFlexItem--flexGrowZero"
   >
     <div
-      class="euiSwitch euiSwitch--primary"
+      class="euiSwitch euiSwitch--primary euiSwitch--compressed"
     >
       <button
         aria-checked="true"
@@ -113,10 +113,7 @@ exports[`<IndexControls /> spec renders data streams selection field 1`] = `
           />
           <span
             class="euiSwitch__track"
-          >
-            EuiIconMock
-            EuiIconMock
-          </span>
+          />
         </span>
       </button>
       <span
@@ -186,7 +183,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
     class="euiFlexItem euiFlexItem--flexGrowZero"
   >
     <div
-      class="euiSwitch euiSwitch--primary"
+      class="euiSwitch euiSwitch--primary euiSwitch--compressed"
     >
       <button
         aria-checked="false"
@@ -205,10 +202,7 @@ exports[`<IndexControls /> spec renders the component 1`] = `
           />
           <span
             class="euiSwitch__track"
-          >
-            EuiIconMock
-            EuiIconMock
-          </span>
+          />
         </span>
       </button>
       <span

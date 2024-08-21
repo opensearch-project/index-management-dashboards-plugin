@@ -7,16 +7,16 @@ import {
   EuiAccordion,
   EuiCallOut,
   EuiCodeEditor,
-  EuiComboBox,
+  EuiCompressedComboBox,
   EuiComboBoxOptionOption,
-  EuiFieldText,
+  EuiCompressedFieldText,
   EuiFlyout,
   EuiFlyoutBody,
   EuiFlyoutFooter,
   EuiFlyoutHeader,
-  EuiFormRow,
+  EuiCompressedFormRow,
   EuiLink,
-  EuiSelect,
+  EuiCompressedSelect,
   EuiSpacer,
   EuiText,
   EuiTitle,
@@ -191,14 +191,14 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
       configuration = (
         <>
           <CustomLabel title="Location" />
-          <EuiFormRow isInvalid={!!locationError} error={locationError}>
-            <EuiFieldText
+          <EuiCompressedFormRow isInvalid={!!locationError} error={locationError}>
+            <EuiCompressedFieldText
               disabled={!!editRepo}
               placeholder="e.g., /mnt/snapshots"
               value={location}
               onChange={(e) => this.setState({ location: e.target.value })}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="l" />
 
@@ -279,25 +279,25 @@ export class CreateRepositoryFlyout extends MDSEnabledComponent<CreateRepository
 
         <EuiFlyoutBody>
           <CustomLabel title="Repository name" />
-          <EuiFormRow isInvalid={!!repoNameError} error={repoNameError}>
-            <EuiFieldText
+          <EuiCompressedFormRow isInvalid={!!repoNameError} error={repoNameError}>
+            <EuiCompressedFieldText
               disabled={!!editRepo}
               value={repoName}
               data-test-subj="repoNameInput"
               onChange={(e) => this.setState({ repoName: e.target.value })}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="m" />
 
           <CustomLabel title="Repository type" helpText={repoTypeHelpText} />
-          <EuiFormRow isInvalid={!!repoTypeError} error={repoTypeError}>
-            <EuiSelect
+          <EuiCompressedFormRow isInvalid={!!repoTypeError} error={repoTypeError}>
+            <EuiCompressedSelect
               options={REPO_SELECT_OPTIONS}
               value={selectedRepoTypeOption}
               onChange={(e) => this.setState({ selectedRepoTypeOption: e.target.value })}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="m" />
 

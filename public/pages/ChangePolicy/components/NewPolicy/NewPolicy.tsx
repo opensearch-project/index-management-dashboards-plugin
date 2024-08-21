@@ -5,7 +5,16 @@
 
 import React from "react";
 import _ from "lodash";
-import { EuiSpacer, EuiText, EuiRadioGroup, EuiFormRow, EuiSelect, EuiComboBox, EuiLink, EuiIcon } from "@elastic/eui";
+import {
+  EuiSpacer,
+  EuiText,
+  EuiCompressedRadioGroup,
+  EuiCompressedFormRow,
+  EuiCompressedSelect,
+  EuiCompressedComboBox,
+  EuiLink,
+  EuiIcon,
+} from "@elastic/eui";
 import { ContentPanel } from "../../../../components/ContentPanel";
 import { IndexService } from "../../../../services";
 import { Radio } from "../../containers/ChangePolicy/ChangePolicy";
@@ -102,8 +111,8 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
 
           <EuiSpacer size="s" />
 
-          <EuiFormRow label="New policy" isInvalid={!!selectedPoliciesError} error={selectedPoliciesError}>
-            <EuiComboBox
+          <EuiCompressedFormRow label="New policy" isInvalid={!!selectedPoliciesError} error={selectedPoliciesError}>
+            <EuiCompressedComboBox
               placeholder=""
               async
               options={policies}
@@ -116,16 +125,16 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
               onSearchChange={this.onPolicySearchChange}
               compressed={useUpdatedUX ? true : false}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
 
           <EuiSpacer size="m" />
 
-          <EuiRadioGroup options={radioOptions} idSelected={stateRadioIdSelected} onChange={this.props.onChangeStateRadio} />
+          <EuiCompressedRadioGroup options={radioOptions} idSelected={stateRadioIdSelected} onChange={this.props.onChangeStateRadio} />
 
           <EuiSpacer size="s" />
 
-          <EuiFormRow>
-            <EuiSelect
+          <EuiCompressedFormRow>
+            <EuiCompressedSelect
               disabled={stateRadioIdSelected !== Radio.State}
               options={stateOptions}
               value={stateSelected}
@@ -133,7 +142,7 @@ export default class NewPolicy extends React.Component<NewPolicyProps, NewPolicy
               aria-label="Start state for new policy"
               compressed={useUpdatedUX ? true : false}
             />
-          </EuiFormRow>
+          </EuiCompressedFormRow>
         </div>
       </ContentPanel>
     );

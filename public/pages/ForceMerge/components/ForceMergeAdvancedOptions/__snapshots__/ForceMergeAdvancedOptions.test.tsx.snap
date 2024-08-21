@@ -7,7 +7,7 @@ Object {
     <div>
       <div>
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -32,7 +32,7 @@ Object {
             </div>
             <div>
               <div
-                class="euiRadio euiRadioGroup__item"
+                class="euiRadio euiRadio--compressed euiRadioGroup__item"
               >
                 <input
                   checked=""
@@ -52,7 +52,7 @@ Object {
                 </label>
               </div>
               <div
-                class="euiRadio euiRadioGroup__item"
+                class="euiRadio euiRadio--compressed euiRadioGroup__item"
               >
                 <input
                   class="euiRadio__input"
@@ -77,7 +77,7 @@ Object {
           class="euiSpacer euiSpacer--l"
         />
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -103,7 +103,7 @@ Object {
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
             >
               <div
-                class="euiCheckbox"
+                class="euiCheckbox euiCheckbox--compressed"
               >
                 <input
                   class="euiCheckbox__input"
@@ -127,7 +127,7 @@ Object {
           class="euiSpacer euiSpacer--l"
         />
         <div
-          class="euiFormRow euiFormRow--fullWidth"
+          class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -153,7 +153,7 @@ Object {
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
             >
               <div
-                class="euiCheckbox"
+                class="euiCheckbox euiCheckbox--compressed"
               >
                 <input
                   class="euiCheckbox__input"
@@ -179,7 +179,7 @@ Object {
   "container": <div>
     <div>
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -204,7 +204,7 @@ Object {
           </div>
           <div>
             <div
-              class="euiRadio euiRadioGroup__item"
+              class="euiRadio euiRadio--compressed euiRadioGroup__item"
             >
               <input
                 checked=""
@@ -224,7 +224,7 @@ Object {
               </label>
             </div>
             <div
-              class="euiRadio euiRadioGroup__item"
+              class="euiRadio euiRadio--compressed euiRadioGroup__item"
             >
               <input
                 class="euiRadio__input"
@@ -249,7 +249,7 @@ Object {
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow"
+        class="euiFormRow euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -275,7 +275,7 @@ Object {
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiCheckbox"
+              class="euiCheckbox euiCheckbox--compressed"
             >
               <input
                 class="euiCheckbox__input"
@@ -299,7 +299,7 @@ Object {
         class="euiSpacer euiSpacer--l"
       />
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -325,7 +325,7 @@ Object {
             class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
           >
             <div
-              class="euiCheckbox"
+              class="euiCheckbox euiCheckbox--compressed"
             >
               <input
                 class="euiCheckbox__input"

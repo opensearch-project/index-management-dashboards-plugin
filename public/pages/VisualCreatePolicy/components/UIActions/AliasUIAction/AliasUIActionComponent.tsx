@@ -4,7 +4,7 @@
  */
 
 import React, { Component } from "react";
-import { EuiComboBox, EuiComboBoxOptionOption, EuiFormRow, EuiSpacer, EuiSwitch } from "@elastic/eui";
+import { EuiCompressedComboBox, EuiComboBoxOptionOption, EuiCompressedFormRow, EuiSpacer, EuiCompressedSwitch } from "@elastic/eui";
 import { AliasAction, AliasActionItem, AliasActions, UIAction } from "../../../../../../models/interfaces";
 import AliasUIAction, { MAX_ALIAS_ACTIONS } from "./AliasUIAction";
 import { inputLimitText } from "../../../../CreatePolicy/utils/helpers";
@@ -83,7 +83,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
     const { addAliasToggle, removeAliasToggle } = this.state;
     return (
       <>
-        <EuiSwitch
+        <EuiCompressedSwitch
           label={"Add aliases"}
           checked={addAliasToggle}
           onChange={(e) => {
@@ -96,7 +96,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
         {addAliasToggle && (
           <>
             <EuiSpacer size={"m"} />
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={"Select aliases to add to indexes"}
               fullWidth
               style={{ maxWidth: "100%" }}
@@ -105,7 +105,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
               data-test-subj={"add-alias-row"}
             >
               <>
-                <EuiComboBox
+                <EuiCompressedComboBox
                   placeholder={"Enter aliases to add"}
                   noSuggestions={true}
                   selectedOptions={selectedItems.add || []}
@@ -120,13 +120,13 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
                 />
                 {inputLimitText(selectedItems.add?.length, MAX_ALIAS_ACTIONS, "alias", "aliases")}
               </>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         )}
 
         <EuiSpacer size={"l"} />
 
-        <EuiSwitch
+        <EuiCompressedSwitch
           label={"Remove aliases"}
           checked={removeAliasToggle}
           onChange={(e) => {
@@ -139,7 +139,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
         {removeAliasToggle && (
           <>
             <EuiSpacer size={"m"} />
-            <EuiFormRow
+            <EuiCompressedFormRow
               label={"Select aliases to remove from indexes"}
               fullWidth
               style={{ maxWidth: "100%" }}
@@ -148,7 +148,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
               data-test-subj={"remove-alias-row"}
             >
               <>
-                <EuiComboBox
+                <EuiCompressedComboBox
                   placeholder={"Enter aliases to remove"}
                   noSuggestions={true}
                   selectedOptions={selectedItems.remove || []}
@@ -163,7 +163,7 @@ export default class AliasUIActionComponent extends Component<AliasUIActionCompo
                 />
                 {inputLimitText(selectedItems.remove?.length, MAX_ALIAS_ACTIONS, "alias", "aliases")}
               </>
-            </EuiFormRow>
+            </EuiCompressedFormRow>
           </>
         )}
       </>

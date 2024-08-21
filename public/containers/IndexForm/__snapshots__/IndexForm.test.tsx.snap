@@ -36,7 +36,7 @@ exports[`<IndexForm /> spec render page 1`] = `
         class="euiForm"
       >
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           data-test-subj="form-name-index"
           id="some_html_id-row"
         >
@@ -58,13 +58,13 @@ exports[`<IndexForm /> spec render page 1`] = `
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    class="euiFieldText"
+                    class="euiFieldText euiFieldText--compressed"
                     placeholder="Specify a name for the new index."
                     type="text"
                     value=""
@@ -83,7 +83,7 @@ exports[`<IndexForm /> spec render page 1`] = `
           </div>
         </div>
         <div
-          class="euiFormRow euiFormRow--fullWidth"
+          class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
           data-test-subj="form-name-templateMessage"
           id="some_html_id-row"
         >
@@ -92,7 +92,7 @@ exports[`<IndexForm /> spec render page 1`] = `
           />
         </div>
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           data-test-subj="form-name-aliases"
           id="some_html_id-row"
         >
@@ -125,17 +125,17 @@ exports[`<IndexForm /> spec render page 1`] = `
               <div
                 aria-expanded="false"
                 aria-haspopup="listbox"
-                class="euiComboBox"
+                class="euiComboBox euiComboBox--compressed"
                 role="combobox"
               >
                 <div
-                  class="euiFormControlLayout"
+                  class="euiFormControlLayout euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <div
-                      class="euiComboBox__inputWrap euiComboBox__inputWrap-isClearable"
+                      class="euiComboBox__inputWrap euiComboBox__inputWrap--compressed euiComboBox__inputWrap-isClearable"
                       data-test-subj="comboBoxInput"
                       tabindex="-1"
                     >
@@ -218,7 +218,7 @@ exports[`<IndexForm /> spec render page 1`] = `
         class="euiForm"
       >
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           data-test-subj="form-name-index.number_of_shards"
           id="some_html_id-row"
         >
@@ -251,13 +251,13 @@ exports[`<IndexForm /> spec render page 1`] = `
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    class="euiFieldNumber"
+                    class="euiFieldNumber euiFieldNumber--compressed"
                     placeholder="Specify primary shard count."
                     type="number"
                     value=""
@@ -268,7 +268,7 @@ exports[`<IndexForm /> spec render page 1`] = `
           </div>
         </div>
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           data-test-subj="form-name-index.number_of_replicas"
           id="some_html_id-row"
         >
@@ -296,13 +296,13 @@ exports[`<IndexForm /> spec render page 1`] = `
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    class="euiFieldNumber"
+                    class="euiFieldNumber euiFieldNumber--compressed"
                     placeholder="Specify number of replicas."
                     type="number"
                     value=""
@@ -313,7 +313,7 @@ exports[`<IndexForm /> spec render page 1`] = `
           </div>
         </div>
         <div
-          class="euiFormRow"
+          class="euiFormRow euiFormRow--compressed"
           data-test-subj="form-name-index.refresh_interval"
           id="some_html_id-row"
         >
@@ -341,13 +341,13 @@ exports[`<IndexForm /> spec render page 1`] = `
               class="euiToolTipAnchor euiToolTipAnchor--displayBlock"
             >
               <div
-                class="euiFormControlLayout"
+                class="euiFormControlLayout euiFormControlLayout--compressed"
               >
                 <div
                   class="euiFormControlLayout__childrenWrapper"
                 >
                   <input
-                    class="euiFieldText"
+                    class="euiFieldText euiFieldText--compressed"
                     placeholder="Can be set to -1 to disable refreshing."
                     type="text"
                     value=""
@@ -403,7 +403,7 @@ exports[`<IndexForm /> spec render page 1`] = `
                   class="euiSpacer euiSpacer--s"
                 />
                 <div
-                  class="euiFormRow euiFormRow--fullWidth"
+                  class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
                   data-test-subj="formNameAdvancedSettings"
                   id="some_html_id-row"
                 >
@@ -612,7 +612,7 @@ exports[`<IndexForm /> spec render page 1`] = `
           </i>
         </div>
         <div
-          class="euiFormRow euiFormRow--fullWidth"
+          class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
           id="some_html_id-row"
         >
           <div
@@ -655,7 +655,7 @@ exports[`<IndexForm /> spec render page 1`] = `
       style="padding: 0px 10px;"
     >
       <div
-        class="euiFormRow euiFormRow--fullWidth"
+        class="euiFormRow euiFormRow--fullWidth euiFormRow--compressed"
         id="some_html_id-row"
       >
         <div
@@ -735,7 +735,7 @@ exports[`<IndexForm /> spec render page 1`] = `
             class="euiSpacer euiSpacer--l"
           />
           <button
-            class="euiButton euiButton--primary"
+            class="euiButton euiButton--primary euiButton--small"
             data-test-subj="createIndexAddFieldButton"
             style="margin-right: 8px;"
             type="button"
@@ -751,7 +751,7 @@ exports[`<IndexForm /> spec render page 1`] = `
             </span>
           </button>
           <button
-            class="euiButton euiButton--primary"
+            class="euiButton euiButton--primary euiButton--small"
             data-test-subj="createIndexAddObjectFieldButton"
             type="button"
           >

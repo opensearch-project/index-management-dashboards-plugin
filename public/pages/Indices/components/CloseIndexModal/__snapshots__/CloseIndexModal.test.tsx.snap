@@ -93,13 +93,13 @@ HTMLCollection [
                   </div>
                 </div>
                 <div
-                  class="euiFormControlLayout euiFormControlLayout--fullWidth"
+                  class="euiFormControlLayout euiFormControlLayout--fullWidth euiFormControlLayout--compressed"
                 >
                   <div
                     class="euiFormControlLayout__childrenWrapper"
                   >
                     <input
-                      class="euiFieldText euiFieldText--fullWidth"
+                      class="euiFieldText euiFieldText--fullWidth euiFieldText--compressed"
                       placeholder="close"
                       type="text"
                       value=""
@@ -113,7 +113,7 @@ HTMLCollection [
             class="euiModalFooter"
           >
             <button
-              class="euiButtonEmpty euiButtonEmpty--primary"
+              class="euiButtonEmpty euiButtonEmpty--primary euiButtonEmpty--small"
               data-test-subj="Close Cancel button"
               type="button"
             >
@@ -128,7 +128,7 @@ HTMLCollection [
               </span>
             </button>
             <button
-              class="euiButton euiButton--primary euiButton--fill euiButton-isDisabled"
+              class="euiButton euiButton--primary euiButton--small euiButton--fill euiButton-isDisabled"
               data-test-subj="Close Confirm button"
               disabled=""
               type="button"
