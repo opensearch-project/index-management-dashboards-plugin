@@ -50,6 +50,8 @@ import { NotificationConfigRef } from "../../../../containers/NotificationConfig
 import { ListenType } from "../../../../lib/JobScheduler";
 import { openIndices } from "../../../Indices/utils/helpers";
 import { EVENT_MAP, destroyListener, listenEvent } from "../../../../JobHandler";
+import { useUpdateUrlWithDataSourceProperties } from "../../../../components/MDSEnabledComponent";
+import { getApplication, getNavigationUI, getUISettings } from "../../../../services/Services";
 
 const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
   disabledKey: "isDisabled",
@@ -57,6 +59,7 @@ const WrappedAliasSelect = EuiToolTipWrapper(AliasSelect as any, {
 
 interface ShrinkIndexProps extends RouteComponentProps {
   commonService: CommonService;
+  useUpdatedUX: boolean;
 }
 
 interface ShrinkIndexState {
@@ -66,7 +69,7 @@ interface ShrinkIndexState {
   loading: boolean;
 }
 
-export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
+class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndexState> {
   static contextType = CoreServicesContext;
 
   destroyed: boolean = false;
@@ -83,11 +86,15 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
   }
 
   async componentDidMount() {
-    this.context.chrome.setBreadcrumbs([
-      BREADCRUMBS.INDEX_MANAGEMENT,
-      BREADCRUMBS.INDICES,
-      { ...BREADCRUMBS.SHRINK_INDEX, href: `#${this.props.location.pathname}${this.props.location.search}` },
-    ]);
+    const breadCrumbs = this.props.useUpdatedUX
+      ? [BREADCRUMBS.INDICES, { ...BREADCRUMBS.SHRINK_INDEX, href: `#${this.props.location.pathname}${this.props.location.search}` }]
+      : [
+          BREADCRUMBS.INDEX_MANAGEMENT,
+          BREADCRUMBS.INDICES,
+          { ...BREADCRUMBS.SHRINK_INDEX, href: `#${this.props.location.pathname}${this.props.location.search}` },
+        ];
+    this.context.chrome.setBreadcrumbs(breadCrumbs);
+
     const { source } = queryString.parse(this.props.location.search);
     if (typeof source === "string" && !!source) {
       await this.getIndex(source);
@@ -641,47 +648,91 @@ export default class ShrinkIndex extends Component<ShrinkIndexProps, ShrinkIndex
       </EuiCompressedFormRow>
     );
 
-    return (
+    const description = [
+      {
+        renderComponent: (
+          <EuiCompressedFormRow
+            fullWidth
+            helpText={
+              <div>
+                Shrink an existing index into a new index with fewer primary shards.&nbsp;
+                <EuiLink href={SHRINK_DOCUMENTATION_URL} target="_blank" rel="noopener noreferrer">
+                  Learn more
+                </EuiLink>
+              </div>
+            }
+          >
+            <></>
+          </EuiCompressedFormRow>
+        ),
+      },
+    ];
+
+    const Common = () => {
+      return (
+        <>
+          <IndexDetail indices={indices} children={indexDetailChildren} />
+          {!!disableShrinkButton ? null : configurationChildren}
+          <NotificationConfig
+            withPanel
+            panelProps={{
+              title: "Advanced settings",
+              titleSize: "s",
+            }}
+            ref={(ref) => (this.notificationRef = ref)}
+            actionType={ActionType.RESIZE}
+            operationType={OperationType.SHRINK}
+          />
+          <EuiSpacer />
+          <EuiSpacer />
+          <EuiFlexGroup justifyContent="flexEnd">
+            <EuiFlexItem grow={false}>
+              <EuiSmallButtonEmpty onClick={this.onCancel} flush="left" data-test-subj="shrinkIndexCancelButton">
+                Cancel
+              </EuiSmallButtonEmpty>
+            </EuiFlexItem>
+            <EuiFlexItem grow={false}>
+              <EuiSmallButton
+                isLoading={this.state.loading}
+                isDisabled={this.state.loading}
+                onClick={this.onClickAction}
+                fill
+                data-test-subj="shrinkIndexConfirmButton"
+                disabled={disableShrinkButton}
+              >
+                Shrink
+              </EuiSmallButton>
+            </EuiFlexItem>
+          </EuiFlexGroup>
+        </>
+      );
+    };
+
+    const { HeaderControl } = getNavigationUI();
+    const { setAppDescriptionControls } = getApplication();
+
+    return this.props.useUpdatedUX ? (
+      <div style={{ padding: "0px 0px" }}>
+        <HeaderControl controls={description} setMountPoint={setAppDescriptionControls} />
+
+        {Common()}
+      </div>
+    ) : (
       <div style={{ padding: "0px 50px" }}>
         <EuiTitle size="l">
           <h1>Shrink index</h1>
         </EuiTitle>
         {subTitleText}
         <EuiSpacer />
-        <IndexDetail indices={indices} children={indexDetailChildren} />
-        {!!disableShrinkButton ? null : configurationChildren}
-        <NotificationConfig
-          withPanel
-          panelProps={{
-            title: "Advanced settings",
-            titleSize: "s",
-          }}
-          ref={(ref) => (this.notificationRef = ref)}
-          actionType={ActionType.RESIZE}
-          operationType={OperationType.SHRINK}
-        />
-        <EuiSpacer />
-        <EuiSpacer />
-        <EuiFlexGroup justifyContent="flexEnd">
-          <EuiFlexItem grow={false}>
-            <EuiSmallButtonEmpty onClick={this.onCancel} flush="left" data-test-subj="shrinkIndexCancelButton">
-              Cancel
-            </EuiSmallButtonEmpty>
-          </EuiFlexItem>
-          <EuiFlexItem grow={false}>
-            <EuiSmallButton
-              isLoading={this.state.loading}
-              isDisabled={this.state.loading}
-              onClick={this.onClickAction}
-              fill
-              data-test-subj="shrinkIndexConfirmButton"
-              disabled={disableShrinkButton}
-            >
-              Shrink
-            </EuiSmallButton>
-          </EuiFlexItem>
-        </EuiFlexGroup>
+        {Common()}
       </div>
     );
   }
+}
+
+export default function (props: ShrinkIndexProps) {
+  useUpdateUrlWithDataSourceProperties();
+  const uiSettings = getUISettings();
+  const useUpdatedUX = uiSettings.get("home:useNewHomePage");
+  return <ShrinkIndex {...props} useUpdatedUX={useUpdatedUX} />;
 }

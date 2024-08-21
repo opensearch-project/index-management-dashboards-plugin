@@ -527,6 +527,7 @@ export default class Main extends Component<MainProps, MainState> {
                                 ROUTES.CREATE_REPOSITORY,
                                 ROUTES.EDIT_REPOSITORY,
                                 ROUTES.NOTIFICATIONS,
+                                ROUTES.SHRINK_INDEX,
                               ]}
                               render={() => (
                                 <DataSourceMenu
